@@ -1,7 +1,13 @@
 import React from 'react'
 import { Component } from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import { Home, homeProps } from './src/features/home';
+import { Home } from './src/features/home';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql'
+});
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -14,7 +20,9 @@ const instructions = Platform.select({
 export default class App extends Component<{}> {
   render() {
     return (
-      <Home coursesPrograms={homeProps}/>
+      <ApolloProvider client={client}>
+        <Home/>
+      </ApolloProvider>
     );
   }
 }

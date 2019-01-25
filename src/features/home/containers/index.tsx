@@ -1,24 +1,14 @@
 import {Component} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
+import { courseList } from '../api'
 
-
-type CourseProgramSummary = {
-  title: string
-}
-
-type HomeProps = {
-  coursesPrograms: Array<CourseProgramSummary>
-};
-
-export class Home extends Component<HomeProps> {
+export class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Current learning</Text>
-        { this.props.coursesPrograms.map ( cp =>
-            <Text style={styles.courseProgram} key={cp.title}>{cp.title}</Text>
-        )}
+        <Courses/>
         <Text style={styles.lastAccessed}>Last Accessed activity</Text><TouchableOpacity><Text>Go</Text></TouchableOpacity>
       </View>
     );
@@ -49,3 +39,23 @@ const styles = StyleSheet.create({
   },
 
 });
+
+
+
+export const Courses = courseList(({ data: {loading, courses, error} }) => {
+
+        if (loading) return <Text>Loading...</Text>;
+        if (error) return <Text>Error :(</Text>;
+
+        if (courses) {
+
+          return (
+            <View>
+              {
+                courses.map(({id, shortname, fullname})  => (<Text key={id} style={styles.courseProgram}>{shortname} - {fullname}</Text>))
+              }
+            </View>
+          );
+
+        } else return null
+  });
