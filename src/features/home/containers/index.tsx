@@ -1,7 +1,9 @@
 import {Component} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
-import { courseList } from '../api'
+import Carousel from 'react-native-snap-carousel';
+
+import { courseList, Course } from '../api'
 
 export class Home extends Component {
   render() {
@@ -9,7 +11,9 @@ export class Home extends Component {
       <View style={styles.container}>
         <Text style={styles.header}>Current learning</Text>
         <Courses/>
-        <Text style={styles.lastAccessed}>Last Accessed activity</Text><TouchableOpacity><Text>Go</Text></TouchableOpacity>
+        <View style={styles.lastAccessed}>
+        <Text>Last Accessed activity</Text><TouchableOpacity><Text>Go</Text></TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -23,9 +27,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   header: {
+    flex: 2,
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    marginTop: 50,
   },
   courseProgram: {
     textAlign: 'center',
@@ -33,13 +38,25 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   lastAccessed: {
+    flex: 2,
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
-
+  courses: {
+    flex: 2
+  }
 });
 
+type renderType = {
+  item: Course
+  index: number
+}
+
+
+const renderCourse = ( {item, index}: renderType ) => {
+  return <Text key={item.id} style={styles.courseProgram}>{item.shortname} - {item.fullname}</Text>
+}
 
 
 export const Courses = courseList(({ data: {loading, courses, error} }) => {
@@ -50,12 +67,14 @@ export const Courses = courseList(({ data: {loading, courses, error} }) => {
         if (courses) {
 
           return (
-            <View>
-              {
-                courses.map(({id, shortname, fullname})  => (<Text key={id} style={styles.courseProgram}>{shortname} - {fullname}</Text>))
-              }
-            </View>
-          );
+            <Carousel
+              data={courses}
+              renderItem={renderCourse}
+              sliderWidth={500}
+              itemWidth={500}
+              sliderHeight={500}
+            />
+          )
 
         } else return null
   });
