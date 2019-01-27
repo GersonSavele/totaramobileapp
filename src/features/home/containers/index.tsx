@@ -1,9 +1,9 @@
 import {Component} from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import Carousel from 'react-native-snap-carousel';
 
-import { courseList, Course } from '../api'
+import {courseList, Course} from '../api'
 
 export class Home extends Component {
   render() {
@@ -12,7 +12,7 @@ export class Home extends Component {
         <Text style={styles.header}>Current learning</Text>
         <Courses/>
         <View style={styles.lastAccessed}>
-        <Text>Last Accessed activity</Text><TouchableOpacity><Text>Go</Text></TouchableOpacity>
+        <Text>Last Accessed activity</Text><TouchableOpacity><Text style={styles.button}>Go</Text></TouchableOpacity>
         </View>
       </View>
     );
@@ -27,25 +27,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   header: {
-    flex: 2,
+    flex: 0,
     fontSize: 20,
     textAlign: 'center',
     marginTop: 50,
   },
   courseProgram: {
+    flex: 1,
     textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    color: '#FFFFFF',
+    fontSize: 30,
+    fontWeight: 'bold',
+    borderWidth: 1,
+    margin: 0,
   },
   lastAccessed: {
-    flex: 2,
+    flex: 0,
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 20,
   },
   courses: {
     flex: 2
-  }
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10
+  },
 });
 
 type renderType = {
@@ -55,7 +64,12 @@ type renderType = {
 
 
 const renderCourse = ( {item, index}: renderType ) => {
-  return <Text key={item.id} style={styles.courseProgram}>{item.shortname} - {item.fullname}</Text>
+  const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
+
+  return (
+    <ImageBackground source={{uri: imgSrc}} style={{width: '100%', height: '100%'}}>
+      <Text key={item.id} style={styles.courseProgram}>{item.shortname} - {item.fullname}</Text>
+    </ImageBackground>)
 }
 
 
