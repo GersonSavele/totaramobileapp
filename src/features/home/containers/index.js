@@ -1,9 +1,10 @@
 import {Component} from "react";
-import {ImageBackground, StyleSheet, Text, TouchableOpacity, View, Button} from "react-native";
+import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import Carousel from 'react-native-snap-carousel';
-import { Card, BottomNavigation } from 'react-native-material-ui';
+import { Card, BottomNavigation, Button } from 'react-native-material-ui';
 import SlidingUpPanel from 'rn-sliding-up-panel';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import {courseList, Course} from '../api/index'
 
@@ -19,17 +20,19 @@ export class Home extends Component {
         <Text style={styles.header}>Current learning</Text>
         <Courses/>
         <View style={styles.lastAccessed}>
-        <Text>Last Accessed activity</Text><Button title='Go' onPress={() => this.setState({visible: true})} />
+          <TouchableOpacity  onPress={() => this.setState({visible: true})}>
+          <Text>Last Accessed activity</Text>
+          </TouchableOpacity>
         </View>
         <SlidingUpPanel
           visible={this.state.visible}
           onRequestClose={() => this.setState({visible: false})}>
-          <View style={styles.container}>
+          <View style={styles.panel}>
             <Text>Here is the content inside panel</Text>
-            <Button title='Hide' onPress={() => this.setState({visible: false})} />
+            <Button text='Hide' onPress={() => this.setState({visible: false})} />
           </View>
         </SlidingUpPanel>
-        <BottomNavigation active={this.state.active} hidden={false} >
+        <BottomNavigation active={this.state.active} hidden={false} style={{ container: styles.navigation }}>
           <BottomNavigation.Action
             key="today"
             icon="today"
@@ -65,16 +68,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   header: {
-    flex: 0,
     fontSize: 20,
     textAlign: 'center',
     marginTop: 50,
   },
   courseProgram: {
-    flex: 1,
+    flex: 3,
     textAlign: 'center',
     color: '#FFFFFF',
     fontSize: 30,
@@ -83,19 +84,30 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   lastAccessed: {
-    flex: 0,
+    flexDirection: 'row',
     fontSize: 20,
-    textAlign: 'center',
-    margin: 20,
+    justifyContent: 'center',
+    height: 30,
+    width: wp('100%')
   },
   courses: {
-    flex: 2
+    flex: 3
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
     padding: 10
   },
+  navigation: {
+    paddingBottom: 20,
+    width: wp('100%'),
+    height: hp('10%')
+  },
+  panel: {
+    flex: 1,
+    paddingBottom: 20,
+    justifyContent: 'center',
+    backgroundColor: '#333333',
+  }
 });
 
 // type renderType = {

@@ -20,12 +20,7 @@ const instructions = Platform.select({
 const uiTheme = {
     palette: {
         primaryColor: COLOR.greenA700,
-    },
-    toolbar: {
-        container: {
-            height: 50,
-        },
-    },
+    }
 };
 
 export default class App extends Component<{}> {
