@@ -11,8 +11,8 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 
 
 const client = new ApolloClient({
-//  uri: 'http://10.0.8.178:4000/graphql'
-  uri: 'http://10.0.1.51:4000/graphql'
+  uri: 'http://10.0.8.178:4000/graphql'
+//  uri: 'http://10.0.1.51:4000/graphql'
 });
 
 const instructions = Platform.select({
@@ -24,7 +24,7 @@ const instructions = Platform.select({
 
 const uiTheme = {
     palette: {
-        primaryColor: COLOR.greenA700,
+        primaryColor: COLOR.green800,
     }
 };
 
@@ -50,22 +50,22 @@ export default class App extends Component<{}> {
           <AppContainer/>
           <BottomNavigation active={this.state.active} hidden={false} style={{ container: styles.navigation }}>
             <BottomNavigation.Action
-              key="today"
-              icon="today"
-              label="Today"
-              onPress={() => this.setState({ active: 'today' })}
+              key="home"
+              icon="home"
+              label="Home"
+              onPress={() => this.setState({ active: 'home' })}
             />
             <BottomNavigation.Action
-              key="people"
-              icon="people"
-              label="People"
-              onPress={() => this.setState({ active: 'people' })}
+              key="downloads"
+              icon="class"
+              label="Activities"
+              onPress={() => this.setState({ active: 'downloads' })}
             />
             <BottomNavigation.Action
-              key="bookmark-border"
-              icon="bookmark-border"
-              label="Bookmark"
-              onPress={() => this.setState({ active: 'bookmark-border' })}
+              key="profile"
+              icon="account-circle"
+              label="Profile"
+              onPress={() => this.setState({ active: 'profile' })}
             />
             <BottomNavigation.Action
               key="settings"

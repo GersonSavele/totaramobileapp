@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ImageBackground, Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import React from "react";
 import Carousel from 'react-native-snap-carousel';
 import { Card, Button } from 'react-native-material-ui';
@@ -9,20 +9,23 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import {courseList, Course} from '../api/index'
 
 export class Home extends Component {
+  static navigationOptions = {
+    title: 'Current Learnings',
+  };
 
   state = {
     visible: false
-  }
+  };
 
   render() {
+    let Courses2 = Courses(() => this.props.navigation.navigate('Course'))
+
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Current learning</Text>
-        <Courses/>
-        <View style={styles.lastAccessed}>
-          <TouchableOpacity  onPress={() => this.props.navigation.navigate('Course')}>
-            {/*onPress={() => this.setState({visible: true})}>*/}
-          <Text>Last Accessed activity</Text>
+        <Courses2/>
+        <View>
+          <TouchableOpacity style={styles.lastAccessed} onPress={() => this.setState({visible: true})}>
+            <Text onPress={() => this.setState({visible: true})}>Resume Last Accessed Activity</Text>
           </TouchableOpacity>
         </View>
         <SlidingUpPanel
@@ -50,23 +53,26 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   courseProgram: {
-    flex: 3,
+    flex: 1,
+    marginTop: 10,
     textAlign: 'center',
-    color: '#FFFFFF',
     fontSize: 30,
     fontWeight: 'bold',
     borderWidth: 1,
     margin: 0,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#CCCCCC',
+    width: wp('80%')
   },
   lastAccessed: {
-    flexDirection: 'row',
     fontSize: 20,
     justifyContent: 'center',
-    height: 30,
-    width: wp('100%')
-  },
-  courses: {
-    flex: 3
+    alignItems: 'center',
+    height: 50,
+    width: wp('100%'),
+    backgroundColor: '#CECECE',
+    marginTop: 10,
+    paddingLeft: 30
   },
   button: {
     alignItems: 'center',
@@ -80,8 +86,7 @@ const styles = StyleSheet.create({
   panel: {
     flex: 1,
     paddingBottom: 20,
-    justifyContent: 'center',
-    backgroundColor: '#333333',
+    backgroundColor: '#CECECE',
   }
 });
 
@@ -91,35 +96,37 @@ const styles = StyleSheet.create({
 // }
 
 
-const renderCourse = ( {item, index} ) => {
-//  const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
-  const imgSrc = 'http://10.0.1.51:4000/public/' + item.id + '.JPG'
+const renderCourse = (courseNavigate) => ( {item, index} ) => {
+  const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
+//  const imgSrc = 'http://10.0.1.51:4000/public/' + item.id + '.JPG'
 
   return (
-    <Card>
-    <ImageBackground source={{uri: imgSrc}} style={{width: '100%', height: '100%'}}>
-      <Text key={item.id} style={styles.courseProgram}>{item.shortname} - {item.fullname}</Text>
-    </ImageBackground>
-    </Card>)
+    <TouchableOpacity key={item.id} style={styles.courseProgram} onPress={courseNavigate} activeOpacity={1.0}>
+      <Image source={{uri: imgSrc}} style={{width: '100%', height: '20%'}}/>
+      <Text style={{ padding: 20, fontSize: 20, fontWeight: 'bold'}}>{item.fullname}</Text>
+      <Text style={{ paddingLeft: 20, paddingTop: 10, fontSize: 16, fontWeight: 'bold'}}>Overview</Text>
+      <Text style={{ padding: 20}}>{item.description}</Text>
+    </TouchableOpacity>
+  )
 }
 
 
-export const Courses = courseList(({ data: {loading, courses, error} }) => {
+export const Courses = (courseNavigate) => courseList(({ data: {loading, courses, error} }) => {
 
-        if (loading) return <Text>Loading...</Text>;
-        if (error) return <Text>Error :(</Text>;
+    if (loading) return <Text>Loading...</Text>;
+    if (error) return <Text>Error :(</Text>;
 
-        if (courses) {
+    if (courses) {
 
-          return (
-            <Carousel
-              data={courses}
-              renderItem={renderCourse}
-              sliderWidth={500}
-              itemWidth={500}
-              sliderHeight={500}
-            />
-          )
+      return (
+        <Carousel
+          data={courses}
+          renderItem={renderCourse(courseNavigate)}
+          sliderWidth={wp('100%')}
+          itemWidth={wp('80%')}
+          sliderHeight={hp('100%')}
+        />
+      )
 
-        } else return null
+    } else return null
   });
