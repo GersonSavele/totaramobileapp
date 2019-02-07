@@ -2,8 +2,9 @@ import {Component} from "react";
 import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import Carousel from 'react-native-snap-carousel';
+import { Card, Button } from 'react-native-material-ui';
 
-import {courseList, Course} from '../api'
+import {courseList, Course} from '../api/index'
 
 export class Home extends Component {
   render() {
@@ -12,7 +13,7 @@ export class Home extends Component {
         <Text style={styles.header}>Current learning</Text>
         <Courses/>
         <View style={styles.lastAccessed}>
-        <Text>Last Accessed activity</Text><TouchableOpacity><Text style={styles.button}>Go</Text></TouchableOpacity>
+        <Text>Last Accessed activity</Text><Button primary text="Go"/>
         </View>
       </View>
     );
@@ -57,19 +58,21 @@ const styles = StyleSheet.create({
   },
 });
 
-type renderType = {
-  item: Course
-  index: number
-}
+// type renderType = {
+//   item: Course
+//   index: number
+// }
 
 
-const renderCourse = ( {item, index}: renderType ) => {
+const renderCourse = ( {item, index} ) => {
   const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
 
   return (
+    <Card>
     <ImageBackground source={{uri: imgSrc}} style={{width: '100%', height: '100%'}}>
       <Text key={item.id} style={styles.courseProgram}>{item.shortname} - {item.fullname}</Text>
-    </ImageBackground>)
+    </ImageBackground>
+    </Card>)
 }
 
 
