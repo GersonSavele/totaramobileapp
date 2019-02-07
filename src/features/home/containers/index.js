@@ -1,20 +1,60 @@
 import {Component} from "react";
-import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ImageBackground, StyleSheet, Text, TouchableOpacity, View, Button} from "react-native";
 import React from "react";
 import Carousel from 'react-native-snap-carousel';
-import { Card, Button } from 'react-native-material-ui';
+import { Card, BottomNavigation } from 'react-native-material-ui';
+import SlidingUpPanel from 'rn-sliding-up-panel';
 
 import {courseList, Course} from '../api/index'
 
 export class Home extends Component {
+
+  state = {
+    visible: false
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Current learning</Text>
         <Courses/>
         <View style={styles.lastAccessed}>
-        <Text>Last Accessed activity</Text><Button primary text="Go"/>
+        <Text>Last Accessed activity</Text><Button title='Go' onPress={() => this.setState({visible: true})} />
         </View>
+        <SlidingUpPanel
+          visible={this.state.visible}
+          onRequestClose={() => this.setState({visible: false})}>
+          <View style={styles.container}>
+            <Text>Here is the content inside panel</Text>
+            <Button title='Hide' onPress={() => this.setState({visible: false})} />
+          </View>
+        </SlidingUpPanel>
+        <BottomNavigation active={this.state.active} hidden={false} >
+          <BottomNavigation.Action
+            key="today"
+            icon="today"
+            label="Today"
+            onPress={() => this.setState({ active: 'today' })}
+          />
+          <BottomNavigation.Action
+            key="people"
+            icon="people"
+            label="People"
+            onPress={() => this.setState({ active: 'people' })}
+          />
+          <BottomNavigation.Action
+            key="bookmark-border"
+            icon="bookmark-border"
+            label="Bookmark"
+            onPress={() => this.setState({ active: 'bookmark-border' })}
+          />
+          <BottomNavigation.Action
+            key="settings"
+            icon="settings"
+            label="Settings"
+            onPress={() => this.setState({ active: 'settings' })}
+          />
+        </BottomNavigation>
       </View>
     );
   }
