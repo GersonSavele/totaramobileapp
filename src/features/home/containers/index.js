@@ -2,7 +2,7 @@ import {Component} from "react";
 import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import Carousel from 'react-native-snap-carousel';
-import { Card, BottomNavigation, Button } from 'react-native-material-ui';
+import { Card, Button } from 'react-native-material-ui';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -20,7 +20,8 @@ export class Home extends Component {
         <Text style={styles.header}>Current learning</Text>
         <Courses/>
         <View style={styles.lastAccessed}>
-          <TouchableOpacity  onPress={() => this.setState({visible: true})}>
+          <TouchableOpacity  onPress={() => this.props.navigation.navigate('Course')}>
+            {/*onPress={() => this.setState({visible: true})}>*/}
           <Text>Last Accessed activity</Text>
           </TouchableOpacity>
         </View>
@@ -32,32 +33,6 @@ export class Home extends Component {
             <Button text='Hide' onPress={() => this.setState({visible: false})} />
           </View>
         </SlidingUpPanel>
-        <BottomNavigation active={this.state.active} hidden={false} style={{ container: styles.navigation }}>
-          <BottomNavigation.Action
-            key="today"
-            icon="today"
-            label="Today"
-            onPress={() => this.setState({ active: 'today' })}
-          />
-          <BottomNavigation.Action
-            key="people"
-            icon="people"
-            label="People"
-            onPress={() => this.setState({ active: 'people' })}
-          />
-          <BottomNavigation.Action
-            key="bookmark-border"
-            icon="bookmark-border"
-            label="Bookmark"
-            onPress={() => this.setState({ active: 'bookmark-border' })}
-          />
-          <BottomNavigation.Action
-            key="settings"
-            icon="settings"
-            label="Settings"
-            onPress={() => this.setState({ active: 'settings' })}
-          />
-        </BottomNavigation>
       </View>
     );
   }
@@ -117,7 +92,8 @@ const styles = StyleSheet.create({
 
 
 const renderCourse = ( {item, index} ) => {
-  const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
+//  const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
+  const imgSrc = 'http://10.0.1.51:4000/public/' + item.id + '.JPG'
 
   return (
     <Card>
