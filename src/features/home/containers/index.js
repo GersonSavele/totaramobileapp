@@ -31,6 +31,7 @@ export class Home extends Component {
 
   render() {
     let Courses2 = Courses(() => this.props.navigation.navigate('Course'))
+    let imgSrc = 'http://10.0.8.178:4000/public/panel1.png'
 
     return (
       <View style={styles.container}>
@@ -45,9 +46,9 @@ export class Home extends Component {
           onRequestClose={() => this.setState({visible: false})}>
           <View style={styles.panel}>
             <Button style={ { container: {flex: 0, width: wp('18%') }} } icon='clear' text='' onPress={() => this.setState({visible: false})} />
-            <Text style={styles.panelContent}>Here is the content inside panel
-              Here is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panel
-
+            <Image source={{uri: imgSrc}} style={{width: wp('100%'), height: 240}}/>
+            <Text style={styles.panelContent}>
+              In this brief tutorial, you’ll explore what hierarchies are, how they are structured and the benefits of using them. You’ll also find out about job assignments in Totara Learn.
             </Text>
           </View>
         </SlidingUpPanel>
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 50,
   },
-  courseProgram: {
+  activity: {
     flex: 1,
     marginTop: 10,
     textAlign: 'center',
@@ -116,14 +117,14 @@ const styles = StyleSheet.create({
 
 
 const renderCourse = (courseNavigate) => ( {item, index} ) => {
-  const imgSrc = 'http://localhost:4000/public/' + item.id + '.JPG'
+//  const imgSrc = 'http://localhost:4000/public/' + item.id + '.JPG'
+  const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
 //  const imgSrc = 'http://10.0.1.51:4000/public/' + item.id + '.JPG'
 
   return (
     <TouchableOpacity key={item.id} style={styles.courseProgram} onPress={courseNavigate} activeOpacity={1.0}>
-      <Image source={{uri: imgSrc}} style={{width: '100%', height: '20%'}}/>
-      <Text style={{ padding: 20, fontSize: 20, fontWeight: 'bold'}}>{item.fullname}</Text>
-      <Text style={{ paddingLeft: 20, paddingTop: 10, fontSize: 16, fontWeight: 'bold'}}>Overview</Text>
+      <Image source={{uri: imgSrc}} style={{width: '100%', height: '50%'}}/>
+      <Text style={{ paddingLeft: 20, paddingTop: 20, fontSize: 20, fontWeight: 'bold'}}>{item.fullname}</Text>
       <Text style={{ padding: 20}}>{item.description}</Text>
     </TouchableOpacity>
   )
