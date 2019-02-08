@@ -7,6 +7,7 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import {courseList, Course} from '../api/index'
+import nodejs from "nodejs-mobile-react-native";
 
 export class Home extends Component {
   static navigationOptions = {
@@ -14,15 +15,26 @@ export class Home extends Component {
   };
 
   state = {
-    visible: false
+    visible: false,
+    show: false
   };
+
+  componentWillMount() {
+    setTimeout(() => {
+      this.show();
+    }, 1000);
+  }
+
+  show() {
+   this.setState({show : true});
+  }
 
   render() {
     let Courses2 = Courses(() => this.props.navigation.navigate('Course'))
 
     return (
       <View style={styles.container}>
-        <Courses2/>
+        <Courses2 visible={this.state.show}/>
         <View>
           <TouchableOpacity style={styles.lastAccessed} onPress={() => this.setState({visible: true})}>
             <Text onPress={() => this.setState({visible: true})}>Resume Last Accessed Activity</Text>
@@ -32,8 +44,11 @@ export class Home extends Component {
           visible={this.state.visible}
           onRequestClose={() => this.setState({visible: false})}>
           <View style={styles.panel}>
-            <Text>Here is the content inside panel</Text>
-            <Button text='Hide' onPress={() => this.setState({visible: false})} />
+            <Button style={ { container: {flex: 0, width: wp('18%') }} } icon='clear' text='' onPress={() => this.setState({visible: false})} />
+            <Text style={styles.panelContent}>Here is the content inside panel
+              Here is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panelHere is the content inside panel
+
+            </Text>
           </View>
         </SlidingUpPanel>
       </View>
@@ -85,8 +100,12 @@ const styles = StyleSheet.create({
   },
   panel: {
     flex: 1,
-    paddingBottom: 20,
+    flexDirection: 'column',
     backgroundColor: '#CECECE',
+  },
+  panelContent: {
+    flex: 10,
+    padding: 20,
   }
 });
 
@@ -97,7 +116,7 @@ const styles = StyleSheet.create({
 
 
 const renderCourse = (courseNavigate) => ( {item, index} ) => {
-  const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
+  const imgSrc = 'http://localhost:4000/public/' + item.id + '.JPG'
 //  const imgSrc = 'http://10.0.1.51:4000/public/' + item.id + '.JPG'
 
   return (
@@ -125,6 +144,7 @@ export const Courses = (courseNavigate) => courseList(({ data: {loading, courses
           sliderWidth={wp('100%')}
           itemWidth={wp('80%')}
           sliderHeight={hp('100%')}
+          inactiveSlideOpacity={0.4}
         />
       )
 

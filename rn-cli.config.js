@@ -1,8 +1,11 @@
+const blacklist = require('metro-config/src/defaults/blacklist');
+
 module.exports = {
-  getTransformModulePath() {
-    return require.resolve("react-native-typescript-transformer");
+  resolver:{
+    blacklistRE: blacklist([
+      /nodejs-assets\/.*/,
+      /android\/.*/,
+      /ios\/.*/
+    ])
   },
-  getSourceExts() {
-    return ["ts", "tsx"];
-  }
 };

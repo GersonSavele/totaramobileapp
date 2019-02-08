@@ -8,10 +8,11 @@ import { ApolloProvider } from 'react-apollo';
 import { COLOR, ThemeContext, getTheme, BottomNavigation } from 'react-native-material-ui';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import nodejs from 'nodejs-mobile-react-native'
 
 
 const client = new ApolloClient({
-  uri: 'http://10.0.8.178:4000/graphql'
+  uri: 'http://localhost:4000/graphql'
 //  uri: 'http://10.0.1.51:4000/graphql'
 });
 
@@ -41,6 +42,18 @@ const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends Component<{}> {
   state = {}
+
+  componentWillMount()
+  {
+    nodejs.start('server.js');
+    nodejs.channel.addListener(
+      'message',
+      (msg) => {
+        alert('From node: ' + msg);
+      },
+      this
+    );
+  }
 
 
   render() {
