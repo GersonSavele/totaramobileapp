@@ -46,14 +46,14 @@ export default class App extends Component<{}> {
 
   componentWillMount()
   {
-    // nodejs.start('server.js');
-    // nodejs.channel.addListener(
-    //   'message',
-    //   (msg) => {
-    //     alert('From node: ' + msg);
-    //   },
-    //   this
-    // );
+    nodejs.start('server.js');
+    nodejs.channel.addListener(
+      'message',
+      (msg) => {
+        alert('From node: ' + msg);
+      },
+      this
+    );
   }
 
 

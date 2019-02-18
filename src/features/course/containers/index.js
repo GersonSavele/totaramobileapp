@@ -9,7 +9,8 @@ export class Course extends Component {
   };
 
   renderItem = ({item}) => {
-    let imgSrc = 'http://10.0.8.178:4000/public/panel' + item.key + '.png'
+//    let imgSrc = 'http://10.0.8.178:4000/public/panel' + item.key + '.png'
+    let imgSrc = 'http://localhost:4000/public/panel' + item.key + '.png'
 
     return (
       <View style={styles.activity}>

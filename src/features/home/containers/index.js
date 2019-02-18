@@ -6,7 +6,7 @@ import { Card, Button } from 'react-native-material-ui';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-import {courseList, Course} from '../api/index'
+import {courseList, Course} from '../api'
 import nodejs from "nodejs-mobile-react-native";
 
 export class Home extends Component {
@@ -31,7 +31,8 @@ export class Home extends Component {
 
   render() {
     let Courses2 = Courses(() => this.props.navigation.navigate('Course'))
-    let imgSrc = 'http://10.0.8.178:4000/public/panel1.png'
+   let imgSrc = 'http://10.0.8.178:4000/public/panel1.png'
+//     let imgSrc = 'http://localhost:4000/public/panel1.png'
 
     return (
       <View style={styles.container}>
@@ -117,8 +118,8 @@ const styles = StyleSheet.create({
 
 
 const renderCourse = (courseNavigate) => ( {item, index} ) => {
-//  const imgSrc = 'http://localhost:4000/public/' + item.id + '.JPG'
-  const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
+  // const imgSrc = 'http://localhost:4000/public/' + item.id + '.JPG'
+ const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
 //  const imgSrc = 'http://10.0.1.51:4000/public/' + item.id + '.JPG'
 
   return (
