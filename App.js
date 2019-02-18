@@ -12,8 +12,8 @@ import nodejs from 'nodejs-mobile-react-native'
 
 
 const client = new ApolloClient({
-//  uri: 'http://localhost:4000/graphql'
-  uri: 'http://10.0.8.178:4000/graphql'
+ uri: 'http://localhost:4000/graphql'
+//   uri: 'http://10.0.8.178:4000/graphql'
 //  uri: 'http://10.0.1.51:4000/graphql'
 });
 

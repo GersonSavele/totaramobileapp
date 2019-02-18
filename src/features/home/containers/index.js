@@ -31,8 +31,8 @@ export class Home extends Component {
 
   render() {
     let Courses2 = Courses(() => this.props.navigation.navigate('Course'))
-   let imgSrc = 'http://10.0.8.178:4000/public/panel1.png'
-//     let imgSrc = 'http://localhost:4000/public/panel1.png'
+   // let imgSrc = 'http://10.0.8.178:4000/public/panel1.png'
+    let imgSrc = 'http://localhost:4000/public/panel1.png'
 
     return (
       <View style={styles.container}>
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
 
 
 const renderCourse = (courseNavigate) => ( {item, index} ) => {
-  // const imgSrc = 'http://localhost:4000/public/' + item.id + '.JPG'
- const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
+  const imgSrc = 'http://localhost:4000/public/' + item.id + '.JPG'
+ // const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
 //  const imgSrc = 'http://10.0.1.51:4000/public/' + item.id + '.JPG'
 
   return (
