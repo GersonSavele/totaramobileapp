@@ -3,14 +3,15 @@ import React from 'react';
 import {StyleSheet, Text, View, FlatList, Image} from "react-native";
 import {hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
+import config from '../../../lib/config';
+
 export class Course extends Component {
   static navigationOptions = {
     title: 'Course',
   };
 
   renderItem = ({item}) => {
-//    let imgSrc = 'http://10.0.8.178:4000/public/panel' + item.key + '.png'
-    let imgSrc = 'http://localhost:4000/public/panel' + item.key + '.png'
+    let imgSrc = config.mobileApi + '/public/panel' + item.key + '.png'
 
     return (
       <View style={styles.activity}>

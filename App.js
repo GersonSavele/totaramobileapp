@@ -1,8 +1,6 @@
 import React from 'react'
 import { Component } from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import { Home } from './src/features/home';
-import { Course } from './src/features/course';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { COLOR, ThemeContext, getTheme, BottomNavigation } from 'react-native-material-ui';
@@ -10,11 +8,12 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import nodejs from 'nodejs-mobile-react-native'
 
+import { Home } from './src/features/home';
+import { Course } from './src/features/course';
+import config from './src/lib/config';
 
 const client = new ApolloClient({
- uri: 'http://localhost:4000/graphql'
-//   uri: 'http://10.0.8.178:4000/graphql'
-//  uri: 'http://10.0.1.51:4000/graphql'
+ uri: config.mobileApi + '/graphql'
 });
 
 const instructions = Platform.select({
@@ -46,14 +45,16 @@ export default class App extends Component<{}> {
 
   componentWillMount()
   {
-    nodejs.start('server.js');
-    nodejs.channel.addListener(
-      'message',
-      (msg) => {
-        alert('From node: ' + msg);
-      },
-      this
-    );
+    if (config.startNodeJsMobile) {
+      nodejs.start('server.js');
+      nodejs.channel.addListener(
+        'message',
+        (msg) => {
+          alert('From node: ' + msg);
+        },
+        this
+      );
+    }
   }
 
 

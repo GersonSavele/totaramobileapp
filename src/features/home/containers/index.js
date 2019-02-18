@@ -7,7 +7,8 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import {courseList, Course} from '../api'
-import nodejs from "nodejs-mobile-react-native";
+import config from '../../../lib/config';
+
 
 export class Home extends Component {
   static navigationOptions = {
@@ -31,8 +32,7 @@ export class Home extends Component {
 
   render() {
     let Courses2 = Courses(() => this.props.navigation.navigate('Course'))
-   // let imgSrc = 'http://10.0.8.178:4000/public/panel1.png'
-    let imgSrc = 'http://localhost:4000/public/panel1.png'
+    let imgSrc = config.mobileApi + '/public/panel1.png'
 
     return (
       <View style={styles.container}>
@@ -111,16 +111,9 @@ const styles = StyleSheet.create({
   }
 });
 
-// type renderType = {
-//   item: Course
-//   index: number
-// }
-
 
 const renderCourse = (courseNavigate) => ( {item, index} ) => {
-  const imgSrc = 'http://localhost:4000/public/' + item.id + '.JPG'
- // const imgSrc = 'http://10.0.8.178:4000/public/' + item.id + '.JPG'
-//  const imgSrc = 'http://10.0.1.51:4000/public/' + item.id + '.JPG'
+  const imgSrc = config.mobileApi + '/public/' + item.id + '.JPG'
 
   return (
     <TouchableOpacity key={item.id} style={styles.courseProgram} onPress={courseNavigate} activeOpacity={1.0}>
