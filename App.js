@@ -3,14 +3,19 @@ import { Component } from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
-import { COLOR, ThemeContext, getTheme, BottomNavigation } from 'react-native-material-ui';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { COLOR, ThemeContext, getTheme } from 'react-native-material-ui';
+import {createStackNavigator, createAppContainer, NavigationActions} from "react-navigation";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import nodejs from 'nodejs-mobile-react-native'
 
 import { Home } from './src/features/home';
 import { Course } from './src/features/course';
+import { Profile } from './src/features/profile';
+import { Settings } from './src/features/settings';
+
 import config from './src/lib/config';
+import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const client = new ApolloClient({
  uri: config.mobileApi + '/graphql'
@@ -29,7 +34,7 @@ const uiTheme = {
     }
 };
 
-const AppNavigator = createStackNavigator(
+const HomeCourseNavigator = createStackNavigator(
   {
     Home: Home,
     Course: Course,
@@ -38,13 +43,56 @@ const AppNavigator = createStackNavigator(
     initialRouteName: "Home"
   });
 
-const AppContainer = createAppContainer(AppNavigator);
+const ProfileNavigator = createStackNavigator(
+  {
+    Profile: Profile,
+    Settings: Settings,
+  },
+  {
+    initialRouteName: "Profile"
+  });
+
+const mainNavigator = createMaterialBottomTabNavigator(
+  {
+    Home: {
+      screen: HomeCourseNavigator,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor}) => (
+          <Icon
+            name="home"
+            color={tintColor}
+            size={24}
+          />
+        )
+      })
+    },
+    Profile: {
+      screen: ProfileNavigator,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor}) => (
+          <Icon
+            name="user"
+            color={tintColor}
+            size={24}
+          />
+        )
+      })
+    }
+  }, {
+    initialRouteName: 'Home',
+    labeled: false,
+    barStyle: { backgroundColor: '#F7F7F7' }
+  }
+)
+
+const AppContainer = createAppContainer(mainNavigator);
 
 export default class App extends Component<{}> {
   state = {}
 
-  componentWillMount()
-  {
+  navigator = undefined
+
+  componentWillMount() {
     if (config.startNodeJsMobile) {
       nodejs.start('server.js');
       nodejs.channel.addListener(
@@ -57,39 +105,22 @@ export default class App extends Component<{}> {
     }
   }
 
+  navigateTo(route) {
+    this.navigator &&
+      this.navigator.dispatch(
+        NavigationActions.navigate({ routeName: route })
+      )
+  }
+
 
   render() {
     return (
       <ApolloProvider client={client}>
         <ThemeContext.Provider value={getTheme(uiTheme)}>
-          <AppContainer/>
-          <BottomNavigation active={this.state.active} hidden={false} style={{ container: styles.navigation }}>
-            <BottomNavigation.Action
-              key="home"
-              icon="home"
-              label="Home"
-              onPress={() => this.setState({ active: 'home' })}
-            />
-            <BottomNavigation.Action
-              key="downloads"
-              icon="class"
-              label="Activities"
-              onPress={() => this.setState({ active: 'downloads' })}
-            />
-            <BottomNavigation.Action
-              key="profile"
-              icon="account-circle"
-              label="Profile"
-              onPress={() => this.setState({ active: 'profile' })}
-            />
-            <BottomNavigation.Action
-              key="settings"
-              icon="settings"
-              label="Settings"
-              onPress={() => this.setState({ active: 'settings' })}
-            />
-          </BottomNavigation>
-
+          <AppContainer
+            ref={nav => {
+              this.navigator = nav;
+            }}/>
         </ThemeContext.Provider>
       </ApolloProvider>
     );

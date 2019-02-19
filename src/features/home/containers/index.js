@@ -1,8 +1,8 @@
 import {Component} from "react";
-import {ImageBackground, Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import Carousel from 'react-native-snap-carousel';
-import { Card, Button } from 'react-native-material-ui';
+import { Button } from 'react-native-material-ui';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
