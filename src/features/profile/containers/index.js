@@ -3,7 +3,7 @@ import React from 'react';
 import {StyleSheet, Text, View, FlatList, Image, TouchableOpacity} from "react-native";
 import {hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
-export class Profile extends Component {
+export default class Profile extends Component {
   static navigationOptions = {
     title: 'Profile',
   };

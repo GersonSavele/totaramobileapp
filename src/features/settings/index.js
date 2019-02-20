@@ -1,2 +1,2 @@
-export { Settings } from './containers/index'
+export { default } from './containers/index'
 

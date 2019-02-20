@@ -5,7 +5,7 @@ import {hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 import config from '../../../lib/config';
 
-export class Course extends Component {
+export default class Course extends Component {
   static navigationOptions = {
     title: 'Course',
   };

@@ -1,2 +1,2 @@
-export { Profile } from './containers/index'
+export { default } from './containers'
 

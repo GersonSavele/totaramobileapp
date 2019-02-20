@@ -3,7 +3,7 @@ import React from 'react';
 import {StyleSheet, Text, View, FlatList, Image} from "react-native";
 import {hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
-export class Settings extends Component {
+export default class Settings extends Component {
   static navigationOptions = {
     title: 'Settings',
   };

@@ -8,10 +8,7 @@ import {createStackNavigator, createAppContainer, NavigationActions} from "react
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import nodejs from 'nodejs-mobile-react-native'
 
-import { Home } from './src/features/home';
-import { Course } from './src/features/course';
-import { Profile } from './src/features/profile';
-import { Settings } from './src/features/settings';
+import { MyLearning, Course, Profile, Settings } from './src/features';
 
 import config from './src/lib/config';
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
@@ -34,16 +31,16 @@ const uiTheme = {
     }
 };
 
-const HomeCourseNavigator = createStackNavigator(
+const myLearning = createStackNavigator(
   {
-    Home: Home,
+    MyLearning: MyLearning,
     Course: Course,
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "MyLearning"
   });
 
-const ProfileNavigator = createStackNavigator(
+const profile = createStackNavigator(
   {
     Profile: Profile,
     Settings: Settings,
@@ -54,8 +51,8 @@ const ProfileNavigator = createStackNavigator(
 
 const mainNavigator = createMaterialBottomTabNavigator(
   {
-    Home: {
-      screen: HomeCourseNavigator,
+    MyLearning: {
+      screen: myLearning,
       navigationOptions: () => ({
         tabBarIcon: ({tintColor}) => (
           <Icon
@@ -67,7 +64,7 @@ const mainNavigator = createMaterialBottomTabNavigator(
       })
     },
     Profile: {
-      screen: ProfileNavigator,
+      screen: profile,
       navigationOptions: () => ({
         tabBarIcon: ({tintColor}) => (
           <Icon
@@ -79,7 +76,7 @@ const mainNavigator = createMaterialBottomTabNavigator(
       })
     }
   }, {
-    initialRouteName: 'Home',
+    initialRouteName: 'MyLearning',
     labeled: false,
     barStyle: { backgroundColor: '#F7F7F7' }
   }

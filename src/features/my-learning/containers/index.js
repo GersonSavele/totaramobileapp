@@ -10,10 +10,7 @@ import {courseList, Course} from '../api'
 import config from '../../../lib/config';
 
 
-export class Home extends Component {
-  static navigationOptions = {
-    title: 'Current Learnings',
-  };
+export default class MyLearning extends Component {
 
   state = {
     visible: false,
@@ -36,6 +33,7 @@ export class Home extends Component {
 
     return (
       <View style={styles.container}>
+        <Text>My Learnings</Text>
         <Courses2 visible={this.state.show}/>
         <View>
           <TouchableOpacity style={styles.lastAccessed} onPress={() => this.setState({visible: true})}>
