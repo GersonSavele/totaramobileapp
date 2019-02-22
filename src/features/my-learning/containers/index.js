@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import { Button } from 'react-native-material-ui';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import moment from 'moment'
 
 import {learningItemsList} from '../api'
 import config from '../../../lib/config';
@@ -130,12 +131,22 @@ const styles = StyleSheet.create({
 const renderLearningItem = (courseNavigate) => ( {item, index} ) => {
   const imgSrc = config.mobileStatic + '/public/' + item.id + '.JPG'
 
+  const renderDue = (dueDateState, dueDate) => {
+    if (dueDate && dueDateState != 'info') {
+      return (<Text> | {dueDateState} {moment(dueDate).fromNow()} </Text>)
+    } else if (dueDate) {
+      return (<Text> | {moment(dueDate).format("MMM DD YYYY")}</Text>)
+    } else {
+      return null
+    }
+  }
+
   return (
     <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
       <Image source={{uri: imgSrc}} style={{width: '100%', height: '50%'}}/>
       <Text>{item.type}</Text>
       <Text style={{ paddingLeft: 20, paddingTop: 20, fontSize: 20, fontWeight: 'bold'}}>{item.fullname}</Text>
-      <Text>{item.groupCount} Activities</Text><Text> | {item.dueDate} {item.dueDateState} </Text>
+      <Text>{item.groupCount} Activities</Text>{renderDue(item.dueDateState, item.dueDate)}
       <Text style={{ padding: 20}}>{item.summary}</Text>
       <Button text={'Start this ' + item.type}/>
     </TouchableOpacity>

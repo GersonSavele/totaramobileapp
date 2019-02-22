@@ -11,6 +11,7 @@
     "apollo-boost": "^0.1.27",
     "graphql": "^14.1.1",
     "graphql-iso-date": "^3.6.1",
+    "moment": "^2.24.0",
     "nodejs-mobile-react-native": "^0.3.2",
     "react": "^16.7.0",
     "react-apollo": "^2.4.0",
@@ -38,5 +39,16 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "config": {
+    "maxPackagesNumber": 100,
+    "maxSizeBites": 840400,
+    "allowedLicenseTypes": [
+      "weaklyProtective",
+      "protective",
+      "permissive",
+      "publicDomain",
+      "uncategorized"
+    ]
   }
 }
