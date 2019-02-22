@@ -6,11 +6,25 @@ import { Button } from 'react-native-material-ui';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-import {courseList, Course} from '../api'
+import {learningItemsList} from '../api'
 import config from '../../../lib/config';
 
+class Header extends Component {
+  render() {
+    return (
+      <View>
+        <Image source={require('./totara_logo.png')}/>
+      </View>
+    )
+  }
+}
 
 export default class MyLearning extends Component {
+
+  static navigationOptions = {
+    headerTitle: <Header />,
+  };
+
 
   state = {
     visible: false,
@@ -28,13 +42,16 @@ export default class MyLearning extends Component {
   }
 
   render() {
-    let Courses2 = Courses(() => this.props.navigation.navigate('Course'))
-    let imgSrc = config.mobileApi + '/public/panel1.png'
+    let LearningItems = LearningItemCarousel(() => {
+      this.props.navigation.navigate('Course')
+    })
+
+    let imgSrc = config.mobileStatic + '/public/panel1.png'
 
     return (
       <View style={styles.container}>
-        <Text>My Learnings</Text>
-        <Courses2 visible={this.state.show}/>
+        <Text>My learning</Text>
+        <LearningItems visible={this.state.show}/>
         <View>
           <TouchableOpacity style={styles.lastAccessed} onPress={() => this.setState({visible: true})}>
             <Text onPress={() => this.setState({visible: true})}>Resume Last Accessed Activity</Text>
@@ -110,30 +127,33 @@ const styles = StyleSheet.create({
 });
 
 
-const renderCourse = (courseNavigate) => ( {item, index} ) => {
-  const imgSrc = config.mobileApi + '/public/' + item.id + '.JPG'
+const renderLearningItem = (courseNavigate) => ( {item, index} ) => {
+  const imgSrc = config.mobileStatic + '/public/' + item.id + '.JPG'
 
   return (
-    <TouchableOpacity key={item.id} style={styles.courseProgram} onPress={courseNavigate} activeOpacity={1.0}>
+    <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
       <Image source={{uri: imgSrc}} style={{width: '100%', height: '50%'}}/>
+      <Text>{item.type}</Text>
       <Text style={{ paddingLeft: 20, paddingTop: 20, fontSize: 20, fontWeight: 'bold'}}>{item.fullname}</Text>
-      <Text style={{ padding: 20}}>{item.description}</Text>
+      <Text>{item.groupCount} Activities</Text><Text> | {item.dueDate} {item.dueDateState} </Text>
+      <Text style={{ padding: 20}}>{item.summary}</Text>
+      <Button text={'Start this ' + item.type}/>
     </TouchableOpacity>
   )
 }
 
 
-export const Courses = (courseNavigate) => courseList(({ data: {loading, courses, error} }) => {
+const LearningItemCarousel = (courseNavigate) => learningItemsList(({ data: {loading, currentLearning, error} }) => {
 
     if (loading) return <Text>Loading...</Text>;
     if (error) return <Text>Error :(</Text>;
 
-    if (courses) {
+    if (currentLearning) {
 
       return (
         <Carousel
-          data={courses}
-          renderItem={renderCourse(courseNavigate)}
+          data={currentLearning}
+          renderItem={renderLearningItem(courseNavigate)}
           sliderWidth={wp('100%')}
           itemWidth={wp('80%')}
           sliderHeight={hp('100%')}

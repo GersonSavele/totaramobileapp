@@ -11,7 +11,7 @@ export default class Course extends Component {
   };
 
   renderItem = ({item}) => {
-    let imgSrc = config.mobileApi + '/public/panel' + item.key + '.png'
+    let imgSrc = config.mobileStatic + '/public/panel' + item.key + '.png'
 
     return (
       <View style={styles.activity}>

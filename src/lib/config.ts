@@ -3,6 +3,7 @@ const config = {
   // startNodeJsMobile: true
   // mobileApi: 'http://10.0.1.51:4000',
   mobileApi: 'http://10.0.8.178:4000',
+  mobileStatic: 'http://10.0.8.178:4001',
   startNodeJsMobile: false
 }
 

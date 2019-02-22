@@ -2,30 +2,41 @@ import {ChildDataProps, graphql} from "react-apollo";
 import gql from "graphql-tag";
 
 const query = gql`
-    query CoursesQuery {
-        courses {
-            id
-            shortname
-            fullname
-            description
-        }
+  query CurrentLearning {
+    currentLearning {
+      id
+      type
+      shortname
+      fullname
+      summary
+      dueDateState
+      dueDate
+      progressPercentage 
+      groupCount
     }
-    `
+  }
+  `
 
-export type Course = {
+export type LearningItem = {
   id: number
+  type: string
   shortname: string
   fullname?: string
+  summary?: string
+  dueDateState?: string
+  dueDate?: Date
+  progressPercentage?: number
+  groupCount?: number
 };
 
 export type Response = {
-  courses: Course[];
+  currentLearning: LearningItem[];
 }
 
 type ChildProps = ChildDataProps<{}, Response>
 
 type Variables = {}
 
-export const courseList = graphql<{}, Response, Variables, ChildProps>(query)
+export const learningItemsList = graphql<{}, Response, Variables, ChildProps>(query)
 
 //export const courseList = graphql(query)

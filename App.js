@@ -31,59 +31,6 @@ const uiTheme = {
     }
 };
 
-const myLearning = createStackNavigator(
-  {
-    MyLearning: MyLearning,
-    Course: Course,
-  },
-  {
-    initialRouteName: "MyLearning"
-  });
-
-const profile = createStackNavigator(
-  {
-    Profile: Profile,
-    Settings: Settings,
-  },
-  {
-    initialRouteName: "Profile"
-  });
-
-const mainNavigator = createMaterialBottomTabNavigator(
-  {
-    MyLearning: {
-      screen: myLearning,
-      navigationOptions: () => ({
-        tabBarIcon: ({tintColor}) => (
-          <Icon
-            name="home"
-            color={tintColor}
-            size={24}
-          />
-        )
-      })
-    },
-    Profile: {
-      screen: profile,
-      navigationOptions: () => ({
-        tabBarIcon: ({tintColor}) => (
-          <Icon
-            name="user"
-            color={tintColor}
-            size={24}
-          />
-        )
-      })
-    }
-  }, {
-    initialRouteName: 'MyLearning',
-    labeled: false,
-    barStyle: { backgroundColor: '#F7F7F7' }
-  }
-)
-
-const AppContainer = createAppContainer(mainNavigator);
-
 export default class App extends Component<{}> {
   state = {}
 
@@ -136,3 +83,81 @@ const styles = StyleSheet.create({
     height: hp('10%')
   }
 });
+
+const myLearning = createStackNavigator(
+  {
+    MyLearning: MyLearning,
+    Course: Course,
+  },
+  {
+    initialRouteName: "MyLearning"
+  });
+
+const profile = createStackNavigator(
+  {
+    Profile: Profile,
+    Settings: Settings,
+  },
+  {
+    initialRouteName: "Profile"
+  });
+
+const notification = createStackNavigator(
+  {
+    Notification: Profile,
+  },
+  {
+    initialRouteName: "Notification"
+  });
+
+const mainNavigator = createMaterialBottomTabNavigator(
+  {
+    MyLearning: {
+      screen: myLearning,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor}) => (
+          <Icon
+            name="home"
+            color={tintColor}
+            size={24}
+          />
+        )
+      }),
+      tabBarOnPress: ( { navigation }) => {
+        debugger
+        navigation
+      }
+    },
+    Notification: {
+      screen: notification,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor}) => (
+          <Icon
+            name="bell"
+            color={tintColor}
+            size={24}
+          />
+        )
+      })
+    },
+    Profile: {
+      screen: profile,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor}) => (
+          <Icon
+            name="user"
+            color={tintColor}
+            size={24}
+          />
+        )
+      })
+    }
+  }, {
+    initialRouteName: 'MyLearning',
+    labeled: false,
+    barStyle: { backgroundColor: '#F7F7F7' },
+
+  }
+)
+
+const AppContainer = createAppContainer(mainNavigator);
