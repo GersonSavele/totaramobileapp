@@ -9,12 +9,53 @@ import moment from 'moment'
 
 import {learningItemsList} from '../api'
 import config from '../../../lib/config';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 class Header extends Component {
   render() {
     return (
       <View>
         <Image source={require('./totara_logo.png')}/>
+      </View>
+    )
+  }
+}
+
+class RecentActivity extends Component {
+  style = StyleSheet.create({
+    lastAccessed: {
+      fontSize: 20,
+      justifyContent: 'center',
+      height: 65,
+      width: wp('100%'),
+      backgroundColor: '#CECECE',
+      marginTop: 10,
+    },
+    topText: {
+      padding: 5,
+      borderBottomWidth: 1,
+      borderBottomColor: '#AAAAAA',
+      paddingLeft: 20,
+      fontWeight: 'bold',
+
+    },
+    bottomText: {
+      padding: 5,
+      height: 40,
+      flexDirection: 'row'
+    }
+  })
+
+  render() {
+    return (
+      <View>
+        <TouchableOpacity style={this.style.lastAccessed} onPress={() => this.props.onPress()}>
+          <Text style={this.style.topText}>Continue where you left off</Text>
+          <View style={{flexDirection: 'row', paddingLeft: 20}}>
+            <Icon name="film" size={24}/>
+            <Text style={this.style.bottomText}>Setting up a hierarchy</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -53,11 +94,7 @@ export default class MyLearning extends Component {
       <View style={styles.container}>
         <Text style={styles.header}>My learning</Text>
         <LearningItems visible={this.state.show}/>
-        <View>
-          <TouchableOpacity style={styles.lastAccessed} onPress={() => this.setState({visible: true})}>
-            <Text onPress={() => this.setState({visible: true})}>Resume Last Accessed Activity</Text>
-          </TouchableOpacity>
-        </View>
+        <RecentActivity onPress={() => this.setState({visible: true})}/>
         <SlidingUpPanel
           visible={this.state.visible}
           onRequestClose={() => this.setState({visible: false})}>
@@ -94,20 +131,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderColor: '#CCCCCC',
     width: wp('80%')
-  },
-  lastAccessed: {
-    fontSize: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50,
-    width: wp('100%'),
-    backgroundColor: '#CECECE',
-    marginTop: 10,
-    paddingLeft: 30
-  },
-  button: {
-    alignItems: 'center',
-    padding: 10
   },
   navigation: {
     paddingBottom: 20,
