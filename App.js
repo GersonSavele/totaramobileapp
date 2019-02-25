@@ -8,7 +8,7 @@ import {createStackNavigator, createAppContainer, NavigationActions} from "react
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import nodejs from 'nodejs-mobile-react-native'
 
-import { MyLearning, Course, Profile, Settings } from './src/features';
+import { MyLearning, Course, Profile, Settings, PlaceHolder } from './src/features';
 
 import config from './src/lib/config';
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
@@ -104,11 +104,20 @@ const profile = createStackNavigator(
 
 const notification = createStackNavigator(
   {
-    Notification: Profile,
+    Notification: PlaceHolder,
   },
   {
     initialRouteName: "Notification"
   });
+
+const downloads = createStackNavigator(
+  {
+    Downloads: PlaceHolder,
+  },
+  {
+    initialRouteName: "Downloads"
+  });
+
 
 const mainNavigator = createMaterialBottomTabNavigator(
   {
@@ -127,6 +136,18 @@ const mainNavigator = createMaterialBottomTabNavigator(
         debugger
         navigation
       }
+    },
+    Downloads: {
+      screen: downloads,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor}) => (
+          <Icon
+            name="cloud-download"
+            color={tintColor}
+            size={24}
+          />
+        )
+      })
     },
     Notification: {
       screen: notification,
