@@ -13,9 +13,20 @@ const query = gql`
       dueDate
       progressPercentage 
       groupCount
+      activities {
+        id
+        type
+        itemName
+      }
     }
   }
   `
+
+export type Activity = {
+  id: number,
+  type: string,
+  itemName: string
+}
 
 export type LearningItem = {
   id: number

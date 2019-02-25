@@ -84,9 +84,9 @@ export default class MyLearning extends Component {
   }
 
   render() {
-    let LearningItems = LearningItemCarousel(() => {
-      this.props.navigation.navigate('Course')
-    })
+    let courseNavigate = (course) => this.props.navigation.navigate('Course', { item: course })
+
+    let LearningItems = LearningItemCarousel(courseNavigate)
 
     let imgSrc = config.mobileStatic + '/public/panel1.png'
 
@@ -207,7 +207,7 @@ const renderLearningItem = (courseNavigate) => ( {item, index} ) => {
   }
 
   return (
-    <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
+    <TouchableOpacity key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
       <Image source={{uri: imgSrc}} style={{width: '100%', height: '50%'}}/>
       {renderDue(item.dueDateState, item.dueDate)}
       <View style={styles.itemCard}>

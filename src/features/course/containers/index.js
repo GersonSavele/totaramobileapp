@@ -24,75 +24,13 @@ export default class Course extends Component {
   }
 
   render() {
-    const item = {
-      id: 1,
-      type: 'Course',
-      shortname: "course1",
-      fullname: "Hierarchies and Job Assignments",
-      summary: "This is a space for anyone taking the course to ask questions of the Academy team or other learners. We encourage you to use the course forum as much as you can. If you have a question post it here so that everyone will benefit from seeing the answer. Please start a new thread for each new question.",
-      dueDateState: "warning",
-      dueDate: new Date(2019, 3, 2),
-      progressPercentage: 60.5,
-      groupCount: 20,
-      activities: [
-        {
-          id: 1,
-          itemName: 'Setting up a hierarchy',
-          type: 'file'
-        },
-        {
-          id: 2,
-          itemName: 'Adding job assignments',
-          type: 'download'
-        },
-        {
-          id: 3,
-          itemName: 'Importing hierarchies via HR import',
-          type: 'film'
-        },
-        {
-          id: 4,
-          itemName: 'Setting up a hierarchy',
-          type: 'file'
-        },
-        {
-          id: 5,
-          itemName: 'Adding job assignments',
-          type: 'download'
-        },
-        {
-          id: 6,
-          itemName: 'Importing hierarchies via HR import',
-          type: 'film'
-        },
-        {
-          id: 7,
-          itemName: 'Setting up a hierarchy',
-          type: 'file'
-        },
-        {
-          id: 8,
-          itemName: 'Adding job assignments',
-          type: 'download'
-        },
-        {
-          id: 9,
-          itemName: 'Importing hierarchies via HR import',
-          type: 'film'
-        },
-        {
-          id: 10,
-          itemName: 'Importing hierarchies via HR import',
-          type: 'film'
-        },
-      ]
-    }
+    const { item } = this.props.navigation.state.params
 
     const LearningItem = () => renderLearningItem(() => {})({ item })
 
     return (
       <View style={styles.container}>
-        <View style={{height: hp('26%'), width: wp('100%'), backgroundColor: 'blue'}}>
+        <View style={{height: hp('26%'), width: wp('100%')}}>
           <LearningItem/>
         </View>
         <View style={{height: hp('50%'), width: wp('100%')}}>
