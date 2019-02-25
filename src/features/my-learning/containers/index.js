@@ -51,7 +51,7 @@ export default class MyLearning extends Component {
 
     return (
       <View style={styles.container}>
-        <Text>My learning</Text>
+        <Text style={styles.header}>My learning</Text>
         <LearningItems visible={this.state.show}/>
         <View>
           <TouchableOpacity style={styles.lastAccessed} onPress={() => this.setState({visible: true})}>
@@ -78,12 +78,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   header: {
-    fontSize: 20,
-    textAlign: 'center',
-    marginTop: 50,
+    fontSize: 32,
+    padding: 10
   },
   activity: {
     flex: 1,
@@ -124,8 +122,52 @@ const styles = StyleSheet.create({
   panelContent: {
     flex: 10,
     padding: 20,
-  }
+  },
+  itemCard: {
+    padding: 10,
+    height: hp('26%')
+  },
+  itemType: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    padding: 2,
+    color: '#86C9C8'
+  },
+  itemFullName: {
+    paddingTop: 20,
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  itemInfo: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: 10
+  },
+  itemSummary: {
+    paddingTop: 10,
+    paddingBottom: 10
+  },
 });
+
+
+const itemDueDateStateStyle = (dateDateState) => {
+  let backgroundColor
+  switch (dateDateState) {
+    case 'warning':
+      backgroundColor = 'orange'
+      break;
+    case 'danger':
+      backgroundColor = 'red'
+      break;
+    default:
+      backgroundColor = 'black'
+  }
+
+  return {
+    padding: 2,
+    backgroundColor: backgroundColor
+  }
+}
 
 
 const renderLearningItem = (courseNavigate) => ( {item, index} ) => {
@@ -133,9 +175,9 @@ const renderLearningItem = (courseNavigate) => ( {item, index} ) => {
 
   const renderDue = (dueDateState, dueDate) => {
     if (dueDate && dueDateState != 'info') {
-      return (<Text> | {dueDateState} {moment(dueDate).fromNow()} </Text>)
+      return (<Text style={itemDueDateStateStyle(item.dueDateState)}> Due {moment(dueDate).fromNow()} </Text>)
     } else if (dueDate) {
-      return (<Text> | {moment(dueDate).format("MMM DD YYYY")}</Text>)
+      return (<Text> {moment(dueDate).format("D, MMM YYYY")}</Text>)
     } else {
       return null
     }
@@ -144,11 +186,16 @@ const renderLearningItem = (courseNavigate) => ( {item, index} ) => {
   return (
     <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
       <Image source={{uri: imgSrc}} style={{width: '100%', height: '50%'}}/>
-      <Text>{item.type}</Text>
-      <Text style={{ paddingLeft: 20, paddingTop: 20, fontSize: 20, fontWeight: 'bold'}}>{item.fullname}</Text>
-      <Text>{item.groupCount} Activities</Text>{renderDue(item.dueDateState, item.dueDate)}
-      <Text style={{ padding: 20}}>{item.summary}</Text>
-      <Button text={'Start this ' + item.type}/>
+      {renderDue(item.dueDateState, item.dueDate)}
+      <View style={styles.itemCard}>
+        <Text style={styles.itemFullName}>{item.fullname}</Text>
+        <View style={styles.itemInfo}>
+          <Text style={styles.itemType}>{item.type}</Text>
+          <Text> | {item.progressPercentage}%</Text>
+        </View>
+        <Text style={styles.itemSummary}>{item.summary}</Text>
+      </View>
+      <Button raised primary text={'Start this ' + item.type} upperCase={false}/>
     </TouchableOpacity>
   )
 }
