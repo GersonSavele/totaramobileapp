@@ -1,54 +1,164 @@
 import { Component } from 'react';
 import React from 'react';
-import {StyleSheet, Text, View, FlatList, Image} from "react-native";
-import {hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {StyleSheet, Text, View, FlatList, Image, TouchableOpacity, List} from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 import config from '../../../lib/config';
+import moment from "moment";
+import {Button} from "react-native-material-ui";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default class Course extends Component {
   static navigationOptions = {
     title: 'Course',
   };
 
-  renderItem = ({item}) => {
-    let imgSrc = config.mobileStatic + '/public/panel' + item.key + '.png'
+  renderActivity = ({item}) => {
 
     return (
       <View style={styles.activity}>
-        <Text style={styles.activityText}>{item.title}</Text>
-        <Image source={{uri: imgSrc}} style={{width: wp('100%'), height: 240}}/>
+        <Icon name={item.type} size={24}/>
+        <Text style={styles.activityText}>{item.itemName}</Text>
       </View>
     )
   }
 
-  courseActivities = [
-    {
-      key: '1',
-      title: 'Setting up a hierarchy'
-
-    },
-    {
-      key: '2',
-      title: 'Adding job assignments'
-    },
-    {
-      key: '3',
-      title: 'Importing hierarchies via HR import'
-
-    },
-
-  ]
-
   render() {
+    const item = {
+      id: 1,
+      type: 'Course',
+      shortname: "course1",
+      fullname: "Hierarchies and Job Assignments",
+      summary: "This is a space for anyone taking the course to ask questions of the Academy team or other learners. We encourage you to use the course forum as much as you can. If you have a question post it here so that everyone will benefit from seeing the answer. Please start a new thread for each new question.",
+      dueDateState: "warning",
+      dueDate: new Date(2019, 3, 2),
+      progressPercentage: 60.5,
+      groupCount: 20,
+      activities: [
+        {
+          id: 1,
+          itemName: 'Setting up a hierarchy',
+          type: 'file'
+        },
+        {
+          id: 2,
+          itemName: 'Adding job assignments',
+          type: 'download'
+        },
+        {
+          id: 3,
+          itemName: 'Importing hierarchies via HR import',
+          type: 'film'
+        },
+        {
+          id: 4,
+          itemName: 'Setting up a hierarchy',
+          type: 'file'
+        },
+        {
+          id: 5,
+          itemName: 'Adding job assignments',
+          type: 'download'
+        },
+        {
+          id: 6,
+          itemName: 'Importing hierarchies via HR import',
+          type: 'film'
+        },
+        {
+          id: 7,
+          itemName: 'Setting up a hierarchy',
+          type: 'file'
+        },
+        {
+          id: 8,
+          itemName: 'Adding job assignments',
+          type: 'download'
+        },
+        {
+          id: 9,
+          itemName: 'Importing hierarchies via HR import',
+          type: 'film'
+        },
+        {
+          id: 10,
+          itemName: 'Importing hierarchies via HR import',
+          type: 'film'
+        },
+      ]
+    }
+
+    const LearningItem = () => renderLearningItem(() => {})({ item })
+
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <FlatList
-          data={this.courseActivities}
-          renderItem={this.renderItem}
-        />
+      <View style={styles.container}>
+        <View style={{height: hp('26%'), width: wp('100%'), backgroundColor: 'blue'}}>
+          <LearningItem/>
+        </View>
+        <View style={{height: hp('50%'), width: wp('100%')}}>
+          <View style={styles.tabNav}>
+            <Text style={styles.tabActive}>Activities</Text>
+            <Text style={styles.tabInActive}>Outline</Text>
+          </View>
+          <FlatList style={styles.activities}
+            data={item.activities}
+            renderItem={this.renderActivity}
+            keyExtractor={ (item, index) => item.id.toString() }
+          />
+        </View>
+        <View style={{width: wp('80%'), padding: 5}}>
+          <Button raised primary text={'Continue where you left off'} upperCase={false}/>
+        </View>
       </View>
     );
   }
+}
+
+const itemDueDateStateStyle = (dateDateState) => {
+  let backgroundColor
+  switch (dateDateState) {
+    case 'warning':
+      backgroundColor = 'orange'
+      break;
+    case 'danger':
+      backgroundColor = 'red'
+      break;
+    default:
+      backgroundColor = 'black'
+  }
+
+  return {
+    padding: 2,
+    backgroundColor: backgroundColor
+  }
+}
+
+const renderLearningItem = (courseNavigate) => ( {item, index} ) => {
+  const imgSrc = config.mobileStatic + '/public/' + item.id + '.JPG'
+
+  const renderDue = (dueDateState, dueDate) => {
+    if (dueDate && dueDateState != 'info') {
+      return (<Text style={itemDueDateStateStyle(item.dueDateState)}> Due {moment(dueDate).fromNow()} </Text>)
+    } else if (dueDate) {
+      return (<Text> {moment(dueDate).format("D, MMM YYYY")}</Text>)
+    } else {
+      return null
+    }
+  }
+
+  return (
+    <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
+      <Image source={{uri: imgSrc}} style={{width: '100%', height: '50%'}}/>
+      {renderDue(item.dueDateState, item.dueDate)}
+      <View style={styles.itemCard}>
+        <Text style={styles.itemFullName}>{item.fullname}</Text>
+        <View style={styles.itemInfo}>
+          <Text style={styles.itemType}>{item.type}</Text>
+          <Text> | {item.progressPercentage}%</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  )
 }
 
 
@@ -56,7 +166,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   header: {
     fontSize: 20,
@@ -64,20 +174,61 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   activity: {
-    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 10,
     textAlign: 'center',
     fontWeight: 'bold',
     margin: 0,
     backgroundColor: '#FFFFFF',
-    width: wp('100%')
   },
   activityText: {
-    fontSize: 20,
+    fontSize: 15,
     padding: 10,
+  },
+  activities: {
+    padding: 10
   },
   button: {
     alignItems: 'center',
     padding: 10
   },
+  tabNav: {
+    flexDirection: "row",
+    padding: 10,
+    paddingTop: 30,
+  },
+  tabActive: {
+    paddingRight: 20,
+    fontSize: 15,
+    fontWeight: 'bold',
+    borderBottomWidth: 2
+  },
+  tabInActive: {
+    fontSize: 15,
+    color: '#CECECE'
+  },
+  itemCard: {
+    padding: 20,
+    backgroundColor: '#EEEEEE',
+  },
+  itemType: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    padding: 2,
+    color: '#86C9C8'
+  },
+  itemFullName: {
+    fontSize: 25,
+  },
+  itemInfo: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: 10
+  },
+  itemSummary: {
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+
 });

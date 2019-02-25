@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     color: '#86C9C8'
   },
   itemFullName: {
-    paddingTop: 20,
+    paddingTop: 10,
     fontSize: 20,
     fontWeight: 'bold'
   },
