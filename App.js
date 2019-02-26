@@ -27,7 +27,7 @@ const instructions = Platform.select({
 
 const uiTheme = {
     palette: {
-        primaryColor: COLOR.blue700,
+        primaryColor: '#99AC3A',
     }
 };
 

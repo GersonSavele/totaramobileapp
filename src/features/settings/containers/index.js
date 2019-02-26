@@ -20,16 +20,21 @@ export default class Settings extends Component {
   data = [
     {
       key: '1',
-      title: 'Foo'
+      title: 'Download on Wifi only'
 
     },
     {
       key: '2',
-      title: 'Bar'
+      title: 'Feedback'
     },
     {
       key: '3',
-      title: 'Stuff'
+      title: 'Help'
+
+    },
+    {
+      key: '4',
+      title: 'Version'
 
     },
 
