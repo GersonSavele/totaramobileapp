@@ -50,7 +50,7 @@ class RecentActivity extends Component {
     return (
       <View>
         <TouchableOpacity style={this.style.lastAccessed} onPress={() => this.props.onPress()}>
-          <Text style={this.style.topText}>Continue where you left off</Text>
+          <Text style={this.style.topText}>Continue your learning</Text>
           <View style={{flexDirection: 'row', paddingLeft: 20}}>
             <Icon name="film" size={24}/>
             <Text style={this.style.bottomText}>Setting up a hierarchy</Text>

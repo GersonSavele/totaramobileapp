@@ -45,7 +45,7 @@ export default class Course extends Component {
           />
         </View>
         <View style={{width: wp('80%'), padding: 5}}>
-          <Button raised primary text={'Continue where you left off'} upperCase={false}/>
+          <Button raised primary text={'Continue your learning'} upperCase={false}/>
         </View>
       </View>
     );
