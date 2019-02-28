@@ -1,2 +1,2 @@
-export { default } from './containers'
+export { default } from './containers/MyLearning'
 
