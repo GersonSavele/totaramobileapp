@@ -7,6 +7,7 @@ import config from '../../../lib/config';
 import moment from "moment";
 import {Button} from "react-native-material-ui";
 import Icon from "react-native-vector-icons/FontAwesome";
+import DueDateState from "../../../components/DueDateState";
 
 export default class Course extends Component {
   static navigationOptions = {
@@ -52,42 +53,13 @@ export default class Course extends Component {
   }
 }
 
-const itemDueDateStateStyle = (dateDateState) => {
-  let backgroundColor
-  switch (dateDateState) {
-    case 'warning':
-      backgroundColor = 'orange'
-      break;
-    case 'danger':
-      backgroundColor = 'red'
-      break;
-    default:
-      backgroundColor = 'black'
-  }
-
-  return {
-    padding: 2,
-    backgroundColor: backgroundColor
-  }
-}
-
 const renderLearningItem = (courseNavigate) => ( {item, index} ) => {
   const imgSrc = config.mobileStatic + '/public/' + item.id + '.JPG'
-
-  const renderDue = (dueDateState, dueDate) => {
-    if (dueDate && dueDateState != 'info') {
-      return (<Text style={itemDueDateStateStyle(item.dueDateState)}> Due {moment(dueDate).fromNow()} </Text>)
-    } else if (dueDate) {
-      return (<Text> {moment(dueDate).format("D, MMM YYYY")}</Text>)
-    } else {
-      return null
-    }
-  }
 
   return (
     <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
       <Image source={{uri: imgSrc}} style={{width: '100%', height: '50%'}}/>
-      {renderDue(item.dueDateState, item.dueDate)}
+      <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
       <View style={styles.itemCard}>
         <Text style={styles.itemFullName}>{item.fullname}</Text>
         <View style={styles.itemInfo}>
