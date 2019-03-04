@@ -22,8 +22,8 @@
 
 import {Component} from "react";
 import React from "react";
-import {StyleSheet, Text, View, FlatList, Image, TouchableOpacity} from "react-native";
-import {hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {StyleSheet, Text, View, FlatList, TouchableOpacity} from "react-native";
+import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 export default class Profile extends Component {
   static navigationOptions = {

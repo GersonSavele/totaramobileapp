@@ -30,7 +30,10 @@
   "devDependencies": {
     "@types/react": "^16.7.20",
     "@types/react-native": "^0.57.31",
+    "@typescript-eslint/parser": "^1.4.2",
     "babel-jest": "23.6.0",
+    "eslint": "^5.15.0",
+    "eslint-plugin-react": "^7.12.4",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-native-typescript-transformer": "^1.2.11",
