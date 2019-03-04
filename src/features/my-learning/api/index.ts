@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -33,7 +33,7 @@ const query = gql`
       summary
       dueDateState
       dueDate
-      progressPercentage 
+      progressPercentage
       groupCount
       activities {
         id
@@ -42,7 +42,7 @@ const query = gql`
       }
     }
   }
-  `
+`;
 
 export type Activity = {
   id: number,
@@ -70,6 +70,4 @@ type ChildProps = ChildDataProps<{}, Response>
 
 type Variables = {}
 
-export const learningItemsList = graphql<{}, Response, Variables, ChildProps>(query)
-
-//export const courseList = graphql(query)
+export const learningItemsList = graphql<{}, Response, Variables, ChildProps>(query);

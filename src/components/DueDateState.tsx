@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -26,23 +26,23 @@ import moment from "moment";
 import React from "react";
 
 const dueDateStateStyle = (dateDateState: string) => {
-  let backgroundColor
+  let backgroundColor;
   switch (dateDateState) {
-    case 'warning':
-      backgroundColor = 'orange'
+    case "warning":
+      backgroundColor = "orange";
       break;
-    case 'danger':
-      backgroundColor = 'red'
+    case "danger":
+      backgroundColor = "red";
       break;
     default:
-      backgroundColor = 'black'
+      backgroundColor = "black";
   }
 
   return {
     padding: 2,
     backgroundColor: backgroundColor
-  }
-}
+  };
+};
 
 type Props = {
   dueDate: Date
@@ -52,18 +52,18 @@ type Props = {
 class DueDateState extends React.Component<Props> {
 
   render() {
-    const {dueDate, dueDateState} = this.props
+    const {dueDate, dueDateState} = this.props;
 
-    if (dueDate && dueDateState != 'info') {
-      return (<Text style={dueDateStateStyle(dueDateState)}> Due {moment(dueDate).fromNow()} </Text>)
+    if (dueDate && dueDateState != "info") {
+      return (<Text style={dueDateStateStyle(dueDateState)}> Due {moment(dueDate).fromNow()} </Text>);
     } else if (dueDate) {
-      return (<Text> {moment(dueDate).format("D, MMM YYYY")}</Text>)
+      return (<Text> {moment(dueDate).format("D, MMM YYYY")}</Text>);
     } else {
-      return null
+      return null;
     }
   }
 
 }
 
 
-export default DueDateState
+export default DueDateState;

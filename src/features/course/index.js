@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -20,5 +20,5 @@
  *
  */
 
-export { default } from './containers'
+export {default} from "./containers";
 

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -20,14 +20,14 @@
  *
  */
 
-import { Component } from 'react';
-import React from 'react';
+import {Component} from "react";
+import React from "react";
 import {StyleSheet, Text, View, FlatList, Image} from "react-native";
 import {hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 export default class Settings extends Component {
   static navigationOptions = {
-    title: 'Settings',
+    title: "Settings",
   };
 
   renderItem = ({item}) => {
@@ -36,35 +36,35 @@ export default class Settings extends Component {
       <View style={styles.activity}>
         <Text style={styles.activityText}>{item.title}</Text>
       </View>
-    )
-  }
+    );
+  };
 
   data = [
     {
-      key: '1',
-      title: 'Download on Wifi only'
+      key: "1",
+      title: "Download on Wifi only"
 
     },
     {
-      key: '2',
-      title: 'Feedback'
+      key: "2",
+      title: "Feedback"
     },
     {
-      key: '3',
-      title: 'Help'
+      key: "3",
+      title: "Help"
 
     },
     {
-      key: '4',
-      title: 'Version'
+      key: "4",
+      title: "Version"
 
     },
 
-  ]
+  ];
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
         <FlatList
           data={this.data}
           renderItem={this.renderItem}
@@ -78,29 +78,29 @@ export default class Settings extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   header: {
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 50,
   },
   activity: {
     flex: 1,
     marginTop: 10,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
     margin: 0,
-    backgroundColor: '#FFFFFF',
-    width: wp('100%')
+    backgroundColor: "#FFFFFF",
+    width: wp("100%")
   },
   activityText: {
     fontSize: 20,
     padding: 10,
   },
   button: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 10
   },
 });

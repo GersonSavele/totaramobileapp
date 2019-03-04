@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -20,19 +20,19 @@
  *
  */
 
-import { Component } from 'react';
-import React from 'react';
-import { View } from "react-native";
+import {Component} from "react";
+import React from "react";
+import {View} from "react-native";
 import {hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 export default class PlaceHolder extends Component {
   static navigationOptions = {
-    title: 'Place Holder',
+    title: "Place Holder",
   };
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
       </View>
     );
   }
