@@ -1,10 +1,31 @@
+/*
+ * This file is part of Totara Mobile
+ *
+ * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jun Yamog <jun.yamog@totaralearning.com
+ *
+ */
+
 import {Component} from "react";
 import {Image, StyleSheet, Text, View} from "react-native";
 import React from "react";
 import { Button } from 'react-native-material-ui';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import moment from 'moment'
 
 import config from '../../../lib/config';
 import LearningItemCarousel from './LearningItemCarousel'
@@ -52,7 +73,8 @@ export default class MyLearning extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>My learning</Text>
-        <LearningItems visible={this.state.show}/>
+636
+        +<LearningItems visible={this.state.show}/>
         <RecentActivity onPress={() => this.setState({visible: true})}/>
         <SlidingUpPanel
           visible={this.state.visible}
