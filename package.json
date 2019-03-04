@@ -13,6 +13,7 @@
     "graphql-iso-date": "^3.6.1",
     "moment": "^2.24.0",
     "nodejs-mobile-react-native": "^0.3.2",
+    "prop-types": "^15.7.2",
     "react": "^16.7.0",
     "react-apollo": "^2.4.0",
     "react-native": "0.57.8",

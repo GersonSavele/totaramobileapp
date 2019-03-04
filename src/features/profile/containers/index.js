@@ -20,12 +20,12 @@
  *
  */
 
-import {Component} from "react";
 import React from "react";
+import PropTypes from "prop-types";
 import {StyleSheet, Text, View, FlatList, TouchableOpacity} from "react-native";
 import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
-export default class Profile extends Component {
+export default class Profile extends React.Component {
   static navigationOptions = {
     title: "Profile",
   };
@@ -70,6 +70,10 @@ export default class Profile extends Component {
     );
   }
 }
+
+Profile.propTypes = {
+  navigation: PropTypes.object.isRequired
+};
 
 
 const styles = StyleSheet.create({

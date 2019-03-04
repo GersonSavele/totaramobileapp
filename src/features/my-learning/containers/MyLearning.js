@@ -20,9 +20,10 @@
  *
  */
 
-import {Component} from "react";
-import {Image, StyleSheet, Text, View} from "react-native";
 import React from "react";
+import {Image, StyleSheet, Text, View} from "react-native";
+import PropTypes from 'prop-types';
+
 import {Button} from "react-native-material-ui";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
@@ -31,7 +32,7 @@ import config from "../../../lib/config";
 import LearningItemCarousel from "./LearningItemCarousel";
 import RecentActivity from "./RecentActivity";
 
-class Header extends Component {
+class Header extends React.Component {
   render() {
     return (
       <View>
@@ -41,7 +42,7 @@ class Header extends Component {
   }
 }
 
-export default class MyLearning extends Component {
+export default class MyLearning extends React.Component {
 
   static navigationOptions = {
     headerTitle: <Header/>,
@@ -53,7 +54,7 @@ export default class MyLearning extends Component {
     show: false
   };
 
-  componentWillMount() {
+  componentDidMount() {
     setTimeout(() => {
       this.show();
     }, 1000);
@@ -92,6 +93,10 @@ export default class MyLearning extends Component {
     );
   }
 }
+
+MyLearning.propTypes = {
+  navigation: PropTypes.object.isRequired
+};
 
 const styles = StyleSheet.create({
   container: {

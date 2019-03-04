@@ -20,13 +20,13 @@
  *
  */
 
-import {Component} from "react";
+import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import PropTypes from "prop-types";
 import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 import Icon from "react-native-vector-icons/FontAwesome";
-import React from "react";
 
-export default class RecentActivity extends Component {
+export default class RecentActivity extends React.Component {
   style = StyleSheet.create({
     lastAccessed: {
       fontSize: 20,
@@ -65,4 +65,9 @@ export default class RecentActivity extends Component {
     );
   }
 }
+
+RecentActivity.propTypes = {
+  onPress: PropTypes.func.isRequired
+};
+
 

@@ -20,19 +20,21 @@
  *
  */
 
-import config from "../../../lib/config";
+import React from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import PropTypes from 'prop-types';
 import {Button} from "react-native-material-ui";
-import {learningItemsList} from "../api";
 import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
-import React from "react";
+
+import {learningItemsList} from "../api";
 import DueDateState from "../../../components/DueDateState";
+import config from "../../../lib/config";
 
 
 const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {loading, currentLearning, error}}) => {
 
-  const renderLearningItem = (courseNavigate) => ({item, index}) => {
+  const LearningItem = ({item}) => {
     const imgSrc = config.mobileStatic + "/public/" + item.id + ".JPG";
 
     return (
@@ -52,6 +54,10 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
     );
   };
 
+  LearningItem.propTypes = {
+    item: PropTypes.object.isRequired
+  };
+
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error :(</Text>;
 
@@ -59,7 +65,7 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
     return (
       <Carousel
         data={currentLearning}
-        renderItem={renderLearningItem(courseNavigate)}
+        renderItem={LearningItem}
         sliderWidth={wp("100%")}
         itemWidth={wp("80%")}
         sliderHeight={hp("100%")}

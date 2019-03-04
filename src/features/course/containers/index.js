@@ -20,17 +20,17 @@
  *
  */
 
-import {Component} from "react";
 import React from "react";
-import {StyleSheet, Text, View, FlatList, Image, TouchableOpacity, List} from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import PropTypes from 'prop-types';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 import config from "../../../lib/config";
 import {Button} from "react-native-material-ui";
 import Icon from "react-native-vector-icons/FontAwesome";
 import DueDateState from "../../../components/DueDateState";
 
-export default class Course extends Component {
+export default class Course extends React.Component {
   static navigationOptions = {
     title: "Course",
   };
@@ -64,7 +64,7 @@ export default class Course extends Component {
           <FlatList style={styles.activities}
                     data={item.activities}
                     renderItem={this.renderActivity}
-                    keyExtractor={(item, index) => item.id.toString()}
+                    keyExtractor={(item) => item.id.toString()}
           />
         </View>
         <View style={{width: wp("80%"), padding: 5}}>
@@ -75,11 +75,16 @@ export default class Course extends Component {
   }
 }
 
-const renderLearningItem = (courseNavigate) => ({item, index}) => {
-  const imgSrc = config.mobileStatic + "/public/" + item.id + ".JPG";
+Course.propTypes = {
+  navigation: PropTypes.object.isRequired
+};
 
-  return (
-    <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
+const renderLearningItem = (courseNavigate) => {
+
+  const LearningItem = ({item}) => {
+    const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
+
+    return <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
       <Image source={{uri: imgSrc}} style={{width: "100%", height: "50%"}}/>
       <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
       <View style={styles.itemCard}>
@@ -89,8 +94,14 @@ const renderLearningItem = (courseNavigate) => ({item, index}) => {
           <Text> | {item.progressPercentage}%</Text>
         </View>
       </View>
-    </TouchableOpacity>
-  );
+    </TouchableOpacity>;
+  };
+
+  LearningItem.propTypes = {
+    item: PropTypes.object.isRequired
+  };
+
+  return LearningItem;
 };
 
 
