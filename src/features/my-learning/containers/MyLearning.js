@@ -31,6 +31,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-nativ
 import config from "../../../lib/config";
 import LearningItemCarousel from "./LearningItemCarousel";
 import RecentActivity from "./RecentActivity";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 class Header extends React.Component {
   render() {
@@ -73,7 +74,10 @@ export default class MyLearning extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>My learning</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingRight: 20 }}>
+          <Text style={styles.header}>My learning</Text>
+          <Icon name="list" size={20}/>
+        </View>
         <LearningItems visible={this.state.show}/>
         <RecentActivity onPress={() => this.setState({visible: true})}/>
         <SlidingUpPanel
