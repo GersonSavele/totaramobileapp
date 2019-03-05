@@ -9,6 +9,7 @@ import moment from 'moment'
 import config from '../../../lib/config';
 import LearningItemCarousel from './LearningItemCarousel'
 import RecentActivity from "./RecentActivity";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 class Header extends Component {
   render() {
@@ -51,7 +52,10 @@ export default class MyLearning extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>My learning</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingRight: 20 }}>
+          <Text style={styles.header}>My learning</Text>
+          <Icon name="list" size={20}/>
+        </View>
         <LearningItems visible={this.state.show}/>
         <RecentActivity onPress={() => this.setState({visible: true})}/>
         <SlidingUpPanel
