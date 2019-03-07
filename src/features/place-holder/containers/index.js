@@ -20,11 +20,10 @@
  *
  */
 
-import {Component} from "react";
 import React from "react";
 import {View} from "react-native";
 
-export default class PlaceHolder extends Component {
+export default class PlaceHolder extends React.Component {
   static navigationOptions = {
     title: "Place Holder",
   };
