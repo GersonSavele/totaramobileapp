@@ -1,48 +1,60 @@
-import React from 'react'
-import { Component } from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
-import { COLOR, ThemeContext, getTheme } from 'react-native-material-ui';
+/**
+ * This file is part of Totara Mobile
+ *
+ * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jun Yamog <jun.yamog@totaralearning.com
+ *
+ */
+
+import React from "react";
+import ApolloClient from "apollo-boost";
+import {ApolloProvider} from "react-apollo";
+import {ThemeContext, getTheme} from "react-native-material-ui";
 import {createStackNavigator, createAppContainer, NavigationActions} from "react-navigation";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import nodejs from 'nodejs-mobile-react-native'
+import nodejs from "nodejs-mobile-react-native";
 
-import { MyLearning, Course, Profile, Settings, PlaceHolder } from './src/features';
+import {MyLearning, Course, Profile, Settings, PlaceHolder} from "./src/features";
 
-import config from './src/lib/config';
+import config from "./src/lib/config";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const client = new ApolloClient({
- uri: config.mobileApi + '/graphql'
-});
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+  uri: config.mobileApi + "/graphql"
 });
 
 const uiTheme = {
-    palette: {
-        primaryColor: '#99AC3A',
-    }
+  palette: {
+    primaryColor: "#99AC3A",
+  }
 };
 
-export default class App extends Component<{}> {
-  state = {}
+export default class App extends React.Component<{}> {
+  state = {};
 
-  navigator = undefined
+  navigator = undefined;
 
-  componentWillMount() {
+  componentDidMount() {
     if (config.startNodeJsMobile) {
-      nodejs.start('server.js');
+      nodejs.start("server.js");
       nodejs.channel.addListener(
-        'message',
+        "message",
         (msg) => {
-          alert('From node: ' + msg);
+          alert("From node: " + msg);
         },
         this
       );
@@ -51,9 +63,9 @@ export default class App extends Component<{}> {
 
   navigateTo(route) {
     this.navigator &&
-      this.navigator.dispatch(
-        NavigationActions.navigate({ routeName: route })
-      )
+    this.navigator.dispatch(
+      NavigationActions.navigate({routeName: route})
+    );
   }
 
 
@@ -70,19 +82,6 @@ export default class App extends Component<{}> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  navigation: {
-    paddingBottom: 20,
-    width: wp('100%'),
-    height: hp('10%')
-  }
-});
 
 const myLearning = createStackNavigator(
   {
@@ -132,9 +131,9 @@ const mainNavigator = createMaterialBottomTabNavigator(
           />
         )
       }),
-      tabBarOnPress: ( { navigation }) => {
-        debugger
-        navigation
+      tabBarOnPress: ({navigation}) => {
+        debugger;
+        navigation;
       }
     },
     Downloads: {
@@ -174,11 +173,11 @@ const mainNavigator = createMaterialBottomTabNavigator(
       })
     }
   }, {
-    initialRouteName: 'MyLearning',
+    initialRouteName: "MyLearning",
     labeled: false,
-    barStyle: { backgroundColor: '#F7F7F7' },
+    barStyle: {backgroundColor: "#F7F7F7"},
 
   }
-)
+);
 
 const AppContainer = createAppContainer(mainNavigator);
