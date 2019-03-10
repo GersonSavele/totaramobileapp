@@ -32,8 +32,8 @@ export default class Settings extends React.Component {
   renderItem = ({item}) => {
 
     return (
-      <View style={styles.activity}>
-        <Text style={styles.activityText}>{item.title}</Text>
+      <View style={styles.container}>
+        <Text style={styles.dataText}>{item.title}</Text>
       </View>
     );
   };
@@ -77,16 +77,6 @@ export default class Settings extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  header: {
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 50,
-  },
-  activity: {
-    flex: 1,
     marginTop: 10,
     textAlign: "center",
     fontWeight: "bold",
@@ -94,12 +84,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     width: wp("100%")
   },
-  activityText: {
+  dataText: {
     fontSize: 20,
     padding: 10,
-  },
-  button: {
-    alignItems: "center",
-    padding: 10
   },
 });

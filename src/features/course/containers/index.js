@@ -106,16 +106,6 @@ const renderLearningItem = (courseNavigate) => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  header: {
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 50,
-  },
   activity: {
     flexDirection: "row",
     alignItems: "center",

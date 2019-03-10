@@ -32,6 +32,7 @@ import config from "../../../lib/config";
 import LearningItemCarousel from "./LearningItemCarousel";
 import RecentActivity from "./RecentActivity";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {normalize} from "../../../components/Styles";
 
 class Header extends React.Component {
   render() {
@@ -73,13 +74,17 @@ export default class MyLearning extends React.Component {
     let imgSrc = config.mobileStatic + "/public/panel1.png";
 
     return (
-      <View style={styles.container}>
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingRight: 20 }}>
-          <Text style={styles.header}>My learning</Text>
+      <View style={styles.myLearningContainer}>
+        <View style={styles.myLearningHeader}>
+          <Text style={styles.myLearningHeaderText}>My learning</Text>
           <Icon name="list" size={20}/>
         </View>
-        <LearningItems visible={this.state.show}/>
-        <RecentActivity onPress={() => this.setState({visible: true})}/>
+        <View style={styles.learningItems}>
+          <LearningItems visible={this.state.show}/>
+        </View>
+        <View style={styles.recentActivity}>
+          <RecentActivity onPress={() => this.setState({visible: true})}/>
+        </View>
         <SlidingUpPanel
           visible={this.state.visible}
           onRequestClose={() => this.setState({visible: false})}>
@@ -103,13 +108,28 @@ MyLearning.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  myLearningContainer: {
     flex: 1,
     justifyContent: "center",
   },
-  header: {
-    fontSize: 32,
-    padding: 10
+  myLearningHeader: {
+    flex: 3,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingRight: 20,
+  },
+  myLearningHeaderText: {
+    fontSize: normalize(28),
+    paddingLeft: 10
+  },
+  learningItems: {
+    flex: 32,
+  },
+  recentActivity: {
+    flex: 1,
+    minHeight: 40,
+    maxHeight: 60
   },
   activity: {
     flex: 1,

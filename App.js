@@ -83,13 +83,20 @@ export default class App extends React.Component<{}> {
   }
 }
 
+const navigationOptions = {
+  headerStyle: {
+    borderBottomWidth: 0
+  },
+};
+
 const myLearning = createStackNavigator(
   {
     MyLearning: MyLearning,
     Course: Course,
   },
   {
-    initialRouteName: "MyLearning"
+    initialRouteName: "MyLearning",
+    defaultNavigationOptions: navigationOptions
   });
 
 const profile = createStackNavigator(
@@ -98,7 +105,8 @@ const profile = createStackNavigator(
     Settings: Settings,
   },
   {
-    initialRouteName: "Profile"
+    initialRouteName: "Profile",
+    defaultNavigationOptions: navigationOptions
   });
 
 const notification = createStackNavigator(
@@ -106,7 +114,8 @@ const notification = createStackNavigator(
     Notification: PlaceHolder,
   },
   {
-    initialRouteName: "Notification"
+    initialRouteName: "Notification",
+    defaultNavigationOptions: navigationOptions
   });
 
 const downloads = createStackNavigator(
@@ -114,7 +123,8 @@ const downloads = createStackNavigator(
     Downloads: PlaceHolder,
   },
   {
-    initialRouteName: "Downloads"
+    initialRouteName: "Downloads",
+    defaultNavigationOptions: navigationOptions
   });
 
 
@@ -132,7 +142,6 @@ const mainNavigator = createMaterialBottomTabNavigator(
         )
       }),
       tabBarOnPress: ({navigation}) => {
-        debugger;
         navigation;
       }
     },
@@ -176,7 +185,6 @@ const mainNavigator = createMaterialBottomTabNavigator(
     initialRouteName: "MyLearning",
     labeled: false,
     barStyle: {backgroundColor: "#F7F7F7"},
-
   }
 );
 
