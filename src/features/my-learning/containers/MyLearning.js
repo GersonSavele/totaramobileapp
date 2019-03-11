@@ -24,7 +24,7 @@ import React from "react";
 import {Image, StyleSheet, Text, View} from "react-native";
 import PropTypes from 'prop-types';
 
-import {Button} from "react-native-material-ui";
+import {Button} from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
@@ -89,7 +89,7 @@ export default class MyLearning extends React.Component {
           visible={this.state.visible}
           onRequestClose={() => this.setState({visible: false})}>
           <View style={styles.panel}>
-            <Button style={{container: {flex: 0, width: wp("18%")}}} icon='clear' text=''
+            <Button style={{container: {flex: 0, width: wp("18%")}}} iconRight="clear"
                     onPress={() => this.setState({visible: false})}/>
             <Image source={{uri: imgSrc}} style={{width: wp("100%"), height: 240}}/>
             <Text style={styles.panelContent}>

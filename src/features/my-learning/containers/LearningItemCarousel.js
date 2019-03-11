@@ -22,8 +22,8 @@
 
 import React from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import PropTypes from 'prop-types';
-import {Button} from "react-native-material-ui";
+import PropTypes from "prop-types";
+import {Button} from "native-base";
 import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
@@ -53,16 +53,10 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
             <Text> | {item.progressPercentage}%</Text>
           </View>
           <Text style={styles.itemSummary}>{item.summary}</Text>
-          <Button raised primary text={"Start this " + item.type} upperCase={false} style={buttonStyle}/>
+          <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
         </View>
       </TouchableOpacity>
     );
-  };
-
-  const buttonStyle = {
-    container: {
-      borderRadius: 5
-    }
   };
 
   LearningItem.propTypes = {
@@ -135,4 +129,8 @@ const styles = StyleSheet.create({
     flex: 10,
     paddingBottom: 10,
   },
+  buttonText: {
+    color: "#FFFFFF",
+    padding: 5
+  }
 });

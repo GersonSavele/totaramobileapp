@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -61,6 +60,24 @@
 		EA6017381C654D5590A10E9A /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A2D8074B32C4930B964208E /* Feather.ttf */; };
 		F63F2163994041DFB4446754 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 434F83224ADB49F0950E083E /* libRNVectorIcons.a */; };
 		F85429B4FB554E5EA4E9EC0D /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6C21E0C1D544352B5FE6058 /* EvilIcons.ttf */; };
+		2790F0BE3AAC4F22A2062027 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A250144030F6480BB0963BC3 /* AntDesign.ttf */; };
+		083F47C932884437A2096653 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 457AB8421A5B40168D375D58 /* Entypo.ttf */; };
+		599E202B99BB44179293FE0E /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEBC000881CC4F71B52D8B98 /* EvilIcons.ttf */; };
+		F826906454374A3DBD15173B /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE74DDCB2C694E9288858042 /* Feather.ttf */; };
+		EF6F0B211F604CDA9F55FD71 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04FD1A4C6CFF43E8A7B3BAA7 /* FontAwesome.ttf */; };
+		BFF8A142C5EB4B71B4AC222F /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B5EC34084464AA5AC9670A0 /* FontAwesome5_Brands.ttf */; };
+		ABF2968621FB42B4A8FBB99B /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 71E156C9F08543F8871C8C5A /* FontAwesome5_Regular.ttf */; };
+		46C706A157BB4B08B924FBC7 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39BFCD5AFE1E49EE829190E5 /* FontAwesome5_Solid.ttf */; };
+		DD9F9E738C1943DC8B4758FA /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 617FE806D2DE433CAED8073E /* Foundation.ttf */; };
+		511A5F575EF04692A5322E23 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE4A5620EF604185BB42F828 /* Ionicons.ttf */; };
+		3C92A6EA54BE4FCBA5A90994 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7FF195E75ACB42F7AA60D2BF /* MaterialCommunityIcons.ttf */; };
+		C65D63D12CAB4BF5A35100D3 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E2BEE8624B04FDA9682CB02 /* MaterialIcons.ttf */; };
+		3992A6D2AFA241A3A75ADB54 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D0081964F8248BE84C8EEAE /* Octicons.ttf */; };
+		9940B2D439FF4E408E08A4FF /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9278D087F4484C029C3447EF /* Roboto_medium.ttf */; };
+		CB59234E73A841EA82C7B889 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 115F7ADE032245DB9260332C /* Roboto.ttf */; };
+		A6EDB9AB25CE42C7819D8E0A /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4D9641135D0470CB3841C49 /* rubicon-icon-font.ttf */; };
+		70B095C2637D4E30A330C95A /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C7B6104BA3194AC0A928BE81 /* SimpleLineIcons.ttf */; };
+		5A856E6C0EDE4D999132073B /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D40A3237554848D58DDE31DA /* Zocial.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -433,6 +450,24 @@
 		E6C21E0C1D544352B5FE6058 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		F4D6D906A62F4FCAB810BFF3 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		FCCDCF0C8FE44B729A679390 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		A250144030F6480BB0963BC3 /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		457AB8421A5B40168D375D58 /* Entypo.ttf */ = {isa = PBXFileReference; name = "Entypo.ttf"; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		DEBC000881CC4F71B52D8B98 /* EvilIcons.ttf */ = {isa = PBXFileReference; name = "EvilIcons.ttf"; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CE74DDCB2C694E9288858042 /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		04FD1A4C6CFF43E8A7B3BAA7 /* FontAwesome.ttf */ = {isa = PBXFileReference; name = "FontAwesome.ttf"; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0B5EC34084464AA5AC9670A0 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Brands.ttf"; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		71E156C9F08543F8871C8C5A /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Regular.ttf"; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		39BFCD5AFE1E49EE829190E5 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		617FE806D2DE433CAED8073E /* Foundation.ttf */ = {isa = PBXFileReference; name = "Foundation.ttf"; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EE4A5620EF604185BB42F828 /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7FF195E75ACB42F7AA60D2BF /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2E2BEE8624B04FDA9682CB02 /* MaterialIcons.ttf */ = {isa = PBXFileReference; name = "MaterialIcons.ttf"; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2D0081964F8248BE84C8EEAE /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9278D087F4484C029C3447EF /* Roboto_medium.ttf */ = {isa = PBXFileReference; name = "Roboto_medium.ttf"; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		115F7ADE032245DB9260332C /* Roboto.ttf */ = {isa = PBXFileReference; name = "Roboto.ttf"; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C4D9641135D0470CB3841C49 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C7B6104BA3194AC0A928BE81 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D40A3237554848D58DDE31DA /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -637,6 +672,24 @@
 				64C752E5BDEC4622A5C36376 /* Octicons.ttf */,
 				FCCDCF0C8FE44B729A679390 /* SimpleLineIcons.ttf */,
 				231C6892A2EA4CF6A6B24088 /* Zocial.ttf */,
+				A250144030F6480BB0963BC3 /* AntDesign.ttf */,
+				457AB8421A5B40168D375D58 /* Entypo.ttf */,
+				DEBC000881CC4F71B52D8B98 /* EvilIcons.ttf */,
+				CE74DDCB2C694E9288858042 /* Feather.ttf */,
+				04FD1A4C6CFF43E8A7B3BAA7 /* FontAwesome.ttf */,
+				0B5EC34084464AA5AC9670A0 /* FontAwesome5_Brands.ttf */,
+				71E156C9F08543F8871C8C5A /* FontAwesome5_Regular.ttf */,
+				39BFCD5AFE1E49EE829190E5 /* FontAwesome5_Solid.ttf */,
+				617FE806D2DE433CAED8073E /* Foundation.ttf */,
+				EE4A5620EF604185BB42F828 /* Ionicons.ttf */,
+				7FF195E75ACB42F7AA60D2BF /* MaterialCommunityIcons.ttf */,
+				2E2BEE8624B04FDA9682CB02 /* MaterialIcons.ttf */,
+				2D0081964F8248BE84C8EEAE /* Octicons.ttf */,
+				9278D087F4484C029C3447EF /* Roboto_medium.ttf */,
+				115F7ADE032245DB9260332C /* Roboto.ttf */,
+				C4D9641135D0470CB3841C49 /* rubicon-icon-font.ttf */,
+				C7B6104BA3194AC0A928BE81 /* SimpleLineIcons.ttf */,
+				D40A3237554848D58DDE31DA /* Zocial.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -794,9 +847,9 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				361F7BBAC9BF4B8CA35C08AA /* Embed Frameworks */,
-				ADEB98CEA6A3481B997E11D7 /* Build NodeJS Mobile Native Modules */,
-				A48D926CD0864A1ABCE29374 /* Sign NodeJS Mobile Native Modules */,
-				4C0E2D15FFB8484A86619E1D /* Remove NodeJS Mobile Framework Simulator Strips */,
+				A618363E49314F6DA34581A6 /* Build NodeJS Mobile Native Modules */,
+				8E8E08305BF3455F977B1496 /* Sign NodeJS Mobile Native Modules */,
+				2E2F6E9BFEF5484691C03B89 /* Remove NodeJS Mobile Framework Simulator Strips */,
 			);
 			buildRules = (
 			);
@@ -1275,6 +1328,24 @@
 				3D3C4D09D7A34056876B366B /* Zocial.ttf in Resources */,
 				E3F6912823D44D1AB253590E /* nodejs-project in Resources */,
 				64BCEB132FF44D6995505094 /* builtin_modules in Resources */,
+				2790F0BE3AAC4F22A2062027 /* AntDesign.ttf in Resources */,
+				083F47C932884437A2096653 /* Entypo.ttf in Resources */,
+				599E202B99BB44179293FE0E /* EvilIcons.ttf in Resources */,
+				F826906454374A3DBD15173B /* Feather.ttf in Resources */,
+				EF6F0B211F604CDA9F55FD71 /* FontAwesome.ttf in Resources */,
+				BFF8A142C5EB4B71B4AC222F /* FontAwesome5_Brands.ttf in Resources */,
+				ABF2968621FB42B4A8FBB99B /* FontAwesome5_Regular.ttf in Resources */,
+				46C706A157BB4B08B924FBC7 /* FontAwesome5_Solid.ttf in Resources */,
+				DD9F9E738C1943DC8B4758FA /* Foundation.ttf in Resources */,
+				511A5F575EF04692A5322E23 /* Ionicons.ttf in Resources */,
+				3C92A6EA54BE4FCBA5A90994 /* MaterialCommunityIcons.ttf in Resources */,
+				C65D63D12CAB4BF5A35100D3 /* MaterialIcons.ttf in Resources */,
+				3992A6D2AFA241A3A75ADB54 /* Octicons.ttf in Resources */,
+				9940B2D439FF4E408E08A4FF /* Roboto_medium.ttf in Resources */,
+				CB59234E73A841EA82C7B889 /* Roboto.ttf in Resources */,
+				A6EDB9AB25CE42C7819D8E0A /* rubicon-icon-font.ttf in Resources */,
+				70B095C2637D4E30A330C95A /* SimpleLineIcons.ttf in Resources */,
+				5A856E6C0EDE4D999132073B /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1324,47 +1395,159 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		4C0E2D15FFB8484A86619E1D /* Remove NodeJS Mobile Framework Simulator Strips */ = {
+		A618363E49314F6DA34581A6 /* Build NodeJS Mobile Native Modules */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			inputPaths = (
-			);
-			name = "Remove NodeJS Mobile Framework Simulator Strips";
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\nset -e\nFRAMEWORK_BINARY_PATH=\"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/NodeMobile.framework/NodeMobile\"\nFRAMEWORK_STRIPPED_PATH=\"$FRAMEWORK_BINARY_PATH-strip\"\nif [ \"$PLATFORM_NAME\" != \"iphonesimulator\" ]; then\n  if $(lipo \"$FRAMEWORK_BINARY_PATH\" -verify_arch \"x86_64\") ; then\n    lipo -output \"$FRAMEWORK_STRIPPED_PATH\" -remove \"x86_64\" \"$FRAMEWORK_BINARY_PATH\"\n    rm \"$FRAMEWORK_BINARY_PATH\"\n    mv \"$FRAMEWORK_STRIPPED_PATH\" \"$FRAMEWORK_BINARY_PATH\"\n    echo \"Removed simulator strip from NodeMobile.framework\"\n  fi\nfi\n";
-		};
-		A48D926CD0864A1ABCE29374 /* Sign NodeJS Mobile Native Modules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Sign NodeJS Mobile Native Modules";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\nset -e\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, look for it in the project's\n#nodejs-assets/BUILD_NATIVE_MODULES.txt file.\nNODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"\nPREFERENCE_FILE_PATH=\"$NODEJS_ASSETS_DIR/BUILD_NATIVE_MODULES.txt\"\n  if [ -f \"$PREFERENCE_FILE_PATH\" ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=\"$(cat $PREFERENCE_FILE_PATH | xargs)\"\n  fi\nfi\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, try to find .gyp files\n#to turn it on.\n  gypfiles=($(find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -type f -name \"*.gyp\"))\n  if [ ${#gypfiles[@]} -gt 0 ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=1\n  else\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=0\n  fi\nfi\nif [ \"1\" != \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then exit 0; fi\n# Delete object files\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.o\" -type f -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.a\" -type f -delete\n# Create Info.plist for each framework built and loader override.\nPATCH_SCRIPT_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/scripts/ && pwd )\"\nNODEJS_PROJECT_DIR=\"$( cd \"$CODESIGNING_FOLDER_PATH\" && cd nodejs-project/ && pwd )\"\nnode \"$PATCH_SCRIPT_DIR\"/ios-create-plists-and-dlopen-override.js $NODEJS_PROJECT_DIR\n# Embed every resulting .framework in the application and delete them afterwards.\nembed_framework()\n{\n    FRAMEWORK_NAME=\"$(basename \"$1\")\"\n    cp -r \"$1\" \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n    \n    /usr/bin/codesign --force --sign $EXPANDED_CODE_SIGN_IDENTITY --preserve-metadata=identifier,entitlements,flags --timestamp=none \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/$FRAMEWORK_NAME\"\n}\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d | while read frmwrk_path; do embed_framework \"$frmwrk_path\"; done\n\n#Delete gyp temporary .deps dependency folders from the project structure.\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/.deps/*\" -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \".deps\" -type d -delete\n\n#Delete frameworks from their build paths\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.framework/*\" -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d -delete\n";
-		};
-		ADEB98CEA6A3481B997E11D7 /* Build NodeJS Mobile Native Modules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
 			name = "Build NodeJS Mobile Native Modules";
+			inputPaths = (
+			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nset -e\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, look for it in the project's\n#nodejs-assets/BUILD_NATIVE_MODULES.txt file.\nNODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"\nPREFERENCE_FILE_PATH=\"$NODEJS_ASSETS_DIR/BUILD_NATIVE_MODULES.txt\"\n  if [ -f \"$PREFERENCE_FILE_PATH\" ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=\"$(cat $PREFERENCE_FILE_PATH | xargs)\"\n  fi\nfi\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, try to find .gyp files\n#to turn it on.\n  gypfiles=($(find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -type f -name \"*.gyp\"))\n  if [ ${#gypfiles[@]} -gt 0 ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=1\n  else\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=0\n  fi\nfi\nif [ \"1\" != \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then exit 0; fi\n# Delete object files that may already come from within the npm package.\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.o\" -type f -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.a\" -type f -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.node\" -type f -delete\n# Delete bundle contents that may be there from previous builds.\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.node/*\" -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.node\" -type d -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.framework/*\" -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d -delete\n# Apply patches to the modules package.json\nif [ -d \"$CODESIGNING_FOLDER_PATH\"/nodejs-project/node_modules/ ]; then\n  PATCH_SCRIPT_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/scripts/ && pwd )\"\n  NODEJS_PROJECT_MODULES_DIR=\"$( cd \"$CODESIGNING_FOLDER_PATH\" && cd nodejs-project/node_modules/ && pwd )\"\n  node \"$PATCH_SCRIPT_DIR\"/patch-package.js $NODEJS_PROJECT_MODULES_DIR\nfi\n# Get the nodejs-mobile-gyp location\nif [ -d \"$PROJECT_DIR/../node_modules/nodejs-mobile-gyp/\" ]; then\n  NODEJS_MOBILE_GYP_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-gyp/ && pwd )\"\nelse\n  NODEJS_MOBILE_GYP_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/node_modules/nodejs-mobile-gyp/ && pwd )\"\nfi\nNODEJS_MOBILE_GYP_BIN_FILE=\"$NODEJS_MOBILE_GYP_DIR\"/bin/node-gyp.js\n# Rebuild modules with right environment\nNODEJS_HEADERS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/ios/libnode/ && pwd )\"\npushd $CODESIGNING_FOLDER_PATH/nodejs-project/\nif [ \"$PLATFORM_NAME\" == \"iphoneos\" ]\nthen\n  GYP_DEFINES=\"OS=ios\" npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" npm_config_platform=\"ios\" npm_config_format=\"make-ios\" npm_config_node_engine=\"chakracore\" npm_config_arch=\"arm64\" npm --verbose rebuild --build-from-source\nelse\n  GYP_DEFINES=\"OS=ios\" npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" npm_config_platform=\"ios\" npm_config_format=\"make-ios\" npm_config_node_engine=\"chakracore\" npm_config_arch=\"x64\" npm --verbose rebuild --build-from-source\nfi\npopd\n";
+			shellScript = "
+set -e
+if [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then
+# If build native modules preference is not set, look for it in the project's
+#nodejs-assets/BUILD_NATIVE_MODULES.txt file.
+NODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"
+PREFERENCE_FILE_PATH=\"$NODEJS_ASSETS_DIR/BUILD_NATIVE_MODULES.txt\"
+  if [ -f \"$PREFERENCE_FILE_PATH\" ]; then
+    NODEJS_MOBILE_BUILD_NATIVE_MODULES=\"$(cat $PREFERENCE_FILE_PATH | xargs)\"
+  fi
+fi
+if [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then
+# If build native modules preference is not set, try to find .gyp files
+#to turn it on.
+  gypfiles=($(find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -type f -name \"*.gyp\"))
+  if [ ${#gypfiles[@]} -gt 0 ]; then
+    NODEJS_MOBILE_BUILD_NATIVE_MODULES=1
+  else
+    NODEJS_MOBILE_BUILD_NATIVE_MODULES=0
+  fi
+fi
+if [ \"1\" != \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then exit 0; fi
+# Delete object files that may already come from within the npm package.
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.o\" -type f -delete
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.a\" -type f -delete
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.node\" -type f -delete
+# Delete bundle contents that may be there from previous builds.
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.node/*\" -delete
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.node\" -type d -delete
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.framework/*\" -delete
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d -delete
+# Apply patches to the modules package.json
+if [ -d \"$CODESIGNING_FOLDER_PATH\"/nodejs-project/node_modules/ ]; then
+  PATCH_SCRIPT_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/scripts/ && pwd )\"
+  NODEJS_PROJECT_MODULES_DIR=\"$( cd \"$CODESIGNING_FOLDER_PATH\" && cd nodejs-project/node_modules/ && pwd )\"
+  node \"$PATCH_SCRIPT_DIR\"/patch-package.js $NODEJS_PROJECT_MODULES_DIR
+fi
+# Get the nodejs-mobile-gyp location
+if [ -d \"$PROJECT_DIR/../node_modules/nodejs-mobile-gyp/\" ]; then
+  NODEJS_MOBILE_GYP_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-gyp/ && pwd )\"
+else
+  NODEJS_MOBILE_GYP_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/node_modules/nodejs-mobile-gyp/ && pwd )\"
+fi
+NODEJS_MOBILE_GYP_BIN_FILE=\"$NODEJS_MOBILE_GYP_DIR\"/bin/node-gyp.js
+# Rebuild modules with right environment
+NODEJS_HEADERS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/ios/libnode/ && pwd )\"
+pushd $CODESIGNING_FOLDER_PATH/nodejs-project/
+if [ \"$PLATFORM_NAME\" == \"iphoneos\" ]
+then
+  GYP_DEFINES=\"OS=ios\" npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" npm_config_platform=\"ios\" npm_config_format=\"make-ios\" npm_config_node_engine=\"chakracore\" npm_config_arch=\"arm64\" npm --verbose rebuild --build-from-source
+else
+  GYP_DEFINES=\"OS=ios\" npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" npm_config_platform=\"ios\" npm_config_format=\"make-ios\" npm_config_node_engine=\"chakracore\" npm_config_arch=\"x64\" npm --verbose rebuild --build-from-source
+fi
+popd
+";
+		};
+		8E8E08305BF3455F977B1496 /* Sign NodeJS Mobile Native Modules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Sign NodeJS Mobile Native Modules";
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			shellPath = /bin/sh;
+			shellScript = "
+set -e
+if [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then
+# If build native modules preference is not set, look for it in the project's
+#nodejs-assets/BUILD_NATIVE_MODULES.txt file.
+NODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"
+PREFERENCE_FILE_PATH=\"$NODEJS_ASSETS_DIR/BUILD_NATIVE_MODULES.txt\"
+  if [ -f \"$PREFERENCE_FILE_PATH\" ]; then
+    NODEJS_MOBILE_BUILD_NATIVE_MODULES=\"$(cat $PREFERENCE_FILE_PATH | xargs)\"
+  fi
+fi
+if [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then
+# If build native modules preference is not set, try to find .gyp files
+#to turn it on.
+  gypfiles=($(find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -type f -name \"*.gyp\"))
+  if [ ${#gypfiles[@]} -gt 0 ]; then
+    NODEJS_MOBILE_BUILD_NATIVE_MODULES=1
+  else
+    NODEJS_MOBILE_BUILD_NATIVE_MODULES=0
+  fi
+fi
+if [ \"1\" != \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then exit 0; fi
+# Delete object files
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.o\" -type f -delete
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.a\" -type f -delete
+# Create Info.plist for each framework built and loader override.
+PATCH_SCRIPT_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/scripts/ && pwd )\"
+NODEJS_PROJECT_DIR=\"$( cd \"$CODESIGNING_FOLDER_PATH\" && cd nodejs-project/ && pwd )\"
+node \"$PATCH_SCRIPT_DIR\"/ios-create-plists-and-dlopen-override.js $NODEJS_PROJECT_DIR
+# Embed every resulting .framework in the application and delete them afterwards.
+embed_framework()
+{
+    FRAMEWORK_NAME=\"$(basename \"$1\")\"
+    cp -r \"$1\" \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/\"
+    
+    /usr/bin/codesign --force --sign $EXPANDED_CODE_SIGN_IDENTITY --preserve-metadata=identifier,entitlements,flags --timestamp=none \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/$FRAMEWORK_NAME\"
+}
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d | while read frmwrk_path; do embed_framework \"$frmwrk_path\"; done
+
+#Delete gyp temporary .deps dependency folders from the project structure.
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/.deps/*\" -delete
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \".deps\" -type d -delete
+
+#Delete frameworks from their build paths
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.framework/*\" -delete
+find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d -delete
+";
+		};
+		2E2F6E9BFEF5484691C03B89 /* Remove NodeJS Mobile Framework Simulator Strips */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Remove NodeJS Mobile Framework Simulator Strips";
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			shellPath = /bin/sh;
+			shellScript = "
+set -e
+FRAMEWORK_BINARY_PATH=\"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/NodeMobile.framework/NodeMobile\"
+FRAMEWORK_STRIPPED_PATH=\"$FRAMEWORK_BINARY_PATH-strip\"
+if [ \"$PLATFORM_NAME\" != \"iphonesimulator\" ]; then
+  if $(lipo \"$FRAMEWORK_BINARY_PATH\" -verify_arch \"x86_64\") ; then
+    lipo -output \"$FRAMEWORK_STRIPPED_PATH\" -remove \"x86_64\" \"$FRAMEWORK_BINARY_PATH\"
+    rm \"$FRAMEWORK_BINARY_PATH\"
+    mv \"$FRAMEWORK_STRIPPED_PATH\" \"$FRAMEWORK_BINARY_PATH\"
+    echo \"Removed simulator strip from NodeMobile.framework\"
+  fi
+fi
+";
 		};
 /* End PBXShellScriptBuildPhase section */
 

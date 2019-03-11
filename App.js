@@ -23,25 +23,21 @@
 import React from "react";
 import ApolloClient from "apollo-boost";
 import {ApolloProvider} from "react-apollo";
-import {ThemeContext, getTheme} from "react-native-material-ui";
 import {createStackNavigator, createAppContainer, NavigationActions} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
+import getTheme from "./src/components/native-base-theme/components";
+import {StyleProvider} from "native-base";
+import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import {MyLearning, Course, Profile, Settings, PlaceHolder} from "./src/features";
 
 import config from "./src/lib/config";
-import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
-import Icon from "react-native-vector-icons/FontAwesome";
+import material from "./src/components/native-base-theme/variables/material";
 
 const client = new ApolloClient({
   uri: config.mobileApi + "/graphql"
 });
-
-const uiTheme = {
-  palette: {
-    primaryColor: "#99AC3A",
-  }
-};
 
 export default class App extends React.Component<{}> {
   state = {};
@@ -72,12 +68,12 @@ export default class App extends React.Component<{}> {
   render() {
     return (
       <ApolloProvider client={client}>
-        <ThemeContext.Provider value={getTheme(uiTheme)}>
+        <StyleProvider style={getTheme(material)}>
           <AppContainer
             ref={nav => {
               this.navigator = nav;
             }}/>
-        </ThemeContext.Provider>
+        </StyleProvider>
       </ApolloProvider>
     );
   }

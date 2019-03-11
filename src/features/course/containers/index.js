@@ -22,11 +22,11 @@
 
 import React from "react";
 import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 import config from "../../../lib/config";
-import {Button} from "react-native-material-ui";
+import {Button} from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import DueDateState from "../../../components/DueDateState";
 
@@ -68,7 +68,7 @@ export default class Course extends React.Component {
           />
         </View>
         <View style={{width: wp("80%"), padding: 5}}>
-          <Button raised primary text={"Continue your learning"} upperCase={false}/>
+          <Button block><Text>Continue your learning</Text></Button>
         </View>
       </View>
     );
