@@ -26,22 +26,27 @@ import moment from "moment";
 import React from "react";
 
 const dueDateStateStyle = (dateDateState: string) => {
-  let backgroundColor;
+  let style;
   switch (dateDateState) {
     case "warning":
-      backgroundColor = "orange";
+      style = {
+        padding: 2,
+        backgroundColor: "#FFF062",
+        color: "#000000"
+      };
       break;
     case "danger":
-      backgroundColor = "red";
+      style = {
+        padding: 2,
+        backgroundColor: "#E73C09",
+        color: "#FFFFFF"
+      };
       break;
     default:
-      backgroundColor = "black";
+      style = {};
   }
 
-  return {
-    padding: 2,
-    backgroundColor: backgroundColor
-  };
+  return style;
 };
 
 type Props = {

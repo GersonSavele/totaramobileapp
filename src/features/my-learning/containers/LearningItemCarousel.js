@@ -30,6 +30,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-nativ
 import {learningItemsList} from "../api";
 import DueDateState from "../../../components/DueDateState";
 import config from "../../../lib/config";
+import {normalize} from "../../../components/Styles";
 
 
 const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {loading, currentLearning, error}}) => {
@@ -38,20 +39,30 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
     const imgSrc = config.mobileStatic + "/public/" + item.id + ".JPG";
 
     return (
-      <TouchableOpacity key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
-        <Image source={{uri: imgSrc}} style={{width: "100%", height: "50%"}}/>
-        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
+      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
+        <View style={styles.itemImage}>
+          <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
+          <Image source={{uri: imgSrc}} style={{width: "100%", height: "100%"}}/>
+        </View>
         <View style={styles.itemCard}>
-          <Text style={styles.itemFullName}>{item.fullname}</Text>
+          <View style={{flexDirection: "row"}}>
+            <Text style={styles.itemFullName}>{item.fullname}</Text>
+          </View>
           <View style={styles.itemInfo}>
             <Text style={styles.itemType}>{item.type}</Text>
             <Text> | {item.progressPercentage}%</Text>
           </View>
           <Text style={styles.itemSummary}>{item.summary}</Text>
+          <Button raised primary text={"Start this " + item.type} upperCase={false} style={buttonStyle}/>
         </View>
-        <Button raised primary text={"Start this " + item.type} upperCase={false}/>
       </TouchableOpacity>
     );
+  };
+
+  const buttonStyle = {
+    container: {
+      borderRadius: 5
+    }
   };
 
   LearningItem.propTypes = {
@@ -67,9 +78,9 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
         data={currentLearning}
         renderItem={LearningItem}
         sliderWidth={wp("100%")}
-        itemWidth={wp("80%")}
+        itemWidth={wp("82%")}
         sliderHeight={hp("100%")}
-        inactiveSlideOpacity={0.4}
+        inactiveSlideOpacity={0.6}
       />
     );
 
@@ -79,9 +90,28 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
 export default LearningItemCarousel;
 
 const styles = StyleSheet.create({
+  learningItem: {
+    flex: 1,
+    marginTop: hp("2.5%"),
+    marginBottom: hp("3%"),
+    borderRadius: 10,
+    borderBottomWidth: 0,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 15 },
+    shadowOpacity: 0.15,
+    shadowRadius: 25,
+    backgroundColor: "#FFFFFF"
+  },
+  itemImage: {
+    flex: 1,
+    flexDirection: "column-reverse",
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    overflow: "hidden",
+  },
   itemCard: {
     padding: 10,
-    height: hp("26%")
+    flex: 1
   },
   itemType: {
     fontSize: 10,
@@ -90,17 +120,19 @@ const styles = StyleSheet.create({
     color: "#86C9C8"
   },
   itemFullName: {
-    paddingTop: 10,
-    fontSize: 20,
-    fontWeight: "bold"
+    flexWrap: "wrap",
+    fontSize: normalize(20),
+    fontWeight: "bold",
   },
   itemInfo: {
+    flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingTop: 10
+    minHeight: 30,
+    paddingTop: 5,
   },
   itemSummary: {
-    paddingTop: 10,
-    paddingBottom: 10
+    flex: 10,
+    paddingBottom: 10,
   },
 });
