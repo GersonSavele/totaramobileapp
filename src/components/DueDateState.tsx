@@ -21,33 +21,10 @@
  */
 
 
-import {Text} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import moment from "moment";
 import React from "react";
-
-const dueDateStateStyle = (dateDateState: string) => {
-  let style;
-  switch (dateDateState) {
-    case "warning":
-      style = {
-        padding: 2,
-        backgroundColor: "#FFF062",
-        color: "#000000"
-      };
-      break;
-    case "danger":
-      style = {
-        padding: 2,
-        backgroundColor: "#E73C09",
-        color: "#FFFFFF"
-      };
-      break;
-    default:
-      style = {};
-  }
-
-  return style;
-};
+import {normalize} from "./Styles";
 
 type Props = {
   dueDate: Date
@@ -59,16 +36,63 @@ class DueDateState extends React.Component<Props> {
   render() {
     const {dueDate, dueDateState} = this.props;
 
-    if (dueDate && dueDateState != "info") {
-      return (<Text style={dueDateStateStyle(dueDateState)}> Due {moment(dueDate).fromNow()} </Text>);
-    } else if (dueDate) {
-      return (<Text> {moment(dueDate).format("D, MMM YYYY")}</Text>);
-    } else {
-      return null;
+    switch (dueDateState) {
+      case "warning":
+        return (
+          <View style={styles.warning}>
+            <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
+          </View>
+        );
+
+      case "danger":
+        return (
+          <View style={styles.danger}>
+            <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
+          </View>
+        );
+
+      case "info":
+        return (
+          <View style={styles.info}>
+            <Text style={styles.infoText}>{moment(dueDate).format("D, MMM YYYY")}</Text>
+          </View>
+        );
+
+      default:
+        return null
     }
   }
 
 }
 
+const styles = StyleSheet.create({
+  info: {
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    height: 28
+  },
+  infoText: {
+    color: "#000000",
+    paddingLeft: 5,
+  },
+  warning: {
+    backgroundColor: "#FFF062",
+    justifyContent: "center",
+    height: 28
+  },
+  warningText: {
+    color: "#000000",
+    paddingLeft: 5,
+  },
+  danger: {
+    backgroundColor: "#E73C09",
+    justifyContent: "center",
+    height: 28
+  },
+  dangerText: {
+    color: "#FFFFFF",
+    paddingLeft: 5,
+  },
+});
 
 export default DueDateState;

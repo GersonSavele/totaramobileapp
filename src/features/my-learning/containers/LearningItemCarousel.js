@@ -26,6 +26,7 @@ import PropTypes from "prop-types";
 import {Button} from "native-base";
 import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import * as Progress from 'react-native-progress';
 
 import {learningItemsList} from "../api";
 import DueDateState from "../../../components/DueDateState";
@@ -42,7 +43,7 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
       <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
         <View style={styles.itemImage}>
           <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
-          <Image source={{uri: imgSrc}} style={{width: "100%", height: "100%"}}/>
+          <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
         </View>
         <View style={styles.itemCard}>
           <View style={{flexDirection: "row"}}>
@@ -50,7 +51,9 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
           </View>
           <View style={styles.itemInfo}>
             <Text style={styles.itemType}>{item.type}</Text>
-            <Text> | {item.progressPercentage}%</Text>
+            <Text> | </Text>
+            <Progress.Circle progress={item.progressPercentage/100} size={16} borderColor={"#E6E6E6"} color={"#0066CC"}/>
+            <Text> {item.progressPercentage} %</Text>
           </View>
           <Text style={styles.itemSummary}>{item.summary}</Text>
           <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
@@ -91,9 +94,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderBottomWidth: 0,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 15 },
-    shadowOpacity: 0.15,
-    shadowRadius: 25,
+    shadowOffset: { width: 0, height: normalize(10) },
+    shadowOpacity: 0.25,
+    shadowRadius: normalize(10),
     backgroundColor: "#FFFFFF"
   },
   itemImage: {
@@ -104,14 +107,14 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   itemCard: {
-    padding: 10,
+    padding: normalize(16),
     flex: 1
   },
   itemType: {
     fontSize: 10,
     fontWeight: "bold",
     padding: 2,
-    color: "#86C9C8"
+    color: "#A0A0A0"
   },
   itemFullName: {
     flexWrap: "wrap",
