@@ -56,6 +56,7 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
             <Text> {item.progressPercentage} %</Text>
           </View>
           <Text style={styles.itemSummary}>{item.summary}</Text>
+          <View style={{flex: 1}}></View>
           <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
         </View>
       </TouchableOpacity>
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
   },
   itemCard: {
     padding: normalize(16),
+    justifyContent: "flex-start",
     flex: 1
   },
   itemType: {
@@ -126,11 +128,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     minHeight: 30,
+    maxHeight: 35,
     paddingTop: 5,
   },
   itemSummary: {
     flex: 10,
     paddingBottom: 10,
+    maxHeight: 120,
+    fontSize: 16,
+    lineHeight: 21
   },
   buttonText: {
     color: "#FFFFFF",

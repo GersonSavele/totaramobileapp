@@ -24,7 +24,6 @@
 import {StyleSheet, Text, View} from "react-native";
 import moment from "moment";
 import React from "react";
-import {normalize} from "./Styles";
 
 type Props = {
   dueDate: Date
