@@ -77,7 +77,7 @@ export default class MyLearning extends React.Component {
       <View style={styles.myLearningContainer}>
         <View style={styles.myLearningHeader}>
           <Text style={styles.myLearningHeaderText}>My learning</Text>
-          <Icon name="list" size={20}/>
+          <Icon name="list-ul" size={20}/>
         </View>
         <View style={styles.learningItems}>
           <LearningItems visible={this.state.show}/>

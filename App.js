@@ -28,7 +28,8 @@ import nodejs from "nodejs-mobile-react-native";
 import getTheme from "./src/components/native-base-theme/components";
 import {StyleProvider} from "native-base";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
-import Icon from "react-native-vector-icons/FontAwesome";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome"
+import { faHome, faCloudDownloadAlt, faBell, faUser } from '@fortawesome/free-solid-svg-icons'
 
 import {MyLearning, Course, Profile, Settings, PlaceHolder} from "./src/features";
 
@@ -130,8 +131,8 @@ const mainNavigator = createMaterialBottomTabNavigator(
       screen: myLearning,
       navigationOptions: () => ({
         tabBarIcon: ({tintColor}) => (
-          <Icon
-            name="home"
+          <FontAwesomeIcon
+            icon={faHome}
             color={tintColor}
             size={24}
           />
@@ -145,8 +146,8 @@ const mainNavigator = createMaterialBottomTabNavigator(
       screen: downloads,
       navigationOptions: () => ({
         tabBarIcon: ({tintColor}) => (
-          <Icon
-            name="cloud-download"
+          <FontAwesomeIcon
+            icon={faCloudDownloadAlt}
             color={tintColor}
             size={24}
           />
@@ -157,8 +158,8 @@ const mainNavigator = createMaterialBottomTabNavigator(
       screen: notification,
       navigationOptions: () => ({
         tabBarIcon: ({tintColor}) => (
-          <Icon
-            name="bell"
+          <FontAwesomeIcon
+            icon={faBell}
             color={tintColor}
             size={24}
           />
@@ -169,8 +170,8 @@ const mainNavigator = createMaterialBottomTabNavigator(
       screen: profile,
       navigationOptions: () => ({
         tabBarIcon: ({tintColor}) => (
-          <Icon
-            name="user"
+          <FontAwesomeIcon
+            icon={faUser}
             color={tintColor}
             size={24}
           />

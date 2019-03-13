@@ -23,39 +23,49 @@
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
-import {widthPercentageToDP as wp} from "react-native-responsive-screen";
-import Icon from "react-native-vector-icons/FontAwesome";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faVideo, faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import {normalize} from "../../../components/Styles";
 
 export default class RecentActivity extends React.Component {
   style = StyleSheet.create({
     lastAccessed: {
-      fontSize: 20,
-      height: 65,
-      width: wp("100%"),
+      flexDirection: "row",
+      height: normalize(65),
       backgroundColor: "#CECECE",
+      alignItems: "center"
+    },
+    icon: {
+      padding: 16
+    },
+    container: {
+      flex: 1,
     },
     topText: {
-      padding: 5,
-      borderBottomWidth: 1,
-      borderBottomColor: "#AAAAAA",
-      paddingLeft: 20,
-      fontWeight: "bold",
-
+      fontSize: 12,
+      flex: 2,
+      color: "#64717D"
     },
     bottomText: {
-      padding: 5,
-      height: 40,
-      flexDirection: "row"
+      flex: 3,
+      fontSize: 16,
+      paddingBottom: 10,
     }
   });
 
   render() {
     return (
       <TouchableOpacity style={this.style.lastAccessed} onPress={() => this.props.onPress()}>
-        <Text style={this.style.topText}>Continue your learning</Text>
-        <View style={{flexDirection: "row", paddingLeft: 20}}>
-          <Icon name="film" size={24}/>
+        <View style={this.style.icon}>
+          <FontAwesomeIcon icon={faVideo} size={24}/>
+        </View>
+        <View style={this.style.container}>
+          <View style={{flex: 1}}/>
+          <Text style={this.style.topText}>Continue your learning</Text>
           <Text style={this.style.bottomText}>Setting up a hierarchy</Text>
+        </View>
+        <View style={this.style.icon}>
+          <FontAwesomeIcon icon={faChevronRight} size={16} color={"#3D444B"}/>
         </View>
       </TouchableOpacity>
     );
