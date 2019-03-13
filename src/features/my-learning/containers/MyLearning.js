@@ -37,7 +37,7 @@ import {normalize} from "../../../components/Styles";
 class Header extends React.Component {
   render() {
     return (
-      <View>
+      <View style={styles.myLearningLogo}>
         <Image source={require("./totara_logo.png")}/>
       </View>
     );
@@ -47,7 +47,11 @@ class Header extends React.Component {
 export default class MyLearning extends React.Component {
 
   static navigationOptions = {
-    headerTitle: <Header/>,
+    headerTitle: null,
+    headerStyle: {
+      height: 0,
+      borderBottomWidth: 0
+    }
   };
 
 
@@ -75,6 +79,7 @@ export default class MyLearning extends React.Component {
 
     return (
       <View style={styles.myLearningContainer}>
+        <Header/>
         <View style={styles.myLearningHeader}>
           <Text style={styles.myLearningHeaderText}>My learning</Text>
           <Icon name="list-ul" size={20}/>
@@ -111,6 +116,10 @@ const styles = StyleSheet.create({
   myLearningContainer: {
     flex: 1,
     justifyContent: "center",
+  },
+  myLearningLogo: {
+    paddingLeft: 8,
+    paddingTop: 8
   },
   myLearningHeader: {
     flex: 3,
