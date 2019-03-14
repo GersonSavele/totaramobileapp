@@ -21,43 +21,38 @@
  */
 
 import React from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {Button} from "native-base";
 import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
-import * as Progress from 'react-native-progress';
 
 import {learningItemsList} from "../api";
-import DueDateState from "../../../components/DueDateState";
-import config from "../../../lib/config";
 import {normalize} from "../../../components/Styles";
+import learningItemCard from "../../../components/learning-item/LearningItemCard";
 
 
 const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {loading, currentLearning, error}}) => {
 
   const LearningItem = ({item}) => {
-    const imgSrc = config.mobileStatic + "/public/" + item.id + ".JPG";
+
+    class LearningItemSummaryAndStartButton extends React.Component {
+      render() {
+        return(
+          <View style={{flex: 1}}>
+            <Text style={styles.itemSummary}>{item.summary}</Text>
+            <View style={{flex: 1}}/>
+            <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
+          </View>);
+      }
+    }
+
+    const LearningItemWithSummary = learningItemCard(LearningItemSummaryAndStartButton);
 
     return (
       <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
-        <View style={styles.itemImage}>
-          <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
-          <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
-        </View>
-        <View style={styles.itemCard}>
-          <View style={{flexDirection: "row"}}>
-            <Text style={styles.itemFullName}>{item.fullname}</Text>
-          </View>
-          <View style={styles.itemInfo}>
-            <Text style={styles.itemType}>{item.type}</Text>
-            <Text style={styles.pipe}> | </Text>
-            <Progress.Circle progress={item.progressPercentage/100} size={16} borderColor={"#E6E6E6"} color={"#0066CC"}/>
-            <Text style={styles.percentagetext}> {item.progressPercentage} %</Text>
-          </View>
-          <Text style={styles.itemSummary}>{item.summary}</Text>
-          <View style={{flex: 1}}></View>
-          <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
+        <View style={styles.itemContainer}>
+          <LearningItemWithSummary item={item}/>
         </View>
       </TouchableOpacity>
     );
@@ -71,6 +66,10 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
   if (error) return <Text>Error :(</Text>;
 
   if (currentLearning) {
+    // used for faster development to navigate at once to first course
+    // courseNavigate(currentLearning[0])
+    // return null;
+
     return (
       <Carousel
         data={currentLearning}
@@ -100,51 +99,11 @@ const styles = StyleSheet.create({
     shadowRadius: normalize(7),
     backgroundColor: "#FFFFFF"
   },
-  itemImage: {
+  itemContainer: {
     flex: 1,
-    flexDirection: "column-reverse",
     borderTopRightRadius: normalize(10),
     borderTopLeftRadius: normalize(10),
     overflow: "hidden",
-  },
-  itemCard: {
-    padding: normalize(16),
-    justifyContent: "flex-start",
-    flex: 1
-  },
-  itemType: {
-    fontSize: 12,
-
-
-    color: "#A0A0A0"
-  },
-  pipe: {
-  color: "#A0A0A0",
-    paddingRight: 8,
-    paddingLeft: 8,
-    fontSize: 10,
-
-  },
-  percentagetext: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: "#A0A0A0",
-  },
-  itemFullName: {
-    color: "#3D444B",
-    flexWrap: "wrap",
-    fontSize: normalize(22),
-    fontWeight: "400",
-    padding: 0,
-    lineHeight: normalize(24),
-  },
-  itemInfo: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    minHeight: 30,
-    maxHeight: 35,
-    paddingTop: 5,
   },
   itemSummary: {
     flex: 10,

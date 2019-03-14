@@ -95,7 +95,7 @@ export default class MyLearning extends React.Component {
   render() {
     let courseNavigate = (course) => this.props.navigation.navigate("Course", {item: course});
 
-    let LearningItems = LearningItemCarousel(courseNavigate);
+    let LearningItems = LearningItemCarousel(courseNavigate); // TODO take this HOC outside render() this is not ideal
 
     let imgSrc = config.mobileStatic + "/public/panel1.png";
 
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   myLearningHeader: {
-      height: h1barheight,
+    height: h1barheight,
     flexDirection: "row",
     backgroundColor: "white",
     alignItems: "center",

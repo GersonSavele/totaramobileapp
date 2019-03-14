@@ -30,8 +30,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faVideo} from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
-  dueDate: Date
-  dueDateState: string
+  dueDate?: Date
+  dueDateState?: string
 }
 
 class DueDateState extends React.Component<Props> {

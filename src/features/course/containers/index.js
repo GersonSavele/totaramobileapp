@@ -21,14 +21,13 @@
  */
 
 import React from "react";
-import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, StyleSheet, Text, View} from "react-native";
 import PropTypes from "prop-types";
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
-import config from "../../../lib/config";
 import {Button} from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import DueDateState from "../../../components/DueDateState";
+import learningItemCard from "../../../components/learning-item/LearningItemCard";
+import {normalize} from "../../../components/Styles";
 
 export default class Course extends React.Component {
   static navigationOptions = {
@@ -48,15 +47,14 @@ export default class Course extends React.Component {
   render() {
     const {item} = this.props.navigation.state.params;
 
-    const LearningItem = () => renderLearningItem(() => {
-    })({item});
+    const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
 
     return (
       <View style={styles.container}>
-        <View style={{height: hp("26%"), width: wp("100%")}}>
-          <LearningItem/>
+        <View style={styles.learningItem}>
+          <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
         </View>
-        <View style={{height: hp("50%"), width: wp("100%")}}>
+        <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
             <Text style={styles.tabActive}>Activities</Text>
             <Text style={styles.tabInActive}>Outline</Text>
@@ -67,7 +65,7 @@ export default class Course extends React.Component {
                     keyExtractor={(item) => item.id.toString()}
           />
         </View>
-        <View style={{width: wp("80%"), padding: 5}}>
+        <View style={styles.buttonContainer}>
           <Button block><Text>Continue your learning</Text></Button>
         </View>
       </View>
@@ -79,48 +77,44 @@ Course.propTypes = {
   navigation: PropTypes.object.isRequired
 };
 
-const renderLearningItem = (courseNavigate) => {
-
-  const LearningItem = ({item}) => {
-    const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
-
-    return <TouchableOpacity key={item.id} onPress={courseNavigate} activeOpacity={1.0}>
-      <Image source={{uri: imgSrc}} style={{width: "100%", height: "50%"}}/>
-      <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
-      <View style={styles.itemCard}>
-        <Text style={styles.itemFullName}>{item.fullname}</Text>
-        <View style={styles.itemInfo}>
-          <Text style={styles.itemType}>{item.type}</Text>
-          <Text> | {item.progressPercentage}%</Text>
-        </View>
-      </View>
-    </TouchableOpacity>;
-  };
-
-  LearningItem.propTypes = {
-    item: PropTypes.object.isRequired
-  };
-
-  return LearningItem;
-};
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  learningItem: {
+    flex: 2,
+  },
+  activitiesContainer: {
+    flex: 3
+  },
+  buttonContainer: {
+    flex: 0,
+    paddingTop: 4,
+    paddingLeft: 8,
+    paddingRight: 8,
+    marginBottom: 10
+  },
   activity: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
     textAlign: "center",
     fontWeight: "bold",
     margin: 0,
     backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#EEEEEE",
+    height: normalize(64),
+    padding: 10
   },
   activityText: {
     fontSize: 15,
     padding: 10,
   },
   activities: {
-    padding: 10
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   button: {
     alignItems: "center",
@@ -129,7 +123,6 @@ const styles = StyleSheet.create({
   tabNav: {
     flexDirection: "row",
     padding: 10,
-    paddingTop: 30,
   },
   tabActive: {
     paddingRight: 20,
@@ -141,27 +134,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#CECECE"
   },
+  itemImage: {
+    flex: 6,
+  },
   itemCard: {
-    padding: 20,
+    flex: 2,
     backgroundColor: "#EEEEEE",
+    maxHeight: 72
   },
-  itemType: {
-    fontSize: 10,
-    fontWeight: "bold",
-    padding: 2,
-    color: "#86C9C8"
-  },
-  itemFullName: {
-    fontSize: 25,
-  },
-  itemInfo: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    paddingTop: 10
-  },
-  itemSummary: {
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-
 });
