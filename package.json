@@ -37,6 +37,7 @@
   "devDependencies": {
     "@types/react": "^16.7.20",
     "@types/react-native": "^0.57.31",
+    "@types/react-navigation": "^3.0.5",
     "@typescript-eslint/parser": "^1.4.2",
     "babel-jest": "23.6.0",
     "eslint": "^5.15.0",

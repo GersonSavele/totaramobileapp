@@ -70,4 +70,10 @@ type ChildProps = ChildDataProps<{}, Response>
 
 type Variables = {}
 
-export const learningItemsList = graphql<{}, Response, Variables, ChildProps>(query);
+export const learningItemsList = graphql<{}, Response>(
+  query,
+  {
+    props: ( {data} ) => ({...data})
+    // needed magic for double HOC, I have no idea why extracting data here makes wrapped components props passed down.  As opposed to extracting data on the calling function
+    // it is just stated to be better with static typing, but it doesn't work w/o this.  see: https://www.apollographql.com/docs/react/recipes/static-typing.html#props
+  });

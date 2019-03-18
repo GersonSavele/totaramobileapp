@@ -32,6 +32,8 @@ import config from "../../../lib/config";
 import LearningItemCarousel from "./LearningItemCarousel";
 import RecentActivity from "./RecentActivity";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {iPhoneSize} from "../../../components/Styles";
 
 const size = iPhoneSize();
@@ -93,9 +95,6 @@ export default class MyLearning extends React.Component {
   }
 
   render() {
-    let courseNavigate = (course) => this.props.navigation.navigate("Course", {item: course});
-
-    let LearningItems = LearningItemCarousel(courseNavigate); // TODO take this HOC outside render() this is not ideal
 
     let imgSrc = config.mobileStatic + "/public/panel1.png";
 
@@ -107,7 +106,7 @@ export default class MyLearning extends React.Component {
           <Icon name="list-ul" size={20}/>
         </View>
         <View style={styles.learningItems}>
-          <LearningItems visible={this.state.show}/>
+          <LearningItemCarousel visible={this.state.show}/>
         </View>
         <View style={styles.recentActivity}>
           <RecentActivity onPress={() => this.setState({visible: true})}/>
@@ -116,8 +115,12 @@ export default class MyLearning extends React.Component {
           visible={this.state.visible}
           onRequestClose={() => this.setState({visible: false})}>
           <View style={styles.panel}>
-            <Button style={{container: {flex: 0, width: wp("18%")}}} iconRight="clear"
-                    onPress={() => this.setState({visible: false})}/>
+            <Button transparent onPress={() => this.setState({visible: false})}>
+              <FontAwesomeIcon
+                icon={faTimes}
+                size={24}
+              />
+            </Button>
             <Image source={{uri: imgSrc}} style={{width: wp("100%"), height: 240}}/>
             <Text style={styles.panelContent}>
               In this brief tutorial, you’ll explore what hierarchies are, how they are structured and the benefits of

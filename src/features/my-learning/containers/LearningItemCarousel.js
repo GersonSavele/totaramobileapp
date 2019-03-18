@@ -30,9 +30,10 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-nativ
 import {learningItemsList} from "../api";
 import {normalize} from "../../../components/Styles";
 import learningItemCard from "../../../components/learning-item/LearningItemCard";
+import {withNavigation} from "react-navigation";
 
 
-const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {loading, currentLearning, error}}) => {
+const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
   const LearningItem = ({item}) => {
 
@@ -48,6 +49,7 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
     }
 
     const LearningItemWithSummary = learningItemCard(LearningItemSummaryAndStartButton);
+    let courseNavigate = (course) => navigation.navigate("Course", {item: course});
 
     return (
       <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
@@ -69,7 +71,6 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
     // used for faster development to navigate at once to first course
     // courseNavigate(currentLearning[0])
     // return null;
-
     return (
       <Carousel
         data={currentLearning}
@@ -82,7 +83,7 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
     );
 
   } else return null;
-});
+}));
 
 export default LearningItemCarousel;
 
