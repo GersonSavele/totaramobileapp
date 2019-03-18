@@ -32,13 +32,35 @@ import config from "../../../lib/config";
 import LearningItemCarousel from "./LearningItemCarousel";
 import RecentActivity from "./RecentActivity";
 import Icon from "react-native-vector-icons/FontAwesome";
-import {normalize} from "../../../components/Styles";
+import {iPhoneSize} from "../../../components/Styles";
+
+const size = iPhoneSize();
+/** iPhone 8 (375)*/
+let logobarheight = 48;
+let logobarpadding = 10;
+let h1 = 28;
+let h1barheight = 48;
+
+if(size == 'small') {
+  /** iPhone 5SE (320)*/
+  logobarheight = 40;
+  logobarpadding = 8;
+  h1 = 24;
+  h1barheight = 40;
+
+} else if (size === 'large') {
+  /** iPhone XR (414)*/
+  logobarheight = 56;
+  logobarpadding = 16;
+  h1 = 32;
+  h1barheight = 64;
+}
 
 class Header extends React.Component {
   render() {
     return (
       <View style={styles.myLearningLogo}>
-        <Image source={require("./totara_logo.png")}/>
+        <Image source={require("./totara_logo.png")} style={{width:81, height: 20}}/>
       </View>
     );
   }
@@ -118,27 +140,31 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   myLearningLogo: {
-    paddingLeft: 8,
-    paddingTop: 8
+    flexDirection: 'row',
+    height: logobarheight,
+    paddingHorizontal: logobarpadding,
+    backgroundColor: "white",
+    alignItems: 'center'
   },
   myLearningHeader: {
-    flex: 3,
+      height: h1barheight,
     flexDirection: "row",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingRight: 20,
+    paddingRight: logobarpadding,
+    paddingLeft: logobarpadding,
   },
   myLearningHeaderText: {
-    fontSize: normalize(28),
-    paddingLeft: 10
+    fontSize: h1,
+  },
+  topnavicon: {
+  paddingLeft: 10,
   },
   learningItems: {
-    flex: 32,
+    flex: 1,
   },
   recentActivity: {
-    flex: 1,
-    minHeight: 40,
-    maxHeight: 60
   },
   activity: {
     flex: 1,

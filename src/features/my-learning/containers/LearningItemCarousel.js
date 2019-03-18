@@ -51,9 +51,9 @@ const LearningItemCarousel = (courseNavigate) => learningItemsList(({data: {load
           </View>
           <View style={styles.itemInfo}>
             <Text style={styles.itemType}>{item.type}</Text>
-            <Text> | </Text>
+            <Text style={styles.pipe}> | </Text>
             <Progress.Circle progress={item.progressPercentage/100} size={16} borderColor={"#E6E6E6"} color={"#0066CC"}/>
-            <Text> {item.progressPercentage} %</Text>
+            <Text style={styles.percentagetext}> {item.progressPercentage} %</Text>
           </View>
           <Text style={styles.itemSummary}>{item.summary}</Text>
           <View style={{flex: 1}}></View>
@@ -92,19 +92,19 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: hp("2.5%"),
     marginBottom: hp("3%"),
-    borderRadius: 10,
-    borderBottomWidth: 0,
+    borderRadius: normalize(10),
+
     shadowColor: "#000",
     shadowOffset: { width: 0, height: normalize(10) },
-    shadowOpacity: 0.25,
-    shadowRadius: normalize(10),
+    shadowOpacity: 0.40,
+    shadowRadius: normalize(7),
     backgroundColor: "#FFFFFF"
   },
   itemImage: {
     flex: 1,
     flexDirection: "column-reverse",
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderTopRightRadius: normalize(10),
+    borderTopLeftRadius: normalize(10),
     overflow: "hidden",
   },
   itemCard: {
@@ -113,15 +113,30 @@ const styles = StyleSheet.create({
     flex: 1
   },
   itemType: {
-    fontSize: 10,
-    fontWeight: "bold",
-    padding: 2,
+    fontSize: 12,
+
+
     color: "#A0A0A0"
   },
-  itemFullName: {
-    flexWrap: "wrap",
-    fontSize: normalize(20),
+  pipe: {
+  color: "#A0A0A0",
+    paddingRight: 8,
+    paddingLeft: 8,
+    fontSize: 10,
+
+  },
+  percentagetext: {
+    fontSize: 12,
     fontWeight: "bold",
+    color: "#A0A0A0",
+  },
+  itemFullName: {
+    color: "#3D444B",
+    flexWrap: "wrap",
+    fontSize: normalize(22),
+    fontWeight: "400",
+    padding: 0,
+    lineHeight: normalize(24),
   },
   itemInfo: {
     flex: 1,
@@ -133,10 +148,11 @@ const styles = StyleSheet.create({
   },
   itemSummary: {
     flex: 10,
-    paddingBottom: 10,
-    maxHeight: 120,
-    fontSize: 16,
-    lineHeight: 21
+    paddingBottom: 20,
+    maxHeight: 80,
+    fontSize: 14,
+    lineHeight: 16,
+    color: "#3D444B",
   },
   buttonText: {
     color: "#FFFFFF",

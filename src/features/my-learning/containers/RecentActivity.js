@@ -31,25 +31,38 @@ export default class RecentActivity extends React.Component {
   style = StyleSheet.create({
     lastAccessed: {
       flexDirection: "row",
-      height: normalize(65),
       backgroundColor: "#CECECE",
-      alignItems: "center"
+      alignItems: "center",
+      paddingRight: 16,
+      paddingLeft: 16,
+      paddingTop: 10,
+      paddingBottom: 10,
     },
     icon: {
-      padding: 16
+      padding: 0,
+      backgroundColor: "#3D444B",
+      borderRadius: 20,
+      borderWidth: 1,
+      borderColor: "#3D444B",
+      height: normalize(40),
+      width: normalize(40),
+      justifyContent: "center",
+      alignItems: "center",
     },
+
     container: {
       flex: 1,
+      justifyContent: 'space-between',
+      paddingLeft: 8,
     },
     topText: {
       fontSize: 12,
-      flex: 2,
+      lineHeight: 14,
       color: "#64717D"
     },
     bottomText: {
-      flex: 3,
       fontSize: 16,
-      paddingBottom: 10,
+      lineHeight: 18,
     }
   });
 
@@ -57,14 +70,13 @@ export default class RecentActivity extends React.Component {
     return (
       <TouchableOpacity style={this.style.lastAccessed} onPress={() => this.props.onPress()}>
         <View style={this.style.icon}>
-          <FontAwesomeIcon icon={faVideo} size={24}/>
+          <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
         </View>
         <View style={this.style.container}>
-          <View style={{flex: 1}}/>
           <Text style={this.style.topText}>Continue your learning</Text>
           <Text style={this.style.bottomText}>Setting up a hierarchy</Text>
         </View>
-        <View style={this.style.icon}>
+        <View>
           <FontAwesomeIcon icon={faChevronRight} size={16} color={"#3D444B"}/>
         </View>
       </TouchableOpacity>

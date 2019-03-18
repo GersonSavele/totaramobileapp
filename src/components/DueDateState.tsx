@@ -24,6 +24,10 @@
 import {StyleSheet, Text, View} from "react-native";
 import moment from "moment";
 import React from "react";
+import {normalize} from "./Styles";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+
+import {faVideo} from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
   dueDate: Date
@@ -39,6 +43,7 @@ class DueDateState extends React.Component<Props> {
       case "warning":
         return (
           <View style={styles.warning}>
+            <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
             <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
           </View>
         );
@@ -46,6 +51,7 @@ class DueDateState extends React.Component<Props> {
       case "danger":
         return (
           <View style={styles.danger}>
+            <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
             <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
           </View>
         );
@@ -53,6 +59,7 @@ class DueDateState extends React.Component<Props> {
       case "info":
         return (
           <View style={styles.info}>
+            <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
             <Text style={styles.infoText}>{moment(dueDate).format("D, MMM YYYY")}</Text>
           </View>
         );
@@ -66,31 +73,40 @@ class DueDateState extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   info: {
+    flexDirection: "row",
     backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    height: 28
+    alignItems: "center",
+    paddingLeft: 16,
+    height: normalize(50)
   },
   infoText: {
     color: "#000000",
-    paddingLeft: 5,
+    paddingLeft: 8,
+    fontSize: 14,
   },
   warning: {
-    backgroundColor: "#FFF062",
-    justifyContent: "center",
-    height: 28
+    flexDirection: "row",
+    backgroundColor: "#337AB7",
+    alignItems: "center",
+    paddingLeft: 16,
+    height: normalize(50)
   },
   warningText: {
-    color: "#000000",
-    paddingLeft: 5,
+    color: "#FFFFFF",
+    paddingLeft: 8,
+    fontSize: 14,
   },
   danger: {
-    backgroundColor: "#E73C09",
-    justifyContent: "center",
-    height: 28
+    flexDirection: "row",
+    backgroundColor: "#953539",
+    alignItems: "center",
+    height: normalize(50),
+    paddingLeft: 16,
   },
   dangerText: {
     color: "#FFFFFF",
-    paddingLeft: 5,
+    paddingLeft: 8,
+    fontSize: 14,
   },
 });
 
