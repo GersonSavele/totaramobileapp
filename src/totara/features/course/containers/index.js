@@ -26,8 +26,7 @@ import PropTypes from "prop-types";
 
 import {Button} from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import learningItemCard from "../../../components/learning-item/LearningItemCard";
-import {normalize} from "../../../components/Styles";
+import {normalize, learningItemCard} from "@totara/components";
 
 export default class Course extends React.Component {
   static navigationOptions = {

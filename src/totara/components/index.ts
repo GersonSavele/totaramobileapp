@@ -20,4 +20,9 @@
  *
  */
 
-export {default} from "./containers/index";
+import {LearningItem} from "./learning-item/LearningItem";
+import learningItemCard from "./learning-item/LearningItemCard";
+import {normalize, iPhoneSize} from "./Styles";
+import DueDateState from "./DueDateState";
+
+export {LearningItem, learningItemCard, normalize, iPhoneSize, DueDateState}

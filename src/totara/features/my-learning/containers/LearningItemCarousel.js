@@ -27,9 +27,8 @@ import {Button} from "native-base";
 import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
-import {learningItemsList} from "../api";
-import {normalize} from "../../../components/Styles";
-import learningItemCard from "../../../components/learning-item/LearningItemCard";
+import {learningItemsList} from "../api/index";
+import {learningItemCard, normalize} from "@totara/components";
 import {withNavigation} from "react-navigation";
 
 

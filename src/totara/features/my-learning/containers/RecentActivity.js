@@ -25,7 +25,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faVideo, faChevronRight} from "@fortawesome/free-solid-svg-icons";
-import {normalize} from "../../../components/Styles";
+import {normalize} from "@totara/components";
 
 export default class RecentActivity extends React.Component {
   style = StyleSheet.create({

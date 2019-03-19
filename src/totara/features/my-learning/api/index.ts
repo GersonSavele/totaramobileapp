@@ -20,8 +20,9 @@
  *
  */
 
-import {ChildDataProps, graphql} from "react-apollo";
+import {graphql} from "react-apollo";
 import gql from "graphql-tag";
+import {LearningItem} from "@totara/components";
 
 const query = gql`
   query CurrentLearning {
@@ -44,36 +45,14 @@ const query = gql`
   }
 `;
 
-export type Activity = {
-  id: number,
-  type: string,
-  itemName: string
-}
-
-export type LearningItem = {
-  id: number
-  type: string
-  shortname: string
-  fullname?: string
-  summary?: string
-  dueDateState?: string
-  dueDate?: Date
-  progressPercentage?: number
-  groupCount?: number
-};
-
 export type Response = {
   currentLearning: LearningItem[];
 }
-
-type ChildProps = ChildDataProps<{}, Response>
-
-type Variables = {}
 
 export const learningItemsList = graphql<{}, Response>(
   query,
   {
     props: ( {data} ) => ({...data})
-    // needed magic for double HOC, I have no idea why extracting data here makes wrapped components props passed down.  As opposed to extracting data on the calling function
+    // needed magic for double HOC, I have no idea why extracting data here makes wrapped totara.components props passed down.  As opposed to extracting data on the calling function
     // it is just stated to be better with static typing, but it doesn't work w/o this.  see: https://www.apollographql.com/docs/react/recipes/static-typing.html#props
   });

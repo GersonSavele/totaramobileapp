@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -18,20 +18,22 @@
  */
 
 import {Image, ImageStyle, StyleSheet, Text, View, ViewStyle} from "react-native";
-import DueDateState from "../DueDateState";
 import React from "react";
 import {Component, ComponentType} from "react";
 import * as Progress from 'react-native-progress';
 
-import {LearningItem} from "../../features/my-learning/api";
-import {normalize} from "../Styles";
-import config from "../../lib/config";
+import {LearningItem} from "./LearningItem";
+import {normalize, iPhoneSize} from "../Styles";
+import {config} from "@totara/lib";
+import DueDateState from "../DueDateState";
 
 interface Props {
   item: LearningItem
   imageStyle: ImageStyle
   cardStyle: ViewStyle
 }
+
+console.log("xxxxxxxxxxxxxxx", iPhoneSize())
 
 const learningItemCard = (WrappedComponent: ComponentType<any>) =>
   class LearningItemCard extends Component<Props> {

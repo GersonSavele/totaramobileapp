@@ -15,15 +15,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import MyLearning from "./my-learning";
-import Course from "./course";
-import Profile from "./profile";
-import Settings from "./settings";
-import PlaceHolder from "./place-holder";
+import material from "./native-base-theme/variables/material";
+import getTheme from "./native-base-theme/components/index";
 
-export {MyLearning, Course, Profile, Settings, PlaceHolder};
+export {material, getTheme}

@@ -26,15 +26,15 @@ import PropTypes from 'prop-types';
 
 import {Button} from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
-import config from "../../../lib/config";
+import {config} from "@totara/lib";
 import LearningItemCarousel from "./LearningItemCarousel";
 import RecentActivity from "./RecentActivity";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
-import {iPhoneSize} from "../../../components/Styles";
+import {iPhoneSize} from "@totara/components";
 
 const size = iPhoneSize();
 /** iPhone 8 (375)*/

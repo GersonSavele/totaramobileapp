@@ -25,16 +25,14 @@ import ApolloClient from "apollo-boost";
 import {ApolloProvider} from "react-apollo";
 import {createStackNavigator, createAppContainer, NavigationActions} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
-import getTheme from "./src/components/native-base-theme/components";
 import {StyleProvider} from "native-base";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome"
 import { faHome, faCloudDownloadAlt, faBell, faUser } from '@fortawesome/free-solid-svg-icons'
 
-import {MyLearning, Course, Profile, Settings, PlaceHolder} from "./src/features";
-
-import config from "./src/lib/config";
-import material from "./src/components/native-base-theme/variables/material";
+import {MyLearning, Course, Profile, Settings, PlaceHolder} from "@totara/features";
+import {config} from "@totara/lib";
+import {material, getTheme} from "@totara/theme";
 
 const client = new ApolloClient({
   uri: config.mobileApi + "/graphql"
