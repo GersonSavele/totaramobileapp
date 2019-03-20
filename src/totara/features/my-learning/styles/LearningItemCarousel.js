@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: normalize(10) },
-    shadowOpacity: 0.40,
-    shadowRadius: normalize(7),
+    shadowOpacity: 0.16,
+    shadowRadius: normalize(14),
     backgroundColor: "#FFFFFF"
   },
   itemContainer: {
