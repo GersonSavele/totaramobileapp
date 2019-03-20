@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -15,16 +15,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
 
 import {StyleSheet, Text, View} from "react-native";
 import moment from "moment";
 import React from "react";
-import {normalize} from "./Styles";
+import {normalize} from "@totara/theme";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import {faVideo} from "@fortawesome/free-solid-svg-icons";

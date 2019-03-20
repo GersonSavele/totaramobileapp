@@ -21,60 +21,23 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faVideo, faChevronRight} from "@fortawesome/free-solid-svg-icons";
-import {normalize} from "@totara/components";
+import styles from "./styles/RecentActivity"
 
 export default class RecentActivity extends React.Component {
-  style = StyleSheet.create({
-    lastAccessed: {
-      flexDirection: "row",
-      backgroundColor: "#CECECE",
-      alignItems: "center",
-      paddingRight: 16,
-      paddingLeft: 16,
-      paddingTop: 10,
-      paddingBottom: 10,
-    },
-    icon: {
-      padding: 0,
-      backgroundColor: "#3D444B",
-      borderRadius: 20,
-      borderWidth: 1,
-      borderColor: "#3D444B",
-      height: normalize(40),
-      width: normalize(40),
-      justifyContent: "center",
-      alignItems: "center",
-    },
-
-    container: {
-      flex: 1,
-      justifyContent: 'space-between',
-      paddingLeft: 8,
-    },
-    topText: {
-      fontSize: 12,
-      lineHeight: 14,
-      color: "#64717D"
-    },
-    bottomText: {
-      fontSize: 16,
-      lineHeight: 18,
-    }
-  });
 
   render() {
     return (
-      <TouchableOpacity style={this.style.lastAccessed} onPress={() => this.props.onPress()}>
-        <View style={this.style.icon}>
+      <TouchableOpacity style={styles.lastAccessed} onPress={() => this.props.onPress()}>
+        <View style={styles.icon}>
           <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
         </View>
-        <View style={this.style.container}>
-          <Text style={this.style.topText}>Continue your learning</Text>
-          <Text style={this.style.bottomText}>Setting up a hierarchy</Text>
+        <View style={styles.container}>
+          <Text style={styles.topText}>Continue your learning</Text>
+          <Text style={styles.bottomText}>Setting up a hierarchy</Text>
         </View>
         <View>
           <FontAwesomeIcon icon={faChevronRight} size={16} color={"#3D444B"}/>
@@ -82,6 +45,7 @@ export default class RecentActivity extends React.Component {
       </TouchableOpacity>
     );
   }
+
 }
 
 RecentActivity.propTypes = {

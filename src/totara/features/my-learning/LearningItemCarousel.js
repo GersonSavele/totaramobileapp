@@ -21,16 +21,16 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {Button} from "native-base";
 import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
-import {learningItemsList} from "../api/index";
-import {learningItemCard, normalize} from "@totara/components";
+import {learningItemsList} from "./api";
+import {learningItemCard} from "@totara/components";
 import {withNavigation} from "react-navigation";
-
+import styles from "./styles/LearningItemCarousel"
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
@@ -85,36 +85,3 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 }));
 
 export default LearningItemCarousel;
-
-const styles = StyleSheet.create({
-  learningItem: {
-    flex: 1,
-    marginTop: hp("2.5%"),
-    marginBottom: hp("3%"),
-    borderRadius: normalize(10),
-
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: normalize(10) },
-    shadowOpacity: 0.40,
-    shadowRadius: normalize(7),
-    backgroundColor: "#FFFFFF"
-  },
-  itemContainer: {
-    flex: 1,
-    borderTopRightRadius: normalize(10),
-    borderTopLeftRadius: normalize(10),
-    overflow: "hidden",
-  },
-  itemSummary: {
-    flex: 10,
-    paddingBottom: 20,
-    maxHeight: 80,
-    fontSize: 14,
-    lineHeight: 16,
-    color: "#3D444B",
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    padding: 5
-  }
-});

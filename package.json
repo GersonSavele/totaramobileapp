@@ -35,6 +35,7 @@
     "rn-sliding-up-panel": "^1.3.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.123",
     "@types/react": "^16.7.20",
     "@types/react-native": "^0.57.31",
     "@types/react-navigation": "^3.0.5",

@@ -21,12 +21,12 @@
  */
 
 import React from "react";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, Text, View} from "react-native";
 import PropTypes from 'prop-types';
 
 import {Button} from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 import {config} from "@totara/lib";
 import LearningItemCarousel from "./LearningItemCarousel";
@@ -34,39 +34,9 @@ import RecentActivity from "./RecentActivity";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
-import {iPhoneSize} from "@totara/components";
 
-const size = iPhoneSize();
-/** iPhone 8 (375)*/
-let logobarheight = 48;
-let logobarpadding = 10;
-let h1 = 28;
-let h1barheight = 48;
+import styles from "./styles/MyLearning"
 
-if(size == 'small') {
-  /** iPhone 5SE (320)*/
-  logobarheight = 40;
-  logobarpadding = 8;
-  h1 = 24;
-  h1barheight = 40;
-
-} else if (size === 'large') {
-  /** iPhone XR (414)*/
-  logobarheight = 56;
-  logobarpadding = 16;
-  h1 = 32;
-  h1barheight = 64;
-}
-
-class Header extends React.Component {
-  render() {
-    return (
-      <View style={styles.myLearningLogo}>
-        <Image source={require("./totara_logo.png")} style={{width:81, height: 20}}/>
-      </View>
-    );
-  }
-}
 
 export default class MyLearning extends React.Component {
 
@@ -77,7 +47,6 @@ export default class MyLearning extends React.Component {
       borderBottomWidth: 0
     }
   };
-
 
   state = {
     visible: false,
@@ -100,7 +69,9 @@ export default class MyLearning extends React.Component {
 
     return (
       <View style={styles.myLearningContainer}>
-        <Header/>
+        <View style={styles.myLearningLogo}>
+          <Image source={require("./totara_logo.png")} style={{width:81, height: 20}}/>
+        </View>
         <View style={styles.myLearningHeader}>
           <Text style={styles.myLearningHeaderText}>My learning</Text>
           <Icon name="list-ul" size={20}/>
@@ -136,67 +107,3 @@ export default class MyLearning extends React.Component {
 MyLearning.propTypes = {
   navigation: PropTypes.object.isRequired
 };
-
-const styles = StyleSheet.create({
-  myLearningContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  myLearningLogo: {
-    flexDirection: 'row',
-    height: logobarheight,
-    paddingHorizontal: logobarpadding,
-    backgroundColor: "white",
-    alignItems: 'center'
-  },
-  myLearningHeader: {
-    height: h1barheight,
-    flexDirection: "row",
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingRight: logobarpadding,
-    paddingLeft: logobarpadding,
-  },
-  myLearningHeaderText: {
-    fontSize: h1,
-  },
-  topnavicon: {
-  paddingLeft: 10,
-  },
-  learningItems: {
-    flex: 1,
-  },
-  recentActivity: {
-  },
-  activity: {
-    flex: 1,
-    marginTop: 10,
-    textAlign: "center",
-    fontSize: 30,
-    fontWeight: "bold",
-    borderWidth: 1,
-    margin: 0,
-    backgroundColor: "#FFFFFF",
-    borderColor: "#CCCCCC",
-    width: wp("80%")
-  },
-  navigation: {
-    paddingBottom: 20,
-    width: wp("100%"),
-    height: hp("10%")
-  },
-  panel: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#CECECE",
-  },
-  panelContent: {
-    flex: 10,
-    padding: 20,
-  },
-});
-
-
-
-

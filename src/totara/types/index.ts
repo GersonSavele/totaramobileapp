@@ -17,30 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Dimensions, Platform, PixelRatio} from "react-native"
+import {LearningItem, Activity} from "./LearningItem"
 
-const {
-  width: SCREEN_WIDTH,
-  height: SCREEN_HEIGHT,
-} = Dimensions.get('window');
-
-const scale = SCREEN_WIDTH / 414;
-
-export function normalize(size: number) {
-  const newSize = size * scale;
-  if (Platform.OS === 'ios') {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize))
-  } else {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-  }
-}
-
-export const iPhoneSize = () => {
-  const windowWidth = Dimensions.get('window').width;
-  if (windowWidth === 320) {
-    return 'small'; // iPhone SE
-  } if (windowWidth === 414) {
-    return 'large'; // iPhone Plus
-  }
-  return 'medium'; // iPhone 6/7
-};
+export {LearningItem, Activity}

@@ -20,9 +20,8 @@
  *
  */
 
-import {LearningItem} from "./learning-item/LearningItem";
+import {LearningItem} from "@totara/types";
 import learningItemCard from "./learning-item/LearningItemCard";
-import {normalize, iPhoneSize} from "./Styles";
 import DueDateState from "./DueDateState";
 
-export {LearningItem, learningItemCard, normalize, iPhoneSize, DueDateState}
+export {LearningItem, learningItemCard, DueDateState}

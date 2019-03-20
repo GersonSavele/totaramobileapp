@@ -19,5 +19,9 @@
 
 import material from "./native-base-theme/variables/material";
 import getTheme from "./native-base-theme/components/index";
+import {resizeByScreenSize, normalize} from "./ui";
 
-export {material, getTheme}
+const h1 = resizeByScreenSize(24, 28, 32, 36);
+const gutter = resizeByScreenSize(8, 10, 16, 26);
+
+export {material, getTheme, resizeByScreenSize, normalize, h1, gutter}

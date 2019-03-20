@@ -20,5 +20,5 @@
  *
  */
 
-export {default} from "./containers/MyLearning";
+export {default} from "./MyLearning";
 
