@@ -67,7 +67,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
   if (error) return <Text>Error :(</Text>;
 
   if (currentLearning) {
-    // used for faster development to navigate at once to first course
+    // used for faster development to navigate at once to first course-details
     // courseNavigate(currentLearning[0])
     // return null;
     return (

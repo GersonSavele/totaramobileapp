@@ -32,7 +32,7 @@ import { faHome, faCloudDownloadAlt, faBell, faUser } from '@fortawesome/free-so
 
 import {MyLearning, Course, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
-import {material, getTheme} from "@totara/theme";
+import {theme, getTheme} from "@totara/theme";
 
 const client = new ApolloClient({
   uri: config.mobileApi + "/graphql"
@@ -67,7 +67,7 @@ export default class App extends React.Component<{}> {
   render() {
     return (
       <ApolloProvider client={client}>
-        <StyleProvider style={getTheme(material)}>
+        <StyleProvider style={getTheme(theme)}>
           <AppContainer
             ref={nav => {
               this.navigator = nav;

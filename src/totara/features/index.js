@@ -21,7 +21,7 @@
  */
 
 import MyLearning from "./my-learning";
-import Course from "./course";
+import Course from "./course-details";
 import Profile from "./profile";
 import Settings from "./settings";
 import PlaceHolder from "./place-holder";

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -17,68 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import React from "react";
-import {FlatList, StyleSheet, Text, View} from "react-native";
-import PropTypes from "prop-types";
-
-import {Button} from "native-base";
-import Icon from "react-native-vector-icons/FontAwesome";
-import {learningItemCard} from "@totara/components";
+import {StyleSheet} from "react-native";
 import {normalize} from "@totara/theme";
-
-
-export default class Course extends React.Component {
-  static navigationOptions = {
-    title: "Course",
-  };
-
-  renderActivity = ({item}) => {
-
-    return (
-      <View style={styles.activity}>
-        <Icon name={item.type} size={24}/>
-        <Text style={styles.activityText}>{item.itemName}</Text>
-      </View>
-    );
-  };
-
-  render() {
-    const {item} = this.props.navigation.state.params;
-
-    const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
-
-    return (
-      <View style={styles.container}>
-        <View style={styles.learningItem}>
-          <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
-        </View>
-        <View style={styles.activitiesContainer}>
-          <View style={styles.tabNav}>
-            <Text style={styles.tabActive}>Activities</Text>
-            <Text style={styles.tabInActive}>Outline</Text>
-          </View>
-          <FlatList style={styles.activities}
-                    data={item.activities}
-                    renderItem={this.renderActivity}
-                    keyExtractor={(item) => item.id.toString()}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button block><Text>Continue your learning</Text></Button>
-        </View>
-      </View>
-    );
-  }
-}
-
-Course.propTypes = {
-  navigation: PropTypes.object.isRequired
-};
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -144,3 +86,5 @@ const styles = StyleSheet.create({
     maxHeight: 72
   },
 });
+
+export default styles;
