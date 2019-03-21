@@ -21,11 +21,12 @@
  */
 
 import React from "react";
-import {Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faVideo, faChevronRight} from "@fortawesome/free-solid-svg-icons";
-import styles from "./styles/RecentActivity"
+
+import {normalize} from "@totara/theme";
 
 export default class RecentActivity extends React.Component {
 
@@ -51,5 +52,43 @@ export default class RecentActivity extends React.Component {
 RecentActivity.propTypes = {
   onPress: PropTypes.func.isRequired
 };
+
+const styles = StyleSheet.create({
+  lastAccessed: {
+    flexDirection: "row",
+    backgroundColor: "#CECECE",
+    alignItems: "center",
+    paddingRight: 16,
+    paddingLeft: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  icon: {
+    padding: 0,
+    backgroundColor: "#3D444B",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#3D444B",
+    height: normalize(40),
+    width: normalize(40),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingLeft: 8,
+  },
+  topText: {
+    fontSize: 12,
+    lineHeight: 14,
+    color: "#64717D"
+  },
+  bottomText: {
+    fontSize: 16,
+    lineHeight: 18,
+  }
+});
 
 

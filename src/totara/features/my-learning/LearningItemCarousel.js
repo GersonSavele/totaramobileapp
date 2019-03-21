@@ -21,7 +21,8 @@
  */
 
 import React from "react";
-import {Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {withNavigation} from "react-navigation";
 import PropTypes from "prop-types";
 import {Button} from "native-base";
 import Carousel from "react-native-snap-carousel";
@@ -29,8 +30,8 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-nativ
 
 import {learningItemsList} from "./api";
 import {learningItemCard} from "@totara/components";
-import {withNavigation} from "react-navigation";
-import styles from "./styles/LearningItemCarousel"
+import {normalize} from "@totara/theme";
+
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
@@ -58,6 +59,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
         </View>
       </TouchableOpacity>
     );
+
   };
 
   LearningItem.propTypes = {
@@ -65,6 +67,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
   };
 
   if (loading) return <Text>Loading...</Text>;
+
   if (error) {
     console.log("error", error); // TODO turn this into a logging system
     return <Text>Error :(</Text>;
@@ -87,5 +90,39 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 
   } else return null;
 }));
+
+const styles = StyleSheet.create({
+  learningItem: {
+    flex: 1,
+    marginTop: hp("2.5%"),
+    marginBottom: hp("3%"),
+    borderRadius: normalize(10),
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: normalize(10) },
+    shadowOpacity: 0.16,
+    shadowRadius: normalize(14),
+    backgroundColor: "#FFFFFF"
+  },
+  itemContainer: {
+    flex: 1,
+    borderTopRightRadius: normalize(10),
+    borderTopLeftRadius: normalize(10),
+    overflow: "hidden",
+  },
+  itemSummary: {
+    flex: 10,
+    paddingBottom: 20,
+    maxHeight: 80,
+    fontSize: 14,
+    lineHeight: 16,
+    color: "#3D444B",
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    padding: 5
+  }
+});
+
 
 export default LearningItemCarousel;
