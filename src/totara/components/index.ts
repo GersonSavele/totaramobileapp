@@ -22,5 +22,6 @@
 
 import learningItemCard from "./LearningItemCard";
 import DueDateState from "./DueDateState";
+import ContentIcon from "./ContentIcon";
 
-export {learningItemCard, DueDateState}
+export {learningItemCard, DueDateState, ContentIcon}

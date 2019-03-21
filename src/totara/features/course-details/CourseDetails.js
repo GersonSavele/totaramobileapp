@@ -24,9 +24,8 @@ import React from "react";
 import {SectionList, StyleSheet, Text, View} from "react-native";
 import PropTypes from "prop-types";
 import {Button} from "native-base";
-import Icon from "react-native-vector-icons/FontAwesome";
 
-import {learningItemCard} from "@totara/components";
+import {learningItemCard, ContentIcon} from "@totara/components";
 import {normalize, resizeByScreenSize} from "@totara/theme";
 
 
@@ -53,14 +52,11 @@ export default class CourseDetails extends React.Component {
   renderActivity = ({item}) => {
     return (
       <View style={styles.activity}>
-          <View style={styles.iconcircle}>
-              <Icon name={item.type} size={24} color={"white"}/>
-          </View>
-          <View style={{flex: 1}}>
-              <Text style={styles.activityText}>{item.itemName}</Text>
-              <Text style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas</Text>
-          </View>
-
+        <ContentIcon icon={item.type} iconSize={24} size={50}/>
+        <View style={{flex: 1}}>
+          <Text style={styles.activityText}>{item.itemName}</Text>
+          <Text style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas</Text>
+        </View>
       </View>
     );
   };
@@ -168,17 +164,6 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     flex: 6,
-  },
-  iconcircle:{
-    padding: 0,
-    backgroundColor: "#3D444B",
-    borderRadius: 25,
-    borderWidth: 1,
-    borderColor: "#3D444B",
-    height: normalize(50),
-    width: normalize(50),
-    justifyContent: "center",
-    alignItems: "center",
   },
   itemCard: {
     flex: 2,

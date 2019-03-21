@@ -24,18 +24,16 @@ import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faVideo, faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 
-import {normalize} from "@totara/theme";
+import {ContentIcon} from "@totara/components";
 
 export default class RecentActivity extends React.Component {
 
   render() {
     return (
       <TouchableOpacity style={styles.lastAccessed} onPress={() => this.props.onPress()}>
-        <View style={styles.icon}>
-          <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
-        </View>
+        <ContentIcon icon={"film"} iconSize={20} size={40}/>
         <View style={styles.container}>
           <Text style={styles.topText}>Continue your learning</Text>
           <Text style={styles.bottomText}>Setting up a hierarchy</Text>
@@ -63,18 +61,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
-  icon: {
-    padding: 0,
-    backgroundColor: "#3D444B",
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#3D444B",
-    height: normalize(40),
-    width: normalize(40),
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   container: {
     flex: 1,
     justifyContent: 'space-between',
