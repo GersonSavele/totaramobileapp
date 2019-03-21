@@ -26,7 +26,7 @@ import PropTypes from "prop-types";
 
 import {Button} from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import {learningItemCard} from "../../components/index";
+import {learningItemCard} from "@totara/components";
 import styles from "./styles/CourseDetails"
 
 
@@ -39,8 +39,14 @@ export default class CourseDetails extends React.Component {
 
     return (
       <View style={styles.activity}>
-        <Icon name={item.type} size={24}/>
-        <Text style={styles.activityText}>{item.itemName}</Text>
+          <View style={styles.iconcircle}>
+              <Icon name={item.type} size={24} color={"white"}/>
+          </View>
+          <View>
+              <Text style={styles.activityText}>{item.itemName}</Text>
+              <Text style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas</Text>
+          </View>
+
       </View>
     );
   };
@@ -63,8 +69,7 @@ export default class CourseDetails extends React.Component {
           <FlatList style={styles.activities}
                     data={item.activities}
                     renderItem={this.renderActivity}
-                    keyExtractor={(item) => item.id.toString()}
-          />
+                    keyExtractor={(item) => item.id.toString()}/>
         </View>
         <View style={styles.buttonContainer}>
           <Button block><Text>Continue your learning</Text></Button>

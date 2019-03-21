@@ -20,7 +20,7 @@
  */
 
 import {StyleSheet} from "react-native";
-import {normalize} from "@totara/theme";
+import {normalize, resizeByScreenSize} from "@totara/theme";
 
 const styles = StyleSheet.create({
   container: {
@@ -30,8 +30,10 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   activitiesContainer: {
-    flex: 3
-  },
+    flex: 3,
+    paddingLeft: 0,
+
+    },
   buttonContainer: {
     flex: 0,
     paddingTop: 4,
@@ -47,17 +49,25 @@ const styles = StyleSheet.create({
     margin: 0,
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EEEEEE",
+    borderColor: "#F5F5F5",
     height: normalize(64),
     padding: 10
   },
   activityText: {
-    fontSize: 15,
-    padding: 10,
+    fontSize: 16,
+    paddingLeft: 10,
+
+  },
+  activitySummaryText: {
+    fontSize: 14,
+    color: "#A0A0A0",
+    paddingLeft: 10,
+
   },
   activities: {
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: resizeByScreenSize(8, 10, 16, 24),
+    paddingRight: resizeByScreenSize(8,10, 16, 24),
+    paddingTop: resizeByScreenSize(8,10, 16, 24),
   },
   button: {
     alignItems: "center",
@@ -65,13 +75,15 @@ const styles = StyleSheet.create({
   },
   tabNav: {
     flexDirection: "row",
-    padding: 10,
+    paddingLeft: resizeByScreenSize(8, 10, 16, 24),
+    paddingTop: 20,
   },
   tabActive: {
-    paddingRight: 20,
-    fontSize: 15,
+    paddingRight: 40,
+    fontSize: 16,
     fontWeight: "bold",
-    borderBottomWidth: 2
+    borderBottomWidth: 5,
+    borderColor: "black",
   },
   tabInActive: {
     fontSize: 15,
@@ -79,6 +91,17 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     flex: 6,
+  },
+  iconcircle:{
+    padding: 0,
+    backgroundColor: "#3D444B",
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#3D444B",
+    height: normalize(50),
+    width: normalize(50),
+    justifyContent: "center",
+    alignItems: "center",
   },
   itemCard: {
     flex: 2,
