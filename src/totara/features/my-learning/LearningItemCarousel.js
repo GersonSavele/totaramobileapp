@@ -34,6 +34,8 @@ import styles from "./styles/LearningItemCarousel"
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
+  let courseNavigate = (course) => navigation.navigate("Course", {item: course});
+
   const LearningItem = ({item}) => {
 
     class LearningItemSummaryAndStartButton extends React.Component {
@@ -48,7 +50,6 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
     }
 
     const LearningItemWithSummary = learningItemCard(LearningItemSummaryAndStartButton);
-    let courseNavigate = (course) => navigation.navigate("Course", {item: course});
 
     return (
       <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
@@ -64,7 +65,10 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
   };
 
   if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error :(</Text>;
+  if (error) {
+    console.log("error", error); // TODO turn this into a logging system
+    return <Text>Error :(</Text>;
+  }
 
   if (currentLearning) {
     // used for faster development to navigate at once to first course-details

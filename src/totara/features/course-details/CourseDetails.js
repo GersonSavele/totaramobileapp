@@ -21,7 +21,7 @@
  */
 
 import React from "react";
-import {FlatList, Text, View} from "react-native";
+import {SectionList, Text, View} from "react-native";
 import PropTypes from "prop-types";
 
 import {Button} from "native-base";
@@ -35,14 +35,28 @@ export default class CourseDetails extends React.Component {
     title: "Course",
   };
 
-  renderActivity = ({item}) => {
+  renderSection = ({section: {groupName}}) => {
+    return (
+      <View style={styles.sectionHeader}>
+        <Text>{groupName}</Text>
+      </View>
+    );
+  };
 
+  renderFooter = () => {
+    return (
+      <View style={styles.sectionFooter}>
+      </View>
+    );
+  };
+
+  renderActivity = ({item}) => {
     return (
       <View style={styles.activity}>
           <View style={styles.iconcircle}>
               <Icon name={item.type} size={24} color={"white"}/>
           </View>
-          <View>
+          <View style={{flex: 1}}>
               <Text style={styles.activityText}>{item.itemName}</Text>
               <Text style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas</Text>
           </View>
@@ -66,10 +80,12 @@ export default class CourseDetails extends React.Component {
             <Text style={styles.tabActive}>Activities</Text>
             <Text style={styles.tabInActive}>Outline</Text>
           </View>
-          <FlatList style={styles.activities}
-                    data={item.activities}
-                    renderItem={this.renderActivity}
-                    keyExtractor={(item) => item.id.toString()}/>
+          <SectionList style={styles.activities}
+                       sections={item.activityGroups}
+                       renderSectionHeader={this.renderSection}
+                       renderItem={this.renderActivity}
+                       renderSectionFooter={this.renderFooter}
+                       keyExtractor={(item, index) => item.id.toString() + index}/>
         </View>
         <View style={styles.buttonContainer}>
           <Button block><Text>Continue your learning</Text></Button>

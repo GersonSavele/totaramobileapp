@@ -56,18 +56,17 @@ const styles = StyleSheet.create({
   activityText: {
     fontSize: 16,
     paddingLeft: 10,
-
+    flexWrap: "wrap",
   },
   activitySummaryText: {
     fontSize: 14,
     color: "#A0A0A0",
     paddingLeft: 10,
-
+    flexWrap: "wrap",
   },
   activities: {
     paddingLeft: resizeByScreenSize(8, 10, 16, 24),
     paddingRight: resizeByScreenSize(8,10, 16, 24),
-    paddingTop: resizeByScreenSize(8,10, 16, 24),
   },
   button: {
     alignItems: "center",
@@ -77,6 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingLeft: resizeByScreenSize(8, 10, 16, 24),
     paddingTop: 20,
+    height: 56
   },
   tabActive: {
     paddingRight: 40,
@@ -108,6 +108,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEEEEE",
     maxHeight: 72
   },
+  sectionHeader: {
+    backgroundColor: "#EEEEEE",
+    paddingLeft: 10,
+    justifyContent: "center",
+    height: 40,
+  },
+  sectionFooter: {
+    backgroundColor: "#FFFFFF",
+    height: 10
+  }
 });
 
 export default styles;

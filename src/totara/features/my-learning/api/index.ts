@@ -36,11 +36,14 @@ const query = gql`
       dueDate
       progressPercentage
       groupCount
-      activities {
-        id
-        type
-        itemName
-      }
+      activityGroups {
+        groupName  
+        data {
+            id
+            type
+            itemName
+        }
+      }  
     }
   }
 `;
