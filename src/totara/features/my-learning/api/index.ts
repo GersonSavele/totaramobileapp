@@ -22,7 +22,7 @@
 
 import {graphql} from "react-apollo";
 import gql from "graphql-tag";
-import {LearningItem} from "@totara/components";
+import {LearningItem} from "@totara/types";
 
 const query = gql`
   query CurrentLearning {
@@ -42,6 +42,7 @@ const query = gql`
             id
             type
             itemName
+            status
         }
       }  
     }

@@ -32,7 +32,7 @@ export default class RecentActivity extends React.Component {
   render() {
     return (
       <TouchableOpacity style={styles.lastAccessed} onPress={() => this.props.onPress()}>
-        <ContentIcon icon={"film"} iconSize={20} size={40}/>
+        <ContentIcon icon={"video"} iconSize={20} size={40}/>
         <View style={styles.container}>
           <Text style={styles.topText}>Continue your learning</Text>
           <Text style={styles.bottomText}>Setting up a hierarchy</Text>

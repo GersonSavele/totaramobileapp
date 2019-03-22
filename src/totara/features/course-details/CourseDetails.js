@@ -25,7 +25,7 @@ import {SectionList, StyleSheet, Text, View} from "react-native";
 import PropTypes from "prop-types";
 import {Button} from "native-base";
 
-import {learningItemCard, ContentIcon} from "@totara/components";
+import {learningItemCard, ContentIcon, addBadge} from "@totara/components";
 import {normalize, resizeByScreenSize} from "@totara/theme";
 
 
@@ -49,10 +49,21 @@ export default class CourseDetails extends React.Component {
     );
   };
 
+
   renderActivity = ({item}) => {
+    class Foo extends React.Component {
+      render() {
+        return(<ContentIcon icon={item.type} iconSize={24} size={50}/>);
+      }
+    }
+
+    const BadgedIcon = addBadge(Foo);
+
     return (
       <View style={styles.activity}>
-        <ContentIcon icon={item.type} iconSize={24} size={50}/>
+        {
+          (item.status) ? <BadgedIcon/> : <ContentIcon icon={item.type} iconSize={24} size={50}/>
+        }
         <View style={{flex: 1}}>
           <Text style={styles.activityText}>{item.itemName}</Text>
           <Text style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas</Text>

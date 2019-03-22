@@ -23,6 +23,7 @@ export type Activity = {
   id: number,
   type: string,
   itemName: string
+  status?: string
 }
 
 export type ActivityGroup = {

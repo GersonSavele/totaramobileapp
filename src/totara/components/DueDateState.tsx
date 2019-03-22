@@ -39,7 +39,7 @@ class DueDateState extends React.Component<Props> {
       case "warning":
         return (
           <View style={styles.warning}>
-            <FontAwesomeIcon icon="video" size={16} color={"#FFFFFF"}/>
+            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
             <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
           </View>
         );
@@ -47,7 +47,7 @@ class DueDateState extends React.Component<Props> {
       case "danger":
         return (
           <View style={styles.danger}>
-            <FontAwesomeIcon icon="video" size={16} color={"#FFFFFF"}/>
+            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
             <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
           </View>
         );
@@ -55,7 +55,6 @@ class DueDateState extends React.Component<Props> {
       case "info":
         return (
           <View style={styles.info}>
-            <FontAwesomeIcon icon="video" size={16} color={"#FFFFFF"}/>
             <Text style={styles.infoText}>{moment(dueDate).format("D, MMM YYYY")}</Text>
           </View>
         );

@@ -20,14 +20,41 @@
  *
  */
 
-import learningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import addBadge from "./AddBadge";
+import React from "react";
+import {Component, ComponentType} from "react";
+import {View, StyleSheet} from "react-native";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-export {
-  learningItemCard,
-  DueDateState,
-  ContentIcon,
-  addBadge
-}
+
+const addBadge = (WrappedComponent: ComponentType<any>) =>
+  class Badged extends Component {
+
+    render() {
+      return (
+        <View>
+          <WrappedComponent/>
+          <View style={styles.iconContainer}>
+            <FontAwesomeIcon icon="check" size={10} color={"white"}/>
+          </View>
+        </View>
+      );
+    }
+
+  };
+
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    top: 1,
+    right: 1,
+    position: "absolute",
+    backgroundColor: "green",
+    borderRadius: 20,
+    width: 15,
+    height: 15,
+    justifyContent: "center",
+    alignItems: "center",
+  }
+});
+
+export default addBadge;

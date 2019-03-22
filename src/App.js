@@ -42,7 +42,9 @@ import {
   faListUl,
   faTasks,
   faComments,
-  faExternalLinkAlt} from "@fortawesome/free-solid-svg-icons"
+  faExternalLinkAlt,
+  faCheck,
+  faExclamationTriangle} from "@fortawesome/free-solid-svg-icons"
 
 import {MyLearning, Course, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
@@ -219,7 +221,9 @@ const initFontAwesome = () => {
     faListUl,
     faTasks,
     faComments,
-    faExternalLinkAlt
+    faExternalLinkAlt,
+    faCheck,
+    faExclamationTriangle
   );
 };
 initFontAwesome();
