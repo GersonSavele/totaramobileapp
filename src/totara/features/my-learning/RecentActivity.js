@@ -24,7 +24,6 @@ import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 
 import {ContentIcon} from "@totara/components";
 
@@ -39,7 +38,7 @@ export default class RecentActivity extends React.Component {
           <Text style={styles.bottomText}>Setting up a hierarchy</Text>
         </View>
         <View>
-          <FontAwesomeIcon icon={faChevronRight} size={16} color={"#3D444B"}/>
+          <FontAwesomeIcon icon="chevron-right" size={16} color={"#3D444B"}/>
         </View>
       </TouchableOpacity>
     );

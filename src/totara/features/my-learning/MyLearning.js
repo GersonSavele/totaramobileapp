@@ -26,9 +26,7 @@ import PropTypes from 'prop-types';
 import {Button} from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
-import Icon from "react-native-vector-icons/FontAwesome";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
 import {config} from "@totara/lib";
 import {gutter, h1, resizeByScreenSize} from "@totara/theme";
@@ -72,7 +70,7 @@ export default class MyLearning extends React.Component {
         </View>
         <View style={styles.myLearningHeader}>
           <Text style={styles.myLearningHeaderText}>My learning</Text>
-          <Icon name="list-ul" size={20}/>
+          <FontAwesomeIcon icon="list-ul" size={20}/>
         </View>
         <View style={styles.learningItems}>
           <LearningItemCarousel visible={this.state.show}/>
@@ -86,7 +84,7 @@ export default class MyLearning extends React.Component {
           <View style={styles.panel}>
             <Button transparent onPress={() => this.setState({visible: false})}>
               <FontAwesomeIcon
-                icon={faTimes}
+                icon="times"
                 size={24}
               />
             </Button>

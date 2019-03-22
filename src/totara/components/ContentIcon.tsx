@@ -23,7 +23,7 @@
 import {StyleSheet, View} from "react-native";
 import React from "react";
 import {normalize} from "@totara/theme";
-import Icon from "react-native-vector-icons/FontAwesome";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 type Props = {
   icon: string
@@ -50,7 +50,7 @@ class ContentIcon extends React.Component<Props> {
   render() {
     return(
       <View style={this.styles.iconcircle}>
-        <Icon name={this.props.icon} size={this.props.iconSize} color={"white"}/>
+        <FontAwesomeIcon icon={this.props.icon} size={this.props.iconSize} color={"white"}/>
       </View>
   );
   }
