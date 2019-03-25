@@ -34,7 +34,7 @@ const addBadge = (WrappedComponent: ComponentType<any>) =>
         <View>
           <WrappedComponent/>
           <View style={styles.iconContainer}>
-            <FontAwesomeIcon icon="check" size={10} color={"white"}/>
+            <FontAwesomeIcon icon="check" size={8} color={"white"}/>
           </View>
         </View>
       );
@@ -45,13 +45,13 @@ const addBadge = (WrappedComponent: ComponentType<any>) =>
 
 const styles = StyleSheet.create({
   iconContainer: {
-    top: 1,
-    right: 1,
+    top: -2,
+    right: 0,
     position: "absolute",
-    backgroundColor: "green",
-    borderRadius: 20,
-    width: 15,
-    height: 15,
+    backgroundColor: "#69BD45",
+    borderRadius: 16,
+    width: 16,
+    height: 16,
     justifyContent: "center",
     alignItems: "center",
   }

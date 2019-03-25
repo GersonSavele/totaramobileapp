@@ -25,8 +25,10 @@ import {SectionList, StyleSheet, Text, View} from "react-native";
 import PropTypes from "prop-types";
 import {Button} from "native-base";
 
+
 import {learningItemCard, ContentIcon, addBadge} from "@totara/components";
-import {normalize, resizeByScreenSize} from "@totara/theme";
+import {normalize, gutter, resizeByScreenSize} from "@totara/theme";
+
 
 
 export default class CourseDetails extends React.Component {
@@ -37,7 +39,7 @@ export default class CourseDetails extends React.Component {
   renderSection = ({section: {groupName}}) => {
     return (
       <View style={styles.sectionHeader}>
-        <Text>{groupName}</Text>
+        <Text style={styles.sectionHeaderText}>{groupName}</Text>
       </View>
     );
   };
@@ -65,8 +67,8 @@ export default class CourseDetails extends React.Component {
           (item.status) ? <BadgedIcon/> : <ContentIcon icon={item.type} iconSize={24} size={50}/>
         }
         <View style={{flex: 1}}>
-          <Text style={styles.activityText}>{item.itemName}</Text>
-          <Text style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas</Text>
+          <Text numberOfLines={1} style={styles.activityText}>{item.itemName}</Text>
+          <Text numberOfLines={1} style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas lorem ipsum</Text>
         </View>
       </View>
     );
@@ -94,9 +96,9 @@ export default class CourseDetails extends React.Component {
                        renderSectionFooter={this.renderFooter}
                        keyExtractor={(item, index) => item.id.toString() + index}/>
         </View>
-        <View style={styles.buttonContainer}>
-          <Button block><Text>Continue your learning</Text></Button>
-        </View>
+        {/*<View style={styles.buttonContainer}>*/}
+          {/*<Button block><Text style={styles.buttonText}>Continue your learning</Text></Button>*/}
+        {/*</View>*/}
       </View>
     );
   }
@@ -124,6 +126,10 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 8,
     marginBottom: 10
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    padding: 5
   },
   activity: {
     flexDirection: "row",
@@ -158,7 +164,7 @@ const styles = StyleSheet.create({
   },
   tabNav: {
     flexDirection: "row",
-    paddingLeft: resizeByScreenSize(8, 10, 16, 24),
+    paddingLeft: gutter,
     paddingTop: 20,
     height: 56
   },
@@ -186,9 +192,16 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     justifyContent: "center",
     height: 40,
+    borderTopRightRadius: 6,
+    borderTopLeftRadius: 6,
+  },
+  sectionHeaderText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#3D444B"
   },
   sectionFooter: {
     backgroundColor: "#FFFFFF",
-    height: 10
+    height: 16
   }
 });

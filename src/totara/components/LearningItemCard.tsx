@@ -57,12 +57,12 @@ const learningItemCard = (WrappedComponent: ComponentType<any>) =>
           </View>
           <View style={cardStyleSheet}>
             <View style={{flexDirection: "row"}}>
-              <Text style={styles.itemFullName}>{item.fullname}</Text>
+              <Text numberOfLines={2} style={styles.itemFullName}>{item.fullname}</Text>
             </View>
             <View style={styles.itemInfo}>
               <Text style={styles.itemType}>{item.type}</Text>
               <Text style={styles.pipe}> | </Text>
-              <Progress.Circle progress={progressPercentage} size={16} borderColor={"#E6E6E6"} color={"#0066CC"}/>
+              <Progress.Circle progress={progressPercentage} size={16} borderColor={"#E6E6E6"} color={"#0066CC"} thickness={1} borderWidth={1}/>
               <Text style={styles.percentagetext}> {item.progressPercentage} %</Text>
             </View>
             {

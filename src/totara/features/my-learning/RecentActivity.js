@@ -35,10 +35,10 @@ export default class RecentActivity extends React.Component {
         <ContentIcon icon={"video"} iconSize={20} size={40}/>
         <View style={styles.container}>
           <Text style={styles.topText}>Continue your learning</Text>
-          <Text style={styles.bottomText}>Setting up a hierarchy</Text>
+          <Text numberOfLines={1} style={styles.bottomText}>Setting up a hierarchy and flows of the screen and the</Text>
         </View>
         <View>
-          <FontAwesomeIcon icon="chevron-right" size={16} color={"#3D444B"}/>
+          <FontAwesomeIcon icon="chevron-up" size={16} color={"#3D444B"}/>
         </View>
       </TouchableOpacity>
     );
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingRight: 16,
     paddingLeft: 16,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 16,
+    paddingBottom: 16,
   },
   container: {
     flex: 1,
@@ -71,8 +71,12 @@ const styles = StyleSheet.create({
     color: "#64717D"
   },
   bottomText: {
-    fontSize: 16,
+    flex: 1,
+    fontSize: 14,
     lineHeight: 18,
+    paddingRight: 64,
+    color: "#3D444B",
+    fontWeight: "600"
   }
 });
 

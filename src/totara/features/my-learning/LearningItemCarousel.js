@@ -43,7 +43,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
       render() {
         return(
           <View style={{flex: 1}}>
-            <Text style={styles.itemSummary}>{item.summary}</Text>
+            <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
             <View style={{flex: 1}}/>
             <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
           </View>);
