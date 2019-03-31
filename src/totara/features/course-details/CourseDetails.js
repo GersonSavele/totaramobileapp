@@ -53,18 +53,15 @@ export default class CourseDetails extends React.Component {
 
 
   renderActivity = ({item}) => {
-    class Foo extends React.Component {
-      render() {
-        return(<ContentIcon icon={item.type} iconSize={24} size={50}/>);
-      }
-    }
 
-    const BadgedIcon = addBadge(Foo);
+    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>
+
+    const BadgedIcon = addBadge(BuildContentIcon);
 
     return (
       <View style={styles.activity}>
         {
-          (item.status) ? <BadgedIcon/> : <ContentIcon icon={item.type} iconSize={24} size={50}/>
+          (item.status) ? <BadgedIcon/> : <BuildContentIcon/>
         }
         <View style={{flex: 1}}>
           <Text numberOfLines={1} style={styles.activityText}>{item.itemName}</Text>
