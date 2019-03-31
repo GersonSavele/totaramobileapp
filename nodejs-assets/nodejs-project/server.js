@@ -27,7 +27,7 @@ apolloServer.listen().then(function (_ref) {
 
 var expressServer = (0, _express2.default)();
 expressServer.use('/public', _express2.default.static(_path2.default.join(__dirname, 'src/public')));
-//expressServer.use('/public', express.static('src/public'))
+// expressServer.use('/public', express.static('src/public'))
 
 var EXPRESS_PORT = 4001;
 expressServer.listen(EXPRESS_PORT, function () {
