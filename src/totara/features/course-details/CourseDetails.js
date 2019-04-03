@@ -21,60 +21,33 @@
  */
 
 import React from "react";
-import {SectionList, StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
-import {Button} from "native-base";
 
 
-import {learningItemCard, ContentIcon, addBadge} from "@totara/components";
-import {normalize, gutter, resizeByScreenSize} from "@totara/theme";
+import {learningItemCard} from "@totara/components";
+import {gutter} from "@totara/theme";
+import ActivityList from "./ActivityList";
 
-
+const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
 
 export default class CourseDetails extends React.Component {
   static navigationOptions = {
     title: "Course",
   };
 
-  renderSection = ({section: {groupName}}) => {
-    return (
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionHeaderText}>{groupName}</Text>
-      </View>
-    );
+  state = {
+    showActivities: true,
   };
 
-  renderFooter = () => {
-    return (
-      <View style={styles.sectionFooter}>
-      </View>
-    );
-  };
-
-
-  renderActivity = ({item}) => {
-
-    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>
-
-    const BadgedIcon = addBadge(BuildContentIcon);
-
-    return (
-      <View style={styles.activity}>
-        {
-          (item.status) ? <BadgedIcon/> : <BuildContentIcon/>
-        }
-        <View style={{flex: 1}}>
-          <Text numberOfLines={1} style={styles.activityText}>{item.itemName}</Text>
-          <Text numberOfLines={1} style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas lorem ipsum</Text>
-        </View>
-      </View>
-    );
-  };
+  setShowAcitivities(show) {
+    this.setState({
+      showActivities: show
+    })
+  }
 
   render() {
     const {item} = this.props.navigation.state.params;
-
-    const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
 
     return (
       <View style={styles.container}>
@@ -83,19 +56,15 @@ export default class CourseDetails extends React.Component {
         </View>
         <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
-            <Text style={styles.tabActive}>Activities</Text>
-            <Text style={styles.tabInActive}>Outline</Text>
+            <TouchableOpacity style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(true)}>
+              <Text style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Activities</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(false)}>
+              <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Outline</Text>
+            </TouchableOpacity>
           </View>
-          <SectionList style={styles.activities}
-                       sections={item.activityGroups}
-                       renderSectionHeader={this.renderSection}
-                       renderItem={this.renderActivity}
-                       renderSectionFooter={this.renderFooter}
-                       keyExtractor={(item, index) => item.id.toString() + index}/>
+          { (this.state.showActivities) ? <ActivityList activityGroups={item.sections}/> : <Text>Outline</Text> }
         </View>
-        {/*<View style={styles.buttonContainer}>*/}
-          {/*<Button block><Text style={styles.buttonText}>Continue your learning</Text></Button>*/}
-        {/*</View>*/}
       </View>
     );
   }
@@ -117,64 +86,29 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
 
   },
-  buttonContainer: {
-    flex: 0,
-    paddingTop: 4,
-    paddingLeft: 8,
-    paddingRight: 8,
-    marginBottom: 10
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    padding: 5
-  },
-  activity: {
-    flexDirection: "row",
-    alignItems: "center",
-    textAlign: "center",
-    fontWeight: "bold",
-    margin: 0,
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#F5F5F5",
-    height: normalize(64),
-    padding: 10
-  },
-  activityText: {
-    fontSize: 16,
-    paddingLeft: 10,
-    flexWrap: "wrap",
-  },
-  activitySummaryText: {
-    fontSize: 14,
-    color: "#A0A0A0",
-    paddingLeft: 10,
-    flexWrap: "wrap",
-  },
-  activities: {
-    paddingLeft: resizeByScreenSize(8, 10, 16, 24),
-    paddingRight: resizeByScreenSize(8,10, 16, 24),
-  },
   button: {
     alignItems: "center",
     padding: 10
   },
   tabNav: {
     flexDirection: "row",
+    justifyContent: "space-between",
     paddingLeft: gutter,
     paddingTop: 20,
-    height: 56
+    height: 56,
+    paddingBottom: 10,
+    width: 180
   },
   tabActive: {
-    paddingRight: 40,
     fontSize: 16,
     fontWeight: "bold",
-    borderBottomWidth: 5,
+    borderBottomWidth: 3,
     borderColor: "black",
+    justifyContent: "center",
   },
   tabInActive: {
     fontSize: 15,
-    color: "#CECECE"
+    color: "#CECECE",
   },
   itemImage: {
     flex: 6,
@@ -184,21 +118,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEEEEE",
     maxHeight: 72
   },
-  sectionHeader: {
-    backgroundColor: "#EEEEEE",
-    paddingLeft: 10,
-    justifyContent: "center",
-    height: 40,
-    borderTopRightRadius: 6,
-    borderTopLeftRadius: 6,
-  },
-  sectionHeaderText: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#3D444B"
-  },
-  sectionFooter: {
-    backgroundColor: "#FFFFFF",
-    height: 16
-  }
 });

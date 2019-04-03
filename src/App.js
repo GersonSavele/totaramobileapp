@@ -45,7 +45,8 @@ import {
   faExternalLinkAlt,
   faCheck,
   faChevronUp,
-  faExclamationTriangle} from "@fortawesome/free-solid-svg-icons"
+  faExclamationTriangle,
+  faLock} from "@fortawesome/free-solid-svg-icons"
 
 import {MyLearning, Course, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
@@ -226,6 +227,7 @@ const initFontAwesome = () => {
     faCheck,
     faExclamationTriangle,
     faChevronUp,
+    faLock
   );
 };
 initFontAwesome();

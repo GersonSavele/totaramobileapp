@@ -26,8 +26,9 @@ export type Activity = {
   status?: string
 }
 
-export type ActivityGroup = {
-  groupName: string
+export type Section = {
+  sectionName: string
+  status?: string
   activities: [Activity]
 }
 
@@ -41,5 +42,5 @@ export type LearningItem = {
   dueDate?: Date
   progressPercentage?: number
   groupCount?: number
-  activityGroups: [ActivityGroup]
+  sections: [Section]
 };

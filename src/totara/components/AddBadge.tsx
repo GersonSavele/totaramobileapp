@@ -25,16 +25,60 @@ import {Component, ComponentType} from "react";
 import {View, StyleSheet} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
+enum BadgeType {
+  Check = "Check",
+  Lock = "Lock"
+}
 
-const addBadge = (WrappedComponent: ComponentType<any>) =>
-  class Badged extends Component {
+interface Badge {
+  kind: BadgeType
+  color: string
+  backgroundColor: string
+  icon: string
+}
+
+class CheckBadge implements Badge {
+  kind = BadgeType.Check;
+  color = "#FFFFFF";
+  backgroundColor = "#69BD45";
+  icon = "check";
+}
+
+class LockBadge implements Badge {
+  kind = BadgeType.Check;
+  color = "#FFFFFF";
+  backgroundColor = "#999999";
+  icon = "lock";
+}
+
+const addBadge = (WrappedComponent: ComponentType<any>,
+                  badgeType: BadgeType,
+                  size = 8) => {
+
+  const badgeDetails = getBadgeDetails(badgeType);
+
+  return class Badged extends Component {
+
+    styles = StyleSheet.create({
+      iconContainer: {
+        top: -2 * (size / 4),
+        right: 0,
+        position: "absolute",
+        backgroundColor: badgeDetails.backgroundColor,
+        borderRadius: size * 2,
+        width: size * 2,
+        height: size * 2,
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
 
     render() {
       return (
         <View>
           <WrappedComponent/>
-          <View style={styles.iconContainer}>
-            <FontAwesomeIcon icon="check" size={8} color={"white"}/>
+          <View style={this.styles.iconContainer}>
+            <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>
           </View>
         </View>
       );
@@ -42,19 +86,16 @@ const addBadge = (WrappedComponent: ComponentType<any>) =>
 
   };
 
+};
 
-const styles = StyleSheet.create({
-  iconContainer: {
-    top: -2,
-    right: 0,
-    position: "absolute",
-    backgroundColor: "#69BD45",
-    borderRadius: 16,
-    width: 16,
-    height: 16,
-    justifyContent: "center",
-    alignItems: "center",
+const getBadgeDetails = (badgeType: BadgeType) => {
+
+  switch (badgeType) {
+    case BadgeType.Check:
+      return new CheckBadge;
+    case BadgeType.Lock:
+      return new LockBadge;
   }
-});
+};
 
-export default addBadge;
+export {addBadge, BadgeType};
