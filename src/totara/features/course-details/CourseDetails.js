@@ -21,40 +21,33 @@
  */
 
 import React from "react";
-import {FlatList, Text, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 
-import {Button} from "native-base";
-import Icon from "react-native-vector-icons/FontAwesome";
-import {learningItemCard} from "@totara/components";
-import styles from "./styles/CourseDetails"
 
+import {learningItemCard} from "@totara/components";
+import {gutter} from "@totara/theme";
+import ActivityList from "./ActivityList";
+
+const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
 
 export default class CourseDetails extends React.Component {
   static navigationOptions = {
     title: "Course",
   };
 
-  renderActivity = ({item}) => {
-
-    return (
-      <View style={styles.activity}>
-          <View style={styles.iconcircle}>
-              <Icon name={item.type} size={24} color={"white"}/>
-          </View>
-          <View>
-              <Text style={styles.activityText}>{item.itemName}</Text>
-              <Text style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas</Text>
-          </View>
-
-      </View>
-    );
+  state = {
+    showActivities: true,
   };
+
+  setShowAcitivities(show) {
+    this.setState({
+      showActivities: show
+    })
+  }
 
   render() {
     const {item} = this.props.navigation.state.params;
-
-    const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
 
     return (
       <View style={styles.container}>
@@ -63,16 +56,14 @@ export default class CourseDetails extends React.Component {
         </View>
         <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
-            <Text style={styles.tabActive}>Activities</Text>
-            <Text style={styles.tabInActive}>Outline</Text>
+            <TouchableOpacity style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(true)}>
+              <Text style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Activities</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(false)}>
+              <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Outline</Text>
+            </TouchableOpacity>
           </View>
-          <FlatList style={styles.activities}
-                    data={item.activities}
-                    renderItem={this.renderActivity}
-                    keyExtractor={(item) => item.id.toString()}/>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button block><Text>Continue your learning</Text></Button>
+          { (this.state.showActivities) ? <ActivityList activityGroups={item.sections}/> : <Text>Outline</Text> }
         </View>
       </View>
     );
@@ -82,3 +73,49 @@ export default class CourseDetails extends React.Component {
 CourseDetails.propTypes = {
   navigation: PropTypes.object.isRequired
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  learningItem: {
+    flex: 2,
+  },
+  activitiesContainer: {
+    flex: 3,
+    paddingLeft: 0,
+
+  },
+  button: {
+    alignItems: "center",
+    padding: 10
+  },
+  tabNav: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: gutter,
+    paddingTop: 20,
+    height: 56,
+    paddingBottom: 10,
+    width: 180
+  },
+  tabActive: {
+    fontSize: 16,
+    fontWeight: "bold",
+    borderBottomWidth: 3,
+    borderColor: "black",
+    justifyContent: "center",
+  },
+  tabInActive: {
+    fontSize: 15,
+    color: "#CECECE",
+  },
+  itemImage: {
+    flex: 6,
+  },
+  itemCard: {
+    flex: 2,
+    backgroundColor: "#EEEEEE",
+    maxHeight: 72
+  },
+});

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -15,12 +15,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
 export type Activity = {
   id: number,
   type: string,
   itemName: string
+  status?: string
+}
+
+export type Section = {
+  sectionName: string
+  status?: string
+  activities: [Activity]
 }
 
 export type LearningItem = {
@@ -33,4 +42,5 @@ export type LearningItem = {
   dueDate?: Date
   progressPercentage?: number
   groupCount?: number
+  sections: [Section]
 };

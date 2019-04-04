@@ -21,21 +21,17 @@
  */
 
 import React from "react";
-import {Image, Text, View} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import PropTypes from 'prop-types';
-
 import {Button} from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import {widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import {config} from "@totara/lib";
+import {gutter, h1, resizeByScreenSize} from "@totara/theme";
 import LearningItemCarousel from "./LearningItemCarousel";
 import RecentActivity from "./RecentActivity";
-import Icon from "react-native-vector-icons/FontAwesome";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
-
-import styles from "./styles/MyLearning"
 
 
 export default class MyLearning extends React.Component {
@@ -74,7 +70,7 @@ export default class MyLearning extends React.Component {
         </View>
         <View style={styles.myLearningHeader}>
           <Text style={styles.myLearningHeaderText}>My learning</Text>
-          <Icon name="list-ul" size={20}/>
+          <FontAwesomeIcon icon="list-ul" size={20}/>
         </View>
         <View style={styles.learningItems}>
           <LearningItemCarousel visible={this.state.show}/>
@@ -88,7 +84,7 @@ export default class MyLearning extends React.Component {
           <View style={styles.panel}>
             <Button transparent onPress={() => this.setState({visible: false})}>
               <FontAwesomeIcon
-                icon={faTimes}
+                icon="times"
                 size={24}
               />
             </Button>
@@ -107,3 +103,63 @@ export default class MyLearning extends React.Component {
 MyLearning.propTypes = {
   navigation: PropTypes.object.isRequired
 };
+
+const styles = StyleSheet.create({
+  myLearningContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  myLearningLogo: {
+    flexDirection: 'row',
+    height: resizeByScreenSize(40, 48, 56, 64),
+    paddingHorizontal: gutter,
+    backgroundColor: "white",
+    alignItems: 'center'
+  },
+  myLearningHeader: {
+    height: resizeByScreenSize(40, 48, 64, 64),
+    flexDirection: "row",
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingRight: gutter,
+    paddingLeft: gutter,
+  },
+  myLearningHeaderText: {
+    fontSize: h1,
+  },
+  topnavicon: {
+    paddingLeft: 10,
+  },
+  learningItems: {
+    flex: 1,
+  },
+  recentActivity: {
+  },
+  activity: {
+    flex: 1,
+    marginTop: 10,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+    borderWidth: 1,
+    margin: 0,
+    backgroundColor: "#FFFFFF",
+    borderColor: "#CCCCCC",
+    width: wp("80%")
+  },
+  navigation: {
+    paddingBottom: 20,
+    width: wp("100%"),
+    height: hp("10%")
+  },
+  panel: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "#CECECE",
+  },
+  panelContent: {
+    flex: 10,
+    padding: 20,
+  },
+});

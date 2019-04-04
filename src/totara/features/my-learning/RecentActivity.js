@@ -21,26 +21,24 @@
  */
 
 import React from "react";
-import {Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faVideo, faChevronRight} from "@fortawesome/free-solid-svg-icons";
-import styles from "./styles/RecentActivity"
+
+import {ContentIcon} from "@totara/components";
 
 export default class RecentActivity extends React.Component {
 
   render() {
     return (
       <TouchableOpacity style={styles.lastAccessed} onPress={() => this.props.onPress()}>
-        <View style={styles.icon}>
-          <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
-        </View>
+        <ContentIcon icon={"video"} iconSize={20} size={40}/>
         <View style={styles.container}>
           <Text style={styles.topText}>Continue your learning</Text>
-          <Text style={styles.bottomText}>Setting up a hierarchy</Text>
+          <Text numberOfLines={1} style={styles.bottomText}>Setting up a hierarchy and flows of the screen and the</Text>
         </View>
         <View>
-          <FontAwesomeIcon icon={faChevronRight} size={16} color={"#3D444B"}/>
+          <FontAwesomeIcon icon="chevron-up" size={16} color={"#3D444B"}/>
         </View>
       </TouchableOpacity>
     );
@@ -51,5 +49,35 @@ export default class RecentActivity extends React.Component {
 RecentActivity.propTypes = {
   onPress: PropTypes.func.isRequired
 };
+
+const styles = StyleSheet.create({
+  lastAccessed: {
+    flexDirection: "row",
+    backgroundColor: "#CECECE",
+    alignItems: "center",
+    paddingRight: 16,
+    paddingLeft: 16,
+    paddingTop: 16,
+    paddingBottom: 16,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingLeft: 8,
+  },
+  topText: {
+    fontSize: 12,
+    lineHeight: 14,
+    color: "#64717D"
+  },
+  bottomText: {
+    flex: 1,
+    fontSize: 14,
+    lineHeight: 18,
+    paddingRight: 64,
+    color: "#3D444B",
+    fontWeight: "600"
+  }
+});
 
 

@@ -20,8 +20,15 @@
  *
  */
 
-import {LearningItem} from "@totara/types";
-import learningItemCard from "./learning-item/LearningItemCard";
+import learningItemCard from "./LearningItemCard";
 import DueDateState from "./DueDateState";
+import ContentIcon from "./ContentIcon";
+import {addBadge, BadgeType} from "./AddBadge";
 
-export {LearningItem, learningItemCard, DueDateState}
+export {
+  learningItemCard,
+  DueDateState,
+  ContentIcon,
+  addBadge,
+  BadgeType
+}

@@ -24,7 +24,6 @@ import React from "react";
 import {normalize} from "@totara/theme";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-import {faVideo} from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
   dueDate?: Date
@@ -40,7 +39,7 @@ class DueDateState extends React.Component<Props> {
       case "warning":
         return (
           <View style={styles.warning}>
-            <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
+            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
             <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
           </View>
         );
@@ -48,7 +47,7 @@ class DueDateState extends React.Component<Props> {
       case "danger":
         return (
           <View style={styles.danger}>
-            <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
+            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
             <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
           </View>
         );
@@ -56,7 +55,6 @@ class DueDateState extends React.Component<Props> {
       case "info":
         return (
           <View style={styles.info}>
-            <FontAwesomeIcon icon={faVideo} size={16} color={"#FFFFFF"}/>
             <Text style={styles.infoText}>{moment(dueDate).format("D, MMM YYYY")}</Text>
           </View>
         );
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
   },
   warning: {
     flexDirection: "row",
-    backgroundColor: "#337AB7",
+    backgroundColor: "#8E660D",
     alignItems: "center",
     paddingLeft: 16,
     height: normalize(50)

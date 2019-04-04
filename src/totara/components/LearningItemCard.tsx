@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -15,6 +15,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jun Yamog <jun.yamog@totaralearning.com
+ *
  */
 
 import {Image, ImageStyle, StyleSheet, Text, View, ViewStyle} from "react-native";
@@ -24,8 +27,8 @@ import * as Progress from 'react-native-progress';
 
 import {LearningItem} from "@totara/types";
 import {config} from "@totara/lib";
-import DueDateState from "../DueDateState";
-import styles from "./styles/LearningItemCard"
+import DueDateState from "./DueDateState";
+import {normalize} from "@totara/theme";
 
 interface Props {
   item: LearningItem
@@ -54,12 +57,12 @@ const learningItemCard = (WrappedComponent: ComponentType<any>) =>
           </View>
           <View style={cardStyleSheet}>
             <View style={{flexDirection: "row"}}>
-              <Text style={styles.itemFullName}>{item.fullname}</Text>
+              <Text numberOfLines={2} style={styles.itemFullName}>{item.fullname}</Text>
             </View>
             <View style={styles.itemInfo}>
               <Text style={styles.itemType}>{item.type}</Text>
               <Text style={styles.pipe}> | </Text>
-              <Progress.Circle progress={progressPercentage} size={16} borderColor={"#E6E6E6"} color={"#0066CC"}/>
+              <Progress.Circle progress={progressPercentage} size={16} borderColor={"#E6E6E6"} color={"#0066CC"} thickness={1} borderWidth={1}/>
               <Text style={styles.percentagetext}> {item.progressPercentage} %</Text>
             </View>
             {
@@ -70,6 +73,50 @@ const learningItemCard = (WrappedComponent: ComponentType<any>) =>
       );
     }
   };
+
+const styles = StyleSheet.create({
+  itemImage: {
+    flex: 1,
+    flexDirection: "column-reverse",
+  },
+  itemCard: {
+    padding: normalize(16),
+    justifyContent: "flex-start",
+    flex: 1
+  },
+  itemType: {
+    fontSize: 12,
+    color: "#A0A0A0"
+  },
+  pipe: {
+    color: "#A0A0A0",
+    paddingRight: 8,
+    paddingLeft: 8,
+    fontSize: 10,
+  },
+  percentagetext: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#A0A0A0",
+  },
+  itemFullName: {
+    color: "#3D444B",
+    flexWrap: "wrap",
+    fontSize: normalize(22),
+    fontWeight: "400",
+    padding: 0,
+    lineHeight: normalize(24),
+  },
+  itemInfo: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    minHeight: 30,
+    maxHeight: 35,
+    paddingTop: 5,
+  },
+});
+
 
 export default learningItemCard
 

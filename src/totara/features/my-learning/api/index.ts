@@ -22,7 +22,7 @@
 
 import {graphql} from "react-apollo";
 import gql from "graphql-tag";
-import {LearningItem} from "@totara/components";
+import {LearningItem} from "@totara/types";
 
 const query = gql`
   query CurrentLearning {
@@ -36,11 +36,16 @@ const query = gql`
       dueDate
       progressPercentage
       groupCount
-      activities {
-        id
-        type
-        itemName
-      }
+      sections {
+        sectionName
+        status  
+        data {
+            id
+            type
+            itemName
+            status
+        }
+      }  
     }
   }
 `;

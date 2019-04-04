@@ -21,14 +21,32 @@
  */
 
 import React from "react";
+import {View} from "react-native";
 import ApolloClient from "apollo-boost";
 import {ApolloProvider} from "react-apollo";
 import {createStackNavigator, createAppContainer, NavigationActions} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import {StyleProvider} from "native-base";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome"
-import { faHome, faCloudDownloadAlt, faBell, faUser } from '@fortawesome/free-solid-svg-icons'
+import {
+  faHome,
+  faCloudDownloadAlt,
+  faBell,
+  faUser,
+  faVideo,
+  faTimes,
+  faChevronRight,
+  faFilm,
+  faListUl,
+  faTasks,
+  faComments,
+  faExternalLinkAlt,
+  faCheck,
+  faChevronUp,
+  faExclamationTriangle,
+  faLock} from "@fortawesome/free-solid-svg-icons"
 
 import {MyLearning, Course, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
@@ -82,12 +100,18 @@ const navigationOptions = {
   headerStyle: {
     borderBottomWidth: 0
   },
+  headerBackTitle: null
 };
 
 const myLearning = createStackNavigator(
   {
     MyLearning: MyLearning,
-    Course: Course,
+    Course: {
+      screen: Course,
+      navigationOptions: {
+        headerRight: <View style={{paddingRight: 10}}><FontAwesomeIcon icon={faCloudDownloadAlt} size={24}/></View>
+      }
+    },
   },
   {
     initialRouteName: "MyLearning",
@@ -182,5 +206,31 @@ const mainNavigator = createMaterialBottomTabNavigator(
     barStyle: {backgroundColor: "#F7F7F7"},
   }
 );
+
+// init is needeed for FA to bundle the only needed icons
+// https://github.com/FortAwesome/react-native-fontawesome#build-a-library-to-reference-icons-throughout-your-app-more-conveniently
+// TODO this will be an issue extending this app, probably best to put this somewhere else
+const initFontAwesome = () => {
+  library.add(
+    faHome,
+    faCloudDownloadAlt,
+    faBell,
+    faUser,
+    faVideo,
+    faTimes,
+    faChevronRight,
+    faFilm,
+    faListUl,
+    faTasks,
+    faComments,
+    faExternalLinkAlt,
+    faCheck,
+    faExclamationTriangle,
+    faChevronUp,
+    faLock
+  );
+};
+initFontAwesome();
+
 
 const AppContainer = createAppContainer(mainNavigator);
