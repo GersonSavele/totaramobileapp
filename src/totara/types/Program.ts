@@ -15,10 +15,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import {LearningItem, Activity} from "./LearningItem"
-import {Course} from "./Course"
-import {Program} from "./Program";
+import {Section} from "./LearningItem"
 
-export {LearningItem, Activity, Course, Program}
+export type Program = {
+  id: number
+  type: string
+  shortname: string
+  fullname?: string
+  summary?: string
+  dueDateState?: string
+  dueDate?: Date
+  progressPercentage?: number
+  groupCount?: number
+  sections: [Section]
+};

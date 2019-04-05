@@ -48,7 +48,7 @@ import {
   faExclamationTriangle,
   faLock} from "@fortawesome/free-solid-svg-icons"
 
-import {MyLearning, Course, Profile, Settings, PlaceHolder} from "@totara/features";
+import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
 import {theme, getTheme} from "@totara/theme";
 
@@ -106,8 +106,14 @@ const navigationOptions = {
 const myLearning = createStackNavigator(
   {
     MyLearning: MyLearning,
-    Course: {
-      screen: Course,
+    CourseDetails: {
+      screen: CourseDetails,
+      navigationOptions: {
+        headerRight: <View style={{paddingRight: 10}}><FontAwesomeIcon icon={faCloudDownloadAlt} size={24}/></View>
+      }
+    },
+    ProgramDetails: {
+      screen: ProgramDetails,
       navigationOptions: {
         headerRight: <View style={{paddingRight: 10}}><FontAwesomeIcon icon={faCloudDownloadAlt} size={24}/></View>
       }

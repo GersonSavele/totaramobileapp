@@ -35,7 +35,18 @@ import {normalize} from "@totara/theme";
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
-  let courseNavigate = (course) => navigation.navigate("Course", {item: course});
+  let navigateTo = (item) => {
+    switch (item.type) { //TODO put type or constant on type
+      case "Course":
+        navigation.navigate("CourseDetails", {courseId: item.id});
+        break;
+      case "Program":
+        navigation.navigate("ProgramDetails", {programId: item.id});
+        break;
+      default:
+        console.error("unknown type", item); // TODO turn this into a logging system
+    }
+  };
 
   const LearningItem = ({item}) => {
 
@@ -53,7 +64,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
     const LearningItemWithSummary = learningItemCard(LearningItemSummaryAndStartButton);
 
     return (
-      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
+      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
         <View style={styles.itemContainer}>
           <LearningItemWithSummary item={item}/>
         </View>

@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
 import React from "react";
@@ -28,14 +27,13 @@ import {withNavigation} from "react-navigation";
 
 import {learningItemCard} from "@totara/components";
 import {gutter} from "@totara/theme";
-import {tbPadding} from "@totara/theme";
-import ActivityList from "./ActivityList";
-import {getCourse} from "./api";
+import CourseSetList from "./CourseSetList";
+import {getProgram} from "./api";
 
 const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
-const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
+const ProgramDetails = withNavigation(getProgram(({loading, program, error}) => {
   if (loading) return <Text>Loading...</Text>;
 
   if (error) {
@@ -43,16 +41,16 @@ const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
     return <Text>Error :(</Text>;
   }
 
-  if (course) {
+  if (program) {
     return(
-      <CourseDetailsComponent course={course}/>
+      <ProgramDetailsComponent program={program}/>
     )
   }
 }));
 
-export default CourseDetails;
+export default ProgramDetails;
 
-class CourseDetailsComponent extends React.Component {
+class ProgramDetailsComponent extends React.Component {
 
   state = {
     showActivities: true,
@@ -65,7 +63,7 @@ class CourseDetailsComponent extends React.Component {
   }
 
   render() {
-    const item = this.props.course;
+    const item = this.props.program;
 
     return (
       <View style={styles.container}>
@@ -81,15 +79,15 @@ class CourseDetailsComponent extends React.Component {
               <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Outline</Text>
             </TouchableOpacity>
           </View>
-          { (this.state.showActivities) ? <ActivityList activityGroups={item.sections}/> : <Text>Outline</Text> }
+          { (this.state.showActivities) ? <CourseSetList activityGroups={item.sections}/> : <Text>Outline</Text> }
         </View>
       </View>
     );
   }
 }
 
-CourseDetailsComponent.propTypes = {
-  course: PropTypes.object.isRequired
+ProgramDetailsComponent.propTypes = {
+  program: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -112,8 +110,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingLeft: gutter,
-    paddingTop: tbPadding,
-    paddingBottom: tbPadding,
+    paddingTop: 20,
+    height: 56,
+    paddingBottom: 10,
     width: 180
   },
   tabActive: {
