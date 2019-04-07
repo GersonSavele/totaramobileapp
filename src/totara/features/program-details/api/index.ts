@@ -36,14 +36,15 @@ const query = gql`
       dueDate
       progressPercentage
       groupCount
-      sections {
-        sectionName
-        status  
-        data {
-            id
-            type
-            itemName
-            status
+      courseSet {
+        id  
+        courses {
+          id
+          type
+          shortname
+          fullname
+          summary
+          progressPercentage
         }
       }  
     }

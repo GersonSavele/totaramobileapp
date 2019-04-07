@@ -28,8 +28,6 @@ export type Course = {
   shortname: string
   fullname?: string
   summary?: string
-  dueDateState?: string
-  dueDate?: Date
   progressPercentage?: number
   groupCount?: number
   sections: [Section]

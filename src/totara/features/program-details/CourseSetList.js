@@ -19,172 +19,31 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import {SectionList, StyleSheet, Text, View} from "react-native";
+import {FlatList, StyleSheet, Text, View} from "react-native";
 import React from "react";
-import {ContentIcon, addBadge, BadgeType} from "@totara/components";
-import {normalize, resizeByScreenSize} from "@totara/theme";
 import PropTypes from "prop-types";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import CourseSet from "./CourseSet";
 
 class CourseSetList extends React.Component {
 
-  renderSection = ({section: {sectionName, status}}) => {
-    const SectionHeader = () => (status === "hidden") ?
-      <View style={styles.withLock}>
-        <Text style={styles.sectionHeaderText}>{sectionName}</Text>
-        <View style={styles.sectionLock}>
-          <FontAwesomeIcon icon="lock" size={16} color="white"/>
-        </View>
-      </View>
-      :
-      <Text style={styles.sectionHeaderText}>{sectionName}</Text>
-
-    return (
-      <View style={styles.sectionHeader}>
-        <SectionHeader/>
-      </View>
-    );
-  };
-
-  renderFooter = () => {
-    return (
-      <View style={styles.sectionFooter}>
-      </View>
-    );
-  };
-
-
-  renderActivity = ({item, index, section}) => {
-
-    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>
-
-    const BadgedIcon = addBadge(BuildContentIcon, BadgeType.Check);
-
-    const Activity = () =>
-      <View style={styles.activity}>
-        {
-          (item.status === "done") ? <BadgedIcon/> : <BuildContentIcon/>
-        }
-        <View style={{flex: 1}}>
-          <Text numberOfLines={1} style={styles.activityText}>{item.itemName}</Text>
-          <Text numberOfLines={1} style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas lorem ipsum</Text>
-        </View>
-        {
-          (item.type === "film") ?
-            <View style={{padding: 4}}>
-              <FontAwesomeIcon icon="cloud-download-alt" size={24} color="black"/>
-            </View>
-            :
-            null
-        }
-      </View>;
-
-    if (section.status === "hidden")
-      return(
-        <View>
-          <Activity/>
-          <View style={styles.disabledOverlay}/>
-        </View>);
-    else if (item.status === "active")
-      return(
-        <View style={styles.activeActivity}>
-          <Activity/>
-        </View>);
-    else
-      return <Activity/>
-  };
+  renderCourseSet = ({item}) => <CourseSet courses={item.courses} navigateTo={this.props.navigateTo}/>
 
   render() {
-    const {activityGroups} = this.props;
-
+    const {courseSet} = this.props;
     return(
-    <SectionList style={styles.activities}
-                 sections={activityGroups}
-                 renderSectionHeader={this.renderSection}
-                 renderItem={this.renderActivity}
-                 renderSectionFooter={this.renderFooter}
+    <FlatList
+                 data={courseSet}
+                 renderItem={this.renderCourseSet}
                  keyExtractor={(item, index) => item.id.toString() + index}/>
     );
   }
 }
 
 CourseSetList.propTypes = {
-  activityGroups: PropTypes.array.isRequired
+  courseSet: PropTypes.array.isRequired
 };
 
 const styles = StyleSheet.create({
-  activity: {
-    flexDirection: "row",
-    alignItems: "center",
-    textAlign: "center",
-    fontWeight: "bold",
-    margin: 0,
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#F5F5F5",
-    height: normalize(64),
-    padding: 10
-  },
-  activityText: {
-    fontSize: 16,
-    paddingLeft: 10,
-    flexWrap: "wrap",
-  },
-  activitySummaryText: {
-    fontSize: 14,
-    color: "#A0A0A0",
-    paddingLeft: 10,
-    flexWrap: "wrap",
-  },
-  activities: {
-    paddingLeft: resizeByScreenSize(8, 10, 16, 24),
-    paddingRight: resizeByScreenSize(8, 10, 16, 24),
-  },
-  sectionHeader: {
-    backgroundColor: "#EEEEEE",
-    paddingLeft: 10,
-    justifyContent: "center",
-    height: 40,
-    borderTopRightRadius: 6,
-    borderTopLeftRadius: 6,
-    overflow: "hidden",
-  },
-  sectionHeaderText: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#3D444B",
-  },
-  sectionFooter: {
-    backgroundColor: "#FFFFFF",
-    height: 16
-  },
-  withLock: {
-    flex: 1,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  sectionLock: {
-    backgroundColor: "#999999",
-    padding: 4,
-    height: 40,
-    width: 40,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  disabledOverlay: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    backgroundColor: "white",
-    opacity: 0.5,
-    height: normalize(64),
-    width: "100%"
-  },
-  activeActivity: {
-    borderWidth: 2,
-    borderColor: "#AAAAAA",
-  }
 });
 
 export default CourseSetList;

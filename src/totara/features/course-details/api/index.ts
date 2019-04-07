@@ -33,8 +33,6 @@ const query = gql`
       shortname
       fullname
       summary
-      dueDateState
-      dueDate
       progressPercentage
       groupCount
       sections {
@@ -56,7 +54,7 @@ type CourseId = {
 }
 
 export type Response = {
-  getCourse: Course;
+  course: Course;
 } & NavigationInjectedProps<CourseId>
 
 export const getCourse = graphql<NavigationInjectedProps, Response>(

@@ -33,7 +33,7 @@ import {getProgram} from "./api";
 const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
-const ProgramDetails = withNavigation(getProgram(({loading, program, error}) => {
+const ProgramDetails = withNavigation(getProgram(({loading, program, error, navigation}) => {
   if (loading) return <Text>Loading...</Text>;
 
   if (error) {
@@ -43,7 +43,7 @@ const ProgramDetails = withNavigation(getProgram(({loading, program, error}) => 
 
   if (program) {
     return(
-      <ProgramDetailsComponent program={program}/>
+      <ProgramDetailsComponent program={program} navigation={navigation}/>
     )
   }
 }));
@@ -51,6 +51,11 @@ const ProgramDetails = withNavigation(getProgram(({loading, program, error}) => 
 export default ProgramDetails;
 
 class ProgramDetailsComponent extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.navigateTo = (item) => props.navigation.navigate("CourseDetails", {courseId: item.id});
+  }
 
   state = {
     showActivities: true,
@@ -79,7 +84,7 @@ class ProgramDetailsComponent extends React.Component {
               <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Outline</Text>
             </TouchableOpacity>
           </View>
-          { (this.state.showActivities) ? <CourseSetList activityGroups={item.sections}/> : <Text>Outline</Text> }
+          { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet} navigateTo={this.navigateTo}/> : <Text>Outline</Text> }
         </View>
       </View>
     );
@@ -87,7 +92,8 @@ class ProgramDetailsComponent extends React.Component {
 }
 
 ProgramDetailsComponent.propTypes = {
-  program: PropTypes.object.isRequired
+  program: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
