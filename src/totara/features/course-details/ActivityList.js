@@ -23,7 +23,7 @@
 import {SectionList, StyleSheet, Text, View} from "react-native";
 import React from "react";
 import {ContentIcon, addBadge, BadgeType} from "@totara/components";
-import {normalize, resizeByScreenSize} from "@totara/theme";
+import {normalize, resizeByScreenSize, h4, normal, tbPadding, lrPadding} from "@totara/theme";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
@@ -61,18 +61,18 @@ class ActivityList extends React.Component {
 
     const BadgedIcon = addBadge(BuildContentIcon, BadgeType.Check);
 
-    const Activity = () =>
+    const Activity = ({status}) =>
       <View style={styles.activity}>
         {
           (item.status === "done") ? <BadgedIcon/> : <BuildContentIcon/>
         }
         <View style={{flex: 1}}>
-          <Text numberOfLines={1} style={styles.activityText}>{item.itemName}</Text>
+          <Text numberOfLines={1} style={(item.status) === "active" ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
           <Text numberOfLines={1} style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas lorem ipsum</Text>
         </View>
         {
           (item.type === "film") ?
-            <View style={{padding: 4}}>
+            <View style={{paddingLeft: lrPadding}}>
               <FontAwesomeIcon icon="cloud-download-alt" size={24} color="black"/>
             </View>
             :
@@ -123,19 +123,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
     borderColor: "#F5F5F5",
-    height: normalize(64),
-    padding: 10
+    height: normalize(72),
+    paddingLeft: lrPadding,
+    paddingRight: lrPadding,
   },
   activityText: {
-    fontSize: 16,
-    paddingLeft: 10,
-    flexWrap: "wrap",
+    fontSize: h4,
+    paddingLeft: lrPadding,
+
   },
   activitySummaryText: {
-    fontSize: 14,
+    fontSize: normal,
     color: "#A0A0A0",
-    paddingLeft: 10,
-    flexWrap: "wrap",
+    paddingLeft: lrPadding,
+
   },
   activities: {
     paddingLeft: resizeByScreenSize(8, 10, 16, 24),
@@ -184,7 +185,16 @@ const styles = StyleSheet.create({
   },
   activeActivity: {
     borderWidth: 2,
-    borderColor: "#AAAAAA",
+    borderColor: "#337AB7",
+
+    backgroundColor: "#EEEEEE",
+  },
+  activeActivityText: {
+    fontSize: h4,
+    color: "#0066CC",
+    paddingLeft: lrPadding,
+    fontWeight: "600",
+
   }
 });
 
