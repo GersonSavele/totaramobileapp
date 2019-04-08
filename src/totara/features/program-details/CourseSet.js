@@ -25,14 +25,17 @@ import {learningItemCard} from "@totara/components";
 import PropTypes from "prop-types";
 import Carousel from "react-native-snap-carousel";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {withNavigation} from "react-navigation";
+
+
 import {normalize} from "@totara/theme";
 
 
-const CourseCard = (navigateTo) => ({item}) => {
+const CourseCard = (navigation) => ({item}) => {
 
   class CourseSummary extends React.Component {
     render() {
-      return(
+      return (
         <View style={{flex: 1}}>
           <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
         </View>);
@@ -40,16 +43,18 @@ const CourseCard = (navigateTo) => ({item}) => {
   }
 
   const CourseWithSummary = learningItemCard(CourseSummary);
+  const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
 
   return (
-    <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
+    <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)}
+                      activeOpacity={1.0}>
       <View style={styles.itemContainer}>
         <CourseWithSummary item={item}/>
       </View>
     </TouchableOpacity>
   );
-
 };
+
 
 CourseCard.propTypes = {
   item: PropTypes.object.isRequired
@@ -60,13 +65,13 @@ class CourseSet extends React.Component {
 
   render() {
 
-    const {courses, navigateTo} = this.props;
+    const {courses, navigation} = this.props;
 
     return (
       <View style={styles.courseSet}>
         <Carousel
           data={courses}
-          renderItem={CourseCard(navigateTo)}
+          renderItem={CourseCard(navigation)}
           sliderWidth={wp("100%")}
           itemWidth={350}
           sliderHeight={hp("100%")}
@@ -81,7 +86,8 @@ class CourseSet extends React.Component {
 }
 
 CourseSet.propTypes = {
-  courses: PropTypes.array.isRequired
+  courses: PropTypes.array.isRequired,
+  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -117,4 +123,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default CourseSet;
+export default withNavigation(CourseSet);

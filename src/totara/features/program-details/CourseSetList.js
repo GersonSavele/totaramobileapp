@@ -19,14 +19,14 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import {FlatList, StyleSheet, Text, View} from "react-native";
+import {FlatList, StyleSheet} from "react-native";
 import React from "react";
 import PropTypes from "prop-types";
 import CourseSet from "./CourseSet";
 
 class CourseSetList extends React.Component {
 
-  renderCourseSet = ({item}) => <CourseSet courses={item.courses} navigateTo={this.props.navigateTo}/>
+  renderCourseSet = ({item}) => <CourseSet courses={item.courses}/>
 
   render() {
     const {courseSet} = this.props;

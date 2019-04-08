@@ -22,7 +22,6 @@
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
-import {withNavigation} from "react-navigation";
 
 
 import {learningItemCard} from "@totara/components";
@@ -33,7 +32,7 @@ import {getProgram} from "./api";
 const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
-const ProgramDetails = withNavigation(getProgram(({loading, program, error, navigation}) => {
+const ProgramDetails = getProgram(({loading, program, error}) => {
   if (loading) return <Text>Loading...</Text>;
 
   if (error) {
@@ -43,19 +42,14 @@ const ProgramDetails = withNavigation(getProgram(({loading, program, error, navi
 
   if (program) {
     return(
-      <ProgramDetailsComponent program={program} navigation={navigation}/>
+      <ProgramDetailsComponent program={program}/>
     )
   }
-}));
+});
 
 export default ProgramDetails;
 
 class ProgramDetailsComponent extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.navigateTo = (item) => props.navigation.navigate("CourseDetails", {courseId: item.id});
-  }
 
   state = {
     showActivities: true,
@@ -84,7 +78,7 @@ class ProgramDetailsComponent extends React.Component {
               <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Outline</Text>
             </TouchableOpacity>
           </View>
-          { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet} navigateTo={this.navigateTo}/> : <Text>Outline</Text> }
+          { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet}/> : <Text>Outline</Text> }
         </View>
       </View>
     );
@@ -93,7 +87,6 @@ class ProgramDetailsComponent extends React.Component {
 
 ProgramDetailsComponent.propTypes = {
   program: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
