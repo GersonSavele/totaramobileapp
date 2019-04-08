@@ -46,6 +46,10 @@ const query = gql`
           summary
           progressPercentage
         }
+        nextSet {
+          nextID
+          operator
+        }
       }  
     }
   }

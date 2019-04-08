@@ -31,33 +31,36 @@ import {withNavigation} from "react-navigation";
 import {normalize} from "@totara/theme";
 
 
-const CourseCard = (navigation) => ({item}) => {
+const CourseCardAndNavigation = (navigation) => {
+  const CourseCard = ({item}) => {
 
-  class CourseSummary extends React.Component {
-    render() {
-      return (
-        <View style={{flex: 1}}>
-          <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
-        </View>);
+    class CourseSummary extends React.Component {
+      render() {
+        return (
+          <View style={{flex: 1}}>
+            <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
+          </View>);
+      }
     }
-  }
 
-  const CourseWithSummary = learningItemCard(CourseSummary);
-  const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
+    const CourseWithSummary = learningItemCard(CourseSummary);
+    const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
 
-  return (
-    <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)}
-                      activeOpacity={1.0}>
-      <View style={styles.itemContainer}>
-        <CourseWithSummary item={item}/>
-      </View>
-    </TouchableOpacity>
-  );
-};
+    return (
+      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)}
+                        activeOpacity={1.0}>
+        <View style={styles.itemContainer}>
+          <CourseWithSummary item={item}/>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
+  CourseCard.propTypes = {
+    item: PropTypes.object.isRequired
+  };
 
-CourseCard.propTypes = {
-  item: PropTypes.object.isRequired
+  return CourseCard;
 };
 
 
@@ -65,20 +68,29 @@ class CourseSet extends React.Component {
 
   render() {
 
-    const {courses, navigation} = this.props;
+    const {courses, navigation, nextSet} = this.props;
 
     return (
       <View style={styles.courseSet}>
         <Carousel
           data={courses}
-          renderItem={CourseCard(navigation)}
+          renderItem={CourseCardAndNavigation(navigation)}
           sliderWidth={wp("100%")}
           itemWidth={350}
           sliderHeight={hp("100%")}
           inactiveSlideOpacity={0.6}
           enableSnap={false}
         />
-        <Text>--------------------------Next-----------------------</Text>
+        {
+          (nextSet && nextSet.operator) ?
+            <View style={styles.nextSet}>
+              <View style={styles.separator}/>
+              <Text style={styles.nextSetText}>{nextSet.operator}</Text>
+              <View style={styles.separator}/>
+            </View>
+            :
+            null
+        }
       </View>
     );
 
@@ -87,7 +99,8 @@ class CourseSet extends React.Component {
 
 CourseSet.propTypes = {
   courses: PropTypes.array.isRequired,
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
+  nextSet: PropTypes.object
 };
 
 const styles = StyleSheet.create({
@@ -120,6 +133,22 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     color: "#3D444B",
   },
+  nextSet: {
+    flex: 0,
+    height: 20,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  separator: {
+    backgroundColor: "#CCCCCC",
+    height: 4,
+    flex: 1,
+    marginRight: 20,
+    marginLeft: 20
+  },
+  nextSetText: {
+    textTransform: "uppercase"
+  }
 });
 
 

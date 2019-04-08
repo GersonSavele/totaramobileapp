@@ -72,10 +72,10 @@ class ProgramDetailsComponent extends React.Component {
         <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
             <TouchableOpacity style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(true)}>
-              <Text style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Activities</Text>
+              <Text style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Courses</Text>
             </TouchableOpacity>
             <TouchableOpacity style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(false)}>
-              <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Outline</Text>
+              <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Details</Text>
             </TouchableOpacity>
           </View>
           { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet}/> : <Text>Outline</Text> }
