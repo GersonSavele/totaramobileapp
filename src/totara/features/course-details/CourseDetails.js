@@ -27,6 +27,7 @@ import PropTypes from "prop-types";
 
 import {learningItemCard} from "@totara/components";
 import {gutter} from "@totara/theme";
+import {tbPadding} from "@totara/theme";
 import ActivityList from "./ActivityList";
 
 const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
@@ -94,9 +95,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingLeft: gutter,
-    paddingTop: 20,
-    height: 56,
-    paddingBottom: 10,
+    paddingTop: tbPadding,
+    paddingBottom: tbPadding,
     width: 180
   },
   tabActive: {

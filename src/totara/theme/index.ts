@@ -23,8 +23,15 @@ import {resizeByScreenSize, normalize} from "./ui";
 import lodash from "lodash";
 
 const h1 = resizeByScreenSize(24, 28, 32, 36);
+const h2 = resizeByScreenSize(24, 28, 32, 36);
+const h3 = resizeByScreenSize(24, 28, 32, 36);
+const h4 = resizeByScreenSize(14, 15, 16, 16);
+const normal = resizeByScreenSize(13, 14, 14, 14);
+const paragraph = resizeByScreenSize(24, 28, 32, 36);
 const gutter = resizeByScreenSize(8, 10, 16, 24);
 const contmargin = resizeByScreenSize(8, 10, 16, 24);
+const tbPadding = resizeByScreenSize(8, 16, 24, 32);
+const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 
 const theme = lodash.merge(material, {
   brandPrimary: "#69BD45"
@@ -36,6 +43,13 @@ export {
   resizeByScreenSize,
   normalize,
   h1,
+  h2,
+  h3,
+  h4,
+  normal,
+  paragraph,
   gutter,
   contmargin,
+  tbPadding,
+  lrPadding,
 };
