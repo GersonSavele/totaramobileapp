@@ -94,6 +94,8 @@ const getBadgeDetails = (badgeType: BadgeType) => {
       return new CheckBadge;
     case BadgeType.Lock:
       return new LockBadge;
+    default:
+      throw "unsupported badgeType: " + badgeType;
   }
 };
 

@@ -30,5 +30,6 @@ export type Course = {
   summary?: string
   progressPercentage?: number
   groupCount?: number
+  status?: string
   sections: [Section]
 };

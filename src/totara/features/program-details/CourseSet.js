@@ -45,20 +45,30 @@ const CourseCard = (navigation) => ({item}) => {
   const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
   const CourseWithSummary = learningItemCard(() => <CourseSummary item={item}/>);
 
-  const CourseWithSummaryAndNavigiation = () =>
+  const CourseWithSummaryAndNavigiation = () => (item.status != "hidden") ?
     <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
       <View style={styles.itemContainer}>
         <CourseWithSummary item={item}/>
       </View>
-    </TouchableOpacity>;
+    </TouchableOpacity>
+    :
+    <View style={styles.itemContainer}>
+      <CourseWithSummary item={item}/>
+    </View>;
 
-  const BadgedCourseWithSummaryWithNavigation =
-    (item.progressPercentage === 100) ? addBadge(CourseWithSummaryAndNavigiation, BadgeType.Check, 16)
-      : CourseWithSummaryAndNavigiation;
+  const BadgedCourseWithSummaryWithNavigation = applyBadge(item.status, CourseWithSummaryAndNavigiation);
 
   return(<View style={{marginTop: hp("2.5%"), marginBottom: hp("3%"),}}>
     <BadgedCourseWithSummaryWithNavigation/>
   </View>);
+};
+
+const applyBadge = (status, component) => {
+  switch (status) {
+    case "done": return addBadge(component, BadgeType.Check, 16);
+    case "hidden": return addBadge(component, BadgeType.Lock, 16);
+    default: return component
+  }
 };
 
 class CourseSet extends React.Component {

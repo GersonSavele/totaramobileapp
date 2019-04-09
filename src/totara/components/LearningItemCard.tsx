@@ -45,11 +45,19 @@ const learningItemCard = (WrappedComponent: ComponentType<any>) => ({item, image
       const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
       const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
 
-      return(
+      const ImageElement = () => (item.status === "hidden") ?
+        <View style={{flex: 1}}>
+          <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
+          <View style={styles.disabledOverlay}/>
+        </View>
+      :
+        <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>;
+
+  return(
         <View style={{flex: 1}}>
           <View style={imageStyleSheet}>
             <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
-            <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
+            <ImageElement/>
           </View>
           <View style={cardStyleSheet}>
             <View style={{flexDirection: "row"}}>
@@ -109,6 +117,15 @@ const styles = StyleSheet.create({
     minHeight: 30,
     maxHeight: 35,
     paddingTop: 5,
+  },
+  disabledOverlay: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    backgroundColor: "white",
+    opacity: 0.5,
+    height: "100%",
+    width: "100%"
   },
 });
 

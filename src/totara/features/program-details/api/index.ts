@@ -45,6 +45,7 @@ const query = gql`
           fullname
           summary
           progressPercentage
+          status  
         }
         nextSet {
           nextID
