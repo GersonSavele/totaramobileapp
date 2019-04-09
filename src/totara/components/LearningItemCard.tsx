@@ -22,7 +22,7 @@
 
 import {Image, ImageStyle, StyleSheet, Text, View, ViewStyle} from "react-native";
 import React from "react";
-import {Component, ComponentType} from "react";
+import {ComponentType} from "react";
 import * as Progress from 'react-native-progress';
 
 import {LearningItem} from "@totara/types";
@@ -36,11 +36,7 @@ interface Props {
   cardStyle: ViewStyle
 }
 
-const learningItemCard = (WrappedComponent: ComponentType<any>) =>
-  class LearningItemCard extends Component<Props> {
-
-    render() {
-      const {item, imageStyle, cardStyle} = this.props;
+const learningItemCard = (WrappedComponent: ComponentType<any>) => ({item, imageStyle, cardStyle}: Props) => {
 
       const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
 
@@ -71,8 +67,7 @@ const learningItemCard = (WrappedComponent: ComponentType<any>) =>
           </View>
         </View>
       );
-    }
-  };
+    };
 
 const styles = StyleSheet.create({
   itemImage: {

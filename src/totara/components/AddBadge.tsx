@@ -42,6 +42,7 @@ class CheckBadge implements Badge {
   color = "#FFFFFF";
   backgroundColor = "#69BD45";
   icon = "check";
+  borderColor = "#FFFFFF"
 }
 
 class LockBadge implements Badge {
@@ -49,23 +50,25 @@ class LockBadge implements Badge {
   color = "#FFFFFF";
   backgroundColor = "#999999";
   icon = "lock";
+  borderColor = "#FFFFFF"
 }
 
 const addBadge = (WrappedComponent: ComponentType<any>,
                   badgeType: BadgeType,
-                  size = 8) => {
+                  size = 8,
+                  offsetSize = (size / 2)) => () => {
 
   const badgeDetails = getBadgeDetails(badgeType);
 
-  return class Badged extends Component {
-
-    styles = StyleSheet.create({
+  const styles = StyleSheet.create({
       iconContainer: {
-        top: -2 * (size / 4),
-        right: 0,
+        top: -1 * offsetSize,
+        right: -1 * offsetSize,
         position: "absolute",
         backgroundColor: badgeDetails.backgroundColor,
         borderRadius: size * 2,
+        borderWidth: size / 8,
+        borderColor: badgeDetails.borderColor,
         width: size * 2,
         height: size * 2,
         justifyContent: "center",
@@ -73,18 +76,14 @@ const addBadge = (WrappedComponent: ComponentType<any>,
       },
     });
 
-    render() {
-      return (
-        <View>
-          <WrappedComponent/>
-          <View style={this.styles.iconContainer}>
-            <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>
-          </View>
+    return (
+      <View>
+        <WrappedComponent/>
+        <View style={styles.iconContainer}>
+          <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>
         </View>
-      );
-    }
-
-  };
+      </View>
+    );
 
 };
 

@@ -21,7 +21,7 @@
 
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {learningItemCard} from "@totara/components";
+import {addBadge, BadgeType, learningItemCard} from "@totara/components";
 import PropTypes from "prop-types";
 import Carousel from "react-native-snap-carousel";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
@@ -31,38 +31,35 @@ import {withNavigation} from "react-navigation";
 import {normalize} from "@totara/theme";
 
 
-const CourseCardAndNavigation = (navigation) => {
-  const CourseCard = ({item}) => {
+const CourseSummary = ({item}) =>
+  <View style={{flex: 1}}>
+    <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
+  </View>;
 
-    class CourseSummary extends React.Component {
-      render() {
-        return (
-          <View style={{flex: 1}}>
-            <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
-          </View>);
-      }
-    }
-
-    const CourseWithSummary = learningItemCard(CourseSummary);
-    const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
-
-    return (
-      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)}
-                        activeOpacity={1.0}>
-        <View style={styles.itemContainer}>
-          <CourseWithSummary item={item}/>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  CourseCard.propTypes = {
-    item: PropTypes.object.isRequired
-  };
-
-  return CourseCard;
+CourseSummary.propTypes = {
+  item: PropTypes.object.isRequired
 };
 
+const CourseCard = (navigation) => ({item}) => {
+
+  const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
+  const CourseWithSummary = learningItemCard(() => <CourseSummary item={item}/>);
+
+  const CourseWithSummaryAndNavigiation = () =>
+    <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
+      <View style={styles.itemContainer}>
+        <CourseWithSummary item={item}/>
+      </View>
+    </TouchableOpacity>;
+
+  const BadgedCourseWithSummaryWithNavigation =
+    (item.progressPercentage === 100) ? addBadge(CourseWithSummaryAndNavigiation, BadgeType.Check, 16)
+      : CourseWithSummaryAndNavigiation;
+
+  return(<View style={{marginTop: hp("2.5%"), marginBottom: hp("3%"),}}>
+    <BadgedCourseWithSummaryWithNavigation/>
+  </View>);
+};
 
 class CourseSet extends React.Component {
 
@@ -74,7 +71,7 @@ class CourseSet extends React.Component {
       <View style={styles.courseSet}>
         <Carousel
           data={courses}
-          renderItem={CourseCardAndNavigation(navigation)}
+          renderItem={CourseCard(navigation)}
           sliderWidth={wp("100%")}
           itemWidth={350}
           sliderHeight={hp("100%")}
@@ -108,11 +105,7 @@ const styles = StyleSheet.create({
     height: 300
   },
   learningItem: {
-    flex: 1,
-    marginTop: hp("2.5%"),
-    marginBottom: hp("3%"),
     borderRadius: normalize(10),
-
     shadowColor: "#000",
     shadowOffset: { width: 0, height: normalize(10) },
     shadowOpacity: 0.16,
@@ -120,10 +113,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   itemContainer: {
-    flex: 1,
     borderTopRightRadius: normalize(10),
     borderTopLeftRadius: normalize(10),
     overflow: "hidden",
+    width: "100%",
+    height: "100%"
   },
   itemSummary: {
     flex: 10,

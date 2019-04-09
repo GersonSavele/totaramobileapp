@@ -59,7 +59,7 @@ class ActivityList extends React.Component {
 
     const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>
 
-    const BadgedIcon = addBadge(BuildContentIcon, BadgeType.Check);
+    const BadgedIcon = addBadge(BuildContentIcon, BadgeType.Check, 8, 2);
 
     const Activity = ({status}) =>
       <View style={styles.activity}>
