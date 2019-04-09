@@ -21,14 +21,14 @@
 
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {applyBadge, learningItemCard} from "@totara/components";
 import PropTypes from "prop-types";
 import Carousel from "react-native-snap-carousel";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {withNavigation} from "react-navigation";
 
-
 import {normalize} from "@totara/theme";
+import {Status} from "@totara/types"
+import {applyBadge, learningItemCard} from "@totara/components";
 
 
 const CourseSummary = ({item}) =>
@@ -45,7 +45,7 @@ const CourseCard = (navigation) => ({item}) => {
   const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
   const CourseWithSummary = learningItemCard(() => <CourseSummary item={item}/>);
 
-  const CourseWithSummaryAndNavigiation = () => (item.status != "hidden") ?
+  const CourseWithSummaryAndNavigiation = () => (item.status != Status.hidden) ?
     <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
       <View style={styles.itemContainer}>
         <CourseWithSummary item={item}/>

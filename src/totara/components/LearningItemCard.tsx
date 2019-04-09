@@ -24,7 +24,7 @@ import {Image, ImageStyle, StyleSheet, Text, View, ViewStyle} from "react-native
 import React from "react";
 import {ComponentType} from "react";
 
-import {LearningItem} from "@totara/types";
+import {LearningItem, Status} from "@totara/types";
 import {config} from "@totara/lib";
 import DueDateState from "./DueDateState";
 import {normalize} from "@totara/theme";
@@ -44,7 +44,7 @@ const learningItemCard = (WrappedComponent: ComponentType<any>) => ({item, image
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
 
-  const ImageElement = () => (item.status === "hidden") ?
+  const ImageElement = () => (item.status === Status.hidden) ?
     <View style={{flex: 1}}>
       <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
       <View style={styles.disabledOverlay}/>

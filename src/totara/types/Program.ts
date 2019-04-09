@@ -21,7 +21,8 @@
 
 import {Section} from "./LearningItem"
 
-export type Program = {
+
+export interface Program {
   id: number
   type: string
   shortname: string
@@ -32,4 +33,4 @@ export type Program = {
   progressPercentage?: number
   groupCount?: number
   sections: [Section]
-};
+}

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -19,20 +19,21 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-export type Activity = {
+import {LearningStatus} from "./LearningStatus";
+
+
+export interface Activity extends LearningStatus {
   id: number,
   type: string,
   itemName: string
-  status?: string
 }
 
-export type Section = {
+export interface Section {
   sectionName: string
-  status?: string
   activities: [Activity]
 }
 
-export type LearningItem = {
+export interface LearningItem extends LearningStatus {
   id: number
   type: string
   shortname: string
@@ -42,6 +43,5 @@ export type LearningItem = {
   dueDate?: Date
   progressPercentage?: number
   groupCount?: number
-  status?: string
   sections: [Section]
-};
+}

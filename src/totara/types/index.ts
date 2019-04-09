@@ -20,5 +20,13 @@
 import {LearningItem, Activity} from "./LearningItem"
 import {Course} from "./Course"
 import {Program} from "./Program";
+import {Status, LearningStatus} from "./LearningStatus";
 
-export {LearningItem, Activity, Course, Program}
+export {
+  LearningItem,
+  Activity,
+  Course,
+  Program,
+  Status,
+  LearningStatus,
+}

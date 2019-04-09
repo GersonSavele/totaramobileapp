@@ -17,20 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import {Section} from "./LearningItem"
-import {LearningStatus} from "./LearningStatus";
+export enum Status {
+  hidden = "hidden", // TODO should be lock instaed
+  active = "active",
+  done = "done"
+}
 
-
-export interface Course extends LearningStatus {
-  id: number
-  type: string
-  shortname: string
-  fullname?: string
-  summary?: string
-  progressPercentage?: number
-  groupCount?: number
-  sections: [Section]
+export interface LearningStatus {
+  status?: Status
 }

@@ -22,15 +22,17 @@
 
 import {SectionList, StyleSheet, Text, View} from "react-native";
 import React from "react";
-import {ContentIcon, addBadge, BadgeType} from "@totara/components";
-import {normalize, resizeByScreenSize, h4, normal, tbPadding, lrPadding} from "@totara/theme";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+
+import {ContentIcon, addBadge, BadgeType} from "@totara/components";
+import {normalize, resizeByScreenSize, h4, normal, lrPadding} from "@totara/theme";
+import {Status} from "@totara/types"
 
 class ActivityList extends React.Component {
 
   renderSection = ({section: {sectionName, status}}) => {
-    const SectionHeader = () => (status === "hidden") ?
+    const SectionHeader = () => (status === Status.hidden) ?
       <View style={styles.withLock}>
         <Text style={styles.sectionHeaderText}>{sectionName}</Text>
         <View style={styles.sectionLock}>
@@ -80,13 +82,13 @@ class ActivityList extends React.Component {
         }
       </View>;
 
-    if (section.status === "hidden")
+    if (section.status === Status.hidden)
       return(
         <View>
           <Activity/>
           <View style={styles.disabledOverlay}/>
         </View>);
-    else if (item.status === "active")
+    else if (item.status === Status.active)
       return(
         <View style={styles.activeActivity}>
           <Activity/>
