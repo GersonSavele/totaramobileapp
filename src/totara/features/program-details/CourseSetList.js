@@ -26,7 +26,7 @@ import CourseSet from "./CourseSet";
 
 class CourseSetList extends React.Component {
 
-  renderCourseSet = ({item}) => <CourseSet courses={item.courses} nextSet={item.nextSet}/>
+  renderCourseSet = ({item}) => <CourseSet {...item}/>;
 
   render() {
     const {courseSet} = this.props;

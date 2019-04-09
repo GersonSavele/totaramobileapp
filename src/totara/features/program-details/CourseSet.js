@@ -75,15 +75,18 @@ class CourseSet extends React.Component {
 
   render() {
 
-    const {courses, navigation, nextSet} = this.props;
+    const {courses, navigation, nextSet, label} = this.props;
 
     return (
       <View style={styles.courseSet}>
+        <View style={styles.courseSetLabel}>
+          <Text style={styles.courseSetLabel}>{label}</Text>
+        </View>
         <Carousel
           data={courses}
           renderItem={CourseCard(navigation)}
           sliderWidth={wp("100%")}
-          itemWidth={350}
+          itemWidth={300}
           sliderHeight={hp("100%")}
           inactiveSlideOpacity={0.6}
           enableSnap={false}
@@ -107,12 +110,13 @@ class CourseSet extends React.Component {
 CourseSet.propTypes = {
   courses: PropTypes.array.isRequired,
   navigation: PropTypes.object.isRequired,
-  nextSet: PropTypes.object
+  label: PropTypes.string.isRequired,
+  nextSet: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
   courseSet: {
-    height: 300
+    height: 350
   },
   learningItem: {
     borderRadius: normalize(10),
@@ -152,6 +156,12 @@ const styles = StyleSheet.create({
   },
   nextSetText: {
     textTransform: "uppercase"
+  },
+  courseSetLabel: {
+    fontSize: 20,
+    color: "#000000",
+    paddingLeft: 10,
+    paddingTop: 5,
   }
 });
 

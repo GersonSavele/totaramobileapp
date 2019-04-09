@@ -37,7 +37,8 @@ const query = gql`
       progressPercentage
       groupCount
       courseSet {
-        id  
+        id
+        label  
         courses {
           id
           type
