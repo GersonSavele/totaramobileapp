@@ -23,12 +23,13 @@
 import learningItemCard from "./LearningItemCard";
 import DueDateState from "./DueDateState";
 import ContentIcon from "./ContentIcon";
-import {addBadge, BadgeType} from "./AddBadge";
+import {addBadge, BadgeType, applyBadge} from "./AddBadge";
 
 export {
   learningItemCard,
   DueDateState,
   ContentIcon,
   addBadge,
-  BadgeType
+  BadgeType,
+  applyBadge
 }

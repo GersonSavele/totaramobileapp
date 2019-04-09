@@ -42,5 +42,6 @@ export type LearningItem = {
   dueDate?: Date
   progressPercentage?: number
   groupCount?: number
+  status?: string
   sections: [Section]
 };

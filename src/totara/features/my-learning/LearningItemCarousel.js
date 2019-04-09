@@ -29,7 +29,7 @@ import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 import {learningItemsList} from "./api";
-import {learningItemCard} from "@totara/components";
+import {learningItemCard, applyBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
 
 
@@ -63,14 +63,18 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 
     const LearningItemWithSummary = learningItemCard(LearningItemSummaryAndStartButton);
 
-    return (
+    const LearningItemWithSummaryAndNavigation = () =>
       <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
         <View style={styles.itemContainer}>
           <LearningItemWithSummary item={item}/>
         </View>
-      </TouchableOpacity>
-    );
+      </TouchableOpacity>;
 
+    const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.status || item.progressPercentage, LearningItemWithSummaryAndNavigation)
+
+    return(<View style={{marginTop: hp("2.5%"), marginBottom: hp("3%"),}}>
+      <BadgeLearningItemWithSummaryAndNavigation/>
+    </View>);
   };
 
   LearningItem.propTypes = {
@@ -104,9 +108,6 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 
 const styles = StyleSheet.create({
   learningItem: {
-    flex: 1,
-    marginTop: hp("2.5%"),
-    marginBottom: hp("3%"),
     borderRadius: normalize(10),
 
     shadowColor: "#000",
@@ -116,9 +117,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   itemContainer: {
-    flex: 1,
     borderTopRightRadius: normalize(10),
     borderTopLeftRadius: normalize(10),
+    width: "100%",
+    height: "100%",
     overflow: "hidden",
   },
   itemSummary: {

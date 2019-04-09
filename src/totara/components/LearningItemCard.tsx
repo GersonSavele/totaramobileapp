@@ -23,7 +23,6 @@
 import {Image, ImageStyle, StyleSheet, Text, View, ViewStyle} from "react-native";
 import React from "react";
 import {ComponentType} from "react";
-import * as Progress from 'react-native-progress';
 
 import {LearningItem} from "@totara/types";
 import {config} from "@totara/lib";
@@ -38,44 +37,41 @@ interface Props {
 
 const learningItemCard = (WrappedComponent: ComponentType<any>) => ({item, imageStyle, cardStyle}: Props) => {
 
-      const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
+  const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
 
-      const progressPercentage = item.progressPercentage ? item.progressPercentage/100 : 0;
+  const progressPercentage = item.progressPercentage ? item.progressPercentage/100 : 0;
 
-      const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
-      const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
+  const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
+  const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
 
-      const ImageElement = () => (item.status === "hidden") ?
-        <View style={{flex: 1}}>
-          <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
-          <View style={styles.disabledOverlay}/>
-        </View>
-      :
-        <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>;
+  const ImageElement = () => (item.status === "hidden") ?
+    <View style={{flex: 1}}>
+      <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
+      <View style={styles.disabledOverlay}/>
+    </View>
+    :
+    <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>;
 
   return(
-        <View style={{flex: 1}}>
-          <View style={imageStyleSheet}>
-            <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
-            <ImageElement/>
-          </View>
-          <View style={cardStyleSheet}>
-            <View style={{flexDirection: "row"}}>
-              <Text numberOfLines={2} style={styles.itemFullName}>{item.fullname}</Text>
-            </View>
-            <View style={styles.itemInfo}>
-              <Text style={styles.itemType}>{item.type}</Text>
-              <Text style={styles.pipe}> | </Text>
-              <Progress.Circle progress={progressPercentage} size={16} borderColor={"#E6E6E6"} color={"#0066CC"} thickness={1} borderWidth={1}/>
-              <Text style={styles.percentagetext}> {item.progressPercentage} %</Text>
-            </View>
-            {
-              WrappedComponent ? <WrappedComponent/> : null
-            }
-          </View>
+    <View style={{flex: 1}}>
+      <View style={imageStyleSheet}>
+        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
+        <ImageElement/>
+      </View>
+      <View style={cardStyleSheet}>
+        <View style={{flexDirection: "row"}}>
+          <Text numberOfLines={2} style={styles.itemFullName}>{item.fullname}</Text>
         </View>
-      );
-    };
+        <View style={styles.itemInfo}>
+          <Text style={styles.itemType}>{item.type}</Text>
+        </View>
+        {
+          WrappedComponent ? <WrappedComponent/> : null
+        }
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   itemImage: {

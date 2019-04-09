@@ -21,7 +21,7 @@
 
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {addBadge, BadgeType, learningItemCard} from "@totara/components";
+import {applyBadge, learningItemCard} from "@totara/components";
 import PropTypes from "prop-types";
 import Carousel from "react-native-snap-carousel";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
@@ -56,19 +56,11 @@ const CourseCard = (navigation) => ({item}) => {
       <CourseWithSummary item={item}/>
     </View>;
 
-  const BadgedCourseWithSummaryWithNavigation = applyBadge(item.status, CourseWithSummaryAndNavigiation);
+  const BadgedCourseWithSummaryWithNavigation = applyBadge(item.status || item.progressPercentage, CourseWithSummaryAndNavigiation);
 
   return(<View style={{marginTop: hp("2.5%"), marginBottom: hp("3%"),}}>
     <BadgedCourseWithSummaryWithNavigation/>
   </View>);
-};
-
-const applyBadge = (status, component) => {
-  switch (status) {
-    case "done": return addBadge(component, BadgeType.Check, 16);
-    case "hidden": return addBadge(component, BadgeType.Lock, 16);
-    default: return component
-  }
 };
 
 class CourseSet extends React.Component {

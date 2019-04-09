@@ -24,10 +24,12 @@ import React from "react";
 import {Component, ComponentType} from "react";
 import {View, StyleSheet} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import * as Progress from "react-native-progress";
 
 enum BadgeType {
   Check = "Check",
-  Lock = "Lock"
+  Lock = "Lock",
+  Progress = "Progress"
 }
 
 interface Badge {
@@ -37,6 +39,7 @@ interface Badge {
   icon: string
 }
 
+// TODO rethink if this should be a class
 class CheckBadge implements Badge {
   kind = BadgeType.Check;
   color = "#FFFFFF";
@@ -53,10 +56,19 @@ class LockBadge implements Badge {
   borderColor = "#FFFFFF"
 }
 
+class ProgressBadge implements Badge {
+  kind = BadgeType.Progress;
+  color = "#69BD45";
+  backgroundColor = "#E6E6E6";
+  icon = undefined;
+  borderColor = "#FFFFFF"
+}
+
 const addBadge = (WrappedComponent: ComponentType<any>,
                   badgeType: BadgeType,
                   size = 8,
-                  offsetSize = (size / 2)) => () => {
+                  offsetSize = (size / 2),
+                  progress = 0) => () => {
 
   const badgeDetails = getBadgeDetails(badgeType);
 
@@ -76,11 +88,25 @@ const addBadge = (WrappedComponent: ComponentType<any>,
       },
     });
 
-    return (
+  const Badge = () => (badgeDetails.kind === BadgeType.Progress) ?
+    <Progress.Circle progress={progress/100}
+                   size={32}
+                   unfilledColor={badgeDetails.backgroundColor}
+                   color={badgeDetails.color}
+                   thickness={2}
+                   borderWidth={0}
+                   formatText={() =>  progress+"%"}
+                   showsText={true}
+                   textStyle={{fontSize: 11, fontWeight: "bold", color: "#000000"}}/>
+    :
+    <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>
+
+
+  return (
       <View>
         <WrappedComponent/>
         <View style={styles.iconContainer}>
-          <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>
+          <Badge/>
         </View>
       </View>
     );
@@ -94,9 +120,23 @@ const getBadgeDetails = (badgeType: BadgeType) => {
       return new CheckBadge;
     case BadgeType.Lock:
       return new LockBadge;
+    case BadgeType.Progress:
+      return new ProgressBadge;
     default:
       throw "unsupported badgeType: " + badgeType;
   }
 };
 
-export {addBadge, BadgeType};
+const applyBadge = (status: string | number, component: ComponentType<any>) => {
+  switch (status) {
+    case "done": return addBadge(component, BadgeType.Check, 16);
+    case "hidden": return addBadge(component, BadgeType.Lock, 16);
+    default:
+      if (typeof status == "number")
+        return addBadge(component, BadgeType.Progress, 16, 8, status);
+      else
+        return component
+  }
+};
+
+export {addBadge, BadgeType, applyBadge};
