@@ -26,12 +26,27 @@ import {Button} from "native-base";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
-import {config} from "../lib/index";
+import {config} from "@totara/lib";
+import {Activity} from "@totara/types";
 
 
-const ActivitySheetContext = React.createContext({
+type contextData = {
+  toggleActivity: () => void,
+  activitySheetVisible: boolean,
+  currentActivity: Activity,
+  setCurrentActivity: (activity: Activity) => void
+}
+
+
+const ActivitySheetContext = React.createContext<contextData>({
   toggleActivity: () => {},
-  activitySheetVisible: false
+  activitySheetVisible: false,
+  currentActivity: { // placeholder
+    id: 0,
+    type: "",
+    itemName: "",
+  },
+  setCurrentActivity: activity => {}
 });
 
 export const ActivitySheetProvider = ActivitySheetContext.Provider;
@@ -43,7 +58,7 @@ export const ActivitySheet = () => {
 
     return(
       <ActivitySheetConsumer>
-        {({toggleActivity, activitySheetVisible}) =>
+        {({toggleActivity, activitySheetVisible, currentActivity}) =>
           (<SlidingUpPanel
             visible={activitySheetVisible}
             onRequestClose={toggleActivity}>
@@ -57,11 +72,19 @@ export const ActivitySheet = () => {
                 />
               </Button>
               </View>
-              <Image source={{uri: imgSrc}} style={{width: wp("100%"), height: 240}}/>
-              <Text style={styles.panelContent}>
-                In this brief tutorial, you’ll explore what hierarchies are, how they are structured and the benefits of
-                using them. You’ll also find out about job assignments in Totara Learn.
-              </Text>
+              {
+                (currentActivity && currentActivity.imgSrc) ?
+                  <Image source={{uri: config.mobileStatic + "/public/" + currentActivity.imgSrc}}
+                         style={{width: wp("100%"), height: 240}}/>
+                  : null
+              }
+              {
+                (currentActivity && currentActivity.summary) ?
+                  <Text style={styles.panelContent}>
+                    {currentActivity.summary}
+                  </Text>
+                  : null
+              }
             </View>
           </SlidingUpPanel>)
         }

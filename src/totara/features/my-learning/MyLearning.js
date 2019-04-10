@@ -55,11 +55,14 @@ export default class MyLearning extends React.Component {
   }
 
   render() {
-    const activity = {
+    const activity = { // TODO mock activity, put into graphql
       id: 1,
-      itemName: 'Totara Learn for beginners',
-      type: 'video',
-      progressPercentage: 55
+      itemName: "Totara Learn for beginners",
+      type: "video",
+      progressPercentage: 55,
+      summary: "Users are the people who are going to interact with your Totara Learn system; whether they are learners, " +
+        "managers, trainers,administrators or something in between. So it’s easy to understand why you want to add users to your LMS. But how do you go about doing so? You’ve got two main options you’re likely to use. You can create users manually, or you can create multiple users at the same time using HR Import. In this course, you’ll learn how to do both.",
+      imgSrc: "panel2.png"
     };
 
     return (
@@ -76,8 +79,8 @@ export default class MyLearning extends React.Component {
           </View>
           <View style={styles.recentActivity}>
             <ActivitySheetConsumer>
-              {({toggleActivity}) =>
-                <ActivityLauncher item={activity} onPress={toggleActivity}/>
+              {({setCurrentActivity}) =>
+                <ActivityLauncher item={activity} onPress={() => setCurrentActivity(activity)}/>
               }
             </ActivitySheetConsumer>
           </View>

@@ -61,6 +61,8 @@ export default class App extends React.Component<{}> {
   state = {
     activitySheetVisible: false,
     toggleActivity: () => this.toggleActivity(),
+    setCurrentActivity: (activity) => this.setCurrentActivity(activity),
+    currentActivity: null
   };
 
   navigator = undefined;
@@ -80,6 +82,13 @@ export default class App extends React.Component<{}> {
 
   toggleActivity() {
     this.setState({activitySheetVisible: !this.state.activitySheetVisible})
+  }
+
+  setCurrentActivity(activity) {
+    this.setState({
+      currentActivity: activity,
+      activitySheetVisible: !this.state.activitySheetVisible
+    })
   }
 
   render() {

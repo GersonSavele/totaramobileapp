@@ -63,12 +63,15 @@ class ProgramDetailsComponent extends React.Component {
 
   render() {
     const item = this.props.program;
-    const activity = {
+    const activity = { // TODO mock activity, put into graphql
         id: 1,
         itemName: 'Setting up a hierarchy',
         type: 'video',
-        progressPercentage: 45
-      };
+        progressPercentage: 45,
+        summary: "In this brief tutorial, you’ll explore what hierarchies are, how they are structured and the benefits of\n" +
+          "using them. You’ll also find out about job assignments in Totara Learn.",
+        imgSrc: "panel1.png"
+    };
 
       return (
       <View style={styles.container}>
@@ -77,8 +80,8 @@ class ProgramDetailsComponent extends React.Component {
           <View style={styles.activeActivityContainer}>
             <View style={styles.activeActivity}>
               <ActivitySheetConsumer>
-                {({toggleActivity}) =>
-                  <ActivityLauncher item={activity} onPress={toggleActivity}/>
+                {({setCurrentActivity}) =>
+                  <ActivityLauncher item={activity} onPress={() => setCurrentActivity(activity)}/>
                 }
               </ActivitySheetConsumer>
             </View>

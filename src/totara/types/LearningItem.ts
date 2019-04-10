@@ -26,6 +26,8 @@ export interface Activity extends LearningStatus {
   id: number,
   type: string,
   itemName: string,
+  summary?: string,
+  imgSrc?: string,
   progressPercentage?: number
 }
 
