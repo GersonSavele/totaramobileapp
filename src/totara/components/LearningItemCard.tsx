@@ -32,10 +32,11 @@ import {normalize} from "@totara/theme";
 interface Props {
   item: LearningItem
   imageStyle: ImageStyle
-  cardStyle: ViewStyle
+  cardStyle: ViewStyle,
+  onExtension?: () => void
 }
 
-const learningItemCard = (WrappedComponent: ComponentType<any>) => ({item, imageStyle, cardStyle}: Props) => {
+const learningItemCard = (WrappedComponent: ComponentType<any>) => ({item, imageStyle, cardStyle, onExtension}: Props) => {
 
   const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
 
@@ -55,7 +56,7 @@ const learningItemCard = (WrappedComponent: ComponentType<any>) => ({item, image
   return(
     <View style={{flex: 1}}>
       <View style={imageStyleSheet}>
-        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
+        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} onExtension={onExtension}/>
         <ImageElement/>
       </View>
       <View style={cardStyleSheet}>

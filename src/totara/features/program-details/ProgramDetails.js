@@ -73,10 +73,12 @@ class ProgramDetailsComponent extends React.Component {
         imgSrc: "panel1.png"
     };
 
-      return (
+    const extendProgram = () => {};
+
+    return (
       <View style={styles.container}>
         <View style={styles.learningItem}>
-          <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
+          <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard} onExtension={extendProgram}/>
           <View style={styles.activeActivityContainer}>
             <View style={styles.activeActivity}>
               <ActivitySheetConsumer>

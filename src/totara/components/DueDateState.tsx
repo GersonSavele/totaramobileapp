@@ -19,6 +19,7 @@
 
 
 import {StyleSheet, Text, View} from "react-native";
+import {Button} from "native-base";
 import moment from "moment";
 import React from "react";
 import {normalize} from "@totara/theme";
@@ -28,27 +29,46 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 type Props = {
   dueDate?: Date
   dueDateState?: string
+  onExtension?: () => void
 }
 
-class DueDateState extends React.Component<Props> {
+const ExtenstionButton = ({onExtension}: Props) =>
+  <View style={{paddingTop: 3}}>
+    <Button small rounded bordered light onPress={onExtension} style={{padding: 5}}>
+      <Text style={styles.buttonText}> Extend Date </Text>
+    </Button>
+  </View>
 
-  render() {
-    const {dueDate, dueDateState} = this.props;
 
+const DueDateState = ({dueDate, dueDateState, onExtension}: Props) => {
     switch (dueDateState) {
       case "warning":
         return (
           <View style={styles.warning}>
-            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
-            <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
+            <View style={{flexDirection: "row"}}>
+              <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
+              <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
+            </View>
+            {
+              (onExtension) ?
+                <ExtenstionButton onExtension={onExtension}/>
+                : null
+            }
           </View>
         );
 
       case "danger":
         return (
           <View style={styles.danger}>
-            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
-            <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
+            <View style={{flexDirection: "row"}}>
+              <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
+              <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
+            </View>
+            {
+              (onExtension) ?
+                <ExtenstionButton onExtension={onExtension}/>
+                : null
+            }
           </View>
         );
 
@@ -62,9 +82,8 @@ class DueDateState extends React.Component<Props> {
       default:
         return null
     }
-  }
+  };
 
-}
 
 const styles = StyleSheet.create({
   info: {
@@ -81,9 +100,11 @@ const styles = StyleSheet.create({
   },
   warning: {
     flexDirection: "row",
+    justifyContent: "space-between",
     backgroundColor: "#8E660D",
     alignItems: "center",
     paddingLeft: 16,
+    paddingRight: 16,
     height: normalize(50)
   },
   warningText: {
@@ -93,16 +114,21 @@ const styles = StyleSheet.create({
   },
   danger: {
     flexDirection: "row",
+    justifyContent: "space-between",
     backgroundColor: "#953539",
     alignItems: "center",
     height: normalize(50),
     paddingLeft: 16,
+    paddingRight: 16,
   },
   dangerText: {
     color: "#FFFFFF",
     paddingLeft: 8,
     fontSize: 14,
   },
+  buttonText: {
+    color: "#FFFFFF",
+  }
 });
 
 export default DueDateState;
