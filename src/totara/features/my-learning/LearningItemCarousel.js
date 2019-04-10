@@ -70,7 +70,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
         </View>
       </TouchableOpacity>;
 
-    const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.status || item.progressPercentage, LearningItemWithSummaryAndNavigation)
+    const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.progressPercentage || item.status, LearningItemWithSummaryAndNavigation)
 
     return(<View style={{marginTop: hp("2.5%"), marginBottom: hp("3%"),}}>
       <BadgeLearningItemWithSummaryAndNavigation/>

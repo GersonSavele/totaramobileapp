@@ -44,9 +44,12 @@ const CourseCard = (navigation) => ({item}) => {
 
   const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
   const CourseWithSummary = learningItemCard(() => <CourseSummary item={item}/>);
+  const learningItemStyle = (item.status === Status.active) ?
+    StyleSheet.flatten([styles.learningItem, styles.activeCourse]) :
+    styles.learningItem;
 
   const CourseWithSummaryAndNavigiation = () => (item.status != Status.hidden) ?
-    <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
+    <TouchableOpacity style={learningItemStyle} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
       <View style={styles.itemContainer}>
         <CourseWithSummary item={item}/>
       </View>
@@ -56,7 +59,7 @@ const CourseCard = (navigation) => ({item}) => {
       <CourseWithSummary item={item}/>
     </View>;
 
-  const BadgedCourseWithSummaryWithNavigation = applyBadge(item.status || item.progressPercentage, CourseWithSummaryAndNavigiation);
+  const BadgedCourseWithSummaryWithNavigation = applyBadge(item.progressPercentage || item.status, CourseWithSummaryAndNavigiation);
 
   return(<View style={{marginTop: hp("2.5%"), marginBottom: hp("3%"),}}>
     <BadgedCourseWithSummaryWithNavigation/>
@@ -116,14 +119,18 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: normalize(10) },
     shadowOpacity: 0.16,
     shadowRadius: normalize(14),
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
+  },
+  activeLearningItem: {
+    borderWidth: 2,
+    borderColor: "#337AB7",
   },
   itemContainer: {
     borderTopRightRadius: normalize(10),
     borderTopLeftRadius: normalize(10),
     overflow: "hidden",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   itemSummary: {
     flex: 10,
@@ -154,7 +161,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     paddingLeft: 10,
     paddingTop: 5,
-  }
+  },
 });
 
 

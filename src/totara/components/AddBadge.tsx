@@ -25,6 +25,7 @@ import {Component, ComponentType} from "react";
 import {View, StyleSheet} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import * as Progress from "react-native-progress";
+import {Status} from "@totara/types";
 
 enum BadgeType {
   Check = "Check",
@@ -127,10 +128,12 @@ const getBadgeDetails = (badgeType: BadgeType) => {
   }
 };
 
-const applyBadge = (status: string | number, component: ComponentType<any>) => {
+const applyBadge = (status: Status | number, component: ComponentType<any>) => {
   switch (status) {
-    case "done": return addBadge(component, BadgeType.Check, 16);
-    case "hidden": return addBadge(component, BadgeType.Lock, 16);
+    case Status.done: return addBadge(component, BadgeType.Check, 16);
+    case 100: return addBadge(component, BadgeType.Check, 16);
+    case Status.hidden: return addBadge(component, BadgeType.Lock, 16);
+    case Status.active: // drop through default
     default:
       if (typeof status == "number")
         return addBadge(component, BadgeType.Progress, 16, 8, status);
