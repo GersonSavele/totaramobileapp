@@ -24,8 +24,8 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 
 
-import {learningItemCard} from "@totara/components";
-import {gutter} from "@totara/theme";
+import {learningItemCard, ActivityLauncher} from "@totara/components";
+import {gutter, normalize} from "@totara/theme";
 import CourseSetList from "./CourseSetList";
 import {getProgram} from "./api";
 
@@ -63,11 +63,22 @@ class ProgramDetailsComponent extends React.Component {
 
   render() {
     const item = this.props.program;
+    const activity = {
+        id: 1,
+        itemName: 'Setting up a hierarchy',
+        type: 'video',
+        progressPercentage: 45
+      };
 
-    return (
+      return (
       <View style={styles.container}>
         <View style={styles.learningItem}>
           <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
+          <View style={styles.activeActivityContainer}>
+            <View style={styles.activeActivity}>
+              <ActivityLauncher item={activity}/>
+            </View>
+          </View>
         </View>
         <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
@@ -99,7 +110,18 @@ const styles = StyleSheet.create({
   activitiesContainer: {
     flex: 3,
     paddingLeft: 0,
-
+  },
+  activeActivityContainer: {
+    padding: 16,
+    backgroundColor: "#EEEEEE",
+  },
+  activeActivity: {
+    borderRadius: normalize(10),
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: normalize(10) },
+    shadowOpacity: 0.16,
+    shadowRadius: normalize(14),
+    overflow: "hidden"
   },
   button: {
     alignItems: "center",

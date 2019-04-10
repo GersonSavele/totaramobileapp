@@ -57,7 +57,7 @@ class LockBadge implements Badge {
   borderColor = "#FFFFFF"
 }
 
-class ProgressBadge implements Badge {
+class ProgressBadge implements Badge { // TODO just not have a class, too brittle
   kind = BadgeType.Progress;
   color = "#69BD45";
   backgroundColor = "#E6E6E6";
@@ -90,15 +90,7 @@ const addBadge = (WrappedComponent: ComponentType<any>,
     });
 
   const Badge = () => (badgeDetails.kind === BadgeType.Progress) ?
-    <Progress.Circle progress={progress/100}
-                   size={32}
-                   unfilledColor={badgeDetails.backgroundColor}
-                   color={badgeDetails.color}
-                   thickness={2}
-                   borderWidth={0}
-                   formatText={() =>  progress+"%"}
-                   showsText={true}
-                   textStyle={{fontSize: 11, fontWeight: "bold", color: "#000000"}}/>
+    <ProgressCircle size={size * 2} progress={progress}/>
     :
     <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>
 
@@ -142,4 +134,23 @@ const applyBadge = (status: Status | number, component: ComponentType<any>) => {
   }
 };
 
-export {addBadge, BadgeType, applyBadge};
+type ProgressCircleParam = {
+  progress: number,
+  size: number
+}
+
+const ProgressCircle = ({size, progress}: ProgressCircleParam) => {
+
+  return <Progress.Circle progress={progress/100}
+                   size={size}
+                   unfilledColor={"#E6E6E6"}
+                   color={"#69BD45"}
+                   thickness={2}
+                   borderWidth={0}
+                   formatText={() =>  progress+"%"}
+                   showsText={true}
+                   textStyle={{fontSize: 11, fontWeight: "bold", color: "#000000"}}/>
+
+};
+
+export {addBadge, BadgeType, applyBadge, ProgressCircle};

@@ -21,26 +21,22 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-import {ContentIcon} from "@totara/components";
+import {ActivityLauncher} from "@totara/components";
 
 export default class RecentActivity extends React.Component {
 
   render() {
+    const activity = {
+      id: 1,
+      itemName: 'Totara Learn for beginners',
+      type: 'video',
+      progressPercentage: 55
+    };
+
     return (
-      <TouchableOpacity style={styles.lastAccessed} onPress={() => this.props.onPress()}>
-        <ContentIcon icon={"video"} iconSize={20} size={40}/>
-        <View style={styles.container}>
-          <Text style={styles.topText}>Continue your learning</Text>
-          <Text numberOfLines={1} style={styles.bottomText}>Setting up a hierarchy and flows of the screen and the</Text>
-        </View>
-        <View>
-          <FontAwesomeIcon icon="chevron-up" size={16} color={"#3D444B"}/>
-        </View>
-      </TouchableOpacity>
+      <ActivityLauncher item={activity} onPress={() => this.props.onPress()}/>
     );
   }
 
@@ -49,35 +45,5 @@ export default class RecentActivity extends React.Component {
 RecentActivity.propTypes = {
   onPress: PropTypes.func.isRequired
 };
-
-const styles = StyleSheet.create({
-  lastAccessed: {
-    flexDirection: "row",
-    backgroundColor: "#CECECE",
-    alignItems: "center",
-    paddingRight: 16,
-    paddingLeft: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingLeft: 8,
-  },
-  topText: {
-    fontSize: 12,
-    lineHeight: 14,
-    color: "#64717D"
-  },
-  bottomText: {
-    flex: 1,
-    fontSize: 14,
-    lineHeight: 18,
-    paddingRight: 64,
-    color: "#3D444B",
-    fontWeight: "600"
-  }
-});
 
 

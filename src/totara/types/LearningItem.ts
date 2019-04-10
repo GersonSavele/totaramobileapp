@@ -25,7 +25,8 @@ import {LearningStatus} from "./LearningStatus";
 export interface Activity extends LearningStatus {
   id: number,
   type: string,
-  itemName: string
+  itemName: string,
+  progressPercentage?: number
 }
 
 export interface Section {

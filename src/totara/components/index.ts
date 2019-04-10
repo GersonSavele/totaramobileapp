@@ -23,7 +23,8 @@
 import learningItemCard from "./LearningItemCard";
 import DueDateState from "./DueDateState";
 import ContentIcon from "./ContentIcon";
-import {addBadge, BadgeType, applyBadge} from "./AddBadge";
+import {addBadge, BadgeType, applyBadge, ProgressCircle} from "./AddBadge";
+import ActivityLauncher from "./ActivityLauncher";
 
 export {
   learningItemCard,
@@ -31,5 +32,7 @@ export {
   ContentIcon,
   addBadge,
   BadgeType,
-  applyBadge
+  applyBadge,
+  ActivityLauncher,
+  ProgressCircle
 }

@@ -185,10 +185,9 @@ const styles = StyleSheet.create({
     height: normalize(64),
     width: "100%"
   },
-  activeActivity: {
+  activeActivityContainer: {
     borderWidth: 2,
     borderColor: "#337AB7",
-
     backgroundColor: "#EEEEEE",
   },
   activeActivityText: {
@@ -196,7 +195,6 @@ const styles = StyleSheet.create({
     color: "#0066CC",
     paddingLeft: lrPadding,
     fontWeight: "600",
-
   }
 });
 
