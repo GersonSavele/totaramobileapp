@@ -24,7 +24,7 @@ import React from "react";
 import {View} from "react-native";
 import ApolloClient from "apollo-boost";
 import {ApolloProvider} from "react-apollo";
-import {createStackNavigator, createAppContainer, NavigationActions} from "react-navigation";
+import {createStackNavigator, createAppContainer} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import {StyleProvider} from "native-base";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
@@ -51,13 +51,17 @@ import {
 import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
 import {theme, getTheme} from "@totara/theme";
+import {ActivitySheet, ActivitySheetProvider} from "@totara/components";
 
 const client = new ApolloClient({
   uri: config.mobileApi + "/graphql"
 });
 
 export default class App extends React.Component<{}> {
-  state = {};
+  state = {
+    activitySheetVisible: false,
+    toggleActivity: () => this.toggleActivity(),
+  };
 
   navigator = undefined;
 
@@ -74,22 +78,21 @@ export default class App extends React.Component<{}> {
     }
   }
 
-  navigateTo(route) {
-    this.navigator &&
-    this.navigator.dispatch(
-      NavigationActions.navigate({routeName: route})
-    );
+  toggleActivity() {
+    this.setState({activitySheetVisible: !this.state.activitySheetVisible})
   }
-
 
   render() {
     return (
       <ApolloProvider client={client}>
         <StyleProvider style={getTheme(theme)}>
+          <ActivitySheetProvider value={this.state}>
           <AppContainer
             ref={nav => {
               this.navigator = nav;
             }}/>
+          <ActivitySheet/>
+          </ActivitySheetProvider>
         </StyleProvider>
       </ApolloProvider>
     );

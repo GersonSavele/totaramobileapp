@@ -24,7 +24,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 
 
-import {learningItemCard, ActivityLauncher} from "@totara/components";
+import {learningItemCard, ActivityLauncher, ActivitySheetConsumer} from "@totara/components";
 import {gutter, normalize} from "@totara/theme";
 import CourseSetList from "./CourseSetList";
 import {getProgram} from "./api";
@@ -76,7 +76,11 @@ class ProgramDetailsComponent extends React.Component {
           <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
           <View style={styles.activeActivityContainer}>
             <View style={styles.activeActivity}>
-              <ActivityLauncher item={activity}/>
+              <ActivitySheetConsumer>
+                {({toggleActivity}) =>
+                  <ActivityLauncher item={activity} onPress={toggleActivity}/>
+                }
+              </ActivitySheetConsumer>
             </View>
           </View>
         </View>

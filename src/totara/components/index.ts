@@ -25,6 +25,7 @@ import DueDateState from "./DueDateState";
 import ContentIcon from "./ContentIcon";
 import {addBadge, BadgeType, applyBadge, ProgressCircle} from "./AddBadge";
 import ActivityLauncher from "./ActivityLauncher";
+import {ActivitySheet, ActivitySheetProvider, ActivitySheetConsumer} from "./ActivitySheet"; // TODO maybe just make this ActivitySheet.X
 
 export {
   learningItemCard,
@@ -34,5 +35,8 @@ export {
   BadgeType,
   applyBadge,
   ActivityLauncher,
-  ProgressCircle
+  ProgressCircle,
+  ActivitySheet,
+  ActivitySheetProvider,
+  ActivitySheetConsumer
 }
