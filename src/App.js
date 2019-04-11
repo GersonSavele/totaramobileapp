@@ -51,19 +51,13 @@ import {
 import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
 import {theme, getTheme} from "@totara/theme";
-import {ActivitySheet, ActivitySheetProvider} from "@totara/components";
+import {ActivitySheetProvider} from "@totara/components";
 
 const client = new ApolloClient({
   uri: config.mobileApi + "/graphql"
 });
 
 export default class App extends React.Component<{}> {
-  state = {
-    activitySheetVisible: false,
-    toggleActivity: () => this.toggleActivity(),
-    setCurrentActivity: (activity) => this.setCurrentActivity(activity),
-    currentActivity: null
-  };
 
   navigator = undefined;
 
@@ -80,27 +74,16 @@ export default class App extends React.Component<{}> {
     }
   }
 
-  toggleActivity() {
-    this.setState({activitySheetVisible: !this.state.activitySheetVisible})
-  }
-
-  setCurrentActivity(activity) {
-    this.setState({
-      currentActivity: activity,
-      activitySheetVisible: !this.state.activitySheetVisible
-    })
-  }
-
   render() {
     return (
       <ApolloProvider client={client}>
         <StyleProvider style={getTheme(theme)}>
-          <ActivitySheetProvider value={this.state}>
+          <ActivitySheetProvider>
           <AppContainer
             ref={nav => {
               this.navigator = nav;
             }}/>
-          <ActivitySheet/>
+          {/*<ActivitySheet/>*/}
           </ActivitySheetProvider>
         </StyleProvider>
       </ApolloProvider>

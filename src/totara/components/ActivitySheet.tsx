@@ -31,63 +31,82 @@ import {Activity} from "@totara/types";
 
 
 type contextData = {
-  toggleActivity: () => void,
-  activitySheetVisible: boolean,
-  currentActivity: Activity,
   setCurrentActivity: (activity: Activity) => void
 }
 
-
-const ActivitySheetContext = React.createContext<contextData>({
-  toggleActivity: () => {},
-  activitySheetVisible: false,
-  currentActivity: { // placeholder
+const placeHolderActivity = { // placeholder
     id: 0,
     type: "",
     itemName: "",
-  },
+  };
+
+const ActivitySheetContext = React.createContext<contextData>({
   setCurrentActivity: activity => {}
 });
 
-export const ActivitySheetProvider = ActivitySheetContext.Provider;
 export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
 
-export const ActivitySheet = () => {
+type Props = {
+  toggleActivity: () => void,
+  activitySheetVisible: boolean,
+  currentActivity: Activity,
+}
 
-    return(
-      <ActivitySheetConsumer>
-        {({toggleActivity, activitySheetVisible, currentActivity}) =>
-          (<SlidingUpPanel
-            visible={activitySheetVisible}
-            onRequestClose={toggleActivity}>
-            <View style={styles.panel}>
-              <View style={{paddingLeft: 10}}>
-              <StatusBar hidden/>
-              <Button transparent onPress={toggleActivity}>
-                <FontAwesomeIcon
-                  icon="times"
-                  size={24}
-                />
-              </Button>
-              </View>
-              {
-                (currentActivity && currentActivity.imgSrc) ?
-                  <Image source={{uri: config.mobileStatic + "/public/" + currentActivity.imgSrc}}
-                         style={{width: wp("100%"), height: 240}}/>
-                  : null
-              }
-              {
-                (currentActivity && currentActivity.summary) ?
-                  <Text style={styles.panelContent}>
-                    {currentActivity.summary}
-                  </Text>
-                  : null
-              }
-            </View>
-          </SlidingUpPanel>)
-        }
-      </ActivitySheetConsumer>);
+export class ActivitySheetProvider extends React.Component {
+
+  state = {
+    activitySheetVisible: false,
+    toggleActivity: () => this.toggleActivity(),
+    setCurrentActivity: (activity: Activity) => this.setCurrentActivity(activity),
+    currentActivity: placeHolderActivity
   };
+
+  toggleActivity() {
+    this.setState({activitySheetVisible: !this.state.activitySheetVisible})
+  }
+
+  setCurrentActivity(activity: Activity) {
+    this.setState({
+      currentActivity: activity,
+      activitySheetVisible: !this.state.activitySheetVisible
+    })
+  }
+
+  render() {
+    return(
+      <ActivitySheetContext.Provider value={this.state}>
+        {this.props.children}
+        <ActivitySheet {...this.state}/>
+      </ActivitySheetContext.Provider>)
+  }
+
+}
+
+const ActivitySheet = ({toggleActivity, activitySheetVisible, currentActivity}: Props) => (
+  <SlidingUpPanel visible={activitySheetVisible} onRequestClose={toggleActivity}>
+    <View style={styles.panel}>
+      <View style={{paddingLeft: 10}}>
+      <StatusBar hidden/>
+      <Button transparent onPress={toggleActivity}>
+        <FontAwesomeIcon
+          icon="times"
+          size={24}
+        />
+      </Button>
+      </View>
+      {(currentActivity && currentActivity.imgSrc) ?
+        <Image source={{uri: config.mobileStatic + "/public/" + currentActivity.imgSrc}}
+               style={{width: wp("100%"), height: 240}}/>
+        : null
+      }
+      {(currentActivity && currentActivity.summary) ?
+        <Text style={styles.panelContent}>
+          {currentActivity.summary}
+        </Text>
+        : null
+      }
+    </View>
+  </SlidingUpPanel>);
 
 
 const styles = StyleSheet.create({
