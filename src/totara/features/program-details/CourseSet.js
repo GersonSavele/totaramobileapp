@@ -55,8 +55,10 @@ const CourseCard = (navigation) => ({item}) => {
       </View>
     </TouchableOpacity>
     :
-    <View style={styles.itemContainer}>
-      <CourseWithSummary item={item}/>
+    <View style={learningItemStyle}>
+      <View style={styles.itemContainer}>
+        <CourseWithSummary item={item}/>
+      </View>
     </View>;
 
   const BadgedCourseWithSummaryWithNavigation = applyBadge(item.progressPercentage || item.status, CourseWithSummaryAndNavigiation);

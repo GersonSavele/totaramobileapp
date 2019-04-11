@@ -54,8 +54,6 @@ export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
 
 export const ActivitySheet = () => {
 
-    let imgSrc = config.mobileStatic + "/public/panel1.png";
-
     return(
       <ActivitySheetConsumer>
         {({toggleActivity, activitySheetVisible, currentActivity}) =>

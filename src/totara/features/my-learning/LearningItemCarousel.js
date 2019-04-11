@@ -43,6 +43,9 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
       case "Program":
         navigation.navigate("ProgramDetails", {programId: item.id});
         break;
+      case "Certification": // TODO for now certifaction is the same as Program
+        navigation.navigate("ProgramDetails", {programId: item.id});
+        break;
       default:
         console.error("unknown type", item); // TODO turn this into a logging system
     }
