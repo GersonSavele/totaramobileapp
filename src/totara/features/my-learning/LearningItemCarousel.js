@@ -33,6 +33,13 @@ import {learningItemCard, applyBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
 
 
+const LearningItemSummaryAndStartButton = ({item}) => (
+      <View style={{flex: 1}}>
+        <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
+        <View style={{flex: 1}}/>
+        <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
+      </View>);
+
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
   let navigateTo = (item) => {
@@ -53,18 +60,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 
   const LearningItem = ({item}) => {
 
-    class LearningItemSummaryAndStartButton extends React.Component {
-      render() {
-        return(
-          <View style={{flex: 1}}>
-            <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
-            <View style={{flex: 1}}/>
-            <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
-          </View>);
-      }
-    }
-
-    const LearningItemWithSummary = learningItemCard(LearningItemSummaryAndStartButton);
+    const LearningItemWithSummary = learningItemCard(() => <LearningItemSummaryAndStartButton item={item}/>);
 
     const LearningItemWithSummaryAndNavigation = () =>
       <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
@@ -75,7 +71,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 
     const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.progressPercentage || item.status, LearningItemWithSummaryAndNavigation)
 
-    return(<View style={{marginTop: hp("2.5%"), marginBottom: hp("3%"),}}>
+    return(<View style={styles.itemWithBadgeContainer}>
       <BadgeLearningItemWithSummaryAndNavigation/>
     </View>);
   };
@@ -110,9 +106,14 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 }));
 
 const styles = StyleSheet.create({
+  itemWithBadgeContainer: {
+    marginTop: hp("2.5%"),
+    marginBottom: hp("3%"),
+    marginLeft: hp("1.5%"),
+    marginRight: hp("1.5%")
+  },
   learningItem: {
     borderRadius: normalize(10),
-
     shadowColor: "#000",
     shadowOffset: { width: 0, height: normalize(10) },
     shadowOpacity: 0.16,

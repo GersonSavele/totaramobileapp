@@ -79,11 +79,10 @@ export default class App extends React.Component<{}> {
       <ApolloProvider client={client}>
         <StyleProvider style={getTheme(theme)}>
           <ActivitySheetProvider>
-          <AppContainer
-            ref={nav => {
-              this.navigator = nav;
-            }}/>
-          {/*<ActivitySheet/>*/}
+            <AppContainer
+              ref={nav => {
+                this.navigator = nav;
+              }}/>
           </ActivitySheetProvider>
         </StyleProvider>
       </ApolloProvider>

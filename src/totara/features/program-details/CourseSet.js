@@ -63,7 +63,7 @@ const CourseCard = (navigation) => ({item}) => {
 
   const BadgedCourseWithSummaryWithNavigation = applyBadge(item.progressPercentage || item.status, CourseWithSummaryAndNavigiation);
 
-  return(<View style={{marginTop: hp("2.5%"), marginBottom: hp("3%"),}}>
+  return(<View style={styles.itemWithBadgeContainer}>
     <BadgedCourseWithSummaryWithNavigation/>
   </View>);
 };
@@ -114,6 +114,12 @@ CourseSet.propTypes = {
 const styles = StyleSheet.create({
   courseSet: {
     height: 350
+  },
+  itemWithBadgeContainer: {
+    marginTop: hp("2.5%"),
+    marginBottom: hp("3%"),
+    marginLeft: hp("1.5%"),
+    marginRight: hp("1.5%")
   },
   learningItem: {
     borderRadius: normalize(10),
