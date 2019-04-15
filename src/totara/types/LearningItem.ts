@@ -36,6 +36,12 @@ export interface Section {
   activities: [Activity]
 }
 
+export enum LearningItemType {
+  Course = "Course",
+  Program = "Program",
+  Certification = "Certification"
+}
+
 export interface LearningItem extends LearningStatus {
   id: number
   type: string

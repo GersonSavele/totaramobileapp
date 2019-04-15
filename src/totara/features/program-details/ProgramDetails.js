@@ -29,9 +29,6 @@ import {gutter, normalize} from "@totara/theme";
 import CourseSetList from "./CourseSetList";
 import {getProgram} from "./api";
 
-const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
-
-// TODO: turn the graphql loading, error, HOC and navigation to be a single component
 const ProgramDetails = getProgram(({loading, program, error}) => {
   if (loading) return <Text>Loading...</Text>;
 
@@ -108,6 +105,8 @@ class ProgramDetailsComponent extends React.Component {
 ProgramDetailsComponent.propTypes = {
   program: PropTypes.object.isRequired,
 };
+
+const LearningItemCard = learningItemCard();
 
 const styles = StyleSheet.create({
   container: {

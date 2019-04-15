@@ -32,8 +32,6 @@ import {tbPadding} from "@totara/theme";
 import ActivityList from "./ActivityList";
 import {getCourse} from "./api";
 
-const LearningItemCard = learningItemCard(null); // TODO make wrapped component to be optional
-
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
 const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
   if (loading) return <Text>Loading...</Text>;
@@ -91,6 +89,8 @@ class CourseDetailsComponent extends React.Component {
 CourseDetailsComponent.propTypes = {
   course: PropTypes.object.isRequired
 };
+
+const LearningItemCard = learningItemCard();
 
 const styles = StyleSheet.create({
   container: {

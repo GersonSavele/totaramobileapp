@@ -31,54 +31,10 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-nativ
 import {learningItemsList} from "./api";
 import {learningItemCard, applyBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
+import {LearningItemType} from "@totara/types";
 
-
-const LearningItemSummaryAndStartButton = ({item}) => (
-      <View style={{flex: 1}}>
-        <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
-        <View style={{flex: 1}}/>
-        <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
-      </View>);
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
-
-  let navigateTo = (item) => {
-    switch (item.type) { //TODO put type or constant on type
-      case "Course":
-        navigation.navigate("CourseDetails", {courseId: item.id});
-        break;
-      case "Program":
-        navigation.navigate("ProgramDetails", {programId: item.id});
-        break;
-      case "Certification": // TODO for now certifaction is the same as Program
-        navigation.navigate("ProgramDetails", {programId: item.id});
-        break;
-      default:
-        console.error("unknown type", item); // TODO turn this into a logging system
-    }
-  };
-
-  const LearningItem = ({item}) => {
-
-    const LearningItemWithSummary = learningItemCard(() => <LearningItemSummaryAndStartButton item={item}/>);
-
-    const LearningItemWithSummaryAndNavigation = () =>
-      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
-        <View style={styles.itemContainer}>
-          <LearningItemWithSummary item={item}/>
-        </View>
-      </TouchableOpacity>;
-
-    const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.progressPercentage || item.status, LearningItemWithSummaryAndNavigation)
-
-    return(<View style={styles.itemWithBadgeContainer}>
-      <BadgeLearningItemWithSummaryAndNavigation/>
-    </View>);
-  };
-
-  LearningItem.propTypes = {
-    item: PropTypes.object.isRequired
-  };
 
   if (loading) return <Text>Loading...</Text>;
 
@@ -94,7 +50,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
     return (
       <Carousel
         data={currentLearning}
-        renderItem={LearningItem}
+        renderItem={renderItem(navigation)}
         sliderWidth={wp("100%")}
         itemWidth={wp("82%")}
         sliderHeight={hp("100%")}
@@ -104,6 +60,64 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 
   } else return null;
 }));
+
+const renderItem = (navigation) => {
+
+  const LearningItem = ({item}) => {
+
+    const LearningItemWithSummary = learningItemCard(() => <LearningItemSummaryAndStartButton item={item}/>);
+
+    const LearningItemWithSummaryAndNavigation = () =>
+      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(navigation, item)}
+                        activeOpacity={1.0}>
+        <View style={styles.itemContainer}>
+          <LearningItemWithSummary item={item}/>
+        </View>
+      </TouchableOpacity>;
+
+    const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.progressPercentage || item.status, LearningItemWithSummaryAndNavigation)
+
+    return (<View style={styles.itemWithBadgeContainer}>
+      <BadgeLearningItemWithSummaryAndNavigation/>
+    </View>);
+  };
+
+  LearningItem.propTypes = {
+    item: PropTypes.object.isRequired
+  };
+
+  return LearningItem;
+
+};
+
+
+const LearningItemSummaryAndStartButton = ({item}) => (
+  <View style={{flex: 1}}>
+    <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
+    <View style={{flex: 1}}/>
+    <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
+  </View>);
+
+LearningItemSummaryAndStartButton.propTypes = {
+  item: PropTypes.object.isRequired
+};
+
+let navigateTo = (navigation, item) => {
+  switch (item.type) {
+    case LearningItemType.Course:
+      navigation.navigate("CourseDetails", {courseId: item.id});
+      break;
+    case LearningItemType.Program:
+      navigation.navigate("ProgramDetails", {programId: item.id});
+      break;
+    case LearningItemType.Certification: // TODO for now certifaction is the same as Program
+      navigation.navigate("ProgramDetails", {programId: item.id});
+      break;
+    default:
+      console.error("unknown type", item); // TODO turn this into a logging system
+  }
+};
+
 
 const styles = StyleSheet.create({
   itemWithBadgeContainer: {

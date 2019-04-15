@@ -36,11 +36,9 @@ interface Props {
   onExtension?: () => void
 }
 
-const learningItemCard = (WrappedComponent: ComponentType<any>) => ({item, imageStyle, cardStyle, onExtension}: Props) => {
+const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({item, imageStyle, cardStyle, onExtension}: Props) => {
 
   const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
-
-  const progressPercentage = item.progressPercentage ? item.progressPercentage/100 : 0;
 
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);

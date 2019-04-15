@@ -17,13 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {LearningItem, Activity} from "./LearningItem"
+import {LearningItem, LearningItemType, Activity} from "./LearningItem"
 import {Course} from "./Course"
 import {Program} from "./Program";
 import {Status, LearningStatus} from "./LearningStatus";
 
 export {
   LearningItem,
+  LearningItemType,
   Activity,
   Course,
   Program,
