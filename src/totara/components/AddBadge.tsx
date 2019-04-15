@@ -70,7 +70,9 @@ const addBadge = (WrappedComponent: ComponentType<any>,
                   badgeType: BadgeType,
                   size = 8,
                   offsetSize = (size / 2),
-                  progress = 0) => ({...props}) => {
+                  progress = 0) =>
+
+                  ({...props}) => {
 
   const badgeDetails = getBadgeDetails(badgeType);
 

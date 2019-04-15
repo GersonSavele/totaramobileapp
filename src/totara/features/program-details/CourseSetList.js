@@ -19,7 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import {FlatList} from "react-native";
+import {FlatList, StyleSheet} from "react-native";
 import React from "react";
 import PropTypes from "prop-types";
 import CourseSet from "./CourseSet";
@@ -34,7 +34,8 @@ class CourseSetList extends React.Component {
       <FlatList
         data={courseSet}
         renderItem={this.renderCourseSet}
-        keyExtractor={(item, index) => item.id.toString() + index}/>
+        keyExtractor={(item, index) => item.id.toString() + index}
+        style={styles.container}/>
     );
   }
 }
@@ -42,5 +43,11 @@ class CourseSetList extends React.Component {
 CourseSetList.propTypes = {
   courseSet: PropTypes.array.isRequired
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#FFFFFF"
+  }
+});
 
 export default CourseSetList;

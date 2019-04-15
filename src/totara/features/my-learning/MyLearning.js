@@ -36,7 +36,8 @@ export default class MyLearning extends React.Component {
     headerTitle: null,
     headerStyle: {
       height: 0,
-      borderBottomWidth: 0
+      borderBottomWidth: 0,
+      backgroundColor: "#FFFFFF",
     }
   };
 
@@ -102,13 +103,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: resizeByScreenSize(40, 48, 56, 64),
     paddingHorizontal: gutter,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     alignItems: 'center'
   },
   myLearningHeader: {
     height: resizeByScreenSize(40, 48, 64, 64),
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "space-between",
     paddingRight: gutter,

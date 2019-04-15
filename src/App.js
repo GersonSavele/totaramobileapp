@@ -92,7 +92,8 @@ export default class App extends React.Component<{}> {
 
 const navigationOptions = {
   headerStyle: {
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
+    backgroundColor: "#FFFFFF",
   },
   headerBackTitle: null
 };

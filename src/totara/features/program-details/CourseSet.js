@@ -87,6 +87,7 @@ class CourseSet extends React.Component {
           sliderHeight={hp("100%")}
           inactiveSlideOpacity={0.6}
           enableSnap={false}
+          containerCustomStyle={{backgroundColor: "#FFFFFF"}}
         />
         {
           (nextSet && nextSet.operator) ?
@@ -118,8 +119,8 @@ const styles = StyleSheet.create({
   itemWithBadgeContainer: {
     marginTop: hp("2.5%"),
     marginBottom: hp("3%"),
-    marginLeft: hp("1.5%"),
-    marginRight: hp("1.5%")
+    marginLeft: 4,
+    marginRight: 4
   },
   learningItem: {
     borderRadius: normalize(10),

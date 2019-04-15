@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   activitiesContainer: {
     flex: 3,
     paddingLeft: 0,
-
+    backgroundColor: "#FFFFFF",
   },
   button: {
     alignItems: "center",
