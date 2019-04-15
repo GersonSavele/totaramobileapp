@@ -38,24 +38,14 @@ interface Props {
 
 const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({item, imageStyle, cardStyle, onExtension}: Props) => {
 
-  const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
-
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
-
-  const ImageElement = () => (item.status === Status.hidden) ?
-    <View style={{flex: 1}}>
-      <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
-      <View style={styles.disabledOverlay}/>
-    </View>
-    :
-    <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>;
 
   return(
     <View style={{flex: 1}}>
       <View style={imageStyleSheet}>
         <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} onExtension={onExtension}/>
-        <ImageElement/>
+        <ImageElement item={item}/>
       </View>
       <View style={cardStyleSheet}>
         <View style={{flexDirection: "row"}}>
@@ -64,12 +54,26 @@ const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({item, imag
         <View style={styles.itemInfo}>
           <Text style={styles.itemType}>{item.type}</Text>
         </View>
-        {
-          WrappedComponent ? <WrappedComponent/> : null
-        }
+        { (WrappedComponent)
+          && <WrappedComponent/>}
       </View>
     </View>
   );
+};
+
+const ImageElement = ({item}: {item: LearningItem}) => {
+
+  const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
+
+  if (item.status === Status.hidden)
+    return(
+      <View style={{flex: 1}}>
+        <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
+        <View style={styles.disabledOverlay}/>
+      </View>);
+  else
+      return(<Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>);
+
 };
 
 const styles = StyleSheet.create({

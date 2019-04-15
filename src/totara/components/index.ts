@@ -29,11 +29,11 @@ import {ActivitySheetProvider, ActivitySheetConsumer} from "./ActivitySheet"; //
 
 export {
   learningItemCard,
+  addBadge,
+  applyBadge,
   DueDateState,
   ContentIcon,
-  addBadge,
   BadgeType,
-  applyBadge,
   ActivityLauncher,
   ProgressCircle,
   ActivitySheetProvider,

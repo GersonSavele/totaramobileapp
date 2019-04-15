@@ -34,24 +34,19 @@ type contextData = {
   setCurrentActivity: (activity: Activity) => void
 }
 
-const placeHolderActivity = { // placeholder
-    id: 0,
-    type: "",
-    itemName: "",
-  };
-
 const ActivitySheetContext = React.createContext<contextData>({
   setCurrentActivity: activity => {}
 });
 
 export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
 
-type Props = {
-  toggleActivity: () => void,
-  activitySheetVisible: boolean,
-  currentActivity: Activity,
-}
-
+/**
+ * Works with React Context, when a consumer calls setCurrentActivity this provider will bring up the
+ * ActivitySheet with activity passed in
+ *
+ * TODO need to make some nice text on how to use provider and consumer
+ *
+ */
 export class ActivitySheetProvider extends React.Component {
 
   state = {
@@ -82,6 +77,12 @@ export class ActivitySheetProvider extends React.Component {
 
 }
 
+type Props = {
+  toggleActivity: () => void,
+  activitySheetVisible: boolean,
+  currentActivity: Activity,
+}
+
 const ActivitySheet = ({toggleActivity, activitySheetVisible, currentActivity}: Props) => (
   <SlidingUpPanel visible={activitySheetVisible} onRequestClose={toggleActivity}>
     <View style={styles.panel}>
@@ -108,6 +109,11 @@ const ActivitySheet = ({toggleActivity, activitySheetVisible, currentActivity}: 
     </View>
   </SlidingUpPanel>);
 
+const placeHolderActivity = { // placeholder for init
+  id: 0,
+  type: "",
+  itemName: "",
+};
 
 const styles = StyleSheet.create({
   panel: {

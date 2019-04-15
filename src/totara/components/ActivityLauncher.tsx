@@ -25,6 +25,12 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Activity} from "@totara/types";
 import {ContentIcon, ProgressCircle} from "@totara/components";
 
+/**
+ * Launch an activity then it is touched
+ *
+ * @param item - Activity to be rendered
+ * @param onPress - function to fire when component is touched
+ */
 type Props = {
   item: Activity,
   onPress: () => void
@@ -38,8 +44,10 @@ const ActivityLauncher = ({item, onPress = () => {}}: Props) => {
         <Text style={styles.topText}>Continue your learning</Text>
         <Text numberOfLines={1} style={styles.bottomText}>{item.itemName}</Text>
       </View>
-      <View style={styles.divider}></View>
-      <ProgressCircle size={32} progress={item.progressPercentage}/>
+      <View style={styles.divider}/>
+      { (item.progressPercentage) &&
+          <ProgressCircle size={32} progress={item.progressPercentage}/>
+      }
     </TouchableOpacity>
   );
 };

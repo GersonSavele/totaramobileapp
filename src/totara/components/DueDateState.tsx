@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -15,6 +15,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
 
@@ -26,6 +28,10 @@ import {normalize} from "@totara/theme";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 
+/**
+ * Component to render dueDate and change style depending on the dueDateState
+ * it would also offer a button fire a function when state is on warning or danger
+ */
 type Props = {
   dueDate?: Date
   dueDateState?: string
@@ -37,53 +43,52 @@ const ExtenstionButton = ({onExtension}: Props) =>
     <Button small rounded bordered light onPress={onExtension} style={{padding: 5}}>
       <Text style={styles.buttonText}> Extend Date </Text>
     </Button>
-  </View>
-
+  </View>;
 
 const DueDateState = ({dueDate, dueDateState, onExtension}: Props) => {
-    switch (dueDateState) {
-      case "warning":
-        return (
-          <View style={styles.warning}>
-            <View style={{flexDirection: "row"}}>
-              <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
-              <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
-            </View>
-            {
-              (onExtension) ?
-                <ExtenstionButton onExtension={onExtension}/>
-                : null
-            }
+
+  switch (dueDateState) {
+    case DueDateStateStatus.warning:
+      return (
+        <View style={styles.warning}>
+          <View style={{flexDirection: "row"}}>
+            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
+            <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
           </View>
-        );
+          {(onExtension) &&
+              <ExtenstionButton onExtension={onExtension}/>}
+        </View>
+      );
 
-      case "danger":
-        return (
-          <View style={styles.danger}>
-            <View style={{flexDirection: "row"}}>
-              <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
-              <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
-            </View>
-            {
-              (onExtension) ?
-                <ExtenstionButton onExtension={onExtension}/>
-                : null
-            }
+    case DueDateStateStatus.danger:
+      return (
+        <View style={styles.danger}>
+          <View style={{flexDirection: "row"}}>
+            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
+            <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
           </View>
-        );
+          {(onExtension) &&
+              <ExtenstionButton onExtension={onExtension}/>}
+        </View>
+      );
 
-      case "info":
-        return (
-          <View style={styles.info}>
-            <Text style={styles.infoText}>{moment(dueDate).format("D, MMM YYYY")}</Text>
-          </View>
-        );
+    case DueDateStateStatus.info:
+      return (
+        <View style={styles.info}>
+          <Text style={styles.infoText}>{moment(dueDate).format("D, MMM YYYY")}</Text>
+        </View>
+      );
 
-      default:
-        return null
-    }
-  };
+    default:
+      return null
+  }
+};
 
+enum DueDateStateStatus {
+  warning = "warning",
+  danger = "danger",
+  info = "info"
+}
 
 const styles = StyleSheet.create({
   info: {

@@ -21,10 +21,11 @@
  */
 
 import React from "react";
-import {Component, ComponentType} from "react";
+import {ComponentType} from "react";
 import {View, StyleSheet} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import * as Progress from "react-native-progress";
+
 import {Status} from "@totara/types";
 
 enum BadgeType {
@@ -89,11 +90,10 @@ const addBadge = (WrappedComponent: ComponentType<any>,
       },
     });
 
-  const Badge = () => (badgeDetails.kind === BadgeType.Progress) ?
-    <ProgressCircle size={size * 2} progress={progress}/>
-    :
-    <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>
-
+  const Badge = () =>
+    (badgeDetails.kind === BadgeType.Progress)
+      ? <ProgressCircle size={size * 2} progress={progress}/>
+      : <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>;
 
   return (
       <View>
