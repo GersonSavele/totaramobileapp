@@ -70,7 +70,7 @@ const addBadge = (WrappedComponent: ComponentType<any>,
                   badgeType: BadgeType,
                   size = 8,
                   offsetSize = (size / 2),
-                  progress = 0) => () => {
+                  progress = 0) => ({...props}) => {
 
   const badgeDetails = getBadgeDetails(badgeType);
 
@@ -97,7 +97,7 @@ const addBadge = (WrappedComponent: ComponentType<any>,
 
   return (
       <View>
-        <WrappedComponent/>
+        <WrappedComponent {...props}/>
         <View style={styles.iconContainer}>
           <Badge/>
         </View>

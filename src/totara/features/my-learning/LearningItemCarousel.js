@@ -65,20 +65,10 @@ const renderItem = (navigation) => {
 
   const LearningItem = ({item}) => {
 
-    const LearningItemWithSummary = learningItemCard(() => <LearningItemSummaryAndStartButton item={item}/>);
-
-    const LearningItemWithSummaryAndNavigation = () =>
-      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => navigateTo(navigation, item)}
-                        activeOpacity={1.0}>
-        <View style={styles.itemContainer}>
-          <LearningItemWithSummary item={item}/>
-        </View>
-      </TouchableOpacity>;
-
-    const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.progressPercentage || item.status, LearningItemWithSummaryAndNavigation)
+    const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.progressPercentage || item.status, LearningItemWithSummaryAndNavigation);
 
     return (<View style={styles.itemWithBadgeContainer}>
-      <BadgeLearningItemWithSummaryAndNavigation/>
+      <BadgeLearningItemWithSummaryAndNavigation item={item} navigation={navigation}/>
     </View>);
   };
 
@@ -90,17 +80,33 @@ const renderItem = (navigation) => {
 
 };
 
+const LearningItemWithSummaryAndNavigation = ({...props}) => (
+  <TouchableOpacity style={styles.learningItem}
+                    key={props.item.id}
+                    onPress={() => navigateTo(props.navigation, props.item)}
+                    activeOpacity={1.0}>
+    <View style={styles.itemContainer}>
+      <LearningItemWithSummary {...props}/>
+    </View>
+  </TouchableOpacity>);
 
-const LearningItemSummaryAndStartButton = ({item}) => (
+LearningItemWithSummaryAndNavigation.propTypes = {
+  item: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired
+};
+
+const SummaryAndStartButton = ({item}) => (
   <View style={{flex: 1}}>
     <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
     <View style={{flex: 1}}/>
     <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
   </View>);
 
-LearningItemSummaryAndStartButton.propTypes = {
+SummaryAndStartButton.propTypes = {
   item: PropTypes.object.isRequired
 };
+
+const LearningItemWithSummary = learningItemCard(SummaryAndStartButton);
 
 let navigateTo = (navigation, item) => {
   switch (item.type) {

@@ -36,8 +36,9 @@ interface Props {
   onExtension?: () => void
 }
 
-const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({item, imageStyle, cardStyle, onExtension}: Props) => {
+const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({...props}: Props) => {
 
+  const {item, imageStyle, cardStyle, onExtension} = props;
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
 
@@ -55,7 +56,7 @@ const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({item, imag
           <Text style={styles.itemType}>{item.type}</Text>
         </View>
         { (WrappedComponent)
-          && <WrappedComponent/>}
+          && <WrappedComponent {...props}/>}
       </View>
     </View>
   );
