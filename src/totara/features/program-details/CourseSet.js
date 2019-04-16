@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   learningItem: {
     borderRadius: normalize(10),
-    shadowColor: "#000",
+    shadowColor: "#000000",
     shadowOffset: { width: 0, height: normalize(10) },
     shadowOpacity: 0.16,
     shadowRadius: normalize(14),
