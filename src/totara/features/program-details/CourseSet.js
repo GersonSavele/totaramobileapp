@@ -31,6 +31,83 @@ import {Status} from "@totara/types"
 import {applyBadge, learningItemCard} from "@totara/components";
 
 
+const CourseSet = ({courses, navigation, nextSet, label}) => (
+  <View style={styles.courseSet}>
+    <View style={styles.courseSetLabel}>
+      <Text style={styles.courseSetLabel}>{label}</Text>
+    </View>
+    <Carousel
+      data={courses}
+      renderItem={renderItem(navigation)}
+      sliderWidth={wp("100%")}
+      itemWidth={300}
+      sliderHeight={hp("100%")}
+      inactiveSlideOpacity={0.6}
+      enableSnap={false}
+      containerCustomStyle={{backgroundColor: "#FFFFFF"}}
+    />
+    {
+      (nextSet && nextSet.operator) ?
+        <View style={styles.nextSet}>
+          <View style={styles.separator}/>
+          <Text style={styles.nextSetText}>{nextSet.operator}</Text>
+          <View style={styles.separator}/>
+        </View>
+        :
+        null
+    }
+  </View>);
+
+CourseSet.propTypes = {
+  courses: PropTypes.array.isRequired,
+  navigation: PropTypes.object.isRequired,
+  label: PropTypes.string.isRequired,
+  nextSet: PropTypes.object,
+};
+
+const renderItem = (navigation) => {
+  const CourseCard = ({item}) => {
+
+    const BadgedCourseWithSummaryWithNavigation = applyBadge(item.progressPercentage || item.status, CourseWithSummaryAndNavigation);
+
+    return(<View style={styles.itemWithBadgeContainer}>
+      <BadgedCourseWithSummaryWithNavigation item={item} navigation={navigation}/>
+    </View>);
+  };
+
+  CourseCard.propTypes = {
+    item: PropTypes.object.isRequired
+  };
+
+  return CourseCard;
+};
+
+const CourseWithSummaryAndNavigation = ({navigation, item}) => {
+  const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
+  const learningItemStyle = (item.status === Status.active) ?
+    StyleSheet.flatten([styles.learningItem, styles.activeCourse]) :
+    styles.learningItem;
+
+  return (
+    (item.status !== Status.hidden) ?
+      <TouchableOpacity style={learningItemStyle} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
+        <View style={styles.itemContainer}>
+          <CourseWithSummary item={item}/>
+        </View>
+      </TouchableOpacity>
+      :
+      <View style={learningItemStyle}>
+        <View style={styles.itemContainer}>
+          <CourseWithSummary item={item}/>
+        </View>
+      </View>);
+};
+
+CourseWithSummaryAndNavigation.propTypes = {
+  item: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
+};
+
 const CourseSummary = ({item}) =>
   <View style={{flex: 1}}>
     <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
@@ -40,77 +117,7 @@ CourseSummary.propTypes = {
   item: PropTypes.object.isRequired
 };
 
-const CourseCard = (navigation) => ({item}) => {
-
-  const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
-  const CourseWithSummary = learningItemCard(() => <CourseSummary item={item}/>);
-  const learningItemStyle = (item.status === Status.active) ?
-    StyleSheet.flatten([styles.learningItem, styles.activeCourse]) :
-    styles.learningItem;
-
-  const CourseWithSummaryAndNavigiation = () => (item.status != Status.hidden) ?
-    <TouchableOpacity style={learningItemStyle} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
-      <View style={styles.itemContainer}>
-        <CourseWithSummary item={item}/>
-      </View>
-    </TouchableOpacity>
-    :
-    <View style={learningItemStyle}>
-      <View style={styles.itemContainer}>
-        <CourseWithSummary item={item}/>
-      </View>
-    </View>;
-
-  const BadgedCourseWithSummaryWithNavigation = applyBadge(item.progressPercentage || item.status, CourseWithSummaryAndNavigiation);
-
-  return(<View style={styles.itemWithBadgeContainer}>
-    <BadgedCourseWithSummaryWithNavigation/>
-  </View>);
-};
-
-class CourseSet extends React.Component {
-
-  render() {
-
-    const {courses, navigation, nextSet, label} = this.props;
-
-    return (
-      <View style={styles.courseSet}>
-        <View style={styles.courseSetLabel}>
-          <Text style={styles.courseSetLabel}>{label}</Text>
-        </View>
-        <Carousel
-          data={courses}
-          renderItem={CourseCard(navigation)}
-          sliderWidth={wp("100%")}
-          itemWidth={300}
-          sliderHeight={hp("100%")}
-          inactiveSlideOpacity={0.6}
-          enableSnap={false}
-          containerCustomStyle={{backgroundColor: "#FFFFFF"}}
-        />
-        {
-          (nextSet && nextSet.operator) ?
-            <View style={styles.nextSet}>
-              <View style={styles.separator}/>
-              <Text style={styles.nextSetText}>{nextSet.operator}</Text>
-              <View style={styles.separator}/>
-            </View>
-            :
-            null
-        }
-      </View>
-    );
-
-  }
-}
-
-CourseSet.propTypes = {
-  courses: PropTypes.array.isRequired,
-  navigation: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  nextSet: PropTypes.object,
-};
+const CourseWithSummary = learningItemCard(CourseSummary);
 
 const styles = StyleSheet.create({
   courseSet: {
@@ -172,6 +179,5 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
 });
-
 
 export default withNavigation(CourseSet);
