@@ -81,7 +81,7 @@ export default class MyLearning extends React.Component {
           <View style={styles.recentActivity}>
             <ActivitySheetConsumer>
               {({setCurrentActivity}) =>
-                <ActivityLauncher item={activity} onPress={() => setCurrentActivity(activity)}/>
+                <ActivityLauncher item={activity} onPress={(activity) => setCurrentActivity(activity)}/>
               }
             </ActivitySheetConsumer>
           </View>

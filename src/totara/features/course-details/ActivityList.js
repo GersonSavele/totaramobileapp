@@ -25,22 +25,21 @@ import React from "react";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-import {ContentIcon, addBadge, BadgeType} from "@totara/components";
+import {ContentIcon, CheckBadge} from "@totara/components";
 import {normalize, resizeByScreenSize, h4, normal, lrPadding} from "@totara/theme";
 import {Status} from "@totara/types"
 
 class ActivityList extends React.Component {
 
   renderSection = ({section: {sectionName, status}}) => {
-    const SectionHeader = () => (status === Status.hidden) ?
-      <View style={styles.withLock}>
-        <Text style={styles.sectionHeaderText}>{sectionName}</Text>
-        <View style={styles.sectionLock}>
-          <FontAwesomeIcon icon="lock" size={16} color="white"/>
+    const SectionHeader = () => (status === Status.hidden)
+      ? <View style={styles.withLock}>
+          <Text style={styles.sectionHeaderText}>{sectionName}</Text>
+          <View style={styles.sectionLock}>
+            <FontAwesomeIcon icon="lock" size={16} color="white"/>
+          </View>
         </View>
-      </View>
-      :
-      <Text style={styles.sectionHeaderText}>{sectionName}</Text>
+      : <Text style={styles.sectionHeaderText}>{sectionName}</Text>;
 
     return (
       <View style={styles.sectionHeader}>
@@ -59,14 +58,16 @@ class ActivityList extends React.Component {
 
   renderActivity = ({item, index, section}) => {
 
-    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>
+    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>;
 
-    const BadgedIcon = addBadge(BuildContentIcon, BadgeType.Check, 8, 2);
-
-    const Activity = ({status}) =>
+    const Activity = () =>
       <View style={styles.activity}>
         {
-          (item.status === "done") ? <BadgedIcon/> : <BuildContentIcon/>
+          (item.status === "done")
+            ? <CheckBadge size={8} offsetSize={2}>
+                <BuildContentIcon/>
+              </CheckBadge>
+            : <BuildContentIcon/>
         }
         <View style={{flex: 1}}>
           <Text numberOfLines={1} style={(item.status) === "active" ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>

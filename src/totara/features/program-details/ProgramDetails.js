@@ -80,7 +80,7 @@ class ProgramDetailsComponent extends React.Component {
             <View style={styles.activeActivity}>
               <ActivitySheetConsumer>
                 {({setCurrentActivity}) =>
-                  <ActivityLauncher item={activity} onPress={() => setCurrentActivity(activity)}/>
+                  <ActivityLauncher item={activity} onPress={(activity) => setCurrentActivity(activity)}/>
                 }
               </ActivitySheetConsumer>
             </View>

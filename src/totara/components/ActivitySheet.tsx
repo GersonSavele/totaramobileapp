@@ -35,7 +35,7 @@ type contextData = {
 }
 
 const ActivitySheetContext = React.createContext<contextData>({
-  setCurrentActivity: activity => {}
+  setCurrentActivity: () => {}
 });
 
 export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
@@ -44,8 +44,20 @@ export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
  * Works with React Context, when a consumer calls setCurrentActivity this provider will bring up the
  * ActivitySheet with activity passed in
  *
- * TODO need to make some nice text on how to use provider and consumer
+ * @example
  *
+ * // some on the upper hierarchy of the app
+ * <ActivitySheetProvider>
+ *   <ElementsThatWillHaveTheActivitySheetInScope/>
+ * </ActivitySheetProvider>
+ *
+ * // deep down nested component of the app
+ * <ActivitySheetConsumer>
+ *   {
+ *     ({setCurrentActivity}) =>
+ *       <Component onPress={() => setCurrentActivity(activity)}/>
+ *   }
+ * </ActivitySheetConsumer/>
  */
 export class ActivitySheetProvider extends React.Component {
 

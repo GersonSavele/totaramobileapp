@@ -26,19 +26,19 @@ import {Activity} from "@totara/types";
 import {ContentIcon, ProgressCircle} from "@totara/components";
 
 /**
- * Launch an activity then it is touched
+ * Render a preview of the activity and execute a function when component is touched
  *
  * @param item - Activity to be rendered
  * @param onPress - function to fire when component is touched
  */
 type Props = {
   item: Activity,
-  onPress: () => void
+  onPress: (activity: Activity) => void
 }
 
 const ActivityLauncher = ({item, onPress = () => {}}: Props) => {
   return(
-    <TouchableOpacity style={styles.activityContainer} onPress={onPress}>
+    <TouchableOpacity style={styles.activityContainer} onPress={() => onPress(item)}>
       <ContentIcon icon={item.type} iconSize={16} size={40}/>
       <View style={styles.container}>
         <Text style={styles.topText}>Continue your learning</Text>
