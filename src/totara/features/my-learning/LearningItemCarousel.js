@@ -29,7 +29,7 @@ import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 import {learningItemsList} from "./api";
-import {learningItemCard, applyBadge} from "@totara/components";
+import {learningItemCard, AddBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
 import {LearningItemType} from "@totara/types";
 
@@ -64,14 +64,12 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
 
 const renderItem = (navigation) => {
 
-  const LearningItem = ({item}) => {
-
-    const BadgeLearningItemWithSummaryAndNavigation = applyBadge(item.progressPercentage || item.status, LearningItemWithSummaryAndNavigation);
-
-    return (<View style={styles.itemWithBadgeContainer}>
-      <BadgeLearningItemWithSummaryAndNavigation item={item} navigation={navigation}/>
-    </View>);
-  };
+  const LearningItem = ({item}) =>
+    <View style={styles.itemWithBadgeContainer}>
+      <AddBadge status={item.progressPercentage || item.status}>
+        <LearningItemWithSummaryAndNavigation item={item} navigation={navigation}/>
+      </AddBadge>
+    </View>;
 
   LearningItem.propTypes = {
     item: PropTypes.object.isRequired

@@ -99,18 +99,18 @@ class ProgressBadge extends Badge<ProgressBadgeProps> {
   BadgeElement = ({size = 8, progress}: ProgressBadgeProps) => <ProgressCircle size={size * 2} progress={progress}/>
 }
 
-const applyBadge = (status: Status | number, Component: ComponentType<any>) => {
+const AddBadge = ({status, children}: {status: Status | number, children: any}) => {
   switch (status) {
-    case Status.done: return(({...props}) => (<CheckBadge size={16} offsetSize={8}><Component {...props}/></CheckBadge>));
-    case 100: return(({...props}) => <CheckBadge size={16} offsetSize={8}><Component {...props}/></CheckBadge>);
-    case Status.hidden: return(({...props}) => <LockBadge size={16} offsetSize={8}><Component {...props}/></LockBadge>);
+    case Status.done: return <CheckBadge size={16} offsetSize={8}>{children}</CheckBadge>;
+    case 100: return <CheckBadge size={16} offsetSize={8}>{children}</CheckBadge>;
+    case Status.hidden: return <LockBadge size={16} offsetSize={8}>{children}</LockBadge>;
     case Status.active: // drop through default
     default:
       if (typeof status == "number")
-        return(({...props}) => <ProgressBadge size={16} offsetSize={8} progress={status}><Component {...props}/></ProgressBadge>);
+        return <ProgressBadge size={16} offsetSize={8} progress={status}>{children}</ProgressBadge>;
       else
-        return Component
+        return <View>{children}</View>
   }
 };
 
-export {applyBadge, CheckBadge, LockBadge, ProgressBadge};
+export {AddBadge, CheckBadge, LockBadge, ProgressBadge};

@@ -28,7 +28,7 @@ import {withNavigation} from "react-navigation";
 
 import {normalize} from "@totara/theme";
 import {Status} from "@totara/types"
-import {applyBadge, learningItemCard} from "@totara/components";
+import {AddBadge, learningItemCard} from "@totara/components";
 
 
 const CourseSet = ({courses, navigation, nextSet, label}) => (
@@ -66,14 +66,13 @@ CourseSet.propTypes = {
 };
 
 const renderItem = (navigation) => {
-  const CourseCard = ({item}) => {
 
-    const BadgedCourseWithSummaryWithNavigation = applyBadge(item.progressPercentage || item.status, CourseWithSummaryAndNavigation);
-
-    return(<View style={styles.itemWithBadgeContainer}>
-      <BadgedCourseWithSummaryWithNavigation item={item} navigation={navigation}/>
-    </View>);
-  };
+  const CourseCard = ({item}) =>
+    <View style={styles.itemWithBadgeContainer}>
+      <AddBadge status={item.progressPercentage || item.status}>
+        <CourseWithSummaryAndNavigation item={item} navigation={navigation}/>
+      </AddBadge>
+    </View>;
 
   CourseCard.propTypes = {
     item: PropTypes.object.isRequired
