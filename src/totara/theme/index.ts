@@ -34,7 +34,8 @@ const tbPadding = resizeByScreenSize(8, 16, 24, 32);
 const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 
 const theme = lodash.merge(material, {
-  brandPrimary: "#69BD45"
+  brandPrimary: "#69BD45",
+  brandInfo: "#FFFFFF"
 });
 
 export {

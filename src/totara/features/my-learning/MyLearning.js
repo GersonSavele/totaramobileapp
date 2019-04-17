@@ -125,6 +125,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   recentActivity: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "#F0F0F0",
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 8,
+    overflow: "hidden",
   },
   activity: {
     flex: 1,

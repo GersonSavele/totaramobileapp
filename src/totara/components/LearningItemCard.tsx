@@ -50,7 +50,7 @@ const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({...props}:
       </View>
       <View style={cardStyleSheet}>
         <View style={{flexDirection: "row"}}>
-          <Text numberOfLines={2} style={styles.itemFullName}>{item.fullname}</Text>
+          <Text numberOfLines={1} style={styles.itemFullName}>{item.fullname}</Text>
         </View>
         <View style={styles.itemInfo}>
           <Text style={styles.itemType}>{item.type}</Text>
@@ -83,7 +83,10 @@ const styles = StyleSheet.create({
     flexDirection: "column-reverse",
   },
   itemCard: {
-    padding: normalize(16),
+    paddingLeft: normalize(16),
+    paddingTop: normalize(16),
+    paddingRight: normalize(16),
+    paddingBottom: normalize(16),
     justifyContent: "flex-start",
     flex: 1
   },
@@ -105,8 +108,8 @@ const styles = StyleSheet.create({
   itemFullName: {
     color: "#3D444B",
     flexWrap: "wrap",
-    fontSize: normalize(22),
-    fontWeight: "400",
+    fontSize: normalize(20),
+    fontWeight: "500",
     padding: 0,
     lineHeight: normalize(24),
   },
@@ -114,9 +117,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
-    minHeight: 30,
-    maxHeight: 35,
-    paddingTop: 5,
+
+    maxHeight: 16,
+    paddingTop: 4,
   },
   disabledOverlay: {
     position: "absolute",
@@ -131,4 +134,3 @@ const styles = StyleSheet.create({
 
 
 export default learningItemCard
-

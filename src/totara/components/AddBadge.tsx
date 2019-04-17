@@ -61,7 +61,7 @@ class LockBadge implements Badge {
 class ProgressBadge implements Badge { // TODO just not have a class, too brittle
   kind = BadgeType.Progress;
   color = "#69BD45";
-  backgroundColor = "#E6E6E6";
+  backgroundColor = "#FFFFFF";
   icon = undefined;
   borderColor = "#FFFFFF"
 }

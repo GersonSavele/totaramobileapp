@@ -121,17 +121,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   activeActivityContainer: {
-    padding: 16,
-    backgroundColor: "#EEEEEE",
+    paddingLeft: 16,
+    paddingTop:0,
+    paddingRight:16,
+    paddingBottom: 16,
+    backgroundColor: "#F5F5F5",
   },
   activeActivity: {
     borderRadius: normalize(10),
-    shadowColor: "#000000",
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
     backgroundColor: "#FFFFFF",
-    shadowOffset: { width: 0, height: normalize(10) },
-    shadowOpacity: 0.16,
+
+
     shadowRadius: normalize(14),
-    overflow: "hidden"
+    overflow: "hidden",
+
   },
   button: {
     alignItems: "center",
@@ -141,10 +146,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingLeft: gutter,
-    paddingTop: 20,
-    height: 56,
-    paddingBottom: 10,
-    width: 180
+    paddingTop: 24,
+    width: 150,
   },
   tabActive: {
     fontSize: 16,
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
   },
   itemCard: {
     flex: 2,
-    backgroundColor: "#EEEEEE",
-    maxHeight: 72
+    backgroundColor: "#F5F5F5",
+
   },
 });

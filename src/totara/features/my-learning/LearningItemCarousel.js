@@ -100,7 +100,7 @@ const SummaryAndStartButton = ({item}) => (
   <View style={{flex: 1}}>
     <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
     <View style={{flex: 1}}/>
-    <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
+    <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
   </View>);
 
 SummaryAndStartButton.propTypes = {
@@ -157,9 +157,12 @@ const styles = StyleSheet.create({
     color: "#3D444B",
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: "#3D444B",
     padding: 5
-  }
+  },
+  Secondarybutton: {
+    borderColor: "#3D444B",
+  },
 });
 
 

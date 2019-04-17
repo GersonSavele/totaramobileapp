@@ -166,17 +166,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#CCCCCC",
     height: 4,
     flex: 1,
-    marginRight: 20,
-    marginLeft: 20
+    marginRight: 16,
+    marginLeft: 16
   },
   nextSetText: {
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    fontSize: 12,
   },
   courseSetLabel: {
     fontSize: 20,
-    color: "#000000",
-    paddingLeft: 10,
-    paddingTop: 5,
+    color: "#3D444B",
+    paddingLeft: 16,
+    paddingTop: 10,
   },
 });
 

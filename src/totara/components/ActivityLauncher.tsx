@@ -39,7 +39,7 @@ type Props = {
 const ActivityLauncher = ({item, onPress = () => {}}: Props) => {
   return(
     <TouchableOpacity style={styles.activityContainer} onPress={onPress}>
-      <ContentIcon icon={item.type} iconSize={20} size={40}/>
+      <ContentIcon icon={item.type} iconSize={16} size={40}/>
       <View style={styles.container}>
         <Text style={styles.topText}>Continue your learning</Text>
         <Text numberOfLines={1} style={styles.bottomText}>{item.itemName}</Text>
@@ -57,10 +57,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
     alignItems: "center",
-    paddingRight: 16,
-    paddingLeft: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingRight: 8,
+    paddingLeft: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+
+
   },
   container: {
     flex: 1,
@@ -68,17 +70,17 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   topText: {
-    fontSize: 12,
-    lineHeight: 14,
+    fontSize: 10,
+    lineHeight: 12,
     color: "#64717D"
   },
   bottomText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 12,
     lineHeight: 20,
     paddingRight: 64,
     color: "#3D444B",
-    fontWeight: "600"
+    fontWeight: "bold"
   },
   divider: {
     marginRight: 16,
