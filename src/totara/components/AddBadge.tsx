@@ -99,7 +99,7 @@ class ProgressBadge extends Badge<ProgressBadgeProps> {
   BadgeElement = ({size = 8, progress}: ProgressBadgeProps) => <ProgressCircle size={size * 2} progress={progress}/>
 }
 
-const AddBadge = ({status, children}: {status: Status | number, children: any}) => {
+const AddBadge = ({status, children}: {status: Status | number, children: JSX.Element}) => {
   switch (status) {
     case Status.done: return <CheckBadge size={16} offsetSize={8}>{children}</CheckBadge>;
     case 100: return <CheckBadge size={16} offsetSize={8}>{children}</CheckBadge>;
