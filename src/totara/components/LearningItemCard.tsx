@@ -22,7 +22,6 @@
 
 import {Image, ImageStyle, StyleSheet, Text, View, ViewStyle} from "react-native";
 import React from "react";
-import {ComponentType} from "react";
 
 import {LearningItem, Status} from "@totara/types";
 import {config} from "@totara/lib";
@@ -33,16 +32,16 @@ interface Props {
   item: LearningItem
   imageStyle: ImageStyle
   cardStyle: ViewStyle,
-  onExtension?: () => void
+  onExtension?: () => void,
+  children: JSX.Element
 }
 
-const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({...props}: Props) => {
+const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: Props) => {
 
-  const {item, imageStyle, cardStyle, onExtension} = props;
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
 
-  return(
+  return (
     <View style={{flex: 1}}>
       <View style={imageStyleSheet}>
         <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} onExtension={onExtension}/>
@@ -55,12 +54,12 @@ const learningItemCard = (WrappedComponent?: ComponentType<any>) => ({...props}:
         <View style={styles.itemInfo}>
           <Text style={styles.itemType}>{item.type}</Text>
         </View>
-        { (WrappedComponent)
-          && <WrappedComponent {...props}/>}
+        {children}
       </View>
     </View>
   );
 };
+
 
 const ImageElement = ({item}: {item: LearningItem}) => {
 
@@ -133,4 +132,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default learningItemCard
+export default LearningItemCard

@@ -29,7 +29,7 @@ import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 import {learningItemsList} from "./api";
-import {learningItemCard, AddBadge} from "@totara/components";
+import {LearningItemCard, AddBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
 import {LearningItemType} from "@totara/types";
 
@@ -79,13 +79,19 @@ const renderItem = (navigation) => {
 
 };
 
-const LearningItemWithSummaryAndNavigation = ({...props}) => (
+const LearningItemWithSummaryAndNavigation = ({item, navigation}) => (
   <TouchableOpacity style={styles.learningItem}
-                    key={props.item.id}
-                    onPress={() => navigateTo(props.navigation, props.item)}
+                    key={item.id}
+                    onPress={() => navigateTo(navigation, item)}
                     activeOpacity={1.0}>
     <View style={styles.itemContainer}>
-      <LearningItemWithSummary {...props}/>
+      <LearningItemCard item={item}>
+        <View style={{flex: 1}}>
+          <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
+          <View style={{flex: 1}}/>
+          <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
+        </View>
+      </LearningItemCard>
     </View>
   </TouchableOpacity>);
 
@@ -93,19 +99,6 @@ LearningItemWithSummaryAndNavigation.propTypes = {
   item: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired
 };
-
-const SummaryAndStartButton = ({item}) => (
-  <View style={{flex: 1}}>
-    <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
-    <View style={{flex: 1}}/>
-    <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
-  </View>);
-
-SummaryAndStartButton.propTypes = {
-  item: PropTypes.object.isRequired
-};
-
-const LearningItemWithSummary = learningItemCard(SummaryAndStartButton);
 
 let navigateTo = (navigation, item) => {
   switch (item.type) {

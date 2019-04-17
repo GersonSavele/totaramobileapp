@@ -26,7 +26,7 @@ import PropTypes from "prop-types";
 import {withNavigation} from "react-navigation";
 
 
-import {learningItemCard} from "@totara/components";
+import {LearningItemCard} from "@totara/components";
 import {gutter} from "@totara/theme";
 import {tbPadding} from "@totara/theme";
 import ActivityList from "./ActivityList";
@@ -89,8 +89,6 @@ class CourseDetailsComponent extends React.Component {
 CourseDetailsComponent.propTypes = {
   course: PropTypes.object.isRequired
 };
-
-const LearningItemCard = learningItemCard();
 
 const styles = StyleSheet.create({
   container: {

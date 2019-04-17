@@ -28,7 +28,7 @@ import {withNavigation} from "react-navigation";
 
 import {normalize} from "@totara/theme";
 import {Status} from "@totara/types"
-import {AddBadge, learningItemCard} from "@totara/components";
+import {AddBadge, LearningItemCard} from "@totara/components";
 
 
 const CourseSet = ({courses, navigation, nextSet, label}) => (
@@ -87,18 +87,23 @@ const CourseWithSummaryAndNavigation = ({navigation, item}) => {
     StyleSheet.flatten([styles.learningItem, styles.activeCourse]) :
     styles.learningItem;
 
+  const CourseDetails =
+    <View style={styles.itemContainer}>
+      <LearningItemCard item={item}>
+        <View style={{flex: 1}}>
+          <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
+        </View>
+      </LearningItemCard>
+    </View>;
+
   return (
     (item.status !== Status.hidden) ?
       <TouchableOpacity style={learningItemStyle} key={item.id} onPress={() => navigateTo(item)} activeOpacity={1.0}>
-        <View style={styles.itemContainer}>
-          <CourseWithSummary item={item}/>
-        </View>
+        {CourseDetails}
       </TouchableOpacity>
       :
       <View style={learningItemStyle}>
-        <View style={styles.itemContainer}>
-          <CourseWithSummary item={item}/>
-        </View>
+        {CourseDetails}
       </View>);
 };
 
@@ -106,17 +111,6 @@ CourseWithSummaryAndNavigation.propTypes = {
   item: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
 };
-
-const CourseSummary = ({item}) =>
-  <View style={{flex: 1}}>
-    <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
-  </View>;
-
-CourseSummary.propTypes = {
-  item: PropTypes.object.isRequired
-};
-
-const CourseWithSummary = learningItemCard(CourseSummary);
 
 const styles = StyleSheet.create({
   courseSet: {

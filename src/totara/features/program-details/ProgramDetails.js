@@ -24,7 +24,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 
 
-import {learningItemCard, ActivityLauncher, ActivitySheetConsumer} from "@totara/components";
+import {LearningItemCard, ActivityLauncher, ActivitySheetConsumer} from "@totara/components";
 import {gutter, normalize} from "@totara/theme";
 import CourseSetList from "./CourseSetList";
 import {getProgram} from "./api";
@@ -105,8 +105,6 @@ class ProgramDetailsComponent extends React.Component {
 ProgramDetailsComponent.propTypes = {
   program: PropTypes.object.isRequired,
 };
-
-const LearningItemCard = learningItemCard();
 
 const styles = StyleSheet.create({
   container: {
