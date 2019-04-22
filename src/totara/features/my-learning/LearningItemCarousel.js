@@ -89,7 +89,7 @@ const LearningItemWithSummaryAndNavigation = ({item, navigation}) => (
         <View style={{flex: 1}}>
           <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
           <View style={{flex: 1}}/>
-          <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
+          <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>Continue your {item.type}</Text></Button>
         </View>
       </LearningItemCard>
     </View>
@@ -141,10 +141,11 @@ const styles = StyleSheet.create({
   },
   itemSummary: {
     flex: 10,
-    paddingBottom: 20,
-    maxHeight: 80,
-    fontSize: 14,
-    lineHeight: 16,
+    paddingBottom: 24,
+    paddingTop: 16,
+    maxHeight: 125,
+    fontSize: 15,
+    lineHeight: 20,
     color: "#3D444B",
   },
   buttonText: {

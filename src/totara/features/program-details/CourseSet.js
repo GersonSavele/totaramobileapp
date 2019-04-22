@@ -114,6 +114,7 @@ CourseWithSummaryAndNavigation.propTypes = {
 
 const styles = StyleSheet.create({
   courseSet: {
+
     height: 350
   },
   itemWithBadgeContainer: {
@@ -143,8 +144,9 @@ const styles = StyleSheet.create({
   },
   itemSummary: {
     flex: 10,
-    paddingBottom: 20,
-    maxHeight: 80,
+    paddingBottom: 24,
+    paddingTop: 16,
+    maxHeight: 60,
     fontSize: 14,
     lineHeight: 16,
     color: "#3D444B",
@@ -156,8 +158,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   separator: {
-    backgroundColor: "#CCCCCC",
-    height: 4,
+    backgroundColor: "#D2D2D2",
+    height: 2,
     flex: 1,
     marginRight: 16,
     marginLeft: 16
@@ -165,6 +167,8 @@ const styles = StyleSheet.create({
   nextSetText: {
     textTransform: "uppercase",
     fontSize: 12,
+    color: "#3D444B",
+    fontWeight: "bold",
   },
   courseSetLabel: {
     fontSize: 20,
