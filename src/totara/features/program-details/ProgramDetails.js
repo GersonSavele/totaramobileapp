@@ -123,14 +123,13 @@ ProgramDetailsComponent.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   learningItem: {
     flex: 2,
   },
   activitiesContainer: {
     flex: 3,
-    paddingLeft: 0,
     backgroundColor: "#FFFFFF",
   },
   activeActivityContainer: {
@@ -147,8 +146,9 @@ const styles = StyleSheet.create({
   tabNav: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: gutter,
+    paddingLeft: 16,
     paddingTop: 24,
+    paddingBottom: 24,
     width: 150,
   },
   tabActive: {

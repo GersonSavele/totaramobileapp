@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   panel: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#CECECE",
+    backgroundColor: "#FFFFFF",
     paddingTop: 5
   },
   panelContent: {

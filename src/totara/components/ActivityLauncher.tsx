@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'space-between',
     paddingLeft: 8,
+    paddingTop: 4,
   },
   topText: {
     fontSize: 10,
@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
   bottomText: {
     flex: 1,
     fontSize: 12,
-    lineHeight: 20,
     paddingRight: 64,
     color: "#3D444B",
     fontWeight: "bold"

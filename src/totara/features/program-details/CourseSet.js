@@ -24,8 +24,7 @@ import {StyleSheet, Text, TouchableOpacity, View, FlatList} from "react-native";
 import PropTypes from "prop-types";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {withNavigation} from "react-navigation";
-
-import {normalize} from "@totara/theme";
+import {normalize, gutter, h1, resizeByScreenSize} from "@totara/theme";
 import {Status} from "@totara/types"
 import {AddBadge, LearningItemCard} from "@totara/components";
 
@@ -110,12 +109,12 @@ const styles = StyleSheet.create({
   courseSet: {
   },
   itemWithBadgeContainer: {
-    marginTop: hp("2.5%"),
-    marginBottom: hp("3%"),
-    marginLeft: wp("4%"),
-    marginRight: wp("4%"),
+    marginTop: hp("3%"),
+    marginBottom: hp("4%"),
+    marginLeft: 16,
+    marginRight: wp("3%"),
     width: wp("70"),
-    height: hp("25%")
+    height: hp("24%")
   },
   learningItem: {
     borderRadius: normalize(10),
@@ -139,17 +138,17 @@ const styles = StyleSheet.create({
   itemSummary: {
     flex: 10,
     paddingBottom: 24,
-    paddingTop: 16,
-    maxHeight: 60,
+    paddingTop: 8,
     fontSize: 14,
     lineHeight: 16,
     color: "#3D444B",
   },
   nextSet: {
     flex: 0,
-    height: 20,
+    marginBottom: 16,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: 'transparent',
   },
   separator: {
     backgroundColor: "#D2D2D2",
@@ -167,8 +166,7 @@ const styles = StyleSheet.create({
   courseSetLabel: {
     fontSize: 20,
     color: "#3D444B",
-    paddingLeft: 16,
-    paddingTop: 10,
+    paddingLeft: 8,
   },
 });
 
