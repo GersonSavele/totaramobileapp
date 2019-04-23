@@ -67,7 +67,7 @@ class CourseDetailsComponent extends React.Component {
   };
 
   onScroll = (event) => {
-    const flex = 2 - (event.nativeEvent.contentOffset.y/100);
+    const flex = 2 - (event.nativeEvent.contentOffset.y/120);
     this.learningItemRef.transitionTo({ flex: flex});
  };
 
@@ -110,10 +110,6 @@ const styles = StyleSheet.create({
     flex: 3,
     paddingLeft: 0,
     backgroundColor: "#FFFFFF",
-  },
-  button: {
-    alignItems: "center",
-    padding: 10
   },
   tabNav: {
     flexDirection: "row",

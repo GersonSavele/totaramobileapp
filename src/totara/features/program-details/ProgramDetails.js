@@ -23,6 +23,7 @@ import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
+import lodash from "lodash";
 
 import {LearningItemCard, ActivityLauncher, ActivitySheetConsumer} from "@totara/components";
 import {gutter, normalize} from "@totara/theme";
@@ -62,9 +63,13 @@ class ProgramDetailsComponent extends React.Component {
     this.learningItemRef = ref;
   };
 
-  onScroll = (event) => {
-    const flex = 2 - (event.nativeEvent.contentOffset.y/100);
+  animate = lodash.throttle((flex) => {
     this.learningItemRef.transitionTo({flex: flex})
+  }, 160);
+
+  onScroll = (event) => {
+    const flex = 2 - (event.nativeEvent.contentOffset.y/120);
+    this.animate(flex)
   };
 
   extendProgram = () => {};
@@ -138,10 +143,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     shadowRadius: normalize(14),
     overflow: "hidden",
-  },
-  button: {
-    alignItems: "center",
-    padding: 10
   },
   tabNav: {
     flexDirection: "row",
