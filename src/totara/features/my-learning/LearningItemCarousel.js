@@ -86,6 +86,9 @@ const LearningItemWithSummaryAndNavigation = ({item, navigation}) => (
                     activeOpacity={1.0}>
     <View style={styles.itemContainer}>
       <LearningItemCard item={item}>
+        <View style={styles.itemInfo}>
+          <Text style={styles.itemType}>{item.type}</Text>
+        </View>
         <View style={{flex: 1}}>
           <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
           <View style={{flex: 1}}/>
@@ -154,6 +157,17 @@ const styles = StyleSheet.create({
   },
   Secondarybutton: {
     borderColor: "#3D444B",
+  },
+  itemInfo: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    maxHeight: 16,
+    paddingTop: 4,
+  },
+  itemType: {
+    fontSize: 12,
+    color: "#A0A0A0"
   },
 });
 

@@ -29,19 +29,21 @@ class CourseSetList extends React.Component {
   renderCourseSet = ({item}) => <CourseSet {...item}/>;
 
   render() {
-    const {courseSet} = this.props;
+    const {courseSet, onScroll} = this.props;
     return(
       <FlatList
         data={courseSet}
         renderItem={this.renderCourseSet}
         keyExtractor={(item, index) => item.id.toString() + index}
-        style={styles.container}/>
+        style={styles.container}
+        onScroll={onScroll}/>
     );
   }
 }
 
 CourseSetList.propTypes = {
-  courseSet: PropTypes.array.isRequired
+  courseSet: PropTypes.array.isRequired,
+  onScroll: PropTypes.func
 };
 
 const styles = StyleSheet.create({

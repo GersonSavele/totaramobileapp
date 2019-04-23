@@ -20,9 +20,8 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View, FlatList} from "react-native";
 import PropTypes from "prop-types";
-import Carousel from "react-native-snap-carousel";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {withNavigation} from "react-navigation";
 
@@ -36,16 +35,11 @@ const CourseSet = ({courses, navigation, nextSet, label}) => (
     <View style={styles.courseSetLabel}>
       <Text style={styles.courseSetLabel}>{label}</Text>
     </View>
-    <Carousel
+    <FlatList
       data={courses}
       renderItem={renderItem(navigation)}
-      sliderWidth={wp("100%")}
-      itemWidth={300}
-      sliderHeight={hp("100%")}
-      inactiveSlideOpacity={0.6}
-      enableSnap={false}
-      containerCustomStyle={{backgroundColor: "#FFFFFF"}}
-    />
+      keyExtractor={(item, index) => item.id.toString() + index}
+      horizontal={true}/>
     {
       (nextSet && nextSet.operator) ?
         <View style={styles.nextSet}>
@@ -114,14 +108,14 @@ CourseWithSummaryAndNavigation.propTypes = {
 
 const styles = StyleSheet.create({
   courseSet: {
-
-    height: 350
   },
   itemWithBadgeContainer: {
     marginTop: hp("2.5%"),
     marginBottom: hp("3%"),
-    marginLeft: 4,
-    marginRight: 4
+    marginLeft: wp("4%"),
+    marginRight: wp("4%"),
+    width: wp("70"),
+    height: hp("25%")
   },
   learningItem: {
     borderRadius: normalize(10),

@@ -51,9 +51,6 @@ const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: 
         <View style={{flexDirection: "row"}}>
           <Text numberOfLines={1} style={styles.itemFullName}>{item.fullname}</Text>
         </View>
-        <View style={styles.itemInfo}>
-          <Text style={styles.itemType}>{item.type}</Text>
-        </View>
         {children}
       </View>
     </View>
@@ -89,10 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flex: 1
   },
-  itemType: {
-    fontSize: 12,
-    color: "#A0A0A0"
-  },
   pipe: {
     color: "#A0A0A0",
     paddingRight: 8,
@@ -111,14 +104,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     padding: 0,
     lineHeight: normalize(24),
-  },
-  itemInfo: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-
-    maxHeight: 16,
-    paddingTop: 4,
   },
   disabledOverlay: {
     position: "absolute",

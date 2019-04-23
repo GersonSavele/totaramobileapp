@@ -99,7 +99,7 @@ class ActivityList extends React.Component {
   };
 
   render() {
-    const {activityGroups} = this.props;
+    const {activityGroups, onScroll} = this.props;
 
     return(
     <SectionList style={styles.activities}
@@ -107,13 +107,15 @@ class ActivityList extends React.Component {
                  renderSectionHeader={this.renderSection}
                  renderItem={this.renderActivity}
                  renderSectionFooter={this.renderFooter}
-                 keyExtractor={(item, index) => item.id.toString() + index}/>
+                 keyExtractor={(item, index) => item.id.toString() + index}
+                 onScroll={onScroll}/>
     );
   }
 }
 
 ActivityList.propTypes = {
-  activityGroups: PropTypes.array.isRequired
+  activityGroups: PropTypes.array.isRequired,
+  onScroll: PropTypes.func
 };
 
 const styles = StyleSheet.create({

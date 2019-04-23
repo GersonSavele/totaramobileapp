@@ -24,7 +24,7 @@ import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import {withNavigation} from "react-navigation";
-
+import * as Animatable from "react-native-animatable";
 
 import {LearningItemCard} from "@totara/components";
 import {gutter} from "@totara/theme";
@@ -62,14 +62,23 @@ class CourseDetailsComponent extends React.Component {
     })
   }
 
+  handleLearningItemRef = (ref) => {
+    this.learningItemRef = ref;
+  };
+
+  onScroll = (event) => {
+    const flex = 2 - (event.nativeEvent.contentOffset.y/100);
+    this.learningItemRef.transitionTo({ flex: flex});
+ };
+
   render() {
     const item = this.props.course;
 
     return (
       <View style={styles.container}>
-        <View style={styles.learningItem}>
+        <Animatable.View style={styles.learningItem} ref={this.handleLearningItemRef}>
           <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
-        </View>
+        </Animatable.View>
         <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
             <TouchableOpacity style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(true)}>
@@ -79,7 +88,7 @@ class CourseDetailsComponent extends React.Component {
               <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Outline</Text>
             </TouchableOpacity>
           </View>
-          { (this.state.showActivities) ? <ActivityList activityGroups={item.sections}/> : <Text>Outline</Text> }
+          { (this.state.showActivities) ? <ActivityList activityGroups={item.sections} onScroll={this.onScroll}/> : <Text>Outline</Text> }
         </View>
       </View>
     );

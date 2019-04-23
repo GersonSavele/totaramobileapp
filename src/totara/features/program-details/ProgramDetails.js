@@ -22,7 +22,7 @@
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
-
+import * as Animatable from "react-native-animatable";
 
 import {LearningItemCard, ActivityLauncher, ActivitySheetConsumer} from "@totara/components";
 import {gutter, normalize} from "@totara/theme";
@@ -58,34 +58,44 @@ class ProgramDetailsComponent extends React.Component {
     })
   }
 
+  handleLearningItemRef = (ref) => {
+    this.learningItemRef = ref;
+  };
+
+  onScroll = (event) => {
+    const flex = 2 - (event.nativeEvent.contentOffset.y/100);
+    this.learningItemRef.transitionTo({flex: flex})
+  };
+
+  extendProgram = () => {};
+  activity = { // TODO mock activity, put into graphql
+    id: 1,
+    itemName: 'Setting up a hierarchy',
+    type: 'video',
+    progressPercentage: 45,
+    summary: "In this brief tutorial, you’ll explore what hierarchies are, how they are structured and the benefits of\n" +
+      "using them. You’ll also find out about job assignments in Totara Learn.",
+    imgSrc: "panel1.png"
+  };
+
   render() {
     const item = this.props.program;
-    const activity = { // TODO mock activity, put into graphql
-        id: 1,
-        itemName: 'Setting up a hierarchy',
-        type: 'video',
-        progressPercentage: 45,
-        summary: "In this brief tutorial, you’ll explore what hierarchies are, how they are structured and the benefits of\n" +
-          "using them. You’ll also find out about job assignments in Totara Learn.",
-        imgSrc: "panel1.png"
-    };
-
-    const extendProgram = () => {};
 
     return (
       <View style={styles.container}>
-        <View style={styles.learningItem}>
-          <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard} onExtension={extendProgram}/>
-          <View style={styles.activeActivityContainer}>
-            <View style={styles.activeActivity}>
-              <ActivitySheetConsumer>
-                {({setCurrentActivity}) =>
-                  <ActivityLauncher item={activity} onPress={(activity) => setCurrentActivity(activity)}/>
-                }
-              </ActivitySheetConsumer>
+        <Animatable.View style={styles.learningItem} ref={this.handleLearningItemRef}>
+          <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard} onExtension={this.extendProgram}>
+            <View style={styles.activeActivityContainer}>
+              <View style={styles.activeActivity}>
+                <ActivitySheetConsumer>
+                  {({setCurrentActivity}) =>
+                    <ActivityLauncher item={this.activity} onPress={(activity) => setCurrentActivity(activity)}/>
+                  }
+                </ActivitySheetConsumer>
+              </View>
             </View>
-          </View>
-        </View>
+          </LearningItemCard>
+        </Animatable.View>
         <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
             <TouchableOpacity style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(true)}>
@@ -95,7 +105,7 @@ class ProgramDetailsComponent extends React.Component {
               <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Details</Text>
             </TouchableOpacity>
           </View>
-          { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet}/> : <Text>Outline</Text> }
+          { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet} onScroll={this.onScroll}/> : <Text>Outline</Text> }
         </View>
       </View>
     );
@@ -119,10 +129,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   activeActivityContainer: {
-    paddingLeft: 16,
-    paddingTop:0,
-    paddingRight:16,
-    paddingBottom: 16,
     backgroundColor: "#F5F5F5",
   },
   activeActivity: {
@@ -130,11 +136,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#F0F0F0",
     backgroundColor: "#FFFFFF",
-
-
     shadowRadius: normalize(14),
     overflow: "hidden",
-
   },
   button: {
     alignItems: "center",
@@ -159,11 +162,11 @@ const styles = StyleSheet.create({
     color: "#CECECE",
   },
   itemImage: {
-    flex: 6,
+    flex: 3.5,
   },
   itemCard: {
     flex: 2,
+    justifyContent: "space-between",
     backgroundColor: "#F5F5F5",
-
   },
 });
