@@ -17,16 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
 import {graphql} from "react-apollo";
 import gql from "graphql-tag";
-import {LearningItem} from "@totara/types";
+import {Program} from "@totara/types";
+import {NavigationInjectedProps} from "react-navigation";
 
 const query = gql`
-  query CurrentLearning {
-    currentLearning {
+  query program($id: ID!) {
+    program(id: $id) {
       id
       type
       shortname
@@ -36,18 +36,41 @@ const query = gql`
       dueDate
       progressPercentage
       groupCount
-      status  
+      courseSet {
+        id
+        label  
+        courses {
+          id
+          type
+          shortname
+          fullname
+          summary
+          progressPercentage
+          status  
+        }
+        nextSet {
+          nextID
+          operator
+        }
+      }  
     }
   }
 `;
 
-export type Response = {
-  currentLearning: LearningItem[];
+type ProgramId = {
+  programId: number
 }
 
-export const learningItemsList = graphql<{}, Response>(
+export type Response = {
+  program: Program;
+} & NavigationInjectedProps<ProgramId>
+
+export const getProgram = graphql<NavigationInjectedProps, Response>(
   query,
   {
+    options: (props) => ({
+      variables: { id: props.navigation.state.params.programId },
+    }),
     props: ( {data} ) => ({...data})
     // needed magic for double HOC, I have no idea why extracting data here makes wrapped totara.components props passed down.  As opposed to extracting data on the calling function
     // it is just stated to be better with static typing, but it doesn't work w/o this.  see: https://www.apollographql.com/docs/react/recipes/static-typing.html#props

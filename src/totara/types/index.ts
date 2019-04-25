@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -17,6 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {LearningItem, Activity} from "./LearningItem"
+import {LearningItem, LearningItemType, Activity} from "./LearningItem"
+import {Course} from "./Course"
+import {Program} from "./Program";
+import {Status, LearningStatus} from "./LearningStatus";
 
-export {LearningItem, Activity}
+export {
+  LearningItem,
+  LearningItemType,
+  Activity,
+  Course,
+  Program,
+  Status,
+  LearningStatus,
+}

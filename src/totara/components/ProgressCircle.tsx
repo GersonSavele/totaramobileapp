@@ -17,25 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
-import {ActivitySheetProvider, ActivitySheetConsumer} from "./ActivitySheet"; // TODO maybe just make this ActivitySheet.X
+import React from "react";
+import * as Progress from "react-native-progress";
 
-export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle,
-  ActivitySheetProvider,
-  ActivitySheetConsumer
+type ProgressCircleParam = {
+  progress: number,
+  size: number
 }
+
+const ProgressCircle = ({size, progress}: ProgressCircleParam) => {
+
+  return <Progress.Circle progress={progress/100}
+  size={size}
+  unfilledColor={"#E6E6E6"}
+  color={"#69BD45"}
+  thickness={2}
+  borderWidth={0}
+  formatText={() =>  progress+"%"}
+  showsText={true}
+  textStyle={{fontSize: 11, fontWeight: "bold", color: "#000000"}}/>
+
+};
+
+export default ProgressCircle;

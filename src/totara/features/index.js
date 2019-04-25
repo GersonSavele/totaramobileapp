@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -21,9 +21,10 @@
  */
 
 import MyLearning from "./my-learning";
-import Course from "./course-details";
+import CourseDetails from "./course-details";
 import Profile from "./profile";
 import Settings from "./settings";
 import PlaceHolder from "./place-holder";
+import ProgramDetails from "./program-details";
 
-export {MyLearning, Course, Profile, Settings, PlaceHolder};
+export {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder};

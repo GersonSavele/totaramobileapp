@@ -17,23 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
-import {withNavigation} from "react-navigation";
 import * as Animatable from "react-native-animatable";
+import lodash from "lodash";
 
-import {LearningItemCard} from "@totara/components";
-import {gutter} from "@totara/theme";
-import {tbPadding} from "@totara/theme";
-import ActivityList from "./ActivityList";
-import {getCourse} from "./api";
+import {LearningItemCard, ActivityLauncher, ActivitySheetConsumer} from "@totara/components";
+import {gutter, normalize} from "@totara/theme";
+import CourseSetList from "./CourseSetList";
+import {getProgram} from "./api";
 
-// TODO: turn the graphql loading, error, HOC and navigation to be a single component
-const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
+const ProgramDetails = getProgram(({loading, program, error}) => {
   if (loading) return <Text>Loading...</Text>;
 
   if (error) {
@@ -41,16 +38,16 @@ const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
     return <Text>Error :(</Text>;
   }
 
-  if (course) {
+  if (program) {
     return(
-      <CourseDetailsComponent course={course}/>
+      <ProgramDetailsComponent program={program}/>
     )
   }
-}));
+});
 
-export default CourseDetails;
+export default ProgramDetails;
 
-class CourseDetailsComponent extends React.Component {
+class ProgramDetailsComponent extends React.Component {
 
   state = {
     showActivities: true,
@@ -66,58 +63,93 @@ class CourseDetailsComponent extends React.Component {
     this.learningItemRef = ref;
   };
 
+  animate = lodash.throttle((flex) => {
+    this.learningItemRef.transitionTo({flex: flex})
+  }, 160);
+
   onScroll = (event) => {
     const flex = 2 - (event.nativeEvent.contentOffset.y/120);
-    this.learningItemRef.transitionTo({ flex: flex});
- };
+    this.animate(flex)
+  };
+
+  extendProgram = () => {};
+  activity = { // TODO mock activity, put into graphql
+    id: 1,
+    itemName: 'Setting up a hierarchy',
+    type: 'video',
+    progressPercentage: 45,
+    summary: "In this brief tutorial, you’ll explore what hierarchies are, how they are structured and the benefits of\n" +
+      "using them. You’ll also find out about job assignments in Totara Learn.",
+    imgSrc: "panel1.png"
+  };
 
   render() {
-    const item = this.props.course;
+    const item = this.props.program;
 
     return (
       <View style={styles.container}>
         <Animatable.View style={styles.learningItem} ref={this.handleLearningItemRef}>
-          <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
+          <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard} onExtension={this.extendProgram}>
+            <View style={styles.activeActivityContainer}>
+              <View style={styles.activeActivity}>
+                <ActivitySheetConsumer>
+                  {({setCurrentActivity}) =>
+                    <ActivityLauncher item={this.activity} onPress={(activity) => setCurrentActivity(activity)}/>
+                  }
+                </ActivitySheetConsumer>
+              </View>
+            </View>
+          </LearningItemCard>
         </Animatable.View>
         <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
             <TouchableOpacity style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(true)}>
-              <Text style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Activities</Text>
+              <Text style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Courses</Text>
             </TouchableOpacity>
             <TouchableOpacity style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(false)}>
-              <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Outline</Text>
+              <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Details</Text>
             </TouchableOpacity>
           </View>
-          { (this.state.showActivities) ? <ActivityList activityGroups={item.sections} onScroll={this.onScroll}/> : <Text>Outline</Text> }
+          { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet} onScroll={this.onScroll}/> : <Text>Outline</Text> }
         </View>
       </View>
     );
   }
 }
 
-CourseDetailsComponent.propTypes = {
-  course: PropTypes.object.isRequired
+ProgramDetailsComponent.propTypes = {
+  program: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   learningItem: {
     flex: 2,
   },
   activitiesContainer: {
     flex: 3,
-    paddingLeft: 0,
     backgroundColor: "#FFFFFF",
+  },
+  activeActivityContainer: {
+    backgroundColor: "#F5F5F5",
+  },
+  activeActivity: {
+    borderRadius: normalize(10),
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
+    backgroundColor: "#FFFFFF",
+    shadowRadius: normalize(14),
+    overflow: "hidden",
   },
   tabNav: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: gutter,
-    paddingTop: tbPadding,
-    paddingBottom: tbPadding,
-    width: 180
+    paddingLeft: 16,
+    paddingTop: 24,
+    paddingBottom: 24,
+    width: 150,
   },
   tabActive: {
     fontSize: 16,
@@ -131,11 +163,11 @@ const styles = StyleSheet.create({
     color: "#CECECE",
   },
   itemImage: {
-    flex: 6,
+    flex: 3.5,
   },
   itemCard: {
     flex: 2,
-    backgroundColor: "#EEEEEE",
-    maxHeight: 72
+    justifyContent: "space-between",
+    backgroundColor: "#F5F5F5",
   },
 });

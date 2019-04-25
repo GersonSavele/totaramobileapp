@@ -17,25 +17,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
-import {ActivitySheetProvider, ActivitySheetConsumer} from "./ActivitySheet"; // TODO maybe just make this ActivitySheet.X
+import {FlatList, StyleSheet} from "react-native";
+import React from "react";
+import PropTypes from "prop-types";
+import CourseSet from "./CourseSet";
 
-export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle,
-  ActivitySheetProvider,
-  ActivitySheetConsumer
+class CourseSetList extends React.Component {
+
+  renderCourseSet = ({item}) => <CourseSet {...item}/>;
+
+  render() {
+    const {courseSet, onScroll} = this.props;
+    return(
+      <FlatList
+        data={courseSet}
+        renderItem={this.renderCourseSet}
+        keyExtractor={(item, index) => item.id.toString() + index}
+        style={styles.container}
+        onScroll={onScroll}/>
+    );
+  }
 }
+
+CourseSetList.propTypes = {
+  courseSet: PropTypes.array.isRequired,
+  onScroll: PropTypes.func
+};
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#FFFFFF"
+  }
+});
+
+export default CourseSetList;

@@ -22,23 +22,24 @@
 
 import {SectionList, StyleSheet, Text, View} from "react-native";
 import React from "react";
-import {ContentIcon, addBadge, BadgeType} from "@totara/components";
-import {normalize, resizeByScreenSize, h4, normal, tbPadding, lrPadding} from "@totara/theme";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+
+import {ContentIcon, CheckBadge} from "@totara/components";
+import {normalize, resizeByScreenSize, h4, normal, lrPadding} from "@totara/theme";
+import {Status} from "@totara/types"
 
 class ActivityList extends React.Component {
 
   renderSection = ({section: {sectionName, status}}) => {
-    const SectionHeader = () => (status === "hidden") ?
-      <View style={styles.withLock}>
-        <Text style={styles.sectionHeaderText}>{sectionName}</Text>
-        <View style={styles.sectionLock}>
-          <FontAwesomeIcon icon="lock" size={16} color="white"/>
+    const SectionHeader = () => (status === Status.hidden)
+      ? <View style={styles.withLock}>
+          <Text style={styles.sectionHeaderText}>{sectionName}</Text>
+          <View style={styles.sectionLock}>
+            <FontAwesomeIcon icon="lock" size={16} color="white"/>
+          </View>
         </View>
-      </View>
-      :
-      <Text style={styles.sectionHeaderText}>{sectionName}</Text>
+      : <Text style={styles.sectionHeaderText}>{sectionName}</Text>;
 
     return (
       <View style={styles.sectionHeader}>
@@ -57,14 +58,16 @@ class ActivityList extends React.Component {
 
   renderActivity = ({item, index, section}) => {
 
-    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>
+    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>;
 
-    const BadgedIcon = addBadge(BuildContentIcon, BadgeType.Check);
-
-    const Activity = ({status}) =>
+    const Activity = () =>
       <View style={styles.activity}>
         {
-          (item.status === "done") ? <BadgedIcon/> : <BuildContentIcon/>
+          (item.status === "done")
+            ? <CheckBadge size={8} offsetSize={2}>
+                <BuildContentIcon/>
+              </CheckBadge>
+            : <BuildContentIcon/>
         }
         <View style={{flex: 1}}>
           <Text numberOfLines={1} style={(item.status) === "active" ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
@@ -80,13 +83,13 @@ class ActivityList extends React.Component {
         }
       </View>;
 
-    if (section.status === "hidden")
+    if (section.status === Status.hidden)
       return(
         <View>
           <Activity/>
           <View style={styles.disabledOverlay}/>
         </View>);
-    else if (item.status === "active")
+    else if (item.status === Status.active)
       return(
         <View style={styles.activeActivity}>
           <Activity/>
@@ -96,7 +99,7 @@ class ActivityList extends React.Component {
   };
 
   render() {
-    const {activityGroups} = this.props;
+    const {activityGroups, onScroll} = this.props;
 
     return(
     <SectionList style={styles.activities}
@@ -104,13 +107,15 @@ class ActivityList extends React.Component {
                  renderSectionHeader={this.renderSection}
                  renderItem={this.renderActivity}
                  renderSectionFooter={this.renderFooter}
-                 keyExtractor={(item, index) => item.id.toString() + index}/>
+                 keyExtractor={(item, index) => item.id.toString() + index}
+                 onScroll={onScroll}/>
     );
   }
 }
 
 ActivityList.propTypes = {
-  activityGroups: PropTypes.array.isRequired
+  activityGroups: PropTypes.array.isRequired,
+  onScroll: PropTypes.func
 };
 
 const styles = StyleSheet.create({
@@ -183,10 +188,9 @@ const styles = StyleSheet.create({
     height: normalize(64),
     width: "100%"
   },
-  activeActivity: {
+  activeActivityContainer: {
     borderWidth: 2,
     borderColor: "#337AB7",
-
     backgroundColor: "#EEEEEE",
   },
   activeActivityText: {
@@ -194,7 +198,6 @@ const styles = StyleSheet.create({
     color: "#0066CC",
     paddingLeft: lrPadding,
     fontWeight: "600",
-
   }
 });
 

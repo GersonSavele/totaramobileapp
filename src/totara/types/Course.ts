@@ -20,22 +20,17 @@
  *
  */
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
-import {ActivitySheetProvider, ActivitySheetConsumer} from "./ActivitySheet"; // TODO maybe just make this ActivitySheet.X
+import {Section} from "./LearningItem"
+import {LearningStatus} from "./LearningStatus";
 
-export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle,
-  ActivitySheetProvider,
-  ActivitySheetConsumer
+
+export interface Course extends LearningStatus {
+  id: number
+  type: string
+  shortname: string
+  fullname?: string
+  summary?: string
+  progressPercentage?: number
+  groupCount?: number
+  sections: [Section]
 }

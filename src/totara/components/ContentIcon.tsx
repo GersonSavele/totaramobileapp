@@ -31,30 +31,28 @@ type Props = {
   size: number
 }
 
-class ContentIcon extends React.Component<Props> {
+const ContentIcon = ({icon, iconSize, size}: Props) => {
 
-  styles = StyleSheet.create({
+  const styles = StyleSheet.create({
     iconcircle: {
       padding: 0,
       backgroundColor: "#3D444B",
       borderRadius: 25,
       borderWidth: 1,
       borderColor: "#3D444B",
-      height: normalize(this.props.size),
-      width: normalize(this.props.size),
+      height: normalize(size),
+      width: normalize(size),
       justifyContent: "center",
       alignItems: "center",
     },
   });
 
-  render() {
-    return(
-      <View style={this.styles.iconcircle}>
-        <FontAwesomeIcon icon={this.props.icon} size={this.props.iconSize} color={"white"}/>
-      </View>
+  return(
+    <View style={styles.iconcircle}>
+      <FontAwesomeIcon icon={icon} size={iconSize} color={"white"}/>
+    </View>
   );
-  }
 
-}
+};
 
 export default ContentIcon

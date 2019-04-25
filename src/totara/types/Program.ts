@@ -17,25 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
-import {ActivitySheetProvider, ActivitySheetConsumer} from "./ActivitySheet"; // TODO maybe just make this ActivitySheet.X
+import {Section} from "./LearningItem"
 
-export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle,
-  ActivitySheetProvider,
-  ActivitySheetConsumer
+
+export interface Program {
+  id: number
+  type: string
+  shortname: string
+  fullname?: string
+  summary?: string
+  dueDateState?: string
+  dueDate?: Date
+  progressPercentage?: number
+  groupCount?: number
+  sections: [Section]
 }

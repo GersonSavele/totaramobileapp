@@ -17,25 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
-import {ActivitySheetProvider, ActivitySheetConsumer} from "./ActivitySheet"; // TODO maybe just make this ActivitySheet.X
+export enum Status {
+  hidden = "hidden", // TODO should be lock instaed
+  active = "active",
+  done = "done"
+}
 
-export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle,
-  ActivitySheetProvider,
-  ActivitySheetConsumer
+export interface LearningStatus {
+  status?: Status
 }

@@ -22,10 +22,8 @@
 
 import {Image, ImageStyle, StyleSheet, Text, View, ViewStyle} from "react-native";
 import React from "react";
-import {Component, ComponentType} from "react";
-import * as Progress from 'react-native-progress';
 
-import {LearningItem} from "@totara/types";
+import {LearningItem, Status} from "@totara/types";
 import {config} from "@totara/lib";
 import DueDateState from "./DueDateState";
 import {normalize} from "@totara/theme";
@@ -33,46 +31,47 @@ import {normalize} from "@totara/theme";
 interface Props {
   item: LearningItem
   imageStyle: ImageStyle
-  cardStyle: ViewStyle
+  cardStyle: ViewStyle,
+  onExtension?: () => void,
+  children: JSX.Element
 }
 
-const learningItemCard = (WrappedComponent: ComponentType<any>) =>
-  class LearningItemCard extends Component<Props> {
+const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: Props) => {
 
-    render() {
-      const {item, imageStyle, cardStyle} = this.props;
+  const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
+  const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
 
-      const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
-
-      const progressPercentage = item.progressPercentage ? item.progressPercentage/100 : 0;
-
-      const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
-      const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
-
-      return(
-        <View style={{flex: 1}}>
-          <View style={imageStyleSheet}>
-            <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate}/>
-            <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
-          </View>
-          <View style={cardStyleSheet}>
-            <View style={{flexDirection: "row"}}>
-              <Text numberOfLines={2} style={styles.itemFullName}>{item.fullname}</Text>
-            </View>
-            <View style={styles.itemInfo}>
-              <Text style={styles.itemType}>{item.type}</Text>
-              <Text style={styles.pipe}> | </Text>
-              <Progress.Circle progress={progressPercentage} size={16} borderColor={"#E6E6E6"} color={"#0066CC"} thickness={1} borderWidth={1}/>
-              <Text style={styles.percentagetext}> {item.progressPercentage} %</Text>
-            </View>
-            {
-              WrappedComponent ? <WrappedComponent/> : null
-            }
-          </View>
+  return (
+    <View style={{flex: 1}}>
+      <View style={imageStyleSheet}>
+        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} onExtension={onExtension}/>
+        <ImageElement item={item}/>
+      </View>
+      <View style={cardStyleSheet}>
+        <View style={{flexDirection: "row"}}>
+          <Text numberOfLines={1} style={styles.itemFullName}>{item.fullname}</Text>
         </View>
-      );
-    }
-  };
+        {children}
+      </View>
+    </View>
+  );
+};
+
+
+const ImageElement = ({item}: {item: LearningItem}) => {
+
+  const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
+
+  if (item.status === Status.hidden)
+    return(
+      <View style={{flex: 1}}>
+        <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
+        <View style={styles.disabledOverlay}/>
+      </View>);
+  else
+      return(<Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>);
+
+};
 
 const styles = StyleSheet.create({
   itemImage: {
@@ -80,13 +79,12 @@ const styles = StyleSheet.create({
     flexDirection: "column-reverse",
   },
   itemCard: {
-    padding: normalize(16),
+    paddingLeft: normalize(16),
+    paddingTop: normalize(16),
+    paddingRight: normalize(16),
+    paddingBottom: normalize(16),
     justifyContent: "flex-start",
     flex: 1
-  },
-  itemType: {
-    fontSize: 12,
-    color: "#A0A0A0"
   },
   pipe: {
     color: "#A0A0A0",
@@ -102,21 +100,21 @@ const styles = StyleSheet.create({
   itemFullName: {
     color: "#3D444B",
     flexWrap: "wrap",
-    fontSize: normalize(22),
-    fontWeight: "400",
+    fontSize: normalize(20),
+    fontWeight: "500",
     padding: 0,
     lineHeight: normalize(24),
   },
-  itemInfo: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    minHeight: 30,
-    maxHeight: 35,
-    paddingTop: 5,
+  disabledOverlay: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    backgroundColor: "white",
+    opacity: 0.5,
+    height: "100%",
+    width: "100%"
   },
 });
 
 
-export default learningItemCard
-
+export default LearningItemCard

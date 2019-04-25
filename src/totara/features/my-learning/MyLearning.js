@@ -23,16 +23,12 @@
 import React from "react";
 import {Image, StyleSheet, Text, View} from "react-native";
 import PropTypes from 'prop-types';
-import {Button} from "native-base";
-import SlidingUpPanel from "rn-sliding-up-panel";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-import {config} from "@totara/lib";
 import {gutter, h1, resizeByScreenSize} from "@totara/theme";
 import LearningItemCarousel from "./LearningItemCarousel";
-import RecentActivity from "./RecentActivity";
-
+import {ActivitySheetConsumer, ActivityLauncher} from "@totara/components";
 
 export default class MyLearning extends React.Component {
 
@@ -40,16 +36,16 @@ export default class MyLearning extends React.Component {
     headerTitle: null,
     headerStyle: {
       height: 0,
-      borderBottomWidth: 0
+      borderBottomWidth: 0,
+      backgroundColor: "#FFFFFF",
     }
   };
 
   state = {
-    visible: false,
-    show: false
+    show: false,
   };
 
-  componentDidMount() {
+  componentDidMount() { // this is a hack to wait of the internal node js server to serve mock data
     setTimeout(() => {
       this.show();
     }, 1000);
@@ -60,42 +56,36 @@ export default class MyLearning extends React.Component {
   }
 
   render() {
-
-    let imgSrc = config.mobileStatic + "/public/panel1.png";
+    const activity = { // TODO mock activity, put into graphql
+      id: 1,
+      itemName: "Totara Learn for beginners",
+      type: "video",
+      progressPercentage: 55,
+      summary: "Users are the people who are going to interact with your Totara Learn system; whether they are learners, " +
+        "managers, trainers,administrators or something in between. So it’s easy to understand why you want to add users to your LMS. But how do you go about doing so? You’ve got two main options you’re likely to use. You can create users manually, or you can create multiple users at the same time using HR Import. In this course, you’ll learn how to do both.",
+      imgSrc: "panel2.png"
+    };
 
     return (
-      <View style={styles.myLearningContainer}>
-        <View style={styles.myLearningLogo}>
-          <Image source={require("./totara_logo.png")} style={{width:81, height: 20}}/>
-        </View>
-        <View style={styles.myLearningHeader}>
-          <Text style={styles.myLearningHeaderText}>My learning</Text>
-          <FontAwesomeIcon icon="list-ul" size={20}/>
-        </View>
-        <View style={styles.learningItems}>
-          <LearningItemCarousel visible={this.state.show}/>
-        </View>
-        <View style={styles.recentActivity}>
-          <RecentActivity onPress={() => this.setState({visible: true})}/>
-        </View>
-        <SlidingUpPanel
-          visible={this.state.visible}
-          onRequestClose={() => this.setState({visible: false})}>
-          <View style={styles.panel}>
-            <Button transparent onPress={() => this.setState({visible: false})}>
-              <FontAwesomeIcon
-                icon="times"
-                size={24}
-              />
-            </Button>
-            <Image source={{uri: imgSrc}} style={{width: wp("100%"), height: 240}}/>
-            <Text style={styles.panelContent}>
-              In this brief tutorial, you’ll explore what hierarchies are, how they are structured and the benefits of
-              using them. You’ll also find out about job assignments in Totara Learn.
-            </Text>
+        <View style={styles.myLearningContainer}>
+          <View style={styles.myLearningLogo}>
+            <Image source={require("./totara_logo.png")} style={{width:81, height: 20}}/>
           </View>
-        </SlidingUpPanel>
-      </View>
+          <View style={styles.myLearningHeader}>
+            <Text style={styles.myLearningHeaderText}>My learning</Text>
+            <FontAwesomeIcon icon="list-ul" size={20}/>
+          </View>
+          <View style={styles.learningItems}>
+            <LearningItemCarousel visible={this.state.show}/>
+          </View>
+          <View style={styles.recentActivity}>
+            <ActivitySheetConsumer>
+              {({setCurrentActivity}) =>
+                <ActivityLauncher item={activity} onPress={(activity) => setCurrentActivity(activity)}/>
+              }
+            </ActivitySheetConsumer>
+          </View>
+        </View>
     );
   }
 }
@@ -113,13 +103,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: resizeByScreenSize(40, 48, 56, 64),
     paddingHorizontal: gutter,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     alignItems: 'center'
   },
   myLearningHeader: {
     height: resizeByScreenSize(40, 48, 64, 64),
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "space-between",
     paddingRight: gutter,
@@ -135,6 +125,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   recentActivity: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "#F0F0F0",
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 8,
+    overflow: "hidden",
   },
   activity: {
     flex: 1,
@@ -152,14 +149,5 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     width: wp("100%"),
     height: hp("10%")
-  },
-  panel: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#CECECE",
-  },
-  panelContent: {
-    flex: 10,
-    padding: 20,
   },
 });

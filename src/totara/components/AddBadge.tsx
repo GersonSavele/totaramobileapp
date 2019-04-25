@@ -21,81 +21,96 @@
  */
 
 import React from "react";
-import {Component, ComponentType} from "react";
+import {ComponentType} from "react";
 import {View, StyleSheet} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-enum BadgeType {
-  Check = "Check",
-  Lock = "Lock"
+import {Status} from "@totara/types";
+import ProgressCircle from "./ProgressCircle"
+
+
+type Props = {
+  size?: number,
+  offsetSize?: number
 }
 
-interface Badge {
-  kind: BadgeType
-  color: string
-  backgroundColor: string
-  icon: string
-}
+abstract class Badge<P extends Props> extends React.Component<P> {
+  abstract backgroundColor: string;
+  abstract borderColor: string;
+  abstract BadgeElement: ComponentType<any>;
 
-class CheckBadge implements Badge {
-  kind = BadgeType.Check;
-  color = "#FFFFFF";
-  backgroundColor = "#69BD45";
-  icon = "check";
-}
-
-class LockBadge implements Badge {
-  kind = BadgeType.Check;
-  color = "#FFFFFF";
-  backgroundColor = "#999999";
-  icon = "lock";
-}
-
-const addBadge = (WrappedComponent: ComponentType<any>,
-                  badgeType: BadgeType,
-                  size = 8) => {
-
-  const badgeDetails = getBadgeDetails(badgeType);
-
-  return class Badged extends Component {
-
-    styles = StyleSheet.create({
+  getStyles(size: number = 8, offsetSize: number = (size / 2)) {
+    return StyleSheet.create({
       iconContainer: {
-        top: -2 * (size / 4),
-        right: 0,
+        top: -1 * offsetSize,
+        right: -1 * offsetSize,
         position: "absolute",
-        backgroundColor: badgeDetails.backgroundColor,
+        backgroundColor: this.backgroundColor,
         borderRadius: size * 2,
+        borderWidth: size / 8,
+        borderColor: this.borderColor,
         width: size * 2,
         height: size * 2,
         justifyContent: "center",
         alignItems: "center",
       },
     });
+  }
 
-    render() {
-      return (
-        <View>
-          <WrappedComponent/>
-          <View style={this.styles.iconContainer}>
-            <FontAwesomeIcon icon={badgeDetails.icon} size={size} color={badgeDetails.color}/>
-          </View>
+  render() {
+    const {size, offsetSize, ...otherProps} = this.props;
+
+    return (
+      <View>
+        {this.props.children}
+        <View style={this.getStyles(size, offsetSize).iconContainer}>
+          <this.BadgeElement size={size} {...otherProps}/>
         </View>
-      );
-    }
+      </View>
+    );
+  }
 
-  };
+}
 
-};
+class CheckBadge extends Badge<Props> {
+  color = "#FFFFFF";
+  icon = "check";
+  backgroundColor = "#69BD45";
+  borderColor = "#FFFFFF";
+  BadgeElement = ({size}: Props) => <FontAwesomeIcon icon={this.icon} color={this.color} size={size}/>
+}
 
-const getBadgeDetails = (badgeType: BadgeType) => {
+class LockBadge extends Badge<Props> {
+  color = "#FFFFFF";
+  icon = "lock";
+  backgroundColor = "#999999";
+  borderColor = "#FFFFFF";
+  BadgeElement = ({size}: Props) => <FontAwesomeIcon icon={this.icon} color={this.color} size={size}/>
+}
 
-  switch (badgeType) {
-    case BadgeType.Check:
-      return new CheckBadge;
-    case BadgeType.Lock:
-      return new LockBadge;
+type ProgressBadgeProps = {
+  progress: number
+} & Props
+
+class ProgressBadge extends Badge<ProgressBadgeProps> {
+  color = "#69BD45";
+  backgroundColor = "#FFFFFF";
+  borderColor = "#FFFFFF";
+  BadgeElement = ({size = 8, progress}: ProgressBadgeProps) => <ProgressCircle size={size * 2} progress={progress}/>
+}
+
+const AddBadge = ({status, children}: {status: Status | number, children: JSX.Element}) => {
+  switch (status) {
+    case Status.done: return <CheckBadge size={16} offsetSize={8}>{children}</CheckBadge>;
+    case 100: return <CheckBadge size={16} offsetSize={8}>{children}</CheckBadge>;
+    case Status.hidden: return <LockBadge size={16} offsetSize={8}>{children}</LockBadge>;
+    case Status.active: // drop through default
+    default:
+      if (typeof status == "number")
+        return <ProgressBadge size={16} offsetSize={8} progress={status}>{children}</ProgressBadge>;
+      else
+        return <View>{children}</View>
   }
 };
 
-export {addBadge, BadgeType};
+export {AddBadge, CheckBadge, LockBadge, ProgressBadge};

@@ -29,42 +29,12 @@ import Carousel from "react-native-snap-carousel";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 import {learningItemsList} from "./api";
-import {learningItemCard} from "@totara/components";
+import {LearningItemCard, AddBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
+import {LearningItemType} from "@totara/types";
 
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
-
-  let courseNavigate = (course) => navigation.navigate("Course", {item: course});
-
-  const LearningItem = ({item}) => {
-
-    class LearningItemSummaryAndStartButton extends React.Component {
-      render() {
-        return(
-          <View style={{flex: 1}}>
-            <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
-            <View style={{flex: 1}}/>
-            <Button block><Text style={styles.buttonText}>Start this {item.type}</Text></Button>
-          </View>);
-      }
-    }
-
-    const LearningItemWithSummary = learningItemCard(LearningItemSummaryAndStartButton);
-
-    return (
-      <TouchableOpacity style={styles.learningItem} key={item.id} onPress={() => courseNavigate(item)} activeOpacity={1.0}>
-        <View style={styles.itemContainer}>
-          <LearningItemWithSummary item={item}/>
-        </View>
-      </TouchableOpacity>
-    );
-
-  };
-
-  LearningItem.propTypes = {
-    item: PropTypes.object.isRequired
-  };
 
   if (loading) return <Text>Loading...</Text>;
 
@@ -80,24 +50,85 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
     return (
       <Carousel
         data={currentLearning}
-        renderItem={LearningItem}
+        renderItem={renderItem(navigation)}
         sliderWidth={wp("100%")}
         itemWidth={wp("82%")}
         sliderHeight={hp("100%")}
         inactiveSlideOpacity={0.6}
+        containerCustomStyle={{backgroundColor: "#FFFFFF"}}
       />
     );
 
   } else return null;
 }));
 
+const renderItem = (navigation) => {
+
+  const LearningItem = ({item}) =>
+    <View style={styles.itemWithBadgeContainer}>
+      <AddBadge status={item.progressPercentage || item.status}>
+        <LearningItemWithSummaryAndNavigation item={item} navigation={navigation}/>
+      </AddBadge>
+    </View>;
+
+  LearningItem.propTypes = {
+    item: PropTypes.object.isRequired
+  };
+
+  return LearningItem;
+
+};
+
+const LearningItemWithSummaryAndNavigation = ({item, navigation}) => (
+  <TouchableOpacity style={styles.learningItem}
+                    key={item.id}
+                    onPress={() => navigateTo(navigation, item)}
+                    activeOpacity={1.0}>
+    <View style={styles.itemContainer}>
+      <LearningItemCard item={item}>
+        <View style={styles.itemInfo}>
+          <Text style={styles.itemType}>{item.type}</Text>
+        </View>
+        <View style={{flex: 1}}>
+          <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
+          <View style={{flex: 1}}/>
+          <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>Continue your {item.type}</Text></Button>
+        </View>
+      </LearningItemCard>
+    </View>
+  </TouchableOpacity>);
+
+LearningItemWithSummaryAndNavigation.propTypes = {
+  item: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired
+};
+
+let navigateTo = (navigation, item) => {
+  switch (item.type) {
+    case LearningItemType.Course:
+      navigation.navigate("CourseDetails", {courseId: item.id});
+      break;
+    case LearningItemType.Program:
+      navigation.navigate("ProgramDetails", {programId: item.id});
+      break;
+    case LearningItemType.Certification: // TODO for now certifaction is the same as Program
+      navigation.navigate("ProgramDetails", {programId: item.id});
+      break;
+    default:
+      console.error("unknown type", item); // TODO turn this into a logging system
+  }
+};
+
+
 const styles = StyleSheet.create({
-  learningItem: {
-    flex: 1,
+  itemWithBadgeContainer: {
     marginTop: hp("2.5%"),
     marginBottom: hp("3%"),
+    marginLeft: 4,
+    marginRight: 4,
+  },
+  learningItem: {
     borderRadius: normalize(10),
-
     shadowColor: "#000",
     shadowOffset: { width: 0, height: normalize(10) },
     shadowOpacity: 0.16,
@@ -105,23 +136,39 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   itemContainer: {
-    flex: 1,
     borderTopRightRadius: normalize(10),
     borderTopLeftRadius: normalize(10),
+    width: "100%",
+    height: "100%",
     overflow: "hidden",
   },
   itemSummary: {
     flex: 10,
-    paddingBottom: 20,
-    maxHeight: 80,
-    fontSize: 14,
-    lineHeight: 16,
+    paddingBottom: 24,
+    paddingTop: 16,
+    maxHeight: 125,
+    fontSize: 15,
+    lineHeight: 20,
     color: "#3D444B",
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: "#3D444B",
     padding: 5
-  }
+  },
+  Secondarybutton: {
+    borderColor: "#3D444B",
+  },
+  itemInfo: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    maxHeight: 16,
+    paddingTop: 4,
+  },
+  itemType: {
+    fontSize: 12,
+    color: "#A0A0A0"
+  },
 });
 
 
