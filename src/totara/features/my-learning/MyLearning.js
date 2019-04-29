@@ -76,7 +76,7 @@ export default class MyLearning extends React.Component {
             <FontAwesomeIcon icon="list-ul" size={20}/>
           </View>
           <View style={styles.learningItems}>
-            <LearningItemCarousel visible={this.state.show}/>
+            {(this.state.show) && <LearningItemCarousel/>}
           </View>
           <View style={styles.recentActivity}>
             <ActivitySheetConsumer>
