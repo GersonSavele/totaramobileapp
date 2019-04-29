@@ -71,7 +71,7 @@ class ActivityList extends React.Component {
         }
         <View style={{flex: 1}}>
           <Text numberOfLines={1} style={(item.status) === "active" ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
-          <Text numberOfLines={1} style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas lorem ipsum</Text>
+          <Text numberOfLines={1} style={styles.activitySummaryText}>{item.summary}</Text>
         </View>
         {
           (item.type === "film") ?
