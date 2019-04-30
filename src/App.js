@@ -22,8 +22,12 @@
 
 import React from "react";
 import {View} from "react-native";
-import ApolloClient from "apollo-boost";
+import {ApolloClient}  from "apollo-client";
 import {ApolloProvider} from "react-apollo";
+import {ApolloLink} from 'apollo-link';
+import {RetryLink} from 'apollo-link-retry';
+import {HttpLink} from 'apollo-link-http';
+import {InMemoryCache} from "apollo-cache-inmemory";
 import {createStackNavigator, createAppContainer} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import {StyleProvider} from "native-base";
@@ -54,8 +58,14 @@ import {config} from "@totara/lib";
 import {theme, getTheme} from "@totara/theme";
 import {ActivitySheetProvider} from "@totara/components";
 
+const link = ApolloLink.from([
+  new RetryLink({attempts: {max: 10}}),
+  new HttpLink({ uri: config.mobileApi + "/graphql" })
+]);
+
 const client = new ApolloClient({
-  uri: config.mobileApi + "/graphql"
+  link: link,
+  cache: new InMemoryCache()
 });
 
 export default class App extends React.Component<{}> {

@@ -41,20 +41,6 @@ export default class MyLearning extends React.Component {
     }
   };
 
-  state = {
-    show: false,
-  };
-
-  componentDidMount() { // this is a hack to wait of the internal node js server to serve mock data
-    setTimeout(() => {
-      this.show();
-    }, 1000);
-  }
-
-  show() {
-    this.setState({show: true});
-  }
-
   render() {
     const activity = { // TODO mock activity, put into graphql
       id: 1,
@@ -76,7 +62,7 @@ export default class MyLearning extends React.Component {
             <FontAwesomeIcon icon="list-ul" size={20}/>
           </View>
           <View style={styles.learningItems}>
-            {(this.state.show) && <LearningItemCarousel/>}
+            <LearningItemCarousel/>
           </View>
           <View style={styles.recentActivity}>
             <ActivitySheetConsumer>
