@@ -60,14 +60,12 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingLeft: 8,
     paddingTop: 8,
-    paddingBottom: 8,
-
-
+    paddingBottom: 8
   },
   container: {
     flex: 1,
     paddingLeft: 8,
-    paddingTop: 4,
+    paddingTop: 4
   },
   topText: {
     fontSize: 10,
