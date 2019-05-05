@@ -99,15 +99,15 @@ class ProgressBadge extends Badge<ProgressBadgeProps> {
   BadgeElement = ({size = 8, progress}: ProgressBadgeProps) => <ProgressCircle size={size * 2} progress={progress}/>
 }
 
-const AddBadge = ({status, children}: {status: Status | number, children: JSX.Element}) => {
+const AddBadge = ({status, children, size = 16}: {status: Status | number, children: JSX.Element, size: number}) => {
   switch (status) {
-    case Status.done: return <CheckBadge size={16} offsetSize={8}>{children}</CheckBadge>;
-    case 100: return <CheckBadge size={16} offsetSize={8}>{children}</CheckBadge>;
-    case Status.hidden: return <LockBadge size={16} offsetSize={8}>{children}</LockBadge>;
+    case Status.done: return <CheckBadge size={size} offsetSize={8}>{children}</CheckBadge>;
+    case 100: return <CheckBadge size={size} offsetSize={8}>{children}</CheckBadge>;
+    case Status.hidden: return <LockBadge size={size} offsetSize={8}>{children}</LockBadge>;
     case Status.active: // drop through default
     default:
       if (typeof status == "number")
-        return <ProgressBadge size={16} offsetSize={8} progress={status}>{children}</ProgressBadge>;
+        return <ProgressBadge size={size} offsetSize={8} progress={status}>{children}</ProgressBadge>;
       else
         return <View>{children}</View>
   }
