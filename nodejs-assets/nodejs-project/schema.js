@@ -34,12 +34,14 @@ var courses = [{
       id: 1,
       itemName: "News forum",
       summary: undefined,
-      type: "comments"
+      type: "comments",
+      status: "done"
     }, {
       id: 2,
       itemName: "Course forum",
       type: "comments",
-      summary: undefined
+      summary: undefined,
+      status: "active"
     }]
   }, {
     sectionName: "Skill up",
@@ -47,7 +49,7 @@ var courses = [{
       id: 3,
       itemName: "The problem",
       type: "comments",
-      summary: "Users are the people who are going to interact with your Totara Learn system; whether they are learners, managers, trainers, administrators or something in between."
+      summary: "Users are the people who are going to interact with your Totara Learn system; whether they are learners, managers, trainers, administrators or something in between.",
     }, {
       id: 4,
       itemName: "Adding users to Totara Learn",
@@ -67,6 +69,7 @@ var courses = [{
     }]
   }, {
     sectionName: "Have a go",
+    status: "hidden",
     data: [{
       id: 7,
       itemName: "Help me",
@@ -143,7 +146,7 @@ var moreCourses = [{
   summary: "The Site Administrator program for Totara Learn version 11 covers everything you need to know to be a Site Administrator for your Totara Learn site. Comprised of smaller feature-focused courses, you can work through the program in any order. Completing each course counts towards the completion of the program; complete them all and we’ll award you your Totara Learn Site Administrator’s badge.",
   dueDateState: undefined,
   dueDate: undefined,
-  progressPercentage: 90,
+  progressPercentage: undefined,
   groupCount: 150,
   status: "active",
   sections: [{
