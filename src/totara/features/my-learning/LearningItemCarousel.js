@@ -32,15 +32,15 @@ import {learningItemsList} from "./api";
 import {LearningItemCard, AddBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
 import {LearningItemType} from "@totara/types";
-
+import {translate} from "@totara/locale";
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return <Text>{translate("general.loading")}</Text>;
 
   if (error) {
     console.log("error", error); // TODO turn this into a logging system
-    return <Text>Error :(</Text>;
+    return <Text>{translate("general.error")}(</Text>;
   }
 
   if (currentLearning) {
@@ -92,7 +92,7 @@ const LearningItemWithSummaryAndNavigation = ({item, navigation}) => (
         <View style={{flex: 1}}>
           <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
           <View style={{flex: 1}}/>
-          <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>Continue your {item.type}</Text></Button>
+          <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>{translate("my-learning.continue_action")} {item.type}</Text></Button>
         </View>
       </LearningItemCard>
     </View>

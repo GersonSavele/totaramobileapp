@@ -29,6 +29,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {gutter, h1, resizeByScreenSize} from "@totara/theme";
 import LearningItemCarousel from "./LearningItemCarousel";
 import {ActivitySheetConsumer, ActivityLauncher} from "@totara/components";
+import {translate} from "@totara/locale";
 
 export default class MyLearning extends React.Component {
 
@@ -58,7 +59,7 @@ export default class MyLearning extends React.Component {
             <Image source={require("./totara_logo.png")} style={{width:81, height: 20}}/>
           </View>
           <View style={styles.myLearningHeader}>
-            <Text style={styles.myLearningHeaderText}>My learning</Text>
+          <Text style={styles.myLearningHeaderText}>{translate("my-learning.primary_title")}</Text>
             <FontAwesomeIcon icon="list-ul" size={20}/>
           </View>
           <View style={styles.learningItems}>

@@ -1,0 +1,24 @@
+{
+  "general": {
+    "loading": "Chargement...",
+    "error": "Erreur :"
+  }, 
+  "course-details": {
+    "activities": "Activités",
+    "outline": "Contour"
+  }, 
+  "my-learning": {
+    "primary_title": "Mon apprentissage",
+    "continue_action": "Continuez votre"
+  }, 
+  "program-details": {
+    "courses": "Cours",
+    "details": "Détails",
+    "outline": "Contour"
+  }, 
+  "totara-component" : {
+    "section_title_continue_learn": "Continuez votre apprentissage",
+    "due": "Dû",
+    "extend_date": "Date de prolongation"
+  }
+}

@@ -3,6 +3,7 @@ package com.totaramobileapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.horcrux.svg.SvgPackage;
 import com.janeasystems.rn_nodejs_mobile.RNNodeJsMobilePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNLocalizePackage(),
             new SvgPackage(),
             new RNNodeJsMobilePackage(),
             new RNGestureHandlerPackage(),

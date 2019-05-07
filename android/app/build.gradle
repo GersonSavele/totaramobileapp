@@ -140,6 +140,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-localize')
     compile project(':react-native-svg')
     compile project(':nodejs-mobile-react-native')
     compile project(':react-native-gesture-handler')
