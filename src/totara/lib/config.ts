@@ -19,14 +19,14 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  *
  */
-import localConfig from "@totara/lib/config.local";
-const projectConfig = {
+import localConfig from "./config.local";
+const defaultConfig = {
   mobileApi: "http://localhost:4000",
   mobileStatic: "http://localhost:4001",
   // startNodeJsMobile: true
   startNodeJsMobile: false
 };
 
-const config = {...projectConfig, ...localConfig};
+const config = {...defaultConfig, ...localConfig};
 
 export default config;
