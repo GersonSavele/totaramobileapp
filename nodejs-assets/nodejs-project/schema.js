@@ -31,13 +31,13 @@ var courses = [{
   sections: [{
     sectionName: "Ask us",
     data: [{
-      id: 1,
+      id: 100,
       itemName: "News forum",
       summary: undefined,
       type: "comments",
       status: "done"
     }, {
-      id: 2,
+      id: 102,
       itemName: "Course forum",
       type: "comments",
       summary: undefined,
