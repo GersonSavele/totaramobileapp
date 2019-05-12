@@ -58,3 +58,7 @@ buck-out/
 # VSCode
 #
 .vscode/
+
+#local configuration
+#
+/src/totara/lib/config.local.ts
