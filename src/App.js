@@ -32,8 +32,8 @@ import {createStackNavigator, createAppContainer} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import {StyleProvider} from "native-base";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome"
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {
   faHome,
   faCloudDownloadAlt,
@@ -51,7 +51,8 @@ import {
   faChevronUp,
   faExclamationTriangle,
   faLock,
-  faBoxOpen} from "@fortawesome/free-solid-svg-icons"
+  faBoxOpen} from "@fortawesome/free-solid-svg-icons";
+  import SplashScreen from "react-native-splash-screen";
 
 import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
@@ -73,6 +74,7 @@ export default class App extends React.Component<{}> {
   navigator = undefined;
 
   componentDidMount() {
+    SplashScreen.hide();
     if (config.startNodeJsMobile) {
       nodejs.start("server.js");
       nodejs.channel.addListener(

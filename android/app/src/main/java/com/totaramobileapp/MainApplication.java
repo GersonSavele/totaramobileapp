@@ -3,6 +3,7 @@ package com.totaramobileapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.horcrux.svg.SvgPackage;
 import com.janeasystems.rn_nodejs_mobile.RNNodeJsMobilePackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
             new RNLocalizePackage(),
             new SvgPackage(),
             new RNNodeJsMobilePackage(),
