@@ -63,15 +63,15 @@ class ActivityList extends React.Component {
     const Activity = () =>
       <View style={styles.activity}>
         {
-          (item.status === "done")
+          (item.status === Status.done)
             ? <CheckBadge size={8} offsetSize={2}>
                 <BuildContentIcon/>
               </CheckBadge>
             : <BuildContentIcon/>
         }
         <View style={{flex: 1}}>
-          <Text numberOfLines={1} style={(item.status) === "active" ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
-          <Text numberOfLines={1} style={styles.activitySummaryText}>Nemo enim ipsam voluptatem quia voluptas lorem ipsum</Text>
+          <Text numberOfLines={1} style={(item.status) === Status.active ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
+          <Text numberOfLines={1} style={styles.activitySummaryText}>{item.summary}</Text>
         </View>
         {
           (item.type === "film") ?

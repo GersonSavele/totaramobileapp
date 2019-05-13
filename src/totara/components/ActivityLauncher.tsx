@@ -24,6 +24,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 import {Activity} from "@totara/types";
 import {ContentIcon, ProgressCircle} from "@totara/components";
+import {translate} from "@totara/locale";
 
 /**
  * Render a preview of the activity and execute a function when component is touched
@@ -41,7 +42,7 @@ const ActivityLauncher = ({item, onPress = () => {}}: Props) => {
     <TouchableOpacity style={styles.activityContainer} onPress={() => onPress(item)}>
       <ContentIcon icon={item.type} iconSize={16} size={40}/>
       <View style={styles.container}>
-        <Text style={styles.topText}>Continue your learning</Text>
+        <Text style={styles.topText}>{translate("totara-component.section_title_continue_learn")}</Text>
         <Text numberOfLines={1} style={styles.bottomText}>{item.itemName}</Text>
       </View>
       <View style={styles.divider}/>
@@ -60,14 +61,12 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingLeft: 8,
     paddingTop: 8,
-    paddingBottom: 8,
-
-
+    paddingBottom: 8
   },
   container: {
     flex: 1,
     paddingLeft: 8,
-    paddingTop: 4,
+    paddingTop: 4
   },
   topText: {
     fontSize: 10,

@@ -43,6 +43,7 @@ const query = gql`
             type
             itemName
             status
+            summary
         }
       }  
     }

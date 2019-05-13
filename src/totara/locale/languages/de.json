@@ -1,0 +1,24 @@
+{
+  "general": {
+    "loading": "Wird geladen...",
+    "error": "Error :"
+  }, 
+  "course-details": {
+    "activities": "Aktivitäten",
+    "outline": "Gliederung"
+  }, 
+  "my-learning": {
+    "primary_title": "Mein Lernen",
+    "continue_action": "Fahren Sie fort"
+  }, 
+  "program-details": {
+    "courses": "Kurse",
+    "details": "Einzelheiten",
+    "outline": "Gliederung"
+  }, 
+  "totara-component" : {
+    "section_title_continue_learn": "Setzen Sie Ihr Lernen fort",
+    "due": "Fällig",
+    "extend_date": "Datum verlängern"
+  }
+}

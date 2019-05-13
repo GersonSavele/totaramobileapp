@@ -86,17 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flex: 1
   },
-  pipe: {
-    color: "#A0A0A0",
-    paddingRight: 8,
-    paddingLeft: 8,
-    fontSize: 10,
-  },
-  percentagetext: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: "#A0A0A0",
-  },
   itemFullName: {
     color: "#3D444B",
     flexWrap: "wrap",

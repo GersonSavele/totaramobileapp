@@ -22,14 +22,18 @@
 
 import React from "react";
 import {View} from "react-native";
-import ApolloClient from "apollo-boost";
+import {ApolloClient}  from "apollo-client";
 import {ApolloProvider} from "react-apollo";
+import {ApolloLink} from 'apollo-link';
+import {RetryLink} from 'apollo-link-retry';
+import {HttpLink} from 'apollo-link-http';
+import {InMemoryCache} from "apollo-cache-inmemory";
 import {createStackNavigator, createAppContainer} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import {StyleProvider} from "native-base";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome"
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {
   faHome,
   faCloudDownloadAlt,
@@ -46,15 +50,23 @@ import {
   faCheck,
   faChevronUp,
   faExclamationTriangle,
-  faLock} from "@fortawesome/free-solid-svg-icons"
+  faLock,
+  faBoxOpen} from "@fortawesome/free-solid-svg-icons";
+  import SplashScreen from "react-native-splash-screen";
 
 import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder} from "@totara/features";
 import {config} from "@totara/lib";
 import {theme, getTheme} from "@totara/theme";
 import {ActivitySheetProvider} from "@totara/components";
 
+const link = ApolloLink.from([
+  new RetryLink({attempts: {max: 10}}),
+  new HttpLink({ uri: config.mobileApi + "/graphql" })
+]);
+
 const client = new ApolloClient({
-  uri: config.mobileApi + "/graphql"
+  link: link,
+  cache: new InMemoryCache()
 });
 
 export default class App extends React.Component<{}> {
@@ -62,6 +74,7 @@ export default class App extends React.Component<{}> {
   navigator = undefined;
 
   componentDidMount() {
+    SplashScreen.hide();
     if (config.startNodeJsMobile) {
       nodejs.start("server.js");
       nodejs.channel.addListener(
@@ -228,7 +241,8 @@ const initFontAwesome = () => {
     faCheck,
     faExclamationTriangle,
     faChevronUp,
-    faLock
+    faLock,
+    faBoxOpen
   );
 };
 initFontAwesome();

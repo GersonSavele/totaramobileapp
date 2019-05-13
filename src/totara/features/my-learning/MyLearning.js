@@ -29,6 +29,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {gutter, h1, resizeByScreenSize} from "@totara/theme";
 import LearningItemCarousel from "./LearningItemCarousel";
 import {ActivitySheetConsumer, ActivityLauncher} from "@totara/components";
+import {translate} from "@totara/locale";
 
 export default class MyLearning extends React.Component {
 
@@ -40,20 +41,6 @@ export default class MyLearning extends React.Component {
       backgroundColor: "#FFFFFF",
     }
   };
-
-  state = {
-    show: false,
-  };
-
-  componentDidMount() { // this is a hack to wait of the internal node js server to serve mock data
-    setTimeout(() => {
-      this.show();
-    }, 1000);
-  }
-
-  show() {
-    this.setState({show: true});
-  }
 
   render() {
     const activity = { // TODO mock activity, put into graphql
@@ -72,11 +59,11 @@ export default class MyLearning extends React.Component {
             <Image source={require("./totara_logo.png")} style={{width:81, height: 20}}/>
           </View>
           <View style={styles.myLearningHeader}>
-            <Text style={styles.myLearningHeaderText}>My learning</Text>
+          <Text style={styles.myLearningHeaderText}>{translate("my-learning.primary_title")}</Text>
             <FontAwesomeIcon icon="list-ul" size={20}/>
           </View>
           <View style={styles.learningItems}>
-            <LearningItemCarousel visible={this.state.show}/>
+            <LearningItemCarousel/>
           </View>
           <View style={styles.recentActivity}>
             <ActivitySheetConsumer>

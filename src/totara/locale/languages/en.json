@@ -1,0 +1,24 @@
+{
+  "general": {
+    "loading": "Loading...",
+    "error": "Error :"
+  }, 
+  "course-details": {
+    "activities": "Activities",
+    "outline": "Outline"
+  }, 
+  "my-learning": {
+    "primary_title": "My learning",
+    "continue_action": "Continue your"
+  }, 
+  "program-details": {
+    "courses": "Courses",
+    "details": "Details",
+    "outline": "Outline"
+  }, 
+  "totara-component" : {
+    "section_title_continue_learn": "Continue your learning",
+    "due": "Due",
+    "extend_date": "Extend Date"
+  }
+}

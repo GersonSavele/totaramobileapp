@@ -29,13 +29,14 @@ import {LearningItemCard, ActivityLauncher, ActivitySheetConsumer} from "@totara
 import {gutter, normalize} from "@totara/theme";
 import CourseSetList from "./CourseSetList";
 import {getProgram} from "./api";
+import {translate} from "@totara/locale";
 
 const ProgramDetails = getProgram(({loading, program, error}) => {
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return <Text>{translate("general.loading")}</Text>;
 
   if (error) {
     console.log("error", error); // TODO turn this into a logging system
-    return <Text>Error :(</Text>;
+    return <Text>{translate("general.error")}(</Text>;
   }
 
   if (program) {
@@ -104,13 +105,13 @@ class ProgramDetailsComponent extends React.Component {
         <View style={styles.activitiesContainer}>
           <View style={styles.tabNav}>
             <TouchableOpacity style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(true)}>
-              <Text style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Courses</Text>
+              <Text style={(this.state.showActivities) ? styles.tabActive : styles.tabInActive}>{translate("program-details.courses")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive} onPress={() => this.setShowAcitivities(false)}>
-              <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>Details</Text>
+              <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>{translate("program-details.details")}</Text>
             </TouchableOpacity>
           </View>
-          { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet} onScroll={this.onScroll}/> : <Text>Outline</Text> }
+          { (this.state.showActivities) ? <CourseSetList courseSet={item.courseSet} onScroll={this.onScroll}/> : <Text>{translate("program-details.outline")}</Text> }
         </View>
       </View>
     );

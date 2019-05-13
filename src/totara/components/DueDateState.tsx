@@ -26,6 +26,7 @@ import moment from "moment";
 import React from "react";
 import {normalize} from "@totara/theme";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {translate} from "@totara/locale";
 
 
 /**
@@ -41,7 +42,7 @@ type Props = {
 const ExtenstionButton = ({onExtension}: Props) =>
   <View style={{paddingTop: 3}}>
     <Button small rounded bordered light onPress={onExtension} style={{padding: 5}}>
-      <Text style={styles.buttonText}> Extend Date </Text>
+      <Text style={styles.buttonText}> {translate("totara-component.extend_date")} </Text>
     </Button>
   </View>;
 
@@ -53,7 +54,7 @@ const DueDateState = ({dueDate, dueDateState, onExtension}: Props) => {
         <View style={styles.warning}>
           <View style={{flexDirection: "row"}}>
             <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
-            <Text style={styles.warningText}>Due {moment(dueDate).fromNow()} </Text>
+            <Text style={styles.warningText}>{translate("totara-component.due")} {moment(dueDate).fromNow()} </Text>
           </View>
           {(onExtension) &&
               <ExtenstionButton onExtension={onExtension}/>}
@@ -65,7 +66,7 @@ const DueDateState = ({dueDate, dueDateState, onExtension}: Props) => {
         <View style={styles.danger}>
           <View style={{flexDirection: "row"}}>
             <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
-            <Text style={styles.dangerText}>Due {moment(dueDate).fromNow()} </Text>
+            <Text style={styles.dangerText}>{translate("totara-component.due")} {moment(dueDate).fromNow()} </Text>
           </View>
           {(onExtension) &&
               <ExtenstionButton onExtension={onExtension}/>}
