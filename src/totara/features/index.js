@@ -26,8 +26,7 @@ import Profile from "./profile";
 import Settings from "./settings";
 import PlaceHolder from "./place-holder";
 import ProgramDetails from "./program-details";
-import AuthLogin from "./auth/AuthLogin";
-import AuthLoading from "./auth/AuthLoading";
+import {AuthProvider, AuthConsumer} from "./auth/AuthContext";
 
 export {
   MyLearning,
@@ -36,6 +35,6 @@ export {
   Profile,
   Settings,
   PlaceHolder,
-  AuthLogin,
-  AuthLoading
+  AuthProvider,
+  AuthConsumer
 };

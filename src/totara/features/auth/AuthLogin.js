@@ -21,25 +21,22 @@
  */
 
 import React from "react";
-import {View, Button, AsyncStorage} from "react-native";
+import {View, Button} from "react-native";
+import PropTypes from 'prop-types';
 
-class AuthLogin extends React.Component {
-  static navigationOptions = {
-    title: 'Please sign in',
+export default class AuthLogin extends React.Component {
+
+  static propTypes = {
+    setWebSession: PropTypes.func.isRequired
   };
 
   render() {
+    const {setWebSession} = this.props;
+
     return (
-      <View>
-        <Button title="Sign in!" onPress={this._signInAsync} />
+      <View style={{marginTop: 100}}>
+        <Button title="Sign in!" onPress={() => setWebSession("abc")}/>
       </View>
     );
   }
-
-  _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'abc');
-    this.props.navigation.navigate('MainApp');
-  };
 }
-
-export default AuthLogin;
