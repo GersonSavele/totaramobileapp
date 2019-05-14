@@ -20,22 +20,26 @@
  *
  */
 
-import MyLearning from "./my-learning";
-import CourseDetails from "./course-details";
-import Profile from "./profile";
-import Settings from "./settings";
-import PlaceHolder from "./place-holder";
-import ProgramDetails from "./program-details";
-import AuthLogin from "./auth/AuthLogin";
-import AuthLoading from "./auth/AuthLoading";
+import React from "react";
+import {View, Button, AsyncStorage} from "react-native";
 
-export {
-  MyLearning,
-  CourseDetails,
-  ProgramDetails,
-  Profile,
-  Settings,
-  PlaceHolder,
-  AuthLogin,
-  AuthLoading
-};
+class AuthLogin extends React.Component {
+  static navigationOptions = {
+    title: 'Please sign in',
+  };
+
+  render() {
+    return (
+      <View>
+        <Button title="Sign in!" onPress={this._signInAsync} />
+      </View>
+    );
+  }
+
+  _signInAsync = async () => {
+    await AsyncStorage.setItem('userToken', 'abc');
+    this.props.navigation.navigate('MainApp');
+  };
+}
+
+export default AuthLogin;

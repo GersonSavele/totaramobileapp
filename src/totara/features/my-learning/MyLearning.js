@@ -21,7 +21,7 @@
  */
 
 import React from "react";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {AsyncStorage, Button, Image, StyleSheet, Text, View} from "react-native";
 import PropTypes from 'prop-types';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
@@ -40,6 +40,11 @@ export default class MyLearning extends React.Component {
       borderBottomWidth: 0,
       backgroundColor: "#FFFFFF",
     }
+  };
+
+  _signOutAsync = async () => {
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Auth');
   };
 
   render() {
@@ -72,6 +77,7 @@ export default class MyLearning extends React.Component {
               }
             </ActivitySheetConsumer>
           </View>
+          <Button title="Actually, sign me out :)" onPress={this._signOutAsync} />
         </View>
     );
   }

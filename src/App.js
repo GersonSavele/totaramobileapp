@@ -28,7 +28,7 @@ import {ApolloLink} from 'apollo-link';
 import {RetryLink} from 'apollo-link-retry';
 import {HttpLink} from 'apollo-link-http';
 import {InMemoryCache} from "apollo-cache-inmemory";
-import {createStackNavigator, createAppContainer} from "react-navigation";
+import {createStackNavigator, createAppContainer, createSwitchNavigator} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import {StyleProvider} from "native-base";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
@@ -54,7 +54,7 @@ import {
   faBoxOpen} from "@fortawesome/free-solid-svg-icons";
   import SplashScreen from "react-native-splash-screen";
 
-import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder} from "@totara/features";
+import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder, AuthLogin, AuthLoading} from "@totara/features";
 import {config} from "@totara/lib";
 import {theme, getTheme} from "@totara/theme";
 import {ActivitySheetProvider} from "@totara/components";
@@ -247,5 +247,14 @@ const initFontAwesome = () => {
 };
 initFontAwesome();
 
+const authNavigator = createStackNavigator({ authLogin: AuthLogin });
 
-const AppContainer = createAppContainer(mainNavigator);
+const AppContainer = createAppContainer(createSwitchNavigator(
+  {
+    MainApp: mainNavigator,
+    Auth: authNavigator,
+    AuthLoading: AuthLoading
+  },
+  {
+    initialRouteName: "AuthLoading"
+  }));
