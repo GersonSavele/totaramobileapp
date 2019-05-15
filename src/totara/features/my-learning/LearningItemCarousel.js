@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
   itemWithBadgeContainer: {
     marginTop: hp("2.5%"),
     marginBottom: hp("3%"),
-    marginLeft: 4,
-    marginRight: 4,
+    marginLeft: 8,
+    marginRight: 8,
   },
   learningItem: {
     borderRadius: normalize(10),

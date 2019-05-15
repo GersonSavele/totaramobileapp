@@ -32,6 +32,7 @@ import {tbPadding} from "@totara/theme";
 import ActivityList from "./ActivityList";
 import {getCourse} from "./api";
 import {translate} from "@totara/locale";
+import lodash from "lodash";
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
 const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
@@ -67,9 +68,13 @@ class CourseDetailsComponent extends React.Component {
     this.learningItemRef = ref;
   };
 
+  animate = lodash.throttle((flex) => {
+    this.learningItemRef.transitionTo({flex: flex})
+  }, 160);
+
   onScroll = (event) => {
     const flex = 2 - (event.nativeEvent.contentOffset.y/120);
-    this.learningItemRef.transitionTo({ flex: flex});
+    this.animate(flex)
  };
 
   render() {
