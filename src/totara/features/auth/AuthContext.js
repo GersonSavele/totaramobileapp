@@ -84,29 +84,28 @@ class AuthProvider extends React.Component {
   }
 
   bootstrap = async () => {
-    const storedSession = await AsyncStorage.getItem('webSession');
+    const apiKey = await AsyncStorage.getItem('apiKey');
 
     SplashScreen.hide();
 
     this.setState({
-      webSession: storedSession,
+      apiKey: apiKey,
       isLoading: false
     });
+    console.log("state", this.state);
     // TODO add some logging and error handling, important routine
   };
 
   setWebSession = async (webSession) => {
-    await AsyncStorage.setItem("webSession", webSession);
+    await this.getAndStoreApiKey("uegkuxhdeHaoc0dYX9HwswvisvUIEb");
 
-    this.setState({
-      webSession: webSession
-    });
+    console.log("state", this.state);
   };
 
   logOut = async () => {
     await AsyncStorage.clear();
     this.setState({
-      webSession: undefined
+      apiKey: undefined
     });
   };
 
@@ -120,13 +119,40 @@ class AuthProvider extends React.Component {
     cache: new InMemoryCache()
   });
 
+  getAndStoreApiKey = async (setupSecret) => {
+    try {
+      const apiKey = await fetch("http://totara72/totara/mobile/device_register.php", {
+        method: "POST",
+        body: JSON.stringify({
+          setupsecret: setupSecret
+        })
+      }).then((response) => {
+        if (response.status === 200) return response.json();
+        throw new Error(`Server Error: ${response.status}`);
+      }).then((json) => json.data.apikey);
+
+      await AsyncStorage.setItem("apiKey", apiKey);
+
+      this.setState({
+        apiKey: apiKey
+      });
+
+      return apiKey;
+    } catch (error) {
+      console.error(error);
+      // TODO add some logging and error handling, important routine
+
+      return undefined;
+    }
+  };
+
   render() {
     return(
       <AuthContext.Provider value={this.state}>
         {
           (this.state.isLoading)
             ? <Text>auth loading, this text should not be seen unless bootstrap failed</Text>
-            : (this.state.webSession)
+            : (this.state.apiKey)
               ? <ApolloProvider client={this.client}>
                   {this.props.children}
                 </ApolloProvider>
