@@ -28,6 +28,7 @@ import {ApolloLink} from 'apollo-link';
 import {RetryLink} from 'apollo-link-retry';
 import {HttpLink} from 'apollo-link-http';
 import {InMemoryCache} from "apollo-cache-inmemory";
+import {setContext} from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
 import PropTypes from 'prop-types';
 
@@ -109,15 +110,29 @@ class AuthProvider extends React.Component {
     });
   };
 
-  link = ApolloLink.from([
-    new RetryLink({attempts: {max: 10}}),
-    new HttpLink({ uri: config.mobileApi + "/graphql" })
-  ]);
+  createApolloClient = (apiKey, uri) => {
 
-  client = new ApolloClient({
-    link: this.link,
-    cache: new InMemoryCache()
-  });
+    const authLink = setContext((_, {headers}) => (
+      {
+        headers: {
+          ...headers,
+          "X-API-KEY": apiKey,
+        }
+      }));
+
+    const link = ApolloLink.from([
+      new RetryLink({attempts: {max: 10}}),
+      authLink,
+      new HttpLink({uri: uri})
+    ]);
+
+    const client = new ApolloClient({
+      link: link,
+      cache: new InMemoryCache()
+    });
+
+    return client;
+  };
 
   getAndStoreApiKey = async (setupSecret) => {
     try {
@@ -153,7 +168,7 @@ class AuthProvider extends React.Component {
           (this.state.isLoading)
             ? <Text>auth loading, this text should not be seen unless bootstrap failed</Text>
             : (this.state.apiKey)
-              ? <ApolloProvider client={this.client}>
+              ? <ApolloProvider client={this.createApolloClient(this.state.apiKey, config.mobileApi + "/graphql")}>
                   {this.props.children}
                 </ApolloProvider>
               : <AuthLogin setWebSession={this.setWebSession}/>
