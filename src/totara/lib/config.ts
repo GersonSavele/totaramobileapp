@@ -25,7 +25,8 @@ const defaultConfig = {
   mobileStatic: "http://localhost:4001",
   // startNodeJsMobile: true
   startNodeJsMobile: false,
-  userAgent: "TotaraMobileApp"
+  userAgent: "TotaraMobileApp",
+  mobileLogin: "http://10.0.8.153/login/index.php"
 };
 
 const config = {...defaultConfig, ...localConfig};

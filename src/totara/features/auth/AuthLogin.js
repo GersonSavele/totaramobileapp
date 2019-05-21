@@ -43,7 +43,7 @@ export default class AuthLogin extends React.Component {
       <View style={{ flex: 1, marginTop: 50 }} >
         <WebView
           source={{
-            uri: "http://totara72/login",
+            uri: config.mobileLogin,
             headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent}
           }}
           userAgent={config.userAgent}
