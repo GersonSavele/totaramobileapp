@@ -20,15 +20,22 @@
  *
  */
 import localConfig from "./config.local";
+
 const defaultConfig = {
   mobileApi: "http://localhost:4000",
   mobileStatic: "http://localhost:4001",
   // startNodeJsMobile: true
   startNodeJsMobile: false,
   userAgent: "TotaraMobileApp",
-  mobileLogin: "http://10.0.8.153/login/index.php"
+  authenticationHost: "http://10.0.8.153",
+  deviceRegisterUri: "",
+  loginUri: ""
 };
 
-const config = {...defaultConfig, ...localConfig};
+let config = {...defaultConfig, ...localConfig};
+
+config.deviceRegisterUri = `${config.authenticationHost}/totara/mobile/device_register.php`;
+config.loginUri = `${config.authenticationHost}/login/index.php`;
 
 export default config;
+

@@ -21,29 +21,29 @@
  */
 
 import React from "react";
-import {AsyncStorage, Text} from "react-native";
-import {ApolloClient}  from "apollo-client";
-import {ApolloProvider} from "react-apollo";
-import {ApolloLink} from 'apollo-link';
-import {RetryLink} from 'apollo-link-retry';
-import {HttpLink} from 'apollo-link-http';
-import {InMemoryCache} from "apollo-cache-inmemory";
-import {setContext} from "apollo-link-context";
+import { AsyncStorage, Text } from "react-native";
+import { ApolloClient } from "apollo-client";
+import { ApolloProvider } from "react-apollo";
+import { ApolloLink } from 'apollo-link';
+import { RetryLink } from 'apollo-link-retry';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { setContext } from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
 import PropTypes from 'prop-types';
 
-import {config} from "@totara/lib";
+import { config } from "@totara/lib";
 
 import AuthLogin from "./AuthLogin";
 
 
 const AuthContext = React.createContext(
   {
-    setSetupSecret: () => {},
+    setSetupSecret: () => { },
     setupSecret: undefined,
-    setApiKey: () => {},
+    setApiKey: () => { },
     apiKey: undefined,
-    logOut: () => {}
+    logOut: () => { }
   }
 );
 
@@ -110,7 +110,7 @@ class AuthProvider extends React.Component {
 
   createApolloClient = (apiKey, uri) => {
 
-    const authLink = setContext((_, {headers}) => (
+    const authLink = setContext((_, { headers }) => (
       {
         headers: {
           ...headers,
@@ -119,9 +119,9 @@ class AuthProvider extends React.Component {
       }));
 
     const link = ApolloLink.from([
-      new RetryLink({attempts: {max: 10}}),
+      new RetryLink({ attempts: { max: 10 } }),
       authLink,
-      new HttpLink({uri: uri})
+      new HttpLink({ uri: uri })
     ]);
 
     const client = new ApolloClient({
@@ -134,7 +134,7 @@ class AuthProvider extends React.Component {
 
   getAndStoreApiKey = async (setupSecret) => {
     try {
-      const apiKey = await fetch("http://10.0.8.178/totara/mobile/device_register.php", {
+      const apiKey = await fetch(config.deviceRegisterUri, {
         method: "POST",
         body: JSON.stringify({
           setupsecret: setupSecret
@@ -160,16 +160,16 @@ class AuthProvider extends React.Component {
   };
 
   render() {
-    return(
+    return (
       <AuthContext.Provider value={this.state}>
         {
           (this.state.isLoading)
             ? <Text>auth loading, this text should not be seen unless bootstrap failed</Text>
             : (this.state.apiKey)
               ? <ApolloProvider client={this.createApolloClient(this.state.apiKey, config.mobileApi + "/graphql")}>
-                  {this.props.children}
-                </ApolloProvider>
-              : <AuthLogin setSetupSecret={this.setSetupSecret}/>
+                {this.props.children}
+              </ApolloProvider>
+              : <AuthLogin setSetupSecret={this.setSetupSecret} />
         }
       </AuthContext.Provider>
     )
@@ -178,4 +178,4 @@ class AuthProvider extends React.Component {
 
 
 
-export {AuthProvider, AuthConsumer}
+export { AuthProvider, AuthConsumer }

@@ -22,34 +22,39 @@
 
 import React from "react";
 import { View } from "react-native";
-import PropTypes from 'prop-types';
-import { WebView } from 'react-native-webview';
+import PropTypes from "prop-types";
+import { WebView } from "react-native-webview";
 
-import {config} from "@totara/lib";
+import { config } from "@totara/lib";
+
 
 export default class AuthLogin extends React.Component {
+
   static propTypes = {
     setSetupSecret: PropTypes.func.isRequired
   };
-  _onMessage = (event) => {
+
+  didRecieveOnMessage = (event) => {
     const setupSecretValue = event.nativeEvent.data;
-    if ((typeof setupSecretValue !== 'undefined') && (setupSecretValue != "null")) {
+    if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
       this.props.setSetupSecret(setupSecretValue);
     }
-  }
+  };
+
   render() {
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('setup-secret') && document.getElementById('setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
     return (
       <View style={{ flex: 1, marginTop: 50 }} >
         <WebView
           source={{
-            uri: config.mobileLogin,
-            headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent}
+            uri: config.loginUri,
+            headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
           }}
           userAgent={config.userAgent}
           javaScriptEnabled={true}
-          onMessage={this._onMessage}
+          onMessage={this.didRecieveOnMessage}
           injectedJavaScript={jsCode}
+          scrollEnabled={false}
         />
       </View>
     );
