@@ -29,12 +29,12 @@ import {config} from "@totara/lib";
 
 export default class AuthLogin extends React.Component {
   static propTypes = {
-    setWebSession: PropTypes.func.isRequired
+    setSetupSecret: PropTypes.func.isRequired
   };
   _onMessage = (event) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== 'undefined') && (setupSecretValue != "null")) {
-      this.props.setWebSession(setupSecretValue);
+      this.props.setSetupSecret(setupSecretValue);
     }
   }
   render() {

@@ -39,8 +39,8 @@ import AuthLogin from "./AuthLogin";
 
 const AuthContext = React.createContext(
   {
-    setWebSession: () => {},
-    webSession: undefined,
+    setSetupSecret: () => {},
+    setupSecret: undefined,
     setApiKey: () => {},
     apiKey: undefined,
     logOut: () => {}
@@ -73,8 +73,8 @@ class AuthProvider extends React.Component {
     super(props);
 
     this.state = {
-      setWebSession: this.setWebSession,
-      webSession: undefined,
+      setSetupSecret: this.setSetupSecret,
+      setupSecret: undefined,
       setApiKey: this.setApiKey,
       apiKey: undefined,
       logOut: this.logOut,
@@ -97,10 +97,8 @@ class AuthProvider extends React.Component {
     // TODO add some logging and error handling, important routine
   };
 
-  setWebSession = async (webSession) => {
-    await this.getAndStoreApiKey("uegkuxhdeHaoc0dYX9HwswvisvUIEb");
-
-    console.log("state", this.state);
+  setSetupSecret = async (setupSecret) => {
+    await this.getAndStoreApiKey(setupSecret);
   };
 
   logOut = async () => {
@@ -136,7 +134,7 @@ class AuthProvider extends React.Component {
 
   getAndStoreApiKey = async (setupSecret) => {
     try {
-      const apiKey = await fetch("http://totara72/totara/mobile/device_register.php", {
+      const apiKey = await fetch("http://10.0.8.178/totara/mobile/device_register.php", {
         method: "POST",
         body: JSON.stringify({
           setupsecret: setupSecret
@@ -171,7 +169,7 @@ class AuthProvider extends React.Component {
               ? <ApolloProvider client={this.createApolloClient(this.state.apiKey, config.mobileApi + "/graphql")}>
                   {this.props.children}
                 </ApolloProvider>
-              : <AuthLogin setWebSession={this.setWebSession}/>
+              : <AuthLogin setSetupSecret={this.setSetupSecret}/>
         }
       </AuthContext.Provider>
     )
