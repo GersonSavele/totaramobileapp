@@ -21,21 +21,36 @@
  */
 
 import React from "react";
-import {View, Button} from "react-native";
+import { View } from "react-native";
 import PropTypes from 'prop-types';
+import { WebView } from 'react-native-webview';
+
+import {config} from "@totara/lib";
 
 export default class AuthLogin extends React.Component {
-
   static propTypes = {
     setWebSession: PropTypes.func.isRequired
   };
-
+  _onMessage = (event) => {
+    const setupSecretValue = event.nativeEvent.data;
+    if ((typeof setupSecretValue !== 'undefined') && (setupSecretValue != "null")) {
+      this.props.setWebSession(setupSecretValue);
+    }
+  }
   render() {
-    const {setWebSession} = this.props;
-
+    const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('setup-secret') && document.getElementById('setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
     return (
-      <View style={{marginTop: 100}}>
-        <Button title="Sign in!" onPress={() => setWebSession("abc")}/>
+      <View style={{ flex: 1, marginTop: 50 }} >
+        <WebView
+          source={{
+            uri: "http://totara72/login",
+            headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent}
+          }}
+          userAgent={config.userAgent}
+          javaScriptEnabled={true}
+          onMessage={this._onMessage}
+          injectedJavaScript={jsCode}
+        />
       </View>
     );
   }

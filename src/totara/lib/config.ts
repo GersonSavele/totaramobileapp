@@ -24,7 +24,8 @@ const defaultConfig = {
   mobileApi: "http://localhost:4000",
   mobileStatic: "http://localhost:4001",
   // startNodeJsMobile: true
-  startNodeJsMobile: false
+  startNodeJsMobile: false,
+  userAgent: "TotaraMobileApp"
 };
 
 const config = {...defaultConfig, ...localConfig};
