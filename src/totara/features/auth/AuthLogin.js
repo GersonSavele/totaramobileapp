@@ -42,7 +42,7 @@ export default class AuthLogin extends React.Component {
   };
 
   render() {
-    const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('setup-secret') && document.getElementById('setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
+    const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
     return (
       <View style={{ flex: 1, marginTop: 50 }} >
         <WebView
@@ -55,6 +55,7 @@ export default class AuthLogin extends React.Component {
           onMessage={this.didRecieveOnMessage}
           injectedJavaScript={jsCode}
           scrollEnabled={false}
+          salesPageToFit={true}
         />
       </View>
     );
