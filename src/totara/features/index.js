@@ -26,5 +26,15 @@ import Profile from "./profile";
 import Settings from "./settings";
 import PlaceHolder from "./place-holder";
 import ProgramDetails from "./program-details";
+import {AuthProvider, AuthConsumer} from "./auth/AuthContext";
 
-export {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder};
+export {
+  MyLearning,
+  CourseDetails,
+  ProgramDetails,
+  Profile,
+  Settings,
+  PlaceHolder,
+  AuthProvider,
+  AuthConsumer
+};

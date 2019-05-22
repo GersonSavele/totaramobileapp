@@ -22,8 +22,9 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import {StyleSheet, Text, View, FlatList, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, View, FlatList, TouchableOpacity, Button} from "react-native";
 import {widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {AuthConsumer} from "@totara/features";
 
 export default class Profile extends React.Component {
   static navigationOptions = {
@@ -51,12 +52,6 @@ export default class Profile extends React.Component {
       key: "2",
       title: "Settings"
     },
-    {
-      key: "3",
-      title: "Logout"
-
-    },
-
   ];
 
   render() {
@@ -66,6 +61,11 @@ export default class Profile extends React.Component {
           data={this.data}
           renderItem={this.renderItem}
         />
+        <AuthConsumer>
+          { auth =>
+            <Button title="Logout" onPress={() => auth.logOut()} />
+          }
+        </AuthConsumer>
       </View>
     );
   }

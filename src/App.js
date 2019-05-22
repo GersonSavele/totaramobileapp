@@ -22,12 +22,6 @@
 
 import React from "react";
 import {View} from "react-native";
-import {ApolloClient}  from "apollo-client";
-import {ApolloProvider} from "react-apollo";
-import {ApolloLink} from 'apollo-link';
-import {RetryLink} from 'apollo-link-retry';
-import {HttpLink} from 'apollo-link-http';
-import {InMemoryCache} from "apollo-cache-inmemory";
 import {createStackNavigator, createAppContainer} from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import {StyleProvider} from "native-base";
@@ -52,29 +46,17 @@ import {
   faExclamationTriangle,
   faLock,
   faBoxOpen} from "@fortawesome/free-solid-svg-icons";
-  import SplashScreen from "react-native-splash-screen";
 
-import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder} from "@totara/features";
+import {MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder, AuthProvider} from "@totara/features";
 import {config} from "@totara/lib";
 import {theme, getTheme} from "@totara/theme";
 import {ActivitySheetProvider} from "@totara/components";
-
-const link = ApolloLink.from([
-  new RetryLink({attempts: {max: 10}}),
-  new HttpLink({ uri: config.mobileApi + "/graphql" })
-]);
-
-const client = new ApolloClient({
-  link: link,
-  cache: new InMemoryCache()
-});
 
 export default class App extends React.Component<{}> {
 
   navigator = undefined;
 
   componentDidMount() {
-    SplashScreen.hide();
     if (config.startNodeJsMobile) {
       nodejs.start("server.js");
       nodejs.channel.addListener(
@@ -89,16 +71,16 @@ export default class App extends React.Component<{}> {
 
   render() {
     return (
-      <ApolloProvider client={client}>
-        <StyleProvider style={getTheme(theme)}>
+      <StyleProvider style={getTheme(theme)}>
+        <AuthProvider>
           <ActivitySheetProvider>
             <AppContainer
               ref={nav => {
                 this.navigator = nav;
               }}/>
           </ActivitySheetProvider>
-        </StyleProvider>
-      </ApolloProvider>
+        </AuthProvider>
+      </StyleProvider>
     );
   }
 }
@@ -246,6 +228,5 @@ const initFontAwesome = () => {
   );
 };
 initFontAwesome();
-
 
 const AppContainer = createAppContainer(mainNavigator);
