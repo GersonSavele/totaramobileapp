@@ -23,14 +23,14 @@
 import React from "react";
 import { View } from "react-native";
 import { WebView } from "react-native-webview";
+import { WebViewMessageEvent } from "react-native-webview/lib/WebViewTypes";
 
 import { config } from "@totara/lib";
 import { SetupSecret } from "./AuthContext";
 
-
 export default class WebLogin extends React.Component<Props> {
 
-  didRecieveOnMessage = (event) => {
+  didRecieveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
       this.props.onLoginSuccess({
@@ -54,7 +54,7 @@ export default class WebLogin extends React.Component<Props> {
           onMessage={this.didRecieveOnMessage}
           injectedJavaScript={jsCode}
           scrollEnabled={false}
-          salesPageToFit={true}
+          scalesPageToFit={true}
         />
       </View>
     );
