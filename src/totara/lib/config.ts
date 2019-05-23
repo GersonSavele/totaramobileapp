@@ -29,13 +29,15 @@ const defaultConfig = {
   userAgent: "TotaraMobileApp",
   authenticationHost: "http://10.0.8.153",
   deviceRegisterUri: "",
-  loginUri: ""
+  loginUri: "",
+  webViewUri: ""
 };
 
 let config = {...defaultConfig, ...localConfig};
 
 config.deviceRegisterUri = `${config.authenticationHost}/totara/mobile/device_register.php`;
 config.loginUri = `${config.authenticationHost}/login/index.php`;
+config.webViewUri = `${config.authenticationHost}/totara/mobile/device_webview.php`;
 
 export default config;
 
