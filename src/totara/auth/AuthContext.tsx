@@ -20,7 +20,7 @@
  *
  */
 
-import React from "react";
+import React, {ReactNode} from "react";
 import { AsyncStorage, Text } from "react-native";
 import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "react-apollo";
@@ -30,20 +30,18 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
-import PropTypes from 'prop-types';
 
 import { config } from "@totara/lib";
 
-import AuthLogin from "./AuthLogin";
+import WebLogin from "./WebLogin";
 
 
-const AuthContext = React.createContext(
+const AuthContext = React.createContext<State>(
   {
-    setSetupSecret: () => { },
-    setupSecret: undefined,
-    setApiKey: () => { },
+    onLoginSuccess: (setupSecret: SetupSecret) => { return Promise.resolve() },
     apiKey: undefined,
-    logOut: () => { }
+    isLoading: true,
+    logOut: () => { return Promise.resolve() }
   }
 );
 
@@ -64,18 +62,13 @@ const AuthConsumer = AuthContext.Consumer;
  * </AuthProvider>
  *
  */
-class AuthProvider extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  };
+class AuthProvider extends React.Component<Props, State> {
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
-      setSetupSecret: this.setSetupSecret,
-      setupSecret: undefined,
-      setApiKey: this.setApiKey,
+      onLoginSuccess: this.onLoginSuccess,
       apiKey: undefined,
       logOut: this.logOut,
       isLoading: true
@@ -97,8 +90,12 @@ class AuthProvider extends React.Component {
     // TODO add some logging and error handling, important routine
   };
 
-  setSetupSecret = async (setupSecret) => {
+  onLoginSuccess = async (setupSecret: SetupSecret) => {
     await this.getAndStoreApiKey(setupSecret);
+  };
+
+  onLoginFailure = async (error: Error) => {
+    console.error(error);
   };
 
   logOut = async () => {
@@ -108,7 +105,7 @@ class AuthProvider extends React.Component {
     });
   };
 
-  createApolloClient = (apiKey, uri) => {
+  createApolloClient = (apiKey: string, uri: string) => {
 
     const authLink = setContext((_, { headers }) => (
       {
@@ -132,12 +129,12 @@ class AuthProvider extends React.Component {
     return client;
   };
 
-  getAndStoreApiKey = async (setupSecret) => {
+  getAndStoreApiKey = async (setupSecret: SetupSecret) => {
     try {
       const apiKey = await fetch(config.deviceRegisterUri, {
         method: "POST",
         body: JSON.stringify({
-          setupsecret: setupSecret
+          setupsecret: setupSecret.secret
         })
       }).then((response) => {
         if (response.status === 200) return response.json();
@@ -169,13 +166,31 @@ class AuthProvider extends React.Component {
               ? <ApolloProvider client={this.createApolloClient(this.state.apiKey, config.mobileApi + "/graphql")}>
                 {this.props.children}
               </ApolloProvider>
-              : <AuthLogin setSetupSecret={this.setSetupSecret} />
+              : <WebLogin onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
         }
       </AuthContext.Provider>
     )
   }
 }
 
+
+type Props = {
+  children: ReactNode
+}
+
+type State = {
+  isLoading: boolean,
+  apiKey: string | undefined | null,
+  onLoginSuccess: (setupSecret: SetupSecret) => Promise<void>
+  logOut: () => Promise<void>
+}
+
+
+
+export interface SetupSecret {
+  secret: string
+  uri: string
+}
 
 
 export { AuthProvider, AuthConsumer }

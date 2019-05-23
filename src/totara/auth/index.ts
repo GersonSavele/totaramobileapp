@@ -17,21 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import MyLearning from "./my-learning";
-import CourseDetails from "./course-details";
-import Profile from "./profile";
-import Settings from "./settings";
-import PlaceHolder from "./place-holder";
-import ProgramDetails from "./program-details";
+import {AuthProvider, AuthConsumer} from "./AuthContext";
 
 export {
-  MyLearning,
-  CourseDetails,
-  ProgramDetails,
-  Profile,
-  Settings,
-  PlaceHolder
+  AuthProvider,
+  AuthConsumer
 };
