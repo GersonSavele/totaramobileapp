@@ -22,22 +22,21 @@
 
 import React from "react";
 import { View } from "react-native";
-import PropTypes from "prop-types";
 import { WebView } from "react-native-webview";
+import { WebViewMessageEvent } from "react-native-webview/lib/WebViewTypes";
 
 import { config } from "@totara/lib";
+import { SetupSecret } from "./AuthContext";
 
+export default class WebLogin extends React.Component<Props> {
 
-export default class AuthLogin extends React.Component {
-
-  static propTypes = {
-    setSetupSecret: PropTypes.func.isRequired
-  };
-
-  didRecieveOnMessage = (event) => {
+  didRecieveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
-      this.props.setSetupSecret(setupSecretValue);
+      this.props.onLoginSuccess({
+        secret: setupSecretValue,
+        uri: ""
+      });
     }
   };
 
@@ -55,9 +54,15 @@ export default class AuthLogin extends React.Component {
           onMessage={this.didRecieveOnMessage}
           injectedJavaScript={jsCode}
           scrollEnabled={false}
-          salesPageToFit={true}
+          scalesPageToFit={true}
         />
       </View>
     );
   }
 }
+
+type Props = {
+  onLoginSuccess: (setupSecret: SetupSecret) => {}
+  onLoginFailure: (error: Error) => {}
+};
+
