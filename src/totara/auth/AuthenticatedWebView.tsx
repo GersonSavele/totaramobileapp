@@ -22,8 +22,7 @@
 
 import React from "react";
 import { WebView } from "react-native-webview";
-import { Text } from "react-native";
-import { graphql, Mutation, MutationOpts } from "react-apollo";
+import { compose, graphql, MutationFunc, MutationOpts } from "react-apollo";
 import gql from "graphql-tag";
 
 import { config } from "@totara/lib";
@@ -41,51 +40,81 @@ const deleteWebview = gql`
     }
 `;
 
-export type CreateWebViewResponse = {
-  create_webview: string;
-} & MutationOpts
+class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
-export type DeleteWebViewResponse = {
-  delete_webview: string;
-} & MutationOpts
+  constructor(props: Props) {
+    super(props);
 
+    this.state = {
+      isAuthenticated: false,
+      webviewSecret: undefined
+    };
 
-const AuthenticatedWebView = ({}) => {
+  }
 
-  return (
-    <Mutation mutation={createWebview}>
-      { (totara_mobile_create_webview, data) => {
+  componentDidMount() {
+    const { createWebview, uri } = this.props;
 
-        console.log("create_webview", data);
+    createWebview({ variables: { url: uri } })
+      .then((data) => {
+        console.log("data on create", data);
 
-        if (!data.loading && data.called) {
+        this.setState({
+          webviewSecret: data.data.create_webview,
+          isAuthenticated: true
+        });
+      });
+  }
 
-          return <WebView
-            source={{
-              uri: config.webViewUri,
-              headers: { "X-TOTARA-MOBILE-WEBVIEW-SECRET": data.data.create_webview }
-            }}
-            userAgent={config.userAgent}
-            incognito={true}
-          />
+  componentWillUnmount() {
+    const { deleteWebview } = this.props;
+    if (this.state.webviewSecret) {
+      deleteWebview({ variables: { secret: this.state.webviewSecret } })
+        .then((data) => console.log("data after delete", data));
+    }
+  }
 
-        } else if (data.loading) {
-          return <Text>Loading...</Text>
-        } else if (data.called) {
-          return <Text>Called</Text>
-        } else {
-          totara_mobile_create_webview({ variables: { url: "/totara/plan/index.php" } });
-          return <Text>start</Text>
-        }
-      }
-
-      }
-    </Mutation>
-
-  );
-
+  render() {
+    return (
+      (this.state.webviewSecret)
+        ? <WebView
+          source={{
+            uri: config.webViewUri,
+            headers: { "X-TOTARA-MOBILE-WEBVIEW-SECRET": this.state.webviewSecret }
+          }}
+          userAgent={config.userAgent}
+          incognito={true} // needed for now, as we need fresh session w/o cookies
+          style={{ flex: 1 }}/>
+        : null
+    );
+  }
 
 };
+
+
+type CreateWebViewResponse = {
+  create_webview: string;
+}
+
+type DeleteWebViewResponse = {
+  delete_webview: string;
+}
+
+type Props = {
+  uri: string
+  createWebview: MutationFunc<CreateWebViewResponse, { url: string }>
+  deleteWebview: MutationFunc<DeleteWebViewResponse, { secret: string }>
+}
+
+type State = {
+  isAuthenticated: boolean
+  webviewSecret?: string
+}
+
+const AuthenticatedWebView = compose(
+  graphql(createWebview, { name: "createWebview" }),
+  graphql(deleteWebview, { name: "deleteWebview" }),
+)(AuthenticatedWebViewComponent);
 
 
 export { AuthenticatedWebView };
