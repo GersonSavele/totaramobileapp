@@ -52,10 +52,10 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { createWebview, uri } = this.props;
 
-    createWebview({ variables: { url: uri } })
+    return createWebview({ variables: { url: uri } })
       .then((data) => {
         console.log("data on create", data);
 
@@ -66,10 +66,10 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
       });
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     const { deleteWebview } = this.props;
     if (this.state.webviewSecret) {
-      deleteWebview({ variables: { secret: this.state.webviewSecret } })
+      return deleteWebview({ variables: { secret: this.state.webviewSecret } })
         .then((data) => console.log("data after delete", data));
     }
   }
