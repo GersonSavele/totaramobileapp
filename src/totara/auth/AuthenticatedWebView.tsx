@@ -40,6 +40,11 @@ const deleteWebview = gql`
     }
 `;
 
+/**
+ *  AuthenticatedWebViewComponent will create a webview that has been logged into Totara.
+ *  It would use the api to request create webview when component is mounted.  Then use
+ *  the api to request delete webview when unmounted.
+ */
 class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
   constructor(props: Props) {
@@ -85,7 +90,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
           userAgent={config.userAgent}
           incognito={true} // needed for now, as we need fresh session w/o cookies
           style={{ flex: 1 }}/>
-        : null
+        : null // show something loading, ask UX if this the preferred solution
     );
   }
 
