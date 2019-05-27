@@ -33,7 +33,7 @@ import SplashScreen from "react-native-splash-screen";
 
 import { config } from "@totara/lib";
 
-import WebLogin from "./WebLogin";
+import WebLogin from "./web-login";
 
 
 const AuthContext = React.createContext<State>(
