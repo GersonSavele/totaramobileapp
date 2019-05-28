@@ -41,7 +41,7 @@ export default class Login extends React.Component<Props> {
   render() {
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
     return (
-      <View style={{ flex: 1, marginTop: 50 }} >
+      <View style={{ flex: 1}} >
         <WebView
           source={{
             uri: config.loginUri,

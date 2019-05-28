@@ -38,7 +38,6 @@ export default class WebLogin extends React.Component<Props> {
   };
 
   onSetupLoginData = (dataAction: string, currentAction: number)  => {
-    console.log("dataAction: "+dataAction);
     switch (currentAction) {
       case SiteUrl.actionType:
         this.setState({

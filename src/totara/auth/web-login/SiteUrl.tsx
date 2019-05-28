@@ -20,9 +20,8 @@
  */
 import React from "react";
 import { StyleSheet, View, Image, Text, TextInput } from "react-native";
-import { Button } from "native-base";
 
-import { gutter, h1, h3, resizeByScreenSize, normal, PrimaryButton } from "@totara/theme";
+import { gutter, h1, normal, PrimaryButton } from "@totara/theme";
 
 export default class SiteUrl extends React.Component <Props> {
   
@@ -32,16 +31,33 @@ export default class SiteUrl extends React.Component <Props> {
     this.props.onSetupLoginData(this.state.inputSiteUrl, SiteUrl.actionType);
   };
 
+  isValidSiteUrl = ()=> {
+    if (this.state && this.state.inputSiteUrl) {
+      return this.isValidUrlText(this.state.inputSiteUrl);
+    }
+    return false
+  };
+  
+  isValidUrlText = (urlText: string) => {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return pattern.test(urlText);
+  };
+
   render() {
     return (
       <View style={styles.siteUrlContainer}>
-        <Image source={require("../totara_logo@siteurl.png")} style={styles.totaraLogo} resizeMode="stretch"  />
+        <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch"  />
         <View style={styles.detailsContainer}>
           <Text style={styles.header}>Get started.</Text>
           <Text style={styles.information}>Please enter your site url</Text>
         </View>
         <TextInput style={styles.inputTextUrl} keyboardType="url" placeholder="http://www.totoralearning.com" clearButtonMode="while-editing" autoCapitalize="none" onChangeText={(text) => this.setState({inputSiteUrl: text})} />
-        <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" />
+        <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" disabled={!this.isValidSiteUrl()} />
       </View> 
     );
   };
@@ -63,10 +79,8 @@ const styles = StyleSheet.create({
     height: 120,
     width: 120,
     alignItems: 'flex-start',
-    // backgroundColor: "powderblue",
   },
   detailsContainer: {
-    // backgroundColor: "skyblue",
     alignItems: "flex-start",
   },
   header: {
@@ -77,15 +91,10 @@ const styles = StyleSheet.create({
     color: "#696969",
   },
   inputTextUrl: {
-    // backgroundColor: "powderblue",
     height: 35,
     borderBottomWidth: 1,
     borderColor: "#a9a9a9",
     marginBottom: 20,
     marginTop: 10
-  },
-  buttonText: {
-    color: "#fff",
-    padding: 5
-  },
+  }
 });
