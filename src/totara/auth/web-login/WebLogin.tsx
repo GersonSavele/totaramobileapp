@@ -26,14 +26,13 @@ import { SetupSecret } from "../AuthContext";
 import SiteUrl from "./SiteUrl";
 import Login from "./Login";
 
-
 export default class WebLogin extends React.Component<Props> {
   
   constructor(props: Props) {
     super(props);
     this.state = { 
       step: SiteUrl.actionType,
-      dataSetup: {uri: null, secret: null}
+      dataSetup: {uri: null, secret: null},
     };
   };
 
@@ -52,15 +51,15 @@ export default class WebLogin extends React.Component<Props> {
         break;
     }
   };
-  
+
   render() {
     switch (this.state.step) {
       case SiteUrl.actionType:
-        return <SiteUrl onSetupLoginData={this.onSetupLoginData} />;
+        return <SiteUrl onSetupLoginData={ this.onSetupLoginData } />;
       case Login.actionType:
-        return <Login onSetupLoginData={this.onSetupLoginData} />; 
+        return <Login onSetupLoginData={ this.onSetupLoginData } />
       default:
-        return <SiteUrl onSetupLoginData={this.onSetupLoginData} />;
+          return <SiteUrl onSetupLoginData={ this.onSetupLoginData } />;
     }
   }
 }

@@ -51,9 +51,8 @@ export default class Login extends React.Component<Props> {
           javaScriptEnabled={true}
           onMessage={this.didRecieveOnMessage}
           injectedJavaScript={jsCode}
-          scrollEnabled={false}
-          scalesPageToFit={true}
-        />
+          scrollEnabled={false} 
+          />
       </View>
     );
   }

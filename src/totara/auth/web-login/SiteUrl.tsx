@@ -20,45 +20,71 @@
  */
 import React from "react";
 import { StyleSheet, View, Image, Text, TextInput } from "react-native";
+import * as Animatable from 'react-native-animatable';
 
 import { gutter, h1, normal, PrimaryButton } from "@totara/theme";
 
-export default class SiteUrl extends React.Component <Props> {
-  
+enum ViewFlex {
+  header= 3,
+  detail= 3,
+  action= 5,
+  headerOff= 3,
+  detailOff= 1,
+  actionOff= 7
+};
+
+export default class SiteUrl extends React.Component<Props> {
+
   static actionType: number = 1;
   
-  setInputSiteUrl = ()=> {
+  toggleView = (isShow: boolean) => {
+    if (isShow) {
+      this.refs.viewHeader.transitionTo({flex: ViewFlex.headerOff});
+      this.refs.viewInformation.transitionTo({flex: ViewFlex.detailOff});
+      this.refs.viewController.transitionTo({flex: ViewFlex.actionOff});
+    } else {
+      this.refs.viewHeader.transitionTo({flex: ViewFlex.header});
+      this.refs.viewInformation.transitionTo({flex: ViewFlex.detail});
+      this.refs.viewController.transitionTo({flex: ViewFlex.action});
+    }
+  };
+
+  setInputSiteUrl = () => {
     this.props.onSetupLoginData(this.state.inputSiteUrl, SiteUrl.actionType);
   };
 
-  isValidSiteUrl = ()=> {
+  isValidSiteUrl = () => {
     if (this.state && this.state.inputSiteUrl) {
       return this.isValidUrlText(this.state.inputSiteUrl);
     }
     return false
   };
-  
+
   isValidUrlText = (urlText: string) => {
-    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
     return pattern.test(urlText);
   };
 
   render() {
     return (
       <View style={styles.siteUrlContainer}>
-        <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch"  />
-        <View style={styles.detailsContainer}>
-          <Text style={styles.header}>Get started.</Text>
+        <Animatable.View style={styles.headerContainer} ref="viewHeader" >
+          <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
+        </Animatable.View>
+        <Animatable.View style={ styles.detailsContainer } ref="viewInformation" >
+          <Text style={styles.detailTitle}>Get started.</Text>
           <Text style={styles.information}>Please enter your site url</Text>
-        </View>
-        <TextInput style={styles.inputTextUrl} keyboardType="url" placeholder="http://www.totoralearning.com" clearButtonMode="while-editing" autoCapitalize="none" onChangeText={(text) => this.setState({inputSiteUrl: text})} />
-        <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" disabled={!this.isValidSiteUrl()} />
-      </View> 
+        </Animatable.View>
+        <Animatable.View style={styles.actionContainer} ref="viewController">
+          <TextInput style={styles.inputTextUrl} keyboardType="url" placeholder="Enter site url" clearButtonMode="while-editing" autoCapitalize="none" onChangeText={ (text) => this.setState({ inputSiteUrl: text }) } onFocus={() => this.toggleView(true)} onBlur={ () => this.toggleView(false)} />
+          <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" disabled={!this.isValidSiteUrl()} />
+        </Animatable.View>
+      </View>
     );
   };
 }
@@ -72,29 +98,40 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: 'stretch',
     paddingHorizontal: gutter,
+  },
+
+  headerContainer: {
+    flex: ViewFlex.header,
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
   totaraLogo: {
     height: 120,
     width: 120,
-    alignItems: 'flex-start',
   },
+
   detailsContainer: {
+    flex: ViewFlex.detail,
     alignItems: "flex-start",
+    justifyContent: "center"
   },
-  header: {
+  detailTitle: {
     fontSize: h1,
   },
   information: {
     fontSize: normal,
     color: "#696969",
   },
+
+  actionContainer: {
+    flex: ViewFlex.action,
+    justifyContent: "flex-start",
+  },
   inputTextUrl: {
-    height: 35,
     borderBottomWidth: 1,
-    borderColor: "#a9a9a9",
-    marginBottom: 20,
-    marginTop: 10
+    borderColor: "#D2D2D2",
+    height: 44,
+    marginVertical: 10
   }
 });
