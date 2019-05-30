@@ -26,6 +26,7 @@ import { WebView } from "react-native-webview";
 import { WebViewMessageEvent } from "react-native-webview/lib/WebViewTypes";
 
 import { config } from "@totara/lib";
+import SiteUrl from "./SiteUrl";
 
 export default class Login extends React.Component<Props> {
   
@@ -34,17 +35,18 @@ export default class Login extends React.Component<Props> {
   didRecieveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
-      this.props.onSetupLoginData(setupSecretValue, Login.actionType);
+      this.props.callBack(setupSecretValue, Login.actionType);
     }
   };
 
   render() {
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
+    const loginUrl = config.loginUri(this.props.siteUrl);//+"/login/index.php";
     return (
       <View style={{ flex: 1}} >
         <WebView
           source={{
-            uri: config.loginUri,
+            uri: loginUrl,
             headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
           }}
           userAgent={config.userAgent}
@@ -59,7 +61,8 @@ export default class Login extends React.Component<Props> {
 }
 
 type Props = {
-  onSetupLoginData: (dataSetupSecret: string, currentAction: number) => {}
+  callBack: (data: string, currentAction: number) => void
+  siteUrl: string
 };
 
 

@@ -27,15 +27,12 @@ const defaultConfig = {
   // startNodeJsMobile: true
   startNodeJsMobile: false,
   userAgent: "TotaraMobileApp",
-  authenticationHost: "http://10.0.8.153",
-  deviceRegisterUri: "",
-  loginUri: ""
+  
+  loginUri: (host: string)=> { return `${host}/login/index.php` },
+  deviceRegisterUri: (host: string) => { return `${host}/totara/mobile/device_register.php` }
 };
 
 let config = {...defaultConfig, ...localConfig};
-
-config.deviceRegisterUri = `${config.authenticationHost}/totara/mobile/device_register.php`;
-config.loginUri = `${config.authenticationHost}/login/index.php`;
 
 export default config;
 

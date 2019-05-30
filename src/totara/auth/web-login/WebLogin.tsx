@@ -25,27 +25,34 @@ import React from "react";
 import { SetupSecret } from "../AuthContext";
 import SiteUrl from "./SiteUrl";
 import Login from "./Login";
+import { Alert } from "react-native";
+import { config } from "@totara/lib";
 
-export default class WebLogin extends React.Component<Props> {
+export default class WebLogin extends React.Component<Props, States> {
   
   constructor(props: Props) {
     super(props);
     this.state = { 
       step: SiteUrl.actionType,
-      dataSetup: {uri: null, secret: null},
+      uri: undefined, 
+      secret: undefined
     };
   };
 
-  onSetupLoginData = (dataAction: string, currentAction: number)  => {
+  onSetupLoginData = (data: string, currentAction: number) => {
     switch (currentAction) {
       case SiteUrl.actionType:
         this.setState({
           step: Login.actionType,
-          dataSetup: { uri: dataAction }
+          uri: data
         });
         break;
       case Login.actionType:
-        this.props.onLoginSuccess({uri: this.state.dataSetup.uri, secret: dataAction});
+        if ( this.state.uri && data ) {
+          this.props.onLoginSuccess({uri: this.state.uri, secret: data});
+        } else {
+          console.log("Invalid Login")
+        }
         break;
       default:
         break;
@@ -53,13 +60,14 @@ export default class WebLogin extends React.Component<Props> {
   };
 
   render() {
+    const onSetupLoginData = this.onSetupLoginData;
     switch (this.state.step) {
       case SiteUrl.actionType:
-        return <SiteUrl onSetupLoginData={ this.onSetupLoginData } />;
+        return <SiteUrl callBack={ onSetupLoginData } />;
       case Login.actionType:
-        return <Login onSetupLoginData={ this.onSetupLoginData } />
+        return <Login callBack={ onSetupLoginData } siteUrl={ this.state.uri! }/>;
       default:
-          return <SiteUrl onSetupLoginData={ this.onSetupLoginData } />;
+        return <SiteUrl callBack={ onSetupLoginData } />;
     }
   }
 }
@@ -67,4 +75,10 @@ export default class WebLogin extends React.Component<Props> {
 type Props = {
   onLoginSuccess: (setupSecret: SetupSecret) => {}
   onLoginFailure: (error: Error) => {}
+};
+
+type States = {
+  step: number,
+  uri?: string, 
+  secret?: string
 };

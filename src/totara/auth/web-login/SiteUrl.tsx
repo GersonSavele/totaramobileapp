@@ -22,35 +22,46 @@ import React from "react";
 import { StyleSheet, View, Image, Text, TextInput } from "react-native";
 import * as Animatable from 'react-native-animatable';
 
+
 import { gutter, h1, normal, PrimaryButton } from "@totara/theme";
 
 enum ViewFlex {
-  header= 3,
-  detail= 3,
+  header= 3, detail= 3,
   action= 5,
   headerOff= 3,
   detailOff= 1,
   actionOff= 7
 };
 
-export default class SiteUrl extends React.Component<Props> {
+export default class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
-  
+
+  constructor(props: Props) {
+    super(props);
+    
+  }
+  viewHeader = React.createRef<Animatable.View>();
+  viewDetail = React.createRef<Animatable.View>();
+  viewAction = React.createRef<Animatable.View>();
   toggleView = (isShow: boolean) => {
     if (isShow) {
-      this.refs.viewHeader.transitionTo({flex: ViewFlex.headerOff});
-      this.refs.viewInformation.transitionTo({flex: ViewFlex.detailOff});
-      this.refs.viewController.transitionTo({flex: ViewFlex.actionOff});
+      this.viewHeader.current!.transitionTo({flex: ViewFlex.headerOff});
+      this.viewDetail.current!.transitionTo({flex: ViewFlex.detailOff});
+      this.viewAction.current!.transitionTo({flex: ViewFlex.actionOff});
     } else {
-      this.refs.viewHeader.transitionTo({flex: ViewFlex.header});
-      this.refs.viewInformation.transitionTo({flex: ViewFlex.detail});
-      this.refs.viewController.transitionTo({flex: ViewFlex.action});
+      this.viewHeader.current!.transitionTo({flex: ViewFlex.header});
+      this.viewDetail.current!.transitionTo({flex: ViewFlex.detail});
+      this.viewAction.current!.transitionTo({flex: ViewFlex.action});
     }
   };
-
+  
   setInputSiteUrl = () => {
-    this.props.onSetupLoginData(this.state.inputSiteUrl, SiteUrl.actionType);
+    var valueSiteUrl = this.state.inputSiteUrl;
+    if ( !this.isExistProtocol(this.state.inputSiteUrl) ) {
+      valueSiteUrl = `http://${valueSiteUrl}`;
+    }
+    this.props.callBack(valueSiteUrl, SiteUrl.actionType);
   };
 
   isValidSiteUrl = () => {
@@ -69,18 +80,23 @@ export default class SiteUrl extends React.Component<Props> {
       '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
     return pattern.test(urlText);
   };
+  isExistProtocol = (urlText: string) => {
+    var pattern = new RegExp('^(https?:\\/\\/)');
+    return pattern.test(urlText);
+  };
+ 
 
   render() {
     return (
       <View style={styles.siteUrlContainer}>
-        <Animatable.View style={styles.headerContainer} ref="viewHeader" >
+        <Animatable.View style={styles.headerContainer} ref={this.viewHeader} >
           <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
         </Animatable.View>
-        <Animatable.View style={ styles.detailsContainer } ref="viewInformation" >
+        <Animatable.View style={ styles.detailsContainer } ref={this.viewDetail} >
           <Text style={styles.detailTitle}>Get started.</Text>
           <Text style={styles.information}>Please enter your site url</Text>
         </Animatable.View>
-        <Animatable.View style={styles.actionContainer} ref="viewController">
+        <Animatable.View style={styles.actionContainer} ref={this.viewAction} >
           <TextInput style={styles.inputTextUrl} keyboardType="url" placeholder="Enter site url" clearButtonMode="while-editing" autoCapitalize="none" onChangeText={ (text) => this.setState({ inputSiteUrl: text }) } onFocus={() => this.toggleView(true)} onBlur={ () => this.toggleView(false)} />
           <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" disabled={!this.isValidSiteUrl()} />
         </Animatable.View>
@@ -90,9 +106,12 @@ export default class SiteUrl extends React.Component<Props> {
 }
 
 type Props = {
-  onSetupLoginData: (dataSetupSecret: string, currentAction: number) => {}
+  callBack: (data: string, currentAction: number) => void
 };
 
+type State = {
+  inputSiteUrl: string
+}
 const styles = StyleSheet.create({
   siteUrlContainer: {
     flex: 1,
