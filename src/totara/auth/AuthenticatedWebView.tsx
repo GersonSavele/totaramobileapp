@@ -24,6 +24,7 @@ import React from "react";
 import { WebView } from "react-native-webview";
 import { compose, graphql, MutationFunc, MutationOpts } from "react-apollo";
 import gql from "graphql-tag";
+import CookieManager from "react-native-cookies";
 
 import { config } from "@totara/lib";
 
@@ -60,7 +61,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
   async componentDidMount() {
     const { createWebview, uri } = this.props;
 
-    return createWebview({ variables: { url: uri } })
+    const createWebViewPromise = createWebview({ variables: { url: uri } })
       .then((data) => {
         console.log("data on create", data);
 
@@ -69,6 +70,10 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
           isAuthenticated: true
         });
       });
+
+    const clearCookiesPromise = CookieManager.clearAll(true);
+
+    return Promise.all([createWebViewPromise, clearCookiesPromise]);
   }
 
   async componentWillUnmount() {
@@ -88,7 +93,6 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
             headers: { "X-TOTARA-MOBILE-WEBVIEW-SECRET": this.state.webviewSecret }
           }}
           userAgent={config.userAgent}
-          incognito={true} // needed for now, as we need fresh session w/o cookies
           style={{ flex: 1 }}/>
         : null // show something loading, ask UX if this the preferred solution
     );
