@@ -24,6 +24,7 @@ import React from "react";
 import { View } from "react-native";
 import { WebView } from "react-native-webview";
 import { WebViewMessageEvent } from "react-native-webview/lib/WebViewTypes";
+import CookieManager from "react-native-cookies";
 
 import { config } from "@totara/lib";
 import { SetupSecret } from "./AuthContext";
@@ -58,6 +59,9 @@ export default class WebLogin extends React.Component<Props> {
         />
       </View>
     );
+  }
+  async componentWillUnmount() {
+    return  CookieManager.clearAll(true);
   }
 }
 
