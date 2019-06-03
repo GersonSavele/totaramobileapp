@@ -24,35 +24,27 @@ import * as Animatable from 'react-native-animatable';
 
 
 import { gutter, h1, normal, PrimaryButton } from "@totara/theme";
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 enum ViewFlex {
-  header= 3, detail= 3,
-  action= 5,
-  headerOff= 3,
-  detailOff= 1,
-  actionOff= 7
+  keyboardOff= 1, keyboardOn= 3
 };
 
 export default class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
 
+  viewKeyboard = React.createRef<Animatable.View>();
+
   constructor(props: Props) {
     super(props);
-    
   }
-  viewHeader = React.createRef<Animatable.View>();
-  viewDetail = React.createRef<Animatable.View>();
-  viewAction = React.createRef<Animatable.View>();
+  
   toggleView = (isShow: boolean) => {
     if (isShow) {
-      this.viewHeader.current!.transitionTo({flex: ViewFlex.headerOff});
-      this.viewDetail.current!.transitionTo({flex: ViewFlex.detailOff});
-      this.viewAction.current!.transitionTo({flex: ViewFlex.actionOff});
+      this.viewKeyboard.current!.transitionTo({flex: ViewFlex.keyboardOn});
     } else {
-      this.viewHeader.current!.transitionTo({flex: ViewFlex.header});
-      this.viewDetail.current!.transitionTo({flex: ViewFlex.detail});
-      this.viewAction.current!.transitionTo({flex: ViewFlex.action});
+      this.viewKeyboard.current!.transitionTo({flex: ViewFlex.keyboardOff});
     }
   };
   
@@ -72,34 +64,41 @@ export default class SiteUrl extends React.Component<Props, State> {
   };
 
   isValidUrlText = (urlText: string) => {
-    var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+    var pattern = new RegExp("^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$", "i"); // fragment locator
     return pattern.test(urlText);
   };
+
   isExistProtocol = (urlText: string) => {
-    var pattern = new RegExp('^(https?:\\/\\/)');
+    var pattern = new RegExp("^(https?:\\/\\/)");
     return pattern.test(urlText);
   };
- 
 
   render() {
     return (
       <View style={styles.siteUrlContainer}>
-        <Animatable.View style={styles.headerContainer} ref={this.viewHeader} >
+        <View style={styles.headerContainer} >
           <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
-        </Animatable.View>
-        <Animatable.View style={ styles.detailsContainer } ref={this.viewDetail} >
+        </View>
+        <Animatable.View style={ styles.container } >
           <Text style={styles.detailTitle}>Get started.</Text>
           <Text style={styles.information}>Please enter your site url</Text>
-        </Animatable.View>
-        <Animatable.View style={styles.actionContainer} ref={this.viewAction} >
-          <TextInput style={styles.inputTextUrl} keyboardType="url" placeholder="Enter site url" clearButtonMode="while-editing" autoCapitalize="none" onChangeText={ (text) => this.setState({ inputSiteUrl: text }) } onFocus={() => this.toggleView(true)} onBlur={ () => this.toggleView(false)} />
+          <TextInput
+            style={styles.inputTextUrl}
+            keyboardType="url"
+            placeholder="Enter site url"
+            clearButtonMode="while-editing" 
+            autoCapitalize="none"
+            onChangeText={(text) => this.setState({ inputSiteUrl: text })}
+            onFocus={() => this.toggleView(true)}
+            onBlur={() => this.toggleView(false)} />
           <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" disabled={!this.isValidSiteUrl()} />
         </Animatable.View>
+        <Animatable.View style={ styles.keyboard } ref={this.viewKeyboard} ></Animatable.View>
       </View>
     );
   };
@@ -119,21 +118,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: gutter,
   },
-
   headerContainer: {
-    flex: ViewFlex.header,
+    height: hp("21%"),
     flexDirection: "row",
     alignItems: "flex-end",
   },
   totaraLogo: {
     height: 120,
     width: 120,
+    backgroundColor: "white"
   },
-
-  detailsContainer: {
-    flex: ViewFlex.detail,
-    alignItems: "flex-start",
-    justifyContent: "center"
+  container: {
+    flex: 2.2,
+    justifyContent: "flex-end",
   },
   detailTitle: {
     fontSize: h1,
@@ -142,15 +139,14 @@ const styles = StyleSheet.create({
     fontSize: normal,
     color: "#696969",
   },
-
-  actionContainer: {
-    flex: ViewFlex.action,
-    justifyContent: "flex-start",
-  },
   inputTextUrl: {
     borderBottomWidth: 1,
     borderColor: "#D2D2D2",
     height: 44,
     marginVertical: 10
+  },
+  keyboard : {
+    flex: ViewFlex.keyboardOff,
+    justifyContent: "center",
   }
 });
