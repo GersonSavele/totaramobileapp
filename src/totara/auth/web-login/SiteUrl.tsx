@@ -18,7 +18,7 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React from "react";
+import React, { RefObject } from "react";
 import { StyleSheet, View, Image, Text, TextInput } from "react-native";
 import * as Animatable from 'react-native-animatable';
 
@@ -34,12 +34,13 @@ export default class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
 
-  viewKeyboard = React.createRef<Animatable.View>();
-
   constructor(props: Props) {
-    super(props);
+    super(props);    
   }
 
+  viewKeyboard = React.createRef<Animatable.View>();
+  refTextInputSiteUrl: RefObject<TextInput> = React.createRef<TextInput>();
+  
   toggleView = (isShow: boolean) => {
     if (isShow) {
       this.viewKeyboard.current!.transitionTo({flex: ViewFlex.keyboardOn});
@@ -77,6 +78,12 @@ export default class SiteUrl extends React.Component<Props, State> {
     var pattern = new RegExp("^(https?:\\/\\/)");
     return pattern.test(urlText);
   };
+  
+  componentDidMount() {
+    setTimeout(() => {
+      this.refTextInputSiteUrl.current!.focus();
+    }, 1000);
+  }
 
   render() {
     return (
@@ -88,6 +95,7 @@ export default class SiteUrl extends React.Component<Props, State> {
           <Text style={styles.detailTitle}>Get started.</Text>
           <Text style={styles.information}>Please enter your site url</Text>
           <TextInput
+            ref={this.refTextInputSiteUrl}
             style={styles.inputTextUrl}
             keyboardType="url"
             placeholder="Enter site url"
