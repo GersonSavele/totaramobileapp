@@ -39,11 +39,12 @@ const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 
 const theme = lodash.merge(material, {
   brandPrimary: "#69BD45",
-  brandInfo: "#FFFFFF"
+  brandInfo: "#FFFFFF",
+  platformStyle: "totara"
 });
 
-const PrimaryButton = ({children, text, ...rest}) => 
-  <Button block rounded primary {...rest} >
+const PrimaryButton = ({children, text, ...rest}) =>
+  <Button block rounded primary {...rest}>
     {
       text
         ? <Text style={{color: "#fff"}}>{text}</Text>

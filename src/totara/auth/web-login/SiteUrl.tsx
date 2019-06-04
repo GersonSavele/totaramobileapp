@@ -23,7 +23,7 @@ import { StyleSheet, View, Image, Text, TextInput } from "react-native";
 import * as Animatable from 'react-native-animatable';
 
 
-import { gutter, h1, normal, PrimaryButton } from "@totara/theme";
+import { gutter, h1, h4, normal, resizeByScreenSize, PrimaryButton } from "@totara/theme";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 enum ViewFlex {
@@ -39,7 +39,7 @@ export default class SiteUrl extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
   }
-  
+
   toggleView = (isShow: boolean) => {
     if (isShow) {
       this.viewKeyboard.current!.transitionTo({flex: ViewFlex.keyboardOn});
@@ -47,7 +47,7 @@ export default class SiteUrl extends React.Component<Props, State> {
       this.viewKeyboard.current!.transitionTo({flex: ViewFlex.keyboardOff});
     }
   };
-  
+
   setInputSiteUrl = () => {
     var valueSiteUrl = this.state.inputSiteUrl;
     if ( !this.isExistProtocol(this.state.inputSiteUrl) ) {
@@ -91,7 +91,7 @@ export default class SiteUrl extends React.Component<Props, State> {
             style={styles.inputTextUrl}
             keyboardType="url"
             placeholder="Enter site url"
-            clearButtonMode="while-editing" 
+            clearButtonMode="while-editing"
             autoCapitalize="none"
             onChangeText={(text) => this.setState({ inputSiteUrl: text })}
             onFocus={() => this.toggleView(true)}
@@ -116,37 +116,39 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    paddingHorizontal: gutter,
+    paddingHorizontal: 16,
   },
   headerContainer: {
     height: hp("21%"),
     flexDirection: "row",
     alignItems: "flex-end",
+
   },
   totaraLogo: {
-    height: 120,
-    width: 120,
-    backgroundColor: "white"
+    height: resizeByScreenSize(68, 68, 87, 87),
+    width: resizeByScreenSize(94, 94, 120, 120),
+
   },
   container: {
-    flex: 2.2,
+    flex: resizeByScreenSize(2.1, 2.6, 2.8, 1),
     justifyContent: "flex-end",
   },
   detailTitle: {
-    fontSize: h1,
+    fontSize: 26,
   },
   information: {
-    fontSize: normal,
-    color: "#696969",
+    fontSize: 20,
+    color: "#64717D",
   },
   inputTextUrl: {
     borderBottomWidth: 1,
     borderColor: "#D2D2D2",
     height: 44,
-    marginVertical: 10
+    marginVertical: resizeByScreenSize (16, 40, 40, 40),
   },
   keyboard : {
     flex: ViewFlex.keyboardOff,
     justifyContent: "center",
-  }
+  },
+
 });
