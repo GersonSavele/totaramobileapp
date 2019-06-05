@@ -35,7 +35,7 @@ export default class SiteUrl extends React.Component<Props, State> {
   static actionType: number = 1;
 
   constructor(props: Props) {
-    super(props);   
+    super(props);
     this.state = {
       showError: false,
       inputSiteUrl: ""
@@ -88,7 +88,7 @@ export default class SiteUrl extends React.Component<Props, State> {
     var pattern = new RegExp("^(https?:\\/\\/)");
     return pattern.test(urlText);
   };
-  
+
   componentDidMount() {
     setTimeout(() => {
       this.refTextInputSiteUrl.current!.focus();
@@ -149,70 +149,67 @@ const styles = StyleSheet.create({
     height: hp("21%"),
     flexDirection: "row",
     alignItems: "flex-end",
-
   },
   totaraLogo: {
     height: resizeByScreenSize(68, 68, 87, 87),
     width: resizeByScreenSize(94, 94, 120, 120),
-
+    marginBottom: resizeByScreenSize(16, 0, 0, 0),
   },
   container: {
     flex: resizeByScreenSize(2.1, 2.6, 2.8, 1),
     justifyContent: "flex-end",
   },
   detailTitle: {
-    fontSize: 26,
+    fontSize: resizeByScreenSize (22, 26, 26, 26),
   },
   information: {
-    fontSize: 20,
+    fontSize: resizeByScreenSize (15, 20, 20, 20),
     color: "#64717D",
   },
   inputTextUrl: {
-    zIndex: 10,
     borderBottomWidth: 1,
     borderColor: "#D2D2D2",
     height: 44,
-    marginTop: resizeByScreenSize (16, 40, 40, 40),
+    marginTop: resizeByScreenSize (8, 40, 40, 40),
   },
   keyboard : {
     flex: ViewFlex.keyboardOff,
     justifyContent: "center",
   },
   errorContainer: {
-    marginBottom: resizeByScreenSize (8, 8, 16, 16),
     flexDirection: "column",
     justifyContent: "flex-start",
-    opacity: 0.0
+    opacity: 0.0,
+    top: -10,
   },
   errorOn: {
     opacity: 1.0
   },
   errorContent: {
     backgroundColor: "#953539",
-    padding: resizeByScreenSize (4, 4, 8, 8),
+    padding: 6,
     flexDirection: "row",
-    top: -resizeByScreenSize (7, 7, 15, 15),
+    top: -5,
     alignItems: "center"
   },
   errorMessage: {
     fontSize: 12,
     color: "white",
-    marginLeft: resizeByScreenSize (4, 4, 8, 8),
-  }, 
+    marginLeft: 4,
+  },
   arrow: {
-    zIndex: 0,
     width: 0,
     height: 0,
-    borderLeftWidth: resizeByScreenSize(8, 8, 16, 16),
+    borderLeftWidth: 5,
     borderLeftColor: "transparent",
-    borderRightWidth: resizeByScreenSize(8, 8, 16, 16),
+    borderRightWidth: 5,
     borderRightColor: "transparent",
-    borderBottomWidth: resizeByScreenSize(16, 16, 32, 32),
+    borderBottomWidth: 10,
     borderBottomColor: "#953539",
     borderTopWidth: 0,
     borderTopColor: "transparent",
-    top: -resizeByScreenSize(7, 7, 15, 15),
-    marginLeft: resizeByScreenSize(8, 8, 16, 16),
+    top: -5,
+    marginLeft: 8,
     backgroundColor: "transparent",
     borderColor: "transparent"
   }
