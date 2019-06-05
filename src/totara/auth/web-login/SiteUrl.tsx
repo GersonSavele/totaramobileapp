@@ -19,9 +19,9 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React, { RefObject } from "react";
-import { StyleSheet, View, Image, Text, TextInput } from "react-native";
+import { StyleSheet, View, Image, Text, TextInput, Alert } from "react-native";
 import * as Animatable from 'react-native-animatable';
-
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import { gutter, h1, h4, normal, resizeByScreenSize, PrimaryButton } from "@totara/theme";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
@@ -35,12 +35,16 @@ export default class SiteUrl extends React.Component<Props, State> {
   static actionType: number = 1;
 
   constructor(props: Props) {
-    super(props);    
+    super(props);   
+    this.state = {
+      showError: false,
+      inputSiteUrl: ""
+    };
   }
 
   viewKeyboard = React.createRef<Animatable.View>();
   refTextInputSiteUrl: RefObject<TextInput> = React.createRef<TextInput>();
-  
+
   toggleView = (isShow: boolean) => {
     if (isShow) {
       this.viewKeyboard.current!.transitionTo({flex: ViewFlex.keyboardOn});
@@ -50,11 +54,17 @@ export default class SiteUrl extends React.Component<Props, State> {
   };
 
   setInputSiteUrl = () => {
-    var valueSiteUrl = this.state.inputSiteUrl;
-    if ( !this.isExistProtocol(this.state.inputSiteUrl) ) {
-      valueSiteUrl = `http://${valueSiteUrl}`;
+    const isValidSiteAddress = this.isValidSiteUrl();
+    this.setState({
+      showError: !isValidSiteAddress
+    });
+    if (isValidSiteAddress) {
+      var valueSiteUrl = this.state.inputSiteUrl;
+      if ( !this.isExistProtocol(this.state.inputSiteUrl) ) {
+        valueSiteUrl = `http://${valueSiteUrl}`;
+      }
+      this.props.callBack(valueSiteUrl, SiteUrl.actionType);
     }
-    this.props.callBack(valueSiteUrl, SiteUrl.actionType);
   };
 
   isValidSiteUrl = () => {
@@ -82,7 +92,7 @@ export default class SiteUrl extends React.Component<Props, State> {
   componentDidMount() {
     setTimeout(() => {
       this.refTextInputSiteUrl.current!.focus();
-    }, 1000);
+    }, 300);
   }
 
   render() {
@@ -101,10 +111,17 @@ export default class SiteUrl extends React.Component<Props, State> {
             placeholder="Enter site url"
             clearButtonMode="while-editing"
             autoCapitalize="none"
-            onChangeText={(text) => this.setState({ inputSiteUrl: text })}
+            onChangeText={(text) => this.setState({ inputSiteUrl: text, showError: false})}
             onFocus={() => this.toggleView(true)}
             onBlur={() => this.toggleView(false)} />
-          <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" disabled={!this.isValidSiteUrl()} />
+          <View style={ this.state.showError ? [styles.errorContainer, styles.errorOn] :  styles.errorContainer }  >
+            <View style={styles.arrow}></View>
+            <View  style={styles.errorContent}>
+              <FontAwesomeIcon icon="exclamation-circle" size={12} color="white" background="white"/>
+              <Text style={styles.errorMessage}>Enter a valid site address</Text>
+            </View>
+          </View>
+          <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" />
         </Animatable.View>
         <Animatable.View style={ styles.keyboard } ref={this.viewKeyboard} ></Animatable.View>
       </View>
@@ -117,8 +134,10 @@ type Props = {
 };
 
 type State = {
-  inputSiteUrl: string
-}
+  inputSiteUrl: string,
+  showError: boolean
+};
+
 const styles = StyleSheet.create({
   siteUrlContainer: {
     flex: 1,
@@ -149,14 +168,56 @@ const styles = StyleSheet.create({
     color: "#64717D",
   },
   inputTextUrl: {
+    zIndex: 10,
     borderBottomWidth: 1,
     borderColor: "#D2D2D2",
     height: 44,
-    marginVertical: resizeByScreenSize (16, 40, 40, 40),
+    marginTop: resizeByScreenSize (16, 40, 40, 40),
+    color: "black"
+  },
+  inputTextUrlErrorOn: {
+    color: "#953539"
   },
   keyboard : {
     flex: ViewFlex.keyboardOff,
     justifyContent: "center",
   },
-
+  errorContainer: {
+    marginBottom: resizeByScreenSize (8, 8, 16, 16),
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    opacity: 0.0
+  },
+  errorOn: {
+    opacity: 1.0
+  },
+  errorContent: {
+    backgroundColor: "#953539",
+    padding: resizeByScreenSize (4, 4, 8, 8),
+    flexDirection: "row",
+    top: -resizeByScreenSize (7, 7, 15, 15),
+    alignItems: "center"
+  },
+  errorMessage: {
+    fontSize: 12,
+    color: "white",
+    marginLeft: resizeByScreenSize (4, 4, 8, 8),
+  }, 
+  arrow: {
+    zIndex: 0,
+    width: 0,
+    height: 0,
+    borderLeftWidth: resizeByScreenSize(8, 8, 16, 16),
+    borderLeftColor: "transparent",
+    borderRightWidth: resizeByScreenSize(8, 8, 16, 16),
+    borderRightColor: "transparent",
+    borderBottomWidth: resizeByScreenSize(16, 16, 32, 32),
+    borderBottomColor: "#953539",
+    borderTopWidth: 0,
+    borderTopColor: "transparent",
+    top: -resizeByScreenSize(7, 7, 15, 15),
+    marginLeft: resizeByScreenSize(8, 8, 16, 16),
+    backgroundColor: "transparent",
+    borderColor: "transparent"
+  }
 });

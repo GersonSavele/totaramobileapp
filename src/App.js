@@ -45,7 +45,8 @@ import {
   faChevronUp,
   faExclamationTriangle,
   faLock,
-  faBoxOpen
+  faBoxOpen,
+  faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
@@ -226,7 +227,8 @@ const initFontAwesome = () => {
     faExclamationTriangle,
     faChevronUp,
     faLock,
-    faBoxOpen
+    faBoxOpen,
+    faExclamationCircle,
   );
 };
 initFontAwesome();
