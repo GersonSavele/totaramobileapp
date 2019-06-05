@@ -173,10 +173,6 @@ const styles = StyleSheet.create({
     borderColor: "#D2D2D2",
     height: 44,
     marginTop: resizeByScreenSize (16, 40, 40, 40),
-    color: "black"
-  },
-  inputTextUrlErrorOn: {
-    color: "#953539"
   },
   keyboard : {
     flex: ViewFlex.keyboardOff,
