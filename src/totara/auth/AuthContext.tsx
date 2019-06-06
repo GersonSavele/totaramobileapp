@@ -33,7 +33,7 @@ import SplashScreen from "react-native-splash-screen";
 
 import { config } from "@totara/lib";
 
-import WebLogin from "./WebLogin";
+import WebLogin from "./web-login";
 
 
 const AuthContext = React.createContext<State>(
@@ -131,7 +131,7 @@ class AuthProvider extends React.Component<Props, State> {
 
   getAndStoreApiKey = async (setupSecret: SetupSecret) => {
     try {
-      const apiKey = await fetch(config.deviceRegisterUri, {
+      const apiKey = await fetch(config.deviceRegisterUri(setupSecret.uri), {
         method: "POST",
         body: JSON.stringify({
           setupsecret: setupSecret.secret

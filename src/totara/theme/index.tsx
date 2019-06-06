@@ -17,10 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from "react";
+import {Text} from "react-native";
 import material from "./native-base-theme/variables/material";
 import getTheme from "./native-base-theme/components/index";
 import {resizeByScreenSize, normalize} from "./ui";
 import lodash from "lodash";
+import { Button } from "native-base";
 
 const h1 = resizeByScreenSize(24, 28, 32, 36);
 const h2 = resizeByScreenSize(24, 28, 32, 36);
@@ -33,10 +36,21 @@ const contmargin = resizeByScreenSize(8, 10, 16, 24);
 const tbPadding = resizeByScreenSize(8, 16, 24, 32);
 const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 
+
 const theme = lodash.merge(material, {
   brandPrimary: "#69BD45",
-  brandInfo: "#FFFFFF"
+  brandInfo: "#FFFFFF",
+  platformStyle: "totara"
 });
+
+const PrimaryButton = ({children, text, ...rest}) =>
+  <Button block rounded primary {...rest}>
+    {
+      text
+        ? <Text style={{color: "#fff"}}>{text}</Text>
+        : children
+    }
+  </Button>;
 
 export {
   theme,
@@ -53,4 +67,5 @@ export {
   contmargin,
   tbPadding,
   lrPadding,
+  PrimaryButton
 };

@@ -27,36 +27,35 @@ import { WebViewMessageEvent } from "react-native-webview/lib/WebViewTypes";
 import CookieManager from "react-native-cookies";
 
 import { config } from "@totara/lib";
-import { SetupSecret } from "./AuthContext";
+import SiteUrl from "./SiteUrl";
 
-export default class WebLogin extends React.Component<Props> {
-
+export default class Login extends React.Component<Props> {
+  
+  static actionType = 2;
+  
   didRecieveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
-      this.props.onLoginSuccess({
-        secret: setupSecretValue,
-        uri: ""
-      });
+      this.props.callBack(setupSecretValue, Login.actionType);
     }
   };
 
   render() {
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
+    const loginUrl = config.loginUri(this.props.siteUrl);//+"/login/index.php";
     return (
-      <View style={{ flex: 1, marginTop: 50 }} >
+      <View style={{ flex: 1}} >
         <WebView
           source={{
-            uri: config.loginUri,
+            uri: loginUrl,
             headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
           }}
           userAgent={config.userAgent}
           javaScriptEnabled={true}
           onMessage={this.didRecieveOnMessage}
           injectedJavaScript={jsCode}
-          scrollEnabled={false}
-          scalesPageToFit={true}
-        />
+          scrollEnabled={false} 
+          />
       </View>
     );
   }
@@ -66,7 +65,8 @@ export default class WebLogin extends React.Component<Props> {
 }
 
 type Props = {
-  onLoginSuccess: (setupSecret: SetupSecret) => {}
-  onLoginFailure: (error: Error) => {}
+  callBack: (data: string, currentAction: number) => void
+  siteUrl: string
 };
+
 
