@@ -25,8 +25,6 @@ import React from "react";
 import { SetupSecret } from "../AuthContext";
 import SiteUrl from "./SiteUrl";
 import Login from "./Login";
-import { Alert } from "react-native";
-import { config } from "@totara/lib";
 
 export default class WebLogin extends React.Component<Props, States> {
   
@@ -51,7 +49,7 @@ export default class WebLogin extends React.Component<Props, States> {
         if ( this.state.uri && data ) {
           this.props.onLoginSuccess({uri: this.state.uri, secret: data});
         } else {
-          console.log("Invalid Login")
+          console.log("Login failed.");
         }
         break;
       default:
@@ -59,15 +57,27 @@ export default class WebLogin extends React.Component<Props, States> {
     }
   };
 
+  onCancelLogin = (currentAction: number) => {
+    switch (currentAction) {
+      case Login.actionType:
+        this.setState({
+          step: SiteUrl.actionType,
+          uri: this.state.uri
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
   render() {
-    const onSetupLoginData = this.onSetupLoginData;
     switch (this.state.step) {
       case SiteUrl.actionType:
-        return <SiteUrl callBack={ onSetupLoginData } />;
+        return <SiteUrl onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } />;
       case Login.actionType:
-        return <Login callBack={ onSetupLoginData } siteUrl={ this.state.uri! }/>;
+        return <Login onSuccessfulLogin={ (setupSecret, action) => this.onSetupLoginData(setupSecret, action) } siteUrl={ this.state.uri! } onCancelLogin={(action) => this.onCancelLogin(action)} />;
       default:
-        return <SiteUrl callBack={ onSetupLoginData } />;
+        return <SiteUrl onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } />;
     }
   }
 }

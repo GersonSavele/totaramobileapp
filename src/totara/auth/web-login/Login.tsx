@@ -21,13 +21,14 @@
  */
 
 import React from "react";
-import { View } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import { WebView } from "react-native-webview";
 import { WebViewMessageEvent } from "react-native-webview/lib/WebViewTypes";
 import CookieManager from "react-native-cookies";
+import { Button } from "native-base";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import { config } from "@totara/lib";
-import SiteUrl from "./SiteUrl";
 
 export default class Login extends React.Component<Props> {
   
@@ -36,37 +37,56 @@ export default class Login extends React.Component<Props> {
   didRecieveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
-      this.props.callBack(setupSecretValue, Login.actionType);
+      this.props.onSuccessfulLogin(setupSecretValue, Login.actionType);
     }
   };
 
   render() {
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
-    const loginUrl = config.loginUri(this.props.siteUrl);//+"/login/index.php";
+    const loginUrl = config.loginUri(this.props.siteUrl);
     return (
-      <View style={{ flex: 1}} >
-        <WebView
-          source={{
-            uri: loginUrl,
-            headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
-          }}
-          userAgent={config.userAgent}
-          javaScriptEnabled={true}
-          onMessage={this.didRecieveOnMessage}
-          injectedJavaScript={jsCode}
-          scrollEnabled={false} 
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={{ flex: 1 }} >
+          <View style={styles.navigation} >
+            <Button transparent onPress={() => { this.props.onCancelLogin(Login.actionType); }} style={{padding: 8}} >
+              <FontAwesomeIcon icon="times" size={24} />
+            </Button>
+          </View>
+          <WebView
+            style={{flex: 1}}
+            source={{
+              uri: loginUrl,
+              headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
+            }}
+            userAgent={config.userAgent}
+            javaScriptEnabled={true}
+            onMessage={this.didRecieveOnMessage}
+            injectedJavaScript={jsCode}
+            useWebKit={true}
           />
-      </View>
+        </View>
+      </SafeAreaView>
     );
   }
+  
   async componentWillUnmount() {
     return  CookieManager.clearAll(true);
   }
 }
 
 type Props = {
-  callBack: (data: string, currentAction: number) => void
+  onSuccessfulLogin: (data: string, currentAction: number) => void
+  onCancelLogin: (currentAction: number) => void
   siteUrl: string
 };
 
-
+const styles = StyleSheet.create({
+  navigation: { 
+    height: 44, 
+    justifyContent: "flex-end", 
+    alignItems: "flex-start", 
+    borderBottomColor: "#f1f1f1", 
+    borderBottomWidth: 1,
+    backgroundColor: "#ffffff",
+  }
+});
