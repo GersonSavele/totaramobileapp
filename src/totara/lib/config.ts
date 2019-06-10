@@ -29,7 +29,8 @@ const defaultConfig = {
   userAgent: "TotaraMobileApp",
 
   loginUri: (host: string)=> { return `${host}/login/index.php` },
-  deviceRegisterUri: (host: string) => { return `${host}/totara/mobile/device_register.php` }
+  deviceRegisterUri: (host: string) => { return `${host}/totara/mobile/device_register.php` },
+  webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`)
 };
 
 let config = {...defaultConfig, ...localConfig};
