@@ -72,8 +72,6 @@ export default class WebLogin extends React.Component<Props, States> {
 
   render() {
     switch (this.state.step) {
-      case SiteUrl.actionType:
-        return <SiteUrl onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } />;
       case Login.actionType:
         return <Login onSuccessfulLogin={ (setupSecret, action) => this.onSetupLoginData(setupSecret, action) } siteUrl={ this.state.uri! } onCancelLogin={(action) => this.onCancelLogin(action)} />;
       default:
