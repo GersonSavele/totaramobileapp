@@ -21,16 +21,26 @@
  */
 
 import React from "react";
-import {View} from "react-native";
+import { View, Button } from "react-native";
+import { AuthenticatedWebView } from "@totara/auth";
 
 export default class PlaceHolder extends React.Component {
+  state = {
+    showWebView: false
+  };
+
   static navigationOptions = {
     title: "Place Holder",
   };
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+      <View style={{flex: 1}}>
+        <Button onPress={() => this.setState( (state) => ({
+          showWebView: !state.showWebView
+        }))} title={"toggle"}/>
+
+        { (this.state.showWebView) && <AuthenticatedWebView uri={"/index.php"}/> }
       </View>
     );
   }
