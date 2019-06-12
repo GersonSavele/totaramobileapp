@@ -27,6 +27,7 @@ import gql from "graphql-tag";
 import CookieManager from "react-native-cookies";
 
 import { config } from "@totara/lib";
+import { AuthConsumer } from "@totara/auth/AuthContext";
 
 
 const createWebview = gql`
@@ -45,6 +46,11 @@ const deleteWebview = gql`
  *  AuthenticatedWebViewComponent will create a webview that has been logged into Totara.
  *  It would use the api to request create webview when component is mounted.  Then use
  *  the api to request delete webview when unmounted.
+ *
+ *  Cookies are cleared when component is mounted, this is required by Totara web for a
+ *  secure login.  This does mean that we can only have 1 webview session at a time.
+ *  This can be possibly be improved in the future by conditionally clearing the cookies
+ *  if an existing session exists (either webview, cookie is still valid)
  */
 class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
@@ -86,15 +92,20 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
   render() {
     return (
-      (this.state.webviewSecret)
-        ? <WebView
-          source={{
-            uri: config.webViewUri,
-            headers: { "X-TOTARA-MOBILE-WEBVIEW-SECRET": this.state.webviewSecret }
-          }}
-          userAgent={config.userAgent}
-          style={{ flex: 1 }}/>
-        : null // show something loading, ask UX if this the preferred solution
+      <AuthConsumer>
+        {auth =>
+          (this.state.webviewSecret && auth.setup)
+            ? <WebView
+                source={{
+                  uri: config.webViewUri(auth.setup.host),
+                  headers: { "X-TOTARA-MOBILE-WEBVIEW-SECRET": this.state.webviewSecret }
+                }}
+                userAgent={config.userAgent}
+                style={{ flex: 1 }}/>
+            : null // TODO MOB-65 handle this error better.  Log or show something like error screen/text, ask UX if this the preferred solution
+        }
+      </AuthConsumer>
+
     );
   }
 

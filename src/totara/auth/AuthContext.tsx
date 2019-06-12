@@ -39,7 +39,7 @@ import WebLogin from "./web-login";
 const AuthContext = React.createContext<State>(
   {
     onLoginSuccess: (setupSecret: SetupSecret) => { return Promise.resolve() },
-    apiKey: undefined,
+    setup: undefined,
     isLoading: true,
     logOut: () => { return Promise.resolve() }
   }
@@ -69,7 +69,7 @@ class AuthProvider extends React.Component<Props, State> {
 
     this.state = {
       onLoginSuccess: this.onLoginSuccess,
-      apiKey: undefined,
+      setup: undefined,
       logOut: this.logOut,
       isLoading: true
     };
@@ -79,15 +79,27 @@ class AuthProvider extends React.Component<Props, State> {
 
   bootstrap = async () => {
     const apiKey = await AsyncStorage.getItem('apiKey');
+    const host = await AsyncStorage.getItem('host');
 
     SplashScreen.hide();
 
-    this.setState({
-      apiKey: apiKey,
-      isLoading: false
-    });
+    if (apiKey !== null && host !== null) {
+      this.setState({
+        setup: {
+          apiKey: apiKey,
+          host: host
+        },
+        isLoading: false
+      });
+    } else {
+      this.setState({
+        isLoading: false
+      });
+
+    }
+
     console.log("state", this.state);
-    // TODO add some logging and error handling, important routine
+    // TODO MOB-65 add some logging and error handling, important routine
   };
 
   onLoginSuccess = async (setupSecret: SetupSecret) => {
@@ -101,7 +113,7 @@ class AuthProvider extends React.Component<Props, State> {
   logOut = async () => {
     await AsyncStorage.clear();
     this.setState({
-      apiKey: undefined
+      setup: undefined,
     });
   };
 
@@ -142,15 +154,19 @@ class AuthProvider extends React.Component<Props, State> {
       }).then((json) => json.data.apikey);
 
       await AsyncStorage.setItem("apiKey", apiKey);
+      await AsyncStorage.setItem("host", setupSecret.uri);
 
       this.setState({
-        apiKey: apiKey
+        setup: {
+          apiKey: apiKey,
+          host: setupSecret.uri
+        }
       });
 
       return apiKey;
     } catch (error) {
       console.error(error);
-      // TODO add some logging and error handling, important routine
+      // TODO MOB-65 add some logging and error handling, important routine
 
       return undefined;
     }
@@ -162,8 +178,8 @@ class AuthProvider extends React.Component<Props, State> {
         {
           (this.state.isLoading)
             ? <Text>auth loading, this text should not be seen unless bootstrap failed</Text>
-            : (this.state.apiKey)
-              ? <ApolloProvider client={this.createApolloClient(this.state.apiKey, config.mobileApi + "/graphql")}>
+            : (this.state.setup && this.state.setup.apiKey)
+              ? <ApolloProvider client={this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql")}>
                 {this.props.children}
               </ApolloProvider>
               : <WebLogin onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
@@ -180,11 +196,15 @@ type Props = {
 
 type State = {
   isLoading: boolean,
-  apiKey: string | undefined | null,
+  setup?: Setup,
   onLoginSuccess: (setupSecret: SetupSecret) => Promise<void>
   logOut: () => Promise<void>
 }
 
+type Setup = {
+  apiKey: string,
+  host: string
+}
 
 
 export interface SetupSecret {
