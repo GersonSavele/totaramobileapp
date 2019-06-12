@@ -33,27 +33,38 @@ import { config } from "@totara/lib";
 export default class Login extends React.Component<Props> {
   
   static actionType = 2;
-  
+  webviewLogin = React.createRef<WebView>();
+
   didRecieveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
       this.props.onSuccessfulLogin(setupSecretValue, Login.actionType);
     }
   };
+ 
 
   render() {
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
     const loginUrl = config.loginUri(this.props.siteUrl);
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }} >
           <View style={styles.navigation} >
-            <Button transparent onPress={() => { this.props.onCancelLogin(Login.actionType); }} style={{padding: 8}} >
+            <Button transparent onPress={() => { this.props.onCancelLogin(Login.actionType); }} style={{ padding: 8 }} >
               <FontAwesomeIcon icon="times" size={24} />
             </Button>
+            <View style={{ flexDirection: "row" }}>
+              <Button transparent onPress={() => { this.webviewLogin.current!.goBack(); }} style={styles.rightActionItem} >
+                <FontAwesomeIcon icon="arrow-left" size={22} />
+              </Button>
+              <Button transparent onPress={() => { this.webviewLogin.current!.goForward(); }} style={styles.rightActionItem}>
+                <FontAwesomeIcon icon="arrow-right" size={22} />
+              </Button>
+            </View>
           </View>
           <WebView
-            style={{flex: 1}}
+            ref={this.webviewLogin}
+            style={{ flex: 1 }}
             source={{
               uri: loginUrl,
               headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
@@ -83,10 +94,14 @@ type Props = {
 const styles = StyleSheet.create({
   navigation: { 
     height: 44, 
-    justifyContent: "flex-end", 
     alignItems: "flex-start", 
     borderBottomColor: "#f1f1f1", 
     borderBottomWidth: 1,
     backgroundColor: "#ffffff",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  rightActionItem: {
+    padding: 8
   }
 });

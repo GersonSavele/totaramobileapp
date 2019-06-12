@@ -21,6 +21,7 @@
  */
 
 import React from "react";
+import { Modal, View } from "react-native";
 
 import { SetupSecret } from "../AuthContext";
 import SiteUrl from "./SiteUrl";
@@ -49,6 +50,7 @@ export default class WebLogin extends React.Component<Props, States> {
         if ( this.state.uri && data ) {
           this.props.onLoginSuccess({uri: this.state.uri, secret: data});
         } else {
+          // TODO MOB-65 add some logging and error handling
           console.log("Login failed.");
         }
         break;
@@ -73,7 +75,13 @@ export default class WebLogin extends React.Component<Props, States> {
   render() {
     switch (this.state.step) {
       case Login.actionType:
-        return <Login onSuccessfulLogin={ (setupSecret, action) => this.onSetupLoginData(setupSecret, action) } siteUrl={ this.state.uri! } onCancelLogin={(action) => this.onCancelLogin(action)} />;
+        return (
+          <View style={{ flex: 1 }}>
+            <Modal animationType="slide" transparent={false} >
+              <Login onSuccessfulLogin={(setupSecret, action) => this.onSetupLoginData(setupSecret, action)} siteUrl={this.state.uri!} onCancelLogin={(action) => this.onCancelLogin(action)} />
+            </Modal>
+          </View>
+        );
       default:
         return <SiteUrl onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } />;
     }

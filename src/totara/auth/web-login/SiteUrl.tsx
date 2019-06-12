@@ -18,7 +18,7 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React, { RefObject } from "react";
+import React from "react";
 import { StyleSheet, View, Image, Text, TextInput, SafeAreaView } from "react-native";
 import * as Animatable from 'react-native-animatable';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -43,7 +43,7 @@ export default class SiteUrl extends React.Component<Props, State> {
   }
 
   viewKeyboard = React.createRef<Animatable.View>();
-  refTextInputSiteUrl: RefObject<TextInput> = React.createRef<TextInput>();
+  refTextInputSiteUrl = React.createRef<TextInput>();
 
   toggleView = (isShow: boolean) => {
     if (isShow) {
