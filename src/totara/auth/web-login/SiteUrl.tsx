@@ -25,6 +25,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { resizeByScreenSize, PrimaryButton } from "@totara/theme";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {translate} from "@totara/locale";
 
 enum ViewFlex {
   keyboardOff= 1, keyboardOn= 3
@@ -88,13 +89,13 @@ export default class SiteUrl extends React.Component<Props, State> {
             <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
           </View>
           <Animatable.View style={styles.container} >
-            <Text style={styles.detailTitle}>Get started.</Text>
-            <Text style={styles.information}>Please enter your site url</Text>
+            <Text style={styles.detailTitle}>{translate("web-login.site_url_title")}</Text>
+            <Text style={styles.information}>{translate("web-login.site_url_information")}</Text>
             <TextInput
               ref={this.refTextInputSiteUrl}
               style={styles.inputTextUrl}
               keyboardType="url"
-              placeholder="Enter site url"
+              placeholder={translate("web-login.site_url_text_placeholder")}
               clearButtonMode="while-editing"
               autoCapitalize="none"
               onChangeText={(text) => this.setState({ inputSiteUrl: text, showError: false })}
@@ -105,10 +106,10 @@ export default class SiteUrl extends React.Component<Props, State> {
               <View style={styles.arrow}></View>
               <View style={styles.errorContent}>
                 <FontAwesomeIcon icon="exclamation-circle" size={12} color="white" background="white" />
-                <Text style={styles.errorMessage}>Enter a valid site address</Text>
+                <Text style={styles.errorMessage}>{translate("message.enter_valid_url")}</Text>
               </View>
             </View>
-            <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" />
+            <PrimaryButton onPress={this.setInputSiteUrl} text={translate("general.enter")} />
           </Animatable.View>
           <Animatable.View style={styles.keyboard} ref={this.viewKeyboard} ></Animatable.View>
         </View>
