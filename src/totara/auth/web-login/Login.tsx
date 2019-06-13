@@ -23,17 +23,25 @@
 import React from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import { WebView } from "react-native-webview";
-import { WebViewMessageEvent } from "react-native-webview/lib/WebViewTypes";
+import { WebViewMessageEvent, WebViewNavigation } from "react-native-webview/lib/WebViewTypes";
 import CookieManager from "react-native-cookies";
 import { Button } from "native-base";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import { config } from "@totara/lib";
 
-export default class Login extends React.Component<Props> {
+export default class Login extends React.Component<Props, States> {
   
   static actionType = 2;
   webviewLogin = React.createRef<WebView>();
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { 
+      canWebGoBack: false,
+      canWebGoForward: false
+    };
+  }
 
   didRecieveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
@@ -41,6 +49,13 @@ export default class Login extends React.Component<Props> {
       this.props.onSuccessfulLogin(setupSecretValue, Login.actionType);
     }
   };
+
+  onLogViewNavigate = (navState: WebViewNavigation) => {
+    this.setState({
+      canWebGoBack: navState.canGoBack,
+      canWebGoForward: navState.canGoForward
+    });
+  }
  
 
   render() {
@@ -50,15 +65,15 @@ export default class Login extends React.Component<Props> {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }} >
           <View style={styles.navigation} >
-            <Button transparent onPress={() => { this.props.onCancelLogin(Login.actionType); }} style={{ padding: 8 }} >
+            <Button transparent onPress={() => { this.props.onCancelLogin(Login.actionType); }} style={styles.actionItem} >
               <FontAwesomeIcon icon="times" size={24} />
             </Button>
             <View style={{ flexDirection: "row" }}>
-              <Button transparent onPress={() => { this.webviewLogin.current!.goBack(); }} style={styles.rightActionItem} >
-                <FontAwesomeIcon icon="arrow-left" size={22} />
+              <Button transparent onPress={() => { this.webviewLogin.current!.goBack(); }} style={styles.actionItem} disabled={!(this.state.canWebGoBack)} >
+                <FontAwesomeIcon icon="arrow-left" size={22} color={(this.state.canWebGoBack ? "#000000": "#D1D5D8")} />
               </Button>
-              <Button transparent onPress={() => { this.webviewLogin.current!.goForward(); }} style={styles.rightActionItem}>
-                <FontAwesomeIcon icon="arrow-right" size={22} />
+              <Button transparent onPress={() => { this.webviewLogin.current!.goForward(); }} style={styles.actionItem}  disabled={!(this.state.canWebGoForward)} >
+                <FontAwesomeIcon icon="arrow-right" size={22} color={(this.state.canWebGoForward ? "#000000": "#D1D5D8")} />
               </Button>
             </View>
           </View>
@@ -74,6 +89,7 @@ export default class Login extends React.Component<Props> {
             onMessage={this.didRecieveOnMessage}
             injectedJavaScript={jsCode}
             useWebKit={true}
+            onNavigationStateChange={this.onLogViewNavigate}
           />
         </View>
       </SafeAreaView>
@@ -90,6 +106,11 @@ type Props = {
   onCancelLogin: (currentAction: number) => void
   siteUrl: string
 };
+type States = {
+  canWebGoBack: boolean,
+  canWebGoForward: boolean
+};
+
 
 const styles = StyleSheet.create({
   navigation: { 
@@ -101,7 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
-  rightActionItem: {
+  actionItem: {
     padding: 8
   }
 });
