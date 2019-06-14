@@ -18,13 +18,14 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React, { RefObject } from "react";
-import { StyleSheet, View, Image, Text, TextInput, Alert } from "react-native";
+import React from "react";
+import { StyleSheet, View, Image, Text, TextInput, SafeAreaView } from "react-native";
 import * as Animatable from 'react-native-animatable';
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { gutter, h1, h4, normal, resizeByScreenSize, PrimaryButton } from "@totara/theme";
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import { resizeByScreenSize, PrimaryButton } from "@totara/theme";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {translate} from "@totara/locale";
 
 enum ViewFlex {
   keyboardOff= 1, keyboardOn= 3
@@ -38,12 +39,12 @@ export default class SiteUrl extends React.Component<Props, State> {
     super(props);
     this.state = {
       showError: false,
-      inputSiteUrl: ""
+      inputSiteUrl: this.props.siteUrl
     };
   }
 
   viewKeyboard = React.createRef<Animatable.View>();
-  refTextInputSiteUrl: RefObject<TextInput> = React.createRef<TextInput>();
+  refTextInputSiteUrl = React.createRef<TextInput>();
 
   toggleView = (isShow: boolean) => {
     if (isShow) {
@@ -54,24 +55,14 @@ export default class SiteUrl extends React.Component<Props, State> {
   };
 
   setInputSiteUrl = () => {
-    const isValidSiteAddress = this.isValidSiteUrl();
+    const siteUrlValue = this.state.inputSiteUrl 
+    const isValidSiteAddress = (siteUrlValue) ? this.isValidUrlText(siteUrlValue!) : false;
     this.setState({
       showError: !isValidSiteAddress
     });
     if (isValidSiteAddress) {
-      var valueSiteUrl = this.state.inputSiteUrl;
-      if ( !this.isExistProtocol(this.state.inputSiteUrl) ) {
-        valueSiteUrl = `http://${valueSiteUrl}`;
-      }
-      this.props.callBack(valueSiteUrl, SiteUrl.actionType);
+      this.props.onSuccessfulSiteUrl(siteUrlValue!, SiteUrl.actionType);
     }
-  };
-
-  isValidSiteUrl = () => {
-    if (this.state && this.state.inputSiteUrl) {
-      return this.isValidUrlText(this.state.inputSiteUrl);
-    }
-    return false
   };
 
   isValidUrlText = (urlText: string) => {
@@ -84,11 +75,6 @@ export default class SiteUrl extends React.Component<Props, State> {
     return pattern.test(urlText);
   };
 
-  isExistProtocol = (urlText: string) => {
-    var pattern = new RegExp("^(https?:\\/\\/)");
-    return pattern.test(urlText);
-  };
-
   componentDidMount() {
     setTimeout(() => {
       this.refTextInputSiteUrl.current!.focus();
@@ -97,44 +83,48 @@ export default class SiteUrl extends React.Component<Props, State> {
 
   render() {
     return (
-      <View style={styles.siteUrlContainer}>
-        <View style={styles.headerContainer} >
-          <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
-        </View>
-        <Animatable.View style={ styles.container } >
-          <Text style={styles.detailTitle}>Get started.</Text>
-          <Text style={styles.information}>Please enter your site url</Text>
-          <TextInput
-            ref={this.refTextInputSiteUrl}
-            style={styles.inputTextUrl}
-            keyboardType="url"
-            placeholder="Enter site url"
-            clearButtonMode="while-editing"
-            autoCapitalize="none"
-            onChangeText={(text) => this.setState({ inputSiteUrl: text, showError: false})}
-            onFocus={() => this.toggleView(true)}
-            onBlur={() => this.toggleView(false)} />
-          <View style={ this.state.showError ? [styles.errorContainer, styles.errorOn] :  styles.errorContainer }  >
-            <View style={styles.arrow}></View>
-            <View  style={styles.errorContent}>
-              <FontAwesomeIcon icon="exclamation-circle" size={12} color="white" background="white"/>
-              <Text style={styles.errorMessage}>Enter a valid site address</Text>
-            </View>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={styles.siteUrlContainer}>
+          <View style={styles.headerContainer} >
+            <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
           </View>
-          <PrimaryButton onPress={this.setInputSiteUrl} text="Enter" />
-        </Animatable.View>
-        <Animatable.View style={ styles.keyboard } ref={this.viewKeyboard} ></Animatable.View>
-      </View>
+          <Animatable.View style={styles.container} >
+            <Text style={styles.detailTitle}>{translate("web-login.site_url_title")}</Text>
+            <Text style={styles.information}>{translate("web-login.site_url_information")}</Text>
+            <TextInput
+              ref={this.refTextInputSiteUrl}
+              style={styles.inputTextUrl}
+              keyboardType="url"
+              placeholder={translate("web-login.site_url_text_placeholder")}
+              clearButtonMode="while-editing"
+              autoCapitalize="none"
+              onChangeText={(text) => this.setState({ inputSiteUrl: text, showError: false })}
+              onFocus={() => this.toggleView(true)}
+              onBlur={() => this.toggleView(false)}
+              value={ this.state.inputSiteUrl ? this.state.inputSiteUrl : "" } />
+            <View style={this.state.showError ? [styles.errorContainer, styles.errorOn] : styles.errorContainer}  >
+              <View style={styles.arrow}></View>
+              <View style={styles.errorContent}>
+                <FontAwesomeIcon icon="exclamation-circle" size={12} color="white" background="white" />
+                <Text style={styles.errorMessage}>{translate("message.enter_valid_url")}</Text>
+              </View>
+            </View>
+            <PrimaryButton onPress={this.setInputSiteUrl} text={translate("general.enter")} />
+          </Animatable.View>
+          <Animatable.View style={styles.keyboard} ref={this.viewKeyboard} ></Animatable.View>
+        </View>
+      </SafeAreaView>
     );
   };
 }
 
 type Props = {
-  callBack: (data: string, currentAction: number) => void
+  onSuccessfulSiteUrl: (data: string, currentAction: number) => void
+  siteUrl?: string
 };
 
 type State = {
-  inputSiteUrl: string,
+  inputSiteUrl?: string,
   showError: boolean
 };
 
@@ -146,7 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   headerContainer: {
-    height: hp("21%"),
+    height: hp("20%"),
     flexDirection: "row",
     alignItems: "flex-end",
   },
@@ -158,6 +148,7 @@ const styles = StyleSheet.create({
   container: {
     flex: resizeByScreenSize(2.1, 2.6, 2.8, 1),
     justifyContent: "flex-end",
+    paddingBottom: 8
   },
   detailTitle: {
     fontSize: resizeByScreenSize (22, 26, 26, 26),
@@ -169,7 +160,7 @@ const styles = StyleSheet.create({
   inputTextUrl: {
     borderBottomWidth: 1,
     borderColor: "#D2D2D2",
-    height: 44,
+    height: 40,
     marginTop: resizeByScreenSize (8, 40, 40, 40),
   },
   keyboard : {

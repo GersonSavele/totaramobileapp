@@ -21,52 +21,108 @@
  */
 
 import React from "react";
-import { View } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import { WebView } from "react-native-webview";
-import { WebViewMessageEvent } from "react-native-webview/lib/WebViewTypes";
+import { WebViewMessageEvent, WebViewNavigation } from "react-native-webview/lib/WebViewTypes";
 import CookieManager from "react-native-cookies";
+import { Button } from "native-base";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import { config } from "@totara/lib";
-import SiteUrl from "./SiteUrl";
 
-export default class Login extends React.Component<Props> {
+export default class Login extends React.Component<Props, States> {
   
   static actionType = 2;
-  
+  webviewLogin = React.createRef<WebView>();
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { 
+      canWebGoBack: false,
+      canWebGoForward: false
+    };
+  }
+
   didRecieveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
-      this.props.callBack(setupSecretValue, Login.actionType);
+      this.props.onSuccessfulLogin(setupSecretValue, Login.actionType);
     }
   };
 
+  onLogViewNavigate = (navState: WebViewNavigation) => {
+    this.setState({
+      canWebGoBack: navState.canGoBack,
+      canWebGoForward: navState.canGoForward
+    });
+  }
+ 
+
   render() {
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
-    const loginUrl = config.loginUri(this.props.siteUrl);//+"/login/index.php";
+    const loginUrl = config.loginUri(this.props.siteUrl);
     return (
-      <View style={{ flex: 1}} >
-        <WebView
-          source={{
-            uri: loginUrl,
-            headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
-          }}
-          userAgent={config.userAgent}
-          javaScriptEnabled={true}
-          onMessage={this.didRecieveOnMessage}
-          injectedJavaScript={jsCode}
-          scrollEnabled={false} 
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }} >
+          <View style={styles.navigation} >
+            <Button transparent onPress={() => { this.props.onCancelLogin(Login.actionType); }} style={styles.actionItem} >
+              <FontAwesomeIcon icon="times" size={24} />
+            </Button>
+            <View style={{ flexDirection: "row" }}>
+              <Button transparent onPress={() => { this.webviewLogin.current!.goBack(); }} style={styles.actionItem} disabled={!(this.state.canWebGoBack)} >
+                <FontAwesomeIcon icon="arrow-left" size={22} color={(this.state.canWebGoBack ? "#000000": "#D1D5D8")} />
+              </Button>
+              <Button transparent onPress={() => { this.webviewLogin.current!.goForward(); }} style={styles.actionItem}  disabled={!(this.state.canWebGoForward)} >
+                <FontAwesomeIcon icon="arrow-right" size={22} color={(this.state.canWebGoForward ? "#000000": "#D1D5D8")} />
+              </Button>
+            </View>
+          </View>
+          <WebView
+            ref={this.webviewLogin}
+            style={{ flex: 1 }}
+            source={{
+              uri: loginUrl,
+              headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
+            }}
+            userAgent={config.userAgent}
+            javaScriptEnabled={true}
+            onMessage={this.didRecieveOnMessage}
+            injectedJavaScript={jsCode}
+            useWebKit={true}
+            onNavigationStateChange={this.onLogViewNavigate}
           />
-      </View>
+        </View>
+      </SafeAreaView>
     );
   }
+  
   async componentWillUnmount() {
     return  CookieManager.clearAll(true);
   }
 }
 
 type Props = {
-  callBack: (data: string, currentAction: number) => void
+  onSuccessfulLogin: (data: string, currentAction: number) => void
+  onCancelLogin: (currentAction: number) => void
   siteUrl: string
+};
+type States = {
+  canWebGoBack: boolean,
+  canWebGoForward: boolean
 };
 
 
+const styles = StyleSheet.create({
+  navigation: { 
+    height: 44, 
+    alignItems: "flex-start", 
+    borderBottomColor: "#f1f1f1", 
+    borderBottomWidth: 1,
+    backgroundColor: "#ffffff",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  actionItem: {
+    padding: 8
+  }
+});

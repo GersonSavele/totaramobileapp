@@ -1,7 +1,8 @@
 {
   "general": {
     "loading": "Loading...",
-    "error": "Error :"
+    "error": "Error :",
+    "enter": "Enter"
   }, 
   "course-details": {
     "activities": "Activities",
@@ -20,5 +21,13 @@
     "section_title_continue_learn": "Continue your learning",
     "due": "Due",
     "extend_date": "Extend Date"
+  },
+  "web-login": {
+    "site_url_title": "Get started.",
+    "site_url_information": "Please enter your site url",
+    "site_url_text_placeholder": "Enter site url"
+  },
+  "message": {
+    "enter_valid_url": "Enter a valid site address"
   }
 }
