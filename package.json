@@ -11,8 +11,6 @@
     "@fortawesome/free-brands-svg-icons": "^5.7.2",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
     "@fortawesome/react-native-fontawesome": "^0.1.0",
-    "@types/i18n-js": "^3.0.1",
-    "@types/react-native-snap-carousel": "^3.7.1",
     "apollo-boost": "^0.1.27",
     "apollo-link-context": "^1.0.17",
     "apollo-link-retry": "^2.2.13",
