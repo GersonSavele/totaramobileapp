@@ -27,7 +27,7 @@ import { SetupSecret } from "../AuthContext";
 import SiteUrl from "./SiteUrl";
 import Login from "./Login";
 
-export default class WebLogin extends React.Component<Props, States> {
+class WebLogin extends React.Component<Props, States> {
   
   constructor(props: Props) {
     super(props);
@@ -98,3 +98,5 @@ type States = {
   uri?: string, 
   secret?: string
 };
+
+export default  WebLogin;

@@ -56,8 +56,9 @@ import { config } from "@totara/lib";
 import { theme, getTheme } from "@totara/theme";
 import { ActivitySheetProvider } from "@totara/components";
 import { AuthProvider } from "@totara/auth";
+import {ALERT_MESSAGE_FROM_NODE} from "@totara/lib/Constant"
 
-export default class App extends React.Component<{}> {
+class App extends React.Component<{}> {
 
   navigator = undefined;
 
@@ -67,7 +68,7 @@ export default class App extends React.Component<{}> {
       nodejs.channel.addListener(
         "message",
         (msg) => {
-          alert("From node: " + msg);
+          alert(ALERT_MESSAGE_FROM_NODE + msg);
         },
         this
       );
@@ -238,3 +239,4 @@ const initFontAwesome = () => {
 initFontAwesome();
 
 const AppContainer = createAppContainer(mainNavigator);
+export default App;

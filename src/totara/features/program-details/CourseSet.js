@@ -27,7 +27,7 @@ import {withNavigation} from "react-navigation";
 import {normalize, gutter, h1, resizeByScreenSize} from "@totara/theme";
 import {Status} from "@totara/types"
 import {AddBadge, LearningItemCard} from "@totara/components";
-
+import {NAVIGATION_COURSE_DETAILS} from "@totara/lib/Constant";
 
 const CourseSet = ({courses, navigation, nextSet, label}) => (
   <View style={styles.courseSet}>
@@ -75,7 +75,7 @@ const renderItem = (navigation) => {
 };
 
 const CourseWithSummaryAndNavigation = ({navigation, item}) => {
-  const navigateTo = (item) => navigation.navigate("CourseDetails", {courseId: item.id});
+  const navigateTo = (item) => navigation.navigate(NAVIGATION_COURSE_DETAILS, {courseId: item.id});
   const learningItemStyle = (item.status === Status.active) ?
     StyleSheet.flatten([styles.learningItem, styles.activeCourse]) :
     styles.learningItem;

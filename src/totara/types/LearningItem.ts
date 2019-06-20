@@ -21,7 +21,6 @@
 
 import {LearningStatus} from "./LearningStatus";
 
-
 export interface Activity extends LearningStatus {
   id: number,
   type: string,

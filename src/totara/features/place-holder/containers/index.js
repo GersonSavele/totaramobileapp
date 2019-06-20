@@ -23,14 +23,16 @@
 import React from "react";
 import { View, Button } from "react-native";
 import { AuthenticatedWebView } from "@totara/auth";
+import {PROFILE_NAVIGATION_OPTIONS_TITLE , TOGGLE_TITLE} from "@totara/lib/Constant"
 
-export default class PlaceHolder extends React.Component {
+
+class PlaceHolder extends React.Component {
   state = {
     showWebView: false
   };
 
   static navigationOptions = {
-    title: "Place Holder",
+    title: PROFILE_NAVIGATION_OPTIONS_TITLE,
   };
 
   render() {
@@ -38,10 +40,12 @@ export default class PlaceHolder extends React.Component {
       <View style={{flex: 1}}>
         <Button onPress={() => this.setState( (state) => ({
           showWebView: !state.showWebView
-        }))} title={"toggle"}/>
+        }))} title={TOGGLE_TITLE}/>
 
         { (this.state.showWebView) && <AuthenticatedWebView uri={"/index.php"}/> }
       </View>
     );
   }
 }
+
+export default PlaceHolder;

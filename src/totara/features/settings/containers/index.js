@@ -23,10 +23,11 @@
 import React from "react";
 import {StyleSheet, Text, View, FlatList} from "react-native";
 import {widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {NAVIGATION_SETTING} from "@totara/lib/Constant";
 
-export default class Settings extends React.Component {
+class Settings extends React.Component {
   static navigationOptions = {
-    title: "Settings",
+    title: NAVIGATION_SETTING,
   };
 
   renderItem = ({item}) => {
@@ -89,3 +90,5 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+
+export default Settings;

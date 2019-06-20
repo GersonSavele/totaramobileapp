@@ -31,7 +31,7 @@ enum ViewFlex {
   keyboardOff= 1, keyboardOn= 3
 };
 
-export default class SiteUrl extends React.Component<Props, State> {
+class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
 
@@ -205,3 +205,5 @@ const styles = StyleSheet.create({
     borderColor: "transparent"
   }
 });
+
+export default SiteUrl;
