@@ -40,7 +40,7 @@ const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: 
 
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
-
+  const { itemFullName } = styles;
   return (
     <View style={{flex: 1}}>
       <View style={imageStyleSheet}>
@@ -49,7 +49,7 @@ const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: 
       </View>
       <View style={cardStyleSheet}>
         <View style={{flexDirection: "row"}}>
-          <Text numberOfLines={1} style={styles.itemFullName}>{item.fullname}</Text>
+          <Text numberOfLines={1} style={itemFullName}>{item.fullname}</Text>
         </View>
         {children}
       </View>
@@ -61,12 +61,12 @@ const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: 
 const ImageElement = ({item}: {item: LearningItem}) => {
 
   const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
-
+  const { disabledOverlay } = styles;
   if (item.status === Status.hidden)
     return(
       <View style={{flex: 1}}>
         <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
-        <View style={styles.disabledOverlay}/>
+        <View style={disabledOverlay}/>
       </View>);
   else
       return(<Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>);

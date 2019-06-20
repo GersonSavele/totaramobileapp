@@ -25,11 +25,11 @@ import PropTypes from "prop-types";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { AuthConsumer } from "@totara/auth";
-import {NAVIGATION_SETTING, PROFILE_NAVIGATION_OPTIONS_TITLE} from "@totara/lib/Constant";
+import {NAVIGATION_SETTING} from "@totara/lib/Constant";
 
 class Profile extends React.Component {
   static navigationOptions = {
-    title: PROFILE_NAVIGATION_OPTIONS_TITLE,
+    title: "Profile",
   };
 
   renderItem = ({item}) => {

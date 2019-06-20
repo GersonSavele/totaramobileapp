@@ -97,7 +97,7 @@ type Props = {
 
 const ActivitySheet = ({toggleActivity, activitySheetVisible, currentActivity}: Props) => (
   <SlidingUpPanel visible={activitySheetVisible} onRequestClose={toggleActivity}>
-    <View style={styles.panel}>
+    <View style={panel}>
       <View style={{paddingLeft: 10}}>
       <StatusBar hidden/>
       <Button transparent onPress={toggleActivity}>
@@ -113,7 +113,7 @@ const ActivitySheet = ({toggleActivity, activitySheetVisible, currentActivity}: 
         : null
       }
       {(currentActivity && currentActivity.summary) ?
-        <Text style={styles.panelContent}>
+        <Text style={panelContent}>
           {currentActivity.summary}
         </Text>
         : null
@@ -139,3 +139,5 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
+
+const {panel, panelContent} = styles;

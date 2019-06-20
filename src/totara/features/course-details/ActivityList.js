@@ -28,11 +28,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {ContentIcon, CheckBadge} from "@totara/components";
 import {normalize, resizeByScreenSize, h4, normal, lrPadding} from "@totara/theme";
 import {Status} from "@totara/types";
-import {FILM} from "@totara/lib/Constant"
 
 
 class ActivityList extends React.Component {
-
   renderSection = ({section: {sectionName, status}}) => {
     const SectionHeader = () => (status === Status.hidden)
       ? <View style={styles.withLock}>
@@ -76,7 +74,7 @@ class ActivityList extends React.Component {
           <Text numberOfLines={1} style={styles.activitySummaryText}>{item.summary}</Text>
         </View>
         {
-          (item.type === FILM) ?
+          (item.type === "film") ?
             <View style={{paddingLeft: lrPadding}}>
               <FontAwesomeIcon icon="cloud-download-alt" size={24} color="black"/>
             </View>
@@ -93,7 +91,7 @@ class ActivityList extends React.Component {
         </View>);
     else if (item.status === Status.active)
       return(
-        <View style={styles.activeActivity}>
+        <View style={styles.activeActivityContainer}>
           <Activity/>
         </View>);
     else

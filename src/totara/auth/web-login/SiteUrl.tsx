@@ -81,6 +81,10 @@ class SiteUrl extends React.Component<Props, State> {
     }, 300);
   }
 
+  setStateInputSiteUrlWithShowError = (siteUrl: string) => {
+    this.setState({inputSiteUrl: siteUrl, showError : false});
+  }
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -98,7 +102,7 @@ class SiteUrl extends React.Component<Props, State> {
               placeholder={translate("web-login.site_url_text_placeholder")}
               clearButtonMode="while-editing"
               autoCapitalize="none"
-              onChangeText={(text) => this.setState({ inputSiteUrl: text, showError: false })}
+              onChangeText={this.setStateInputSiteUrlWithShowError}
               onFocus={() => this.toggleView(true)}
               onBlur={() => this.toggleView(false)}
               value={ this.state.inputSiteUrl ? this.state.inputSiteUrl : "" } />

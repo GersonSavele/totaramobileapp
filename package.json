@@ -47,6 +47,8 @@
     "@types/react-native": "^0.57.31",
     "@types/react-navigation": "^3.0.5",
     "@typescript-eslint/parser": "^1.4.2",
+    "@types/i18n-js": "^3.0.1",
+    "@types/react-native-snap-carousel": "^3.7.1",
     "babel-jest": "23.6.0",
     "eslint": "^5.15.0",
     "eslint-plugin-react": "^7.12.4",

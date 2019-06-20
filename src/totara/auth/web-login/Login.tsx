@@ -77,21 +77,18 @@ class Login extends React.Component<Props, States> {
     const header = {"X-TOTARA-MOBILE-DEVICE-REGISTRATION" : config.userAgent}
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
     const loginUrl = config.loginUri(this.props.siteUrl);
-    const {navigation, actionItem} = styles;
-
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }} >
-          <View style={navigation} >
-            <Button transparent onPress={this.cancelLogin} style= {actionItem} >
+          <View style={styles.navigation} >
+            <Button transparent onPress={this.cancelLogin} style= {styles.actionItem} >
               <FontAwesomeIcon icon="times" size={24} />
             </Button>
             <View style={{ flexDirection: "row" }}>
-              <Button transparent onPress={this.goBack} style={actionItem} disabled={!(this.state.canWebGoBack)} >
+              <Button transparent onPress={this.goBack} style={styles.actionItem} disabled={!(this.state.canWebGoBack)} >
                 <FontAwesomeIcon icon="arrow-left" size={22} color={(this.state.canWebGoBack ? "#000000": "#D1D5D8")} />
               </Button>
-              <Button transparent onPress={this.goForward} style={actionItem}  disabled={!(this.state.canWebGoForward)} >
+              <Button transparent onPress={this.goForward} style={styles.actionItem}  disabled={!(this.state.canWebGoForward)} >
                 <FontAwesomeIcon icon="arrow-right" size={22} color={(this.state.canWebGoForward ? "#000000": "#D1D5D8")} />
               </Button>
             </View>

@@ -32,7 +32,6 @@ import { setContext } from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
 
 import { config } from "@totara/lib";
-import { POST, SERVER_ERROR } from "@totara/lib/Constant"
 import WebLogin from "./web-login";
 
 
@@ -144,13 +143,13 @@ class AuthProvider extends React.Component<Props, State> {
   getAndStoreApiKey = async (setupSecret: SetupSecret) => {
     try {
       const apiKey = await fetch(config.deviceRegisterUri(setupSecret.uri), {
-        method: POST,
+        method: "POST",
         body: JSON.stringify({
           setupsecret: setupSecret.secret
         })
       }).then((response) => {
         if (response.status === 200) return response.json();
-        throw new Error(SERVER_ERROR +`${response.status}`);
+        throw new Error(`Server Error: ${response.status}`);
       }).then((json) => json.data.apikey);
 
       await AsyncStorage.setItem("apiKey", apiKey);

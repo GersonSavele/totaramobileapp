@@ -79,7 +79,6 @@ class CourseDetailsComponent extends React.Component {
 
   render() {
     const item = this.props.course;
-
     return (
       <View style={styles.container}>
         <Animatable.View style={styles.learningItem} ref={this.handleLearningItemRef}>

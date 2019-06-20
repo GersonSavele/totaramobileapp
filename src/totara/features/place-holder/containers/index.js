@@ -23,7 +23,6 @@
 import React from "react";
 import { View, Button } from "react-native";
 import { AuthenticatedWebView } from "@totara/auth";
-import {PROFILE_NAVIGATION_OPTIONS_TITLE , TOGGLE_TITLE} from "@totara/lib/Constant"
 
 
 class PlaceHolder extends React.Component {
@@ -32,7 +31,7 @@ class PlaceHolder extends React.Component {
   };
 
   static navigationOptions = {
-    title: PROFILE_NAVIGATION_OPTIONS_TITLE,
+    title: "Place Holder",
   };
 
   render() {
@@ -40,7 +39,7 @@ class PlaceHolder extends React.Component {
       <View style={{flex: 1}}>
         <Button onPress={() => this.setState( (state) => ({
           showWebView: !state.showWebView
-        }))} title={TOGGLE_TITLE}/>
+        }))} title={"toggle"}/>
 
         { (this.state.showWebView) && <AuthenticatedWebView uri={"/index.php"}/> }
       </View>
