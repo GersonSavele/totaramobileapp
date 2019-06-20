@@ -97,7 +97,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
             ? <WebView
                 source={{
                   uri: config.webViewUri(auth.setup.host),
-                  headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": this.state.webviewSecret }
+                  headers: { "X-TOTARA-MOBILE-WEBVIEW-SECRET": this.state.webviewSecret }
                 }}
                 userAgent={config.userAgent}
                 style={{ flex: 1 }}/>
