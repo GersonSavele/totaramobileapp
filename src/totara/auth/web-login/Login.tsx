@@ -29,7 +29,7 @@ import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { config } from "@totara/lib";
-
+import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 
 class Login extends React.Component<Props, States> {
   
@@ -74,7 +74,6 @@ class Login extends React.Component<Props, States> {
   }
 
   render() {
-    const header = {"X-TOTARA-MOBILE-DEVICE-REGISTRATION" : config.userAgent}
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
     const loginUrl = config.loginUri(this.props.siteUrl);
     return (
@@ -98,7 +97,7 @@ class Login extends React.Component<Props, States> {
             style={{ flex: 1 }}
             source={{
               uri: loginUrl,
-              headers: header
+              headers: {[DEVICE_REGISTRATION] : config.userAgent}
             }}
             userAgent={config.userAgent}
             javaScriptEnabled={true}

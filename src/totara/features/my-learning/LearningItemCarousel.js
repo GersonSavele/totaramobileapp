@@ -33,7 +33,7 @@ import {LearningItemCard, AddBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
 import {LearningItemType} from "@totara/types";
 import {translate} from "@totara/locale";
-import {NAVIGATION_COURSE_DETAILS , NAVIGATION_PROGRAM_DETAILS} from "@totara/lib/Constant"
+import {NAVIGATION_COURSE_DETAILS , NAVIGATION_PROGRAM_DETAILS} from "@totara/lib/Constant";
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 

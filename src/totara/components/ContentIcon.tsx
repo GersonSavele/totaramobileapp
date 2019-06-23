@@ -32,6 +32,21 @@ type Props = {
 }
 
 const ContentIcon = ({icon, iconSize, size}: Props) => {
+
+  const styles = StyleSheet.create({
+    iconCircle: {
+      padding: 0,
+      backgroundColor: "#3D444B",
+      borderRadius: 25,
+      borderWidth: 1,
+      borderColor: "#3D444B",
+      height: normalize(size),
+      width: normalize(size),
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  });
+  
   return(
     <View style={styles.iconCircle}>
       <FontAwesomeIcon icon={icon} size={iconSize} color={"white"}/>
@@ -40,17 +55,5 @@ const ContentIcon = ({icon, iconSize, size}: Props) => {
 
 };
 
-const styles = StyleSheet.create({
-  iconCircle: {
-    padding: 0,
-    backgroundColor: "#3D444B",
-    borderRadius: 25,
-    borderWidth: 1,
-    borderColor: "#3D444B",
-    height: normalize(size),
-    width: normalize(size),
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+
 export default ContentIcon

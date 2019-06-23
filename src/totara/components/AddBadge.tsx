@@ -21,12 +21,12 @@
  */
 
 import React from "react";
-import {ComponentType} from "react";
-import {View, StyleSheet} from "react-native";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { ComponentType } from "react";
+import { View, StyleSheet } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import {Status} from "@totara/types";
-import ProgressCircle from "./ProgressCircle"
+import { Status } from "@totara/types";
+import ProgressCircle from "./ProgressCircle";
 
 
 type Props = {

@@ -27,7 +27,7 @@ import React from "react";
 import {normalize} from "@totara/theme";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {translate} from "@totara/locale";
-import {DATE_FORMAT} from "@totara/lib/Constant"
+import {DATE_FORMAT} from "@totara/lib/Constant";
 
 /**
  * Component to render dueDate and change style depending on the dueDateState

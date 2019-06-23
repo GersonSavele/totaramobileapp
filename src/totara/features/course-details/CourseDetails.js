@@ -54,6 +54,8 @@ export default CourseDetails;
 
 class CourseDetailsComponent extends React.Component {
 
+  learningItemRef = React.createRef();
+  
   state = {
     showActivities: true,
   };
@@ -63,10 +65,6 @@ class CourseDetailsComponent extends React.Component {
       showActivities: show
     })
   }
-
-  handleLearningItemRef = (ref) => {
-    this.learningItemRef = ref;
-  };
 
   animate = lodash.throttle((flex) => {
     this.learningItemRef.transitionTo({flex: flex})
@@ -81,7 +79,7 @@ class CourseDetailsComponent extends React.Component {
     const item = this.props.course;
     return (
       <View style={styles.container}>
-        <Animatable.View style={styles.learningItem} ref={this.handleLearningItemRef}>
+        <Animatable.View style={styles.learningItem} ref={this.learningItemRef}>
           <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
         </Animatable.View>
         <View style={styles.activitiesContainer}>
