@@ -54,8 +54,11 @@ export default CourseDetails;
 
 class CourseDetailsComponent extends React.Component {
 
-  learningItemRef = React.createRef();
-
+  constructor(props) {
+    super(props);
+    this.learningItemRef = React.createRef();
+  }
+  
   state = {
     showActivities: true,
   };

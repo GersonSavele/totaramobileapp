@@ -50,11 +50,11 @@ export default ProgramDetails;
 
 class ProgramDetailsComponent extends React.Component {
 
-
   constructor(props) {
     super(props);
     this.learningItemRef = React.createRef();
   }
+  
   state = {
     showActivities: true,
   };
