@@ -23,7 +23,7 @@ import React from "react";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import { Image, StyleSheet, Text, View, StatusBar } from "react-native";
 import { Button } from "native-base";
-import { FontAwesomeIconc} from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 import { config } from "@totara/lib";

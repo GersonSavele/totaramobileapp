@@ -55,7 +55,7 @@ export default CourseDetails;
 class CourseDetailsComponent extends React.Component {
 
   learningItemRef = React.createRef();
-  
+
   state = {
     showActivities: true,
   };
@@ -67,7 +67,7 @@ class CourseDetailsComponent extends React.Component {
   }
 
   animate = lodash.throttle((flex) => {
-    this.learningItemRef.transitionTo({flex: flex})
+    this.learningItemRef.current.transitionTo({flex: flex})
   }, 160);
 
   onScroll = (event) => {

@@ -109,7 +109,10 @@ let navigateTo = (navigation, item) => {
     case LearningItemType.Course:
       navigation.navigate(NAVIGATION_COURSE_DETAILS, {courseId: item.id});
       break;
-    case LearningItemType.Program || LearningItemType.Certification: // TODO for now certifaction is the same as Program
+    case LearningItemType.Program :  
+      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, {programId: item.id});
+      break;
+    case LearningItemType.Certification: // TODO for now certifaction is the same as Program
       navigation.navigate(NAVIGATION_PROGRAM_DETAILS, {programId: item.id});
       break;
     default:

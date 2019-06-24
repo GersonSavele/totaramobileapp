@@ -50,8 +50,11 @@ export default ProgramDetails;
 
 class ProgramDetailsComponent extends React.Component {
 
-  learningItemRef = React.createRef();
 
+  constructor(props) {
+    super(props);
+    this.learningItemRef = React.createRef();
+  }
   state = {
     showActivities: true,
   };
@@ -63,7 +66,7 @@ class ProgramDetailsComponent extends React.Component {
   }
 
   animate = lodash.throttle((flex) => {
-    this.learningItemRef.transitionTo({flex: flex})
+    this.learningItemRef.current.transitionTo({flex: flex})
   }, 160);
 
   onScroll = (event) => {
