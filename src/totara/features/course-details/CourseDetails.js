@@ -54,6 +54,11 @@ export default CourseDetails;
 
 class CourseDetailsComponent extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.learningItemRef = React.createRef();
+  }
+  
   state = {
     showActivities: true,
   };
@@ -64,12 +69,8 @@ class CourseDetailsComponent extends React.Component {
     })
   }
 
-  handleLearningItemRef = (ref) => {
-    this.learningItemRef = ref;
-  };
-
   animate = lodash.throttle((flex) => {
-    this.learningItemRef.transitionTo({flex: flex})
+    this.learningItemRef.current.transitionTo({flex: flex})
   }, 160);
 
   onScroll = (event) => {
@@ -79,10 +80,9 @@ class CourseDetailsComponent extends React.Component {
 
   render() {
     const item = this.props.course;
-
     return (
       <View style={styles.container}>
-        <Animatable.View style={styles.learningItem} ref={this.handleLearningItemRef}>
+        <Animatable.View style={styles.learningItem} ref={this.learningItemRef}>
           <LearningItemCard item={item} imageStyle={styles.itemImage} cardStyle={styles.itemCard}/>
         </Animatable.View>
         <View style={styles.activitiesContainer}>

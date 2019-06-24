@@ -24,7 +24,8 @@ import React from "react";
 import { View, Button } from "react-native";
 import { AuthenticatedWebView } from "@totara/auth";
 
-export default class PlaceHolder extends React.Component {
+
+class PlaceHolder extends React.Component {
   state = {
     showWebView: false
   };
@@ -45,3 +46,5 @@ export default class PlaceHolder extends React.Component {
     );
   }
 }
+
+export default PlaceHolder;

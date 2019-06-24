@@ -61,7 +61,6 @@ const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: 
 const ImageElement = ({item}: {item: LearningItem}) => {
 
   const imgSrc = `${config.mobileStatic}/public/${item.id}.JPG`;
-
   if (item.status === Status.hidden)
     return(
       <View style={{flex: 1}}>

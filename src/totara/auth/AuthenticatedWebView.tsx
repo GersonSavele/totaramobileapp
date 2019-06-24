@@ -29,7 +29,6 @@ import CookieManager from "react-native-cookies";
 import { config } from "@totara/lib";
 import { AuthConsumer } from "@totara/auth/AuthContext";
 
-
 const createWebview = gql`
     mutation totara_mobile_create_webview($url: String!) {
         create_webview: totara_mobile_create_webview(url: $url)

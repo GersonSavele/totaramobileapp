@@ -31,7 +31,7 @@ enum ViewFlex {
   keyboardOff= 1, keyboardOn= 3
 };
 
-export default class SiteUrl extends React.Component<Props, State> {
+class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
 
@@ -81,6 +81,10 @@ export default class SiteUrl extends React.Component<Props, State> {
     }, 300);
   }
 
+  setStateInputSiteUrlWithShowError = (siteUrl: string) => {
+    this.setState({inputSiteUrl: siteUrl, showError : false});
+  }
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -98,7 +102,7 @@ export default class SiteUrl extends React.Component<Props, State> {
               placeholder={translate("web-login.site_url_text_placeholder")}
               clearButtonMode="while-editing"
               autoCapitalize="none"
-              onChangeText={(text) => this.setState({ inputSiteUrl: text, showError: false })}
+              onChangeText={this.setStateInputSiteUrlWithShowError}
               onFocus={() => this.toggleView(true)}
               onBlur={() => this.toggleView(false)}
               value={ this.state.inputSiteUrl ? this.state.inputSiteUrl : "" } />
@@ -205,3 +209,5 @@ const styles = StyleSheet.create({
     borderColor: "transparent"
   }
 });
+
+export default SiteUrl;

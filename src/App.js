@@ -57,7 +57,7 @@ import { theme, getTheme } from "@totara/theme";
 import { ActivitySheetProvider } from "@totara/components";
 import { AuthProvider } from "@totara/auth";
 
-export default class App extends React.Component<{}> {
+class App extends React.Component<{}> {
 
   navigator = undefined;
 
@@ -238,3 +238,4 @@ const initFontAwesome = () => {
 initFontAwesome();
 
 const AppContainer = createAppContainer(mainNavigator);
+export default App;

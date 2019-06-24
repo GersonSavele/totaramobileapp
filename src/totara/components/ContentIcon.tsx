@@ -34,7 +34,7 @@ type Props = {
 const ContentIcon = ({icon, iconSize, size}: Props) => {
 
   const styles = StyleSheet.create({
-    iconcircle: {
+    iconCircle: {
       padding: 0,
       backgroundColor: "#3D444B",
       borderRadius: 25,
@@ -46,13 +46,14 @@ const ContentIcon = ({icon, iconSize, size}: Props) => {
       alignItems: "center",
     },
   });
-
+  
   return(
-    <View style={styles.iconcircle}>
+    <View style={styles.iconCircle}>
       <FontAwesomeIcon icon={icon} size={iconSize} color={"white"}/>
     </View>
   );
 
 };
+
 
 export default ContentIcon

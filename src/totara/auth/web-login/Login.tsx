@@ -26,15 +26,15 @@ import { WebView } from "react-native-webview";
 import { WebViewMessageEvent, WebViewNavigation } from "react-native-webview/lib/WebViewTypes";
 import CookieManager from "react-native-cookies";
 import { Button } from "native-base";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { config } from "@totara/lib";
+import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 
-export default class Login extends React.Component<Props, States> {
+class Login extends React.Component<Props, States> {
   
   static actionType = 2;
   webviewLogin = React.createRef<WebView>();
-
   constructor(props: Props) {
     super(props);
     this.state = { 
@@ -43,7 +43,7 @@ export default class Login extends React.Component<Props, States> {
     };
   }
 
-  didRecieveOnMessage = (event: WebViewMessageEvent) => {
+  didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
       this.props.onSuccessfulLogin(setupSecretValue, Login.actionType);
@@ -56,7 +56,22 @@ export default class Login extends React.Component<Props, States> {
       canWebGoForward: navState.canGoForward
     });
   }
- 
+
+  async componentWillUnmount() {
+    return  CookieManager.clearAll(true);
+  }
+
+  cancelLogin = () =>{
+    this.props.onCancelLogin(Login.actionType);
+  }
+
+  goBack = () => {
+    this.webviewLogin.current!.goBack();
+  }
+
+  goForward = () => {
+    this.webviewLogin.current!.goForward();
+  }
 
   render() {
     const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
@@ -65,14 +80,14 @@ export default class Login extends React.Component<Props, States> {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }} >
           <View style={styles.navigation} >
-            <Button transparent onPress={() => { this.props.onCancelLogin(Login.actionType); }} style={styles.actionItem} >
+            <Button transparent onPress={this.cancelLogin} style= {styles.actionItem} >
               <FontAwesomeIcon icon="times" size={24} />
             </Button>
             <View style={{ flexDirection: "row" }}>
-              <Button transparent onPress={() => { this.webviewLogin.current!.goBack(); }} style={styles.actionItem} disabled={!(this.state.canWebGoBack)} >
+              <Button transparent onPress={this.goBack} style={styles.actionItem} disabled={!(this.state.canWebGoBack)} >
                 <FontAwesomeIcon icon="arrow-left" size={22} color={(this.state.canWebGoBack ? "#000000": "#D1D5D8")} />
               </Button>
-              <Button transparent onPress={() => { this.webviewLogin.current!.goForward(); }} style={styles.actionItem}  disabled={!(this.state.canWebGoForward)} >
+              <Button transparent onPress={this.goForward} style={styles.actionItem}  disabled={!(this.state.canWebGoForward)} >
                 <FontAwesomeIcon icon="arrow-right" size={22} color={(this.state.canWebGoForward ? "#000000": "#D1D5D8")} />
               </Button>
             </View>
@@ -82,11 +97,11 @@ export default class Login extends React.Component<Props, States> {
             style={{ flex: 1 }}
             source={{
               uri: loginUrl,
-              headers: { "X-TOTARA-MOBILE-DEVICE-REGISTRATION": config.userAgent }
+              headers: {[DEVICE_REGISTRATION] : config.userAgent}
             }}
             userAgent={config.userAgent}
             javaScriptEnabled={true}
-            onMessage={this.didRecieveOnMessage}
+            onMessage={this.didReceiveOnMessage}
             injectedJavaScript={jsCode}
             useWebKit={true}
             onNavigationStateChange={this.onLogViewNavigate}
@@ -94,10 +109,6 @@ export default class Login extends React.Component<Props, States> {
         </View>
       </SafeAreaView>
     );
-  }
-  
-  async componentWillUnmount() {
-    return  CookieManager.clearAll(true);
   }
 }
 
@@ -126,3 +137,5 @@ const styles = StyleSheet.create({
     padding: 8
   }
 });
+
+export default Login;

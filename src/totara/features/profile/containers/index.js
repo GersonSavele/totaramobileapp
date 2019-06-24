@@ -25,8 +25,9 @@ import PropTypes from "prop-types";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { AuthConsumer } from "@totara/auth";
+import {NAVIGATION_SETTING} from "@totara/lib/Constant";
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
   static navigationOptions = {
     title: "Profile",
   };
@@ -35,7 +36,7 @@ export default class Profile extends React.Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("Settings")}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate(NAVIGATION_SETTING)}>
           <Text style={styles.activityText}>{item.title}</Text>
         </TouchableOpacity>
       </View>
@@ -87,3 +88,5 @@ const styles = StyleSheet.create({
     width: wp("100%")
   },
 });
+
+export default Profile;

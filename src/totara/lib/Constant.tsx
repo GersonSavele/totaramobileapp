@@ -16,40 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-import {LearningStatus} from "./LearningStatus";
+export const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
+export const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
+export const X_API_KEY = "X-API-KEY";
 
-export interface Activity extends LearningStatus {
-  id: number,
-  type: string,
-  itemName: string,
-  summary?: string,
-  imgSrc?: string,
-  progressPercentage?: number
-}
+export const DATE_FORMAT = "D, MMM YYYY";
 
-export interface Section {
-  sectionName: string
-  activities: [Activity]
-}
+export const PLATFORM_IOS = "ios";
+export const PLATFORM_ANDROID = "";
 
-export enum LearningItemType {
-  Course = "Course",
-  Program = "Program",
-  Certification = "Certification"
-}
+export const NAVIGATION_COURSE_DETAILS ="CourseDetails";
+export const NAVIGATION_PROGRAM_DETAILS ="ProgramDetails";
+export const NAVIGATION_SETTING = "Settings";
 
-export interface LearningItem extends LearningStatus {
-  id: number
-  type: string
-  shortname: string
-  fullname?: string
-  summary?: string
-  dueDateState?: string
-  dueDate?: Date
-  progressPercentage?: number
-  groupCount?: number
-  sections: [Section]
-}
+export const SCREEN_WIDTH_X_LARGE = "xlarge";
+export const SCREEN_WIDTH_LARGE = "large";
+export const SCREEN_WIDTH_MEDIUM = "medium";
+export const SCREEN_WIDTH_SMALL = "small";
+
+
+

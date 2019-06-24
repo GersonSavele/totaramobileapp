@@ -27,10 +27,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import {ContentIcon, CheckBadge} from "@totara/components";
 import {normalize, resizeByScreenSize, h4, normal, lrPadding} from "@totara/theme";
-import {Status} from "@totara/types"
+import {Status} from "@totara/types";
+
 
 class ActivityList extends React.Component {
-
   renderSection = ({section: {sectionName, status}}) => {
     const SectionHeader = () => (status === Status.hidden)
       ? <View style={styles.withLock}>
@@ -91,7 +91,7 @@ class ActivityList extends React.Component {
         </View>);
     else if (item.status === Status.active)
       return(
-        <View style={styles.activeActivity}>
+        <View style={styles.activeActivityContainer}>
           <Activity/>
         </View>);
     else

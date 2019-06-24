@@ -33,6 +33,7 @@ import {LearningItemCard, AddBadge} from "@totara/components";
 import {normalize} from "@totara/theme";
 import {LearningItemType} from "@totara/types";
 import {translate} from "@totara/locale";
+import {NAVIGATION_COURSE_DETAILS , NAVIGATION_PROGRAM_DETAILS} from "@totara/lib/Constant";
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
@@ -92,7 +93,7 @@ const LearningItemWithSummaryAndNavigation = ({item, navigation}) => (
         <View style={{flex: 1}}>
           <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
           <View style={{flex: 1}}/>
-          <Button block rounded info bordered style={styles.Secondarybutton}><Text style={styles.buttonText}>{translate("my-learning.continue_action")} {item.type}</Text></Button>
+          <Button block rounded info bordered style={styles.secondaryButton}><Text style={styles.buttonText}>{translate("my-learning.continue_action")} {item.type}</Text></Button>
         </View>
       </LearningItemCard>
     </View>
@@ -106,13 +107,13 @@ LearningItemWithSummaryAndNavigation.propTypes = {
 let navigateTo = (navigation, item) => {
   switch (item.type) {
     case LearningItemType.Course:
-      navigation.navigate("CourseDetails", {courseId: item.id});
+      navigation.navigate(NAVIGATION_COURSE_DETAILS, {courseId: item.id});
       break;
-    case LearningItemType.Program:
-      navigation.navigate("ProgramDetails", {programId: item.id});
+    case LearningItemType.Program :  
+      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, {programId: item.id});
       break;
     case LearningItemType.Certification: // TODO for now certifaction is the same as Program
-      navigation.navigate("ProgramDetails", {programId: item.id});
+      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, {programId: item.id});
       break;
     default:
       console.error("unknown type", item); // TODO turn this into a logging system
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     color: "#3D444B",
     padding: 5
   },
-  Secondarybutton: {
+  secondaryButton: {
     borderColor: "#3D444B",
   },
   itemInfo: {

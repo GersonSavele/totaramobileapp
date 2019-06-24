@@ -32,7 +32,6 @@ import { setContext } from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
 
 import { config } from "@totara/lib";
-
 import WebLogin from "./web-login";
 
 

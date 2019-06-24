@@ -21,13 +21,13 @@
 
 import React from "react";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import {Image, StyleSheet, Text, View, StatusBar} from "react-native";
-import {Button} from "native-base";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { Image, StyleSheet, Text, View, StatusBar } from "react-native";
+import { Button } from "native-base";
+import { FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
-import {config} from "@totara/lib";
-import {Activity} from "@totara/types";
+import { config } from "@totara/lib";
+import { Activity } from "@totara/types";
 
 
 type contextData = {
@@ -139,3 +139,4 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
+
