@@ -17,22 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
+import React from "react";
+import { Text, View } from "react-native";
 
-export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle,
+import { Activity } from "@totara/types";
+
+const ScormActivity = ({activity}: Props) => (
+  <View>
+    <Text>SCORM Activity</Text>
+    {(activity.itemName) &&
+      <Text>
+        {activity.itemName}
+      </Text>
+    }
+  </View>
+);
+
+type Props = {
+  activity: Activity
 }
+
+export { ScormActivity };

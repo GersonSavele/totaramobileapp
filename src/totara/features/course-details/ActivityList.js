@@ -20,14 +20,15 @@
  *
  */
 
-import {SectionList, StyleSheet, Text, View} from "react-native";
+import { SectionList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-import {ContentIcon, CheckBadge} from "@totara/components";
+import { ContentIcon, CheckBadge } from "@totara/components";
 import {normalize, resizeByScreenSize, h4, normal, lrPadding} from "@totara/theme";
 import {Status} from "@totara/types";
+import { ActivitySheetConsumer } from "@totara/activities";
 
 
 class ActivityList extends React.Component {
@@ -69,10 +70,14 @@ class ActivityList extends React.Component {
               </CheckBadge>
             : <BuildContentIcon/>
         }
-        <View style={{flex: 1}}>
-          <Text numberOfLines={1} style={(item.status) === Status.active ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
-          <Text numberOfLines={1} style={styles.activitySummaryText}>{item.summary}</Text>
-        </View>
+        <ActivitySheetConsumer>
+          {({setCurrentActivity}) =>
+            <TouchableOpacity style={{flex: 1}} onPress={() => setCurrentActivity(item)}>
+              <Text numberOfLines={1} style={(item.status) === Status.active ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
+              <Text numberOfLines={1} style={styles.activitySummaryText}>{item.summary}</Text>
+            </TouchableOpacity>
+          }
+        </ActivitySheetConsumer>
         {
           (item.type === "film") ?
             <View style={{paddingLeft: lrPadding}}>

@@ -20,16 +20,18 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import lodash from "lodash";
 
-import {LearningItemCard, ActivityLauncher, ActivitySheetConsumer} from "@totara/components";
-import {gutter, normalize} from "@totara/theme";
+import { ActivityLauncher, LearningItemCard } from "@totara/components";
+import { normalize } from "@totara/theme";
+import { translate } from "@totara/locale";
+import { ActivitySheetConsumer } from "@totara/activities";
+
 import CourseSetList from "./CourseSetList";
-import {getProgram} from "./api";
-import {translate} from "@totara/locale";
+import { getProgram } from "./api";
 
 const ProgramDetails = getProgram(({loading, program, error}) => {
   if (loading) return <Text>{translate("general.loading")}</Text>;

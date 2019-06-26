@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -24,10 +24,10 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 import { Image, StyleSheet, Text, View, StatusBar  } from "react-native";
 import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
-import { config } from "@totara/lib";
 import { Activity } from "@totara/types";
+import { ScormActivity } from "@totara/activities/scorm/ScormActivity";
+import { PlaceHolderActivity } from "@totara/activities/placeholder/PlaceHolderActivity";
 
 
 type contextData = {
@@ -64,6 +64,7 @@ export class ActivitySheetProvider extends React.Component {
   state = {
     setCurrentActivity: (activity: Activity) => this.setCurrentActivity(activity),
     currentActivity: placeHolderActivity,
+    activitySheetVisible: false
   };
 
   setCurrentActivity(activity: Activity) {
@@ -72,74 +73,65 @@ export class ActivitySheetProvider extends React.Component {
     })
   }
 
+  toggleActivity = () => {
+    if (this.state.activitySheetVisible) {
+      this.panel.current!.hide();
+      this.setState({
+        activitySheetVisible: false
+      });
+    } else {
+      this.panel.current!.show();
+      this.setState({
+        activitySheetVisible: true
+      });
+    }
+
+  };
+
+  panel = createRef<SlidingUpPanel>();
+
   render() {
     return(
       <ActivitySheetContext.Provider value={this.state}>
         {this.props.children}
-        <ActivitySheet {...this.state}/>
+        <ActivitySheet ref={this.panel} toggleActivity={this.toggleActivity} currentActivity={this.state.currentActivity}/>
       </ActivitySheetContext.Provider>)
   }
 }
 
-class ActivitySheet extends Component {
+const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>((props, ref) => {
+  const {toggleActivity, currentActivity} = props;
 
-  panel = createRef<SlidingUpPanel>();
-  state = {
-    activitySheetVisible: false
-  };
-
-       /**
-     * @toggleActivity this arrow function help to update state activitySheetVisible(bool) value.
-     * @param Null.
-     * @param Null.
-     * @return Null
-     */
-
-  toggleActivity = () => {
-    this.setState({activitySheetVisible: !this.state.activitySheetVisible})
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    this.state.activitySheetVisible != prevState.activitySheetVisible ? this.panel.current!.hide() 
-    : this.panel.current!.show();
-  }
-
- render() {
-
-  const {currentActivity} = this.props;
-
-  return(
-   <SlidingUpPanel 
-    ref={ this.panel }>
+  return(<SlidingUpPanel
+    ref={ ref }>
       <View style={styles.panel}>
         <View style={{paddingLeft: 10}}>
         <StatusBar hidden/>
-        <Button transparent onPress={this.toggleActivity}>
+        <Button transparent onPress={toggleActivity}>
           <FontAwesomeIcon
             icon="times"
             size={24}
           />
         </Button>
         </View>
-        {(currentActivity && currentActivity.imgSrc) ?
-          <Image source={{uri: config.mobileStatic + "/public/" + currentActivity.imgSrc}}
-                 style={{width: wp("100%"), height: 240}}/>
-          : null
-        }
-        {(currentActivity && currentActivity.summary) ?
-          <Text style={styles.panelContent}>
-            {currentActivity.summary}
-          </Text>
-          : null
-        }
+        <ActivityWrapper activity={currentActivity}/>
       </View>
     </SlidingUpPanel>);
- }
-}
+});
 
 type Props = {
   currentActivity: Activity,
+  toggleActivity: () => void
 }
+
+const ActivityWrapper = ({activity}: { activity: Activity }) => {
+  switch (activity.type) {
+    case "film": // TODO for now use film type as scorm, need to fix this mapping
+      return (<ScormActivity activity={activity}/>);
+    default:
+      return (<PlaceHolderActivity activity={activity}/>);
+  }
+};
 
 const placeHolderActivity = { // placeholder for init
   id: 0,
@@ -153,10 +145,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#FFFFFF",
     paddingTop: 5
-  },
-  panelContent: {
-    flex: 10,
-    padding: 20,
   },
 });
 

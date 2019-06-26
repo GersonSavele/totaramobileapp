@@ -21,15 +21,18 @@
  */
 
 import React from "react";
-import {Image, StyleSheet, Text, View} from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import PropTypes from 'prop-types';
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import {gutter, h1, resizeByScreenSize} from "@totara/theme";
+import { gutter, h1, resizeByScreenSize } from "@totara/theme";
+import { ActivityLauncher } from "@totara/components";
+import { translate } from "@totara/locale";
+import { ActivitySheetConsumer } from "@totara/activities";
+
 import LearningItemCarousel from "./LearningItemCarousel";
-import {ActivitySheetConsumer, ActivityLauncher} from "@totara/components";
-import {translate} from "@totara/locale";
+
 
 export default class MyLearning extends React.Component {
 
