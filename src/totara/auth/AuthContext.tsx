@@ -21,7 +21,7 @@
  */
 
 import React, {ReactNode} from "react";
-import { AsyncStorage, Text } from "react-native";
+import { Text } from "react-native";
 import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "react-apollo";
 import { ApolloLink } from 'apollo-link';
@@ -30,6 +30,7 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
+import AsyncStorage from "@react-native-community/async-storage";
 
 import { config } from "@totara/lib";
 import WebLogin from "./web-login";
