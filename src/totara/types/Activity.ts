@@ -15,21 +15,27 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { LearningItem, LearningItemType } from "./LearningItem";
-import { Activity, ActivityType } from "./Activity";
-import { Course } from "./Course";
-import { Program } from "./Program";
-import { Status, LearningStatus } from "./LearningStatus";
+import { LearningStatus } from "./LearningStatus";
 
-export {
-  LearningItem,
-  LearningItemType,
-  Activity,
-  ActivityType,
-  Course,
-  Program,
-  Status,
-  LearningStatus,
+export interface Activity extends LearningStatus {
+  id: number,
+  type: string,
+  itemName: string,
+  summary?: string,
+  imgSrc?: string,
+  progressPercentage?: number
 }
+
+export interface ScormActivity extends Activity {
+  type: "scorm"
+}
+
+export interface SeminarActivity extends Activity {
+  type: "seminar"
+}
+
+export type ActivityType = ScormActivity | SeminarActivity;

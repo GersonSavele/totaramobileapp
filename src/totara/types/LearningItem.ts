@@ -19,16 +19,8 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import {LearningStatus} from "./LearningStatus";
-
-export interface Activity extends LearningStatus {
-  id: number,
-  type: string,
-  itemName: string,
-  summary?: string,
-  imgSrc?: string,
-  progressPercentage?: number
-}
+import { LearningStatus } from "./LearningStatus";
+import { Activity } from "./Activity";
 
 export interface Section {
   sectionName: string

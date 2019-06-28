@@ -59,16 +59,23 @@ class ActivityList extends React.Component {
 
   renderActivity = ({item, index, section}) => {
 
-    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>;
+    const BuildContentIcon = ({type}) => {
+      switch (type) {
+        case "scorm":
+          return <ContentIcon icon={"film"} iconSize={24} size={50}/>;
+        default:
+          return <ContentIcon icon={type} iconSize={24} size={50}/>;
+      }
+    };
 
     const Activity = () =>
       <View style={styles.activity}>
         {
           (item.status === Status.done)
             ? <CheckBadge size={8} offsetSize={2}>
-                <BuildContentIcon/>
+                <BuildContentIcon type={item.type}/>
               </CheckBadge>
-            : <BuildContentIcon/>
+            : <BuildContentIcon type={item.type}/>
         }
         <ActivitySheetConsumer>
           {({setCurrentActivity}) =>
@@ -79,7 +86,7 @@ class ActivityList extends React.Component {
           }
         </ActivitySheetConsumer>
         {
-          (item.type === "film") ?
+          (item.type === "scorm") ?
             <View style={{paddingLeft: lrPadding}}>
               <FontAwesomeIcon icon="cloud-download-alt" size={24} color="black"/>
             </View>

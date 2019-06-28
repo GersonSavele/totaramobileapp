@@ -34,20 +34,20 @@ import { Activity } from "@totara/types";
  */
 const PlaceHolderActivity = ({activity}: Props) => (
   <View>
-  {(activity.imgSrc) &&
-    <Image source={{uri: config.mobileStatic + "/public/" + activity.imgSrc}}
-    style={{width: wp("100%"), height: 240}}/>
-  }
-  {(activity.itemName) &&
-    <Text>
-      {activity.itemName}
-    </Text>
-  }
-  {(activity.summary) &&
-    <Text style={styles.panelContent}>
-      {activity.summary}
-    </Text>
-  }
+    {(activity.imgSrc) &&
+      <Image source={{uri: config.mobileStatic + "/public/" + activity.imgSrc}}
+      style={{width: wp("100%"), height: 240}}/>
+    }
+    {(activity.itemName) &&
+      <Text>
+        {activity.itemName}
+      </Text>
+    }
+    {(activity.summary) &&
+      <Text style={styles.panelContent}>
+        {activity.summary}
+      </Text>
+    }
   </View>
 );
 

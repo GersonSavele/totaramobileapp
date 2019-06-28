@@ -25,13 +25,13 @@ import { Image, StyleSheet, Text, View, StatusBar  } from "react-native";
 import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { Activity } from "@totara/types";
-import { ScormActivity } from "@totara/activities/scorm/ScormActivity";
-import { PlaceHolderActivity } from "@totara/activities/placeholder/PlaceHolderActivity";
+import { ActivityType } from "@totara/types";
+import { ScormActivity } from "./scorm/ScormActivity";
+import { PlaceHolderActivity } from "./placeholder/PlaceHolderActivity";
 
 
 type contextData = {
-  setCurrentActivity: (activity: Activity) => void
+  setCurrentActivity: (activity: ActivityType) => void
 }
 
 const ActivitySheetContext = React.createContext<contextData>({
@@ -62,13 +62,13 @@ export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
 
 export class ActivitySheetProvider extends React.Component {
   state = {
-    setCurrentActivity: (activity: Activity) => this.setCurrentActivity(activity),
-    currentActivity: placeHolderActivity,
+    setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
+    currentActivity: undefined,
     activitySheetVisible: false
   };
 
-  setCurrentActivity(activity: Activity) {
-    this.setState({  
+  setCurrentActivity(activity: ActivityType) {
+    this.setState({
       currentActivity: activity
     })
   }
@@ -120,23 +120,18 @@ const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>((props, ref) => {
 });
 
 type Props = {
-  currentActivity: Activity,
-  toggleActivity: () => void
+  toggleActivity: () => void,
+  activitySheetVisible: boolean,
+  currentActivity: ActivityType,
 }
 
-const ActivityWrapper = ({activity}: { activity: Activity }) => {
+const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
   switch (activity.type) {
-    case "film": // TODO for now use film type as scorm, need to fix this mapping
+    case "scorm":
       return (<ScormActivity activity={activity}/>);
     default:
       return (<PlaceHolderActivity activity={activity}/>);
   }
-};
-
-const placeHolderActivity = { // placeholder for init
-  id: 0,
-  type: "",
-  itemName: "",
 };
 
 const styles = StyleSheet.create({
