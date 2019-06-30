@@ -70,6 +70,7 @@
 		F63F2163994041DFB4446754 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 434F83224ADB49F0950E083E /* libRNVectorIcons.a */; };
 		F85429B4FB554E5EA4E9EC0D /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6C21E0C1D544352B5FE6058 /* EvilIcons.ttf */; };
 		36C971CB87804583A2B87129 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4B497C872443618F0D7AD9 /* libRNCAsyncStorage.a */; };
+		9A042FB6CD2141428AF55484 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 676AA7CBEFC74A6D8609AC9E /* Fontisto.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -546,6 +547,7 @@
 		FCCDCF0C8FE44B729A679390 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		ADAD0F1FB5CB475F8DD6033C /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; name = "RNCAsyncStorage.xcodeproj"; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		2C4B497C872443618F0D7AD9 /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; name = "libRNCAsyncStorage.a"; path = "libRNCAsyncStorage.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		676AA7CBEFC74A6D8609AC9E /* Fontisto.ttf */ = {isa = PBXFileReference; name = "Fontisto.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -780,6 +782,7 @@
 				C4D9641135D0470CB3841C49 /* rubicon-icon-font.ttf */,
 				C7B6104BA3194AC0A928BE81 /* SimpleLineIcons.ttf */,
 				D40A3237554848D58DDE31DA /* Zocial.ttf */,
+				676AA7CBEFC74A6D8609AC9E /* Fontisto.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1002,9 +1005,9 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				361F7BBAC9BF4B8CA35C08AA /* Embed Frameworks */,
-				A90DAD255BE14E36B52976EE /* Build NodeJS Mobile Native Modules */,
-				BDBA73FD10FE4C93AC03D075 /* Sign NodeJS Mobile Native Modules */,
-				C168A1751ABC48B6B6CBFAC0 /* Remove NodeJS Mobile Framework Simulator Strips */,
+				E542ACA548DA4D798F64FFCC /* Build NodeJS Mobile Native Modules */,
+				88AEB03BFDB64B36BC17450A /* Sign NodeJS Mobile Native Modules */,
+				7F345B3E405E4621BDB0C68F /* Remove NodeJS Mobile Framework Simulator Strips */,
 			);
 			buildRules = (
 			);
@@ -1578,6 +1581,7 @@
 				3D3C4D09D7A34056876B366B /* Zocial.ttf in Resources */,
 				E3F6912823D44D1AB253590E /* nodejs-project in Resources */,
 				64BCEB132FF44D6995505094 /* builtin_modules in Resources */,
+				9A042FB6CD2141428AF55484 /* Fontisto.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1627,7 +1631,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		A90DAD255BE14E36B52976EE /* Build NodeJS Mobile Native Modules */ = {
+		E542ACA548DA4D798F64FFCC /* Build NodeJS Mobile Native Modules */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1695,7 +1699,7 @@ fi
 popd
 ";
 		};
-		BDBA73FD10FE4C93AC03D075 /* Sign NodeJS Mobile Native Modules */ = {
+		88AEB03BFDB64B36BC17450A /* Sign NodeJS Mobile Native Modules */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1755,7 +1759,7 @@ find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.framework/*\" -del
 find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d -delete
 ";
 		};
-		C168A1751ABC48B6B6CBFAC0 /* Remove NodeJS Mobile Framework Simulator Strips */ = {
+		7F345B3E405E4621BDB0C68F /* Remove NodeJS Mobile Framework Simulator Strips */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
