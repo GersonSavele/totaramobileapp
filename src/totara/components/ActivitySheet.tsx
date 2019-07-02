@@ -106,7 +106,7 @@ class ActivitySheet extends Component {
 
  render() {
 
-// distract props.
+// Destructuring Props.
   const {currentActivity} = this.props;
 
   return(
