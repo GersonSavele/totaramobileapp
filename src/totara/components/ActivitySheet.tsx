@@ -106,7 +106,6 @@ class ActivitySheet extends Component {
 
  render() {
 
-// Destructuring Props.
   const {currentActivity} = this.props;
 
   return(
