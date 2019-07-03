@@ -57,7 +57,6 @@
 		65E2665A95EE4354931925CC /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3350581D884CFDAE85DF8B /* libRNVectorIcons-tvOS.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8F1400DB1563456ABA42C7CA /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4F236ADF3E4F5B8F818C3D /* libRNCookieManagerIOS.a */; };
-		9A042FB6CD2141428AF55484 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 676AA7CBEFC74A6D8609AC9E /* Fontisto.ttf */; };
 		AD1AA90830C84053B31BC268 /* libRNNodeJsMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1068672E52034C5DA997BD20 /* libRNNodeJsMobile.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B4EBA88BD5EA4D9685F89A3F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C01097FADBF489D8F57B2DE /* MaterialCommunityIcons.ttf */; };
@@ -1609,7 +1608,6 @@
 				3D3C4D09D7A34056876B366B /* Zocial.ttf in Resources */,
 				E3F6912823D44D1AB253590E /* nodejs-project in Resources */,
 				64BCEB132FF44D6995505094 /* builtin_modules in Resources */,
-				9A042FB6CD2141428AF55484 /* Fontisto.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
