@@ -19,11 +19,11 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React from "react";
+import React, { createRef, Component } from "react";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import { Image, StyleSheet, Text, View, StatusBar } from "react-native";
+import { Image, StyleSheet, Text, View, StatusBar  } from "react-native";
 import { Button } from "native-base";
-import { FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 import { config } from "@totara/lib";
@@ -59,23 +59,16 @@ export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
  *   }
  * </ActivitySheetConsumer/>
  */
-export class ActivitySheetProvider extends React.Component {
 
+export class ActivitySheetProvider extends React.Component {
   state = {
-    activitySheetVisible: false,
-    toggleActivity: () => this.toggleActivity(),
     setCurrentActivity: (activity: Activity) => this.setCurrentActivity(activity),
-    currentActivity: placeHolderActivity
+    currentActivity: placeHolderActivity,
   };
 
-  toggleActivity() {
-    this.setState({activitySheetVisible: !this.state.activitySheetVisible})
-  }
-
   setCurrentActivity(activity: Activity) {
-    this.setState({
-      currentActivity: activity,
-      activitySheetVisible: !this.state.activitySheetVisible
+    this.setState({  
+      currentActivity: activity
     })
   }
 
@@ -86,40 +79,67 @@ export class ActivitySheetProvider extends React.Component {
         <ActivitySheet {...this.state}/>
       </ActivitySheetContext.Provider>)
   }
+}
 
+class ActivitySheet extends Component {
+
+  panel = createRef<SlidingUpPanel>();
+  state = {
+    activitySheetVisible: false
+  };
+
+       /**
+     * @toggleActivity this arrow function help to update state activitySheetVisible(bool) value.
+     * @param Null.
+     * @param Null.
+     * @return Null
+     */
+
+  toggleActivity = () => {
+    this.setState({activitySheetVisible: !this.state.activitySheetVisible})
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.state.activitySheetVisible != prevState.activitySheetVisible ? this.panel.current!.hide() 
+    : this.panel.current!.show();
+  }
+
+ render() {
+
+  const {currentActivity} = this.props;
+
+  return(
+   <SlidingUpPanel 
+    ref={ this.panel }>
+      <View style={styles.panel}>
+        <View style={{paddingLeft: 10}}>
+        <StatusBar hidden/>
+        <Button transparent onPress={this.toggleActivity}>
+          <FontAwesomeIcon
+            icon="times"
+            size={24}
+          />
+        </Button>
+        </View>
+        {(currentActivity && currentActivity.imgSrc) ?
+          <Image source={{uri: config.mobileStatic + "/public/" + currentActivity.imgSrc}}
+                 style={{width: wp("100%"), height: 240}}/>
+          : null
+        }
+        {(currentActivity && currentActivity.summary) ?
+          <Text style={styles.panelContent}>
+            {currentActivity.summary}
+          </Text>
+          : null
+        }
+      </View>
+    </SlidingUpPanel>);
+ }
 }
 
 type Props = {
-  toggleActivity: () => void,
-  activitySheetVisible: boolean,
   currentActivity: Activity,
 }
-
-const ActivitySheet = ({toggleActivity, activitySheetVisible, currentActivity}: Props) => (
-  <SlidingUpPanel visible={activitySheetVisible} onRequestClose={toggleActivity}>
-    <View style={styles.panel}>
-      <View style={{paddingLeft: 10}}>
-      <StatusBar hidden/>
-      <Button transparent onPress={toggleActivity}>
-        <FontAwesomeIcon
-          icon="times"
-          size={24}
-        />
-      </Button>
-      </View>
-      {(currentActivity && currentActivity.imgSrc) ?
-        <Image source={{uri: config.mobileStatic + "/public/" + currentActivity.imgSrc}}
-               style={{width: wp("100%"), height: 240}}/>
-        : null
-      }
-      {(currentActivity && currentActivity.summary) ?
-        <Text style={styles.panelContent}>
-          {currentActivity.summary}
-        </Text>
-        : null
-      }
-    </View>
-  </SlidingUpPanel>);
 
 const placeHolderActivity = { // placeholder for init
   id: 0,
@@ -140,3 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
+export default ActivitySheet;
