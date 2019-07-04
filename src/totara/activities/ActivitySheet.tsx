@@ -60,68 +60,47 @@ export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
  * </ActivitySheetConsumer/>
  */
 
+const panelRef = createRef<SlidingUpPanel>();
+
 export class ActivitySheetProvider extends React.Component {
   state = {
     setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
     currentActivity: undefined,
-    activitySheetVisible: false
   };
 
   setCurrentActivity(activity: ActivityType) {
     this.setState({
       currentActivity: activity
-    })
+    }, () => panelRef.current!.show(0));
   }
-
-  toggleActivity = () => {
-    if (this.state.activitySheetVisible) {
-      this.panel.current!.hide();
-      this.setState({
-        activitySheetVisible: false
-      });
-    } else {
-      this.panel.current!.show();
-      this.setState({
-        activitySheetVisible: true
-      });
-    }
-
-  };
-
-  panel = createRef<SlidingUpPanel>();
 
   render() {
     return(
       <ActivitySheetContext.Provider value={this.state}>
         {this.props.children}
-        <ActivitySheet ref={this.panel} toggleActivity={this.toggleActivity} currentActivity={this.state.currentActivity}/>
+        {
+          (this.state.currentActivity) &&
+            <ActivitySheet ref={panelRef} currentActivity={this.state.currentActivity!}/>
+        }
       </ActivitySheetContext.Provider>)
   }
 }
 
-const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>((props, ref) => {
-  const {toggleActivity, currentActivity} = props;
-
-  return(<SlidingUpPanel
-    ref={ ref }>
-      <View style={styles.panel}>
-        <View style={{paddingLeft: 10}}>
-        <StatusBar hidden/>
-        <Button transparent onPress={toggleActivity}>
-          <FontAwesomeIcon
-            icon="times"
-            size={24}
-          />
-        </Button>
-        </View>
-        <ActivityWrapper activity={currentActivity}/>
+const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity}, ref) =>
+  (<SlidingUpPanel ref={ref} friction={0.25}>
+    <View style={styles.panel}>
+      <View style={{paddingLeft: 10}}>
+      <StatusBar hidden/>
+      <Button transparent onPress={() => panelRef.current!.hide()}>
+        <FontAwesomeIcon icon="times" size={24}/>
+      </Button>
       </View>
-    </SlidingUpPanel>);
-});
+      <ActivityWrapper activity={currentActivity}/>
+    </View>
+    </SlidingUpPanel>)
+);
 
 type Props = {
-  toggleActivity: () => void,
-  activitySheetVisible: boolean,
   currentActivity: ActivityType,
 }
 
@@ -142,5 +121,3 @@ const styles = StyleSheet.create({
     paddingTop: 5
   },
 });
-
-export default ActivitySheet;
