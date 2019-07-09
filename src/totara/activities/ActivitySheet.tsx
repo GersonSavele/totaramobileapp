@@ -19,16 +19,15 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React, { createRef, Component } from "react";
+import React, { createRef } from "react";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import { Image, StyleSheet, Text, View, StatusBar  } from "react-native";
+import { StyleSheet, View, StatusBar, Text } from "react-native";
 import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { ActivityType } from "@totara/types";
-import { ScormActivity } from "./scorm/ScormActivity";
+import { ScormActivity, ScormInformation } from "./scorm/ScormActivity";
 import { PlaceHolderActivity } from "./placeholder/PlaceHolderActivity";
-
 
 type contextData = {
   setCurrentActivity: (activity: ActivityType) => void
@@ -87,17 +86,21 @@ export class ActivitySheetProvider extends React.Component {
 }
 
 const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity}, ref) =>
-  (<SlidingUpPanel ref={ref} friction={0.25}>
-    <View style={styles.panel}>
-      <View style={{paddingLeft: 10}}>
-      <StatusBar hidden/>
-      <Button transparent onPress={() => panelRef.current!.hide()}>
-        <FontAwesomeIcon icon="times" size={24}/>
-      </Button>
-      </View>
-      <ActivityWrapper activity={currentActivity}/>
-    </View>
-    </SlidingUpPanel>)
+  <SlidingUpPanel ref={ref} friction={0.25}>
+      <View style={styles.panel}>
+       <View style={styles.navigationStyle}>
+         <StatusBar hidden/>
+         <View style={styles.rightContainer}>
+          <Button style = {styles.buttonStyle} onPress={() => panelRef.current!.hide()}>
+          <FontAwesomeIcon icon="times" size={24}/>
+          </Button>
+          </View>
+          <Text style = {styles.titleStyle}> {currentActivity.itemName} </Text>
+          <View style={styles.rightContainer}></View>
+          </View>
+        <ActivityWrapper activity={currentActivity}/>
+      </View> 
+  </SlidingUpPanel>
 );
 
 type Props = {
@@ -109,15 +112,42 @@ const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
     case "scorm":
       return (<ScormActivity activity={activity}/>);
     default:
-      return (<PlaceHolderActivity activity={activity}/>);
+      return (<ScormInformation activity={activity}/>);
   }
 };
 
 const styles = StyleSheet.create({
   panel: {
     flex: 1,
+    paddingTop: 5,
     flexDirection: "column",
-    backgroundColor: "#FFFFFF",
-    paddingTop: 5
+    backgroundColor: "#FFFFFF"
   },
+  navigationStyle :{
+    flex: 0.1,
+    paddingTop: 10,
+    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  leftContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+  rightContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  buttonStyle : {
+    backgroundColor: "transparent",
+    paddingLeft: 20,
+    alignSelf:"flex-start"
+  },
+  titleStyle: {
+    fontSize: 16,
+    color: "#3D444B",
+    fontWeight: "bold",
+    textAlign: 'center',
+    alignSelf:"center"
+  }
 });
