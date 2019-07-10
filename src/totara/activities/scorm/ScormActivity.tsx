@@ -20,7 +20,7 @@
  */
 
 import React from "react";
-import { View, WebView } from "react-native";
+import { View } from "react-native";
 import { Button } from "native-base";
 import { Activity } from "@totara/types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -44,24 +44,26 @@ class ScormActivity extends React.Component<Props, States> {
       case 1:
         return (
           <View style = {{flex : 1, alignItems: 'center', flexDirection:'column', alignContent:"space-between"}}>
-          <ActivityHeaderView title = "" fontSize = {10}></ActivityHeaderView>
-          <GradeDetailsCircle gradeTitle = "" progress = {3} status = "" statusColor = ""></GradeDetailsCircle>
-          <ActivityBottomView title = "" fontSize = {10} buttonTitle = "" buttonBackgroundColor = "" buttonTitleColor = "" buttonBorderColor = "" 
-          onPress = {this.loadScormPlayer}></ActivityBottomView>
+            <ActivityHeaderView title = "A title is one or more words used before or after a person's name, in certain contexts. It may signify either veneration, an official position, or a professional or academic qualification" 
+            fontSize = {12}></ActivityHeaderView>
+            <GradeDetailsCircle gradeTitle = "Your highest grade" progress = {0} status = "VIEW TO COMPLETE" statusColor = "#000"></GradeDetailsCircle>
+            <ActivityBottomView title = "" fontSize = {12} buttonTitle = "Begin" buttonBackgroundColor = "" buttonTitleColor = "" buttonBorderColor = "" 
+            onPress = {this.loadScormPlayer}></ActivityBottomView>
         </View>)
         case 2:
         return (
-      <View style={{ flex: 1 }} >
-      <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
-        <FontAwesomeIcon icon="arrow-right" size={24} />
-      </Button>
-      <AuthenticatedWebView uri={"/mod/scorm/view.php?id=4"}/>
-    </View>)
+         <View style={{ flex: 1 }} >
+          <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
+            <FontAwesomeIcon icon="arrow-right" size={24} />
+          </Button>
+          <AuthenticatedWebView uri={"/mod/scorm/view.php?id=4"}/>
+        </View>)
       default:
         return (
           <View style = {{flex : 1, alignItems: 'center', flexDirection:'column', alignContent:"space-between"}}>
-          <ActivityHeaderView title = "" fontSize = {10}></ActivityHeaderView>
-          <GradeDetailsCircle gradeTitle = "" progress = {3} status = "" statusColor = ""></GradeDetailsCircle>
+            <ActivityHeaderView title = "Awesome Sandy. Your are doing great.!" fontSize = {20}></ActivityHeaderView>
+            <GradeDetailsCircle gradeTitle = "Your grade" progress = {80} status = "PASSED" statusColor = "#69BD45"></GradeDetailsCircle>
+            <ActivityBottomView title = "" fontSize = {12} buttonTitle = "Attempt again" buttonBackgroundColor = "" buttonTitleColor = "" buttonBorderColor = ""  onPress = {this.loadScormPlayer}></ActivityBottomView>
         </View>)
     }
   }

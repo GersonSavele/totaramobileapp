@@ -45,7 +45,7 @@ const ActivityBottomView = ({title, fontSize, buttonTitle, buttonBackgroundColor
         <Text style= { styles.titleText }> attempt left.</Text>
         </Text>
         <Button style = {styles.buttonStyle} onPress = {onPress}>
-         <Text style = {{color: "#FFF", fontWeight: "600"}}>Begin</Text>
+         <Text style = {{color: "#FFF", fontWeight: "600"}}>{buttonTitle}</Text>
       </Button>
       </View>
     );

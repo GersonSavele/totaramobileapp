@@ -64,7 +64,7 @@ class ActivityList extends React.Component {
         case "scorm":
           return <ContentIcon icon={"film"} iconSize={24} size={50}/>;
         default:
-          return <ContentIcon icon={type} iconSize={24} size={50}/>;
+          return <ContentIcon icon={"film"} iconSize={24} size={50}/>;
       }
     };
 

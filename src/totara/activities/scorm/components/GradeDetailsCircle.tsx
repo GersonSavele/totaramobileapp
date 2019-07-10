@@ -35,12 +35,12 @@ const GradeDetailsCircle = ({gradeTitle, progress, status, statusColor}: GradeCi
   return(
     <View style = {{flex:1, justifyContent: "center", alignContent: "center", paddingBottom: "5%"}}>
     <View style={styles.container}>
-    <Text style = {styles.titleText}>Progress Activity</Text>
+    <Text style = {styles.titleText}>{gradeTitle}</Text>
     <Text style = {{margin: 20}}>
-     <Text style = {styles.percentageText}>80</Text>
+     <Text style = {styles.percentageText}>{progress}</Text>
      <Text style={{fontWeight: "400", fontSize : 18}}>%</Text>
     </Text>
-    <Text style = {styles.statusText}>View to complete</Text>
+    <Text style = {[styles.statusText, {color: statusColor, borderColor:statusColor}]}>{status}</Text>
     </View>
     </View>
   );
@@ -74,8 +74,6 @@ const styles = StyleSheet.create({
     statusText: {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: "#69BD45",
-      color: "#69BD45",
       backgroundColor: "#FFFFFF",    
       padding : 2,
       fontSize: 10,

@@ -27,7 +27,8 @@ export interface Activity extends LearningStatus {
   itemName: string,
   summary?: string,
   imgSrc?: string,
-  progressPercentage?: number
+  progressPercentage?: number,
+  url: string
 }
 
 export interface ScormActivity extends Activity {
@@ -35,7 +36,24 @@ export interface ScormActivity extends Activity {
 }
 
 export interface SeminarActivity extends Activity {
-  type: "seminar"
+  type: "facetoface"
 }
 
-export type ActivityType = ScormActivity | SeminarActivity;
+export interface ForumsActivity extends Activity {
+  type: "forums"
+}
+
+export interface QuizActivity extends Activity {
+  type: "quiz"
+}
+
+export interface AssignmentActivity extends Activity {
+  type: "assign"
+}
+
+export type ActivityType =
+  ScormActivity |
+  SeminarActivity |
+  ForumsActivity |
+  QuizActivity |
+  AssignmentActivity;

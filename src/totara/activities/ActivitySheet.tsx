@@ -26,8 +26,9 @@ import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { ActivityType } from "@totara/types";
-import ScormActivity from "./scorm/ScormActivity";
-import { PlaceHolderActivity } from "./placeholder/PlaceHolderActivity";
+import  ScormActivity  from "./scorm/ScormActivity";
+
+// import { WebviewActivity } from "./webview/WebviewActivity";
 
 type contextData = {
   setCurrentActivity: (activity: ActivityType) => void
@@ -73,46 +74,57 @@ export class ActivitySheetProvider extends React.Component {
     }, () => panelRef.current!.show(0));
   }
 
+  onClose = () => {
+    panelRef.current!.hide();
+    console.log("print=====");
+    this.setState({
+      currentActivity: undefined
+    })
+  };
+
   render() {
     return(
       <ActivitySheetContext.Provider value={this.state}>
         {this.props.children}
         {
           (this.state.currentActivity) &&
-            <ActivitySheet ref={panelRef} currentActivity={this.state.currentActivity!}/>
+            <ActivitySheet ref={panelRef} currentActivity={this.state.currentActivity!} onClose={this.onClose}/>
         }
       </ActivitySheetContext.Provider>)
   }
 }
 
-const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity}, ref) =>
+const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity, onClose}, ref) =>
   <SlidingUpPanel ref={ref} friction={0.25}>
       <View style={styles.panel}>
        <View style={styles.navigationStyle}>
          <StatusBar hidden/>
          <View style={styles.rightContainer}>
-          <Button style = {styles.buttonStyle} onPress={() => panelRef.current!.hide()}>
+          <Button style = {styles.buttonStyle} onPress={onClose}>
           <FontAwesomeIcon icon="times" size={24}/>
           </Button>
           </View>
           <Text style = {styles.titleStyle}> {currentActivity.itemName} </Text>
           <View style={styles.rightContainer}></View>
           </View>
-        <ActivityWrapper activity={currentActivity}/>
+        {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
       </View> 
   </SlidingUpPanel>
 );
 
 type Props = {
   currentActivity: ActivityType,
+  onClose: () => void
 }
 
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
   switch (activity.type) {
     case "scorm":
-      // return (<ScormActivity activity={activity}/>);
+      return (<ScormActivity activity={activity}/>);
     default:
       return (<ScormActivity activity={activity}/>);
+      // return (<WebviewActivity activity={activity}/>);
+
   }
 };
 

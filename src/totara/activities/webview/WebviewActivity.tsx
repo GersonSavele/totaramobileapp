@@ -20,34 +20,19 @@
  */
 
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { View } from "react-native";
 
-import config from "@totara/lib/config";
 import { Activity } from "@totara/types";
+import { AuthenticatedWebView } from "@totara/auth";
 
 /**
- * Placeholder activity is just a generic place holder for activities that doesn't have any implementation yet
- *
- * This just renders some of the properties of Activity
- *
+ * WebviewActivity opens an activity with the given url
  */
-const PlaceHolderActivity = ({activity}: Props) => (
-  <View>
-    {(activity.imgSrc) &&
-      <Image source={{uri: config.mobileStatic + "/public/" + activity.imgSrc}}
-      style={{width: wp("100%"), height: 240}}/>
-    }
-    {(activity.itemName) &&
-      <Text>
-        {activity.itemName}
-      </Text>
-    }
-    {(activity.summary) &&
-      <Text style={styles.panelContent}>
-        {activity.summary}
-      </Text>
-    }
+const WebviewActivity = ({activity}: Props) => (
+  <View style={{flex: 1}}>
+    <View style={{flex: 1}}>
+      <AuthenticatedWebView uri={activity.url}/>
+    </View>
   </View>
 );
 
@@ -55,11 +40,4 @@ type Props = {
   activity: Activity
 }
 
-const styles = StyleSheet.create({
-  panelContent: {
-    flex: 10,
-    padding: 20,
-  },
-});
-
-export { PlaceHolderActivity };
+export { WebviewActivity };

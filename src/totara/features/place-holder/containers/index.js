@@ -37,11 +37,11 @@ class PlaceHolder extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <Button onPress={() => this.setState( (state) => ({
-          showWebView: !state.showWebView
-        }))} title={"toggle"}/>
+        {/*<Button onPress={() => this.setState( (state) => ({*/}
+          {/*showWebView: !state.showWebView*/}
+        {/*}))} title={"toggle"}/>*/}
 
-        { (this.state.showWebView) && <AuthenticatedWebView uri={"/index.php"}/> }
+        {/*{ (this.state.showWebView) && <AuthenticatedWebView uri={"/index.php"}/> }*/}
       </View>
     );
   }

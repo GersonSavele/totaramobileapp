@@ -31,8 +31,7 @@ type ActivityHeaderViewParam = {
 const ActivityHeaderView = ({title, fontSize}: ActivityHeaderViewParam) => {
     return(
       <View style= { styles.container }>
-      <Text style= { styles.titleText }>Lorem ipsum dolor sit amet, sjsdj ljdklvjklfjl jldzjvljl jzlb ldlvjfd kvjdfkl
-      djdkjlj ljlfvl fj erjger</Text>
+      <Text style= { [styles.titleText, {fontSize: fontSize}]}>{title}</Text>
       </View>
     );
 };
@@ -45,7 +44,6 @@ const ActivityHeaderView = ({title, fontSize}: ActivityHeaderViewParam) => {
       justifyContent:"flex-start"
     },
     titleText: {
-        fontSize: 14,
         color: "#3D444B",
         fontWeight: "500",
         textAlign: 'center',
