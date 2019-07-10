@@ -44,6 +44,7 @@ const query = gql`
             itemName
             status
             summary
+            url
         }
       }  
     }
