@@ -16,27 +16,71 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
 import React from "react";
-import { Text, View } from "react-native";
-
+import { View, WebView } from "react-native";
+import { Button } from "native-base";
 import { Activity } from "@totara/types";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-const ScormActivity = ({activity}: Props) => (
-  <View>
-    <Text>SCORM Activity</Text>
-    {(activity.itemName) &&
-      <Text>
-        {activity.itemName}
-      </Text>
+import GradeDetailsCircle from "./components/GradeDetailsCircle";
+import ActivityBottomView from "../components/ActivityBottomView";
+import ActivityHeaderView from "../components/ActivityHeaderView";
+import { AuthenticatedWebView } from "@totara/auth";
+
+class ScormActivity extends React.Component<Props, States> {
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { 
+      screen : 1
+    };
+  }
+
+  render(){
+    switch (this.state.screen) {
+      case 1:
+        return (
+          <View style = {{flex : 1, alignItems: 'center', flexDirection:'column', alignContent:"space-between"}}>
+          <ActivityHeaderView title = "" fontSize = {10}></ActivityHeaderView>
+          <GradeDetailsCircle gradeTitle = "" progress = {3} status = "" statusColor = ""></GradeDetailsCircle>
+          <ActivityBottomView title = "" fontSize = {10} buttonTitle = "" buttonBackgroundColor = "" buttonTitleColor = "" buttonBorderColor = "" 
+          onPress = {this.loadScormPlayer}></ActivityBottomView>
+        </View>)
+        case 2:
+        return (
+      <View style={{ flex: 1 }} >
+      <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
+        <FontAwesomeIcon icon="arrow-right" size={24} />
+      </Button>
+      <AuthenticatedWebView uri={"/mod/scorm/view.php?id=4"}/>
+    </View>)
+      default:
+        return (
+          <View style = {{flex : 1, alignItems: 'center', flexDirection:'column', alignContent:"space-between"}}>
+          <ActivityHeaderView title = "" fontSize = {10}></ActivityHeaderView>
+          <GradeDetailsCircle gradeTitle = "" progress = {3} status = "" statusColor = ""></GradeDetailsCircle>
+        </View>)
     }
-  </View>
-);
+  }
+
+  loadScormPlayer = () => {
+    this.setState({screen : 2})
+  }
+
+  loadFeedbackView = () => {
+    this.setState({screen : 3})
+  }
+}
 
 type Props = {
   activity: Activity
 }
 
-export { ScormActivity };
+type States = { 
+  screen : number
+};
+
+export default ScormActivity;

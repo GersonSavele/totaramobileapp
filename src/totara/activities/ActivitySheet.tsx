@@ -26,7 +26,7 @@ import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { ActivityType } from "@totara/types";
-import { ScormActivity, ScormInformation } from "./scorm/ScormActivity";
+import ScormActivity from "./scorm/ScormActivity";
 import { PlaceHolderActivity } from "./placeholder/PlaceHolderActivity";
 
 type contextData = {
@@ -110,9 +110,9 @@ type Props = {
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
   switch (activity.type) {
     case "scorm":
-      return (<ScormActivity activity={activity}/>);
+      // return (<ScormActivity activity={activity}/>);
     default:
-      return (<ScormInformation activity={activity}/>);
+      return (<ScormActivity activity={activity}/>);
   }
 };
 
