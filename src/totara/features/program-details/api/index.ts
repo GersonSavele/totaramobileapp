@@ -36,6 +36,7 @@ const query = gql`
       dueDate
       progressPercentage
       groupCount
+      imageSrc
       courseSet {
         id
         label  

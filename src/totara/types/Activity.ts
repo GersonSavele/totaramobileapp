@@ -40,7 +40,7 @@ export interface SeminarActivity extends Activity {
 }
 
 export interface ForumsActivity extends Activity {
-  type: "forums"
+  type: "forum"
 }
 
 export interface QuizActivity extends Activity {
