@@ -44,8 +44,8 @@ const ActivityBottomView = ({title, fontSize, buttonTitle, buttonBackgroundColor
         <Text style= {{fontWeight: "bold", fontSize : 14}}>unlimited</Text>
         <Text style= { styles.titleText }> attempt left.</Text>
         </Text>
-        <Button style = {styles.buttonStyle} onPress = {onPress}>
-         <Text style = {{color: "#FFF", fontWeight: "600"}}>{buttonTitle}</Text>
+        <Button style = {[styles.buttonStyle, {backgroundColor: buttonBackgroundColor, borderColor:buttonBorderColor}]} onPress = {onPress}>
+         <Text style = {{color: buttonTitleColor, fontWeight: "600"}}>{buttonTitle}</Text>
       </Button>
       </View>
     );
@@ -66,9 +66,7 @@ const ActivityBottomView = ({title, fontSize, buttonTitle, buttonBackgroundColor
     buttonStyle : {
         borderRadius: 20,
         borderWidth: 1,
-        borderColor: "#69BD45",
-        color: "#FFF",
-        backgroundColor: "#69BD45",    
+        color: "#FFF",    
         margin : 20,
         paddingRight:"20%",
         paddingLeft: "20%",

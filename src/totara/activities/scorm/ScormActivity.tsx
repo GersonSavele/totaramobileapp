@@ -38,7 +38,7 @@ class ScormActivity extends React.Component<Props, States> {
       screen : 1
     };
   }
-
+  
   render(){
     switch (this.state.screen) {
       case 1:
@@ -47,33 +47,37 @@ class ScormActivity extends React.Component<Props, States> {
             <ActivityHeaderView title = "A title is one or more words used before or after a person's name, in certain contexts. It may signify either veneration, an official position, or a professional or academic qualification" 
             fontSize = {12}></ActivityHeaderView>
             <GradeDetailsCircle gradeTitle = "Your highest grade" progress = {0} status = "VIEW TO COMPLETE" statusColor = "#000"></GradeDetailsCircle>
-            <ActivityBottomView title = "" fontSize = {12} buttonTitle = "Begin" buttonBackgroundColor = "" buttonTitleColor = "" buttonBorderColor = "" 
+            <ActivityBottomView title = "" fontSize = {12} buttonTitle = "Begin" buttonBackgroundColor = "#69BD45" buttonTitleColor = "#FFF" buttonBorderColor = "#69BD45" 
             onPress = {this.loadScormPlayer}></ActivityBottomView>
-        </View>)
+          </View>)
         case 2:
         return (
          <View style={{ flex: 1 }} >
           <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
-            <FontAwesomeIcon icon="arrow-right" size={24} />
+            <FontAwesomeIcon icon="arrow-right" size={24}/>
           </Button>
-          <AuthenticatedWebView uri={"/mod/scorm/view.php?id=4"}/>
+          <AuthenticatedWebView uri={this.props.activity.url}/>
         </View>)
       default:
         return (
           <View style = {{flex : 1, alignItems: 'center', flexDirection:'column', alignContent:"space-between"}}>
-            <ActivityHeaderView title = "Awesome Sandy. Your are doing great.!" fontSize = {20}></ActivityHeaderView>
+            <ActivityHeaderView title = {"Awesome Sandy.\n Your are doing great.!"} fontSize = {20}></ActivityHeaderView>
             <GradeDetailsCircle gradeTitle = "Your grade" progress = {80} status = "PASSED" statusColor = "#69BD45"></GradeDetailsCircle>
-            <ActivityBottomView title = "" fontSize = {12} buttonTitle = "Attempt again" buttonBackgroundColor = "" buttonTitleColor = "" buttonBorderColor = ""  onPress = {this.loadScormPlayer}></ActivityBottomView>
-        </View>)
+            <ActivityBottomView title = "" fontSize = {12} buttonTitle = "Attempt again" buttonBackgroundColor = "#FFF" buttonTitleColor = "#3D444B" buttonBorderColor = "#3D444B"  
+            onPress = {this.loadInfromationView}></ActivityBottomView>
+          </View>)
     }
   }
-
   loadScormPlayer = () => {
     this.setState({screen : 2})
   }
 
   loadFeedbackView = () => {
     this.setState({screen : 3})
+  }
+
+  loadInfromationView = () => {
+    this.setState({screen : 1})
   }
 }
 

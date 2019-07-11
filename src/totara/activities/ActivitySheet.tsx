@@ -27,8 +27,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { ActivityType } from "@totara/types";
 import  ScormActivity  from "./scorm/ScormActivity";
-
-// import { WebviewActivity } from "./webview/WebviewActivity";
+import { WebviewActivity } from "./webview/WebviewActivity";
 
 type contextData = {
   setCurrentActivity: (activity: ActivityType) => void
@@ -122,8 +121,8 @@ const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
     case "scorm":
       return (<ScormActivity activity={activity}/>);
     default:
-      return (<ScormActivity activity={activity}/>);
-      // return (<WebviewActivity activity={activity}/>);
+      // return (<ScormActivity activity={activity}/>);
+       return (<WebviewActivity activity={activity}/>);
 
   }
 };
