@@ -26,8 +26,8 @@ import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import { ContentIcon, CheckBadge } from "@totara/components";
-import {normalize, resizeByScreenSize, h4, normal, lrPadding} from "@totara/theme";
-import {Status} from "@totara/types";
+import { normalize, resizeByScreenSize, h4, normal, lrPadding } from "@totara/theme";
+import { Status } from "@totara/types";
 import { ActivitySheetConsumer } from "@totara/activities";
 
 
@@ -63,8 +63,16 @@ class ActivityList extends React.Component {
       switch (type) {
         case "scorm":
           return <ContentIcon icon={"film"} iconSize={24} size={50}/>;
+        case "forum" :
+          return <ContentIcon icon={"comments"} iconSize={24} size={50}/>;
+        case "quiz" :
+          return <ContentIcon icon={"pen"} iconSize={24} size={50}/>;
+        case "assign" :
+          return <ContentIcon icon={"pen-square"} iconSize={24} size={50}/>;
+        case "facetoface" :
+          return <ContentIcon icon={"bullhorn"} iconSize={24} size={50}/>;
         default:
-          return <ContentIcon icon={"film"} iconSize={24} size={50}/>;
+          return <ContentIcon icon={"book"} iconSize={24} size={50}/>;
       }
     };
 

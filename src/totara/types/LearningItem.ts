@@ -44,4 +44,5 @@ export interface LearningItem extends LearningStatus {
   progressPercentage?: number
   groupCount?: number
   sections: [Section]
+  imageSrc?: string
 }

@@ -48,7 +48,12 @@ import {
   faBoxOpen,
   faExclamationCircle,
   faArrowRight,
-  faArrowLeft
+  faArrowLeft,
+  faBullhorn,
+  faBookOpen,
+  faPenSquare,
+  faBook,
+  faPen
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
@@ -232,7 +237,12 @@ const initFontAwesome = () => {
     faBoxOpen,
     faExclamationCircle,
     faArrowLeft,
-    faArrowRight
+    faArrowRight,
+    faBullhorn,
+    faBookOpen,
+    faPenSquare,
+    faBook,
+    faPen
   );
 };
 initFontAwesome();
