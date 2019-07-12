@@ -23,8 +23,6 @@ import React from "react";
 import { Text, View , StyleSheet , Dimensions} from "react-native";
 import {normalize} from "@totara/theme";
 
-
-
 type GradeDetailsCircleParam = {
   borderRadius?: number,
   width ?: number,
