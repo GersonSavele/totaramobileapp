@@ -21,64 +21,109 @@
 
 import React from "react";
 import { Text, View , StyleSheet , Dimensions} from "react-native";
-
 import {normalize} from "@totara/theme";
 
-type GradeCircleParam = {
-  gradeTitle: string,
-  progress: number,
-  status : string,
-  statusColor : string
+
+
+type GradeDetailsCircleParam = {
+  borderRadius?: number,
+  width ?: number,
+  height? : number,
+  backgroundColor?: string,
+  shadowColor?: string,
+  shadowRadius?:number,
+  shadowOpacity?: number,
+  borderWidth?: number,
+  children?: any[]
 }
 
-const GradeDetailsCircle = ({gradeTitle, progress, status, statusColor}: GradeCircleParam) => {
+type GradeDetailsTextParams = {
+  text: string,
+  color?: string,
+  backgroundColor?:string,
+  fontWeight? : string,
+  fontSize? : number,
+  borderColor?: string,
+  borderWidth?: number,
+  borderRadius?: number
+}
+
+const GradeDetailsCircle = ({borderRadius,width,height,backgroundColor,shadowColor,shadowRadius, shadowOpacity, children}: GradeDetailsCircleParam) => {
   return(
-    <View style = {{flex:1, justifyContent: "center", alignContent: "center", paddingBottom: "5%"}}>
-    <View style={styles.container}>
-    <Text style = {styles.titleText}>{gradeTitle}</Text>
-    <Text style = {{margin: 20}}>
-     <Text style = {styles.percentageText}>{progress}</Text>
-     <Text style={{fontWeight: "400", fontSize : 18}}>%</Text>
-    </Text>
-    <Text style = {[styles.statusText, {color: statusColor, borderColor:statusColor}]}>{status}</Text>
-    </View>
+    <View style = {styles.container}>
+      <View style={[styles.circleStyle,{borderRadius : borderRadius != undefined? borderRadius : Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+      width: width != undefined? width :  Dimensions.get('window').width * 0.7,
+      height:height != undefined? height: Dimensions.get('window').width *0.7,
+      backgroundColor:backgroundColor != undefined? backgroundColor: "#FFFFFF",
+      shadowColor: shadowColor != undefined? shadowColor: "#000",
+      shadowRadius:shadowRadius != undefined? shadowRadius: normalize(14),
+      shadowOpacity: shadowOpacity != undefined? shadowOpacity: 0.16,
+      }]}>
+      {children}
+      </View>
     </View>
   );
 };
 
+const GradeDetailsTitle = ({text, fontSize, fontWeight, color}: GradeDetailsTextParams) => {
+  return(
+      <Text style = {[{
+        fontSize: fontSize != undefined? fontSize: 18,
+        color:color != undefined? color: "#3D444B",
+        fontWeight:fontWeight !=undefined?fontWeight: "600"}
+      ]}>{text}</Text>
+  );
+}
+
+const GradeDetailsProgress = ({text,fontSize, fontWeight, color}: GradeDetailsTextParams) => {
+  fontSize = fontSize != undefined? fontSize : 40;
+  return(
+    <Text style = {{margin: 20}}>
+      <Text style = {[styles.percentageTextStyle,{
+        fontSize: fontSize,
+        color: color != undefined? color: "#3D444B",
+        fontWeight: fontWeight !=undefined? fontWeight: "900",
+      }
+      ]}>{text}</Text>
+      <Text style={{
+        fontWeight: fontWeight !=undefined? fontWeight: "400", 
+        fontSize : (fontSize!/2)}}>%</Text>
+   </Text>
+  );
+}
+
+const GradeDetailsStatus = ({text, borderColor, color, backgroundColor,fontSize, borderRadius, borderWidth }: GradeDetailsTextParams) => {
+  return(
+    <Text style = {[styles.statusTextStyle, {color: color,
+      borderColor:borderColor != undefined? borderColor: "#FFFFFF", 
+      backgroundColor : backgroundColor != undefined? backgroundColor: "#FFFFFF",
+      fontSize:fontSize != undefined? fontSize: 10,
+      borderRadius: borderRadius != undefined? borderRadius: 5,
+      borderWidth: borderWidth != undefined? borderWidth:1
+    }]}>{text}</Text>
+  );
+}
+
 const styles = StyleSheet.create({
-    container: {
-      borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-      width: Dimensions.get('window').width * 0.7,
-      height: Dimensions.get('window').width *0.7,
+    container:{
+      flex:1, 
+      justifyContent: "center", 
+      alignContent: "center", 
+      paddingBottom: "5%"
+    },
+    circleStyle: {
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection:'column',
-      shadowOpacity: 0.16,
-      backgroundColor: "#FFFFFF",
-      shadowColor: "#000",
       shadowOffset: { width: 0, height: normalize(10) },
-      shadowRadius: normalize(14)
     },
-    titleText: {
-      fontSize: 18,
-      color: "#3D444B",
-      fontWeight: "600"
-    },
-    percentageText: {
-      fontSize: 40,
-      color: "#3D444B",
-      fontWeight: "900",
+    percentageTextStyle: {
       margin: 15
     }, 
-    statusText: {
-      borderRadius: 5,
-      borderWidth: 1,
-      backgroundColor: "#FFFFFF",    
+    statusTextStyle: {
       padding : 2,
-      fontSize: 10,
       textAlign: 'center'
     }
   });
 
-export default GradeDetailsCircle;
+export  { GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus };

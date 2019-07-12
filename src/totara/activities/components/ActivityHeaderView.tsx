@@ -23,31 +23,33 @@
 import React from "react";
 import { Text, View , StyleSheet } from "react-native";
 
-type ActivityHeaderViewParam = {
+  type ActivityHeaderViewParam = {
     title: string,
-    fontSize: number
+    color?: string,
+    fontWeight?: string,
+    fontSize?: number
   }
   
-const ActivityHeaderView = ({title, fontSize}: ActivityHeaderViewParam) => {
-    return(
-      <View style= { styles.container }>
+const ActivityHeaderView = ({title, fontSize, color, fontWeight}: ActivityHeaderViewParam) => {
+  return(
+    <View style= { styles.container }>
       <Text style= { [styles.titleText, {fontSize: fontSize}]}>{title}</Text>
-      </View>
-    );
+    </View>
+  );
 };
 
-  const styles = StyleSheet.create({
-    container: {
-      paddingTop: 20,
-      paddingLeft: 20,
-      paddingRight: 20,
-      justifyContent:"flex-start"
-    },
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    justifyContent:"flex-start"
+  },
     titleText: {
-        color: "#3D444B",
-        fontWeight: "500",
-        textAlign: 'center',
-      }
-    });
+    color: "#3D444B",
+    fontWeight: "500",
+    textAlign: 'center',
+  }
+});
 
   export default ActivityHeaderView;

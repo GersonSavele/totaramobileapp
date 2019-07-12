@@ -20,13 +20,13 @@
  */
 
 import React from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Button } from "native-base";
 import { Activity } from "@totara/types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import GradeDetailsCircle from "./components/GradeDetailsCircle";
-import ActivityBottomView from "../components/ActivityBottomView";
+import {GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus } from "./components/GradeDetailsCircle";
+import {ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton} from "../components/ActivityBottomView";
 import ActivityHeaderView from "../components/ActivityHeaderView";
 import { AuthenticatedWebView } from "@totara/auth";
 
@@ -38,35 +38,50 @@ class ScormActivity extends React.Component<Props, States> {
       screen : 1
     };
   }
-  
+
   render(){
     switch (this.state.screen) {
-      case 1:
-        return (
-          <View style = {{flex : 1, alignItems: 'center', flexDirection:'column', alignContent:"space-between"}}>
-            <ActivityHeaderView title = "A title is one or more words used before or after a person's name, in certain contexts. It may signify either veneration, an official position, or a professional or academic qualification" 
-            fontSize = {12}></ActivityHeaderView>
-            <GradeDetailsCircle gradeTitle = "Your highest grade" progress = {0} status = "VIEW TO COMPLETE" statusColor = "#000"></GradeDetailsCircle>
-            <ActivityBottomView title = "" fontSize = {12} buttonTitle = "Begin" buttonBackgroundColor = "#69BD45" buttonTitleColor = "#FFF" buttonBorderColor = "#69BD45" 
-            onPress = {this.loadScormPlayer}></ActivityBottomView>
-          </View>)
+        case 1:
+          return (
+             <View style = {styles.container}>
+              <ActivityHeaderView title = "A title is one or more words used before or after a person's name, in certain contexts. It may signify either veneration, an official position, or a professional or academic qualification" 
+              fontSize = {12}></ActivityHeaderView>
+                <GradeDetailsCircle>
+                  <GradeDetailsTitle text = "Your highest grade"></GradeDetailsTitle>
+                  <GradeDetailsProgress text = "0"></GradeDetailsProgress>
+                  <GradeDetailsStatus text = "VIEW TO COMPLETE" borderColor = "#000" color = "#000" ></GradeDetailsStatus>
+                </GradeDetailsCircle>
+              <ActivityBottomView>
+                <ActivityBottomViewTitle attempt ="0" leftAttempt = "unlimited"></ActivityBottomViewTitle>
+                <ActivityBottomViewButton buttonBackgroundColor = "#69BD45" buttonBorderColor = "#69BD45" 
+                onPress = {this.loadScormPlayer} buttonTitleColor = "#FFF" buttonTitle = "Begin" buttonTitleFontWeight = "600"></ActivityBottomViewButton>
+              </ActivityBottomView>
+            </View>)
         case 2:
-        return (
-         <View style={{ flex: 1 }} >
-          <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
-            <FontAwesomeIcon icon="arrow-right" size={24}/>
-          </Button>
-          <AuthenticatedWebView uri={this.props.activity.url}/>
-        </View>)
-      default:
-        return (
-          <View style = {{flex : 1, alignItems: 'center', flexDirection:'column', alignContent:"space-between"}}>
-            <ActivityHeaderView title = {"Awesome Sandy.\n Your are doing great.!"} fontSize = {20}></ActivityHeaderView>
-            <GradeDetailsCircle gradeTitle = "Your grade" progress = {80} status = "PASSED" statusColor = "#69BD45"></GradeDetailsCircle>
-            <ActivityBottomView title = "" fontSize = {12} buttonTitle = "Attempt again" buttonBackgroundColor = "#FFF" buttonTitleColor = "#3D444B" buttonBorderColor = "#3D444B"  
-            onPress = {this.loadInfromationView}></ActivityBottomView>
-          </View>)
-    }
+          return (
+            <View style={{ flex: 1 }} >
+              <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
+              <FontAwesomeIcon icon="arrow-right" size={24}/>
+              </Button>
+              <AuthenticatedWebView uri={this.props.activity.url}/>
+            </View>)
+        default:
+          return (
+            <View style = {styles.container}>
+              <ActivityHeaderView title = "A title is one or more words used before or after a person's name, in certain contexts. It may signify either veneration, an official position, or a professional or academic qualification" 
+              fontSize = {12}></ActivityHeaderView>
+              <GradeDetailsCircle>
+                <GradeDetailsTitle text = "Your highest grade"></GradeDetailsTitle>
+                <GradeDetailsProgress text = "80"></GradeDetailsProgress>
+                <GradeDetailsStatus text = "PASSED" borderColor = "#69BD45" color = "#69BD45" ></GradeDetailsStatus>
+                </GradeDetailsCircle>
+              <ActivityBottomView>
+                <ActivityBottomViewTitle attempt ="1" leftAttempt = "unlimited"></ActivityBottomViewTitle>
+                <ActivityBottomViewButton buttonBackgroundColor = "#FFF" buttonBorderColor = "#3D444B" 
+                onPress = {this.loadScormPlayer} buttonTitleColor = "#3D444B" buttonTitle = "Attempt again" buttonTitleFontWeight = "600"></ActivityBottomViewButton>
+              </ActivityBottomView>
+            </View>)
+      }
   }
   loadScormPlayer = () => {
     this.setState({screen : 2})
@@ -76,7 +91,7 @@ class ScormActivity extends React.Component<Props, States> {
     this.setState({screen : 3})
   }
 
-  loadInfromationView = () => {
+  loadInformationView = () => {
     this.setState({screen : 1})
   }
 }
@@ -88,5 +103,13 @@ type Props = {
 type States = { 
   screen : number
 };
+const styles = StyleSheet.create({
+  container:{
+    flex : 1, 
+    alignItems: 'center', 
+    flexDirection:'column', 
+    alignContent:"space-between"
+  }
+});
 
 export default ScormActivity;

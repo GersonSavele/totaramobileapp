@@ -22,58 +22,90 @@
 import React from "react";
 import { Text, View , StyleSheet } from "react-native";
 import {Button} from "native-base";
+import { strict } from "assert";
+import { string } from "prop-types";
 
+  type ActivityBottomViewParam = {
+    children?: any[];
+  }
 
-type ActivityBottomViewParam = {
-    title: string,
-    fontSize: number,
-    buttonTitle : string,
-    buttonBackgroundColor : string,
-    buttonTitleColor : string,
-    buttonBorderColor : string,
+  type ActivityBottomViewTitleParam = {
+    fontSize?: number, 
+    color?: string,
+    fontWeight?: string,
+    attempt?: string,
+    leftAttempt?:string
+  }
+
+  type ActivityBottomViewButtonParam = {
+    buttonTitle? : string,
+    buttonBackgroundColor? : string,
+    buttonTitleColor? : string,
+    buttonBorderColor? : string,
+    buttonTitleFontWeight? : string,
+    borderRadius?: number,
+    borderWidth? : number,
+    fontSize? : number,
     onPress: (()=> void)
   }
   
-const ActivityBottomView = ({title, fontSize, buttonTitle, buttonBackgroundColor, buttonTitleColor, buttonBorderColor, onPress }: ActivityBottomViewParam) => {
+const ActivityBottomView = ({children}: ActivityBottomViewParam) => {
     return(
       <View style= { styles.container }>
-        <Text>
-        <Text style= { styles.titleText }>You have done </Text>
-        <Text style= {{fontWeight: "bold", fontSize : 14}}>0</Text>
-        <Text style= { styles.titleText }> attempt {"\n"}and </Text>
-        <Text style= {{fontWeight: "bold", fontSize : 14}}>unlimited</Text>
-        <Text style= { styles.titleText }> attempt left.</Text>
-        </Text>
-        <Button style = {[styles.buttonStyle, {backgroundColor: buttonBackgroundColor, borderColor:buttonBorderColor}]} onPress = {onPress}>
-         <Text style = {{color: buttonTitleColor, fontWeight: "600"}}>{buttonTitle}</Text>
-      </Button>
+        {children}
       </View>
     );
 };
 
-  const styles = StyleSheet.create({
+const ActivityBottomViewTitle = ({fontSize, color, fontWeight, attempt, leftAttempt}: ActivityBottomViewTitleParam) => {
+  return(
+    <Text>
+      <Text style= { styles.titleText }>You have done </Text>
+      <Text style= {{fontWeight: "bold", fontSize : 14}}>{attempt}</Text>
+      <Text style= { styles.titleText }> attempt {"\n"}and </Text>
+      <Text style= {{fontWeight: "bold", fontSize : 14}}>{leftAttempt}</Text>
+      <Text style= { styles.titleText }> attempt left.</Text>
+  </Text>
+  );
+}
+
+const ActivityBottomViewButton = ({buttonBackgroundColor,buttonBorderColor,onPress,buttonTitleColor,buttonTitle, buttonTitleFontWeight, borderRadius, borderWidth, fontSize}: ActivityBottomViewButtonParam) =>{
+  return (
+    <Button style = {[styles.buttonStyle, {
+      backgroundColor: buttonBackgroundColor != undefined? buttonBackgroundColor : "#FFF", 
+      borderColor:buttonBorderColor != undefined? buttonBorderColor : "#3D444B",
+      borderRadius:borderRadius != undefined? borderRadius : 20,
+      borderWidth:borderWidth != undefined? borderWidth : 1
+    }]} 
+      onPress = {onPress}>
+      <Text style = {{
+        color: buttonTitleColor != undefined? buttonTitleColor : "#FFF",  
+        fontWeight: buttonTitleFontWeight != undefined? buttonTitleFontWeight : "normal",
+        fontSize : fontSize != undefined? fontSize : 18,
+        alignSelf: 'center'
+        }}>{buttonTitle}</Text>
+    </Button>
+  );
+}
+
+const styles = StyleSheet.create({
     container: {
-      justifyContent:"flex-end",
-      marginBottom:"10%",
-      flexDirection:'column'
+        justifyContent:"flex-end",
+        marginBottom:"10%",
+        flexDirection:'column'
     },
     titleText: {
         fontSize: 12,
         color: "#3D444B",
         fontWeight: "normal",
-        textAlign: 'center',
+        textAlign: 'center'
       },
     buttonStyle : {
-        borderRadius: 20,
-        borderWidth: 1,
-        color: "#FFF",    
         margin : 20,
         paddingRight:"20%",
         paddingLeft: "20%",
-        fontSize: 10,
-        alignSelf: 'center',
-        
+        alignSelf: 'center'
     }
     });
 
-  export default ActivityBottomView;
+export  {ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton};
