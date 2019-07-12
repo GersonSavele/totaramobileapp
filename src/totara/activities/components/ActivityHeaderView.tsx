@@ -33,7 +33,11 @@ import { Text, View , StyleSheet } from "react-native";
 const ActivityHeaderView = ({title, fontSize, color, fontWeight}: ActivityHeaderViewParam) => {
   return(
     <View style= { styles.container }>
-      <Text style= { [styles.titleText, {fontSize: fontSize}]}>{title}</Text>
+      <Text style= { [styles.titleText, {
+        fontSize: fontSize != undefined?fontSize:12,
+        color:color != undefined? color:"#3D444B",
+        fontWeight: fontWeight != undefined? fontWeight:"400"
+        }]}>{title}</Text>
     </View>
   );
 };
@@ -46,9 +50,7 @@ const styles = StyleSheet.create({
     justifyContent:"flex-start"
   },
     titleText: {
-    color: "#3D444B",
-    fontWeight: "500",
-    textAlign: 'center',
+    textAlign: 'center'
   }
 });
 

@@ -52,7 +52,7 @@ class ScormActivity extends React.Component<Props, States> {
                   <GradeDetailsStatus text = "VIEW TO COMPLETE" borderColor = "#000" color = "#000" ></GradeDetailsStatus>
                 </GradeDetailsCircle>
               <ActivityBottomView>
-                <ActivityBottomViewTitle attempt ="0" leftAttempt = "unlimited"></ActivityBottomViewTitle>
+                <ActivityBottomViewTitle attempts ="0" leftAttempts = "unlimited"></ActivityBottomViewTitle>
                 <ActivityBottomViewButton buttonBackgroundColor = "#69BD45" buttonBorderColor = "#69BD45" 
                 onPress = {this.loadScormPlayer} buttonTitleColor = "#FFF" buttonTitle = "Begin" buttonTitleFontWeight = "600"></ActivityBottomViewButton>
               </ActivityBottomView>
@@ -76,7 +76,7 @@ class ScormActivity extends React.Component<Props, States> {
                 <GradeDetailsStatus text = "PASSED" borderColor = "#69BD45" color = "#69BD45" ></GradeDetailsStatus>
                 </GradeDetailsCircle>
               <ActivityBottomView>
-                <ActivityBottomViewTitle attempt ="1" leftAttempt = "unlimited"></ActivityBottomViewTitle>
+                <ActivityBottomViewTitle attempts ="1" leftAttempts = "unlimited"></ActivityBottomViewTitle>
                 <ActivityBottomViewButton buttonBackgroundColor = "#FFF" buttonBorderColor = "#3D444B" 
                 onPress = {this.loadScormPlayer} buttonTitleColor = "#3D444B" buttonTitle = "Attempt again" buttonTitleFontWeight = "600"></ActivityBottomViewButton>
               </ActivityBottomView>

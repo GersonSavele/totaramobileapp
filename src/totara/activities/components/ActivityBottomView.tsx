@@ -22,8 +22,6 @@
 import React from "react";
 import { Text, View , StyleSheet } from "react-native";
 import {Button} from "native-base";
-import { strict } from "assert";
-import { string } from "prop-types";
 
   type ActivityBottomViewParam = {
     children?: any[];
@@ -33,8 +31,8 @@ import { string } from "prop-types";
     fontSize?: number, 
     color?: string,
     fontWeight?: string,
-    attempt?: string,
-    leftAttempt?:string
+    attempts?: string,
+    leftAttempts?:string
   }
 
   type ActivityBottomViewButtonParam = {
@@ -57,13 +55,13 @@ const ActivityBottomView = ({children}: ActivityBottomViewParam) => {
     );
 };
 
-const ActivityBottomViewTitle = ({fontSize, color, fontWeight, attempt, leftAttempt}: ActivityBottomViewTitleParam) => {
+const ActivityBottomViewTitle = ({fontSize, color, fontWeight, attempts, leftAttempts}: ActivityBottomViewTitleParam) => {
   return(
     <Text>
       <Text style= { styles.titleText }>You have done </Text>
-      <Text style= {{fontWeight: "bold", fontSize : 14}}>{attempt}</Text>
+      <Text style= {{fontWeight: "bold", fontSize : 14}}>{attempts}</Text>
       <Text style= { styles.titleText }> attempt {"\n"}and </Text>
-      <Text style= {{fontWeight: "bold", fontSize : 14}}>{leftAttempt}</Text>
+      <Text style= {{fontWeight: "bold", fontSize : 14}}>{leftAttempts}</Text>
       <Text style= { styles.titleText }> attempt left.</Text>
   </Text>
   );
