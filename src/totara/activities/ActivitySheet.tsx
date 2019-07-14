@@ -26,7 +26,7 @@ import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { ActivityType } from "@totara/types";
-import { ScormActivity } from "./scorm/ScormActivity";
+import ScormActivity from "./scorm/ScormActivity";
 import { WebviewActivity } from "./webview/WebviewActivity";
 
 type contextData = {
@@ -94,21 +94,19 @@ export class ActivitySheetProvider extends React.Component {
 
 const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity, onClose}, ref) =>
   <SlidingUpPanel ref={ref} friction={0.25}>
-      <View style={styles.panel}>
-       <View style={styles.navigationStyle}>
-         <StatusBar hidden/>
-         <View style={styles.rightContainer}>
-          <Button style = {styles.buttonStyle} onPress={onClose}>
-          <FontAwesomeIcon icon="times" size={24}/>
+    <View style={styles.panel}>
+      <View style={styles.navigationStyle}>
+        <StatusBar hidden/>
+        <View style={styles.rightContainer}>
+          <Button style={styles.buttonStyle} onPress={onClose}>
+            <FontAwesomeIcon icon="times" size={24}/>
           </Button>
-          </View>
-          <Text style = {styles.titleStyle}> {currentActivity.itemName} </Text>
-          <View style={styles.rightContainer}></View>
-          </View>
-        {
-          (currentActivity) && <ActivityWrapper activity={currentActivity}/>
-        }
-      </View> 
+        </View>
+        <Text style={styles.titleStyle}> {currentActivity.itemName} </Text>
+        <View style={styles.rightContainer}></View>
+      </View>
+      {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
+    </View>
   </SlidingUpPanel>
 );
 

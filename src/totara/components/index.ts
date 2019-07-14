@@ -34,5 +34,5 @@ export {
   ContentIcon,
   CheckBadge,
   ActivityLauncher,
-  ProgressCircle,
+  ProgressCircle
 }
