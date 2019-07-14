@@ -55,7 +55,7 @@ const GradeDetailsCircle = ({borderRadius,width,height,backgroundColor,shadowCol
       backgroundColor:backgroundColor != undefined? backgroundColor: "#FFFFFF",
       shadowColor: shadowColor != undefined? shadowColor: "#000",
       shadowRadius:shadowRadius != undefined? shadowRadius: normalize(14),
-      shadowOpacity: shadowOpacity != undefined? shadowOpacity: 0.16,
+      shadowOpacity: shadowOpacity != undefined? shadowOpacity: 0.16
       }]}>
       {children}
       </View>

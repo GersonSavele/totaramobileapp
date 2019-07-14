@@ -74,7 +74,7 @@ class ScormActivity extends React.Component<Props, States> {
                 <GradeDetailsTitle text = "Your highest grade"></GradeDetailsTitle>
                 <GradeDetailsProgress text = "80"></GradeDetailsProgress>
                 <GradeDetailsStatus text = "PASSED" borderColor = "#69BD45" color = "#69BD45" ></GradeDetailsStatus>
-                </GradeDetailsCircle>
+              </GradeDetailsCircle>
               <ActivityBottomView>
                 <ActivityBottomViewTitle attempts ="1" leftAttempts = "unlimited"></ActivityBottomViewTitle>
                 <ActivityBottomViewButton buttonBackgroundColor = "#FFF" buttonBorderColor = "#3D444B" 
