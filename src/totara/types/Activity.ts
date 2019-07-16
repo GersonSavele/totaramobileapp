@@ -32,7 +32,12 @@ export interface Activity extends LearningStatus {
 }
 
 export interface ScormActivity extends Activity {
-  type: "scorm"
+  type: "scorm",
+  currentAttempt : number,
+  maxAttempt : number,
+  score : number,
+  webEntryUrl?: string,
+  isAvailable :boolean
 }
 
 export interface SeminarActivity extends Activity {

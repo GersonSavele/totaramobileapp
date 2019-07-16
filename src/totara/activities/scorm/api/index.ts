@@ -15,22 +15,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import { LearningItem, LearningItemType } from "./LearningItem";
-import { Activity, ActivityType, ScormActivity } from "./Activity";
-import { Course } from "./Course";
-import { Program } from "./Program";
-import { Status, LearningStatus } from "./LearningStatus";
+
+import ScormGQLQuery from "./Query";
+import { Response,  Variables} from "./Types";
 
 export {
-  LearningItem,
-  LearningItemType,
-  ScormActivity,
-  Activity,
-  ActivityType,
-  Course,
-  Program,
-  Status,
-  LearningStatus
-}
+    ScormGQLQuery,
+    Response,
+    Variables
+  }
