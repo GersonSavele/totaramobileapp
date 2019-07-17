@@ -37,6 +37,7 @@ const query = gql`
       progressPercentage
       groupCount
       status  
+      imageSrc
     }
   }
 `;

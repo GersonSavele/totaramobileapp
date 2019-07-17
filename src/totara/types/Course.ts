@@ -33,4 +33,5 @@ export interface Course extends LearningStatus {
   progressPercentage?: number
   groupCount?: number
   sections: [Section]
+  imageSrc?: string
 }

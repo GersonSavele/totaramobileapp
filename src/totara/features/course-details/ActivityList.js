@@ -20,14 +20,15 @@
  *
  */
 
-import {SectionList, StyleSheet, Text, View} from "react-native";
+import { SectionList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-import {ContentIcon, CheckBadge} from "@totara/components";
-import {normalize, resizeByScreenSize, h4, normal, lrPadding} from "@totara/theme";
-import {Status} from "@totara/types";
+import { ContentIcon, CheckBadge } from "@totara/components";
+import { normalize, resizeByScreenSize, h4, normal, lrPadding } from "@totara/theme";
+import { Status } from "@totara/types";
+import { ActivitySheetConsumer } from "@totara/activities";
 
 
 class ActivityList extends React.Component {
@@ -58,23 +59,42 @@ class ActivityList extends React.Component {
 
   renderActivity = ({item, index, section}) => {
 
-    const BuildContentIcon = () => <ContentIcon icon={item.type} iconSize={24} size={50}/>;
+    const BuildContentIcon = ({type}) => {
+      switch (type) {
+        case "scorm":
+          return <ContentIcon icon={"film"} iconSize={24} size={50}/>;
+        case "forum" :
+          return <ContentIcon icon={"comments"} iconSize={24} size={50}/>;
+        case "quiz" :
+          return <ContentIcon icon={"pen"} iconSize={24} size={50}/>;
+        case "assign" :
+          return <ContentIcon icon={"pen-square"} iconSize={24} size={50}/>;
+        case "facetoface" :
+          return <ContentIcon icon={"bullhorn"} iconSize={24} size={50}/>;
+        default:
+          return <ContentIcon icon={"book"} iconSize={24} size={50}/>;
+      }
+    };
 
     const Activity = () =>
       <View style={styles.activity}>
         {
           (item.status === Status.done)
             ? <CheckBadge size={8} offsetSize={2}>
-                <BuildContentIcon/>
+                <BuildContentIcon type={item.type}/>
               </CheckBadge>
-            : <BuildContentIcon/>
+            : <BuildContentIcon type={item.type}/>
         }
-        <View style={{flex: 1}}>
-          <Text numberOfLines={1} style={(item.status) === Status.active ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
-          <Text numberOfLines={1} style={styles.activitySummaryText}>{item.summary}</Text>
-        </View>
+        <ActivitySheetConsumer>
+          {({setCurrentActivity}) =>
+            <TouchableOpacity style={{flex: 1}} onPress={() => setCurrentActivity(item)}>
+              <Text numberOfLines={1} style={(item.status) === Status.active ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
+              <Text numberOfLines={1} style={styles.activitySummaryText}>{item.summary}</Text>
+            </TouchableOpacity>
+          }
+        </ActivitySheetConsumer>
         {
-          (item.type === "film") ?
+          (item.type === "scorm") ?
             <View style={{paddingLeft: lrPadding}}>
               <FontAwesomeIcon icon="cloud-download-alt" size={24} color="black"/>
             </View>

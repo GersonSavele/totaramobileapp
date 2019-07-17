@@ -17,22 +17,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
+import { LearningStatus } from "./LearningStatus";
 
-export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle
+export interface Activity extends LearningStatus {
+  id: number,
+  type: string,
+  itemName: string,
+  summary?: string,
+  imgSrc?: string,
+  progressPercentage?: number,
+  url: string
 }
+
+export interface ScormActivity extends Activity {
+  type: "scorm"
+}
+
+export interface SeminarActivity extends Activity {
+  type: "facetoface"
+}
+
+export interface ForumsActivity extends Activity {
+  type: "forum"
+}
+
+export interface QuizActivity extends Activity {
+  type: "quiz"
+}
+
+export interface AssignmentActivity extends Activity {
+  type: "assign"
+}
+
+export type ActivityType =
+  ScormActivity |
+  SeminarActivity |
+  ForumsActivity |
+  QuizActivity |
+  AssignmentActivity;

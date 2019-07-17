@@ -15,21 +15,29 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { LearningItem, LearningItemType } from "./LearningItem";
-import { Activity, ActivityType } from "./Activity";
-import { Course } from "./Course";
-import { Program } from "./Program";
-import { Status, LearningStatus } from "./LearningStatus";
+import React from "react";
+import { View } from "react-native";
 
-export {
-  LearningItem,
-  LearningItemType,
-  Activity,
-  ActivityType,
-  Course,
-  Program,
-  Status,
-  LearningStatus,
+import { Activity } from "@totara/types";
+import { AuthenticatedWebView } from "@totara/auth";
+
+/**
+ * WebviewActivity opens an activity with the given url
+ */
+const WebviewActivity = ({activity}: Props) => (
+  <View style={{flex: 1}}>
+    <View style={{flex: 1}}>
+      <AuthenticatedWebView uri={activity.url}/>
+    </View>
+  </View>
+);
+
+type Props = {
+  activity: Activity
 }
+
+export { WebviewActivity };

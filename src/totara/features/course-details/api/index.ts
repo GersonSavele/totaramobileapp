@@ -35,6 +35,7 @@ const query = gql`
       summary
       progressPercentage
       groupCount
+      imageSrc
       sections {
         sectionName
         status  
@@ -44,6 +45,7 @@ const query = gql`
             itemName
             status
             summary
+            url
         }
       }  
     }

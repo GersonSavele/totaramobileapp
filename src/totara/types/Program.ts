@@ -33,4 +33,5 @@ export interface Program {
   progressPercentage?: number
   groupCount?: number
   sections: [Section]
+  imageSrc?: string
 }
