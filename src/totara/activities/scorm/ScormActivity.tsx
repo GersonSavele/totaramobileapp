@@ -40,7 +40,6 @@ type ScormActivityViewParam = {
   data: any,
   error: any, 
   loading : boolean,
-  headerViewTile : string,
   headerViewFontSize? : number,
   gradeDetailsTitle : string,
   gradeDetailsStatus : string,
@@ -61,7 +60,7 @@ class ScormActivity extends React.Component<Props, States> {
     };
   }
 
-  showScormDetails = ({data, error, loading, headerViewTile, headerViewFontSize, gradeDetailsTitle, gradeDetailsStatus, borderColor,
+  showScormDetails = ({data, error, loading, headerViewFontSize, gradeDetailsTitle, gradeDetailsStatus, borderColor,
     color,bottomViewButtonTitle,bottomViewButtonTitleColor,bottomViewButtonBackgroundColor,bottomViewButtonBorderColor,
     bottomViewButtonTitleFontWeight }: ScormActivityViewParam )  => {
     if (loading) return <Text>{translate("general.loading")}</Text>;
@@ -69,7 +68,7 @@ class ScormActivity extends React.Component<Props, States> {
     if (data) {
       return(
         <View style = {styles.container}>      
-         <ActivityHeaderView title = {headerViewTile}
+         <ActivityHeaderView title = {this.props.activity.itemName}
          fontSize = {headerViewFontSize}></ActivityHeaderView>
          <GradeDetailsCircle>
           <GradeDetailsTitle text = {gradeDetailsTitle}></GradeDetailsTitle>
@@ -97,7 +96,6 @@ class ScormActivity extends React.Component<Props, States> {
                    data : data, 
                    error : error, 
                    loading : loading,
-                   headerViewTile : "A title is one or more words used before or after a persons name", 
                    headerViewFontSize : 12,
                    gradeDetailsTitle : "Your highest grade",
                    gradeDetailsStatus : "VIEW TO COMPLETE",
@@ -129,7 +127,6 @@ class ScormActivity extends React.Component<Props, States> {
                   data : data, 
                   error : error, 
                   loading : loading,
-                  headerViewTile : "A title is one or more words used before or after a persons name", 
                   headerViewFontSize : 12,
                   gradeDetailsTitle : "Your highest grade",
                   gradeDetailsStatus : "PASSED",

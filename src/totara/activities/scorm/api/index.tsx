@@ -19,12 +19,43 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
+import React from "react";
+import gql from "graphql-tag";
+import { ScormActivity } from "@totara/types";
+import { Query } from "react-apollo";
+import console = require("console");
+import { View } from "native-base";
 
-import ScormGQLQuery from "./Query";
-import { Response,  Variables} from "./Types";
 
-export {
-    ScormGQLQuery,
-    Response,
-    Variables
+class ScormQuery extends Query<Response, Variables> {}
+
+type Response = {
+    scorm: ScormActivity;
   }
+  
+interface Variables {
+    id: number;
+  }
+
+const ScormGQLQuery = gql` 
+query scorm($id: ID!) {
+    scorm(id: $id) {
+      id
+      webEntryUrl
+      currentAttempt
+      maxAttempt
+      score
+      isAvailable
+    }
+  }
+`;
+
+const GetScormQuery = ({props,id}: any) => {
+   <ScormQuery  query= { ScormGQLQuery } variables = {{ id : id }}>
+    {props}
+   </ScormQuery>
+}
+
+
+
+export default GetScormQuery;
