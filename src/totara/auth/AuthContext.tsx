@@ -34,6 +34,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import { config } from "@totara/lib";
 import WebLogin from "./web-login";
+import AppLinkLogin from "./app-link-login/AppLinkLogin";
 
 
 const AuthContext = React.createContext<State>(
@@ -75,6 +76,7 @@ class AuthProvider extends React.Component<Props, State> {
     };
 
     this.bootstrap();
+    new AppLinkLogin({onLoginSuccess: this.onLoginSuccess, onLoginFailure: this.onLoginFailure});
   }
 
   bootstrap = async () => {
