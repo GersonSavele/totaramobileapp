@@ -25,21 +25,13 @@ import { Button } from "native-base";
 import { Activity } from "@totara/types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"; 
 import { Query } from "react-apollo";
-import  {Response, Variables, ScormGQLQuery}  from "./api";
+import { Response, Variables, ScormGQLQuery }  from "./api";
 
-import {GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus } from "./components/GradeDetailsCircle";
-import {ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton} from "../components/ActivityBottomView";
+import { GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus } from "./components/GradeDetailsCircle";
+import { ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton } from "../components/ActivityBottomView";
 import ActivityHeaderView from "../components/ActivityHeaderView";
 import { AuthenticatedWebView } from "@totara/auth";
 import { translate } from "@totara/locale";
-import { GRADE_INFORMATION_HEADER_TITLE,
-         GRADE_INFORMATION_HEADER_BUTTON_TITLE, 
-         GRADE_INFORMATION_STATUS,
-         GRADE_FEEDBACK_HEADER_TITLE,
-         GRADE_FEEDBACK_HEADER_BUTTON_TITLE,
-         GRADE_FEEDBACK_STATUS
-        } from "@totara/lib/Constant";
-
 
 class ScormQuery extends Query<Response, Variables> {}
 
@@ -58,6 +50,7 @@ type ScormActivityViewParam = {
   bottomViewButtonBorderColor : string,
   bottomViewButtonTitleFontWeight : string
 }
+
 class ScormActivity extends React.Component<Props, States> {
 
   constructor(props: Props) {
@@ -66,6 +59,7 @@ class ScormActivity extends React.Component<Props, States> {
       screen : 1
     };
   }
+
 
   showScormDetails = ({data, error, loading, headerViewFontSize, gradeDetailsTitle, gradeDetailsStatus, borderColor,
     color,bottomViewButtonTitle,bottomViewButtonTitleColor,bottomViewButtonBackgroundColor,bottomViewButtonBorderColor,
@@ -87,16 +81,17 @@ class ScormActivity extends React.Component<Props, States> {
           <ActivityBottomViewButton buttonBackgroundColor = {bottomViewButtonBackgroundColor} buttonBorderColor = {bottomViewButtonBorderColor} 
           onPress = {this.loadScormPlayer} buttonTitleColor = {bottomViewButtonTitleColor} buttonTitle = {bottomViewButtonTitle} buttonTitleFontWeight = {bottomViewButtonTitleFontWeight}></ActivityBottomViewButton>
         </ActivityBottomView> 
-        </View>   
-      )
+        </View>)
       }
     }
+
 
   render(){
     switch (this.state.screen) {
         case 1:
           return (
              <View style = {styles.container}>
+
               <ScormQuery  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
               {({ data, error, loading }) => (
                 this.showScormDetails({
@@ -104,11 +99,11 @@ class ScormActivity extends React.Component<Props, States> {
                    error : error, 
                    loading : loading,
                    headerViewFontSize : 12,
-                   gradeDetailsTitle : GRADE_INFORMATION_HEADER_TITLE,
-                   gradeDetailsStatus : GRADE_INFORMATION_STATUS,
+                   gradeDetailsTitle : translate("Your highest grade"),
+                   gradeDetailsStatus : translate("VIEW TO COMPLETE"),
                    borderColor : "#000",
                    color: "#000",
-                   bottomViewButtonTitle : GRADE_INFORMATION_HEADER_BUTTON_TITLE,
+                   bottomViewButtonTitle : translate("Begin"),
                    bottomViewButtonTitleColor: "#FFF",
                    bottomViewButtonBackgroundColor: "#69BD45",
                    bottomViewButtonBorderColor: "#69BD45",
@@ -135,11 +130,11 @@ class ScormActivity extends React.Component<Props, States> {
                   error : error, 
                   loading : loading,
                   headerViewFontSize : 12,
-                  gradeDetailsTitle : GRADE_FEEDBACK_HEADER_TITLE,
-                  gradeDetailsStatus : GRADE_FEEDBACK_STATUS,
+                  gradeDetailsTitle : translate("Your highest grade"),
+                  gradeDetailsStatus : translate("PASSED"),
                   borderColor : "#69BD45",
                   color: "#69BD45",
-                  bottomViewButtonTitle : GRADE_FEEDBACK_HEADER_BUTTON_TITLE,
+                  bottomViewButtonTitle : translate("Attempt again"),
                   bottomViewButtonTitleColor: "#3D444B",
                   bottomViewButtonBackgroundColor: "#FFF",
                   bottomViewButtonBorderColor: "#3D444B",
