@@ -27,53 +27,59 @@ export default class AuthLinkLogin extends React.Component<Props> {
   private _keyToken: string = "token";
   private _keySite: string = "site";
   private _eventType: string = "url";
+  private _requestRegister: string = "register";
   constructor(props: Props) {
     super(props);
     this.deepLinkListener();
   };
 
   private deepLinkListener = () => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       Linking.getInitialURL().then(url => {
         this.getAuthSecret(url);
       });
     } else {
       Linking.addEventListener(this._eventType, this.handleUrlOniOS);
     }
-  }
+  };
 
-  private handleUrlOniOS = (event) => { 
+  private handleUrlOniOS = (event: { url: string }) => { 
     this.getAuthSecret(event.url);
-  }
+  };
 
-  // componentWillUnmount() { // C
+  // componentWillUnmount() { 
   //   Linking.removeEventListener(this._eventType, this.handleUrlOniOS);
   // }
 
-  private getAuthSecret = (url) => { // E
-    var token = this.getUrlParameter(url, this._keyToken);
-    var site = this.getUrlParameter(url, this._keySite);
-    if (site != "" && token != "") {
-      this.props.onLoginSuccess({uri: site, secret: token});
-    } else {
-      var errorInfo = "Invalid request.";
-      if (site == "" && token == "") {
-        errorInfo = "Invalid request, cannot find site and token.";
-      } else if (site == "") {
-        errorInfo = "Invalid request, cannot find site.";
-      } else if (token == "") {
-        errorInfo = "Invalid request, cannot find token.";
-      } 
-      this.props.onLoginFailure(new Error(errorInfo));
+  private getAuthSecret = (url: string | null) => { 
+    if (url) {
+      var requstApi: string = url.replace(/(^\w+:\/\/)?(?:www\.)?/i, "").split("?")[0];
+      if (requstApi === this._requestRegister || requstApi === this._requestRegister+"/") {
+        var token = this.getUrlParameter(url, this._keyToken);
+        var site = this.getUrlParameter(url, this._keySite);
+        if (site != "" && token != "") {
+          this.props.onLoginSuccess({uri: site, secret: token});
+        } else {
+          var errorInfo = "Invalid request.";
+          if (site == "" && token == "") {
+            errorInfo = "Invalid request, cannot find site and token.";
+          } else if (site == "") {
+            errorInfo = "Invalid request, cannot find site.";
+          } else if (token == "") {
+            errorInfo = "Invalid request, cannot find token.";
+          } 
+          this.props.onLoginFailure(new Error(errorInfo));
+        }
+      }
     }
-  }
+  };
 
   private getUrlParameter = (url: string, key: string) => {
     key = key.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + key + '=([^&#]*)');
     var results = regex.exec(url);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-  }
+  };
 }
 
 type Props = {
