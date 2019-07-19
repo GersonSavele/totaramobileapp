@@ -23,15 +23,22 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Button } from "native-base";
 import { Activity } from "@totara/types";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"; 
 import { Query } from "react-apollo";
-import { ScormGQLQuery, Response, Variables } from "./api";
+import  {Response, Variables, ScormGQLQuery}  from "./api";
 
 import {GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus } from "./components/GradeDetailsCircle";
 import {ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton} from "../components/ActivityBottomView";
 import ActivityHeaderView from "../components/ActivityHeaderView";
 import { AuthenticatedWebView } from "@totara/auth";
 import { translate } from "@totara/locale";
+import { GRADE_INFORMATION_HEADER_TITLE,
+         GRADE_INFORMATION_HEADER_BUTTON_TITLE, 
+         GRADE_INFORMATION_STATUS,
+         GRADE_FEEDBACK_HEADER_TITLE,
+         GRADE_FEEDBACK_HEADER_BUTTON_TITLE,
+         GRADE_FEEDBACK_STATUS
+        } from "@totara/lib/Constant";
 
 
 class ScormQuery extends Query<Response, Variables> {}
@@ -97,11 +104,11 @@ class ScormActivity extends React.Component<Props, States> {
                    error : error, 
                    loading : loading,
                    headerViewFontSize : 12,
-                   gradeDetailsTitle : "Your highest grade",
-                   gradeDetailsStatus : "VIEW TO COMPLETE",
+                   gradeDetailsTitle : GRADE_INFORMATION_HEADER_TITLE,
+                   gradeDetailsStatus : GRADE_INFORMATION_STATUS,
                    borderColor : "#000",
                    color: "#000",
-                   bottomViewButtonTitle : "Begin",
+                   bottomViewButtonTitle : GRADE_INFORMATION_HEADER_BUTTON_TITLE,
                    bottomViewButtonTitleColor: "#FFF",
                    bottomViewButtonBackgroundColor: "#69BD45",
                    bottomViewButtonBorderColor: "#69BD45",
@@ -128,11 +135,11 @@ class ScormActivity extends React.Component<Props, States> {
                   error : error, 
                   loading : loading,
                   headerViewFontSize : 12,
-                  gradeDetailsTitle : "Your highest grade",
-                  gradeDetailsStatus : "PASSED",
+                  gradeDetailsTitle : GRADE_FEEDBACK_HEADER_TITLE,
+                  gradeDetailsStatus : GRADE_FEEDBACK_STATUS,
                   borderColor : "#69BD45",
                   color: "#69BD45",
-                  bottomViewButtonTitle : "Attempt again",
+                  bottomViewButtonTitle : GRADE_FEEDBACK_HEADER_BUTTON_TITLE,
                   bottomViewButtonTitleColor: "#3D444B",
                   bottomViewButtonBackgroundColor: "#FFF",
                   bottomViewButtonBorderColor: "#3D444B",

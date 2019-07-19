@@ -37,5 +37,14 @@ export const SCREEN_WIDTH_LARGE = "large";
 export const SCREEN_WIDTH_MEDIUM = "medium";
 export const SCREEN_WIDTH_SMALL = "small";
 
+export const GRADE_INFORMATION_HEADER_TITLE = "Your highest grade"
+export const GRADE_INFORMATION_HEADER_BUTTON_TITLE = "Begin"
+export const GRADE_INFORMATION_STATUS = "VIEW TO COMPLETE"
+
+export const GRADE_FEEDBACK_HEADER_TITLE = "Your highest grade"
+export const GRADE_FEEDBACK_HEADER_BUTTON_TITLE = "Attempt again"
+export const GRADE_FEEDBACK_STATUS = "PASSED"
+
+
 
 
