@@ -16,25 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
- *
- */
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
+**/
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
-import TransparentView from "./TransparentView"
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
-export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle,
-  TransparentView
+const AuthModelTitleText = (text : string) => {
+    <View style={styles.containerStyle} >
+       <Text style = {styles.titleTextStyle}>{text}</Text>
+    </View>
 }
+
+const AuthModelDescriptionText = (text : string) => {
+   <View style={styles.containerStyle} >
+       <Text style = {styles.descriptionTextStyle}>{text}</Text>
+   </View>
+}
+
+const styles = StyleSheet.create({ 
+    containerStyle: {
+    },
+    titleTextStyle: {
+    },
+    descriptionTextStyle: {
+    }
+  });
+export { AuthModelTitleText, AuthModelDescriptionText };

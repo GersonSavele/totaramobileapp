@@ -16,25 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
- *
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import LearningItemCard from "./LearningItemCard";
-import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
-import TransparentView from "./TransparentView"
+import { AuthModelGoToBrowserButton, AuthModelLogOutButton } from "./AuthModelButton";
+import AuthModelCard from "./AuthModelCard";
+import AuthModelImageView from "./AuthModelImageView";
+import { AuthModelTitleText, AuthModelDescriptionText } from "./AuthModelText";
+
 
 export {
-  LearningItemCard,
-  AddBadge,
-  DueDateState,
-  ContentIcon,
-  CheckBadge,
-  ActivityLauncher,
-  ProgressCircle,
-  TransparentView
+    AuthModelGoToBrowserButton,
+    AuthModelLogOutButton,
+    AuthModelCard,
+    AuthModelImageView,
+    AuthModelTitleText, 
+    AuthModelDescriptionText
 }
