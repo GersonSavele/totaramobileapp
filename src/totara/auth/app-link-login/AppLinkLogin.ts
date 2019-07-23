@@ -21,13 +21,16 @@
 
 import React from "react";
 import { Linking, Platform, Alert } from "react-native";
+
 import { SetupSecret } from "../AuthContext";
 
-export default class AuthLinkLogin extends React.Component<Props> {  
+export default class AuthLinkLogin extends React.Component<Props> { 
+
   private _keyToken: string = "token";
   private _keySite: string = "site";
   private _eventType: string = "url";
-  private _requestRegister: string = "register";
+  private _requestRegister: string[] = ["register", "register/", "mobiledemo.wlg.totaralms.com/register", "mobiledemo.wlg.totaralms.com/register/"];
+
   constructor(props: Props) {
     super(props);
     this.deepLinkListener();
@@ -54,7 +57,7 @@ export default class AuthLinkLogin extends React.Component<Props> {
   private getAuthSecret = (url: string | null) => { 
     if (url) {
       var requstApi: string = url.replace(/(^\w+:\/\/)?(?:www\.)?/i, "").split("?")[0];
-      if (requstApi === this._requestRegister || requstApi === this._requestRegister+"/") {
+      if (this._requestRegister.includes(requstApi)) {
         var token = this.getUrlParameter(url, this._keyToken);
         var site = this.getUrlParameter(url, this._keySite);
         if (site != "" && token != "") {
@@ -78,8 +81,9 @@ export default class AuthLinkLogin extends React.Component<Props> {
     key = key.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + key + '=([^&#]*)');
     var results = regex.exec(url);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    return results === null ? '' : results[1].replace(/\+/g, ' ');
   };
+
 }
 
 type Props = {
