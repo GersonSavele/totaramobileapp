@@ -31,8 +31,8 @@ import {Button} from "native-base";
     fontSize?: number, 
     color?: string,
     fontWeight?: string,
-    attempts?: string,
-    leftAttempts?:string
+    currentAttempts?: string,
+    maxAttempts?:string
   }
 
   type ActivityBottomViewButtonParam = {
@@ -55,13 +55,13 @@ const ActivityBottomView = ({children}: ActivityBottomViewParam) => {
     );
 };
 
-const ActivityBottomViewTitle = ({fontSize, color, fontWeight, attempts, leftAttempts}: ActivityBottomViewTitleParam) => {
+const ActivityBottomViewTitle = ({fontSize, color, fontWeight, currentAttempts, maxAttempts}: ActivityBottomViewTitleParam) => {
   return(
     <Text>
       <Text style= { styles.titleText }>You have done </Text>
-      <Text style= {{fontWeight: "bold", fontSize : 14}}>{attempts}</Text>
+      <Text style= {{fontWeight: "bold", fontSize : 14}}>{currentAttempts}</Text>
       <Text style= { styles.titleText }> attempt {"\n"}and </Text>
-      <Text style= {{fontWeight: "bold", fontSize : 14}}>{leftAttempts}</Text>
+      <Text style= {{fontWeight: "bold", fontSize : 14}}>{maxAttempts}</Text>
       <Text style= { styles.titleText }> attempt left.</Text>
   </Text>
   );

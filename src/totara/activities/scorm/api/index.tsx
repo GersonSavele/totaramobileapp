@@ -16,29 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-export const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
-export const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
-export const X_API_KEY = "X-API-KEY";
+import gql from "graphql-tag";
+import { ScormActivity } from "@totara/types";
 
-export const DATE_FORMAT = "D, MMM YYYY";
+type Response = {
+    scorm: ScormActivity;
+  }
+  
+interface Variables {
+    id: number;
+  }
 
-export const PLATFORM_IOS = "ios";
-export const PLATFORM_ANDROID = "";
-
-export const NAVIGATION_COURSE_DETAILS ="CourseDetails";
-export const NAVIGATION_PROGRAM_DETAILS ="ProgramDetails";
-export const NAVIGATION_SETTING = "Settings";
-
-export const SCREEN_WIDTH_X_LARGE = "xlarge";
-export const SCREEN_WIDTH_LARGE = "large";
-export const SCREEN_WIDTH_MEDIUM = "medium";
-export const SCREEN_WIDTH_SMALL = "small";
-
-
-
+const ScormGQLQuery = gql` 
+query scorm($id: ID!) {
+    scorm(id: $id) {
+      id
+      webEntryUrl
+      currentAttempt
+      maxAttempt
+      score
+      isAvailable
+    }
+  }
+`;
 
 
-
+export  {Response, Variables, ScormGQLQuery};
