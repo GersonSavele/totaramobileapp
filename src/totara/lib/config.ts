@@ -28,9 +28,9 @@ const defaultConfig = {
   startNodeJsMobile: false,
   userAgent: "TotaraMobileApp",
 
-  loginUri: (host: string) => (`http://${host}/login/index.php`),
-  deviceRegisterUri: (host: string) => (`http://${host}/totara/mobile/device_register.php`),
-  webViewUri: (host: string) => (`http://${host}/totara/mobile/device_webview.php`)
+  loginUri: (host: string) => (`${host}/login/index.php`),
+  deviceRegisterUri: (host: string) => (`${host}/totara/mobile/device_register.php`),
+  webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`)
 };
 
 let config = {...defaultConfig, ...localConfig};

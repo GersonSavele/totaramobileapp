@@ -44,8 +44,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
-                    android:host="mobiledemo.wlg.totaralms.com" />
+                    android:scheme="https"
+                    android:host="mobile.totaralearning.com" />
             </intent-filter>
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />

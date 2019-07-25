@@ -24,8 +24,8 @@ import * as Animatable from 'react-native-animatable';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { resizeByScreenSize, PrimaryButton } from "@totara/theme";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
-import {translate} from "@totara/locale";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { translate } from "@totara/locale";
 
 enum ViewFlex {
   keyboardOff= 1, keyboardOn= 3
@@ -34,6 +34,7 @@ enum ViewFlex {
 class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
+  private urlProtocol: string = "http://";
 
   constructor(props: Props) {
     super(props);
@@ -55,12 +56,17 @@ class SiteUrl extends React.Component<Props, State> {
   };
 
   setInputSiteUrl = () => {
-    const siteUrlValue = this.state.inputSiteUrl 
+    var siteUrlValue = this.state.inputSiteUrl 
     const isValidSiteAddress = (siteUrlValue) ? this.isValidUrlText(siteUrlValue!) : false;
+
     this.setState({
       showError: !isValidSiteAddress
     });
     if (isValidSiteAddress) {
+      siteUrlValue = this.formatUrl(siteUrlValue!);
+      this.setState({
+        inputSiteUrl: siteUrlValue
+      });
       this.props.onSuccessfulSiteUrl(siteUrlValue!, SiteUrl.actionType);
     }
   };
@@ -75,6 +81,14 @@ class SiteUrl extends React.Component<Props, State> {
     return pattern.test(urlText);
   };
 
+  formatUrl = (urlText: string) => {
+    var pattern = new RegExp("^(https?:\\/\\/)" , "i"); // fragment locator
+    if(!pattern.test(urlText)) {
+      return this.urlProtocol+urlText;
+    }
+    return urlText;
+  };
+
   componentDidMount() {
     setTimeout(() => {
       this.refTextInputSiteUrl.current!.focus();
@@ -83,7 +97,7 @@ class SiteUrl extends React.Component<Props, State> {
 
   setStateInputSiteUrlWithShowError = (siteUrl: string) => {
     this.setState({inputSiteUrl: siteUrl, showError : false});
-  }
+  };
 
   render() {
     return (

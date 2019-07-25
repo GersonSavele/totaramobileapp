@@ -26,7 +26,7 @@ import { SetupSecret } from "../AuthContext";
 
 export default class AuthLinkLogin extends React.Component<Props> { 
 
-  private _keyToken: string = "token";
+  private _keySecret: string = "setupsecret";
   private _keySite: string = "site";
   private _eventType: string = "url";
   private _requestRegister: string[] = ["register", "register/", "mobiledemo.wlg.totaralms.com/register", "mobiledemo.wlg.totaralms.com/register/"];
@@ -58,17 +58,17 @@ export default class AuthLinkLogin extends React.Component<Props> {
     if (url) {
       var requstApi: string = url.replace(/(^\w+:\/\/)?(?:www\.)?/i, "").split("?")[0];
       if (this._requestRegister.includes(requstApi)) {
-        var token = this.getUrlParameter(url, this._keyToken);
+        var secret = this.getUrlParameter(url, this._keySecret);
         var site = this.getUrlParameter(url, this._keySite);
-        if (site != "" && token != "") {
-          this.props.onLoginSuccess({uri: site, secret: token});
+        if (site != "" && secret != "") {
+          this.props.onLoginSuccess({uri: site, secret: secret});
         } else {
           var errorInfo = "Invalid request.";
-          if (site == "" && token == "") {
+          if (site == "" && secret == "") {
             errorInfo = "Invalid request, cannot find site and token.";
           } else if (site == "") {
             errorInfo = "Invalid request, cannot find site.";
-          } else if (token == "") {
+          } else if (secret == "") {
             errorInfo = "Invalid request, cannot find token.";
           } 
           this.props.onLoginFailure(new Error(errorInfo));
