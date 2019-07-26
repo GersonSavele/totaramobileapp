@@ -20,21 +20,21 @@
  */
 
 import React from "react";
-import { Linking, Platform, Alert } from "react-native";
+import { Linking, Platform } from "react-native";
 
 import { SetupSecret } from "../AuthContext";
 
 export default class AuthLinkLogin extends React.Component<Props> { 
 
-  private _keySecret: string = "setupsecret";
-  private _keySite: string = "site";
-  private _eventType: string = "url";
-  private _requestRegister: string[] = ["register", "register/", "mobiledemo.wlg.totaralms.com/register", "mobiledemo.wlg.totaralms.com/register/"];
+  private keySecret: string = "setupsecret";
+  private keySite: string = "site";
+  private eventType: string = "url";
+  private requestRegister: string[] = ["register", "register/", "mobile.totaralearning.com/register", "mobile.totaralearning.com/register/"];
 
   constructor(props: Props) {
     super(props);
     this.deepLinkListener();
-  };
+  }
 
   private deepLinkListener = () => {
     if (Platform.OS === "android") {
@@ -42,7 +42,7 @@ export default class AuthLinkLogin extends React.Component<Props> {
         this.getAuthSecret(url);
       });
     } else {
-      Linking.addEventListener(this._eventType, this.handleUrlOniOS);
+      Linking.addEventListener(this.eventType, this.handleUrlOniOS);
     }
   };
 
@@ -51,17 +51,17 @@ export default class AuthLinkLogin extends React.Component<Props> {
   };
 
   // componentWillUnmount() { 
-  //   Linking.removeEventListener(this._eventType, this.handleUrlOniOS);
+  //   Linking.removeEventListener(this.eventType, this.handleUrlOniOS);
   // }
 
   private getAuthSecret = (url: string | null) => { 
     if (url) {
-      var requstApi: string = url.replace(/(^\w+:\/\/)?(?:www\.)?/i, "").split("?")[0];
-      if (this._requestRegister.includes(requstApi)) {
-        var secret = this.getUrlParameter(url, this._keySecret);
-        var site = this.getUrlParameter(url, this._keySite);
+      const requstApi: string = url.replace(/(^\w+:\/\/)?(?:www\.)?/i, "").split("?")[0];
+      if (this.requestRegister.includes(requstApi)) {
+        const secret = this.getUrlParameter(url, this.keySecret);
+        const site = this.getUrlParameter(url, this.keySite);
         if (site != "" && secret != "") {
-          this.props.onLoginSuccess({uri: site, secret: secret});
+          this.props.onLoginSuccess({secret: secret, uri: site});
         } else {
           var errorInfo = "Invalid request.";
           if (site == "" && secret == "") {
@@ -78,7 +78,7 @@ export default class AuthLinkLogin extends React.Component<Props> {
   };
 
   private getUrlParameter = (url: string, key: string) => {
-    key = key.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    key = key.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + key + '=([^&#]*)');
     var results = regex.exec(url);
     return results === null ? '' : results[1].replace(/\+/g, ' ');

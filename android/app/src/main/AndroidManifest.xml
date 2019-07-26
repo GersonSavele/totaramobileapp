@@ -17,9 +17,6 @@
         android:theme="@style/AppTheme">
         <!-- For .MainActivity Activity: Commented windowSoftInputMode mode to default to avoid adjusting screen height for keboard -->
         <!-- android:windowSoftInputMode="adjustResize"  -->
-        <meta-data
-            android:name="asset_statements"
-            android:resource="@string/asset_statements" />
 
         <activity
             android:name=".MainActivity"

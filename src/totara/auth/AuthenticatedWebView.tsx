@@ -28,7 +28,6 @@ import CookieManager from "react-native-cookies";
 
 import { config } from "@totara/lib";
 import { AuthConsumer } from "@totara/auth/AuthContext";
-import { Alert } from "react-native";
 
 const createWebview = gql`
     mutation totara_mobile_create_webview($url: String!) {
@@ -90,16 +89,6 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     }
   }
 
-  didReceiveOnMessage = (event: WebViewMessageEvent) => {
-    const message = event.nativeEvent.data;
-    if ((typeof message !== "undefined") && (message != "null")) {
-      this.setState({
-        webviewSecret: undefined
-      });
-    }
-  };
-
-
   render() {
     return (
       <AuthConsumer>
@@ -112,7 +101,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
                 }}
                 userAgent={config.userAgent}
                 style={{ flex: 1}}
-                onMessage={this.didReceiveOnMessage}/>
+                />
             : null // TODO MOB-65 handle this error better.  Log or show something like error screen/text, ask UX if this the preferred solution
         }
       </AuthConsumer>
