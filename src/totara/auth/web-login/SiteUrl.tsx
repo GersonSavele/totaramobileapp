@@ -26,6 +26,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { resizeByScreenSize, PrimaryButton } from "@totara/theme";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { translate } from "@totara/locale";
+import { config } from "@totara/lib";
 
 enum ViewFlex {
   keyboardOff= 1, keyboardOn= 3
@@ -34,7 +35,6 @@ enum ViewFlex {
 class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
-  private urlProtocol: string = "http://";
 
   constructor(props: Props) {
     super(props);
@@ -84,7 +84,7 @@ class SiteUrl extends React.Component<Props, State> {
   formatUrl = (urlText: string) => {
     var pattern = new RegExp("^(https?:\\/\\/)" , "i"); // fragment locator
     if(!pattern.test(urlText)) {
-      return this.urlProtocol+urlText;
+      return config.urlProtocol+"://"+urlText;
     }
     return urlText;
   };

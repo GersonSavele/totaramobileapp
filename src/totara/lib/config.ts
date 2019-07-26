@@ -22,6 +22,7 @@
 import localConfig from "./config.local";
 
 const defaultConfig = {
+  urlProtocol: "https",
   mobileApi: "http://localhost:4000",
   mobileStatic: "http://localhost:4001",
   // startNodeJsMobile: true
