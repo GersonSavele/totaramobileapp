@@ -17,10 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import config from "./config"
-import { Logger, LoggerImpl } from "./logger";
+import ConsoleLogger from "./ConsoleLogger"
 
-export { config, Logger, LoggerImpl }
+interface Logger {
+  init: (params: any[]) => void
+  close: (params: any[]) => void
+  debug: (message: string, ...others: any[]) => void
+  info: (message: string, ...others: any[]) => void
+  warn: (message: string, ...others: any[]) => void
+  error: (message: string, error: Error, ...others: any[]) => void
+}
+
+export const LoggerImpl = ConsoleLogger;

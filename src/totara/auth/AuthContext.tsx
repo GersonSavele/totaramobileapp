@@ -32,7 +32,7 @@ import { setContext } from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
 import AsyncStorage from "@react-native-community/async-storage";
 
-import { config } from "@totara/lib";
+import { config, LoggerImpl } from "@totara/lib";
 import WebLogin from "./web-login";
 
 import AppLinkLogin from "./app-link-login/AppLinkLogin";
@@ -82,10 +82,9 @@ class AuthProvider extends React.Component<Props, State> {
   }
 
   bootstrap = async () => {
-    const apiKey = await AsyncStorage.getItem('apiKey');
-    const host = await AsyncStorage.getItem('host');
-
     SplashScreen.hide();
+
+    const [apiKey, host] = await Promise.all([AsyncStorage.getItem('apiKey'), AsyncStorage.getItem('host')]);
 
     if (apiKey !== null && host !== null) {
       this.setState({
@@ -102,7 +101,8 @@ class AuthProvider extends React.Component<Props, State> {
 
     }
 
-    console.log("state", this.state);
+    config.logger().info("state", this.state);
+    LoggerImpl.error("something bad happened", new Error("bad error"), "more stuff");
     // TODO MOB-65 add some logging and error handling, important routine
   };
 

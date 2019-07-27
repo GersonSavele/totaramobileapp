@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -17,10 +17,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
-import config from "./config"
-import { Logger, LoggerImpl } from "./logger";
+import { Logger } from "./index"
 
-export { config, Logger, LoggerImpl }
+class ConsoleLogger implements Logger {
+  init() {
+
+  }
+  close() {
+
+  }
+  debug(message: string, ...others: any[]) {
+    console.log("[DEBUG]", message, others);
+  }
+  info(message: string, ...others: any[]) {
+    console.log("[INFO]", message, others);
+  }
+  warn(message: string, ...others: any[]) {
+    console.log("[WARN]", message, others);
+  }
+  error(message: string, error: Error, ...others: any[]){
+    console.error("[ERROR]", message, error, others);
+  }
+}
+
+export default new ConsoleLogger()
