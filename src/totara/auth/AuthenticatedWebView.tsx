@@ -27,7 +27,7 @@ import gql from "graphql-tag";
 import CookieManager from "react-native-cookies";
 
 import { config, Log } from "@totara/lib";
-import { AuthConsumer } from "@totara/auth/AuthContext";
+import { AuthConsumer } from "./AuthContext";
 import { WEBVIEW_SECRET } from "@totara/lib/Constant";
 
 const createWebview = gql`
@@ -75,9 +75,10 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
           webviewSecret: data.data.create_webview,
           isAuthenticated: true
         });
-      });
+      }).catch(error => Log.error("unable to create webview", error));
 
-    const clearCookiesPromise = CookieManager.clearAll(true);
+    const clearCookiesPromise = CookieManager.clearAll(true)
+      .catch(error => Log.error("unable to clearcookies", error));
 
     return Promise.all([createWebViewPromise, clearCookiesPromise]);
   }
@@ -86,7 +87,8 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     const { deleteWebview } = this.props;
     if (this.state.webviewSecret) {
       return deleteWebview({ variables: { secret: this.state.webviewSecret } })
-        .then((data) => Log.debug("deleted webview", data));
+        .then((data) => Log.debug("deleted webview", data))
+        .catch(error => Log.error("unable to create webview", error));
     }
   }
 
@@ -103,14 +105,14 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
                 userAgent={config.userAgent}
                 style={{ flex: 1}}
                 />
-            : null // TODO MOB-65 handle this error better.  Log or show something like error screen/text, ask UX if this the preferred solution
+            : null
         }
       </AuthConsumer>
 
     );
   }
 
-};
+}
 
 
 type CreateWebViewResponse = {
