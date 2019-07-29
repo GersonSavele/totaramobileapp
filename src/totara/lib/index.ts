@@ -20,7 +20,7 @@
  *
  */
 
-import config from "./config"
-import { Logger, LoggerImpl } from "./logger";
+import config from "./config";
+import { Logger, Log } from "./logger";
 
-export { config, Logger, LoggerImpl }
+export { config, Logger, Log }

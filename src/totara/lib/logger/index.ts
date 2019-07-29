@@ -19,15 +19,9 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import ConsoleLogger from "./ConsoleLogger"
+import ConsoleLogger from "./ConsoleLogger";
+import { Logger } from "./Logger";
 
-interface Logger {
-  init: (params: any[]) => void
-  close: (params: any[]) => void
-  debug: (message: string, ...others: any[]) => void
-  info: (message: string, ...others: any[]) => void
-  warn: (message: string, ...others: any[]) => void
-  error: (message: string, error: Error, ...others: any[]) => void
-}
+const LoggerImpl = ConsoleLogger; // TODO would good to make this configurable
 
-export const LoggerImpl = ConsoleLogger;
+export { LoggerImpl as Log, Logger };

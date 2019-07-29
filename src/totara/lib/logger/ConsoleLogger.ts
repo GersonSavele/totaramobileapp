@@ -19,26 +19,38 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { Logger } from "./index"
+import { Logger } from "./Logger"
 
+/**
+ * ConsoleLogger is a basic logger that outputs into JS console
+ */
 class ConsoleLogger implements Logger {
+
   init() {
-
   }
+
   close() {
-
   }
+
   debug(message: string, ...others: any[]) {
     console.log("[DEBUG]", message, others);
   }
+
   info(message: string, ...others: any[]) {
     console.log("[INFO]", message, others);
   }
+
   warn(message: string, ...others: any[]) {
     console.log("[WARN]", message, others);
   }
+
   error(message: string, error: Error, ...others: any[]){
-    console.error("[ERROR]", message, error, others);
+    // eslint-disable-next-line no-undef
+    if (__DEV__) { // its ok to ignore __DEV__ not defined on TS.  It is defined globally
+      console.error("[ERROR]", message, error, others); // only blow up on development mode
+    } else {
+      console.log("[ERROR]", message, error, others);
+    }
   }
 }
 
