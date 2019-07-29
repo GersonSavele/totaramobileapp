@@ -21,26 +21,28 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import PropTypes from "prop-types";
-import {withNavigation} from "react-navigation";
+import { withNavigation } from "react-navigation";
 import * as Animatable from "react-native-animatable";
-
-import {LearningItemCard} from "@totara/components";
-import {gutter} from "@totara/theme";
-import {tbPadding} from "@totara/theme";
-import ActivityList from "./ActivityList";
-import {getCourse} from "./api";
-import {translate} from "@totara/locale";
 import lodash from "lodash";
+
+import { Log } from "@totara/lib";
+import { LearningItemCard } from "@totara/components";
+import { gutter } from "@totara/theme";
+import { tbPadding } from "@totara/theme";
+import { translate } from "@totara/locale";
+
+import ActivityList from "./ActivityList";
+import { getCourse } from "./api";
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
 const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
   if (loading) return <Text>{translate("general.loading")}</Text>;
 
   if (error) {
-    console.log("error", error); // TODO turn this into a logging system
-    return <Text>{translate("general.error")}(</Text>;
+    Log.error("Error getting course details", error);
+    return <Text>{translate("general.error")}(</Text>;  // TODO MOB-123 make this UI better
   }
 
   if (course) {

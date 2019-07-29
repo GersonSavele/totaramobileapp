@@ -50,8 +50,7 @@ class WebLogin extends React.Component<Props, States> {
         if ( this.state.uri && data ) {
           this.props.onLoginSuccess({uri: this.state.uri, secret: data});
         } else {
-          // TODO MOB-65 add some logging and error handling
-          console.log("Login failed.");
+          this.props.onLoginFailure(new Error(`Missing data: ${data}`));
         }
         break;
       default:

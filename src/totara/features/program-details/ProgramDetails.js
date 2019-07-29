@@ -32,13 +32,14 @@ import { ActivitySheetConsumer } from "@totara/activities";
 
 import CourseSetList from "./CourseSetList";
 import { getProgram } from "./api";
+import { Log } from "@totara/lib";
 
 const ProgramDetails = getProgram(({loading, program, error}) => {
   if (loading) return <Text>{translate("general.loading")}</Text>;
 
   if (error) {
-    console.log("error", error); // TODO turn this into a logging system
-    return <Text>{translate("general.error")}(</Text>;
+    Log.error("Error getting program details", error);
+    return <Text>{translate("general.error")}(</Text>;  // TODO MOB-123 make this UI better
   }
 
   if (program) {

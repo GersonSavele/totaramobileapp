@@ -21,27 +21,30 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {withNavigation} from "react-navigation";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import {Button} from "native-base";
+import { Button } from "native-base";
 import Carousel from "react-native-snap-carousel";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-import {learningItemsList} from "./api";
-import {LearningItemCard, AddBadge} from "@totara/components";
-import {normalize} from "@totara/theme";
-import {LearningItemType} from "@totara/types";
-import {translate} from "@totara/locale";
-import {NAVIGATION_COURSE_DETAILS , NAVIGATION_PROGRAM_DETAILS} from "@totara/lib/Constant";
+import { LearningItemCard, AddBadge } from "@totara/components";
+import { normalize } from "@totara/theme";
+import { LearningItemType } from "@totara/types";
+import { translate } from "@totara/locale";
+import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS } from "@totara/lib/Constant";
+import { Log } from "@totara/lib";
+
+import { learningItemsList } from "./api";
+
 
 const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
 
   if (loading) return <Text>{translate("general.loading")}</Text>;
 
   if (error) {
-    console.log("error", error); // TODO turn this into a logging system
-    return <Text>{translate("general.error")}(</Text>;
+    Log.error("Error getting course details", error);
+    return <Text>{translate("general.error")}(</Text>; // TODO MOB-123 make this UI better
   }
 
   if (currentLearning) {
@@ -116,7 +119,7 @@ let navigateTo = (navigation, item) => {
       navigation.navigate(NAVIGATION_PROGRAM_DETAILS, {programId: item.id});
       break;
     default:
-      console.error("unknown type", item); // TODO turn this into a logging system
+      Log.error(`Unknown type ${item.type}, unable to native to`, new Error(), item);
   }
 };
 

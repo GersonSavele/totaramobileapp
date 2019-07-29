@@ -22,11 +22,11 @@
 
 import React from "react";
 import { WebView } from "react-native-webview";
-import { compose, graphql, MutationFunc, MutationOpts } from "react-apollo";
+import { compose, graphql, MutationFunc } from "react-apollo";
 import gql from "graphql-tag";
 import CookieManager from "react-native-cookies";
 
-import { config } from "@totara/lib";
+import { config, Log } from "@totara/lib";
 import { AuthConsumer } from "@totara/auth/AuthContext";
 import { WEBVIEW_SECRET } from "@totara/lib/Constant";
 
@@ -69,7 +69,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
     const createWebViewPromise = createWebview({ variables: { url: uri } })
       .then((data) => {
-        console.log("data on create", data);
+        Log.debug("created webview", data);
 
         this.setState({
           webviewSecret: data.data.create_webview,
@@ -86,7 +86,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     const { deleteWebview } = this.props;
     if (this.state.webviewSecret) {
       return deleteWebview({ variables: { secret: this.state.webviewSecret } })
-        .then((data) => console.log("data after delete", data));
+        .then((data) => Log.debug("deleted webview", data));
     }
   }
 
