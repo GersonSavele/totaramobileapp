@@ -70,3 +70,7 @@ nodejs-assets/build-native-modules-MacOS-helper-script-npm.sh
 
 nodejs-assets/nodejs-project/sample-main.js
 nodejs-assets/nodejs-project/sample-package.json
+
+# ignore test generated files
+.jest
+converage
