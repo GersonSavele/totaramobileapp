@@ -33,13 +33,13 @@ export default class AuthLinkLogin extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
-    this.deepLinkListener();
+    this.appLinkListener();
   }
 
-  private deepLinkListener = () => {
+  private appLinkListener = () => {
     if (Platform.OS === "android") {
       Linking.getInitialURL().then(url => {
-        this.getAuthSecret(url);
+        this.handleAppLink(url);
       });
     } else {
       Linking.addEventListener(this.eventType, this.handleUrlOniOS);
@@ -47,15 +47,16 @@ export default class AuthLinkLogin extends React.Component<Props> {
   };
 
   private handleUrlOniOS = (event: { url: string }) => { 
-    this.getAuthSecret(event.url);
+    this.handleAppLink(event.url);
   };
 
   // componentWillUnmount() { 
   //   Linking.removeEventListener(this.eventType, this.handleUrlOniOS);
   // }
 
-  private getAuthSecret = (url: string | null) => { 
-    if (url) {
+  private handleAppLink = (encodedUrl: string | null) => { 
+    if (encodedUrl) {
+      const url = decodeURIComponent(encodedUrl);    
       const requstApi: string = url.replace(/(^\w+:\/\/)?(?:www\.)?/i, "").split("?")[0];
       if (this.requestRegister.includes(requstApi)) {
         const secret = this.getUrlParameter(url, this.keySecret);
