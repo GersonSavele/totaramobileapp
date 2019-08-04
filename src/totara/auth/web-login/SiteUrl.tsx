@@ -30,7 +30,7 @@ import { config } from "@totara/lib";
 
 enum ViewFlex {
   keyboardOff= 1, keyboardOn= 3
-};
+}
 
 class SiteUrl extends React.Component<Props, State> {
 
@@ -101,10 +101,6 @@ class SiteUrl extends React.Component<Props, State> {
     this.setState({inputSiteUrl: siteUrl, showError : false});
   };
 
-  componentWillUnmount() { 
-    // Linking.removeEventListener(this.eventType, this.handleUrlOniOS);
-  };
-
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -139,7 +135,7 @@ class SiteUrl extends React.Component<Props, State> {
         </View>
       </SafeAreaView>
     );
-  };
+  }
 }
 
 type Props = {

@@ -48,11 +48,7 @@ export default class AppLinkLogin extends React.Component<Props> {
     this.handleAppLink(event.url);
   };
 
-  // componentWillUnmount() { 
-  //   Linking.removeEventListener(this.eventType, this.handleUrlOniOS);
-  // }
-
-  private handleAppLink = (encodedUrl: string | null) => { // TODO need to refactor and move this see MOB-205
+  private handleAppLink = (encodedUrl: string | null) => {
     if (encodedUrl) {
       const url = decodeURIComponent(encodedUrl);
       const requestRegister: string[] = ["register", "register/", "mobile.totaralearning.com/register", "mobile.totaralearning.com/register/"];
