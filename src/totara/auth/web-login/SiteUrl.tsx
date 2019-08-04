@@ -35,7 +35,7 @@ enum ViewFlex {
 class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
-
+  
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -91,12 +91,18 @@ class SiteUrl extends React.Component<Props, State> {
 
   componentDidMount() {
     setTimeout(() => {
-      this.refTextInputSiteUrl.current!.focus();
+      if(this.refTextInputSiteUrl.current) {
+        this.refTextInputSiteUrl.current!.focus();
+      }
     }, 300);
   }
 
   setStateInputSiteUrlWithShowError = (siteUrl: string) => {
     this.setState({inputSiteUrl: siteUrl, showError : false});
+  };
+
+  componentWillUnmount() { 
+    // Linking.removeEventListener(this.eventType, this.handleUrlOniOS);
   };
 
   render() {
