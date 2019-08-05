@@ -19,24 +19,37 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
 **/
 
-
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
+import { resizeByScreenSize } from "@totara/theme";
+import { IMAGES } from "@totara/lib/Constant"
 
-const AuthModelImageView = () => {
-    <View style={styles.containerStyle} >
-       <Image style= {styles.imageViewStyle}    
-       source={require('../')}/>
-   </View>
+type Params = {
+  imageType: string
+}
+
+const CustomImageView = ({imageType}: Params) => {
+  return(setImage({imageType}))
+}
+
+const setImage = ({imageType}: Params) => {
+  switch (imageType) {
+    case 'complete_action':
+      return <Image style={styles.containerStyle} source={IMAGES.complete_action}/>
+    default:
+      return <Image style={styles.containerStyle} source={IMAGES.complete_action}/>
+  }
 }
 
 const styles = StyleSheet.create({
-    containerStyle: {
-     
-    },
-    imageViewStyle: {
+  containerStyle: {
+    marginTop:resizeByScreenSize(16, 16, 16, 16),
+    alignItems:"center",
+    height: resizeByScreenSize(160, 180, 200, 220),
+    width: resizeByScreenSize(190, 200, 220, 250),
+    marginBottom: resizeByScreenSize(16, 16, 16, 16),
+    resizeMode: 'contain'
+  }
+});
 
-    }
-  });
-
-export default AuthModelImageView;
+export default CustomImageView;

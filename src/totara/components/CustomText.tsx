@@ -21,25 +21,36 @@
 
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { resizeByScreenSize } from "@totara/theme";
 
-const AuthModelTitleText = (text : string) => {
-    <View style={styles.containerStyle} >
-       <Text style = {styles.titleTextStyle}>{text}</Text>
-    </View>
+type TextParam = {
+    text: string,
+    fontSize?: number, 
+    color?: string,
+    fontWeight?: string,
 }
 
-const AuthModelDescriptionText = (text : string) => {
-   <View style={styles.containerStyle} >
-       <Text style = {styles.descriptionTextStyle}>{text}</Text>
-   </View>
+const CustomText = ({text, fontSize, color, fontWeight } : TextParam) => {
+  return(
+    <View style={styles.containerStyle} >
+      <Text style = {[styles.titleTextStyle,
+       {fontSize : fontSize != undefined? fontSize : 18,
+        color: color != undefined? color : "#0101", 
+        fontWeight: fontWeight != undefined? fontWeight : "normal",
+       }]}>{text}
+      </Text>
+    </View>  
+  ) 
 }
 
 const styles = StyleSheet.create({ 
-    containerStyle: {
-    },
+  containerStyle: {
+    alignItems: "flex-start",
+    marginBottom: resizeByScreenSize(8, 8, 16, 16),
+  },
     titleTextStyle: {
-    },
-    descriptionTextStyle: {
-    }
-  });
-export { AuthModelTitleText, AuthModelDescriptionText };
+    textAlign: 'center',
+  }
+});
+
+export default CustomText;

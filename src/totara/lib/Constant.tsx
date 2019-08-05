@@ -36,3 +36,6 @@ export const SCREEN_WIDTH_X_LARGE = "xlarge";
 export const SCREEN_WIDTH_LARGE = "large";
 export const SCREEN_WIDTH_MEDIUM = "medium";
 export const SCREEN_WIDTH_SMALL = "small";
+export const IMAGES = {
+    complete_action: require('@resources/images/complete_action/complete_action.png')
+};

@@ -28,7 +28,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ActivityType } from "@totara/types";
 import ScormActivity from "./scorm/ScormActivity";
 import { WebviewActivity } from "./webview/WebviewActivity";
-import { AuthenticationModel } from "@totara/auth"
 
 type contextData = {
   setCurrentActivity: (activity: ActivityType) => void
@@ -84,19 +83,13 @@ export class ActivitySheetProvider extends React.Component {
   render() {
     return(
       <View style ={{flex:1}}>
-     
-      
       <ActivitySheetContext.Provider value={this.state}>
-      
         {this.props.children}
         {
           (this.state.currentActivity) &&
             <ActivitySheet ref={panelRef} currentActivity={this.state.currentActivity!} onClose={this.onClose}/>
         }
-        <AuthenticationModel>
-        </AuthenticationModel>
       </ActivitySheetContext.Provider>
-     
       </View>)
   }
 }

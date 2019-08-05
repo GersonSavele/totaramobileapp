@@ -53,7 +53,7 @@ import {
   faBookOpen,
   faPenSquare,
   faBook,
-  faPen
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
@@ -61,6 +61,7 @@ import { config } from "@totara/lib";
 import { theme, getTheme } from "@totara/theme";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
+import { AdditionalAction } from "@totara/auth/additional-actions"
 
 class App extends React.Component<{}> {
 
@@ -89,6 +90,7 @@ class App extends React.Component<{}> {
                 this.navigator = nav;
               }}/>
           </ActivitySheetProvider>
+          <AdditionalAction></AdditionalAction>
         </AuthProvider>
       </StyleProvider>
     );

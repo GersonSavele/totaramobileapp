@@ -19,17 +19,10 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import { AuthModelGoToBrowserButton, AuthModelLogOutButton } from "./AuthModelButton";
-import AuthModelCard from "./AuthModelCard";
-import AuthModelImageView from "./AuthModelImageView";
-import { AuthModelTitleText, AuthModelDescriptionText } from "./AuthModelText";
-
+import AdditionalAction  from "./AdditionalAction";
+import AdditionalActionRule from "./AdditionalActionRule"
 
 export {
-    AuthModelGoToBrowserButton,
-    AuthModelLogOutButton,
-    AuthModelCard,
-    AuthModelImageView,
-    AuthModelTitleText, 
-    AuthModelDescriptionText
+    AdditionalAction, 
+    AdditionalActionRule
 }

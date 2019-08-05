@@ -17,24 +17,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
-**/
+ */
 
+import gql from "graphql-tag";
+import { Me } from "@totara/types";
 
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-
-const AuthModelCard = (children: any) => {
- return(
-  <View style = {styles.containerStyle}>
-     {children}
-  </View>
- );
+type Response = {
+    me: Me;
 }
 
-const styles = StyleSheet.create({
-    containerStyle: {
-     
+const QueryMe = gql` 
+query totara_mobile_me {
+    me: totara_mobile_me {
+        user {
+            id,
+            firstname,
+            lastname,
+            middlename,
+            username,
+            email,
+        },
+        system {
+            wwwroot,
+            apiurl,
+            release,
+            request_policy_agreement,
+            request_user_consent,
+            request_user_fields,
+        }
+        enrolled_courses {
+            id,
+            fullname,
+            shortname,
+            idnumber,
+            summary,
+        }
     }
-  });
+}
+`;
 
-export default AuthModelCard;
+export  { Response, QueryMe };

@@ -27,6 +27,12 @@
     "site_url_information": "Please enter your site url",
     "site_url_text_placeholder": "Enter site url"
   },
+  "additional-actions-modal": {
+    "auth_model_title": "You need to complete\nsome action",
+    "auth_model_description" : "You will be re-directed to browser\nto perform some action and come\nback to the app to continue\nyour learning",
+    "auth_model_go_to_browser" : "Go to browser",
+    "auth_model_logout":"Logout"
+  },
   "message": {
     "enter_valid_url": "Enter a valid site address"
   }

@@ -21,10 +21,9 @@
 
 import { AuthProvider, AuthConsumer } from "./AuthContext";
 import { AuthenticatedWebView } from "./AuthenticatedWebView";
-import AuthenticationModel from "./AuthenticationModel"
 export {
   AuthProvider,
   AuthConsumer,
   AuthenticatedWebView,
-  AuthenticationModel
+ 
 };
