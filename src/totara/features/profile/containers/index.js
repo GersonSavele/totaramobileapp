@@ -21,11 +21,21 @@
  */
 
 import React from "react";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+
 import { AuthConsumer } from "@totara/auth";
 import {NAVIGATION_SETTING} from "@totara/lib/Constant";
+import Logout  from "./Logout"
+
+export const deleteDevice = gql`
+mutation totara_mobile_delete_device {
+  delete_device: totara_mobile_delete_device
+}
+`;
 
 class Profile extends React.Component {
   static navigationOptions = {
@@ -33,7 +43,6 @@ class Profile extends React.Component {
   };
 
   renderItem = ({item}) => {
-
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={() => this.props.navigation.navigate(NAVIGATION_SETTING)}>
@@ -59,13 +68,10 @@ class Profile extends React.Component {
     return (
       <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
         <FlatList
-          data={this.data}
-          renderItem={this.renderItem}
+            data={this.data}
+            renderItem={this.renderItem}
         />
-        <AuthConsumer>
-          { auth =>
-            <Button title="Logout" onPress={() => auth.logOut()} />
-          }
+        <AuthConsumer>{auth =><Button title="Logout" onPress={() => Logout({...this.props,auth})}/>}
         </AuthConsumer>
       </View>
     );
@@ -73,9 +79,9 @@ class Profile extends React.Component {
 }
 
 Profile.propTypes = {
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
+  mutate: PropTypes.func.isRequired
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -89,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default graphql(deleteDevice)(Profile);

@@ -28,6 +28,7 @@ import CookieManager from "react-native-cookies";
 
 import { config } from "@totara/lib";
 import { AuthConsumer } from "@totara/auth/AuthContext";
+import { WEBVIEW_SECRET } from "@totara/lib/Constant";
 
 const createWebview = gql`
     mutation totara_mobile_create_webview($url: String!) {
@@ -97,7 +98,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
             ? <WebView
                 source={{
                   uri: config.webViewUri(auth.setup.host),
-                  headers: { "X-TOTARA-MOBILE-WEBVIEW-SECRET": this.state.webviewSecret }
+                  headers: { [WEBVIEW_SECRET]: this.state.webviewSecret }
                 }}
                 userAgent={config.userAgent}
                 style={{ flex: 1}}

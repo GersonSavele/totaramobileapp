@@ -1,3 +1,4 @@
+  
 /**
  * This file is part of Totara Mobile
  *
@@ -19,20 +20,15 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-export const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
-export const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
-export const X_API_KEY = "X-API-KEY";
+const Logout = async ({ mutate, auth }) =>{
+    return(
+     mutate({})
+      .then(()=>auth.logOut())
+      .catch((error) => {
+      console.log('there was an error sending the query', auth, error);
+     })
+    )
+}
 
-export const DATE_FORMAT = "D, MMM YYYY";
 
-export const PLATFORM_IOS = "ios";
-export const PLATFORM_ANDROID = "";
-
-export const NAVIGATION_COURSE_DETAILS ="CourseDetails";
-export const NAVIGATION_PROGRAM_DETAILS ="ProgramDetails";
-export const NAVIGATION_SETTING = "Settings";
-
-export const SCREEN_WIDTH_X_LARGE = "xlarge";
-export const SCREEN_WIDTH_LARGE = "large";
-export const SCREEN_WIDTH_MEDIUM = "medium";
-export const SCREEN_WIDTH_SMALL = "small";
+export default Logout ;

@@ -34,8 +34,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import { config } from "@totara/lib";
 import WebLogin from "./web-login";
-import AppLinkLogin from "./app-link-login/AppLinkLogin";
 
+import AppLinkLogin from "./app-link-login/AppLinkLogin";
+import { X_API_KEY } from "@totara/lib/Constant";
 
 const AuthContext = React.createContext<State>(
   {
@@ -125,7 +126,7 @@ class AuthProvider extends React.Component<Props, State> {
       {
         headers: {
           ...headers,
-          "X-API-KEY": apiKey,
+          [X_API_KEY]: apiKey,
         }
       }));
 
