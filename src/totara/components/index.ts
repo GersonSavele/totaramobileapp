@@ -44,5 +44,6 @@ export {
   CustomButton,
   CustomText,
   CustomImageView,
-  ModalContainer
+  ModalContainer,
+
 }

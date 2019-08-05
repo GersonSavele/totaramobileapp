@@ -20,28 +20,40 @@
  */
 
 import gql from "graphql-tag";
-import { ScormActivity } from "@totara/types";
+import { Me } from "@totara/types";
 
 type Response = {
-    scorm: ScormActivity;
+    me: Me;
 }
-  
-interface Variables {
-    id: number;
-  }
 
-const ScormGQLQuery = gql` 
-query scorm($id: ID!) {
-    scorm(id: $id) {
-      id
-      webEntryUrl
-      currentAttempt
-      maxAttempt
-      score
-      isAvailable
+const QueryMe = gql` 
+query totara_mobile_me {
+    me: totara_mobile_me {
+        user {
+            id,
+            firstname,
+            lastname,
+            middlename,
+            username,
+            email,
+        },
+        system {
+            wwwroot,
+            apiurl,
+            release,
+            request_policy_agreement,
+            request_user_consent,
+            request_user_fields,
+        }
+        enrolled_courses {
+            id,
+            fullname,
+            shortname,
+            idnumber,
+            summary,
+        }
     }
-  }
+}
 `;
 
-
-export  {Response, Variables, ScormGQLQuery};
+export  { Response, QueryMe };

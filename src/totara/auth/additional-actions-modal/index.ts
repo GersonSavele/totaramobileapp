@@ -19,29 +19,8 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import gql from "graphql-tag";
-import { ScormActivity } from "@totara/types";
+import AdditionalActionModal from "./AdditionalActionModal";
 
-type Response = {
-    scorm: ScormActivity;
+export {
+    AdditionalActionModal
 }
-  
-interface Variables {
-    id: number;
-  }
-
-const ScormGQLQuery = gql` 
-query scorm($id: ID!) {
-    scorm(id: $id) {
-      id
-      webEntryUrl
-      currentAttempt
-      maxAttempt
-      score
-      isAvailable
-    }
-  }
-`;
-
-
-export  {Response, Variables, ScormGQLQuery};

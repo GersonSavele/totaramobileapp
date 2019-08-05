@@ -63,6 +63,8 @@ import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions"
 
+
+
 class App extends React.Component<{}> {
 
   navigator = undefined;
