@@ -1,3 +1,4 @@
+  
 /**
  * This file is part of Totara Mobile
  *
@@ -16,8 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
- *
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-export {default} from "./Profile";
+const Logout = async ({ mutate, auth }) =>{
+    return(
+     mutate({})
+      .then(()=>auth.logOut())
+      .catch((error) => {
+      console.log('there was an error sending the query', auth, error); // TODO change this to use new logger in MOB-65
+     })
+    )
+};
+
+
+export default Logout ;

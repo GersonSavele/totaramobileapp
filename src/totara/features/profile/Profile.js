@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
 
 import React from "react";
@@ -29,7 +28,7 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 import { AuthConsumer } from "@totara/auth";
 import {NAVIGATION_SETTING} from "@totara/lib/Constant";
-import Logout  from "./Logout"
+import Logout from "./Logout"
 
 export const deleteDevice = gql`
 mutation totara_mobile_delete_device {

@@ -1,4 +1,3 @@
-  
 /**
  * This file is part of Totara Mobile
  *
@@ -17,18 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-const Logout = async ({ mutate, auth }) =>{
-    return(
-     mutate({})
-      .then(()=>auth.logOut())
-      .catch((error) => {
-      console.log('there was an error sending the query', auth, error);
-     })
-    )
-}
+import Logout from "../Logout";
 
+describe("Profile screen", () => {
 
-export default Logout ;
+  it("when logout button is pressed, it would call a mutation to delete device and then logout", async () => {
+
+    const mockMutate = jest.fn(() => Promise.resolve());
+    const mockAuth = {
+      logOut: jest.fn(() => Promise.resolve())
+    };
+
+    await Logout({ mutate: mockMutate, auth: mockAuth });
+
+    expect(mockMutate.mock.calls.length).toBe(1);
+    expect(mockAuth.logOut.mock.calls.length).toBe(1);
+
+  });
+
+});
