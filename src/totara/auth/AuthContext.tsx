@@ -38,6 +38,7 @@ import WebLogin from "./web-login";
 import AppLinkLogin from "./app-link-login/AppLinkLogin";
 import { X_API_KEY } from "@totara/lib/Constant";
 
+
 const AuthContext = React.createContext<State>(
   {
     onLoginSuccess: (setupSecret: SetupSecret) => { return Promise.resolve() },
