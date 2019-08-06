@@ -1,12 +1,18 @@
 {
     "env": {
         "es6": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended"
     ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -19,9 +25,20 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "@typescript-eslint"
     ],
     "rules": {
+        "react/jsx-uses-vars": "error"
     },
+    "overrides": [
+        {
+            "files": [ "src/totara/**/*.tsx", "src/totara/**/*.ts" ],
+            "rules": {
+                "no-unused-vars": "off",
+                "@typescript-eslint/no-unused-vars": "error"
+            }
+        }
+    ],
 	"parser": "@typescript-eslint/parser"
 }
