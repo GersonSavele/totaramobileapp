@@ -12,7 +12,9 @@ type Params = {
 const AdditionalActionRule = ({children}: Params) => {
   return (
     <QueryGQL  query = { QueryMe }>
+    
     {({ loading, data, error }) => {
+        {console.log("print---",loading, data, error )}
       if (loading) return <Text>Loading...</Text>;
       if (error) return <Text>Error!</Text>;
       if (data && (!data.me.system.request_policy_agreement || !data.me.system.request_user_consent || !data.me.system.request_user_fields)) {

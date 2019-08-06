@@ -28,7 +28,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ActivityType } from "@totara/types";
 import ScormActivity from "./scorm/ScormActivity";
 import { WebviewActivity } from "./webview/WebviewActivity";
-import { AppStateListener } from "@totara/components"
 
 type contextData = {
   setCurrentActivity: (activity: ActivityType) => void

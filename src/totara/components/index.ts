@@ -45,5 +45,4 @@ export {
   CustomText,
   CustomImageView,
   ModalContainer,
-
 }
