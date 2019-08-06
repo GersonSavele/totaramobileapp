@@ -57,6 +57,8 @@
 		65E2665A95EE4354931925CC /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3350581D884CFDAE85DF8B /* libRNVectorIcons-tvOS.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8F1400DB1563456ABA42C7CA /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4F236ADF3E4F5B8F818C3D /* libRNCookieManagerIOS.a */; };
+		AC865E3D22F9909200179A7B /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB68C0CA22C1B40600943552 /* JavaScriptCore.framework */; };
+		AC865E7222F9909C00179A7B /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		AD1AA90830C84053B31BC268 /* libRNNodeJsMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1068672E52034C5DA997BD20 /* libRNNodeJsMobile.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B4EBA88BD5EA4D9685F89A3F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C01097FADBF489D8F57B2DE /* MaterialCommunityIcons.ttf */; };
@@ -563,6 +565,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC865E3D22F9909200179A7B /* JavaScriptCore.framework in Frameworks */,
+				AC865E7222F9909C00179A7B /* libRCTWebSocket.a in Frameworks */,
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
