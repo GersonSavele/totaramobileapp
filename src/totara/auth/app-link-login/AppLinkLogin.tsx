@@ -19,17 +19,14 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React from "react";
 import { Linking, Platform } from "react-native";
+import { AuthProviderStateLift, AuthComponent } from "../AuthComponent";
 
-import { SetupSecret } from "../AuthContext";
-
-export default class AppLinkLogin extends React.Component<Props> { 
+export default class AppLinkLogin extends AuthComponent {
 
   private eventType: string = "url";
-  private requestRegister: string[] = ["register", "register/", "mobile.totaralearning.com/register", "mobile.totaralearning.com/register/"];
 
-  constructor(props: Props) {
+  constructor(props: AuthProviderStateLift) {
     super(props);
     this.appLinkListener();
   }
@@ -94,7 +91,3 @@ export default class AppLinkLogin extends React.Component<Props> {
 
 }
 
-type Props = {
-  onLoginSuccess: (setupSecret: SetupSecret) => {}
-  onLoginFailure: (error: Error) => {}
-};

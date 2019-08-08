@@ -20,6 +20,7 @@
  *
  */
 import localConfig from "./config.local";
+import ConsoleLogger from "./logger/ConsoleLogger";
 
 const defaultConfig = {
   urlProtocol: "https",
@@ -32,6 +33,10 @@ const defaultConfig = {
   loginUri: (host: string) => (`${host}/login/index.php`),
   deviceRegisterUri: (host: string) => (`${host}/totara/mobile/device_register.php`),
   webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`)
+};
+
+export const internalConfig = {
+  logger: ConsoleLogger
 };
 
 let config = {...defaultConfig, ...localConfig};

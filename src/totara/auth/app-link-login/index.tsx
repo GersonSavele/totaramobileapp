@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -19,9 +19,5 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { Logger } from "./Logger";
-import { internalConfig } from "../config";
-
-const LoggerImpl = internalConfig.logger; // TODO would good to make this injectable, do a simple dependency injection
-
-export { LoggerImpl as Log, Logger };
+import AppLinkLogin from "./AppLinkLogin";
+export default AppLinkLogin;

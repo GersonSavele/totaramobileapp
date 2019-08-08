@@ -19,9 +19,13 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { Logger } from "./Logger";
-import { internalConfig } from "../config";
+import React from "react";
 
-const LoggerImpl = internalConfig.logger; // TODO would good to make this injectable, do a simple dependency injection
+import { SetupSecret } from "./AuthContext";
 
-export { LoggerImpl as Log, Logger };
+export class AuthComponent<P = {}, S = {}> extends React.Component<AuthProviderStateLift & P, S> {}
+
+export type AuthProviderStateLift = {
+  onLoginSuccess: (setupSecret: SetupSecret) => {}
+  onLoginFailure: (error: Error) => {}
+};

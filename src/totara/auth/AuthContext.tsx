@@ -20,7 +20,7 @@
  *
  */
 
-import React, {ReactNode} from "react";
+import React, { ReactNode } from "react";
 import { Text } from "react-native";
 import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "react-apollo";
@@ -35,13 +35,12 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { config, Log } from "@totara/lib";
 import WebLogin from "./web-login";
 
-import AppLinkLogin from "./app-link-login/AppLinkLogin";
+import AppLinkLogin from "./app-link-login";
 import { X_API_KEY } from "@totara/lib/Constant";
-
 
 const AuthContext = React.createContext<State>(
   {
-    onLoginSuccess: (setupSecret: SetupSecret) => { return Promise.resolve() },
+    onLoginSuccess: () => { return Promise.resolve() },
     setup: undefined,
     isLoading: true,
     logOut: () => { return Promise.resolve() }
@@ -81,6 +80,9 @@ class AuthProvider extends React.Component<Props, State> {
     new AppLinkLogin({onLoginSuccess: this.onLoginSuccess, onLoginFailure: this.onLoginFailure});
   }
 
+  /**
+   * bootstrap would initialize AuthProvider is the right state
+   */
   bootstrap = async () => {
     SplashScreen.hide();
 
@@ -104,14 +106,29 @@ class AuthProvider extends React.Component<Props, State> {
     Log.info("state", this.state);
   };
 
+  /**
+   * When a successful login is achieved call this with setupSecret it would start the login sequence and right authenticated state
+   *
+   * Can be used on either a AuthComponent react component or a promise chain
+   *
+   * @param setupSecret
+   */
   onLoginSuccess = async (setupSecret: SetupSecret) => {
     await this.getAndStoreApiKey(setupSecret);
   };
 
+  /**
+   * When a failure of login happens call this
+   *
+   * @param error
+   */
   onLoginFailure = async (error: Error) => {
     Log.error("login failure", error);
   };
 
+  /**
+   * call logOut to clean any state of auth
+   */
   logOut = async () => {
     await AsyncStorage.clear();
     this.setState({
@@ -119,7 +136,10 @@ class AuthProvider extends React.Component<Props, State> {
     });
   };
 
-  createApolloClient = (apiKey: string, uri: string) => {
+  /**
+   * create an authenticated Apollo client that has the right credentials to the api
+   */
+  private createApolloClient = (apiKey: string, uri: string) => {
 
     const authLink = setContext((_, { headers }) => (
       {
@@ -135,16 +155,21 @@ class AuthProvider extends React.Component<Props, State> {
       new HttpLink({ uri: uri })
     ]);
 
-    const client = new ApolloClient({
+    return new ApolloClient({
       link: link,
       cache: new InMemoryCache()
     });
-
-    return client;
   };
 
-  getAndStoreApiKey = async (setupSecret: SetupSecret) => {
+  /**
+   * using the setup secret (a temp key), retrieve the api key (a long term key) for the api
+   *
+   * @param setupSecret
+   */
+  private getAndStoreApiKey = async (setupSecret: SetupSecret) => {
     try {
+      // fetch is in global space
+      // eslint-disable-next-line no-undef
       const apiKey = await fetch(config.deviceRegisterUri(setupSecret.uri), {
         method: "POST",
         body: JSON.stringify({
@@ -206,7 +231,6 @@ type Setup = {
   apiKey: string,
   host: string
 }
-
 
 export interface SetupSecret {
   secret: string

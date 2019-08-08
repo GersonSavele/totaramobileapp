@@ -23,20 +23,20 @@
 import React from "react";
 import { Modal, View } from "react-native";
 
-import { SetupSecret } from "../AuthContext";
 import SiteUrl from "./SiteUrl";
 import Login from "./Login";
+import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
 
-class WebLogin extends React.Component<Props, States> {
+class WebLogin extends AuthComponent<{}, States> {
   
-  constructor(props: Props) {
+  constructor(props: AuthProviderStateLift) {
     super(props);
     this.state = { 
       step: SiteUrl.actionType,
       uri: undefined, 
       secret: undefined
     };
-  };
+  }
 
   onSetupLoginData = (data: string, currentAction: number) => {
     switch (currentAction) {
@@ -86,11 +86,6 @@ class WebLogin extends React.Component<Props, States> {
     }
   }
 }
-
-type Props = {
-  onLoginSuccess: (setupSecret: SetupSecret) => {}
-  onLoginFailure: (error: Error) => {}
-};
 
 type States = {
   step: number,
