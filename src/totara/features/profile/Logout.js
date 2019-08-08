@@ -20,12 +20,14 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
+import { Log } from "@totara/lib";
+
 const Logout = async ({ mutate, auth }) =>{
     return(
      mutate({})
       .then(()=>auth.logOut())
       .catch((error) => {
-      console.log('there was an error sending the query', auth, error); // TODO change this to use new logger in MOB-65
+      Log.error("there was an error sending the query", error, auth);
      })
     )
 };
