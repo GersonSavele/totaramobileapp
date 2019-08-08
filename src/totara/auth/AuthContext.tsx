@@ -77,7 +77,6 @@ class AuthProvider extends React.Component<Props, State> {
     };
 
     this.bootstrap();
-    new AppLinkLogin({onLoginSuccess: this.onLoginSuccess, onLoginFailure: this.onLoginFailure});
   }
 
   /**
