@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
+    "test-junit": "jest --ci --reporters=jest-junit --reporters=default",
     "eslint": "eslint -c .eslintrc.json --ext .js --ext .ts --ext .tsx ./src/totara"
   },
   "dependencies": {
@@ -59,6 +60,7 @@
     "eslint": "^6.0.1",
     "eslint-plugin-react": "^7.12.4",
     "jest": "^24.8.0",
+    "jest-junit": "^7.0.0",
     "metro-react-native-babel-preset": "^0.54.1",
     "react-native-typescript-transformer": "^1.2.11",
     "react-test-renderer": "^16.7.0",
