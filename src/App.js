@@ -60,9 +60,7 @@ import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHold
 import { config } from "@totara/lib";
 import { theme, getTheme } from "@totara/theme";
 import { ActivitySheetProvider } from "@totara/activities";
-import { AuthProvider, AppLinkLogin } from "@totara/auth";
-import { Linking, Platform } from "react-native";
-import AppLinkHandler from "./AppLinkHandler";
+import { AuthProvider } from "@totara/auth";
 
 class App extends React.Component<{}> {
 
@@ -79,7 +77,6 @@ class App extends React.Component<{}> {
         this
       );
     }
-    new AppLinkHandler();
   }
 
   render() {
@@ -143,7 +140,7 @@ const notification = createStackNavigator(
   },
   {
     initialRouteName: "Notification",
-    defaultNavigationOptions: navigationOptions
+    defaultNavigationOptions: navigationOptions,
   });
 
 const downloads = createStackNavigator(

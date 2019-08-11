@@ -35,8 +35,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { config, Log } from "@totara/lib";
 import WebLogin from "./web-login";
 
-import AppLinkLogin from "./app-link-login";
 import { X_API_KEY } from "@totara/lib/Constant";
+import AppLinkLogin from "./app-link-login";
 
 const AuthContext = React.createContext<State>(
   {
@@ -113,7 +113,9 @@ class AuthProvider extends React.Component<Props, State> {
    * @param setupSecret
    */
   onLoginSuccess = async (setupSecret: SetupSecret) => {
-    await this.getAndStoreApiKey(setupSecret);
+    await this.logOut().then(()=> {
+      this.getAndStoreApiKey(setupSecret);
+    })
   };
 
   /**
@@ -200,6 +202,7 @@ class AuthProvider extends React.Component<Props, State> {
   render() {
     return (
       <AuthContext.Provider value={this.state}>
+        <AppLinkLogin onLoginFailure={this.onLoginFailure} onLoginSuccess={this.onLoginSuccess} />
         {
           (this.state.isLoading)
             ? <Text>auth loading, this text should not be seen unless bootstrap failed</Text>
