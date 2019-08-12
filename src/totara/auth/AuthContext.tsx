@@ -115,7 +115,7 @@ class AuthProvider extends React.Component<Props, State> {
   onLoginSuccess = async (setupSecret: SetupSecret) => {
     await this.logOut().then(()=> {
       this.getAndStoreApiKey(setupSecret);
-    })
+    });
   };
 
   /**
@@ -131,7 +131,13 @@ class AuthProvider extends React.Component<Props, State> {
    * call logOut to clean any state of auth
    */
   logOut = async () => {
-    await AsyncStorage.clear();
+    await AsyncStorage.clear().catch((error) => {
+      if (error.message.startsWith("Failed to delete storage directory")) {
+        Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
+      } else {
+        Log.error("Fail to clear Async storage ", error);
+      }
+    });
     this.setState({
       setup: undefined,
     });
