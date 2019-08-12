@@ -21,6 +21,7 @@
 
 import { Linking, Platform } from "react-native";
 import { AuthProviderStateLift, AuthComponent } from "../AuthComponent";
+import { Log, config } from "@totara/lib";
 
 export default class AppLinkLogin extends AuthComponent {
 
@@ -43,10 +44,11 @@ export default class AppLinkLogin extends AuthComponent {
   };
 
   private handleAppLink = (encodedUrl: string | null) => {
+    Log.info("handleAppLink", encodedUrl);
     if (encodedUrl) {
       const url = decodeURIComponent(encodedUrl);
-      const isRegistrerRequest = url.match(/^https:\/\/mobile.totaralearning.com\/register\?|^totara:\/\/register\?/g) ? true : false;
-      if (isRegistrerRequest) {
+      const requestUrl= url.split("?")[0];
+      if (requestUrl ==  `${config.appLinkDomain}/register` || requestUrl == `${config.deepLinkSchema}/register`) {
         this.handleAppLinkRegister(url);
       }
     } 
@@ -66,6 +68,7 @@ export default class AppLinkLogin extends AuthComponent {
     const secret = this.getValueForUrlQueryParameter(url, keySecret);
     const site = this.getValueForUrlQueryParameter(url, keySite);
     if (site != null && secret != null && site != "" && secret != "") {
+      Log.info("AppLinkLogin success", secret, site);
       this.props.onLoginSuccess({ secret: secret, uri: site });
     } else {
       var errorInfo = "Invalid request.";
@@ -76,6 +79,7 @@ export default class AppLinkLogin extends AuthComponent {
       } else if (secret == null || secret == "") {
         errorInfo = "Invalid request, 'token' cannot be null or empty.";
       }
+      Log.info("AppLinkLogin failed with error ", errorInfo);
       this.props.onLoginFailure(new Error(errorInfo));
     }
   };
