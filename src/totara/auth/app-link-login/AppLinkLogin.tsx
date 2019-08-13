@@ -48,7 +48,9 @@ export default class AppLinkLogin extends AuthComponent {
     if (encodedUrl) {
       const url = decodeURIComponent(encodedUrl);
       const requestUrl= url.split("?")[0];
-      if (requestUrl ==  `${config.appLinkDomain}/register` || requestUrl == `${config.deepLinkSchema}/register`) {
+      const requestRegister: string[] = [`${config.appLinkDomain}/register`, `${config.appLinkDomain}/register/`, `${config.deepLinkSchema}/register`, `${config.deepLinkSchema}/register/`];
+      
+      if (requestRegister.includes(requestUrl)) {
         this.handleAppLinkRegister(url);
       }
     } 
