@@ -70,7 +70,10 @@ class Profile extends React.Component {
             data={this.data}
             renderItem={this.renderItem}
         />
-        <AuthConsumer>{auth =><Button title="Logout" onPress={() => Logout({...this.props,auth})}/>}
+        <AuthConsumer>
+          { auth =>
+            <Button title="Logout" onPress={() => auth.logOut()} />
+          }
         </AuthConsumer>
       </View>
     );

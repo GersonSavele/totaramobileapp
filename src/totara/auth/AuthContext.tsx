@@ -27,7 +27,7 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloLink } from 'apollo-link';
 import { RetryLink } from 'apollo-link-retry';
 import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -37,6 +37,7 @@ import WebLogin from "./web-login";
 
 import { X_API_KEY } from "@totara/lib/Constant";
 import AppLinkLogin from "./app-link-login";
+import { gql } from "apollo-boost";
 
 const AuthContext = React.createContext<State>(
   {
@@ -79,6 +80,8 @@ class AuthProvider extends React.Component<Props, State> {
     this.bootstrap();
   }
 
+  apolloClient?: ApolloClient<NormalizedCacheObject> = undefined;
+
   /**
    * bootstrap would initialize AuthProvider is the right state
    */
@@ -113,9 +116,12 @@ class AuthProvider extends React.Component<Props, State> {
    * @param setupSecret
    */
   onLoginSuccess = async (setupSecret: SetupSecret) => {
-    await this.logOut().then(()=> {
-      this.getAndStoreApiKey(setupSecret);
-    });
+    if (this.state.setup && this.state.setup.apiKey) {
+      if (!this.apolloClient) this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql");
+      await this.logOut();
+    }
+
+    return this.getAndStoreApiKey(setupSecret);
   };
 
   /**
@@ -131,15 +137,30 @@ class AuthProvider extends React.Component<Props, State> {
    * call logOut to clean any state of auth
    */
   logOut = async () => {
-    await AsyncStorage.clear().catch((error) => {
+    Log.debug("logging out");
+
+    if (this.apolloClient) {
+      Log.debug("Deleting device");
+      const mutation = this.apolloClient!.mutate({
+        mutation: deleteDevice
+      });
+
+      await mutation.then(() => {
+        this.apolloClient = undefined;
+        Log.debug("Device deleted and apollo client discarded");
+      });
+    }
+
+    await AsyncStorage.clear().then(() => {
+      this.setState({
+        setup: undefined,
+      });
+    }).catch((error) => {
       if (error.message.startsWith("Failed to delete storage directory")) {
         Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
       } else {
         Log.error("Fail to clear Async storage ", error);
       }
-    });
-    this.setState({
-      setup: undefined,
     });
   };
 
@@ -162,10 +183,12 @@ class AuthProvider extends React.Component<Props, State> {
       new HttpLink({ uri: uri })
     ]);
 
-    return new ApolloClient({
+    this.apolloClient = new ApolloClient({
       link: link,
       cache: new InMemoryCache()
     });
+
+    return this.apolloClient;
   };
 
   /**
@@ -183,6 +206,7 @@ class AuthProvider extends React.Component<Props, State> {
           setupsecret: setupSecret.secret
         })
       }).then((response) => {
+        Log.debug("server response status ", response.status);
         if (response.status === 200) return response.json();
         throw new Error(`Server Error: ${response.status}`);
       }).then((json) => json.data.apikey);
@@ -211,7 +235,7 @@ class AuthProvider extends React.Component<Props, State> {
         <AppLinkLogin onLoginFailure={this.onLoginFailure} onLoginSuccess={this.onLoginSuccess} />
         {
           (this.state.isLoading)
-            ? <Text>auth loading, this text should not be seen unless bootstrap failed</Text>
+            ? <Text>TODO replace with error feedback screen see MOB-117</Text>
             : (this.state.setup && this.state.setup.apiKey)
               ? <ApolloProvider client={this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql")}>
                 {this.props.children}
@@ -223,6 +247,11 @@ class AuthProvider extends React.Component<Props, State> {
   }
 }
 
+export const deleteDevice = gql`
+    mutation totara_mobile_delete_device {
+        delete_device: totara_mobile_delete_device
+    }
+`;
 
 type Props = {
   children: ReactNode
@@ -235,7 +264,7 @@ type State = {
   logOut: () => Promise<void>
 }
 
-type Setup = {
+export type Setup = {
   apiKey: string,
   host: string
 }
