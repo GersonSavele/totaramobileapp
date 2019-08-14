@@ -22,7 +22,10 @@
 import React from "react";
 import { Image, StyleSheet } from "react-native";
 import { resizeByScreenSize } from "@totara/theme";
-import { IMAGES } from "@totara/lib/Constant"
+
+export const IMAGES = {
+  complete_action: require('@resources/images/complete_action/complete_action.png')
+};
 
 type Params = {
   imageType: string

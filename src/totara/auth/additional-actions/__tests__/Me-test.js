@@ -13,8 +13,7 @@ const response = {
       id: 1,
       firstname: "Admin",
       lastname: "User",
-      middlename: "String",
-      username: "String",
+      fullname: "String",
       email: "admin@totara.local"
     },
     system: {
@@ -29,8 +28,7 @@ const response = {
       id: 1,
       fullname: "Name",
       shortname: "Name",
-      idnumber: 1,
-      summary: "All"
+      idnumber: 1
     }
   }
 }
@@ -69,7 +67,7 @@ describe("should render loading state initially", () => {
   });
 });
 
-describe("should render additional action rule", () => {
+describe("should render additional action rule", ()  => {
   it("Test result : After render additional action rule, it will return child component", async () => {
     const component = renderer.create(
       <MockedProvider mocks={ mocks } addTypename={false}>

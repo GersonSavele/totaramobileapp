@@ -17,41 +17,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
- */
+**/
 
-import gql from "graphql-tag";
-import { Me } from "@totara/types";
-
-type Response = {
-    me: Me;
+export interface User {
+    id: number,
+    firstname: string,
+    lastname: string,
+    fullname: string,
+    email: string,
+  }
+  
+export interface System {
+    wwwroot: string,
+    apiurl : string,
+    release : string,
+    request_policy_agreement : boolean,
+    request_user_consent: boolean,
+    request_user_fields :boolean
 }
 
-const QueryMe = gql` 
-query totara_mobile_me {
-    me: totara_mobile_me {
-        user {
-            id,
-            firstname,
-            lastname,
-            fullname,
-            email,
-        },
-        system {
-            wwwroot,
-            apiurl,
-            release,
-            request_policy_agreement,
-            request_user_consent,
-            request_user_fields,
-        }
-        enrolled_courses {
-            id,
-            fullname,
-            shortname,
-            idnumber
-        }
-    }
+export interface EnrolledCourses {
+    id: number,
+    fullname: string,
+    shortname: string,
+    idnumber: number
 }
-`;
 
-export  { Response, QueryMe };
+export interface Me {
+    user: User,
+    system: System,
+    enrolled_courses: EnrolledCourses
+}

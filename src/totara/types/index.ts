@@ -22,6 +22,7 @@ import { Activity, ActivityType, ScormActivity } from "./Activity";
 import { Course } from "./Course";
 import { Program } from "./Program";
 import { Status, LearningStatus } from "./LearningStatus";
+import { Me } from "./Me"
 
 export {
   LearningItem,
@@ -32,5 +33,6 @@ export {
   Course,
   Program,
   Status,
-  LearningStatus
+  LearningStatus,
+  Me
 }
