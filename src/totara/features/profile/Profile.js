@@ -20,23 +20,15 @@
  */
 
 import React from "react";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 import { AuthConsumer } from "@totara/auth";
-import {NAVIGATION_SETTING} from "@totara/lib/Constant";
-import Logout from "./Logout"
+import { NAVIGATION_SETTING } from "@totara/lib/Constant";
 
-export const deleteDevice = gql`
-mutation totara_mobile_delete_device {
-  delete_device: totara_mobile_delete_device
-}
-`;
 
-class Profile extends React.Component {
+export default class Profile extends React.Component {
   static navigationOptions = {
     title: "Profile",
   };
@@ -55,9 +47,7 @@ class Profile extends React.Component {
     {
       key: "1",
       title: "Name"
-
-    },
-    {
+    }, {
       key: "2",
       title: "Settings"
     },
@@ -82,7 +72,6 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
   navigation: PropTypes.object.isRequired,
-  mutate: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -96,5 +85,3 @@ const styles = StyleSheet.create({
     width: wp("100%")
   },
 });
-
-export default graphql(deleteDevice)(Profile);

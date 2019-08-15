@@ -19,22 +19,16 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import Logout from "../Logout";
+import deviceCleanup from "../DeviceCleanup";
 
-describe("Profile screen", () => {
+describe("DeviceCleanup will deregister the device record and cleanup setup in the storage", () => {
+  it("Only one chain of promises and cleanup storage should be the end", async () => {
+    const setSetup = jest.fn();
+    const mockClearStorage = Promise.resolve();
+    const mockDeleteDevice = Promise.resolve();
 
-  it("when logout button is pressed, it would call a mutation to delete device and then logout", async () => {
-
-    const mockMutate = jest.fn(() => Promise.resolve());
-    const mockAuth = {
-      logOut: jest.fn(() => Promise.resolve())
-    };
-
-    await Logout({ mutate: mockMutate, auth: mockAuth });
-
-    expect(mockMutate.mock.calls.length).toBe(1);
-    expect(mockAuth.logOut.mock.calls.length).toBe(1);
-
+    expect.assertions(1);
+    const testResult = deviceCleanup(mockDeleteDevice, mockClearStorage, setSetup);
+    await expect(testResult).resolves.toBe(mockClearStorage.resolves);
   });
-
 });

@@ -38,6 +38,7 @@ import WebLogin from "./web-login";
 import { X_API_KEY } from "@totara/lib/Constant";
 import AppLinkLogin from "./app-link-login";
 import { gql } from "apollo-boost";
+import deviceCleanup from "./DeviceCleanup";
 
 const AuthContext = React.createContext<State>(
   {
@@ -138,33 +139,23 @@ class AuthProvider extends React.Component<Props, State> {
    */
   logOut = async () => {
     Log.debug("logging out");
-
+    let mutationPromise: Promise<any> = Promise.resolve(true);
     if (this.apolloClient) {
       Log.debug("Deleting device");
-      const mutation = this.apolloClient!.mutate({
+      mutationPromise = this.apolloClient!.mutate({
         mutation: deleteDevice
       });
-
-      await mutation.then(() => {
-        this.apolloClient = undefined;
-        Log.debug("Device deleted and apollo client discarded");
-      });
-    }
-
-    await AsyncStorage.clear().then(() => {
+    } 
+    const clearStoragePromise = AsyncStorage.clear();
+    return deviceCleanup(mutationPromise, clearStoragePromise, ()=> { this.apolloClient = undefined; }).then(()=> {
+      Log.debug("Clear setup");
       this.setState({
         setup: undefined,
       });
-    }).catch((error) => {
-      if (error.message.startsWith("Failed to delete storage directory")) {
-        Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
-      } else {
-        Log.error("Fail to clear Async storage ", error);
-      }
     });
   };
 
-  /**
+   /**
    * create an authenticated Apollo client that has the right credentials to the api
    */
   private createApolloClient = (apiKey: string, uri: string) => {
@@ -273,6 +264,5 @@ export interface SetupSecret {
   secret: string
   uri: string
 }
-
 
 export { AuthProvider, AuthConsumer }
