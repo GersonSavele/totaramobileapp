@@ -53,15 +53,15 @@ const AdditionalActionModal =() => {
   return(
     <TransparentView>
       <ModalContainer>
-        <CustomImageView imageType = "complete_action"/>
+      <CustomImageView imageType = "complete_action"/>
         <View style ={styles. textContainerStyle}>
           <CustomText text = {translate("additional-actions-modal.auth_model_title")} fontSize = {normalize(24)} color = "#3D444B" fontWeight = "600"></CustomText>
           <CustomText text = {translate("additional-actions-modal.auth_model_description")} fontSize = {normalize(16)} color = "#3D444B" fontWeight = "100"></CustomText>
         </View>
-        <AuthConsumer>
+      <AuthConsumer>
         { auth =>
         <View style ={styles. textContainerStyle}>
-          <CustomButton buttonTitle = {translate("additional-actions-modal.auth_model_go_to_browser")} onPress = {()=>{ Linking.openURL("http://" + auth.setup!.host)}} buttonTitleFontWeight = "600" buttonTitleColor ="#FFF" buttonBackgroundColor = "#8ca83d" fontSize = {normalize(16)} buttonIcon = "external-link-alt"/>
+          <CustomButton buttonTitle = {translate("additional-actions-modal.auth_model_go_to_browser")} onPress = {()=>{ Linking.openURL(auth.setup!.host)}} buttonTitleFontWeight = "600" buttonTitleColor ="#FFF" buttonBackgroundColor = "#8ca83d" fontSize = {normalize(16)} buttonIcon = "external-link-alt"/>
           <CustomButton buttonTitle = {translate("additional-actions-modal.auth_model_logout")} onPress = {() => auth.logOut()} fontSize = {normalize(16)}></CustomButton>
         </View>
         }

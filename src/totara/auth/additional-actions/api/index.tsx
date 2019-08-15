@@ -19,12 +19,16 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
+import * as React from 'react'
+import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { Me } from "@totara/types";
 
 type Response = {
     me: Me;
 }
+
+class QueryGQL extends Query<Response> {}
 
 const QueryMe = gql` 
 query totara_mobile_me {
@@ -54,4 +58,16 @@ query totara_mobile_me {
 }
 `;
 
-export  { Response, QueryMe };
+const GetMe = ({props} : any) => {
+   return (<QueryGQL  query = { QueryMe }>
+    {({ loading, data, error }) =>  
+       props({
+        loading : loading,
+        data : data,
+        error : error
+       })
+     }
+    </QueryGQL>)
+}
+
+export  { GetMe, QueryMe };
