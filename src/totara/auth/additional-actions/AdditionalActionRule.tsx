@@ -33,8 +33,10 @@ const AdditionalActionRule = ({children}: Params) => {
       ({ loading, data, error } : any) => {
         if (loading) return <Text>Loading...</Text>;
         if (error) return <Text>Error!</Text>;
-        if (data && (!data.me.system.request_policy_agreement || !data.me.system.request_user_consent || !data.me.system.request_user_fields)) {
-          return children
+        // TO DO : We need to understand request_policy_agreement bool value, how it is working with modal
+        // if (data && (data.me.system.request_policy_agreement || data.me.system.request_user_consent || data.me.system.request_user_fields)) {
+        if (data && (data.me.system.request_user_consent || data.me.system.request_user_fields)) {
+        return children
         } else {
           return null;
         }

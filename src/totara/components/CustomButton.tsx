@@ -60,7 +60,7 @@ const CustomButton = ( { buttonBackgroundColor,buttonBorderColor,onPress,buttonT
 
 const styles = StyleSheet.create({
   containerModelButtonStyle: {
-      marginBottom: resizeByScreenSize(8, 8, 16, 16),
+      paddingBottom: resizeByScreenSize(8, 8, 16, 16),
     },
     ButtonStyle:{
       paddingRight:"10%",

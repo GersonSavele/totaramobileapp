@@ -20,7 +20,7 @@
 **/
 
 import React from "react";
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, Dimensions } from "react-native";
 import { resizeByScreenSize } from "@totara/theme";
 
 export const IMAGES = {
@@ -46,11 +46,9 @@ const setImage = ({imageType}: Params) => {
 
 const styles = StyleSheet.create({
   containerStyle: {
-    marginTop:resizeByScreenSize(16, 16, 16, 16),
     alignItems:"center",
-    height: resizeByScreenSize(160, 180, 200, 220),
-    width: resizeByScreenSize(190, 200, 220, 250),
-    marginBottom: resizeByScreenSize(16, 16, 16, 16),
+    height: Dimensions.get('window').width * 0.5,
+    width: Dimensions.get('window').width * 0.7,
     resizeMode: 'contain'
   }
 });

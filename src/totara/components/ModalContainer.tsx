@@ -40,16 +40,12 @@ const styles = StyleSheet.create({
     subContainerStyle: {
         flex: 1,
         flexDirection:"column",
-        marginTop: "17%",
         marginLeft: "5%",
         marginRight: "5%",
-        marginBottom:"17%",
         alignItems: 'center',
-        justifyContent: 'center', 
-        paddingHorizontal: 16,
+        justifyContent: 'center'
         },
     wrapContainerStyle : {
-        position: 'absolute',
         alignItems:"center"
     }
 });

@@ -19,23 +19,18 @@
  * $author
  */
 
-import {Dimensions, PixelRatio, Platform} from "react-native";
-import {PLATFORM_IOS, SCREEN_WIDTH_LARGE, SCREEN_WIDTH_MEDIUM, SCREEN_WIDTH_SMALL, SCREEN_WIDTH_X_LARGE} from "@totara/lib/Constant";
+import {Dimensions, PixelRatio} from "react-native";
+import { SCREEN_WIDTH_LARGE, SCREEN_WIDTH_MEDIUM, SCREEN_WIDTH_SMALL, SCREEN_WIDTH_X_LARGE} from "@totara/lib/Constant";
 
 const {
-  width: SCREEN_WIDTH,
-  height: SCREEN_HEIGHT,
+  width: SCREEN_WIDTH
 } = Dimensions.get('window');
 
 const scale = SCREEN_WIDTH / 414;
 
 export function normalize(size: number) {
   const newSize = size * scale;
-  if (Platform.OS === PLATFORM_IOS) {
     return Math.round(PixelRatio.roundToNearestPixel(newSize))
-  } else {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-  }
 }
 
 export const deviceSize = () => {
