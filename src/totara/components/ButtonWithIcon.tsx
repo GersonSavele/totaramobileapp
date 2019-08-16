@@ -25,6 +25,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { Button } from "native-base";
 import { resizeByScreenSize } from "@totara/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
 type ButtonParam = {
   buttonTitle? : string,
   buttonBackgroundColor? : string,
@@ -38,7 +39,7 @@ type ButtonParam = {
   buttonIcon? : string
 }
 
-const CustomButton = ( { buttonBackgroundColor,buttonBorderColor,onPress,buttonTitleColor,buttonTitle, buttonTitleFontWeight, borderRadius, borderWidth, fontSize, buttonIcon }: ButtonParam) => {
+const ButtonWithIcon = ( { buttonBackgroundColor,buttonBorderColor,onPress,buttonTitleColor,buttonTitle, buttonTitleFontWeight, borderRadius, borderWidth, fontSize, buttonIcon }: ButtonParam) => {
      return(
   <View style = {styles.containerModelButtonStyle}>
     <Button style={[styles.ButtonStyle,{
@@ -77,4 +78,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default CustomButton;
+export default ButtonWithIcon;

@@ -22,7 +22,7 @@
 import React from "react";
 import { View, StyleSheet, Linking} from "react-native";
 
-import { TransparentView, CustomButton, CustomText, CustomImageView, ModalContainer } from "@totara/components"
+import { TransparentView, ButtonWithIcon, CustomText, CustomImageView, ModalContainer } from "@totara/components"
 import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
@@ -64,8 +64,8 @@ const AdditionalActionModal =() => {
       <AuthConsumer>
         { auth =>
         <View style ={styles. ContainerStyle}>
-          <CustomButton buttonTitle = {translate("additional-actions-modal.auth_model_go_to_browser")} onPress = {()=>{ Linking.openURL(auth.setup!.host)}} buttonTitleFontWeight = "600" buttonTitleColor ="#FFF" buttonBackgroundColor = "#8ca83d" fontSize = {normalize(16)} buttonIcon = "external-link-alt"/>
-          <CustomButton buttonTitle = {translate("additional-actions-modal.auth_model_logout")} onPress = {() => auth.logOut()} fontSize = {normalize(16)}></CustomButton>
+          <ButtonWithIcon buttonTitle = {translate("additional-actions-modal.auth_model_go_to_browser")} onPress = {()=>{ Linking.openURL(auth.setup!.host)}} buttonTitleFontWeight = "600" buttonTitleColor ="#FFF" buttonBackgroundColor = "#8ca83d" fontSize = {normalize(16)} buttonIcon = "external-link-alt"/>
+          <ButtonWithIcon buttonTitle = {translate("additional-actions-modal.auth_model_logout")} onPress = {() => auth.logOut()} fontSize = {normalize(16)}></ButtonWithIcon>
         </View>
         }
       </AuthConsumer>

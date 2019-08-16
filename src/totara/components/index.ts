@@ -27,7 +27,7 @@ import {AddBadge, CheckBadge} from "./AddBadge";
 import ProgressCircle from "./ProgressCircle";
 import ActivityLauncher from "./ActivityLauncher";
 import TransparentView from "./TransparentView";
-import CustomButton from "./CustomButton";
+import ButtonWithIcon from "./ButtonWithIcon";
 import CustomText from "./CustomText";
 import CustomImageView from "./CustomImageView";
 import ModalContainer from "./ModalContainer"
@@ -41,7 +41,7 @@ export {
   ActivityLauncher,
   ProgressCircle,
   TransparentView,
-  CustomButton,
+  ButtonWithIcon,
   CustomText,
   CustomImageView,
   ModalContainer,
