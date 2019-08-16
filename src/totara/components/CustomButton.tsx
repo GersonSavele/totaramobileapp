@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
       shadowOpacity: 0,
     },
     titleText: {
-      fontSize: 12,
       color: "#FFF",
       textAlign: 'center',
       marginRight:10
