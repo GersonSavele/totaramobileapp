@@ -21,16 +21,23 @@
 
 import { Log } from "@totara/lib";
 
-const deviceCleanup = async (deviceDelete: Promise<any>, clearStorage: Promise<void>, clearApolloClient: ()=>void) => {
+/**
+ * Call this to clear user session and local states
+ */
+const deviceCleanup = async (deviceDelete: Promise<any>, clearStorage: Promise<void>, clearApolloClient: () => void, clearSetupState: () => void) => {
   return deviceDelete.then(() => {
     Log.debug("Clear apollo client");
     clearApolloClient();
     return clearStorage
+  }).then(() => {
+    Log.debug("Clear setup");
+    clearSetupState();
   }).catch((error) => {
     if (error.message.startsWith("Failed to delete storage directory")) {
       Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
     } else {
       Log.error("Fail to clear Async storage ", error);
+      throw error;
     }
   });
 }

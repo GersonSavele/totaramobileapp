@@ -21,14 +21,69 @@
 
 import deviceCleanup from "../DeviceCleanup";
 
-describe("DeviceCleanup will deregister the device record and cleanup setup in the storage", () => {
-  it("Only one chain of promises and cleanup storage should be the end", async () => {
+describe("Deregister the device and cleanup setup in the storage", () => {
+  it("Successfully deregistration and cleanup storage",  async () => {
+    const clearApollo = jest.fn();
     const setSetup = jest.fn();
-    const mockClearStorage = Promise.resolve();
     const mockDeleteDevice = Promise.resolve();
+    const mockClearStorage = Promise.resolve();
+    
+    await deviceCleanup(mockDeleteDevice, mockClearStorage, clearApollo, setSetup)
+    expect(clearApollo).toHaveBeenCalledTimes(1);
+    expect(setSetup).toHaveBeenCalledTimes(1);
+  });
+  
+  it("Handled error on cleanup non-existing storage", async () => {
+    const errorNoneExistStorage = new Error("Failed to delete storage directory with");
+    const clearApollo = jest.fn();
+    const setSetup = jest.fn();
+    const mockDeleteDevice = Promise.resolve();
+    const mockClearStorageReject = Promise.reject(errorNoneExistStorage);
+    await deviceCleanup(mockDeleteDevice, mockClearStorageReject, clearApollo, setSetup);
+    expect(clearApollo).toHaveBeenCalledTimes(1);
+    expect(setSetup).not.toHaveBeenCalled();
+  });
 
-    expect.assertions(1);
-    const testResult = deviceCleanup(mockDeleteDevice, mockClearStorage, setSetup);
-    await expect(testResult).resolves.toBe(mockClearStorage.resolves);
+  it("Un-handeled error on deregister the device", async () => {
+    const unHandledErrorServer = new Error("Server error");
+    const clearApollo = jest.fn();
+    const setSetup = jest.fn();
+    const mockDeleteDevice = Promise.reject(unHandledErrorServer);
+    const mockClearStorageReject = Promise.resolve();
+    
+    await deviceCleanup(mockDeleteDevice, mockClearStorageReject, clearApollo, setSetup).catch((e) => {
+      expect(clearApollo).not.toHaveBeenCalled();
+      expect(setSetup).not.toHaveBeenCalled();
+      expect(e).toBe(unHandledErrorServer);
+    });
+  });
+
+  it("Un-handeled error on cleanup the storage", async () => {
+    const unHandledErrorStorage = new Error("Un handled errors for clean storage");
+    const clearApollo = jest.fn();
+    const setSetup = jest.fn();
+    const mockDeleteDevice = Promise.resolve();
+    const mockClearStorageReject = Promise.reject(unHandledErrorStorage);
+    
+    await deviceCleanup(mockDeleteDevice, mockClearStorageReject, clearApollo, setSetup).catch((e) => {
+      expect(clearApollo).toHaveBeenCalledTimes(1);
+      expect(setSetup).not.toHaveBeenCalled();
+      expect(e).toBe(unHandledErrorStorage);
+    });
+  });
+
+  it("All Un-handeled errors", async () => {
+    const unHandledErrorServer = new Error("Server error");
+    const unHandledErrorStorage = new Error("Un handled errors for clean storage");
+    const clearApollo = jest.fn();
+    const setSetup = jest.fn();
+    const mockDeleteDevice = Promise.reject(unHandledErrorServer);
+    const mockClearStorageReject = Promise.reject(unHandledErrorStorage);
+    
+    await deviceCleanup(mockDeleteDevice, mockClearStorageReject, clearApollo, setSetup).catch((e) => {
+      expect(clearApollo).not.toHaveBeenCalled();
+      expect(setSetup).not.toHaveBeenCalled();
+      expect(e).toBe(unHandledErrorServer);
+    });
   });
 });

@@ -43,9 +43,7 @@ describe("Passing different forms of 'url' and get the value for query string pa
       const expectSetupsecret = testCase["setupsecret"];
       const url = testCase["url"];
       const testcase = testCase["testcase"];
-      // it("Test " + testcase + ": 'url'='" + url + "', expect 'site' = '" + expectSite + "' and 'setupsecret' = '" + expectSetupsecret + "'.", () => {
       it( testcase, () => {
-      
         const actualResultSite = appLinkLogin.getValueForUrlQueryParameter(url, keySite);
         expect(actualResultSite).toBe(expectSite);
 
@@ -138,11 +136,9 @@ describe("Passing different forms of 'url' and get the value for query string pa
     }
   ];
   testGetValueForUrlQueryParameter(testCases);
-
 });
 
 describe("Action for Auth Universal/AppLink and Deeplink event according to different data", () => {
-  
   function testHandleAppLinkRegister(testCases) {
     for(let i = 0; i < testCases.length; i++) {
       var testCase = testCases[i];

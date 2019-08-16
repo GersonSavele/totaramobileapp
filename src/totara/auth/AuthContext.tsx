@@ -145,14 +145,13 @@ class AuthProvider extends React.Component<Props, State> {
       mutationPromise = this.apolloClient!.mutate({
         mutation: deleteDevice
       });
-    } 
+    }
     const clearStoragePromise = AsyncStorage.clear();
-    return deviceCleanup(mutationPromise, clearStoragePromise, ()=> { this.apolloClient = undefined; }).then(()=> {
-      Log.debug("Clear setup");
-      this.setState({
-        setup: undefined,
-      });
-    });
+    return deviceCleanup(mutationPromise,
+      clearStoragePromise,
+      () => (this.apolloClient = undefined),
+      () => (this.setState({ setup: undefined }))
+    );
   };
 
    /**
