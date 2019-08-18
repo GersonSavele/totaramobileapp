@@ -30,7 +30,7 @@ type Params = {
   imageType: string
 }
 
-const CustomImageView = ({imageType}: Params) => {
+const ModalImageView = ({imageType}: Params) => {
   return(setImage({imageType}))
 }
 
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CustomImageView;
+export default ModalImageView;

@@ -30,7 +30,7 @@ type TextParam = {
     fontWeight?: string,
 }
 
-const CustomText = ({text, fontSize, color, fontWeight } : TextParam) => {
+const ModalText = ({text, fontSize, color, fontWeight } : TextParam) => {
   return(
     <View style={styles.containerStyle} >
       <Text style = {[styles.titleTextStyle,
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CustomText;
+export default ModalText;

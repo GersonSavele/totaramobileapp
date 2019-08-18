@@ -22,7 +22,7 @@
 import React from "react";
 import { View, StyleSheet, Linking} from "react-native";
 
-import { TransparentView, ButtonWithIcon, CustomText, CustomImageView, ModalContainer } from "@totara/components"
+import { TransparentView, ButtonWithIcon, ModalText, ModalImageView, ModalContainer } from "@totara/components"
 import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
@@ -55,11 +55,11 @@ const AdditionalActionModal =() => {
     <TransparentView>
       <ModalContainer>
       <View style ={styles.ContainerStyle}>
-      <CustomImageView imageType = "complete_action"/>
+      <ModalImageView imageType = "complete_action"/>
       </View>
         <View style ={styles.ContainerStyle}>
-          <CustomText text = {translate("additional-actions-modal.auth_model_title")} fontSize = {normalize(24)} color = "#3D444B" fontWeight = "600"></CustomText>
-          <CustomText text = {translate("additional-actions-modal.auth_model_description")} fontSize = {normalize(16)} color = "#3D444B" fontWeight = "100"></CustomText>
+          <ModalText text = {translate("additional-actions-modal.auth_model_title")} fontSize = {normalize(24)} color = "#3D444B" fontWeight = "600"></ModalText>
+          <ModalText text = {translate("additional-actions-modal.auth_model_description")} fontSize = {normalize(16)} color = "#3D444B" fontWeight = "100"></ModalText>
         </View>
       <AuthConsumer>
         { auth =>

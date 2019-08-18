@@ -28,8 +28,8 @@ import ProgressCircle from "./ProgressCircle";
 import ActivityLauncher from "./ActivityLauncher";
 import TransparentView from "./TransparentView";
 import ButtonWithIcon from "./ButtonWithIcon";
-import CustomText from "./CustomText";
-import CustomImageView from "./CustomImageView";
+import ModalText from "./ModalText";
+import ModalImageView from "./ModalImageView";
 import ModalContainer from "./ModalContainer"
 
 export {
@@ -42,7 +42,7 @@ export {
   ProgressCircle,
   TransparentView,
   ButtonWithIcon,
-  CustomText,
-  CustomImageView,
+  ModalText,
+  ModalImageView,
   ModalContainer,
 }
