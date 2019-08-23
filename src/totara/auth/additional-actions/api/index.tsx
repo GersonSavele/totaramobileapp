@@ -60,11 +60,12 @@ query totara_mobile_me {
 
 const GetMe = ({props} : any) => {
    return (<QueryGQL  query = { QueryMe }>
-    {({ loading, data, error }) =>  
+    {({ loading, data, error, refetch }) =>  
        props({
         loading : loading,
         data : data,
-        error : error
+        error : error,
+        refetch: refetch
        })
      }
     </QueryGQL>)

@@ -28,11 +28,7 @@ import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
 import AdditionalActionRule from "./AdditionalActionRule"
 
-
-type Props = {
-  children: Element
-}
-class AdditionalAction extends React.Component<Props> {
+class AdditionalAction extends React.Component {
 
 render() {
   return (
@@ -73,6 +69,5 @@ const AdditionalActionModal =() => {
     </TransparentView>
   );
 }
-
 
 export default AdditionalAction;

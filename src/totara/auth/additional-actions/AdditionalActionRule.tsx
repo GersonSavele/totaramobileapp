@@ -22,23 +22,39 @@
 import React , { ReactNode }from "react";
 import {  GetMe }  from "./api";
 import { Text } from "react-native"; 
+import  AppStateListener  from "@totara/components/AppStateListener"
+import { Me } from "@totara/types";
+
+type Response = {
+    me: Me;
+}
 
 type Params = {
   children : ReactNode
 }
 
+type QueryResult = {
+  loading : boolean,
+  data : Response,
+  error : Error,
+  refetch: () => void
+}
+
 const AdditionalActionRule = ({children}: Params) => {
- 
   return (<GetMe props = {
-      ({ loading, data, error } : any) => {
+      ({ loading, data, error, refetch } : QueryResult) => {
         if (loading) return <Text>Loading...</Text>;
         if (error) return <Text>Error!</Text>;
         // TO DO - MOB-166 : We need to understand request_policy_agreement bool value, how it is working with modal
         // if (data && (data.me.system.request_policy_agreement || data.me.system.request_user_consent || data.me.system.request_user_fields)) {
         if (data && (data.me.system.request_user_consent || data.me.system.request_user_fields)) {
-        return children
-        } else {
-          return null;
+          return(
+            <AppStateListener onAfterActive = {refetch}>
+              {children}
+            </AppStateListener>)
+        } 
+        else {
+          return null
         }
       }
     }/>

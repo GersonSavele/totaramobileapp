@@ -71,7 +71,7 @@ const mocksError = [
     request: {
       query: QueryMe
     },
-      error: new Error('Error'),
+      error: new Error("Error"),
   },
 ];
 
@@ -84,7 +84,7 @@ describe("should render loading state initially", () => {
       </MockedProvider>
     );
     const tree = component.toJSON();
-    expect(tree.children).toContain('Loading...');
+    expect(tree.children).toContain("Loading...");
   });
 });
 
@@ -98,8 +98,8 @@ describe("should render additional action rule", ()  => {
       </MockedProvider>
     );
     await wait(0);// wait for response
-    const tree = component.root.findByType('Text');
-    expect(tree.children).toContain("Modal Details");
+    const tree = component.root.props.children.props.children.props.children;
+    expect(tree).toContain("Modal Details");
   });
 });
 
@@ -112,6 +112,6 @@ describe("should show error UI", () => {
     );
     await wait(0); // wait for response
     const tree = component.toJSON();
-    expect(tree.children).toContain('Error!');
+    expect(tree.children).toContain("Error!");
   });
 });
