@@ -39,6 +39,7 @@ import { X_API_KEY } from "@totara/lib/Constant";
 import AppLinkLogin from "./app-link-login";
 import { gql } from "apollo-boost";
 import deviceCleanup from "./DeviceCleanup";
+import { getAndStoreApiKey } from "./AuthRoutines";
 
 const AuthContext = React.createContext<State>(
   {
@@ -119,10 +120,18 @@ class AuthProvider extends React.Component<Props, State> {
   onLoginSuccess = async (setupSecret: SetupSecret) => {
     if (this.state.setup && this.state.setup.apiKey) {
       if (!this.apolloClient) this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql");
+      Log.debug("Logging out previous login user");
       await this.logOut();
     }
 
-    return this.getAndStoreApiKey(setupSecret);
+    return getAndStoreApiKey(setupSecret,
+      // fetch is in global space
+      // eslint-disable-next-line no-undef
+      fetch,
+      AsyncStorage.setItem)
+      .then((setup: Setup) => this.setState({
+        setup: setup
+      }));
   };
 
   /**
@@ -181,43 +190,6 @@ class AuthProvider extends React.Component<Props, State> {
     return this.apolloClient;
   };
 
-  /**
-   * using the setup secret (a temp key), retrieve the api key (a long term key) for the api
-   *
-   * @param setupSecret
-   */
-  private getAndStoreApiKey = async (setupSecret: SetupSecret) => {
-    try {
-      // fetch is in global space
-      // eslint-disable-next-line no-undef
-      const apiKey = await fetch(config.deviceRegisterUri(setupSecret.uri), {
-        method: "POST",
-        body: JSON.stringify({
-          setupsecret: setupSecret.secret
-        })
-      }).then((response) => {
-        Log.debug("server response status ", response.status);
-        if (response.status === 200) return response.json();
-        throw new Error(`Server Error: ${response.status}`);
-      }).then((json) => json.data.apikey);
-
-      await AsyncStorage.setItem("apiKey", apiKey);
-      await AsyncStorage.setItem("host", setupSecret.uri);
-
-      this.setState({
-        setup: {
-          apiKey: apiKey,
-          host: setupSecret.uri
-        }
-      });
-
-      return apiKey;
-    } catch (error) {
-      Log.error("unable to get apiKey", error);
-
-      return undefined;
-    }
-  };
 
   render() {
     return (
