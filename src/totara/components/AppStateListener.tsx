@@ -24,8 +24,8 @@ import { AppState, AppStateStatus } from "react-native";
 import { Log } from "@totara/lib";
 
 type Props = {
-    onAfterActive? : () => void,
-    onBackground? : () => void,
+    onAfterActive? : () => {},
+    onBackground? : () => {},
     children? : ReactNode
 }
 
@@ -39,11 +39,11 @@ class AppStateListener extends React.Component <Props>{
     }
 
     componentDidMount() {
-        AppState.addEventListener("change", this._handleAppStateChange);
+        AppState.addEventListener("change", this.handleAppStateChange);
     }
 
     componentWillUnmount() {
-        AppState.removeEventListener("change", this._handleAppStateChange);
+        AppState.removeEventListener("change", this.handleAppStateChange);
     }
 
     /**
@@ -52,7 +52,7 @@ class AppStateListener extends React.Component <Props>{
      * @return : null 
     */
 
-    _handleAppStateChange = (nextAppState : AppStateStatus) => {
+    handleAppStateChange = (nextAppState : AppStateStatus) => {
         this.setState({appState: nextAppState});
 
         if (nextAppState === "active") {

@@ -32,14 +32,14 @@ const stateListener = renderer.create(
 
 describe("App is in Active Foreground/active Mode", () => {
     it("Test result : App state should be changed to active state, in when user comes foreground", () => {
-        stateListener._handleAppStateChange("active");
+        stateListener.handleAppStateChange("active");
         expect(stateListener.state.appState).toBe("active");
     });
   });
 
   describe("App is in Background Mode", () => {
     it("Test result : App state should be changed to background state, in when user comes background", () => {
-        stateListener._handleAppStateChange("background");
+        stateListener.handleAppStateChange("background");
         expect(stateListener.state.appState).toBe("background");
     });
   });
@@ -47,7 +47,7 @@ describe("App is in Active Foreground/active Mode", () => {
 
   describe("App is in inactive Mode", () => {
     it("Test result : App state should be changed to inactive state, in when user comes inactive", () => {
-        stateListener._handleAppStateChange("inactive");
+        stateListener.handleAppStateChange("inactive");
         expect(stateListener.state.appState).toBe("inactive");
     });
   });

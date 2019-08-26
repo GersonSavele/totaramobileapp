@@ -42,7 +42,7 @@ const AdditionalActionRule = ({children}: Params) => {
             </AppStateListener>)
         } 
         else {
-          return null
+          return <AppStateListener onAfterActive = {refetch}/>
         }
       }
     }/>
