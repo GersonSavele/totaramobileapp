@@ -107,3 +107,30 @@ export const deviceCleanup = async (deviceDelete: () => Promise<any>,
   return Promise.all([localCleanUp, remoteCleanUp]).then(() => clearSetupState());
 
 };
+
+/**
+ * Would get needed items from storage and return a valid state setup.
+ *
+ * @param storeGetItem
+ */
+export const bootstrap = async (storeGetItem: (key: string) => Promise<string | null>) => {
+  const [apiKey, host] = await Promise.all([storeGetItem("apiKey"), storeGetItem("host")]);
+
+  if (apiKey !== null && host !== null) {
+    Log.info("bootstrap with existing apiKey and host");
+    return({
+      setup: {
+        apiKey: apiKey,
+        host: host
+      },
+      isLoading: false
+    });
+  } else {
+    Log.info("bootstrap with clean setup state");
+    return({
+      isLoading: false
+    });
+
+  }
+};
+

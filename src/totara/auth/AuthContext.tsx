@@ -27,22 +27,21 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloLink } from 'apollo-link';
 import { RetryLink } from 'apollo-link-retry';
 import { HttpLink } from 'apollo-link-http';
+import { gql } from "apollo-boost";
 import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import SplashScreen from "react-native-splash-screen";
-import AsyncStorage from "@react-native-community/async-storage";
+import { AsyncStorageStatic } from "@react-native-community/async-storage";
 
 import { config, Log } from "@totara/lib";
 import WebLogin from "./web-login";
 
 import { X_API_KEY } from "@totara/lib/Constant";
 import AppLinkLogin from "./app-link-login";
-import { gql } from "apollo-boost";
-import { getAndStoreApiKey, deviceCleanup } from "./AuthRoutines";
+import { getAndStoreApiKey, deviceCleanup, bootstrap } from "./AuthRoutines";
 
 const AuthContext = React.createContext<State>(
   {
-    onLoginSuccess: () => { return Promise.resolve() },
     setup: undefined,
     isLoading: true,
     logOut: () => { return Promise.resolve() }
@@ -72,42 +71,25 @@ class AuthProvider extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      onLoginSuccess: this.onLoginSuccess,
       setup: undefined,
       logOut: this.logOut,
       isLoading: true
     };
 
-    this.bootstrap();
+    this.asyncStorage = props.asyncStorage;
   }
 
   apolloClient?: ApolloClient<NormalizedCacheObject> = undefined;
+  asyncStorage: AsyncStorageStatic;
 
   /**
-   * bootstrap would initialize AuthProvider is the right state
+   * turn off the splash screen and bootstrap the provider
    */
-  bootstrap = async () => {
+  async componentDidMount() {
     SplashScreen.hide();
-
-    const [apiKey, host] = await Promise.all([AsyncStorage.getItem('apiKey'), AsyncStorage.getItem('host')]);
-
-    if (apiKey !== null && host !== null) {
-      this.setState({
-        setup: {
-          apiKey: apiKey,
-          host: host
-        },
-        isLoading: false
-      });
-    } else {
-      this.setState({
-        isLoading: false
-      });
-
-    }
-
-    Log.info("state", this.state);
-  };
+    const initialState = await bootstrap(this.asyncStorage.getItem);
+    this.setState(initialState);
+  }
 
   /**
    * When a successful login is achieved call this with setupSecret it would start the login sequence and right authenticated state
@@ -129,7 +111,7 @@ class AuthProvider extends React.Component<Props, State> {
       // fetch is in global space
       // eslint-disable-next-line no-undef
       fetch,
-      AsyncStorage.setItem)
+      this.asyncStorage.setItem)
       .then((setup: Setup) => this.setState({
         setup: setup
       }));
@@ -156,7 +138,7 @@ class AuthProvider extends React.Component<Props, State> {
       })
       : Promise.resolve({ data: {delete_device: true }});
 
-    const clearStoragePromise = () => AsyncStorage.clear();
+    const clearStoragePromise = () => this.asyncStorage.clear();
     const clearApolloClient = () => this.apolloClient = undefined;
     const clearSetupState = () => this.setState({ setup: undefined });
 
@@ -221,12 +203,12 @@ export const deleteDevice = gql`
 
 type Props = {
   children: ReactNode
+  asyncStorage: AsyncStorageStatic
 }
 
 type State = {
   isLoading: boolean,
   setup?: Setup,
-  onLoginSuccess: (setupSecret: SetupSecret) => Promise<void>
   logOut: () => Promise<void>
 }
 

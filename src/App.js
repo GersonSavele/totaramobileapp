@@ -28,6 +28,8 @@ import { StyleProvider } from "native-base";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import AsyncStorage from "@react-native-community/async-storage";
+
 import {
   faHome,
   faCloudDownloadAlt,
@@ -83,7 +85,7 @@ class App extends React.Component<{}> {
   render() {
     return (
       <StyleProvider style={getTheme(theme)}>
-        <AuthProvider>
+        <AuthProvider asyncStorage={AsyncStorage}>
           <ActivitySheetProvider>
             <AppContainer
               ref={nav => {

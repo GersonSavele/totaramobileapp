@@ -20,7 +20,7 @@
  *
  */
 
-import { getAndStoreApiKey, deviceCleanup } from "../AuthRoutines";
+import { getAndStoreApiKey, deviceCleanup, bootstrap } from "../AuthRoutines";
 
 describe("AuthRoutines.getAndStoreApiKey should", () => {
   it("get api key if setup secret is valid", async () => {
@@ -168,3 +168,32 @@ describe("AuthRoutines.deviceCleanup should", () => {
 
 
 });
+
+
+describe("AuthRoutines.bootstrap should", () => {
+
+  it("return the apiKey and host if they exists", async () => {
+    const mockGetStorage = jest.fn( key => (key === "apiKey") ? "the_api_key" : "testhost");
+
+    const result = bootstrap(mockGetStorage);
+
+    await expect(result).resolves.toMatchObject({
+      setup: {
+        apiKey: "the_api_key",
+        host: "testhost"
+      },
+      isLoading: false
+    });
+  });
+
+  it("return no setup if apiKey and host is not stored", async () => {
+    const result = bootstrap(() => Promise.resolve(null));
+
+    await expect(result).resolves.toMatchObject({
+      isLoading: false
+    });
+
+  });
+
+});
+
