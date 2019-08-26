@@ -19,5 +19,5 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import AppLinkLogin from "./AppLinkLogin";
-export default AppLinkLogin;
+import AppLinkFlow from "./AppLinkFlow";
+export default AppLinkFlow;

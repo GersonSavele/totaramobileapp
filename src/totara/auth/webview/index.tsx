@@ -19,5 +19,5 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import WebLogin from "./WebLogin";
-export default WebLogin;
+import WebviewFlow from "./WebviewFlow";
+export default WebviewFlow;

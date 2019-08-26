@@ -31,6 +31,7 @@ const defaultConfig = {
   userAgent: "TotaraMobileApp",
 
   loginUri: (host: string) => (`${host}/login/index.php`),
+  brandThemeUri: (host: string) => (`${host}/theme/index.php`),
   deviceRegisterUri: (host: string) => (`${host}/totara/mobile/device_register.php`),
   webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`),
   appLinkDomain: "https://mobile.totaralearning.com",

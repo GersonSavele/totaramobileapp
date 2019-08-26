@@ -23,11 +23,14 @@
 import React from "react";
 import { Modal, View } from "react-native";
 
-import SiteUrl from "./SiteUrl";
-import Login from "./Login";
+import SiteUrl from "../SiteUrl";
+import NativeLogin from "./NativeLogin";
 import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
+import { StyleProvider } from "native-base";
+import { theme, getTheme } from "@totara/theme";
+import { Log } from "@totara/lib";
 
-class WebLogin extends AuthComponent<{}, States> {
+class NativeFlow extends AuthComponent<{}, States> {
   
   constructor(props: AuthProviderStateLift) {
     super(props);
@@ -36,17 +39,20 @@ class WebLogin extends AuthComponent<{}, States> {
       uri: undefined, 
       secret: undefined
     };
+    this.setBrandTheme("http://10.0.8.153");
   }
 
   onSetupLoginData = (data: string, currentAction: number) => {
     switch (currentAction) {
       case SiteUrl.actionType:
+        this.setBrandTheme(data);
         this.setState({
-          step: Login.actionType,
+          step: NativeLogin.actionType,
           uri: data
         });
+        
         break;
-      case Login.actionType:
+      case NativeLogin.actionType:
         if ( this.state.uri && data ) {
           this.props.onLoginSuccess({uri: this.state.uri, secret: data});
         } else {
@@ -60,7 +66,7 @@ class WebLogin extends AuthComponent<{}, States> {
 
   onCancelLogin = (currentAction: number) => {
     switch (currentAction) {
-      case Login.actionType:
+      case NativeLogin.actionType:
         this.setState({
           step: SiteUrl.actionType,
           uri: this.state.uri
@@ -71,16 +77,20 @@ class WebLogin extends AuthComponent<{}, States> {
     }
   };
 
+  setBrandTheme = (site: string) => {
+    Log.info("site: ", site);
+    theme.brandPrimary = "#ff0000";
+  };
+
   render() {
     switch (this.state.step) {
-      case Login.actionType:
+      case NativeLogin.actionType:
+        
         return (
-          <View style={{ flex: 1 }}>
-            <Modal animationType="slide" transparent={false} >
-              <Login onSuccessfulLogin={(setupSecret, action) => this.onSetupLoginData(setupSecret, action)} siteUrl={this.state.uri!} onCancelLogin={(action) => this.onCancelLogin(action)} />
-            </Modal>
-          </View>
-        );
+          <StyleProvider style={getTheme(theme)}>
+          <NativeLogin onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } brandLogo={ "https://trademe.tmcdn.co.nz/tm/agentimages/jobs/wide/1846418-1.jpg" } />
+           </StyleProvider>
+          );
       default:
         return <SiteUrl onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } />;
     }
@@ -93,4 +103,4 @@ type States = {
   secret?: string
 };
 
-export default  WebLogin;
+export default  NativeFlow;

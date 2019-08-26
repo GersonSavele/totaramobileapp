@@ -23,7 +23,7 @@ import { Linking, Platform } from "react-native";
 import { AuthProviderStateLift, AuthComponent } from "../AuthComponent";
 import { Log, config } from "@totara/lib";
 
-export default class AppLinkLogin extends AuthComponent {
+export default class AppLinkFlow extends AuthComponent {
 
   constructor(props: AuthProviderStateLift) {
     super(props);

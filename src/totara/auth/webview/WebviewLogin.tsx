@@ -31,7 +31,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 
-class Login extends React.Component<Props, States> {
+class WebviewLogin extends React.Component<Props, States> {
   
   static actionType = 2;
   webviewLogin = React.createRef<WebView>();
@@ -138,4 +138,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+export default WebviewLogin;

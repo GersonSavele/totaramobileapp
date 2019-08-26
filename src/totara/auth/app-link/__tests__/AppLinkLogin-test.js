@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import AppLinkLogin from "../AppLinkLogin";
+import AppLinkFlow from "../AppLinkFlow";
 import renderer from "react-test-renderer";
 
 
@@ -28,7 +28,7 @@ const mockOnSuccess = jest.fn();
 const mockOnFail = jest.fn();
 
 const appLinkLogin = renderer.create(
-  <AppLinkLogin onLoginSuccess={mockOnSuccess} onLoginFailure={mockOnFail} />
+  <AppLinkFlow onLoginSuccess={mockOnSuccess} onLoginFailure={mockOnFail} />
 ).getInstance();
 
 

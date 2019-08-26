@@ -34,11 +34,11 @@ import SplashScreen from "react-native-splash-screen";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
 
 import { config, Log } from "@totara/lib";
-import WebLogin from "./web-login";
-
 import { X_API_KEY } from "@totara/lib/Constant";
-import AppLinkLogin from "./app-link-login";
+
 import { getAndStoreApiKey, deviceCleanup, bootstrap, AuthProviderType } from "./AuthRoutines";
+import NativeFlow from "./native";
+import AppLinkFlow from "./app-link";
 
 const AuthContext = React.createContext<State>(
   {
@@ -182,7 +182,7 @@ class AuthProvider extends React.Component<Props, State>
   render() {
     return (
       <AuthContext.Provider value={this.state}>
-        <AppLinkLogin onLoginFailure={this.onLoginFailure} onLoginSuccess={this.onLoginSuccess} />
+        <AppLinkFlow onLoginFailure={this.onLoginFailure} onLoginSuccess={this.onLoginSuccess} />
         {
           (this.state.isLoading)
             ? <Text>TODO replace with error feedback screen see MOB-117</Text>
@@ -191,7 +191,8 @@ class AuthProvider extends React.Component<Props, State>
               ? <ApolloProvider client={this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql")}>
                 {this.props.children}
               </ApolloProvider>
-              : <WebLogin onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
+              // : <WebviewFlow onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
+              : <NativeFlow onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
         }
       </AuthContext.Provider>
     )
