@@ -20,8 +20,8 @@
 **/
 
 import React , { ReactNode } from "react";
-import { AppState } from "react-native";
-import ConsoleLogger from "@totara/lib/logger/ConsoleLogger";
+import { AppState, AppStateStatus } from "react-native";
+import { Log } from "@totara/lib";
 
 type Props = {
     onAfterActive? : () => void,
@@ -45,22 +45,33 @@ class AppStateListener extends React.Component <Props>{
     componentWillUnmount() {
         AppState.removeEventListener("change", this._handleAppStateChange);
     }
-    _handleAppStateChange = (nextAppState :any) => {
+
+    /**
+     * @AppStateChange : Here, will trigger when app is background/inactive and foreground.
+     * @parameter : When app goes background and foreground, next app state.
+     * @return : null 
+    */
+
+    _handleAppStateChange = (nextAppState : AppStateStatus) => {
         this.setState({appState: nextAppState});
-        if (nextAppState === "background") {
-            // Do something here on app background.
-            ConsoleLogger.debug("App is in Background Mode.");
-        }
+
         if (nextAppState === "active") {
             if (this.props.onAfterActive){
                 this.props.onAfterActive();
             }
             // Do something here on app active foreground mode.
-            ConsoleLogger.debug("App is in Active Foreground Mode.");
+            Log.debug("App is in Active Foreground Mode.");
+        }
+    /**
+     * @AdditionalActionModal won't use background/inactive app state. however, this is common component and it will be useful for future implementation.
+    */
+        if (nextAppState === "background") {
+            // Do something here on app background.
+            Log.debug("App is in Background Mode.");
         }
         if (nextAppState === "inactive") {
             // Do something here on app inactive mode.
-            ConsoleLogger.debug("App is in inactive Mode.");
+            Log.debug("App is in inactive Mode.");
         }
     }
 

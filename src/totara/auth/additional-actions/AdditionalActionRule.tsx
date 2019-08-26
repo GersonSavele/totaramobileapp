@@ -20,24 +20,12 @@
 **/
 
 import React , { ReactNode }from "react";
-import {  GetMe }  from "./api";
+import {  GetMe , QueryResult }  from "./api";
 import { Text } from "react-native"; 
 import  AppStateListener  from "@totara/components/AppStateListener"
-import { Me } from "@totara/types";
-
-type Response = {
-    me: Me;
-}
 
 type Params = {
   children : ReactNode
-}
-
-type QueryResult = {
-  loading : boolean,
-  data : Response,
-  error : Error,
-  refetch: () => void
 }
 
 const AdditionalActionRule = ({children}: Params) => {

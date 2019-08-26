@@ -28,6 +28,13 @@ type Response = {
     me: Me;
 }
 
+export type QueryResult = {
+    loading : boolean,
+    data : Response,
+    error : Error,
+    refetch: () => void
+}
+
 class QueryGQL extends Query<Response> {}
 
 const QueryMe = gql` 
