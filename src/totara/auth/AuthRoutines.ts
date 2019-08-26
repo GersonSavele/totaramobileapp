@@ -24,11 +24,13 @@ import { SetupSecret, Setup } from "./AuthContext";
 
 /**
  * Given a setup secret (temp key), retrieve the api key (a long term key) from the api via
- * fetch.  Also store the api key and host in storage
+ * fetch.  Store the api key and host in storage, return these as well.
  *
  * @param setupSecret contains the setup secret to be validated by the server
  * @param fetch http fetch
  * @param storeItem store item using key value
+ *
+ * @returns promise of setup which contains the valid apiKey and which host it was obtained from
  */
 export const getAndStoreApiKey = async (setupSecret: SetupSecret,
                                  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
@@ -63,3 +65,45 @@ export const getAndStoreApiKey = async (setupSecret: SetupSecret,
   })
 
 );
+
+
+/**
+ *
+ * During logOff this will clean up the device properly.  Will perform both local and remote
+ * clean up.  It would catch all errors, as a user would be logged off regardless issues on the
+ * remote and local services.  It would always clear the memory state
+ *
+ * @param deviceDelete - remote device deletion mutation
+ * @param clearStorage - local storage cleanup
+ * @param clearApolloClient - clear in memory apollo client
+ * @param clearSetupState - clear in memory state
+ */
+export const deviceCleanup = async (deviceDelete: () => Promise<any>,
+                                    clearStorage: () => Promise<void>,
+                                    clearApolloClient: () => void,
+                                    clearSetupState: () => void) => {
+
+  const remoteCleanUp = deviceDelete().then(({ data: { delete_device } }) => {
+    Log.debug("Device deleted from server", delete_device);
+    if (!delete_device)
+      Log.warn("Unable to delete device from server");
+    return delete_device
+  }).then(() => clearApolloClient())
+    .catch(error => {
+      Log.warn("remote clean up had issues, but continue to do local clean up", error)
+    });
+
+
+  const localCleanUp = clearStorage().then(() => {
+    Log.debug("Cleared storage");
+  }).catch((error) => {
+    if (error.message.startsWith("Failed to delete storage directory")) {
+      Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
+    } else {
+      Log.warn("Error cleaning up device, but we still continue to logout the user", error);
+    }
+  });
+
+  return Promise.all([localCleanUp, remoteCleanUp]).then(() => clearSetupState());
+
+};

@@ -38,8 +38,7 @@ import WebLogin from "./web-login";
 import { X_API_KEY } from "@totara/lib/Constant";
 import AppLinkLogin from "./app-link-login";
 import { gql } from "apollo-boost";
-import deviceCleanup from "./DeviceCleanup";
-import { getAndStoreApiKey } from "./AuthRoutines";
+import { getAndStoreApiKey, deviceCleanup } from "./AuthRoutines";
 
 const AuthContext = React.createContext<State>(
   {
@@ -120,6 +119,8 @@ class AuthProvider extends React.Component<Props, State> {
   onLoginSuccess = async (setupSecret: SetupSecret) => {
     if (this.state.setup && this.state.setup.apiKey) {
       if (!this.apolloClient) this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql");
+      // TODO this is for now using the configured API endpoint.  Once the API are built properly this should be
+      // switched to this.state.setup.host
       Log.debug("Logging out previous login user");
       await this.logOut();
     }
@@ -148,19 +149,22 @@ class AuthProvider extends React.Component<Props, State> {
    */
   logOut = async () => {
     Log.debug("logging out");
-    let mutationPromise: Promise<any> = Promise.resolve(true);
-    if (this.apolloClient) {
-      Log.debug("Deleting device");
-      mutationPromise = this.apolloClient!.mutate({
+    const mutationPromise =
+      () => (this.apolloClient)
+      ? this.apolloClient.mutate({
         mutation: deleteDevice
-      });
-    }
-    const clearStoragePromise = AsyncStorage.clear();
-    return deviceCleanup(mutationPromise,
-      clearStoragePromise,
-      () => (this.apolloClient = undefined),
-      () => (this.setState({ setup: undefined }))
-    );
+      })
+      : Promise.resolve({ data: {delete_device: true }});
+
+    const clearStoragePromise = () => AsyncStorage.clear();
+    const clearApolloClient = () => this.apolloClient = undefined;
+    const clearSetupState = () => this.setState({ setup: undefined });
+
+    return deviceCleanup(mutationPromise.bind(this),
+      clearStoragePromise.bind(this),
+      clearApolloClient.bind(this),
+      clearSetupState.bind(this)
+      );
   };
 
    /**
