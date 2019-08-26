@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "test-junit": "jest --ci --reporters=jest-junit --reporters=default",
+    "test": "jest --config jest.config.js",
+    "test-junit": "jest --config jest.config.js --ci --reporters=jest-junit --reporters=default",
     "eslint": "eslint -c .eslintrc.json --ext .js --ext .ts --ext .tsx ./src/totara"
   },
   "dependencies": {
@@ -67,27 +67,6 @@
     "ts-jest": "^24.0.2",
     "typescript": "^3.2.4",
     "waait": "^1.0.5"
-  },
-  "jest": {
-    "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest",
-      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/node_modules/"
-    ],
-    "cacheDirectory": ".jest/cache",
-    "moduleNameMapper": {
-      "@totara/(.*)": "<rootDir>/src/totara/$1"
-    }
   },
   "config": {
     "maxPackagesNumber": 100,
