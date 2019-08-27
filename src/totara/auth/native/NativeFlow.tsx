@@ -21,25 +21,23 @@
  */
 
 import React from "react";
-import { Modal, View } from "react-native";
+import { Modal } from "react-native";
 
 import SiteUrl from "../SiteUrl";
 import NativeLogin from "./NativeLogin";
 import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
 import { StyleProvider } from "native-base";
 import { theme, getTheme } from "@totara/theme";
-import { Log } from "@totara/lib";
 
 class NativeFlow extends AuthComponent<{}, States> {
-  
+
   constructor(props: AuthProviderStateLift) {
     super(props);
-    this.state = { 
+    this.state = {
       step: SiteUrl.actionType,
-      uri: undefined, 
+      uri: undefined,
       secret: undefined
     };
-    this.setBrandTheme("http://10.0.8.153");
   }
 
   onSetupLoginData = (data: string, currentAction: number) => {
@@ -50,11 +48,10 @@ class NativeFlow extends AuthComponent<{}, States> {
           step: NativeLogin.actionType,
           uri: data
         });
-        
         break;
       case NativeLogin.actionType:
-        if ( this.state.uri && data ) {
-          this.props.onLoginSuccess({uri: this.state.uri, secret: data});
+        if (this.state.uri && data) {
+          this.props.onLoginSuccess({ uri: this.state.uri, secret: data });
         } else {
           this.props.onLoginFailure(new Error(`Missing data: ${data}`));
         }
@@ -78,29 +75,33 @@ class NativeFlow extends AuthComponent<{}, States> {
   };
 
   setBrandTheme = (site: string) => {
-    Log.info("site: ", site);
+    //@TODO will be covered in MOB-172
     theme.brandPrimary = "#ff0000";
   };
 
   render() {
     switch (this.state.step) {
       case NativeLogin.actionType:
-        
         return (
           <StyleProvider style={getTheme(theme)}>
-          <NativeLogin onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } brandLogo={ "https://trademe.tmcdn.co.nz/tm/agentimages/jobs/wide/1846418-1.jpg" } />
-           </StyleProvider>
-          );
+            <Modal animationType="slide" transparent={false} >
+              {/* //@TODO will be covered in MOB-172 */}
+              <NativeLogin onSuccessfulSiteUrl={(siteUrl, action) => this.onSetupLoginData(siteUrl, action)} siteUrl={this.state.uri}
+                brandLogo={"https://trademe.tmcdn.co.nz/tm/agentimages/jobs/wide/1846418-1.jpg"}
+                onBack={this.onCancelLogin} />
+            </Modal>
+          </StyleProvider>
+        );
       default:
-        return <SiteUrl onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } />;
+        return <SiteUrl onSuccessfulSiteUrl={(siteUrl, action) => this.onSetupLoginData(siteUrl, action)} siteUrl={this.state.uri} />;
     }
   }
 }
 
 type States = {
   step: number,
-  uri?: string, 
+  uri?: string,
   secret?: string
 };
 
-export default  NativeFlow;
+export default NativeFlow;

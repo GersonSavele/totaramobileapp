@@ -19,12 +19,12 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { StyleSheet, View, Image, Text, TextInput, SafeAreaView, Alert, Platform, ScrollView, Dimensions } from "react-native";
-import * as Animatable from 'react-native-animatable';
+import { StyleSheet, View, Image, Text, TextInput, SafeAreaView, Platform, ScrollView, Keyboard, KeyboardEvent, EmitterSubscription } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { Button } from "native-base";
+import * as Animatable from 'react-native-animatable';
 
 import { resizeByScreenSize, PrimaryButton, theme } from "@totara/theme";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { translate } from "@totara/locale";
 
 enum StatusInput {
@@ -32,8 +32,13 @@ enum StatusInput {
 }
 
 class NativeLogin extends React.Component<Props, State> {
-
+  
   static actionType: number = 2;
+  private preUsername?: string = undefined;
+  private preStatusUsername: StatusInput = StatusInput.normal;
+  private keyboardDidShowListener?: EmitterSubscription;
+  private keyboardDidHideListener?: EmitterSubscription;
+  viewKeyboard = React.createRef<Animatable.View>();
 
   constructor(props: Props) {
     super(props);
@@ -43,6 +48,41 @@ class NativeLogin extends React.Component<Props, State> {
     };
   }
 
+  componentDidMount() {
+    if (Platform.OS === "ios") {
+      this.keyboardDidShowListener = Keyboard.addListener(
+        "keyboardDidShow",
+        this.onKeyboardDidShow
+      );
+      this.keyboardDidHideListener = Keyboard.addListener(
+        "keyboardDidHide",
+        this.onKeyboardDidHide
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.keyboardDidShowListener) {
+      this.keyboardDidShowListener.remove();
+    }
+    if (this.keyboardDidHideListener) {
+      this.keyboardDidHideListener.remove();
+    }
+  }
+
+  onKeyboardDidShow = (e: KeyboardEvent) => {
+    if (this.viewKeyboard.current) {
+      const keyboardHeight = e.endCoordinates.height;
+      this.viewKeyboard.current.transitionTo({ height: keyboardHeight }, 1);
+    }
+  };
+
+  onKeyboardDidHide = () => {
+    if (this.viewKeyboard.current) {
+      this.viewKeyboard.current.transitionTo({ height: 0 }, 1);
+    }
+  };
+
   setStateInputUsernameWithShowError = (username: string) => {
     this.setState({ inputUsername: username });
   };
@@ -51,21 +91,33 @@ class NativeLogin extends React.Component<Props, State> {
     this.setState({ inputPassword: password });
   };
 
-  onClickEnter = () => {
-    if((this.state.inputUsername && this.state.inputUsername != "") && (this.state.inputPassword && this.state.inputPassword != "")) {
-      //@TODO MOB-168
+  onBlurUsername = () => {
+    if (this.state.inputUsername == this.preUsername) {
+      this.setState({
+        statusInputUsername: this.preStatusUsername
+      })
     } else {
-      if(!this.state.inputUsername || this.state.inputUsername == "") {
+      this.setState({ statusInputUsername: StatusInput.normal });
+    }
+  };
+
+  onClickEnter = () => {
+    if ((this.state.inputUsername && this.state.inputUsername != "wrong") && (this.state.inputPassword && this.state.inputPassword != "")) {
+      //@TODO will be covered in MOB-172
+    } else {
+      if (!this.state.inputUsername || this.state.inputUsername == "" || this.state.inputUsername == "wrong") {
+        this.preStatusUsername = StatusInput.error;
         this.setState({
           statusInputUsername: StatusInput.error
         });
       }
-      if(!this.state.inputPassword || this.state.inputPassword == "") {
+      if (!this.state.inputPassword || this.state.inputPassword == "") {
         this.setState({
           statusInputPassword: StatusInput.error
         });
       }
     }
+    this.preUsername = this.state.inputUsername;
   };
 
   getStatusStyle = (inputState: StatusInput) => {
@@ -82,9 +134,14 @@ class NativeLogin extends React.Component<Props, State> {
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={styles.navigation} >
+          <Button transparent onPress={() => { this.props.onBack(NativeLogin.actionType) }} style={styles.actionItem} >
+            <FontAwesomeIcon icon="times" size={22} color={"#000000"} />
+          </Button>
+        </View>
         <ScrollView>
           <View style={styles.container}>
-            <Image source={{uri: this.props.brandLogo}} style={styles.totaraLogo} />
+            <Image source={{ uri: this.props.brandLogo }} style={styles.totaraLogo} />
             <View style={styles.infoContainer}>
               <Text style={styles.detailTitle}>{translate("native-login.header_title")}</Text>
               <Text style={styles.information}>{translate("native-login.login_information")}</Text>
@@ -98,7 +155,7 @@ class NativeLogin extends React.Component<Props, State> {
                   autoCapitalize="none"
                   onChangeText={this.setStateInputUsernameWithShowError}
                   onFocus={() => { this.setState({ statusInputUsername: StatusInput.focus }); }}
-                  onBlur={() => { this.setState({ statusInputUsername: StatusInput.normal }); }}
+                  onBlur={() => { this.onBlurUsername() }}
                   value={this.state.inputUsername} />
                 <Text style={[styles.inputInfo, this.getStatusStyle(this.state.statusInputUsername)]} >{translate("message.enter_valid_username")}</Text>
               </View>
@@ -118,6 +175,7 @@ class NativeLogin extends React.Component<Props, State> {
             </View>
           </View>
         </ScrollView>
+        <Animatable.View style={styles.keyboard} ref={this.viewKeyboard} ></Animatable.View>
       </SafeAreaView>
     );
   }
@@ -126,7 +184,8 @@ class NativeLogin extends React.Component<Props, State> {
 type Props = {
   onSuccessfulSiteUrl: (data: string, currentAction: number) => void
   siteUrl?: string,
-  brandLogo: string
+  brandLogo: string,
+  onBack: (action: number) => void
 };
 
 type State = {
@@ -150,6 +209,18 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingHorizontal: 16
   },
+  navigation: {
+    height: 44,
+    alignItems: "flex-start",
+    borderBottomColor: "#f1f1f1",
+    borderBottomWidth: 1,
+    backgroundColor: "#ffffff",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  actionItem: {
+    padding: 8
+  },
   totaraLogo: {
     height: 72,
     maxHeight: 144,
@@ -170,7 +241,8 @@ const styles = StyleSheet.create({
     color: TotaraColor.light_black,
   },
   formContainer: {
-    marginVertical: 8
+    marginVertical: 8,
+    marginBottom: 20
   },
   input: {
     paddingBottom: 6
@@ -210,6 +282,11 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     textDecorationLine: "underline",
     textAlign: "right"
+  },
+  keyboard: {
+    height: 0,
+    justifyContent: "center",
+    backgroundColor: "transparent"
   }
 });
 
