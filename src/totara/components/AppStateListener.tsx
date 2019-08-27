@@ -24,59 +24,59 @@ import { AppState, AppStateStatus } from "react-native";
 import { Log } from "@totara/lib";
 
 type Props = {
-    onAfterActive? : () => {},
-    onBackground? : () => {},
-    onInactive? : () => {},
-    children? : ReactNode
+  onActive? : () => void,
+  onBackground? : () => void,
+  onInactive? : () => {},
+  children? : ReactNode
 }
 
 class AppStateListener extends React.Component <Props>{
 
-    static defaultProps =  { 
-    onAfterActive : () => Log.debug("App is in Active Foreground Mode."),
+  static defaultProps =  { 
+    onActive : () => Log.debug("App is in Active/Foreground Mode."),
     onBackground : () => Log.debug("App is in Background Mode."),
     onInactive : () => Log.debug("App is in Inactive mode.")
-    };
+  };
 
-    constructor(props: Props) {
-        super(props);
+  constructor(props: Props) {
+    super(props);
+  }
+  state = {
+    appState: AppState.currentState
+  }
+
+  componentDidMount() {
+    AppState.addEventListener("change", this.handleAppStateChange);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this.handleAppStateChange);
+  }
+
+/**
+* @AppStateChange : Here, will trigger when app is background/inactive and foreground.
+* @parameter : When app goes background and foreground, next app state.
+* @return : null 
+*/
+
+  handleAppStateChange = (nextAppState : AppStateStatus) => {
+    this.setState({appState: nextAppState});
+
+      if (nextAppState === "active") {
+        // Do something here on app active foreground mode.
+        this.props.onActive!();
       }
-    state = {
-        appState: AppState.currentState
+      if (nextAppState === "background") {
+        // Do something here on app background.
+        this.props.onBackground!();
+      }
+      if (nextAppState === "inactive") {
+        // Do something here on app inactive mode.
+        this.props.onInactive!();
+      }
     }
 
-    componentDidMount() {
-        AppState.addEventListener("change", this.handleAppStateChange);
-    }
-
-    componentWillUnmount() {
-        AppState.removeEventListener("change", this.handleAppStateChange);
-    }
-
-    /**
-     * @AppStateChange : Here, will trigger when app is background/inactive and foreground.
-     * @parameter : When app goes background and foreground, next app state.
-     * @return : null 
-    */
-
-    handleAppStateChange = (nextAppState : AppStateStatus) => {
-        this.setState({appState: nextAppState});
-
-        if (nextAppState === "active") {
-            // Do something here on app active foreground mode.
-            this.props.onAfterActive!();
-        }
-        if (nextAppState === "background") {
-            // Do something here on app background.
-            this.props.onBackground!();
-        }
-        if (nextAppState === "inactive") {
-            // Do something here on app inactive mode.
-            this.props.onInactive!();
-        }
-    }
-
-render() {
+  render() {
     return this.props.children != null ? this.props.children : null;
    }
 }

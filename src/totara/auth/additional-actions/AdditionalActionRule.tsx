@@ -37,12 +37,12 @@ const AdditionalActionRule = ({children}: Params) => {
         // if (data && (data.me.system.request_policy_agreement || data.me.system.request_user_consent || data.me.system.request_user_fields)) {
         if (data && (data.me.system.request_user_consent || data.me.system.request_user_fields)) {
           return(
-            <AppStateListener onAfterActive = {refetch}>
+            <AppStateListener onActive = {refetch}>
               {children}
             </AppStateListener>)
         } 
         else {
-          return <AppStateListener onAfterActive = {refetch}/>
+          return <AppStateListener onActive = {refetch}/>
         }
       }
     }/>
