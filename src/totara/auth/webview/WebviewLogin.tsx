@@ -62,7 +62,7 @@ class WebviewLogin extends React.Component<Props, States> {
   }
 
   cancelLogin = () =>{
-    this.props.onCancelLogin(Login.actionType);
+    this.props.onCancelLogin(WebviewLogin.actionType);
   }
 
   goBack = () => {

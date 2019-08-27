@@ -28,6 +28,7 @@ import NativeLogin from "./NativeLogin";
 import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
 import { StyleProvider } from "native-base";
 import { theme, getTheme } from "@totara/theme";
+import { AuthFlow } from "../AuthContext";
 
 class NativeFlow extends AuthComponent<{}, States> {
 
@@ -43,10 +44,14 @@ class NativeFlow extends AuthComponent<{}, States> {
   onSetupLoginData = (data: string, currentAction: number) => {
     switch (currentAction) {
       case SiteUrl.actionType:
-        this.setBrandTheme(data);
-        this.setState({
-          step: NativeLogin.actionType,
-          uri: data
+        this.getSiteConfiguration(data).then((response)=> {
+          if (response.status == 200) {
+            this.setSiteTheme(response.json().theme);
+            this.setState({
+              step: NativeLogin.actionType,
+              uri: data
+            });
+          }
         });
         break;
       case NativeLogin.actionType:
@@ -61,6 +66,11 @@ class NativeFlow extends AuthComponent<{}, States> {
     }
   };
 
+  setSiteTheme = (data: JSON) => {
+    theme.brandPrimary = data.brandPrimary;
+    theme.logoUrl = data.logoUrl;
+  }
+
   onCancelLogin = (currentAction: number) => {
     switch (currentAction) {
       case NativeLogin.actionType:
@@ -74,9 +84,20 @@ class NativeFlow extends AuthComponent<{}, States> {
     }
   };
 
-  setBrandTheme = (site: string) => {
+  getSiteConfiguration = (site: string) => {
     //@TODO will be covered in MOB-172
-    theme.brandPrimary = "#ff0000";
+    return Promise.resolve({
+      status: 200,
+      json: () => ({
+          version: "2019061900",
+          auth: "native",
+          siteMaintenance: false,
+          theme: {
+             logoUrl: "https://trademe.tmcdn.co.nz/tm/agentimages/jobs/wide/1846418-1.jpg",
+             brandPrimary: "#FF0000"
+          }
+        })       
+    });
   };
 
   render() {
@@ -86,8 +107,10 @@ class NativeFlow extends AuthComponent<{}, States> {
           <StyleProvider style={getTheme(theme)}>
             <Modal animationType="slide" transparent={false} >
               {/* //@TODO will be covered in MOB-172 */}
-              <NativeLogin onSuccessfulSiteUrl={(siteUrl, action) => this.onSetupLoginData(siteUrl, action)} siteUrl={this.state.uri}
-                brandLogo={"https://trademe.tmcdn.co.nz/tm/agentimages/jobs/wide/1846418-1.jpg"}
+              <NativeLogin 
+                onSuccessfulSiteUrl={(siteUrl, action) => this.onSetupLoginData(siteUrl, action)} 
+                siteUrl={this.state.uri}
+                brandLogo={theme.logoUrl}
                 onBack={this.onCancelLogin} />
             </Modal>
           </StyleProvider>

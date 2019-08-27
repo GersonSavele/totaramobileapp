@@ -179,7 +179,16 @@ class AuthProvider extends React.Component<Props, State>
 
   clearApolloClient = () => this.apolloClient = undefined;
 
+  AuthFlow = () => {
+    switch(this.state.authFlow) {
+      case AuthFlow.native:
+        return <NativeFlow onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
+      default:
+        return <WebviewFlow onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
+    }
+  };
   render() {
+    const AuthFlow = this.AuthFlow;
     return (
       <AuthContext.Provider value={this.state}>
         <AppLinkFlow onLoginFailure={this.onLoginFailure} onLoginSuccess={this.onLoginSuccess} />
@@ -190,9 +199,8 @@ class AuthProvider extends React.Component<Props, State>
               // TODO this is for now using the configured API endpoint.  Once the API are built properly the same as this.state.setup.host
               ? <ApolloProvider client={this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql")}>
                 {this.props.children}
-              </ApolloProvider>
-              // : <WebviewFlow onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
-              : <NativeFlow onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure} />
+                </ApolloProvider>
+                : <AuthFlow />
         }
       </AuthContext.Provider>
     )
@@ -225,6 +233,10 @@ export type Setup = {
 export interface SetupSecret {
   secret: string
   uri: string
+}
+
+export enum AuthFlow {
+  native= "native", webview = "webview", applink = "applink"
 }
 
 export { AuthProvider, AuthConsumer }
