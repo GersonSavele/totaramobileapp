@@ -23,7 +23,8 @@ import { StyleSheet, View, Image, Text, TextInput, SafeAreaView } from "react-na
 import * as Animatable from 'react-native-animatable';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { resizeByScreenSize, PrimaryButton } from "@totara/theme";
+import { resizeByScreenSize } from "@totara/theme";
+import { PrimaryButton } from "@totara/components/PrimaryButton";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { translate } from "@totara/locale";
 import { config } from "@totara/lib";

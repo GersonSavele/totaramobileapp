@@ -46,7 +46,7 @@ class WebviewLogin extends React.Component<Props, States> {
   didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
-      this.props.onSuccessfulLogin(setupSecretValue, Login.actionType);
+      this.props.onSuccessfulLogin(setupSecretValue, WebviewLogin.actionType);
     }
   };
 

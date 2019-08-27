@@ -22,9 +22,9 @@ import React from "react";
 import { StyleSheet, View, Image, Text, TextInput, SafeAreaView, Platform, ScrollView, Keyboard, KeyboardEvent, EmitterSubscription } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Button } from "native-base";
-import * as Animatable from 'react-native-animatable';
 
-import { resizeByScreenSize, PrimaryButton, theme } from "@totara/theme";
+import { resizeByScreenSize, theme } from "@totara/theme";
+import { PrimaryButton } from "@totara/components/PrimaryButton";
 import { translate } from "@totara/locale";
 
 enum StatusInput {
@@ -38,13 +38,13 @@ class NativeLogin extends React.Component<Props, State> {
   private preStatusUsername: StatusInput = StatusInput.normal;
   private keyboardDidShowListener?: EmitterSubscription;
   private keyboardDidHideListener?: EmitterSubscription;
-  viewKeyboard = React.createRef<Animatable.View>();
-
+  
   constructor(props: Props) {
     super(props);
     this.state = {
       statusInputUsername: StatusInput.normal,
-      statusInputPassword: StatusInput.normal
+      statusInputPassword: StatusInput.normal,
+      keyboardHeight: 0
     };
   }
 
@@ -71,16 +71,15 @@ class NativeLogin extends React.Component<Props, State> {
   }
 
   onKeyboardDidShow = (e: KeyboardEvent) => {
-    if (this.viewKeyboard.current) {
-      const keyboardHeight = e.endCoordinates.height;
-      this.viewKeyboard.current.transitionTo({ height: keyboardHeight }, 1);
-    }
+    this.setState({
+      keyboardHeight: e.endCoordinates.height
+    });
   };
 
   onKeyboardDidHide = () => {
-    if (this.viewKeyboard.current) {
-      this.viewKeyboard.current.transitionTo({ height: 0 }, 1);
-    }
+    this.setState({
+      keyboardHeight: 0
+    });
   };
 
   setStateInputUsernameWithShowError = (username: string) => {
@@ -186,7 +185,7 @@ class NativeLogin extends React.Component<Props, State> {
             </View>
           </View>
         </ScrollView>
-        <Animatable.View style={styles.keyboard} ref={this.viewKeyboard} ></Animatable.View>
+        <View style={{height: this.state.keyboardHeight}}></View>
       </SafeAreaView>
     );
   }
@@ -204,7 +203,8 @@ type State = {
   statusInputUsername: StatusInput,
   statusInputPassword: StatusInput,
   passwordInfoMessage?: string,
-  usernameInfoMessage?: string
+  usernameInfoMessage?: string,
+  keyboardHeight: number
 };
 
 const TotaraColor = {

@@ -19,20 +19,23 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React from 'react';
-import NativeLogin from "../NativeLogin";
-import renderer from "react-test-renderer";
+import React from "react";
+import { Text } from "react-native";
+import { Button } from "native-base";
 
+type Props = {
+  children?: Element,
+  text?: string
+  onPress?: (() => void)
+}
 
-const mockOnSuccess = jest.fn();
-const mockOnFail = jest.fn();
+const PrimaryButton = ({ children, text, onPress, ...rest}: Props) =>
+  <Button block rounded primary onPress={onPress} {...rest}>
+    {
+      text
+        ? <Text style={{ color: "#fff" }}>{text}</Text>
+        : children
+    }
+  </Button>;
 
-// const nativeLogin = renderer.create(
-//   <NativeLogin onSuccessfulSiteUrl={mockOnSuccess} siteUrl={"http://mobiledemo.wlg.totaralms.com"}  onBack={mockOnFail} />
-// ).getInstance();
-
-describe("Passing different forms of 'url' and get the value for query string parameters('site' and 'setupsecret')", () => {
-  it( "testcase 01", () => {
-    console.log("\n\n called nativeLogin");
-  });
-});
+export { PrimaryButton };
