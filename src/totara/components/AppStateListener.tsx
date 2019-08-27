@@ -26,10 +26,17 @@ import { Log } from "@totara/lib";
 type Props = {
     onAfterActive? : () => {},
     onBackground? : () => {},
+    onInactive? : () => {},
     children? : ReactNode
 }
 
 class AppStateListener extends React.Component <Props>{
+
+    static defaultProps =  { 
+    onAfterActive : () => Log.debug("App is in Active Foreground Mode."),
+    onBackground : () => Log.debug("App is in Background Mode."),
+    onInactive : () => Log.debug("App is in Inactive mode.")
+    };
 
     constructor(props: Props) {
         super(props);
@@ -56,22 +63,16 @@ class AppStateListener extends React.Component <Props>{
         this.setState({appState: nextAppState});
 
         if (nextAppState === "active") {
-            if (this.props.onAfterActive){
-                this.props.onAfterActive();
-            }
             // Do something here on app active foreground mode.
-            Log.debug("App is in Active Foreground Mode.");
+            this.props.onAfterActive!();
         }
-    /**
-     * @AdditionalActionModal won't use background/inactive app state. however, this is common component and it will be useful for future implementation.
-    */
         if (nextAppState === "background") {
             // Do something here on app background.
-            Log.debug("App is in Background Mode.");
+            this.props.onBackground!();
         }
         if (nextAppState === "inactive") {
             // Do something here on app inactive mode.
-            Log.debug("App is in inactive Mode.");
+            this.props.onInactive!();
         }
     }
 
