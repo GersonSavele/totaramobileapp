@@ -40,7 +40,8 @@ const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 const theme = lodash.merge(material, {
   brandPrimary: "#69BD45",
   brandInfo: "#FFFFFF",
-  platformStyle: "totara"
+  platformStyle: "totara",
+  logoUrl: "https://webcasts.td.org/uploads/assets/2300/logo.png"
 });
 
 const PrimaryButton = ({children, text, ...rest}) =>

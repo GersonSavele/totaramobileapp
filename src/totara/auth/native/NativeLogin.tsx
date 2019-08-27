@@ -102,22 +102,33 @@ class NativeLogin extends React.Component<Props, State> {
   };
 
   onClickEnter = () => {
+    this.preUsername = this.state.inputUsername;
+    this.preStatusUsername = StatusInput.normal;
+
+    let tempStatusInputUsername =  StatusInput.normal;
+    let tempUsernameInfoMessage =  undefined;
+    let tempStatusInputPassword =  StatusInput.normal;
+    let tempPasswordInfoMessage =  undefined;
+
     if ((this.state.inputUsername && this.state.inputUsername != "wrong") && (this.state.inputPassword && this.state.inputPassword != "")) {
       //@TODO will be covered in MOB-172
     } else {
       if (!this.state.inputUsername || this.state.inputUsername == "" || this.state.inputUsername == "wrong") {
         this.preStatusUsername = StatusInput.error;
-        this.setState({
-          statusInputUsername: StatusInput.error
-        });
+        tempStatusInputUsername = StatusInput.error;
+        tempUsernameInfoMessage = translate("message.enter_valid_username");
       }
       if (!this.state.inputPassword || this.state.inputPassword == "") {
-        this.setState({
-          statusInputPassword: StatusInput.error
-        });
+        tempStatusInputPassword = StatusInput.error;
+        tempPasswordInfoMessage = translate("message.enter_valid_password");
       }
     }
-    this.preUsername = this.state.inputUsername;
+    this.setState({
+      statusInputUsername: tempStatusInputUsername,
+      usernameInfoMessage: tempUsernameInfoMessage,
+      statusInputPassword: tempStatusInputPassword,
+      passwordInfoMessage: tempPasswordInfoMessage
+    });
   };
 
   getStatusStyle = (inputState: StatusInput) => {
@@ -141,7 +152,7 @@ class NativeLogin extends React.Component<Props, State> {
         </View>
         <ScrollView>
           <View style={styles.container}>
-            <Image source={{ uri: this.props.brandLogo }} style={styles.totaraLogo} />
+            <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} />
             <View style={styles.infoContainer}>
               <Text style={styles.detailTitle}>{translate("native-login.header_title")}</Text>
               <Text style={styles.information}>{translate("native-login.login_information")}</Text>
@@ -157,7 +168,7 @@ class NativeLogin extends React.Component<Props, State> {
                   onFocus={() => { this.setState({ statusInputUsername: StatusInput.focus }); }}
                   onBlur={() => { this.onBlurUsername() }}
                   value={this.state.inputUsername} />
-                <Text style={[styles.inputInfo, this.getStatusStyle(this.state.statusInputUsername)]} >{translate("message.enter_valid_username")}</Text>
+                <Text style={[styles.inputInfo, this.getStatusStyle(this.state.statusInputUsername)]} >{this.state.usernameInfoMessage}</Text>
               </View>
               <View style={styles.input} >
                 <TextInput
@@ -168,7 +179,7 @@ class NativeLogin extends React.Component<Props, State> {
                   onFocus={() => { this.setState({ inputPassword: undefined, statusInputPassword: StatusInput.focus }); }}
                   onBlur={() => { this.setState({ statusInputPassword: StatusInput.normal }); }}
                   value={this.state.inputPassword} />
-                <Text style={[styles.inputInfo, this.getStatusStyle(this.state.statusInputPassword)]} >{translate("message.enter_valid_password")}</Text>
+                <Text style={[styles.inputInfo, this.getStatusStyle(this.state.statusInputPassword)]} >{this.state.passwordInfoMessage}</Text>
               </View>
               <Text style={styles.forgotCredential} onPress={() => { }} >{translate("native-login.forgot_username_password")}</Text>
               <PrimaryButton onPress={this.onClickEnter} text={translate("general.enter")} />
@@ -184,7 +195,6 @@ class NativeLogin extends React.Component<Props, State> {
 type Props = {
   onSuccessfulSiteUrl: (data: string, currentAction: number) => void
   siteUrl?: string,
-  brandLogo: string,
   onBack: (action: number) => void
 };
 
@@ -192,7 +202,9 @@ type State = {
   inputUsername?: string,
   inputPassword?: string,
   statusInputUsername: StatusInput,
-  statusInputPassword: StatusInput
+  statusInputPassword: StatusInput,
+  passwordInfoMessage?: string,
+  usernameInfoMessage?: string
 };
 
 const TotaraColor = {

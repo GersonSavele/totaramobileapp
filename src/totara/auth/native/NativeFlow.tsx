@@ -29,6 +29,7 @@ import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
 import { StyleProvider } from "native-base";
 import { theme, getTheme } from "@totara/theme";
 import { AuthFlow } from "../AuthContext";
+import { Log } from "@totara/lib";
 
 class NativeFlow extends AuthComponent<{}, States> {
 
@@ -45,13 +46,17 @@ class NativeFlow extends AuthComponent<{}, States> {
     switch (currentAction) {
       case SiteUrl.actionType:
         this.getSiteConfiguration(data).then((response)=> {
-          if (response.status == 200) {
-            this.setSiteTheme(response.json().theme);
-            this.setState({
-              step: NativeLogin.actionType,
-              uri: data
-            });
+          if (response.status ===  200) {
+            return response.json();
           }
+        }).then((siteInfo) => {
+          if(siteInfo && siteInfo.theme) {
+            this.setSiteTheme(siteInfo.theme);
+          }
+          this.setState({
+            step: NativeLogin.actionType,
+            uri: data
+          });
         });
         break;
       case NativeLogin.actionType:
@@ -66,9 +71,13 @@ class NativeFlow extends AuthComponent<{}, States> {
     }
   };
 
-  setSiteTheme = (data: JSON) => {
-    theme.brandPrimary = data.brandPrimary;
-    theme.logoUrl = data.logoUrl;
+  setSiteTheme = (data: Theme) => {
+    if(data && data.brandPrimary) {
+      theme.brandPrimary = data.brandPrimary;
+    }
+    if(data && data.logoUrl) {
+      theme.logoUrl = data.logoUrl;
+    }
   }
 
   onCancelLogin = (currentAction: number) => {
@@ -110,7 +119,6 @@ class NativeFlow extends AuthComponent<{}, States> {
               <NativeLogin 
                 onSuccessfulSiteUrl={(siteUrl, action) => this.onSetupLoginData(siteUrl, action)} 
                 siteUrl={this.state.uri}
-                brandLogo={theme.logoUrl}
                 onBack={this.onCancelLogin} />
             </Modal>
           </StyleProvider>
@@ -124,7 +132,19 @@ class NativeFlow extends AuthComponent<{}, States> {
 type States = {
   step: number,
   uri?: string,
-  secret?: string
+  secret?: string,
+};
+
+type Theme = {
+  logoUrl?: string,
+  brandPrimary?: string
+};
+
+type SiteInfo = {
+  version: string,
+  auth: string,
+  siteMaintenance: boolean,
+  theme?: Theme
 };
 
 export default NativeFlow;
