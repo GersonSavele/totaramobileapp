@@ -20,7 +20,23 @@
  */
 
 import { config, Log } from "@totara/lib";
-import { SetupSecret, Setup } from "./AuthContext";
+import { SetupSecret, Setup, State, Props } from "./AuthContext";
+
+/**
+ * Authentication Routines, part of AuthProvider however refactored to individual functions
+ * so dependency can be passed as params for testing.
+ *
+ * WIP, not ideal that internal implementation is exposed (export).  Working out how to do
+ * have a good balance between testability and keeping implementation hidden
+ */
+
+type AuthProviderType<P, S> = {
+  clearApolloClient: () => void
+  setState: <K extends keyof S>(
+    state: ((prevState: Readonly<S>, props: Readonly<P>) => (Pick<S, K> | S | null)) | (Pick<S, K> | S | null),
+    callback?: () => void
+  ) => void
+}
 
 /**
  * Given a setup secret (temp key), retrieve the api key (a long term key) from the api via
@@ -66,7 +82,6 @@ export const getAndStoreApiKey = async (setupSecret: SetupSecret,
 
 );
 
-
 /**
  *
  * During logOff this will clean up the device properly.  Will perform both local and remote
@@ -74,25 +89,22 @@ export const getAndStoreApiKey = async (setupSecret: SetupSecret,
  * remote and local services.  It would always clear the memory state
  *
  * @param deviceDelete - remote device deletion mutation
- * @param clearStorage - local storage cleanup
- * @param clearApolloClient - clear in memory apollo client
- * @param clearSetupState - clear in memory state
+ * @param clearStorage - storage cleanup
+ * @param authContext - authContext instance to clear
  */
 export const deviceCleanup = async (deviceDelete: () => Promise<any>,
                                     clearStorage: () => Promise<void>,
-                                    clearApolloClient: () => void,
-                                    clearSetupState: () => void) => {
+                                    authProvider: AuthProviderType<Props, State>) => {
 
   const remoteCleanUp = deviceDelete().then(({ data: { delete_device } }) => {
     Log.debug("Device deleted from server", delete_device);
     if (!delete_device)
       Log.warn("Unable to delete device from server");
     return delete_device
-  }).then(() => clearApolloClient())
+  }).then(() => authProvider.clearApolloClient())
     .catch(error => {
       Log.warn("remote clean up had issues, but continue to do local clean up", error)
     });
-
 
   const localCleanUp = clearStorage().then(() => {
     Log.debug("Cleared storage");
@@ -104,16 +116,16 @@ export const deviceCleanup = async (deviceDelete: () => Promise<any>,
     }
   });
 
-  return Promise.all([localCleanUp, remoteCleanUp]).then(() => clearSetupState());
+  return Promise.all([localCleanUp, remoteCleanUp]).then(() => authProvider.setState({ setup: undefined }));
 
 };
 
 /**
  * Would get needed items from storage and return a valid state setup.
  *
- * @param storeGetItem
+ * @param storeGetItem - retrieve from storage using a key
  */
-export const bootstrap = async (storeGetItem: (key: string) => Promise<string | null>) => {
+export const bootstrap = async (storeGetItem: (key: string) => Promise<string | null>): Promise<Pick<State, "isLoading" | "setup">> => {
   const [apiKey, host] = await Promise.all([storeGetItem("apiKey"), storeGetItem("host")]);
 
   if (apiKey !== null && host !== null) {

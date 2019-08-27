@@ -102,10 +102,14 @@ describe("AuthRoutines.deviceCleanup should", () => {
   it("Successfully deregister and cleanup storage",  async () => {
     const clearApollo = jest.fn();
     const setSetup = jest.fn();
+    const authContext = {
+      setState: setSetup,
+      clearApolloClient: clearApollo
+    };
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
     const mockClearStorage = jest.fn(() => Promise.resolve());
 
-    await deviceCleanup(mockDeleteDevice, mockClearStorage, clearApollo, setSetup);
+    await deviceCleanup(mockDeleteDevice, mockClearStorage, authContext);
     expect(clearApollo).toHaveBeenCalledTimes(1);
     expect(setSetup).toHaveBeenCalledTimes(1);
   });
@@ -115,9 +119,13 @@ describe("AuthRoutines.deviceCleanup should", () => {
     const errorNoneExistStorage = new Error("Failed to delete storage directory with");
     const clearApollo = jest.fn();
     const setSetup = jest.fn();
+    const authContext = {
+      setState: setSetup,
+      clearApolloClient: clearApollo
+    };
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
     const mockClearStorageReject = jest.fn(() => Promise.reject(errorNoneExistStorage));
-    await deviceCleanup(mockDeleteDevice, mockClearStorageReject, clearApollo, setSetup);
+    await deviceCleanup(mockDeleteDevice, mockClearStorageReject, authContext);
     expect(clearApollo).toHaveBeenCalledTimes(1);
     expect(setSetup).toHaveBeenCalledTimes(1);
   });
@@ -127,10 +135,14 @@ describe("AuthRoutines.deviceCleanup should", () => {
     const unHandledErrorServer = new Error("Server error");
     const clearApollo = jest.fn();
     const setSetup = jest.fn();
+    const authContext = {
+      setState: setSetup,
+      clearApolloClient: clearApollo
+    };
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
     const mockClearStorageReject = jest.fn(() => Promise.resolve());
 
-    const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, clearApollo, setSetup);
+    const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, authContext);
 
     await expect(result).resolves.toBeFalsy();
     expect(setSetup).toHaveBeenCalledTimes(1);
@@ -142,10 +154,14 @@ describe("AuthRoutines.deviceCleanup should", () => {
     const unHandledErrorStorage = new Error("Un handled errors for clean storage");
     const clearApollo = jest.fn();
     const setSetup = jest.fn();
+    const authContext = {
+      setState: setSetup,
+      clearApolloClient: clearApollo
+    };
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
     const mockClearStorageReject = jest.fn(() => Promise.reject(unHandledErrorStorage));
 
-    const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, clearApollo, setSetup);
+    const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, authContext);
 
     await expect(result).resolves.toBeFalsy();
     expect(clearApollo).toHaveBeenCalledTimes(1);
@@ -155,12 +171,16 @@ describe("AuthRoutines.deviceCleanup should", () => {
   it("All Un-handeled errors", async () => {
     const unHandledErrorServer = new Error("Server error");
     const unHandledErrorStorage = new Error("Un handled errors for clean storage");
-    const clearApollo = jest.fn(() => Promise.resolve());
+    const clearApollo = jest.fn();
     const setSetup = jest.fn();
+    const authContext = {
+      setState: setSetup,
+      clearApolloClient: clearApollo
+    };
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
     const mockClearStorageReject = jest.fn(() => Promise.reject(unHandledErrorStorage));
 
-    const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, clearApollo, setSetup);
+    const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, authContext);
 
     await expect(result).resolves.toBeFalsy();
     expect(setSetup).toHaveBeenCalledTimes(1);

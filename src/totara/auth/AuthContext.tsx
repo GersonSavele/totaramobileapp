@@ -139,13 +139,10 @@ class AuthProvider extends React.Component<Props, State> {
       : Promise.resolve({ data: {delete_device: true }});
 
     const clearStoragePromise = () => this.asyncStorage.clear();
-    const clearApolloClient = () => this.apolloClient = undefined;
-    const clearSetupState = () => this.setState({ setup: undefined });
 
     return deviceCleanup(mutationPromise.bind(this),
       clearStoragePromise.bind(this),
-      clearApolloClient.bind(this),
-      clearSetupState.bind(this)
+      this,
       );
   };
 
@@ -176,6 +173,7 @@ class AuthProvider extends React.Component<Props, State> {
     return this.apolloClient;
   };
 
+  clearApolloClient = () => this.apolloClient = undefined;
 
   render() {
     return (
@@ -201,12 +199,12 @@ export const deleteDevice = gql`
     }
 `;
 
-type Props = {
+export type Props = {
   children: ReactNode
   asyncStorage: AsyncStorageStatic
 }
 
-type State = {
+export type State = {
   isLoading: boolean,
   setup?: Setup,
   logOut: () => Promise<void>
