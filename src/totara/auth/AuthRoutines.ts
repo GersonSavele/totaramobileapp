@@ -116,7 +116,11 @@ export const deviceCleanup = async (deviceDelete: () => Promise<any>,
     }
   });
 
-  return Promise.all([localCleanUp, remoteCleanUp]).then(() => authProvider.setState({ setup: undefined }));
+  return Promise.all([localCleanUp, remoteCleanUp])
+    .then(() => authProvider.setState({
+      setup: undefined,
+      isAuthenticated: false
+    }));
 
 };
 
@@ -125,7 +129,7 @@ export const deviceCleanup = async (deviceDelete: () => Promise<any>,
  *
  * @param storeGetItem - retrieve from storage using a key
  */
-export const bootstrap = async (storeGetItem: (key: string) => Promise<string | null>): Promise<Pick<State, "isLoading" | "setup">> => {
+export const bootstrap = async (storeGetItem: (key: string) => Promise<string | null>): Promise<Pick<State, "isLoading" | "setup" | "isAuthenticated">> => {
   const [apiKey, host] = await Promise.all([storeGetItem("apiKey"), storeGetItem("host")]);
 
   if (apiKey !== null && host !== null) {
@@ -135,12 +139,14 @@ export const bootstrap = async (storeGetItem: (key: string) => Promise<string | 
         apiKey: apiKey,
         host: host
       },
-      isLoading: false
+      isLoading: false,
+      isAuthenticated: true
     });
   } else {
     Log.info("bootstrap with clean setup state");
     return({
-      isLoading: false
+      isLoading: false,
+      isAuthenticated: false
     });
 
   }

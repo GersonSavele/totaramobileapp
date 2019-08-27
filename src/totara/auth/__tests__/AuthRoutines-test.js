@@ -99,13 +99,23 @@ describe("AuthRoutines.getAndStoreApiKey should", () => {
 
 describe("AuthRoutines.deviceCleanup should", () => {
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const clearApollo = jest.fn();
+  const setSetup = jest.fn((state) => {
+    expect(state).toMatchObject({
+      setup: undefined,
+      isAuthenticated: false
+    })
+  });
+  const authContext = {
+    setState: setSetup,
+    clearApolloClient: clearApollo
+  };
+
   it("Successfully deregister and cleanup storage",  async () => {
-    const clearApollo = jest.fn();
-    const setSetup = jest.fn();
-    const authContext = {
-      setState: setSetup,
-      clearApolloClient: clearApollo
-    };
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
     const mockClearStorage = jest.fn(() => Promise.resolve());
 
@@ -117,14 +127,9 @@ describe("AuthRoutines.deviceCleanup should", () => {
 
   it("Handle error on cleanup non-existing storage", async () => {
     const errorNoneExistStorage = new Error("Failed to delete storage directory with");
-    const clearApollo = jest.fn();
-    const setSetup = jest.fn();
-    const authContext = {
-      setState: setSetup,
-      clearApolloClient: clearApollo
-    };
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
     const mockClearStorageReject = jest.fn(() => Promise.reject(errorNoneExistStorage));
+
     await deviceCleanup(mockDeleteDevice, mockClearStorageReject, authContext);
     expect(clearApollo).toHaveBeenCalledTimes(1);
     expect(setSetup).toHaveBeenCalledTimes(1);
@@ -133,17 +138,10 @@ describe("AuthRoutines.deviceCleanup should", () => {
 
   it("Handle error on deregister the device and continue to logout the user", async () => {
     const unHandledErrorServer = new Error("Server error");
-    const clearApollo = jest.fn();
-    const setSetup = jest.fn();
-    const authContext = {
-      setState: setSetup,
-      clearApolloClient: clearApollo
-    };
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
     const mockClearStorageReject = jest.fn(() => Promise.resolve());
 
     const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, authContext);
-
     await expect(result).resolves.toBeFalsy();
     expect(setSetup).toHaveBeenCalledTimes(1);
     expect(clearApollo).not.toHaveBeenCalled();
@@ -152,17 +150,10 @@ describe("AuthRoutines.deviceCleanup should", () => {
 
   it("Un-handeled error on cleanup the storage", async () => {
     const unHandledErrorStorage = new Error("Un handled errors for clean storage");
-    const clearApollo = jest.fn();
-    const setSetup = jest.fn();
-    const authContext = {
-      setState: setSetup,
-      clearApolloClient: clearApollo
-    };
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
     const mockClearStorageReject = jest.fn(() => Promise.reject(unHandledErrorStorage));
 
     const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, authContext);
-
     await expect(result).resolves.toBeFalsy();
     expect(clearApollo).toHaveBeenCalledTimes(1);
     expect(setSetup).toHaveBeenCalledTimes(1);
@@ -171,21 +162,13 @@ describe("AuthRoutines.deviceCleanup should", () => {
   it("All Un-handeled errors", async () => {
     const unHandledErrorServer = new Error("Server error");
     const unHandledErrorStorage = new Error("Un handled errors for clean storage");
-    const clearApollo = jest.fn();
-    const setSetup = jest.fn();
-    const authContext = {
-      setState: setSetup,
-      clearApolloClient: clearApollo
-    };
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
     const mockClearStorageReject = jest.fn(() => Promise.reject(unHandledErrorStorage));
 
     const result = deviceCleanup(mockDeleteDevice, mockClearStorageReject, authContext);
-
     await expect(result).resolves.toBeFalsy();
     expect(setSetup).toHaveBeenCalledTimes(1);
   });
-
 
 });
 
@@ -202,7 +185,8 @@ describe("AuthRoutines.bootstrap should", () => {
         apiKey: "the_api_key",
         host: "testhost"
       },
-      isLoading: false
+      isLoading: false,
+      isAuthenticated: true
     });
   });
 
@@ -210,7 +194,8 @@ describe("AuthRoutines.bootstrap should", () => {
     const result = bootstrap(() => Promise.resolve(null));
 
     await expect(result).resolves.toMatchObject({
-      isLoading: false
+      isLoading: false,
+      isAuthenticated: false
     });
 
   });

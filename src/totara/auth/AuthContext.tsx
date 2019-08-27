@@ -43,6 +43,7 @@ import { getAndStoreApiKey, deviceCleanup, bootstrap } from "./AuthRoutines";
 const AuthContext = React.createContext<State>(
   {
     setup: undefined,
+    isAuthenticated: false,
     isLoading: true,
     logOut: () => { return Promise.resolve() }
   }
@@ -73,7 +74,8 @@ class AuthProvider extends React.Component<Props, State> {
     this.state = {
       setup: undefined,
       logOut: this.logOut,
-      isLoading: true
+      isLoading: true,
+      isAuthenticated: false
     };
 
     this.asyncStorage = props.asyncStorage;
@@ -99,11 +101,7 @@ class AuthProvider extends React.Component<Props, State> {
    * @param setupSecret
    */
   onLoginSuccess = async (setupSecret: SetupSecret) => {
-    if (this.state.setup && this.state.setup.apiKey) {
-      if (!this.apolloClient) this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql");
-      // TODO this is for now using the configured API endpoint.  Once the API are built properly this should be
-      // switched to this.state.setup.host
-      Log.debug("Logging out previous login user");
+    if (this.state.isAuthenticated) {
       await this.logOut();
     }
 
@@ -113,7 +111,8 @@ class AuthProvider extends React.Component<Props, State> {
       fetch,
       this.asyncStorage.setItem)
       .then((setup: Setup) => this.setState({
-        setup: setup
+        setup: setup,
+        isAuthenticated: true
       }));
   };
 
@@ -182,7 +181,8 @@ class AuthProvider extends React.Component<Props, State> {
         {
           (this.state.isLoading)
             ? <Text>TODO replace with error feedback screen see MOB-117</Text>
-            : (this.state.setup && this.state.setup.apiKey)
+            : (this.state.setup && this.state.setup.apiKey && this.state.isAuthenticated)
+              // TODO this is for now using the configured API endpoint.  Once the API are built properly the same as this.state.setup.host
               ? <ApolloProvider client={this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql")}>
                 {this.props.children}
               </ApolloProvider>
@@ -206,6 +206,7 @@ export type Props = {
 
 export type State = {
   isLoading: boolean,
+  isAuthenticated: boolean,
   setup?: Setup,
   logOut: () => Promise<void>
 }
