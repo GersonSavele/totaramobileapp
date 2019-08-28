@@ -38,7 +38,7 @@ import WebLogin from "./web-login";
 
 import { X_API_KEY } from "@totara/lib/Constant";
 import AppLinkLogin from "./app-link-login";
-import { getAndStoreApiKey, deviceCleanup, bootstrap } from "./AuthRoutines";
+import { getAndStoreApiKey, deviceCleanup, bootstrap, AuthProviderType } from "./AuthRoutines";
 
 const AuthContext = React.createContext<State>(
   {
@@ -66,7 +66,8 @@ const AuthConsumer = AuthContext.Consumer;
  * </AuthProvider>
  *
  */
-class AuthProvider extends React.Component<Props, State> {
+class AuthProvider extends React.Component<Props, State>
+  implements AuthProviderType<Props, State> {
 
   constructor(props: Props) {
     super(props);
@@ -79,18 +80,27 @@ class AuthProvider extends React.Component<Props, State> {
     };
 
     this.asyncStorage = props.asyncStorage;
+    this.bootstrap = bootstrap(this);
+    this.getAndStoreApiKey = getAndStoreApiKey(this);
+    this.deviceCleanup = deviceCleanup(this);
   }
 
   apolloClient?: ApolloClient<NormalizedCacheObject> = undefined;
   asyncStorage: AsyncStorageStatic;
+  bootstrap: (storeGetItem: (key: string) => Promise<string | null>) => Promise<void>;
+  getAndStoreApiKey: (setupSecret: SetupSecret,
+                      fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
+                      storeItem: (key: string, value: string) => Promise<void>,
+  ) => Promise<void>;
+  deviceCleanup: (deviceDelete: () => Promise<any>,
+                  clearStorage: () => Promise<void>) => Promise<void>;
 
   /**
    * turn off the splash screen and bootstrap the provider
    */
   async componentDidMount() {
     SplashScreen.hide();
-    const initialState = await bootstrap(this.asyncStorage.getItem);
-    this.setState(initialState);
+    await this.bootstrap(this.asyncStorage.getItem);
   }
 
   /**
@@ -105,15 +115,11 @@ class AuthProvider extends React.Component<Props, State> {
       await this.logOut();
     }
 
-    return getAndStoreApiKey(setupSecret,
+    return this.getAndStoreApiKey(setupSecret,
       // fetch is in global space
       // eslint-disable-next-line no-undef
       fetch,
-      this.asyncStorage.setItem)
-      .then((setup: Setup) => this.setState({
-        setup: setup,
-        isAuthenticated: true
-      }));
+      this.asyncStorage.setItem);
   };
 
   /**
@@ -139,9 +145,8 @@ class AuthProvider extends React.Component<Props, State> {
 
     const clearStoragePromise = () => this.asyncStorage.clear();
 
-    return deviceCleanup(mutationPromise.bind(this),
+    return this.deviceCleanup(mutationPromise.bind(this),
       clearStoragePromise.bind(this),
-      this,
       );
   };
 

@@ -20,7 +20,7 @@
  */
 
 import { config, Log } from "@totara/lib";
-import { SetupSecret, Setup, State, Props } from "./AuthContext";
+import { SetupSecret, State, Props } from "./AuthContext";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -28,9 +28,11 @@ import { SetupSecret, Setup, State, Props } from "./AuthContext";
  *
  * WIP, not ideal that internal implementation is exposed (export).  Working out how to do
  * have a good balance between testability and keeping implementation hidden
+ *
+ * Partially apply the function to an instance of AuthProvider and recommended on its constructor
  */
 
-type AuthProviderType<P, S> = {
+export interface AuthProviderType<P, S> {
   clearApolloClient: () => void
   setState: <K extends keyof S>(
     state: ((prevState: Readonly<S>, props: Readonly<P>) => (Pick<S, K> | S | null)) | (Pick<S, K> | S | null),
@@ -42,16 +44,18 @@ type AuthProviderType<P, S> = {
  * Given a setup secret (temp key), retrieve the api key (a long term key) from the api via
  * fetch.  Store the api key and host in storage, return these as well.
  *
+ * @param authProvider - authProvider instance to interact with
  * @param setupSecret contains the setup secret to be validated by the server
  * @param fetch http fetch
  * @param storeItem store item using key value
  *
  * @returns promise of setup which contains the valid apiKey and which host it was obtained from
  */
-export const getAndStoreApiKey = async (setupSecret: SetupSecret,
-                                 fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
-                                 storeItem: (key: string, value: string) => Promise<void>,
-                                 ): Promise<Setup> => (
+export const getAndStoreApiKey = (authProvider: AuthProviderType<Props, State>) =>
+  async (setupSecret: SetupSecret,
+         fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
+         storeItem: (key: string, value: string) => Promise<void>,
+  ): Promise<void> => (
 
   fetch(config.deviceRegisterUri(setupSecret.uri), {
       method: "POST",
@@ -73,7 +77,10 @@ export const getAndStoreApiKey = async (setupSecret: SetupSecret,
         host: setupSecret.uri
       };
       Log.debug("setup done", setup);
-      return setup;
+      return authProvider.setState({
+        setup: setup,
+        isAuthenticated: true
+      });
     }
   ).catch(error => {
     Log.error("unable to get apiKey", error);
@@ -88,13 +95,13 @@ export const getAndStoreApiKey = async (setupSecret: SetupSecret,
  * clean up.  It would catch all errors, as a user would be logged off regardless issues on the
  * remote and local services.  It would always clear the memory state
  *
+ * @param authProvider - authProvider instance to interact with
  * @param deviceDelete - remote device deletion mutation
  * @param clearStorage - storage cleanup
- * @param authContext - authContext instance to clear
  */
-export const deviceCleanup = async (deviceDelete: () => Promise<any>,
-                                    clearStorage: () => Promise<void>,
-                                    authProvider: AuthProviderType<Props, State>) => {
+export const deviceCleanup = (authProvider: AuthProviderType<Props, State>) =>
+  async (deviceDelete: () => Promise<any>,
+         clearStorage: () => Promise<void>) => {
 
   const remoteCleanUp = deviceDelete().then(({ data: { delete_device } }) => {
     Log.debug("Device deleted from server", delete_device);
@@ -127,14 +134,16 @@ export const deviceCleanup = async (deviceDelete: () => Promise<any>,
 /**
  * Would get needed items from storage and return a valid state setup.
  *
+ * @param authProvider - authProvider instance to interact with
  * @param storeGetItem - retrieve from storage using a key
  */
-export const bootstrap = async (storeGetItem: (key: string) => Promise<string | null>): Promise<Pick<State, "isLoading" | "setup" | "isAuthenticated">> => {
+export const bootstrap = (authProvider: AuthProviderType<Props, State>) =>
+  async (storeGetItem: (key: string) => Promise<string | null>): Promise<void> => {
   const [apiKey, host] = await Promise.all([storeGetItem("apiKey"), storeGetItem("host")]);
 
   if (apiKey !== null && host !== null) {
     Log.info("bootstrap with existing apiKey and host");
-    return({
+    return authProvider.setState({
       setup: {
         apiKey: apiKey,
         host: host
@@ -144,7 +153,7 @@ export const bootstrap = async (storeGetItem: (key: string) => Promise<string | 
     });
   } else {
     Log.info("bootstrap with clean setup state");
-    return({
+    return authProvider.setState({
       isLoading: false,
       isAuthenticated: false
     });
