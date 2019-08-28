@@ -26,7 +26,7 @@ import { Log } from "@totara/lib";
 type Props = {
   onActive?: () => void;
   onBackground?: () => void;
-  onInactive?: () => {};
+  onInactive?: () => void;
   children?: ReactNode;
 };
 

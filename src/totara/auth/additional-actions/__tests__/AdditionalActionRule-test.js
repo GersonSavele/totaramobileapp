@@ -78,7 +78,7 @@ describe("should render loading state initially", () => {
   it("Test result : return Loading...", () => {
     const component = renderer.create(
       <MockedProvider mocks={[]} addTypename={false}>
-        <AdditionalActionRule></AdditionalActionRule>
+        <AdditionalActionRule/>
       </MockedProvider>
     );
     const tree = component.toJSON();
