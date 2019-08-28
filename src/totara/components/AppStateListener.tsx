@@ -17,25 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
-**/
+ **/
 
-import React , { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { AppState, AppStateStatus } from "react-native";
 import { Log } from "@totara/lib";
 
 type Props = {
-  onActive? : () => void,
-  onBackground? : () => void,
-  onInactive? : () => {},
-  children? : ReactNode
-}
+  onActive?: () => void;
+  onBackground?: () => void;
+  onInactive?: () => {};
+  children?: ReactNode;
+};
 
-class AppStateListener extends React.Component <Props>{
-
-  static defaultProps =  { 
-    onActive : () => Log.debug("App is in Active/Foreground Mode."),
-    onBackground : () => Log.debug("App is in Background Mode."),
-    onInactive : () => Log.debug("App is in Inactive mode.")
+class AppStateListener extends React.Component<Props> {
+  static defaultProps = {
+    onActive: () => Log.debug("App is in Active/Foreground Mode."),
+    onBackground: () => Log.debug("App is in Background Mode."),
+    onInactive: () => Log.debug("App is in Inactive mode.")
   };
 
   constructor(props: Props) {
@@ -43,7 +42,7 @@ class AppStateListener extends React.Component <Props>{
   }
   state = {
     appState: AppState.currentState
-  }
+  };
 
   componentDidMount() {
     AppState.addEventListener("change", this.handleAppStateChange);
@@ -53,32 +52,32 @@ class AppStateListener extends React.Component <Props>{
     AppState.removeEventListener("change", this.handleAppStateChange);
   }
 
-/**
-* @AppStateChange : Here, will trigger when app is background/inactive and foreground.
-* @parameter : When app goes background and foreground, next app state.
-* @return : null 
-*/
+  /**
+   * @AppStateChange : Here, will trigger when app is background/inactive and foreground.
+   * @parameter : When app goes background and foreground, next app state.
+   * @return : null
+   */
 
-  handleAppStateChange = (nextAppState : AppStateStatus) => {
-    this.setState({appState: nextAppState});
+  handleAppStateChange = (nextAppState: AppStateStatus) => {
+    this.setState({ appState: nextAppState });
 
-      if (nextAppState === "active") {
-        // Do something here on app active foreground mode.
-        this.props.onActive!();
-      }
-      if (nextAppState === "background") {
-        // Do something here on app background.
-        this.props.onBackground!();
-      }
-      if (nextAppState === "inactive") {
-        // Do something here on app inactive mode.
-        this.props.onInactive!();
-      }
+    if (nextAppState === "active") {
+      // Do something here on app active foreground mode.
+      this.props.onActive!();
     }
+    if (nextAppState === "background") {
+      // Do something here on app background.
+      this.props.onBackground!();
+    }
+    if (nextAppState === "inactive") {
+      // Do something here on app inactive mode.
+      this.props.onInactive!();
+    }
+  };
 
   render() {
     return this.props.children != null ? this.props.children : null;
-   }
+  }
 }
 
 export default AppStateListener;

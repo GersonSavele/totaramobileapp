@@ -17,35 +17,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
-**/
+ **/
 
-import React , { ReactNode }from "react";
-import {  GetMe , QueryResult }  from "./api";
-import { Text } from "react-native"; 
-import  AppStateListener  from "@totara/components/AppStateListener"
+import React, { ReactNode } from "react";
+import { GetMe, QueryResult } from "./api";
+import { Text } from "react-native";
+import AppStateListener from "@totara/components/AppStateListener";
 
 type Params = {
-  children : ReactNode
-}
+  children: ReactNode;
+};
 
-const AdditionalActionRule = ({children}: Params) => {
-  return (<GetMe props = {
-      ({ loading, data, error, refetch } : QueryResult) => {
+const AdditionalActionRule = ({ children }: Params) => {
+  return (
+    <GetMe
+      props={({ loading, data, error, refetch }: QueryResult) => {
         if (loading) return <Text>Loading...</Text>;
         if (error) return <Text>Error!</Text>;
         // TO DO - MOB-166 : We need to understand request_policy_agreement bool value, how it is working with modal
         // if (data && (data.me.system.request_policy_agreement || data.me.system.request_user_consent || data.me.system.request_user_fields)) {
-        if (data && (data.me.system.request_user_consent || data.me.system.request_user_fields)) {
-          return(
-            <AppStateListener onActive = {refetch}>
-              {children}
-            </AppStateListener>)
-        } 
-        else {
-          return <AppStateListener onActive = {refetch}/>
+        if (
+          data &&
+          (data.me.system.request_user_consent ||
+            data.me.system.request_user_fields)
+        ) {
+          return (
+            <AppStateListener onActive={refetch}>{children}</AppStateListener>
+          );
+        } else {
+          return <AppStateListener onActive={refetch} />;
         }
-      }
-    }/>
-)}
+      }}
+    />
+  );
+};
 
 export default AdditionalActionRule;

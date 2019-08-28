@@ -17,57 +17,90 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
-**/
+ **/
 
 import React from "react";
-import { View, StyleSheet, Linking} from "react-native";
+import { View, StyleSheet, Linking } from "react-native";
 
-import { TransparentView, ButtonWithIcon, ModalText, ModalImageView, ModalContainer } from "@totara/components"
+import {
+  TransparentView,
+  ButtonWithIcon,
+  ModalText,
+  ModalImageView,
+  ModalContainer
+} from "@totara/components";
 import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
-import AdditionalActionRule from "./AdditionalActionRule"
+import AdditionalActionRule from "./AdditionalActionRule";
 
 class AdditionalAction extends React.Component {
-
-render() {
-  return (
-    <AdditionalActionRule>
-    <AdditionalActionModal/>
-    </AdditionalActionRule>
-    )
+  render() {
+    return (
+      <AdditionalActionRule>
+        <AdditionalActionModal />
+      </AdditionalActionRule>
+    );
   }
 }
 
 const styles = StyleSheet.create({
   ContainerStyle: {
-    marginBottom: resizeByScreenSize(16,16, 24, 24),
-    marginTop: resizeByScreenSize(16,16, 24, 24)
+    marginBottom: resizeByScreenSize(16, 16, 24, 24),
+    marginTop: resizeByScreenSize(16, 16, 24, 24)
   }
 });
 
-const AdditionalActionModal =() => {
-  return(
+const AdditionalActionModal = () => {
+  return (
     <TransparentView>
       <ModalContainer>
-      <View style ={styles.ContainerStyle}>
-      <ModalImageView imageType = "complete_action"/>
-      </View>
-        <View style ={styles.ContainerStyle}>
-          <ModalText text = {translate("additional-actions-modal.auth_model_title")} fontSize = {normalize(24)} color = "#3D444B" fontWeight = "600"></ModalText>
-          <ModalText text = {translate("additional-actions-modal.auth_model_description")} fontSize = {normalize(16)} color = "#3D444B" fontWeight = "100"></ModalText>
+        <View style={styles.ContainerStyle}>
+          <ModalImageView imageType="complete_action" />
         </View>
-      <AuthConsumer>
-        { auth =>
-        <View style ={styles. ContainerStyle}>
-          <ButtonWithIcon buttonTitle = {translate("additional-actions-modal.auth_model_go_to_browser")} onPress = {()=>{ Linking.openURL(auth.setup!.host)}} buttonTitleFontWeight = "600" buttonTitleColor ="#FFF" buttonBackgroundColor = "#8ca83d" fontSize = {normalize(16)} buttonIcon = "external-link-alt"/>
-          <ButtonWithIcon buttonTitle = {translate("additional-actions-modal.auth_model_logout")} onPress = {() => auth.logOut()} fontSize = {normalize(16)}></ButtonWithIcon>
+        <View style={styles.ContainerStyle}>
+          <ModalText
+            text={translate("additional-actions-modal.auth_model_title")}
+            fontSize={normalize(24)}
+            color="#3D444B"
+            fontWeight="600"
+          ></ModalText>
+          <ModalText
+            text={translate("additional-actions-modal.auth_model_description")}
+            fontSize={normalize(16)}
+            color="#3D444B"
+            fontWeight="100"
+          ></ModalText>
         </View>
-        }
-      </AuthConsumer>
+        <AuthConsumer>
+          {auth => (
+            <View style={styles.ContainerStyle}>
+              <ButtonWithIcon
+                buttonTitle={translate(
+                  "additional-actions-modal.auth_model_go_to_browser"
+                )}
+                onPress={() => {
+                  Linking.openURL(auth.setup!.host);
+                }}
+                buttonTitleFontWeight="600"
+                buttonTitleColor="#FFF"
+                buttonBackgroundColor="#8ca83d"
+                fontSize={normalize(16)}
+                buttonIcon="external-link-alt"
+              />
+              <ButtonWithIcon
+                buttonTitle={translate(
+                  "additional-actions-modal.auth_model_logout"
+                )}
+                onPress={() => auth.logOut()}
+                fontSize={normalize(16)}
+              ></ButtonWithIcon>
+            </View>
+          )}
+        </AuthConsumer>
       </ModalContainer>
     </TransparentView>
   );
-}
+};
 
 export default AdditionalAction;

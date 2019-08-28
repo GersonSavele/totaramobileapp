@@ -19,16 +19,16 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import { MockedProvider } from 'react-apollo/test-utils';
-import renderer from 'react-test-renderer';
+import { MockedProvider } from "react-apollo/test-utils";
+import renderer from "react-test-renderer";
 import React from "react";
 import wait from "waait";
 import { Text } from "react-native";
 
-import { QueryMe } from '../api';
-import  AdditionalActionRule  from "../AdditionalActionRule"
+import { QueryMe } from "../api";
+import AdditionalActionRule from "../AdditionalActionRule";
 
-const response = { 
+const response = {
   me: {
     user: {
       id: 1,
@@ -52,7 +52,7 @@ const response = {
       idnumber: 1
     }
   }
-}
+};
 
 const mocks = [
   {
@@ -61,26 +61,24 @@ const mocks = [
     },
     result: {
       data: response
-    },
-  },
+    }
+  }
 ];
-
 
 const mocksError = [
   {
     request: {
       query: QueryMe
     },
-      error: new Error("Error"),
-  },
+    error: new Error("Error")
+  }
 ];
 
 describe("should render loading state initially", () => {
   it("Test result : return Loading...", () => {
     const component = renderer.create(
       <MockedProvider mocks={[]} addTypename={false}>
-        <AdditionalActionRule>
-        </AdditionalActionRule>  
+        <AdditionalActionRule></AdditionalActionRule>
       </MockedProvider>
     );
     const tree = component.toJSON();
@@ -88,16 +86,16 @@ describe("should render loading state initially", () => {
   });
 });
 
-describe("should render additional action rule", ()  => {
+describe("should render additional action rule", () => {
   it("Test result : After render additional action rule, it will return child component", async () => {
     const component = renderer.create(
-      <MockedProvider mocks={ mocks } addTypename={false}>
+      <MockedProvider mocks={mocks} addTypename={false}>
         <AdditionalActionRule>
           <Text>Modal Details</Text>
         </AdditionalActionRule>
       </MockedProvider>
     );
-    await wait(0);// wait for response
+    await wait(0); // wait for response
     const tree = component.root.props.children.props.children.props.children;
     expect(tree).toContain("Modal Details");
   });
@@ -107,7 +105,7 @@ describe("should show error UI", () => {
   it("Test result : return Error", async () => {
     const component = renderer.create(
       <MockedProvider mocks={mocksError} addTypename={false}>
-        <AdditionalActionRule/>
+        <AdditionalActionRule />
       </MockedProvider>
     );
     await wait(0); // wait for response
