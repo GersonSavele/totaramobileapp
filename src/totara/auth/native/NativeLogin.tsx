@@ -40,7 +40,7 @@ import { resizeByScreenSize, theme } from "@totara/theme";
 import { PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 
-enum StatusInput {
+export enum StatusInput {
   normal = 0, focus, error
 }
 

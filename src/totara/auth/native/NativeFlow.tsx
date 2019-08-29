@@ -28,8 +28,6 @@ import NativeLogin from "./NativeLogin";
 import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
 import { StyleProvider } from "native-base";
 import { theme, getTheme } from "@totara/theme";
-import { AuthFlow } from "../AuthContext";
-import { Log } from "@totara/lib";
 
 class NativeFlow extends AuthComponent<{}, States> {
 

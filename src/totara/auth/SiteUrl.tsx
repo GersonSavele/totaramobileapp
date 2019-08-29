@@ -24,8 +24,8 @@ import * as Animatable from 'react-native-animatable';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { resizeByScreenSize } from "@totara/theme";
-import { PrimaryButton } from "@totara/components/PrimaryButton";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { PrimaryButton } from "@totara/components";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { translate } from "@totara/locale";
 import { config } from "@totara/lib";
 
