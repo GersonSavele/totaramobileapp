@@ -16,26 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React from "react";
-import { Text } from "react-native";
-import { Button } from "native-base";
+import { Scope, TranslateOptions } from "i18n-js";
 
-type Props = {
-  children?: Element,
-  text?: string
-  onPress?: (() => void)
-}
+// don't use the real translate as it linked to a native function which checks the phone's locale
+// on test we don't need to check translations
+const translate = (scope: Scope, options?: TranslateOptions) => (`translated ${scope} with ${options}`);
 
-const PrimaryButton = ({ children, text, onPress, ...rest}: Props) =>
-  <Button block rounded primary onPress={onPress} {...rest}>
-    {
-      text
-        ? <Text style={{ color: "#fff" }}>{text}</Text>
-        : children
-    }
-  </Button>;
-
-export default PrimaryButton;
+export { translate };

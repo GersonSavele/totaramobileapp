@@ -24,6 +24,7 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Button } from "native-base";
 import { resizeByScreenSize } from "@totara/theme";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type ButtonParam = {
@@ -31,7 +32,7 @@ type ButtonParam = {
   buttonBackgroundColor? : string,
   buttonTitleColor? : string,
   buttonBorderColor? : string,
-  buttonTitleFontWeight? : string,
+  buttonTitleFontWeight? : "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900",
   borderRadius?: number,
   borderWidth? : number,
   fontSize? : number,
@@ -52,12 +53,12 @@ const ButtonWithIcon = ( { buttonBackgroundColor,buttonBorderColor,onPress,butto
       color: buttonTitleColor != undefined? buttonTitleColor : "#337AB7",  
       fontWeight: buttonTitleFontWeight != undefined? buttonTitleFontWeight : "normal",
       fontSize : fontSize != undefined? fontSize : 18,
-      alignSelf: 'center'
+      alignSelf: "center"
     }]}>{buttonTitle}</Text>
     {buttonIcon != undefined? <FontAwesomeIcon icon={buttonIcon} size={fontSize} color={buttonTitleColor} /> : null}
     </Button>
   </View>)
-}
+};
 
 const styles = StyleSheet.create({
   containerModelButtonStyle: {

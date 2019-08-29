@@ -16,26 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React from "react";
-import { Text } from "react-native";
-import { Button } from "native-base";
-
-type Props = {
-  children?: Element,
-  text?: string
-  onPress?: (() => void)
+export default {
+  // mock theme implementation
 }
-
-const PrimaryButton = ({ children, text, onPress, ...rest}: Props) =>
-  <Button block rounded primary onPress={onPress} {...rest}>
-    {
-      text
-        ? <Text style={{ color: "#fff" }}>{text}</Text>
-        : children
-    }
-  </Button>;
-
-export default PrimaryButton;

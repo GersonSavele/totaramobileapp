@@ -25,6 +25,7 @@ import {Button} from "native-base";
 import moment from "moment";
 import React from "react";
 import {normalize} from "@totara/theme";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {translate} from "@totara/locale";
 import {DATE_FORMAT} from "@totara/lib/Constant";

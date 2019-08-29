@@ -17,7 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// @ts-ignore no type defs on generated js files
 import material from "./native-base-theme/variables/material";
+// @ts-ignore no type defs on generated js files
 import getTheme from "./native-base-theme/components/index";
 import {resizeByScreenSize, normalize} from "./ui";
 import lodash from "lodash";

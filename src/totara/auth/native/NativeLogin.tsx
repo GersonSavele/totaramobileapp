@@ -19,12 +19,25 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { StyleSheet, View, Image, Text, TextInput, SafeAreaView, Platform, ScrollView, Keyboard, KeyboardEvent, EmitterSubscription } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  TextInput,
+  SafeAreaView,
+  Platform,
+  ScrollView,
+  Keyboard,
+  KeyboardEvent,
+  EmitterSubscription,
+  TouchableOpacity
+} from "react-native";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { Button } from "native-base";
 
 import { resizeByScreenSize, theme } from "@totara/theme";
-import { PrimaryButton } from "@totara/components/PrimaryButton";
+import { PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 
 enum StatusInput {
@@ -145,9 +158,9 @@ class NativeLogin extends React.Component<Props, State> {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
         <View style={styles.navigation} >
-          <Button transparent onPress={() => { this.props.onBack(NativeLogin.actionType) }} style={styles.actionItem} >
+          <TouchableOpacity onPress={() => { this.props.onBack(NativeLogin.actionType) }} style={styles.actionItem} >
             <FontAwesomeIcon icon="times" size={22} color={"#000000"} />
-          </Button>
+          </TouchableOpacity>
         </View>
         <ScrollView>
           <View style={styles.container}>

@@ -23,6 +23,7 @@
 import React from "react";
 import { ComponentType } from "react";
 import { View, StyleSheet } from "react-native";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { Status } from "@totara/types";

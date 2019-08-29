@@ -16,26 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
 import React from "react";
-import { Text } from "react-native";
-import { Button } from "native-base";
+import { Button } from "react-native";
 
-type Props = {
-  children?: Element,
-  text?: string
-  onPress?: (() => void)
+// use react-native button instead on jest, as native-base button
+// has issues while on test
+const MockButton = ({onPress}) => <Button title={"this is a mock button"} onPress={onPress}/>;
+
+export {
+  MockButton as Button
 }
-
-const PrimaryButton = ({ children, text, onPress, ...rest}: Props) =>
-  <Button block rounded primary onPress={onPress} {...rest}>
-    {
-      text
-        ? <Text style={{ color: "#fff" }}>{text}</Text>
-        : children
-    }
-  </Button>;
-
-export default PrimaryButton;

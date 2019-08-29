@@ -32,6 +32,7 @@ import ModalText from "./ModalText";
 import ModalImageView from "./ModalImageView";
 import ModalContainer from "./ModalContainer";
 import AppStateListener from "./AppStateListener";
+import PrimaryButton from "./PrimaryButton";
 
 export {
   LearningItemCard,
@@ -46,5 +47,6 @@ export {
   ModalText,
   ModalImageView,
   ModalContainer,
-  AppStateListener
+  AppStateListener,
+  PrimaryButton
 }
