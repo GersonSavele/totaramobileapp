@@ -23,7 +23,6 @@ import React from 'react';
 import NativeLogin, { StatusInput } from "../NativeLogin";
 import renderer from "react-test-renderer";
 
-
 const mockOnSuccess = jest.fn();
 const mockOnFail = jest.fn();
 
@@ -32,55 +31,45 @@ const nativeLogin = renderer.create(
 ).getInstance();
 
 describe("Passing different 'username' and 'password' for checking validation", () => {
-  const testCases = [
-    {
-      "testcase": "both valid 'username' and 'password'",
-      "username": "uname",
-      "password": "pword",
-      "stateUsername": StatusInput.normal,
-      "statePassword": StatusInput.normal
-    }, {
-      "testcase": "both empty 'username' and 'password'",
-      "username": undefined,
-      "password": undefined,
-      "stateUsername": StatusInput.error,
-      "statePassword": StatusInput.error
-    }, {
-      "testcase": "valid 'username' and empty 'password'",
-      "username": "uname",
-      "password": undefined,
-      "stateUsername": StatusInput.normal,
-      "statePassword": StatusInput.error
-    }, {
-      "testcase": "empty 'username' and valid 'password'",
-      "username": undefined,
-      "password": "pword",
-      "stateUsername": StatusInput.error,
-      "statePassword": StatusInput.normal
-    }, {
-      "testcase": "invalid 'username' and valid 'password'",
-      "username": "wrong",
-      "password": "pword",
-      "stateUsername": StatusInput.error,
-      "statePassword": StatusInput.normal
-    }
-  ];
-  function testOnClickEnter() {
-    for (let i = 0; i < testCases.length; i++) {
-      var testCase = testCases[i];
-      const testcase = testCase["testcase"];
-      it(testcase, () => {
-        const expectStateUname = testCase["stateUsername"];
-        const expectStatePword = testCase["statePassword"];
-        nativeLogin.setState({
-          inputUsername: testCase["username"],
-          inputPassword: testCase["password"]
-        });
-        nativeLogin.onClickEnter();
-        expect(nativeLogin.state.statusInputUsername).toBe(expectStateUname);
-        expect(nativeLogin.state.statusInputPassword).toBe(expectStatePword);
-      });
-    }
-  }
-  testOnClickEnter();
+
+  it("both valid 'username' and 'password'", () => {
+    nativeLogin.setState({
+      inputUsername: "username",
+      inputPassword: "password"
+    });
+    nativeLogin.onClickEnter();
+    expect(nativeLogin.state.statusInputUsername).toBe(StatusInput.normal);
+    expect(nativeLogin.state.statusInputPassword).toBe(StatusInput.normal);
+  });
+
+  it("both empty 'username' and 'password'", () => {
+    nativeLogin.setState({
+      inputUsername: undefined,
+      inputPassword: undefined
+    });
+    nativeLogin.onClickEnter();
+    expect(nativeLogin.state.statusInputUsername).toBe(StatusInput.error);
+    expect(nativeLogin.state.statusInputPassword).toBe(StatusInput.error);
+  });
+
+  it("valid 'username' and empty 'password'", () => {
+    nativeLogin.setState({
+      inputUsername: "username",
+      inputPassword: undefined
+    });
+    nativeLogin.onClickEnter();
+    expect(nativeLogin.state.statusInputUsername).toBe(StatusInput.normal);
+    expect(nativeLogin.state.statusInputPassword).toBe(StatusInput.error);
+  });
+
+  it("empty 'username' and valid 'password'", () => {
+    nativeLogin.setState({
+      inputUsername: undefined,
+      inputPassword: "password"
+    });
+    nativeLogin.onClickEnter();
+    expect(nativeLogin.state.statusInputUsername).toBe(StatusInput.error);
+    expect(nativeLogin.state.statusInputPassword).toBe(StatusInput.normal);
+  });
+
 });

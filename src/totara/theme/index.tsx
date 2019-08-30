@@ -39,7 +39,19 @@ const theme = lodash.merge(material, {
   brandPrimary: "#69BD45",
   brandInfo: "#FFFFFF",
   platformStyle: "totara",
-  logoUrl: "https://webcasts.td.org/uploads/assets/2300/logo.png"
+  logoUrl: "https://webcasts.td.org/uploads/assets/2300/logo.png", //TODO need to set default logo and it will be covered in MOB-172 
+
+  inputErrorTextColor: "#953539",
+  inputTextColor: "#000000",
+  inputSuccessTextColor: "#000000",
+
+  inputErrorBorderColor: "#953539",
+  inputBorderColor: "#D2D2D2",
+  inputSuccessBorderColor: "#69BD45",
+
+  h1Color: "#000",
+  h3Color: "#64717D",
+  linkColor: "#64717D"
 });
 
 export {

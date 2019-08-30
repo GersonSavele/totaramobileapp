@@ -92,7 +92,7 @@ class NativeFlow extends AuthComponent<{}, States> {
   };
 
   getSiteConfiguration = (site: string) => {
-    //@TODO will be covered in MOB-172
+    //TODO will be covered in MOB-172
     return Promise.resolve({
       status: 200,
       json: () => ({
@@ -100,8 +100,8 @@ class NativeFlow extends AuthComponent<{}, States> {
           auth: "native",
           siteMaintenance: false,
           theme: {
-             logoUrl: "https://trademe.tmcdn.co.nz/tm/agentimages/jobs/wide/1846418-1.jpg",
-             brandPrimary: "#FF0000"
+             logoUrl: "https://webcasts.td.org/uploads/assets/2300/logo.png",
+             brandPrimary: "#69BD45"
           }
         })       
     });
@@ -113,7 +113,7 @@ class NativeFlow extends AuthComponent<{}, States> {
         return (
           <StyleProvider style={getTheme(theme)}>
             <Modal animationType="slide" transparent={false} >
-              {/* //@TODO will be covered in MOB-172 */}
+              {/* //TODO will be covered in MOB-172 */}
               <NativeLogin 
                 onSuccessfulSiteUrl={(siteUrl, action) => this.onSetupLoginData(siteUrl, action)} 
                 siteUrl={this.state.uri}

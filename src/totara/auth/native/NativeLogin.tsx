@@ -123,7 +123,7 @@ class NativeLogin extends React.Component<Props, State> {
     let tempPasswordInfoMessage =  undefined;
 
     if ((this.state.inputUsername && this.state.inputUsername != "wrong") && (this.state.inputPassword && this.state.inputPassword != "")) {
-      //@TODO will be covered in MOB-172
+      //TODO will be covered in MOB-172
     } else {
       if (!this.state.inputUsername || this.state.inputUsername == "" || this.state.inputUsername == "wrong") {
         this.preStatusUsername = StatusInput.error;
@@ -156,10 +156,10 @@ class NativeLogin extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.navigation} >
           <TouchableOpacity onPress={() => { this.props.onBack(NativeLogin.actionType) }} style={styles.actionItem} >
-            <FontAwesomeIcon icon="times" size={22} color={"#000000"} />
+            <FontAwesomeIcon icon="times" size={22} color={theme.h1Color} />
           </TouchableOpacity>
         </View>
         <ScrollView>
@@ -220,14 +220,6 @@ type State = {
   keyboardHeight: number
 };
 
-const TotaraColor = {
-  red: "#953539",
-  green: "#69BD45",
-  ash: "#D2D2D2",
-  black: "#000000",
-  light_black: "#64717D"
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -260,10 +252,11 @@ const styles = StyleSheet.create({
   },
   detailTitle: {
     fontSize: resizeByScreenSize(22, 26, 26, 26),
+    color: theme.h1Color
   },
   information: {
     fontSize: resizeByScreenSize(15, 20, 20, 20),
-    color: TotaraColor.light_black,
+    color: theme.h3Color
   },
   formContainer: {
     marginVertical: 8,
@@ -273,28 +266,29 @@ const styles = StyleSheet.create({
     paddingBottom: 6
   },
   inputText: {
-    color: TotaraColor.black,
+    color: theme.inputTextColor,
     borderBottomWidth: 1,
     borderRadius: (Platform.OS === "ios") ? 5 : 0,
     borderLeftWidth: (Platform.OS === "ios") ? 1 : 0,
     borderRightWidth: (Platform.OS === "ios") ? 1 : 0,
     borderTopWidth: (Platform.OS === "ios") ? 1 : 0,
-    borderColor: TotaraColor.ash,
+    borderColor: theme.inputBorderColor,
     height: 40,
     paddingLeft: 4,
     paddingRight: 4
   },
   focusOn: {
-    color: TotaraColor.black,
-    borderColor: TotaraColor.green
+    color: theme.inputTextColor,
+    borderColor: theme.inputSuccessBorderColor
   },
   normal: {
-    color: TotaraColor.black
+    color: theme.inputTextColor,
+    borderColor: theme.inputBorderColor
   },
   errorOn: {
     opacity: 1.0,
-    color: TotaraColor.red,
-    borderColor: TotaraColor.red
+    color: theme.inputErrorTextColor,
+    borderColor: theme.inputErrorBorderColor
   },
   inputInfo: {
     opacity: 0.0,
@@ -302,7 +296,7 @@ const styles = StyleSheet.create({
     marginLeft: (Platform.OS === "ios") ? 8 : 4,
   },
   forgotCredential: {
-    color: TotaraColor.light_black,
+    color: theme.linkColor,
     fontSize: resizeByScreenSize(14, 16, 16, 16),
     paddingBottom: 16,
     textDecorationLine: "underline",
