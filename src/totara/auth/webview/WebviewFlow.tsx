@@ -23,7 +23,7 @@
 import React from "react";
 import { Modal, View } from "react-native";
 
-import SiteUrl from "../SiteUrl";
+import SiteUrl from "../manual/SiteUrl";
 import WebviewLogin from "./WebviewLogin";
 import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
 

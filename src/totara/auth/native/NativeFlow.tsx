@@ -23,7 +23,7 @@
 import React from "react";
 import { Modal } from "react-native";
 
-import SiteUrl from "../SiteUrl";
+import SiteUrl from "../manual/SiteUrl";
 import NativeLogin from "./NativeLogin";
 import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
 import { StyleProvider } from "native-base";
@@ -43,7 +43,7 @@ class NativeFlow extends AuthComponent<{}, States> {
   onSetupLoginData = (data: string, currentAction: number) => {
     switch (currentAction) {
       case SiteUrl.actionType:
-        this.getSiteConfiguration(data).then((response)=> {
+        this.getSiteConfiguration().then((response)=> {
           if (response.status ===  200) {
             return response.json();
           }
@@ -91,7 +91,7 @@ class NativeFlow extends AuthComponent<{}, States> {
     }
   };
 
-  getSiteConfiguration = (site: string) => {
+  getSiteConfiguration = () => {
     //TODO will be covered in MOB-172
     return Promise.resolve({
       status: 200,
