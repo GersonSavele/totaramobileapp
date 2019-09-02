@@ -24,8 +24,8 @@ import ConsoleLogger from "./logger/ConsoleLogger";
 
 const defaultConfig = {
   urlProtocol: "https",
-  mobileApi: "http://localhost:4000",
-  mobileStatic: "http://localhost:4001",
+  mobileApi: "http://mobilenode.wlg.totaralms.com",
+  mobileStatic: "http://mobilenode.wlg.totaralms.com",
   // startNodeJsMobile: true
   startNodeJsMobile: false,
   userAgent: "TotaraMobileApp",
