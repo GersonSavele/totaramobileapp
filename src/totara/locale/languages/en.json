@@ -33,6 +33,11 @@
     "auth_model_go_to_browser" : "Go to browser",
     "auth_model_logout":"Logout"
   },
+  "error_feedback-modal": {
+    "title": "Sorry!",
+    "description" : "Seems like you have entered a wrong\nsite address.",
+    "button_title" : "Try again"
+  },
   "message": {
     "enter_valid_url": "Enter a valid site address",
     "enter_valid_username": "Enter a valid Username",
