@@ -28,7 +28,7 @@ import * as Animatable from "react-native-animatable";
 import lodash from "lodash";
 
 import { Log } from "@totara/lib";
-import { LearningItemCard } from "@totara/components";
+import { LearningItemCard , ErrorFeedbackView} from "@totara/components";
 import { gutter } from "@totara/theme";
 import { tbPadding } from "@totara/theme";
 import { translate } from "@totara/locale";
@@ -42,7 +42,7 @@ const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
 
   if (error) {
     Log.error("Error getting course details", error);
-    return <Text>{translate("general.error")}(</Text>;  // TODO MOB-123 make this UI better
+    return <ErrorFeedbackView/>;
   }
 
   if (course) {

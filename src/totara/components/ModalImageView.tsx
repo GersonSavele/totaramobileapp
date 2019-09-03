@@ -17,38 +17,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
-**/
+ **/
 
 import React from "react";
 import { Image, StyleSheet, Dimensions } from "react-native";
 
 export const IMAGES = {
-  complete_action: require('@resources/images/complete_action/complete_action.png')
+  complete_action: require("@resources/images/complete_action/complete_action.png"),
+  url_not_valid: require("@resources/images/url_not_valid/url_not_valid.png")
 };
 
 type Params = {
-  imageType: string
-}
+  imageType: string;
+};
 
-const ModalImageView = ({imageType}: Params) => {
-  return(setImage({imageType}))
-}
+const ModalImageView = ({ imageType }: Params) => {
+  return setImage({ imageType });
+};
 
-const setImage = ({imageType}: Params) => {
+const setImage = ({ imageType }: Params) => {
   switch (imageType) {
-    case 'complete_action':
-      return <Image style={styles.containerStyle} source={IMAGES.complete_action}/>
+    case "complete_action":
+      return (
+        <Image style={styles.containerStyle} source={IMAGES.complete_action} />
+      );
+    case "url_not_valid":
+      return (
+        <Image style={styles.containerStyle} source={IMAGES.url_not_valid} />
+      );
     default:
-      return <Image style={styles.containerStyle} source={IMAGES.complete_action}/>
+      return (
+        <Image style={styles.containerStyle} source={IMAGES.complete_action} />
+      );
   }
-}
+};
 
 const styles = StyleSheet.create({
   containerStyle: {
-    alignItems:"center",
-    height: Dimensions.get('window').width * 0.5,
-    width: Dimensions.get('window').width * 0.7,
-    resizeMode: 'contain'
+    alignItems: "center",
+    height: Dimensions.get("window").width * 0.5,
+    width: Dimensions.get("window").width * 0.7,
+    resizeMode: "contain"
   }
 });
 

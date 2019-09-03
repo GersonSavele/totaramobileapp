@@ -17,58 +17,117 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
-**/
+ **/
 
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Modal } from "react-native";
 import { Button } from "native-base";
-import { TransparentView, CustomButton, CustomText, CustomImageView, ModalContainer } from "./"
-import { TextParams, ButtonParams, ImageParams } from "./types/ComponentsTypes"
+import {
+  TransparentView,
+  ButtonWithIcon,
+  ModalText,
+  ModalImageView,
+  ModalContainer
+} from "./";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 
-type Params = {
-    title : TextParams,
-    description : TextParams,
-    button : ButtonParams,
-    image : ImageParams
-}
 
-const ErrorFeedbackView = ({title, description, button, image}: Params) => {
-    return(
-    <TransparentView>
-    <View style = {styles.buttonContainerStyle}>
-    <Button style = {styles.buttonStyle} onPress = {()=> ""}>
-    <FontAwesomeIcon icon="times" size={24}/>
-    </Button>
-    </View>
-      <ModalContainer>
-      <CustomImageView imageType = "complete_action"/>
-        <View style ={styles. textContainerStyle}>
-          <CustomText text = {translate("error_feedback-modal.title")} fontSize = {normalize(24)} color = "#3D444B" fontWeight = "600"></CustomText>
-          <CustomText text = {translate("error_feedback-modal.description")} fontSize = {normalize(16)} color = "#3D444B" fontWeight = "100"></CustomText>
+type ButtonParams = {
+  buttonTitle?: string;
+  buttonBackgroundColor?: string;
+  buttonTitleColor?: string;
+  buttonBorderColor?: string;
+  buttonTitleFontWeight?: string;
+  borderRadius?: number;
+  borderWidth?: number;
+  fontSize?: number;
+  onPress: () => void;
+  buttonIcon?: string;
+};
+
+type ImageParams = {
+  imageType: string;
+};
+
+type TextParams = {
+  text: string;
+  fontSize?: number;
+  color?: string;
+  fontWeight?: string;
+};
+
+type Params = {
+  title: TextParams;
+  description: TextParams;
+  button: ButtonParams;
+  image: ImageParams;
+};
+
+const ErrorFeedbackView = ({ title, description, button, image }: Params) => {
+  return (
+    <Modal>
+      <TransparentView>
+        <View style={styles.buttonContainerStyle}>
+          <Button style={styles.buttonStyle} onPress={() => ""}>
+            <FontAwesomeIcon icon="times" size={24} />
+          </Button>
         </View>
-        <View style ={styles. textContainerStyle}>
-          <CustomButton buttonTitle = {translate("error_feedback-modal.button_title")} onPress = {()=> ""} buttonTitleFontWeight = "600" buttonTitleColor ="#FFF" buttonBackgroundColor = "#8ca83d" fontSize = {normalize(16)}/>
-        </View>
-      </ModalContainer>
-    </TransparentView>
-    );
-}
+        <ModalContainer>
+        <View style={styles.ContainerStyle}>
+          <ModalImageView imageType="url_not_valid" />
+          </View>
+          <View style={styles.ContainerStyle}>
+            <ModalText
+              text={translate("error_feedback-modal.title")}
+              fontSize={normalize(24)}
+              color="#3D444B"
+              fontWeight="600"
+            ></ModalText>
+            <ModalText
+              text={translate("error_feedback-modal.description")}
+              fontSize={normalize(16)}
+              color="#3D444B"
+              fontWeight="100"
+            ></ModalText>
+          </View>
+          <View style={styles.ContainerStyle}>
+            <ButtonWithIcon
+              buttonTitle={translate("error_feedback-modal.button_title")}
+              onPress={() => ""}
+              buttonTitleFontWeight="600"
+              buttonTitleColor="#FFF"
+              buttonBackgroundColor="#8ca83d"
+              fontSize={normalize(16)}
+            />
+            <ButtonWithIcon
+                buttonTitle={translate(
+                  "error_feedback-modal.try_in_browser"
+                )}
+                onPress={() => ""}
+                fontSize={normalize(16)}
+              ></ButtonWithIcon>
+          </View>
+        </ModalContainer>
+      </TransparentView>
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
-    textContainerStyle: {
-      marginBottom: resizeByScreenSize(32,32, 48, 48),
-      alignItems: "center"
-    }, 
-    buttonContainerStyle: {
-        marginStart:resizeByScreenSize(8,12, 12, 16) 
-    }, 
-    buttonStyle : {
-        backgroundColor : "#FFF"
-    }
-  });
+  ContainerStyle: {
+    marginBottom: resizeByScreenSize(16, 16, 24, 24),
+    marginTop: resizeByScreenSize(16, 16, 24, 24),
+    alignItems:"center"
+  },
+  buttonContainerStyle: {
+    marginStart: resizeByScreenSize(8, 12, 12, 16)
+  },
+  buttonStyle: {
+    backgroundColor: "#FFF"
+  }
+});
 
 export default ErrorFeedbackView;

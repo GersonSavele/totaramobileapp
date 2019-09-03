@@ -36,7 +36,8 @@
   "error_feedback-modal": {
     "title": "Sorry!",
     "description" : "Seems like you have entered a wrong\nsite address.",
-    "button_title" : "Try again"
+    "button_title" : "Try again",
+    "try_in_browser" : "Try in browser"
   },
   "message": {
     "enter_valid_url": "Enter a valid site address",

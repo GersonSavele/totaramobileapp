@@ -33,6 +33,8 @@ import ModalImageView from "./ModalImageView";
 import ModalContainer from "./ModalContainer";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
+import ErrorFeedbackView from "./ErrorFeedbackView"
+
 
 export {
   LearningItemCard,
@@ -48,5 +50,6 @@ export {
   ModalImageView,
   ModalContainer,
   AppStateListener,
-  PrimaryButton
+  PrimaryButton,
+  ErrorFeedbackView
 }
