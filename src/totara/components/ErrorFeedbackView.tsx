@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  **/
 
 import React from "react";
@@ -70,11 +70,6 @@ const ErrorFeedbackView = ({ title, description, button, image }: Params) => {
   return (
     <Modal>
       <TransparentView>
-        <View style={styles.buttonContainerStyle}>
-          <Button style={styles.buttonStyle} onPress={() => ""}>
-            <FontAwesomeIcon icon="times" size={24} />
-          </Button>
-        </View>
         <ModalContainer>
         <View style={styles.ContainerStyle}>
           <ModalImageView imageType="url_not_valid" />
