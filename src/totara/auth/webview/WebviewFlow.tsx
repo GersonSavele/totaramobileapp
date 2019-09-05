@@ -20,77 +20,99 @@
  *
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { Modal, View } from "react-native";
 
 import SiteUrl from "../manual/SiteUrl";
 import WebviewLogin from "./WebviewLogin";
-import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
+import { AuthProviderStateLift } from "../AuthComponent";
+import { SetupSecret } from "../AuthContext";
 
-class WebviewFlow extends AuthComponent<{}, States> {
-  
-  constructor(props: AuthProviderStateLift) {
-    super(props);
-    this.state = { 
-      step: SiteUrl.actionType,
-      uri: undefined, 
-      secret: undefined
-    };
+
+const WebviewFlow = ({onLoginSuccess, onLoginFailure}: AuthProviderStateLift) => {
+  const {
+    step,
+    setupSecret,
+    onSuccessfulUri,
+    onSuccessfulSecret,
+    onCancelLogin
+  } = useWebviewFlow({onLoginSuccess: onLoginSuccess, onLoginFailure: onLoginFailure});
+
+  switch (step) {
+    case steps.webviewLogin:
+      return <WebviewLoginWrapper onSuccessfulSecret={onSuccessfulSecret} uri={setupSecret.uri!} onCancelLogin={onCancelLogin}/>
+    default:
+      return <SiteUrl onSuccessfulSiteUrl={ (siteUrl, action) => onSuccessfulUri(siteUrl) } siteUrl={ setupSecret.uri } />;
+
   }
 
-  onSetupLoginData = (data: string, currentAction: number) => {
-    switch (currentAction) {
-      case SiteUrl.actionType:
-        this.setState({
-          step: WebviewLogin.actionType,
-          uri: data
-        });
-        break;
-      case WebviewLogin.actionType:
-        if ( this.state.uri && data ) {
-          this.props.onLoginSuccess({uri: this.state.uri, secret: data});
-        } else {
-          this.props.onLoginFailure(new Error(`Missing data: ${data}`));
-        }
-        break;
-      default:
-        break;
-    }
-  };
+};
 
-  onCancelLogin = (currentAction: number) => {
-    switch (currentAction) {
-      case WebviewLogin.actionType:
-        this.setState({
-          step: SiteUrl.actionType,
-          uri: this.state.uri
-        });
-        break;
-      default:
-        break;
-    }
-  };
 
-  render() {
-    switch (this.state.step) {
-      case WebviewLogin.actionType:
-        return (
-          <View style={{ flex: 1 }}>
-            <Modal animationType="slide" transparent={false} >
-              <WebviewLogin onSuccessfulLogin={(setupSecret, action) => this.onSetupLoginData(setupSecret, action)} siteUrl={this.state.uri!} onCancelLogin={(action) => this.onCancelLogin(action)} />
-            </Modal>
-          </View>
-        );
-      default:
-        return <SiteUrl onSuccessfulSiteUrl={ (siteUrl, action) => this.onSetupLoginData(siteUrl, action) } siteUrl={ this.state.uri } />;
-    }
-  }
+const WebviewLoginWrapper = ({onSuccessfulSecret, uri, onCancelLogin}: {onSuccessfulSecret: (secret: string) => void, uri: string, onCancelLogin: () => void}) =>
+  (
+    <View style={{ flex: 1 }}>
+      <Modal animationType="slide" transparent={false} >
+        <WebviewLogin onSuccessfulLogin={(setupSecret, action) => onSuccessfulSecret(setupSecret)} siteUrl={uri} onCancelLogin={(action) => onCancelLogin()} />
+      </Modal>
+    </View>
+  );
+
+export enum steps {
+  siteUrl,
+  webviewLogin,
+  done
 }
 
-type States = {
-  step: number,
-  uri?: string, 
-  secret?: string
+export const useWebviewFlow = ({onLoginSuccess, onLoginFailure}: AuthProviderStateLift) => {
+
+  const [step, nextStep] = useState(steps.siteUrl);
+
+  const initialSetupSecret: Partial<SetupSecret> = {};
+  const [setupSecret, setSetupSecret] = useState(initialSetupSecret);
+
+  if (setupSecret.secret && setupSecret.uri && steps.done) {
+    const validSetupSecret = {
+      secret: setupSecret.secret,
+      uri: setupSecret.uri
+    };
+
+    console.log("successful login", validSetupSecret);
+
+    onLoginSuccess(validSetupSecret);
+  }
+
+  const onSuccessfulUri = (uri: string) => {
+    setSetupSecret({
+      secret: setupSecret.secret,
+      uri: uri
+    });
+
+    nextStep(steps.webviewLogin);
+  };
+
+  const onSuccessfulSecret = (secret: string) => {
+    setSetupSecret({
+      secret: secret,
+      uri: setupSecret.uri
+    });
+
+    nextStep(steps.done);
+  };
+
+  const onCancelLogin = () => {
+    console.log("onCancelLogin", step);
+    nextStep(steps.siteUrl);
+  };
+
+  return ({
+    step,
+    setupSecret,
+    onSuccessfulUri,
+    onSuccessfulSecret,
+    onCancelLogin
+  });
+
 };
 
 export default  WebviewFlow;

@@ -19,9 +19,9 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React from "react";
+import React, { useState } from "react";
 
-import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
+import { AuthProviderStateLift } from "../AuthComponent";
 import WebviewFlow from "../webview";
 import NativeFlow from "../native";
 import { TouchableOpacity, View } from "react-native";
@@ -30,54 +30,39 @@ import { TouchableOpacity, View } from "react-native";
  * This currently is temporary that it switches the webview and native flow
  * Just tap the upper left corner to switch
  */
-class ManualFlow extends AuthComponent<{}, State> {
+const ManualFlow = ({onLoginSuccess, onLoginFailure}: AuthProviderStateLift) => {
 
-  constructor(props: AuthProviderStateLift) {
-    super(props);
+  const [authType, setAuthType] = useState(AuthType.webview);
 
-    this.state = {
-      authType: AuthType.webview
-    }
-  }
-
-  toggle = () => {
-    if (this.state.authType === AuthType.webview) {
-      this.setState({ authType: AuthType.native });
+  const toggle = () => {
+    if (authType === AuthType.webview) {
+      setAuthType(AuthType.native);
     } else {
-      this.setState({ authType: AuthType.webview });
+      setAuthType(AuthType.webview);
     }
   };
 
-  render() {
-    const {onLoginSuccess, onLoginFailure} = this.props;
+  return(
+    <View style={{flex: 1}}>
+      {
+        (authType === AuthType.webview)
+          ? <WebviewFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>
+          : <NativeFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>
+      }
+      <TouchableOpacity style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: 100,
+        height: 100,
+      }} onPress={toggle}></TouchableOpacity>
+    </View>
+  )
 
-    return(
-      <View style={{flex: 1}}>
-        {
-          (this.state.authType === AuthType.webview)
-            ? <WebviewFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>
-            : <NativeFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>
-        }
-        <TouchableOpacity style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: 100,
-          height: 100,
-        }} onPress={this.toggle}></TouchableOpacity>
-      </View>
-    )
-  }
-
-}
-
-type State = {
-  authType: AuthType
-}
+};
 
 export enum AuthType {
   native= "native", webview = "webview", browser = "browser"
 }
-
 
 export default ManualFlow;
