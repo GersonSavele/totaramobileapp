@@ -46,6 +46,7 @@
     "rn-sliding-up-panel": "^2.3.0"
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^2.0.1",
     "@types/i18n-js": "^3.0.1",
     "@types/jest": "^24.0.15",
     "@types/lodash": "^4.14.123",
