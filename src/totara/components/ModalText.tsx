@@ -24,7 +24,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { resizeByScreenSize } from "@totara/theme";
 
 type TextParam = {
-    text: string,
+    text?: string,
     fontSize?: number, 
     color?: string,
     fontWeight?: "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900",

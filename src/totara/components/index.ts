@@ -33,7 +33,8 @@ import ModalImageView from "./ModalImageView";
 import ModalContainer from "./ModalContainer";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
-import ErrorFeedbackView from "./ErrorFeedbackView"
+import ErrorFeedbackView from "./ErrorFeedbackView";
+import ActionModal from "./ActionModal"
 
 
 export {
@@ -51,5 +52,6 @@ export {
   ModalContainer,
   AppStateListener,
   PrimaryButton,
-  ErrorFeedbackView
+  ErrorFeedbackView,
+  ActionModal
 }

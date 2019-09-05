@@ -22,13 +22,7 @@
 import React from "react";
 import { View, StyleSheet, Linking } from "react-native";
 
-import {
-  TransparentView,
-  ButtonWithIcon,
-  ModalText,
-  ModalImageView,
-  ModalContainer
-} from "@totara/components";
+import { ButtonWithIcon, ActionModal } from "@totara/components";
 import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
@@ -53,53 +47,44 @@ const styles = StyleSheet.create({
 
 const AdditionalActionModal = () => {
   return (
-    <TransparentView>
-      <ModalContainer>
+    <ActionModal
+      title={translate("additional-actions-modal.auth_model_title")}
+      description={translate("additional-actions-modal.auth_model_description")}
+      imageType="complete_action"
+    >
+      <Buttons />
+    </ActionModal>
+  );
+};
+
+const Buttons = () => {
+  return (
+    <AuthConsumer>
+      {auth => (
         <View style={styles.ContainerStyle}>
-          <ModalImageView imageType="complete_action" />
-        </View>
-        <View style={styles.ContainerStyle}>
-          <ModalText
-            text={translate("additional-actions-modal.auth_model_title")}
-            fontSize={normalize(24)}
-            color="#3D444B"
-            fontWeight="600"
-          ></ModalText>
-          <ModalText
-            text={translate("additional-actions-modal.auth_model_description")}
+          <ButtonWithIcon
+            buttonTitle={translate(
+              "additional-actions-modal.auth_model_go_to_browser"
+            )}
+            onPress={() => {
+              Linking.openURL(auth.setup!.host);
+            }}
+            buttonTitleFontWeight="600"
+            buttonTitleColor="#FFF"
+            buttonBackgroundColor="#8ca83d"
             fontSize={normalize(16)}
-            color="#3D444B"
-            fontWeight="100"
-          ></ModalText>
+            buttonIcon="external-link-alt"
+          />
+          <ButtonWithIcon
+            buttonTitle={translate(
+              "additional-actions-modal.auth_model_logout"
+            )}
+            onPress={() => auth.logOut()}
+            fontSize={normalize(16)}
+          ></ButtonWithIcon>
         </View>
-        <AuthConsumer>
-          {auth => (
-            <View style={styles.ContainerStyle}>
-              <ButtonWithIcon
-                buttonTitle={translate(
-                  "additional-actions-modal.auth_model_go_to_browser"
-                )}
-                onPress={() => {
-                  Linking.openURL(auth.setup!.host);
-                }}
-                buttonTitleFontWeight="600"
-                buttonTitleColor="#FFF"
-                buttonBackgroundColor="#8ca83d"
-                fontSize={normalize(16)}
-                buttonIcon="external-link-alt"
-              />
-              <ButtonWithIcon
-                buttonTitle={translate(
-                  "additional-actions-modal.auth_model_logout"
-                )}
-                onPress={() => auth.logOut()}
-                fontSize={normalize(16)}
-              ></ButtonWithIcon>
-            </View>
-          )}
-        </AuthConsumer>
-      </ModalContainer>
-    </TransparentView>
+      )}
+    </AuthConsumer>
   );
 };
 

@@ -19,52 +19,51 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  **/
 
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, {ReactNode} from "react";
+import { View, StyleSheet, Modal } from "react-native";
 import {
-  ButtonWithIcon,
-  ActionModal
+  TransparentView,
+  ModalText,
+  ModalImageView,
+  ModalContainer
 } from "./";
-
-import { normalize,resizeByScreenSize } from "@totara/theme";
-import { translate } from "@totara/locale";
+import { normalize, resizeByScreenSize } from "@totara/theme";
 
 type Params = {
   title?: string;
   description?: string;
   imageType: string;
+  children? : ReactNode
 };
 
-const ErrorFeedbackView = ({ title, description, imageType }: Params) => {
+const ActionModal = ({ title, description, imageType, children }: Params) => {
   return (
-  <ActionModal title = {title != null ? title : translate("error_feedback-modal.title")} 
-  description = {description != null ? description :  translate("error_feedback-modal.description")} 
-  imageType = { imageType != null ? imageType : "url_not_valid" }>
-   <ErrorFeedbackViewButtons/> 
-  </ActionModal>
-    );
+    <Modal>
+      <TransparentView>
+        <ModalContainer>
+        <View style={styles.ContainerStyle}>
+          <ModalImageView imageType= {imageType} />
+          </View>
+          <View style={styles.ContainerStyle}>
+            <ModalText
+              text={title}
+              fontSize={normalize(24)}
+              color="#3D444B"
+              fontWeight="600"
+            ></ModalText>
+            <ModalText
+              text={description}
+              fontSize={normalize(16)}
+              color="#3D444B"
+              fontWeight="100"
+            ></ModalText>
+          </View>
+          {children}
+        </ModalContainer>
+      </TransparentView>
+    </Modal>
+  );
 };
-
-const ErrorFeedbackViewButtons = () => {
-  return (
-    <View style={styles.ContainerStyle}>
-    <ButtonWithIcon
-      buttonTitle={translate("error_feedback-modal.button_title")}
-      onPress={() => ""}
-      buttonTitleFontWeight="600"
-      buttonTitleColor="#FFF"
-      buttonBackgroundColor="#8ca83d"
-      fontSize={normalize(16)}
-    />
-    <ButtonWithIcon
-        buttonTitle={translate(
-          "error_feedback-modal.try_in_browser"
-        )}
-        onPress={() => ""}
-        fontSize={normalize(16)}
-      ></ButtonWithIcon>
-  </View>);
-}
 
 const styles = StyleSheet.create({
   ContainerStyle: {
@@ -80,4 +79,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ErrorFeedbackView;
+export default ActionModal;
