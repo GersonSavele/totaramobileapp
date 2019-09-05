@@ -31,11 +31,13 @@ import {
   Keyboard,
   KeyboardEvent,
   EmitterSubscription,
-  TouchableOpacity
+  TouchableOpacity,
+  Linking
 } from "react-native";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
+import { config } from "@totara/lib";
 import { resizeByScreenSize, theme } from "@totara/theme";
 import { PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
@@ -193,7 +195,9 @@ class NativeLogin extends React.Component<Props, State> {
                   value={this.state.inputPassword} />
                 <Text style={[styles.inputInfo, this.getStatusStyle(this.state.statusInputPassword)]} >{this.state.passwordInfoMessage}</Text>
               </View>
-              <Text style={styles.forgotCredential} onPress={() => { }} >{translate("native-login.forgot_username_password")}</Text>
+              <TouchableOpacity style={styles.forgotCredentialContainer} onPress={() => { Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }}>
+                <Text style={styles.forgotCredential} >{translate("native-login.forgot_username_password")}</Text>
+              </TouchableOpacity>
               <PrimaryButton onPress={this.onClickEnter} text={translate("general.enter")} />
             </View>
           </View>
@@ -206,7 +210,7 @@ class NativeLogin extends React.Component<Props, State> {
 
 type Props = {
   onSuccessfulSiteUrl: (data: string, currentAction: number) => void
-  siteUrl?: string,
+  siteUrl: string,
   onBack: (action: number) => void
 };
 
@@ -295,10 +299,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: (Platform.OS === "ios") ? 8 : 4,
   },
+  forgotCredentialContainer: {
+    marginBottom: 6,
+    alignSelf:"flex-end",
+    alignItems: "flex-end"
+  },
   forgotCredential: {
     color: theme.linkColor,
     fontSize: resizeByScreenSize(14, 16, 16, 16),
-    paddingBottom: 16,
+    paddingVertical: 8,
     textDecorationLine: "underline",
     textAlign: "right"
   },
