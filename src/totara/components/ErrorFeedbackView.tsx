@@ -23,7 +23,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import {
   ButtonWithIcon,
-  ActionModal
+  InfoModal
 } from "./";
 
 import { normalize,resizeByScreenSize } from "@totara/theme";
@@ -37,11 +37,11 @@ type Params = {
 
 const ErrorFeedbackView = ({ title, description, imageType }: Params) => {
   return (
-  <ActionModal title = {title != null ? title : translate("error_feedback-modal.title")} 
+  <InfoModal title = {title != null ? title : translate("error_feedback-modal.title")} 
   description = {description != null ? description :  translate("error_feedback-modal.description")} 
   imageType = { imageType != null ? imageType : "url_not_valid" }>
    <ErrorFeedbackViewButtons/> 
-  </ActionModal>
+  </InfoModal>
     );
 };
 

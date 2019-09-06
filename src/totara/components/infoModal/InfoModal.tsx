@@ -26,7 +26,7 @@ import {
   ModalText,
   ModalImageView,
   ModalContainer
-} from "./";
+} from ".";
 import { normalize, resizeByScreenSize } from "@totara/theme";
 
 type Params = {
@@ -36,7 +36,7 @@ type Params = {
   children? : ReactNode
 };
 
-const ActionModal = ({ title, description, imageType, children }: Params) => {
+const InfoModal = ({ title, description, imageType, children }: Params) => {
   return (
     <Modal>
       <TransparentView>
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ActionModal;
+export default InfoModal;

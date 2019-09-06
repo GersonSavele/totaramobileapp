@@ -26,17 +26,11 @@ import ContentIcon from "./ContentIcon";
 import {AddBadge, CheckBadge} from "./AddBadge";
 import ProgressCircle from "./ProgressCircle";
 import ActivityLauncher from "./ActivityLauncher";
-import TransparentView from "./TransparentView";
 import ButtonWithIcon from "./ButtonWithIcon";
-import ModalText from "./ModalText";
-import ModalImageView from "./ModalImageView";
-import ModalContainer from "./ModalContainer";
+import { InfoModal } from "./modalComponents";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
 import ErrorFeedbackView from "./ErrorFeedbackView";
-import ActionModal from "./ActionModal"
-
-
 export {
   LearningItemCard,
   AddBadge,
@@ -45,13 +39,9 @@ export {
   CheckBadge,
   ActivityLauncher,
   ProgressCircle,
-  TransparentView,
   ButtonWithIcon,
-  ModalText,
-  ModalImageView,
-  ModalContainer,
   AppStateListener,
   PrimaryButton,
   ErrorFeedbackView,
-  ActionModal
+  InfoModal
 }

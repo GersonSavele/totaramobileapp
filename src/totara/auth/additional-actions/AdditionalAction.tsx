@@ -22,7 +22,7 @@
 import React from "react";
 import { View, StyleSheet, Linking } from "react-native";
 
-import { ButtonWithIcon, ActionModal } from "@totara/components";
+import { ButtonWithIcon, InfoModal } from "@totara/components";
 import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
@@ -47,13 +47,13 @@ const styles = StyleSheet.create({
 
 const AdditionalActionModal = () => {
   return (
-    <ActionModal
+    <InfoModal
       title={translate("additional-actions-modal.auth_model_title")}
       description={translate("additional-actions-modal.auth_model_description")}
       imageType="complete_action"
     >
       <Buttons />
-    </ActionModal>
+    </InfoModal>
   );
 };
 
