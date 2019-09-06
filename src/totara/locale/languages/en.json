@@ -22,6 +22,11 @@
     "due": "Due",
     "extend_date": "Extend Date"
   },
+  "manual": {
+    "site_url_title": "Get started.",
+    "site_url_information": "Enter your organisation's URL",
+    "site_url_text_placeholder": "ENTER URL"
+  },
   "web-login": {
     "site_url_title": "Get started.",
     "site_url_information": "Please enter your site url",

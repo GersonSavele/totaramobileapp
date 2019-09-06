@@ -30,7 +30,7 @@ type Props = {
 }
 
 const PrimaryButton = ({ children, text, onPress, ...rest}: Props) =>
-  <Button block rounded primary onPress={onPress} {...rest}>
+  <Button block primary onPress={onPress} {...rest}>
     {
       text
         ? <Text style={{ color: "#fff" }}>{text}</Text>

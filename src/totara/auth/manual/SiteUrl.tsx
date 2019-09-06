@@ -19,45 +19,51 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { StyleSheet, View, Image, Text, TextInput, SafeAreaView } from "react-native";
-import * as Animatable from 'react-native-animatable';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  TextInput,
+  ScrollView,
+  Keyboard,
+  Dimensions,
+  Platform,
+  EmitterSubscription,
+  KeyboardEvent
+} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { resizeByScreenSize } from "@totara/theme";
+import { resizeByScreenSize, theme } from "@totara/theme";
 import { PrimaryButton } from "@totara/components";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { translate } from "@totara/locale";
 import { config } from "@totara/lib";
 
 enum ViewFlex {
-  keyboardOff= 1, keyboardOn= 3
+  keyboardOff = 1, keyboardOn = 3
 }
 
 class SiteUrl extends React.Component<Props, State> {
 
   static actionType: number = 1;
-  
+
+  private keyboardDidShowListener?: EmitterSubscription;
+  private keyboardWillHideListener?: EmitterSubscription;
+
   constructor(props: Props) {
     super(props);
     this.state = {
       showError: false,
-      inputSiteUrl: this.props.siteUrl
+      inputSiteUrl: this.props.siteUrl,
+      keyboardHeight: 0
     };
   }
 
-  viewKeyboard = React.createRef<Animatable.View>();
   refTextInputSiteUrl = React.createRef<TextInput>();
 
-  toggleView = (isShow: boolean) => {
-    if (isShow) {
-      this.viewKeyboard.current!.transitionTo({flex: ViewFlex.keyboardOn});
-    } else {
-      this.viewKeyboard.current!.transitionTo({flex: ViewFlex.keyboardOff});
-    }
-  };
-
   setInputSiteUrl = () => {
-    var siteUrlValue = this.state.inputSiteUrl 
+    var siteUrlValue = this.state.inputSiteUrl
     const isValidSiteAddress = (siteUrlValue) ? this.isValidUrlText(siteUrlValue!) : false;
 
     this.setState({
@@ -83,58 +89,91 @@ class SiteUrl extends React.Component<Props, State> {
   };
 
   formatUrl = (urlText: string) => {
-    var pattern = new RegExp("^(https?:\\/\\/)" , "i"); // fragment locator
-    if(!pattern.test(urlText)) {
-      return config.urlProtocol+"://"+urlText;
+    var pattern = new RegExp("^(https?:\\/\\/)", "i"); // fragment locator
+    if (!pattern.test(urlText)) {
+      return config.urlProtocol + "://" + urlText;
     }
     return urlText;
   };
 
   componentDidMount() {
+    if (Platform.OS === "ios") {
+      this.keyboardDidShowListener = Keyboard.addListener(
+        "keyboardDidShow",
+        this.onKeyboardDidShow
+      );
+      this.keyboardWillHideListener = Keyboard.addListener(
+        "keyboardWillHide",
+        this.onKeyboardWillHide
+      );
+    }
     setTimeout(() => {
-      if(this.refTextInputSiteUrl.current) {
+      if (this.refTextInputSiteUrl.current) {
         this.refTextInputSiteUrl.current!.focus();
       }
     }, 300);
   }
 
+  componentWillUnmount() {
+    if (this.keyboardDidShowListener) {
+      this.keyboardDidShowListener.remove();
+    }
+    if (this.keyboardWillHideListener) {
+      this.keyboardWillHideListener.remove();
+    }
+  }
+
+  onKeyboardDidShow = (e: KeyboardEvent) => {
+    this.setState({
+      keyboardHeight: e.endCoordinates.height
+    });
+  };
+
+  onKeyboardWillHide = () => {
+    this.setState({
+      keyboardHeight: 0
+    });
+  };
+
   setStateInputSiteUrlWithShowError = (siteUrl: string) => {
-    this.setState({inputSiteUrl: siteUrl, showError : false});
+    this.setState({ inputSiteUrl: siteUrl, showError: false });
   };
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View style={styles.siteUrlContainer}>
-          <View style={styles.headerContainer} >
-            <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
-          </View>
-          <Animatable.View style={styles.container} >
-            <Text style={styles.detailTitle}>{translate("web-login.site_url_title")}</Text>
-            <Text style={styles.information}>{translate("web-login.site_url_information")}</Text>
-            <TextInput
-              ref={this.refTextInputSiteUrl}
-              style={styles.inputTextUrl}
-              keyboardType="url"
-              placeholder={translate("web-login.site_url_text_placeholder")}
-              clearButtonMode="while-editing"
-              autoCapitalize="none"
-              onChangeText={this.setStateInputSiteUrlWithShowError}
-              onFocus={() => this.toggleView(true)}
-              onBlur={() => this.toggleView(false)}
-              value={ this.state.inputSiteUrl ? this.state.inputSiteUrl : "" } />
-            <View style={this.state.showError ? [styles.errorContainer, styles.errorOn] : styles.errorContainer}  >
-              <View style={styles.arrow}></View>
-              <View style={styles.errorContent}>
-                <FontAwesomeIcon icon="exclamation-circle" size={12} color="white" background="white" />
-                <Text style={styles.errorMessage}>{translate("message.enter_valid_url")}</Text>
+      <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
+          <View style={styles.siteUrlContainer}>
+            <View style={styles.container}>
+              <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
+              <View >
+                <Text style={styles.infoTitle}>{translate("manual.site_url_title")}</Text>
+                <Text style={styles.infoDescription}>{translate("manual.site_url_information")}</Text>
               </View>
             </View>
-            <PrimaryButton onPress={this.setInputSiteUrl} text={translate("general.enter")} />
-          </Animatable.View>
-          <Animatable.View style={styles.keyboard} ref={this.viewKeyboard} ></Animatable.View>
-        </View>
-      </SafeAreaView>
+            <View style={styles.formContainer}>
+              <TextInput
+                style={styles.inputTextUrl}
+                ref={this.refTextInputSiteUrl}
+                keyboardType="url"
+                placeholder={translate("manual.site_url_text_placeholder")}
+                clearButtonMode="while-editing"
+                autoCapitalize="none"
+                onChangeText={this.setStateInputSiteUrlWithShowError}
+                value={this.state.inputSiteUrl ? this.state.inputSiteUrl : ""} />
+              <View style={this.state.showError ? [styles.errorContainer, styles.errorOn] : styles.errorContainer}  >
+                <View style={styles.arrow}></View>
+                <View style={styles.errorContent}>
+                  <FontAwesomeIcon icon="exclamation-circle" size={12} color="white" background="white" />
+                  <Text style={styles.errorMessage}>{translate("message.enter_valid_url")}</Text>
+                </View>
+              </View>
+              <PrimaryButton onPress={this.setInputSiteUrl} text={translate("general.enter")} />
+            </View>
+          </View>
+        </ScrollView>
+        <View style={{ height: this.state.keyboardHeight }}></View>
+      </View>
     );
   }
 }
@@ -146,59 +185,56 @@ type Props = {
 
 type State = {
   inputSiteUrl?: string,
-  showError: boolean
+  showError: boolean,
+  keyboardHeight: number
 };
 
 const styles = StyleSheet.create({
   siteUrlContainer: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
     paddingHorizontal: 16,
-  },
-  headerContainer: {
-    height: hp("20%"),
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flex: 1
   },
   totaraLogo: {
+    marginTop: resizeByScreenSize(32, 64, 64, 64),
     height: resizeByScreenSize(68, 68, 87, 87),
     width: resizeByScreenSize(94, 94, 120, 120),
-    marginBottom: resizeByScreenSize(16, 0, 0, 0),
+    alignSelf: "center"
   },
   container: {
-    flex: resizeByScreenSize(2.1, 2.6, 2.8, 1),
-    justifyContent: "flex-end",
-    paddingBottom: 8
+    height: Dimensions.get("window").height * 0.4,
+    justifyContent: "space-between"
   },
-  detailTitle: {
-    fontSize: resizeByScreenSize (22, 26, 26, 26),
+  infoTitle: {
+    fontSize: resizeByScreenSize(22, 26, 26, 26),
+    color: theme.h1Color
   },
-  information: {
-    fontSize: resizeByScreenSize (15, 20, 20, 20),
-    color: "#64717D",
+  infoDescription: {
+    fontSize: resizeByScreenSize(15, 20, 20, 20),
+    color: theme.h3Color
+  },
+  formContainer: {
+    marginVertical: resizeByScreenSize(10, 20, 20, 20)
   },
   inputTextUrl: {
     borderBottomWidth: 1,
     borderColor: "#D2D2D2",
-    height: 40,
-    marginTop: resizeByScreenSize (8, 40, 40, 40),
+    height: 40
   },
-  keyboard : {
+  keyboard: {
     flex: ViewFlex.keyboardOff,
-    justifyContent: "center",
+    justifyContent: "center"
   },
   errorContainer: {
     flexDirection: "column",
     justifyContent: "flex-start",
     opacity: 0.0,
-    top: -10,
+    top: -10
   },
   errorOn: {
     opacity: 1.0
   },
   errorContent: {
-    backgroundColor: "#953539",
+    // backgroundColor: "#953539",
     padding: 6,
     flexDirection: "row",
     top: -5,
@@ -207,7 +243,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 12,
     color: "white",
-    marginLeft: 4,
+    marginLeft: 4
   },
   arrow: {
     width: 0,

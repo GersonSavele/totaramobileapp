@@ -36,7 +36,7 @@ const tbPadding = resizeByScreenSize(8, 16, 24, 32);
 const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 
 const theme = lodash.merge(material, {
-  brandPrimary: "#69BD45",
+  brandPrimary: "#8ca83d",
   brandInfo: "#FFFFFF",
   platformStyle: "totara",
   logoUrl: "https://webcasts.td.org/uploads/assets/2300/logo.png", //TODO need to set default logo and it will be covered in MOB-172 

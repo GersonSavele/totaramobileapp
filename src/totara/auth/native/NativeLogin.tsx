@@ -168,8 +168,8 @@ class NativeLogin extends React.Component<Props, State> {
           <View style={styles.container}>
             <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} />
             <View style={styles.infoContainer}>
-              <Text style={styles.detailTitle}>{translate("native-login.header_title")}</Text>
-              <Text style={styles.information}>{translate("native-login.login_information")}</Text>
+              <Text style={styles.infoTitle}>{translate("native-login.header_title")}</Text>
+              <Text style={styles.infoDescription}>{translate("native-login.login_information")}</Text>
             </View>
             <View style={styles.formContainer} >
               <View style={styles.input} >
@@ -243,8 +243,8 @@ const styles = StyleSheet.create({
     padding: 8
   },
   totaraLogo: {
-    height: 72,
-    maxHeight: 144,
+    height: resizeByScreenSize(68, 68, 87, 87),
+    maxHeight: resizeByScreenSize(136, 136, 184, 184),
     width: "100%",
     resizeMode: "contain",
     marginVertical: 8
@@ -254,11 +254,11 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     marginVertical: 8
   },
-  detailTitle: {
+  infoTitle: {
     fontSize: resizeByScreenSize(22, 26, 26, 26),
     color: theme.h1Color
   },
-  information: {
+  infoDescription: {
     fontSize: resizeByScreenSize(15, 20, 20, 20),
     color: theme.h3Color
   },
