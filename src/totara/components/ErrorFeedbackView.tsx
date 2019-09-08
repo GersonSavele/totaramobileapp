@@ -69,8 +69,6 @@ const ErrorFeedbackViewButtons = () => {
 const styles = StyleSheet.create({
   ContainerStyle: {
     marginBottom: resizeByScreenSize(16, 16, 24, 24),
-    marginTop: resizeByScreenSize(16, 16, 24, 24),
-    alignItems:"center"
   },
   buttonContainerStyle: {
     marginStart: resizeByScreenSize(8, 12, 12, 16)

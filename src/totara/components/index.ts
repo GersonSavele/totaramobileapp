@@ -27,7 +27,7 @@ import {AddBadge, CheckBadge} from "./AddBadge";
 import ProgressCircle from "./ProgressCircle";
 import ActivityLauncher from "./ActivityLauncher";
 import ButtonWithIcon from "./ButtonWithIcon";
-import { InfoModal } from "./modalComponents";
+import { InfoModal } from "./infoModal";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
 import ErrorFeedbackView from "./ErrorFeedbackView";

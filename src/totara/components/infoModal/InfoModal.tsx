@@ -67,8 +67,8 @@ const InfoModal = ({ title, description, imageType, children }: Params) => {
 
 const styles = StyleSheet.create({
   ContainerStyle: {
-    marginBottom: resizeByScreenSize(16, 16, 24, 24),
-    marginTop: resizeByScreenSize(16, 16, 24, 24),
+    marginBottom: resizeByScreenSize(8, 8, 16, 16),
+    marginTop: resizeByScreenSize(8, 8, 16, 16),
     alignItems:"center"
   },
   buttonContainerStyle: {
