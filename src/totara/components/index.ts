@@ -31,6 +31,8 @@ import { InfoModal } from "./infoModal";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
 import ErrorFeedbackModal from "./ErrorFeedbackModal";
+import InputTextWithInfo from "./InputTextWithInfo";
+
 export {
   LearningItemCard,
   AddBadge,
@@ -43,5 +45,6 @@ export {
   AppStateListener,
   PrimaryButton,
   ErrorFeedbackModal,
-  InfoModal
+  InfoModal,
+  InputTextWithInfo
 }

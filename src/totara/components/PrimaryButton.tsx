@@ -22,6 +22,7 @@
 import React from "react";
 import { Text } from "react-native";
 import { Button } from "native-base";
+import { theme } from "@totara/theme";
 
 type Props = {
   children?: Element,
@@ -33,7 +34,7 @@ const PrimaryButton = ({ children, text, onPress, ...rest}: Props) =>
   <Button block primary onPress={onPress} {...rest}>
     {
       text
-        ? <Text style={{ color: "#fff" }}>{text}</Text>
+        ? <Text style={{ color: "#fff", fontSize: theme.DefaultFontSize }}>{text}</Text>
         : children
     }
   </Button>;

@@ -51,7 +51,11 @@ const theme = lodash.merge(material, {
 
   h1Color: "#000",
   h3Color: "#64717D",
-  linkColor: "#64717D"
+  linkColor: "#64717D",
+
+  inputMarginLeft: 0,
+  inputPaddingLeft: 0,
+  
 });
 
 export {
