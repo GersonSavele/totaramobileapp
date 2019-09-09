@@ -21,54 +21,56 @@
 
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import {
-  ButtonWithIcon,
-  InfoModal
-} from "./";
+import { ButtonWithIcon, InfoModal } from "./";
 
-import { normalize,resizeByScreenSize } from "@totara/theme";
+import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 
 type Params = {
   title?: string;
   description?: string;
-  imageType: string;
+  imageType?: string;
 };
 
 const ErrorFeedbackView = ({ title, description, imageType }: Params) => {
   return (
-  <InfoModal title = {title != null ? title : translate("error_feedback-modal.title")} 
-  description = {description != null ? description :  translate("error_feedback-modal.description")} 
-  imageType = { imageType != null ? imageType : "url_not_valid" }>
-   <ErrorFeedbackViewButtons/> 
-  </InfoModal>
-    );
+    <InfoModal
+      title={title != null ? title : translate("error_feedback-modal.title")}
+      description={
+        description != null
+          ? description
+          : translate("error_feedback-modal.description")
+      }
+      imageType={imageType != null ? imageType : "url_not_valid"}
+    >
+      <ErrorFeedbackViewButtons />
+    </InfoModal>
+  );
 };
 
 const ErrorFeedbackViewButtons = () => {
   return (
     <View style={styles.ContainerStyle}>
-    <ButtonWithIcon
-      buttonTitle={translate("error_feedback-modal.button_title")}
-      onPress={() => ""}
-      buttonTitleFontWeight="600"
-      buttonTitleColor="#FFF"
-      buttonBackgroundColor="#8ca83d"
-      fontSize={normalize(16)}
-    />
-    <ButtonWithIcon
-        buttonTitle={translate(
-          "error_feedback-modal.try_in_browser"
-        )}
+      <ButtonWithIcon
+        buttonTitle={translate("error_feedback-modal.button_title")}
+        onPress={() => ""}
+        buttonTitleFontWeight="600"
+        buttonTitleColor="#FFF"
+        buttonBackgroundColor="#8ca83d"
+        fontSize={normalize(16)}
+      />
+      <ButtonWithIcon
+        buttonTitle={translate("error_feedback-modal.try_in_browser")}
         onPress={() => ""}
         fontSize={normalize(16)}
       ></ButtonWithIcon>
-  </View>);
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   ContainerStyle: {
-    marginBottom: resizeByScreenSize(16, 16, 24, 24),
+    marginBottom: resizeByScreenSize(16, 16, 24, 24)
   },
   buttonContainerStyle: {
     marginStart: resizeByScreenSize(8, 12, 12, 16)

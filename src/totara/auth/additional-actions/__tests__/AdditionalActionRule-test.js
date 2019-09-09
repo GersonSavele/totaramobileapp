@@ -110,6 +110,6 @@ describe("should show error UI", () => {
     );
     await wait(0); // wait for response
     const tree = component.toJSON();
-    expect(tree.children).toContain("Error!");
+    expect(tree).toMatchSnapshot();
   });
 });

@@ -10,6 +10,9 @@ module.exports = {
   globals: {
     'ts-jest': {
       babelConfig: true,
+      diagnostics: {
+        warnOnly: true
+      }
     }
   },
   cacheDirectory: '.jest/cache',

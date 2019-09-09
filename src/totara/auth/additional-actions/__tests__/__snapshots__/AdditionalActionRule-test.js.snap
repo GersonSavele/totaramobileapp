@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should show error UI Test result : return Error 1`] = `
+<Modal
+  hardwareAccelerated={false}
+  visible={true}
+>
+  <RCTSafeAreaView
+    emulateUnlessSupported={true}
+    style={
+      Object {
+        "backgroundColor": "rgba(0, 0, 0, 0.7)",
+        "bottom": 0,
+        "flex": 1,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFF",
+          "borderRadius": 4,
+          "bottom": 32,
+          "flex": 1,
+          "left": 20,
+          "padding": 5,
+          "position": "absolute",
+          "right": 20,
+          "top": 32,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "center",
+            "marginLeft": "5%",
+            "marginRight": "5%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "marginTop": 16,
+              }
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
+                }
+              }
+              style={
+                Object {
+                  "alignItems": "center",
+                  "height": 375,
+                  "resizeMode": "contain",
+                  "width": 525,
+                }
+              }
+            />
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "marginTop": 16,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "flex-start",
+                  "paddingBottom": 16,
+                }
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "textAlign": "center",
+                    },
+                    Object {
+                      "color": "#3D444B",
+                      "fontSize": 44,
+                      "fontWeight": "600",
+                    },
+                  ]
+                }
+              >
+                translated error_feedback-modal.title with undefined
+              </Text>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "flex-start",
+                  "paddingBottom": 16,
+                }
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "textAlign": "center",
+                    },
+                    Object {
+                      "color": "#3D444B",
+                      "fontSize": 29,
+                      "fontWeight": "100",
+                    },
+                  ]
+                }
+              >
+                translated error_feedback-modal.description with undefined
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "marginBottom": 24,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "paddingBottom": 16,
+                }
+              }
+            >
+              <View
+                accessibilityRole="button"
+                accessibilityStates={Array []}
+                accessible={true}
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {},
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "#007AFF",
+                          "fontSize": 18,
+                          "padding": 8,
+                          "textAlign": "center",
+                        },
+                      ]
+                    }
+                  >
+                    this is a mock button
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "paddingBottom": 16,
+                }
+              }
+            >
+              <View
+                accessibilityRole="button"
+                accessibilityStates={Array []}
+                accessible={true}
+                isTVSelectable={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {},
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "#007AFF",
+                          "fontSize": 18,
+                          "padding": 8,
+                          "textAlign": "center",
+                        },
+                      ]
+                    }
+                  >
+                    this is a mock button
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTSafeAreaView>
+</Modal>
+`;
