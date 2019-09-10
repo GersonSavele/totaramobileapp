@@ -50,8 +50,8 @@
     "enter_valid_password": "Enter a valid Password"
   },
   "native-login": {
-    "header_title": "Get started.",
-    "login_information": "Please enter your site username and password to start learning",
+    "header_title": "Login",
+    "login_information": "Enter your site username and password.",
     "username_text_placeholder": "Username",
     "password_text_placeholder": "Password",
     "forgot_username_password": "Forgot your username or password?",

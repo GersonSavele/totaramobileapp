@@ -26,7 +26,7 @@ import lodash from "lodash";
 
 const h1 = resizeByScreenSize(24, 28, 32, 36);
 const h2 = resizeByScreenSize(24, 28, 32, 36);
-const h3 = resizeByScreenSize(24, 28, 32, 36);
+const h3 = resizeByScreenSize(15, 20, 20, 20);
 const h4 = resizeByScreenSize(14, 15, 16, 16);
 const normal = resizeByScreenSize(13, 14, 14, 14);
 const paragraph = resizeByScreenSize(24, 28, 32, 36);
@@ -51,7 +51,7 @@ const theme = lodash.merge(material, {
 
   h1Color: "#000",
   h3Color: "#64717D",
-  linkColor: "#64717D",
+  linkColor: "#3d444b",
 
   inputMarginLeft: 0,
   inputPaddingLeft: 0,

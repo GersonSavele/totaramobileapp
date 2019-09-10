@@ -28,7 +28,7 @@ import {
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Form, Input, Content, Container } from "native-base";
 
-import { resizeByScreenSize, theme, gutter } from "@totara/theme";
+import { resizeByScreenSize, theme, gutter, h1, h3 } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
 import { config } from "@totara/lib";
@@ -112,11 +112,11 @@ class SiteUrl extends React.Component<Props, State> {
                   clearButtonMode="while-editing"
                   autoCapitalize="none"
                   onChangeText={this.setStateInputSiteUrlWithShowError}
-                  value={this.state.inputSiteUrl ? this.state.inputSiteUrl : ""}
+                  value={this.state.inputSiteUrl}
                   style={styles.inputText}
                   autoFocus={true} />
               </InputTextWithInfo>
-              <PrimaryButton onPress={this.setInputSiteUrl} text={translate("general.enter")} />
+              <PrimaryButton onPress={this.setInputSiteUrl} text={translate("general.enter")} style={styles.buttonEnter} />
             </View>
           </Form>
         </Content>
@@ -152,11 +152,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   infoTitle: {
-    fontSize: resizeByScreenSize(22, 26, 26, 26),
+    fontSize: h1,
     color: theme.h1Color
   },
   infoDescription: {
-    fontSize: resizeByScreenSize(15, 20, 20, 20),
+    fontSize: h3,
     color: theme.h3Color
   },
   formContainer: {
@@ -165,6 +165,9 @@ const styles = StyleSheet.create({
   inputText: { 
     paddingRight: 0, 
     paddingLeft: 0 
+  },
+  buttonEnter: {
+    marginTop: 8
   }
 });
 

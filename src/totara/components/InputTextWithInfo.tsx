@@ -31,7 +31,6 @@ type Props = {
   onPress?: (() => void),
   status?: "success" | "focus" | "error",
   style?: ViewStyle
-  
 }
 
 const InforStyle = ({status}: Props) => {
@@ -49,7 +48,7 @@ const InforStyle = ({status}: Props) => {
 
 const InputTextWithInfo = ({ children, placeholder, message, status, style, ...rest }: Props) => {  
   return (
-    <View style={{marginVertical: 15}}>
+    <View style={{marginBottom: 8}}>
       <Item floatingLabel {...rest} success={(status === "success")} error={(status === "error")} style={[style, styles.formItem]}>
         <Label style={{fontSize: theme.inputFontSize - 1}}>{placeholder}</Label>
         { children }        
@@ -63,6 +62,7 @@ const styles = StyleSheet.create({
   message: {
     fontSize: theme.inputFontSize - 2,
     color: theme.inputTextColor,
+    height: theme.inputFontSize,
     opacity: 0
   },
   success: {
@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
     opacity: 0
   },
   formItem: {
+    marginTop: 0,
+    marginBottom:0,
     marginLeft: 0,
     marginRight: 0,
     paddingLeft: 0,

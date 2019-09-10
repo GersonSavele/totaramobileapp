@@ -20,18 +20,19 @@
  */
 
 import React from "react";
-import { Text } from "react-native";
+import { Text, ViewStyle } from "react-native";
 import { Button } from "native-base";
 import { theme } from "@totara/theme";
 
 type Props = {
   children?: Element,
-  text?: string
+  text?: string,
+  style?: ViewStyle,
   onPress?: (() => void)
 }
 
-const PrimaryButton = ({ children, text, onPress, ...rest}: Props) =>
-  <Button block primary onPress={onPress} {...rest}>
+const PrimaryButton = ({ children, text, style, onPress, ...rest}: Props) =>
+  <Button block primary onPress={onPress} {...rest} style={style}>
     {
       text
         ? <Text style={{ color: "#fff", fontSize: theme.DefaultFontSize }}>{text}</Text>

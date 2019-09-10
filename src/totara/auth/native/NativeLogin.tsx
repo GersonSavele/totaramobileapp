@@ -24,22 +24,18 @@ import {
   View,
   Image,
   Text,
-  TextInput,
   SafeAreaView,
-  Platform,
-  ScrollView,
-  Keyboard,
-  KeyboardEvent,
-  EmitterSubscription,
   TouchableOpacity,
+  Alert,
   Linking
 } from "react-native";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { Form, Input, Content, Container } from "native-base";
 
 import { config } from "@totara/lib";
-import { resizeByScreenSize, theme } from "@totara/theme";
-import { PrimaryButton } from "@totara/components";
+import { resizeByScreenSize, theme, gutter, h1, h3 } from "@totara/theme";
+import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
 
 export enum StatusInput {
@@ -49,53 +45,16 @@ export enum StatusInput {
 class NativeLogin extends React.Component<Props, State> {
   
   static actionType: number = 2;
-  private preUsername?: string = undefined;
-  private preStatusUsername: StatusInput = StatusInput.normal;
-  private keyboardDidShowListener?: EmitterSubscription;
-  private keyboardDidHideListener?: EmitterSubscription;
   
   constructor(props: Props) {
     super(props);
     this.state = {
-      statusInputUsername: StatusInput.normal,
-      statusInputPassword: StatusInput.normal,
-      keyboardHeight: 0
+      inputUsernameStatus: undefined,
+      inputUsernameMessage: undefined,
+      inputPasswordStatus: undefined,
+      inputPasswordMessage: undefined
     };
   }
-
-  componentDidMount() {
-    if (Platform.OS === "ios") {
-      this.keyboardDidShowListener = Keyboard.addListener(
-        "keyboardDidShow",
-        this.onKeyboardDidShow
-      );
-      this.keyboardDidHideListener = Keyboard.addListener(
-        "keyboardDidHide",
-        this.onKeyboardDidHide
-      );
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.keyboardDidShowListener) {
-      this.keyboardDidShowListener.remove();
-    }
-    if (this.keyboardDidHideListener) {
-      this.keyboardDidHideListener.remove();
-    }
-  }
-
-  onKeyboardDidShow = (e: KeyboardEvent) => {
-    this.setState({
-      keyboardHeight: e.endCoordinates.height
-    });
-  };
-
-  onKeyboardDidHide = () => {
-    this.setState({
-      keyboardHeight: 0
-    });
-  };
 
   setStateInputUsernameWithShowError = (username: string) => {
     this.setState({ inputUsername: username });
@@ -105,43 +64,29 @@ class NativeLogin extends React.Component<Props, State> {
     this.setState({ inputPassword: password });
   };
 
-  onBlurUsername = () => {
-    if (this.state.inputUsername == this.preUsername) {
-      this.setState({
-        statusInputUsername: this.preStatusUsername
-      })
-    } else {
-      this.setState({ statusInputUsername: StatusInput.normal });
-    }
-  };
-
   onClickEnter = () => {
-    this.preUsername = this.state.inputUsername;
-    this.preStatusUsername = StatusInput.normal;
-
-    let tempStatusInputUsername =  StatusInput.normal;
-    let tempUsernameInfoMessage =  undefined;
-    let tempStatusInputPassword =  StatusInput.normal;
-    let tempPasswordInfoMessage =  undefined;
+    let tmpInputUsernameStatus: "success" | "error" | "focus" | undefined = undefined;
+    let tmpInputUsernameMessage = undefined;
+    let tmpInputPasswordStatus: "success" | "error" | "focus" | undefined = undefined;
+    let tmpInputPasswordMessage = undefined;
 
     if ((this.state.inputUsername && this.state.inputUsername != "wrong") && (this.state.inputPassword && this.state.inputPassword != "")) {
       //TODO will be covered in MOB-172
     } else {
       if (!this.state.inputUsername || this.state.inputUsername == "" || this.state.inputUsername == "wrong") {
-        this.preStatusUsername = StatusInput.error;
-        tempStatusInputUsername = StatusInput.error;
-        tempUsernameInfoMessage = translate("message.enter_valid_username");
+          tmpInputUsernameStatus = "error";
+          tmpInputUsernameMessage = translate("message.enter_valid_username");
       }
       if (!this.state.inputPassword || this.state.inputPassword == "") {
-        tempStatusInputPassword = StatusInput.error;
-        tempPasswordInfoMessage = translate("message.enter_valid_password");
+        tmpInputPasswordStatus = "error";
+        tmpInputPasswordMessage = translate("message.enter_valid_password");
       }
     }
-    this.setState({
-      statusInputUsername: tempStatusInputUsername,
-      usernameInfoMessage: tempUsernameInfoMessage,
-      statusInputPassword: tempStatusInputPassword,
-      passwordInfoMessage: tempPasswordInfoMessage
+    this.setState({ 
+      inputUsernameStatus: tmpInputUsernameStatus,
+      inputUsernameMessage: tmpInputUsernameMessage,
+      inputPasswordStatus: tmpInputPasswordStatus,
+      inputPasswordMessage: tmpInputPasswordMessage
     });
   };
 
@@ -159,50 +104,49 @@ class NativeLogin extends React.Component<Props, State> {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.navigation} >
-          <TouchableOpacity onPress={() => { this.props.onBack(NativeLogin.actionType) }} style={styles.actionItem} >
-            <FontAwesomeIcon icon="times" size={22} color={theme.h1Color} />
-          </TouchableOpacity>
-        </View>
-        <ScrollView>
-          <View style={styles.container}>
+        <Container>
+          <View style={styles.navigation} >
+            <TouchableOpacity onPress={() => { this.props.onBack(NativeLogin.actionType) }} style={styles.navigationCloseItem} >
+              <FontAwesomeIcon icon="times" size={h3} color={theme.h1Color} />
+            </TouchableOpacity>
+          </View>
+          <Content style={styles.content}>
             <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} />
             <View style={styles.infoContainer}>
               <Text style={styles.infoTitle}>{translate("native-login.header_title")}</Text>
               <Text style={styles.infoDescription}>{translate("native-login.login_information")}</Text>
             </View>
-            <View style={styles.formContainer} >
-              <View style={styles.input} >
-                <TextInput
-                  style={[styles.inputText, this.getStatusStyle(this.state.statusInputUsername)]}
-                  placeholder={translate("native-login.username_text_placeholder")}
+            <Form >
+              <InputTextWithInfo
+                placeholder={translate("native-login.username_text_placeholder")}
+                message={this.state.inputUsernameMessage}
+                status={this.state.inputUsernameStatus} >
+                <Input
                   clearButtonMode="while-editing"
                   autoCapitalize="none"
                   onChangeText={this.setStateInputUsernameWithShowError}
-                  onFocus={() => { this.setState({ statusInputUsername: StatusInput.focus }); }}
-                  onBlur={() => { this.onBlurUsername() }}
-                  value={this.state.inputUsername} />
-                <Text style={[styles.inputInfo, this.getStatusStyle(this.state.statusInputUsername)]} >{this.state.usernameInfoMessage}</Text>
-              </View>
-              <View style={styles.input} >
-                <TextInput
-                  style={[styles.inputText, this.getStatusStyle(this.state.statusInputPassword)]}
+                  value={this.state.inputUsername}
+                  style={styles.inputText} />
+              </InputTextWithInfo>
+              <InputTextWithInfo
+                placeholder={translate("native-login.password_text_placeholder")}
+                message={this.state.inputPasswordMessage}
+                status={this.state.inputPasswordStatus}>
+                <Input
                   secureTextEntry={true}
-                  placeholder={translate("native-login.password_text_placeholder")}
+                  clearButtonMode="while-editing"
                   onChangeText={this.setStateInputPasswordWithShowError}
-                  onFocus={() => { this.setState({ inputPassword: undefined, statusInputPassword: StatusInput.focus }); }}
-                  onBlur={() => { this.setState({ statusInputPassword: StatusInput.normal }); }}
-                  value={this.state.inputPassword} />
-                <Text style={[styles.inputInfo, this.getStatusStyle(this.state.statusInputPassword)]} >{this.state.passwordInfoMessage}</Text>
-              </View>
-              <TouchableOpacity style={styles.forgotCredentialContainer} onPress={() => { Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }}>
+                  value={this.state.inputPassword}
+                  style={styles.inputText} />
+              <TouchableOpacity onPress={() => { Alert.alert("hie");Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }}>
                 <Text style={styles.forgotCredential} >{translate("native-login.forgot_username_password")}</Text>
               </TouchableOpacity>
+              </InputTextWithInfo>
+              <Text style={styles.forgotCredential} onPress={() => { }} >{translate("native-login.forgot_username_password")}</Text>
               <PrimaryButton onPress={this.onClickEnter} text={translate("general.enter")} />
-            </View>
-          </View>
-        </ScrollView>
-        <View style={{height: this.state.keyboardHeight}}></View>
+            </Form>
+          </Content>
+        </Container>
       </SafeAreaView>
     );
   }
@@ -214,22 +158,17 @@ type Props = {
   onBack: (action: number) => void
 };
 
+
 type State = {
   inputUsername?: string,
   inputPassword?: string,
-  statusInputUsername: StatusInput,
-  statusInputPassword: StatusInput,
-  passwordInfoMessage?: string,
-  usernameInfoMessage?: string,
-  keyboardHeight: number
+  inputUsernameStatus?: "success" | "error" | "focus",
+  inputPasswordStatus?: "success" | "error" | "focus",
+  inputPasswordMessage?: string,
+  inputUsernameMessage?: string
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    paddingHorizontal: 16
-  },
   navigation: {
     height: 44,
     alignItems: "flex-start",
@@ -239,82 +178,47 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
-  actionItem: {
-    padding: 8
+  navigationCloseItem: {
+    padding: gutter,
+    lineHeight: 40
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: gutter
   },
   totaraLogo: {
     height: resizeByScreenSize(68, 68, 87, 87),
     maxHeight: resizeByScreenSize(136, 136, 184, 184),
     width: "100%",
     resizeMode: "contain",
-    marginVertical: 8
+    marginTop: 40
   },
   infoContainer: {
     justifyContent: "space-between",
     textAlignVertical: "center",
-    marginVertical: 8
+    marginBottom: 24,
+    marginTop: 40
   },
   infoTitle: {
-    fontSize: resizeByScreenSize(22, 26, 26, 26),
+    fontSize: h1,
     color: theme.h1Color
   },
   infoDescription: {
-    fontSize: resizeByScreenSize(15, 20, 20, 20),
+    fontSize: h3,
     color: theme.h3Color
   },
-  formContainer: {
-    marginVertical: 8,
-    marginBottom: 20
-  },
-  input: {
-    paddingBottom: 6
-  },
   inputText: {
-    color: theme.inputTextColor,
-    borderBottomWidth: 1,
-    borderRadius: (Platform.OS === "ios") ? 5 : 0,
-    borderLeftWidth: (Platform.OS === "ios") ? 1 : 0,
-    borderRightWidth: (Platform.OS === "ios") ? 1 : 0,
-    borderTopWidth: (Platform.OS === "ios") ? 1 : 0,
-    borderColor: theme.inputBorderColor,
-    height: 40,
-    paddingLeft: 4,
-    paddingRight: 4
-  },
-  focusOn: {
-    color: theme.inputTextColor,
-    borderColor: theme.inputSuccessBorderColor
-  },
-  normal: {
-    color: theme.inputTextColor,
-    borderColor: theme.inputBorderColor
-  },
-  errorOn: {
-    opacity: 1.0,
-    color: theme.inputErrorTextColor,
-    borderColor: theme.inputErrorBorderColor
-  },
-  inputInfo: {
-    opacity: 0.0,
-    fontSize: 12,
-    marginLeft: (Platform.OS === "ios") ? 8 : 4,
-  },
-  forgotCredentialContainer: {
-    marginBottom: 6,
-    alignSelf:"flex-end",
-    alignItems: "flex-end"
+    paddingLeft: 0,
+    marginLeft: 0
   },
   forgotCredential: {
     color: theme.linkColor,
     fontSize: resizeByScreenSize(14, 16, 16, 16),
-    paddingVertical: 8,
+    lineHeight: resizeByScreenSize(14, 16, 16, 16),
+    paddingVertical: 16,
     textDecorationLine: "underline",
-    textAlign: "right"
-  },
-  keyboard: {
-    height: 0,
-    justifyContent: "center",
-    backgroundColor: "transparent"
+    textAlign: "center",
+    marginBottom: 8,
   }
 });
 
