@@ -26,7 +26,6 @@ import {
   Text,
   SafeAreaView,
   TouchableOpacity,
-  Alert,
   Linking
 } from "react-native";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
@@ -37,10 +36,6 @@ import { config } from "@totara/lib";
 import { resizeByScreenSize, theme, gutter, h1, h3 } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
-
-export enum StatusInput {
-  normal = 0, focus, error
-}
 
 class NativeLogin extends React.Component<Props, State> {
   
@@ -90,17 +85,6 @@ class NativeLogin extends React.Component<Props, State> {
     });
   };
 
-  getStatusStyle = (inputState: StatusInput) => {
-    switch (inputState) {
-      case StatusInput.error:
-        return styles.errorOn;
-      case StatusInput.focus:
-        return styles.focusOn;
-      default:
-        return styles.normal;
-    }
-  };
-
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -138,11 +122,12 @@ class NativeLogin extends React.Component<Props, State> {
                   onChangeText={this.setStateInputPasswordWithShowError}
                   value={this.state.inputPassword}
                   style={styles.inputText} />
-              <TouchableOpacity onPress={() => { Alert.alert("hie");Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }}>
-                <Text style={styles.forgotCredential} >{translate("native-login.forgot_username_password")}</Text>
-              </TouchableOpacity>
               </InputTextWithInfo>
-              <Text style={styles.forgotCredential} onPress={() => { }} >{translate("native-login.forgot_username_password")}</Text>
+              <View style={styles.forgotCredentialContainer}>
+                <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }}>
+                  <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
+                </TouchableOpacity>
+              </View>
               <PrimaryButton onPress={this.onClickEnter} text={translate("general.enter")} />
             </Form>
           </Content>
@@ -157,7 +142,6 @@ type Props = {
   siteUrl: string,
   onBack: (action: number) => void
 };
-
 
 type State = {
   inputUsername?: string,
@@ -211,14 +195,18 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     marginLeft: 0
   },
+  forgotCredentialContainer: {
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginBottom: 8
+  },
   forgotCredential: {
     color: theme.linkColor,
     fontSize: resizeByScreenSize(14, 16, 16, 16),
     lineHeight: resizeByScreenSize(14, 16, 16, 16),
-    paddingVertical: 16,
+    padding: 16,
     textDecorationLine: "underline",
-    textAlign: "center",
-    marginBottom: 8,
+    textAlign: "center"
   }
 });
 
