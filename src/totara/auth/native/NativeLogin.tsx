@@ -168,7 +168,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: gutter
+    paddingHorizontal: gutter,
+    marginBottom: resizeByScreenSize(10, 20, 20, 20)
   },
   totaraLogo: {
     height: resizeByScreenSize(68, 68, 87, 87),

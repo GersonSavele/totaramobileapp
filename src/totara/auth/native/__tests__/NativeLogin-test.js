@@ -19,9 +19,17 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React from 'react';
-import NativeLogin, { StatusInput } from "../NativeLogin";
+import React from "react";
+import {View, TextInput} from "react-native";
 import renderer from "react-test-renderer";
+import * as  NativeComp from "native-base";
+
+import NativeLogin from "../NativeLogin";
+
+NativeComp.Container = jest.fn(() => <View />);
+NativeComp.Content = jest.fn(() => <View />);
+NativeComp.Form = jest.fn(() => <View />);
+NativeComp.Input = jest.fn(() => <TextInput />);
 
 const mockOnSuccess = jest.fn();
 const mockOnFail = jest.fn();
@@ -31,25 +39,23 @@ const nativeLogin = renderer.create(
 ).getInstance();
 
 describe("Passing different 'username' and 'password' for checking validation", () => {
-
   it("both valid 'username' and 'password'", () => {
     nativeLogin.setState({
       inputUsername: "username",
       inputPassword: "password"
     });
     nativeLogin.onClickEnter();
-    expect(nativeLogin.state.statusInputUsername).toBe(StatusInput.normal);
-    expect(nativeLogin.state.statusInputPassword).toBe(StatusInput.normal);
+    expect(nativeLogin.state.inputUsernameStatus).toBe(undefined);
+    expect(nativeLogin.state.inputPasswordStatus).toBe(undefined);
   });
-
   it("both empty 'username' and 'password'", () => {
     nativeLogin.setState({
       inputUsername: undefined,
       inputPassword: undefined
     });
     nativeLogin.onClickEnter();
-    expect(nativeLogin.state.statusInputUsername).toBe(StatusInput.error);
-    expect(nativeLogin.state.statusInputPassword).toBe(StatusInput.error);
+    expect(nativeLogin.state.inputUsernameStatus).toBe("error");
+    expect(nativeLogin.state.inputPasswordStatus).toBe("error");
   });
 
   it("valid 'username' and empty 'password'", () => {
@@ -58,8 +64,8 @@ describe("Passing different 'username' and 'password' for checking validation", 
       inputPassword: undefined
     });
     nativeLogin.onClickEnter();
-    expect(nativeLogin.state.statusInputUsername).toBe(StatusInput.normal);
-    expect(nativeLogin.state.statusInputPassword).toBe(StatusInput.error);
+    expect(nativeLogin.state.inputUsernameStatus).toBe(undefined);
+    expect(nativeLogin.state.inputPasswordStatus).toBe("error");
   });
 
   it("empty 'username' and valid 'password'", () => {
@@ -68,8 +74,7 @@ describe("Passing different 'username' and 'password' for checking validation", 
       inputPassword: "password"
     });
     nativeLogin.onClickEnter();
-    expect(nativeLogin.state.statusInputUsername).toBe(StatusInput.error);
-    expect(nativeLogin.state.statusInputPassword).toBe(StatusInput.normal);
+    expect(nativeLogin.state.inputUsernameStatus).toBe("error");
+    expect(nativeLogin.state.inputPasswordStatus).toBe(undefined);
   });
-
 });

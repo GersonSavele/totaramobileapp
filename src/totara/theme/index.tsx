@@ -56,6 +56,7 @@ const theme = lodash.merge(material, {
   inputMarginLeft: 0,
   inputPaddingLeft: 0,
   
+  btnDisabledBg: "#b5b5b5"
 });
 
 export {

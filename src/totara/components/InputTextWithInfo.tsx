@@ -33,16 +33,16 @@ type Props = {
   style?: ViewStyle
 }
 
-const InforStyle = ({status}: Props) => {
+const InfoText = ({status, message}: Props) => {
   switch (status) {
     case "success":
-      return styles.success;
+      return <Text style={[styles.message, styles.success]}>{message}</Text>;
     case "error":
-      return styles.error;
+      return<Text style={[styles.message, styles.error]}>{message}</Text>;
     case "focus":
-        return styles.focus;
+        return <Text style={[styles.message, styles.focus]}>{message}</Text>;
     default:
-      return null;
+      return <Text style={styles.message}>{message}</Text>;
   }
 };
 
@@ -53,7 +53,7 @@ const InputTextWithInfo = ({ children, placeholder, message, status, style, ...r
         <Label style={{fontSize: theme.inputFontSize - 1}}>{placeholder}</Label>
         { children }        
       </Item>
-      <Text style={[styles.message, InforStyle({status})]}>{message}</Text>
+      <InfoText status={status} message={message} />
     </View>
   );
 };
