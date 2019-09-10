@@ -30,7 +30,7 @@ import ButtonWithIcon from "./ButtonWithIcon";
 import { InfoModal } from "./infoModal";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
-import ErrorFeedbackView from "./ErrorFeedbackView";
+import ErrorFeedbackModal from "./ErrorFeedbackModal";
 export {
   LearningItemCard,
   AddBadge,
@@ -42,6 +42,6 @@ export {
   ButtonWithIcon,
   AppStateListener,
   PrimaryButton,
-  ErrorFeedbackView,
+  ErrorFeedbackModal,
   InfoModal
 }

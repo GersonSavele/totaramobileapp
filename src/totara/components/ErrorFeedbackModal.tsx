@@ -21,7 +21,7 @@
 
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { ButtonWithIcon, InfoModal } from "./";
+import { ButtonWithIcon, InfoModal } from ".";
 
 import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
@@ -32,7 +32,7 @@ type Params = {
   imageType?: string;
 };
 
-const ErrorFeedbackView = ({ title, description, imageType }: Params) => {
+const ErrorFeedbackModal = ({ title, description, imageType }: Params) => {
   return (
     <InfoModal
       title={title != null ? title : translate("error_feedback-modal.title")}
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ErrorFeedbackView;
+export default ErrorFeedbackModal;

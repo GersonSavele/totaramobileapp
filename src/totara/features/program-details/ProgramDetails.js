@@ -25,7 +25,7 @@ import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import lodash from "lodash";
 
-import { ActivityLauncher, LearningItemCard, ErrorFeedbackView } from "@totara/components";
+import { ActivityLauncher, LearningItemCard, ErrorFeedbackModal } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ActivitySheetConsumer } from "@totara/activities";
@@ -39,7 +39,7 @@ const ProgramDetails = getProgram(({loading, program, error}) => {
 
   if (error) {
     Log.error("Error getting program details", error);
-    return <ErrorFeedbackView/>;
+    return <ErrorFeedbackModal/>;
   }
 
   if (program) {

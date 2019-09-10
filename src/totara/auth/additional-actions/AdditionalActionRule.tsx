@@ -23,7 +23,7 @@ import React, { ReactNode } from "react";
 import { GetMe, QueryResult } from "./api";
 import { Text } from "react-native";
 import AppStateListener from "@totara/components/AppStateListener";
-import ErrorFeedbackView from "@totara/components/ErrorFeedbackView";
+import ErrorFeedbackModal from "@totara/components/ErrorFeedbackModal";
 
 type Params = {
   children: ReactNode;
@@ -34,7 +34,7 @@ const AdditionalActionRule = ({ children }: Params) => {
     <GetMe
       props={({ loading, data, error, refetch }: QueryResult) => {
         if (loading) return <Text>Loading...</Text>;
-        if (error) return <ErrorFeedbackView/>;
+        if (error) return <ErrorFeedbackModal/>;
         // TO DO - MOB-166 : We need to understand request_policy_agreement bool value, how it is working with modal
         // if (data && (data.me.system.request_policy_agreement || data.me.system.request_user_consent || data.me.system.request_user_fields)) {
         if (
