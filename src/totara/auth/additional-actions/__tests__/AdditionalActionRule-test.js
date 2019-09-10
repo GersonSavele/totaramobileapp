@@ -26,7 +26,10 @@ import wait from "waait";
 import { Text } from "react-native";
 
 import { QueryMe } from "../api";
-import AdditionalActionRule from "../AdditionalActionRule";
+import {
+  AdditionalActionRule,
+  AdditionalActionRuleCondition
+} from "../AdditionalActionRule";
 
 const response = {
   me: {
@@ -74,20 +77,18 @@ const mocksError = [
   }
 ];
 
-describe("should render loading state initially", () => {
-  it("Test result : return Loading...", () => {
+describe("AdditionalActionRule, Apollo MockedProvider should test three state such as loading, final and error ", () => {
+  it("Test result : Render loading state initially and return Loading...", () => {
     const component = renderer.create(
       <MockedProvider mocks={[]} addTypename={false}>
-        <AdditionalActionRule/>
+        <AdditionalActionRule />
       </MockedProvider>
     );
     const tree = component.toJSON();
     expect(tree.children).toContain("Loading...");
   });
-});
 
-describe("should render additional action rule", () => {
-  it("Test result : After render additional action rule, it will return child component", async () => {
+  it("Test result : Once render additional action rule, it will return child component", async () => {
     const component = renderer.create(
       <MockedProvider mocks={mocks} addTypename={false}>
         <AdditionalActionRule>
@@ -99,10 +100,8 @@ describe("should render additional action rule", () => {
     const tree = component.root.props.children.props.children.props.children;
     expect(tree).toContain("Modal Details");
   });
-});
 
-describe("should show error UI", () => {
-  it("Test result : return Error", async () => {
+  it("Test result : Set mock-error response and return Error UI", async () => {
     const component = renderer.create(
       <MockedProvider mocks={mocksError} addTypename={false}>
         <AdditionalActionRule />
@@ -112,4 +111,25 @@ describe("should show error UI", () => {
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
+<<<<<<< HEAD
 });
+=======
+});
+
+describe("AdditionalActionRuleCondition, Passing different bool params which relate policyAgreement,userConsent,userFields and get a bool value", () => {
+  it("Test result : if all bool values are true it should return true", () => {
+    const actualResult = AdditionalActionRuleCondition(true, true, true);
+    expect(actualResult).toBe(true);
+  });
+
+  it("Test result : if either once bool value are true it should return true", () => {
+    const actualResult = AdditionalActionRuleCondition(false, true, false);
+    expect(actualResult).toBe(true);
+  });
+
+  it("Test result : if non of the bool value are true it should return false", () => {
+    const actualResult = AdditionalActionRuleCondition(false, false, false);
+    expect(actualResult).toBe(false);
+  });
+});
+>>>>>>> MOB-166: Implement test-case for AARule and check condition

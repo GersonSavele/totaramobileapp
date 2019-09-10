@@ -20,9 +20,10 @@
  */
 
 import AdditionalAction  from "./AdditionalAction";
-import AdditionalActionRule from "./AdditionalActionRule"
+import {AdditionalActionRule, AdditionalActionRuleCondition} from "./AdditionalActionRule"
 
 export {
     AdditionalAction, 
-    AdditionalActionRule
+    AdditionalActionRule,
+    AdditionalActionRuleCondition
 }

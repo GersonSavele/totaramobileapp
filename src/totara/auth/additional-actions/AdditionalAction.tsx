@@ -26,7 +26,7 @@ import { ButtonWithIcon, InfoModal } from "@totara/components";
 import { normalize, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
-import AdditionalActionRule from "./AdditionalActionRule";
+import { AdditionalActionRule } from "./AdditionalActionRule";
 
 class AdditionalAction extends React.Component {
   render() {

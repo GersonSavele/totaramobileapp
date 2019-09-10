@@ -43,9 +43,11 @@ const AdditionalActionRule = ({ children }: Params) => {
 >>>>>>> MOB-166: Added request_policy_agreement
         if (
           data &&
-          (data.me.system.request_policy_agreement ||
-            data.me.system.request_user_consent ||
-            data.me.system.request_user_fields)
+          AdditionalActionRuleCondition(
+            data.me.system.request_policy_agreement,
+            data.me.system.request_user_consent,
+            data.me.system.request_user_fields
+          )
         ) {
           return (
             <AppStateListener onActive={refetch}>{children}</AppStateListener>
@@ -58,4 +60,16 @@ const AdditionalActionRule = ({ children }: Params) => {
   );
 };
 
-export default AdditionalActionRule;
+const AdditionalActionRuleCondition = (
+  policyAgreement: boolean,
+  userConsent: boolean,
+  userFields: boolean
+) => {
+  if (policyAgreement || userConsent || userFields) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export { AdditionalActionRule, AdditionalActionRuleCondition };
