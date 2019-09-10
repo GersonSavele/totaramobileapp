@@ -33,7 +33,6 @@ import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 
 class WebviewLogin extends React.Component<Props, States> {
   
-  static actionType = 2;
   webviewLogin = React.createRef<WebView>();
   constructor(props: Props) {
     super(props);
@@ -46,7 +45,7 @@ class WebviewLogin extends React.Component<Props, States> {
   didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if ((typeof setupSecretValue !== "undefined") && (setupSecretValue != "null")) {
-      this.props.onSuccessfulLogin(setupSecretValue, WebviewLogin.actionType);
+      this.props.onSuccessfulLogin(setupSecretValue);
     }
   };
 
@@ -62,7 +61,7 @@ class WebviewLogin extends React.Component<Props, States> {
   }
 
   cancelLogin = () =>{
-    this.props.onCancelLogin(WebviewLogin.actionType);
+    this.props.onCancelLogin();
   }
 
   goBack = () => {
@@ -113,8 +112,8 @@ class WebviewLogin extends React.Component<Props, States> {
 }
 
 type Props = {
-  onSuccessfulLogin: (data: string, currentAction: number) => void
-  onCancelLogin: (currentAction: number) => void
+  onSuccessfulLogin: (data: string) => void
+  onCancelLogin: () => void
   siteUrl: string
 };
 type States = {
