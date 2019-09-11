@@ -32,6 +32,7 @@ import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
 import ErrorFeedbackModal from "./ErrorFeedbackModal";
 import InputTextWithInfo from "./InputTextWithInfo";
+import TertiaryButton from "./TertiaryButton";
 
 export {
   LearningItemCard,
@@ -46,5 +47,6 @@ export {
   PrimaryButton,
   ErrorFeedbackModal,
   InfoModal,
-  InputTextWithInfo
+  InputTextWithInfo,
+  TertiaryButton
 }

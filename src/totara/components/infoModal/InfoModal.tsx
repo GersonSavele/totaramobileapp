@@ -36,9 +36,9 @@ type Params = {
   children? : ReactNode
 };
 
-const InfoModal = ({ title, description, imageType, children }: Params) => {
+const InfoModal = ({ title, description, imageType, children, ...rest }: Params) => {
   return (
-    <Modal>
+    <Modal {...rest}>
       <TransparentView>
         <ModalContainer>
         <View style={styles.ContainerStyle}>
