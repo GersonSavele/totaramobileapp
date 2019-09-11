@@ -20,12 +20,13 @@
  */
 
 import React, { useEffect, useReducer } from "react";
+import { View } from "react-native";
 
-import { Log } from "@totara/lib";
+import { config, Log } from "@totara/lib";
 import { AuthProviderStateLift } from "../AuthComponent";
 import WebviewFlow from "../webview";
 import NativeFlow from "../native";
-import { TouchableOpacity, View } from "react-native";
+import { manualFlowReducer, ActionType, SiteInfo } from "./ManualFlowReducer";
 import SiteUrl from "./SiteUrl";
 
 /**
@@ -41,25 +42,28 @@ const ManualFlow = ({onLoginSuccess, onLoginFailure}: AuthProviderStateLift) => 
     onSetupSecretCancel
   } = useManualFlow(mockFetch)({onLoginSuccess, onLoginFailure});
 
+  const StartComponent = () => <SiteUrl onSiteUrlSubmit={(siteUrl) => onSiteUrlSubmit(siteUrl)} siteUrl={manualFlowState.siteUrl}/>;
+
   return(
     <View style={{flex: 1}}>
       {(() => {
         switch (manualFlowState.flowStep) {
           case ManualFlowSteps.native:
-            return <NativeFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>;
+            return (manualFlowState.siteUrl && manualFlowState.siteInfo)
+              ? <NativeFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
+                            onSetupSecretSubmit={onSetupSecretSubmit} onSetupSecretCancel={onSetupSecretCancel}/>
+              : <StartComponent/>;
           case ManualFlowSteps.webview:
-            return <WebviewFlow uri={manualFlowState.siteUrl} onSetupSecretSubmit={onSetupSecretSubmit} onSetupSecretCancel={onSetupSecretCancel}/>;
+            return (manualFlowState.siteUrl && manualFlowState.siteInfo)
+              ? <WebviewFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
+                                onSetupSecretSubmit={onSetupSecretSubmit} onSetupSecretCancel={onSetupSecretCancel}/>
+              : <StartComponent/>;
+          case ManualFlowSteps.done:
+            return null;
           default:
-            return <SiteUrl onSuccessfulSiteUrl={(siteUrl) => onSiteUrlSubmit(siteUrl)} siteUrl={manualFlowState.siteUrl}/>;
+            return <StartComponent/>;
         }
       })()}
-      <TouchableOpacity style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: 100,
-        height: 100,
-      }} ></TouchableOpacity>
     </View>
   )
 
@@ -73,69 +77,14 @@ export enum ManualFlowSteps {
   done = "done"
 }
 
-type ManualFlowState = {
-  siteUrl?: string,
-  setupSecret?: string
-  isSiteUrlSubmitted: boolean,
-  flowStep: ManualFlowSteps
-}
-
-export enum Actions {
-  apiInit = "apiInit",
-  apiSuccess = "apiSuccess",
-  setupSecretSuccess = "setupSecretSuccess",
-  cancelManualFlow = "cancelManualFlow"
-}
-
-type Action = {
-  type: Actions
-  payload?: string
-}
-
-export const manualFlowReducer = (state: ManualFlowState, action: Action): ManualFlowState => {
-  Log.debug("manualFlowReducer state:", state, "action", action);
-
-  switch (action.type) {
-    case Actions.apiInit:
-      return {
-        ...state,
-        isSiteUrlSubmitted: true,
-        siteUrl: action.payload,
-      };
-    case Actions.apiSuccess: {
-      const flowStep = action.payload as ManualFlowSteps;
-
-      if (flowStep === ManualFlowSteps.native ||
-        flowStep === ManualFlowSteps.webview ||
-        flowStep === ManualFlowSteps.browser) {
-
-        return  {
-          ...state,
-          flowStep: flowStep
-        };
-      } else {
-        throw new Error(); // TODO specify error
-      }
-    }
-    case Actions.cancelManualFlow:
-      return {
-        ...state,
-        isSiteUrlSubmitted: false,
-        flowStep: ManualFlowSteps.siteUrl
-      };
-    case Actions.setupSecretSuccess:
-      return {
-        ...state,
-        isSiteUrlSubmitted: false,
-        setupSecret: action.payload,
-        flowStep: ManualFlowSteps.done
-      };
-    default:
-      throw new Error(); // TODO specify error
-  }
-};
-
-export const useManualFlow = (fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>) =>
+/**
+ * Custom react hook that manages the state of the manual flow
+ *
+ * @param fetch - as param so test can easily pass a mock implementation
+ * @returns state and functions that will change the state of the manual flow
+ */
+export const useManualFlow =
+  (fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>) =>
   ({onLoginSuccess, onLoginFailure}: AuthProviderStateLift) => {
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer,
@@ -148,27 +97,36 @@ export const useManualFlow = (fetch: (input: RequestInfo, init?: RequestInit) =>
     manualFlowState.setupSecret)
     onLoginSuccess({ secret: manualFlowState.setupSecret, uri: manualFlowState.siteUrl });
 
-  // fetch the data when siteUrl it not initial value and it has changed
+  // effect fetch the data when the right dependency has been met
   useEffect(() => {
     let didCancel = false;
 
-    const fetchData = async () => {
-      const infoUrl = manualFlowState.siteUrl + "/totara/mobile/info.php";
+    const fetchData = async (siteUrl: string) => {
+      const infoUrl = config.infoUri(siteUrl);
       const options = {
         method: "POST",
         body: JSON.stringify({ version: "app version, put right version here" })
       };
 
-      const authFlow = await fetch(infoUrl, options)
-        .then(response => response.json())
-        .then((json) => json.auth)
+      const siteInfo = await fetch(infoUrl, options)
+        .then(response => {
+          if (response.status === 200)
+            return response.json() as unknown as SiteInfo;
+          else
+            throw new Error(response.statusText);
+        })
         .catch( (error) => onLoginFailure(error));
-      Log.debug("authFlow", authFlow);
+      Log.debug("siteInfo", siteInfo);
 
-      if (!didCancel) dispatch({type: Actions.apiSuccess, payload: authFlow })
+      if (!didCancel && "version" in siteInfo)
+        dispatch({type: ActionType.apiSuccess, payload: siteInfo });
+      else
+        Log.warn("Did not dispatch apiSuccess: didCancel", didCancel, "siteInfo", siteInfo);
     };
 
-    if (manualFlowState.isSiteUrlSubmitted && manualFlowState.flowStep === ManualFlowSteps.siteUrl) fetchData();
+    if (manualFlowState.isSiteUrlSubmitted &&
+      manualFlowState.flowStep === ManualFlowSteps.siteUrl &&
+      manualFlowState.siteUrl) fetchData(manualFlowState.siteUrl);
 
     return () => {
       didCancel = true; // need to create a lock for async stuff
@@ -176,16 +134,15 @@ export const useManualFlow = (fetch: (input: RequestInfo, init?: RequestInit) =>
   }, [manualFlowState.siteUrl, manualFlowState.isSiteUrlSubmitted]);
 
   const onSiteUrlSubmit = (url: string) => {
-    Log.debug("url", url);
-    dispatch({type: Actions.apiInit, payload: url})
+    dispatch({type: ActionType.apiInit, payload: url})
   };
 
   const onSetupSecretSubmit = (setupSecret: string) => {
-    dispatch({type: Actions.setupSecretSuccess, payload: setupSecret})
+    dispatch({type: ActionType.setupSecretSuccess, payload: setupSecret})
   };
 
   const onSetupSecretCancel = () => {
-    dispatch({type: Actions.cancelManualFlow});
+    dispatch({type: ActionType.cancelManualFlow});
   };
 
   return {
@@ -203,6 +160,7 @@ const mockFetch = () => {
   return Promise.resolve({
     status: 200,
     json: () => ({
+      version: "2019061900",
       auth: "webview",
       siteMaintenance: false,
       theme: {

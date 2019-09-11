@@ -34,6 +34,7 @@ const defaultConfig = {
   deviceRegisterUri: (host: string) => (`${host}/totara/mobile/device_register.php`),
   webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`),
   forgotPasswordUri: (host: string) => (`${host}/login/forgot_password.php`),
+  infoUri: (host: string) => (`${host}/totara/mobile/info.php`),
   
   appLinkDomain: "https://mobile.totaralearning.com",
   deepLinkSchema: "totara://"

@@ -22,127 +22,44 @@
 
 import React from "react";
 import { Modal } from "react-native";
-
-import SiteUrl from "../manual/SiteUrl";
-import NativeLogin from "./NativeLogin";
-import { AuthComponent, AuthProviderStateLift } from "../AuthComponent";
 import { StyleProvider } from "native-base";
+
 import { theme, getTheme } from "@totara/theme";
 
-class NativeFlow extends AuthComponent<{}, States> {
+import NativeLogin from "./NativeLogin";
+import { ManualAuthProps } from "../manual/ManualAuthProps";
 
-  constructor(props: AuthProviderStateLift) {
+class NativeFlow extends React.Component<ManualAuthProps> {
+
+  constructor(props: ManualAuthProps) {
     super(props);
-    this.state = {
-      step: SiteUrl.actionType,
-      uri: undefined,
-      secret: undefined
-    };
   }
 
-  onSetupLoginData = (data: string, currentAction: number) => {
-    switch (currentAction) {
-      case SiteUrl.actionType:
-        this.getSiteConfiguration().then((response)=> {
-          if (response.status ===  200) {
-            return response.json();
-          }
-        }).then((siteInfo) => {
-          if(siteInfo && siteInfo.theme) {
-            this.setSiteTheme(siteInfo.theme);
-          }
-          this.setState({
-            step: NativeLogin.actionType,
-            uri: data
-          });
-        });
-        break;
-      case NativeLogin.actionType:
-        if (this.state.uri && data) {
-          this.props.onLoginSuccess({ uri: this.state.uri, secret: data });
-        } else {
-          this.props.onLoginFailure(new Error(`Missing data: ${data}`));
-        }
-        break;
-      default:
-        break;
-    }
+  onSetupLoginData = (data: string) => {
+    this.props.onSetupSecretSubmit(data);
   };
 
-  setSiteTheme = (data: Theme) => {
-    if(data && data.brandPrimary) {
-      theme.brandPrimary = data.brandPrimary;
-    }
-    if(data && data.logoUrl) {
-      theme.logoUrl = data.logoUrl;
-    }
-  }
-
-  onCancelLogin = (currentAction: number) => {
-    switch (currentAction) {
-      case NativeLogin.actionType:
-        this.setState({
-          step: SiteUrl.actionType,
-          uri: this.state.uri
-        });
-        break;
-      default:
-        break;
-    }
-  };
-
-  getSiteConfiguration = () => {
-    //TODO will be covered in MOB-172
-    return Promise.resolve({
-      status: 200,
-      json: () => ({
-          version: "2019061900",
-          auth: "native",
-          siteMaintenance: false,
-          theme: {
-             logoUrl: "https://webcasts.td.org/uploads/assets/2300/logo.png",
-             brandPrimary: "#69BD45"
-          }
-        })       
-    });
+  onCancelLogin = () => {
+    this.props.onSetupSecretCancel();
   };
 
   render() {
-    switch (this.state.step) {
-      case NativeLogin.actionType:
-        return (
-          <StyleProvider style={getTheme(theme)}>
-            <Modal animationType="slide" transparent={false} >
-              {/* //TODO will be covered in MOB-172 */}
-              <NativeLogin 
-                onSuccessfulSiteUrl={(siteUrl, action) => this.onSetupLoginData(siteUrl, action)} 
-                siteUrl={this.state.uri}
-                onBack={this.onCancelLogin} />
-            </Modal>
-          </StyleProvider>
-        );
-      default:
-        return <SiteUrl onSuccessfulSiteUrl={(siteUrl, action) => this.onSetupLoginData(siteUrl, action)} siteUrl={this.state.uri} />;
-    }
+
+    // TODO re-apply the theme here from the SiteInfo
+
+    return (
+      <StyleProvider style={getTheme(theme)}>
+        <Modal animationType="slide" transparent={false} >
+          {/* //TODO will be covered in MOB-172 */}
+          <NativeLogin
+            onSuccessfulSiteUrl={(siteUrl) => this.onSetupLoginData(siteUrl)}
+            siteUrl={this.props.siteUrl}
+            onBack={this.onCancelLogin} />
+        </Modal>
+      </StyleProvider>
+    );
   }
+
 }
-
-type States = {
-  step: number,
-  uri?: string,
-  secret?: string,
-};
-
-type Theme = {
-  logoUrl?: string,
-  brandPrimary?: string
-};
-
-type SiteInfo = {
-  version: string,
-  auth: string,
-  siteMaintenance: boolean,
-  theme?: Theme
-};
 
 export default NativeFlow;

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -17,23 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
+import { manualFlowReducer, ActionType } from "../ManualFlowReducer";
+import { ManualFlowSteps } from "../ManualFlow";
 
-import React from "react";
-import { Modal, View } from "react-native";
+describe("manualFlowReducer", () => {
 
-import WebviewLogin from "./WebviewLogin";
-import { ManualAuthProps } from "../manual/ManualAuthProps";
+  it("should put flowStep into siteUrl when it is cancelled", () => {
+    const currentState = {
+      isSiteUrlSubmitted: true,
+      flowStep: ManualFlowSteps.native
+    };
+    const action = {
+      type: ActionType.cancelManualFlow
+    };
 
-const WebviewFlow = ({siteUrl, onSetupSecretSubmit, onSetupSecretCancel}: ManualAuthProps) => {
+    const newState = manualFlowReducer(currentState, action);
 
-    return <View style={{ flex: 1 }}>
-      <Modal animationType="slide" transparent={false} >
-        <WebviewLogin onSuccessfulLogin={onSetupSecretSubmit} siteUrl={siteUrl} onCancelLogin={onSetupSecretCancel} />
-      </Modal>
-    </View>
+    expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
+    expect(newState.isSiteUrlSubmitted).toBeFalsy();
 
-};
+  });
 
-export default  WebviewFlow;
+});

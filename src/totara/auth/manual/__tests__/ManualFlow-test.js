@@ -18,28 +18,8 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
-import { manualFlowReducer, ManualFlowSteps, Actions, useManualFlow } from "../ManualFlow";
+import { ManualFlowSteps, useManualFlow } from "../ManualFlow";
 import { renderHook, act } from "@testing-library/react-hooks";
-
-describe("manualFlowReducer", () => {
-
-  it("should put flowStep into siteUrl when it is cancelled", () => {
-    const currentState = {
-      isSiteUrlSubmitted: true,
-      flowStep: ManualFlowSteps.native
-    };
-    const action = {
-      type: Actions.cancelManualFlow
-    };
-
-    const newState = manualFlowReducer(currentState, action);
-
-    expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
-    expect(newState.isSiteUrlSubmitted).toBeFalsy();
-
-  });
-
-});
 
 describe("useManualFlow", () => {
 

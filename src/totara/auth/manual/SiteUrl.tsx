@@ -59,7 +59,7 @@ class SiteUrl extends React.Component<Props, State> {
         inputSiteUrl: siteUrlValue,
         inputSiteUrlStatus: "success"
       });
-      this.props.onSuccessfulSiteUrl(siteUrlValue!, SiteUrl.actionType);
+      this.props.onSiteUrlSubmit(siteUrlValue!);
     } else {
       this.setState({
         inputSiteUrlMessage: translate("message.enter_valid_url"),
@@ -126,7 +126,7 @@ class SiteUrl extends React.Component<Props, State> {
 }
 
 type Props = {
-  onSuccessfulSiteUrl: (data: string, currentAction: number) => void
+  onSiteUrlSubmit: (data: string) => void
   siteUrl?: string
 };
 

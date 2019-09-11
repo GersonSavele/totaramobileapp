@@ -17,23 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
- *
  */
+import { SiteInfo } from "./ManualFlowReducer";
 
-import React from "react";
-import { Modal, View } from "react-native";
-
-import WebviewLogin from "./WebviewLogin";
-import { ManualAuthProps } from "../manual/ManualAuthProps";
-
-const WebviewFlow = ({siteUrl, onSetupSecretSubmit, onSetupSecretCancel}: ManualAuthProps) => {
-
-    return <View style={{ flex: 1 }}>
-      <Modal animationType="slide" transparent={false} >
-        <WebviewLogin onSuccessfulLogin={onSetupSecretSubmit} siteUrl={siteUrl} onCancelLogin={onSetupSecretCancel} />
-      </Modal>
-    </View>
-
+export type ManualAuthProps = {
+  siteUrl: string,
+  siteInfo: SiteInfo,
+  onSetupSecretSubmit: (url: string) => void
+  onSetupSecretCancel: () => void
 };
-
-export default  WebviewFlow;
