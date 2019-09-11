@@ -111,9 +111,6 @@ describe("AdditionalActionRule, Apollo MockedProvider should test three state su
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
-<<<<<<< HEAD
-});
-=======
 });
 
 describe("AdditionalActionRuleCondition, Passing different bool params which relate policyAgreement,userConsent,userFields and get a bool value", () => {
@@ -132,4 +129,3 @@ describe("AdditionalActionRuleCondition, Passing different bool params which rel
     expect(actualResult).toBe(false);
   });
 });
->>>>>>> MOB-166: Implement test-case for AARule and check condition

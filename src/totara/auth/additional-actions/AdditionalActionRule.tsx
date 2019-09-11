@@ -34,13 +34,7 @@ const AdditionalActionRule = ({ children }: Params) => {
     <GetMe
       props={({ loading, data, error, refetch }: QueryResult) => {
         if (loading) return <Text>Loading...</Text>;
-<<<<<<< HEAD
         if (error) return <ErrorFeedbackModal/>;
-        // TO DO - MOB-166 : We need to understand request_policy_agreement bool value, how it is working with modal
-        // if (data && (data.me.system.request_policy_agreement || data.me.system.request_user_consent || data.me.system.request_user_fields)) {
-=======
-        if (error) return <Text>Error!</Text>;
->>>>>>> MOB-166: Added request_policy_agreement
         if (
           data &&
           AdditionalActionRuleCondition(
