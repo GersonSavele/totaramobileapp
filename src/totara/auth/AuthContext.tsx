@@ -24,9 +24,10 @@ import React, { ReactNode } from "react";
 import { Text } from "react-native";
 import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "react-apollo";
-import { ApolloLink } from 'apollo-link';
-import { RetryLink } from 'apollo-link-retry';
-import { HttpLink } from 'apollo-link-http';
+import { ApolloLink } from "apollo-link";
+import { RetryLink } from "apollo-link-retry";
+import { HttpLink } from "apollo-link-http";
+import { onError, ErrorResponse } from "apollo-link-error";
 import { gql } from "apollo-boost";
 import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
@@ -36,18 +37,24 @@ import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { config, Log } from "@totara/lib";
 import { X_API_KEY } from "@totara/lib/Constant";
 
-import { getAndStoreApiKey, deviceCleanup, bootstrap, AuthProviderType } from "./AuthRoutines";
+
+import {
+  getAndStoreApiKey,
+  deviceCleanup,
+  bootstrap,
+  AuthProviderType
+} from "./AuthRoutines";
 import AppLinkFlow from "./app-link";
 import ManualFlow from "./manual/ManualFlow";
 
-const AuthContext = React.createContext<State>(
-  {
-    setup: undefined,
-    isAuthenticated: false,
-    isLoading: true,
-    logOut: () => { return Promise.resolve() }
+const AuthContext = React.createContext<State>({
+  setup: undefined,
+  isAuthenticated: false,
+  isLoading: true,
+  logOut: () => {
+    return Promise.resolve();
   }
-);
+});
 
 const AuthConsumer = AuthContext.Consumer;
 
@@ -68,7 +75,6 @@ const AuthConsumer = AuthContext.Consumer;
  */
 class AuthProvider extends React.Component<Props, State>
   implements AuthProviderType<Props, State> {
-
   constructor(props: Props) {
     super(props);
 
@@ -87,13 +93,18 @@ class AuthProvider extends React.Component<Props, State>
 
   apolloClient?: ApolloClient<NormalizedCacheObject> = undefined;
   asyncStorage: AsyncStorageStatic;
-  bootstrap: (storeGetItem: (key: string) => Promise<string | null>) => Promise<void>;
-  getAndStoreApiKey: (setupSecret: SetupSecret,
-                      fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
-                      storeItem: (key: string, value: string) => Promise<void>,
+  bootstrap: (
+    storeGetItem: (key: string) => Promise<string | null>
   ) => Promise<void>;
-  deviceCleanup: (deviceDelete: () => Promise<any>,
-                  clearStorage: () => Promise<void>) => Promise<void>;
+  getAndStoreApiKey: (
+    setupSecret: SetupSecret,
+    fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
+    storeItem: (key: string, value: string) => Promise<void>
+  ) => Promise<void>;
+  deviceCleanup: (
+    deviceDelete: () => Promise<any>,
+    clearStorage: () => Promise<void>
+  ) => Promise<void>;
 
   /**
    * turn off the splash screen and bootstrap the provider
@@ -115,11 +126,13 @@ class AuthProvider extends React.Component<Props, State>
       await this.logOut();
     }
 
-    return this.getAndStoreApiKey(setupSecret,
+    return this.getAndStoreApiKey(
+      setupSecret,
       // fetch is in global space
       // eslint-disable-next-line no-undef
       fetch,
-      this.asyncStorage.setItem);
+      this.asyncStorage.setItem
+    );
   };
 
   /**
@@ -136,37 +149,49 @@ class AuthProvider extends React.Component<Props, State>
    */
   logOut = async () => {
     Log.debug("logging out");
-    const mutationPromise =
-      () => (this.apolloClient)
-      ? this.apolloClient.mutate({
-        mutation: deleteDevice
-      })
-      : Promise.resolve({ data: {delete_device: true }});
+    const mutationPromise = () =>
+      this.apolloClient
+        ? this.apolloClient.mutate({
+            mutation: deleteDevice
+          })
+        : Promise.resolve({ data: { delete_device: true } });
 
     const clearStoragePromise = () => this.asyncStorage.clear();
 
-    return this.deviceCleanup(mutationPromise.bind(this),
-      clearStoragePromise.bind(this),
-      );
+    return this.deviceCleanup(
+      mutationPromise.bind(this),
+      clearStoragePromise.bind(this)
+    );
   };
 
-   /**
+  /**
    * create an authenticated Apollo client that has the right credentials to the api
    */
   private createApolloClient = (apiKey: string, uri: string) => {
+    const authLink = setContext((_, { headers }) => ({
+      headers: {
+        ...headers,
+        [X_API_KEY]: apiKey
+      }
+    }));
 
-    const authLink = setContext((_, { headers }) => (
-      {
-        headers: {
-          ...headers,
-          [X_API_KEY]: apiKey,
+    const httpLink = new HttpLink({ uri: uri });
+
+    const logoutLink = onError(( {response} : ErrorResponse) => {
+      // Log.error("login failure");
+      console.log("[Network error]:", response);
+        if (response.errors[0].extensions.exception.networkError.statusCode === 401) {
+          this.logOut();
+          this.apolloClient!.stop()
         }
-      }));
+    });
 
     const link = ApolloLink.from([
+      logoutLink,
       new RetryLink({ attempts: { max: 10 } }),
       authLink,
-      new HttpLink({ uri: uri })
+      httpLink,
+      
     ]);
 
     this.apolloClient = new ApolloClient({
@@ -177,53 +202,66 @@ class AuthProvider extends React.Component<Props, State>
     return this.apolloClient;
   };
 
-  clearApolloClient = () => this.apolloClient = undefined;
+  clearApolloClient = () => (this.apolloClient = undefined);
 
   render() {
     return (
       <AuthContext.Provider value={this.state}>
-        <AppLinkFlow onLoginFailure={this.onLoginFailure} onLoginSuccess={this.onLoginSuccess} />
-        {
-          (this.state.isLoading)
-            ? <Text>TODO replace with error feedback screen see MOB-117</Text>
-            : (this.state.setup && this.state.setup.apiKey && this.state.isAuthenticated)
-            // TODO this is for now using the configured API endpoint.  Once the API are built properly the same as this.state.setup.host
-            ? <ApolloProvider client={this.createApolloClient(this.state.setup.apiKey, config.mobileApi + "/graphql")}>
-              {this.props.children}
-            </ApolloProvider>
-            : <ManualFlow onLoginSuccess={this.onLoginSuccess} onLoginFailure={this.onLoginFailure}/>
-        }
+        <AppLinkFlow
+          onLoginFailure={this.onLoginFailure}
+          onLoginSuccess={this.onLoginSuccess}
+        />
+        {this.state.isLoading ? (
+          <Text>TODO replace with error feedback screen see MOB-117</Text>
+        ) : this.state.setup &&
+          this.state.setup.apiKey &&
+          this.state.isAuthenticated ? (
+          // TODO this is for now using the configured API endpoint.  Once the API are built properly the same as this.state.setup.host
+          <ApolloProvider
+            client={this.createApolloClient(
+              this.state.setup.apiKey,
+              config.mobileApi + "/graphql"
+            )}
+          >
+            {this.props.children}
+          </ApolloProvider>
+        ) : (
+          <ManualFlow
+            onLoginSuccess={this.onLoginSuccess}
+            onLoginFailure={this.onLoginFailure}
+          />
+        )}
       </AuthContext.Provider>
-    )
+    );
   }
 }
 
 export const deleteDevice = gql`
-    mutation totara_mobile_delete_device {
-        delete_device: totara_mobile_delete_device
-    }
+  mutation totara_mobile_delete_device {
+    delete_device: totara_mobile_delete_device
+  }
 `;
 
 export type Props = {
-  children: ReactNode
-  asyncStorage: AsyncStorageStatic
-}
+  children: ReactNode;
+  asyncStorage: AsyncStorageStatic;
+};
 
 export type State = {
-  isLoading: boolean,
-  isAuthenticated: boolean,
-  setup?: Setup,
-  logOut: () => Promise<void>
-}
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  setup?: Setup;
+  logOut: () => Promise<void>;
+};
 
 export type Setup = {
-  apiKey: string,
-  host: string
-}
+  apiKey: string;
+  host: string;
+};
 
 export interface SetupSecret {
-  secret: string
-  uri: string
+  secret: string;
+  uri: string;
 }
 
-export { AuthProvider, AuthConsumer }
+export { AuthProvider, AuthConsumer };
