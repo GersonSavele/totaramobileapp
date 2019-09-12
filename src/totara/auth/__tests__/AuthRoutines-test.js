@@ -159,7 +159,7 @@ describe("AuthRoutines.deviceCleanup should", () => {
 
     await deviceCleanup(authProvider)(mockDeleteDevice, mockClearStorageReject, authProvider);
     expect(setState).toHaveBeenCalledTimes(1);
-    expect(clearApollo).not.toHaveBeenCalled();
+    expect(clearApollo).toHaveBeenCalledTimes(1);
   });
 
 

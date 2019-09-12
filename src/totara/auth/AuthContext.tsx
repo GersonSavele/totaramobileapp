@@ -147,10 +147,10 @@ class AuthProvider extends React.Component<Props, State>
   /**
    * call logOut to clean any state of auth
    */
-  logOut = async () => {
+  logOut = async (localOnly: boolean = false) => { // TODO MOB-231 should remove this localOnly flag, a bit of a hack
     Log.debug("logging out");
     const mutationPromise = () =>
-      this.apolloClient
+      this.apolloClient && !localOnly
         ? this.apolloClient.mutate({
             mutation: deleteDevice
           })
@@ -178,12 +178,10 @@ class AuthProvider extends React.Component<Props, State>
     const httpLink = new HttpLink({ uri: uri });
 
     const logoutLink = onError(( {response} : ErrorResponse) => {
-      // Log.error("login failure");
-      console.log("[Network error]:", response);
-        if (response.errors[0].extensions.exception.networkError.statusCode === 401) {
-          this.logOut();
-          this.apolloClient!.stop()
-        }
+      Log.warn("Apollo client error", response);
+      if (response.errors[0].extensions.exception.networkError.statusCode === 401) { // TODO MOB-231 this is not the documented way to get status code fix this
+        this.logOut(true);
+      }
     });
 
     const link = ApolloLink.from([
@@ -202,7 +200,10 @@ class AuthProvider extends React.Component<Props, State>
     return this.apolloClient;
   };
 
-  clearApolloClient = () => (this.apolloClient = undefined);
+  clearApolloClient = () => { // TODO MOB-231 review this, possibly better implementation
+    if (this.apolloClient) this.apolloClient.stop();
+    this.apolloClient = undefined
+  };
 
   render() {
     return (

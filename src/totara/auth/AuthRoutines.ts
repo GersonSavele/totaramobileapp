@@ -108,8 +108,7 @@ export const deviceCleanup = (authProvider: AuthProviderType<Props, State>) =>
     if (!delete_device)
       Log.warn("Unable to delete device from server");
     return delete_device
-  }).then(() => authProvider.clearApolloClient())
-    .catch(error => {
+  }).catch(error => {
       Log.warn("remote clean up had issues, but continue to do local clean up", error)
     });
 
@@ -127,7 +126,8 @@ export const deviceCleanup = (authProvider: AuthProviderType<Props, State>) =>
     .then(() => authProvider.setState({
       setup: undefined,
       isAuthenticated: false
-    }));
+    }))
+    .then(() => authProvider.clearApolloClient()); // TODO review this on MOB-231
 
 };
 
