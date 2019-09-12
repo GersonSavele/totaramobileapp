@@ -18,7 +18,7 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
-import { ManualFlowSteps, useManualFlow } from "../ManualFlow";
+import { ManualFlowSteps, useManualFlow, manualFlowReducer } from "../ManualFlowHook";
 import { renderHook, act } from "@testing-library/react-hooks";
 
 describe("useManualFlow", () => {
@@ -69,6 +69,54 @@ describe("useManualFlow", () => {
       siteUrl: "https://success.com"
     });
     expect(onLoginSuccess).toBeCalledTimes(1);
+  })
+
+});
+
+
+describe("manualFlowReducer", () => {
+
+  it("should put flowStep into siteUrl when it is cancelled", () => {
+    const currentState = {
+      isSiteUrlSubmitted: true,
+      flowStep: ManualFlowSteps.native
+    };
+    const action = {
+      type: "cancelManualFlow"
+    };
+
+    const newState = manualFlowReducer(currentState, action);
+
+    expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
+    expect(newState.isSiteUrlSubmitted).toBeFalsy();
+
+  });
+
+  it("should use the auth on the SiteInfo for the next flowstep", () => {
+    const currentState = {
+      isSiteUrlSubmitted: true,
+      flowStep: ManualFlowSteps.siteUrl
+    };
+    const testSiteInfo = {
+      version: "2019061900",
+      auth: "native",
+      siteMaintenance: false,
+      theme: {
+        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+        brandPrimary: "#CCFFCC"
+      }
+    };
+    const action = {
+      type: "apiSuccess",
+      payload: testSiteInfo
+    };
+
+    const newState = manualFlowReducer(currentState, action);
+
+    expect(newState.flowStep).toBe(ManualFlowSteps.native);
+    expect(newState.siteInfo).toMatchObject(testSiteInfo);
+
+
   })
 
 });
