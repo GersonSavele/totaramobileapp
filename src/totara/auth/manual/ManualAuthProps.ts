@@ -23,6 +23,6 @@ import { SiteInfo } from "./ManualFlowReducer";
 export type ManualAuthProps = {
   siteUrl: string,
   siteInfo: SiteInfo,
-  onSetupSecretSubmit: (url: string) => void
+  onSetupSecretSuccess: (url: string) => void
   onSetupSecretCancel: () => void
 };

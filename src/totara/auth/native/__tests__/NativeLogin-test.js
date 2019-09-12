@@ -35,7 +35,7 @@ const mockOnSuccess = jest.fn();
 const mockOnFail = jest.fn();
 
 const nativeLogin = renderer.create(
-  <NativeLogin onSuccessfulSiteUrl={mockOnSuccess} siteUrl={"http://mobiledemo.wlg.totaralms.com"} onBack={mockOnFail} />
+  <NativeLogin onSetupSecretSuccess={mockOnSuccess} siteUrl={"http://mobiledemo.wlg.totaralms.com"} onBack={mockOnFail} />
 ).getInstance();
 
 describe("Passing different 'username' and 'password' for checking validation", () => {

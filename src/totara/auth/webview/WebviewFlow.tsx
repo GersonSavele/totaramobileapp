@@ -26,11 +26,11 @@ import { Modal, View } from "react-native";
 import WebviewLogin from "./WebviewLogin";
 import { ManualAuthProps } from "../manual/ManualAuthProps";
 
-const WebviewFlow = ({siteUrl, onSetupSecretSubmit, onSetupSecretCancel}: ManualAuthProps) => {
+const WebviewFlow = ({siteUrl, onSetupSecretSuccess, onSetupSecretCancel}: ManualAuthProps) => {
 
     return <View style={{ flex: 1 }}>
       <Modal animationType="slide" transparent={false} >
-        <WebviewLogin onSuccessfulLogin={onSetupSecretSubmit} siteUrl={siteUrl} onCancelLogin={onSetupSecretCancel} />
+        <WebviewLogin onSuccessfulLogin={onSetupSecretSuccess} siteUrl={siteUrl} onCancelLogin={onSetupSecretCancel} />
       </Modal>
     </View>
 

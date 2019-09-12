@@ -36,7 +36,7 @@ class NativeFlow extends React.Component<ManualAuthProps> {
   }
 
   onSetupLoginData = (data: string) => {
-    this.props.onSetupSecretSubmit(data);
+    this.props.onSetupSecretSuccess(data);
   };
 
   onCancelLogin = () => {
@@ -52,7 +52,7 @@ class NativeFlow extends React.Component<ManualAuthProps> {
         <Modal animationType="slide" transparent={false} >
           {/* //TODO will be covered in MOB-172 */}
           <NativeLogin
-            onSuccessfulSiteUrl={(siteUrl) => this.onSetupLoginData(siteUrl)}
+            onSetupSecretSuccess={(siteUrl) => this.onSetupLoginData(siteUrl)}
             siteUrl={this.props.siteUrl}
             onBack={this.onCancelLogin} />
         </Modal>

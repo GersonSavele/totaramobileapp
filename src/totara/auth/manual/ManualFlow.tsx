@@ -26,8 +26,9 @@ import { config, Log } from "@totara/lib";
 import { AuthProviderStateLift } from "../AuthComponent";
 import WebviewFlow from "../webview";
 import NativeFlow from "../native";
-import { manualFlowReducer, ActionType, SiteInfo } from "./ManualFlowReducer";
+import { manualFlowReducer, SiteInfo } from "./ManualFlowReducer";
 import SiteUrl from "./SiteUrl";
+import { useSiteUrl } from "./SiteUrlHook";
 
 /**
  * ManualFlow starts with a siteUrl, then depending what configured on the server
@@ -37,12 +38,12 @@ const ManualFlow = ({onLoginSuccess, onLoginFailure}: AuthProviderStateLift) => 
 
   const {
     manualFlowState,
-    onSiteUrlSubmit,
-    onSetupSecretSubmit,
+    onSiteUrlSuccess,
+    onSetupSecretSuccess,
     onSetupSecretCancel
   } = useManualFlow(mockFetch)({onLoginSuccess, onLoginFailure});
 
-  const StartComponent = () => <SiteUrl onSiteUrlSubmit={(siteUrl) => onSiteUrlSubmit(siteUrl)} siteUrl={manualFlowState.siteUrl}/>;
+  const StartComponent = () => SiteUrl(useSiteUrl({onSiteUrlSuccess: onSiteUrlSuccess, siteUrl: manualFlowState.siteUrl}));
 
   return(
     <View style={{flex: 1}}>
@@ -51,12 +52,12 @@ const ManualFlow = ({onLoginSuccess, onLoginFailure}: AuthProviderStateLift) => 
           case ManualFlowSteps.native:
             return (manualFlowState.siteUrl && manualFlowState.siteInfo)
               ? <NativeFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
-                            onSetupSecretSubmit={onSetupSecretSubmit} onSetupSecretCancel={onSetupSecretCancel}/>
+                            onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel}/>
               : <StartComponent/>;
           case ManualFlowSteps.webview:
             return (manualFlowState.siteUrl && manualFlowState.siteInfo)
               ? <WebviewFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
-                                onSetupSecretSubmit={onSetupSecretSubmit} onSetupSecretCancel={onSetupSecretCancel}/>
+                             onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel}/>
               : <StartComponent/>;
           case ManualFlowSteps.done:
             return null;
@@ -119,7 +120,7 @@ export const useManualFlow =
       Log.debug("siteInfo", siteInfo);
 
       if (!didCancel && "version" in siteInfo)
-        dispatch({type: ActionType.apiSuccess, payload: siteInfo });
+        dispatch({type: "apiSuccess", payload: siteInfo });
       else
         Log.warn("Did not dispatch apiSuccess: didCancel", didCancel, "siteInfo", siteInfo);
     };
@@ -133,22 +134,22 @@ export const useManualFlow =
     }
   }, [manualFlowState.siteUrl, manualFlowState.isSiteUrlSubmitted]);
 
-  const onSiteUrlSubmit = (url: string) => {
-    dispatch({type: ActionType.apiInit, payload: url})
+  const onSiteUrlSuccess = (url: string) => {
+    dispatch({type: "apiInit", payload: url})
   };
 
-  const onSetupSecretSubmit = (setupSecret: string) => {
-    dispatch({type: ActionType.setupSecretSuccess, payload: setupSecret})
+  const onSetupSecretSuccess = (setupSecret: string) => {
+    dispatch({type: "setupSecretSuccess", payload: setupSecret})
   };
 
   const onSetupSecretCancel = () => {
-    dispatch({type: ActionType.cancelManualFlow});
+    dispatch({type: "cancelManualFlow"});
   };
 
   return {
     manualFlowState,
-    onSiteUrlSubmit,
-    onSetupSecretSubmit,
+    onSiteUrlSuccess,
+    onSetupSecretSuccess,
     onSetupSecretCancel
   }
 
@@ -161,7 +162,7 @@ const mockFetch = () => {
     status: 200,
     json: () => ({
       version: "2019061900",
-      auth: "webview",
+      auth: "native",
       siteMaintenance: false,
       theme: {
         logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",

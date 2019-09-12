@@ -47,7 +47,7 @@ describe("useManualFlow", () => {
     const { result, waitForNextUpdate } = renderHook(({onLoginSuccess}) => useManualFlow(mockFetch)({onLoginSuccess: onLoginSuccess}), {initialProps: {onLoginSuccess: onLoginSuccess}});
 
     act(() => {
-      result.current.onSiteUrlSubmit("https://success.com");
+      result.current.onSiteUrlSuccess("https://success.com");
     });
 
     await waitForNextUpdate; // custom hook has useEffect need to wait for it
@@ -59,7 +59,7 @@ describe("useManualFlow", () => {
     });
 
     act( () => {
-      result.current.onSetupSecretSubmit("theSecret");
+      result.current.onSetupSecretSuccess("theSecret");
     });
 
     expect(result.current.manualFlowState).toMatchObject({

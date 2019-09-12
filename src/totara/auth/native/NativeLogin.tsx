@@ -39,8 +39,6 @@ import { translate } from "@totara/locale";
 
 class NativeLogin extends React.Component<Props, State> {
   
-  static actionType: number = 2;
-  
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -90,7 +88,7 @@ class NativeLogin extends React.Component<Props, State> {
       <SafeAreaView style={{ flex: 1 }}>
         <Container>
           <View style={styles.navigation} >
-            <TouchableOpacity onPress={() => { this.props.onBack(NativeLogin.actionType) }} style={styles.navigationCloseItem} >
+            <TouchableOpacity onPress={() => { this.props.onBack() }} style={styles.navigationCloseItem} >
               <FontAwesomeIcon icon="times" size={h3} color={theme.h1Color} />
             </TouchableOpacity>
           </View>
@@ -138,9 +136,9 @@ class NativeLogin extends React.Component<Props, State> {
 }
 
 type Props = {
-  onSuccessfulSiteUrl: (data: string, currentAction: number) => void
+  onSetupSecretSuccess: (data: string) => void
   siteUrl: string,
-  onBack: (action: number) => void
+  onBack: () => void
 };
 
 type State = {

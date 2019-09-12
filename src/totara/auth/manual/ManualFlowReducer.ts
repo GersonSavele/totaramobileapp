@@ -26,14 +26,14 @@ export const manualFlowReducer = (state: ManualFlowState, action: Action): Manua
   Log.debug("manualFlowReducer state:", state, "action", action);
 
   switch (action.type) {
-    case ActionType.apiInit:
+    case "apiInit":
       return {
         ...state,
         isSiteUrlSubmitted: true,
         siteUrl: action.payload as string,
       };
 
-    case ActionType.apiSuccess: {
+    case "apiSuccess": {
       const siteInfo = action.payload as SiteInfo;
       const flowStep = siteInfo.auth as ManualFlowSteps;
 
@@ -51,23 +51,20 @@ export const manualFlowReducer = (state: ManualFlowState, action: Action): Manua
       }
     }
 
-    case ActionType.cancelManualFlow:
+    case "cancelManualFlow":
       return {
         ...state,
         isSiteUrlSubmitted: false,
         flowStep: ManualFlowSteps.siteUrl
       };
 
-    case ActionType.setupSecretSuccess:
+    case "setupSecretSuccess":
       return {
         ...state,
         isSiteUrlSubmitted: false,
         setupSecret: action.payload as string,
         flowStep: ManualFlowSteps.done
       };
-
-    default:
-      throw new Error(); // TODO specify error
   }
 };
 
@@ -79,15 +76,8 @@ type ManualFlowState = {
   flowStep: ManualFlowSteps
 }
 
-export enum ActionType {
-  apiInit = "apiInit",
-  apiSuccess = "apiSuccess",
-  setupSecretSuccess = "setupSecretSuccess",
-  cancelManualFlow = "cancelManualFlow"
-}
-
 type Action = {
-  type: ActionType
+  type: "apiInit" | "apiSuccess" | "setupSecretSuccess" | "cancelManualFlow"
   payload?: string | SiteInfo
 }
 

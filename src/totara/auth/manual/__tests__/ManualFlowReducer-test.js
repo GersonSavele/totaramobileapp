@@ -18,7 +18,7 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
-import { manualFlowReducer, ActionType } from "../ManualFlowReducer";
+import { manualFlowReducer } from "../ManualFlowReducer";
 import { ManualFlowSteps } from "../ManualFlow";
 
 describe("manualFlowReducer", () => {
@@ -29,7 +29,7 @@ describe("manualFlowReducer", () => {
       flowStep: ManualFlowSteps.native
     };
     const action = {
-      type: ActionType.cancelManualFlow
+      type: "cancelManualFlow"
     };
 
     const newState = manualFlowReducer(currentState, action);
