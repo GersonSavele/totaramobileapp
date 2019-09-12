@@ -18,33 +18,27 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
-import { ManualFlowSteps, useManualFlow, manualFlowReducer } from "../ManualFlowHook";
+
 import { renderHook, act } from "@testing-library/react-hooks";
+import {
+  ManualFlowSteps,
+  useManualFlow,
+  manualFlowReducer,
+  fetchSiteInfo
+} from "../ManualFlowHook";
 
 describe("useManualFlow", () => {
-
-  const mockFetch = () => {
-
-    return Promise.resolve({
-      status: 200,
-      json: () => ({
-        auth: "webview",
-        siteMaintenance: false,
-        theme: {
-          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-          brandPrimary: "#CCFFCC"
-        }
-      })
-    });
-  };
-
   it("should be on step done when url and secret is valid", async () => {
-    const onLoginSuccess = jest.fn((setupSecret) => {
+    const onLoginSuccess = jest.fn(setupSecret => {
       expect(setupSecret.uri).toBe("https://success.com");
       expect(setupSecret.secret).toBe("theSecret");
     });
 
-    const { result, waitForNextUpdate } = renderHook(({onLoginSuccess}) => useManualFlow(mockFetch)({onLoginSuccess: onLoginSuccess}), {initialProps: {onLoginSuccess: onLoginSuccess}});
+    const { result, waitForNextUpdate } = renderHook(
+      ({ onLoginSuccess }) =>
+        useManualFlow(mockFetch)({ onLoginSuccess: onLoginSuccess }),
+      { initialProps: { onLoginSuccess: onLoginSuccess } }
+    );
 
     act(() => {
       result.current.onSiteUrlSuccess("https://success.com");
@@ -58,7 +52,7 @@ describe("useManualFlow", () => {
       siteUrl: "https://success.com"
     });
 
-    act( () => {
+    act(() => {
       result.current.onSetupSecretSuccess("theSecret");
     });
 
@@ -69,13 +63,10 @@ describe("useManualFlow", () => {
       siteUrl: "https://success.com"
     });
     expect(onLoginSuccess).toBeCalledTimes(1);
-  })
-
+  });
 });
 
-
 describe("manualFlowReducer", () => {
-
   it("should put flowStep into siteUrl when it is cancelled", () => {
     const currentState = {
       isSiteUrlSubmitted: true,
@@ -89,7 +80,6 @@ describe("manualFlowReducer", () => {
 
     expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
     expect(newState.isSiteUrlSubmitted).toBeFalsy();
-
   });
 
   it("should use the auth on the SiteInfo for the next flowstep", () => {
@@ -115,8 +105,91 @@ describe("manualFlowReducer", () => {
 
     expect(newState.flowStep).toBe(ManualFlowSteps.native);
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
+  });
 
+  it("should properly init the state", () => {
+    const currentState = {
+      isSiteUrlSubmitted: false,
+      siteUrl: undefined,
+      flowStep: ManualFlowSteps.siteUrl
+    };
+    const action = {
+      type: "apiInit",
+      payload: "https://totarasite.com"
+    };
 
-  })
+    const newState = manualFlowReducer(currentState, action);
+
+    expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
+    expect(newState.isSiteUrlSubmitted).toBeTruthy();
+    expect(newState.siteUrl).toBe("https://totarasite.com");
+  });
+
+  it("should put flowstep as done, set the setupSecret when setupSecretSuccess", () => {
+    const currentState = {
+      isSiteUrlSubmitted: true,
+      siteUrl: "https://totarasite.com",
+      flowStep: ManualFlowSteps.native
+    };
+    const action = {
+      type: "setupSecretSuccess",
+      payload: "the_secret"
+    };
+
+    const newState = manualFlowReducer(currentState, action);
+
+    expect(newState.flowStep).toBe(ManualFlowSteps.done);
+    expect(newState.isSiteUrlSubmitted).toBeFalsy();
+    expect(newState.setupSecret).toBe("the_secret");
+  });
+});
+
+describe("fetchData", () => {
+  it("should dispatch apiSuccess action with the siteInfo when it isn't cancelled", async () => {
+    expect.assertions(2);
+
+    const dispatch = jest.fn(({type, payload}) => {
+      expect(type).toBe("apiSuccess");
+      expect(payload).toMatchObject({
+        version: "1",
+        auth: "webview",
+        siteMaintenance: false,
+        theme: {
+          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+          brandPrimary: "#CCFFCC"
+        }
+      })
+    });
+
+    await fetchSiteInfo(mockFetch)({})("https://totarasite.com", false, dispatch);
+  });
+
+  it("should call onLoginFailure if the response has an error", async () => {
+    const onLoginFailure = jest.fn();
+    const mockFetch = () => Promise.resolve({
+        status: 500,
+        statusText: "server error"
+      });
+
+    await fetchSiteInfo(mockFetch)({onLoginFailure: onLoginFailure})("https://totarasite.com", false);
+
+    expect(onLoginFailure).toBeCalledTimes(1);
+  });
 
 });
+
+const mockFetch = () => {
+  return Promise.resolve({
+    status: 200,
+    json: () => ({
+      version: "1",
+      auth: "webview",
+      siteMaintenance: false,
+      theme: {
+        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+        brandPrimary: "#CCFFCC"
+      }
+    })
+  });
+};
+

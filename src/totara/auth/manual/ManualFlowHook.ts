@@ -21,7 +21,7 @@
 
 import { config, Log } from "@totara/lib";
 import { AuthProviderStateLift } from "@totara/auth/AuthComponent";
-import { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 
 /**
  * Custom react hook that manages the state of the manual flow
@@ -31,7 +31,7 @@ import { useEffect, useReducer } from "react";
  */
 export const useManualFlow =
   (fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>) =>
-    ({ onLoginSuccess, onLoginFailure }: AuthProviderStateLift): OutProps => {
+    (props: AuthProviderStateLift): OutProps => {
 
       const [manualFlowState, dispatch] = useReducer(manualFlowReducer,
         { isSiteUrlSubmitted: false, flowStep: ManualFlowSteps.siteUrl });
@@ -41,38 +41,15 @@ export const useManualFlow =
       if (manualFlowState.flowStep === ManualFlowSteps.done &&
         manualFlowState.siteUrl &&
         manualFlowState.setupSecret)
-        onLoginSuccess({ secret: manualFlowState.setupSecret, uri: manualFlowState.siteUrl });
+        props.onLoginSuccess({ secret: manualFlowState.setupSecret, uri: manualFlowState.siteUrl });
 
       // effect fetch the data when the right dependency has been met
       useEffect(() => {
         let didCancel = false;
 
-        const fetchData = async (siteUrl: string) => {
-          const infoUrl = config.infoUri(siteUrl);
-          const options = {
-            method: "POST",
-            body: JSON.stringify({ version: "app version, put right version here" })
-          };
-
-          const siteInfo = await fetch(infoUrl, options)
-            .then(response => {
-              if (response.status === 200)
-                return response.json() as unknown as SiteInfo;
-              else
-                throw new Error(response.statusText);
-            })
-            .catch((error) => onLoginFailure(error));
-          Log.debug("siteInfo", siteInfo);
-
-          if (!didCancel && "version" in siteInfo)
-            dispatch({ type: "apiSuccess", payload: siteInfo });
-          else
-            Log.warn("Did not dispatch apiSuccess: didCancel", didCancel, "siteInfo", siteInfo);
-        };
-
         if (manualFlowState.isSiteUrlSubmitted &&
           manualFlowState.flowStep === ManualFlowSteps.siteUrl &&
-          manualFlowState.siteUrl) fetchData(manualFlowState.siteUrl);
+          manualFlowState.siteUrl) fetchSiteInfo(fetch)(props)(manualFlowState.siteUrl, didCancel, dispatch);
 
         return () => {
           didCancel = true; // need to create a lock for async stuff
@@ -100,7 +77,12 @@ export const useManualFlow =
 
     };
 
-
+/**
+ * Reducer to manage ManualFlowState to proper states
+ * @param state - input state
+ * @param action - dispatched action to change state
+ * @returns - output state
+ */
 export const manualFlowReducer = (state: ManualFlowState, action: Action): ManualFlowState => {
   Log.debug("manualFlowReducer state:", state, "action", action);
 
@@ -126,7 +108,7 @@ export const manualFlowReducer = (state: ManualFlowState, action: Action): Manua
           siteInfo: siteInfo
         };
       } else {
-        throw new Error(); // TODO specify error
+        throw new Error(`Unknown auth response from server ${siteInfo.auth}`);
       }
     }
 
@@ -147,6 +129,42 @@ export const manualFlowReducer = (state: ManualFlowState, action: Action): Manua
   }
 };
 
+
+/**
+ * Fetch the siteInfo from the server, dispatch with proper action.  Taken outside useEffect for testing
+ * this follows this pattern: https://www.robinwieruch.de/react-hooks-fetch-data
+ */
+export const fetchSiteInfo = (
+  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
+) => (
+  props: AuthProviderStateLift
+) => async (
+  siteUrl: string,
+  didCancel: boolean,
+  dispatch: React.Dispatch<Action>
+) => {
+  const infoUrl = config.infoUri(siteUrl);
+  const options = {
+    method: "POST",
+    body: JSON.stringify({ version: "app version, put right version here" })
+  };
+
+  const siteInfo = await fetch(infoUrl, options)
+    .then(response => {
+      if (response.status === 200)
+        return (response.json() as unknown) as SiteInfo;
+      else throw new Error(response.statusText);
+    })
+    .catch(error => props.onLoginFailure(error));
+  Log.debug("siteInfo", siteInfo);
+
+  if (!didCancel && siteInfo && "version" in siteInfo)
+    dispatch({ type: "apiSuccess", payload: siteInfo });
+  else
+    Log.warn("Did not dispatch apiSuccess: didCancel", didCancel, "siteInfo", siteInfo);
+};
+
+
 export enum ManualFlowSteps {
   siteUrl = "siteUrl",
   native = "native",
@@ -156,33 +174,33 @@ export enum ManualFlowSteps {
 }
 
 type ManualFlowState = {
-  siteUrl?: string,
-  siteInfo?: SiteInfo,
-  setupSecret?: string
-  isSiteUrlSubmitted: boolean,
-  flowStep: ManualFlowSteps
-}
+  siteUrl?: string;
+  siteInfo?: SiteInfo;
+  setupSecret?: string;
+  isSiteUrlSubmitted: boolean;
+  flowStep: ManualFlowSteps;
+};
 
 type Action = {
-  type: "apiInit" | "apiSuccess" | "setupSecretSuccess" | "cancelManualFlow"
-  payload?: string | SiteInfo
-}
+  type: "apiInit" | "apiSuccess" | "setupSecretSuccess" | "cancelManualFlow";
+  payload?: string | SiteInfo;
+};
 
 type Theme = {
-  logoUrl?: string,
-  brandPrimary?: string
+  logoUrl?: string;
+  brandPrimary?: string;
 };
 
 export type SiteInfo = {
-  version: string,
-  auth: string,
-  siteMaintenance: boolean,
-  theme?: Theme
-}
+  version: string;
+  auth: string;
+  siteMaintenance: boolean;
+  theme?: Theme;
+};
 
 export type OutProps = {
-  manualFlowState: ManualFlowState,
-  onSiteUrlSuccess: (url: string) => void,
-  onSetupSecretSuccess: (setupSecret: string) => void,
-  onSetupSecretCancel: () => void
-}
+  manualFlowState: ManualFlowState;
+  onSiteUrlSuccess: (url: string) => void;
+  onSetupSecretSuccess: (setupSecret: string) => void;
+  onSetupSecretCancel: () => void;
+};
