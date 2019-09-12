@@ -31,109 +31,39 @@ import { Form, Input, Content, Container } from "native-base";
 import { resizeByScreenSize, theme, gutter, h1, h3 } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
-import { config } from "@totara/lib";
+import { OutProps } from "./SiteUrlHook";
 
+const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 
-class SiteUrl extends React.Component<Props, State> {
-
-  static actionType: number = 1;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      inputSiteUrl: this.props.siteUrl
-    };
-  }
-
-  setInputSiteUrl = () => {
-    var siteUrlValue = this.state.inputSiteUrl
-    const isValidSiteAddress = (siteUrlValue) ? this.isValidUrlText(siteUrlValue!) : false;
-
-    this.setState({
-      inputSiteUrlMessage: undefined,
-      inputSiteUrlStatus: undefined,
-    });
-    if (isValidSiteAddress) {
-      siteUrlValue = this.formatUrl(siteUrlValue!);
-      this.setState({
-        inputSiteUrl: siteUrlValue,
-        inputSiteUrlStatus: "success"
-      });
-      this.props.onSiteUrlSubmit(siteUrlValue!);
-    } else {
-      this.setState({
-        inputSiteUrlMessage: translate("message.enter_valid_url"),
-        inputSiteUrlStatus: "error"
-      });
-    }
-  };
-
-  isValidUrlText = (urlText: string) => {
-    var pattern = new RegExp("^(https?:\\/\\/)?" + // protocol
-      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-      "(\\#[-a-z\\d_]*)?$", "i"); // fragment locator
-    return pattern.test(urlText);
-  };
-
-  formatUrl = (urlText: string) => {
-    var pattern = new RegExp("^(https?:\\/\\/)", "i"); // fragment locator
-    if (!pattern.test(urlText)) {
-      return config.urlProtocol + "://" + urlText;
-    }
-    return urlText;
-  };
-
-  setStateInputSiteUrlWithShowError = (siteUrl: string) => {
-    this.setState({ inputSiteUrl: siteUrl });
-  };
-
-  render() {
-    return (
-      <Container>
-        <Content>
-          <Form style={styles.siteUrlContainer}>
-            <View style={styles.container}>
-              <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch" />
-              <View >
-                <Text style={styles.infoTitle}>{translate("manual.site_url_title")}</Text>
-                <Text style={styles.infoDescription}>{translate("manual.site_url_information")}</Text>
-              </View>
-            </View>
-            <View style={styles.formContainer}>
-              <InputTextWithInfo
-                placeholder={translate("manual.site_url_text_placeholder")}
-                message={this.state.inputSiteUrlMessage}
-                status={this.state.inputSiteUrlStatus} >
-                <Input
-                  keyboardType="url"
-                  clearButtonMode="while-editing"
-                  autoCapitalize="none"
-                  onChangeText={this.setStateInputSiteUrlWithShowError}
-                  value={this.state.inputSiteUrl}
-                  style={styles.inputText}
-                  autoFocus={true} />
-              </InputTextWithInfo>
-              <PrimaryButton onPress={this.setInputSiteUrl} text={translate("general.enter")} style={styles.buttonEnter} />
-            </View>
-          </Form>
-        </Content>
-      </Container>
-    );
-  }
-}
-
-type Props = {
-  onSiteUrlSubmit: (data: string) => void
-  siteUrl?: string
-};
-
-type State = {
-  inputSiteUrl?: string,
-  inputSiteUrlStatus?: "success" | "focus" | "error",
-  inputSiteUrlMessage?: string
+  return <Container>
+    <Content>
+      <Form style={styles.siteUrlContainer}>
+        <View style={styles.container}>
+          <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch"/>
+          <View>
+            <Text style={styles.infoTitle}>{translate("manual.site_url_title")}</Text>
+            <Text style={styles.infoDescription}>{translate("manual.site_url_information")}</Text>
+          </View>
+        </View>
+        <View style={styles.formContainer}>
+          <InputTextWithInfo
+            placeholder={translate("manual.site_url_text_placeholder")}
+            message={siteUrlState.inputSiteUrlMessage}
+            status={siteUrlState.inputSiteUrlStatus}>
+            <Input
+              keyboardType="url"
+              clearButtonMode="while-editing"
+              autoCapitalize="none"
+              onChangeText={onChangeInputSiteUrl}
+              value={siteUrlState.inputSiteUrl}
+              style={styles.inputText}
+              autoFocus={true}/>
+          </InputTextWithInfo>
+          <PrimaryButton onPress={onSubmit} text={translate("general.enter")} style={styles.buttonEnter}/>
+        </View>
+      </Form>
+    </Content>
+  </Container>
 };
 
 const styles = StyleSheet.create({
