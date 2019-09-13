@@ -18,7 +18,7 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
-import { SiteInfo } from "./ManualFlowReducer";
+import { SiteInfo } from "./ManualFlowHook";
 
 export type ManualAuthProps = {
   siteUrl: string,
