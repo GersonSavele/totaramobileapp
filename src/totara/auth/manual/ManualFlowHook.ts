@@ -143,7 +143,8 @@ export const fetchSiteInfo = (
   didCancel: boolean,
   dispatch: React.Dispatch<Action>
 ) => {
-  const infoUrl = config.infoUri(siteUrl);
+  const infoUrl = config.infoUri(config.mobileApi);
+  // const infoUrl = config.infoUri(siteUrl); for now not using siteUrl, using the mock api on mobileApi
   const options = {
     method: "POST",
     body: JSON.stringify({ version: "app version, put right version here" })
@@ -151,6 +152,7 @@ export const fetchSiteInfo = (
 
   const siteInfo = await fetch(infoUrl, options)
     .then(response => {
+      Log.debug("response", response);
       if (response.status === 200)
         return (response.json() as unknown) as SiteInfo;
       else throw new Error(response.statusText);

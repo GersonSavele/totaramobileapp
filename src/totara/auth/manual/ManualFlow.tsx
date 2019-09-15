@@ -62,21 +62,5 @@ const ManualFlow = ({ manualFlowState, onSiteUrlSuccess, onSetupSecretSuccess, o
 
 };
 
-const mockFetch = () => {
 
-  return Promise.resolve({
-    status: 200,
-    json: () => ({
-      version: "2019061900",
-      auth: "webview",
-      siteMaintenance: false,
-      theme: {
-        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        brandPrimary: "#CCFFCC"
-      }
-    })
-  } as unknown as Response);
-};
-
-
-export default (props: AuthProviderStateLift) => ManualFlow(useManualFlow(mockFetch)(props));
+export default (props: AuthProviderStateLift) => ManualFlow(useManualFlow(fetch)(props));
