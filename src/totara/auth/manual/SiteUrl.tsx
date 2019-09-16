@@ -32,9 +32,9 @@ import { resizeByScreenSize, theme, gutter, h1, h3 } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
 import { OutProps } from "./SiteUrlHook";
+import AuthErrorModal from "./AuthErrorModal";
 
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
-
   return <Container>
     <Content>
       <Form style={styles.siteUrlContainer}>

@@ -20,7 +20,7 @@
  */
 
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text } from "react-native";
 import { Button } from "native-base";
 
 type Props = {
@@ -29,15 +29,14 @@ type Props = {
   onPress?: (() => void)
 }
 
-const TertiaryButton = ({ children, text, onPress, ...rest}: Props) =>
+const TertiaryButton = ({ children, text, onPress, ...rest }: Props) => (
   <Button block rounded transparent onPress={onPress} {...rest}>
-    <TouchableOpacity>
-      {
-        text
-          ? <Text style={{ color: "#337ab7" }}>{text}</Text>
-          : children
-      }
-    </TouchableOpacity>
-  </Button>;
+    {
+      text 
+      ? <Text style={{ color: "#337ab7" }}>{text}</Text> 
+      : children
+    }
+  </Button>
+);
 
 export default TertiaryButton;

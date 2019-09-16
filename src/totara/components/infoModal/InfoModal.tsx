@@ -33,7 +33,7 @@ type Params = {
   title?: string;
   description?: string;
   imageType: string;
-  children? : ReactNode
+  children? : ReactNode;
 };
 
 const InfoModal = ({ title, description, imageType, children, ...rest }: Params) => {

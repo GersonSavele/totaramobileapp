@@ -20,15 +20,34 @@
  */
 
 import React from "react";
+import {Alert} from "react-native";
+
 import { PrimaryButton, InfoModal, TertiaryButton } from "@totara/components";
 
-export default class AuthErrorModal extends React.Component {
+export default class AuthErrorModal extends React.Component<Props, State> {
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      visible: true
+    }
+  }
   render() {
+  
     return (
       <InfoModal title={"Sorry!"} description={"The URL you have entered is not valid."} imageType={"url_not_valid"}>
-        <PrimaryButton text={"Try again"} style={{ marginBottom: 18 }} onPress={() => { }} />
-        <TertiaryButton text={"Try in browser"} onPress={() => { }} />
+        <PrimaryButton text={"Try again"} style={{ marginBottom: 18 }} onPress={() => { Alert.alert("Try again");}} />
+        <TertiaryButton  text={"Try in browser"} onPress={() => { this.setState({visible: !this.state.visible});}} />
       </InfoModal>
     );
   }
 }
+
+type State = {
+  visible: boolean
+}
+type Props = {
+  title: string,
+  description: string,
+  imageType: string
+};
