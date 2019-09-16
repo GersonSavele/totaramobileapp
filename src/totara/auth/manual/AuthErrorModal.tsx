@@ -33,9 +33,8 @@ export default class AuthErrorModal extends React.Component<Props, State> {
     }
   }
   render() {
-  
     return (
-      <InfoModal title={"Sorry!"} description={"The URL you have entered is not valid."} imageType={"url_not_valid"}>
+      <InfoModal title={"Sorry!"} description={"The URL you have entered is not valid."} imageType={"url_not_valid"} visible={this.state.visible}>
         <PrimaryButton text={"Try again"} style={{ marginBottom: 18 }} onPress={() => { Alert.alert("Try again");}} />
         <TertiaryButton  text={"Try in browser"} onPress={() => { this.setState({visible: !this.state.visible});}} />
       </InfoModal>

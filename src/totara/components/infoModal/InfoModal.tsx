@@ -34,6 +34,7 @@ type Params = {
   description?: string;
   imageType: string;
   children? : ReactNode;
+  visible: boolean;
 };
 
 const InfoModal = ({ title, description, imageType, children, ...rest }: Params) => {
