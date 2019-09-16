@@ -24,7 +24,7 @@ import { View } from "react-native";
 
 import { AuthProviderStateLift } from "../AuthComponent";
 import WebviewFlow from "./webview";
-import NativeFlow from "../native";
+import NativeFlow from "./native";
 import { useManualFlow, ManualFlowSteps, OutProps } from "./ManualFlowHook";
 import SiteUrl from "./SiteUrl";
 import { useSiteUrl } from "./SiteUrlHook";

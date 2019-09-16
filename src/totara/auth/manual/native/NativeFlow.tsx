@@ -27,7 +27,7 @@ import { StyleProvider } from "native-base";
 import { theme, getTheme } from "@totara/theme";
 
 import NativeLogin from "./NativeLogin";
-import { ManualAuthProps } from "../manual/ManualAuthProps";
+import { ManualAuthProps } from "../ManualAuthProps";
 
 class NativeFlow extends React.Component<ManualAuthProps> {
 

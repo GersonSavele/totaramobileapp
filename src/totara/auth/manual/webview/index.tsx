@@ -19,7 +19,5 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-// TODO move this down into auth/manual/webview
-
 import WebviewFlow from "./WebviewFlow";
 export default WebviewFlow;

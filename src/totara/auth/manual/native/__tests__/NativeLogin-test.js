@@ -25,7 +25,7 @@ import renderer from "react-test-renderer";
 import * as  NativeBase from "native-base";
 
 
-import NativeLogin from "../NativeLogin";
+import NativeLogin from "totara/auth/manual/native/NativeLogin";
 
 
 NativeBase.Container = jest.fn(() => <View />);
