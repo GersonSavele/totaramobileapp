@@ -35,11 +35,11 @@ type Params = {
 const ErrorFeedbackModal = ({ title, description, imageType }: Params) => {
   return (
     <InfoModal
-      title={title != null ? title : translate("error_feedback-modal.title")}
+      title={title != null ? title : translate("general_error_feedback-modal.title")}
       description={
         description != null
           ? description
-          : translate("error_feedback-modal.description")
+          : translate("general_error_feedback-modal.description")
       }
       imageType={imageType != null ? imageType : "url_not_valid"}
     >
@@ -52,7 +52,7 @@ const ErrorFeedbackViewButtons = () => {
   return (
     <View style={styles.ContainerStyle}>
       <ButtonWithIcon
-        buttonTitle={translate("error_feedback-modal.button_title")}
+        buttonTitle={translate("general_error_feedback-modal.button_title")}
         onPress={() => ""}
         buttonTitleFontWeight="600"
         buttonTitleColor="#FFF"
@@ -60,7 +60,7 @@ const ErrorFeedbackViewButtons = () => {
         fontSize={normalize(16)}
       />
       <ButtonWithIcon
-        buttonTitle={translate("error_feedback-modal.try_in_browser")}
+        buttonTitle={translate("general_error_feedback-modal.try_in_browser")}
         onPress={() => ""}
         fontSize={normalize(16)}
       ></ButtonWithIcon>

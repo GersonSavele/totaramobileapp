@@ -33,15 +33,15 @@
     "site_url_text_placeholder": "Enter site url"
   },
   "additional-actions-modal": {
-    "auth_model_title": "You need to complete\nsome action",
-    "auth_model_description" : "You will be re-directed to browser\nto perform some action and come\nback to the app to continue\nyour learning",
+    "auth_model_title": "Action required",
+    "auth_model_description" : "You are required to visit a browser\nto complete some action(s).",
     "auth_model_go_to_browser" : "Go to browser",
     "auth_model_logout":"Logout"
   },
-  "error_feedback-modal": {
-    "title": "Sorry!",
-    "description" : "The URL you have entered is not valid.",
-    "button_title" : "Try again",
+  "general_error_feedback-modal": {
+    "title": "Ooops!",
+    "description" : "Something went wrong",
+    "button_title" : "Refresh",
     "try_in_browser" : "Try in browser"
   },
   "message": {
