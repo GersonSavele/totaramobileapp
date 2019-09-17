@@ -30,7 +30,7 @@ import ButtonWithIcon from "./ButtonWithIcon";
 import { InfoModal } from "./infoModal";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
-import ErrorFeedbackModal from "./ErrorFeedbackModal";
+import GeneralErrorModal from "./GeneralErrorModal";
 import InputTextWithInfo from "./InputTextWithInfo";
 import TertiaryButton from "./TertiaryButton";
 
@@ -45,7 +45,7 @@ export {
   ButtonWithIcon,
   AppStateListener,
   PrimaryButton,
-  ErrorFeedbackModal,
+  GeneralErrorModal,
   InfoModal,
   InputTextWithInfo,
   TertiaryButton

@@ -25,7 +25,7 @@ import { Image, StyleSheet, Dimensions } from "react-native";
 export const IMAGES = {
   complete_action: require("@resources/images/complete_action/complete_action.png"),
   url_not_valid: require("@resources/images/url_not_valid/url_not_valid.png"),
-  general_error: require("@resources/images/url_not_valid/url_not_valid.png")
+  general_error: require("@resources/images/general_error/general_error.png")
 };
 
 type Params = {

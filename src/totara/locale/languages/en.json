@@ -41,8 +41,8 @@
   "general_error_feedback-modal": {
     "title": "Ooops!",
     "description" : "Something went wrong",
-    "button_title" : "Refresh",
-    "try_in_browser" : "Try in browser"
+    "primary_title" : "Refresh",
+    "tertiary_title" : "Try in browser"
   },
   "message": {
     "enter_valid_url": "Enter a valid site address",
