@@ -24,7 +24,8 @@ import { Image, StyleSheet, Dimensions } from "react-native";
 
 export const IMAGES = {
   complete_action: require("@resources/images/complete_action/complete_action.png"),
-  url_not_valid: require("@resources/images/url_not_valid/url_not_valid.png")
+  url_not_valid: require("@resources/images/url_not_valid/url_not_valid.png"),
+  general_error: require("@resources/images/url_not_valid/url_not_valid.png")
 };
 
 type Params = {
@@ -44,6 +45,10 @@ const setImage = ({ imageType }: Params) => {
     case "url_not_valid":
       return (
         <Image style={styles.containerStyle} source={IMAGES.url_not_valid} />
+      );
+    case "general_error":
+      return (
+        <Image style={styles.containerStyle} source={IMAGES.general_error} />
       );
     default:
       return (

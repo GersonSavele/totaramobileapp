@@ -41,7 +41,7 @@ const ErrorFeedbackModal = ({ title, description, imageType }: Params) => {
           ? description
           : translate("general_error_feedback-modal.description")
       }
-      imageType={imageType != null ? imageType : "url_not_valid"}
+      imageType={imageType != null ? imageType : "general_error"}
     >
       <ErrorFeedbackViewButtons />
     </InfoModal>
