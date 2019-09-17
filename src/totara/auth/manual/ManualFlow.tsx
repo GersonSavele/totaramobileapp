@@ -62,4 +62,6 @@ const ManualFlow = ({ manualFlowState, onSiteUrlSuccess, onSetupSecretSuccess, o
 };
 
 
+// fetch is available on global scope
+// eslint-disable-next-line no-undef
 export default (props: AuthProviderStateLift) => ManualFlow(useManualFlow(fetch)(props));
