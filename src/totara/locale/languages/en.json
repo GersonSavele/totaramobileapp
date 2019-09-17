@@ -57,5 +57,11 @@
     "forgot_username_password": "Forgot your username or password?",
     "footer_note": "Is this your first time here?",
     "footer_action": "Create new account"
+  },
+  "error-not-valid-url": {
+    "title": "Sorry!",
+    "description" : "The URL you have entered is not valid.",
+    "primary_title" : "Try again",
+    "tertiary_title" : "Try in browser"
   }
 }

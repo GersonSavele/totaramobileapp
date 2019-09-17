@@ -34,11 +34,12 @@ import { translate } from "@totara/locale";
 import { OutProps } from "./SiteUrlHook";
 
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
+
   return <Container>
     <Content>
       <Form style={styles.siteUrlContainer}>
         <View style={styles.container}>
-          <Image source={require("@resources/images/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch"/>
+          <Image source={require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch"/>
           <View>
             <Text style={styles.infoTitle}>{translate("manual.site_url_title")}</Text>
             <Text style={styles.infoDescription}>{translate("manual.site_url_information")}</Text>

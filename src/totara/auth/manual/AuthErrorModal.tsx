@@ -20,23 +20,24 @@
  */
 
 import React from "react";
-import {Alert} from "react-native";
+import { Linking } from "react-native";
 
 import { PrimaryButton, InfoModal, TertiaryButton } from "@totara/components";
+import { translate } from "@totara/locale";
 
 export default class AuthErrorModal extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      visible: true
+      visible: this.props.visible
     }
   }
   render() {
     return (
-      <InfoModal title={"Sorry!"} description={"The URL you have entered is not valid."} imageType={"url_not_valid"} visible={this.state.visible}>
-        <PrimaryButton text={"Try again"} style={{ marginBottom: 18 }} onPress={() => { Alert.alert("Try again");}} />
-        <TertiaryButton  text={"Try in browser"} onPress={() => { this.setState({visible: !this.state.visible});}} />
+      <InfoModal title={translate("error-not-valid-url.title")} description={translate("error-not-valid-url.description")} imageType={"url_not_valid"} visible={this.state.visible}>
+        <PrimaryButton text={translate("error-not-valid-url.primary_title")} style={{ marginBottom: 18 }} onPress={() => { this.setState({visible: !this.state.visible}); }} />
+        <TertiaryButton  text={translate("error-not-valid-url.tertiary_title")} onPress={() => { Linking.openURL(this.props.siteUrl); }} />
       </InfoModal>
     );
   }
@@ -46,7 +47,7 @@ type State = {
   visible: boolean
 }
 type Props = {
-  title: string,
-  description: string,
-  imageType: string
+  errorType: "not_valid_url",
+  siteUrl: string,
+  visible: boolean
 };

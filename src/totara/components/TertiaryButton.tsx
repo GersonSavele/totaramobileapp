@@ -19,12 +19,12 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React from "react";
+import React, { ReactNode } from "react";
 import { Text } from "react-native";
 import { Button } from "native-base";
 
 type Props = {
-  children?: Element,
+  children?: ReactNode,
   text?: string
   onPress?: (() => void)
 }
