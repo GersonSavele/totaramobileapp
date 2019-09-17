@@ -11,6 +11,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
-        android:src="@mipmap/launch_screen"
+        android:src="@mipmap/totara_logo_white"
         android:contentDescription="@string/app_name" />
 </RelativeLayout>
