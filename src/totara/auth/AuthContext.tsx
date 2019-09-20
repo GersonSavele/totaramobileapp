@@ -20,7 +20,7 @@
  *
  */
 
-import React, { ReactNode, useEffect, useReducer } from "react";
+import React, { ReactNode, useEffect, useReducer, useRef } from "react";
 import { Text } from "react-native";
 import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "react-apollo";
@@ -41,16 +41,13 @@ import { X_API_KEY } from "@totara/lib/Constant";
 import {
   getAndStoreApiKey,
   deviceCleanup,
-  bootstrap,
-  AuthProviderType
+  bootstrap
 } from "./AuthRoutines";
 import AppLinkFlow from "./app-link";
 import ManualFlow from "./manual/ManualFlow";
 
 const AuthContext = React.createContext<State2>({
-  setup: undefined,
   isAuthenticated: false,
-  isLoading: true,
   logOut: () => {
     return Promise.resolve();
   }
@@ -74,220 +71,18 @@ const AuthConsumer = AuthContext.Consumer;
  *
  */
 
-class AuthProvider2 extends React.Component<Props, State>
-  implements AuthProviderType<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      setup: undefined,
-      logOut: this.logOut,
-      isLoading: true,
-      isAuthenticated: false
-    };
-
-    this.asyncStorage = props.asyncStorage;
-    this.bootstrap = bootstrap(this);
-    this.getAndStoreApiKey = getAndStoreApiKey(this);
-    this.deviceCleanup = deviceCleanup(this);
-  }
-
-  apolloClient?: ApolloClient<NormalizedCacheObject> = undefined;
-  asyncStorage: AsyncStorageStatic;
-  bootstrap: (
-    storeGetItem: (key: string) => Promise<string | null>
-  ) => Promise<void>;
-  getAndStoreApiKey: (
-    setupSecret: SetupSecret,
-    fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
-    storeItem: (key: string, value: string) => Promise<void>
-  ) => Promise<void>;
-  deviceCleanup: (
-    deviceDelete: () => Promise<any>,
-    clearStorage: () => Promise<void>
-  ) => Promise<void>;
-
-  /**
-   * turn off the splash screen and bootstrap the provider
-   */
-  async componentDidMount() {
-    SplashScreen.hide();
-    await this.bootstrap(this.asyncStorage.getItem);
-  }
-
-  /**
-   * When a successful login is achieved call this with setupSecret it would start the login sequence and right authenticated state
-   *
-   * Can be used on either a AuthComponent react component or a promise chain
-   *
-   * @param setupSecret
-   */
-  onLoginSuccess = async (setupSecret: SetupSecret) => {
-    if (this.state.isAuthenticated) {
-      await this.logOut();
-    }
-
-    return this.getAndStoreApiKey(
-      setupSecret,
-      // fetch is in global space
-      // eslint-disable-next-line no-undef
-      fetch,
-      this.asyncStorage.setItem
-    );
-  };
-
-  /**
-   * When a failure of login happens call this
-   *
-   * @param error
-   */
-  onLoginFailure = async (error: Error) => {
-    Log.error("login failure", error);
-  };
-
-  /**
-   * call logOut to clean any state of auth
-   */
-  logOut = async (localOnly: boolean = false) => { // TODO MOB-231 should remove this localOnly flag, a bit of a hack
-    Log.debug("logging out");
-    const mutationPromise = () =>
-      this.apolloClient && !localOnly
-        ? this.apolloClient.mutate({
-            mutation: deleteDevice
-          })
-        : Promise.resolve({ data: { delete_device: true } });
-
-    const clearStoragePromise = () => this.asyncStorage.clear();
-
-    return this.deviceCleanup(
-      mutationPromise.bind(this),
-      clearStoragePromise.bind(this)
-    );
-  };
-
-  /**
-   * create an authenticated Apollo client that has the right credentials to the api
-   */
-  private createApolloClient = (apiKey: string, uri: string) => {
-    const authLink = setContext((_, { headers }) => ({
-      headers: {
-        ...headers,
-        [X_API_KEY]: apiKey
-      }
-    }));
-
-    const httpLink = new HttpLink({ uri: uri });
-
-    const logoutLink = onError(( {response} : ErrorResponse) => {
-      Log.warn("Apollo client error", response);
-      if (response.errors[0].extensions.exception.networkError.statusCode === 401) { // TODO MOB-231 this is not the documented way to get status code fix this
-        this.logOut(true);
-      }
-    });
-
-    const link = ApolloLink.from([
-      logoutLink,
-      new RetryLink({ attempts: { max: 10 } }),
-      authLink,
-      httpLink,
-      
-    ]);
-
-    this.apolloClient = new ApolloClient({
-      link: link,
-      cache: new InMemoryCache()
-    });
-
-    return this.apolloClient;
-  };
-
-  clearApolloClient = () => { // TODO MOB-231 review this, possibly better implementation
-    if (this.apolloClient) this.apolloClient.stop();
-    this.apolloClient = undefined
-  };
-
-  render() {
-    return (
-      <AuthContext.Provider value={this.state}>
-        <AppLinkFlow
-          onLoginFailure={this.onLoginFailure}
-          onLoginSuccess={this.onLoginSuccess}
-        />
-        {this.state.isLoading ? (
-          <Text>TODO replace with error feedback screen see MOB-117</Text>
-        ) : this.state.setup &&
-          this.state.setup.apiKey &&
-          this.state.isAuthenticated ? (
-          // TODO this is for now using the configured API endpoint.  Once the API are built properly the same as this.state.setup.host
-          <ApolloProvider
-            client={this.createApolloClient(
-              this.state.setup.apiKey,
-              config.mobileApi + "/graphql"
-            )}
-          >
-            {this.props.children}
-          </ApolloProvider>
-        ) : (
-          <ManualFlow
-            onLoginSuccess={this.onLoginSuccess}
-            onLoginFailure={this.onLoginFailure}
-          />
-        )}
-      </AuthContext.Provider>
-    );
-  }
-}
-
-/**
- * create an authenticated Apollo client that has the right credentials to the api
- */
-const createApolloClient = (apiKey: string, uri: string) => {
-  const authLink = setContext((_, { headers }) => ({
-    headers: {
-      ...headers,
-      [X_API_KEY]: apiKey
-    }
-  }));
-
-  const httpLink = new HttpLink({ uri: uri });
-
-  const logoutLink = onError(( {response} : ErrorResponse) => {
-    Log.warn("Apollo client error", response);
-    if (response.errors[0].extensions.exception.networkError.statusCode === 401) { // TODO MOB-231 this is not the documented way to get status code fix this
-//      this.logOut(true);
-      // TODO broken make a dispatch somehow
-    }
-  });
-
-  const link = ApolloLink.from([
-    logoutLink,
-    new RetryLink({ attempts: { max: 10 } }),
-    authLink,
-    httpLink,
-
-  ]);
-
-  return new ApolloClient({
-    link: link,
-    cache: new InMemoryCache()
-  });
-
-};
-
-
 const AuthProvider = (props: Props) => {
 
   const {
     authContextState,
     onLoginSuccess,
     onLoginFailure,
-    logOut
+    logOut,
+    apolloClient
   } = useAuthContext(props);
 
   const providerValue = {
-    isLoading: authContextState.isLoading,
     isAuthenticated: authContextState.isAuthenticated,
-    setup: authContextState.setup,
     logOut: logOut
   };
 
@@ -299,16 +94,8 @@ const AuthProvider = (props: Props) => {
       />
       {authContextState.isLoading ? (
         <Text>TODO replace with error feedback screen see MOB-117</Text>
-      ) : authContextState.setup &&
-      authContextState.setup.apiKey &&
-      authContextState.isAuthenticated ? (
-        // TODO this is for now using the configured API endpoint.  Once the API are built properly the same as this.state.setup.host
-        <ApolloProvider
-          client={createApolloClient(
-            authContextState.setup.apiKey,
-            config.mobileApi + "/graphql"
-          )}
-        >
+      ) : apolloClient ? (
+        <ApolloProvider client={apolloClient}>
           {props.children}
         </ApolloProvider>
       ) : (
@@ -332,6 +119,49 @@ const useAuthContext = ({asyncStorage}: Props) => {
     });
 
   /**
+   * call logOut to clean any state of auth
+   */
+  const logOut = async (localOnly: boolean = false) => { // TODO MOB-231 should remove this localOnly flag, a bit of a hack
+    Log.debug("logging out");
+    const mutationPromise = () => apolloClient.current && !localOnly
+      ? apolloClient.current.mutate({
+        mutation: deleteDevice
+      })
+      : Promise.resolve({ data: { delete_device: true } });
+
+    const clearStoragePromise = () => asyncStorage.clear();
+
+    return deviceCleanup(
+      mutationPromise,
+      clearStoragePromise
+    ).then( () => dispatch({type: "logOutSuccess"}));
+  };
+
+  // instance of apollo client this is valid as per faq
+  // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-instance-variables
+  const apolloClient = useRef<ApolloClient<NormalizedCacheObject> | null>(null);
+
+  if (
+    authContextState.setup &&
+    authContextState.setup.apiKey &&
+    authContextState.isAuthenticated &&
+    apolloClient.current === null
+  ) {
+    Log.debug("creating apolloClient");
+    apolloClient.current = createApolloClient(
+      authContextState.setup.apiKey,
+      config.mobileApi + "/graphql",
+      logOut
+    );
+  } else if (apolloClient.current) {
+    Log.debug("stopping apolloClient");
+    // TODO MOB-231 review this, possibly better implementation
+    apolloClient.current.stop();
+    apolloClient.current = null;
+  }
+
+
+  /**
    * When a successful login is achieved call this with setupSecret it would start the login sequence and right authenticated state
    *
    * Can be used on either a AuthComponent react component or a promise chain
@@ -339,16 +169,24 @@ const useAuthContext = ({asyncStorage}: Props) => {
    * @param setupSecret
    */
   const onLoginSuccess = async (setupSecret: SetupSecret) => {
-    // if (authContextState.isAuthenticated) {
-    //   await this.logOut();
-    // }
+    if (authContextState.isAuthenticated) {
+      await logOut();
+    }
 
     dispatch({type: "loginInit", payload: setupSecret});
-
-    // return new Promise((resolve, reject) => {
-    //   if (authContextState.authStep == AuthStep.setupDone) resolve();
-    // });
   };
+
+  /**
+   * When a failure of login happens call this
+   *
+   * @param error
+   */
+  const onLoginFailure = async (error: Error) => {
+    Log.error("login failure", error);
+
+    // TODO add a dispatch here for failure state
+  };
+
 
   /**
    * turn off the splash screen and bootstrap the provider
@@ -387,54 +225,12 @@ const useAuthContext = ({asyncStorage}: Props) => {
     }, [authContextState.authStep]
   );
 
-  useEffect(() => {
-    const doCleanup = () => {
-      Log.debug("doCleanup", authContextState);
-      const mutationPromise = () => Promise.resolve({ data: { delete_device: true } });
-
-      const clearStoragePromise = () => asyncStorage.clear();
-
-      return deviceCleanup(
-        mutationPromise,
-        clearStoragePromise
-      ).then( () => dispatch({type: "logOutSuccess"}));
-    };
-
-    if (authContextState.authStep === AuthStep.logOutInit) doCleanup()
-
-  }, [authContextState.authStep]);
-
-  /**
-   * When a failure of login happens call this
-   *
-   * @param error
-   */
-  const onLoginFailure = async (error: Error) => {
-    Log.error("login failure", error);
-  };
-
-  /**
-   * call logOut to clean any state of auth
-   */
-  const logOut = async (localOnly: boolean = false) => { // TODO MOB-231 should remove this localOnly flag, a bit of a hack
-    Log.debug("logging out");
-
-    dispatch({type: "logOutInit"});
-    // const mutationPromise = () =>
-    //   this.apolloClient && !localOnly
-    //     ? this.apolloClient.mutate({
-    //       mutation: deleteDevice
-    //     })
-    //     : Promise.resolve({ data: { delete_device: true } });
-    //
-  };
-
-
   return {
     authContextState,
     onLoginSuccess,
     onLoginFailure,
-    logOut
+    logOut,
+    apolloClient: apolloClient.current
   }
 };
 
@@ -477,12 +273,6 @@ const authContextReducer = (state: State, action: Action): State => {
         }
     }
 
-    case "logOutInit":
-      return {
-        ...state,
-        authStep: AuthStep.logOutInit
-      };
-
     case "logOutSuccess":
       return {
         ...state,
@@ -491,12 +281,47 @@ const authContextReducer = (state: State, action: Action): State => {
         authStep: AuthStep.bootstrapDone
       }
   }
+};
 
+
+/**
+ * create an authenticated Apollo client that has the right credentials to the api
+ */
+const createApolloClient = (apiKey: string, uri: string, logOut: (localOnly: boolean) => Promise<void>) => {
+  const authLink = setContext((_, { headers }) => ({
+    headers: {
+      ...headers,
+      [X_API_KEY]: apiKey
+    }
+  }));
+
+  const httpLink = new HttpLink({ uri: uri });
+
+  const logoutLink = onError(( {response} : ErrorResponse) => {
+    Log.warn("Apollo client error", response);
+    if (response.errors[0].extensions.exception.networkError.statusCode === 401) { // TODO MOB-231 this is not the documented way to get status code fix this
+      logOut(true);
+    }
+  });
+
+  const link = ApolloLink.from([
+    logoutLink,
+    new RetryLink({ attempts: { max: 10 } }),
+    authLink,
+    httpLink,
+
+  ]);
+
+  return new ApolloClient({
+    link: link,
+    cache: new InMemoryCache()
+  });
 
 };
 
+
 type Action = {
-  type: "logOutInit" | "logOutSuccess" | "loginInit" | "loginSuccess" | "bootstrapSuccess";
+  type: "logOutSuccess" | "loginInit" | "loginSuccess" | "bootstrapSuccess";
   payload?: Setup | SetupSecret;
 };
 
@@ -516,7 +341,6 @@ enum AuthStep {
   bootstrapDone,
   setupSecretInit,
   setupDone,
-  logOutInit
 }
 
 export type State = {
@@ -524,14 +348,11 @@ export type State = {
   isAuthenticated: boolean;
   setup?: Setup;
   setupSecret?: SetupSecret;
-  // logOut: () => Promise<void>;
   authStep: AuthStep
 };
 
 export type State2 = {
-  isLoading: boolean;
   isAuthenticated: boolean;
-  setup?: Setup;
   logOut: () => Promise<void>;
 };
 
