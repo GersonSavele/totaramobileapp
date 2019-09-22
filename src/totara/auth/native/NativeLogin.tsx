@@ -24,17 +24,15 @@ import {
   View,
   Image,
   Text,
-  SafeAreaView,
   TouchableOpacity,
   Linking
 } from "react-native";
-// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { SafeAreaView } from "react-navigation";
 import { Form, Input, Content, Container } from "native-base";
 
 import { config } from "@totara/lib";
 import { resizeByScreenSize, theme, gutter, h1, h3 } from "@totara/theme";
-import { PrimaryButton, InputTextWithInfo } from "@totara/components";
+import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
 import { translate } from "@totara/locale";
 
 class NativeLogin extends React.Component<Props, State> {
@@ -88,9 +86,7 @@ class NativeLogin extends React.Component<Props, State> {
       <SafeAreaView style={{ flex: 1 }}>
         <Container>
           <View style={styles.navigation} >
-            <TouchableOpacity onPress={() => { this.props.onBack() }} style={styles.navigationCloseItem} >
-              <FontAwesomeIcon icon="times" size={h3} color={theme.h1Color} />
-            </TouchableOpacity>
+            <TouchableIcon onPress={() => { this.props.onBack() }} icon={"times"} disabled={false} />
           </View>
           <Content style={styles.content}>
             <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} />

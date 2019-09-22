@@ -21,19 +21,18 @@
  */
 
 import React from "react";
-import { Modal, View } from "react-native";
+import { Modal } from "react-native";
 
 import WebviewLogin from "./WebviewLogin";
-import { ManualAuthProps } from "../manual/ManualAuthProps";
+import { ManualAuthProps } from "../ManualAuthProps";
+import { useWebviewLogin } from "./WebviewLoginHook";
 
 const WebviewFlow = ({siteUrl, onSetupSecretSuccess, onSetupSecretCancel}: ManualAuthProps) => {
 
-    return <View style={{ flex: 1 }}>
-      <Modal animationType="slide" transparent={false} >
-        <WebviewLogin onSuccessfulLogin={onSetupSecretSuccess} siteUrl={siteUrl} onCancelLogin={onSetupSecretCancel} />
+  const UserWebviewLogin = () => WebviewLogin(useWebviewLogin({siteUrl: siteUrl, onCancelWebviewLogin: onSetupSecretCancel, onRecievedSetupSecret: onSetupSecretSuccess}));
+    return <Modal animationType="slide">
+        <UserWebviewLogin  />
       </Modal>
-    </View>
-
 };
 
 export default  WebviewFlow;

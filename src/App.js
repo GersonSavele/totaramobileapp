@@ -56,6 +56,8 @@ import {
   faPenSquare,
   faBook,
   faPen,
+  faChevronLeft,
+  faUnlockAlt
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
@@ -246,7 +248,9 @@ const initFontAwesome = () => {
     faBookOpen,
     faPenSquare,
     faBook,
-    faPen
+    faPen,
+    faChevronLeft,
+    faUnlockAlt
   );
 };
 initFontAwesome();

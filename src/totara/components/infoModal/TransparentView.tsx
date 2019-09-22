@@ -20,7 +20,8 @@
  */
 
 import React from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-navigation";
 import { resizeByScreenSize } from "@totara/theme";
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 
