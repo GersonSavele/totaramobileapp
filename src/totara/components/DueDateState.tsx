@@ -19,16 +19,13 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-
-import {StyleSheet, Text, View} from "react-native";
-import {Button} from "native-base";
+import { StyleSheet, Text, View } from "react-native";
 import moment from "moment";
 import React from "react";
-import {normalize} from "@totara/theme";
-// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {translate} from "@totara/locale";
-import {DATE_FORMAT} from "@totara/lib/Constant";
+
+import { gutter } from "@totara/theme";
+import { translate } from "@totara/locale";
+import { DATE_FORMAT } from "@totara/lib/Constant";
 
 /**
  * Component to render dueDate and change style depending on the dueDateState
@@ -37,53 +34,28 @@ import {DATE_FORMAT} from "@totara/lib/Constant";
 type Props = {
   dueDate?: Date
   dueDateState?: string
-  onExtension?: () => void
 }
 
-const ExtenstionButton = ({onExtension}: Props) =>
-  <View style={{paddingTop: 3}}>
-    <Button small rounded bordered light onPress={onExtension} style={{padding: 5}}>
-      <Text style={styles.buttonText}> {translate("totara-component.extend_date")} </Text>
-    </Button>
-  </View>;
 
-const DueDateState = ({dueDate, dueDateState, onExtension}: Props) => {
+const DuedateModeStyle = ({ dueDateState }: Props) => ((dueDateState == DueDateStateStatus.info) ? styles.normal : styles.warning);
+ 
+const DueDateState = ({ dueDate, dueDateState }: Props) => {
 
-  switch (dueDateState) {
-    case DueDateStateStatus.warning:
-      return (
-        <View style={styles.warning}>
-          <View style={{flexDirection: "row"}}>
-            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
-            <Text style={styles.warningText}>{translate("totara-component.due")} {moment(dueDate).fromNow()} </Text>
-          </View>
-          {(onExtension) &&
-              <ExtenstionButton onExtension={onExtension}/>}
-        </View>
-      );
-
-    case DueDateStateStatus.danger:
-      return (
-        <View style={styles.danger}>
-          <View style={{flexDirection: "row"}}>
-            <FontAwesomeIcon icon="exclamation-triangle" size={16} color={"#FFFFFF"}/>
-            <Text style={styles.dangerText}>{translate("totara-component.due")} {moment(dueDate).fromNow()} </Text>
-          </View>
-          {(onExtension) &&
-              <ExtenstionButton onExtension={onExtension}/>}
-        </View>
-      );
-
-    case DueDateStateStatus.info:
-      return (
-        <View style={styles.info}>
-          <Text style={styles.infoText}>{moment(dueDate).format(DATE_FORMAT)}</Text>
-        </View>
-      );
-
-    default:
-      return null
-  }
+  const duedateModeStyle = DuedateModeStyle({ dueDateState });
+  
+  return (
+    <View style={[styles.container, duedateModeStyle]}>
+      <Text style={styles.generalText}>
+        {translate("totara-component.due")}&nbsp;
+        <Text style={styles.highlighText}>
+          {moment(dueDate).fromNow()}&nbsp;
+        </Text>
+      </Text>
+      <Text style={styles.generalText}>
+        ({moment(dueDate).format(DATE_FORMAT)})
+      </Text>
+    </View>
+  );
 };
 
 enum DueDateStateStatus {
@@ -93,48 +65,25 @@ enum DueDateStateStatus {
 }
 
 const styles = StyleSheet.create({
-  info: {
+  container: {
+    backgroundColor: "#fff",
     flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    paddingLeft: 16,
-    height: normalize(50)
+    padding: gutter,
+    flexWrap: "wrap"
   },
-  infoText: {
-    color: "#000000",
-    paddingLeft: 8,
-    fontSize: 14,
+  normal: {
+    backgroundColor: "#4579B2"
   },
   warning: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#8E660D",
-    alignItems: "center",
-    paddingLeft: 16,
-    paddingRight: 16,
-    height: normalize(50)
+    backgroundColor: "#8A3B3C"
   },
-  warningText: {
-    color: "#FFFFFF",
-    paddingLeft: 8,
+  generalText: {
     fontSize: 14,
+    color: "#fff"
   },
-  danger: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#953539",
-    alignItems: "center",
-    height: normalize(50),
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  dangerText: {
-    color: "#FFFFFF",
-    paddingLeft: 8,
+  highlighText: {
     fontSize: 14,
-  },
-  buttonText: {
-    color: "#FFFFFF",
+    fontWeight: "bold"
   }
 });
 

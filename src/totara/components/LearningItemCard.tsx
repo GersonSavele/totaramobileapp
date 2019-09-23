@@ -20,23 +20,21 @@
  *
  */
 
-import {Image, ImageStyle, StyleSheet, Text, View, ViewStyle} from "react-native";
+import { Image, ImageStyle, StyleSheet, Text, View, ViewStyle } from "react-native";
 import React from "react";
 
-import {LearningItem, Status} from "@totara/types";
-import {config} from "@totara/lib";
-import DueDateState from "./DueDateState";
-import {normalize} from "@totara/theme";
+import { LearningItem, Status } from "@totara/types";
+import { DueDateState }  from "@totara/components";
+import { normalize } from "@totara/theme";
 
 interface Props {
   item: LearningItem
   imageStyle: ImageStyle
   cardStyle: ViewStyle,
-  onExtension?: () => void,
   children: JSX.Element
 }
 
-const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: Props) => {
+const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
 
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
@@ -44,7 +42,7 @@ const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: 
   return (
     <View style={{flex: 1}}>
       <View style={imageStyleSheet}>
-        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} onExtension={onExtension}/>
+        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} />        
         <ImageElement item={item}/>
       </View>
       <View style={cardStyleSheet}>
@@ -56,7 +54,6 @@ const LearningItemCard = ({item, imageStyle, cardStyle, onExtension, children}: 
     </View>
   );
 };
-
 
 const ImageElement = ({item}: {item: LearningItem}) => {
 
