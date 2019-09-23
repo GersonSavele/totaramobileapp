@@ -29,6 +29,7 @@ export const useWebviewLogin = ({
   onCancelWebviewLogin,
   onRecievedSetupSecret
 }: Props): OutProps => {
+  
   const getProtocolEndpoint = (url: string) => url.split("://");
 
   const cancelLogin = () => {

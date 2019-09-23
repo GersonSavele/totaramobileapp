@@ -20,6 +20,7 @@
  */
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { gutter, h3 } from "@totara/theme";
 
@@ -38,8 +39,8 @@ const TouchableIcon = ({ icon, onPress, disabled, ...rest }: Props) => (
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    padding: gutter,
-    // backgroundColor: "green"  
+    padding: gutter
   }
-})
+});
+
 export default TouchableIcon;
