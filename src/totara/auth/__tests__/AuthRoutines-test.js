@@ -21,9 +21,10 @@
  */
 
 import { getAndStoreApiKey, deviceCleanup, bootstrap } from "../AuthRoutines";
+import { Log } from "@totara/lib";
 
-describe("AuthRoutines.getAndStoreApiKey should", () => {
-  it("get api key if setup secret is valid", async () => {
+describe("AuthRoutines.getAndStoreApiKey", () => {
+  it("should get api key if setup secret is valid", async () => {
     expect.assertions(5);
 
     const setupSecret = {
@@ -51,31 +52,25 @@ describe("AuthRoutines.getAndStoreApiKey should", () => {
       });
     });
 
-    const asyncStorageSetItem = jest.fn((key, value) => {
-      if (key === "apiKey") expect(value).toBe(apiKey);
-      if (key === "host") expect(value).toBe(setupSecret.uri);
-    });
+    const mockAsyncStorage = {
+      setItem: jest.fn((key, value) => {
+        if (key === "apiKey") expect(value).toBe(apiKey);
+        if (key === "host") expect(value).toBe(setupSecret.uri);
+      })
+    };
 
     const expectedSetup = {
       apiKey: apiKey,
       host: setupSecret.uri
     };
 
-    const setState = jest.fn((state) => {
-      expect(state).toMatchObject({
-        setup: expectedSetup,
-        isAuthenticated: true
-      })
-    });
-    const authProvider = {
-      setState: setState,
-    };
+    const setup = await getAndStoreApiKey(mockFetch, mockAsyncStorage)(setupSecret);
 
-    await getAndStoreApiKey(authProvider)(setupSecret, mockFetch, asyncStorageSetItem);
+    expect(setup).toMatchObject(expectedSetup);
   });
 
 
-  it("be an error is setup secret is invalid", async () => {
+  it("should be an error is setup secret is invalid", async () => {
     expect.assertions(3);
 
     const setupSecret = {
@@ -96,10 +91,11 @@ describe("AuthRoutines.getAndStoreApiKey should", () => {
       });
     });
 
-    const asyncStorageSetItem = jest.fn(() => {
-    });
+    const mockAsyncStorage = {
+      setItem: () => {}
+    };
 
-    const result = getAndStoreApiKey(null)(setupSecret, mockFetch, asyncStorageSetItem);
+    const result = getAndStoreApiKey(mockFetch, mockAsyncStorage)(setupSecret);
 
     await expect(result).rejects.toThrow("Server Error: 400");
   });
@@ -107,128 +103,126 @@ describe("AuthRoutines.getAndStoreApiKey should", () => {
 });
 
 
-describe("AuthRoutines.deviceCleanup should", () => {
+describe("AuthRoutines.deviceCleanup", () => {
 
-  afterEach(() => {
+  Log.debug = jest.fn();
+  Log.warn = jest.fn();
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  const clearApollo = jest.fn();
-  const setState = jest.fn((state) => {
-    expect(state).toMatchObject({
-      setup: undefined,
-      isAuthenticated: false
-    })
-  });
-  const authProvider = {
-    setState: setState,
-    clearApolloClient: clearApollo
-  };
-
-  it("Successfully deregister and cleanup storage",  async () => {
+  it("should successfully deregister and cleanup storage",  async () => {
     expect.assertions(3);
 
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
     const mockClearStorage = jest.fn(() => Promise.resolve());
+    const mockAsyncStorage = {
+      clear: mockClearStorage
+    };
 
-    await deviceCleanup(authProvider)(mockDeleteDevice, mockClearStorage, authProvider);
-    expect(clearApollo).toHaveBeenCalledTimes(1);
-    expect(setState).toHaveBeenCalledTimes(1);
+      const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
+    expect(result).toBeTruthy();
+    expect(Log.debug).toHaveBeenCalledTimes(2);
+    expect(Log.warn).not.toHaveBeenCalled();
   });
 
 
-  it("Handle error on cleanup non-existing storage", async () => {
+  it("should handle error on cleanup non-existing storage", async () => {
     expect.assertions(3);
 
     const errorNoneExistStorage = new Error("Failed to delete storage directory with");
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
-    const mockClearStorageReject = jest.fn(() => Promise.reject(errorNoneExistStorage));
+    const mockClearStorage = jest.fn(() => Promise.reject(errorNoneExistStorage));
+    const mockAsyncStorage = {
+      clear: mockClearStorage
+    };
 
-    await deviceCleanup(authProvider)(mockDeleteDevice, mockClearStorageReject, authProvider);
-    expect(clearApollo).toHaveBeenCalledTimes(1);
-    expect(setState).toHaveBeenCalledTimes(1);
+    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
+    expect(result).toBeTruthy();
+    expect(Log.debug).toHaveBeenCalledTimes(1);
+    expect(Log.warn).toHaveBeenCalledTimes(1);
   });
 
 
-  it("Handle error on deregister the device and continue to logout the user", async () => {
+  it("should handle error on deregister the device", async () => {
     expect.assertions(3);
 
     const unHandledErrorServer = new Error("Server error");
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
-    const mockClearStorageReject = jest.fn(() => Promise.resolve());
+    const mockClearStorage = jest.fn(() => Promise.resolve());
+    const mockAsyncStorage = {
+      clear: mockClearStorage
+    };
 
-    await deviceCleanup(authProvider)(mockDeleteDevice, mockClearStorageReject, authProvider);
-    expect(setState).toHaveBeenCalledTimes(1);
-    expect(clearApollo).toHaveBeenCalledTimes(1);
+    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
+    expect(result).toBeTruthy();
+    expect(Log.debug).toHaveBeenCalledTimes(1);
+    expect(Log.warn).toHaveBeenCalledTimes(1);
   });
 
 
-  it("Un-handeled error on cleanup the storage", async () => {
+  it("should handle unsuccessful deregister", async () => {
     expect.assertions(3);
 
-    const unHandledErrorStorage = new Error("Un handled errors for clean storage");
-    const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: true }}));
-    const mockClearStorageReject = jest.fn(() => Promise.reject(unHandledErrorStorage));
+    const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: {delete_device: false }}));
+    const mockClearStorage = jest.fn(() => Promise.resolve());
+    const mockAsyncStorage = {
+      clear: mockClearStorage
+    };
 
-    await deviceCleanup(authProvider)(mockDeleteDevice, mockClearStorageReject, authProvider);
-    expect(clearApollo).toHaveBeenCalledTimes(1);
-    expect(setState).toHaveBeenCalledTimes(1);
+    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
+    expect(result).toBeTruthy();
+    expect(Log.debug).toHaveBeenCalledTimes(2);
+    expect(Log.warn).toHaveBeenCalledTimes(1);
   });
 
-  it("All Un-handeled errors", async () => {
-    expect.assertions(2);
+  it("should handle errors on deregister and clean up storage", async () => {
+    expect.assertions(3);
 
     const unHandledErrorServer = new Error("Server error");
     const unHandledErrorStorage = new Error("Un handled errors for clean storage");
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
-    const mockClearStorageReject = jest.fn(() => Promise.reject(unHandledErrorStorage));
+    const mockClearStorage = jest.fn(() => Promise.reject(unHandledErrorStorage));
+    const mockAsyncStorage = {
+      clear: mockClearStorage
+    };
 
-    await deviceCleanup(authProvider)(mockDeleteDevice, mockClearStorageReject, authProvider);
-    expect(setState).toHaveBeenCalledTimes(1);
+    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
+    expect(result).toBeTruthy();
+    expect(Log.debug).not.toHaveBeenCalled();
+    expect(Log.warn).toHaveBeenCalledTimes(2);
   });
 
 });
 
 
-describe("AuthRoutines.bootstrap should", () => {
+describe("AuthRoutines.bootstrap", () => {
 
-  it("return the apiKey and host if they exists", async () => {
+  it("should return the apiKey and host if they exists", async () => {
     expect.assertions(1);
 
-    const mockGetStorage = jest.fn( key => (key === "apiKey") ? "the_api_key" : "testhost");
-
-    const setState = jest.fn((state) => {
-      expect(state).toMatchObject({
-        setup: {
-          apiKey: "the_api_key",
-          host: "testhost"
-        },
-        isLoading: false,
-        isAuthenticated: true
-      })
-    });
-    const authProvider = {
-      setState: setState,
+    const mockAsyncStorage = {
+      getItem: jest.fn( key => (key === "apiKey") ? Promise.resolve("the_api_key") : Promise.resolve("testhost"))
     };
 
-    await bootstrap(authProvider)(mockGetStorage);
+    const result = await bootstrap(mockAsyncStorage)();
+
+    expect(result).toMatchObject({
+      apiKey: "the_api_key",
+      host: "testhost"
+    });
   });
 
-  it("return no setup if apiKey and host is not stored", async () => {
+  it("should return no setup if apiKey and host is not stored", async () => {
     expect.assertions(1);
 
-    const setState = jest.fn((state) => {
-      expect(state).toMatchObject({
-        isLoading: false,
-        isAuthenticated: false
-      })
-    });
-    const authProvider = {
-      setState: setState,
+    const mockAsyncStorage = {
+      getItem: jest.fn( () => Promise.resolve(null))
     };
 
-    await bootstrap(authProvider)(() => Promise.resolve(null));
+    const result = await bootstrap(mockAsyncStorage)();
 
+    expect(result).toBeFalsy();
   });
 
 });

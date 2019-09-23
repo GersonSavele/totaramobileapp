@@ -19,8 +19,18 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
+import { ApolloClient } from "apollo-client";
+import { ApolloLink } from "apollo-link";
+import { RetryLink } from "apollo-link-retry";
+import { HttpLink } from "apollo-link-http";
+import { onError, ErrorResponse } from "apollo-link-error";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { setContext } from "apollo-link-context";
+
 import { config, Log } from "@totara/lib";
 import { SetupSecret, Setup } from "./AuthContext";
+import { X_API_KEY } from "@totara/lib/Constant";
+import { AsyncStorageStatic } from "@react-native-community/async-storage";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -36,17 +46,20 @@ import { SetupSecret, Setup } from "./AuthContext";
  * Given a setup secret (temp key), retrieve the api key (a long term key) from the api via
  * fetch.  Store the api key and host in storage, return these as well.
  *
- * @param authProvider - authProvider instance to interact with
- * @param setupSecret contains the setup secret to be validated by the server
  * @param fetch http fetch
- * @param storeItem store item using key value
+ * @param asyncStorage device storage
+ *
+ * @param setupSecret contains the setup secret to be validated by the server
+ *
  *
  * @returns promise of setup which contains the valid apiKey and which host it was obtained from
  */
-export const getAndStoreApiKey = async (setupSecret: SetupSecret,
-         fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
-         storeItem: (key: string, value: string) => Promise<void>,
-  ): Promise<Setup> => (
+export const getAndStoreApiKey = (
+  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
+  asyncStorage: AsyncStorageStatic,
+) => async (
+  setupSecret: SetupSecret
+): Promise<Setup> => (
 
     fetch(config.deviceRegisterUri(setupSecret.uri), {
         method: "POST",
@@ -60,7 +73,7 @@ export const getAndStoreApiKey = async (setupSecret: SetupSecret,
       throw new Error(`Server Error: ${response.status}`);
     }).then(json => json.data.apikey
     ).then(apiKey =>
-      Promise.all([storeItem("apiKey", apiKey), storeItem("host", setupSecret.uri)])
+      Promise.all([asyncStorage.setItem("apiKey", apiKey), asyncStorage.setItem("host", setupSecret.uri)])
         .then(() => apiKey)
     ).then(apiKey => {
         const setup = {
@@ -83,12 +96,15 @@ export const getAndStoreApiKey = async (setupSecret: SetupSecret,
  * clean up.  It would catch all errors, as a user would be logged off regardless issues on the
  * remote and local services.  It would always clear the memory state
  *
- * @param authProvider - authProvider instance to interact with
+ * @param asyncStorage device storage
+ *
  * @param deviceDelete - remote device deletion mutation
- * @param clearStorage - storage cleanup
  */
-export const deviceCleanup = async (deviceDelete: () => Promise<any>,
-         clearStorage: () => Promise<void>): Promise<void> => {
+export const deviceCleanup = (
+  asyncStorage: AsyncStorageStatic
+) => async (
+  deviceDelete: () => Promise<any>
+): Promise<boolean> => {
 
     const remoteCleanUp = deviceDelete().then(({ data: { delete_device } }) => {
       Log.debug("Device deleted from server", delete_device);
@@ -99,7 +115,7 @@ export const deviceCleanup = async (deviceDelete: () => Promise<any>,
       Log.warn("remote clean up had issues, but continue to do local clean up", error)
     });
 
-    const localCleanUp = clearStorage().then(() => {
+    const localCleanUp = asyncStorage.clear().then(() => {
       Log.debug("Cleared storage");
     }).catch((error) => {
       if (error.message.startsWith("Failed to delete storage directory")) {
@@ -109,17 +125,18 @@ export const deviceCleanup = async (deviceDelete: () => Promise<any>,
       }
     });
 
-    return Promise.all([localCleanUp, remoteCleanUp]).then(() => {});
+    return Promise.all([localCleanUp, remoteCleanUp]).then(() => true);
   };
 
 /**
  * Would get needed items from storage and return a valid state setup.
  *
- * @param authProvider - authProvider instance to interact with
- * @param storeGetItem - retrieve from storage using a key
+ * @param asyncStorage device storage
  */
-export const bootstrap = async (storeGetItem: (key: string) => Promise<string | null>): Promise<Setup | undefined> => {
-    const [apiKey, host] = await Promise.all([storeGetItem("apiKey"), storeGetItem("host")]);
+export const bootstrap = (
+  asyncStorage: AsyncStorageStatic
+) => async (): Promise<Setup | undefined> => {
+    const [apiKey, host] = await Promise.all([asyncStorage.getItem("apiKey"), asyncStorage.getItem("host")]);
 
     if (apiKey !== null && host !== null) {
       Log.info("bootstrap with existing apiKey and host");
@@ -133,3 +150,42 @@ export const bootstrap = async (storeGetItem: (key: string) => Promise<string | 
     }
   };
 
+/**
+ * create an authenticated Apollo client that has the right credentials to the api
+ */
+export const createApolloClient = (
+  apiKey: string,
+  uri: string,
+  logOut: (localOnly: boolean) => Promise<void>
+) => {
+  const authLink = setContext((_, { headers }) => ({
+    headers: {
+      ...headers,
+      [X_API_KEY]: apiKey
+    }
+  }));
+
+  const logoutLink = onError(({ response }: ErrorResponse) => {
+    Log.warn("Apollo client error", response);
+    if (
+      response.errors[0].extensions.exception.networkError.statusCode === 401
+    ) {
+      // TODO MOB-231 this is not the documented way to get status code fix this
+      logOut(true);
+    }
+  });
+
+  const httpLink = new HttpLink({ uri: uri });
+
+  const link = ApolloLink.from([
+    logoutLink,
+    new RetryLink({ attempts: { max: 10 } }),
+    authLink,
+    httpLink
+  ]);
+
+  return new ApolloClient({
+    link: link,
+    cache: new InMemoryCache()
+  });
+};

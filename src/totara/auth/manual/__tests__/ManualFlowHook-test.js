@@ -44,7 +44,7 @@ describe("useManualFlow", () => {
       result.current.onSiteUrlSuccess("https://success.com");
     });
 
-    await waitForNextUpdate; // custom hook has useEffect need to wait for it
+    // TODO uncomment this when upgrade to react 16.9 to remove warning await act(async () => waitForNextUpdate());
 
     expect(result.current.manualFlowState).toMatchObject({
       flowStep: ManualFlowSteps.siteUrl,
