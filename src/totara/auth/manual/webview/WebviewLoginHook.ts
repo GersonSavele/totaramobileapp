@@ -22,6 +22,7 @@
 import { useState, useEffect } from "react";
 import { WebViewMessageEvent, WebViewNavigation } from "react-native-webview/lib/WebViewTypes";
 import CookieManager from "react-native-cookies";
+
 import { config } from "@totara/lib";
 
 export const useWebviewLogin = ({
@@ -46,14 +47,14 @@ export const useWebviewLogin = ({
   const onLogViewNavigate = (navState: WebViewNavigation) => {
     setCanWebGoBackward(navState.canGoBack);
     setCanWebGoForward(navState.canGoForward);
-    let spiltedUrl = getProtocolEndpoint(navState.url);
+    const spiltedUrl = getProtocolEndpoint(navState.url);
     setNavProtocol(spiltedUrl[0]);
     setNavEndPoint(spiltedUrl[1]);
   };
 
   const loginUrl = config.loginUri(siteUrl);
 
-  let spiltedLoginUrl = getProtocolEndpoint(loginUrl);
+  const spiltedLoginUrl = getProtocolEndpoint(loginUrl);
   const [navProtocol, setNavProtocol] = useState(spiltedLoginUrl[0]);
   const [navEndPoint, setNavEndPoint] = useState(spiltedLoginUrl[1]);
 

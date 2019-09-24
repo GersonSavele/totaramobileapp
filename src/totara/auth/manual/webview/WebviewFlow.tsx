@@ -27,12 +27,21 @@ import WebviewLogin from "./WebviewLogin";
 import { ManualAuthProps } from "../ManualAuthProps";
 import { useWebviewLogin } from "./WebviewLoginHook";
 
-const WebviewFlow = ({siteUrl, onSetupSecretSuccess, onSetupSecretCancel}: ManualAuthProps) => {
+const WebviewFlow = ({ siteUrl, onSetupSecretSuccess, onSetupSecretCancel }: ManualAuthProps) => {
 
-  const UserWebviewLogin = () => WebviewLogin(useWebviewLogin({siteUrl: siteUrl, onCancelWebviewLogin: onSetupSecretCancel, onRecievedSetupSecret: onSetupSecretSuccess}));
-    return <Modal animationType="slide">
-        <UserWebviewLogin  />
-      </Modal>
+  const UserWebviewLogin = () => WebviewLogin(
+      useWebviewLogin({
+        siteUrl: siteUrl,
+        onCancelWebviewLogin: onSetupSecretCancel,
+        onRecievedSetupSecret: onSetupSecretSuccess
+      })
+    );
+
+  return (
+    <Modal animationType="slide">
+      <UserWebviewLogin />
+    </Modal>
+  );
 };
 
 export default  WebviewFlow;

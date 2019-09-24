@@ -48,7 +48,7 @@ const WebviewLogin = ({
   const refLoginWebview = useRef<WebView>(null);
 
   return (
-    <SafeAreaView style={{ flex: 1 }} forceInset={{ vertical: "always", horizontal: "always" }}>
+    <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always", top: "always", left: "always", right: "always" }}>
         <View style={styles.navigation}>
           <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} />
           <View style={styles.addressContainer}>
