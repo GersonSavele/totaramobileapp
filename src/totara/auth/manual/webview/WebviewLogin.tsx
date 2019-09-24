@@ -21,8 +21,8 @@
  */
 
 import React, { useRef } from "react";
-import { View, StyleSheet, Linking, Text } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { View, StyleSheet, Linking, Text} from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 import { WebView } from "react-native-webview";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -48,7 +48,7 @@ const WebviewLogin = ({
   const refLoginWebview = useRef<WebView>(null);
 
   return (
-    <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always", top: "always", left: "always", right: "always" }}>
+    <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
         <View style={styles.navigation}>
           <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} />
           <View style={styles.addressContainer}>

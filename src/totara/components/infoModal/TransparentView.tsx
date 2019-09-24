@@ -21,17 +21,17 @@
 
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { resizeByScreenSize } from "@totara/theme";
-import { ifIphoneX } from 'react-native-iphone-x-helper'
 
 const TransparentView = ({children} : Props) =>{
     return (
-        <SafeAreaView style={styles.transparentViewStyle}>
-           <View style={styles.containerStyle}>
-            {children}
-           </View>
+      <View style={styles.transparentViewStyle}>
+        <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
+          <View style={styles.containerStyle}>{children}</View>
         </SafeAreaView>
+      </View>
     );
 }
 
@@ -40,31 +40,17 @@ type Props = {
  }
 
 const styles = StyleSheet.create({
-    containerStyle: {
-        flex:1,
-        padding: 5,
-        borderRadius: 4,
-        position: "absolute",
-        right: resizeByScreenSize(16, 16, 20, 20),
-        left: resizeByScreenSize(16, 16,20, 20),
-        ...ifIphoneX({
-            top: resizeByScreenSize(72, 72, 72, 72),
-            bottom: resizeByScreenSize(72, 72, 72, 72),
-        }, {
-            top: resizeByScreenSize(32, 32, 32, 32),
-            bottom: resizeByScreenSize(32, 32, 32, 32),
-        }),
-        backgroundColor: "#FFF"
-    },
-    transparentViewStyle: {
-        flex: 1,
-        position: "absolute",
-        right: 0,
-        top: 0,
-        bottom: 0,
-        left: 0, 
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    }
+  containerStyle: {
+    flex: 1,
+    borderRadius: 4,
+    marginHorizontal: resizeByScreenSize(16, 16, 20, 20),
+    marginVertical: resizeByScreenSize(32, 32, 32, 32),
+    backgroundColor: "#FFF"
+  },
+  transparentViewStyle: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)"
+  }
 });
 
 export default TransparentView;

@@ -20,18 +20,21 @@
  */
 
 import React from "react";
-import {View, TextInput} from "react-native";
+import { View, TextInput } from "react-native";
 import renderer from "react-test-renderer";
-import * as  NativeComp from "native-base";
+import * as  NativeBase from "native-base";
+
 
 import NativeLogin from "../NativeLogin";
 
-NativeComp.Container = jest.fn(() => <View />);
-NativeComp.Content = jest.fn(() => <View />);
-NativeComp.Form = jest.fn(() => <View />);
-NativeComp.Input = jest.fn(() => <TextInput />);
+
+NativeBase.Container = jest.fn(() => <View />);
+NativeBase.Content = jest.fn(() => <View />);
+NativeBase.Form = jest.fn(() => <View />);
+NativeBase.Input = jest.fn(() => <TextInput />);
 
 const mockOnSuccess = jest.fn();
+
 const mockOnFail = jest.fn();
 
 const nativeLogin = renderer.create(
@@ -39,6 +42,7 @@ const nativeLogin = renderer.create(
 ).getInstance();
 
 describe("Passing different 'username' and 'password' for checking validation", () => {
+
   it("both valid 'username' and 'password'", () => {
     nativeLogin.setState({
       inputUsername: "username",
@@ -48,6 +52,7 @@ describe("Passing different 'username' and 'password' for checking validation", 
     expect(nativeLogin.state.inputUsernameStatus).toBe(undefined);
     expect(nativeLogin.state.inputPasswordStatus).toBe(undefined);
   });
+
   it("both empty 'username' and 'password'", () => {
     nativeLogin.setState({
       inputUsername: undefined,

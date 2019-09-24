@@ -27,7 +27,7 @@ import {
   TouchableOpacity,
   Linking
 } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import { Form, Input, Content, Container } from "native-base";
 
 import { config } from "@totara/lib";
@@ -83,7 +83,7 @@ class NativeLogin extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }} forceInset={{bottom: "always"}}>
         <Container>
           <View style={styles.navigation} >
             <TouchableIcon onPress={() => { this.props.onBack() }} icon={"times"} disabled={false} />
