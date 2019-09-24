@@ -23,8 +23,9 @@
   }, 
   "totara-component" : {
     "section_title_continue_learn": "Continue your learning",
-    "due": "Due",
-    "extend_date": "Extend Date"
+    "due_in": "Due in",
+    "extend_date": "Extend Date",
+    "overdue_by": "Overdue by"
   },
   "manual": {
     "site_url_title": "Get started.",

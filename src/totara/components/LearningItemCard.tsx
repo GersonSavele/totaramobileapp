@@ -40,14 +40,16 @@ const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View style={imageStyleSheet}>
-        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} />        
-        <ImageElement item={item}/>
+        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} />
+        <ImageElement item={item} />
       </View>
       <View style={cardStyleSheet}>
-        <View style={{flexDirection: "row"}}>
-          <Text numberOfLines={1} style={styles.itemFullName}>{item.fullname}</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text numberOfLines={1} style={styles.itemFullName}>
+            {item.fullname}
+          </Text>
         </View>
         {children}
       </View>

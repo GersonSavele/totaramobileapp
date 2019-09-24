@@ -23,7 +23,7 @@ export const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
 export const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
 export const X_API_KEY = "X-API-KEY";
 
-export const DATE_FORMAT = "DD MMM, YYYY";
+export const DATE_FORMAT = "D MMM, YYYY";
 
 export const PLATFORM_IOS = "ios";
 export const PLATFORM_ANDROID = "";
