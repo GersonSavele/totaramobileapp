@@ -33,7 +33,7 @@ import ActivityHeaderView from "../components/ActivityHeaderView";
 import { AuthenticatedWebView } from "@totara/auth";
 import { translate } from "@totara/locale";
 
-class ScormQuery extends Query<Response, Variables> {}
+
 
 type ScormActivityViewParam = {
   data: any,
@@ -91,8 +91,7 @@ class ScormActivity extends React.Component<Props, States> {
         case 1:
           return (
              <View style = {styles.container}>
-
-              <ScormQuery  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
+              <Query <Response>  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
               {({ data, error, loading }) => (
                 this.showScormDetails({
                    data : data, 
@@ -108,9 +107,9 @@ class ScormActivity extends React.Component<Props, States> {
                    bottomViewButtonBackgroundColor: "#69BD45",
                    bottomViewButtonBorderColor: "#69BD45",
                    bottomViewButtonTitleFontWeight: "600"
-                })
+                }) || null
               )}
-            </ScormQuery>
+            </Query>
             </View>)
         case 2:
           return (
@@ -123,7 +122,7 @@ class ScormActivity extends React.Component<Props, States> {
         default:
           return (
             <View style = {styles.container}>
-              <ScormQuery  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
+              <Query <Response>  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
               {({ loading, data, error }) => (
                 this.showScormDetails({
                   data : data, 
@@ -139,9 +138,9 @@ class ScormActivity extends React.Component<Props, States> {
                   bottomViewButtonBackgroundColor: "#FFF",
                   bottomViewButtonBorderColor: "#3D444B",
                   bottomViewButtonTitleFontWeight: "600"
-               })
+               }) || null
                )}
-            </ScormQuery>
+            </Query>
             </View>)
       }
   }

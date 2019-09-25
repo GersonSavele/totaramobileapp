@@ -35,8 +35,6 @@ export type QueryResult = {
     refetch: () => void
 }
 
-class QueryGQL extends Query<Response> {}
-
 const QueryMe = gql` 
 query totara_mobile_me {
     me: totara_mobile_me {
@@ -66,7 +64,7 @@ query totara_mobile_me {
 `;
 
 const GetMe = ({props} : any) => {
-   return (<QueryGQL  query = { QueryMe }>
+   return (<Query <Response>  query = { QueryMe }>
     {({ loading, data, error, refetch }) =>  
        props({
         loading : loading,
@@ -75,7 +73,7 @@ const GetMe = ({props} : any) => {
         refetch: refetch
        })
      }
-    </QueryGQL>)
+    </Query>)
 }
 
 export  { GetMe, QueryMe };

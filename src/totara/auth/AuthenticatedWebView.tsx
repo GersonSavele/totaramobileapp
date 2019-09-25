@@ -22,7 +22,8 @@
 
 import React from "react";
 import { WebView } from "react-native-webview";
-import { compose, graphql, MutationFunc } from "react-apollo";
+import { graphql, MutationFunction } from "react-apollo";
+import { compose } from "recompose";
 import gql from "graphql-tag";
 import CookieManager from "react-native-cookies";
 
@@ -125,8 +126,8 @@ type DeleteWebViewResponse = {
 
 type Props = {
   uri: string
-  createWebview: MutationFunc<CreateWebViewResponse, { url: string }>
-  deleteWebview: MutationFunc<DeleteWebViewResponse, { secret: string }>
+  createWebview: MutationFunction<CreateWebViewResponse, { url: string }>
+  deleteWebview: MutationFunction<DeleteWebViewResponse, { secret: string }>
 }
 
 type State = {
@@ -137,7 +138,7 @@ type State = {
 const AuthenticatedWebView = compose(
   graphql(createWebview, { name: "createWebview" }),
   graphql(deleteWebview, { name: "deleteWebview" }),
-)(AuthenticatedWebViewComponent);
+)(AuthenticatedWebViewComponent as any);
 
 
 export { AuthenticatedWebView };
