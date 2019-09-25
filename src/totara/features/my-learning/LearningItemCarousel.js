@@ -134,7 +134,7 @@ LearningItemWithSummaryAndNavigation.propTypes = {
 };
 
 let navigateTo = (navigation, item) => {
-  switch (item.type) {
+  switch (item.itemtype) {
     case LearningItemType.Course:
       navigation.navigate(NAVIGATION_COURSE_DETAILS, { courseId: item.id });
       break;
