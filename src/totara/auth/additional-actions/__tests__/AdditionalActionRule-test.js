@@ -19,7 +19,7 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-import { MockedProvider } from "react-apollo/test-utils";
+import { MockedProvider } from "@apollo/react-testing";
 import renderer from "react-test-renderer";
 import React from "react";
 import wait from "waait";
