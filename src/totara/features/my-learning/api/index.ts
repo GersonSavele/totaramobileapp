@@ -25,21 +25,21 @@ import gql from "graphql-tag";
 import {LearningItem} from "@totara/types";
 
 const query = gql`
-  query CurrentLearning {
-    currentLearning {
-      id
-      type
-      shortname
-      fullname
-      summary
-      dueDateState
-      dueDate
-      progressPercentage
-      groupCount
-      status  
-      imageSrc
+    query totara_mobile_my_current_learning {
+        currentLearning: totara_core_my_current_learning {
+            id
+            itemtype
+            shortname
+            fullname
+            summary: description
+            summaryFormat: description_format
+            # duedateState
+            duedate
+            progress
+            # status
+            # imageSrc
+        }
     }
-  }
 `;
 
 export type Response = {

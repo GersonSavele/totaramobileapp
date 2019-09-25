@@ -35,14 +35,12 @@ export enum LearningItemType {
 
 export interface LearningItem extends LearningStatus {
   id: number
-  type: string
+  itemtype: string
   shortname: string
   fullname?: string
   summary?: string
-  dueDateState?: string
-  dueDate?: Date
-  progressPercentage?: number
-  groupCount?: number
-  sections: [Section]
+  duedateState?: string
+  duedate?: Date
+  progress?: number
   imageSrc?: string
 }

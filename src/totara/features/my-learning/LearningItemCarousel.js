@@ -115,7 +115,7 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => (
     <View style={styles.itemContainer}>
       <LearningItemCard item={item}>
         <View style={styles.itemInfo}>
-          <Text style={styles.itemType}>{item.type}</Text>
+          <Text style={styles.itemType}>{item.itemtype}</Text>
         </View>
         <View style={{ flex: 1 }}>
           <Text numberOfLines={3} style={styles.itemSummary}>
