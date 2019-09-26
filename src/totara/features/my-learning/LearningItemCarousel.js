@@ -21,73 +21,116 @@
  */
 
 import React from "react";
+import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import Carousel from "react-native-snap-carousel";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 import { LearningItemCard, AddBadge } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { LearningItemType } from "@totara/types";
-import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS } from "@totara/lib/Constant";
+import {
+  NAVIGATION_COURSE_DETAILS,
+  NAVIGATION_PROGRAM_DETAILS
+} from "@totara/lib/Constant";
 import { Log } from "@totara/lib";
 
+const LearningItemCarousel = withNavigation(
+  ({ navigation, currentLearning }) => {
+    const [activeSlide, setActiveSlide] = useState(0);
+    const [sliderRef, setSliderRef] = useState();
+    if (currentLearning) {
+      // used for faster development to navigate at once to first course-details
+      // courseNavigate(currentLearning[0])
+      // return null;
+      return (
+        <View>
+          <View
+            style={{
+              height: 0.5,
+              justifyContent: "center",
+              backgroundColor: "#f9f9f9"
+            }}
+          >
+            <Pagination
+              activeDotIndex={activeSlide}
+              dotsLength={currentLearning.length}
+              containerStyle={{ borderStyle: "dashed" }}
+              dotStyle={{
+                width: wp("115%"),
+                height: 1,
+                marginHorizontal: 0,
+                backgroundColor: "#b2b2b2"
+              }}
+              inactiveDotOpacity={0.4}
+              inactiveDotScale={0.6}
+              carouselRef={sliderRef}
+              tappableDots={!!sliderRef}
+            />
+          </View>
+          <Carousel
+            ref={ref => setSliderRef(ref)}
+            data={currentLearning}
+            renderItem={renderItem(navigation)}
+            sliderWidth={wp("100%")}
+            itemWidth={wp("82%")}
+            sliderHeight={hp("100%")}
+            inactiveSlideOpacity={0.6}
+            containerCustomStyle={{ backgroundColor: "#FFFFFF" }}
+            onSnapToItem={index => setActiveSlide(index)}
+          />
+        </View>
+      );
+    } else return null;
+  }
+);
 
-const LearningItemCarousel = withNavigation(({navigation, currentLearning}) => {
-  if (currentLearning) {
-    // used for faster development to navigate at once to first course-details
-    // courseNavigate(currentLearning[0])
-    // return null;
-    return (
-      <Carousel
-        data={currentLearning}
-        renderItem={renderItem(navigation)}
-        sliderWidth={wp("100%")}
-        itemWidth={wp("82%")}
-        sliderHeight={hp("100%")}
-        inactiveSlideOpacity={0.6}
-        containerCustomStyle={{backgroundColor: "#FFFFFF"}}
-      />
-    );
-
-  } else return null;
-});
-
-const renderItem = (navigation) => {
-
-  const LearningItem = ({item}) =>
+const renderItem = navigation => {
+  const LearningItem = ({ item }) => (
     <View style={styles.itemWithBadgeContainer}>
       <AddBadge status={item.progressPercentage || item.status} size={21}>
-        <LearningItemWithSummaryAndNavigation item={item} navigation={navigation}/>
+        <LearningItemWithSummaryAndNavigation
+          item={item}
+          navigation={navigation}
+        />
       </AddBadge>
-    </View>;
+    </View>
+  );
 
   LearningItem.propTypes = {
     item: PropTypes.object.isRequired
   };
 
   return LearningItem;
-
 };
 
-const LearningItemWithSummaryAndNavigation = ({item, navigation}) => (
-  <TouchableOpacity style={styles.learningItem}
-                    key={item.id}
-                    onPress={() => navigateTo(navigation, item)}
-                    activeOpacity={1.0}>
+const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => (
+  <TouchableOpacity
+    style={styles.learningItem}
+    key={item.id}
+    onPress={() => navigateTo(navigation, item)}
+    activeOpacity={1.0}
+  >
     <View style={styles.itemContainer}>
       <LearningItemCard item={item}>
         <View style={styles.itemInfo}>
           <Text style={styles.itemType}>{item.type}</Text>
         </View>
-        <View style={{flex: 1}}>
-          <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
-          <View style={{flex: 1}}/>
+        <View style={{ flex: 1 }}>
+          <Text numberOfLines={3} style={styles.itemSummary}>
+            {item.summary}
+          </Text>
+          <View style={{ flex: 1 }} />
         </View>
       </LearningItemCard>
     </View>
-  </TouchableOpacity>);
+  </TouchableOpacity>
+);
 
 LearningItemWithSummaryAndNavigation.propTypes = {
   item: PropTypes.object.isRequired,
@@ -97,16 +140,20 @@ LearningItemWithSummaryAndNavigation.propTypes = {
 let navigateTo = (navigation, item) => {
   switch (item.type) {
     case LearningItemType.Course:
-      navigation.navigate(NAVIGATION_COURSE_DETAILS, {courseId: item.id});
+      navigation.navigate(NAVIGATION_COURSE_DETAILS, { courseId: item.id });
       break;
-    case LearningItemType.Program :  
-      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, {programId: item.id});
+    case LearningItemType.Program:
+      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, { programId: item.id });
       break;
     case LearningItemType.Certification: // TODO for now certifaction is the same as Program
-      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, {programId: item.id});
+      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, { programId: item.id });
       break;
     default:
-      Log.error(`Unknown type ${item.type}, unable to native to`, new Error(), item);
+      Log.error(
+        `Unknown type ${item.type}, unable to native to`,
+        new Error(),
+        item
+      );
   }
 };
 
@@ -160,7 +207,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 8,
     paddingVertical: 2
-  },
+  }
 });
 
 export default LearningItemCarousel;
