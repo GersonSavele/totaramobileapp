@@ -94,10 +94,10 @@ type ProgressBadgeProps = {
 } & Props
 
 class ProgressBadge extends Badge<ProgressBadgeProps> {
-  color = "#69BD45";
+  color = "#4579b2";
   backgroundColor = "#FFFFFF";
   borderColor = "#FFFFFF";
-  BadgeElement = ({size = 8, progress}: ProgressBadgeProps) => <ProgressCircle size={size * 2} progress={progress}/>
+  BadgeElement = ({size = 8, progress}: ProgressBadgeProps) => <ProgressCircle size={size * 2} progress={progress} />
 }
 
 const AddBadge = ({status, children, size = 16}: {status: Status | number, children: JSX.Element, size: number}) => {

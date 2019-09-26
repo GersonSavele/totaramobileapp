@@ -24,20 +24,23 @@ import * as Progress from "react-native-progress";
 
 type ProgressCircleParam = {
   progress: number,
-  size: number
+  size: number,
+  progressColor?: string,
+  color?: string,
+  backgroundColor?: string
 }
 
-const ProgressCircle = ({size, progress}: ProgressCircleParam) => {
+const ProgressCircle = ({size, progress, progressColor, color, backgroundColor}: ProgressCircleParam) => {
 
   return <Progress.Circle progress={progress/100}
   size={size}
-  unfilledColor={"#E6E6E6"}
-  color={"#69BD45"}
+  unfilledColor={(backgroundColor? backgroundColor : "#E6E6E6")}
+  color={(progressColor? progressColor : "#4579b2")}
   thickness={2}
   borderWidth={0}
   formatText={() =>  progress+"%"}
   showsText={true}
-  textStyle={{fontSize: 11, fontWeight: "bold", color: "#000000"}}/>
+  textStyle={{fontSize: 11, fontWeight: "bold", color: (color ? color: "#000")}}/>
 
 };
 
