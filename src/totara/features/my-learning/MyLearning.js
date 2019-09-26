@@ -21,18 +21,14 @@
  */
 
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 import PropTypes from 'prop-types';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-// import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { gutter, h1, resizeByScreenSize } from "@totara/theme";
-import { ActivityLauncher } from "@totara/components";
+import { gutter, h1 } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { ActivitySheetConsumer } from "@totara/activities";
-
+import { TouchableIcon } from "@totara/components";
 import LearningItemCarousel from "./LearningItemCarousel";
-
 
 export default class MyLearning extends React.Component {
 
@@ -46,36 +42,21 @@ export default class MyLearning extends React.Component {
   };
 
   render() {
-    const activity = { // TODO mock activity, put into graphql
-      id: 1,
-      itemName: "Totara Learn for beginners",
-      type: "video",
-      progressPercentage: 55,
-      summary: "Users are the people who are going to interact with your Totara Learn system; whether they are learners, " +
-        "managers, trainers,administrators or something in between. So it’s easy to understand why you want to add users to your LMS. But how do you go about doing so? You’ve got two main options you’re likely to use. You can create users manually, or you can create multiple users at the same time using HR Import. In this course, you’ll learn how to do both.",
-      imgSrc: "panel2.png"
-    };
-
     return (
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.myLearningContainer}>
-          <View style={styles.myLearningLogo}>
-            <Image source={require("./totara_logo.png")} style={{width:81, height: 20}}/>
-          </View>
           <View style={styles.myLearningHeader}>
-          <Text style={styles.myLearningHeaderText}>{translate("my-learning.primary_title")}</Text>
-            {/* <FontAwesomeIcon icon="list-ul" size={20}/> */}
+            <View style={styles.notificationContainer}>
+              <TouchableIcon icon={"bell"} disabled={false} onPress={() => { }}  />
+            </View>
+            <Text style={styles.primaryText}> {translate("my-learning.primary_title")} </Text>
+            <Text> {translate("my-learning.primary_info", {count: 10})} </Text>
           </View>
           <View style={styles.learningItems}>
-            <LearningItemCarousel/>
-          </View>
-          <View style={styles.recentActivity}>
-            <ActivitySheetConsumer>
-              {({setCurrentActivity}) =>
-                <ActivityLauncher item={activity} onPress={(activity) => setCurrentActivity(activity)}/>
-              }
-            </ActivitySheetConsumer>
+            <LearningItemCarousel />
           </View>
         </View>
+      </SafeAreaView>
     );
   }
 }
@@ -87,57 +68,21 @@ MyLearning.propTypes = {
 const styles = StyleSheet.create({
   myLearningContainer: {
     flex: 1,
-    justifyContent: "center",
-  },
-  myLearningLogo: {
-    flexDirection: 'row',
-    height: resizeByScreenSize(40, 48, 56, 64),
-    paddingHorizontal: gutter,
-    backgroundColor: "#FFFFFF",
-    alignItems: 'center'
+    justifyContent: "center"
   },
   myLearningHeader: {
-    height: resizeByScreenSize(40, 48, 64, 64),
-    flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
+    flexDirection: "column",
     justifyContent: "space-between",
-    paddingRight: gutter,
-    paddingLeft: gutter,
+    padding: gutter
   },
-  myLearningHeaderText: {
-    fontSize: h1,
+  notificationContainer: {
+    height: 40,
+    alignItems: "flex-end"
   },
-  topnavicon: {
-    paddingLeft: 10,
+  primaryText: {
+    fontSize: h1
   },
   learningItems: {
-    flex: 1,
-  },
-  recentActivity: {
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "#F0F0F0",
-    marginLeft: 8,
-    marginRight: 8,
-    marginBottom: 8,
-    overflow: "hidden",
-  },
-  activity: {
-    flex: 1,
-    marginTop: 10,
-    textAlign: "center",
-    fontSize: 30,
-    fontWeight: "bold",
-    borderWidth: 1,
-    margin: 0,
-    backgroundColor: "#FFFFFF",
-    borderColor: "#CCCCCC",
-    width: wp("80%")
-  },
-  navigation: {
-    paddingBottom: 20,
-    width: wp("100%"),
-    height: hp("10%")
-  },
+    flex: 1
+  }
 });

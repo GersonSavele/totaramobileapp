@@ -9,8 +9,12 @@
     "outline": "Outline"
   }, 
   "my-learning": {
-    "primary_title": "My learning",
-    "continue_action": "Continue your"
+    "primary_title": "Current learning",
+    "primary_info": {
+        "zero": "You have no any learning items to complete",
+        "one": "You have {{count}} learning item to complete",
+        "other": "You have {{count}} learning item to complete"
+    }
   }, 
   "program-details": {
     "courses": "Courses",

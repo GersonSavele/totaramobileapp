@@ -96,7 +96,6 @@ const LearningItemWithSummaryAndNavigation = ({item, navigation}) => (
         <View style={{flex: 1}}>
           <Text numberOfLines={3} style={styles.itemSummary}>{item.summary}</Text>
           <View style={{flex: 1}}/>
-          <Button block rounded info bordered style={styles.secondaryButton}><Text style={styles.buttonText}>{translate("my-learning.continue_action")} {item.type}</Text></Button>
         </View>
       </LearningItemCard>
     </View>
