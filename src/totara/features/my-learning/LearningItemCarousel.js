@@ -30,7 +30,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-
 import { LearningItemCard, AddBadge } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { LearningItemType } from "@totara/types";
@@ -44,6 +43,7 @@ const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning }) => {
     const [activeSlide, setActiveSlide] = useState(0);
     const [sliderRef, setSliderRef] = useState();
+
     if (currentLearning) {
       // used for faster development to navigate at once to first course-details
       // courseNavigate(currentLearning[0])
