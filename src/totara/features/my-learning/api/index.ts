@@ -31,13 +31,13 @@ const query = gql`
             itemtype
             shortname
             fullname
-            summary: description
-            summaryFormat: description_format
-            # duedateState
+            summary #: description
+            #summaryFormat: description_format
+            duedateState # missing from real api
             duedate
             progress
-            # status
-            # imageSrc
+            # status # missing from real api
+            imageSrc # missing from real api
         }
     }
 `;

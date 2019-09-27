@@ -89,7 +89,7 @@ const LearningItemCarousel = withNavigation(
 const renderItem = navigation => {
   const LearningItem = ({ item }) => (
     <View style={styles.itemWithBadgeContainer}>
-      <AddBadge status={item.progressPercentage || item.status} size={21}>
+      <AddBadge status={item.progress || item.status} size={21}>
         <LearningItemWithSummaryAndNavigation
           item={item}
           navigation={navigation}
