@@ -23,47 +23,45 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
-import PropTypes from 'prop-types';
 
 import { gutter, h1 } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { TouchableIcon } from "@totara/components";
 import LearningItemCarousel from "./LearningItemCarousel";
+import { learningItemsList } from "./api";
+import { Log } from "@totara/lib";
+import { ErrorFeedbackModal } from "@totara/components";
 
-export default class MyLearning extends React.Component {
-
-  static navigationOptions = {
-    headerTitle: null,
-    headerStyle: {
-      height: 0,
-      borderBottomWidth: 0,
-      backgroundColor: "#FFFFFF",
-    }
-  };
-
-  render() {
+const MyLearning = learningItemsList(({loading, currentLearning, error}) => {
+  if (error) {
+    Log.error("Error getting course details", error);
+    return <ErrorFeedbackModal/>
+  } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.myLearningContainer}>
           <View style={styles.myLearningHeader}>
-            <View style={styles.notificationContainer}>
-              <TouchableIcon icon={"bell"} disabled={false} onPress={() => { }}  />
-            </View>
-            <Text style={styles.primaryText}> {translate("my-learning.primary_title")} </Text>
-            <Text> {translate("my-learning.primary_info", {count: 10})} </Text>
+            <Text style={styles.primaryText}>
+              {translate("my-learning.primary_title")}
+            </Text>
+            <Text>
+              {translate("my-learning.primary_info", { count: (!loading && currentLearning && currentLearning.length) ? currentLearning.length : 0})}
+            </Text>
           </View>
           <View style={styles.learningItems}>
-            <LearningItemCarousel />
+            { (loading) && <Text>{translate("general.loading")}</Text>}
+            { 
+              (!loading && currentLearning && currentLearning.length > 0) 
+              ? <LearningItemCarousel currentLearning={currentLearning} /> 
+              : <Text>No data to display</Text>
+            }
           </View>
         </View>
       </SafeAreaView>
-    );
-  }
-}
+    )
+  } 
+});
 
-MyLearning.propTypes = {
-  navigation: PropTypes.object.isRequired
-};
+export default MyLearning;
 
 const styles = StyleSheet.create({
   myLearningContainer: {
@@ -73,11 +71,8 @@ const styles = StyleSheet.create({
   myLearningHeader: {
     flexDirection: "column",
     justifyContent: "space-between",
+    backgroundColor: "#f9f9f9",
     padding: gutter
-  },
-  notificationContainer: {
-    height: 40,
-    alignItems: "flex-end"
   },
   primaryText: {
     fontSize: h1

@@ -11,7 +11,7 @@
   "my-learning": {
     "primary_title": "Current learning",
     "primary_info": {
-        "zero": "You have no any learning items to complete",
+        "zero": "You have no learning",
         "one": "You have {{count}} learning item to complete",
         "other": "You have {{count}} learning item to complete"
     }

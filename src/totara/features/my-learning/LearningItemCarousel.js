@@ -24,29 +24,17 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import { Button } from "native-base";
 import Carousel from "react-native-snap-carousel";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 import { LearningItemCard, AddBadge } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { LearningItemType } from "@totara/types";
-import { translate } from "@totara/locale";
 import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS } from "@totara/lib/Constant";
 import { Log } from "@totara/lib";
 
-import { learningItemsList } from "./api";
 
-
-const LearningItemCarousel = withNavigation(learningItemsList(({loading, currentLearning, error, navigation}) => {
-
-  if (loading) return <Text>{translate("general.loading")}</Text>;
-
-  if (error) {
-    Log.error("Error getting course details", error);
-    return <Text>{translate("general.error")}(</Text>; // TODO MOB-123 make this UI better
-  }
-
+const LearningItemCarousel = withNavigation(({navigation, currentLearning}) => {
   if (currentLearning) {
     // used for faster development to navigate at once to first course-details
     // courseNavigate(currentLearning[0])
@@ -64,7 +52,7 @@ const LearningItemCarousel = withNavigation(learningItemsList(({loading, current
     );
 
   } else return null;
-}));
+});
 
 const renderItem = (navigation) => {
 
@@ -122,13 +110,12 @@ let navigateTo = (navigation, item) => {
   }
 };
 
-
 const styles = StyleSheet.create({
   itemWithBadgeContainer: {
     marginTop: hp("2.5%"),
     marginBottom: hp("3%"),
     marginLeft: 8,
-    marginRight: 8,
+    marginRight: 8
   },
   learningItem: {
     borderRadius: normalize(10),
@@ -143,7 +130,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: normalize(10),
     width: "100%",
     height: "100%",
-    overflow: "hidden",
+    overflow: "hidden"
   },
   itemSummary: {
     flex: 10,
@@ -152,27 +139,26 @@ const styles = StyleSheet.create({
     maxHeight: 125,
     fontSize: 15,
     lineHeight: 20,
-    color: "#3D444B",
+    color: "#3D444B"
   },
   buttonText: {
     color: "#3D444B",
     padding: 5
   },
   secondaryButton: {
-    borderColor: "#3D444B",
+    borderColor: "#3D444B"
   },
   itemInfo: {
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
     maxHeight: 16,
-    paddingTop: 4,
+    paddingTop: 4
   },
   itemType: {
     fontSize: 12,
     color: "#A0A0A0"
   },
 });
-
 
 export default LearningItemCarousel;

@@ -21,7 +21,6 @@
  */
 
 import React from "react";
-import { View } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import { StyleProvider } from "native-base";
@@ -65,7 +64,8 @@ import { config } from "@totara/lib";
 import { theme, getTheme } from "@totara/theme";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
-import { AdditionalAction } from "@totara/auth/additional-actions"
+import { AdditionalAction } from "@totara/auth/additional-actions";
+import { TouchableIcon } from "@totara/components";
 
 class App extends React.Component<{}> {
 
@@ -104,24 +104,29 @@ class App extends React.Component<{}> {
 const navigationOptions = {
   headerStyle: {
     borderBottomWidth: 0,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#f9f9f9"
   },
   headerBackTitle: null
 };
 
 const myLearning = createStackNavigator(
   {
-    MyLearning: MyLearning,
+    MyLearning: {
+      screen: MyLearning,
+      navigationOptions: {
+        headerRight: <TouchableIcon icon={faBell} disabled={false} size={24} />
+      }
+    },
     CourseDetails: {
       screen: CourseDetails,
       navigationOptions: {
-        headerRight: <View style={{paddingRight: 10}}><FontAwesomeIcon icon={faCloudDownloadAlt} size={24}/></View>
+        headerRight: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={24} />
       }
     },
     ProgramDetails: {
       screen: ProgramDetails,
       navigationOptions: {
-        headerRight: <View style={{paddingRight: 10}}><FontAwesomeIcon icon={faCloudDownloadAlt} size={24}/></View>
+        headerRight: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={24} />
       }
     },
   },
