@@ -36,8 +36,7 @@ type Props = {
   dueDateState?: string
 }
 
-
-const getDueDateModeStyle = (dueDateState?: string) => ((dueDateState == DueDateStateStatus.info) ? styles.normal : styles.warning);
+const getDueDateModeStyle = (dueDateState?: string) => ((dueDateState && dueDateState != DueDateStateStatus.info) ? styles.warning : styles.normal);
  
 const DueDateState = ({ dueDate, dueDateState }: Props) => {
 
@@ -46,7 +45,7 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
   return (
     <View style={[styles.container, dueDateModeStyle]}>
       <Text style={styles.generalText}>
-        {(dueDateState == DueDateStateStatus.info)? translate("totara-component.due_in") : translate("totara-component.overdue_by")}&nbsp;
+        {(dueDateState && dueDateState != DueDateStateStatus.info) ? translate("totara-component.overdue_by") : translate("totara-component.due_in")}&nbsp;
         <Text style={styles.highlighText}>
           {moment(dueDate).toNow(true)}&nbsp;
         </Text>

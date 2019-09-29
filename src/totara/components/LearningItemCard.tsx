@@ -38,11 +38,10 @@ const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
 
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
-
   return (
     <View style={{ flex: 1 }}>
       <View style={imageStyleSheet}>
-        <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} />
+        { item.dueDate && <DueDateState dueDateState={item.dueDateState} dueDate={item.dueDate} /> }
         <ImageElement item={item} />
       </View>
       <View style={cardStyleSheet}>
