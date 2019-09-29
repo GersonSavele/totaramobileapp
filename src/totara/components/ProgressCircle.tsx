@@ -36,11 +36,11 @@ const ProgressCircle = ({size, progress, progressColor, color, backgroundColor}:
   size={size}
   unfilledColor={(backgroundColor? backgroundColor : "#E6E6E6")}
   color={(progressColor? progressColor : "#4579b2")}
-  thickness={2}
+  thickness={3}
   borderWidth={0}
   formatText={() =>  progress+"%"}
   showsText={true}
-  textStyle={{fontSize: 11, fontWeight: "bold", color: (color ? color: "#000")}}/>
+  textStyle={{fontSize: 12, color: (color ? color: "#000")}}/>
 
 };
 

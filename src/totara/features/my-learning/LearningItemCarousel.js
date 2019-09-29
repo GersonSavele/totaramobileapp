@@ -58,7 +58,7 @@ const renderItem = (navigation) => {
 
   const LearningItem = ({item}) =>
     <View style={styles.itemWithBadgeContainer}>
-      <AddBadge status={item.progressPercentage || item.status}>
+      <AddBadge status={item.progressPercentage || item.status} size={21}>
         <LearningItemWithSummaryAndNavigation item={item} navigation={navigation}/>
       </AddBadge>
     </View>;
@@ -149,15 +149,17 @@ const styles = StyleSheet.create({
     borderColor: "#3D444B"
   },
   itemInfo: {
-    flex: 1,
     flexDirection: "row",
-    flexWrap: "wrap",
-    maxHeight: 16,
-    paddingTop: 4
+    paddingTop: 8
   },
   itemType: {
-    fontSize: 12,
-    color: "#A0A0A0"
+    fontSize: 10,
+    color: "#A0A0A0",
+    borderRadius: 4,
+    borderColor: "#A0A0A0",
+    borderWidth: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 2
   },
 });
 
