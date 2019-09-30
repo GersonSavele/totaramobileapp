@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     backgroundColor: "#f9f9f9",
-    padding: gutter
+    padding: gutter,
+    borderBottomWidth: 0.2,
   },
   primaryText: {
     fontSize: h1

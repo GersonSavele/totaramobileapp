@@ -22,7 +22,7 @@
 
 import React from "react";
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -50,29 +50,25 @@ const LearningItemCarousel = withNavigation(
       // return null;
       return (
         <View>
-          <View
-            style={{
-              height: 0.5,
-              justifyContent: "center",
-              backgroundColor: "#f9f9f9"
-            }}
-          >
-            <Pagination
+            <Pagination 
               activeDotIndex={activeSlide}
               dotsLength={currentLearning.length}
-              containerStyle={{ borderStyle: "dashed" }}
+              containerStyle={{ borderStyle: "dashed", paddingVertical: 0, marginHorizontal: 0, paddingHorizontal: 0 }}
               dotStyle={{
-                width: wp("115%"),
-                height: 1,
-                marginHorizontal: 0,
-                backgroundColor: "#b2b2b2"
+                  width: (Dimensions.get("window").width)/(currentLearning.length),
+                  height: 1.5,
+                  borderRadius: 0,
+                  marginHorizontal: 0,
+                  backgroundColor: "#b2b2b2",
               }}
-              inactiveDotOpacity={0.4}
-              inactiveDotScale={0.6}
+              dotContainerStyle={{
+                marginHorizontal: 0,
+              }}
               carouselRef={sliderRef}
               tappableDots={!!sliderRef}
+              inactiveDotOpacity={0}
+              inactiveDotScale={1}
             />
-          </View>
           <Carousel
             ref={ref => setSliderRef(ref)}
             data={currentLearning}
@@ -170,7 +166,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: normalize(10) },
     shadowOpacity: 0.16,
     shadowRadius: normalize(14),
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
   },
   itemContainer: {
     borderTopRightRadius: normalize(10),
