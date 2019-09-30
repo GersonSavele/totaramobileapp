@@ -36,7 +36,16 @@ type Props = {
   dueDateState?: string
 }
 
-const getDueDateModeStyle = (dueDateState?: string) => ((dueDateState && dueDateState != DueDateStateStatus.info) ? styles.warning : styles.normal);
+const getDueDateModeStyle = (dueDateState?: string) => {
+  switch (dueDateState) {
+    case DueDateStateStatus.danger:
+      return styles.danger
+    case DueDateStateStatus.warning:
+      return styles.warning
+    default:
+      return styles.info
+  }
+}
  
 const DueDateState = ({ dueDate, dueDateState }: Props) => {
 
@@ -45,7 +54,7 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
   return (
     <View style={[styles.container, dueDateModeStyle]}>
       <Text style={styles.generalText}>
-        {(dueDateState && dueDateState != DueDateStateStatus.info) ? translate("totara-component.overdue_by") : translate("totara-component.due_in")}&nbsp;
+        {(dueDateState && dueDateState == DueDateStateStatus.danger) ? translate("totara-component.overdue_by") : translate("totara-component.due_in")}&nbsp;
         <Text style={styles.highlighText}>
           {moment(dueDate).toNow(true)}&nbsp;
         </Text>
@@ -71,11 +80,14 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "center"
   },
-  normal: {
-    backgroundColor: "#4579B2"
+  info: {
+    backgroundColor: "#337AB7"
   },
   warning: {
-    backgroundColor: "#8A3B3C"
+    backgroundColor: "#8E660D"
+  },
+  danger: {
+    backgroundColor: "#953539"
   },
   generalText: {
     fontSize: 14,
