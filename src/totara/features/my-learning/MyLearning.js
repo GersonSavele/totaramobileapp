@@ -30,6 +30,7 @@ import LearningItemCarousel from "./LearningItemCarousel";
 import { learningItemsList } from "./api";
 import { Log } from "@totara/lib";
 import { ErrorFeedbackModal } from "@totara/components";
+import NoCurrentLearning from "./NoCurrentLearning";
 
 const MyLearning = learningItemsList(({loading, currentLearning, error}) => {
   if (error) {
@@ -52,7 +53,7 @@ const MyLearning = learningItemsList(({loading, currentLearning, error}) => {
             { 
               (!loading && currentLearning && currentLearning.length > 0) 
               ? <LearningItemCarousel currentLearning={currentLearning} /> 
-              : <Text>No data to display</Text>
+              : <NoCurrentLearning />
             }
           </View>
         </View>
