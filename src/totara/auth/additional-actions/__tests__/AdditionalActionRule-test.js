@@ -78,14 +78,14 @@ const mocksError = [
 ];
 
 describe("AdditionalActionRule, Apollo MockedProvider should test three state such as loading, final and error ", () => {
-  it("Test result : Render loading state initially and return Loading...", () => {
+  it("Test result : Render loading state initially and return no component", () => {
     const component = renderer.create(
       <MockedProvider mocks={[]} addTypename={false}>
         <AdditionalActionRule />
       </MockedProvider>
     );
     const tree = component.toJSON();
-    expect(tree.children).toContain("Loading...");
+    expect(tree).toBeNull();
   });
 
   it("Test result : Once render additional action rule, it will return child component", async () => {

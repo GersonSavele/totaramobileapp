@@ -33,7 +33,7 @@ const AdditionalActionRule = ({ children }: Params) => {
   return (
     <GetMe
       props={({ loading, data, error, refetch }: QueryResult) => {
-        if (loading) return <Text>Loading...</Text>;
+        if (loading) return null;
         if (error) return <GeneralErrorModal/>;
         if (
           data &&

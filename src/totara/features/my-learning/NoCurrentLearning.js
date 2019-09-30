@@ -44,7 +44,7 @@ const NoCurrentLearning = () => {
               "additional-actions-modal.auth_model_go_to_browser"
             )}
             onPress={() => {
-                Linking.openURL(auth.setup!.host);
+                Linking.openURL(auth.setup.host);
             }}
             buttonTitleFontWeight="600"
             buttonTitleColor="#FFF"

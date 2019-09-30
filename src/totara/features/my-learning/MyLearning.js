@@ -34,30 +34,28 @@ import NoCurrentLearning from "./NoCurrentLearning";
 
 const MyLearning = learningItemsList(({loading, currentLearning, error}) => {
   if (error) {
-    Log.error("Error getting course details", error);
+    Log.error("Error getting current learning", error);
     return <ErrorFeedbackModal/>
   } else {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.myLearningContainer}>
-          <View style={styles.myLearningHeader}>
-            <Text style={styles.primaryText}>
-              {translate("my-learning.primary_title")}
-            </Text>
-            <Text>
-              {translate("my-learning.primary_info", { count: (!loading && currentLearning && currentLearning.length) ? currentLearning.length : 0})}
-            </Text>
-          </View>
-          <View style={styles.learningItems}>
-            { (loading) && <Text>{translate("general.loading")}</Text>}
-            { 
-              (!loading && currentLearning && currentLearning.length > 0) 
-              ? <LearningItemCarousel currentLearning={currentLearning} /> 
-              : <NoCurrentLearning />
-            }
-          </View>
+      <View style={styles.myLearningContainer}>
+        <View style={styles.myLearningHeader}>
+          <Text style={styles.primaryText}>
+            {translate("my-learning.primary_title")}
+          </Text>
+          <Text>
+            {translate("my-learning.primary_info", { count: (!loading && currentLearning && currentLearning.length) ? currentLearning.length : 0})}
+          </Text>
         </View>
-      </SafeAreaView>
+        <View style={styles.learningItems}>
+          { (loading)
+            ? <Text>{translate("general.loading")}</Text>
+            : (currentLearning && currentLearning.length > 0)
+              ? <LearningItemCarousel currentLearning={currentLearning} />
+              : <NoCurrentLearning />
+          }
+        </View>
+      </View>
     )
   } 
 });
