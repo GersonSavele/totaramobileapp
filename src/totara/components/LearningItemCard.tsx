@@ -21,11 +21,13 @@
  */
 
 import { Image, ImageStyle, StyleSheet, Text, View, ViewStyle } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 
 import { LearningItem, Status } from "@totara/types";
 import { DueDateState }  from "@totara/components";
 import { normalize } from "@totara/theme";
+import { X_API_KEY } from "@totara/lib/Constant";
+import { AuthContext } from "@totara/auth";
 
 interface Props {
   item: LearningItem
@@ -58,15 +60,28 @@ const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
 
 const ImageElement = ({item}: {item: LearningItem}) => {
 
+  const authContext = useContext(AuthContext);
+  const apiKey = authContext.setup!.apiKey;
+
   const imgSrc = item.imageSrc;
   if (item.status === Status.hidden)
     return(
       <View style={{flex: 1}}>
-        <Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>
+        <Image source={{
+          uri: imgSrc,
+          headers: {
+            [X_API_KEY]: apiKey
+          }
+        }} style={{flex: 1, width: "100%", height: "100%"}}/>
         <View style={styles.disabledOverlay}/>
       </View>);
   else
-      return(<Image source={{uri: imgSrc}} style={{flex: 1, width: "100%", height: "100%"}}/>);
+      return(<Image source={{
+          uri: imgSrc,
+          headers: {
+            [X_API_KEY]: apiKey
+          }
+      }} style={{flex: 1, width: "100%", height: "100%"}}/>);
 
 };
 

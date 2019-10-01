@@ -104,7 +104,9 @@ class App extends React.Component<{}> {
 const navigationOptions = {
   headerStyle: {
     borderBottomWidth: 0,
-    backgroundColor: "#f9f9f9"
+    backgroundColor: "#f9f9f9",
+    shadowOpacity: 0,
+    elevation: 0
   },
   headerBackTitle: null
 };

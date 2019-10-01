@@ -30,7 +30,7 @@ import ManualFlow from "./manual/ManualFlow";
 import { AuthStep, useAuthContext, initialState } from "./AuthContextHook";
 import { getAndStoreApiKey, deviceCleanup, bootstrap, createApolloClient } from "./AuthRoutines";
 
-const AuthContext = React.createContext<State>({
+export const AuthContext = React.createContext<State>({
   isAuthenticated: false,
   setup: undefined,
   logOut: () => {
