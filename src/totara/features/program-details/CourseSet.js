@@ -62,7 +62,7 @@ const renderItem = (navigation) => {
 
   const CourseCard = ({item}) =>
     <View style={styles.itemWithBadgeContainer}>
-      <AddBadge status={item.progressPercentage || item.status}>
+      <AddBadge status={item.progress || item.status}>
         <CourseWithSummaryAndNavigation item={item} navigation={navigation}/>
       </AddBadge>
     </View>;

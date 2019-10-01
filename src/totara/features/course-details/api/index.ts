@@ -29,12 +29,11 @@ const query = gql`
   query course($id: ID!) {
     course(id: $id) {
       id
-      type
+      itemtype
       shortname
       fullname
       summary
-      progressPercentage
-      groupCount
+      progress
       imageSrc
       sections {
         sectionName

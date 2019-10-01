@@ -28,26 +28,26 @@ const query = gql`
   query program($id: ID!) {
     program(id: $id) {
       id
-      type
+      itemtype
       shortname
       fullname
       summary
-      dueDateState
-      dueDate
-      progressPercentage
-      groupCount
+      duedateState
+      duedate
+      progress
       imageSrc
       courseSet {
         id
         label  
         courses {
           id
-          type
+          itemtype
           shortname
           fullname
           summary
-          progressPercentage
-          status  
+          progress
+          status
+          imageSrc  
         }
         nextSet {
           nextID

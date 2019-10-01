@@ -24,14 +24,13 @@ import {Section} from "./LearningItem"
 
 export interface Program {
   id: number
-  type: string
+  itemtype: string
   shortname: string
   fullname?: string
   summary?: string
-  dueDateState?: string
-  dueDate?: Date
-  progressPercentage?: number
-  groupCount?: number
+  duedateState?: string
+  duedate?: Date
+  progress?: number
   sections: [Section]
   imageSrc?: string
 }

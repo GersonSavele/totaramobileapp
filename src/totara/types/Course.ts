@@ -26,12 +26,11 @@ import {LearningStatus} from "./LearningStatus";
 
 export interface Course extends LearningStatus {
   id: number
-  type: string
+  itemtype: string
   shortname: string
   fullname?: string
   summary?: string
-  progressPercentage?: number
-  groupCount?: number
+  progress?: number
   sections: [Section]
   imageSrc?: string
 }
