@@ -21,7 +21,7 @@
  */
 
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
@@ -42,7 +42,7 @@ import { Log } from "@totara/lib";
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning }) => {
     const [activeSlide, setActiveSlide] = useState(0);
-    const [sliderRef, setSliderRef] = useState();
+    const sliderRef = useRef(null)
 
     if (currentLearning) {
       // used for faster development to navigate at once to first course-details
@@ -64,13 +64,13 @@ const LearningItemCarousel = withNavigation(
               dotContainerStyle={{
                 marginHorizontal: 0,
               }}
-              carouselRef={sliderRef}
-              tappableDots={!!sliderRef}
+              carouselRef={sliderRef.current}
+              tappableDots={sliderRef && !!sliderRef.current}
               inactiveDotOpacity={0}
               inactiveDotScale={1}
             />
           <Carousel
-            ref={ref => setSliderRef(ref)}
+            ref={sliderRef}
             data={currentLearning}
             renderItem={renderItem(navigation)}
             sliderWidth={wp("100%")}
