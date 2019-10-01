@@ -104,9 +104,7 @@ class App extends React.Component<{}> {
 const navigationOptions = {
   headerStyle: {
     borderBottomWidth: 0,
-    backgroundColor: "#f9f9f9",
-    shadowOpacity: 0,
-    elevation: 0
+    backgroundColor: "#f9f9f9"
   },
   headerBackTitle: null
 };
@@ -116,7 +114,13 @@ const myLearning = createStackNavigator(
     MyLearning: {
       screen: MyLearning,
       navigationOptions: {
-        headerRight: <TouchableIcon icon={faBell} disabled={false} size={24} />
+        headerRight: <TouchableIcon icon={faBell} disabled={false} size={24} />,
+        headerStyle: {
+          borderBottomWidth: 0,
+          backgroundColor: "#f9f9f9",
+          shadowOpacity: 0,
+          elevation: 0
+        }
       }
     },
     CourseDetails: {

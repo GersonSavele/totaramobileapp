@@ -31,6 +31,7 @@ import { config, Log } from "@totara/lib";
 import { SetupSecret, Setup } from "./AuthContext";
 import { X_API_KEY } from "@totara/lib/Constant";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
+import { LearningItem } from "@totara/types";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -186,6 +187,16 @@ export const createApolloClient = (
 
   return new ApolloClient({
     link: link,
-    cache: new InMemoryCache()
+    cache: new InMemoryCache({
+      dataIdFromObject: object => {
+        switch (object.__typename) {
+          case 'totara_core_learning_item': {
+            const learningItem = object as unknown as LearningItem;
+            return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
+          }
+          default: return object.id; // fall back to `id` for all other types
+        }
+      }
+    })
   });
 };
