@@ -21,19 +21,20 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, View, FlatList} from "react-native";
-import {widthPercentageToDP as wp} from "react-native-responsive-screen";
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import VersionInfo from "react-native-version-info";
 
 class Settings extends React.Component {
   static navigationOptions = {
-    title: "Settings",
+    title: "Settings"
   };
 
-  renderItem = ({item}) => {
-
+  renderItem = ({ item }) => {
     return (
       <View style={styles.container}>
         <Text style={styles.dataText}>{item.title}</Text>
+        <Text style={styles.dataValue}>{item.value ? item.value : ""}</Text>
       </View>
     );
   };
@@ -42,7 +43,6 @@ class Settings extends React.Component {
     {
       key: "1",
       title: "Download on Wifi only"
-
     },
     {
       key: "2",
@@ -51,43 +51,43 @@ class Settings extends React.Component {
     {
       key: "3",
       title: "Help"
-
     },
     {
       key: "4",
-      title: "Version"
-
-    },
-
+      title: "Version",
+      value: VersionInfo.appVersion + "(" + VersionInfo.buildVersion + ")"
+    }
   ];
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-        <FlatList
-          data={this.data}
-          renderItem={this.renderItem}
-        />
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <FlatList data={this.data} renderItem={this.renderItem} />
       </View>
     );
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 10,
-    textAlign: "center",
     fontWeight: "bold",
     margin: 0,
     backgroundColor: "#FFFFFF",
-    width: wp("100%")
+    flexDirection: "row"
   },
   dataText: {
+    width: wp("65%"),
     fontSize: 20,
-    padding: 10,
+    padding: 8
   },
+  dataValue: {
+    width: wp("35%"),
+    fontSize: 16,
+    padding: 8,
+    textAlign: "right"
+  }
 });
 
 export default Settings;

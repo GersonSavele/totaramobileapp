@@ -2,7 +2,8 @@
   "general": {
     "loading": "Loading...",
     "error": "Error :",
-    "enter": "Enter"
+    "enter": "Enter",
+    "version": "Version"
   }, 
   "course-details": {
     "activities": "Activities",

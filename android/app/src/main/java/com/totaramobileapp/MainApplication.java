@@ -3,6 +3,7 @@ package com.totaramobileapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import cx.evermeet.versioninfo.RNVersionInfoPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNVersionInfoPackage(),
             new AsyncStoragePackage(),
             new CookieManagerPackage(),
             new RNCWebViewPackage(),

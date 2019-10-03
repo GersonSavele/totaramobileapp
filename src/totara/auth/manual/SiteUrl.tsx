@@ -28,6 +28,7 @@ import {
 } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { Form, Input, Container, Content } from "native-base";
+import VersionInfo from "react-native-version-info";
 
 import {
   resizeByScreenSize,
@@ -42,6 +43,7 @@ import {
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
 import { OutProps } from "./SiteUrlHook";
+import SafeAreaView from "react-native-safe-area-view";
 
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 
@@ -73,6 +75,9 @@ const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
           </View>
         </Form>
       </Content>
+      <SafeAreaView>
+        <Text style={{textAlign: "center"}}>{translate("general.version")}: {VersionInfo.appVersion}({VersionInfo.buildVersion})</Text>
+      </SafeAreaView>
     </Container>
   );
 };
