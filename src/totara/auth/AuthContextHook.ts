@@ -93,7 +93,7 @@ export const useAuthContext = (
     Log.debug("creating apolloClient");
     apolloClient.current = createApolloClient(
       authContextState.setup.apiKey,
-      config.mobileApi + "/graphql",
+      config.mobileApi.uri,
       logOut
     );
   } else if (apolloClient.current && !authContextState.isAuthenticated) {

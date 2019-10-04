@@ -163,7 +163,8 @@ export const createApolloClient = (
     headers: {
       ...headers,
       [X_API_KEY]: apiKey
-    }
+    },
+    http: { includeQuery: !config.mobileApi.persistentQuery }
   }));
 
   const logoutLink = onError(({ response }: ErrorResponse) => {

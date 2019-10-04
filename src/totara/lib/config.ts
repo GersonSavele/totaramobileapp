@@ -24,7 +24,10 @@ import ConsoleLogger from "./logger/ConsoleLogger";
 
 const defaultConfig = {
   urlProtocol: "https",
-  mobileApi: "http://mobilenode.wlg.totaralms.com",
+  mobileApi: {
+    uri: "http://mobilenode.wlg.totaralms.com/graphql",
+    persistentQuery: false
+  },
   mobileStatic: "http://mobilenode.wlg.totaralms.com",
   // startNodeJsMobile: true
   startNodeJsMobile: false,
