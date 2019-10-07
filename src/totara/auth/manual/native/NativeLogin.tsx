@@ -27,11 +27,10 @@ import {
   TouchableOpacity,
   Linking
 } from "react-native";
-import SafeAreaView from "react-native-safe-area-view";
-import { Form, Input, Content, Container } from "native-base";
+import { Form, Input, Container, Content, Header } from "native-base";
 
 import { config } from "@totara/lib";
-import { resizeByScreenSize, theme, gutter, h1, h3 } from "@totara/theme";
+import { resizeByScreenSize, theme, gutter, fontSizeH2, fontSizeH4, textColorDark, colorSecondary3, colorSecondary4, lineHeightH2, lineHeightH4, colorNeutral3 } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
 import { translate } from "@totara/locale";
 
@@ -83,50 +82,48 @@ class NativeLogin extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }} forceInset={{bottom: "always"}}>
-        <Container>
-          <View style={styles.navigation} >
-            <TouchableIcon onPress={() => { this.props.onBack() }} icon={"times"} disabled={false} />
+      <Container style={{ flex: 1, backgroundColor: colorSecondary4 }}>
+        <Header style={styles.navigation} iosBarStyle={"default"}>
+          <TouchableIcon onPress={() => { this.props.onBack(); }} icon={"times"} disabled={false} />
+        </Header>
+        <Content style={styles.content}>
+          <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} resizeMode={"contain"} />
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoTitle}>{translate("native-login.header_title")}</Text>
+            <Text style={styles.infoDescription}>{translate("native-login.login_information")}</Text>
           </View>
-          <Content style={styles.content}>
-            <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} />
-            <View style={styles.infoContainer}>
-              <Text style={styles.infoTitle}>{translate("native-login.header_title")}</Text>
-              <Text style={styles.infoDescription}>{translate("native-login.login_information")}</Text>
-            </View>
-            <Form >
-              <InputTextWithInfo
-                placeholder={translate("native-login.username_text_placeholder")}
-                message={this.state.inputUsernameMessage}
-                status={this.state.inputUsernameStatus} >
+          <Form>
+            <View style={styles.formInputContainer}>
+              <InputTextWithInfo placeholder={translate("native-login.username_text_placeholder")} message={this.state.inputUsernameMessage} status={this.state.inputUsernameStatus} >
                 <Input
                   clearButtonMode="while-editing"
                   autoCapitalize="none"
                   onChangeText={this.setStateInputUsernameWithShowError}
                   value={this.state.inputUsername}
-                  style={styles.inputText} />
+                  style={styles.inputText}
+                />
               </InputTextWithInfo>
-              <InputTextWithInfo
-                placeholder={translate("native-login.password_text_placeholder")}
-                message={this.state.inputPasswordMessage}
-                status={this.state.inputPasswordStatus}>
+            </View>
+            <View style={styles.formInputContainer}>
+              <InputTextWithInfo placeholder={translate("native-login.password_text_placeholder")} message={this.state.inputPasswordMessage} status={this.state.inputPasswordStatus} >
                 <Input
                   secureTextEntry={true}
                   clearButtonMode="while-editing"
                   onChangeText={this.setStateInputPasswordWithShowError}
                   value={this.state.inputPassword}
-                  style={styles.inputText} />
+                  style={styles.inputText}
+                />
               </InputTextWithInfo>
-              <View style={styles.forgotCredentialContainer}>
-                <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }}>
-                  <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
-                </TouchableOpacity>
-              </View>
-              <PrimaryButton onPress={this.onClickEnter} text={translate("general.enter")} />
-            </Form>
-          </Content>
-        </Container>
-      </SafeAreaView>
+            </View>
+            <View style={styles.forgotCredentialContainer}>
+              <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }} >
+                <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
+              </TouchableOpacity>
+            </View>
+            <PrimaryButton onPress={this.onClickEnter} text={translate("general.enter")} />
+          </Form>
+        </Content>
+      </Container>
     );
   }
 }
@@ -148,13 +145,13 @@ type State = {
 
 const styles = StyleSheet.create({
   navigation: {
-    height: 44,
     alignItems: "flex-start",
-    borderBottomColor: "#f1f1f1",
+    borderBottomColor: colorNeutral3,
     borderBottomWidth: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: colorSecondary3,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    color: "red"
   },
   navigationCloseItem: {
     padding: gutter,
@@ -162,29 +159,31 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: gutter,
-    marginBottom: resizeByScreenSize(10, 20, 20, 20)
+    paddingHorizontal: gutter
   },
   totaraLogo: {
-    height: resizeByScreenSize(68, 68, 87, 87),
-    maxHeight: resizeByScreenSize(136, 136, 184, 184),
+    height: resizeByScreenSize(72, 72, 88, 88),
     width: "100%",
-    resizeMode: "contain",
-    marginTop: 40
+    marginTop: 24
   },
   infoContainer: {
     justifyContent: "space-between",
     textAlignVertical: "center",
-    marginBottom: 24,
-    marginTop: 40
+    marginBottom: resizeByScreenSize(32, 32, 32, 32),
+    marginTop: 32
   },
   infoTitle: {
-    fontSize: h1,
-    color: theme.h1Color
+    fontSize: fontSizeH2,
+    lineHeight: lineHeightH2,
+    color: textColorDark
   },
   infoDescription: {
-    fontSize: h3,
-    color: theme.h3Color
+    fontSize: fontSizeH4,
+    lineHeight: lineHeightH4,
+    color: textColorDark
+  },
+  formInputContainer: {
+    marginBottom: 8
   },
   inputText: {
     paddingLeft: 0,

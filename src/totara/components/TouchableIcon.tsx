@@ -22,7 +22,8 @@ import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { gutter, h3 } from "@totara/theme";
+
+import { gutter, fontSizeH3, textColorDark, colorNeutral5 } from "@totara/theme";
 
 type Props = {
   icon: string
@@ -32,7 +33,7 @@ type Props = {
 
 const TouchableIcon = ({ icon, onPress, disabled, ...rest }: Props) => (
   <TouchableOpacity onPress={onPress} style={styles.container} disabled={disabled}>
-    <FontAwesomeIcon icon={icon} size={h3} color={ disabled ? "#D1D5D8" : "#000000"} {...rest} />
+    <FontAwesomeIcon icon={icon} size={fontSizeH3} color={ disabled ? colorNeutral5 : textColorDark} {...rest} />
   </TouchableOpacity>
 );
 

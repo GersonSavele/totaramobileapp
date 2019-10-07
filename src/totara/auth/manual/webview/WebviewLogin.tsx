@@ -21,16 +21,17 @@
  */
 
 import React, { useRef } from "react";
-import { View, StyleSheet, Linking, Text} from "react-native";
-import SafeAreaView from "react-native-safe-area-view";
+import { View, StyleSheet, Linking, Text, StatusBar} from "react-native";
 import { WebView } from "react-native-webview";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { Container, Header, Content, Footer } from "native-base";
 
 import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { OutProps } from "./WebviewLoginHook";
 import { TouchableIcon } from "@totara/components";
+import { colorSecondary4, colorSecondary3, colorNeutral3, textColorDark } from "@totara/theme";
 
 const WebviewLogin = ({
   loginUrl,
@@ -48,19 +49,18 @@ const WebviewLogin = ({
   const refLoginWebview = useRef<WebView>(null);
 
   return (
-    <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
-        <View style={styles.navigation}>
-          <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} />
-          <View style={styles.addressContainer}>
-            <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} />
-            <Text style={styles.addressText} numberOfLines={1} ellipsizeMode={"tail"} >
-              {navEndPoint}
-            </Text>
-          </View>
+    <Container style={{ flex: 1, backgroundColor: colorSecondary4 }}>
+      <Header style={styles.navigation}>
+        <StatusBar barStyle={"default"} />
+        <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} />
+        <View style={styles.addressContainer}>
+          <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} color={textColorDark} />
+          <Text style={styles.addressText} numberOfLines={1} ellipsizeMode={"tail"} >{navEndPoint}</Text>
         </View>
+      </Header>
+      <Content contentContainerStyle={{ flex: 1 }}>
         <WebView
           ref={refLoginWebview}
-          style={styles.webContainer}
           source={{
             uri: loginUrl,
             headers: { [DEVICE_REGISTRATION]: config.userAgent }
@@ -72,26 +72,26 @@ const WebviewLogin = ({
           useWebKit={true}
           onNavigationStateChange={onLogViewNavigate}
         />
-        <View style={styles.footer}>
-          <View style={{ flexDirection: "row" }}>
-            <TouchableIcon icon={"chevron-left"} disabled={!canWebGoBackward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goBack(); }} />
-            <TouchableIcon icon={"chevron-right"} disabled={!canWebGoForward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goForward(); }} />
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <TouchableIcon icon={"external-link-alt"} disabled={false} onPress={() => { Linking.openURL(navProtocol+"://"+navEndPoint); }} />
-          </View>
+      </Content>
+      <Footer style={styles.footer}>
+        <View style={styles.barContent}>
+          <TouchableIcon icon={"chevron-left"} disabled={!canWebGoBackward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goBack(); }} />
+          <TouchableIcon icon={"chevron-right"} disabled={!canWebGoForward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goForward(); }} />
         </View>
-    </SafeAreaView>
+        <View style={styles.barContent}>
+          <TouchableIcon icon={"external-link-alt"} disabled={false} onPress={() => { Linking.openURL(navProtocol + "://" + navEndPoint); }} />
+        </View>
+      </Footer>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
   navigation: {
-    height: 44,
     flexDirection: "row",
-    borderBottomColor: "#f1f1f1",
+    borderBottomColor: colorNeutral3,
     borderBottomWidth: 1,
-    backgroundColor: "#fff"
+    backgroundColor: colorSecondary3
   },
   addressContainer: {
     marginHorizontal: 40,
@@ -102,18 +102,19 @@ const styles = StyleSheet.create({
   },
   addressText: {
     marginLeft: 4,
-    flex: 1
+    flex: 1,
+    color: textColorDark
   },
   footer: {
-    height: 44,
     flexDirection: "row",
-    borderTopColor: "#f1f1f1",
+    borderTopColor: colorNeutral3,
     borderTopWidth: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colorSecondary3,
     justifyContent: "space-between"
   },
-  webContainer: {
-    flexGrow: 1
+  barContent: {
+    flexDirection: "row",
+    alignSelf: "flex-start"
   }
 });
 

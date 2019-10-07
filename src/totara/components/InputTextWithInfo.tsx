@@ -21,7 +21,8 @@
 import React from "react";
 import { View, StyleSheet, ViewStyle, Text } from "react-native";
 import { Item, Label } from "native-base";
-import { theme } from "@totara/theme";
+
+import { theme, textColorSubdued, fontSizeH4, fontSizeB2 } from "@totara/theme";
 
 type Props = {
   children?: Element,
@@ -47,10 +48,11 @@ const InfoText = ({status, message}: Props) => {
 };
 
 const InputTextWithInfo = ({ children, placeholder, message, status, style, ...rest }: Props) => {  
+
   return (
     <View style={{marginBottom: 8}}>
       <Item floatingLabel {...rest} success={(status === "success")} error={(status === "error")} style={[style, styles.formItem]}>
-        <Label style={{fontSize: theme.inputFontSize - 1}}>{placeholder}</Label>
+        <Label style={{fontSize: fontSizeH4, color: textColorSubdued}}>{placeholder}</Label>
         { children }        
       </Item>
       <InfoText status={status} message={message} />
@@ -60,9 +62,9 @@ const InputTextWithInfo = ({ children, placeholder, message, status, style, ...r
 
 const styles = StyleSheet.create({
   message: {
-    fontSize: theme.inputFontSize - 2,
+    fontSize: fontSizeB2,
     color: theme.inputTextColor,
-    height: theme.inputFontSize,
+    height: fontSizeB2,
     opacity: 0
   },
   success: {

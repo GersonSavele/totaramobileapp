@@ -22,7 +22,8 @@
 import React from "react";
 import { Text, ViewStyle } from "react-native";
 import { Button, Spinner } from "native-base";
-import { theme, gutter } from "@totara/theme";
+
+import { gutter, fontSizeButtonTitle, textColorLight } from "@totara/theme";
 import { translate } from "@totara/locale";
 
 type Props = {
@@ -36,23 +37,23 @@ type Props = {
 const ButtonTitle = ({mode, text}: Props) => {
   switch (mode) {
     case "loading":
-        return <Text style={{ color: "#fff", fontSize: theme.DefaultFontSize }}>{ translate("general.loading") }</Text>;
+        return <Text style={{ color: textColorLight, fontSize: fontSizeButtonTitle, fontWeight: "bold"}}>{ translate("general.loading") }</Text>;
     default: 
-        return <Text style={{ color: "#fff", fontSize: theme.DefaultFontSize }}>{ text }</Text>;
+        return <Text style={{ color: textColorLight, fontSize: fontSizeButtonTitle, fontWeight: "bold" }}>{ text }</Text>;
   }
 };
 
 const ButtonIndicator = ({mode}: Props) => {
   switch (mode) {
     case "loading":
-      return <Spinner size="small" color={"#fff"} style={{marginLeft: gutter}} />;
+      return <Spinner size="small" color={textColorLight} style={{marginLeft: gutter}} />;
     default: 
       return null;
   }
 };
 
 const PrimaryButton = ({ children, text, style, onPress, mode, ...rest}: Props) =>
-  <Button block primary onPress={onPress} {...rest} style={style} disabled={mode == "loading" || mode == "disabled"}>
+  <Button block primary onPress={onPress} {...rest} style={[{height: 48}, style]} disabled={mode == "loading" || mode == "disabled"}>
     {
       text
       ? <ButtonTitle mode={mode} text={text} />

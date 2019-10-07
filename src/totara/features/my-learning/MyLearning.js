@@ -24,7 +24,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { gutter, h1 } from "@totara/theme";
+import { gutter, fontSizeH1 } from "@totara/theme";
 import { translate } from "@totara/locale";
 import LearningItemCarousel from "./LearningItemCarousel";
 import { learningItemsList } from "./api";
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.2,
   },
   primaryText: {
-    fontSize: h1
+    fontSize: fontSizeH1
   },
   learningItems: {
     flex: 1

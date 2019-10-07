@@ -26,7 +26,7 @@ import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import { ContentIcon, CheckBadge } from "@totara/components";
-import { normalize, resizeByScreenSize, h4, normal, lrPadding } from "@totara/theme";
+import { normalize, resizeByScreenSize, fontSizeH4, fontSizeB1, lrPadding } from "@totara/theme";
 import { Status } from "@totara/types";
 import { ActivitySheetConsumer } from "@totara/activities";
 
@@ -153,12 +153,12 @@ const styles = StyleSheet.create({
     paddingRight: lrPadding,
   },
   activityText: {
-    fontSize: h4,
+    fontSize: fontSizeH4,
     paddingLeft: lrPadding,
 
   },
   activitySummaryText: {
-    fontSize: normal,
+    fontSize: fontSizeB1,
     color: "#A0A0A0",
     paddingLeft: lrPadding,
 
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEEEEE",
   },
   activeActivityText: {
-    fontSize: h4,
+    fontSize: fontSizeH4,
     color: "#0066CC",
     paddingLeft: lrPadding,
     fontWeight: "600",

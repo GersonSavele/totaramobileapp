@@ -23,47 +23,49 @@ import {
   StyleSheet,
   View,
   Image,
-  Text
+  Text,
+  StatusBar
 } from "react-native";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { Form, Input, Content, Container } from "native-base";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { Form, Input, Container, Content } from "native-base";
 
-import { resizeByScreenSize, theme, gutter, h1, h3 } from "@totara/theme";
+import { resizeByScreenSize, gutter, fontSizeH2, fontSizeH4, textColorDark, colorSecondary4, lineHeightH2, lineHeightH4 } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
 import { OutProps } from "./SiteUrlHook";
 
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 
-  return <Container>
-    <Content>
-      <Form style={styles.siteUrlContainer}>
-        <View style={styles.container}>
-          <Image source={require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode="stretch"/>
-          <View>
-            <Text style={styles.infoTitle}>{translate("manual.site_url_title")}</Text>
-            <Text style={styles.infoDescription}>{translate("manual.site_url_information")}</Text>
+  return (
+    <Container style={{ flex: 1, backgroundColor: colorSecondary4 }}>
+      <Content>
+        <StatusBar barStyle={"default"} />
+        <Form style={styles.siteUrlContainer}>
+          <View style={styles.container}>
+            <Image source={require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode="contain" />
+            <View>
+              <Text style={styles.infoTitle}>{translate("manual.site_url_title")}</Text>
+              <Text style={styles.infoDescription}>{translate("manual.site_url_information")}</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.formContainer}>
-          <InputTextWithInfo
-            placeholder={translate("manual.site_url_text_placeholder")}
-            message={siteUrlState.inputSiteUrlMessage}
-            status={siteUrlState.inputSiteUrlStatus}>
-            <Input
-              keyboardType="url"
-              clearButtonMode="while-editing"
-              autoCapitalize="none"
-              onChangeText={onChangeInputSiteUrl}
-              value={siteUrlState.inputSiteUrl}
-              style={styles.inputText}
-              autoFocus={true}/>
-          </InputTextWithInfo>
-          <PrimaryButton onPress={onSubmit} text={translate("general.enter")} style={styles.buttonEnter}/>
-        </View>
-      </Form>
-    </Content>
-  </Container>
+          <View style={styles.formContainer}>
+            <InputTextWithInfo placeholder={translate("manual.site_url_text_placeholder")} message={siteUrlState.inputSiteUrlMessage} status={siteUrlState.inputSiteUrlStatus} >
+              <Input
+                keyboardType="url"
+                clearButtonMode="while-editing"
+                autoCapitalize="none"
+                onChangeText={onChangeInputSiteUrl}
+                value={siteUrlState.inputSiteUrl}
+                style={styles.inputText}
+                autoFocus={true}
+              />
+            </InputTextWithInfo>
+            <PrimaryButton onPress={onSubmit} text={translate("general.enter")} style={styles.buttonEnter} />
+          </View>
+        </Form>
+      </Content>
+    </Container>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -72,9 +74,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   totaraLogo: {
-    marginTop: resizeByScreenSize(32, 128, 128, 128),
-    height: resizeByScreenSize(68, 68, 87, 87),
-    width: resizeByScreenSize(94, 94, 120, 120),
+    marginTop: 64,
+    width: wp(33),
     alignSelf: "center"
   },
   container: {
@@ -82,15 +83,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   infoTitle: {
-    fontSize: h1,
-    color: theme.h1Color
+    fontSize: fontSizeH2,
+    lineHeight: lineHeightH2,
+    color: textColorDark
   },
   infoDescription: {
-    fontSize: h3,
-    color: theme.h3Color
+    fontSize: fontSizeH4,
+    lineHeight: lineHeightH4,
+    color: textColorDark
   },
   formContainer: {
-    marginVertical: resizeByScreenSize(10, 20, 20, 20)
+    marginTop: resizeByScreenSize(32, 32, 32, 32)
   },
   inputText: { 
     paddingRight: 0, 

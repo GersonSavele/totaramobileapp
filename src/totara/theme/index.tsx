@@ -24,39 +24,90 @@ import getTheme from "./native-base-theme/components/index";
 import {resizeByScreenSize, normalize} from "./ui";
 import lodash from "lodash";
 
-const h1 = resizeByScreenSize(24, 28, 32, 36);
-const h2 = resizeByScreenSize(24, 28, 32, 36);
-const h3 = resizeByScreenSize(15, 20, 20, 20);
-const h4 = resizeByScreenSize(14, 15, 16, 16);
-const normal = resizeByScreenSize(13, 14, 14, 14);
-const paragraph = resizeByScreenSize(24, 28, 32, 36);
-const gutter = resizeByScreenSize(8, 10, 16, 24);
-const contmargin = resizeByScreenSize(8, 10, 16, 24);
+const fontSizeH1 = 32;
+const lineHeightH1 = 40;
+const fontSizeH2 = 24;
+const lineHeightH2 = 32;
+const fontSizeH3 = 20;
+const lineHeightH3 = 28;
+const fontSizeH4 = 17;
+const lineHeightH4 = 26;
+
+const fontSizeB1 = 16;
+const lineHeightB1 = 24;
+const fontSizeB2 = 15;
+const lineHeightB2 = 22;
+const fontSizeB3 = 14;
+const lineHeightB3 = 18;
+
+const fontSizeSmall = 12;
+const lineHeightSmall = 16;
+const fontSizeLabel = 10;
+const lineHeightLabel = 12;
+
+const fontSizeButtonTitle = 16;
+
+//---- theme color ------
+const colorBrand = "#8CA83D";
+const colorAssent = "#C5D395";
+const colorSecondary1 = "#D2D2D2";
+const colorSecondary2 = "#E6E6E6";
+const colorSecondary3 = "#F5F5F5";
+const colorSecondary4 = "#FFFFFF";
+
+//---- Text color ------
+const textColorDark = "#3D444B";
+const textColorSecondary = "#C5D39D";
+const textColorLight = "#FFFFFF";
+const textColorSubdued = "#7D7D7D";
+const textColorDisabled = "#C7C7C7";
+
+//---- Notification color ------
+const colorInfo = "#337AB7";
+const colorSuccess = "#677B2D";
+const colorWarning = "#BE660D";
+const colorAlert = "#953539";
+const colorHighlight = "#FDF8E4";
+
+//---- Neutral color ------
+const colorNeutral1 = "#FFFFFF";
+const colorNeutral2 = "#F5F5F5";
+const colorNeutral3 = "#E6E6E6";
+const colorNeutral4 = "#D2D2D2";
+const colorNeutral5 = "#C7C7C7";
+const colorNeutral6 = "#7D7D7D";
+const colorNeutral7 = "#4A4A4A";
+const colorNeutral8 = "#000000";
+
+const gutter = resizeByScreenSize(8, 16, 16, 24);
+
 const tbPadding = resizeByScreenSize(8, 16, 24, 32);
 const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 
 const theme = lodash.merge(material, {
-  brandPrimary: "#8ca83d",
-  brandInfo: "#FFFFFF",
+
+  brandPrimary: colorBrand,// NEED TO READ FROM colorPrimary: "#8ca83d",
+
+  inputFontSize: fontSizeH4,
+  
+  brandInfo: colorSecondary4,
   platformStyle: "totara",
   logoUrl: "https://webcasts.td.org/uploads/assets/2300/logo.png", //TODO need to set default logo and it will be covered in MOB-172 
 
-  inputErrorTextColor: "#953539",
-  inputTextColor: "#000000",
-  inputSuccessTextColor: "#000000",
+  inputErrorTextColor: colorAlert,
+  inputTextColor: textColorDark,
+  inputSuccessTextColor: colorSuccess,
 
-  inputErrorBorderColor: "#953539",
-  inputBorderColor: "#D2D2D2",
-  inputSuccessBorderColor: "#69BD45",
-
-  h1Color: "#000",
-  h3Color: "#64717D",
+  inputErrorBorderColor: colorAlert,
+  inputBorderColor: colorNeutral4,
+  inputSuccessBorderColor: colorSuccess,  
+  
   linkColor: "#3d444b",
 
   inputMarginLeft: 0,
   inputPaddingLeft: 0,
   
-  btnDisabledBg: "#b5b5b5"
+  btnDisabledBg: colorNeutral5
 });
 
 export {
@@ -64,14 +115,55 @@ export {
   getTheme,
   resizeByScreenSize,
   normalize,
-  h1,
-  h2,
-  h3,
-  h4,
-  normal,
-  paragraph,
+  fontSizeH1,
+  lineHeightH1,
+  fontSizeH2,
+  lineHeightH2,
+  fontSizeH3,
+  lineHeightH3,
+  fontSizeH4,
+  lineHeightH4,
+  fontSizeB1,
+  lineHeightB1,
+  fontSizeB2,
+  lineHeightB2,
+  fontSizeB3,
+  lineHeightB3,
+  fontSizeSmall,
+  lineHeightSmall,
+  fontSizeLabel,
+  lineHeightLabel,
+  fontSizeButtonTitle,
+
+  colorBrand,
+  colorAssent,
+  colorSecondary1,
+  colorSecondary2,
+  colorSecondary3,
+  colorSecondary4,
+
+  textColorDark,
+  textColorSecondary,
+  textColorLight,
+  textColorSubdued,
+  textColorDisabled,
+
+  colorInfo,
+  colorWarning,
+  colorSuccess,
+  colorAlert,
+  colorHighlight,
+
+  colorNeutral1,
+  colorNeutral2,
+  colorNeutral3,
+  colorNeutral4,
+  colorNeutral5,
+  colorNeutral6,
+  colorNeutral7,
+  colorNeutral8,
+
   gutter,
-  contmargin,
   tbPadding,
   lrPadding
 };
