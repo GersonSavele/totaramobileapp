@@ -63,7 +63,7 @@
     "eslint": "^6.4.0",
     "eslint-plugin-react": "^7.14.3",
     "jest": "^24.9.0",
-    "jest-junit": "^7.0.0",
+    "jest-junit": "^8.0.0",
     "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "^0.54.1",
     "react-native-typescript-transformer": "^1.2.13",
