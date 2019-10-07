@@ -39,7 +39,7 @@ export const useWebviewLogin = ({
 
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
-    if (typeof setupSecretValue !== "undefined" && setupSecretValue != "null") {
+    if (typeof setupSecretValue !== "undefined" && setupSecretValue != "null" && setupSecretValue) {
       onRecievedSetupSecret(setupSecretValue);
     }
   };
