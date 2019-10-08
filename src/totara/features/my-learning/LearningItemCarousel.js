@@ -31,7 +31,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { LearningItemCard, AddBadge } from "@totara/components";
-import { normalize } from "@totara/theme";
+import { resizeByScreenSize, normalize, colorNeutral3, colorSecondary4, colorNeutral8, colorNeutral6, fontSizeB2, lineHeightB2, textColorSubdued, fontSizeLabel, lineHeightLabel, colorLight } from "@totara/theme";
 import { LearningItemType } from "@totara/types";
 import {
   NAVIGATION_COURSE_DETAILS,
@@ -59,7 +59,7 @@ const LearningItemCarousel = withNavigation(
                   height: 1.5,
                   borderRadius: 0,
                   marginHorizontal: 0,
-                  backgroundColor: "#b2b2b2",
+                  backgroundColor: colorNeutral6,
               }}
               dotContainerStyle={{
                 marginHorizontal: 0,
@@ -77,7 +77,7 @@ const LearningItemCarousel = withNavigation(
             itemWidth={wp("82%")}
             sliderHeight={hp("100%")}
             inactiveSlideOpacity={0.6}
-            containerCustomStyle={{ backgroundColor: "#FFFFFF" }}
+            containerCustomStyle={{ backgroundColor: colorSecondary4 }}
             onSnapToItem={index => setActiveSlide(index)}
           />
         </View>
@@ -89,7 +89,7 @@ const LearningItemCarousel = withNavigation(
 const renderItem = navigation => {
   const LearningItem = ({ item }) => (
     <View style={styles.itemWithBadgeContainer}>
-      <AddBadge status={item.progress || item.status} size={21}>
+      <AddBadge status={item.progress || item.status} size={24}>
         <LearningItemWithSummaryAndNavigation
           item={item}
           navigation={navigation}
@@ -114,15 +114,9 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => (
   >
     <View style={styles.itemContainer}>
       <LearningItemCard item={item}>
-        <View style={styles.itemInfo}>
-          <Text style={styles.itemType}>{item.itemtype}</Text>
-        </View>
-        <View style={{ flex: 1 }}>
-          <Text numberOfLines={3} style={styles.itemSummary}>
-            {item.summary}
-          </Text>
-          <View style={{ flex: 1 }} />
-        </View>
+        <Text style={styles.itemType}>{item.itemtype}</Text>
+        {/* // TODO handeling numberOfLines for dynamic height */}
+        <Text style={styles.itemSummary} ellipsizeMode="tail" numberOfLines={resizeByScreenSize(3, 6, 6, 8)} >{item.summary}</Text>
       </LearningItemCard>
     </View>
   </TouchableOpacity>
@@ -162,47 +156,39 @@ const styles = StyleSheet.create({
   },
   learningItem: {
     borderRadius: normalize(10),
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: normalize(10) },
+    shadowColor: colorNeutral8,
     shadowOpacity: 0.16,
-    shadowRadius: normalize(14),
-    backgroundColor: "#FFFFFF",
+    shadowRadius: normalize(13),
+    backgroundColor: colorSecondary4,
+    borderWidth: normalize(1),
+    borderColor: colorNeutral3
   },
   itemContainer: {
-    borderTopRightRadius: normalize(10),
-    borderTopLeftRadius: normalize(10),
+    borderRadius: normalize(10),
     width: "100%",
     height: "100%",
     overflow: "hidden"
   },
-  itemSummary: {
-    flex: 10,
-    paddingBottom: 24,
-    paddingTop: 16,
-    maxHeight: 125,
-    fontSize: 15,
-    lineHeight: 20,
-    color: "#3D444B"
-  },
-  buttonText: {
-    color: "#3D444B",
-    padding: 5
-  },
-  secondaryButton: {
-    borderColor: "#3D444B"
-  },
-  itemInfo: {
-    flexDirection: "row",
-    paddingTop: 8
-  },
   itemType: {
-    fontSize: 10,
-    color: "#A0A0A0",
-    borderRadius: 4,
-    borderColor: "#A0A0A0",
-    borderWidth: 1,
+    marginTop: 8,
+    alignSelf: "flex-start",
     paddingHorizontal: 8,
-    paddingVertical: 2
+    paddingVertical: 2,
+    borderWidth: 1,
+    borderRadius: 4,
+    fontSize: fontSizeLabel,
+    backgroundColor: colorSecondary4,
+    color: textColorSubdued,
+    borderColor: colorNeutral6
+  },
+  itemSummary: {
+    flex: 1,
+    alignSelf: "flex-start",
+    width: "100%",
+    paddingVertical: 16,
+    fontSize: fontSizeB2,
+    lineHeight: lineHeightB2,
+    color: textColorSubdued
   }
 });
 

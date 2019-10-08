@@ -56,12 +56,13 @@ import {
   faBook,
   faPen,
   faChevronLeft,
-  faUnlockAlt
+  faUnlockAlt,
+  faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
 import { config } from "@totara/lib";
-import { theme, getTheme } from "@totara/theme";
+import { theme, getTheme, colorBrand, colorNeutral5, colorSecondary3, colorSecondary4 } from "@totara/theme";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions";
@@ -104,7 +105,7 @@ class App extends React.Component<{}> {
 const navigationOptions = {
   headerStyle: {
     borderBottomWidth: 0,
-    backgroundColor: "#f9f9f9"
+    backgroundColor: colorSecondary3
   },
   headerBackTitle: null
 };
@@ -117,7 +118,7 @@ const myLearning = createStackNavigator(
         headerRight: <TouchableIcon icon={faBell} disabled={false} size={24} />,
         headerStyle: {
           borderBottomWidth: 0,
-          backgroundColor: "#f9f9f9",
+          backgroundColor: colorSecondary3,
           shadowOpacity: 0,
           elevation: 0
         }
@@ -185,7 +186,7 @@ const mainNavigator = createMaterialBottomTabNavigator(
       }),
       tabBarOnPress: ({navigation}) => {
         navigation;
-      }
+      },
     },
     Downloads: {
       screen: downloads,
@@ -204,7 +205,7 @@ const mainNavigator = createMaterialBottomTabNavigator(
       navigationOptions: () => ({
         tabBarIcon: ({tintColor}) => (
           <FontAwesomeIcon
-            icon={faBell}
+            icon={faEnvelope}
             color={tintColor}
             size={24}
           />
@@ -222,11 +223,14 @@ const mainNavigator = createMaterialBottomTabNavigator(
           />
         )
       })
-    }
+    },
+    // style: { borderTopColor: "red"}
   }, {
     initialRouteName: "MyLearning",
     labeled: false,
-    barStyle: {backgroundColor: "#F7F7F7"},
+    barStyle: {backgroundColor: colorSecondary4, shadowRadius: 0},
+    activeTintColor: colorBrand,
+    inactiveTintColor: colorNeutral5
   }
 );
 

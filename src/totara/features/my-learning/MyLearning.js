@@ -22,9 +22,8 @@
 
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import SafeAreaView from "react-native-safe-area-view";
 
-import { gutter, fontSizeH1 } from "@totara/theme";
+import { gutter, textColorDark ,fontSizeH1, lineHeightH1, colorSecondary4, colorSecondary3, fontSizeSmall, lineHeightSmall } from "@totara/theme";
 import { translate } from "@totara/locale";
 import LearningItemCarousel from "./LearningItemCarousel";
 import { learningItemsList } from "./api";
@@ -43,7 +42,7 @@ const MyLearning = learningItemsList(({loading, currentLearning, error}) => {
           <Text style={styles.primaryText}>
             {translate("my-learning.primary_title")}
           </Text>
-          <Text>
+          <Text style={styles.infoText}>
             {translate("my-learning.primary_info", { count: (!loading && currentLearning && currentLearning.length) ? currentLearning.length : 0})}
           </Text>
         </View>
@@ -65,17 +64,25 @@ export default MyLearning;
 const styles = StyleSheet.create({
   myLearningContainer: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: colorSecondary4
   },
   myLearningHeader: {
     flexDirection: "column",
     justifyContent: "space-between",
-    backgroundColor: "#f9f9f9",
-    padding: gutter,
-    borderBottomWidth: 0.2,
+    backgroundColor: colorSecondary3,
+    padding: gutter
   },
   primaryText: {
-    fontSize: fontSizeH1
+    fontSize: fontSizeH1,
+    lineHeight: lineHeightH1,
+    color: textColorDark,
+    fontWeight: "bold"
+  },
+  infoText: {
+    fontSize: fontSizeSmall,
+    lineHeight: lineHeightSmall,
+    color: textColorDark,
   },
   learningItems: {
     flex: 1

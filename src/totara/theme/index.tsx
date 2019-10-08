@@ -24,43 +24,13 @@ import getTheme from "./native-base-theme/components/index";
 import {resizeByScreenSize, normalize} from "./ui";
 import lodash from "lodash";
 
-const fontSizeH1 = 32;
-const lineHeightH1 = 40;
-const fontSizeH2 = 24;
-const lineHeightH2 = 32;
-const fontSizeH3 = 20;
-const lineHeightH3 = 28;
-const fontSizeH4 = 17;
-const lineHeightH4 = 26;
-
-const fontSizeB1 = 16;
-const lineHeightB1 = 24;
-const fontSizeB2 = 15;
-const lineHeightB2 = 22;
-const fontSizeB3 = 14;
-const lineHeightB3 = 18;
-
-const fontSizeSmall = 12;
-const lineHeightSmall = 16;
-const fontSizeLabel = 10;
-const lineHeightLabel = 12;
-
-const fontSizeButtonTitle = 16;
-
-//---- theme color ------
+//---- Theme color ------
 const colorBrand = "#8CA83D";
 const colorAssent = "#C5D395";
 const colorSecondary1 = "#D2D2D2";
 const colorSecondary2 = "#E6E6E6";
 const colorSecondary3 = "#F5F5F5";
 const colorSecondary4 = "#FFFFFF";
-
-//---- Text color ------
-const textColorDark = "#3D444B";
-const textColorSecondary = "#C5D39D";
-const textColorLight = "#FFFFFF";
-const textColorSubdued = "#7D7D7D";
-const textColorDisabled = "#C7C7C7";
 
 //---- Notification color ------
 const colorInfo = "#337AB7";
@@ -78,6 +48,38 @@ const colorNeutral5 = "#C7C7C7";
 const colorNeutral6 = "#7D7D7D";
 const colorNeutral7 = "#4A4A4A";
 const colorNeutral8 = "#000000";
+
+//---- Text color ------
+const textColorDark = "#3D444B";
+const textColorSecondary = "#C5D39D";
+const textColorLight = "#FFFFFF";
+const textColorSubdued = "#7D7D7D";
+const textColorDisabled = "#C7C7C7";
+
+//---- Text size ------
+const fontSizeH1 = normalize(32);
+const fontSizeH2 = normalize(24);
+const fontSizeH3 = normalize(20);
+const fontSizeH4 = normalize(17);
+const fontSizeB1 = 16;
+const fontSizeB2 = 15;
+const fontSizeB3 = 14;
+const fontSizeSmall = 12;
+const fontSizeLabel = 10;
+
+const lineHeightH1 = normalize(38);
+const lineHeightH2 = normalize(32);
+const lineHeightH3 = normalize(28);
+const lineHeightH4 = normalize(26);
+const lineHeightB1 = 24;
+const lineHeightB2 = 20;
+const lineHeightB3 = 18;
+const lineHeightSmall = 16;
+const lineHeightLabel = 12;
+
+const fontSizeButtonTitle = 16;
+
+const fontWeightMedium = "500";
 
 const gutter = resizeByScreenSize(8, 16, 16, 24);
 
@@ -115,25 +117,9 @@ export {
   getTheme,
   resizeByScreenSize,
   normalize,
-  fontSizeH1,
-  lineHeightH1,
-  fontSizeH2,
-  lineHeightH2,
-  fontSizeH3,
-  lineHeightH3,
-  fontSizeH4,
-  lineHeightH4,
-  fontSizeB1,
-  lineHeightB1,
-  fontSizeB2,
-  lineHeightB2,
-  fontSizeB3,
-  lineHeightB3,
-  fontSizeSmall,
-  lineHeightSmall,
-  fontSizeLabel,
-  lineHeightLabel,
-  fontSizeButtonTitle,
+  gutter,
+  tbPadding,
+  lrPadding,
 
   colorBrand,
   colorAssent,
@@ -141,12 +127,6 @@ export {
   colorSecondary2,
   colorSecondary3,
   colorSecondary4,
-
-  textColorDark,
-  textColorSecondary,
-  textColorLight,
-  textColorSubdued,
-  textColorDisabled,
 
   colorInfo,
   colorWarning,
@@ -163,7 +143,33 @@ export {
   colorNeutral7,
   colorNeutral8,
 
-  gutter,
-  tbPadding,
-  lrPadding
+  textColorDark,
+  textColorSecondary,
+  textColorLight,
+  textColorSubdued,
+  textColorDisabled,
+
+  fontSizeH1,
+  fontSizeH2,
+  fontSizeH3,
+  fontSizeH4,
+  fontSizeB1,
+  fontSizeB2,
+  fontSizeB3,
+  fontSizeSmall,
+  fontSizeLabel,
+  
+  lineHeightH1,
+  lineHeightH2,
+  lineHeightH3,
+  lineHeightH4,
+  lineHeightB1,
+  lineHeightB2,
+  lineHeightB3,
+  lineHeightSmall,
+  lineHeightLabel,
+  
+  fontSizeButtonTitle,
+  
+  fontWeightMedium,
 };

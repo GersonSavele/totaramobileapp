@@ -23,7 +23,7 @@ import { StyleSheet, Text, View } from "react-native";
 import moment from "moment";
 import React from "react";
 
-import { gutter } from "@totara/theme";
+import { gutter, colorWarning, colorAlert, colorInfo, fontSizeB3, lineHeightB3, textColorLight } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/Constant";
 
@@ -74,27 +74,28 @@ enum DueDateStateStatus {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
     flexDirection: "row",
     padding: gutter,
     flexWrap: "wrap",
     alignItems: "center"
   },
   info: {
-    backgroundColor: "#337AB7"
+    backgroundColor: colorInfo
   },
   warning: {
-    backgroundColor: "#8E660D"
+    backgroundColor: colorWarning
   },
   danger: {
-    backgroundColor: "#953539"
+    backgroundColor: colorAlert
   },
   generalText: {
-    fontSize: 14,
-    color: "#fff"
+    fontSize: fontSizeB3,
+    lineHeight: lineHeightB3,
+    color: textColorLight
   },
   highlighText: {
-    fontSize: 14,
+    fontSize: fontSizeB3,
+    lineHeight: lineHeightB3,
     fontWeight: "bold"
   }
 });

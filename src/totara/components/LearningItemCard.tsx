@@ -25,7 +25,7 @@ import React, { useContext } from "react";
 
 import { LearningItem, Status } from "@totara/types";
 import { DueDateState }  from "@totara/components";
-import { normalize } from "@totara/theme";
+import { normalize, textColorDark, fontSizeH2, lineHeightH2, fontWeightMedium, colorSecondary4 } from "@totara/theme";
 import { X_API_KEY } from "@totara/lib/Constant";
 import { AuthContext } from "@totara/auth";
 
@@ -48,9 +48,7 @@ const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
       </View>
       <View style={cardStyleSheet}>
         <View style={{ flexDirection: "row" }}>
-          <Text numberOfLines={1} style={styles.itemFullName}>
-            {item.fullname}
-          </Text>
+          <Text numberOfLines={2} style={styles.itemFullName} ellipsizeMode="tail">{item.fullname}</Text>
         </View>
         {children}
       </View>
@@ -91,26 +89,22 @@ const styles = StyleSheet.create({
     flexDirection: "column-reverse",
   },
   itemCard: {
-    paddingLeft: normalize(16),
-    paddingTop: normalize(16),
-    paddingRight: normalize(16),
-    paddingBottom: normalize(16),
+    padding: normalize(16),
     justifyContent: "flex-start",
     flex: 1
   },
   itemFullName: {
-    color: "#3D444B",
+    color: textColorDark,
     flexWrap: "wrap",
-    fontSize: normalize(20),
-    fontWeight: "500",
-    padding: 0,
-    lineHeight: normalize(24),
+    fontSize: fontSizeH2,
+    fontWeight: fontWeightMedium,
+    lineHeight: lineHeightH2,
   },
   disabledOverlay: {
     position: "absolute",
     left: 0,
     top: 0,
-    backgroundColor: "white",
+    backgroundColor: colorSecondary4,
     opacity: 0.5,
     height: "100%",
     width: "100%"
