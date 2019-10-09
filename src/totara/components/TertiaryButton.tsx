@@ -20,23 +20,40 @@
  */
 
 import React, { ReactNode } from "react";
-import { Text } from "react-native";
+import { Text, StyleSheet, ViewStyle } from "react-native";
 import { Button } from "native-base";
+
+import { fontSizeButtonTitle, textColorDark } from "@totara/theme";
 
 type Props = {
   children?: ReactNode,
-  text?: string
+  text?: string,
+  style?: ViewStyle,
   onPress?: (() => void)
 }
 
-const TertiaryButton = ({ children, text, onPress, ...rest }: Props) => (
-  <Button block rounded transparent onPress={onPress} {...rest}>
+const TertiaryButton = ({ children, text, style, onPress, ...rest }: Props) => (
+  <Button block rounded transparent onPress={onPress} style={[styles.button, style]} {...rest}>
     {
       text 
-      ? <Text style={{ color: "#337ab7" }}>{text}</Text> 
+      ? <Text style={styles.title}>{text}</Text> 
       : children
     }
   </Button>
 );
+
+
+const styles = StyleSheet.create({
+  button: {
+    height: 48,
+    paddingHorizontal: 16,
+    minWidth: 200,
+    borderRadius: 3
+  },
+  title: {
+    color: textColorDark,
+    fontSize: fontSizeButtonTitle,
+  }
+});
 
 export default TertiaryButton;

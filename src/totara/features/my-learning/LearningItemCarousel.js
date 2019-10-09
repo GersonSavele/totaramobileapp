@@ -30,13 +30,22 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+
 import { LearningItemCard, AddBadge } from "@totara/components";
-import { resizeByScreenSize, normalize, colorNeutral3, colorSecondary4, colorNeutral8, colorNeutral6, fontSizeB2, lineHeightB2, textColorSubdued, fontSizeLabel, lineHeightLabel, colorLight } from "@totara/theme";
-import { LearningItemType } from "@totara/types";
 import {
-  NAVIGATION_COURSE_DETAILS,
-  NAVIGATION_PROGRAM_DETAILS
-} from "@totara/lib/Constant";
+  resizeByScreenSize,
+  normalize,
+  colorNeutral1,
+  colorNeutral8,
+  colorNeutral6,
+  fontSizeB2,
+  lineHeightB2,
+  textColorSubdued,
+  fontSizeLabel,
+  colorNeutral3
+} from "@totara/theme";
+import { LearningItemType } from "@totara/types";
+import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS } from "@totara/lib/Constant";
 import { Log } from "@totara/lib";
 
 const LearningItemCarousel = withNavigation(
@@ -77,7 +86,6 @@ const LearningItemCarousel = withNavigation(
             itemWidth={wp("82%")}
             sliderHeight={hp("100%")}
             inactiveSlideOpacity={0.6}
-            containerCustomStyle={{ backgroundColor: colorSecondary4 }}
             onSnapToItem={index => setActiveSlide(index)}
           />
         </View>
@@ -159,8 +167,8 @@ const styles = StyleSheet.create({
     shadowColor: colorNeutral8,
     shadowOpacity: 0.16,
     shadowRadius: normalize(13),
-    backgroundColor: colorSecondary4,
-    borderWidth: normalize(1),
+    backgroundColor: colorNeutral1,
+    borderWidth: 1,
     borderColor: colorNeutral3
   },
   itemContainer: {
@@ -177,7 +185,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     fontSize: fontSizeLabel,
-    backgroundColor: colorSecondary4,
+    backgroundColor: colorNeutral1,
     color: textColorSubdued,
     borderColor: colorNeutral6
   },

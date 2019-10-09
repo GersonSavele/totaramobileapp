@@ -25,7 +25,7 @@ import React, { useContext } from "react";
 
 import { LearningItem, Status } from "@totara/types";
 import { DueDateState }  from "@totara/components";
-import { normalize, textColorDark, fontSizeH2, lineHeightH2, fontWeightMedium, colorSecondary4 } from "@totara/theme";
+import { normalize, textColorDark, fontSizeH2, lineHeightH2, fontWeightMedium, colorNeutral1 } from "@totara/theme";
 import { X_API_KEY } from "@totara/lib/Constant";
 import { AuthContext } from "@totara/auth";
 
@@ -104,12 +104,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     top: 0,
-    backgroundColor: colorSecondary4,
+    backgroundColor: colorNeutral1,
     opacity: 0.5,
     height: "100%",
     width: "100%"
   },
 });
-
 
 export default LearningItemCard

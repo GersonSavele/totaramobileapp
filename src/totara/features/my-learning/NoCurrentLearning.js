@@ -21,81 +21,47 @@
 
 import React from "react";
 import { View, StyleSheet, Image, Dimensions, Text, Linking } from "react-native";
-import { ButtonWithIcon } from "@totara/components";
-import { resizeByScreenSize, normalize } from "@totara/theme";
+
+import { PrimaryButton } from "@totara/components";
+import { gutter, resizeByScreenSize, textColorDark, fontSizeH2, lineHeightH2 } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
 
 const NoCurrentLearning = () => {
   return (
-    
-    <View style={styles.MainContainerStyle}>
-        <Image
-          style={styles.ImageStyle}
-          source={require("@resources/images/no_current_learning/no_current_learning.png")}
-        />
-      <View style={styles.TextStyle}>
-        <Text style = {{fontSize : 24,color:  "#3d444b", fontWeight: "700"}}>No current learning</Text>
-      </View>
+    <View style={styles.containerStyle}>
+      <Image style={styles.imageContainer} source={require("@resources/images/no_current_learning/no_current_learning.png")} />
+      <Text style={styles.description}>{translate("my-learning.no_learning_message")}</Text>
       <AuthConsumer>
-      {auth => (
-      <ButtonWithIcon
-            buttonTitle={translate(
-              "additional-actions-modal.auth_model_go_to_browser"
-            )}
-            onPress={() => {
-                Linking.openURL(auth.setup.host);
-            }}
-            buttonTitleFontWeight="600"
-            buttonTitleColor="#FFF"
-            buttonBackgroundColor="#8ca83d"
-            fontSize={normalize(16)}
-            buttonIcon="external-link-alt"
-            borderRadius= {5}/>
-      )}</AuthConsumer>
+        {auth => (
+          <PrimaryButton onPress={() => { Linking.openURL(auth.setup.host); }} text={translate("additional-actions-modal.auth_model_go_to_browser")} icon="external-link-alt" style={{ alignSelf: "center" }} />
+        )}
+      </AuthConsumer>
     </View>
-
   );
 };
 
 const styles = StyleSheet.create({
-  MainContainerStyle: {
-    flex: 1,
-    flexDirection: "column",
-    marginLeft: "5%",
-    marginRight: "5%",
-    marginBottom: "5%",
-    alignItems: "center",
-    justifyContent: "center"
-  },
   containerStyle: {
     flex: 1,
-    borderRadius: 4,
-    marginHorizontal: resizeByScreenSize(16, 16, 20, 20),
-    marginVertical: resizeByScreenSize(32, 32, 32, 32),
-    backgroundColor: "#FFF"
-  },
-  transparentViewStyle: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)"
-  },
-  ImageStyle: {
     alignItems: "center",
+    justifyContent: "center",
+    padding: gutter
+  },
+  imageContainer: {
     height: Dimensions.get("window").width * 0.5,
     width: Dimensions.get("window").width * 0.7,
     resizeMode: "contain",
-    paddingBottom: resizeByScreenSize(32, 32, 48, 48)
-  },
-  TextStyle: {
-    alignItems: "flex-start",
     paddingBottom: resizeByScreenSize(32, 32, 48, 48),
-    paddingTop: resizeByScreenSize(32, 32, 48, 48)
   },
-  buttonContainerStyle: {
-    marginStart: resizeByScreenSize(8, 12, 12, 16)
-  },
-  buttonStyle: {
-    backgroundColor: "#FFF"
+  description: {
+    alignItems: "flex-start",
+    marginBottom: resizeByScreenSize(32, 32, 48, 48),
+    marginTop: resizeByScreenSize(32, 32, 48, 48),
+    fontSize : fontSizeH2,
+    lineHeight: lineHeightH2,
+    color:  textColorDark, 
+    fontWeight: "bold"
   }
 });
 

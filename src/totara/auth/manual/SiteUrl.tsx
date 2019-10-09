@@ -29,7 +29,16 @@ import {
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { Form, Input, Container, Content } from "native-base";
 
-import { resizeByScreenSize, gutter, fontSizeH2, fontSizeH4, textColorDark, colorSecondary4, lineHeightH2, lineHeightH4 } from "@totara/theme";
+import {
+  resizeByScreenSize,
+  gutter,
+  fontSizeH2,
+  fontSizeH4,
+  textColorDark,
+  colorAssent,
+  lineHeightH2,
+  lineHeightH4
+} from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
 import { OutProps } from "./SiteUrlHook";
@@ -37,7 +46,7 @@ import { OutProps } from "./SiteUrlHook";
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 
   return (
-    <Container style={{ flex: 1, backgroundColor: colorSecondary4 }}>
+    <Container style={{ flex: 1, backgroundColor: colorAssent }}>
       <Content>
         <StatusBar barStyle={"default"} />
         <Form style={styles.siteUrlContainer}>

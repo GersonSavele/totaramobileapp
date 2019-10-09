@@ -31,7 +31,7 @@ import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { OutProps } from "./WebviewLoginHook";
 import { TouchableIcon } from "@totara/components";
-import { colorSecondary4, colorSecondary3, colorNeutral3, textColorDark } from "@totara/theme";
+import { colorAssent, colorSecondary3, textColorDark } from "@totara/theme";
 
 const WebviewLogin = ({
   loginUrl,
@@ -49,7 +49,7 @@ const WebviewLogin = ({
   const refLoginWebview = useRef<WebView>(null);
 
   return (
-    <Container style={{ flex: 1, backgroundColor: colorSecondary4 }}>
+    <Container style={{ flex: 1, backgroundColor: colorAssent }}>
       <Header style={styles.navigation}>
         <StatusBar barStyle={"default"} />
         <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} />
@@ -89,8 +89,7 @@ const WebviewLogin = ({
 const styles = StyleSheet.create({
   navigation: {
     flexDirection: "row",
-    borderBottomColor: colorNeutral3,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0,
     backgroundColor: colorSecondary3
   },
   addressContainer: {
@@ -107,8 +106,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: "row",
-    borderTopColor: colorNeutral3,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     backgroundColor: colorSecondary3,
     justifyContent: "space-between"
   },

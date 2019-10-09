@@ -23,18 +23,27 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { gutter, textColorDark ,fontSizeH1, lineHeightH1, colorSecondary4, colorSecondary3, fontSizeSmall, lineHeightSmall } from "@totara/theme";
+import {
+  gutter,
+  textColorDark,
+  fontSizeH1,
+  lineHeightH1,
+  colorAssent,
+  colorSecondary3,
+  fontSizeSmall,
+  lineHeightSmall
+} from "@totara/theme";
 import { translate } from "@totara/locale";
 import LearningItemCarousel from "./LearningItemCarousel";
 import { learningItemsList } from "./api";
 import { Log } from "@totara/lib";
-import { ErrorFeedbackModal } from "@totara/components";
+import { GeneralErrorModal } from "@totara/components";
 import NoCurrentLearning from "./NoCurrentLearning";
 
 const MyLearning = learningItemsList(({loading, currentLearning, error}) => {
   if (error) {
     Log.error("Error getting current learning", error);
-    return <ErrorFeedbackModal/>
+    return <GeneralErrorModal />
   } else {
     return (
       <View style={styles.myLearningContainer}>
@@ -65,13 +74,14 @@ const styles = StyleSheet.create({
   myLearningContainer: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: colorSecondary4
+    backgroundColor: colorAssent
   },
   myLearningHeader: {
     flexDirection: "column",
     justifyContent: "space-between",
     backgroundColor: colorSecondary3,
-    padding: gutter
+    paddingHorizontal: gutter,
+    paddingVertical: 8
   },
   primaryText: {
     fontSize: fontSizeH1,

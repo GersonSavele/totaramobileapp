@@ -21,21 +21,22 @@
 
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { resizeByScreenSize } from "@totara/theme";
+
+import { resizeByScreenSize, textColorDark, fontSizeB1 } from "@totara/theme";
 
 type TextParam = {
-    text?: string,
-    fontSize?: number, 
-    color?: string,
-    fontWeight?: "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900",
+  text?: string,
+  fontSize?: number, 
+  color?: string,
+  fontWeight?: "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
 }
 
 const ModalText = ({text, fontSize, color, fontWeight } : TextParam) => {
   return(
     <View style={styles.containerStyle} >
       <Text style = {[styles.titleTextStyle,
-       {fontSize : fontSize != undefined? fontSize : 18,
-        color: color != undefined? color : "#0101", 
+       {fontSize : fontSize != undefined? fontSize : fontSizeB1,
+        color: color != undefined? color : textColorDark, 
         fontWeight: fontWeight != undefined? fontWeight : "normal",
        }]}>{text}
       </Text>
@@ -43,13 +44,13 @@ const ModalText = ({text, fontSize, color, fontWeight } : TextParam) => {
   ) 
 };
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   containerStyle: {
     alignItems: "flex-start",
     paddingBottom: resizeByScreenSize(8, 8, 16, 16)
   },
-    titleTextStyle: {
-    textAlign: 'center',
+  titleTextStyle: {
+    textAlign: "center"
   }
 });
 

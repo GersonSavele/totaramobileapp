@@ -22,7 +22,7 @@ import React from "react";
 import { View, StyleSheet, ViewStyle, Text } from "react-native";
 import { Item, Label } from "native-base";
 
-import { theme, textColorSubdued, fontSizeH4, fontSizeB2 } from "@totara/theme";
+import { theme, textColorSubdued, fontSizeH4, fontSizeB2, lineHeightB2 } from "@totara/theme";
 
 type Props = {
   children?: Element,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   message: {
     fontSize: fontSizeB2,
     color: theme.inputTextColor,
-    height: fontSizeB2,
+    lineHeight: lineHeightB2,
     opacity: 0
   },
   success: {

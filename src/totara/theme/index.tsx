@@ -24,9 +24,13 @@ import getTheme from "./native-base-theme/components/index";
 import {resizeByScreenSize, normalize} from "./ui";
 import lodash from "lodash";
 
+const gutter = resizeByScreenSize(8, 16, 16, 24);
+const tbPadding = resizeByScreenSize(8, 16, 24, 32);
+const lrPadding = resizeByScreenSize(10, 12, 16, 20);
+
 //---- Theme color ------
 const colorBrand = "#8CA83D";
-const colorAssent = "#C5D395";
+const colorAssent = "#FFFFFF";
 const colorSecondary1 = "#D2D2D2";
 const colorSecondary2 = "#E6E6E6";
 const colorSecondary3 = "#F5F5F5";
@@ -35,7 +39,7 @@ const colorSecondary4 = "#FFFFFF";
 //---- Notification color ------
 const colorInfo = "#337AB7";
 const colorSuccess = "#677B2D";
-const colorWarning = "#BE660D";
+const colorWarning = "#8E660D";
 const colorAlert = "#953539";
 const colorHighlight = "#FDF8E4";
 
@@ -81,11 +85,6 @@ const fontSizeButtonTitle = 16;
 
 const fontWeightMedium = "500";
 
-const gutter = resizeByScreenSize(8, 16, 16, 24);
-
-const tbPadding = resizeByScreenSize(8, 16, 24, 32);
-const lrPadding = resizeByScreenSize(10, 12, 16, 20);
-
 const theme = lodash.merge(material, {
 
   brandPrimary: colorBrand,// NEED TO READ FROM colorPrimary: "#8ca83d",
@@ -104,11 +103,12 @@ const theme = lodash.merge(material, {
   inputBorderColor: colorNeutral4,
   inputSuccessBorderColor: colorSuccess,  
   
-  linkColor: "#3d444b",
+  linkColor: textColorDark,
 
   inputMarginLeft: 0,
   inputPaddingLeft: 0,
   
+  inverseTextColor: textColorLight,
   btnDisabledBg: colorNeutral5
 });
 

@@ -30,7 +30,20 @@ import {
 import { Form, Input, Container, Content, Header } from "native-base";
 
 import { config } from "@totara/lib";
-import { resizeByScreenSize, theme, gutter, fontSizeH2, fontSizeH4, textColorDark, colorSecondary3, colorSecondary4, lineHeightH2, lineHeightH4, colorNeutral3 } from "@totara/theme";
+import {
+  resizeByScreenSize,
+  theme,
+  gutter,
+  fontSizeH2,
+  fontSizeH4,
+  textColorDark,
+  colorSecondary3,
+  colorAssent,
+  lineHeightH2,
+  lineHeightH4,
+  fontSizeB1,
+  lineHeightB1
+} from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
 import { translate } from "@totara/locale";
 
@@ -82,7 +95,7 @@ class NativeLogin extends React.Component<Props, State> {
 
   render() {
     return (
-      <Container style={{ flex: 1, backgroundColor: colorSecondary4 }}>
+      <Container style={{ flex: 1, backgroundColor: colorAssent }}>
         <Header style={styles.navigation} iosBarStyle={"default"}>
           <TouchableIcon onPress={() => { this.props.onBack(); }} icon={"times"} disabled={false} />
         </Header>
@@ -146,8 +159,7 @@ type State = {
 const styles = StyleSheet.create({
   navigation: {
     alignItems: "flex-start",
-    borderBottomColor: colorNeutral3,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0,
     backgroundColor: colorSecondary3,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -196,8 +208,8 @@ const styles = StyleSheet.create({
   },
   forgotCredential: {
     color: theme.linkColor,
-    fontSize: resizeByScreenSize(14, 16, 16, 16),
-    lineHeight: resizeByScreenSize(14, 16, 16, 16),
+    fontSize: fontSizeB1,
+    lineHeight: lineHeightB1,
     padding: 16,
     textDecorationLine: "underline",
     textAlign: "center"

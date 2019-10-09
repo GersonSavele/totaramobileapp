@@ -20,8 +20,10 @@
  */
 
 import React from "react";
-import { Text, ViewStyle } from "react-native";
+import { Text, ViewStyle, StyleSheet } from "react-native";
 import { Button, Spinner } from "native-base";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { gutter, fontSizeButtonTitle, textColorLight } from "@totara/theme";
 import { translate } from "@totara/locale";
@@ -29,6 +31,7 @@ import { translate } from "@totara/locale";
 type Props = {
   children?: Element,
   text?: string,
+  icon?: string,
   style?: ViewStyle,
   onPress?: (() => void),
   mode?: "loading" | undefined
@@ -37,29 +40,46 @@ type Props = {
 const ButtonTitle = ({mode, text}: Props) => {
   switch (mode) {
     case "loading":
-        return <Text style={{ color: textColorLight, fontSize: fontSizeButtonTitle, fontWeight: "bold"}}>{ translate("general.loading") }</Text>;
+        return <Text style={styles.title}>{ translate("general.loading") }</Text>;
     default: 
-        return <Text style={{ color: textColorLight, fontSize: fontSizeButtonTitle, fontWeight: "bold" }}>{ text }</Text>;
+        return <Text style={styles.title}>{ text }</Text>;
   }
 };
 
-const ButtonIndicator = ({mode}: Props) => {
+const ButtonIndicator = ({mode, icon}: Props) => {
   switch (mode) {
     case "loading":
-      return <Spinner size="small" color={textColorLight} style={{marginLeft: gutter}} />;
+      return <Spinner size="small" color={textColorLight}  style={styles.indicator} />;
     default: 
-      return null;
+      return icon ? <FontAwesomeIcon icon={icon} size={fontSizeButtonTitle} color={textColorLight}  style={styles.indicator} /> : null;
   }
 };
 
-const PrimaryButton = ({ children, text, style, onPress, mode, ...rest}: Props) =>
-  <Button block primary onPress={onPress} {...rest} style={[{height: 48}, style]} disabled={mode == "loading" || mode == "disabled"}>
+const PrimaryButton = ({ children, text, icon, style, onPress, mode, ...rest}: Props) =>
+  <Button block primary onPress={onPress} {...rest}  style={[styles.button, style]} disabled={mode == "loading" || mode == "disabled"}>
     {
       text
       ? <ButtonTitle mode={mode} text={text} />
-      : children
+      : {children}
     }
-    <ButtonIndicator mode={mode} />
+    <ButtonIndicator mode={mode} icon={icon} />
   </Button>;
+
+const styles = StyleSheet.create({
+  button: {
+    height: 48,
+    paddingHorizontal: 16,
+    minWidth: 200,
+    borderRadius: 3
+  },
+  title: {
+    color: textColorLight,
+    fontSize: fontSizeButtonTitle,
+    fontWeight: "bold",
+  },
+  indicator: {
+    marginLeft: gutter
+  }
+});
 
 export default PrimaryButton;

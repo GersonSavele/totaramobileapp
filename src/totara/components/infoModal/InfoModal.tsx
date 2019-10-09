@@ -21,13 +21,14 @@
 
 import React, {ReactNode} from "react";
 import { View, StyleSheet, Modal } from "react-native";
+
 import {
   TransparentView,
   ModalText,
   ModalImageView,
   ModalContainer
 } from ".";
-import { normalize, resizeByScreenSize } from "@totara/theme";
+import { resizeByScreenSize, fontSizeH2 } from "@totara/theme";
 
 type Params = {
   title?: string;
@@ -42,24 +43,16 @@ const InfoModal = ({ title, description, imageType, children, ...rest }: Params)
     <Modal {...rest}>
       <TransparentView>
         <ModalContainer>
-        <View style={styles.ContainerStyle}>
-          <ModalImageView imageType= {imageType} />
+          <View style={styles.sectionContainer}>
+            <ModalImageView imageType={imageType} />
           </View>
-          <View style={styles.ContainerStyle}>
-            <ModalText
-              text={title}
-              fontSize={normalize(24)}
-              color="#3D444B"
-              fontWeight="600"
-            ></ModalText>
-            <ModalText
-              text={description}
-              fontSize={normalize(16)}
-              color="#3D444B"
-              fontWeight="100"
-            ></ModalText>
+          <View style={styles.sectionContainer}>
+            <ModalText text={title} fontSize={fontSizeH2} fontWeight="bold" />
+            <ModalText text={description} />
           </View>
-          {children}
+          <View style={styles.actionContainer}>
+            {children}
+          </View>
         </ModalContainer>
       </TransparentView>
     </Modal>
@@ -67,16 +60,14 @@ const InfoModal = ({ title, description, imageType, children, ...rest }: Params)
 };
 
 const styles = StyleSheet.create({
-  ContainerStyle: {
-    marginBottom: resizeByScreenSize(8, 8, 16, 16),
-    marginTop: resizeByScreenSize(8, 8, 16, 16),
+  sectionContainer: {
+    marginVertical: resizeByScreenSize(8, 8, 16, 16),
     alignItems:"center"
   },
-  buttonContainerStyle: {
-    marginStart: resizeByScreenSize(8, 12, 12, 16)
-  },
-  buttonStyle: {
-    backgroundColor: "#FFF"
+  actionContainer: {
+    marginVertical: resizeByScreenSize(8, 8, 16, 16),
+    minHeight: 104,
+    justifyContent: "space-between"
   }
 });
 

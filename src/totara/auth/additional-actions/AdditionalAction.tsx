@@ -20,10 +20,9 @@
  **/
 
 import React from "react";
-import { View, StyleSheet, Linking } from "react-native";
+import { Linking } from "react-native";
 
-import { ButtonWithIcon, InfoModal } from "@totara/components";
-import { normalize, resizeByScreenSize } from "@totara/theme";
+import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
 import { AdditionalActionRule } from "./AdditionalActionRule";
@@ -38,51 +37,34 @@ class AdditionalAction extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  ContainerStyle: {
-    marginBottom: resizeByScreenSize(16, 16, 24, 24),
-    marginTop: resizeByScreenSize(16, 16, 24, 24)
-  }
-});
-
 const AdditionalActionModal = () => {
   return (
     <InfoModal
       title={translate("additional-actions-modal.auth_model_title")}
       description={translate("additional-actions-modal.auth_model_description")}
       imageType="complete_action"
-    >
-      <Buttons />
+      visible={true} >
+      <ActionButtonPrimary />
+      <ActionButtonTertiary />
     </InfoModal>
   );
 };
 
-const Buttons = () => {
+const ActionButtonPrimary = () => {
   return (
     <AuthConsumer>
       {auth => (
-        <View style={styles.ContainerStyle}>
-          <ButtonWithIcon
-            buttonTitle={translate(
-              "additional-actions-modal.auth_model_go_to_browser"
-            )}
-            onPress={() => {
-              Linking.openURL(auth.setup!.host);
-            }}
-            buttonTitleFontWeight="600"
-            buttonTitleColor="#FFF"
-            buttonBackgroundColor="#8ca83d"
-            fontSize={normalize(16)}
-            buttonIcon="external-link-alt"
-          />
-          <ButtonWithIcon
-            buttonTitle={translate(
-              "additional-actions-modal.auth_model_logout"
-            )}
-            onPress={() => auth.logOut()}
-            fontSize={normalize(16)}
-          ></ButtonWithIcon>
-        </View>
+        auth.setup && auth.setup.host && <PrimaryButton text={translate("additional-actions-modal.auth_model_go_to_browser")} icon={"external-link-alt"} onPress={() => { Linking.openURL(auth.setup!.host); }} />
+      )}
+    </AuthConsumer>
+  );
+};
+
+const ActionButtonTertiary = () => {
+  return (
+    <AuthConsumer>
+      {auth => (
+        <TertiaryButton text={translate("additional-actions-modal.auth_model_logout")} onPress={() => { auth.logOut(); }} />
       )}
     </AuthConsumer>
   );

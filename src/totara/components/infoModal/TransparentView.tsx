@@ -23,21 +23,21 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { resizeByScreenSize } from "@totara/theme";
+import { resizeByScreenSize, colorNeutral1 } from "@totara/theme";
 
-const TransparentView = ({children} : Props) =>{
-    return (
-      <View style={styles.transparentViewStyle}>
-        <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
-          <View style={styles.containerStyle}>{children}</View>
-        </SafeAreaView>
-      </View>
-    );
-}
+const TransparentView = ({ children }: Props) => {
+  return (
+    <View style={styles.transparentViewStyle}>
+      <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
+        <View style={styles.containerStyle}>{children}</View>
+      </SafeAreaView>
+    </View>
+  );
+};
 
 type Props = {
-    children? : Element
- }
+  children? : Element
+}
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginHorizontal: resizeByScreenSize(16, 16, 20, 20),
     marginVertical: resizeByScreenSize(32, 32, 32, 32),
-    backgroundColor: "#FFF"
+    backgroundColor: colorNeutral1
   },
   transparentViewStyle: {
     flex: 1,

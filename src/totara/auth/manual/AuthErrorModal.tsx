@@ -36,7 +36,7 @@ export default class AuthErrorModal extends React.Component<Props, State> {
   render() {
     return (
       <InfoModal title={translate("error-not-valid-url.title")} description={translate("error-not-valid-url.description")} imageType={"url_not_valid"} visible={this.state.visible}>
-        <PrimaryButton text={translate("error-not-valid-url.primary_title")} style={{ marginBottom: 18 }} onPress={() => { this.setState({visible: !this.state.visible}); }} />
+        <PrimaryButton  text={translate("error-not-valid-url.primary_title")} onPress={() => { this.setState({visible: !this.state.visible}); }} />
         <TertiaryButton  text={translate("error-not-valid-url.tertiary_title")} onPress={() => { Linking.openURL(this.props.siteUrl); }} />
       </InfoModal>
     );

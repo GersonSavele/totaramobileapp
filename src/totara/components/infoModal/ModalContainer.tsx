@@ -22,32 +22,30 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-const ModalContainer = ({children} : Props) =>{
-    return (
-        <View style = {styles.subContainerStyle}>
-             <View style = {styles.wrapContainerStyle}>
-                {children}
-            </View>
-        </View>
-    );
-}
+const ModalContainer = ({ children }: Props) => {
+  return (
+    <View style={styles.subContainerStyle}>
+      <View style={styles.wrapContainerStyle}>{children}</View>
+    </View>
+  );
+};
 
 type Props = {
-    children? : Element
- }
+  children? : Element
+}
 
 const styles = StyleSheet.create({
-    subContainerStyle: {
-        flex: 1,
-        flexDirection:"column",
-        marginLeft: "5%",
-        marginRight: "5%",
-        alignItems: 'center',
-        justifyContent: 'center'
-        },
-    wrapContainerStyle : {
-        alignItems:"center"
-    }
+  subContainerStyle: {
+    flex: 1,
+    flexDirection: "column",
+    marginLeft: "5%",
+    marginRight: "5%",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  wrapContainerStyle: {
+    alignItems: "center"
+  }
 });
 
 export default ModalContainer;

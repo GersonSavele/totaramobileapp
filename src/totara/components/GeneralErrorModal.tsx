@@ -26,7 +26,7 @@ import {  PrimaryButton, InfoModal, TertiaryButton } from ".";
 import { translate } from "@totara/locale";
 
 
-class ErrorFeedbackModal extends React.Component<Props, State> {
+class GeneralErrorModal extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
@@ -37,7 +37,7 @@ class ErrorFeedbackModal extends React.Component<Props, State> {
   render() {
     return (
       <InfoModal title={translate("general_error_feedback-modal.title")} description={translate("general_error_feedback-modal.description")} imageType={"general_error"} visible={this.state.visible}>
-        <PrimaryButton text={translate("general_error_feedback-modal.primary_title")} style={{ marginBottom: 18 }} onPress={() => { this.setState({visible: !this.state.visible}); }} />
+        <PrimaryButton text={translate("general_error_feedback-modal.primary_title")} onPress={() => { this.setState({visible: !this.state.visible}); }} />
         <TertiaryButton  text={translate("general_error_feedback-modal.tertiary_title")} onPress={() => { Linking.openURL(this.props.siteUrl); }} />
       </InfoModal>
     );
@@ -51,4 +51,4 @@ type Props = {
   errorType?: "general_error" | ""
 };
 
-export default ErrorFeedbackModal;
+export default GeneralErrorModal;

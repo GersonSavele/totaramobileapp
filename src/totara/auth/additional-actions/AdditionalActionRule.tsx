@@ -21,7 +21,7 @@
 
 import React, { ReactNode } from "react";
 import { GetMe, QueryResult } from "./api";
-import { Text } from "react-native";
+
 import AppStateListener from "@totara/components/AppStateListener";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 
@@ -34,7 +34,7 @@ const AdditionalActionRule = ({ children }: Params) => {
     <GetMe
       props={({ loading, data, error, refetch }: QueryResult) => {
         if (loading) return null;
-        if (error) return <GeneralErrorModal/>;
+        if (error) return <GeneralErrorModal />;
         if (
           data &&
           AdditionalActionRuleCondition(

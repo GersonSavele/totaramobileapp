@@ -14,7 +14,8 @@
         "zero": "You have no learning",
         "one": "You have {{count}} learning item to complete",
         "other": "You have {{count}} learning items to complete"
-    }
+    },
+    "no_learning_message": "No current learning"
   }, 
   "program-details": {
     "courses": "Courses",

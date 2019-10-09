@@ -39,7 +39,7 @@ const ProgramDetails = getProgram(({loading, program, error}) => {
 
   if (error) {
     Log.error("Error getting program details", error);
-    return <GeneralErrorModal/>;
+    return <GeneralErrorModal />;
   }
 
   if (program) {

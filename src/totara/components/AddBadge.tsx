@@ -28,7 +28,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { Status } from "@totara/types";
 import ProgressCircle from "./ProgressCircle";
-import { colorSecondary4, textColorDark, textColorLight } from "@totara/theme";
+import { colorNeutral1, textColorDark, textColorLight } from "@totara/theme";
 
 
 type Props = {
@@ -50,12 +50,13 @@ abstract class Badge<P extends Props> extends React.Component<P> {
         backgroundColor: this.backgroundColor,
         borderRadius: size * 2,
         borderWidth: size / 8,
+        shadowColor: "red",
         borderColor: this.borderColor,
         width: size * 2,
         height: size * 2,
         justifyContent: "center",
-        alignItems: "center",
-      },
+        alignItems: "center"
+      }
     });
   }
 
@@ -78,7 +79,7 @@ class CheckBadge extends Badge<Props> {
   color = textColorLight;
   icon = "check";
   backgroundColor = "#69BD45";
-  borderColor = colorSecondary4;
+  borderColor = colorNeutral1;
   BadgeElement = ({size}: Props) => <FontAwesomeIcon icon={this.icon} color={this.color} size={size}/>
 }
 
@@ -86,7 +87,7 @@ class LockBadge extends Badge<Props> {
   color = textColorLight;
   icon = "lock";
   backgroundColor = "#999999";
-  borderColor = colorSecondary4;
+  borderColor = colorNeutral1;
   BadgeElement = ({size}: Props) => <FontAwesomeIcon icon={this.icon} color={this.color} size={size}/>
 }
 
@@ -96,8 +97,8 @@ type ProgressBadgeProps = {
 
 class ProgressBadge extends Badge<ProgressBadgeProps> {
   color = textColorDark;
-  backgroundColor = colorSecondary4;
-  borderColor = colorSecondary4;
+  backgroundColor = colorNeutral1;
+  borderColor = colorNeutral1;
   BadgeElement = ({size = 8, progress}: ProgressBadgeProps) => <ProgressCircle size={size * 2} progress={progress} />
 }
 
@@ -109,7 +110,7 @@ const AddBadge = ({status, children, size = 16}: {status: Status | number, child
     case Status.active: // drop through default
     default:
       if (typeof status == "number")
-        return <ProgressBadge size={size} offsetSize={4} progress={status}>{children}</ProgressBadge>;
+        return <ProgressBadge size={size} offsetSize={5} progress={status}>{children}</ProgressBadge>;
       else
         return <View>{children}</View>
   }
