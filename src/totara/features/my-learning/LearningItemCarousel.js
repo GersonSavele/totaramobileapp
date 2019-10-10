@@ -174,8 +174,8 @@ const styles = StyleSheet.create({
   itemContainer: {
     borderRadius: normalize(10),
     width: "100%",
-    height: "100%",
-    overflow: "hidden"
+    height: "99%",
+    overflow: "hidden"    
   },
   itemType: {
     marginTop: 8,

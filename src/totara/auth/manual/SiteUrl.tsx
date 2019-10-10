@@ -23,8 +23,7 @@ import {
   StyleSheet,
   View,
   Image,
-  Text,
-  StatusBar
+  Text
 } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { Form, Input, Container, Content } from "native-base";
@@ -38,7 +37,9 @@ import {
   textColorDark,
   colorAccent,
   lineHeightH2,
-  lineHeightH4
+  lineHeightH4,
+  fontSizeLabel,
+  textColorDisabled
 } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
@@ -48,11 +49,10 @@ import SafeAreaView from "react-native-safe-area-view";
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 
   return (
-    <Container style={{ flex: 1, backgroundColor: colorAccent }}>
-      <Content>
-        <StatusBar barStyle={"default"} />
+    <Container style={{ flex: 0, backgroundColor: colorAccent }}>
+      <Content enableOnAndroid>
         <Form style={styles.siteUrlContainer}>
-          <View style={styles.container}>
+          <View style={styles.headerContainer}>
             <Image source={require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode="contain" />
             <View>
               <Text style={styles.infoTitle}>{translate("manual.site_url_title")}</Text>
@@ -76,7 +76,7 @@ const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
         </Form>
       </Content>
       <SafeAreaView>
-        <Text style={{textAlign: "center"}}>{translate("general.version")}: {VersionInfo.appVersion}({VersionInfo.buildVersion})</Text>
+        <Text style={styles.version}>{translate("general.version")}: {VersionInfo.appVersion}({VersionInfo.buildVersion})</Text>
       </SafeAreaView>
     </Container>
   );
@@ -84,15 +84,14 @@ const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 
 const styles = StyleSheet.create({
   siteUrlContainer: {
-    marginHorizontal: gutter,
-    flex: 1
+    marginHorizontal: gutter
   },
   totaraLogo: {
     marginTop: 64,
     width: wp(33),
     alignSelf: "center"
   },
-  container: {
+  headerContainer: {
     height: hp(45),
     justifyContent: "space-between"
   },
@@ -109,12 +108,19 @@ const styles = StyleSheet.create({
   formContainer: {
     marginTop: resizeByScreenSize(32, 32, 32, 32)
   },
-  inputText: { 
-    paddingRight: 0, 
-    paddingLeft: 0 
+  inputText: {
+    paddingRight: 0,
+    paddingLeft: 0
   },
   buttonEnter: {
     marginTop: 8
+  },
+  version: {
+    textAlign: "center",
+    fontSize: fontSizeLabel,
+    color: textColorDisabled,
+    marginBottom: 8,
+    flexDirection: "column-reverse"
   }
 });
 

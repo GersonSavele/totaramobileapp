@@ -96,11 +96,11 @@ class NativeLogin extends React.Component<Props, State> {
 
   render() {
     return (
-      <Container style={{ flex: 1, backgroundColor: colorAccent }}>
+      <Container style={{ flex: 0, backgroundColor: colorAccent }}>
         <Header style={styles.navigation} iosBarStyle={"default"}>
           <TouchableIcon onPress={() => { this.props.onBack(); }} icon={"times"} disabled={false} color={navigationHeaderTintColor} />
         </Header>
-        <Content style={styles.content}>
+        <Content style={styles.content} enableOnAndroid>
           <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} resizeMode={"contain"} />
           <View style={styles.infoContainer}>
             <Text style={styles.infoTitle}>{translate("native-login.header_title")}</Text>
@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
     lineHeight: 40
   },
   content: {
-    flex: 1,
     paddingHorizontal: gutter
   },
   totaraLogo: {
