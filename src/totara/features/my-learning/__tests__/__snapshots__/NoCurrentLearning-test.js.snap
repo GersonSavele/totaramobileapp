@@ -6,11 +6,8 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
     Object {
       "alignItems": "center",
       "flex": 1,
-      "flexDirection": "column",
       "justifyContent": "center",
-      "marginBottom": "5%",
-      "marginLeft": "5%",
-      "marginRight": "5%",
+      "padding": 24,
     }
   }
 >
@@ -22,7 +19,6 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
     }
     style={
       Object {
-        "alignItems": "center",
         "height": 375,
         "paddingBottom": 48,
         "resizeMode": "contain",
@@ -30,73 +26,59 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
       }
     }
   />
-  <View
+  <Text
     style={
       Object {
         "alignItems": "flex-start",
-        "paddingBottom": 48,
-        "paddingTop": 48,
+        "color": "#3D444B",
+        "fontSize": 44,
+        "fontWeight": "bold",
+        "lineHeight": 58,
+        "marginBottom": 48,
+        "marginTop": 48,
       }
     }
   >
-    <Text
-      style={
-        Object {
-          "color": "#3d444b",
-          "fontSize": 24,
-          "fontWeight": "700",
-        }
-      }
-    >
-      No current learning
-    </Text>
-  </View>
+    translated my-learning.no_learning_message with undefined
+  </Text>
   <View
+    accessibilityRole="button"
+    accessibilityStates={Array []}
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "paddingBottom": 16,
+        "opacity": 1,
       }
     }
   >
     <View
-      accessibilityRole="button"
-      accessibilityStates={Array []}
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "opacity": 1,
-        }
+        Array [
+          Object {},
+        ]
       }
     >
-      <View
+      <Text
         style={
           Array [
-            Object {},
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "padding": 8,
+              "textAlign": "center",
+            },
           ]
         }
       >
-        <Text
-          style={
-            Array [
-              Object {
-                "color": "#007AFF",
-                "fontSize": 18,
-                "padding": 8,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          this is a mock button
-        </Text>
-      </View>
+        this is a mock button
+      </Text>
     </View>
   </View>
 </View>
