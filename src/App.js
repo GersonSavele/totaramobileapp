@@ -62,7 +62,15 @@ import {
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
 import { config } from "@totara/lib";
-import { theme, getTheme, colorBrand, colorNeutral5, colorSecondary3, colorSecondary4 } from "@totara/theme";
+import {
+  theme,
+  getTheme,
+  navigationHeaderTintColor,
+  tabBarActiveTintColor,
+  tabBarInactiveTintColor,
+  colorSecondary1,
+  colorNeutral1
+} from "@totara/theme";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions";
@@ -105,7 +113,7 @@ class App extends React.Component<{}> {
 const navigationOptions = {
   headerStyle: {
     borderBottomWidth: 0,
-    backgroundColor: colorSecondary3
+    backgroundColor: colorSecondary1
   },
   headerBackTitle: null
 };
@@ -115,25 +123,26 @@ const myLearning = createStackNavigator(
     MyLearning: {
       screen: MyLearning,
       navigationOptions: {
-        headerRight: <TouchableIcon icon={faBell} disabled={false} size={24} />,
+        headerRight: <TouchableIcon icon={faBell} disabled={false} size={24} color={navigationHeaderTintColor}/>,
         headerStyle: {
           borderBottomWidth: 0,
-          backgroundColor: colorSecondary3,
+          backgroundColor: colorSecondary1,
           shadowOpacity: 0,
           elevation: 0
-        }
+        },
+        headerTintColor: navigationHeaderTintColor
       }
     },
     CourseDetails: {
       screen: CourseDetails,
       navigationOptions: {
-        headerRight: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={24} />
+        headerRight: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={24} color={navigationHeaderTintColor} />
       }
     },
     ProgramDetails: {
       screen: ProgramDetails,
       navigationOptions: {
-        headerRight: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={24} />
+        headerRight: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={24} color={navigationHeaderTintColor} />
       }
     },
   },
@@ -224,13 +233,12 @@ const mainNavigator = createMaterialBottomTabNavigator(
         )
       })
     },
-    // style: { borderTopColor: "red"}
   }, {
     initialRouteName: "MyLearning",
     labeled: false,
-    barStyle: {backgroundColor: colorSecondary4, shadowRadius: 0},
-    activeTintColor: colorBrand,
-    inactiveTintColor: colorNeutral5
+    barStyle: {backgroundColor: colorNeutral1, shadowRadius: 0},
+    activeTintColor: tabBarActiveTintColor,
+    inactiveTintColor: tabBarInactiveTintColor
   }
 );
 

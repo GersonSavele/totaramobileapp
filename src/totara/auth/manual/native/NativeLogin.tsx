@@ -37,12 +37,13 @@ import {
   fontSizeH2,
   fontSizeH4,
   textColorDark,
-  colorSecondary3,
-  colorAssent,
+  colorSecondary1,
+  colorAccent,
   lineHeightH2,
   lineHeightH4,
   fontSizeB1,
-  lineHeightB1
+  lineHeightB1,
+  navigationHeaderTintColor
 } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
 import { translate } from "@totara/locale";
@@ -95,9 +96,9 @@ class NativeLogin extends React.Component<Props, State> {
 
   render() {
     return (
-      <Container style={{ flex: 1, backgroundColor: colorAssent }}>
+      <Container style={{ flex: 1, backgroundColor: colorAccent }}>
         <Header style={styles.navigation} iosBarStyle={"default"}>
-          <TouchableIcon onPress={() => { this.props.onBack(); }} icon={"times"} disabled={false} />
+          <TouchableIcon onPress={() => { this.props.onBack(); }} icon={"times"} disabled={false} color={navigationHeaderTintColor} />
         </Header>
         <Content style={styles.content}>
           <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} resizeMode={"contain"} />
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
   navigation: {
     alignItems: "flex-start",
     borderBottomWidth: 0,
-    backgroundColor: colorSecondary3,
+    backgroundColor: colorSecondary1,
     flexDirection: "row",
     justifyContent: "space-between",
     color: "red"

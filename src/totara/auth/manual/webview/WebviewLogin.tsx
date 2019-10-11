@@ -21,7 +21,7 @@
  */
 
 import React, { useRef } from "react";
-import { View, StyleSheet, Linking, Text, StatusBar} from "react-native";
+import { View, StyleSheet, Linking, Text } from "react-native";
 import { WebView } from "react-native-webview";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -31,7 +31,7 @@ import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { OutProps } from "./WebviewLoginHook";
 import { TouchableIcon } from "@totara/components";
-import { colorAssent, colorSecondary3, textColorDark } from "@totara/theme";
+import { colorAccent, colorSecondary1, navigationHeaderTintColor } from "@totara/theme";
 
 const WebviewLogin = ({
   loginUrl,
@@ -49,12 +49,11 @@ const WebviewLogin = ({
   const refLoginWebview = useRef<WebView>(null);
 
   return (
-    <Container style={{ flex: 1, backgroundColor: colorAssent }}>
-      <Header style={styles.navigation}>
-        <StatusBar barStyle={"default"} />
-        <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} />
+    <Container style={{ flex: 0, backgroundColor: colorAccent }}>
+      <Header style={styles.navigation} iosBarStyle={"default"}>
+        <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} color={navigationHeaderTintColor} />
         <View style={styles.addressContainer}>
-          <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} color={textColorDark} />
+          <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} color={navigationHeaderTintColor} />
           <Text style={styles.addressText} numberOfLines={1} ellipsizeMode={"tail"} >{navEndPoint}</Text>
         </View>
       </Header>
@@ -75,11 +74,11 @@ const WebviewLogin = ({
       </Content>
       <Footer style={styles.footer}>
         <View style={styles.barContent}>
-          <TouchableIcon icon={"chevron-left"} disabled={!canWebGoBackward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goBack(); }} />
-          <TouchableIcon icon={"chevron-right"} disabled={!canWebGoForward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goForward(); }} />
+          <TouchableIcon icon={"chevron-left"} disabled={!canWebGoBackward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goBack(); }} color={navigationHeaderTintColor} />
+          <TouchableIcon icon={"chevron-right"} disabled={!canWebGoForward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goForward(); }} color={navigationHeaderTintColor} />
         </View>
         <View style={styles.barContent}>
-          <TouchableIcon icon={"external-link-alt"} disabled={false} onPress={() => { Linking.openURL(navProtocol + "://" + navEndPoint); }} />
+          <TouchableIcon icon={"external-link-alt"} disabled={false} onPress={() => { Linking.openURL(navProtocol + "://" + navEndPoint); }} color={navigationHeaderTintColor} />
         </View>
       </Footer>
     </Container>
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
   navigation: {
     flexDirection: "row",
     borderBottomWidth: 0,
-    backgroundColor: colorSecondary3
+    backgroundColor: colorSecondary1
   },
   addressContainer: {
     marginHorizontal: 40,
@@ -102,12 +101,12 @@ const styles = StyleSheet.create({
   addressText: {
     marginLeft: 4,
     flex: 1,
-    color: textColorDark
+    color: navigationHeaderTintColor
   },
   footer: {
     flexDirection: "row",
     borderTopWidth: 0,
-    backgroundColor: colorSecondary3,
+    backgroundColor: colorSecondary1,
     justifyContent: "space-between"
   },
   barContent: {

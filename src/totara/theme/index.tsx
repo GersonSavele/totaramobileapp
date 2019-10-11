@@ -28,23 +28,23 @@ const gutter = resizeByScreenSize(8, 16, 16, 24);
 const tbPadding = resizeByScreenSize(8, 16, 24, 32);
 const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 
-//---- Theme color ------
+//---- Theme color: customizable by [User/Developer] ------
 const colorBrand = "#8CA83D";
-const colorAssent = "#FFFFFF";
-const colorSecondary1 = "#D2D2D2";
-const colorSecondary2 = "#E6E6E6";
+const colorAccent = "#FFFFFF";
+const colorSecondary1 = "#F5F5F5";
+const colorSecondary2 = "#FFFFFF"; 
 const colorSecondary3 = "#F5F5F5";
 const colorSecondary4 = "#FFFFFF";
 
-//---- Notification color ------
+//---- Notification color: customizable by [Developer] ------
 const colorInfo = "#337AB7";
 const colorSuccess = "#677B2D";
 const colorWarning = "#8E660D";
 const colorAlert = "#953539";
 const colorHighlight = "#FDF8E4";
 
-//---- Neutral color ------
-const colorNeutral1 = "#FFFFFF";
+//---- Neutral color: customizable by [Developer] ------
+const colorNeutral1 = "#FFFFFF"; 
 const colorNeutral2 = "#F5F5F5";
 const colorNeutral3 = "#E6E6E6";
 const colorNeutral4 = "#D2D2D2";
@@ -53,14 +53,24 @@ const colorNeutral6 = "#7D7D7D";
 const colorNeutral7 = "#4A4A4A";
 const colorNeutral8 = "#000000";
 
-//---- Text color ------
+//---- Text color: customizable by [Developer] ------
 const textColorDark = "#3D444B";
 const textColorSecondary = "#C5D39D";
 const textColorLight = "#FFFFFF";
 const textColorSubdued = "#7D7D7D";
 const textColorDisabled = "#C7C7C7";
 
-//---- Text size ------
+//---- Navigation color: customizable by [User/Developer] ------
+const navigationHeaderTintColor = "#3D444B";
+const textNavigationColorLight = "#FFFFFF";
+
+//---- TabBar color: customizable by [Developer] ------
+const tabBarActiveTintColor = colorBrand;
+const tabBarInactiveTintColor = colorNeutral5;
+const textTabBarColorDark = "#3D444B";
+const textTabBarColorLight = "#FFFFFF";
+
+//---- Text size: customizable by [Developer] ------
 const fontSizeH1 = normalize(32);
 const fontSizeH2 = normalize(24);
 const fontSizeH3 = normalize(20);
@@ -71,6 +81,9 @@ const fontSizeB3 = 14;
 const fontSizeSmall = 12;
 const fontSizeLabel = 10;
 
+const fontSizeButtonTitle = 16;
+
+//---- Text Line-height: customizable by [Developer] ------
 const lineHeightH1 = normalize(38);
 const lineHeightH2 = normalize(32);
 const lineHeightH3 = normalize(28);
@@ -81,8 +94,7 @@ const lineHeightB3 = 18;
 const lineHeightSmall = 16;
 const lineHeightLabel = 12;
 
-const fontSizeButtonTitle = 16;
-
+//---- Text weight: customizable by [Developer] ------
 const fontWeightMedium = "500";
 
 const theme = lodash.merge(material, {
@@ -122,7 +134,7 @@ export {
   lrPadding,
 
   colorBrand,
-  colorAssent,
+  colorAccent,
   colorSecondary1,
   colorSecondary2,
   colorSecondary3,
@@ -149,6 +161,14 @@ export {
   textColorSubdued,
   textColorDisabled,
 
+  navigationHeaderTintColor,
+  textNavigationColorLight,
+
+  tabBarActiveTintColor,
+  tabBarInactiveTintColor,
+  textTabBarColorDark,
+  textTabBarColorLight,
+
   fontSizeH1,
   fontSizeH2,
   fontSizeH3,
@@ -158,7 +178,9 @@ export {
   fontSizeB3,
   fontSizeSmall,
   fontSizeLabel,
-  
+
+  fontSizeButtonTitle,
+
   lineHeightH1,
   lineHeightH2,
   lineHeightH3,
@@ -168,8 +190,6 @@ export {
   lineHeightB3,
   lineHeightSmall,
   lineHeightLabel,
-  
-  fontSizeButtonTitle,
-  
-  fontWeightMedium,
+    
+  fontWeightMedium
 };

@@ -35,7 +35,7 @@ import {
   fontSizeH2,
   fontSizeH4,
   textColorDark,
-  colorAssent,
+  colorAccent,
   lineHeightH2,
   lineHeightH4
 } from "@totara/theme";
@@ -46,7 +46,7 @@ import { OutProps } from "./SiteUrlHook";
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 
   return (
-    <Container style={{ flex: 1, backgroundColor: colorAssent }}>
+    <Container style={{ flex: 1, backgroundColor: colorAccent }}>
       <Content>
         <StatusBar barStyle={"default"} />
         <Form style={styles.siteUrlContainer}>

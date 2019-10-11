@@ -25,13 +25,13 @@ import { StyleSheet, Text, View } from "react-native";
 
 import {
   gutter,
-  textColorDark,
   fontSizeH1,
   lineHeightH1,
-  colorAssent,
-  colorSecondary3,
+  colorAccent,
+  colorSecondary1,
   fontSizeSmall,
-  lineHeightSmall
+  lineHeightSmall,
+  navigationHeaderTintColor
 } from "@totara/theme";
 import { translate } from "@totara/locale";
 import LearningItemCarousel from "./LearningItemCarousel";
@@ -74,25 +74,25 @@ const styles = StyleSheet.create({
   myLearningContainer: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: colorAssent
+    backgroundColor: colorAccent
   },
   myLearningHeader: {
     flexDirection: "column",
     justifyContent: "space-between",
-    backgroundColor: colorSecondary3,
+    backgroundColor: colorSecondary1,
     paddingHorizontal: gutter,
     paddingVertical: 8
   },
   primaryText: {
     fontSize: fontSizeH1,
     lineHeight: lineHeightH1,
-    color: textColorDark,
+    color: navigationHeaderTintColor,
     fontWeight: "bold"
   },
   infoText: {
     fontSize: fontSizeSmall,
     lineHeight: lineHeightSmall,
-    color: textColorDark,
+    color: navigationHeaderTintColor,
   },
   learningItems: {
     flex: 1

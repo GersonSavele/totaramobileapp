@@ -20,14 +20,15 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View, FlatList} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, FlatList } from "react-native";
 import PropTypes from "prop-types";
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
-import {withNavigation} from "react-navigation";
-import {normalize, gutter, fontSizeH1, resizeByScreenSize} from "@totara/theme";
-import {Status} from "@totara/types"
-import {AddBadge, LearningItemCard} from "@totara/components";
-import {NAVIGATION_COURSE_DETAILS} from "@totara/lib/Constant";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { withNavigation } from "react-navigation";
+
+import { normalize } from "@totara/theme";
+import { Status } from "@totara/types"
+import { AddBadge, LearningItemCard } from "@totara/components";
+import { NAVIGATION_COURSE_DETAILS } from "@totara/lib/Constant";
 
 const CourseSet = ({courses, navigation, nextSet, label}) => (
   <View style={styles.courseSet}>
