@@ -47,9 +47,7 @@ describe("useAuthContext", () => {
     });
 
     await mockDeviceCleanup;
-    // TODO uncomment this when upgrade to react 16.9 to remove warning 
     act(async () => waitForNextUpdate());
-    // waitForNextUpdate();
 
     expect(result.current.authContextState.setup).toBeFalsy();
     expect(result.current.authContextState.isAuthenticated).toBeFalsy();
@@ -94,10 +92,8 @@ describe("useAuthContext", () => {
       result.current.onLoginSuccess(setupSecret);
     });
 
-    await mockDeviceCleanup;
-    // TODO uncomment this when upgrade to react 16.9 to remove warning 
-     await act(async () => waitForNextUpdate());
-    //  waitForNextUpdate();
+    await mockDeviceCleanup; 
+    await act(async () => waitForNextUpdate());
 
     expect(result.current.authContextState.setupSecret).toMatchObject(setupSecret);
     expect(result.current.authContextState.isAuthenticated).toBeTruthy();
@@ -118,9 +114,7 @@ describe("useAuthContext", () => {
     );
 
     await mockBootstrap;
-    // TODO uncomment this when upgrade to react 16.9 to remove warning 
     await act(async () => waitForNextUpdate());
-    // waitForNextUpdate();
 
     expect(result.current.authContextState.setup).toBeFalsy();
   });
@@ -140,9 +134,7 @@ describe("useAuthContext", () => {
     );
 
     await mockBootstrap;
-    // TODO uncomment this when upgrade to react 16.9 to remove warning 
     await act(async () => waitForNextUpdate());
-    // waitForNextUpdate();
 
     expect(result.current.authContextState.setup.apiKey).toBe("apikey");
     expect(mockCreateApolloClient).toBeCalledTimes(1);
@@ -181,9 +173,7 @@ describe("useAuthContext", () => {
     );
 
     await mockGetAndStoreApiKey;
-    // TODO uncomment this when upgrade to react 16.9 to remove warning 
     await act(async () => waitForNextUpdate());
-    // waitForNextUpdate();
 
     expect(result.current.authContextState.setup.apiKey).toBe("apiKey");
     expect(result.current.authContextState.isAuthenticated).toBeTruthy();
