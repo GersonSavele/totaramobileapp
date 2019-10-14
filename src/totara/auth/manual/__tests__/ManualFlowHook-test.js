@@ -44,10 +44,10 @@ describe("useManualFlow", () => {
       result.current.onSiteUrlSuccess("https://success.com");
     });
 
-    // TODO uncomment this when upgrade to react 16.9 to remove warning await act(async () => waitForNextUpdate());
+    await act(async () => waitForNextUpdate());
 
     expect(result.current.manualFlowState).toMatchObject({
-      flowStep: ManualFlowSteps.siteUrl,
+      flowStep: ManualFlowSteps.webview,
       isSiteUrlSubmitted: true,
       siteUrl: "https://success.com"
     });
