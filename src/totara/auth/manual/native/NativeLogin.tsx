@@ -163,12 +163,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     backgroundColor: colorSecondary1,
     flexDirection: "row",
-    justifyContent: "space-between",
-    color: "red"
-  },
-  navigationCloseItem: {
-    padding: gutter,
-    lineHeight: 40
+    justifyContent: "space-between"
   },
   content: {
     paddingHorizontal: gutter
