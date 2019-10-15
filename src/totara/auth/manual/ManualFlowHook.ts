@@ -143,7 +143,7 @@ export const fetchSiteInfo = (
   didCancel: boolean,
   dispatch: React.Dispatch<Action>
 ) => {
-  const infoUrl = config.infoUri(config.mobileApi);
+  const infoUrl = config.infoUri;
   // const infoUrl = config.infoUri(siteUrl); for now not using siteUrl, using the mock api on mobileApi
   const options = {
     method: "POST",

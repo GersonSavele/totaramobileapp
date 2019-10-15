@@ -29,6 +29,7 @@ const defaultConfig = {
     persistentQuery: false
   },
   mobileStatic: "http://mobilenode.wlg.totaralms.com",
+  infoUri: "http://mobilenode.wlg.totaralms.com/info",
   // startNodeJsMobile: true
   startNodeJsMobile: false,
   userAgent: "TotaraMobileApp",
@@ -38,8 +39,6 @@ const defaultConfig = {
   webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`),
   forgotPasswordUri: (host: string) => (`${host}/login/forgot_password.php`),
   // infoUri: (host: string) => (`${host}/totara/mobile/info.php`),
-  infoUri: (host: string) => (`${host}/info`), // using the info from node.js for now instead of the totara above
-
   appLinkDomain: "https://mobile.totaralearning.com",
   deepLinkSchema: "totara://"
 };
