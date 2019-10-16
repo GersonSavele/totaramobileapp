@@ -25,11 +25,10 @@ import ConsoleLogger from "./logger/ConsoleLogger";
 const defaultConfig = {
   urlProtocol: "https",
   mobileApi: {
-    uri: "http://mobilenode.wlg.totaralms.com/graphql",
+    uri: "https://mocks.mobile.demo.totara.software/graphql",
     persistentQuery: false
   },
-  mobileStatic: "http://mobilenode.wlg.totaralms.com",
-  infoUri: "http://mobilenode.wlg.totaralms.com/info",
+  infoUri: "https://mocks.mobile.demo.totara.software/info",
   // startNodeJsMobile: true
   startNodeJsMobile: false,
   userAgent: "TotaraMobileApp",
