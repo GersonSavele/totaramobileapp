@@ -14,6 +14,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@fortawesome/react-native-fontawesome": "^0.1.0",
     "@react-native-community/async-storage": "^1.6.2",
+    "@react-native-firebase/app": "^6.0.1",
+    "@react-native-firebase/messaging": "^6.0.1",
     "apollo-boost": "^0.4.4",
     "apollo-link-context": "^1.0.19",
     "apollo-link-retry": "^2.2.15",

@@ -11,6 +11,7 @@
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
+@import Firebase;
 
 @implementation AppDelegate
 
@@ -36,6 +37,8 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   [RNSplashScreen show];
+  [FIRApp configure];
+  
   return YES;
 }
 
