@@ -64,9 +64,15 @@ import { AdditionalAction } from "@totara/auth/additional-actions";
 import { TouchableIcon } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 
+import firebase from "@react-native-firebase/app";
+import messaging from "@react-native-firebase/messaging";
+
 class App extends React.Component<{}> {
 
-  componentDidMount() {
+  async componentDidMount() {
+    // TODO remove this, this is for discovery purposes only
+    let fcmToken = await firebase.messaging().getAPNSToken();
+    Log.debug("fcmtoken", fcmToken);
   }
 
   render() {
