@@ -23,12 +23,10 @@
 import React from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
-import { StyleProvider } from "native-base";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import AsyncStorage from "@react-native-community/async-storage";
-
 import {
   faHome,
   faCloudDownloadAlt,
@@ -62,19 +60,11 @@ import {
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
 import { config } from "@totara/lib";
-import {
-  theme,
-  getTheme,
-  navigationHeaderTintColor,
-  tabBarActiveTintColor,
-  tabBarInactiveTintColor,
-  colorSecondary1,
-  colorNeutral1
-} from "@totara/theme";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { TouchableIcon } from "@totara/components";
+import { MobileTheme, ThemeContext } from "@totara/theme/MobileTheme";
 
 class App extends React.Component<{}> {
 
@@ -92,154 +82,147 @@ class App extends React.Component<{}> {
       );
     }
   }
-
+  
   render() {
+    const AppContainer = () => {
+      return (
+        <ThemeContext.Consumer>
+          { value => {
+            const AppMainNavigation = createAppContainer(tabNavigation(value.theme));
+            return <AppMainNavigation screenProps={{ theme: value.theme }}/>
+          }}</ThemeContext.Consumer>
+      );
+    };
+
     return (
-      <StyleProvider style={getTheme(theme)}>
+      // <StyleProvider style={getTheme(theme)}>
+        <ThemeContext.Provider value={{theme: MobileTheme()}}>
         <AuthProvider asyncStorage={AsyncStorage}>
           <ActivitySheetProvider>
             <AppContainer
               ref={nav => {
                 this.navigator = nav;
-              }}/>
+              }} />
           </ActivitySheetProvider>
           <AdditionalAction/>
         </AuthProvider>
-      </StyleProvider>
+        </ThemeContext.Provider>
+      // </StyleProvider>
     );
   }
 }
 
-const navigationOptions = {
+const navigationOptions = (theme, title, backTitle, rightIcon) => ({
   headerStyle: {
     borderBottomWidth: 0,
-    backgroundColor: colorSecondary1
+    backgroundColor: theme.colorSecondary1,
+    shadowOpacity: 0,
+    elevation: 0
   },
-  headerBackTitle: null
-};
+  title: title,
+  headerBackTitle: null,
+  headerTintColor: theme.navigationHeaderTintColor,
+  headerRight: rightIcon ? <TouchableIcon icon={rightIcon} disabled={false} size={24} color={theme.headerTintColor}/> : null,      
+});
 
 const myLearning = createStackNavigator(
   {
     MyLearning: {
       screen: MyLearning,
-      navigationOptions: {
-        headerRight: <TouchableIcon icon={faBell} disabled={false} size={24} color={navigationHeaderTintColor}/>,
-        headerStyle: {
-          borderBottomWidth: 0,
-          backgroundColor: colorSecondary1,
-          shadowOpacity: 0,
-          elevation: 0
-        },
-        headerTintColor: navigationHeaderTintColor
-      }
+      navigationOptions: ({ screenProps }) =>
+        navigationOptions(screenProps.theme, null, null, faBell)
     },
     CourseDetails: {
       screen: CourseDetails,
-      navigationOptions: {
-        headerRight: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={24} color={navigationHeaderTintColor} />
-      }
+      navigationOptions: ({ screenProps }) =>
+        navigationOptions(screenProps.theme, null, null, faCloudDownloadAlt)
     },
     ProgramDetails: {
       screen: ProgramDetails,
-      navigationOptions: {
-        headerRight: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={24} color={navigationHeaderTintColor} />
-      }
-    },
+      navigationOptions: ({ screenProps }) =>
+        navigationOptions(screenProps.theme, null, null, faCloudDownloadAlt)
+    }
   },
   {
     initialRouteName: "MyLearning",
-    defaultNavigationOptions: navigationOptions
-  });
+    defaultNavigationOptions: ({ screenProps }) =>
+      navigationOptions(screenProps.theme, null, null, null)
+  }
+);
 
 const profile = createStackNavigator(
   {
     Profile: Profile,
-    Settings: Settings,
+    Settings: Settings
   },
   {
     initialRouteName: "Profile",
-    defaultNavigationOptions: navigationOptions
-  });
+    defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
+  }
+);
 
 const notification = createStackNavigator(
   {
-    Notification: PlaceHolder,
+    Notification: PlaceHolder
   },
   {
     initialRouteName: "Notification",
-    defaultNavigationOptions: navigationOptions,
-  });
+    defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
+  }
+);
 
 const downloads = createStackNavigator(
   {
-    Downloads: PlaceHolder,
+    Downloads: PlaceHolder
   },
   {
     initialRouteName: "Downloads",
-    defaultNavigationOptions: navigationOptions
-  });
-
-
-const mainNavigator = createMaterialBottomTabNavigator(
-  {
-    MyLearning: {
-      screen: myLearning,
-      navigationOptions: () => ({
-        tabBarIcon: ({tintColor}) => (
-          <FontAwesomeIcon
-            icon={faHome}
-            color={tintColor}
-            size={24}
-          />
-        )
-      }),
-      tabBarOnPress: ({navigation}) => {
-        navigation;
-      },
-    },
-    Downloads: {
-      screen: downloads,
-      navigationOptions: () => ({
-        tabBarIcon: ({tintColor}) => (
-          <FontAwesomeIcon
-            icon={faCloudDownloadAlt}
-            color={tintColor}
-            size={24}
-          />
-        )
-      })
-    },
-    Notification: {
-      screen: notification,
-      navigationOptions: () => ({
-        tabBarIcon: ({tintColor}) => (
-          <FontAwesomeIcon
-            icon={faEnvelope}
-            color={tintColor}
-            size={24}
-          />
-        )
-      })
-    },
-    Profile: {
-      screen: profile,
-      navigationOptions: () => ({
-        tabBarIcon: ({tintColor}) => (
-          <FontAwesomeIcon
-            icon={faUser}
-            color={tintColor}
-            size={24}
-          />
-        )
-      })
-    },
-  }, {
-    initialRouteName: "MyLearning",
-    labeled: false,
-    barStyle: {backgroundColor: colorNeutral1, shadowRadius: 0},
-    activeTintColor: tabBarActiveTintColor,
-    inactiveTintColor: tabBarInactiveTintColor
+    defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
   }
+);
+
+const tabIcon = (color, icon) => ( <FontAwesomeIcon icon={icon} color={color} size={24} /> );
+
+const tabNavigation = (theme) => (
+  createMaterialBottomTabNavigator(
+    {
+      MyLearning: {
+        screen: myLearning,
+        navigationOptions: () => ({
+          tabBarIcon: ({ tintColor }) => tabIcon(tintColor, faHome)
+        }),
+        tabBarOnPress: ({ navigation }) => {
+          navigation;
+        }
+      },
+      Downloads: {
+        screen: downloads,
+        navigationOptions: () => ({
+          tabBarIcon: ({ tintColor }) =>
+            tabIcon(tintColor, faCloudDownloadAlt)
+        })
+      },
+      Notification: {
+        screen: notification,
+        navigationOptions: () => ({
+          tabBarIcon: ({ tintColor }) => tabIcon(tintColor, faEnvelope)
+        })
+      },
+      Profile: {
+        screen: profile,
+        navigationOptions: () => ({
+          tabBarIcon: ({ tintColor }) => tabIcon(tintColor, faUser)
+        })
+      }
+    },
+    {
+      initialRouteName: "MyLearning",
+      labeled: false,
+      barStyle: { backgroundColor: theme.colorNeutral1, shadowRadius: 0 },
+      activeTintColor: theme.tabBarActiveTintColor,
+      inactiveTintColor: theme.tabBarInactiveTintColor
+    }
+  )
 );
 
 // init is needeed for FA to bundle the only needed icons
@@ -278,5 +261,4 @@ const initFontAwesome = () => {
 };
 initFontAwesome();
 
-const AppContainer = createAppContainer(mainNavigator);
 export default App;

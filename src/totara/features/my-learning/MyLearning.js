@@ -20,7 +20,7 @@
  *
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import {
@@ -37,35 +37,45 @@ import { translate } from "@totara/locale";
 import LearningItemCarousel from "./LearningItemCarousel";
 import { learningItemsList } from "./api";
 import { Log } from "@totara/lib";
-import { GeneralErrorModal } from "@totara/components";
+import { GeneralErrorModal, PrimaryButton } from "@totara/components";
 import NoCurrentLearning from "./NoCurrentLearning";
+import { ThemeContext } from "@totara/theme/MobileTheme"
 
-const MyLearning = learningItemsList(({loading, currentLearning, error}) => {
+
+const MyLearning = learningItemsList(({loading, currentLearning, error }) => {
+
+  const {theme, setMobileTheme} = useContext(ThemeContext);
+
   if (error) {
     Log.error("Error getting current learning", error);
     return <GeneralErrorModal />
   } else {
     return (
-      <View style={styles.myLearningContainer}>
-        <View style={styles.myLearningHeader}>
-          <Text style={styles.primaryText}>
-            {translate("my-learning.primary_title")}
-          </Text>
-          <Text style={styles.infoText}>
-            {translate("my-learning.primary_info", { count: (!loading && currentLearning && currentLearning.length) ? currentLearning.length : 0})}
-          </Text>
-        </View>
-        <View style={styles.learningItems}>
-          { (loading)
-            ? <Text>{translate("general.loading")}</Text>
-            : (currentLearning && currentLearning.length > 0)
-              ? <LearningItemCarousel currentLearning={currentLearning} />
-              : <NoCurrentLearning />
-          }
-        </View>
-      </View>
+      // <ThemeContext.Consumer>
+      //    {value =>  
+            <View style={styles.myLearningContainer}>
+            <View style={styles.myLearningHeader}>
+              <Text style={[theme.textH1, styles.primaryText]}>
+                {translate("my-learning.primary_title")}
+              </Text>
+              <Text style={styles.infoText}>
+                {translate("my-learning.primary_info", { count: (!loading && currentLearning && currentLearning.length) ? currentLearning.length : 0})}
+              </Text>
+              {/* <PrimaryButton text="Switch" onPress={setMobileTheme} /> */}
+            </View>
+            <View style={styles.learningItems}>
+              { (loading)
+                ? <Text>{translate("general.loading")}</Text>
+                : (currentLearning && currentLearning.length > 0)
+                  ? <LearningItemCarousel currentLearning={currentLearning} />
+                  : <NoCurrentLearning />
+              }
+            </View>
+          </View>
+      //   }
+      // </ThemeContext.Consumer>
     )
-  } 
+  }
 });
 
 export default MyLearning;
@@ -84,10 +94,10 @@ const styles = StyleSheet.create({
     paddingVertical: 8
   },
   primaryText: {
-    fontSize: fontSizeH1,
-    lineHeight: lineHeightH1,
-    color: navigationHeaderTintColor,
-    fontWeight: "bold"
+    // fontSize: fontSizeH1,
+    // lineHeight: lineHeightH1,
+    // color: navigationHeaderTintColor,
+    // fontWeight: "bold"
   },
   infoText: {
     fontSize: fontSizeSmall,

@@ -17,12 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 // @ts-ignore no type defs on generated js files
 import material from "./native-base-theme/variables/material";
 // @ts-ignore no type defs on generated js files
 import getTheme from "./native-base-theme/components/index";
 import {resizeByScreenSize, normalize} from "./ui";
 import lodash from "lodash";
+
+import { Theme, MobileTheme } from "./MobileTheme";
 
 const gutter = resizeByScreenSize(8, 16, 16, 24);
 const tbPadding = resizeByScreenSize(8, 16, 24, 32);
@@ -97,8 +100,39 @@ const lineHeightLabel = 12;
 //---- Text weight: customizable by [Developer] ------
 const fontWeightMedium = "500";
 
-const theme = lodash.merge(material, {
+const applyThemeToNativeBase = (themeData: Theme) => {
+  console.log("Theme:> \n\n-----------\n"+theme+"\n")
+  const nativBaseTheme = {
+    brandPrimary: themeData.colorBrand,// NEED TO READ FROM colorPrimary: "#8ca83d",
 
+    inputFontSize: fontSizeH4,
+    
+    brandInfo: colorSecondary4,
+    platformStyle: "totara",
+    logoUrl: "https://webcasts.td.org/uploads/assets/2300/logo.png", //TODO need to set default logo and it will be covered in MOB-172 
+
+    inputErrorTextColor: colorAlert,
+    inputTextColor: textColorDark,
+    inputSuccessTextColor: colorSuccess,
+
+    inputErrorBorderColor: colorAlert,
+    inputBorderColor: colorNeutral4,
+    inputSuccessBorderColor: colorSuccess,  
+    
+    linkColor: textColorDark,
+
+    inputMarginLeft: 0,
+    inputPaddingLeft: 0,
+    
+    inverseTextColor: textColorLight,
+    btnDisabledBg: colorNeutral5,
+
+  }
+  return nativBaseTheme;
+}
+// const mobileTheme = {colorBrand: "red", fontSizeH4: 16, colorSecondary4: "red"};
+// let theme = lodash.merge(material, applyThemeToNativeBase());
+let theme = lodash.merge(material, {
   brandPrimary: colorBrand,// NEED TO READ FROM colorPrimary: "#8ca83d",
 
   inputFontSize: fontSizeH4,
@@ -121,8 +155,9 @@ const theme = lodash.merge(material, {
   inputPaddingLeft: 0,
   
   inverseTextColor: textColorLight,
-  btnDisabledBg: colorNeutral5
+  btnDisabledBg: colorNeutral5,
 });
+
 
 export {
   theme,
