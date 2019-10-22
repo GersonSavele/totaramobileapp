@@ -18,7 +18,8 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React from "react";
+
+import React, {useContext} from "react";
 import {
   StyleSheet,
   View,
@@ -28,124 +29,69 @@ import {
   Linking
 } from "react-native";
 import { Form, Input, Container, Content, Header } from "native-base";
-
 import { config } from "@totara/lib";
-import { resizeByScreenSize, gutter, ThemeConsumer} from "@totara/theme";
+import { resizeByScreenSize, gutter, ThemeContext} from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
 import { translate } from "@totara/locale";
+import { OutProps } from "./NativeLoginHook";
 
-class NativeLogin extends React.Component<Props, State> {
-  
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      inputUsernameStatus: undefined,
-      inputUsernameMessage: undefined,
-      inputPasswordStatus: undefined,
-      inputPasswordMessage: undefined
-    };
-  }
+const NativeLogin = ({
+  nativeLoginState,
+  onBack,
+  siteUrl,
+  onClickEnter,
+  inputUsernameWithShowError,
+  inputPasswordWithShowError
 
-  setStateInputUsernameWithShowError = (username: string) => {
-    this.setState({ inputUsername: username });
-  };
-
-  setStateInputPasswordWithShowError = (password: string) => {
-    this.setState({ inputPassword: password });
-  };
-
-  onClickEnter = () => {
-    let tmpInputUsernameStatus: "success" | "error" | "focus" | undefined = undefined;
-    let tmpInputUsernameMessage = undefined;
-    let tmpInputPasswordStatus: "success" | "error" | "focus" | undefined = undefined;
-    let tmpInputPasswordMessage = undefined;
-
-    if ((this.state.inputUsername && this.state.inputUsername != "wrong") && (this.state.inputPassword && this.state.inputPassword != "")) {
-      //TODO will be covered in MOB-172
-    } else {
-      if (!this.state.inputUsername || this.state.inputUsername == "" || this.state.inputUsername == "wrong") {
-          tmpInputUsernameStatus = "error";
-          tmpInputUsernameMessage = translate("message.enter_valid_username");
-      }
-      if (!this.state.inputPassword || this.state.inputPassword == "") {
-        tmpInputPasswordStatus = "error";
-        tmpInputPasswordMessage = translate("message.enter_valid_password");
-      }
-    }
-    this.setState({ 
-      inputUsernameStatus: tmpInputUsernameStatus,
-      inputUsernameMessage: tmpInputUsernameMessage,
-      inputPasswordStatus: tmpInputPasswordStatus,
-      inputPasswordMessage: tmpInputPasswordMessage
-    });
-  };
-
-  render() {
-
-    return (
-      <ThemeConsumer>{
-        ([theme]) => <Container style={[{ flex: 0 }, theme.viewContainer]}>
-        <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
-          <TouchableIcon onPress={() => { this.props.onBack(); }} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
-        </Header>
-        <Content style={styles.content} enableOnAndroid>
-        <Image source={theme.logoUrl ? { uri: theme.logoUrl } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
-          <View style={styles.infoContainer}>
-            <Text style={theme.textH2}>{translate("native-login.header_title")}</Text>
-            <Text style={theme.textH4}>{translate("native-login.login_information")}</Text>
+}: OutProps) => {
+  const [ theme ] = useContext(ThemeContext);
+  return (
+    <Container style={[{ flex: 0 }, theme.viewContainer]}>
+      <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
+        <TouchableIcon onPress={() => { onBack}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
+      </Header>
+      <Content style={styles.content} enableOnAndroid>
+      <Image source={theme.logoUrl ? { uri: theme.logoUrl } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
+        <View style={styles.infoContainer}>
+          <Text style={theme.textH2}>{translate("native-login.header_title")}</Text>
+          <Text style={theme.textH4}>{translate("native-login.login_information")}</Text>
+        </View>
+        <Form>
+          <View style={styles.formInputContainer}>
+            <InputTextWithInfo placeholder={translate("native-login.username_text_placeholder")} message={(nativeLoginState.inputUsernameStatus == "error")? translate("message.enter_valid_username"): undefined}
+              status={nativeLoginState.inputUsernameStatus} >
+              <Input
+                clearButtonMode="while-editing"
+                autoCapitalize="none"
+                onChangeText={inputUsernameWithShowError}
+                value={nativeLoginState.inputUsername}
+                style={styles.inputText}
+              />
+            </InputTextWithInfo>
           </View>
-          <Form>
-            <View style={styles.formInputContainer}>
-              <InputTextWithInfo placeholder={translate("native-login.username_text_placeholder")} message={this.state.inputUsernameMessage} status={this.state.inputUsernameStatus} >
-                <Input
-                  clearButtonMode="while-editing"
-                  autoCapitalize="none"
-                  onChangeText={this.setStateInputUsernameWithShowError}
-                  value={this.state.inputUsername}
-                  style={styles.inputText}
-                />
-              </InputTextWithInfo>
-            </View>
-            <View style={styles.formInputContainer}>
-              <InputTextWithInfo placeholder={translate("native-login.password_text_placeholder")} message={this.state.inputPasswordMessage} status={this.state.inputPasswordStatus} >
-                <Input
-                  secureTextEntry={true}
-                  clearButtonMode="while-editing"
-                  onChangeText={this.setStateInputPasswordWithShowError}
-                  value={this.state.inputPassword}
-                  style={styles.inputText}
-                />
-              </InputTextWithInfo>
-            </View>
-            <View style={[ styles.forgotCredentialContainer, theme.textB1 ]}>
-              <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }} >
-                <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
-              </TouchableOpacity>
-            </View>
-            <PrimaryButton onPress={this.onClickEnter} text={translate("general.enter")} />
-          </Form>
-        </Content>
-      </Container>
-      }</ThemeConsumer>
-      
-    );
-  }
+          <View style={styles.formInputContainer}>
+            <InputTextWithInfo placeholder={translate("native-login.password_text_placeholder")}  message={(nativeLoginState.inputPasswordStatus == "error")? translate("message.enter_valid_password"): undefined}
+              status={nativeLoginState.inputPasswordStatus} >
+              <Input
+                secureTextEntry={true}
+                clearButtonMode="while-editing"
+                onChangeText={inputPasswordWithShowError}
+                value={nativeLoginState.inputPassword}
+                style={styles.inputText}
+              />
+            </InputTextWithInfo>
+          </View>
+          <View style={[ styles.forgotCredentialContainer, theme.textB1 ]}>
+            <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(siteUrl)); }} >
+              <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
+            </TouchableOpacity>
+          </View>
+          <PrimaryButton onPress={onClickEnter} text={translate("general.enter")} />
+        </Form>
+      </Content>
+    </Container>    
+  );
 }
-
-type Props = {
-  onSetupSecretSuccess: (data: string) => void
-  siteUrl: string,
-  onBack: () => void
-};
-
-type State = {
-  inputUsername?: string,
-  inputPassword?: string,
-  inputUsernameStatus?: "success" | "error" | "focus",
-  inputPasswordStatus?: "success" | "error" | "focus",
-  inputPasswordMessage?: string,
-  inputUsernameMessage?: string
-};
 
 const styles = StyleSheet.create({
   navigation: {

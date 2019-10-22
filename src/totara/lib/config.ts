@@ -29,6 +29,7 @@ const defaultConfig = {
     persistentQuery: false
   },
   infoUri: "https://mocks.mobile.demo.totara.software/info",
+  
   // startNodeJsMobile: true
   startNodeJsMobile: false,
   userAgent: "TotaraMobileApp",
@@ -38,6 +39,8 @@ const defaultConfig = {
   webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`),
   forgotPasswordUri: (host: string) => (`${host}/login/forgot_password.php`),
   // infoUri: (host: string) => (`${host}/totara/mobile/info.php`),
+  nativeLoginSetupUri: (host: string) => (`${host}/totara/mobile/login_setup.php`),
+  nativeLoginUri: (host: string) => (`${host}/totara/mobile/login.php`),
   appLinkDomain: "https://mobile.totaralearning.com",
   deepLinkSchema: "totara://"
 };

@@ -19,42 +19,39 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  *
  */
-
 import React from "react";
 import { Modal } from "react-native";
-
 import NativeLogin from "./NativeLogin";
+import { useNativeLogin } from "./NativeLoginHook";
 import { ManualAuthProps } from "../ManualAuthProps";
 
-class NativeFlow extends React.Component<ManualAuthProps> {
-
-  constructor(props: ManualAuthProps) {
-    super(props);
-  }
-
-  onSetupLoginData = (data: string) => {
-    this.props.onSetupSecretSuccess(data);
+const NativeFlow = ({
+  siteUrl,
+  onSetupSecretSuccess,
+  onSetupSecretCancel
+}: ManualAuthProps) => {
+  const onSetupLoginData = (data: string) => {
+    onSetupSecretSuccess(data);
   };
 
-  onCancelLogin = () => {
-    this.props.onSetupSecretCancel();
+  const onCancelLogin = () => {
+    onSetupSecretCancel();
   };
 
-  render() {
-
-    // TODO re-apply the theme here from the SiteInfo
-
-    return (
-      <Modal animationType="slide" transparent={false} >
-        {/* //TODO will be covered in MOB-172 */}
-        <NativeLogin
-          onSetupSecretSuccess={(siteUrl) => this.onSetupLoginData(siteUrl)}
-          siteUrl={this.props.siteUrl}
-          onBack={this.onCancelLogin} />
-      </Modal>
+  const UserNativeLogin = () =>
+    NativeLogin(
+      useNativeLogin({
+        siteUrl: siteUrl,
+        onSetupSecretSuccess: onSetupLoginData,
+        onBack: onCancelLogin
+      })
     );
-  }
 
-}
+  return (
+      <Modal animationType="slide" transparent={false}>
+        <UserNativeLogin />
+      </Modal>
+  );
+};
 
 export default NativeFlow;
