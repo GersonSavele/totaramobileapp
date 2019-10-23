@@ -30,23 +30,10 @@ import {
 import { Form, Input, Container, Content, Header } from "native-base";
 
 import { config } from "@totara/lib";
-import {
-  resizeByScreenSize,
-  theme,
-  gutter,
-  fontSizeH2,
-  fontSizeH4,
-  textColorDark,
-  colorSecondary1,
-  colorAccent,
-  lineHeightH2,
-  lineHeightH4,
-  fontSizeB1,
-  lineHeightB1,
-  navigationHeaderTintColor
-} from "@totara/theme";
+import { resizeByScreenSize, gutter } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
 import { translate } from "@totara/locale";
+import { ThemeConsumer } from "@totara/theme/ThemeContext";
 
 class NativeLogin extends React.Component<Props, State> {
   
@@ -95,16 +82,18 @@ class NativeLogin extends React.Component<Props, State> {
   };
 
   render() {
+
     return (
-      <Container style={{ flex: 0, backgroundColor: colorAccent }}>
-        <Header style={styles.navigation} iosBarStyle={"default"}>
-          <TouchableIcon onPress={() => { this.props.onBack(); }} icon={"times"} disabled={false} color={navigationHeaderTintColor} />
+      <ThemeConsumer>{
+        ([theme]) => <Container style={[{ flex: 0 }, theme.viewContainer]}>
+        <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
+          <TouchableIcon onPress={() => { this.props.onBack(); }} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
         </Header>
         <Content style={styles.content} enableOnAndroid>
-          <Image source={{ uri: theme.logoUrl }} style={styles.totaraLogo} resizeMode={"contain"} />
+        <Image source={theme.logoUrl ? { uri: theme.logoUrl } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
           <View style={styles.infoContainer}>
-            <Text style={styles.infoTitle}>{translate("native-login.header_title")}</Text>
-            <Text style={styles.infoDescription}>{translate("native-login.login_information")}</Text>
+            <Text style={theme.textH2}>{translate("native-login.header_title")}</Text>
+            <Text style={theme.textH4}>{translate("native-login.login_information")}</Text>
           </View>
           <Form>
             <View style={styles.formInputContainer}>
@@ -129,7 +118,7 @@ class NativeLogin extends React.Component<Props, State> {
                 />
               </InputTextWithInfo>
             </View>
-            <View style={styles.forgotCredentialContainer}>
+            <View style={[ styles.forgotCredentialContainer, theme.textB1 ]}>
               <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(this.props.siteUrl)); }} >
                 <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
               </TouchableOpacity>
@@ -138,6 +127,8 @@ class NativeLogin extends React.Component<Props, State> {
           </Form>
         </Content>
       </Container>
+      }</ThemeConsumer>
+      
     );
   }
 }
@@ -161,7 +152,6 @@ const styles = StyleSheet.create({
   navigation: {
     alignItems: "flex-start",
     borderBottomWidth: 0,
-    backgroundColor: colorSecondary1,
     flexDirection: "row",
     justifyContent: "space-between"
   },
@@ -179,16 +169,6 @@ const styles = StyleSheet.create({
     marginBottom: resizeByScreenSize(32, 32, 32, 32),
     marginTop: 32
   },
-  infoTitle: {
-    fontSize: fontSizeH2,
-    lineHeight: lineHeightH2,
-    color: textColorDark
-  },
-  infoDescription: {
-    fontSize: fontSizeH4,
-    lineHeight: lineHeightH4,
-    color: textColorDark
-  },
   formInputContainer: {
     marginBottom: 8
   },
@@ -202,9 +182,6 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   forgotCredential: {
-    color: theme.linkColor,
-    fontSize: fontSizeB1,
-    lineHeight: lineHeightB1,
     padding: 16,
     textDecorationLine: "underline",
     textAlign: "center"

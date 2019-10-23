@@ -18,7 +18,7 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -29,34 +29,26 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import { Form, Input, Container, Content } from "native-base";
 import VersionInfo from "react-native-version-info";
 
-import {
-  resizeByScreenSize,
-  gutter,
-  fontSizeH2,
-  fontSizeH4,
-  textColorDark,
-  colorAccent,
-  lineHeightH2,
-  lineHeightH4,
-  fontSizeLabel,
-  textColorDisabled
-} from "@totara/theme";
+import { resizeByScreenSize, gutter } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
 import { OutProps } from "./SiteUrlHook";
 import SafeAreaView from "react-native-safe-area-view";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 
+  const [ theme ] = useContext(ThemeContext);
+
   return (
-    <Container style={{ flex: 0, backgroundColor: colorAccent }}>
+    <Container style={[{ flex: 0 }, theme.viewContainer]}>
       <Content enableOnAndroid>
         <Form style={styles.siteUrlContainer}>
           <View style={styles.headerContainer}>
             <Image source={require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode="contain" />
             <View>
-              <Text style={styles.infoTitle}>{translate("manual.site_url_title")}</Text>
-              <Text style={styles.infoDescription}>{translate("manual.site_url_information")}</Text>
+              <Text style={theme.textH2}>{translate("manual.site_url_title")}</Text>
+              <Text style={theme.textH4}>{translate("manual.site_url_information")}</Text>
             </View>
           </View>
           <View style={styles.formContainer}>
@@ -76,7 +68,7 @@ const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
         </Form>
       </Content>
       <SafeAreaView>
-        <Text style={styles.version}>{translate("general.version")}: {VersionInfo.appVersion}({VersionInfo.buildVersion})</Text>
+        <Text style={[styles.version, theme.textLabel, { color: theme.textColorDisabled }]}>{translate("general.version")}: {VersionInfo.appVersion}({VersionInfo.buildVersion})</Text>
       </SafeAreaView>
     </Container>
   );
@@ -95,16 +87,6 @@ const styles = StyleSheet.create({
     height: hp(45),
     justifyContent: "space-between"
   },
-  infoTitle: {
-    fontSize: fontSizeH2,
-    lineHeight: lineHeightH2,
-    color: textColorDark
-  },
-  infoDescription: {
-    fontSize: fontSizeH4,
-    lineHeight: lineHeightH4,
-    color: textColorDark
-  },
   formContainer: {
     marginTop: resizeByScreenSize(32, 32, 32, 32)
   },
@@ -117,8 +99,6 @@ const styles = StyleSheet.create({
   },
   version: {
     textAlign: "center",
-    fontSize: fontSizeLabel,
-    color: textColorDisabled,
     marginBottom: 8,
     flexDirection: "column-reverse"
   }

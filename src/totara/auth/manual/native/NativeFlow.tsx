@@ -22,9 +22,6 @@
 
 import React from "react";
 import { Modal } from "react-native";
-import { StyleProvider } from "native-base";
-
-import { theme, getTheme } from "@totara/theme";
 
 import NativeLogin from "./NativeLogin";
 import { ManualAuthProps } from "../ManualAuthProps";
@@ -48,15 +45,13 @@ class NativeFlow extends React.Component<ManualAuthProps> {
     // TODO re-apply the theme here from the SiteInfo
 
     return (
-      <StyleProvider style={getTheme(theme)}>
-        <Modal animationType="slide" transparent={false} >
-          {/* //TODO will be covered in MOB-172 */}
-          <NativeLogin
-            onSetupSecretSuccess={(siteUrl) => this.onSetupLoginData(siteUrl)}
-            siteUrl={this.props.siteUrl}
-            onBack={this.onCancelLogin} />
-        </Modal>
-      </StyleProvider>
+      <Modal animationType="slide" transparent={false} >
+        {/* //TODO will be covered in MOB-172 */}
+        <NativeLogin
+          onSetupSecretSuccess={(siteUrl) => this.onSetupLoginData(siteUrl)}
+          siteUrl={this.props.siteUrl}
+          onBack={this.onCancelLogin} />
+      </Modal>
     );
   }
 

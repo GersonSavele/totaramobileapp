@@ -22,7 +22,6 @@ import React, { useContext } from "react";
 import { View, StyleSheet, ViewStyle, Text } from "react-native";
 import { Item, Label } from "native-base";
 
-// import { theme, textColorSubdued, fontSizeH4, fontSizeB2, lineHeightB2 } from "@totara/theme";
 import { ThemeContext } from "@totara/theme/ThemeContext";
 
 type Props = {
@@ -36,6 +35,7 @@ type Props = {
 }
 
 const InfoText = ({status, message}: Props) => {
+
   const [ theme ] = useContext(ThemeContext);
   const stylesInfo = StyleSheet.create({
     hide: {
@@ -54,6 +54,7 @@ const InfoText = ({status, message}: Props) => {
       opacity: 0
     }
   });
+
   switch (status) {
     case "success":
       return <Text style={[theme.textB2, stylesInfo.success]}>{message}</Text>;
@@ -69,9 +70,8 @@ const InfoText = ({status, message}: Props) => {
 const InputTextWithInfo = ({ children, placeholder, message, status, style, ...rest }: Props) => {  
 
   const [ theme ] = useContext(ThemeContext);
-
-  const styles = StyleSheet.create({
-    formItem: {
+  const floatingLabelStyles = StyleSheet.create({
+    item: {
       marginTop: 0,
       marginBottom:0,
       marginLeft: 0,
@@ -81,9 +81,10 @@ const InputTextWithInfo = ({ children, placeholder, message, status, style, ...r
       borderBottomColor: status === "error" ? theme.colorAlert : theme.textColorSubdued
     }
   });
+
   return (
     <View style={{marginBottom: 8}}>
-      <Item floatingLabel {...rest} success={(status === "success")} error={(status === "error")} style={[style, styles.formItem]}>
+      <Item floatingLabel {...rest} success={(status === "success")} error={(status === "error")} style={[style, floatingLabelStyles.item]}>
         <Label style={{fontSize: theme.textH4.fontSize, color: theme.textColorSubdued}}>{placeholder}</Label>
         { children }        
       </Item>

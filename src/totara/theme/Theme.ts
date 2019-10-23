@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import { normalize } from "./ui";
-import { ViewStyle, TextStyle } from "react-native";
+import { ViewStyle, TextStyle, ImageSourcePropType } from "react-native";
 
 
 //---- Theme color: customizable by [User/Developer] ------
@@ -44,6 +44,8 @@ const textColorDark = "#3D444B";
 // }
 
 export type Theme = {
+  logoUrl?: string,
+  
   viewContainer: ViewStyle,
   textH1: TextStyle,
   textH2: TextStyle,
@@ -103,13 +105,14 @@ export type Theme = {
 }
 
 const MobileTheme: (theme?: Theme) => Theme = (theme?: Theme) => ({
+  logoUrl:  theme && theme.logoUrl,
   viewContainer: { backgroundColor: theme && theme.colorAccent ? theme.colorAccent : colorAccent },
 
   //---- Text styles: customizable by [Developer] ------
-  textH1: { fontSize: normalize(32), lineHeight:  normalize(38), color:  textColorDark, fontWeight: "bold" },
+  textH1: { fontSize: normalize(32), lineHeight:  normalize(38), color: textColorDark, fontWeight: "bold" },
   textH2: { fontSize: normalize(24), lineHeight: normalize(32), color:  textColorDark, fontWeight: "500" },
-  textH3: { fontSize: normalize(20), lineHeight: normalize(28), color:  textColorDark  },
-  textH4: { fontSize: normalize(17), lineHeight: normalize(26), color: textColorDark },
+  textH3: { fontSize: normalize(20), lineHeight: normalize(28), color: textColorDark, fontWeight: "500" },
+  textH4: { fontSize: normalize(17), lineHeight: normalize(26), color: textColorDark, fontWeight: "500" },
 
   textB1: { fontSize: 16, lineHeight: 24, color: textColorDark },
   textB2: { fontSize: 15, lineHeight: 20, color: textColorDark },

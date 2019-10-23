@@ -19,7 +19,7 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  **/
 
-import React, {ReactNode} from "react";
+import React, {ReactNode, useContext} from "react";
 import { View, StyleSheet, Modal } from "react-native";
 
 import {
@@ -28,7 +28,8 @@ import {
   ModalImageView,
   ModalContainer
 } from ".";
-import { resizeByScreenSize, fontSizeH2 } from "@totara/theme";
+import { resizeByScreenSize } from "@totara/theme";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 type Params = {
   title?: string;
@@ -39,6 +40,9 @@ type Params = {
 };
 
 const InfoModal = ({ title, description, imageType, children, ...rest }: Params) => {
+  
+  const [theme] = useContext(ThemeContext);
+  
   return (
     <Modal {...rest}>
       <TransparentView>
@@ -47,7 +51,7 @@ const InfoModal = ({ title, description, imageType, children, ...rest }: Params)
             <ModalImageView imageType={imageType} />
           </View>
           <View style={styles.sectionContainer}>
-            <ModalText text={title} fontSize={fontSizeH2} fontWeight="bold" />
+            <ModalText text={title} fontSize={theme.textH2.fontSize} fontWeight="bold" />
             <ModalText text={description} />
           </View>
           <View style={styles.actionContainer}>

@@ -19,10 +19,11 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
 **/
 
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import { resizeByScreenSize, textColorDark, fontSizeB1 } from "@totara/theme";
+import { resizeByScreenSize } from "@totara/theme";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 type TextParam = {
   text?: string,
@@ -32,11 +33,13 @@ type TextParam = {
 }
 
 const ModalText = ({text, fontSize, color, fontWeight } : TextParam) => {
+  
+  const [ theme ] = useContext(ThemeContext);
   return(
     <View style={styles.containerStyle} >
       <Text style = {[styles.titleTextStyle,
-       {fontSize : fontSize != undefined? fontSize : fontSizeB1,
-        color: color != undefined? color : textColorDark, 
+       {fontSize : fontSize != undefined? fontSize : theme.textB1.fontSize,
+        color: color != undefined? color : theme.textColorDark, 
         fontWeight: fontWeight != undefined? fontWeight : "normal",
        }]}>{text}
       </Text>

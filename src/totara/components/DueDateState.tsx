@@ -21,11 +21,11 @@
 
 import { StyleSheet, Text, View } from "react-native";
 import moment from "moment";
-import React from "react";
+import React, { useContext } from "react";
 
-import { colorWarning, colorAlert, colorInfo, fontSizeB3, lineHeightB3, textColorLight } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/Constant";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 /**
  * Component to render dueDate and change style depending on the dueDateState
@@ -37,29 +37,31 @@ type Props = {
 }
 
 const getDueDateModeStyle = (dueDateState?: string) => {
+  const [ theme ] = useContext(ThemeContext);
   switch (dueDateState) {
     case DueDateStateStatus.danger:
-      return styles.danger
+      return  { backgroundColor: theme.colorAlert }
     case DueDateStateStatus.warning:
-      return styles.warning
+      return { backgroundColor: theme.colorWarning }
     default:
-      return styles.info
+      return { backgroundColor: theme.colorInfo }
   }
 }
  
 const DueDateState = ({ dueDate, dueDateState }: Props) => {
 
   const dueDateModeStyle = getDueDateModeStyle(dueDateState);
-  
+  const [ theme ] = useContext(ThemeContext);
+
   return (
     <View style={[styles.container, dueDateModeStyle]}>
-      <Text style={styles.generalText}>
+      <Text style={[theme.textB3, {color: theme.textColorLight}]}>
         {(dueDateState && dueDateState == DueDateStateStatus.danger) ? translate("totara-component.overdue_by") : translate("totara-component.due_in")}&nbsp;
-        <Text style={styles.highlighText}>
+        <Text style={{fontWeight: "bold"}}>
           {moment(dueDate).toNow(true)}&nbsp;
         </Text>
       </Text>
-      <Text style={styles.generalText}>
+      <Text style={[theme.textB3, {color: theme.textColorLight}]}>
         ({moment(dueDate).format(DATE_FORMAT)})
       </Text>
     </View>
@@ -78,25 +80,6 @@ const styles = StyleSheet.create({
     padding: 8,
     flexWrap: "wrap",
     alignItems: "center"
-  },
-  info: {
-    backgroundColor: colorInfo
-  },
-  warning: {
-    backgroundColor: colorWarning
-  },
-  danger: {
-    backgroundColor: colorAlert
-  },
-  generalText: {
-    fontSize: fontSizeB3,
-    lineHeight: lineHeightB3,
-    color: textColorLight
-  },
-  highlighText: {
-    fontSize: fontSizeB3,
-    lineHeight: lineHeightB3,
-    fontWeight: "bold"
   }
 });
 

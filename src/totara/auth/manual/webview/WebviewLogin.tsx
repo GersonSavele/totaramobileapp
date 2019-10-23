@@ -20,7 +20,7 @@
  *
  */
 
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import { View, StyleSheet, Linking, Text } from "react-native";
 import { WebView } from "react-native-webview";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
@@ -31,7 +31,7 @@ import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { OutProps } from "./WebviewLoginHook";
 import { TouchableIcon } from "@totara/components";
-import { colorAccent, colorSecondary1, navigationHeaderTintColor } from "@totara/theme";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const WebviewLogin = ({
   loginUrl,
@@ -48,13 +48,15 @@ const WebviewLogin = ({
 
   const refLoginWebview = useRef<WebView>(null);
 
+  const [ theme ] = useContext(ThemeContext);
+
   return (
-    <Container style={{ flex: 0, backgroundColor: colorAccent }}>
-      <Header style={styles.navigation} iosBarStyle={"default"}>
-        <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} color={navigationHeaderTintColor} />
+    <Container style={[{ flex: 0 }, theme.viewContainer]}>
+      <Header style={[styles.navigation,  { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
+        <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} color={ theme.navigationHeaderTintColor } />
         <View style={styles.addressContainer}>
-          <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} color={navigationHeaderTintColor} />
-          <Text style={styles.addressText} numberOfLines={1} ellipsizeMode={"tail"} >{navEndPoint}</Text>
+          <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} color={ theme.navigationHeaderTintColor } />
+          <Text style={[styles.addressText, {color: theme.navigationHeaderTintColor}]} numberOfLines={1} ellipsizeMode={"tail"} >{navEndPoint}</Text>
         </View>
       </Header>
       <Content contentContainerStyle={{ flex: 1 }}>
@@ -72,13 +74,13 @@ const WebviewLogin = ({
           onNavigationStateChange={onLogViewNavigate}
         />
       </Content>
-      <Footer style={styles.footer}>
+      <Footer style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
         <View style={styles.barContent}>
-          <TouchableIcon icon={"chevron-left"} disabled={!canWebGoBackward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goBack(); }} color={navigationHeaderTintColor} />
-          <TouchableIcon icon={"chevron-right"} disabled={!canWebGoForward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goForward(); }} color={navigationHeaderTintColor} />
+          <TouchableIcon icon={"chevron-left"} disabled={!canWebGoBackward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goBack(); }} color={theme.navigationHeaderTintColor} />
+          <TouchableIcon icon={"chevron-right"} disabled={!canWebGoForward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goForward(); }} color={theme.navigationHeaderTintColor} />
         </View>
         <View style={styles.barContent}>
-          <TouchableIcon icon={"external-link-alt"} disabled={false} onPress={() => { Linking.openURL(navProtocol + "://" + navEndPoint); }} color={navigationHeaderTintColor} />
+          <TouchableIcon icon={"external-link-alt"} disabled={false} onPress={() => { Linking.openURL(navProtocol + "://" + navEndPoint); }} color={theme.navigationHeaderTintColor} />
         </View>
       </Footer>
     </Container>
@@ -88,8 +90,7 @@ const WebviewLogin = ({
 const styles = StyleSheet.create({
   navigation: {
     flexDirection: "row",
-    borderBottomWidth: 0,
-    backgroundColor: colorSecondary1
+    borderBottomWidth: 0
   },
   addressContainer: {
     marginHorizontal: 40,
@@ -100,13 +101,11 @@ const styles = StyleSheet.create({
   },
   addressText: {
     marginLeft: 4,
-    flex: 1,
-    color: navigationHeaderTintColor
+    flex: 1
   },
   footer: {
     flexDirection: "row",
     borderTopWidth: 0,
-    backgroundColor: colorSecondary1,
     justifyContent: "space-between"
   },
   barContent: {
