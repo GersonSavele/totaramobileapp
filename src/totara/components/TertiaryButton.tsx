@@ -19,11 +19,11 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import { Text, StyleSheet, ViewStyle } from "react-native";
 import { Button } from "native-base";
 
-import { fontSizeButtonTitle, textColorDark } from "@totara/theme";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 type Props = {
   children?: ReactNode,
@@ -32,15 +32,18 @@ type Props = {
   onPress?: (() => void)
 }
 
-const TertiaryButton = ({ children, text, style, onPress, ...rest }: Props) => (
-  <Button block rounded transparent onPress={onPress} style={[styles.button, style]} {...rest}>
+const TertiaryButton = ({ children, text, style, onPress, ...rest }: Props) => {
+
+  const [theme] = useContext(ThemeContext);
+  
+  return <Button block rounded transparent onPress={onPress} style={[styles.button, style]} {...rest}>
     {
       text 
-      ? <Text style={styles.title}>{text}</Text> 
+      ? <Text style={{color: theme.textColorDark, fontSize: theme.fontSizeButtonTitle}}>{text}</Text> 
       : children
     }
   </Button>
-);
+};
 
 
 const styles = StyleSheet.create({
@@ -49,10 +52,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     minWidth: 200,
     borderRadius: 3
-  },
-  title: {
-    color: textColorDark,
-    fontSize: fontSizeButtonTitle,
   }
 });
 

@@ -20,7 +20,7 @@
  *
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useRef } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
 import { withNavigation } from "react-navigation";
@@ -32,21 +32,11 @@ import {
 } from "react-native-responsive-screen";
 
 import { LearningItemCard, AddBadge } from "@totara/components";
-import {
-  resizeByScreenSize,
-  normalize,
-  colorNeutral1,
-  colorNeutral8,
-  colorNeutral6,
-  fontSizeB2,
-  lineHeightB2,
-  textColorSubdued,
-  fontSizeLabel,
-  colorNeutral3
-} from "@totara/theme";
+import { resizeByScreenSize, normalize } from "@totara/theme";
 import { LearningItemType } from "@totara/types";
 import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS } from "@totara/lib/Constant";
 import { Log } from "@totara/lib";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning }) => {
@@ -57,6 +47,8 @@ const LearningItemCarousel = withNavigation(
       // used for faster development to navigate at once to first course-details
       // courseNavigate(currentLearning[0])
       // return null;
+      const [theme] = useContext(ThemeContext);
+  
       return (
         <View>
             <Pagination 
@@ -68,7 +60,7 @@ const LearningItemCarousel = withNavigation(
                   height: 1.5,
                   borderRadius: 0,
                   marginHorizontal: 0,
-                  backgroundColor: colorNeutral6,
+                  backgroundColor: theme.colorNeutral6,
               }}
               dotContainerStyle={{
                 marginHorizontal: 0,
@@ -113,22 +105,62 @@ const renderItem = navigation => {
   return LearningItem;
 };
 
-const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => (
-  <TouchableOpacity
-    style={styles.learningItem}
-    key={item.id}
-    onPress={() => navigateTo(navigation, item)}
-    activeOpacity={1.0}
-  >
-    <View style={styles.itemContainer}>
-      <LearningItemCard item={item}>
-        <Text style={styles.itemType}>{item.itemtype}</Text>
-        {/* // TODO handeling numberOfLines for dynamic height */}
-        <Text style={styles.itemSummary} ellipsizeMode="tail" numberOfLines={resizeByScreenSize(3, 6, 6, 8)} >{item.summary}</Text>
-      </LearningItemCard>
-    </View>
-  </TouchableOpacity>
-);
+const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
+  
+  const [theme] = useContext(ThemeContext);
+
+  const itemStyle = StyleSheet.create({
+    container: {
+      borderRadius: normalize(10),
+      shadowColor: theme.colorNeutral8,
+      shadowOpacity: 0.16,
+      shadowRadius: normalize(13),
+      backgroundColor: theme.colorNeutral1,
+      borderWidth: 1,
+      borderColor: theme.colorNeutral3
+    },
+    content: {
+      borderRadius: normalize(10),
+      width: "100%",
+      height: "99%",
+      overflow: "hidden"
+    },
+    type: {
+      marginTop: 8,
+      alignSelf: "flex-start",
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderWidth: 1,
+      borderRadius: 4,
+      backgroundColor: theme.colorNeutral1,
+      color: theme.textColorSubdued,
+      borderColor: theme.colorNeutral6
+    },
+    summary: {
+      flex: 1,
+      alignSelf: "flex-start",
+      width: "100%",
+      paddingVertical: 16,
+      color: theme.textColorSubdued
+    }
+  });
+  return (
+    <TouchableOpacity
+      style={itemStyle.container}
+      key={item.id}
+      onPress={() => navigateTo(navigation, item)}
+      activeOpacity={1.0}
+    >
+      <View style={itemStyle.content}>
+        <LearningItemCard item={item}>
+          <Text style={[theme.textLabel, itemStyle.type]}>{item.itemtype}</Text>
+          {/* // TODO handeling numberOfLines for dynamic height */}
+          <Text style={[theme.textB2, itemStyle.summary]} ellipsizeMode="tail" numberOfLines={resizeByScreenSize(3, 6, 6, 8)} >{item.summary}</Text>
+        </LearningItemCard>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 LearningItemWithSummaryAndNavigation.propTypes = {
   item: PropTypes.object.isRequired,
@@ -161,42 +193,6 @@ const styles = StyleSheet.create({
     marginBottom: hp("3%"),
     marginLeft: 8,
     marginRight: 8
-  },
-  learningItem: {
-    borderRadius: normalize(10),
-    shadowColor: colorNeutral8,
-    shadowOpacity: 0.16,
-    shadowRadius: normalize(13),
-    backgroundColor: colorNeutral1,
-    borderWidth: 1,
-    borderColor: colorNeutral3
-  },
-  itemContainer: {
-    borderRadius: normalize(10),
-    width: "100%",
-    height: "99%",
-    overflow: "hidden"    
-  },
-  itemType: {
-    marginTop: 8,
-    alignSelf: "flex-start",
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderWidth: 1,
-    borderRadius: 4,
-    fontSize: fontSizeLabel,
-    backgroundColor: colorNeutral1,
-    color: textColorSubdued,
-    borderColor: colorNeutral6
-  },
-  itemSummary: {
-    flex: 1,
-    alignSelf: "flex-start",
-    width: "100%",
-    paddingVertical: 16,
-    fontSize: fontSizeB2,
-    lineHeight: lineHeightB2,
-    color: textColorSubdued
   }
 });
 

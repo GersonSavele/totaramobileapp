@@ -18,11 +18,12 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, ViewStyle, Text } from "react-native";
 import { Item, Label } from "native-base";
 
-import { theme, textColorSubdued, fontSizeH4, fontSizeB2, lineHeightB2 } from "@totara/theme";
+// import { theme, textColorSubdued, fontSizeH4, fontSizeB2, lineHeightB2 } from "@totara/theme";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 type Props = {
   children?: Element,
@@ -35,58 +36,60 @@ type Props = {
 }
 
 const InfoText = ({status, message}: Props) => {
+  const [ theme ] = useContext(ThemeContext);
+  const stylesInfo = StyleSheet.create({
+    hide: {
+      opacity: 0
+    },
+    success: {
+      color: theme.colorSuccess,
+      opacity: 1
+    },
+    error: {
+      color: theme.colorAlert,
+      opacity: 1
+    },
+    focus: {
+      color: theme.colorInfo,
+      opacity: 0
+    }
+  });
   switch (status) {
     case "success":
-      return <Text style={[styles.message, styles.success]}>{message}</Text>;
+      return <Text style={[theme.textB2, stylesInfo.success]}>{message}</Text>;
     case "error":
-      return<Text style={[styles.message, styles.error]}>{message}</Text>;
+      return<Text style={[theme.textB2,  stylesInfo.error]}>{message}</Text>;
     case "focus":
-        return <Text style={[styles.message, styles.focus]}>{message}</Text>;
+        return <Text style={[theme.textB2, stylesInfo.focus]}>{message}</Text>;
     default:
-      return <Text style={styles.message}>{message}</Text>;
+      return <Text style={[theme.textB2, stylesInfo.hide]}>{message}</Text>;
   }
 };
 
 const InputTextWithInfo = ({ children, placeholder, message, status, style, ...rest }: Props) => {  
 
+  const [ theme ] = useContext(ThemeContext);
+
+  const styles = StyleSheet.create({
+    formItem: {
+      marginTop: 0,
+      marginBottom:0,
+      marginLeft: 0,
+      marginRight: 0,
+      paddingLeft: 0,
+      paddingRight: 0,
+      borderBottomColor: status === "error" ? theme.colorAlert : theme.textColorSubdued
+    }
+  });
   return (
     <View style={{marginBottom: 8}}>
       <Item floatingLabel {...rest} success={(status === "success")} error={(status === "error")} style={[style, styles.formItem]}>
-        <Label style={{fontSize: fontSizeH4, color: textColorSubdued}}>{placeholder}</Label>
+        <Label style={{fontSize: theme.textH4.fontSize, color: theme.textColorSubdued}}>{placeholder}</Label>
         { children }        
       </Item>
       <InfoText status={status} message={message} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  message: {
-    fontSize: fontSizeB2,
-    color: theme.inputTextColor,
-    lineHeight: lineHeightB2,
-    opacity: 0
-  },
-  success: {
-    color: theme.inputSuccessTextColor,
-    opacity: 1
-  },
-  error: {
-    color: theme.inputErrorTextColor,
-    opacity: 1
-  },
-  focus: {
-    color: theme.inputSuccessTextColor,
-    opacity: 0
-  },
-  formItem: {
-    marginTop: 0,
-    marginBottom:0,
-    marginLeft: 0,
-    marginRight: 0,
-    paddingLeft: 0,
-    paddingRight: 0
-  }
-});
 
 export default InputTextWithInfo;

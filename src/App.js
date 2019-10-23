@@ -20,7 +20,7 @@
  *
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import nodejs from "nodejs-mobile-react-native";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
@@ -64,7 +64,7 @@ import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { TouchableIcon } from "@totara/components";
-import { MobileTheme, ThemeContext } from "@totara/theme/MobileTheme";
+import { ThemeProvider, ThemeContext } from "@totara/theme/ThemeContext";
 
 class App extends React.Component<{}> {
 
@@ -84,19 +84,11 @@ class App extends React.Component<{}> {
   }
   
   render() {
-    const AppContainer = () => {
-      return (
-        <ThemeContext.Consumer>
-          { value => {
-            const AppMainNavigation = createAppContainer(tabNavigation(value.theme));
-            return <AppMainNavigation screenProps={{ theme: value.theme }}/>
-          }}</ThemeContext.Consumer>
-      );
-    };
+    
 
     return (
       // <StyleProvider style={getTheme(theme)}>
-        <ThemeContext.Provider value={{theme: MobileTheme()}}>
+        <ThemeProvider>
         <AuthProvider asyncStorage={AsyncStorage}>
           <ActivitySheetProvider>
             <AppContainer
@@ -106,12 +98,19 @@ class App extends React.Component<{}> {
           </ActivitySheetProvider>
           <AdditionalAction/>
         </AuthProvider>
-        </ThemeContext.Provider>
+        </ThemeProvider>
       // </StyleProvider>
     );
   }
 }
+const AppContainer = () => {
+  const [theme] = useContext(ThemeContext);
+  const AppMainNavigation = createAppContainer(tabNavigation(theme));
 
+return (
+   <AppMainNavigation screenProps={{ theme: theme }}/>
+);
+};
 const navigationOptions = (theme, title, backTitle, rightIcon) => ({
   headerStyle: {
     borderBottomWidth: 0,

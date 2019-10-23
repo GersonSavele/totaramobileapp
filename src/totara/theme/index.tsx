@@ -25,7 +25,7 @@ import getTheme from "./native-base-theme/components/index";
 import {resizeByScreenSize, normalize} from "./ui";
 import lodash from "lodash";
 
-import { Theme, MobileTheme } from "./MobileTheme";
+import { Theme, MobileTheme } from "./Theme";
 
 const gutter = resizeByScreenSize(8, 16, 16, 24);
 const tbPadding = resizeByScreenSize(8, 16, 24, 32);

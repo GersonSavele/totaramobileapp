@@ -25,9 +25,10 @@ import React, { useContext } from "react";
 
 import { LearningItem, Status } from "@totara/types";
 import { DueDateState }  from "@totara/components";
-import { normalize, textColorDark, fontSizeH2, lineHeightH2, fontWeightMedium, colorNeutral1 } from "@totara/theme";
+import { normalize } from "@totara/theme";
 import { X_API_KEY } from "@totara/lib/Constant";
 import { AuthContext } from "@totara/auth";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 interface Props {
   item: LearningItem
@@ -37,6 +38,8 @@ interface Props {
 }
 
 const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
+
+  const [theme] = useContext(ThemeContext);
 
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
@@ -48,7 +51,7 @@ const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
       </View>
       <View style={cardStyleSheet}>
         <View style={{ flexDirection: "row" }}>
-          <Text numberOfLines={2} style={styles.itemFullName} ellipsizeMode="tail">{item.fullname}</Text>
+          <Text numberOfLines={2} style={[theme.textH2, styles.itemFullName]} ellipsizeMode="tail">{item.fullname}</Text>
         </View>
         {children}
       </View>
@@ -62,8 +65,9 @@ const ImageElement = ({item}: {item: LearningItem}) => {
   const apiKey = authContext.setup!.apiKey;
 
   const imgSrc = item.imageSrc;
-  if (item.status === Status.hidden)
-    return(
+  if (item.status === Status.hidden) {
+    const [theme] = useContext(ThemeContext)
+    return (
       <View style={{flex: 1}}>
         <Image source={{
           uri: imgSrc,
@@ -71,16 +75,17 @@ const ImageElement = ({item}: {item: LearningItem}) => {
             [X_API_KEY]: apiKey
           }
         }} style={{flex: 1, width: "100%", height: "100%"}}/>
-        <View style={styles.disabledOverlay}/>
-      </View>);
-  else
+        <View style={[styles.disabledOverlay, { backgroundColor: theme.colorNeutral1 }]}/>
+      </View>
+      );
+    } else {
       return(<Image source={{
           uri: imgSrc,
           headers: {
             [X_API_KEY]: apiKey
           }
       }} style={{flex: 1, width: "100%", height: "100%"}}/>);
-
+    }
 };
 
 const styles = StyleSheet.create({
@@ -94,17 +99,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   itemFullName: {
-    color: textColorDark,
-    flexWrap: "wrap",
-    fontSize: fontSizeH2,
-    fontWeight: fontWeightMedium,
-    lineHeight: lineHeightH2,
+    flexWrap: "wrap"
   },
   disabledOverlay: {
     position: "absolute",
     left: 0,
     top: 0,
-    backgroundColor: colorNeutral1,
     opacity: 0.5,
     height: "100%",
     width: "100%"

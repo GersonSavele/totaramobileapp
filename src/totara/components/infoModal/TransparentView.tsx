@@ -19,15 +19,17 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { resizeByScreenSize, colorNeutral1 } from "@totara/theme";
+import { resizeByScreenSize } from "@totara/theme";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const TransparentView = ({ children }: Props) => {
+  const [theme] = useContext(ThemeContext);
   return (
-    <View style={styles.transparentViewStyle}>
+    <View style={[styles.transparentViewStyle, {backgroundColor: theme.colorNeutral1}]}>
       <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
         <View style={styles.containerStyle}>{children}</View>
       </SafeAreaView>
@@ -45,7 +47,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginHorizontal: resizeByScreenSize(16, 16, 20, 20),
     marginVertical: resizeByScreenSize(32, 32, 32, 32),
-    backgroundColor: colorNeutral1
   },
   transparentViewStyle: {
     flex: 1,

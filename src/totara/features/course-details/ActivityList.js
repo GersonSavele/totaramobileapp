@@ -21,14 +21,15 @@
  */
 
 import { SectionList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import { ContentIcon, CheckBadge } from "@totara/components";
-import { normalize, resizeByScreenSize, fontSizeH4, fontSizeB1, lrPadding } from "@totara/theme";
+import { normalize, resizeByScreenSize, lrPadding } from "@totara/theme";
 import { Status } from "@totara/types";
 import { ActivitySheetConsumer } from "@totara/activities";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 
 class ActivityList extends React.Component {
@@ -86,11 +87,15 @@ class ActivityList extends React.Component {
             : <BuildContentIcon type={item.type}/>
         }
         <ActivitySheetConsumer>
-          {({setCurrentActivity}) =>
+          {({setCurrentActivity}) => {
+            const [theme] = useContext(ThemeContext);
+            return (
             <TouchableOpacity style={{flex: 1}} onPress={() => setCurrentActivity(item)}>
-              <Text numberOfLines={1} style={(item.status) === Status.active ? styles.activeActivityText : styles.activityText}>{item.itemName}</Text>
-              <Text numberOfLines={1} style={styles.activitySummaryText}>{item.summary}</Text>
+              <Text numberOfLines={1} style={[theme.textH4, (item.status) === Status.active ? styles.activeActivityText : styles.activityText]}>{item.itemName}</Text>
+              <Text numberOfLines={1} style={[theme.textB1, styles.activitySummaryText]}>{item.summary}</Text>
             </TouchableOpacity>
+            );
+          }
           }
         </ActivitySheetConsumer>
         {
@@ -153,12 +158,10 @@ const styles = StyleSheet.create({
     paddingRight: lrPadding,
   },
   activityText: {
-    fontSize: fontSizeH4,
     paddingLeft: lrPadding,
 
   },
   activitySummaryText: {
-    fontSize: fontSizeB1,
     color: "#A0A0A0",
     paddingLeft: lrPadding,
 
@@ -214,7 +217,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEEEEE",
   },
   activeActivityText: {
-    fontSize: fontSizeH4,
     color: "#0066CC",
     paddingLeft: lrPadding,
     fontWeight: "600",

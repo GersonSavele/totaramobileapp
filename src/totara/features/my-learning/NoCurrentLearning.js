@@ -19,19 +19,22 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  **/
 
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, Image, Dimensions, Text, Linking } from "react-native";
 
 import { PrimaryButton } from "@totara/components";
-import { gutter, resizeByScreenSize, textColorDark, fontSizeH2, lineHeightH2 } from "@totara/theme";
+import { gutter, resizeByScreenSize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
+import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const NoCurrentLearning = () => {
+
+  const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.containerStyle}>
       <Image style={styles.imageContainer} source={require("@resources/images/no_current_learning/no_current_learning.png")} />
-      <Text style={styles.description}>{translate("my-learning.no_learning_message")}</Text>
+      <Text style={[theme.textH2, styles.description]}>{translate("my-learning.no_learning_message")}</Text>
       <AuthConsumer>
         {auth => (
           <PrimaryButton onPress={() => { Linking.openURL(auth.setup.host); }} text={translate("additional-actions-modal.auth_model_go_to_browser")} icon="external-link-alt" style={{ alignSelf: "center" }} />
@@ -52,16 +55,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").width * 0.5,
     width: Dimensions.get("window").width * 0.7,
     resizeMode: "contain",
-    paddingBottom: resizeByScreenSize(32, 32, 48, 48),
+    paddingBottom: resizeByScreenSize(32, 32, 48, 48)
   },
   description: {
     alignItems: "flex-start",
-    marginBottom: resizeByScreenSize(32, 32, 48, 48),
-    marginTop: resizeByScreenSize(32, 32, 48, 48),
-    fontSize : fontSizeH2,
-    lineHeight: lineHeightH2,
-    color:  textColorDark, 
-    fontWeight: "bold"
+    marginVertical: resizeByScreenSize(32, 32, 48, 48)
   }
 });
 
