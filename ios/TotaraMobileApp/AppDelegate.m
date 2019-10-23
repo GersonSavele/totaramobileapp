@@ -12,6 +12,7 @@
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
 #import <Firebase.h>
+#import <RNNotifications.h>
 
 @implementation AppDelegate
 
@@ -39,9 +40,7 @@
   [RNSplashScreen show];
   
   [FIRApp configure];
-  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
-
-  [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+  [RNNotifications startMonitorNotifications];
   
   return YES;
 }
@@ -58,20 +57,19 @@ restorationHandler: (nonnull void (^)(NSArray<id<UIUserActivityRestoring>> *_Nul
   return [RCTLinkingManager application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 
--(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
- 
-  completionHandler();
-}
-
-
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings // NS_AVAILABLE_IOS(8_0);
 {
         [application registerForRemoteNotifications];
-    }
+}
 
-- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken{
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
 
-    NSLog(@"deviceToken: %@", deviceToken);
+  NSLog(@"deviceToken: %@", deviceToken);
+  [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
 }
 
 @end

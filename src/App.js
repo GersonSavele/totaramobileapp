@@ -66,8 +66,48 @@ import { ThemeProvider, ThemeContext } from "@totara/theme";
 
 import firebase from "@react-native-firebase/app";
 import messaging from "@react-native-firebase/messaging";
+import NotificationsIOS from 'react-native-notifications';
 
 class App extends React.Component<{}> {
+
+  constructor() {
+    super();
+
+    NotificationsIOS.addEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
+    NotificationsIOS.addEventListener('notificationOpened', this.onNotificationOpened.bind(this));
+
+    NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
+    NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
+    NotificationsIOS.requestPermissions();
+
+  }
+
+  onPushRegistered(deviceToken) {
+    // TODO: Send the token to my server so it could send back push notifications...
+    console.log("Device Token Received", deviceToken);
+  }
+
+  onPushRegistrationFailed(error) {
+    console.error(error);
+  }
+
+  onNotificationReceivedForeground(notification, completion) {
+    console.log("Notification Received - Foreground", notification);
+    completion({alert: true, sound: false, badge: false});
+  }
+
+  onNotificationOpened(notification, completion, action) {
+    console.log("Notification opened by device user", notification);
+    console.log(`Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`, notification);
+    completion();
+  }
+  componentWillUnmount() {
+    // prevent memory leaks!
+    NotificationsIOS.removeEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
+    NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
+    NotificationsIOS.removeEventListener('notificationReceivedForeground', this._boundOnNotificationReceivedForeground);
+    NotificationsIOS.removeEventListener('notificationOpened', this._boundOnNotificationOpened)
+  }
 
   async componentDidMount() {
     // TODO remove this, this is for discovery purposes only
