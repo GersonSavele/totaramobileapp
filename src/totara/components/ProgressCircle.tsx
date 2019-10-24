@@ -29,17 +29,17 @@ type ProgressCircleParam = {
   size: number,
   progressColor?: string,
   color?: string,
-  backgroundColor?: string
+  unfilledColor?: string
 }
 
-const ProgressCircle = ({size, progress, progressColor, color, backgroundColor}: ProgressCircleParam) => {
+const ProgressCircle = ({size, progress, progressColor, color, unfilledColor}: ProgressCircleParam) => {
 
   const [theme] = useContext(ThemeContext);
 
   return (
   <Progress.Circle progress={progress/100}
   size={size}
-  unfilledColor={(backgroundColor? backgroundColor : theme.colorNeutral4)}
+  unfilledColor={(unfilledColor? unfilledColor : theme.colorNeutral4)}
   color={(progressColor? progressColor : theme.colorInfo)}
   thickness={3}
   borderWidth={0}

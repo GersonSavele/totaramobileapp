@@ -62,46 +62,46 @@ export type Theme = {
   fontSizeButtonTitle: number,
 
   //---- Theme color: customizable by [User/Developer] ------
-  colorBrand?: string,
-  colorAccent?: string,
-  colorSecondary1?: string,
-  colorSecondary2?: string,
-  colorSecondary3?: string,
-  colorSecondary4?: string,
+  colorBrand: string,
+  colorAccent: string,
+  colorSecondary1: string,
+  colorSecondary2: string,
+  colorSecondary3: string,
+  colorSecondary4: string,
 
   //---- Notification color: customizable by [Developer] ------
-  colorInfo?: string,
-  colorSuccess?: string,
-  colorWarning?: string,
-  colorAlert?: string,
-  colorHighlight?: string,
+  colorInfo: string,
+  colorSuccess: string,
+  colorWarning: string,
+  colorAlert: string,
+  colorHighlight: string,
 
   //---- Neutral color: customizable by [Developer] ------
-  colorNeutral1?: string,
-  colorNeutral2?: string,
-  colorNeutral3?: string,
-  colorNeutral4?: string,
-  colorNeutral5?: string,
-  colorNeutral6?: string,
-  colorNeutral7?: string,
-  colorNeutral8?: string,
+  colorNeutral1: string,
+  colorNeutral2: string,
+  colorNeutral3: string,
+  colorNeutral4: string,
+  colorNeutral5: string,
+  colorNeutral6: string,
+  colorNeutral7: string,
+  colorNeutral8: string,
 
   //---- Text color: customizable by [Developer] ------
-  textColorDark?: string,
-  textColorSecondary?: string,
-  textColorLight?: string,
-  textColorSubdued?: string,
-  textColorDisabled?: string,
+  textColorDark: string,
+  textColorSecondary: string,
+  textColorLight: string,
+  textColorSubdued: string,
+  textColorDisabled: string,
 
   //---- Navigation color: customizable by [User/Developer] ------
-  navigationHeaderTintColor?: string,
-  textNavigationColorLight?: string,
+  navigationHeaderTintColor: string,
+  textNavigationColorLight: string,
 
   //---- TabBar color: customizable by [Developer] ------
-  tabBarActiveTintColor?: string,
-  tabBarInactiveTintColor?: string,
-  textTabBarColorDark?: string,
-  textTabBarColorLight?: string
+  tabBarActiveTintColor: string,
+  tabBarInactiveTintColor: string,
+  textTabBarColorDark: string,
+  textTabBarColorLight: string
 }
 
 const MobileTheme: (theme?: Theme) => Theme = (theme?: Theme) => ({

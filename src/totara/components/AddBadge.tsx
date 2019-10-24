@@ -20,100 +20,83 @@
  *
  */
 
-import React from "react";
-import { ComponentType } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useContext } from "react";
+import { View, ViewStyle } from "react-native";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { Status } from "@totara/types";
 import ProgressCircle from "./ProgressCircle";
-import { colorNeutral1, textColorDark, textColorLight } from "@totara/theme";
+import {  ThemeContext } from "@totara/theme/ThemeContext";
 
 
 type Props = {
-  size?: number,
-  offsetSize?: number
+  size: number,
+  offsetSize: number,
+  status?: Status | number
 }
 
-abstract class Badge<P extends Props> extends React.Component<P> {
-  abstract backgroundColor: string;
-  abstract borderColor: string;
-  abstract BadgeElement: ComponentType<any>;
+type ProgressProps = {
+  size?: number,
+  progress: number
+}
+type IconBadgeProps = {
+  size: number,
+  color: string
+}
 
-  getStyles(size: number = 8, offsetSize: number = (size / 2)) {
-    return StyleSheet.create({
-      iconContainer: {
+const AddBadge = ({status, children, size = 16, offsetSize = 8, ...otherProps}: {status: Status | number, children: JSX.Element, size: number, offsetSize: number}) => {
+  return (
+    <View>
+      {children}
+      <RightBadge status={status} size={size} offsetSize={offsetSize} {...otherProps} />
+    </View>
+  );
+};
+
+const RightBadge = ({status, size, offsetSize}: Props) => {
+  const [theme] = useContext(ThemeContext);
+  const getContainerStyle: ((size: number, offsetSize: number, backgroundColor: string, borderColor: string)=> ViewStyle) = (size: number, offsetSize: number, backgroundColor: string = "transparent", borderColor: string = "transparent") => {
+    return {
         top: -1 * offsetSize,
         right: -1 * offsetSize,
         position: "absolute",
-        backgroundColor: this.backgroundColor,
+        backgroundColor: backgroundColor,
         borderRadius: size * 2,
         borderWidth: size / 8,
-        shadowColor: "red",
-        borderColor: this.borderColor,
+        borderColor:  borderColor,
         width: size * 2,
         height: size * 2,
         justifyContent: "center",
         alignItems: "center"
       }
-    });
   }
-
-  render() {
-    const {size, offsetSize, ...otherProps} = this.props;
-
-    return (
-      <View>
-        {this.props.children}
-        <View style={this.getStyles(size, offsetSize).iconContainer}>
-          <this.BadgeElement size={size} {...otherProps}/>
-        </View>
-      </View>
-    );
-  }
-
-}
-
-class CheckBadge extends Badge<Props> {
-  color = textColorLight;
-  icon = "check";
-  backgroundColor = "#69BD45";
-  borderColor = colorNeutral1;
-  BadgeElement = ({size}: Props) => <FontAwesomeIcon icon={this.icon} color={this.color} size={size}/>
-}
-
-class LockBadge extends Badge<Props> {
-  color = textColorLight;
-  icon = "lock";
-  backgroundColor = "#999999";
-  borderColor = colorNeutral1;
-  BadgeElement = ({size}: Props) => <FontAwesomeIcon icon={this.icon} color={this.color} size={size}/>
-}
-
-type ProgressBadgeProps = {
-  progress: number
-} & Props
-
-class ProgressBadge extends Badge<ProgressBadgeProps> {
-  color = textColorDark;
-  backgroundColor = colorNeutral1;
-  borderColor = colorNeutral1;
-  BadgeElement = ({size = 8, progress}: ProgressBadgeProps) => <ProgressCircle size={size * 2} progress={progress} />
-}
-
-const AddBadge = ({status, children, size = 16}: {status: Status | number, children: JSX.Element, size: number}) => {
   switch (status) {
-    case Status.done: return <CheckBadge size={size} offsetSize={8}>{children}</CheckBadge>;
-    case 100: return <CheckBadge size={size} offsetSize={8}>{children}</CheckBadge>;
-    case Status.hidden: return <LockBadge size={size} offsetSize={8}>{children}</LockBadge>;
-    case Status.active: // drop through default
-    default:
-      if (typeof status == "number")
-        return <ProgressBadge size={size} offsetSize={5} progress={status}>{children}</ProgressBadge>;
-      else
-        return <View>{children}</View>
+    case Status.done: {
+      const containerStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
+      return <View style={containerStyle}><CheckBadge size={size} color={theme.textColorLight}/></View>;
+    } case 100: { 
+      const containerStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
+      return <View style={containerStyle}><CheckBadge size={size} color={theme.textColorLight}  /></View>;
+    } case Status.hidden: {
+      const containerStyle = getContainerStyle(size, offsetSize, "#999999", theme.colorNeutral1);
+      return <View style={containerStyle}><LockBadge size={size}  color={theme.textColorLight} /></View>
+    } case Status.active: { // drop through default
+       return null;
+    } default: {
+      if (typeof status == "number") {
+        const containerStyle = getContainerStyle(size, offsetSize, theme.colorNeutral1, theme.colorNeutral1);
+        return <View style={containerStyle}><ProgressBadge size={size} progress={status}/></View>;
+      } 
+      return null;
+    }
   }
-};
+}
 
-export {AddBadge, CheckBadge, LockBadge, ProgressBadge};
+const CheckBadge = ({size, color}: IconBadgeProps) =>  <FontAwesomeIcon icon={"check"} color={color} size={size} />
+
+const LockBadge = ({size, color}: IconBadgeProps) =>  <FontAwesomeIcon icon={"lock"} color={color} size={size} />
+
+const ProgressBadge = ({size, progress}: ProgressProps) =>  <ProgressCircle size={ size ? size * 2 : 32} progress={progress} />
+
+export { AddBadge, CheckBadge, LockBadge, ProgressBadge };
