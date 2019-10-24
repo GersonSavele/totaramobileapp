@@ -75,6 +75,7 @@ describe("useNativeLogin", () => {
     act(() => {
       result.current.inputUsernameWithShowError("username");
       result.current.inputPasswordWithShowError("password");
+      result.current.onClickEnter();
     });
 
     expect(result.current.nativeLoginState.inputUsername).toBe("username");
@@ -130,9 +131,9 @@ describe("Native login reducer", () => {
 });
 
 describe("fetchData", () => {
-  it("should login secret action if the response has an error", async () => {
+  it("should login secret action return if it is response status code 200", async () => {
     await fetchLoginSecret(mockFetchLoginSecret)(false).then(response =>
-      expect(response).toEqual("ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ")
+      expect(response).toEqual("loginsecret_value")
     );
   });
 
@@ -147,11 +148,11 @@ describe("fetchData", () => {
     );
   });
 
-  it("should dispatch native login action with the login secret", async () => {
+  it("should dispatch native setup secret action with the login secret", async () => {
     expect.assertions(2);
     const dispatch = jest.fn(({ type, payload }) => {
       expect(type).toBe("setupsecret");
-      expect(payload).toBe("ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ");
+      expect(payload).toBe("setupsecret_value");
     });
     await fetchLogin(mockFetchLogin)(
       dispatch,
@@ -178,7 +179,7 @@ const mockFetchLogin = () => {
     status: 200,
     json: () => ({
       data: {
-        setupsecret: "ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ"
+        setupsecret: "setupsecret_value"
       }
     })
   });
@@ -189,7 +190,7 @@ const mockFetchLoginSecret = () => {
     status: 200,
     json: () => ({
       data: {
-        loginsecret: "ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ"
+        loginsecret: "loginsecret_value"
       }
     })
   });
