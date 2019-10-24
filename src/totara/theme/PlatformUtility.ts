@@ -19,7 +19,7 @@
  * $author
  */
 
-import {Dimensions, PixelRatio} from "react-native";
+import { Dimensions, PixelRatio } from "react-native";
 import { SCREEN_WIDTH_LARGE, SCREEN_WIDTH_MEDIUM, SCREEN_WIDTH_SMALL, SCREEN_WIDTH_X_LARGE} from "@totara/lib/Constant";
 
 const {
@@ -55,4 +55,4 @@ const resizeByScreenSize = (smallSize: number, mediumSize: number, largeSize: nu
   }
 };
 
-export {resizeByScreenSize}
+export { resizeByScreenSize }

@@ -50,7 +50,7 @@ const InfoModal = ({ title, description, imageType, children, ...rest }: Params)
             <ModalImageView imageType={imageType} />
           </View>
           <View style={styles.sectionContainer}>
-            <ModalText text={title} fontSize={theme.textH2.fontSize} fontWeight="bold" />
+            <ModalText text={title} fontSize={theme.textH2.fontSize} fontWeight={theme.textH2.fontWeight} />
             <ModalText text={description} />
           </View>
           <View style={styles.actionContainer}>

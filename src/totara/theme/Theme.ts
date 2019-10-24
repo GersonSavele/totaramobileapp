@@ -18,18 +18,13 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import { normalize } from "./ui";
+
+import { normalize } from "./PlatformUtility";
 import { ViewStyle, TextStyle } from "react-native";
 
-
-//---- Theme color: customizable by [User/Developer] ------
 const colorBrand = "#8CA83D";
 const colorAccent = "#FFFFFF";
-
-//---- Neutral color: customizable by [Developer] ------
 const colorNeutral5 = "#C7C7C7";
-
-//---- Text color: customizable by [Developer] ------
 const textColorDark = "#3D444B";
 
 export type Theme = {

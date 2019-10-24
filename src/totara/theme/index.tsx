@@ -18,8 +18,7 @@
  */
 
 
-import {resizeByScreenSize, normalize} from "./ui";
-
+import { resizeByScreenSize, normalize } from "./PlatformUtility";
 import { Theme, applyTheme } from "./Theme";
 import { ThemeContext, ThemeProvider, ThemeConsumer} from "./ThemeContext"
 
