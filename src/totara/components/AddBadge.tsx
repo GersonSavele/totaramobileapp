@@ -21,7 +21,7 @@
  */
 
 import React, { useContext } from "react";
-import { View, ViewStyle } from "react-native";
+import { View, ViewStyle, StyleSheet } from "react-native";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -56,37 +56,39 @@ const AddBadge = ({status, children, size = 16, offsetSize = 8, ...otherProps}: 
 
 const RightBadge = ({status, size, offsetSize}: Props) => {
   const [theme] = useContext(ThemeContext);
-  const getContainerStyle: ((size: number, offsetSize: number, backgroundColor: string, borderColor: string)=> ViewStyle) = (size: number, offsetSize: number, backgroundColor: string = "transparent", borderColor: string = "transparent") => {
-    return {
+  const getContainerStyle = (size: number, offsetSize: number, backgroundColor: string, borderColor: string ) => {
+    return StyleSheet.create({
+      container: {
         top: -1 * offsetSize,
         right: -1 * offsetSize,
         position: "absolute",
         backgroundColor: backgroundColor,
         borderRadius: size * 2,
         borderWidth: size / 8,
-        borderColor:  borderColor,
+        borderColor: borderColor,
         width: size * 2,
         height: size * 2,
         justifyContent: "center",
         alignItems: "center"
       }
-  }
+    });
+  };
   switch (status) {
     case Status.done: {
-      const containerStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
-      return <View style={containerStyle}><CheckBadge size={size} color={theme.textColorLight}/></View>;
+      const viewStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
+      return <View style={viewStyle.container}><CheckBadge size={size} color={theme.textColorLight}/></View>;
     } case 100: { 
-      const containerStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
-      return <View style={containerStyle}><CheckBadge size={size} color={theme.textColorLight}  /></View>;
+      const viewStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
+      return <View style={viewStyle.container}><CheckBadge size={size} color={theme.textColorLight}  /></View>;
     } case Status.hidden: {
-      const containerStyle = getContainerStyle(size, offsetSize, "#999999", theme.colorNeutral1);
-      return <View style={containerStyle}><LockBadge size={size}  color={theme.textColorLight} /></View>
+      const viewStyle = getContainerStyle(size, offsetSize, "#999999", theme.colorNeutral1);
+      return <View style={viewStyle.container}><LockBadge size={size}  color={theme.textColorLight} /></View>
     } case Status.active: { // drop through default
        return null;
     } default: {
       if (typeof status == "number") {
-        const containerStyle = getContainerStyle(size, offsetSize, theme.colorNeutral1, theme.colorNeutral1);
-        return <View style={containerStyle}><ProgressBadge size={size} progress={status}/></View>;
+        const viewStyle = getContainerStyle(size, offsetSize, theme.colorNeutral1, theme.colorNeutral1);
+        return <View style={viewStyle.container}><ProgressBadge size={size} progress={status}/></View>;
       } 
       return null;
     }

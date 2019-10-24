@@ -84,18 +84,14 @@ export type Theme = {
 
   //---- Navigation color: customizable by [User/Developer] ------
   navigationHeaderTintColor: string,
-  textNavigationColorLight: string,
 
   //---- TabBar color: customizable by [Developer] ------
   tabBarActiveTintColor: string,
-  tabBarInactiveTintColor: string,
-  textTabBarColorDark: string,
-  textTabBarColorLight: string
+  tabBarInactiveTintColor: string
 }
 
-const setTheme: (theme?: Theme) => Theme = (theme?: Theme) => ({
-  logoUrl:  theme && theme.logoUrl,
-  viewContainer: { backgroundColor: theme && theme.colorAccent ? theme.colorAccent : colorAccent },
+const TotaraTheme: Theme = {
+  viewContainer: { backgroundColor: colorAccent },
 
   //---- Text styles: customizable by [Developer] ------
   textH1: { fontSize: normalize(32), lineHeight:  normalize(38), color: textColorDark, fontWeight: "bold" },
@@ -113,12 +109,12 @@ const setTheme: (theme?: Theme) => Theme = (theme?: Theme) => ({
   fontSizeButtonTitle: 16,
 
   //---- Theme color: customizable by [User/Developer] ------
-  colorBrand: theme && theme.colorBrand ? theme.colorBrand : colorBrand,
-  colorAccent: theme && theme.colorAccent ? theme.colorAccent : colorAccent,
-  colorSecondary1: theme && theme.colorSecondary1 ? theme.colorSecondary1 : "#F5F5F5",
-  colorSecondary2: theme && theme.colorSecondary2 ? theme.colorSecondary2 : "#FFFFFF", 
-  colorSecondary3: theme && theme.colorSecondary3 ? theme.colorSecondary3 : "#F5F5F5",
-  colorSecondary4: theme && theme.colorSecondary4 ? theme.colorSecondary4 : "#FFFFFF",
+  colorBrand: colorBrand,
+  colorAccent: colorAccent,
+  colorSecondary1: "#F5F5F5",
+  colorSecondary2: "#FFFFFF", 
+  colorSecondary3: "#F5F5F5",
+  colorSecondary4: "#FFFFFF",
 
   //---- Notification color: customizable by [Developer] ------
   colorInfo: "#337AB7",
@@ -145,15 +141,37 @@ const setTheme: (theme?: Theme) => Theme = (theme?: Theme) => ({
   textColorDisabled: "#C7C7C7",
 
   //---- Navigation color: customizable by [User/Developer] ------
-  navigationHeaderTintColor: theme && theme.navigationHeaderTintColor ? theme.navigationHeaderTintColor : "#3D444B",
-  textNavigationColorLight: theme && theme.textNavigationColorLight ? theme.textNavigationColorLight : "#FFFFFF",
+  navigationHeaderTintColor: "#3D444B",
 
   //---- TabBar color: customizable by [Developer] ------
-  tabBarActiveTintColor: theme && theme.colorBrand ? theme.colorBrand : colorBrand,
-  tabBarInactiveTintColor: colorNeutral5,
-  textTabBarColorDark: "#3D444B",
-  textTabBarColorLight: "#FFFFFF"  
-});
+  tabBarActiveTintColor: colorBrand,
+  tabBarInactiveTintColor: colorNeutral5
+}
 
-
-export  { setTheme };
+const applyTheme = (theme: Partial<Theme>) => {
+  let newTheme = TotaraTheme;
+  if (theme.colorBrand) {
+    newTheme.tabBarActiveTintColor = theme.colorBrand;
+  }
+  if (theme.colorAccent) {
+    newTheme.viewContainer = {...newTheme.viewContainer, ...{backgroundColor: theme.colorAccent}};
+  }
+  if (theme.colorNeutral5) {
+    newTheme.tabBarInactiveTintColor = theme.colorNeutral5;
+  }
+  if (theme.textColorDark) {
+    newTheme.textH1 = {...newTheme.textH1, ...{color: theme.textColorDark}};
+    newTheme.textH2 = {...newTheme.textH2, ...{ color : theme.textColorDark}};
+    newTheme.textH3 = {...newTheme.textH3, ...{color: theme.textColorDark}};
+    newTheme.textH4 = {...newTheme.textH4, ...{color: theme.textColorDark}};
+    
+    newTheme.textB1 = {...newTheme.textB1, ...{color: theme.textColorDark}};
+    newTheme.textB2 = {...newTheme.textB2, ...{color: theme.textColorDark}};
+    newTheme.textB3 = {...newTheme.textB3, ...{color: theme.textColorDark}};
+    
+    newTheme.textSmall = {...newTheme.textSmall, ...{color: theme.textColorDark}};
+    newTheme.textLabel = {...newTheme.textLabel, ...{color: theme.textColorDark}};
+  }
+  return { ...newTheme, ...theme };
+}
+export  { TotaraTheme, applyTheme };

@@ -67,7 +67,6 @@ import { TouchableIcon } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 
 class App extends React.Component<{}> {
-
   navigator = undefined;
 
   componentDidMount() {
@@ -75,31 +74,28 @@ class App extends React.Component<{}> {
       nodejs.start("server.js");
       nodejs.channel.addListener(
         "message",
-        (msg) => {
+        msg => {
           alert("From node: " + msg);
         },
         this
       );
     }
   }
-  
-  render() {
-    
 
+  render() {
     return (
-      // <StyleProvider style={getTheme(theme)}>
-        <ThemeProvider>
+      <ThemeProvider>
         <AuthProvider asyncStorage={AsyncStorage}>
           <ActivitySheetProvider>
             <AppContainer
               ref={nav => {
                 this.navigator = nav;
-              }} />
+              }}
+            />
           </ActivitySheetProvider>
-          <AdditionalAction/>
+          <AdditionalAction />
         </AuthProvider>
-        </ThemeProvider>
-      // </StyleProvider>
+      </ThemeProvider>
     );
   }
 }

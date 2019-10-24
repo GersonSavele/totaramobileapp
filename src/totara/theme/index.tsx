@@ -20,7 +20,7 @@
 
 import {resizeByScreenSize, normalize} from "./ui";
 
-import { Theme, setTheme } from "./Theme";
+import { Theme, applyTheme } from "./Theme";
 import { ThemeContext, ThemeProvider, ThemeConsumer} from "./ThemeContext"
 
 const gutter = resizeByScreenSize(8, 16, 16, 24);
@@ -35,7 +35,7 @@ export {
   lrPadding,
 
   Theme,
-  setTheme,
+  applyTheme,
   
   ThemeContext, 
   ThemeProvider, 

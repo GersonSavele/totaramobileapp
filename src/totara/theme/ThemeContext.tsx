@@ -20,13 +20,17 @@
  */
 import React, { ReactNode, useState, Dispatch, SetStateAction } from "react";
 
-import { Theme, setTheme } from "./Theme";
+import { Theme, TotaraTheme } from "./Theme";
 
-export const ThemeContext = React.createContext<[Theme, Dispatch<SetStateAction<Theme>>]>([setTheme(), () => {}]);
+type Props = {
+  children: ReactNode;
+};
+
+const ThemeContext = React.createContext<[Theme, Dispatch<SetStateAction<Theme>>]>([TotaraTheme, () => {}]);
 
 const ThemeProvider = ( { children }: Props) => {
   return (
-    <ThemeContext.Provider value={ useState(setTheme()) }>
+    <ThemeContext.Provider value={ useState(TotaraTheme) }>
       { children }
     </ThemeContext.Provider>
   );
@@ -34,8 +38,4 @@ const ThemeProvider = ( { children }: Props) => {
 
 const ThemeConsumer = ThemeContext.Consumer;
 
-type Props = {
-  children: ReactNode;
-};
-
-export { ThemeProvider, ThemeConsumer };
+export { ThemeContext, ThemeProvider, ThemeConsumer };
