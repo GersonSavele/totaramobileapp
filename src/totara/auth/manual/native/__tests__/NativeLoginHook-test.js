@@ -30,16 +30,14 @@ import {
 const onBack = jest.fn();
 const onSetupSecretSuccess = jest.fn();
 
-const { result } = renderHook(props => useNativeLogin(props), {
+describe("useNativeLogin", () => {
+  const { result } = renderHook(props => useNativeLogin(props), {
     initialProps: {
       siteUrl: "http://mobiledemo.wlg.totaralms.com",
       onSetupSecretSuccess: { onSetupSecretSuccess },
       onBack: { onBack }
     }
-});
-
-describe("useNativeLogin", () => {
-  
+  });
   it("both empty 'username' and 'password'", () => {
     act(() => {
       result.current.inputUsernameWithShowError(undefined);
@@ -84,50 +82,115 @@ describe("useNativeLogin", () => {
   });
 });
 
-// describe("Native login reducer", () => {
-//     it("should put flowStep into when received setup-secret", () => {
-//       const currentState = {
-//         setupSecret: undefined
-//       };
-//       const action = {
-//         type: "setupSecret",
-//         payload: "setupsecret"
-//       };
-//       const newState = nativeReducer(currentState, action);
-//       expect(newState.setupSecret).toBe("setupsecret");
-//     });
-// });
-describe("fetchData", () => {
-it("should call onLoginFailure if the response has an error", async () => {
-    expect.assertions(2);
-    const dispatch = jest.fn(({type, payload}) => {
-      expect(type).toBe("setupsecret");
-      expect(payload).toBe(
-        "ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ"
-      )
-    });
-    await fetchLogin(mockFetchLoginSetup)( dispatch, "loginsecret", "username", "password");
+describe("Native login reducer", () => {
+  it("should handle setupSecret", () => {
+    const action = {
+      type: "setupsecret",
+      payload: "test-setupSecret"
+    };
+    const newState = nativeReducer({}, action);
+    expect(newState.setupSecret).toEqual("test-setupSecret");
   });
 
-//   it("should call onLoginFailure if the response has an error", async () => {
-//     expect.assertions(2);
-//     const dispatch = jest.fn(({type, payload}) => {
-//       expect(type).toBe("setupsecret");
-//       expect(payload).toBe(
-//         "ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ"
-//       )
-//     });
-//     await fetchLogin(mockFetchLoginSetup)( dispatch, "loginsecret", "username", "password");
-//   });
+  it("should handle setusername", () => {
+    const action = {
+      type: "setusername",
+      payload: "test-setusername"
+    };
+    const newState = nativeReducer({}, action);
+    expect(newState.inputUsername).toEqual("test-setusername");
+  });
+
+  it("should handle setpassword", () => {
+    const action = {
+      type: "setpassword",
+      payload: "test-setpassword"
+    };
+    const newState = nativeReducer({}, action);
+    expect(newState.inputPassword).toEqual("test-setpassword");
+  });
+
+  it("should handle usernamestatuserror", () => {
+    const action = {
+      type: "usernamestatuserror",
+      payload: "test-usernamestatuserror"
+    };
+    const newState = nativeReducer({}, action);
+    expect(newState.inputUsernameStatus).toEqual("test-usernamestatuserror");
+  });
+
+  it("should handle passwordstatuserror", () => {
+    const action = {
+      type: "passwordstatuserror",
+      payload: "test-passwordstatuserror"
+    };
+    const newState = nativeReducer({}, action);
+    expect(newState.inputPasswordStatus).toEqual("test-passwordstatuserror");
+  });
 });
 
-  const mockFetchLoginSetup = () => {
-    return Promise.resolve({
-      status: 200,
-      json: () => ({
-       "data": {
-        "setupsecret": "ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ"
-        }
-      })
+describe("fetchData", () => {
+  it("should login secret action if the response has an error", async () => {
+    await fetchLoginSecret(mockFetchLoginSecret)(false).then(response =>
+      expect(response).toEqual("ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ")
+    );
+  });
+
+  it("should call login secret action fail if the response has an error", async () => {
+    const mockFetch = () =>
+      Promise.resolve({
+        status: 401,
+        statusText: "server error"
+      });
+    await fetchLoginSecret(mockFetch)(false).then(response =>
+      expect(response).toEqual(undefined)
+    );
+  });
+
+  it("should dispatch native login action with the login secret", async () => {
+    expect.assertions(2);
+    const dispatch = jest.fn(({ type, payload }) => {
+      expect(type).toBe("setupsecret");
+      expect(payload).toBe("ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ");
     });
-  };
+    await fetchLogin(mockFetchLogin)(
+      dispatch,
+      "loginsecret",
+      "username",
+      "password"
+    );
+  });
+
+  it("should call setupSecret fail if the response has an error", async () => {
+    const dispatch = jest.fn();
+    const mockFetch = () =>
+      Promise.resolve({
+        status: 401,
+        statusText: "server error"
+      });
+    await fetchLogin(mockFetch)(dispatch);
+    expect(dispatch).toBeCalledTimes(2);
+  });
+});
+
+const mockFetchLogin = () => {
+  return Promise.resolve({
+    status: 200,
+    json: () => ({
+      data: {
+        setupsecret: "ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ"
+      }
+    })
+  });
+};
+
+const mockFetchLoginSecret = () => {
+  return Promise.resolve({
+    status: 200,
+    json: () => ({
+      data: {
+        loginsecret: "ZCLFQXKQKzuVjklcpNeyRw4LvMudSQ"
+      }
+    })
+  });
+};
