@@ -22,7 +22,7 @@
 import React, { useContext } from "react";
 import * as Progress from "react-native-progress";
 
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { ThemeContext } from "@totara/theme";
 
 type ProgressCircleParam = {
   progress: number,

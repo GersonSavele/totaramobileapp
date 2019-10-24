@@ -23,14 +23,13 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { gutter } from "@totara/theme";
+import { gutter, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import LearningItemCarousel from "./LearningItemCarousel";
 import { learningItemsList } from "./api";
 import { Log } from "@totara/lib";
 import { GeneralErrorModal } from "@totara/components";
 import NoCurrentLearning from "./NoCurrentLearning";
-import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const MyLearning = learningItemsList(({loading, currentLearning, error }) => {
 

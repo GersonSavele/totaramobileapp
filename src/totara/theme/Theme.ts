@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import { normalize } from "./ui";
-import { ViewStyle, TextStyle, ImageSourcePropType } from "react-native";
+import { ViewStyle, TextStyle } from "react-native";
 
 
 //---- Theme color: customizable by [User/Developer] ------
@@ -31,17 +31,6 @@ const colorNeutral5 = "#C7C7C7";
 
 //---- Text color: customizable by [Developer] ------
 const textColorDark = "#3D444B";
-
-
-// type TextStyle = {
-//   color: string;
-//   fontSize: number;
-//   lineHeight?: number;
-//   fontWeight?: string;
-// }
-// type ViewStyle = {
-//   backgroundColor: string
-// }
 
 export type Theme = {
   logoUrl?: string,
@@ -104,7 +93,7 @@ export type Theme = {
   textTabBarColorLight: string
 }
 
-const MobileTheme: (theme?: Theme) => Theme = (theme?: Theme) => ({
+const setTheme: (theme?: Theme) => Theme = (theme?: Theme) => ({
   logoUrl:  theme && theme.logoUrl,
   viewContainer: { backgroundColor: theme && theme.colorAccent ? theme.colorAccent : colorAccent },
 
@@ -167,4 +156,4 @@ const MobileTheme: (theme?: Theme) => Theme = (theme?: Theme) => ({
 });
 
 
-export  { MobileTheme };
+export  { setTheme };

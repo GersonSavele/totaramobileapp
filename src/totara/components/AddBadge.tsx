@@ -27,7 +27,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { Status } from "@totara/types";
 import ProgressCircle from "./ProgressCircle";
-import {  ThemeContext } from "@totara/theme/ThemeContext";
+import {  ThemeContext } from "@totara/theme";
 
 
 type Props = {

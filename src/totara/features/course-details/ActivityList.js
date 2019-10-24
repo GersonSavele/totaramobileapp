@@ -26,10 +26,9 @@ import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 import { ContentIcon, CheckBadge } from "@totara/components";
-import { normalize, resizeByScreenSize, lrPadding } from "@totara/theme";
+import { normalize, resizeByScreenSize, lrPadding, ThemeContext } from "@totara/theme";
 import { Status } from "@totara/types";
 import { ActivitySheetConsumer } from "@totara/activities";
-import { ThemeContext } from "@totara/theme/ThemeContext";
 
 
 class ActivityList extends React.Component {

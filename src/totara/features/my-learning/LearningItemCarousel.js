@@ -32,11 +32,10 @@ import {
 } from "react-native-responsive-screen";
 
 import { LearningItemCard, AddBadge } from "@totara/components";
-import { resizeByScreenSize, normalize } from "@totara/theme";
+import { resizeByScreenSize, normalize, ThemeContext } from "@totara/theme";
 import { LearningItemType } from "@totara/types";
 import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS } from "@totara/lib/Constant";
 import { Log } from "@totara/lib";
-import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning }) => {

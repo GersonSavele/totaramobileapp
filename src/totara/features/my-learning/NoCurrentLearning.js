@@ -23,10 +23,9 @@ import React, { useContext } from "react";
 import { View, StyleSheet, Image, Dimensions, Text, Linking } from "react-native";
 
 import { PrimaryButton } from "@totara/components";
-import { gutter, resizeByScreenSize } from "@totara/theme";
+import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/auth";
-import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const NoCurrentLearning = () => {
 

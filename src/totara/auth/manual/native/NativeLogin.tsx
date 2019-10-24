@@ -30,10 +30,9 @@ import {
 import { Form, Input, Container, Content, Header } from "native-base";
 
 import { config } from "@totara/lib";
-import { resizeByScreenSize, gutter } from "@totara/theme";
+import { resizeByScreenSize, gutter, ThemeConsumer} from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
 import { translate } from "@totara/locale";
-import { ThemeConsumer } from "@totara/theme/ThemeContext";
 
 class NativeLogin extends React.Component<Props, State> {
   

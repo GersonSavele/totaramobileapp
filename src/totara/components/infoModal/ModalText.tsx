@@ -22,8 +22,7 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import { resizeByScreenSize } from "@totara/theme";
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 
 type TextParam = {
   text?: string,

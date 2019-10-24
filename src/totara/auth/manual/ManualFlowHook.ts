@@ -23,6 +23,8 @@ import { config, Log } from "@totara/lib";
 import { AuthProviderStateLift } from "@totara/auth/AuthComponent";
 import React, { useEffect, useReducer } from "react";
 
+import { Theme } from "@totara/theme"
+
 /**
  * Custom react hook that manages the state of the manual flow
  *
@@ -166,7 +168,6 @@ export const fetchSiteInfo = (
     Log.warn("Did not dispatch apiSuccess: didCancel", didCancel, "siteInfo", siteInfo);
 };
 
-
 export enum ManualFlowSteps {
   siteUrl = "siteUrl",
   native = "native",
@@ -186,11 +187,6 @@ type ManualFlowState = {
 type Action = {
   type: "apiInit" | "apiSuccess" | "setupSecretSuccess" | "cancelManualFlow";
   payload?: string | SiteInfo;
-};
-
-type Theme = {
-  logoUrl?: string;
-  brandPrimary?: string;
 };
 
 export type SiteInfo = {

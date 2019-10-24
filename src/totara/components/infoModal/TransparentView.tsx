@@ -23,8 +23,7 @@ import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { resizeByScreenSize } from "@totara/theme";
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 
 const TransparentView = ({ children }: Props) => {
   const [theme] = useContext(ThemeContext);

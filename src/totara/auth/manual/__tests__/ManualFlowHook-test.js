@@ -93,7 +93,7 @@ describe("manualFlowReducer", () => {
       siteMaintenance: false,
       theme: {
         logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        brandPrimary: "#CCFFCC"
+        colorBrand: "#CCFFCC"
       }
     };
     const action = {
@@ -156,7 +156,7 @@ describe("fetchData", () => {
         siteMaintenance: false,
         theme: {
           logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-          brandPrimary: "#CCFFCC"
+          colorBrand: "#CCFFCC"
         }
       })
     });
@@ -187,7 +187,7 @@ const mockFetch = () => {
       siteMaintenance: false,
       theme: {
         logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        brandPrimary: "#CCFFCC"
+        colorBrand: "#CCFFCC"
       }
     })
   });

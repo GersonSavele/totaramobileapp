@@ -20,13 +20,13 @@
  */
 import React, { ReactNode, useState, Dispatch, SetStateAction } from "react";
 
-import { MobileTheme, Theme } from "@totara/theme/Theme";
+import { Theme, setTheme } from "./Theme";
 
-export const ThemeContext = React.createContext<[Theme, Dispatch<SetStateAction<Theme>>]>([MobileTheme(), () => {}]);
+export const ThemeContext = React.createContext<[Theme, Dispatch<SetStateAction<Theme>>]>([setTheme(), () => {}]);
 
 const ThemeProvider = ( { children }: Props) => {
   return (
-    <ThemeContext.Provider value={ useState(MobileTheme()) }>
+    <ThemeContext.Provider value={ useState(setTheme()) }>
       { children }
     </ThemeContext.Provider>
   );

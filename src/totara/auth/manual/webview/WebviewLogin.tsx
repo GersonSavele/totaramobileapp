@@ -31,7 +31,7 @@ import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { OutProps } from "./WebviewLoginHook";
 import { TouchableIcon } from "@totara/components";
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { ThemeContext } from "@totara/theme";
 
 const WebviewLogin = ({
   loginUrl,

@@ -25,10 +25,9 @@ import React, { useContext } from "react";
 
 import { LearningItem, Status } from "@totara/types";
 import { DueDateState }  from "@totara/components";
-import { normalize } from "@totara/theme";
+import { normalize, ThemeContext } from "@totara/theme";
 import { X_API_KEY } from "@totara/lib/Constant";
 import { AuthContext } from "@totara/auth";
-import { ThemeContext } from "@totara/theme/ThemeContext";
 
 interface Props {
   item: LearningItem

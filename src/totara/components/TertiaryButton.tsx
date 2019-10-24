@@ -23,7 +23,7 @@ import React, { ReactNode, useContext } from "react";
 import { Text, StyleSheet, ViewStyle } from "react-native";
 import { Button } from "native-base";
 
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { ThemeContext } from "@totara/theme";
 
 type Props = {
   children?: ReactNode,

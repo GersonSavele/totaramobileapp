@@ -20,11 +20,12 @@
  *
  */
 
-import {StyleSheet, View} from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
-import {normalize} from "@totara/theme";
+
+import { normalize } from "@totara/theme";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type Props = {
   icon: string

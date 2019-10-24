@@ -25,7 +25,7 @@ import React, { useContext } from "react";
 
 import { translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/Constant";
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { ThemeContext } from "@totara/theme";
 
 /**
  * Component to render dueDate and change style depending on the dueDateState

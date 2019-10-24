@@ -22,7 +22,7 @@ import React, { useContext } from "react";
 import { View, StyleSheet, ViewStyle, Text } from "react-native";
 import { Item, Label } from "native-base";
 
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { ThemeContext } from "@totara/theme";
 
 type Props = {
   children?: Element,

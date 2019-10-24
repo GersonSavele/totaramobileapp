@@ -25,9 +25,8 @@ import { Button, Spinner } from "native-base";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { gutter } from "@totara/theme";
+import { gutter, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { ThemeContext } from "@totara/theme/ThemeContext";
 
 type Props = {
   children?: Element,

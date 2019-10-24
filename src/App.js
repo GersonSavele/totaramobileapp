@@ -64,7 +64,7 @@ import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { TouchableIcon } from "@totara/components";
-import { ThemeProvider, ThemeContext } from "@totara/theme/ThemeContext";
+import { ThemeProvider, ThemeContext } from "@totara/theme";
 
 class App extends React.Component<{}> {
 

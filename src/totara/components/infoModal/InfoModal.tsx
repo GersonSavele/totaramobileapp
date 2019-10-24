@@ -28,8 +28,7 @@ import {
   ModalImageView,
   ModalContainer
 } from ".";
-import { resizeByScreenSize } from "@totara/theme";
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 
 type Params = {
   title?: string;

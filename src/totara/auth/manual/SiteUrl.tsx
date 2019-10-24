@@ -29,12 +29,11 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import { Form, Input, Container, Content } from "native-base";
 import VersionInfo from "react-native-version-info";
 
-import { resizeByScreenSize, gutter } from "@totara/theme";
+import { resizeByScreenSize, gutter, ThemeContext } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo } from "@totara/components";
 import { translate } from "@totara/locale";
 import { OutProps } from "./SiteUrlHook";
 import SafeAreaView from "react-native-safe-area-view";
-import { ThemeContext } from "@totara/theme/ThemeContext";
 
 const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
 

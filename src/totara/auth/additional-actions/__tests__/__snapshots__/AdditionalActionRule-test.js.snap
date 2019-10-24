@@ -7,17 +7,21 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
 >
   <View
     style={
-      Object {
-        "backgroundColor": "rgba(0, 0, 0, 0.7)",
-        "flex": 1,
-      }
+      Array [
+        Object {
+          "backgroundColor": "rgba(0, 0, 0, 0.7)",
+          "flex": 1,
+        },
+        Object {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   >
     <View>
       <View
         style={
           Object {
-            "backgroundColor": "#FFFFFF",
             "borderRadius": 4,
             "flex": 1,
             "marginHorizontal": 20,

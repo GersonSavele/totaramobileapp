@@ -23,8 +23,7 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { gutter } from "@totara/theme";
-import { ThemeContext } from "@totara/theme/ThemeContext";
+import { gutter, ThemeContext } from "@totara/theme";
 
 type Props = {
   icon: string;
