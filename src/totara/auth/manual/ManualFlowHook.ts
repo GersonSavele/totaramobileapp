@@ -20,10 +20,11 @@
  */
 
 import { config, Log } from "@totara/lib";
-import { AuthProviderStateLift } from "@totara/auth/AuthComponent";
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useContext } from "react";
 
-import { Theme } from "@totara/theme"
+import { AuthProviderStateLift } from "@totara/auth/AuthComponent";
+import { Theme, ThemeContext, applyTheme } from "@totara/theme"
+import { TotaraTheme } from "@totara/theme/Theme";
 
 /**
  * Custom react hook that manages the state of the manual flow
@@ -31,14 +32,17 @@ import { Theme } from "@totara/theme"
  * @param fetch - as param so test can easily pass a mock implementation
  * @returns state and functions that will change the state of the manual flow
  */
+
 export const useManualFlow =
   (fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>) =>
     (props: AuthProviderStateLift): OutProps => {
 
+      const [ , setTheme] = useContext(ThemeContext);
+
       const [manualFlowState, dispatch] = useReducer(manualFlowReducer,
         { isSiteUrlSubmitted: false, flowStep: ManualFlowSteps.siteUrl });
       Log.debug("manualFlowState", manualFlowState);
-
+      
       // right state to call onLoginSuccess
       if (manualFlowState.flowStep === ManualFlowSteps.done &&
         manualFlowState.siteUrl &&
@@ -57,6 +61,14 @@ export const useManualFlow =
           didCancel = true; // need to create a lock for async stuff
         };
       }, [manualFlowState.siteUrl, manualFlowState.isSiteUrlSubmitted]);
+
+      useEffect(() => {
+        if (manualFlowState.flowStep === ManualFlowSteps.siteUrl && !manualFlowState.isSiteUrlSubmitted) {
+          setTheme(applyTheme(TotaraTheme));
+        } else if (manualFlowState.flowStep !== ManualFlowSteps.siteUrl && manualFlowState.isSiteUrlSubmitted) {
+          setTheme(applyTheme(manualFlowState.siteInfo && manualFlowState.siteInfo.theme ? manualFlowState.siteInfo.theme : TotaraTheme));
+        }        
+      }, [manualFlowState.flowStep, manualFlowState.siteInfo, manualFlowState.isSiteUrlSubmitted]);
 
       const onSiteUrlSuccess = (url: string) => {
         dispatch({ type: "apiInit", payload: url });
@@ -130,7 +142,6 @@ export const manualFlowReducer = (state: ManualFlowState, action: Action): Manua
       };
   }
 };
-
 
 /**
  * Fetch the siteInfo from the server, dispatch with proper action.  Taken outside useEffect for testing
