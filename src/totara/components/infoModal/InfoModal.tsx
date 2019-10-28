@@ -22,12 +22,10 @@
 import React, {ReactNode, useContext} from "react";
 import { View, StyleSheet, Modal } from "react-native";
 
-import {
-  TransparentView,
-  ModalText,
-  ModalImageView,
-  ModalContainer
-} from ".";
+import TransparentView from "./TransparentView";
+import ModalText from "./ModalText";
+import ModalImageView from "./ModalImageView";
+import ModalContainer from "./ModalContainer";
 import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 
 type Params = {

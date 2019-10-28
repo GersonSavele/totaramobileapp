@@ -23,7 +23,8 @@ import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 import {Activity} from "@totara/types";
-import {ContentIcon, ProgressCircle} from "@totara/components";
+import ContentIcon from "@totara/components/ContentIcon";
+import ProgressCircle from "@totara/components/ProgressCircle";
 import {translate} from "@totara/locale";
 
 /**

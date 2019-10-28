@@ -24,7 +24,7 @@ import { Image, ImageStyle, StyleSheet, Text, View, ViewStyle } from "react-nati
 import React, { useContext } from "react";
 
 import { LearningItem, Status } from "@totara/types";
-import { DueDateState }  from "@totara/components";
+import DueDateState  from "./DueDateState";
 import { normalize, ThemeContext } from "@totara/theme";
 import { X_API_KEY } from "@totara/lib/Constant";
 import { AuthContext } from "@totara/auth";

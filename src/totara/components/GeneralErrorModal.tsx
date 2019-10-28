@@ -21,7 +21,9 @@
 
 import React from "react";
 import {  Linking } from "react-native";
-import {  PrimaryButton, InfoModal, TertiaryButton } from ".";
+import PrimaryButton from "./PrimaryButton";
+import InfoModal from "./infoModal/InfoModal";
+import TertiaryButton from "./TertiaryButton";
 
 import { translate } from "@totara/locale";
 
