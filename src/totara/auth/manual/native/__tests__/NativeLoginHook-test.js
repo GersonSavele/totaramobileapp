@@ -30,14 +30,15 @@ import {
 const onBack = jest.fn();
 const onSetupSecretSuccess = jest.fn();
 
+const { result } = renderHook(props => useNativeLogin(props), {
+  initialProps: {
+    siteUrl: "http://mobiledemo.wlg.totaralms.com",
+    onSetupSecretSuccess: { onSetupSecretSuccess },
+    onBack: { onBack }
+  }
+});
 describe("useNativeLogin", () => {
-  const { result } = renderHook(props => useNativeLogin(props), {
-    initialProps: {
-      siteUrl: "http://mobiledemo.wlg.totaralms.com",
-      onSetupSecretSuccess: { onSetupSecretSuccess },
-      onBack: { onBack }
-    }
-  });
+  
   it("both empty 'username' and 'password'", () => {
     act(() => {
       result.current.inputUsernameWithShowError(undefined);
@@ -56,7 +57,7 @@ describe("useNativeLogin", () => {
       result.current.onClickEnter();
     });
 
-    expect(result.current.nativeLoginState.inputUsernameStatus).toBe("error");
+    expect(result.current.nativeLoginState.inputUsernameStatus).toBe(undefined);
     expect(result.current.nativeLoginState.inputPasswordStatus).toBe("error");
   });
 
@@ -68,19 +69,8 @@ describe("useNativeLogin", () => {
     });
 
     expect(result.current.nativeLoginState.inputUsernameStatus).toBe("error");
-    expect(result.current.nativeLoginState.inputPasswordStatus).toBe("error");
-  });
-
-  it("both valid 'username' and 'password'", () => {
-    act(() => {
-      result.current.inputUsernameWithShowError("username");
-      result.current.inputPasswordWithShowError("password");
-      result.current.onClickEnter();
-    });
-
-    expect(result.current.nativeLoginState.inputUsername).toBe("username");
-    expect(result.current.nativeLoginState.inputPassword).toBe("password");
-  });
+    expect(result.current.nativeLoginState.inputPasswordStatus).toBe(undefined);
+  })
 });
 
 describe("Native login reducer", () => {
@@ -110,23 +100,45 @@ describe("Native login reducer", () => {
     const newState = nativeReducer({}, action);
     expect(newState.inputPassword).toEqual("test-setpassword");
   });
-
-  it("should handle usernamestatuserror", () => {
+  it("should handle clickenter with-out username and password", () => {
+    act(() => {
+      result.current.inputUsernameWithShowError(undefined);
+      result.current.inputPasswordWithShowError(undefined);
+    });
     const action = {
-      type: "usernamestatuserror",
-      payload: "test-usernamestatuserror"
+      type: "clickenter",
+      payload: undefined
     };
     const newState = nativeReducer({}, action);
-    expect(newState.inputUsernameStatus).toEqual("test-usernamestatuserror");
+    
+    expect(newState.inputUsernameStatus).toEqual("error");
+    expect(newState.inputPasswordStatus).toEqual("error");
   });
-
-  it("should handle passwordstatuserror", () => {
+  it("should handle clickenter with invalid username and valid password", () => {
+    act(() => {
+      result.current.inputUsernameWithShowError(undefined);
+      result.current.inputPasswordWithShowError("password");
+    });
     const action = {
-      type: "passwordstatuserror",
-      payload: "test-passwordstatuserror"
+      type: "clickenter",
+      payload: undefined
     };
     const newState = nativeReducer({}, action);
-    expect(newState.inputPasswordStatus).toEqual("test-passwordstatuserror");
+    expect(newState.inputUsernameStatus).toEqual("error");
+    expect(newState.inputPasswordStatus).toEqual("error");
+  });
+  it("should handle clickenter with valid username and invalid password", () => {
+    act(() => {
+      result.current.inputUsernameWithShowError("username");
+      result.current.inputPasswordWithShowError(undefined);
+    });
+    const action = {
+      type: "clickenter",
+      payload: undefined
+    };
+    const newState = nativeReducer({}, action);
+    expect(newState.inputUsernameStatus).toEqual("error");
+    expect(newState.inputPasswordStatus).toEqual("error");
   });
 });
 
