@@ -131,6 +131,7 @@ android {
         applicationId "com.totaramobileapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60"
         versionCode 18
         versionName "0.11"
         multiDexEnabled true
@@ -155,6 +156,7 @@ android {
     }
     buildTypes {
         debug {
+            signingConfig signingConfigs.release
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -193,6 +195,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.android.support:multidex:1.0.1'
+    implementation project(':react-native-notifications')
+
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";
       debugImplementation files(hermesPath + "hermes-debug.aar")

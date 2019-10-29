@@ -37,3 +37,18 @@ allprojects {
         jcenter()
     }
 }
+
+subprojects { subproject ->
+        afterEvaluate {
+            if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+                android {
+                    variantFilter { variant ->
+                        def names = variant.flavors*.name
+                        if (names.contains("reactNative59")) {
+                            setIgnore(true)
+                        }
+                   }
+               }
+           }
+       }
+   }

@@ -66,19 +66,49 @@ import { ThemeProvider, ThemeContext } from "@totara/theme";
 
 import firebase from "@react-native-firebase/app";
 import messaging from "@react-native-firebase/messaging";
-import NotificationsIOS from 'react-native-notifications';
+import { NotificationsIOS, NotificationsAndroid, PendingNotifications} from 'react-native-notifications';
+
+if (Platform.OS === "android") {
+  NotificationsAndroid.setRegistrationTokenUpdateListener(onPushRegistered);
+  // NotificationsAndroid.setNotificationOpenedListener(onNotificationOpened);
+  // NotificationsAndroid.setNotificationReceivedListener(onNotificationReceived);
+  NotificationsAndroid.setNotificationReceivedListener((notification) => {
+    console.log("Notification received on device in background or foreground", notification.getData());
+  });
+  NotificationsAndroid.setNotificationReceivedInForegroundListener((notification) => {
+    console.log("Notification received on device in foreground", notification.getData());
+  });
+  NotificationsAndroid.setNotificationOpenedListener((notification) => {
+    console.log("Notification opened by device user", notification.getData());
+  });
+}
+
+function onPushRegistered() {
+  console.log("push registered");
+}
+
+function onNotificationOpened(notification) {
+  console.log("Notification Opened", notification);
+}
+
+function onNotificationReceived(notification) {
+  console.log("Notification Received", notification);
+}
+
 
 class App extends React.Component<{}> {
 
   constructor() {
     super();
 
-    NotificationsIOS.addEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
-    NotificationsIOS.addEventListener('notificationOpened', this.onNotificationOpened.bind(this));
+    if (Platform.OS === "ios") {
+      NotificationsIOS.addEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
+      NotificationsIOS.addEventListener('notificationOpened', this.onNotificationOpened.bind(this));
 
-    NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
-    NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
-    NotificationsIOS.requestPermissions();
+      NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
+      NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
+      NotificationsIOS.requestPermissions();
+    }
 
   }
 
@@ -103,10 +133,12 @@ class App extends React.Component<{}> {
   }
   componentWillUnmount() {
     // prevent memory leaks!
-    NotificationsIOS.removeEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
-    NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
-    NotificationsIOS.removeEventListener('notificationReceivedForeground', this._boundOnNotificationReceivedForeground);
-    NotificationsIOS.removeEventListener('notificationOpened', this._boundOnNotificationOpened)
+    if (Platform.OS === "ios") {
+      NotificationsIOS.removeEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
+      NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
+      NotificationsIOS.removeEventListener('notificationReceivedForeground', this._boundOnNotificationReceivedForeground);
+      NotificationsIOS.removeEventListener('notificationOpened', this._boundOnNotificationOpened)
+    }
   }
 
   async componentDidMount() {
