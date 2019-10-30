@@ -48,7 +48,7 @@ const NativeLogin = ({
   return (
     <Container style={[{ flex: 0 }, theme.viewContainer]}>
       <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
-        <TouchableIcon onPress={() => { onBack}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
+        <TouchableIcon onPress={() => { onBack()}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
       </Header>
       <Content style={styles.content} enableOnAndroid>
       <Image source={theme.logoUrl ? { uri: theme.logoUrl } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
@@ -58,16 +58,8 @@ const NativeLogin = ({
         </View>
         <Form>
           <View style={styles.formInputContainer}>
-<<<<<<< HEAD
             <InputTextWithInfo placeholder={translate("native-login.username_text_placeholder")} message={(nativeLoginState.inputUsernameStatus == "error")? translate("message.enter_valid_username"): undefined}
               status={nativeLoginState.inputUsernameStatus} >
-=======
-            <InputTextWithInfo
-              placeholder={translate("native-login.username_text_placeholder")}
-              message={(nativeLoginState.inputUsernameStatus == "error")? translate("message.enter_valid_username"): undefined}
-              status={nativeLoginState.inputUsernameStatus}
-            >
->>>>>>> MOB-172 auth: cleaned code and implemented logic inside of the reducer
               <Input
                 clearButtonMode="while-editing"
                 autoCapitalize="none"
@@ -78,16 +70,8 @@ const NativeLogin = ({
             </InputTextWithInfo>
           </View>
           <View style={styles.formInputContainer}>
-<<<<<<< HEAD
             <InputTextWithInfo placeholder={translate("native-login.password_text_placeholder")}  message={(nativeLoginState.inputPasswordStatus == "error")? translate("message.enter_valid_password"): undefined}
               status={nativeLoginState.inputPasswordStatus} >
-=======
-            <InputTextWithInfo
-              placeholder={translate("native-login.password_text_placeholder")}
-              message={(nativeLoginState.inputPasswordStatus == "error")? translate("message.enter_valid_password"): undefined}
-              status={nativeLoginState.inputPasswordStatus}
-            >
->>>>>>> MOB-172 auth: cleaned code and implemented logic inside of the reducer
               <Input
                 secureTextEntry={true}
                 clearButtonMode="while-editing"
