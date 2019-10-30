@@ -67,7 +67,6 @@ import { TouchableIcon } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 
 class App extends React.Component<{}> {
-  navigator = undefined;
 
   componentDidMount() {
     if (config.startNodeJsMobile) {
@@ -87,11 +86,7 @@ class App extends React.Component<{}> {
       <ThemeProvider>
         <AuthProvider asyncStorage={AsyncStorage}>
           <ActivitySheetProvider>
-            <AppContainer
-              ref={nav => {
-                this.navigator = nav;
-              }}
-            />
+            <AppContainer />
           </ActivitySheetProvider>
           <AdditionalAction />
         </AuthProvider>

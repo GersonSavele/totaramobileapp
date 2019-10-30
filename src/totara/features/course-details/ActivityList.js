@@ -76,7 +76,9 @@ class ActivityList extends React.Component {
       }
     };
 
-    const Activity = () =>
+    const Activity = () => {
+      const [theme] = useContext(ThemeContext);
+      return (
       <View style={styles.activity}>
         {
           (item.status === Status.done)
@@ -87,7 +89,6 @@ class ActivityList extends React.Component {
         }
         <ActivitySheetConsumer>
           {({setCurrentActivity}) => {
-            const [theme] = useContext(ThemeContext);
             return (
             <TouchableOpacity style={{flex: 1}} onPress={() => setCurrentActivity(item)}>
               <Text numberOfLines={1} style={[theme.textH4, (item.status) === Status.active ? styles.activeActivityText : styles.activityText]}>{item.itemName}</Text>
@@ -105,7 +106,9 @@ class ActivityList extends React.Component {
             :
             null
         }
-      </View>;
+      </View>
+      );
+    };
 
     if (section.status === Status.hidden)
       return(
