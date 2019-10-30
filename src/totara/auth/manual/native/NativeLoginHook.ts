@@ -52,7 +52,6 @@ export const useNativeLogin = ({
   };
 
   useEffect(() => {
-    Log.debug("Logging Statement", nativeLoginState.isDownloadLoginSecret);
     let didCancel = false;
     if (nativeLoginState.isDownloadLoginSecret) {
       // eslint-disable-next-line no-undef
