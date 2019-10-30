@@ -112,7 +112,7 @@ const navigationOptions = (theme, title, backTitle, rightIcon) => ({
   title: title,
   headerBackTitle: null,
   headerTintColor: theme.navigationHeaderTintColor,
-  headerRight: rightIcon ? <TouchableIcon icon={rightIcon} disabled={false} size={24} color={theme.headerTintColor}/> : null,      
+  headerRight: rightIcon ? <TouchableIcon icon={rightIcon} disabled={false} size={24} color={theme.navigationHeaderTintColor}/> : null,      
 });
 
 const myLearning = createStackNavigator(
