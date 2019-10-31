@@ -28,10 +28,8 @@ const defaultConfig = {
     uri: "https://mocks.mobile.demo.totara.software/graphql",
     persistentQuery: false
   },
-  infoUri: "https://mocks.mobile.demo.totara.software/info",
-  
   userAgent: "TotaraMobileApp",
-
+  infoUri: (host: string) => (`${host}/totara/mobile/theme_info.php`),
   loginUri: (host: string) => (`${host}/login/index.php`),
   deviceRegisterUri: (host: string) => (`${host}/totara/mobile/device_register.php`),
   webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`),
