@@ -47,11 +47,11 @@ describe("useManualFlow", () => {
     await act(async () => waitForNextUpdate());
 
     expect(result.current.manualFlowState).toMatchObject({
-      flowStep: ManualFlowSteps.webview,
+      flowStep: ManualFlowSteps.native,
       isSiteUrlSubmitted: true,
       siteUrl: "https://success.com"
     });
-
+   
     act(() => {
       result.current.onSetupSecretSuccess("theSecret");
     });
@@ -88,12 +88,13 @@ describe("manualFlowReducer", () => {
       flowStep: ManualFlowSteps.siteUrl
     };
     const testSiteInfo = {
-      version: "2019061900",
-      auth: "native",
-      siteMaintenance: false,
-      theme: {
-        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        colorBrand: "#CCFFCC"
+      data : {
+        auth: "native",
+        siteMaintenance: false,
+        theme: {
+          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+          colorBrand: "#CCFFCC"
+        }
       }
     };
     const action = {
@@ -151,12 +152,13 @@ describe("fetchData", () => {
     const dispatch = jest.fn(({type, payload}) => {
       expect(type).toBe("apiSuccess");
       expect(payload).toMatchObject({
-        version: "1",
-        auth: "webview",
-        siteMaintenance: false,
-        theme: {
-          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-          colorBrand: "#CCFFCC"
+        data : {
+          auth: "native",
+          siteMaintenance: false,
+          theme: {
+            logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+            colorBrand: "#CCFFCC"
+          }
         }
       })
     });
@@ -182,12 +184,13 @@ const mockFetch = () => {
   return Promise.resolve({
     status: 200,
     json: () => ({
-      version: "1",
-      auth: "webview",
-      siteMaintenance: false,
-      theme: {
-        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        colorBrand: "#CCFFCC"
+      data : {
+        auth: "native",
+        siteMaintenance: false,
+        theme: {
+          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+          colorBrand: "#CCFFCC"
+        }
       }
     })
   });

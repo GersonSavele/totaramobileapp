@@ -84,8 +84,8 @@ export const useManualFlow = (
     ) {
       setTheme(
         applyTheme(
-          manualFlowState.siteInfo && manualFlowState.siteInfo.theme
-            ? manualFlowState.siteInfo.theme
+          manualFlowState.siteInfo && manualFlowState.siteInfo.data.theme
+            ? manualFlowState.siteInfo.data.theme
             : TotaraTheme
         )
       );
@@ -139,7 +139,6 @@ export const manualFlowReducer = (
     case "apiSuccess": {
       const siteInfo = action.payload as SiteInfo;
       const flowStep = siteInfo.data.auth as ManualFlowSteps;
-
       if (
         flowStep === ManualFlowSteps.native ||
         flowStep === ManualFlowSteps.webview ||
@@ -151,7 +150,9 @@ export const manualFlowReducer = (
           siteInfo: siteInfo
         };
       } else {
-        throw new Error(`Unknown auth response from server ${siteInfo.data.auth}`);
+        throw new Error(
+          `Unknown auth response from server ${siteInfo.data.auth}`
+        );
       }
     }
 
@@ -197,11 +198,11 @@ export const fetchSiteInfo = (
       else throw new Error(response.statusText);
     })
     .catch(error => props.onLoginFailure(error));
-    Log.debug("siteInfo", siteInfo);
+  Log.debug("siteInfo", siteInfo);
 
   if (!didCancel && siteInfo) {
     Log.debug("siteInfo", siteInfo);
-    dispatch({ type: "apiSuccess", payload: siteInfo});
+    dispatch({ type: "apiSuccess", payload: siteInfo });
   } else
     Log.warn(
       "Did not dispatch apiSuccess: didCancel",
@@ -233,7 +234,7 @@ type Action = {
 };
 
 export type SiteInfo = {
-  data: Data
+  data: Data;
 };
 
 type Data = {
