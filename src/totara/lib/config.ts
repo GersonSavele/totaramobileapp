@@ -30,8 +30,6 @@ const defaultConfig = {
   },
   infoUri: "https://mocks.mobile.demo.totara.software/info",
   
-  // startNodeJsMobile: true
-  startNodeJsMobile: false,
   userAgent: "TotaraMobileApp",
 
   loginUri: (host: string) => (`${host}/login/index.php`),

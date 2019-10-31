@@ -10,7 +10,6 @@ import com.reactnativecommunity.webview.RNCWebViewPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.horcrux.svg.SvgPackage;
-import com.janeasystems.rn_nodejs_mobile.RNNodeJsMobilePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -40,7 +39,6 @@ public class MainApplication extends Application implements ReactApplication {
             new SplashScreenReactPackage(),
             new RNLocalizePackage(),
             new SvgPackage(),
-            new RNNodeJsMobilePackage(),
             new RNGestureHandlerPackage(),
             new VectorIconsPackage()
       );

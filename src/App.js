@@ -22,7 +22,6 @@
 
 import React, { useContext } from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import nodejs from "nodejs-mobile-react-native";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -59,7 +58,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
-import { config } from "@totara/lib";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions";
@@ -69,16 +67,6 @@ import { ThemeProvider, ThemeContext } from "@totara/theme";
 class App extends React.Component<{}> {
 
   componentDidMount() {
-    if (config.startNodeJsMobile) {
-      nodejs.start("server.js");
-      nodejs.channel.addListener(
-        "message",
-        msg => {
-          alert("From node: " + msg);
-        },
-        this
-      );
-    }
   }
 
   render() {
