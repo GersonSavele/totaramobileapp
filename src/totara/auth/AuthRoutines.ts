@@ -28,10 +28,11 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 
 import { config, Log } from "@totara/lib";
-import { SetupSecret, Setup } from "./AuthContext";
+import { Setup } from "./AuthContext";
 import { AUTHORIZATION } from "@totara/lib/Constant";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { LearningItem } from "@totara/types";
+import { SetupSecret } from "./AuthContextHook";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions

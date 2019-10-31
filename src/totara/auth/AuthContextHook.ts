@@ -26,7 +26,7 @@ import SplashScreen from "react-native-splash-screen";
 
 import { config, Log } from "@totara/lib";
 
-import { Setup, SetupSecret } from "./AuthContext";
+import { Setup } from "./AuthContext";
 
 /**
  * Custom react hook for AuthContext.
@@ -261,3 +261,8 @@ export const initialState: State = {
   isAuthenticated: false,
   authStep: AuthStep.loading
 };
+
+export interface SetupSecret {
+  secret: string;
+  uri: string;
+}

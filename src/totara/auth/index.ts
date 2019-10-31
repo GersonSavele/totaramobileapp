@@ -19,11 +19,10 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { AuthProvider, AuthConsumer, AuthContext } from "./AuthContext";
+import { AuthProvider, AuthConsumer } from "./AuthProvider";
 import { AuthenticatedWebView } from "./AuthenticatedWebView";
 export {
   AuthProvider,
   AuthConsumer,
   AuthenticatedWebView,
-  AuthContext
 };

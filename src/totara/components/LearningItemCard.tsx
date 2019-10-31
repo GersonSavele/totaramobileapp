@@ -27,7 +27,7 @@ import { LearningItem, Status } from "@totara/types";
 import DueDateState  from "./DueDateState";
 import { normalize, ThemeContext } from "@totara/theme";
 import { AUTHORIZATION } from "@totara/lib/Constant";
-import { AuthContext } from "@totara/auth";
+import { AuthContext } from "@totara/auth/AuthContext"; // temp fix for circular deps, must be refactored MOB-289
 
 interface Props {
   item: LearningItem
