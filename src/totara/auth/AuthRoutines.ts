@@ -29,7 +29,7 @@ import { setContext } from "apollo-link-context";
 
 import { config, Log } from "@totara/lib";
 import { SetupSecret, Setup } from "./AuthContext";
-import { X_API_KEY } from "@totara/lib/Constant";
+import { AUTHORIZATION } from "@totara/lib/Constant";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { LearningItem } from "@totara/types";
 
@@ -162,7 +162,7 @@ export const createApolloClient = (
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      [X_API_KEY]: apiKey
+      [AUTHORIZATION]: `Bearer ${apiKey}`
     },
     http: { includeQuery: !config.mobileApi.persistentQuery }
   }));

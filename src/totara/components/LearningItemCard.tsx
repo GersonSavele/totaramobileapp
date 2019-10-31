@@ -26,7 +26,7 @@ import React, { useContext } from "react";
 import { LearningItem, Status } from "@totara/types";
 import DueDateState  from "./DueDateState";
 import { normalize, ThemeContext } from "@totara/theme";
-import { X_API_KEY } from "@totara/lib/Constant";
+import { AUTHORIZATION } from "@totara/lib/Constant";
 import { AuthContext } from "@totara/auth";
 
 interface Props {
@@ -65,13 +65,13 @@ const ImageElement = ({item}: {item: LearningItem}) => {
 
   const imgSrc = item.imageSrc;
   if (item.status === Status.hidden) {
-    const [theme] = useContext(ThemeContext)
+    const [theme] = useContext(ThemeContext);
     return (
       <View style={{flex: 1}}>
         <Image source={{
           uri: imgSrc,
           headers: {
-            [X_API_KEY]: apiKey
+            [AUTHORIZATION]: `Bearer ${apiKey}`
           }
         }} style={{flex: 1, width: "100%", height: "100%"}}/>
         <View style={[styles.disabledOverlay, { backgroundColor: theme.colorNeutral1 }]}/>
@@ -81,7 +81,7 @@ const ImageElement = ({item}: {item: LearningItem}) => {
       return(<Image source={{
           uri: imgSrc,
           headers: {
-            [X_API_KEY]: apiKey
+            [AUTHORIZATION]: `Bearer ${apiKey}`
           }
       }} style={{flex: 1, width: "100%", height: "100%"}}/>);
     }
