@@ -47,11 +47,11 @@ describe("useManualFlow", () => {
     await act(async () => waitForNextUpdate());
 
     expect(result.current.manualFlowState).toMatchObject({
-      flowStep: ManualFlowSteps.native,
+      flowStep: ManualFlowSteps.webview,
       isSiteUrlSubmitted: true,
       siteUrl: "https://success.com"
     });
-   
+
     act(() => {
       result.current.onSetupSecretSuccess("theSecret");
     });
@@ -88,13 +88,11 @@ describe("manualFlowReducer", () => {
       flowStep: ManualFlowSteps.siteUrl
     };
     const testSiteInfo = {
-      data : {
-        auth: "native",
-        siteMaintenance: false,
-        theme: {
-          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-          colorBrand: "#CCFFCC"
-        }
+      auth: "native",
+      siteMaintenance: false,
+      theme: {
+        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+        brandPrimary: "#CCFFCC"
       }
     };
     const action = {
@@ -149,50 +147,54 @@ describe("fetchData", () => {
   it("should dispatch apiSuccess action with the siteInfo when it isn't cancelled", async () => {
     expect.assertions(2);
 
-    const dispatch = jest.fn(({type, payload}) => {
+    const dispatch = jest.fn(({ type, payload }) => {
       expect(type).toBe("apiSuccess");
       expect(payload).toMatchObject({
-        data : {
-          auth: "native",
-          siteMaintenance: false,
-          theme: {
-            logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-            colorBrand: "#CCFFCC"
-          }
+        auth: "webview",
+        siteMaintenance: false,
+        theme: {
+          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+          brandPrimary: "#CCFFCC"
         }
-      })
+      });
     });
 
-    await fetchSiteInfo(mockFetch)({})("https://totarasite.com", false, dispatch);
+    await fetchSiteInfo(mockFetch)({})(
+      "https://totarasite.com",
+      false,
+      dispatch
+    );
   });
 
   it("should call onLoginFailure if the response has an error", async () => {
     const onLoginFailure = jest.fn();
-    const mockFetch = () => Promise.resolve({
+    const mockFetch = () =>
+      Promise.resolve({
         status: 500,
         statusText: "server error"
       });
 
-    await fetchSiteInfo(mockFetch)({onLoginFailure: onLoginFailure})("https://totarasite.com", false);
+    await fetchSiteInfo(mockFetch)({ onLoginFailure: onLoginFailure })(
+      "https://totarasite.com",
+      false
+    );
 
     expect(onLoginFailure).toBeCalledTimes(1);
   });
-
 });
 
 const mockFetch = () => {
   return Promise.resolve({
     status: 200,
     json: () => ({
-      data : {
-        auth: "native",
+      data: {
+        auth: "webview",
         siteMaintenance: false,
         theme: {
           logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-          colorBrand: "#CCFFCC"
+          brandPrimary: "#CCFFCC"
         }
       }
     })
   });
 };
-

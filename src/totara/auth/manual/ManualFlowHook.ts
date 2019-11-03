@@ -84,8 +84,8 @@ export const useManualFlow = (
     ) {
       setTheme(
         applyTheme(
-          manualFlowState.siteInfo && manualFlowState.siteInfo.data.theme
-            ? manualFlowState.siteInfo.data.theme
+          manualFlowState.siteInfo && manualFlowState.siteInfo.theme
+            ? manualFlowState.siteInfo.theme
             : TotaraTheme
         )
       );
@@ -138,7 +138,7 @@ export const manualFlowReducer = (
 
     case "apiSuccess": {
       const siteInfo = action.payload as SiteInfo;
-      const flowStep = siteInfo.data.auth as ManualFlowSteps;
+      const flowStep = siteInfo.auth as ManualFlowSteps;
       if (
         flowStep === ManualFlowSteps.native ||
         flowStep === ManualFlowSteps.webview ||
@@ -150,9 +150,7 @@ export const manualFlowReducer = (
           siteInfo: siteInfo
         };
       } else {
-        throw new Error(
-          `Unknown auth response from server ${siteInfo.data.auth}`
-        );
+        throw new Error(`Unknown auth response from server ${siteInfo.auth}`);
       }
     }
 
@@ -193,14 +191,16 @@ export const fetchSiteInfo = (
   const siteInfo = await fetch(infoUrl, options)
     .then(response => {
       Log.debug("response", response);
-      if (response.status === 200)
-        return (response.json() as unknown) as SiteInfo;
+      if (response.status === 200) return response.json();
       else throw new Error(response.statusText);
+    })
+    .then(response => {
+      return (response.data as unknown) as SiteInfo;
     })
     .catch(error => props.onLoginFailure(error));
   Log.debug("siteInfo", siteInfo);
 
-  if (!didCancel && siteInfo) {
+  if (!didCancel && siteInfo && "auth" in siteInfo) {
     Log.debug("siteInfo", siteInfo);
     dispatch({ type: "apiSuccess", payload: siteInfo });
   } else
@@ -230,14 +230,10 @@ type ManualFlowState = {
 
 type Action = {
   type: "apiInit" | "apiSuccess" | "setupSecretSuccess" | "cancelManualFlow";
-  payload?: string | SiteInfo | Data | {};
+  payload?: string | SiteInfo;
 };
 
 export type SiteInfo = {
-  data: Data;
-};
-
-type Data = {
   auth: string;
   siteMaintenance: boolean;
   theme?: Theme;
