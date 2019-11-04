@@ -42,4 +42,6 @@ export type State = {
 export type Setup = {
   apiKey: string;
   host: string;
+  apiVersion: string;
+  apiUrl: string;
 };

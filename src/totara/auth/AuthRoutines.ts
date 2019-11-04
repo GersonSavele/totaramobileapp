@@ -73,14 +73,16 @@ export const getAndStoreApiKey = (
       Log.debug("server response status ", response.status);
       if (response.status === 200) return response.json();
       throw new Error(`Server Error: ${response.status}`);
-    }).then(json => json.data.apikey
-    ).then(apiKey =>
-      Promise.all([asyncStorage.setItem("apiKey", apiKey), asyncStorage.setItem("host", setupSecret.uri)])
-        .then(() => apiKey)
-    ).then(apiKey => {
+    }).then(json => json.data
+    ).then(data =>
+      Promise.all([asyncStorage.setItem("apiKey", data.apikey), asyncStorage.setItem("apiVersion", data.version), asyncStorage.setItem("apiUrl", data.apiurl), asyncStorage.setItem("host", setupSecret.uri)])
+        .then(() => data)
+    ).then(data => {
         const setup = {
-          apiKey: apiKey,
-          host: setupSecret.uri
+          apiKey: data.apikey,
+          host: setupSecret.uri,
+          apiVersion: data.version,
+          apiUrl: data.apiurl
         };
         Log.debug("setup done", setup);
         return setup;
@@ -92,6 +94,8 @@ export const getAndStoreApiKey = (
 
   );
 
+ 
+  
 /**
  *
  * During logOff this will clean up the device properly.  Will perform both local and remote
@@ -138,13 +142,15 @@ export const deviceCleanup = (
 export const bootstrap = (
   asyncStorage: AsyncStorageStatic
 ) => async (): Promise<Setup | undefined> => {
-    const [apiKey, host] = await Promise.all([asyncStorage.getItem("apiKey"), asyncStorage.getItem("host")]);
+    const [apiKey, host, apiVersion, apiUrl] = await Promise.all([asyncStorage.getItem("apiKey"), asyncStorage.getItem("host"), asyncStorage.getItem("apiVersion"), asyncStorage.getItem("apiUrl")]);
 
     if (apiKey !== null && host !== null) {
       Log.info("bootstrap with existing apiKey and host");
       return {
         apiKey: apiKey,
-        host: host
+        host: host,
+        apiVersion: apiVersion,
+        apiUrl: apiUrl
       }
     } else {
       Log.info("bootstrap with clean setup state");

@@ -33,6 +33,7 @@ import GeneralErrorModal from "./GeneralErrorModal";
 import InputTextWithInfo from "./InputTextWithInfo";
 import TertiaryButton from "./TertiaryButton";
 import TouchableIcon from "./TouchableIcon";
+import AppModal from "./AppModal";
 
 export {
   LearningItemCard,
@@ -48,5 +49,6 @@ export {
   InfoModal,
   InputTextWithInfo,
   TertiaryButton,
-  TouchableIcon
+  TouchableIcon,
+  AppModal
 }

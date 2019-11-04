@@ -28,9 +28,9 @@ import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 const TransparentView = ({ children }: Props) => {
   const [theme] = useContext(ThemeContext);
   return (
-    <View style={[styles.transparentViewStyle, {backgroundColor: theme.colorNeutral1}]}>
-      <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
-        <View style={styles.containerStyle}>{children}</View>
+    <View style={styles.transparentViewStyle}>
+      <SafeAreaView style={{ flex: 1}} forceInset={{ bottom: "always" }}>
+        <View style={[styles.containerStyle, {backgroundColor: theme.colorNeutral1 }]}>{children}</View>
       </SafeAreaView>
     </View>
   );

@@ -64,7 +64,7 @@ import { Log } from "@totara/lib";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions";
-import { TouchableIcon } from "@totara/components";
+import { TouchableIcon, AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 
 import * as notifications from "./Notifications";
@@ -126,6 +126,7 @@ class App extends React.Component<{}> {
             <AppContainer />
           </ActivitySheetProvider>
           <AdditionalAction />
+          <AppModal />
         </AuthProvider>
       </ThemeProvider>
     );

@@ -3,7 +3,8 @@
     "loading": "Loading...",
     "error": "Error :",
     "enter": "Enter",
-    "version": "Version"
+    "version": "Version",
+    "try_again": "Try again"
   }, 
   "course-details": {
     "activities": "Activities",
@@ -52,9 +53,11 @@
     "tertiary_title" : "Try in browser"
   },
   "message": {
+    "sorry": "Sorry!",
     "enter_valid_url": "Enter a valid site address",
     "enter_valid_username": "Enter a valid Username",
-    "enter_valid_password": "Enter a valid Password"
+    "enter_valid_password": "Enter a valid Password",
+    "incompatible_api": "This feature is not available.",
   },
   "native-login": {
     "header_title": "Login",
