@@ -19,11 +19,8 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
+ import React from "react";
 import renderer from "react-test-renderer";
-// import { MockedProvider } from "@apollo/react-testing";
-import React from "react";
-import {Text} from "react-native";
-import wait from "waait";
 
 import AppModal, { isCompatible, isValidApiVersion } from "../AppModal";
 import { AuthContext } from "@totara/auth/AuthContext";
