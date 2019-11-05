@@ -19,7 +19,14 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import { isCompatible, isValidApiVersion } from "../AppModal";
+import renderer from "react-test-renderer";
+// import { MockedProvider } from "@apollo/react-testing";
+import React from "react";
+import {Text} from "react-native";
+import wait from "waait";
+
+import AppModal, { isCompatible, isValidApiVersion } from "../AppModal";
+import { AuthContext } from "@totara/auth/AuthContext";
 
 describe("AppModal", () => {
   
@@ -43,5 +50,31 @@ describe("AppModal", () => {
 
     const higherVersion = isValidApiVersion({ apiVersion: "2030101802" });
     expect(higherVersion).toBeTruthy();
+  });
+
+  it("screens for different apiVersion", async () => {
+    const validSetupVersion = { apiVersion: "2019101802"};
+    const validVersionComponent = renderer.create(
+      <AuthContext.Provider value={{setup: validSetupVersion}} >
+        <AppModal />
+      </AuthContext.Provider>
+    );
+    expect(validVersionComponent.toJSON()).toMatchSnapshot();
+
+    const oldSetupVersion = { apiVersion: "2010101802"};
+    const oldVersionComponent = renderer.create(
+      <AuthContext.Provider value={{setup: oldSetupVersion}} >
+        <AppModal />
+      </AuthContext.Provider>
+    );
+    expect(oldVersionComponent.toJSON()).toMatchSnapshot();
+
+    const higherSetupVersion = { apiVersion: "2030101802"};
+    const higherVersionComponent = renderer.create(
+      <AuthContext.Provider value={{setup: higherSetupVersion}} >
+        <AppModal />
+      </AuthContext.Provider>
+    );
+    expect(higherVersionComponent.toJSON()).toMatchSnapshot();
   });
 });

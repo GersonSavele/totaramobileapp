@@ -22,14 +22,18 @@
 import React, { useContext, useState } from "react";
 
 import { translate } from "@totara/locale";
-import { AuthContext } from "@totara/auth/AuthContext";
+import { AuthContext, Setup } from "@totara/auth/AuthContext";
 import { InfoModal} from "./infoModal"
 import PrimaryButton from "./PrimaryButton";
 import { config } from "@totara/lib";
 
+enum Compatible {
+  Api = 1
+}
 
 const AppModal = () => {
-  const isShowIncompatibleApi = !isValidApiVersion();
+  const {setup} = useContext(AuthContext);
+  const isShowIncompatibleApi = !isValidApiVersion(setup);
   const [isVisible, setIsVisible] = useState(isShowIncompatibleApi);
   if(isVisible) 
     return (
@@ -42,9 +46,19 @@ const AppModal = () => {
 };
 
 //TODO-Need to integrate correct logic
-const isValidApiVersion = () => {
-  const {setup} = useContext(AuthContext);
-  return (setup && (config.minApiVersion <= setup.apiVersion));
+export const isValidApiVersion = (setup?: Setup) => {
+  if (setup && setup.apiVersion) {
+    const compatibilityList = isCompatible(setup.apiVersion)
+    return compatibilityList.length > 0
+  }
+  return false;
+};
+
+export const isCompatible = (version: string) => {
+  if (config.minApiVersion <= version)
+    return [Compatible.Api]
+  else 
+    return []
 };
 
 export default AppModal;
