@@ -26,6 +26,8 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import AsyncStorage from "@react-native-community/async-storage";
+import firebase from "@react-native-firebase/app";
+
 import {
   faHome,
   faCloudDownloadAlt,
@@ -58,42 +60,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
+import { Log } from "@totara/lib";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/auth";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { TouchableIcon } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 
-import firebase from "@react-native-firebase/app";
-import messaging from "@react-native-firebase/messaging";
-import { NotificationsIOS, NotificationsAndroid, PendingNotifications} from 'react-native-notifications';
-
-if (Platform.OS === "android") {
-  NotificationsAndroid.setRegistrationTokenUpdateListener(onPushRegistered);
-  // NotificationsAndroid.setNotificationOpenedListener(onNotificationOpened);
-  // NotificationsAndroid.setNotificationReceivedListener(onNotificationReceived);
-  NotificationsAndroid.setNotificationReceivedListener((notification) => {
-    console.log("Notification received on device in background or foreground", notification.getData());
-  });
-  NotificationsAndroid.setNotificationReceivedInForegroundListener((notification) => {
-    console.log("Notification received on device in foreground", notification.getData());
-  });
-  NotificationsAndroid.setNotificationOpenedListener((notification) => {
-    console.log("Notification opened by device user", notification.getData());
-  });
-}
-
-function onPushRegistered() {
-  console.log("push registered");
-}
-
-function onNotificationOpened(notification) {
-  console.log("Notification Opened", notification);
-}
-
-function onNotificationReceived(notification) {
-  console.log("Notification Received", notification);
-}
+import * as notifications from "./Notifications";
 
 
 class App extends React.Component<{}> {
@@ -101,50 +75,50 @@ class App extends React.Component<{}> {
   constructor() {
     super();
 
-    if (Platform.OS === "ios") {
-      NotificationsIOS.addEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
-      NotificationsIOS.addEventListener('notificationOpened', this.onNotificationOpened.bind(this));
-
-      NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
-      NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
-      NotificationsIOS.requestPermissions();
-    }
+    notifications.init(
+      this.onNotificationReceivedForeground,
+      this.onNotificationOpened,
+      this.onPushRegistered,
+      this.onPushRegistrationFailed
+    );
 
   }
 
+  // TODO: this is just basic notification callback to check if notification to RN.
   onPushRegistered(deviceToken) {
     // TODO: Send the token to my server so it could send back push notifications...
-    console.log("Device Token Received", deviceToken);
+    Log.info("Device Token Received", deviceToken);
   }
 
+  // TODO: this is just basic notification callback to check if notification to RN.
   onPushRegistrationFailed(error) {
-    console.error(error);
+    Log.error(error);
   }
 
-  onNotificationReceivedForeground(notification, completion) {
-    console.log("Notification Received - Foreground", notification);
-    completion({alert: true, sound: false, badge: false});
+  // TODO: this is just basic notification callback to check if notification to RN.
+  onNotificationReceivedForeground(notification) {
+    Log.info("Notification Received - Foreground", notification);
   }
 
-  onNotificationOpened(notification, completion, action) {
-    console.log("Notification opened by device user", notification);
-    console.log(`Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`, notification);
-    completion();
+  // TODO: this is just basic notification callback to check if notification to RN.
+  onNotificationReceived(notification) {
+    Log.info("Notification Received", notification);
   }
+
+  // TODO: this is just basic notification callback to check if notification to RN.
+  onNotificationOpened(notification) {
+    Log.info("Notification opened by device user", notification);
+  }
+
   componentWillUnmount() {
     // prevent memory leaks!
-    if (Platform.OS === "ios") {
-      NotificationsIOS.removeEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
-      NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
-      NotificationsIOS.removeEventListener('notificationReceivedForeground', this._boundOnNotificationReceivedForeground);
-      NotificationsIOS.removeEventListener('notificationOpened', this._boundOnNotificationOpened)
-    }
+    notifications.cleanUp();
   }
 
   async componentDidMount() {
     // TODO remove this, this is for discovery purposes only
-    let fcmToken = await firebase.messaging().getAPNSToken();
-    Log.debug("fcmtoken", fcmToken);
+    let fcmToken = await firebase.messaging().getToken();
+    Log.info("fcmtoken", fcmToken);
   }
 
   render() {
@@ -247,9 +221,6 @@ const tabNavigation = (theme) => (
         navigationOptions: () => ({
           tabBarIcon: ({ tintColor }) => tabIcon(tintColor, faHome)
         }),
-        tabBarOnPress: ({ navigation }) => {
-          navigation;
-        }
       },
       Downloads: {
         screen: downloads,

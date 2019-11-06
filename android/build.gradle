@@ -38,6 +38,7 @@ allprojects {
     }
 }
 
+// this is needed for react-native-notifications RN 59 which is older RN not to be part of the build
 subprojects { subproject ->
         afterEvaluate {
             if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
