@@ -39,8 +39,8 @@ export const init = (
   Log.debug("Android notification registering listeners");
 
   NotificationsAndroid.setRegistrationTokenUpdateListener(onPushRegistered);
-  NotificationsAndroid.setNotificationOpenedListener(onNotificationOpened);
-  NotificationsAndroid.setNotificationReceivedListener(onNotificationReceivedForeground);
+  NotificationsAndroid.setNotificationOpenedListener(onNotificationOpenedAndroid(onNotificationOpened));
+  NotificationsAndroid.setNotificationReceivedListener(onNotificationReceivedForegroundAndroid(onNotificationReceivedForeground));
 
   // const notifications = await PendingNotifications.getInitialNotification();
   // console.log("initialNotifications", notifications);
@@ -51,4 +51,25 @@ export const init = (
 
 export const cleanUp = () => {
   // nothing to cleanup for now
+};
+
+
+const onNotificationOpenedAndroid = (onNotificationOpened) => (notification) => {
+  Log.info("Notification opened by device user", notification);
+
+  const payload = {
+    title: notification.data.title,
+    body: notification.data.body
+  };
+  onNotificationOpened(payload);
+};
+
+const onNotificationReceivedForegroundAndroid = (onNotificationReceivedForeground) => (notification) => {
+  Log.info("Notification Received - Foreground", notification);
+
+  const payload = {
+    title: notification.data.title,
+    body: notification.data.body
+  };
+  onNotificationReceivedForeground(payload);
 };

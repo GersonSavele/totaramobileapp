@@ -26,7 +26,7 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import AsyncStorage from "@react-native-community/async-storage";
-import firebase from "@react-native-firebase/app";
+import messaging from "@react-native-firebase/messaging";
 
 import {
   faHome,
@@ -117,7 +117,7 @@ class App extends React.Component<{}> {
 
   async componentDidMount() {
     // TODO remove this, this is for discovery purposes only
-    let fcmToken = await firebase.messaging().getToken();
+    let fcmToken = await messaging().getToken();
     Log.info("fcmtoken", fcmToken);
   }
 

@@ -57,12 +57,24 @@ export const cleanUp = () => {
 };
 
 const onNotificationOpenedIOS = (onNotificationOpened) => (notification, completion, action) => {
-  onNotificationOpened(notification);
+  Log.info("Notification opened by device user", notification);
+
+  const payload = {
+    title: notification._data.title,
+    body: notification._data.body
+  };
+  onNotificationOpened(payload);
   Log.info(`Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`, notification);
   completion();
 };
 
 const onNotificationReceivedForegroundIOS = (onNotificationReceivedForeground) => (notification, completion) => {
-  onNotificationReceivedForeground(notification);
+  Log.info("Notification Received - Foreground", notification);
+
+  const payload = {
+    title: notification._data.title,
+    body: notification._data.body
+  };
+  onNotificationReceivedForeground(payload);
   completion({alert: true, sound: false, badge: false});
 };
