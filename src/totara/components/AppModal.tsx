@@ -19,13 +19,14 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import { translate } from "@totara/locale";
 import { AuthContext, Setup } from "@totara/auth/AuthContext";
 import { InfoModal} from "./infoModal"
 import PrimaryButton from "./PrimaryButton";
 import { config } from "@totara/lib";
+import { Linking } from "react-native";
 
 enum Compatible {
   Api = 1
@@ -34,11 +35,10 @@ enum Compatible {
 const AppModal = () => {
   const {setup} = useContext(AuthContext);
   const isShowIncompatibleApi = !isValidApiVersion(setup);
-  const [isVisible, setIsVisible] = useState(isShowIncompatibleApi);
-  if(isVisible) 
+  if(isShowIncompatibleApi) 
     return (
-    <InfoModal title={translate("message.sorry")} description={translate("message.incompatible_api")} imageType={"url_not_valid"} visible={isVisible}>
-      <PrimaryButton  text={translate("general.try_again")} onPress={() => { setIsVisible(!isVisible) }} />
+    <InfoModal title={translate("general_error_feedback-modal.title")} description={translate("general_error_feedback-modal.description")} imageType={"general_error"}  visible={isShowIncompatibleApi}>
+      <PrimaryButton  text={translate("general_error_feedback-modal.tertiary_title")} onPress={() => { setup && Linking.openURL( config.loginUri(setup.host) ) }} />
     </InfoModal>
     );
   else 
