@@ -25,8 +25,7 @@ import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import SplashScreen from "react-native-splash-screen";
 
 import { config, Log } from "@totara/lib";
-
-import { Setup } from "./AuthContext";
+import { SiteInfo, AppState } from "./AuthContext";
 
 /**
  * Custom react hook for AuthContext.
@@ -47,8 +46,8 @@ import { Setup } from "./AuthContext";
  * }
  */
 export const useAuthContext = (
-  bootstrap: () => Promise<Setup | undefined>,
-  getAndStoreApiKey: (setupSecret: SetupSecret) => Promise<Setup>,
+  bootstrap: () => Promise<AppState | undefined>,
+  getAndStoreApiKey: (setup: Setup) => Promise<AppState>,
   deviceCleanup: (deviceDelete: () => Promise<any>) => Promise<boolean>,
   createApolloClient: (
     apiKey: string,
@@ -56,6 +55,7 @@ export const useAuthContext = (
     logOut: (localOnly: boolean) => Promise<void>
   ) => ApolloClient<NormalizedCacheObject>
 ) => ({ initialState }: Props) => {
+
   const [authContextState, dispatch] = useReducer(
     authContextReducer,
     initialState
@@ -83,16 +83,16 @@ export const useAuthContext = (
     );
   };
 
-  // create or stop apolloClient depending on the state and if existing apolloClient has been setup
+  // create or stop apolloClient depending on the state and if existing apolloClient has been appState
   if (
-    authContextState.setup &&
-    authContextState.setup.apiKey &&
+    authContextState.appState &&
+    authContextState.appState.apiKey &&
     authContextState.isAuthenticated &&
     apolloClient.current === null
   ) {
     Log.debug("creating apolloClient");
     apolloClient.current = createApolloClient(
-      authContextState.setup.apiKey,
+      authContextState.appState.apiKey,
       config.mobileApi.uri,
       logOut
     );
@@ -104,18 +104,18 @@ export const useAuthContext = (
   }
 
   /**
-   * When a successful login is achieved call this with setupSecret it would start the login sequence and right authenticated state
+   * When a successful login is achieved call this with setup it would start the login sequence and right authenticated state
    *
    * Can be used on either a AuthComponent react component or a promise chain
    *
-   * @param setupSecret
+   * @param setup
    */
-  const onLoginSuccess = async (setupSecret: SetupSecret) => {
+  const onLoginSuccess = async (setup: Setup) => {
     if (authContextState.isAuthenticated) {
       await logOut();
     }
 
-    dispatch({ type: "register", payload: setupSecret });
+    dispatch({ type: "register", payload: setup });
   };
 
   /**
@@ -136,8 +136,8 @@ export const useAuthContext = (
     const doBootStrap = () => {
       Log.debug("doBootStrap", authContextState);
       if (SplashScreen) SplashScreen.hide();
-      bootstrap().then(setup => {
-        dispatch({ type: "bootstrap", payload: setup });
+      bootstrap().then(appState => {
+        dispatch({ type: "bootstrap", payload: appState });
       });
     };
 
@@ -145,14 +145,14 @@ export const useAuthContext = (
   }, [authContextState.authStep]);
 
   /**
-   * When setupSecret has been initialiazed, perform a side affect to get the apikey
+   * When setup has been initialiazed, perform a side affect to get the apikey
    */
   useEffect(() => {
     const doGetandStoreApiKey = () => {
       Log.debug("doGetandStoreApiKey", authContextState);
-      if (authContextState.setupSecret)
-        getAndStoreApiKey(authContextState.setupSecret).then(setup => {
-          dispatch({ type: "setup", payload: setup });
+      if (authContextState.setup)
+        getAndStoreApiKey(authContextState.setup).then(appState => {
+          dispatch({ type: "registered", payload: appState });
         });
     };
 
@@ -175,17 +175,17 @@ const authContextReducer = (state: State, action: Action): State => {
       if (action.payload && "secret" in action.payload)
         return {
           ...state,
-          setupSecret: action.payload,
+          setup: action.payload,
           authStep: AuthStep.setupSecretInit
         };
       else throw new Error(`unexpected payload in action ${action}`);
     }
 
-    case "setup": {
+    case "registered": {
       if (action.payload && "apiKey" in action.payload)
         return {
           ...state,
-          setup: action.payload,
+          appState: action.payload,
           isAuthenticated: true,
           authStep: AuthStep.setupDone
         };
@@ -196,7 +196,7 @@ const authContextReducer = (state: State, action: Action): State => {
       if (action.payload && "apiKey" in action.payload)
         return {
           ...state,
-          setup: action.payload,
+          appState: action.payload,
           isAuthenticated: true,
           isLoading: false,
           authStep: AuthStep.bootstrapDone
@@ -213,7 +213,7 @@ const authContextReducer = (state: State, action: Action): State => {
     case "deRegister":
       return {
         ...state,
-        setup: undefined,
+        appState: undefined,
         isAuthenticated: false,
         isLoading: false,
         authStep: AuthStep.bootstrapDone
@@ -225,8 +225,8 @@ const authContextReducer = (state: State, action: Action): State => {
 };
 
 type Action = {
-  type: "register" | "setup" | "bootstrap" | "deRegister" | "reload";
-  payload?: Setup | SetupSecret;
+  type: "register" | "registered" | "bootstrap" | "deRegister" | "reload";
+  payload?: AppState | Setup;
 };
 
 export const deleteDevice = gql`
@@ -249,20 +249,21 @@ export enum AuthStep {
 type State = {
   isLoading: boolean;
   isAuthenticated: boolean;
+  appState?: AppState;
   setup?: Setup;
-  setupSecret?: SetupSecret;
   authStep: AuthStep;
 };
 
 export const initialState: State = {
+  appState: undefined,
   setup: undefined,
-  setupSecret: undefined,
   isLoading: true,
   isAuthenticated: false,
   authStep: AuthStep.loading
 };
 
-export interface SetupSecret {
+export interface Setup {
   secret: string;
   uri: string;
+  siteInfo: SiteInfo;
 }

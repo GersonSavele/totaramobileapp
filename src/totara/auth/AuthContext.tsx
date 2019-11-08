@@ -23,10 +23,12 @@
 
 import React from "react";
 
+import { config } from "@totara/lib";
+import { Theme } from "@totara/theme";
 
 export const AuthContext = React.createContext<State>({
   isAuthenticated: false,
-  setup: undefined,
+  appState: undefined,
   logOut: () => {
     return Promise.resolve();
   }
@@ -34,14 +36,39 @@ export const AuthContext = React.createContext<State>({
 
 export type State = {
   isAuthenticated: boolean;
-  setup?: Setup;
+  appState?: AppState;
   logOut: () => Promise<void>;
 };
 
+export type SiteInfo = {
+  auth: string;
+  siteMaintenance: boolean;
+  theme?: Theme;
+  version: string;
+};
 
-export type Setup = {
+export type AppState = {
   apiKey: string;
   host: string;
-  apiVersion: string;
-  apiUrl: string;
+  siteInfo: SiteInfo;
+};
+
+enum Compatible {
+  Api = 1
+}
+
+//TODO-Need to integrate correct logic
+export const isValidApiVersion = (apiVersoin?: string) => {
+  if (apiVersoin) {
+    const compatibilityList = isCompatible(apiVersoin);
+    return compatibilityList.length > 0
+  }
+  return false;
+};
+
+export const isCompatible = (version: string) => {
+  if (config.minApiVersion <= version)
+    return [Compatible.Api]
+  else 
+    return []
 };

@@ -23,9 +23,10 @@ import { config, Log } from "@totara/lib";
 import React, { useEffect, useReducer, useContext } from "react";
 
 import { AuthProviderStateLift } from "@totara/auth/AuthComponent";
-import { Theme, ThemeContext, applyTheme } from "@totara/theme";
+import { ThemeContext, applyTheme } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import VersionInfo from "react-native-version-info";
+import { isValidApiVersion, SiteInfo } from "../AuthContext";
 
 /**
  * Custom react hook that manages the state of the manual flow
@@ -49,11 +50,13 @@ export const useManualFlow = (
   if (
     manualFlowState.flowStep === ManualFlowSteps.done &&
     manualFlowState.siteUrl &&
-    manualFlowState.setupSecret
+    manualFlowState.setupSecret &&
+    manualFlowState.siteInfo
   )
     props.onLoginSuccess({
       secret: manualFlowState.setupSecret,
-      uri: manualFlowState.siteUrl
+      uri: manualFlowState.siteUrl,
+      siteInfo: manualFlowState.siteInfo
     });
 
   // effect fetch the data when the right dependency has been met
@@ -139,7 +142,14 @@ export const manualFlowReducer = (
     case "apiSuccess": {
       const siteInfo = action.payload as SiteInfo;
       const flowStep = siteInfo.auth as ManualFlowSteps;
-      if (
+      const isCompatible = isValidApiVersion(siteInfo.version);
+      if (!isCompatible) {
+        return {
+          ...state,
+          flowStep: ManualFlowSteps.incompatible,
+          siteInfo: siteInfo
+        };
+      } else if (
         flowStep === ManualFlowSteps.native ||
         flowStep === ManualFlowSteps.webview ||
         flowStep === ManualFlowSteps.browser
@@ -217,7 +227,8 @@ export enum ManualFlowSteps {
   native = "native",
   webview = "webview",
   browser = "browser",
-  done = "done"
+  done = "done",
+  incompatible = "incompatible"
 }
 
 type ManualFlowState = {
@@ -233,11 +244,7 @@ type Action = {
   payload?: string | SiteInfo;
 };
 
-export type SiteInfo = {
-  auth: string;
-  siteMaintenance: boolean;
-  theme?: Theme;
-};
+
 
 export type OutProps = {
   manualFlowState: ManualFlowState;

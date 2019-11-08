@@ -60,8 +60,8 @@ const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
 
 const ImageElement = ({item}: {item: LearningItem}) => {
 
-  const authContext = useContext(AuthContext);
-  const apiKey = authContext.setup!.apiKey;
+  const {appState} = useContext(AuthContext);
+  const apiKey = appState!.apiKey;
 
   const imgSrc = item.imageSrc;
   if (item.status === Status.hidden) {

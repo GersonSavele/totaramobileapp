@@ -28,6 +28,7 @@ import NativeFlow from "./native";
 import { useManualFlow, ManualFlowSteps, OutProps } from "./ManualFlowHook";
 import SiteUrl from "./SiteUrl";
 import { useSiteUrl } from "./SiteUrlHook";
+import { AppModal } from "@totara/components";
 
 /**
  * ManualFlow starts with a siteUrl, then depending what configured on the server
@@ -42,19 +43,33 @@ const ManualFlow = ({ manualFlowState, onSiteUrlSuccess, onSetupSecretSuccess, o
       {(() => {
         switch (manualFlowState.flowStep) {
           case ManualFlowSteps.native:
-            return (manualFlowState.siteUrl && manualFlowState.siteInfo)
-              ? <NativeFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
-                            onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel}/>
-              : <StartComponent/>;
+            return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+              <NativeFlow
+                siteUrl={manualFlowState.siteUrl}
+                siteInfo={manualFlowState.siteInfo}
+                onSetupSecretSuccess={onSetupSecretSuccess}
+                onSetupSecretCancel={onSetupSecretCancel}
+              />
+            ) : (
+              <StartComponent />
+            );
           case ManualFlowSteps.webview:
-            return (manualFlowState.siteUrl && manualFlowState.siteInfo)
-              ? <WebviewFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
-                             onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel}/>
-              : <StartComponent/>;
+            return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+              <WebviewFlow
+                siteUrl={manualFlowState.siteUrl}
+                siteInfo={manualFlowState.siteInfo}
+                onSetupSecretSuccess={onSetupSecretSuccess}
+                onSetupSecretCancel={onSetupSecretCancel}
+              />
+            ) : (
+              <StartComponent />
+            );
+          case ManualFlowSteps.incompatible:
+            return <AppModal onCancel={onSetupSecretCancel} />;
           case ManualFlowSteps.done:
             return null;
           default:
-            return <StartComponent/>;
+            return <StartComponent />;
         }
       })()}
     </View>

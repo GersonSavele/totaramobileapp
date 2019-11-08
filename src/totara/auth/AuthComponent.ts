@@ -21,11 +21,11 @@
 
 import React from "react";
 
-import { SetupSecret } from "./AuthContext";
+import { Setup } from "./AuthContextHook";
 
 export class AuthComponent<P = {}, S = {}> extends React.Component<AuthProviderStateLift & P, S> {}
 
 export type AuthProviderStateLift = {
-  onLoginSuccess: (setupSecret: SetupSecret) => {}
+  onLoginSuccess: (setup: Setup) => {}
   onLoginFailure: (error: Error) => {}
 };

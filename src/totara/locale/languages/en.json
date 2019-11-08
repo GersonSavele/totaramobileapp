@@ -4,7 +4,8 @@
     "error": "Error :",
     "enter": "Enter",
     "version": "Version",
-    "try_again": "Try again"
+    "try_again": "Try again",
+    "cancel": "Cancel"
   }, 
   "course-details": {
     "activities": "Activities",

@@ -61,7 +61,7 @@ export const AuthProvider = ( {asyncStorage, children}: Props) => {
 
   const providerValue = {
     isAuthenticated: authContextState.isAuthenticated,
-    setup: authContextState.setup,
+    appState: authContextState.appState,
     logOut: logOut
   };
 

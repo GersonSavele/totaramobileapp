@@ -22,43 +22,34 @@
 import React, { useContext } from "react";
 
 import { translate } from "@totara/locale";
-import { AuthContext, Setup } from "@totara/auth/AuthContext";
+import { AuthContext, isValidApiVersion } from "@totara/auth/AuthContext";
 import { InfoModal} from "./infoModal"
 import PrimaryButton from "./PrimaryButton";
 import { config } from "@totara/lib";
 import { Linking } from "react-native";
+import TertiaryButton from "./TertiaryButton";
 
-enum Compatible {
-  Api = 1
+type Props = {
+  onCancel?: () => void
 }
 
-const AppModal = () => {
-  const {setup} = useContext(AuthContext);
-  const isShowIncompatibleApi = !isValidApiVersion(setup);
-  if(isShowIncompatibleApi) 
+const AppModal = ({onCancel}: Props) => {
+  const {appState, isAuthenticated, logOut } = useContext(AuthContext);
+  const isShowIncompatibleApi = appState ? !isValidApiVersion(appState.siteInfo.version) : true;
+  if (isShowIncompatibleApi) 
     return (
     <InfoModal title={translate("general_error_feedback-modal.title")} description={translate("general_error_feedback-modal.description")} imageType={"general_error"}  visible={isShowIncompatibleApi}>
-      <PrimaryButton  text={translate("general_error_feedback-modal.tertiary_title")} onPress={() => { setup && Linking.openURL( config.loginUri(setup.host) ) }} />
+      <PrimaryButton  text={translate("general_error_feedback-modal.tertiary_title")} onPress={() => { appState && Linking.openURL( config.loginUri(appState.host) ) }} />
+      { isAuthenticated 
+        ?  <TertiaryButton text={translate("additional-actions-modal.auth_model_logout")} onPress={() => { logOut(); }} />
+        :  <TertiaryButton text={translate("general.cancel")} onPress={() => {  onCancel && onCancel(); }} />
+      }
     </InfoModal>
     );
   else 
     return null;
 };
 
-//TODO-Need to integrate correct logic
-export const isValidApiVersion = (setup?: Setup) => {
-  if (setup && setup.apiVersion) {
-    const compatibilityList = isCompatible(setup.apiVersion)
-    return compatibilityList.length > 0
-  }
-  return false;
-};
 
-export const isCompatible = (version: string) => {
-  if (config.minApiVersion <= version)
-    return [Compatible.Api]
-  else 
-    return []
-};
 
 export default AppModal;

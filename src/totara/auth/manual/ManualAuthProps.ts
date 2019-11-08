@@ -18,7 +18,7 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
-import { SiteInfo } from "./ManualFlowHook";
+import { SiteInfo } from "@totara/auth/AuthContext";
 
 export type ManualAuthProps = {
   siteUrl: string,

@@ -28,11 +28,11 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 
 import { config, Log } from "@totara/lib";
-import { Setup } from "./AuthContext";
 import { AUTHORIZATION } from "@totara/lib/Constant";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { LearningItem } from "@totara/types";
-import { SetupSecret } from "./AuthContextHook";
+import { Setup } from "./AuthContextHook";
+import { AppState, SiteInfo } from "./AuthContext";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -45,47 +45,51 @@ import { SetupSecret } from "./AuthContextHook";
  */
 
 /**
- * Given a setup secret (temp key), retrieve the api key (a long term key) from the api via
+ * Given a appState secret (temp key), retrieve the api key (a long term key) from the api via
  * fetch.  Store the api key and host in storage, return these as well.
  *
  * @param fetch http fetch
  * @param asyncStorage device storage
  *
- * @param setupSecret contains the setup secret to be validated by the server
+ * @param setup contains the appState secret to be validated by the server
  *
  *
- * @returns promise of setup which contains the valid apiKey and which host it was obtained from
+ * @returns promise of appState which contains the valid apiKey and which host it was obtained from
  */
 export const getAndStoreApiKey = (
   fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
   asyncStorage: AsyncStorageStatic,
 ) => async (
-  setupSecret: SetupSecret
-): Promise<Setup> => (
+  setup: Setup
+): Promise<AppState> => (
 
-    fetch(config.deviceRegisterUri(setupSecret.uri), {
+    fetch(config.deviceRegisterUri(setup.uri), {
         method: "POST",
         body: JSON.stringify({
-          setupsecret: setupSecret.secret
+          setupsecret: setup.secret
         })
       }
     ).then(response => {
       Log.debug("server response status ", response.status);
       if (response.status === 200) return response.json();
       throw new Error(`Server Error: ${response.status}`);
-    }).then(json => json.data
-    ).then(data =>
-      Promise.all([asyncStorage.setItem("apiKey", data.apikey), asyncStorage.setItem("apiVersion", data.version), asyncStorage.setItem("apiUrl", data.apiurl), asyncStorage.setItem("host", setupSecret.uri)])
-        .then(() => data)
+    }).then(json => {
+      return json.data;
+    }).then(data => {
+      const siteInfoData = JSON.stringify(setup.siteInfo);
+      return Promise.all([asyncStorage.setItem("apiKey", data.apikey), asyncStorage.setItem("siteInfo", siteInfoData), asyncStorage.setItem("host", setup.uri)])
+        .then(() => {
+         return data;
+        })
+    }
     ).then(data => {
-        const setup = {
+        const appState = {
           apiKey: data.apikey,
-          host: setupSecret.uri,
-          apiVersion: data.version,
-          apiUrl: data.apiurl
+          host: setup.uri,
+          siteInfo: setup.siteInfo,
         };
-        Log.debug("setup done", setup);
-        return setup;
+        Log.debug("appState done", appState);
+        return appState;
       }
     ).catch(error => {
       Log.error("unable to get apiKey", error);
@@ -135,25 +139,24 @@ export const deviceCleanup = (
   };
 
 /**
- * Would get needed items from storage and return a valid state setup.
+ * Would get needed items from storage and return a valid state appState.
  *
  * @param asyncStorage device storage
  */
 export const bootstrap = (
   asyncStorage: AsyncStorageStatic
-) => async (): Promise<Setup | undefined> => {
-    const [apiKey, host, apiVersion, apiUrl] = await Promise.all([asyncStorage.getItem("apiKey"), asyncStorage.getItem("host"), asyncStorage.getItem("apiVersion"), asyncStorage.getItem("apiUrl")]);
+) => async (): Promise<AppState | undefined> => {
+    const [apiKey, host, siteInfo] = await Promise.all([asyncStorage.getItem("apiKey"), asyncStorage.getItem("host"), asyncStorage.getItem("siteInfo")]);
 
-    if (apiKey !== null && host !== null) {
+    if (apiKey !== null && host !== null && siteInfo !== null) {
       Log.info("bootstrap with existing apiKey and host");
       return {
         apiKey: apiKey,
         host: host,
-        apiVersion: apiVersion,
-        apiUrl: apiUrl
+        siteInfo: JSON.parse(siteInfo) as SiteInfo
       }
     } else {
-      Log.info("bootstrap with clean setup state");
+      Log.info("bootstrap with clean appState state");
       return undefined;
     }
   };
