@@ -74,20 +74,14 @@ class App extends React.Component<{}> {
 
   constructor() {
     super();
-
-    notifications.init(
-      this.onNotificationReceivedForeground,
-      this.onNotificationOpened,
-      this.onPushRegistered,
-      this.onPushRegistrationFailed
-    );
-
   }
 
   // TODO: this is just basic notification callback to check if notification to RN.
-  onPushRegistered(deviceToken) {
+  async onPushRegistered(deviceToken) {
     // TODO: Send the token to my server so it could send back push notifications...
     Log.info("Device Token Received", deviceToken);
+    let fcmToken = await messaging().getToken();
+    Log.info("fcmtoken", fcmToken);
   }
 
   // TODO: this is just basic notification callback to check if notification to RN.
@@ -110,15 +104,18 @@ class App extends React.Component<{}> {
     Log.info("Notification opened by device user", notification);
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     // prevent memory leaks!
-    notifications.cleanUp();
+    await notifications.cleanUp();
   }
 
   async componentDidMount() {
-    // TODO remove this, this is for discovery purposes only
-    let fcmToken = await messaging().getToken();
-    Log.info("fcmtoken", fcmToken);
+    await notifications.init(
+      this.onNotificationReceivedForeground,
+      this.onNotificationOpened,
+      this.onPushRegistered,
+      this.onPushRegistrationFailed
+    );
   }
 
   render() {

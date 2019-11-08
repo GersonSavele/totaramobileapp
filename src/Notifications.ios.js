@@ -20,6 +20,7 @@
  */
 
 import NotificationsIOS from "react-native-notifications";
+import { isEmulator } from "react-native-device-info";
 import { Log } from "@totara/lib";
 
 // TODO: this is just basic notification callback to check if notification to RN.
@@ -31,29 +32,38 @@ import { Log } from "@totara/lib";
  * @param onPushRegistered
  * @param onPushRegistrationFailed
  */
-export const init = (
+export const init = async (
   onNotificationReceivedForeground,
   onNotificationOpened,
   onPushRegistered,
   onPushRegistrationFailed
 ) => {
-  Log.debug("iOS notification registering listeners");
 
-  NotificationsIOS.addEventListener('notificationReceivedForeground', onNotificationReceivedForegroundIOS(onNotificationReceivedForeground));
-  NotificationsIOS.addEventListener('notificationOpened', onNotificationOpenedIOS(onNotificationOpened));
-  NotificationsIOS.addEventListener('remoteNotificationsRegistered', onPushRegistered);
-  NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', onPushRegistrationFailed);
+  if (! await isEmulator()) {
+    Log.debug("iOS notification registering listeners");
 
-  NotificationsIOS.requestPermissions();
+    NotificationsIOS.addEventListener('notificationReceivedForeground', onNotificationReceivedForegroundIOS(onNotificationReceivedForeground));
+    NotificationsIOS.addEventListener('notificationOpened', onNotificationOpenedIOS(onNotificationOpened));
+    NotificationsIOS.addEventListener('remoteNotificationsRegistered', onPushRegistered);
+    NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', onPushRegistrationFailed);
+
+    NotificationsIOS.requestPermissions();
+  } else {
+    Log.debug("notification not supported on iOS simulator");
+  }
 };
 
-export const cleanUp = () => {
-  Log.debug("iOS notification removing listeners");
+export const cleanUp = async () => {
+  if (! await isEmulator()) {
+    Log.debug("iOS notification removing listeners");
 
-  NotificationsIOS.removeEventListener('remoteNotificationsRegistered');
-  NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed');
-  NotificationsIOS.removeEventListener('notificationReceivedForeground');
-  NotificationsIOS.removeEventListener('notificationOpened');
+    NotificationsIOS.removeEventListener('remoteNotificationsRegistered');
+    NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed');
+    NotificationsIOS.removeEventListener('notificationReceivedForeground');
+    NotificationsIOS.removeEventListener('notificationOpened');
+  } else {
+    Log.debug("notification not supported on iOS simulator");
+  }
 };
 
 const onNotificationOpenedIOS = (onNotificationOpened) => (notification, completion, action) => {

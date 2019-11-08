@@ -31,7 +31,7 @@ import { Log } from "@totara/lib";
  * @param onPushRegistered
  * @param onPushRegistrationFailed
  */
-export const init = (
+export const init = async (
   onNotificationReceivedForeground,
   onNotificationOpened,
   onPushRegistered,
@@ -49,7 +49,7 @@ export const init = (
   // console.log("hasPermisions", hasPermissions);
 };
 
-export const cleanUp = () => {
+export const cleanUp = async () => {
   // nothing to cleanup for now
 };
 
