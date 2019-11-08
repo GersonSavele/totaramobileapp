@@ -28,7 +28,7 @@ import gql from "graphql-tag";
 import CookieManager from "react-native-cookies";
 
 import { config, Log } from "@totara/lib";
-import { AuthConsumer } from "./AuthContext";
+import { AuthConsumer } from "./AuthProvider";
 import { WEBVIEW_SECRET } from "@totara/lib/Constant";
 
 const createWebview = gql`
@@ -69,13 +69,17 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     const { createWebview, uri } = this.props;
 
     const createWebViewPromise = createWebview({ variables: { url: uri } })
-      .then((data) => {
-        Log.debug("created webview", data);
+      .then((response) => {
+        Log.debug("created webview", response);
 
-        this.setState({
-          webviewSecret: data.data.create_webview,
-          isAuthenticated: true
-        });
+        if (response.data) {
+          this.setState({
+            webviewSecret: response.data.create_webview,
+            isAuthenticated: true
+          });
+        } else {
+          throw new Error("data missing on response");
+        }
       }).catch(error => Log.error("unable to create webview", error));
 
     const clearCookiesPromise = CookieManager.clearAll(true)
