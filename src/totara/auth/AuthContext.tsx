@@ -59,11 +59,14 @@ enum Compatible {
 
 //TODO-Need to integrate correct logic
 export const isValidApiVersion = (apiVersoin?: string) => {
-  if (apiVersoin) {
-    const compatibilityList = isCompatible(apiVersoin);
-    return compatibilityList.length > 0
+  if (config.minApiVersion !== "disabled") {
+    if (apiVersoin) {
+      const compatibilityList = isCompatible(apiVersoin);
+      return compatibilityList.length > 0
+    }
+    return false;
   }
-  return false;
+  return true;
 };
 
 export const isCompatible = (version: string) => {

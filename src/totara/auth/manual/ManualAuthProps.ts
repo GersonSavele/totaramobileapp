@@ -18,7 +18,8 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
-import { SiteInfo } from "@totara/auth/AuthContext";
+
+import { SiteInfo } from "../AuthContext";
 
 export type ManualAuthProps = {
   siteUrl: string,
