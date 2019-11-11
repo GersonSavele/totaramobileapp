@@ -44,23 +44,15 @@ const ManualFlow = ({ manualFlowState, onSiteUrlSuccess, onSetupSecretSuccess, o
         switch (manualFlowState.flowStep) {
           case ManualFlowSteps.native:
             return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-              <NativeFlow
-                siteUrl={manualFlowState.siteUrl}
-                siteInfo={manualFlowState.siteInfo}
-                onSetupSecretSuccess={onSetupSecretSuccess}
-                onSetupSecretCancel={onSetupSecretCancel}
-              />
+              <NativeFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo} 
+                onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel} />
             ) : (
               <StartComponent />
             );
           case ManualFlowSteps.webview:
             return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-              <WebviewFlow
-                siteUrl={manualFlowState.siteUrl}
-                siteInfo={manualFlowState.siteInfo}
-                onSetupSecretSuccess={onSetupSecretSuccess}
-                onSetupSecretCancel={onSetupSecretCancel}
-              />
+              <WebviewFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
+                onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel} />
             ) : (
               <StartComponent />
             );

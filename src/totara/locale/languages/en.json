@@ -57,8 +57,7 @@
     "sorry": "Sorry!",
     "enter_valid_url": "Enter a valid site address",
     "enter_valid_username": "Enter a valid Username",
-    "enter_valid_password": "Enter a valid Password",
-    "incompatible_api": "This feature is not available.",
+    "enter_valid_password": "Enter a valid Password"
   },
   "native-login": {
     "header_title": "Login",
