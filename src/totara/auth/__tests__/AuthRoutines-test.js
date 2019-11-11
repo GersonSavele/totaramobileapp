@@ -200,10 +200,22 @@ describe("AuthRoutines.bootstrap", () => {
 
   it("should return the apiKey and host if they exists", async () => {
     expect.assertions(1);
-
     const mockAsyncStorage = {
-      getItem: jest.fn( key => (key === "apiKey") ? Promise.resolve("the_api_key") : Promise.resolve("testhost"))
+      getItem: jest.fn( key => { 
+        switch(key) {
+          case "apiKey":
+            return Promise.resolve("the_api_key");
+          case "host":
+            return Promise.resolve("testhost");
+          case "siteInfo":
+              return Promise.resolve(JSON.stringify({version: "testhost"}));
+          default:
+              return  Promise.resolve(null)
+        }
+    
+      })
     };
+
 
     const result = await bootstrap(mockAsyncStorage)();
 

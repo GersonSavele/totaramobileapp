@@ -19,36 +19,15 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
- import React from "react";
+import React from "react";
 import renderer from "react-test-renderer";
 
-import AppModal, { isCompatible, isValidApiVersion } from "../AppModal";
+import AppModal from "../AppModal";
 import { AuthContext } from "@totara/auth/AuthContext";
+import { config } from "@totara/lib";
 
 describe("AppModal", () => {
-  
-  it("should returns available features for current older and higher API version", () => {
-    const validVersion = isCompatible("2019101802");
-    expect(validVersion).toEqual([1]);
-    
-    const oldVersion = isCompatible("2010101802");
-    expect(oldVersion).toEqual([]);
-
-    const higherVersion = isCompatible("2030101802");
-    expect(higherVersion).toEqual([1]);
-  });
-
-  it("should returns true/false according to `minimum api version`", () => {
-    const validVersion = isValidApiVersion({ apiVersion: "2019101802" });
-    expect(validVersion).toBeTruthy();
-    
-    const oldVersion = isValidApiVersion({ apiVersion: "2010101802" });
-    expect(oldVersion).toBeFalsy();
-
-    const higherVersion = isValidApiVersion({ apiVersion: "2030101802" });
-    expect(higherVersion).toBeTruthy();
-  });
-
+  config.minApiVersion = "2019101802";
   it("screens for different apiVersion", async () => {
     const validSetupVersion = { apiVersion: "2019101802"};
     const validVersionComponent = renderer.create(
@@ -73,5 +52,13 @@ describe("AppModal", () => {
       </AuthContext.Provider>
     );
     expect(higherVersionComponent.toJSON()).toMatchSnapshot();
+
+    config.minApiVersion = "disabled";
+    const disabledAppMinVersionComponent = renderer.create(
+      <AuthContext.Provider value={{setup: validSetupVersion}} >
+        <AppModal />
+      </AuthContext.Provider>
+    );
+    expect(disabledAppMinVersionComponent.toJSON()).toMatchSnapshot();
   });
 });
