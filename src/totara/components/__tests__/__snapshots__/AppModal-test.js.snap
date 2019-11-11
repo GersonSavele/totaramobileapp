@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppModal screens for different apiVersion 1`] = `
+exports[`AppModal it should not show any modal screens for valid apiVersion or disabled minApiVersion 1`] = `
 <Modal
   hardwareAccelerated={false}
   visible={true}
@@ -233,7 +233,7 @@ exports[`AppModal screens for different apiVersion 1`] = `
 </Modal>
 `;
 
-exports[`AppModal screens for different apiVersion 2`] = `
+exports[`AppModal it should not show any modal screens for valid apiVersion or disabled minApiVersion 2`] = `
 <Modal
   hardwareAccelerated={false}
   visible={true}
@@ -466,7 +466,7 @@ exports[`AppModal screens for different apiVersion 2`] = `
 </Modal>
 `;
 
-exports[`AppModal screens for different apiVersion 3`] = `
+exports[`AppModal it should not show any modal screens for valid apiVersion or disabled minApiVersion 3`] = `
 <Modal
   hardwareAccelerated={false}
   visible={true}
@@ -699,7 +699,7 @@ exports[`AppModal screens for different apiVersion 3`] = `
 </Modal>
 `;
 
-exports[`AppModal screens for different apiVersion 4`] = `
+exports[`AppModal it should show error modal screens for incompatible version 1`] = `
 <Modal
   hardwareAccelerated={false}
   visible={true}

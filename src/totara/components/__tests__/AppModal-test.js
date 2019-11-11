@@ -27,8 +27,9 @@ import { AuthContext } from "@totara/auth/AuthContext";
 import { config } from "@totara/lib";
 
 describe("AppModal", () => {
-  config.minApiVersion = "2019101802";
-  it("screens for different apiVersion", async () => {
+  
+  it("it should not show any modal screens for valid apiVersion or disabled minApiVersion", async () => {
+    config.minApiVersion = "2019101802";
     const validSetupVersion = { apiVersion: "2019101802"};
     const validVersionComponent = renderer.create(
       <AuthContext.Provider value={{setup: validSetupVersion}} >
@@ -36,14 +37,6 @@ describe("AppModal", () => {
       </AuthContext.Provider>
     );
     expect(validVersionComponent.toJSON()).toMatchSnapshot();
-
-    const oldSetupVersion = { apiVersion: "2010101802"};
-    const oldVersionComponent = renderer.create(
-      <AuthContext.Provider value={{setup: oldSetupVersion}} >
-        <AppModal />
-      </AuthContext.Provider>
-    );
-    expect(oldVersionComponent.toJSON()).toMatchSnapshot();
 
     const higherSetupVersion = { apiVersion: "2030101802"};
     const higherVersionComponent = renderer.create(
@@ -60,5 +53,15 @@ describe("AppModal", () => {
       </AuthContext.Provider>
     );
     expect(disabledAppMinVersionComponent.toJSON()).toMatchSnapshot();
+  });
+  it("it should show error modal screens for incompatible version", async () => {
+    config.minApiVersion = "2019101802";
+    const oldSetupVersion = { apiVersion: "2010101802"};
+    const oldVersionComponent = renderer.create(
+      <AuthContext.Provider value={{setup: oldSetupVersion}} >
+        <AppModal />
+      </AuthContext.Provider>
+    );
+    expect(oldVersionComponent.toJSON()).toMatchSnapshot();
   });
 });
