@@ -26,6 +26,7 @@ import {
   manualFlowReducer,
   fetchSiteInfo
 } from "../ManualFlowHook";
+import { config } from "@totara/lib";
 
 describe("useManualFlow", () => {
   it("should be on step done when url and secret is valid", async () => {
@@ -93,7 +94,60 @@ describe("manualFlowReducer", () => {
       theme: {
         logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
         colorBrand: "#CCFFCC"
-      }
+      },
+      version: "2019101802"
+    };
+    const action = {
+      type: "apiSuccess",
+      payload: testSiteInfo
+    };
+
+    const newState = manualFlowReducer(currentState, action);
+
+    expect(newState.flowStep).toBe(ManualFlowSteps.native);
+    expect(newState.siteInfo).toMatchObject(testSiteInfo);
+  });
+
+  it("should set flowStep to incompatible for unsupport minApiVersion", () => {
+    config.minApiVersion = "2029101802";
+    const currentState = {
+      isSiteUrlSubmitted: true,
+      flowStep: ManualFlowSteps.siteUrl
+    };
+    const testSiteInfo = {
+      auth: "native",
+      siteMaintenance: false,
+      theme: {
+        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+        colorBrand: "#CCFFCC"
+      },
+      version: "2019101802"
+    };
+    const action = {
+      type: "apiSuccess",
+      payload: testSiteInfo
+    };
+
+    const newState = manualFlowReducer(currentState, action);
+
+    expect(newState.flowStep).toBe(ManualFlowSteps.incompatible);
+    expect(newState.siteInfo).toMatchObject(testSiteInfo);
+  });
+
+  it("should set flowStep to native for disabled app minApiVersion", () => {
+    config.minApiVersion = "disabled";
+    const currentState = {
+      isSiteUrlSubmitted: true,
+      flowStep: ManualFlowSteps.siteUrl
+    };
+    const testSiteInfo = {
+      auth: "native",
+      siteMaintenance: false,
+      theme: {
+        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+        colorBrand: "#CCFFCC"
+      },
+      version: "2019101802"
     };
     const action = {
       type: "apiSuccess",
@@ -155,7 +209,8 @@ describe("fetchData", () => {
         theme: {
           logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
           colorBrand: "#CCFFCC"
-        }
+        },
+        version: "2019101802"
       });
     });
 
@@ -193,7 +248,8 @@ const mockFetch = () => {
         theme: {
           logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
           colorBrand: "#CCFFCC"
-        }
+        },
+        version: "2019101802"
       }
     })
   });
