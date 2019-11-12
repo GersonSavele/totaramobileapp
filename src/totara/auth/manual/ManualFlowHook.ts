@@ -25,8 +25,8 @@ import React, { useEffect, useReducer, useContext } from "react";
 import { AuthProviderStateLift } from "@totara/auth/AuthComponent";
 import { ThemeContext, applyTheme } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
-import VersionInfo from "react-native-version-info";
 import { isValidApiVersion, SiteInfo } from "../AuthContext";
+import { getSiteInfo } from "../AuthRoutines";
 
 /**
  * Custom react hook that manages the state of the manual flow
@@ -192,22 +192,10 @@ export const fetchSiteInfo = (
   didCancel: boolean,
   dispatch: React.Dispatch<Action>
 ) => {
-  const infoUrl = config.infoUri(siteUrl);
-  const options = {
-    method: "POST",
-    body: JSON.stringify({ version: VersionInfo.appVersion })
-  };
 
-  const siteInfo = await fetch(infoUrl, options)
-    .then(response => {
-      Log.debug("response", response);
-      if (response.status === 200) return response.json();
-      else throw new Error(response.statusText);
-    })
-    .then(response => {
-      return (response.data as unknown) as SiteInfo;
-    })
+  const siteInfo = await getSiteInfo(fetch)(siteUrl)
     .catch(error => props.onLoginFailure(error));
+
   Log.debug("siteInfo", siteInfo);
 
   if (!didCancel && siteInfo && "auth" in siteInfo) {

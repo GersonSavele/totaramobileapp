@@ -22,6 +22,7 @@
 import { Linking, Platform } from "react-native";
 import { AuthProviderStateLift, AuthComponent } from "../AuthComponent";
 import { Log, config } from "@totara/lib";
+import { getSiteInfo } from "../AuthRoutines";
 
 export default class AppLinkFlow extends AuthComponent {
 
@@ -29,7 +30,7 @@ export default class AppLinkFlow extends AuthComponent {
     super(props);
   }
   
-  componentDidMount() {
+  async componentDidMount() {
     if (Platform.OS === "android") {
       Linking.getInitialURL().then(url => {
         this.handleAppLink(url);
@@ -39,11 +40,11 @@ export default class AppLinkFlow extends AuthComponent {
     }
   }
 
-  private handlerForiOS = (event: { url: string }) => { 
+  private handlerForiOS = async (event: { url: string }) => {
     this.handleAppLink(event.url);
   };
 
-  private handleAppLink = (encodedUrl: string | null) => {
+  private handleAppLink = async (encodedUrl: string | null) => {
     Log.info("handleAppLink", encodedUrl);
     if (encodedUrl) {
       const url = decodeURIComponent(encodedUrl);
@@ -63,7 +64,7 @@ export default class AppLinkFlow extends AuthComponent {
     return results === null ? null : results[1].replace(/\+/g, ' ');
   };
 
-  private handleAppLinkRegister = (url: string) => {
+  private handleAppLinkRegister = async (url: string) => {
     const keySecret: string = "setupsecret";
     const keySite: string = "site";
 
@@ -71,7 +72,13 @@ export default class AppLinkFlow extends AuthComponent {
     const site = this.getValueForUrlQueryParameter(url, keySite);
     if (site != null && secret != null && site != "" && secret != "") {
       Log.info("AppLinkLogin success", secret, site);
-      this.props.onLoginSuccess({ secret: secret, uri: site });
+
+      // fetch from global
+      // eslint-disable-next-line no-undef
+      await getSiteInfo(fetch)(site)
+        .then( siteInfo => this.props.onLoginSuccess({ secret: secret, uri: site, siteInfo: siteInfo }))
+        .catch(error => this.props.onLoginFailure(error));
+
     } else {
       var errorInfo = "Invalid request.";
       if ((site == "" || site == null) && (secret == null || secret == "")) {

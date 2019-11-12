@@ -33,6 +33,7 @@ import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { LearningItem } from "@totara/types";
 import { Setup } from "./AuthContextHook";
 import { AppState, SiteInfo } from "./AuthContext";
+import VersionInfo from "react-native-version-info";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -210,4 +211,32 @@ export const createApolloClient = (
       }
     })
   });
+};
+
+/**
+ * get the siteInfo for a siteUrl
+ *
+ * @param siteUrl - url where to fetch the site info
+ */
+export const getSiteInfo = (
+  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
+) => async (
+  siteUrl: string,
+): Promise<SiteInfo> => {
+
+  const infoUrl = config.infoUri(siteUrl);
+  const options = {
+    method: "POST",
+    body: JSON.stringify({ version: VersionInfo.appVersion })
+  };
+
+  return fetch(infoUrl, options)
+    .then(response => {
+      Log.debug("response", response);
+      if (response.status === 200) return response.json();
+      else throw new Error(response.statusText);
+    })
+    .then(response => {
+      return (response.data as unknown) as SiteInfo;
+    });
 };
