@@ -23,7 +23,6 @@ import { Linking, Platform } from "react-native";
 import { AuthProviderStateLift, AuthComponent } from "../AuthComponent";
 import { Log, config } from "@totara/lib";
 import { getSiteInfo } from "../AuthRoutines";
-import { Setup } from "../AuthContextHook";
 
 export default class AppLinkFlow extends AuthComponent {
 
@@ -53,20 +52,16 @@ export default class AppLinkFlow extends AuthComponent {
       const requestRegister: string[] = [`${config.appLinkDomain}/register`, `${config.appLinkDomain}/register/`, `${config.deepLinkSchema}/register`, `${config.deepLinkSchema}/register/`];
       
       if (requestRegister.includes(requestUrl)) {
-        const resultRegistration = this.getDeviceRegisterData(url);
-        if (resultRegistration.valid) {
-          let loginData = resultRegistration.data as Setup
+        try {
+          const resultRegistration = this.getDeviceRegisterData(url);
           // fetch from global
           // eslint-disable-next-line no-undef
-          await getSiteInfo(fetch)(loginData.uri)
+          await getSiteInfo(fetch)(resultRegistration.uri)
             .then(siteInfo => {
-              loginData.siteInfo = siteInfo;
-              this.props.onLoginSuccess(loginData);
+              this.props.onLoginSuccess({secret: resultRegistration.secret, uri: resultRegistration.uri, siteInfo: siteInfo});
             })
             .catch(error => this.props.onLoginFailure(error));
-        } else {
-          const error = resultRegistration.data as Error
-          Log.info("AppLinkLogin failed with error ", error);
+        } catch (error) {
           this.props.onLoginFailure(error);
         }
       }
@@ -87,7 +82,7 @@ export default class AppLinkFlow extends AuthComponent {
     const secret = this.getValueForUrlQueryParameter(url, keySecret);
     const site = this.getValueForUrlQueryParameter(url, keySite);
     if (site != null && secret != null && site != "" && secret != "") {
-      return { valid: true, data: { secret: secret, uri: site } as Setup};
+      return { secret: secret, uri: site };
     } else {
       var errorInfo = "Invalid request.";
       if ((site == "" || site == null) && (secret == null || secret == "")) {
@@ -97,7 +92,7 @@ export default class AppLinkFlow extends AuthComponent {
       } else if (secret == null || secret == "") {
         errorInfo = "Invalid request, 'token' cannot be null or empty.";
       }
-      return { valid: false, data: new Error(errorInfo) };
+      throw new Error(errorInfo);
     }
   };
   

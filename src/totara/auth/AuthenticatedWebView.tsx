@@ -101,10 +101,10 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     return (
       <AuthConsumer>
         {auth =>
-          (this.state.webviewSecret && auth.setup)
+          (this.state.webviewSecret && auth.appState)
             ? <WebView
                 source={{
-                  uri: config.webViewUri(auth.setup.host),
+                  uri: config.webViewUri(auth.appState.host),
                   headers: { [WEBVIEW_SECRET]: this.state.webviewSecret }
                 }}
                 userAgent={config.userAgent}

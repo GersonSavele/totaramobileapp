@@ -39,14 +39,11 @@ describe("AppModal", () => {
     expect(disabledAppMinVersion).toEqual([1]);
   });
 
-  it("should returns true/false according to `minimum api version`", () => {
+  it("should returns true for `disabled` or valid `minApiVersion` ", () => {
     config.minApiVersion = "2019101802";
   
     const validVersion = isValidApiVersion("2019101802");
     expect(validVersion).toBeTruthy();
-
-    const oldVersion = isValidApiVersion("2010101802");
-    expect(oldVersion).toBeFalsy();
 
     const higherVersion = isValidApiVersion("2030101802");
     expect(higherVersion).toBeTruthy();
@@ -55,5 +52,18 @@ describe("AppModal", () => {
     const disabledAppMinVersion = isValidApiVersion("2030101802");
     expect(disabledAppMinVersion).toBeTruthy();
     
+  });
+
+  it("should returns false for undefined, null or invalid `minApiVersion` ", () => {
+    config.minApiVersion = "2019101802";
+
+    const oldVersion = isValidApiVersion("2010101802");
+    expect(oldVersion).toBeFalsy();
+
+    const undefinedVersion = isValidApiVersion(undefined);
+    expect(undefinedVersion).toBeFalsy();
+
+    const nullVersion = isValidApiVersion(null);
+    expect(nullVersion).toBeFalsy();
   });
 });

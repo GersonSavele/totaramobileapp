@@ -36,7 +36,7 @@ const NoCurrentLearning = () => {
       <Text style={[theme.textH2, styles.description]}>{translate("my-learning.no_learning_message")}</Text>
       <AuthConsumer>
         {auth => (
-          <PrimaryButton onPress={() => { Linking.openURL(auth.setup.host); }} text={translate("additional-actions-modal.auth_model_go_to_browser")} icon="external-link-alt" style={{ alignSelf: "center" }} />
+          <PrimaryButton onPress={() => { Linking.openURL(auth.appState.host); }} text={translate("additional-actions-modal.auth_model_go_to_browser")} icon="external-link-alt" style={{ alignSelf: "center" }} />
         )}
       </AuthConsumer>
     </View>
