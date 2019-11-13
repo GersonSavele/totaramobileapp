@@ -18,11 +18,12 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-
 import { Linking, Platform } from "react-native";
+
 import { AuthProviderStateLift, AuthComponent } from "../AuthComponent";
 import { Log, config } from "@totara/lib";
 import { getSiteInfo } from "../AuthRoutines";
+import { Setup } from "../AuthContextHook";
 
 export default class AppLinkFlow extends AuthComponent {
 
@@ -52,7 +53,22 @@ export default class AppLinkFlow extends AuthComponent {
       const requestRegister: string[] = [`${config.appLinkDomain}/register`, `${config.appLinkDomain}/register/`, `${config.deepLinkSchema}/register`, `${config.deepLinkSchema}/register/`];
       
       if (requestRegister.includes(requestUrl)) {
-        this.handleAppLinkRegister(url);
+        const resultRegistration = this.getDeviceRegisterData(url);
+        if (resultRegistration.valid) {
+          let loginData = resultRegistration.data as Setup
+          // fetch from global
+          // eslint-disable-next-line no-undef
+          await getSiteInfo(fetch)(loginData.uri)
+            .then(siteInfo => {
+              loginData.siteInfo = siteInfo;
+              this.props.onLoginSuccess(loginData);
+            })
+            .catch(error => this.props.onLoginFailure(error));
+        } else {
+          const error = resultRegistration.data as Error
+          Log.info("AppLinkLogin failed with error ", error);
+          this.props.onLoginFailure(error);
+        }
       }
     } 
   };
@@ -63,22 +79,15 @@ export default class AppLinkFlow extends AuthComponent {
     var results = regex.exec(url);
     return results === null ? null : results[1].replace(/\+/g, ' ');
   };
-
-  private handleAppLinkRegister = async (url: string) => {
+  
+  private getDeviceRegisterData = (url: string) => {
     const keySecret: string = "setupsecret";
     const keySite: string = "site";
 
     const secret = this.getValueForUrlQueryParameter(url, keySecret);
     const site = this.getValueForUrlQueryParameter(url, keySite);
     if (site != null && secret != null && site != "" && secret != "") {
-      Log.info("AppLinkLogin success", secret, site);
-
-      // fetch from global
-      // eslint-disable-next-line no-undef
-      await getSiteInfo(fetch)(site)
-        .then( siteInfo => this.props.onLoginSuccess({ secret: secret, uri: site, siteInfo: siteInfo }))
-        .catch(error => this.props.onLoginFailure(error));
-
+      return { valid: true, data: { secret: secret, uri: site } as Setup};
     } else {
       var errorInfo = "Invalid request.";
       if ((site == "" || site == null) && (secret == null || secret == "")) {
@@ -88,8 +97,7 @@ export default class AppLinkFlow extends AuthComponent {
       } else if (secret == null || secret == "") {
         errorInfo = "Invalid request, 'token' cannot be null or empty.";
       }
-      Log.info("AppLinkLogin failed with error ", errorInfo);
-      this.props.onLoginFailure(new Error(errorInfo));
+      return { valid: false, data: new Error(errorInfo) };
     }
   };
   

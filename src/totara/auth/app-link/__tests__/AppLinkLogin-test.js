@@ -31,7 +31,6 @@ const appLinkLogin = renderer.create(
   <AppLinkFlow onLoginSuccess={mockOnSuccess} onLoginFailure={mockOnFail} />
 ).getInstance();
 
-
 describe("Passing different forms of 'url' and get the value for query string parameters('site' and 'setupsecret')", () => {
   function testGetValueForUrlQueryParameter(testCases) {
     const keySite = "site";
@@ -139,177 +138,150 @@ describe("Passing different forms of 'url' and get the value for query string pa
 });
 
 describe("Action for Auth Universal/AppLink and Deeplink event according to different data", () => {
-  function testHandleAppLinkRegister(testCases) {
-    for(let i = 0; i < testCases.length; i++) {
-      var testCase = testCases[i];
-      const url = testCase["url"];
-      const expectAction= testCase["result"]["action"];
-      const expectData = testCase["result"]["data"];
-      const testcase = testCase["testcase"];
-      it(testcase, () => {
-        appLinkLogin.handleAppLinkRegister(url);
-        expect(expectAction).toBeCalledWith(expectData);
-      });
-    }
-  }
-  const testCases = [
-    {
-      "testcase": "AppLink with all valid data",
-      "url": "https://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnSuccess,
-        "data": {
-          "secret": "cavnakd2143df80800",
-          "uri": "https://mobile.totaralearning.com"
-        }
+  it("AppLink with all valid data", () => {
+    const url = "https://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
+    const expectData = {
+      valid: true,
+      data: {
+        "secret": "cavnakd2143df80800",
+        "uri": "https://mobile.totaralearning.com"
       }
-    }, {
-      "testcase": "AppLink with only 'uri' data",
-      "url": "https://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeTruthy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("AppLink with only 'uri' data", () => {
+    const url = "https://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("AppLink with only 'secret' data", () => {
+    const url = "https://mobile.totaralearning.com/register?setupsecret=cavnakd2143df80800";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'site' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("AppLink without any data", () => {
+    const url = "https://mobile.totaralearning.com/register/";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("AppLink with valid 'site' and emplty 'secret'", () => {
+    const url = "https://mobile.totaralearning.com/register/?site=https://mobile.totaralearning.com&setupsecret=";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("AppLink with empty 'site' and valid 'secret'", () => {
+    const url = "https://mobile.totaralearning.com/register/?site=&setupsecret=cavnakd2143df80800";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'site' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("AppLink with empty 'site' and 'secret'", () => {
+    const url = "https://mobile.totaralearning.com/register/?site=&setupsecret=";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("DeepLink with all valid data", () => {
+    const url = "totara://register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
+    const expectData = {
+      valid: true,
+      data: {
+        secret: "cavnakd2143df80800",
+        uri: "https://mobile.totaralearning.com"
       }
-    }, {
-      "testcase": "AppLink with only 'secret' data",
-      "url": "https://mobile.totaralearning.com/register?setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "AppLink without any data",
-      "url": "https://mobile.totaralearning.com/register/",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "AppLink with valid 'site' and emplty 'secret'",
-      "url": "https://mobile.totaralearning.com/register/?site=https://mobile.totaralearning.com&setupsecret=",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "AppLink with empty 'site' and valid 'secret'",
-      "url": "https://mobile.totaralearning.com/register/?site=setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "AppLink with empty 'site' and 'secret'",
-      "url": "https://mobile.totaralearning.com/register/?site=setupsecret=",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "IP-Address formatted AppLink with all valid data",
-      "url": "https://10.0.8.153/register?site=https://10.0.8.153&setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnSuccess,
-        "data": {
-          "secret": "cavnakd2143df80800",
-          "uri": "https://10.0.8.153"
-        }
-      }
-    }, {
-      "testcase": "IP-Address formatted AppLink with only 'uri' data",
-      "url": "https://10.0.8.153/register?site=https://10.0.8.153",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "IP-Address formatted AppLink with only 'secret' data",
-      "url": "https://10.0.8.153/register?setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "IP-Address formatted AppLink without any data",
-      "url": "https://10.0.8.153/register/",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "IP-Address formatted AppLink with valid 'site' and emplty 'secret'",
-      "url": "https://10.0.8.153/register/?site=https://10.0.8.153&setupsecret=",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "IP-Address formatted AppLink with empty 'site' and valid 'secret'",
-      "url": "https://10.0.8.153/register/?site=setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "IP-Address formatted AppLink with empty 'site' and 'secret'",
-      "url": "https://10.0.8.153/register/?site=setupsecret=",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "DeepLink with all valid data",
-      "url": "totara://register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnSuccess,
-        "data": {
-          "secret": "cavnakd2143df80800",
-          "uri": "https://mobile.totaralearning.com"
-        }
-      }
-    }, {
-      "testcase": "DeepLink with only 'uri' data",
-      "url": "totara://register?site=https://mobile.totaralearning.com",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "DeepLink with only 'secret' data",
-      "url": "totara://register?setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "DeepLink without any data",
-      "url": "totara://register/",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "DeepLink with valid 'site' and emplty 'secret'",
-      "url": "totara://register/?site=https://mobile.totaralearning.com&setupsecret=",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'token' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "DeepLink with empty 'site' and valid 'secret'",
-      "url": "totara://register/?site=setupsecret=cavnakd2143df80800",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' cannot be null or empty.")
-      }
-    }, {
-      "testcase": "DeepLink with empty 'site' and 'secret'",
-      "url": "totara://register/?site=setupsecret=",
-      "result": {
-        "action": mockOnFail,
-        "data": new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
-      }
-    }
-  ];
-  testHandleAppLinkRegister(testCases);
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeTruthy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("DeepLink with only 'uri' data", () => {
+    const url = "totara://register?site=https://mobile.totaralearning.com";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("DeepLink with only 'secret' data", () => {
+    const url = "totara://register?setupsecret=cavnakd2143df80800";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'site' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("DeepLink without any data", () => {
+    const url = "totara://register/";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("DeepLink with valid 'site' and emplty 'secret'", () => {
+    const url = "totara://register/?site=https://mobile.totaralearning.com&setupsecret=";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("DeepLink with empty 'site' and valid 'secret'", () => {
+    const url = "totara://register/?site=&setupsecret=cavnakd2143df80800";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'site' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
+  it("DeepLink with empty 'site' and 'secret'", () => {
+    const url = "totara://register/?site=&setupsecret=";
+    const expectData = {
+      valid: false,
+      data: new Error("Invalid request, 'site' and 'token' cannot be null or empty.")
+    };
+    const result = appLinkLogin.getDeviceRegisterData(url);
+    expect(result.valid).toBeFalsy();
+    expect(result.data).toMatchObject(expectData.data);
+  });
 });
