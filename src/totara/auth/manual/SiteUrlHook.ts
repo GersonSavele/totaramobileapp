@@ -18,12 +18,12 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
-import { useReducer } from "react";
-import { translate } from "@totara/locale";
 import { config } from "@totara/lib";
+import { translate } from "@totara/locale";
+import { useReducer } from "react";
 
 
-export const useSiteUrl = ({siteUrl, onSiteUrlSuccess}: Props): OutProps => {
+export const useSiteUrl = ({siteUrl, onSiteUrlSuccess, isSiteUrlSubmitted}: Props): OutProps => {
 
   const [siteUrlState, dispatch] = useReducer(siteUrlReducer,
     { inputSiteUrlStatus: undefined, inputSiteUrlMessage: undefined, inputSiteUrl: siteUrl });
@@ -42,9 +42,9 @@ export const useSiteUrl = ({siteUrl, onSiteUrlSuccess}: Props): OutProps => {
   return {
     siteUrlState,
     onChangeInputSiteUrl,
-    onSubmit
+    onSubmit,
+    isSiteUrlSubmitted
   }
-
 };
 
 
@@ -55,7 +55,7 @@ const siteUrlReducer = (state: State, action: Action): State => {
         return {
           ...state,
           inputSiteUrl: formatUrl(state.inputSiteUrl),
-          inputSiteUrlStatus: "success"
+         inputSiteUrlStatus: "success"
         }
       } else {
         return {
@@ -78,7 +78,8 @@ const siteUrlReducer = (state: State, action: Action): State => {
 
 type Props = {
   onSiteUrlSuccess: (data: string) => void
-  siteUrl?: string
+  siteUrl?: string,
+  isSiteUrlSubmitted : boolean
 };
 
 type State = {
@@ -95,7 +96,8 @@ type Action = {
 export type OutProps = {
   siteUrlState: State,
   onChangeInputSiteUrl: (siteUrl: string) => void,
-  onSubmit: () => void
+  onSubmit: () => void,
+  isSiteUrlSubmitted : boolean
 }
 
 

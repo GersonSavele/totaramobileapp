@@ -78,7 +78,6 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-
     expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
     expect(newState.isSiteUrlSubmitted).toBeFalsy();
   });
@@ -103,7 +102,6 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-
     expect(newState.flowStep).toBe(ManualFlowSteps.native);
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
   });
@@ -129,7 +127,6 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-
     expect(newState.flowStep).toBe(ManualFlowSteps.incompatible);
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
   });
@@ -155,7 +152,6 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-
     expect(newState.flowStep).toBe(ManualFlowSteps.native);
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
   });
@@ -172,7 +168,6 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-
     expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
     expect(newState.isSiteUrlSubmitted).toBeTruthy();
     expect(newState.siteUrl).toBe("https://totarasite.com");
@@ -190,17 +185,36 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-
     expect(newState.flowStep).toBe(ManualFlowSteps.done);
     expect(newState.isSiteUrlSubmitted).toBeFalsy();
     expect(newState.setupSecret).toBe("the_secret");
+  });
+
+  it("should api failure, when site-info was Submitted", () => {
+    const currentState = {
+      isSiteUrlSubmitted: true,
+      siteUrl: "https://totarasite.com",
+      flowStep: ManualFlowSteps.native
+    };
+    const action = {
+      type: "apiFailure",
+      payload: {
+        status: 401,
+        message: "Network request failed",
+        networkError: "server error"
+      }
+    };
+
+    const newState = manualFlowReducer(currentState, action);
+    expect(newState.flowStep).toBe(ManualFlowSteps.native);
+    expect(newState.isSiteUrlSubmitted).toBeFalsy();
+    expect(newState.isSiteUrlFailure).toBe(true);
   });
 });
 
 describe("fetchData", () => {
   it("should dispatch apiSuccess action with the siteInfo when it isn't cancelled", async () => {
     expect.assertions(2);
-
     const dispatch = jest.fn(({ type, payload }) => {
       expect(type).toBe("apiSuccess");
       expect(payload).toMatchObject({
@@ -213,28 +227,41 @@ describe("fetchData", () => {
         version: "2019101802"
       });
     });
+    await fetchSiteInfo(mockFetch)("https://totarasite.com", false, dispatch);
+  });
 
-    await fetchSiteInfo(mockFetch)({})(
+  it("should call if the response has network error", async () => {
+    expect.assertions(2);
+    const dispatch = jest.fn(({ type, payload }) => {
+      expect(type).toBe("apiFailure");
+      expect(payload).toMatchObject({
+        status: 401,
+        message: "Network request failed",
+        networkError: "server error"
+      });
+    });
+    await fetchSiteInfo(mockErrorStatusFetch)(
       "https://totarasite.com",
       false,
       dispatch
     );
   });
 
-  it("should call onLoginFailure if the response has an error", async () => {
-    const onLoginFailure = jest.fn();
-    const mockFetch = () =>
-      Promise.resolve({
-        status: 500,
-        statusText: "server error"
+  it("should call if the response has error with 200 status", async () => {
+    expect.assertions(2);
+    const dispatch = jest.fn(({ type, payload }) => {
+      expect(type).toBe("apiFailure");
+      expect(payload).toMatchObject({
+        status: 200,
+        message: "Invalid request",
+        apiFailure: "server error"
       });
-
-    await fetchSiteInfo(mockFetch)({ onLoginFailure: onLoginFailure })(
+    });
+    await fetchSiteInfo(mockErrorFetch)(
       "https://totarasite.com",
-      false
+      false,
+      dispatch
     );
-
-    expect(onLoginFailure).toBeCalledTimes(1);
   });
 });
 
@@ -252,5 +279,21 @@ const mockFetch = () => {
         version: "2019101802"
       }
     })
+  });
+};
+
+const mockErrorStatusFetch = () => {
+  return Promise.reject({
+    status: 401,
+    message: "Network request failed",
+    networkError: "server error"
+  });
+};
+
+const mockErrorFetch = () => {
+  return Promise.reject({
+    status: 200,
+    message: "Invalid request",
+    apiFailure: "server error"
   });
 };

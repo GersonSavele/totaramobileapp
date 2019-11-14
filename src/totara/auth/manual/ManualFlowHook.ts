@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-import { config, Log } from "@totara/lib";
+import { Log } from "@totara/lib";
 import React, { useEffect, useReducer, useContext } from "react";
 
 import { AuthProviderStateLift } from "@totara/auth/AuthComponent";
@@ -42,7 +42,8 @@ export const useManualFlow = (
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
     isSiteUrlSubmitted: false,
-    flowStep: ManualFlowSteps.siteUrl
+    flowStep: ManualFlowSteps.siteUrl,
+    isSiteUrlFailure: false
   });
   Log.debug("manualFlowState", manualFlowState);
 
@@ -68,7 +69,7 @@ export const useManualFlow = (
       manualFlowState.flowStep === ManualFlowSteps.siteUrl &&
       manualFlowState.siteUrl
     )
-      fetchSiteInfo(fetch)(props)(manualFlowState.siteUrl, didCancel, dispatch);
+      fetchSiteInfo(fetch)(manualFlowState.siteUrl, didCancel, dispatch);
 
     return () => {
       didCancel = true; // need to create a lock for async stuff
@@ -165,21 +166,35 @@ export const manualFlowReducer = (
           siteInfo: siteInfo
         };
       } else {
-        throw new Error(`Unknown auth response from server ${siteInfo.auth}`);
+        return {
+          ...state,
+          isSiteUrlSubmitted: false,
+          isSiteUrlFailure: true
+        };
       }
+    }
+
+    case "apiFailure": {
+      return {
+        ...state,
+        isSiteUrlSubmitted: false,
+        isSiteUrlFailure: true
+      };
     }
 
     case "cancelManualFlow":
       return {
         ...state,
         isSiteUrlSubmitted: false,
-        flowStep: ManualFlowSteps.siteUrl
+        flowStep: ManualFlowSteps.siteUrl,
+        isSiteUrlFailure: false
       };
 
     case "setupSecretSuccess":
       return {
         ...state,
         isSiteUrlSubmitted: false,
+        isSiteUrlFailure: false,
         setupSecret: action.payload as string,
         flowStep: ManualFlowSteps.done
       };
@@ -192,15 +207,15 @@ export const manualFlowReducer = (
  */
 export const fetchSiteInfo = (
   fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) => (props: AuthProviderStateLift) => async (
+) => async (
   siteUrl: string,
   didCancel: boolean,
   dispatch: React.Dispatch<Action>
 ) => {
-
-  const siteInfo = await getSiteInfo(fetch)(siteUrl)
-    .catch(error => props.onLoginFailure(error));
-
+  const siteInfo = await getSiteInfo(fetch)(siteUrl).catch(error => {
+    Log.debug("error", error);
+    dispatch({ type: "apiFailure", payload: error });
+  });
   Log.debug("siteInfo", siteInfo);
 
   if (!didCancel && siteInfo && "auth" in siteInfo) {
@@ -230,14 +245,18 @@ type ManualFlowState = {
   setupSecret?: string;
   isSiteUrlSubmitted: boolean;
   flowStep: ManualFlowSteps;
+  isSiteUrlFailure: boolean;
 };
 
 type Action = {
-  type: "apiInit" | "apiSuccess" | "setupSecretSuccess" | "cancelManualFlow";
+  type:
+    | "apiInit"
+    | "apiSuccess"
+    | "setupSecretSuccess"
+    | "cancelManualFlow"
+    | "apiFailure";
   payload?: string | SiteInfo;
 };
-
-
 
 export type OutProps = {
   manualFlowState: ManualFlowState;

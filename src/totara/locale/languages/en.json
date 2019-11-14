@@ -74,5 +74,11 @@
     "description" : "The URL you have entered is not valid.",
     "primary_title" : "Try again",
     "tertiary_title" : "Try in browser"
+  },
+
+  "site-url-not-valid": {
+    "title": "Sorry!",
+    "description" : "The URL you have entered is not valid.",
+    "primary_title" : "OK"
   }
 }

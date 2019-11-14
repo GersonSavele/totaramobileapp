@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
+ *
  */
 
 import React from "react";
@@ -28,57 +29,84 @@ import NativeFlow from "./native";
 import { useManualFlow, ManualFlowSteps, OutProps } from "./ManualFlowHook";
 import SiteUrl from "./SiteUrl";
 import { useSiteUrl } from "./SiteUrlHook";
-import { AppModal } from "@totara/components";
-
+import { AppModal, InfoModal, PrimaryButton } from "@totara/components";
+import { translate } from "@totara/locale";
 /**
  * ManualFlow starts with a siteUrl, then depending what configured on the server
  * will dispatch the next flow
  */
-const ManualFlow = ({ manualFlowState, onSiteUrlSuccess, onSetupSecretSuccess, onSetupSecretCancel, onSetupSecretFailure }: OutProps) => {
-
-  const StartComponent = () => SiteUrl(useSiteUrl({onSiteUrlSuccess: onSiteUrlSuccess, siteUrl: manualFlowState.siteUrl}));
-
-  return(
-    <View style={{flex: 1}}>
-      {(() => {
-        switch (manualFlowState.flowStep) {
-          case ManualFlowSteps.native:
-            return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-              <NativeFlow
-                siteUrl={manualFlowState.siteUrl}
-                siteInfo={manualFlowState.siteInfo}
-                onSetupSecretSuccess={onSetupSecretSuccess}
-                onSetupSecretCancel={onSetupSecretCancel}
-                onSetupSecretFailure={onSetupSecretFailure}
-              />
-            ) : (
-              <StartComponent />
-            );
-          case ManualFlowSteps.webview:
-            return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-              <WebviewFlow
-                siteUrl={manualFlowState.siteUrl}
-                siteInfo={manualFlowState.siteInfo}
-                onSetupSecretSuccess={onSetupSecretSuccess}
-                onSetupSecretCancel={onSetupSecretCancel}
-                onSetupSecretFailure={onSetupSecretFailure}
-              />
-            ) : (
-              <StartComponent />
-            );
-          case ManualFlowSteps.incompatible:
-            return <AppModal onCancel={onSetupSecretCancel} />;
-          case ManualFlowSteps.done:
-            return null;
-          default:
-            return <StartComponent />;
-        }
-      })()}
-    </View>
-  )
+const ManualFlow = ({
+  manualFlowState,
+  onSiteUrlSuccess,
+  onSetupSecretSuccess,
+  onSetupSecretCancel,
+  onSetupSecretFailure
+}: OutProps) => {
+  const StartComponent = () =>
+    SiteUrl(
+      useSiteUrl({
+        onSiteUrlSuccess: onSiteUrlSuccess,
+        siteUrl: manualFlowState.siteUrl,
+        isSiteUrlSubmitted: manualFlowState.isSiteUrlSubmitted
+      })
+    );
+  if (manualFlowState.isSiteUrlFailure) {
+    return (
+      <InfoModal
+        title={translate("site-url-not-valid.title")}
+        description={translate("site-url-not-valid.description")}
+        imageType={"url_not_valid"}
+        visible={true}
+      >
+        <PrimaryButton
+          text={translate("site-url-not-valid.primary_title")}
+          onPress={() => onSetupSecretCancel && onSetupSecretCancel()}
+        />
+      </InfoModal>
+    );
+  } else {
+    return (
+      <View style={{ flex: 1 }}>
+        {(() => {
+          switch (manualFlowState.flowStep) {
+            case ManualFlowSteps.native:
+              return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+                <NativeFlow
+                  siteUrl={manualFlowState.siteUrl}
+                  siteInfo={manualFlowState.siteInfo}
+                  onSetupSecretSuccess={onSetupSecretSuccess}
+                  onSetupSecretCancel={onSetupSecretCancel}
+                  onSetupSecretFailure={onSetupSecretFailure}
+                />
+              ) : (
+                <StartComponent />
+              );
+            case ManualFlowSteps.webview:
+              return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+                <WebviewFlow
+                  siteUrl={manualFlowState.siteUrl}
+                  siteInfo={manualFlowState.siteInfo}
+                  onSetupSecretSuccess={onSetupSecretSuccess}
+                  onSetupSecretCancel={onSetupSecretCancel}
+                  onSetupSecretFailure={onSetupSecretFailure}
+                />
+              ) : (
+                <StartComponent />
+              );
+            case ManualFlowSteps.incompatible:
+              return <AppModal onCancel={onSetupSecretCancel} />;
+            case ManualFlowSteps.done:
+              return null;
+            default:
+              return <StartComponent />;
+          }
+        })()}
+      </View>
+    );
+  }
 };
 
-
 // fetch is available on global scope
-// eslint-disable-next-line no-undef
-export default (props: AuthProviderStateLift) => ManualFlow(useManualFlow(fetch)(props));
+export default (props: AuthProviderStateLift) =>
+  // eslint-disable-next-line no-undef
+  ManualFlow(useManualFlow(fetch)(props));

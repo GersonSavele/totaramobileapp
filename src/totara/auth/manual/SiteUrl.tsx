@@ -18,40 +18,53 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React, { useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  Text
-} from "react-native";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { Form, Input, Container, Content } from "native-base";
-import VersionInfo from "react-native-version-info";
-
-import { resizeByScreenSize, gutter, ThemeContext } from "@totara/theme";
-import { PrimaryButton, InputTextWithInfo } from "@totara/components";
+import { InputTextWithInfo, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { OutProps } from "./SiteUrlHook";
+import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
+import { Container, Content, Form, Input } from "native-base";
+import React, { useContext } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
+import VersionInfo from "react-native-version-info";
+import { OutProps } from "./SiteUrlHook";
 
-const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
-
-  const [ theme ] = useContext(ThemeContext);
+const SiteUrl = ({
+  siteUrlState,
+  onChangeInputSiteUrl,
+  onSubmit,
+  isSiteUrlSubmitted
+}: OutProps) => {
+  const [theme] = useContext(ThemeContext);
 
   return (
     <Container style={[{ flex: 0 }, theme.viewContainer]}>
       <Content enableOnAndroid>
         <Form style={styles.siteUrlContainer}>
           <View style={styles.headerContainer}>
-            <Image source={require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode="contain" />
+            <Image
+              source={require("@resources/images/totara_logo/totara_logo.png")}
+              style={styles.totaraLogo}
+              resizeMode="contain"
+            />
             <View>
-              <Text style={theme.textH2}>{translate("manual.site_url_title")}</Text>
-              <Text style={theme.textH4}>{translate("manual.site_url_information")}</Text>
+              <Text style={theme.textH2}>
+                {translate("manual.site_url_title")}
+              </Text>
+              <Text style={theme.textH4}>
+                {translate("manual.site_url_information")}
+              </Text>
             </View>
           </View>
           <View style={styles.formContainer}>
-            <InputTextWithInfo placeholder={translate("manual.site_url_text_placeholder")} message={siteUrlState.inputSiteUrlMessage} status={siteUrlState.inputSiteUrlStatus} >
+            <InputTextWithInfo
+              placeholder={translate("manual.site_url_text_placeholder")}
+              message={siteUrlState.inputSiteUrlMessage}
+              status={siteUrlState.inputSiteUrlStatus}
+            >
               <Input
                 keyboardType="url"
                 clearButtonMode="while-editing"
@@ -62,12 +75,26 @@ const SiteUrl = ({siteUrlState, onChangeInputSiteUrl, onSubmit}: OutProps) => {
                 autoFocus={true}
               />
             </InputTextWithInfo>
-            <PrimaryButton onPress={onSubmit} text={translate("general.enter")} style={styles.buttonEnter} />
+            <PrimaryButton
+              onPress={onSubmit}
+              text={translate("general.enter")}
+              style={styles.buttonEnter}
+              mode={isSiteUrlSubmitted == true ? "loading" : undefined}
+            />
           </View>
         </Form>
       </Content>
       <SafeAreaView>
-        <Text style={[styles.version, theme.textLabel, { color: theme.textColorDisabled }]}>{translate("general.version")}: {VersionInfo.appVersion}({VersionInfo.buildVersion})</Text>
+        <Text
+          style={[
+            styles.version,
+            theme.textLabel,
+            { color: theme.textColorDisabled }
+          ]}
+        >
+          {translate("general.version")}: {VersionInfo.appVersion}(
+          {VersionInfo.buildVersion})
+        </Text>
       </SafeAreaView>
     </Container>
   );
