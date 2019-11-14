@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 import { AuthStep, initialState, useAuthContext } from "@totara/auth/AuthContextHook";
 import { renderHook, act } from "@testing-library/react-hooks";
@@ -203,4 +203,52 @@ describe("useAuthContext", () => {
     expect(result.current.authContextState.isLoading).toBeFalsy();
     expect(result.current.authContextState.authStep).toBe(AuthStep.setupDone);
   });
+
+  it("should be setup error when register is not successful", async () => {
+    expect.assertions(5);
+
+    const setup = {
+      secret: "secret",
+      uri: "https://site.com",
+      siteInfo: {
+        version: "2019101802"
+      }
+    };
+
+    const mockBootstrap = jest.fn();
+    const mockGetAndStoreApiKey = jest.fn((ss) => {
+
+      expect(ss).toMatchObject(setup);
+
+      return Promise.reject(new Error("server error"))
+    });
+    const mockDeviceCleanup = jest.fn(() => Promise.resolve(true));
+    const mockCreateApolloClient = jest.fn();
+
+    const state = {
+      appState: undefined,
+      setup: undefined,
+      isLoading: false,
+      isAuthenticated: false,
+      authStep: AuthStep.bootstrapDone
+    };
+
+    const { result, waitForNextUpdate } = renderHook((props) => useAuthContext(mockBootstrap, mockGetAndStoreApiKey, mockDeviceCleanup, mockCreateApolloClient)(props),
+      { initialProps: { initialState: state } }
+    );
+
+    act(() => {
+      result.current.onLoginSuccess(setup);
+    });
+
+    await act(async () => waitForNextUpdate());
+
+    expect(result.current.authContextState.appState).toBeFalsy();
+    expect(result.current.authContextState.isAuthenticated).toBeFalsy();
+    expect(result.current.authContextState.isLoading).toBeFalsy();
+    expect(result.current.authContextState.authStep).toBe(AuthStep.authError);
+
+  });
+
+
 });

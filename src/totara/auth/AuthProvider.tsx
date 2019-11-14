@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
 
@@ -24,6 +24,9 @@ import React, { ReactNode } from "react";
 import { Text } from "react-native";
 import { ApolloProvider } from "react-apollo";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
+
+import { translate } from "@totara/locale";
+import { PrimaryButton, InfoModal } from "@totara/components";
 
 import { AuthContext } from "./AuthContext";
 import AppLinkFlow from "./app-link";
@@ -65,6 +68,26 @@ export const AuthProvider = ( {asyncStorage, children}: Props) => {
     logOut: logOut
   };
 
+  // TODO we need to put this modal in a more appropriate place
+  const AuthErrorModal = () => (
+  <InfoModal title={translate("general_error_feedback-modal.title")} description={translate("general_error_feedback-modal.description")} imageType={"general_error"} visible={true}>
+    <PrimaryButton text={translate("general_error_feedback-modal.primary_title")} onPress={() => logOut(true) } />
+  </InfoModal>);
+
+  // TODO improve and make this testable, logic is getting more complicated
+  const showUIFor = (authStep: AuthStep) => {
+    switch (authStep) {
+      case AuthStep.authError:
+        return <AuthErrorModal/>;
+      case AuthStep.setupDone:
+      case AuthStep.bootstrapDone:
+        return <ManualFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>;
+      case AuthStep.setupSecretInit:
+      case AuthStep.loading:
+        return null;
+    }
+  };
+
   return (
     <AuthContext.Provider value={providerValue}>
       <AppLinkFlow
@@ -78,8 +101,7 @@ export const AuthProvider = ( {asyncStorage, children}: Props) => {
           {children}
         </ApolloProvider>
       ) : (
-        (authContextState.authStep !== AuthStep.setupSecretInit) &&
-        <ManualFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>
+        showUIFor(authContextState.authStep)
       )}
     </AuthContext.Provider>
   );

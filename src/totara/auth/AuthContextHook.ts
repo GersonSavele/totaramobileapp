@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 import { useEffect, useReducer, useRef } from "react";
 import { ApolloClient } from "apollo-client";
@@ -150,10 +150,15 @@ export const useAuthContext = (
   useEffect(() => {
     const doGetandStoreApiKey = () => {
       Log.debug("doGetandStoreApiKey", authContextState);
-      if (authContextState.setup)
+      if (authContextState.setup) {
         getAndStoreApiKey(authContextState.setup).then(appState => {
           dispatch({ type: "registered", payload: appState });
-        });
+        }).catch(error => {
+            Log.error("error on registering", error);
+            dispatch({ type: "authError" });
+          }
+        )
+      }
     };
 
     if (authContextState.authStep === AuthStep.setupSecretInit)
@@ -170,6 +175,7 @@ export const useAuthContext = (
 };
 
 const authContextReducer = (state: State, action: Action): State => {
+  Log.debug("authContextReducer: state", state, "action", action);
   switch (action.type) {
     case "register": {
       if (action.payload && "secret" in action.payload)
@@ -219,13 +225,23 @@ const authContextReducer = (state: State, action: Action): State => {
         authStep: AuthStep.bootstrapDone
       };
 
+    case "authError":
+      return {
+        ...state,
+        setup: undefined,
+        appState: undefined,
+        isAuthenticated: false,
+        isLoading: false,
+        authStep: AuthStep.authError
+      };
+
     case "reload":
       return initialState;
   }
 };
 
 type Action = {
-  type: "register" | "registered" | "bootstrap" | "deRegister" | "reload";
+  type: "register" | "registered" | "bootstrap" | "deRegister" | "reload" | "authError";
   payload?: AppState | Setup;
 };
 
@@ -243,7 +259,8 @@ export enum AuthStep {
   loading,
   bootstrapDone,
   setupSecretInit,
-  setupDone
+  setupDone,
+  authError
 }
 
 type State = {
