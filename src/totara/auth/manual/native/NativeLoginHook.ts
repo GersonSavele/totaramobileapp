@@ -20,6 +20,7 @@
  */
 
 import React, { useReducer, useEffect } from "react";
+
 import { config, Log } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 
@@ -29,7 +30,8 @@ const initialState = {
   inputPassword: "",
   inputUsernameStatus: undefined,
   inputPasswordStatus: undefined,
-  isDownloadLoginSecret: false
+  isRequestingLogin: false,
+  errorStatusUnauthorized: false
 };
 
 export const useNativeLogin = ({
@@ -53,10 +55,10 @@ export const useNativeLogin = ({
 
   useEffect(() => {
     let didCancel = false;
-    if (nativeLoginState.isDownloadLoginSecret) {
+    if (nativeLoginState.isRequestingLogin) {
       // eslint-disable-next-line no-undef
       fetchLoginSecret(fetch)(didCancel, siteUrl)
-        .then(loginsecret => {
+        .then(loginsecret => (
           //  eslint-disable-next-line no-undef
           fetchLogin(fetch)(
             dispatch,
@@ -64,24 +66,30 @@ export const useNativeLogin = ({
             nativeLoginState.inputUsername,
             nativeLoginState.inputPassword,
             siteUrl
-          );
+          )
+        ))
+        .then(setupsecret => {
+          if(setupsecret)
+            dispatch({ type: "setupsecret", payload: setupsecret });
+          else
+            dispatch({ type: "loginfailed"});
         })
         .catch(error => {
-          Log.debug("Error:", error);
-        });
-      dispatch({ type: "isdownloadloginsecret", payload: false });
+          Log.debug("Error fetchLoginSecret:", error);
+          if ((error as Error).message === "401") {
+            dispatch({ type: "loginfailed"});
+          } else {
+            throw error;
+          }
+        })
     }
     return () => {
       didCancel = true; // need to create a lock for async stuff
     };
-  }, [nativeLoginState.isDownloadLoginSecret]);
+  }, [nativeLoginState.isRequestingLogin]);
 
   useEffect(() => {
-    if (
-      typeof nativeLoginState.setupSecret !== "undefined" &&
-      nativeLoginState.setupSecret != "null" &&
-      nativeLoginState.setupSecret
-    ) {
+    if ( nativeLoginState.setupSecret ) {
       Log.debug("Setup Secret", nativeLoginState.setupSecret);
       onSetupSecretSuccess(String(nativeLoginState.setupSecret));
     }
@@ -123,10 +131,11 @@ export const nativeReducer = (
         ...state,
         inputPassword: action.payload as string
       };
-    case "isdownloadloginsecret":
+    case "loginfailed":
       return {
         ...state,
-        isDownloadLoginSecret: action.payload as boolean
+        isRequestingLogin: false,
+        errorStatusUnauthorized: true
       };
     case "submit":
       if (
@@ -137,7 +146,7 @@ export const nativeReducer = (
       ) {
         return {
           ...state,
-          isDownloadLoginSecret: true,
+          isRequestingLogin: true,
           inputUsernameStatus: undefined,
           inputPasswordStatus: undefined
         };
@@ -191,13 +200,10 @@ export const fetchLoginSecret = (
       if (response.status === 200) {
         return (response.json() as unknown) as LoginSecret;
       } else {
-        throw new Error(response.statusText);
+        throw new Error(response.status.toString());
       }
-    })
-    .catch(error => {
-      Log.debug("Error:", error);
-      return undefined;
     });
+    
   if (!didCancel && loginSecretData) {
     return loginSecretData.data.loginsecret;
   } else {
@@ -229,23 +235,18 @@ export const fetchLogin = (
     }),
     headers: { [DEVICE_REGISTRATION]: config.userAgent }
   };
+
   const login = await fetch(nativeLoginUri, options)
     .then(response => {
       if (response.status === 200) {
         return (response.json() as unknown) as Login;
       } else {
-        throw new Error(response.statusText);
+        throw new Error(response.status.toString());
       }
-    })
-    .catch(error => {
-      Log.debug("Error:", error);
-      dispatch({ type: "setupsecret", payload: undefined });
     });
+
   if (login && login.data.setupsecret != undefined) {
-    Log.debug("No Error:");
-    dispatch({ type: "setupsecret", payload: login.data.setupsecret });
-  } else {
-    dispatch({ type: "setupsecret", payload: undefined });
+    return login.data.setupsecret;
   }
 };
 
@@ -255,7 +256,8 @@ type NativeLoginState = {
   inputPassword: string;
   inputUsernameStatus?: "error" | undefined;
   inputPasswordStatus?: "error" | undefined;
-  isDownloadLoginSecret: boolean;
+  isRequestingLogin: boolean;
+  errorStatusUnauthorized: boolean;
 };
 
 type Action = {
@@ -264,7 +266,7 @@ type Action = {
     | "setusername"
     | "setpassword"
     | "submit"
-    | "isdownloadloginsecret";
+    | "loginfailed";
 
   payload?: string | boolean;
 };

@@ -29,6 +29,7 @@ import {
   Linking
 } from "react-native";
 import { Form, Input, Container, Content, Header } from "native-base";
+
 import { config } from "@totara/lib";
 import { resizeByScreenSize, gutter, ThemeContext} from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
@@ -57,6 +58,7 @@ const NativeLogin = ({
           <Text style={theme.textH4}>{translate("native-login.login_information")}</Text>
         </View>
         <Form>
+          { nativeLoginState.errorStatusUnauthorized && (<Text style={{ color: theme.colorAlert }}>{translate("native-login.error_unauthorized")}</Text>) }
           <View style={styles.formInputContainer}>
             <InputTextWithInfo placeholder={translate("native-login.username_text_placeholder")} message={(nativeLoginState.inputUsernameStatus == "error")? translate("message.enter_valid_username"): undefined}
               status={nativeLoginState.inputUsernameStatus} >
@@ -86,7 +88,7 @@ const NativeLogin = ({
               <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
             </TouchableOpacity>
           </View>
-          <PrimaryButton onPress={onClickEnter} text={translate("general.enter")} />
+          <PrimaryButton onPress={onClickEnter} text={translate("general.enter")} mode={nativeLoginState.isRequestingLogin ? "loading": undefined} />
         </Form>
       </Content>
     </Container>    

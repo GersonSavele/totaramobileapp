@@ -66,7 +66,8 @@
     "password_text_placeholder": "Password",
     "forgot_username_password": "Forgot your username or password?",
     "footer_note": "Is this your first time here?",
-    "footer_action": "Create new account"
+    "footer_action": "Create new account",
+    "error_unauthorized": "Invalid login, please try again"
   },
   "error-not-valid-url": {
     "title": "Sorry!",
