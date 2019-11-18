@@ -156,23 +156,24 @@ describe("fetchData", () => {
         status: 401,
         statusText: "server error"
       });
-    await fetchLoginSecret(mockFetch)(false).then(response =>
-      expect(response).toEqual(undefined)
-    );
+      await fetchLoginSecret(mockFetch)(false)
+        .then(response => expect(response).toEqual(undefined))
+        .catch((e)=> expect(e.message).toEqual("401"));
   });
 
   it("should dispatch native setup secret action with the login secret", async () => {
-    expect.assertions(2);
-    const dispatch = jest.fn(({ type, payload }) => {
-      expect(type).toBe("setupsecret");
-      expect(payload).toBe("setupsecret_value");
-    });
-    await fetchLogin(mockFetchLogin)(
-      dispatch,
-      "loginsecret",
-      "username",
-      "password"
-    );
+    expect.assertions(1);
+    const dispatch = jest.fn();
+    try {
+      await fetchLogin(mockFetchLogin)(
+        dispatch,
+        "loginsecret",
+        "username",
+        "password"
+      ).then(responce => expect(responce).toEqual("setupsecret_value"));
+    } catch (e) {
+      expect(e).toBeNull();
+    }
   });
 
   it("should call setupSecret fail if the response has an error", async () => {
@@ -182,8 +183,12 @@ describe("fetchData", () => {
         status: 401,
         statusText: "server error"
       });
-    await fetchLogin(mockFetch)(dispatch);
-    expect(dispatch).toBeCalledTimes(2);
+      try {
+        await fetchLogin(mockFetch)(dispatch);
+      } catch(e) {
+        expect(e.message).toEqual("401");
+      }
+      expect(dispatch).toBeCalledTimes(0);
   });
 });
 
