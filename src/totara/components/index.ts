@@ -34,6 +34,7 @@ import InputTextWithInfo from "./InputTextWithInfo";
 import TertiaryButton from "./TertiaryButton";
 import TouchableIcon from "./TouchableIcon";
 import AppModal from "./AppModal";
+import FormError from "./FormError";
 
 export {
   LearningItemCard,
@@ -50,5 +51,6 @@ export {
   InputTextWithInfo,
   TertiaryButton,
   TouchableIcon,
-  AppModal
+  AppModal,
+  FormError
 }

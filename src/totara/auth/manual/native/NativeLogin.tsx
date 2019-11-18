@@ -20,19 +20,12 @@
  */
 
 import React, {useContext} from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  Linking
-} from "react-native";
+import { StyleSheet, View, Image, Text, TouchableOpacity, Linking } from "react-native";
 import { Form, Input, Container, Content, Header } from "native-base";
 
 import { config } from "@totara/lib";
 import { resizeByScreenSize, gutter, ThemeContext} from "@totara/theme";
-import { PrimaryButton, InputTextWithInfo, TouchableIcon } from "@totara/components";
+import { PrimaryButton, InputTextWithInfo, TouchableIcon, FormError } from "@totara/components";
 import { translate } from "@totara/locale";
 import { OutProps } from "./NativeLoginHook";
 
@@ -43,7 +36,6 @@ const NativeLogin = ({
   onClickEnter,
   inputUsernameWithShowError,
   inputPasswordWithShowError
-
 }: OutProps) => {
   const [ theme ] = useContext(ThemeContext);
   return (
@@ -52,13 +44,13 @@ const NativeLogin = ({
         <TouchableIcon onPress={() => { onBack()}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
       </Header>
       <Content style={styles.content} enableOnAndroid>
-      <Image source={theme.logoUrl ? { uri: theme.logoUrl } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
+        <FormError message={translate("native-login.error_unauthorized")} isShow={nativeLoginState.errorStatusUnauthorized} />
+        <Image source={theme.logoUrl ? { uri: theme.logoUrl } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
         <View style={styles.infoContainer}>
           <Text style={theme.textH2}>{translate("native-login.header_title")}</Text>
           <Text style={theme.textH4}>{translate("native-login.login_information")}</Text>
         </View>
         <Form>
-          { nativeLoginState.errorStatusUnauthorized && (<Text style={{ color: theme.colorAlert }}>{translate("native-login.error_unauthorized")}</Text>) }
           <View style={styles.formInputContainer}>
             <InputTextWithInfo placeholder={translate("native-login.username_text_placeholder")} message={(nativeLoginState.inputUsernameStatus == "error")? translate("message.enter_valid_username"): undefined}
               status={nativeLoginState.inputUsernameStatus} >

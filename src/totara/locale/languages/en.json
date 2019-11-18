@@ -67,7 +67,7 @@
     "forgot_username_password": "Forgot your username or password?",
     "footer_note": "Is this your first time here?",
     "footer_action": "Create new account",
-    "error_unauthorized": "Invalid login, please try again"
+    "error_unauthorized": "Oops! Your username or password is incorrect."
   },
   "error-not-valid-url": {
     "title": "Sorry!",

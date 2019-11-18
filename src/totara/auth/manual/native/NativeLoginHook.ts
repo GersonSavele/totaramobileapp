@@ -72,12 +72,12 @@ export const useNativeLogin = ({
           if(setupsecret)
             dispatch({ type: "setupsecret", payload: setupsecret });
           else
-            dispatch({ type: "loginfailed"});
+            dispatch({ type: "loginfailed", payload: true});
         })
         .catch(error => {
           Log.debug("Error fetchLoginSecret:", error);
           if ((error as Error).message === "401") {
-            dispatch({ type: "loginfailed"});
+            dispatch({ type: "loginfailed", payload: true});
           } else {
             throw error;
           }
@@ -135,7 +135,7 @@ export const nativeReducer = (
       return {
         ...state,
         isRequestingLogin: false,
-        errorStatusUnauthorized: true
+        errorStatusUnauthorized: action.payload as boolean
       };
     case "submit":
       if (
@@ -148,7 +148,8 @@ export const nativeReducer = (
           ...state,
           isRequestingLogin: true,
           inputUsernameStatus: undefined,
-          inputPasswordStatus: undefined
+          inputPasswordStatus: undefined,
+          errorStatusUnauthorized: false
         };
       } else {
         if (
@@ -158,7 +159,8 @@ export const nativeReducer = (
           return {
             ...state,
             inputUsernameStatus: "error",
-            inputPasswordStatus: undefined
+            inputPasswordStatus: undefined,
+            errorStatusUnauthorized: false
           };
         } else if (
           (!state.inputPassword || state.inputPassword == "") &&
@@ -167,13 +169,15 @@ export const nativeReducer = (
           return {
             ...state,
             inputUsernameStatus: undefined,
-            inputPasswordStatus: "error"
+            inputPasswordStatus: "error",
+            errorStatusUnauthorized: false
           };
         } else {
           return {
             ...state,
             inputUsernameStatus: "error",
-            inputPasswordStatus: "error"
+            inputPasswordStatus: "error",
+            errorStatusUnauthorized: false
           };
         }
       }
