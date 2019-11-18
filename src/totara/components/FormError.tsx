@@ -32,7 +32,7 @@ type Props = {
 
 const FormError = ({ message, isShow }: Props) => {
   const [theme] = useContext(ThemeContext);
-  const [animationType, setAnimationType] = useState();
+  const animationType = isShow ? "fadeInDown" : "fadeOutUp";
 
   const styles = StyleSheet.create({
     container: {
@@ -47,30 +47,10 @@ const FormError = ({ message, isShow }: Props) => {
     }
   });
 
-  const refTimer = useRef<NodeJS.Timeout>();
-
-  const errorCleanup = () => {
-    if (isShow) {
-      refTimer.current = setTimeout(() => {
-        setAnimationType("fadeOutUp");
-      }, 5000);
-    }
-  };
-
-  useEffect(() => {
-    if (refTimer.current) {
-      clearTimeout(refTimer.current);
-      setAnimationType(isShow ? "fadeInDown" : "fadeOutUp");
-    } else if (isShow) {
-      setAnimationType("fadeInDown");
-    }
-  }, [isShow]);
-
   return (
     <Animatable.View
       animation={animationType}
       style={styles.container}
-      onAnimationEnd={animationType && errorCleanup}
     >
       <Text style={[theme.textSmall, { color: theme.textColorLight }]}>
         {message}

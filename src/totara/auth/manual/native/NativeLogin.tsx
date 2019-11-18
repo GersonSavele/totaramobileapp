@@ -35,7 +35,8 @@ const NativeLogin = ({
   siteUrl,
   onClickEnter,
   inputUsernameWithShowError,
-  inputPasswordWithShowError
+  inputPasswordWithShowError,
+  onFocusInput
 }: OutProps) => {
   const [ theme ] = useContext(ThemeContext);
   return (
@@ -60,6 +61,7 @@ const NativeLogin = ({
                 onChangeText={inputUsernameWithShowError}
                 value={nativeLoginState.inputUsername}
                 style={styles.inputText}
+                onFocus={onFocusInput}
               />
             </InputTextWithInfo>
           </View>
@@ -72,6 +74,7 @@ const NativeLogin = ({
                 onChangeText={inputPasswordWithShowError}
                 value={nativeLoginState.inputPassword}
                 style={styles.inputText}
+                onFocus={onFocusInput}
               />
             </InputTextWithInfo>
           </View>

@@ -53,6 +53,10 @@ export const useNativeLogin = ({
     dispatch({ type: "submit", payload: undefined });
   };
 
+  const onFocusInput = () => {
+    dispatch({ type: "resetform"});
+  }
+
   useEffect(() => {
     let didCancel = false;
     if (nativeLoginState.isRequestingLogin) {
@@ -72,12 +76,12 @@ export const useNativeLogin = ({
           if(setupsecret)
             dispatch({ type: "setupsecret", payload: setupsecret });
           else
-            dispatch({ type: "loginfailed", payload: true});
+            dispatch({ type: "loginfailed"});
         })
         .catch(error => {
           Log.debug("Error fetchLoginSecret:", error);
           if ((error as Error).message === "401") {
-            dispatch({ type: "loginfailed", payload: true});
+            dispatch({ type: "loginfailed"});
           } else {
             throw error;
           }
@@ -101,7 +105,8 @@ export const useNativeLogin = ({
     siteUrl,
     onClickEnter,
     inputUsernameWithShowError,
-    inputPasswordWithShowError
+    inputPasswordWithShowError,
+    onFocusInput
   };
 };
 
@@ -135,7 +140,12 @@ export const nativeReducer = (
       return {
         ...state,
         isRequestingLogin: false,
-        errorStatusUnauthorized: action.payload as boolean
+        errorStatusUnauthorized: true
+      };
+    case "resetform":
+      return {
+        ...state,
+        errorStatusUnauthorized: false
       };
     case "submit":
       if (
@@ -270,7 +280,8 @@ type Action = {
     | "setusername"
     | "setpassword"
     | "submit"
-    | "loginfailed";
+    | "loginfailed"
+    | "resetform";
 
   payload?: string | boolean;
 };
@@ -300,4 +311,5 @@ export type OutProps = {
   onClickEnter: () => void;
   inputUsernameWithShowError: (text: string) => void;
   inputPasswordWithShowError: (text: string) => void;
+  onFocusInput: () => void;
 };
