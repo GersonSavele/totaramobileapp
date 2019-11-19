@@ -22,13 +22,9 @@
 import InfoModal from "./InfoModal";
 import ModalText from "./ModalText";
 import ModalImageView from "./ModalImageView";
-import ModalContainer from "./ModalContainer";
-import TransparentView from "./TransparentView";
 
 export {
   InfoModal,
   ModalText,
-  ModalImageView,
-  ModalContainer,
-  TransparentView
+  ModalImageView
 }

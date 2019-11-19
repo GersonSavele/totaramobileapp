@@ -18,9 +18,14 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
         style={
           Array [
             Object {
+              "alignItems": "center",
               "borderRadius": 4,
               "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
               "marginHorizontal": 20,
+              "marginLeft": "5%",
+              "marginRight": "5%",
               "marginVertical": 32,
             },
             Object {
@@ -33,197 +38,176 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
-              "flexDirection": "column",
-              "justifyContent": "center",
-              "marginLeft": "5%",
-              "marginRight": "5%",
+              "marginVertical": 16,
+            }
+          }
+        >
+          <Image
+            source={
+              Object {
+                "testUri": "../../../src/resources/images/general_error/general_error.png",
+              }
+            }
+            style={
+              Object {
+                "alignItems": "center",
+                "height": 375,
+                "resizeMode": "contain",
+                "width": 525,
+              }
+            }
+          />
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "marginVertical": 16,
             }
           }
         >
           <View
             style={
               Object {
-                "alignItems": "center",
+                "alignItems": "flex-start",
+                "paddingBottom": 16,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "textAlign": "center",
+                  },
+                  Object {
+                    "color": "#3D444B",
+                    "fontSize": 44,
+                    "fontWeight": "500",
+                  },
+                ]
+              }
+            >
+              translated general_error_feedback-modal.title with undefined
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "paddingBottom": 16,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "textAlign": "center",
+                  },
+                  Object {
+                    "color": "#3D444B",
+                    "fontSize": 16,
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              translated general_error_feedback-modal.description with undefined
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "justifyContent": "space-between",
+              "marginVertical": 16,
+              "minHeight": 104,
+            }
+          }
+        >
+          <View
+            accessibilityRole="button"
+            accessibilityStates={Array []}
+            accessible={true}
+            clickable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
               }
             }
           >
             <View
               style={
-                Object {
-                  "alignItems": "center",
-                  "marginVertical": 16,
-                }
+                Array [
+                  Object {},
+                ]
               }
             >
-              <Image
-                source={
-                  Object {
-                    "testUri": "../../../src/resources/images/general_error/general_error.png",
-                  }
-                }
+              <Text
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "height": 375,
-                    "resizeMode": "contain",
-                    "width": 525,
-                  }
+                  Array [
+                    Object {
+                      "color": "#007AFF",
+                      "fontSize": 18,
+                      "padding": 8,
+                      "textAlign": "center",
+                    },
+                  ]
                 }
-              />
+              >
+                this is a mock button
+              </Text>
             </View>
+          </View>
+          <View
+            accessibilityRole="button"
+            accessibilityStates={Array []}
+            accessible={true}
+            clickable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
             <View
               style={
-                Object {
-                  "alignItems": "center",
-                  "marginVertical": 16,
-                }
+                Array [
+                  Object {},
+                ]
               }
             >
-              <View
+              <Text
                 style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "paddingBottom": 16,
-                  }
+                  Array [
+                    Object {
+                      "color": "#007AFF",
+                      "fontSize": 18,
+                      "padding": 8,
+                      "textAlign": "center",
+                    },
+                  ]
                 }
               >
-                <Text
-                  style={
-                    Array [
-                      Object {
-                        "textAlign": "center",
-                      },
-                      Object {
-                        "color": "#3D444B",
-                        "fontSize": 44,
-                        "fontWeight": "500",
-                      },
-                    ]
-                  }
-                >
-                  translated general_error_feedback-modal.title with undefined
-                </Text>
-              </View>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "paddingBottom": 16,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Array [
-                      Object {
-                        "textAlign": "center",
-                      },
-                      Object {
-                        "color": "#3D444B",
-                        "fontSize": 16,
-                        "fontWeight": "normal",
-                      },
-                    ]
-                  }
-                >
-                  translated general_error_feedback-modal.description with undefined
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                Object {
-                  "justifyContent": "space-between",
-                  "marginVertical": 16,
-                  "minHeight": 104,
-                }
-              }
-            >
-              <View
-                accessibilityRole="button"
-                accessibilityStates={Array []}
-                accessible={true}
-                clickable={true}
-                isTVSelectable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "opacity": 1,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Array [
-                      Object {},
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "color": "#007AFF",
-                          "fontSize": 18,
-                          "padding": 8,
-                          "textAlign": "center",
-                        },
-                      ]
-                    }
-                  >
-                    this is a mock button
-                  </Text>
-                </View>
-              </View>
-              <View
-                accessibilityRole="button"
-                accessibilityStates={Array []}
-                accessible={true}
-                clickable={true}
-                isTVSelectable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "opacity": 1,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Array [
-                      Object {},
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "color": "#007AFF",
-                          "fontSize": 18,
-                          "padding": 8,
-                          "textAlign": "center",
-                        },
-                      ]
-                    }
-                  >
-                    this is a mock button
-                  </Text>
-                </View>
-              </View>
+                this is a mock button
+              </Text>
             </View>
           </View>
         </View>

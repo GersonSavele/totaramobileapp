@@ -19,13 +19,12 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  **/
 
-import React, {ReactNode, useContext} from "react";
+import React, { ReactNode, useContext } from "react";
 import { View, StyleSheet, Modal } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 
-import TransparentView from "./TransparentView";
 import ModalText from "./ModalText";
 import ModalImageView from "./ModalImageView";
-import ModalContainer from "./ModalContainer";
 import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 
 type Params = {
@@ -42,25 +41,40 @@ const InfoModal = ({ title, description, imageType, children, ...rest }: Params)
   
   return (
     <Modal {...rest}>
-      <TransparentView>
-        <ModalContainer>
-          <View style={styles.sectionContainer}>
-            <ModalImageView imageType={imageType} />
+      <View style={styles.transparentViewStyle}>
+        <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
+          <View style={[styles.containerStyle, { backgroundColor: theme.colorNeutral1 }]}>
+            <View style={styles.sectionContainer}>
+              <ModalImageView imageType={imageType} />
+            </View>
+            <View style={styles.sectionContainer}>
+              <ModalText text={title} fontSize={theme.textH2.fontSize} fontWeight={theme.textH2.fontWeight} />
+              <ModalText text={description} />
+            </View>
+            <View style={styles.actionContainer}>{children}</View>
           </View>
-          <View style={styles.sectionContainer}>
-            <ModalText text={title} fontSize={theme.textH2.fontSize} fontWeight={theme.textH2.fontWeight} />
-            <ModalText text={description} />
-          </View>
-          <View style={styles.actionContainer}>
-            {children}
-          </View>
-        </ModalContainer>
-      </TransparentView>
+        </SafeAreaView>
+      </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  transparentViewStyle: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)"
+  },
+  containerStyle: {
+    flex: 1,
+    borderRadius: 4,
+    marginHorizontal: resizeByScreenSize(16, 16, 20, 20),
+    marginVertical: resizeByScreenSize(32, 32, 32, 32),
+    flexDirection: "column",
+    marginLeft: "5%",
+    marginRight: "5%",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   sectionContainer: {
     marginVertical: resizeByScreenSize(8, 8, 16, 16),
     alignItems:"center"
