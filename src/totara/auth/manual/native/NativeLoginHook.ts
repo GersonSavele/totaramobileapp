@@ -24,7 +24,7 @@ import { useReducer, useEffect } from "react";
 import { config, Log } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 
-import { asyncEffectWrapper } from "../ManualFlowHook";
+import { asyncEffectWrapper } from "../../AuthRoutines";
 
 const initialState = {
   setupSecret: undefined,

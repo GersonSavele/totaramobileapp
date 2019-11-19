@@ -20,7 +20,7 @@
  *
  */
 
-import { registerDevice, deviceCleanup, bootstrap } from "../AuthRoutines";
+import { registerDevice, deviceCleanup, bootstrap, asyncEffectWrapper } from "../AuthRoutines";
 import { Log } from "@totara/lib";
 
 describe("AuthRoutines.registerDevice", () => {
@@ -229,4 +229,55 @@ describe("AuthRoutines.bootstrap", () => {
   });
 
 });
+
+
+describe("asyncEffectWrapper", () => {
+  const mockFetch = () => {
+    return Promise.resolve({
+      auth: "webview",
+      siteMaintenance: false,
+      theme: {
+        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+        colorBrand: "#CCFFCC"
+      },
+      version: "2019101802"
+    })};
+
+  it("should dispatch apiSuccess action with the siteInfo when it isn't cancelled", async () => {
+    expect.assertions(1);
+    const dispatch = jest.fn((payload) => {
+      expect(payload).toMatchObject({
+        auth: "webview",
+        siteMaintenance: false,
+        theme: {
+          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+          colorBrand: "#CCFFCC"
+        },
+        version: "2019101802"
+      });
+    });
+    asyncEffectWrapper(
+      mockFetch,
+      () => true,
+      dispatch
+    )();
+  });
+
+  it("should call onLoginFailure if the response has an error", async () => {
+    expect.assertions(1);
+
+    const onLoginFailure = jest.fn((error) => expect(error.message).toBe("server error"));
+    const mockFetch = () =>
+      Promise.reject(new Error("server error"));
+
+    asyncEffectWrapper(
+      mockFetch,
+      () => true,
+      () => {},
+      onLoginFailure
+    )();
+  });
+
+});
+
 
