@@ -43,12 +43,7 @@ describe("AuthRoutines.getAndStoreApiKey", () => {
       expect(options).toMatchObject(expectedOptions);
 
       return Promise.resolve({
-        status: 200,
-        json: () => ({
-          data: {
-            apikey: apiKey
-          }
-        })
+        apikey: apiKey
       });
     });
 
@@ -86,9 +81,7 @@ describe("AuthRoutines.getAndStoreApiKey", () => {
       };
       expect(options).toMatchObject(expectedOptions);
 
-      return Promise.resolve({
-        status: 400
-      });
+      return Promise.reject(new Error("400"));
     });
 
     const mockAsyncStorage = {
@@ -97,7 +90,7 @@ describe("AuthRoutines.getAndStoreApiKey", () => {
 
     const result = getAndStoreApiKey(mockFetch, mockAsyncStorage)(setupSecret);
 
-    await expect(result).rejects.toThrow("Server Error: 400");
+    await expect(result).rejects.toThrow("400");
   });
 
 });

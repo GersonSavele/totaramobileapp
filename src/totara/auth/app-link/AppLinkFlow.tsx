@@ -22,7 +22,8 @@ import { Linking, Platform } from "react-native";
 
 import { AuthProviderStateLift, AuthComponent } from "../AuthComponent";
 import { Log, config } from "@totara/lib";
-import { getSiteInfo } from "../AuthRoutines";
+import { fetchData } from "../AuthRoutines";
+import { SiteInfo } from "../AuthContext";
 
 export default class AppLinkFlow extends AuthComponent {
 
@@ -56,7 +57,7 @@ export default class AppLinkFlow extends AuthComponent {
           const resultRegistration = this.getDeviceRegisterData(url);
           // fetch from global
           // eslint-disable-next-line no-undef
-          await getSiteInfo(fetch)(resultRegistration.uri)
+          await fetchData(fetch)<SiteInfo>(resultRegistration.uri)
             .then(siteInfo => {
               this.props.onLoginSuccess({secret: resultRegistration.secret, uri: resultRegistration.uri, siteInfo: siteInfo});
             })

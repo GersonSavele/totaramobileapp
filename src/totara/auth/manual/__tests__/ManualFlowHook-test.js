@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
 import { renderHook, act } from "@testing-library/react-hooks";
@@ -24,7 +24,7 @@ import {
   ManualFlowSteps,
   useManualFlow,
   manualFlowReducer,
-  fetchSiteInfo
+  asyncEffectWrapper
 } from "../ManualFlowHook";
 import { config } from "@totara/lib";
 
@@ -212,11 +212,10 @@ describe("manualFlowReducer", () => {
   });
 });
 
-describe("fetchData", () => {
+describe("asyncEffectWrapper", () => {
   it("should dispatch apiSuccess action with the siteInfo when it isn't cancelled", async () => {
-    expect.assertions(2);
-    const dispatch = jest.fn(({ type, payload }) => {
-      expect(type).toBe("apiSuccess");
+    expect.assertions(1);
+    const dispatch = jest.fn((payload) => {
       expect(payload).toMatchObject({
         auth: "webview",
         siteMaintenance: false,
@@ -227,49 +226,32 @@ describe("fetchData", () => {
         version: "2019101802"
       });
     });
-    await fetchSiteInfo(mockFetch)("https://totarasite.com", false, dispatch);
+    asyncEffectWrapper(
+      mockFetch,
+      () => true,
+      dispatch
+    )();
   });
 
-  it("should call if the response has network error", async () => {
-    expect.assertions(2);
-    const dispatch = jest.fn(({ type, payload }) => {
-      expect(type).toBe("apiFailure");
-      expect(payload).toMatchObject({
-        status: 401,
-        message: "Network request failed",
-        networkError: "server error"
-      });
-    });
-    await fetchSiteInfo(mockErrorStatusFetch)(
-      "https://totarasite.com",
-      false,
-      dispatch
-    );
+  it("should call onLoginFailure if the response has an error", async () => {
+    expect.assertions(1);
+
+    const onLoginFailure = jest.fn((error) => expect(error.message).toBe("server error"));
+    const mockFetch = () =>
+      Promise.reject(new Error("server error"));
+
+    asyncEffectWrapper(
+      mockFetch,
+      () => true,
+      () => {},
+      onLoginFailure
+    )();
   });
 
-  it("should call if the response has error with 200 status", async () => {
-    expect.assertions(2);
-    const dispatch = jest.fn(({ type, payload }) => {
-      expect(type).toBe("apiFailure");
-      expect(payload).toMatchObject({
-        status: 200,
-        message: "Invalid request",
-        apiFailure: "server error"
-      });
-    });
-    await fetchSiteInfo(mockErrorFetch)(
-      "https://totarasite.com",
-      false,
-      dispatch
-    );
-  });
 });
 
 const mockFetch = () => {
   return Promise.resolve({
-    status: 200,
-    json: () => ({
-      data: {
         auth: "webview",
         siteMaintenance: false,
         theme: {
@@ -277,23 +259,5 @@ const mockFetch = () => {
           colorBrand: "#CCFFCC"
         },
         version: "2019101802"
-      }
-    })
-  });
-};
+      })};
 
-const mockErrorStatusFetch = () => {
-  return Promise.reject({
-    status: 401,
-    message: "Network request failed",
-    networkError: "server error"
-  });
-};
-
-const mockErrorFetch = () => {
-  return Promise.reject({
-    status: 200,
-    message: "Invalid request",
-    apiFailure: "server error"
-  });
-};

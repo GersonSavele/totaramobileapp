@@ -19,14 +19,14 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-import { Log } from "@totara/lib";
 import React, { useEffect, useReducer, useContext } from "react";
+import VersionInfo from "react-native-version-info";
 
-import { AuthProviderStateLift } from "@totara/auth/AuthComponent";
 import { ThemeContext, applyTheme } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { config, Log } from "@totara/lib";
 import { isValidApiVersion, SiteInfo } from "../AuthContext";
-import { getSiteInfo } from "../AuthRoutines";
+import { AuthProviderStateLift } from "../AuthComponent";
 
 /**
  * Custom react hook that manages the state of the manual flow
@@ -36,8 +36,11 @@ import { getSiteInfo } from "../AuthRoutines";
  */
 
 export const useManualFlow = (
-  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) => (props: AuthProviderStateLift): OutProps => {
+  fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>
+) => (
+  props: AuthProviderStateLift
+): OutProps => {
+
   const [, setTheme] = useContext(ThemeContext);
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
@@ -60,21 +63,30 @@ export const useManualFlow = (
       siteInfo: manualFlowState.siteInfo
     });
 
+  const fetchSiteInfo = () =>
+    fetchData<SiteInfo>(config.infoUri(manualFlowState.siteUrl!), {
+      method: "POST",
+      body: JSON.stringify({ version: VersionInfo.appVersion })
+    });
+
   // effect fetch the data when the right dependency has been met
-  useEffect(() => {
-    let didCancel = false;
-
-    if (
-      manualFlowState.isSiteUrlSubmitted &&
-      manualFlowState.flowStep === ManualFlowSteps.siteUrl &&
-      manualFlowState.siteUrl
-    )
-      fetchSiteInfo(fetch)(manualFlowState.siteUrl, didCancel, dispatch);
-
-    return () => {
-      didCancel = true; // need to create a lock for async stuff
-    };
-  }, [manualFlowState.siteUrl, manualFlowState.isSiteUrlSubmitted]);
+  // effect fetch the data when the right dependency has been met
+  useEffect(
+    asyncEffectWrapper<SiteInfo>(
+      fetchSiteInfo,
+      () =>
+        manualFlowState.isSiteUrlSubmitted &&
+        manualFlowState.flowStep === ManualFlowSteps.siteUrl &&
+        manualFlowState.siteUrl
+          ? true
+          : false,
+      siteInfo => {
+        dispatch({ type: "apiSuccess", payload: siteInfo });
+      },
+      error => props.onLoginFailure(error)
+    ),
+    [manualFlowState.siteUrl, manualFlowState.isSiteUrlSubmitted]
+  );
 
   useEffect(() => {
     if (
@@ -202,32 +214,54 @@ export const manualFlowReducer = (
 };
 
 /**
- * Fetch the siteInfo from the server, dispatch with proper action.  Taken outside useEffect for testing
- * this follows this pattern: https://www.robinwieruch.de/react-hooks-fetch-data
+ * When using async operation with React.useEffect use this wrapper
+ * For now async operation is not officially supported in useEffect.
+ * see more details here: https://github.com/facebook/react/issues/14326
+ *
+ * This currently codifies this pattern: https://www.robinwieruch.de/react-hooks-fetch-data
+ *
+ * @param asyncOperation - a function that returns a promise that will be executed as the effect
+ * @param useEffectIfTrue - condition to check before executing the asyncOperation
+ * @param dispatchOnSuccess - when the promise is resolve and effect hasn't been cancelled this function is called with
+ * value resolved
+ * @param dispatchOnFailure - when promise is rejected calls this function with error
+ *
+ * @example
+ *
+ * useEffect(
+ *   asyncEffectWrapper(
+ *      ...
+ *   ), [deps]);
  */
-export const fetchSiteInfo = (
-  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) => async (
-  siteUrl: string,
-  didCancel: boolean,
-  dispatch: React.Dispatch<Action>
-) => {
-  const siteInfo = await getSiteInfo(fetch)(siteUrl).catch(error => {
-    Log.debug("error", error);
-    dispatch({ type: "apiFailure", payload: error });
-  });
-  Log.debug("siteInfo", siteInfo);
+export const asyncEffectWrapper = <T>(
+  asyncOperation: () => Promise<T>,
+  useEffectIfTrue: () => boolean,
+  dispatchOnSuccess: (t: T) => void,
+  dispatchOnFailure: (error: Error) => void
+): React.EffectCallback => {
+  return () => {
+    let didCancel = false;
 
-  if (!didCancel && siteInfo && "auth" in siteInfo) {
-    Log.debug("siteInfo", siteInfo);
-    dispatch({ type: "apiSuccess", payload: siteInfo });
-  } else
-    Log.warn(
-      "Did not dispatch apiSuccess: didCancel",
-      didCancel,
-      "siteInfo",
-      siteInfo
-    );
+    if (useEffectIfTrue()) {
+      asyncOperation()
+        .then(dataFromFetch => {
+          if (!didCancel && dataFromFetch) {
+            Log.debug("dataFromFetch", dataFromFetch);
+            dispatchOnSuccess(dataFromFetch);
+          } else {
+            Log.warn(
+              "Fetch was cancelled, ignoring dataFromFetch",
+              dataFromFetch
+            );
+          }
+        })
+        .catch(error => dispatchOnFailure(error));
+    }
+
+    return () => {
+      didCancel = true; // need to create a lock for async stuff
+    };
+  };
 };
 
 export enum ManualFlowSteps {

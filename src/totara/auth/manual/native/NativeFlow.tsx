@@ -24,6 +24,7 @@ import { Modal } from "react-native";
 import NativeLogin from "./NativeLogin";
 import { useNativeLogin } from "./NativeLoginHook";
 import { ManualAuthProps } from "../ManualAuthProps";
+import { fetchData } from "../../AuthRoutines";
 
 const NativeFlow = ({
   siteUrl,
@@ -39,9 +40,13 @@ const NativeFlow = ({
     onSetupSecretCancel();
   };
 
+  // fetch from global
+  // eslint-disable-next-line no-undef
+  const fetchDataWithFetch = fetchData(fetch);
+
   const UserNativeLogin = () =>
     NativeLogin(
-      useNativeLogin({
+      useNativeLogin(fetchDataWithFetch)({
         siteUrl: siteUrl,
         onSetupSecretSuccess: onSetupLoginData,
         onBack: onCancelLogin,

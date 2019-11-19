@@ -32,7 +32,7 @@ import { AuthContext } from "./AuthContext";
 import AppLinkFlow from "./app-link";
 import ManualFlow from "./manual/ManualFlow";
 import { AuthStep, useAuthContext, initialState } from "./AuthContextHook";
-import { getAndStoreApiKey, deviceCleanup, bootstrap, createApolloClient } from "./AuthRoutines";
+import { getAndStoreApiKey, deviceCleanup, bootstrap, createApolloClient, fetchData } from "./AuthRoutines";
 
 
 /**
@@ -60,7 +60,7 @@ export const AuthProvider = ( {asyncStorage, children}: Props) => {
     apolloClient
     // get fetch from global namespace
     // eslint-disable-next-line no-undef
-  } = useAuthContext(bootstrap(asyncStorage), getAndStoreApiKey(fetch, asyncStorage), deviceCleanup(asyncStorage), createApolloClient)({initialState: initialState });
+  } = useAuthContext(bootstrap(asyncStorage), getAndStoreApiKey(fetchData(fetch), asyncStorage), deviceCleanup(asyncStorage), createApolloClient)({initialState: initialState });
 
   const providerValue = {
     isAuthenticated: authContextState.isAuthenticated,

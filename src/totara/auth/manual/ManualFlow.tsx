@@ -31,6 +31,8 @@ import SiteUrl from "./SiteUrl";
 import { useSiteUrl } from "./SiteUrlHook";
 import { AppModal, InfoModal, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
+import { fetchData } from "../AuthRoutines";
+
 /**
  * ManualFlow starts with a siteUrl, then depending what configured on the server
  * will dispatch the next flow
@@ -107,6 +109,7 @@ const ManualFlow = ({
 };
 
 // fetch is available on global scope
-export default (props: AuthProviderStateLift) =>
-  // eslint-disable-next-line no-undef
-  ManualFlow(useManualFlow(fetch)(props));
+// eslint-disable-next-line no-undef
+const fetchDataWithFetch = fetchData(fetch);
+
+export default (props: AuthProviderStateLift) => ManualFlow(useManualFlow(fetchDataWithFetch)(props));

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
 import { ApolloClient } from "apollo-client";
@@ -33,7 +33,6 @@ import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { LearningItem } from "@totara/types";
 import { Setup } from "./AuthContextHook";
 import { AppState, SiteInfo } from "./AuthContext";
-import VersionInfo from "react-native-version-info";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -58,46 +57,44 @@ import VersionInfo from "react-native-version-info";
  * @returns promise of appState which contains the valid apiKey and which host it was obtained from
  */
 export const getAndStoreApiKey = (
-  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
+  fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>,
   asyncStorage: AsyncStorageStatic,
 ) => async (
   setup: Setup
-): Promise<AppState> => (
+): Promise<AppState> => {
 
-    fetch(config.deviceRegisterUri(setup.uri), {
-        method: "POST",
-        body: JSON.stringify({
-          setupsecret: setup.secret
-        })
-      }
-    ).then(response => {
-      Log.debug("server response status ", response.status);
-      if (response.status === 200) return response.json();
-      throw new Error(`Server Error: ${response.status}`);
-    }).then(json => {
-      return json.data;
-    }).then(data => {
+  type ApiKey = {
+    apikey: string
+  };
+
+  return fetchData<ApiKey>(config.deviceRegisterUri(setup.uri), {
+      method: "POST",
+      body: JSON.stringify({
+        setupsecret: setup.secret
+      })
+    }
+  ).then(apiKey => {
       const siteInfoData = JSON.stringify(setup.siteInfo);
-      return Promise.all([asyncStorage.setItem("apiKey", data.apikey), asyncStorage.setItem("siteInfo", siteInfoData), asyncStorage.setItem("host", setup.uri)])
+      return Promise.all([asyncStorage.setItem("apiKey", apiKey.apikey), asyncStorage.setItem("siteInfo", siteInfoData), asyncStorage.setItem("host", setup.uri)])
         .then(() => {
-         return data;
+          return apiKey;
         })
     }
-    ).then(data => {
-        const appState = {
-          apiKey: data.apikey,
-          host: setup.uri,
-          siteInfo: setup.siteInfo,
-        };
-        Log.debug("appState done", appState);
-        return appState;
-      }
-    ).catch(error => {
-      Log.error("unable to get apiKey", error);
-      throw error;
-    })
+  ).then(apiKey => {
+      const appState = {
+        apiKey: apiKey.apikey,
+        host: setup.uri,
+        siteInfo: setup.siteInfo,
+      };
+      Log.debug("appState done", appState);
+      return appState;
+    }
+  ).catch(error => {
+    Log.error("unable to get apiKey", error);
+    throw error;
+  });
 
-  );
+};
 
  
   
@@ -214,29 +211,42 @@ export const createApolloClient = (
 };
 
 /**
- * get the siteInfo for a siteUrl
+ * fetch the json data from http endpoint
  *
- * @param siteUrl - url where to fetch the site info
+ * @param fetch - pass the fetch implementation, usually in test this is a mock fetch
+ * @param input - input such as url to fetch to
+ * @param init - optional options for the fetch request
+ *
+ * @example
+ *
+ * const totaraApi = fetchData(globalFetch)
+ *
+ * totaraApi<MyType>(
+ *   "https://totarasite/api.php",
+ *   {
+ *      method: "GET"
+ *   }
+ *
  */
-export const getSiteInfo = (
+export const fetchData = (
   fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) => async (
-  siteUrl: string,
-): Promise<SiteInfo> => {
+) => async <T>(
+  input: RequestInfo,
+  init?: RequestInit
+): Promise<T> => {
 
-  const infoUrl = config.infoUri(siteUrl);
-  const options = {
-    method: "POST",
-    body: JSON.stringify({ version: VersionInfo.appVersion })
-  };
-
-  return fetch(infoUrl, options)
+  return fetch(input, init)
     .then(response => {
-      Log.debug("response", response);
-      if (response.status === 200) return response.json();
-      else throw new Error(response.statusText);
+      if (response.status === 200) {
+        Log.debug("fetch ok response", response);
+        return response.json();
+      } else {
+        Log.warn("fetch error response", response);
+        throw new Error(response.status.toString());
+      }
     })
-    .then(response => {
-      return (response.data as unknown) as SiteInfo;
+    .then(json => {
+      Log.debug("json response", json);
+      return (json.data as unknown) as T;
     });
 };

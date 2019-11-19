@@ -32,7 +32,7 @@ const onSetupSecretSuccess = jest.fn();
 
 
 describe("useNativeLogin", () => {
-  const { result } = renderHook(props => useNativeLogin(props), {
+  const { result } = renderHook(props => useNativeLogin()(props), {
     initialProps: {
       siteUrl: "http://mobiledemo.wlg.totaralms.com",
       onSetupSecretSuccess: { onSetupSecretSuccess },

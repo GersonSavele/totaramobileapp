@@ -19,10 +19,12 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-import React, { useReducer, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 
 import { config, Log } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
+
+import { asyncEffectWrapper } from "../ManualFlowHook";
 
 const initialState = {
   setupSecret: undefined,
@@ -34,7 +36,9 @@ const initialState = {
   errorStatusUnauthorized: false
 };
 
-export const useNativeLogin = ({
+export const useNativeLogin = (
+  fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>
+) => ({
   onSetupSecretSuccess,
   onSetupSecretFailure,
   siteUrl,
@@ -58,40 +62,40 @@ export const useNativeLogin = ({
     dispatch({ type: "resetform"});
   };
 
-  useEffect(() => {
-    let didCancel = false;
-    if (nativeLoginState.isRequestingLogin) {
-      // eslint-disable-next-line no-undef
-      fetchLoginSecret(fetch)(didCancel, siteUrl)
-        .then(loginsecret => (
-          //  eslint-disable-next-line no-undef
-          fetchLogin(fetch)(
-            dispatch,
-            loginsecret,
-            nativeLoginState.inputUsername,
-            nativeLoginState.inputPassword,
-            siteUrl
-          )
-        ))
-        .then(setupsecret => {
-          if(setupsecret)
-            dispatch({ type: "setupsecret", payload: setupsecret });
-          else
-            dispatch({ type: "loginfailed"});
-        })
-        .catch(error => {
-          Log.debug("Error fetchLoginSecret:", error);
-          if ((error as Error).message === "401") {
-            dispatch({ type: "loginfailed"});
-          } else {
-            throw onSetupSecretFailure(error);
-          }
-        })
-    }
-    return () => {
-      didCancel = true; // need to create a lock for async stuff
-    };
-  }, [nativeLoginState.isRequestingLogin]);
+  const fetchLogin = () => fetchData<LoginSetup>(
+    config.nativeLoginSetupUri(siteUrl),
+    {
+      method: "GET",
+      headers: { [DEVICE_REGISTRATION]: config.userAgent }
+    }).then(loginSetup => {
+    // eslint-disable-next-line no-undef
+    return fetchData<SetupSecret>(
+      config.nativeLoginUri(siteUrl),
+      {
+        method: "POST",
+        body: JSON.stringify({
+          loginsecret: loginSetup.loginsecret,
+          username: nativeLoginState.inputUsername,
+          password: nativeLoginState.inputPassword
+        }),
+        headers: { [DEVICE_REGISTRATION]: config.userAgent }
+      });
+
+  });
+
+  useEffect(
+    asyncEffectWrapper(
+      fetchLogin,
+      () => nativeLoginState.isRequestingLogin,
+      (setupSecret) => dispatch({ type: "setupsecret", payload: setupSecret.setupsecret }),
+      (error) => {
+        if (error.message === "401") {
+          dispatch({ type: "loginfailed"});
+        } else {
+          onSetupSecretFailure(error);
+        }
+      }
+    ), [nativeLoginState.isRequestingLogin]);
 
   useEffect(() => {
     if ( nativeLoginState.setupSecret ) {
@@ -197,74 +201,6 @@ export const nativeReducer = (
   }
 };
 
-/**@A
- * @class Fetch the login secret key from the server, This method use for get random secret value from server before login
- */
-
-export const fetchLoginSecret = (
-  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) => async (didCancel: boolean, siteUrl:string) => {
-  const nativeLoginSetupUri = config.nativeLoginSetupUri(siteUrl);
-  const options = {
-    method: "GET",
-    headers: { [DEVICE_REGISTRATION]: config.userAgent }
-  };
-  const loginSecretData = await fetch(nativeLoginSetupUri, options)
-    .then(response => {
-      Log.debug("response", response);
-      if (response.status === 200) {
-        return (response.json() as unknown) as LoginSecret;
-      } else {
-        throw new Error(response.status.toString());
-      }
-    });
-    
-  if (!didCancel && loginSecretData) {
-    return loginSecretData.data.loginsecret;
-  } else {
-    Log.warn("Did not dispatch loginSetup:");
-    return undefined;
-  }
-};
-
-/**
- * @class fetch the setup secret value from server using those value (loginsecret,username,password)
- */
-
-export const fetchLogin = (
-  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) => async (
-  dispatch: React.Dispatch<Action>,
-  loginsecret: string | undefined,
-  username: string,
-  password: string,
-  siteUrl:string
-) => {
-  const nativeLoginUri = config.nativeLoginUri(siteUrl);
-  const options = {
-    method: "POST",
-    body: JSON.stringify({
-      loginsecret: loginsecret,
-      username: username,
-      password: password
-    }),
-    headers: { [DEVICE_REGISTRATION]: config.userAgent }
-  };
-
-  const login = await fetch(nativeLoginUri, options)
-    .then(response => {
-      if (response.status === 200) {
-        return (response.json() as unknown) as Login;
-      } else {
-        throw new Error(response.status.toString());
-      }
-    });
-
-  if (login && login.data.setupsecret != undefined) {
-    return login.data.setupsecret;
-  }
-};
-
 type NativeLoginState = {
   setupSecret?: string;
   inputUsername: string;
@@ -287,16 +223,12 @@ type Action = {
   payload?: string | boolean;
 };
 
-type LoginSecret = {
-  data: {
-    loginsecret: string;
-  };
+type LoginSetup = {
+  loginsecret: string;
 };
 
-type Login = {
-  data: {
-    setupsecret: string;
-  };
+type SetupSecret = {
+  setupsecret: string;
 };
 
 type Props = {
