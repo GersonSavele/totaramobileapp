@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
 import * as Animatable from "react-native-animatable";
 
@@ -32,8 +32,14 @@ type Props = {
 
 const FormError = ({ message, isShow }: Props) => {
   const [theme] = useContext(ThemeContext);
-  const animationType = isShow ? "fadeInDown" : "fadeOutUp";
+  const [animationType, setAnimationType ]  = useState();
 
+  useEffect(()=> {
+    if (animationType !== undefined ||  isShow) {
+      setAnimationType(isShow ? "fadeInDown" : "fadeOutUp");
+    }
+  }, [isShow]);
+  
   const styles = StyleSheet.create({
     container: {
       position: "absolute",
@@ -48,13 +54,8 @@ const FormError = ({ message, isShow }: Props) => {
   });
 
   return (
-    <Animatable.View
-      animation={animationType}
-      style={styles.container}
-    >
-      <Text style={[theme.textSmall, { color: theme.textColorLight }]}>
-        {message}
-      </Text>
+    <Animatable.View animation={animationType} style={styles.container}>
+      <Text style={[theme.textSmall, { color: theme.textColorLight }]}>{message}</Text>
     </Animatable.View>
   );
 };
