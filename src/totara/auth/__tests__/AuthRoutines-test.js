@@ -20,10 +20,10 @@
  *
  */
 
-import { getAndStoreApiKey, deviceCleanup, bootstrap } from "../AuthRoutines";
+import { registerDevice, deviceCleanup, bootstrap } from "../AuthRoutines";
 import { Log } from "@totara/lib";
 
-describe("AuthRoutines.getAndStoreApiKey", () => {
+describe("AuthRoutines.registerDevice", () => {
   it("should get api key if setup secret is valid", async () => {
     expect.assertions(5);
 
@@ -59,7 +59,7 @@ describe("AuthRoutines.getAndStoreApiKey", () => {
       host: setupSecret.uri
     };
 
-    const setup = await getAndStoreApiKey(mockFetch, mockAsyncStorage)(setupSecret);
+    const setup = await registerDevice(mockFetch, mockAsyncStorage)(setupSecret);
 
     expect(setup).toMatchObject(expectedSetup);
   });
@@ -88,7 +88,7 @@ describe("AuthRoutines.getAndStoreApiKey", () => {
       setItem: () => {}
     };
 
-    const result = getAndStoreApiKey(mockFetch, mockAsyncStorage)(setupSecret);
+    const result = registerDevice(mockFetch, mockAsyncStorage)(setupSecret);
 
     await expect(result).rejects.toThrow("400");
   });

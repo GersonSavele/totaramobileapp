@@ -56,7 +56,7 @@ import { AppState, SiteInfo } from "./AuthContext";
  *
  * @returns promise of appState which contains the valid apiKey and which host it was obtained from
  */
-export const getAndStoreApiKey = (
+export const registerDevice = (
   fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>,
   asyncStorage: AsyncStorageStatic,
 ) => async (

@@ -33,7 +33,7 @@ import { SiteInfo, AppState } from "./AuthContext";
  * Manages the state of auth in authContextState
  *
  * @param bootstrap
- * @param getAndStoreApiKey
+ * @param registerDevice
  * @param deviceCleanup
  * @param createApolloClient
  *
@@ -47,7 +47,7 @@ import { SiteInfo, AppState } from "./AuthContext";
  */
 export const useAuthContext = (
   bootstrap: () => Promise<AppState | undefined>,
-  getAndStoreApiKey: (setup: Setup) => Promise<AppState>,
+  registerDevice: (setup: Setup) => Promise<AppState>,
   deviceCleanup: (deviceDelete: () => Promise<any>) => Promise<boolean>,
   createApolloClient: (
     apiKey: string,
@@ -148,10 +148,10 @@ export const useAuthContext = (
    * When setup has been initialiazed, perform a side affect to get the apikey
    */
   useEffect(() => {
-    const doGetandStoreApiKey = () => {
-      Log.debug("doGetandStoreApiKey", authContextState);
+    const doRegisterDevice = () => {
+      Log.debug("doRegisterDevice", authContextState);
       if (authContextState.setup) {
-        getAndStoreApiKey(authContextState.setup).then(appState => {
+        registerDevice(authContextState.setup).then(appState => {
           dispatch({ type: "registered", payload: appState });
         }).catch(error => {
             Log.error("error on registering", error);
@@ -162,7 +162,7 @@ export const useAuthContext = (
     };
 
     if (authContextState.authStep === AuthStep.setupSecretInit)
-      doGetandStoreApiKey();
+      doRegisterDevice();
   }, [authContextState.authStep]);
 
   return {
