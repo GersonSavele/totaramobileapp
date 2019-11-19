@@ -34,7 +34,7 @@ import { AppModal } from "@totara/components";
  * ManualFlow starts with a siteUrl, then depending what configured on the server
  * will dispatch the next flow
  */
-const ManualFlow = ({ manualFlowState, onSiteUrlSuccess, onSetupSecretSuccess, onSetupSecretCancel }: OutProps) => {
+const ManualFlow = ({ manualFlowState, onSiteUrlSuccess, onSetupSecretSuccess, onSetupSecretCancel, onSetupSecretFailure }: OutProps) => {
 
   const StartComponent = () => SiteUrl(useSiteUrl({onSiteUrlSuccess: onSiteUrlSuccess, siteUrl: manualFlowState.siteUrl}));
 
@@ -44,15 +44,25 @@ const ManualFlow = ({ manualFlowState, onSiteUrlSuccess, onSetupSecretSuccess, o
         switch (manualFlowState.flowStep) {
           case ManualFlowSteps.native:
             return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-              <NativeFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo} 
-                onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel} />
+              <NativeFlow
+                siteUrl={manualFlowState.siteUrl}
+                siteInfo={manualFlowState.siteInfo}
+                onSetupSecretSuccess={onSetupSecretSuccess}
+                onSetupSecretCancel={onSetupSecretCancel}
+                onSetupSecretFailure={onSetupSecretFailure}
+              />
             ) : (
               <StartComponent />
             );
           case ManualFlowSteps.webview:
             return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-              <WebviewFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
-                onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel} />
+              <WebviewFlow
+                siteUrl={manualFlowState.siteUrl}
+                siteInfo={manualFlowState.siteInfo}
+                onSetupSecretSuccess={onSetupSecretSuccess}
+                onSetupSecretCancel={onSetupSecretCancel}
+                onSetupSecretFailure={onSetupSecretFailure}
+              />
             ) : (
               <StartComponent />
             );

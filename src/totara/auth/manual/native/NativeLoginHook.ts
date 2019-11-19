@@ -36,6 +36,7 @@ const initialState = {
 
 export const useNativeLogin = ({
   onSetupSecretSuccess,
+  onSetupSecretFailure,
   siteUrl,
   onBack
 }: Props): OutProps => {
@@ -55,7 +56,7 @@ export const useNativeLogin = ({
 
   const onFocusInput = () => {
     dispatch({ type: "resetform"});
-  }
+  };
 
   useEffect(() => {
     let didCancel = false;
@@ -83,7 +84,7 @@ export const useNativeLogin = ({
           if ((error as Error).message === "401") {
             dispatch({ type: "loginfailed"});
           } else {
-            throw error;
+            throw onSetupSecretFailure(error);
           }
         })
     }
@@ -300,6 +301,7 @@ type Login = {
 
 type Props = {
   onSetupSecretSuccess: (data: string) => void;
+  onSetupSecretFailure: (error: Error) => void;
   siteUrl: string;
   onBack: () => void;
 };

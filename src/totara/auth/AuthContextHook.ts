@@ -126,7 +126,7 @@ export const useAuthContext = (
   const onLoginFailure = async (error: Error) => {
     Log.error("login failure, bringing back to initial loading state", error);
 
-    dispatch({ type: "reload" });
+    dispatch({ type: "authError" });
   };
 
   /**

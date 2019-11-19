@@ -111,11 +111,16 @@ export const useManualFlow = (
     dispatch({ type: "cancelManualFlow" });
   };
 
+  const onSetupSecretFailure = (error: Error) => {
+    props.onLoginFailure(error);
+  };
+
   return {
     manualFlowState,
     onSiteUrlSuccess,
     onSetupSecretSuccess,
-    onSetupSecretCancel
+    onSetupSecretCancel,
+    onSetupSecretFailure
   };
 };
 
@@ -239,4 +244,5 @@ export type OutProps = {
   onSiteUrlSuccess: (url: string) => void;
   onSetupSecretSuccess: (setupSecret: string) => void;
   onSetupSecretCancel: () => void;
+  onSetupSecretFailure: (error: Error) => void;
 };

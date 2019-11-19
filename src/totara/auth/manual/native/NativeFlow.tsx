@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  *
  */
 import React from "react";
@@ -28,7 +28,8 @@ import { ManualAuthProps } from "../ManualAuthProps";
 const NativeFlow = ({
   siteUrl,
   onSetupSecretSuccess,
-  onSetupSecretCancel
+  onSetupSecretCancel,
+  onSetupSecretFailure
 }: ManualAuthProps) => {
   const onSetupLoginData = (data: string) => {
     onSetupSecretSuccess(data);
@@ -43,7 +44,9 @@ const NativeFlow = ({
       useNativeLogin({
         siteUrl: siteUrl,
         onSetupSecretSuccess: onSetupLoginData,
-        onBack: onCancelLogin
+        onBack: onCancelLogin,
+        onSetupSecretFailure: onSetupSecretFailure
+
       })
     );
 
