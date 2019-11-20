@@ -39,8 +39,8 @@ class GeneralErrorModal extends React.Component<Props, State> {
   render() {
     return (
       <InfoModal title={translate("general_error_feedback-modal.title")} description={translate("general_error_feedback-modal.description")} imageType={"general_error"} visible={this.state.visible}>
-        <PrimaryButton text={translate("general_error_feedback-modal.primary_title")} onPress={() => { this.setState({visible: !this.state.visible})}} />
-        <TertiaryButton  text={translate("general_error_feedback-modal.tertiary_title")} onPress={() => { Linking.openURL(this.props.siteUrl)}} />
+        <PrimaryButton text={translate("general_error_feedback-modal.action_primary")} onPress={() => { this.setState({visible: !this.state.visible})}} />
+        <TertiaryButton  text={translate("general_error_feedback-modal.action_tertiary")} onPress={() => { Linking.openURL(this.props.siteUrl)}} />
       </InfoModal>
     );
   }

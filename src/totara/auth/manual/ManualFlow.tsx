@@ -53,19 +53,7 @@ const ManualFlow = ({
       })
     );
   if (manualFlowState.isSiteUrlFailure) {
-    return (
-      <InfoModal
-        title={translate("site-url-not-valid.title")}
-        description={translate("site-url-not-valid.description")}
-        imageType={"url_not_valid"}
-        visible={true}
-      >
-        <PrimaryButton
-          text={translate("site-url-not-valid.primary_title")}
-          onPress={() => onSetupSecretCancel && onSetupSecretCancel()}
-        />
-      </InfoModal>
-    );
+    return <SiteErrorModal onCancel={()=> { onSetupSecretCancel()}} />;
   } else {
     return (
       <View style={{ flex: 1 }}>
@@ -96,7 +84,7 @@ const ManualFlow = ({
                 <StartComponent />
               );
             case ManualFlowSteps.incompatible:
-              return <AppModal onCancel={onSetupSecretCancel} />;
+              return <AppModal onCancel={onSetupSecretCancel} siteUrl={manualFlowState.siteUrl} />;
             case ManualFlowSteps.done:
               return null;
             default:
@@ -107,6 +95,26 @@ const ManualFlow = ({
     );
   }
 };
+
+
+type PropSiteError = {
+  onCancel: ()=> void
+};
+
+const SiteErrorModal= ({onCancel}: PropSiteError) => (
+  <InfoModal
+    title={translate("auth_invalid_site.title")}
+    description={translate("auth_invalid_site.description")}
+    imageType={"url_not_valid"}
+    visible={true}
+  >
+    <PrimaryButton
+      text={translate("auth_invalid_site.action_primary")}
+      onPress={() => {onCancel()}}
+    />
+  </InfoModal>
+);
+
 
 // fetch is available on global scope
 // eslint-disable-next-line no-undef

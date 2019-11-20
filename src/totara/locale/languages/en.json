@@ -12,7 +12,7 @@
     "outline": "Outline"
   }, 
   "my-learning": {
-    "primary_title": "Current learning",
+    "action_primary": "Current learning",
     "primary_info": {
         "zero": "You have no learning",
         "one": "You have {{count}} learning item to complete",
@@ -50,8 +50,8 @@
   "general_error_feedback-modal": {
     "title": "Ooops!",
     "description" : "Something went wrong",
-    "primary_title" : "Refresh",
-    "tertiary_title" : "Try in browser"
+    "action_primary" : "Refresh",
+    "action_tertiary" : "Try in browser"
   },
   "message": {
     "sorry": "Sorry!",
@@ -69,16 +69,21 @@
     "footer_action": "Create new account",
     "error_unauthorized": "Oops! Your username or password is incorrect."
   },
-  "error-not-valid-url": {
-    "title": "Sorry!",
-    "description" : "The URL you have entered is not valid.",
-    "primary_title" : "Try again",
-    "tertiary_title" : "Try in browser"
+  "auth_invalid_site": {
+    "title": "Sorry",
+    "description" : "The URL you have entered might be wrong or it's not compatible. Please check the URL and try again",
+    "action_primary" : "OK"
   },
-
-  "site-url-not-valid": {
-    "title": "Sorry!",
-    "description" : "The URL you have entered is not valid.",
-    "primary_title" : "OK"
+  "auth_general_error": {
+    "title": "Ooops!",
+    "description" : "Something went wrong",
+    "action_primary" : "OK"
+  },
+  "incompatible_api": {
+    "title": "Sorry",
+    "description" : "The URL you have entered is not compatible. Please check the URL and try again",
+    "action_primary" : "Try in browser",
+    "action_tertiary" : "Logout",
+    "action_tertiary_cancel" : "Cancel"
   }
 }

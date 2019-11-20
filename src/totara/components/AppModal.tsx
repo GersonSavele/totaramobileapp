@@ -31,18 +31,20 @@ import TertiaryButton from "./TertiaryButton";
 
 type Props = {
   onCancel?: () => void
+  siteUrl?: string
 }
 
-const AppModal = ({onCancel}: Props) => {
-  const {appState, isAuthenticated, logOut } = useContext(AuthContext);
+const AppModal = ({onCancel, siteUrl}: Props) => {
+  const { appState, isAuthenticated, logOut } = useContext(AuthContext);
   const isShowIncompatibleApi = appState ? !isValidApiVersion(appState.siteInfo.version) : true;
+  const site = appState ? appState.host : siteUrl;
   if (isShowIncompatibleApi) 
     return (
-    <InfoModal title={translate("general_error_feedback-modal.title")} description={translate("general_error_feedback-modal.description")} imageType={"general_error"}  visible={isShowIncompatibleApi}>
-      <PrimaryButton  text={translate("general_error_feedback-modal.tertiary_title")} onPress={() => { appState && Linking.openURL( config.loginUri(appState.host) ) }} />
+    <InfoModal title={translate("incompatible_api.title")} description={translate("incompatible_api.description")} imageType={"url_not_valid"}  visible={isShowIncompatibleApi}>
+      { site && <PrimaryButton text={translate("incompatible_api.action_primary")} onPress={() => {Linking.openURL( config.loginUri(site)) }} /> }
       { isAuthenticated 
-        ?  <TertiaryButton text={translate("additional-actions-modal.auth_model_logout")} onPress={() => { logOut(); }} />
-        :  <TertiaryButton text={translate("general.cancel")} onPress={() => {  onCancel && onCancel(); }} />
+        ?  <TertiaryButton text={translate("incompatible_api.action_tertiary")} onPress={() => { logOut(); }} />
+        :  <TertiaryButton text={translate("incompatible_api.action_tertiary_cancel")} onPress={() => {  onCancel && onCancel(); }} />
       }
     </InfoModal>
     );

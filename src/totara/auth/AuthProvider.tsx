@@ -68,17 +68,11 @@ export const AuthProvider = ( {asyncStorage, children}: Props) => {
     logOut: logOut
   };
 
-  // TODO we need to put this modal in a more appropriate place
-  const AuthErrorModal = () => (
-  <InfoModal title={translate("general_error_feedback-modal.title")} description={translate("general_error_feedback-modal.description")} imageType={"general_error"} visible={true}>
-    <PrimaryButton text={translate("general_error_feedback-modal.primary_title")} onPress={() => logOut(true) } />
-  </InfoModal>);
-
   // TODO improve and make this testable, logic is getting more complicated
   const showUIFor = (authStep: AuthStep) => {
     switch (authStep) {
       case AuthStep.authError:
-        return <AuthErrorModal/>;
+        return <AuthErrorModal action={()=> logOut(true)}/>;
       case AuthStep.setupDone:
       case AuthStep.bootstrapDone:
         return <ManualFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>;
@@ -107,6 +101,20 @@ export const AuthProvider = ( {asyncStorage, children}: Props) => {
   );
 };
 
+const AuthErrorModal = ({ action }: PropAuthError) => (
+  <InfoModal
+    title={translate("auth_general_error.title")}
+    description={translate("auth_general_error.description")}
+    imageType={"general_error"}
+    visible={true}
+  >
+    <PrimaryButton
+      text={translate("auth_general_error.action_primary")}
+      onPress={() => action()}
+    />
+  </InfoModal>
+);
+
 export const AuthConsumer = AuthContext.Consumer;
 
 type Props = {
@@ -114,3 +122,6 @@ type Props = {
   asyncStorage: AsyncStorageStatic;
 };
 
+type PropAuthError = {
+  action: () => void
+};
