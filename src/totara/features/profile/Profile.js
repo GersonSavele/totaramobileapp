@@ -24,7 +24,7 @@ import PropTypes from "prop-types";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-import { AuthConsumer } from "@totara/auth";
+import { AuthConsumer } from "@totara/auth/AuthContext";
 import { NAVIGATION_SETTING } from "@totara/lib/Constant";
 
 

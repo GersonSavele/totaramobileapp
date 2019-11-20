@@ -28,7 +28,7 @@ import gql from "graphql-tag";
 import CookieManager from "react-native-cookies";
 
 import { config, Log } from "@totara/lib";
-import { AuthConsumer } from "./AuthProvider";
+import { AuthConsumer } from "./AuthContext";
 import { WEBVIEW_SECRET } from "@totara/lib/Constant";
 
 const createWebview = gql`

@@ -115,8 +115,6 @@ const AuthErrorModal = ({ action }: PropAuthError) => (
   </InfoModal>
 );
 
-export const AuthConsumer = AuthContext.Consumer;
-
 type Props = {
   children: ReactNode;
   asyncStorage: AsyncStorageStatic;
