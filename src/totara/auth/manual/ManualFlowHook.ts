@@ -38,10 +38,7 @@ import { asyncEffectWrapper } from "../AuthRoutines";
 
 export const useManualFlow = (
   fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>
-) => (
-  props: AuthProviderStateLift
-): OutProps => {
-
+) => (props: AuthProviderStateLift): OutProps => {
   const [, setTheme] = useContext(ThemeContext);
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
@@ -84,7 +81,9 @@ export const useManualFlow = (
       siteInfo => {
         dispatch({ type: "apiSuccess", payload: siteInfo });
       },
-      error => props.onLoginFailure(error)
+      error => {
+        dispatch({ type: "apiFailure", payload: error.message });
+      }
     ),
     [manualFlowState.siteUrl, manualFlowState.isSiteUrlSubmitted]
   );

@@ -64,6 +64,29 @@ describe("useManualFlow", () => {
     });
     expect(onLoginSuccess).toBeCalledTimes(1);
   });
+
+  it("should be on step fail when url is invalid", async () => {
+    const mockFetchError = () => Promise.reject(new Error("server error"));
+    const { result, waitForNextUpdate } = renderHook(() => useManualFlow(mockFetchError)());
+    
+    act(() => {
+      result.current.onSiteUrlSuccess("https://fail.com");
+    });
+
+    expect(result.current.manualFlowState).toMatchObject({
+      isSiteUrlSubmitted: true,
+      isSiteUrlFailure: false,
+      siteUrl: "https://fail.com"
+    });
+
+    await act(async () => waitForNextUpdate());
+
+    expect(result.current.manualFlowState).toMatchObject({
+      isSiteUrlSubmitted: false,
+      isSiteUrlFailure: true,
+      siteUrl: "https://fail.com"
+    });
+  }); 
 });
 
 describe("manualFlowReducer", () => {
@@ -197,13 +220,8 @@ describe("manualFlowReducer", () => {
     };
     const action = {
       type: "apiFailure",
-      payload: {
-        status: 401,
-        message: "Network request failed",
-        networkError: "server error"
-      }
+      payload: new Error()
     };
-
     const newState = manualFlowReducer(currentState, action);
     expect(newState.flowStep).toBe(ManualFlowSteps.native);
     expect(newState.isSiteUrlSubmitted).toBeFalsy();
@@ -213,12 +231,12 @@ describe("manualFlowReducer", () => {
 
 const mockFetch = () => {
   return Promise.resolve({
-        auth: "webview",
-        siteMaintenance: false,
-        theme: {
-          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-          colorBrand: "#CCFFCC"
-        },
-        version: "2019101802"
-      })};
-
+    auth: "webview",
+    siteMaintenance: false,
+    theme: {
+      logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+      colorBrand: "#CCFFCC"
+    },
+    version: "2019101802"
+  });
+};
