@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  *
  */
 
-import { registerDevice, deviceCleanup, bootstrap, asyncEffectWrapper } from "../AuthRoutines";
+import { registerDevice, deviceCleanup, bootstrap, asyncEffectWrapper, fetchData } from "../AuthRoutines";
 import { Log } from "@totara/lib";
 
 describe("AuthRoutines.registerDevice", () => {
@@ -232,50 +232,173 @@ describe("AuthRoutines.bootstrap", () => {
 
 
 describe("asyncEffectWrapper", () => {
-  const mockFetch = () => {
-    return Promise.resolve({
-      auth: "webview",
-      siteMaintenance: false,
-      theme: {
-        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        colorBrand: "#CCFFCC"
-      },
-      version: "2019101802"
-    })};
+  const asyncOperationSuccess =
+    Promise.resolve({
+      test: "object"
+    });
 
-  it("should dispatch apiSuccess action with the siteInfo when it isn't cancelled", async () => {
+  it("should call dispatchOnSuccess when it isn't cancelled and asyncOperation is resolved", async () => {
     expect.assertions(1);
     const dispatch = jest.fn((payload) => {
       expect(payload).toMatchObject({
-        auth: "webview",
-        siteMaintenance: false,
-        theme: {
-          logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-          colorBrand: "#CCFFCC"
-        },
-        version: "2019101802"
+        test: "object"
       });
     });
     asyncEffectWrapper(
-      mockFetch,
+      () => asyncOperationSuccess,
       () => true,
       dispatch
     )();
+
+    await asyncOperationSuccess;
   });
 
-  it("should call onLoginFailure if the response has an error", async () => {
+  it("should call dispatchOnFailure if the promise is rejected with an error", async () => {
     expect.assertions(1);
 
     const onLoginFailure = jest.fn((error) => expect(error.message).toBe("server error"));
-    const mockFetch = () =>
-      Promise.reject(new Error("server error"));
+    const asyncOperationFailed = () => Promise.reject(new Error("server error"));
 
     asyncEffectWrapper(
-      mockFetch,
+      asyncOperationFailed,
       () => true,
       () => {},
       onLoginFailure
     )();
+  });
+
+  it("should not perform the asyncOperation if the useEffectIfTrue false", async done => {
+    const asyncOperationFailed = () => { done.fail("this code should never be executed, test failed") };
+
+    asyncEffectWrapper(
+      asyncOperationFailed,
+      () => false,
+      () => { done.fail("this code should never be executed, test failed") },
+      () => { done.fail("this code should never be executed, test failed") }
+    )();
+
+    done();
+  });
+
+
+  it("should ignore dispatchOnSuccess when it is cancelled even when asyncOperation is resolved", async done => {
+    expect.assertions(1);
+
+    let resolveOutside;
+
+    const promise = new Promise(resolve => {
+      resolveOutside = resolve
+    });
+
+    const fn = jest.fn(() => promise);
+
+    const effectCallBack = asyncEffectWrapper(
+      fn,
+      () => true,
+      () => { done.fail("this code should never be called") },
+      () => { done.fail("this code should never be called") }
+    )();
+    effectCallBack(); // cancel the effect
+
+    resolveOutside({data: "test"}); // resolve and wait for the promise
+    await promise;
+
+    expect(fn).toBeCalledTimes(1);
+    done();
+  });
+
+});
+
+describe("fetchData", () => {
+
+  it("should return data from json when fetch response with http 200", async () =>{
+    expect.assertions(3);
+
+    const successResponse = jest.fn( (input, init) => {
+      expect(input).toBe("http://apisite.com");
+      expect(init).toMatchObject({
+        method: "GET"
+      });
+
+      return Promise.resolve({
+        status: 200,
+        json: () =>
+          ({
+            data: {
+              test: "data"
+            }
+          })
+      })
+    });
+
+    const data = await fetchData(successResponse)(
+      "http://apisite.com",
+      {
+        method: "GET"
+      }
+    );
+
+    expect(data).toMatchObject({
+      test: "data"
+    });
+  });
+
+  it("should return an error if the response is not http 200", async () =>{
+    expect.assertions(1);
+    const failedResponse = jest.fn( () => {
+      return Promise.resolve({
+        status: 500,
+      })
+    });
+
+    await fetchData(failedResponse)(
+      "http://apisite.com",
+      {
+        method: "GET"
+      }
+    ).catch(error => {
+      expect(error.message).toBe("500");
+    });
+  });
+
+  it("should return an error if the response is not json even with a http 200 response", async () =>{
+    expect.assertions(1);
+    const failedResponse = jest.fn( () => {
+      return Promise.resolve({
+        status: 200,
+        json: () => {throw new Error("error")} // can't mock json error but should be good enough
+      })
+    });
+
+    await fetchData(failedResponse)(
+      "http://apisite.com",
+      {
+        method: "GET"
+      }
+    ).catch(error => {
+      expect(error.message).toBe("error");
+    });
+  });
+
+  it("should return an error if the response is not the expected json format", async () =>{
+    expect.assertions(1);
+    const failedResponse = jest.fn( () => {
+      return Promise.resolve({
+        status: 200,
+        json: () => ({
+          wrongFormatJson: "can't process payload"
+        })
+      })
+    });
+
+    await fetchData(failedResponse)(
+      "http://apisite.com",
+      {
+        method: "GET"
+      }
+    ).catch(error => {
+      expect(error.message).toBe("json expected to have data attribute");
+    });
   });
 
 });

@@ -48,11 +48,10 @@ import { AppState, SiteInfo } from "./AuthContext";
  * Given a appState secret (temp key), retrieve the api key (a long term key) from the api via
  * fetch.  Store the api key and host in storage, return these as well.
  *
- * @param fetch http fetch
- * @param asyncStorage device storage
+ * @param fetchData - promise that resolves to get data
+ * @param asyncStorage - device storage
  *
- * @param setup contains the appState secret to be validated by the server
- *
+ * @param setup - contains the appState secret to be validated by the server
  *
  * @returns promise of appState which contains the valid apiKey and which host it was obtained from
  */
@@ -111,7 +110,7 @@ export const registerDevice = (
 export const deviceCleanup = (
   asyncStorage: AsyncStorageStatic
 ) => async (
-  deviceDelete: () => Promise<any>
+  deviceDelete: () => Promise<{ data: { delete_device: boolean}}>
 ): Promise<boolean> => {
 
     const remoteCleanUp = deviceDelete().then(({ data: { delete_device } }) => {
@@ -211,7 +210,8 @@ export const createApolloClient = (
 };
 
 /**
- * fetch the json data from http endpoint
+ * fetch the json data from http endpoint.  The response is expected to be json with a data then return payload
+ * { data: payload } as the object
  *
  * @param fetch - pass the fetch implementation, usually in test this is a mock fetch
  * @param input - input such as url to fetch to
@@ -247,7 +247,10 @@ export const fetchData = (
     })
     .then(json => {
       Log.debug("json response", json);
-      return (json.data as unknown) as T;
+      if (json.data)
+        return (json.data as unknown) as T;
+      else
+        throw new Error("json expected to have data attribute");
     });
 };
 
@@ -283,18 +286,18 @@ export const asyncEffectWrapper = <T>(
 
     if (useEffectIfTrue()) {
       asyncOperation()
-        .then(dataFromFetch => {
-          if (!didCancel && dataFromFetch) {
-            Log.debug("dataFromFetch", dataFromFetch);
-            dispatchOnSuccess(dataFromFetch);
+        .then(data => {
+          if (!didCancel && data) {
+            Log.debug("Not cancelled and successfully got data: ", data);
+            dispatchOnSuccess(data);
           } else {
-            Log.warn(
-              "Fetch was cancelled, ignoring dataFromFetch",
-              dataFromFetch
-            );
+            Log.warn("Cancelled and ignoring data: ", data);
           }
         })
-        .catch(error => dispatchOnFailure(error));
+        .catch(error => {
+          Log.debug("Error on asyncOperation with error: ", error);
+          dispatchOnFailure(error)
+        });
     }
 
     return () => {
