@@ -19,4 +19,36 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
- 
+import React from "react";
+import { Linking } from "react-native";
+
+import { PrimaryButton, TertiaryButton, InfoModal } from "@totara/components";
+import { translate } from "@totara/locale";
+import { ManualAuthBrowserProps } from "../ManualAuthProps";
+
+const BrowserLogin = ({ onSetupSecretCancel, siteUrl }: ManualAuthBrowserProps) => {
+  return (
+    <InfoModal
+      title={translate("browser_login.title")}
+      description={translate("browser_login.description")}
+      imageType={"browser_login"}
+      visible={true}
+    >
+      <PrimaryButton
+        text={translate("browser_login.primary_title")}
+        onPress={() => {
+          Linking.openURL(siteUrl);
+        }}
+        icon="external-link-alt"
+      />
+      <TertiaryButton
+        text={translate("browser_login.tertiary_title")}
+        onPress={() => {
+          onSetupSecretCancel && onSetupSecretCancel();
+        }}
+      />
+    </InfoModal>
+  );
+};
+
+export default BrowserLogin;

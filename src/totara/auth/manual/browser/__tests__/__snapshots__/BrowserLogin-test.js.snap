@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BrowserLogin, BrowserLogin screen should launch when api return manual flow is browser login Test result : take screen-shot when user login browser 1`] = `
+<Modal
+  hardwareAccelerated={false}
+  visible={true}
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "rgba(0, 0, 0, 0.7)",
+        "flex": 1,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderRadius": 4,
+              "flex": 1,
+              "marginHorizontal": 20,
+              "marginVertical": 32,
+            },
+            Object {
+              "backgroundColor": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "marginLeft": "5%",
+              "marginRight": "5%",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "marginVertical": 16,
+                }
+              }
+            >
+              <Image
+                source={
+                  Object {
+                    "testUri": "../../../src/resources/images/browser_login/browser_login.png",
+                  }
+                }
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "height": 375,
+                    "resizeMode": "contain",
+                    "width": 525,
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "marginVertical": 16,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "paddingBottom": 16,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "textAlign": "center",
+                      },
+                      Object {
+                        "color": "#3D444B",
+                        "fontSize": 44,
+                        "fontWeight": "500",
+                      },
+                    ]
+                  }
+                >
+                  translated browser_login.title with undefined
+                </Text>
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "paddingBottom": 16,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "textAlign": "center",
+                      },
+                      Object {
+                        "color": "#3D444B",
+                        "fontSize": 16,
+                        "fontWeight": "normal",
+                      },
+                    ]
+                  }
+                >
+                  translated browser_login.description with undefined
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "justifyContent": "space-between",
+                  "marginVertical": 16,
+                  "minHeight": 104,
+                }
+              }
+            >
+              <View
+                accessibilityRole="button"
+                accessibilityStates={Array []}
+                accessible={true}
+                clickable={true}
+                isTVSelectable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {},
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "#007AFF",
+                          "fontSize": 18,
+                          "padding": 8,
+                          "textAlign": "center",
+                        },
+                      ]
+                    }
+                  >
+                    this is a mock button
+                  </Text>
+                </View>
+              </View>
+              <View
+                accessibilityRole="button"
+                accessibilityStates={Array []}
+                accessible={true}
+                clickable={true}
+                isTVSelectable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {},
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "#007AFF",
+                          "fontSize": 18,
+                          "padding": 8,
+                          "textAlign": "center",
+                        },
+                      ]
+                    }
+                  >
+                    this is a mock button
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;

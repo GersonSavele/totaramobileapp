@@ -18,3 +18,17 @@
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
+
+import React from 'react';
+import BrowserLogin from '../BrowserLogin';
+import renderer from 'react-test-renderer';
+
+
+describe("BrowserLogin, BrowserLogin screen should launch when api return manual flow is browser login", () => {
+  it('Test result : take screen-shot when user login browser', () => {
+    const tree = renderer
+      .create(<BrowserLogin/>)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+});

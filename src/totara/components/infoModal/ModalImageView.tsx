@@ -25,7 +25,8 @@ import { Image, StyleSheet, Dimensions } from "react-native";
 export const IMAGES = {
   complete_action: require("@resources/images/complete_action/complete_action.png"),
   url_not_valid: require("@resources/images/url_not_valid/url_not_valid.png"),
-  general_error: require("@resources/images/general_error/general_error.png")
+  general_error: require("@resources/images/general_error/general_error.png"),
+  browser_login: require("@resources/images/browser_login/browser_login.png")
 };
 
 type Params = {
@@ -49,6 +50,10 @@ const setImage = ({ imageType }: Params) => {
     case "general_error":
       return (
         <Image style={styles.containerStyle} source={IMAGES.general_error} />
+      );
+    case "browser_login":
+      return (
+        <Image style={styles.containerStyle} source={IMAGES.browser_login} />
       );
     default:
       return (

@@ -21,6 +21,11 @@
 
 import { SiteInfo } from "../AuthContext";
 
+export type ManualAuthBrowserProps = {
+  siteUrl: string,
+  onSetupSecretCancel: () => void
+}
+
 export type ManualAuthProps = {
   siteUrl: string;
   siteInfo: SiteInfo;

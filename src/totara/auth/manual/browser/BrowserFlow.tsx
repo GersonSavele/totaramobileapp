@@ -21,15 +21,23 @@
 
 import React from "react";
 
-
-import { ManualAuthProps } from "../ManualAuthProps";
+import BrowserLogin from "./BrowserLogin";
+import { ManualAuthBrowserProps } from "../ManualAuthProps";
 
 const BrowserFlow = ({
-    siteUrl,
-    onSetupSecretSuccess,
-    onSetupSecretCancel
-  }: ManualAuthProps) => {
-  }
+  siteUrl,
+  onSetupSecretCancel
+}: ManualAuthBrowserProps) => {
+  const onCancelLogin = () => {
+    onSetupSecretCancel();
+  };
+  const UserBrowserLogin = () =>
+    BrowserLogin({
+      siteUrl: siteUrl,
+      onSetupSecretCancel: onCancelLogin
+    });
 
+  return <UserBrowserLogin />;
+};
 
-  export default BrowserFlow;
+export default BrowserFlow;
