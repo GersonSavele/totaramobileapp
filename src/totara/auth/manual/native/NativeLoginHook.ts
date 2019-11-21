@@ -97,12 +97,10 @@ export const useNativeLogin = (
       }
     ), [nativeLoginState.isRequestingLogin]);
 
-  useEffect(() => {
-    if ( nativeLoginState.setupSecret ) {
-      Log.debug("Setup Secret", nativeLoginState.setupSecret);
-      onSetupSecretSuccess(String(nativeLoginState.setupSecret));
-    }
-  }, [nativeLoginState.setupSecret]);
+  if ( nativeLoginState.setupSecret ) {
+    Log.debug("Setup Secret", nativeLoginState.setupSecret);
+    onSetupSecretSuccess(nativeLoginState.setupSecret);
+  }
 
   return {
     nativeLoginState,
@@ -196,8 +194,6 @@ export const nativeReducer = (
           };
         }
       }
-    default:
-      return state;
   }
 };
 
