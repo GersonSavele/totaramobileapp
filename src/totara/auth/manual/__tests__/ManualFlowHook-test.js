@@ -23,12 +23,30 @@ import { renderHook, act } from "@testing-library/react-hooks";
 import {
   ManualFlowSteps,
   useManualFlow,
-  manualFlowReducer,
+  manualFlowReducer
 } from "../ManualFlowHook";
 import { config } from "@totara/lib";
 
 describe("useManualFlow", () => {
   it("should be on step done when url and secret is valid", async () => {
+
+    const expectedOptions = {
+      method: "POST",
+      body: JSON.stringify({version: "UnknownVersion"})
+    };
+
+    const mockFetch = jest.fn(()=> {
+        return Promise.resolve({
+          auth: "webview",
+          siteMaintenance: false,
+          theme: {
+            logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+            colorBrand: "#CCFFCC"
+          },
+          version: "2019101802"
+      });
+    });
+
     const onLoginSuccess = jest.fn(setupSecret => {
       expect(setupSecret.uri).toBe("https://success.com");
       expect(setupSecret.secret).toBe("theSecret");
@@ -39,10 +57,12 @@ describe("useManualFlow", () => {
         useManualFlow(mockFetch)({ onLoginSuccess: onLoginSuccess }),
       { initialProps: { onLoginSuccess: onLoginSuccess } }
     );
-
+    
     act(() => {
       result.current.onSiteUrlSuccess("https://success.com");
     });
+    
+    expect(mockFetch).toHaveBeenCalledWith("https://success.com/totara/mobile/theme_info.php",expectedOptions);
 
     await act(async () => waitForNextUpdate());
 
@@ -67,8 +87,10 @@ describe("useManualFlow", () => {
 
   it("should be on step fail when url is invalid", async () => {
     const mockFetchError = () => Promise.reject(new Error("server error"));
-    const { result, waitForNextUpdate } = renderHook(() => useManualFlow(mockFetchError)());
-    
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useManualFlow(mockFetchError)()
+    );
+
     act(() => {
       result.current.onSiteUrlSuccess("https://fail.com");
     });
@@ -86,7 +108,7 @@ describe("useManualFlow", () => {
       isSiteUrlFailure: true,
       siteUrl: "https://fail.com"
     });
-  }); 
+  });
 });
 
 describe("manualFlowReducer", () => {
@@ -228,15 +250,3 @@ describe("manualFlowReducer", () => {
     expect(newState.isSiteUrlFailure).toBe(true);
   });
 });
-
-const mockFetch = () => {
-  return Promise.resolve({
-    auth: "webview",
-    siteMaintenance: false,
-    theme: {
-      logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-      colorBrand: "#CCFFCC"
-    },
-    version: "2019101802"
-  });
-};

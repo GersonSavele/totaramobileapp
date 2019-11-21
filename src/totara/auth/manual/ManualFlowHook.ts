@@ -61,10 +61,11 @@ export const useManualFlow = (
       siteInfo: manualFlowState.siteInfo
     });
 
+  const version = VersionInfo.appVersion ?  VersionInfo.appVersion : "UnknownVersion";
   const fetchSiteInfo = () =>
     fetchData<SiteInfo>(config.infoUri(manualFlowState.siteUrl!), {
       method: "POST",
-      body: JSON.stringify({ version: VersionInfo.appVersion })
+      body: JSON.stringify({ version: version })
     });
 
   // effect fetch the data when the right dependency has been met

@@ -20,16 +20,10 @@
  */
 
 import { renderHook, act } from "@testing-library/react-hooks";
-import {
-  useNativeLogin,
-  nativeReducer,
-  fetchLoginSecret,
-  fetchLogin
-} from "../NativeLoginHook";
+import { useNativeLogin, nativeReducer } from "../NativeLoginHook";
 
 const onBack = jest.fn();
 const onSetupSecretSuccess = jest.fn();
-
 
 describe("useNativeLogin", () => {
   const { result } = renderHook(props => useNativeLogin()(props), {
@@ -70,7 +64,7 @@ describe("useNativeLogin", () => {
 
     expect(result.current.nativeLoginState.inputUsernameStatus).toBe("error");
     expect(result.current.nativeLoginState.inputPasswordStatus).toBe(undefined);
-  })
+  });
 });
 
 describe("Native login reducer", () => {
@@ -100,6 +94,35 @@ describe("Native login reducer", () => {
     const newState = nativeReducer({}, action);
     expect(newState.inputPassword).toEqual("test-setpassword");
   });
+
+  it("should handle loginfailed", () => {
+    const state = {
+      isRequestingLogin: true,
+      errorStatusUnauthorized: false
+    };
+    const action = {
+      type: "loginfailed",
+      payload: undefined
+    };
+    const newState = nativeReducer(state, action);
+
+    expect(newState.isRequestingLogin).toBeFalsy();
+    expect(newState.errorStatusUnauthorized).toBeTruthy();
+  });
+
+  it("should handle resetform", () => {
+    const state = {
+      errorStatusUnauthorized: true
+    };
+    const action = {
+      type: "resetform",
+      payload: undefined
+    };
+    const newState = nativeReducer(state, action);
+
+    expect(newState.errorStatusUnauthorized).toBeFalsy();
+  });
+
   it("should handle clickenter with-out username and password", () => {
     const state = {
       inputUsername: undefined,
@@ -110,12 +133,11 @@ describe("Native login reducer", () => {
       payload: undefined
     };
     const newState = nativeReducer(state, action);
-    
+
     expect(newState.inputUsernameStatus).toEqual("error");
     expect(newState.inputPasswordStatus).toEqual("error");
   });
   it("should handle clickenter with invalid username and valid password", () => {
-    
     const state = {
       inputUsername: undefined,
       inputPassword: "password"
