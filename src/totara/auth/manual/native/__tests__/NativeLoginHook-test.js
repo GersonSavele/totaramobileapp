@@ -21,6 +21,8 @@
 
 import { renderHook, act } from "@testing-library/react-hooks";
 import { useNativeLogin, nativeReducer } from "../NativeLoginHook";
+import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
+import { config } from "@totara/lib";
 
 const onBack = jest.fn();
 const onSetupSecretSuccess = jest.fn();
@@ -65,6 +67,73 @@ describe("useNativeLogin", () => {
     expect(result.current.nativeLoginState.inputUsernameStatus).toBe("error");
     expect(result.current.nativeLoginState.inputPasswordStatus).toBe(undefined);
   });
+
+  it("should get the setupsecret when it is a valid username and password", async () => {
+    expect.assertions(6);
+
+    const onSetupSecretSuccess = jest.fn( setupSecret => {
+      expect(setupSecret).toBe("setupSecret");
+    });
+
+    const mockFetchData = jest.fn ((input, init) => {
+      //debugger
+      // TODO expect test the input and init
+      if (input === "https://site.com/totara/mobile/login_setup.php") {
+        expect(init).toMatchObject({
+          method: "GET",
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+
+        return Promise.resolve({
+          loginsecret: "loginSecret"
+        });
+      } else if (input === "https://site.com/totara/mobile/login.php") {
+        expect(init).toMatchObject({
+          method: "POST",
+          body: JSON.stringify({
+            loginsecret: "loginSecret",
+            username: "username",
+            password: "password"
+          }),
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+
+        return Promise.resolve({
+          setupsecret: "setupSecret"
+        });
+      } else {
+        throw new Error("should not execute, test failed", input);
+      }
+    });
+
+    const { result, waitForNextUpdate } = renderHook(
+      ({siteUrl, onSetupSecretSuccess}) =>
+        useNativeLogin(mockFetchData)({onSetupSecretSuccess: onSetupSecretSuccess, siteUrl: siteUrl}),
+      { initialProps: { siteUrl: "https://site.com", onSetupSecretSuccess: onSetupSecretSuccess}}
+    );
+
+   act( () => {
+       result.current.inputUsernameWithShowError("username");
+       result.current.inputPasswordWithShowError("password");
+       result.current.onClickEnter();
+     }
+   );
+
+    await act(async () => waitForNextUpdate());
+
+    expect(result.current.nativeLoginState).toMatchObject({
+      setupSecret: "setupSecret",
+      inputUsername: "username",
+      inputPassword: "password",
+      isRequestingLogin: true,
+      errorStatusUnauthorized: false
+    });
+
+    expect(onSetupSecretSuccess).toBeCalledTimes(1);
+    expect(onSetupSecretSuccess).toHaveBeenCalledWith("setupSecret");
+
+  })
+
 });
 
 describe("Native login reducer", () => {
