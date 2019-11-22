@@ -76,8 +76,6 @@ describe("useNativeLogin", () => {
     });
 
     const mockFetchData = jest.fn ((input, init) => {
-      //debugger
-      // TODO expect test the input and init
       if (input === "https://site.com/totara/mobile/login_setup.php") {
         expect(init).toMatchObject({
           method: "GET",
@@ -132,7 +130,231 @@ describe("useNativeLogin", () => {
     expect(onSetupSecretSuccess).toBeCalledTimes(1);
     expect(onSetupSecretSuccess).toHaveBeenCalledWith("setupSecret");
 
-  })
+  });
+
+  it("should set form error for response with handled error[error status: 401], when fetch setupSecret", async () => {
+    expect.assertions(3);
+
+    const mockFetchData = jest.fn((input, init) => {
+      if (input === "https://site.com/totara/mobile/login_setup.php") {
+        expect(init).toMatchObject({
+          method: "GET",
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+        return Promise.resolve({
+          loginsecret: "loginSecret"
+        });
+      } else if (input === "https://site.com/totara/mobile/login.php") {
+        expect(init).toMatchObject({
+          method: "POST",
+          body: JSON.stringify({
+            loginsecret: "loginSecret",
+            username: "username",
+            password: "password"
+          }),
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+        return Promise.reject(new Error("401"));
+      } else {
+        throw new Error("should not execute, test failed", input);
+      }
+    });
+
+    const { result, waitForNextUpdate } = renderHook(
+      ({ siteUrl }) =>
+        useNativeLogin(mockFetchData)({
+          siteUrl: siteUrl
+        }),
+      {
+        initialProps: {
+          siteUrl: "https://site.com"
+        }
+      }
+    );
+
+    act(() => {
+      result.current.inputUsernameWithShowError("username");
+      result.current.inputPasswordWithShowError("password");
+      result.current.onClickEnter();
+    });
+    await act(async () => waitForNextUpdate());
+
+    expect(result.current.nativeLoginState).toMatchObject({
+      isRequestingLogin: false,
+      errorStatusUnauthorized: true
+    });
+  });
+
+  it("should set form error for response with handled error[error status: 401], when fetch loginSecret", async () => {
+    expect.assertions(2);
+
+    const mockFetchData = jest.fn((input, init) => {
+      if (input === "https://site.com/totara/mobile/login_setup.php") {
+        expect(init).toMatchObject({
+          method: "GET",
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+        return Promise.reject(new Error("401"));
+      } else if (input === "https://site.com/totara/mobile/login.php") {
+        expect(init).toMatchObject({
+          method: "POST",
+          body: JSON.stringify({
+            loginsecret: "loginSecret",
+            username: "username",
+            password: "password"
+          }),
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+        return Promise.resolve({
+          setupsecret: "setupSecret"
+        });
+      } else {
+        throw new Error("should not execute, test failed", input);
+      }
+    });
+
+    const { result, waitForNextUpdate } = renderHook(
+      ({ siteUrl }) =>
+        useNativeLogin(mockFetchData)({
+          siteUrl: siteUrl
+        }),
+      {
+        initialProps: {
+          siteUrl: "https://site.com"
+        }
+      }
+    );
+
+    act(() => {
+      result.current.inputUsernameWithShowError("username");
+      result.current.inputPasswordWithShowError("password");
+      result.current.onClickEnter();
+    });
+    await act(async () => waitForNextUpdate());
+
+    expect(result.current.nativeLoginState).toMatchObject({
+      isRequestingLogin: false,
+      errorStatusUnauthorized: true
+    });
+  });
+
+  it("should throw an error for all the unhandled errors while fetching setupSecret for a valid username and password ", async () => {
+    expect.assertions(6);
+    const onSetupSecretFailure = jest.fn(error => {
+      expect(error.message).toBe("400");
+    });
+
+    const mockFetchData = jest.fn((input, init) => {
+      if (input === "https://site.com/totara/mobile/login_setup.php") {
+        expect(init).toMatchObject({
+          method: "GET",
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+        return Promise.resolve({
+          loginsecret: "loginSecret"
+        });
+      } else if (input === "https://site.com/totara/mobile/login.php") {
+        expect(init).toMatchObject({
+          method: "POST",
+          body: JSON.stringify({
+            loginsecret: "loginSecret",
+            username: "username",
+            password: "password"
+          }),
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+        return Promise.reject(new Error("400"));
+      } else {
+        throw new Error("should not execute, test failed", input);
+      }
+    });
+
+    const { result, waitForNextUpdate } = renderHook(
+      ({ siteUrl, onSetupSecretFailure }) =>
+        useNativeLogin(mockFetchData)({
+          onSetupSecretFailure: onSetupSecretFailure,
+          siteUrl: siteUrl
+        }),
+      {
+        initialProps: {
+          siteUrl: "https://site.com",
+          onSetupSecretFailure: onSetupSecretFailure
+        }
+      }
+    );
+
+    act(() => {
+      result.current.inputUsernameWithShowError("username");
+      result.current.inputPasswordWithShowError("password");
+      result.current.onClickEnter();
+    });
+    await act(async () => waitForNextUpdate());
+
+    expect(result.current.nativeLoginState).toMatchObject({
+      unhandleLoginError: new Error("400")
+    });
+    expect(onSetupSecretFailure).toBeCalledTimes(1);
+    expect(onSetupSecretFailure).toHaveBeenCalledWith(new Error("400"));
+  });
+
+  it("should throw an error for all the unhandled errors while fetching loginSecret for a valid username and password ", async () => {
+    expect.assertions(5);
+    const onSetupSecretFailure = jest.fn(error => {
+      expect(error.message).toBe("400");
+    });
+
+    const mockFetchData = jest.fn((input, init) => {
+      if (input === "https://site.com/totara/mobile/login_setup.php") {
+        expect(init).toMatchObject({
+          method: "GET",
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+        return Promise.reject(new Error("400"));
+      } else if (input === "https://site.com/totara/mobile/login.php") {
+        expect(init).toMatchObject({
+          method: "POST",
+          body: JSON.stringify({
+            loginsecret: "loginSecret",
+            username: "username",
+            password: "password"
+          }),
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        });
+        return Promise.resolve({
+          setupsecret: "setupSecret"
+        });
+      } else {
+        throw new Error("should not execute, test failed", input);
+      }
+    });
+
+    const { result, waitForNextUpdate } = renderHook(
+      ({ siteUrl, onSetupSecretFailure }) =>
+        useNativeLogin(mockFetchData)({
+          onSetupSecretFailure: onSetupSecretFailure,
+          siteUrl: siteUrl
+        }),
+      {
+        initialProps: {
+          siteUrl: "https://site.com",
+          onSetupSecretFailure: onSetupSecretFailure
+        }
+      }
+    );
+
+    act(() => {
+      result.current.inputUsernameWithShowError("username");
+      result.current.inputPasswordWithShowError("password");
+      result.current.onClickEnter();
+    });
+    await act(async () => waitForNextUpdate());
+
+    expect(result.current.nativeLoginState).toMatchObject({
+      unhandleLoginError: new Error("400")
+    });
+    expect(onSetupSecretFailure).toBeCalledTimes(1);
+    expect(onSetupSecretFailure).toHaveBeenCalledWith(new Error("400"));
+  });
 
 });
 

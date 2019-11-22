@@ -33,7 +33,8 @@ const initialState = {
   inputUsernameStatus: undefined,
   inputPasswordStatus: undefined,
   isRequestingLogin: false,
-  errorStatusUnauthorized: false
+  errorStatusUnauthorized: false,
+  unhandleLoginError: undefined
 };
 
 export const useNativeLogin = (
@@ -92,10 +93,14 @@ export const useNativeLogin = (
         if (error.message === "401") {
           dispatch({ type: "loginfailed"});
         } else {
-          onSetupSecretFailure(error);
+          dispatch({ type: "unhandledloginfail", payload: error});
         }
       }
     ), [nativeLoginState.isRequestingLogin]);
+    
+  if ( nativeLoginState.unhandleLoginError ) {
+    onSetupSecretFailure(nativeLoginState.unhandleLoginError);
+  }
 
   if ( nativeLoginState.setupSecret ) {
     Log.debug("Setup Secret", nativeLoginState.setupSecret);
@@ -150,6 +155,11 @@ export const nativeReducer = (
         ...state,
         errorStatusUnauthorized: false
       };
+    case "unhandledloginfail":
+        return {
+          ...state,
+          unhandleLoginError: action.payload as Error
+        };
     case "submit":
       if (
         state.inputUsername &&
@@ -162,7 +172,8 @@ export const nativeReducer = (
           isRequestingLogin: true,
           inputUsernameStatus: undefined,
           inputPasswordStatus: undefined,
-          errorStatusUnauthorized: false
+          errorStatusUnauthorized: false,
+          unhandleLoginError: undefined
         };
       } else {
         if (
@@ -205,6 +216,7 @@ type NativeLoginState = {
   inputPasswordStatus?: "error" | undefined;
   isRequestingLogin: boolean;
   errorStatusUnauthorized: boolean;
+  unhandleLoginError?: Error
 };
 
 type Action = {
@@ -214,9 +226,10 @@ type Action = {
     | "setpassword"
     | "submit"
     | "loginfailed"
-    | "resetform";
+    | "resetform"
+    | "unhandledloginfail";
 
-  payload?: string | boolean;
+  payload?: string | boolean | Error;
 };
 
 type LoginSetup = {
