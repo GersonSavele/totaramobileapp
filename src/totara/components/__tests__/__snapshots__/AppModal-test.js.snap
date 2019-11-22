@@ -38,6 +38,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           style={
             Object {
               "alignItems": "center",
+              "marginHorizontal": 32,
               "marginVertical": 16,
             }
           }
@@ -45,7 +46,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           <Image
             source={
               Object {
-                "testUri": "../../../src/resources/images/general_error/general_error.png",
+                "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
               }
             }
             style={
@@ -62,6 +63,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           style={
             Object {
               "alignItems": "center",
+              "marginHorizontal": 32,
               "marginVertical": 16,
             }
           }
@@ -88,7 +90,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                 ]
               }
             >
-              translated general_error_feedback-modal.title with undefined
+              translated incompatible_api.title with undefined
             </Text>
           </View>
           <View
@@ -113,7 +115,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                 ]
               }
             >
-              translated general_error_feedback-modal.description with undefined
+              translated incompatible_api.description with undefined
             </Text>
           </View>
         </View>
@@ -126,48 +128,6 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
             }
           }
         >
-          <View
-            accessibilityRole="button"
-            accessibilityStates={Array []}
-            accessible={true}
-            clickable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {},
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#007AFF",
-                      "fontSize": 18,
-                      "padding": 8,
-                      "textAlign": "center",
-                    },
-                  ]
-                }
-              >
-                this is a mock button
-              </Text>
-            </View>
-          </View>
           <View
             accessibilityRole="button"
             accessibilityStates={Array []}
@@ -255,6 +215,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           style={
             Object {
               "alignItems": "center",
+              "marginHorizontal": 32,
               "marginVertical": 16,
             }
           }
@@ -262,7 +223,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           <Image
             source={
               Object {
-                "testUri": "../../../src/resources/images/general_error/general_error.png",
+                "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
               }
             }
             style={
@@ -279,6 +240,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           style={
             Object {
               "alignItems": "center",
+              "marginHorizontal": 32,
               "marginVertical": 16,
             }
           }
@@ -305,7 +267,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                 ]
               }
             >
-              translated general_error_feedback-modal.title with undefined
+              translated incompatible_api.title with undefined
             </Text>
           </View>
           <View
@@ -330,7 +292,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                 ]
               }
             >
-              translated general_error_feedback-modal.description with undefined
+              translated incompatible_api.description with undefined
             </Text>
           </View>
         </View>
@@ -343,48 +305,6 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
             }
           }
         >
-          <View
-            accessibilityRole="button"
-            accessibilityStates={Array []}
-            accessible={true}
-            clickable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {},
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#007AFF",
-                      "fontSize": 18,
-                      "padding": 8,
-                      "textAlign": "center",
-                    },
-                  ]
-                }
-              >
-                this is a mock button
-              </Text>
-            </View>
-          </View>
           <View
             accessibilityRole="button"
             accessibilityStates={Array []}
@@ -472,6 +392,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           style={
             Object {
               "alignItems": "center",
+              "marginHorizontal": 32,
               "marginVertical": 16,
             }
           }
@@ -479,7 +400,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           <Image
             source={
               Object {
-                "testUri": "../../../src/resources/images/general_error/general_error.png",
+                "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
               }
             }
             style={
@@ -496,6 +417,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
           style={
             Object {
               "alignItems": "center",
+              "marginHorizontal": 32,
               "marginVertical": 16,
             }
           }
@@ -522,7 +444,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                 ]
               }
             >
-              translated general_error_feedback-modal.title with undefined
+              translated incompatible_api.title with undefined
             </Text>
           </View>
           <View
@@ -547,7 +469,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                 ]
               }
             >
-              translated general_error_feedback-modal.description with undefined
+              translated incompatible_api.description with undefined
             </Text>
           </View>
         </View>
@@ -560,48 +482,6 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
             }
           }
         >
-          <View
-            accessibilityRole="button"
-            accessibilityStates={Array []}
-            accessible={true}
-            clickable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {},
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#007AFF",
-                      "fontSize": 18,
-                      "padding": 8,
-                      "textAlign": "center",
-                    },
-                  ]
-                }
-              >
-                this is a mock button
-              </Text>
-            </View>
-          </View>
           <View
             accessibilityRole="button"
             accessibilityStates={Array []}
@@ -689,6 +569,7 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
           style={
             Object {
               "alignItems": "center",
+              "marginHorizontal": 32,
               "marginVertical": 16,
             }
           }
@@ -696,7 +577,7 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
           <Image
             source={
               Object {
-                "testUri": "../../../src/resources/images/general_error/general_error.png",
+                "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
               }
             }
             style={
@@ -713,6 +594,7 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
           style={
             Object {
               "alignItems": "center",
+              "marginHorizontal": 32,
               "marginVertical": 16,
             }
           }
@@ -739,7 +621,7 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
                 ]
               }
             >
-              translated general_error_feedback-modal.title with undefined
+              translated incompatible_api.title with undefined
             </Text>
           </View>
           <View
@@ -764,7 +646,7 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
                 ]
               }
             >
-              translated general_error_feedback-modal.description with undefined
+              translated incompatible_api.description with undefined
             </Text>
           </View>
         </View>
@@ -777,48 +659,6 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
             }
           }
         >
-          <View
-            accessibilityRole="button"
-            accessibilityStates={Array []}
-            accessible={true}
-            clickable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {},
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#007AFF",
-                      "fontSize": 18,
-                      "padding": 8,
-                      "textAlign": "center",
-                    },
-                  ]
-                }
-              >
-                this is a mock button
-              </Text>
-            </View>
-          </View>
           <View
             accessibilityRole="button"
             accessibilityStates={Array []}
