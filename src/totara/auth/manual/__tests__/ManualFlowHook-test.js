@@ -19,6 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
+import React from 'react';
 import { renderHook, act } from "@testing-library/react-hooks";
 import {
   ManualFlowSteps,
@@ -26,6 +27,8 @@ import {
   manualFlowReducer
 } from "../ManualFlowHook";
 import { config } from "@totara/lib";
+import BrowserLogin from '../browser';
+import renderer from 'react-test-renderer';
 
 describe("useManualFlow", () => {
   it("should be on step done when url and secret is valid", async () => {
@@ -234,19 +237,32 @@ describe("manualFlowReducer", () => {
     expect(newState.setupSecret).toBe("the_secret");
   });
 
-  it("should api failure, when site-info was Submitted", () => {
+  it("should set flowStep to browser login and take screen-shot in Information modal", () => {
     const currentState = {
       isSiteUrlSubmitted: true,
-      siteUrl: "https://totarasite.com",
-      flowStep: ManualFlowSteps.native
+      flowStep: ManualFlowSteps.siteUrl
+    };
+    const testSiteInfo = {
+      auth: "browser",
+      siteMaintenance: false,
+      theme: {
+        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
+        colorBrand: "#CCFFCC"
+      },
+      version: "2019101802"
     };
     const action = {
-      type: "siteInfoApiFailure",
-      payload: new Error()
+      type: "apiSuccess",
+      payload: testSiteInfo
     };
+
     const newState = manualFlowReducer(currentState, action);
-    expect(newState.flowStep).toBe(ManualFlowSteps.native);
-    expect(newState.isSiteUrlSubmitted).toBeFalsy();
-    expect(newState.isSiteUrlFailure).toBe(true);
+
+    expect(newState.flowStep).toBe(ManualFlowSteps.browser);
+    expect(newState.siteInfo).toMatchObject(testSiteInfo);
+    const tree = renderer
+      .create(<BrowserLogin siteUrl={ManualFlowSteps.siteUrl} onSetupSecretCancel={jest.fn()} />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });

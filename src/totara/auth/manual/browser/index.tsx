@@ -19,5 +19,5 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-import BrowserFlow from "./BrowserFlow";
-export default BrowserFlow;
+import BrowserLogin from "./BrowserLogin";
+export default BrowserLogin;

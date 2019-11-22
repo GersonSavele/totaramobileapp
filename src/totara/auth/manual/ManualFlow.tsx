@@ -26,7 +26,7 @@ import { View } from "react-native";
 import { AuthProviderStateLift } from "../AuthComponent";
 import WebviewFlow from "./webview";
 import NativeFlow from "./native";
-import BrowserFlow from "./browser"
+import BrowserLogin from "./browser"
 import { useManualFlow, ManualFlowSteps, OutProps } from "./ManualFlowHook";
 import SiteUrl from "./SiteUrl";
 import { useSiteUrl } from "./SiteUrlHook";
@@ -55,6 +55,7 @@ const ManualFlow = ({
       })
     );
 
+<<<<<<< HEAD
   if (manualFlowState.isSiteUrlFailure) {
     return <SiteErrorModal onCancel={()=> { onSetupSecretCancel()}} />;
   } else {
@@ -66,6 +67,29 @@ const ManualFlow = ({
               return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
                 <NativeFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo} 
                   onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel}onSetupSecretFailure={onSetupSecretFailure}/>
+=======
+  return(
+    <View style={{flex: 1}}>
+      {(() => {
+        switch (manualFlowState.flowStep) {
+          case ManualFlowSteps.native:
+            return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+              <NativeFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo} 
+                onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel} />
+            ) : (
+              <StartComponent />
+            );
+          case ManualFlowSteps.webview:
+            return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+              <WebviewFlow siteUrl={manualFlowState.siteUrl} siteInfo={manualFlowState.siteInfo}
+                onSetupSecretSuccess={onSetupSecretSuccess} onSetupSecretCancel={onSetupSecretCancel} />
+            ) : (
+              <StartComponent />
+            );
+          case ManualFlowSteps.browser:
+              return manualFlowState.siteUrl ? (
+                <BrowserLogin siteUrl={manualFlowState.siteUrl} onSetupSecretCancel={onSetupSecretCancel} />
+>>>>>>> MOB-290 auth: Cleaned code and added test-case in Manual-flow for testing browser login
               ) : (
                 <StartComponent />
               );

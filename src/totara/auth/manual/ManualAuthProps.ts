@@ -21,15 +21,10 @@
 
 import { SiteInfo } from "../AuthContext";
 
-export type ManualAuthBrowserProps = {
-  siteUrl: string,
-  onSetupSecretCancel: () => void
-}
-
 export type ManualAuthProps = {
-  siteUrl: string;
-  siteInfo: SiteInfo;
-  onSetupSecretSuccess: (url: string) => void;
-  onSetupSecretCancel: () => void;
-  onSetupSecretFailure: (error: Error) => void;
+  siteUrl: string,
+  siteInfo?: SiteInfo,
+  onSetupSecretSuccess?: (url: string) => void
+  onSetupSecretCancel: () => void
+  onSetupSecretFailure?: (error: Error) => void;
 };

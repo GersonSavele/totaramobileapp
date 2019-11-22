@@ -33,7 +33,7 @@ const WebviewFlow = ({ siteUrl, onSetupSecretSuccess, onSetupSecretCancel }: Man
       useWebviewLogin({
         siteUrl: siteUrl,
         onCancelWebviewLogin: onSetupSecretCancel,
-        onRecievedSetupSecret: onSetupSecretSuccess
+        onRecievedSetupSecret: onSetupSecretSuccess!
       })
     );
 

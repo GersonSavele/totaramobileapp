@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BrowserLogin, BrowserLogin screen should launch when api return manual flow is browser login Test result : take screen-shot when user login browser 1`] = `
+exports[`manualFlowReducer should set flowStep to browser login and take screen-shot Information modal 1`] = `
 <Modal
   hardwareAccelerated={false}
   visible={true}
