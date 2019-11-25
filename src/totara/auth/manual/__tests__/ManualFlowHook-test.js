@@ -65,7 +65,7 @@ describe("useManualFlow", () => {
       result.current.onSiteUrlSuccess("https://success.com");
     });
     
-    expect(mockFetch).toHaveBeenCalledWith("https://success.com/totara/mobile/theme_info.php",expectedOptions);
+    expect(mockFetch).toHaveBeenCalledWith("https://success.com/totara/mobile/site_info.php",expectedOptions);
 
     await act(async () => waitForNextUpdate());
 
