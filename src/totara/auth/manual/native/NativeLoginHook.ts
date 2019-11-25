@@ -99,12 +99,12 @@ export const useNativeLogin = (
     ), [nativeLoginState.isRequestingLogin]);
     
   if ( nativeLoginState.unhandleLoginError ) {
-    onSetupSecretFailure(nativeLoginState.unhandleLoginError);
+    onSetupSecretFailure!(nativeLoginState.unhandleLoginError);
   }
 
   if ( nativeLoginState.setupSecret ) {
     Log.debug("Setup Secret", nativeLoginState.setupSecret);
-    onSetupSecretSuccess(nativeLoginState.setupSecret);
+    onSetupSecretSuccess!(nativeLoginState.setupSecret);
   }
 
   return {
@@ -241,8 +241,8 @@ type SetupSecret = {
 };
 
 type Props = {
-  onSetupSecretSuccess: (data: string) => void;
-  onSetupSecretFailure: (error: Error) => void;
+  onSetupSecretSuccess?: (data: string) => void;
+  onSetupSecretFailure?: (error: Error) => void;
   siteUrl: string;
   onSetupSecretCancel: () => void;
 };

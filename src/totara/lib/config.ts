@@ -29,7 +29,7 @@ const defaultConfig = {
     persistentQuery: false
   },
   userAgent: "TotaraMobileApp",
-  infoUri: (host: string) => (`${host}/totara/mobile/theme_info.php`),
+  infoUri: (host: string) => (`${host}/totara/mobile/site_info.php`),
   loginUri: (host: string) => (`${host}/login/index.php`),
   deviceRegisterUri: (host: string) => (`${host}/totara/mobile/device_register.php`),
   webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`),

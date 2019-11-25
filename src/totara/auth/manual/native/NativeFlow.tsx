@@ -26,7 +26,6 @@ import { useNativeLogin } from "./NativeLoginHook";
 import { ManualAuthProps } from "../ManualAuthProps";
 import { fetchData } from "../../AuthRoutines";
 
-
 const NativeFlow = (props: ManualAuthProps) => {
   // fetch from global
   // eslint-disable-next-line no-undef

@@ -73,6 +73,7 @@ const ManualFlow = ({
                   siteInfo={manualFlowState.siteInfo}
                   onSetupSecretSuccess={onSetupSecretSuccess}
                   onSetupSecretCancel={onSetupSecretCancel}
+                  onSetupSecretFailure={onSetupSecretFailure}
                 />
               ) : (
                 <StartComponent />
@@ -99,7 +100,7 @@ const ManualFlow = ({
                 <StartComponent />
               );
             case ManualFlowSteps.incompatible:
-              return <AppModal onCancel={onSetupSecretCancel} />;
+              return <AppModal onCancel={onSetupSecretCancel} siteUrl={manualFlowState.siteUrl} />;
             case ManualFlowSteps.done:
               return null;
             default:

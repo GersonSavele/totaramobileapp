@@ -237,6 +237,22 @@ describe("manualFlowReducer", () => {
     expect(newState.setupSecret).toBe("the_secret");
   });
 
+  it("should api failure, when site-info was Submitted", () => {
+    const currentState = {
+      isSiteUrlSubmitted: true,
+      siteUrl: "https://totarasite.com",
+      flowStep: ManualFlowSteps.native
+    };
+    const action = {
+      type: "siteInfoApiFailure",
+      payload: new Error()
+    };
+    const newState = manualFlowReducer(currentState, action);
+    expect(newState.flowStep).toBe(ManualFlowSteps.native);
+    expect(newState.isSiteUrlSubmitted).toBeFalsy();
+    expect(newState.isSiteUrlFailure).toBe(true);
+  });
+
   it("should set flowStep to browser login and take screen-shot in Information modal", () => {
     const currentState = {
       isSiteUrlSubmitted: true,
@@ -252,7 +268,7 @@ describe("manualFlowReducer", () => {
       version: "2019101802"
     };
     const action = {
-      type: "apiSuccess",
+      type: "siteInfoApiSuccess",
       payload: testSiteInfo
     };
 
