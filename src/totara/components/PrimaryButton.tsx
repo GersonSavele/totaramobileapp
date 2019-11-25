@@ -79,7 +79,8 @@ const PrimaryButton = ({ children, text, icon, style, onPress, mode, ...rest}: P
       paddingHorizontal: 16,
       minWidth: 200,
       borderRadius: 3,
-      backgroundColor: (mode == "loading" || mode == "disabled") ? theme.colorNeutral5 : theme.colorBrand 
+      backgroundColor: theme.colorBrand,
+      opacity: (mode == "loading" || mode == "disabled") ? 0.5 : 1
     }, 
     title: {
       fontWeight: "bold", 
