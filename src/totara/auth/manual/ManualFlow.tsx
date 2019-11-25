@@ -44,6 +44,7 @@ const ManualFlow = ({
   onSetupSecretCancel,
   onSetupSecretFailure
 }: OutProps) => {
+
   const StartComponent = () =>
     SiteUrl(
       useSiteUrl({
@@ -52,6 +53,7 @@ const ManualFlow = ({
         isSiteUrlSubmitted: manualFlowState.isSiteUrlSubmitted
       })
     );
+
   if (manualFlowState.isSiteUrlFailure) {
     return <SiteErrorModal onCancel={()=> { onSetupSecretCancel()}} />;
   } else {
@@ -95,7 +97,6 @@ const ManualFlow = ({
     );
   }
 };
-
 
 type PropSiteError = {
   onCancel: ()=> void

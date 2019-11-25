@@ -68,7 +68,7 @@ export const AuthProvider = ( {asyncStorage, children}: Props) => {
     logOut: logOut
   };
 
-  // TODO improve and make this testable, logic is getting more complicated
+  // TODO MOB-307 improve and make this testable, logic is getting more complicated
   const showUIFor = (authStep: AuthStep) => {
     switch (authStep) {
       case AuthStep.authError:

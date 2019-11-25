@@ -43,7 +43,7 @@ export const useNativeLogin = (
   onSetupSecretSuccess,
   onSetupSecretFailure,
   siteUrl,
-  onBack
+  onSetupSecretCancel
 }: Props): OutProps => {
   const [nativeLoginState, dispatch] = useReducer(nativeReducer, initialState);
 
@@ -109,7 +109,7 @@ export const useNativeLogin = (
 
   return {
     nativeLoginState,
-    onBack,
+    onSetupSecretCancel,
     siteUrl,
     onClickEnter,
     inputUsernameWithShowError,
@@ -244,12 +244,12 @@ type Props = {
   onSetupSecretSuccess: (data: string) => void;
   onSetupSecretFailure: (error: Error) => void;
   siteUrl: string;
-  onBack: () => void;
+  onSetupSecretCancel: () => void;
 };
 
 export type OutProps = {
   nativeLoginState: NativeLoginState;
-  onBack: () => void;
+  onSetupSecretCancel: () => void;
   siteUrl: string;
   onClickEnter: () => void;
   inputUsernameWithShowError: (text: string) => void;

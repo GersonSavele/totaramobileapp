@@ -24,7 +24,7 @@ import { useNativeLogin, nativeReducer } from "../NativeLoginHook";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { config } from "@totara/lib";
 
-const onBack = jest.fn();
+const onSetupSecretCancel = jest.fn();
 const onSetupSecretSuccess = jest.fn();
 
 describe("useNativeLogin", () => {
@@ -32,7 +32,7 @@ describe("useNativeLogin", () => {
     initialProps: {
       siteUrl: "http://mobiledemo.wlg.totaralms.com",
       onSetupSecretSuccess: { onSetupSecretSuccess },
-      onBack: { onBack }
+      onSetupSecretCancel: { onSetupSecretCancel }
     }
   });
   it("both empty 'username' and 'password'", () => {
@@ -105,8 +105,7 @@ describe("useNativeLogin", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      ({siteUrl, onSetupSecretSuccess}) =>
-        useNativeLogin(mockFetchData)({onSetupSecretSuccess: onSetupSecretSuccess, siteUrl: siteUrl}),
+      (props) => useNativeLogin(mockFetchData)(props),
       { initialProps: { siteUrl: "https://site.com", onSetupSecretSuccess: onSetupSecretSuccess}}
     );
 
@@ -161,10 +160,7 @@ describe("useNativeLogin", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      ({ siteUrl }) =>
-        useNativeLogin(mockFetchData)({
-          siteUrl: siteUrl
-        }),
+      (props) => useNativeLogin(mockFetchData)(props),
       {
         initialProps: {
           siteUrl: "https://site.com"
@@ -195,29 +191,13 @@ describe("useNativeLogin", () => {
           headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
         return Promise.reject(new Error("401"));
-      } else if (input === "https://site.com/totara/mobile/login.php") {
-        expect(init).toMatchObject({
-          method: "POST",
-          body: JSON.stringify({
-            loginsecret: "loginSecret",
-            username: "username",
-            password: "password"
-          }),
-          headers: { [DEVICE_REGISTRATION]: config.userAgent }
-        });
-        return Promise.resolve({
-          setupsecret: "setupSecret"
-        });
       } else {
         throw new Error("should not execute, test failed", input);
       }
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      ({ siteUrl }) =>
-        useNativeLogin(mockFetchData)({
-          siteUrl: siteUrl
-        }),
+      (props) => useNativeLogin(mockFetchData)(props),
       {
         initialProps: {
           siteUrl: "https://site.com"
@@ -270,11 +250,7 @@ describe("useNativeLogin", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      ({ siteUrl, onSetupSecretFailure }) =>
-        useNativeLogin(mockFetchData)({
-          onSetupSecretFailure: onSetupSecretFailure,
-          siteUrl: siteUrl
-        }),
+      (props) => useNativeLogin(mockFetchData)(props),
       {
         initialProps: {
           siteUrl: "https://site.com",
@@ -310,30 +286,13 @@ describe("useNativeLogin", () => {
           headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
         return Promise.reject(new Error("400"));
-      } else if (input === "https://site.com/totara/mobile/login.php") {
-        expect(init).toMatchObject({
-          method: "POST",
-          body: JSON.stringify({
-            loginsecret: "loginSecret",
-            username: "username",
-            password: "password"
-          }),
-          headers: { [DEVICE_REGISTRATION]: config.userAgent }
-        });
-        return Promise.resolve({
-          setupsecret: "setupSecret"
-        });
       } else {
         throw new Error("should not execute, test failed", input);
       }
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      ({ siteUrl, onSetupSecretFailure }) =>
-        useNativeLogin(mockFetchData)({
-          onSetupSecretFailure: onSetupSecretFailure,
-          siteUrl: siteUrl
-        }),
+      (props) => useNativeLogin(mockFetchData)(props),
       {
         initialProps: {
           siteUrl: "https://site.com",
@@ -359,7 +318,7 @@ describe("useNativeLogin", () => {
 });
 
 describe("Native login reducer", () => {
-  it("should handle setupSecret", () => {
+  it("it should set setupSecret status to payload", () => {
     const action = {
       type: "setupsecret",
       payload: "test-setupSecret"
@@ -368,7 +327,7 @@ describe("Native login reducer", () => {
     expect(newState.setupSecret).toEqual("test-setupSecret");
   });
 
-  it("should handle setusername", () => {
+  it("it should set username status to payload", () => {
     const action = {
       type: "setusername",
       payload: "test-setusername"
@@ -377,7 +336,7 @@ describe("Native login reducer", () => {
     expect(newState.inputUsername).toEqual("test-setusername");
   });
 
-  it("should handle setpassword", () => {
+  it("it should set password status to payload", () => {
     const action = {
       type: "setpassword",
       payload: "test-setpassword"
@@ -386,7 +345,7 @@ describe("Native login reducer", () => {
     expect(newState.inputPassword).toEqual("test-setpassword");
   });
 
-  it("should handle loginfailed", () => {
+  it("it should be error status unauthorized where there is login failure", () => {
     const state = {
       isRequestingLogin: true,
       errorStatusUnauthorized: false
@@ -401,7 +360,7 @@ describe("Native login reducer", () => {
     expect(newState.errorStatusUnauthorized).toBeTruthy();
   });
 
-  it("should handle resetform", () => {
+  it("it should remove error status unauthorized where the form is reset", () => {
     const state = {
       errorStatusUnauthorized: true
     };

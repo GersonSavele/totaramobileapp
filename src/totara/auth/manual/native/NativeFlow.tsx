@@ -26,19 +26,7 @@ import { useNativeLogin } from "./NativeLoginHook";
 import { ManualAuthProps } from "../ManualAuthProps";
 import { fetchData } from "../../AuthRoutines";
 
-const NativeFlow = ({
-  siteUrl,
-  onSetupSecretSuccess,
-  onSetupSecretCancel,
-  onSetupSecretFailure
-}: ManualAuthProps) => {
-  const onSetupLoginData = (data: string) => {
-    onSetupSecretSuccess(data);
-  };
-
-  const onCancelLogin = () => {
-    onSetupSecretCancel();
-  };
+const NativeFlow = (props: ManualAuthProps) => {
 
   // fetch from global
   // eslint-disable-next-line no-undef
@@ -46,13 +34,7 @@ const NativeFlow = ({
 
   const UserNativeLogin = () =>
     NativeLogin(
-      useNativeLogin(fetchDataWithFetch)({
-        siteUrl: siteUrl,
-        onSetupSecretSuccess: onSetupLoginData,
-        onBack: onCancelLogin,
-        onSetupSecretFailure: onSetupSecretFailure
-
-      })
+      useNativeLogin(fetchDataWithFetch)(props)
     );
 
   return (

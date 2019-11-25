@@ -31,7 +31,7 @@ import { OutProps } from "./NativeLoginHook";
 
 const NativeLogin = ({
   nativeLoginState,
-  onBack,
+  onSetupSecretCancel,
   siteUrl,
   onClickEnter,
   inputUsernameWithShowError,
@@ -42,7 +42,7 @@ const NativeLogin = ({
   return (
     <Container style={[{ flex: 0 }, theme.viewContainer]}>
       <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
-        <TouchableIcon onPress={() => { onBack()}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
+        <TouchableIcon onPress={() => { onSetupSecretCancel()}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
       </Header>
       <Content style={styles.content} enableOnAndroid>
         <FormError message={translate("native-login.error_unauthorized")} isShow={nativeLoginState.errorStatusUnauthorized} />

@@ -141,7 +141,7 @@ describe("manualFlowReducer", () => {
       version: "2019101802"
     };
     const action = {
-      type: "apiSuccess",
+      type: "siteInfoApiSuccess",
       payload: testSiteInfo
     };
 
@@ -166,7 +166,7 @@ describe("manualFlowReducer", () => {
       version: "2019101802"
     };
     const action = {
-      type: "apiSuccess",
+      type: "siteInfoApiSuccess",
       payload: testSiteInfo
     };
 
@@ -191,7 +191,7 @@ describe("manualFlowReducer", () => {
       version: "2019101802"
     };
     const action = {
-      type: "apiSuccess",
+      type: "siteInfoApiSuccess",
       payload: testSiteInfo
     };
 
@@ -207,7 +207,7 @@ describe("manualFlowReducer", () => {
       flowStep: ManualFlowSteps.siteUrl
     };
     const action = {
-      type: "apiInit",
+      type: "siteInfoApiInit",
       payload: "https://totarasite.com"
     };
 
@@ -241,7 +241,7 @@ describe("manualFlowReducer", () => {
       flowStep: ManualFlowSteps.native
     };
     const action = {
-      type: "apiFailure",
+      type: "siteInfoApiFailure",
       payload: new Error()
     };
     const newState = manualFlowReducer(currentState, action);

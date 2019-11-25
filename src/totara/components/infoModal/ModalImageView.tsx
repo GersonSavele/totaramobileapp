@@ -50,10 +50,6 @@ const setImage = ({ imageType }: Params) => {
       return (
         <Image style={styles.containerStyle} source={IMAGES.general_error} />
       );
-      case "gener_error":
-        return (
-          <Image style={styles.containerStyle} source={IMAGES.general_error} />
-        );
     default:
       return (
         <Image style={styles.containerStyle} source={IMAGES.complete_action} />

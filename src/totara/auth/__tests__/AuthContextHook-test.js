@@ -204,7 +204,7 @@ describe("useAuthContext", () => {
     expect(result.current.authContextState.authStep).toBe(AuthStep.setupDone);
   });
 
-  it("should be setup error when register is not successful", async () => {
+  it("should be setup error when device registration is not successful", async () => {
     expect.assertions(5);
 
     const setup = {

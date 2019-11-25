@@ -238,7 +238,6 @@ export const fetchData = (
   return fetch(input, init)
     .then(response => {
       if (response.status === 200) {
-        Log.debug("fetch ok response", response);
         return response.json();
       } else {
         Log.warn("fetch error response", response);

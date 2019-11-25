@@ -80,10 +80,10 @@ export const useManualFlow = (
           ? true
           : false,
       siteInfo => {
-        dispatch({ type: "apiSuccess", payload: siteInfo });
+        dispatch({ type: "siteInfoApiSuccess", payload: siteInfo });
       },
       error => {
-        dispatch({ type: "apiFailure", payload: error.message });
+        dispatch({ type: "siteInfoApiFailure", payload: error.message });
       }
     ),
     [manualFlowState.siteUrl, manualFlowState.isSiteUrlSubmitted]
@@ -114,7 +114,7 @@ export const useManualFlow = (
   ]);
 
   const onSiteUrlSuccess = (url: string) => {
-    dispatch({ type: "apiInit", payload: url });
+    dispatch({ type: "siteInfoApiInit", payload: url });
   };
 
   const onSetupSecretSuccess = (setupSecret: string) => {
@@ -151,14 +151,14 @@ export const manualFlowReducer = (
   Log.debug("manualFlowReducer state:", state, "action", action);
 
   switch (action.type) {
-    case "apiInit":
+    case "siteInfoApiInit":
       return {
         ...state,
         isSiteUrlSubmitted: true,
         siteUrl: action.payload as string
       };
 
-    case "apiSuccess": {
+    case "siteInfoApiSuccess": {
       const siteInfo = action.payload as SiteInfo;
       const flowStep = siteInfo.auth as ManualFlowSteps;
       const isCompatible = isValidApiVersion(siteInfo.version);
@@ -187,7 +187,7 @@ export const manualFlowReducer = (
       }
     }
 
-    case "apiFailure": {
+    case "siteInfoApiFailure": {
       return {
         ...state,
         isSiteUrlSubmitted: false,
@@ -234,11 +234,11 @@ type ManualFlowState = {
 
 type Action = {
   type:
-    | "apiInit"
-    | "apiSuccess"
+    | "siteInfoApiInit"
+    | "siteInfoApiSuccess"
     | "setupSecretSuccess"
     | "cancelManualFlow"
-    | "apiFailure";
+    | "siteInfoApiFailure";
   payload?: string | SiteInfo;
 };
 
