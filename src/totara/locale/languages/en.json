@@ -71,7 +71,7 @@
   },
   "auth_invalid_site": {
     "title": "Sorry",
-    "description" : "The URL you have entered might be wrong or it's not compatible. Please check the URL and try again",
+    "description" : "The URL is not compatible. Please check the URL and try again.",
     "action_primary" : "OK"
   },
   "auth_general_error": {
@@ -81,8 +81,8 @@
   },
   "incompatible_api": {
     "title": "Sorry",
-    "description" : "The URL you have entered is not compatible. Please check the URL and try again",
-    "action_primary" : "Try in browser",
+    "description" : "The URL is not compatible with the mobile app. Would you like to try in browser?",
+    "action_primary" : "Yes, try in browser",
     "action_tertiary" : "Logout",
     "action_tertiary_cancel" : "Cancel"
   },

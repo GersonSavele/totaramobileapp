@@ -72,7 +72,7 @@ const SiteUrl = ({
                 onChangeText={onChangeInputSiteUrl}
                 value={siteUrlState.inputSiteUrl}
                 style={styles.inputText}
-                autoFocus={true}
+                autoFocus={!isSiteUrlSubmitted}
               />
             </InputTextWithInfo>
             <PrimaryButton
