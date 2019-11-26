@@ -21,13 +21,14 @@
 
 import React, {useContext} from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity, Linking } from "react-native";
-import { Form, Input, Container, Content, Header } from "native-base";
+import { Form, Input, Container, Content } from "native-base";
 
 import { config } from "@totara/lib";
 import { resizeByScreenSize, gutter, ThemeContext} from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon, FormError } from "@totara/components";
 import { translate } from "@totara/locale";
 import { OutProps } from "./NativeLoginHook";
+import SafeAreaView from "react-native-safe-area-view";
 
 const NativeLogin = ({
   nativeLoginState,
@@ -41,11 +42,16 @@ const NativeLogin = ({
   const [ theme ] = useContext(ThemeContext);
   return (
     <Container style={[{ flex: 0 }, theme.viewContainer]}>
-      <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
-        <TouchableIcon onPress={() => { onSetupSecretCancel()}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
-      </Header>
-      <Content style={styles.content} enableOnAndroid>
+      <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
+        <SafeAreaView />
+        <View style={styles.navigation}>
+          <TouchableIcon onPress={() => { onSetupSecretCancel()}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
+        </View>
+      </View>
+      <View style={{position: "relative", zIndex: 2}}>
         <FormError message={translate("native-login.error_unauthorized")} isShow={nativeLoginState.errorStatusUnauthorized} />
+      </View>
+      <Content style={styles.content} enableOnAndroid>
         <Image source={theme.logoUrl ? { uri: theme.logoUrl } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
         <View style={styles.infoContainer}>
           <Text style={theme.textH2}>{translate("native-login.header_title")}</Text>
@@ -98,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   content: {
-    paddingHorizontal: gutter
+    paddingHorizontal: gutter,
   },
   totaraLogo: {
     height: resizeByScreenSize(72, 72, 88, 88),

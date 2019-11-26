@@ -23,7 +23,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
 import * as Animatable from "react-native-animatable";
 
-import { ThemeContext, gutter } from "@totara/theme";
+import { ThemeContext } from "@totara/theme";
 
 type Props = {
   message: string;
@@ -44,11 +44,10 @@ const FormError = ({ message, isShow }: Props) => {
     container: {
       position: "absolute",
       top: 0,
-      left: -1 * gutter,
-      right: -1 * gutter,
+      left: 0,
+      right: 0,
       padding: 8,
       backgroundColor: theme.colorAlert,
-      zIndex: 1,
       opacity: 0
     }
   });
