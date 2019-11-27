@@ -54,10 +54,9 @@
     "action_tertiary" : "Try in browser"
   },
   "message": {
-    "sorry": "Sorry!",
     "enter_valid_url": "Enter a valid site address",
-    "enter_valid_username": "Enter a valid Username",
-    "enter_valid_password": "Enter a valid Password"
+    "enter_valid_username": "Enter a valid username",
+    "enter_valid_password": "Enter a valid password"
   },
   "native-login": {
     "header_title": "Login",
