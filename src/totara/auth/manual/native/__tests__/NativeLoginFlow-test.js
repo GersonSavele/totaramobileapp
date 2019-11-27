@@ -20,7 +20,7 @@
  */
 
 import { renderHook, act } from "@testing-library/react-hooks";
-import { useNativeLogin, nativeReducer } from "../NativeLoginHook";
+import { useNativeFlow, nativeReducer } from "../NativeFlowHook";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { config } from "@totara/lib";
 
@@ -28,7 +28,7 @@ const onSetupSecretCancel = jest.fn();
 const onSetupSecretSuccess = jest.fn();
 
 describe("useNativeLogin", () => {
-  const { result } = renderHook(props => useNativeLogin()(props), {
+  const { result } = renderHook(props => useNativeFlow()(props), {
     initialProps: {
       siteUrl: "http://mobiledemo.wlg.totaralms.com",
       onSetupSecretSuccess: { onSetupSecretSuccess },
@@ -105,7 +105,7 @@ describe("useNativeLogin", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeLogin(mockFetchData)(props),
+      (props) => useNativeFlow(mockFetchData)(props),
       { initialProps: { siteUrl: "https://site.com", onSetupSecretSuccess: onSetupSecretSuccess}}
     );
 
@@ -160,7 +160,7 @@ describe("useNativeLogin", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeLogin(mockFetchData)(props),
+      (props) => useNativeFlow(mockFetchData)(props),
       {
         initialProps: {
           siteUrl: "https://site.com"
@@ -197,7 +197,7 @@ describe("useNativeLogin", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeLogin(mockFetchData)(props),
+      (props) => useNativeFlow(mockFetchData)(props),
       {
         initialProps: {
           siteUrl: "https://site.com"
@@ -250,7 +250,7 @@ describe("useNativeLogin", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeLogin(mockFetchData)(props),
+      (props) => useNativeFlow(mockFetchData)(props),
       {
         initialProps: {
           siteUrl: "https://site.com",
@@ -292,7 +292,7 @@ describe("useNativeLogin", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeLogin(mockFetchData)(props),
+      (props) => useNativeFlow(mockFetchData)(props),
       {
         initialProps: {
           siteUrl: "https://site.com",

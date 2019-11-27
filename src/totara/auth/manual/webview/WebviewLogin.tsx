@@ -29,7 +29,7 @@ import { Container, Header, Content, Footer } from "native-base";
 
 import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
-import { OutProps } from "./WebviewLoginHook";
+import { OutProps } from "./WebviewFlowHook";
 import { TouchableIcon } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
 

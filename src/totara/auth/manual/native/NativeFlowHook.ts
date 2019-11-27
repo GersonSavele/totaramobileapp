@@ -37,7 +37,7 @@ const initialState = {
   unhandleLoginError: undefined
 };
 
-export const useNativeLogin = (
+export const useNativeFlow = (
   fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>
 ) => ({
   onSetupSecretSuccess,

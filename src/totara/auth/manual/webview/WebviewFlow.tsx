@@ -25,12 +25,12 @@ import { Modal } from "react-native";
 
 import WebviewLogin from "./WebviewLogin";
 import { ManualAuthProps } from "../ManualAuthProps";
-import { useWebviewLogin } from "./WebviewLoginHook";
+import { useWebviewFlow } from "./WebviewFlowHook";
 
 const WebviewFlow = ({ siteUrl, onSetupSecretSuccess, onSetupSecretCancel }: ManualAuthProps) => {
 
   const UserWebviewLogin = () => WebviewLogin(
-      useWebviewLogin({
+      useWebviewFlow({
         siteUrl: siteUrl,
         onCancelWebviewLogin: onSetupSecretCancel,
         onRecievedSetupSecret: onSetupSecretSuccess!

@@ -22,13 +22,14 @@
 import React, {useContext} from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity, Linking } from "react-native";
 import { Form, Input, Container, Content } from "native-base";
+import SafeAreaView from "react-native-safe-area-view";
 
 import { config } from "@totara/lib";
 import { resizeByScreenSize, gutter, ThemeContext} from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon, FormError } from "@totara/components";
 import { translate } from "@totara/locale";
-import { OutProps } from "./NativeLoginHook";
-import SafeAreaView from "react-native-safe-area-view";
+
+import { OutProps } from "./NativeFlowHook";
 
 const NativeLogin = ({
   nativeLoginState,

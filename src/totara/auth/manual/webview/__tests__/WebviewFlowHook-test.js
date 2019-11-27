@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import { useWebviewLogin } from "../WebviewLoginHook";
+import { useWebviewFlow } from "../WebviewFlowHook";
 import { renderHook } from "@testing-library/react-hooks";
 import { act } from "react-test-renderer";
 
@@ -27,7 +27,7 @@ describe("WebviewLoginHook", () => {
   it("initial props for the unsecured url(http://)", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewLogin(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "http://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -48,7 +48,7 @@ describe("WebviewLoginHook", () => {
   it("initial props for the secured url(https://)", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewLogin(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -69,7 +69,7 @@ describe("WebviewLoginHook", () => {
   it("Enable go back when navigate to another page in webview", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewLogin(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -97,7 +97,7 @@ describe("WebviewLoginHook", () => {
   it("Enable go forward when came back from first tapped link in webview", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewLogin(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com/tapped/firstlink",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -120,7 +120,7 @@ describe("WebviewLoginHook", () => {
   it("Enable go back and forward in webview", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewLogin(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -145,7 +145,7 @@ describe("WebviewLoginHook", () => {
   it("Handling the completion of successful login", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewLogin(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -166,7 +166,7 @@ describe("WebviewLoginHook", () => {
   it("Handling the completion of login for invalid values", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewLogin(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -197,7 +197,7 @@ describe("WebviewLoginHook", () => {
   it("Exit from the webview-login event handling.", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewLogin(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,

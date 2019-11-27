@@ -22,7 +22,7 @@
 import React from "react";
 import { Modal } from "react-native";
 import NativeLogin from "./NativeLogin";
-import { useNativeLogin } from "./NativeLoginHook";
+import { useNativeFlow } from "./NativeFlowHook";
 import { ManualAuthProps } from "../ManualAuthProps";
 import { fetchData } from "../../AuthRoutines";
 
@@ -33,7 +33,7 @@ const NativeFlow = (props: ManualAuthProps) => {
 
   const UserNativeLogin = () =>
     NativeLogin(
-      useNativeLogin(fetchDataWithFetch)(props)
+      useNativeFlow(fetchDataWithFetch)(props)
     );
 
   return (
