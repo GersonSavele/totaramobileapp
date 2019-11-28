@@ -32,7 +32,7 @@ import renderer from 'react-test-renderer';
 
 describe("useManualFlow", () => {
   it("should be on step done when url and secret is valid", async () => {
-
+    config.minApiVersion = "2019101802";
     const expectedOptions = {
       method: "POST",
       body: JSON.stringify({version: "UnknownVersion"})
@@ -130,6 +130,7 @@ describe("manualFlowReducer", () => {
   });
 
   it("should use the auth on the SiteInfo for the next flowstep", () => {
+    config.minApiVersion = "2019111100";
     const currentState = {
       isSiteUrlSubmitted: true,
       flowStep: ManualFlowSteps.siteUrl
@@ -141,7 +142,7 @@ describe("manualFlowReducer", () => {
         urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
         colorPrimary: "#CCFFCC"
       },
-      version: "2019101802"
+      version: "2019111100"
     };
     const action = {
       type: "siteInfoApiSuccess",
@@ -154,7 +155,7 @@ describe("manualFlowReducer", () => {
   });
 
   it("should set flowStep to incompatible for unsupport minApiVersion", () => {
-    config.minApiVersion = "2029101802";
+    config.minApiVersion = "2019111100";
     const currentState = {
       isSiteUrlSubmitted: true,
       flowStep: ManualFlowSteps.siteUrl
