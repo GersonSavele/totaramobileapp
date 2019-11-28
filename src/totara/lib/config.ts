@@ -39,7 +39,7 @@ const defaultConfig = {
   nativeLoginUri: (host: string) => (`${host}/totara/mobile/login.php`),
   appLinkDomain: "https://mobile.totaralearning.com",
   deepLinkSchema: "totara://",
-  minApiVersion: "disabled"
+  minApiVersion: "2019111100" //"disabled"
 };
 
 export const internalConfig = {

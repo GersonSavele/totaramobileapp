@@ -52,7 +52,7 @@ const NativeLogin = ({
         <FormError message={translate("native-login.error_unauthorized")} isShow={nativeLoginState.errorStatusUnauthorized} />
       </View>
       <Content style={styles.content} enableOnAndroid>
-        <Image source={theme.logoUrl ? { uri: theme.logoUrl } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
+        <Image source={theme.urlLogo ? { uri: theme.urlLogo } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
         <View style={styles.infoContainer}>
           <Text style={theme.textH2}>{translate("native-login.header_title")}</Text>
           <Text style={theme.textH4}>{translate("native-login.login_information")}</Text>

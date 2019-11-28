@@ -79,13 +79,13 @@ const PrimaryButton = ({ children, text, icon, style, onPress, mode, ...rest}: P
       paddingHorizontal: 16,
       minWidth: 200,
       borderRadius: 3,
-      backgroundColor: theme.colorBrand,
+      backgroundColor: theme.colorPrimary,
       opacity: (mode == "loading" || mode == "disabled") ? 0.5 : 1
     }, 
     title: {
       fontWeight: "bold", 
       fontSize: theme.fontSizeButtonTitle, 
-      color: theme.textColorLight
+      color: theme.colorText
     }
   });
   
@@ -96,7 +96,7 @@ const PrimaryButton = ({ children, text, icon, style, onPress, mode, ...rest}: P
         ? <ButtonTitle mode={mode} text={text} style={buttonStyle.title}/>
         : {children}
       }
-      <ButtonIndicator mode={mode} icon={icon} color={theme.textColorLight} size={theme.fontSizeButtonTitle} />
+      <ButtonIndicator mode={mode} icon={icon} color={theme.colorText} size={theme.fontSizeButtonTitle} />
     </Button>
   );
 }

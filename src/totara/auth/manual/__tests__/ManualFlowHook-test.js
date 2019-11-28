@@ -43,8 +43,8 @@ describe("useManualFlow", () => {
           auth: "webview",
           siteMaintenance: false,
           theme: {
-            logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-            colorBrand: "#CCFFCC"
+            urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
+            colorPrimary: "#CCFFCC"
           },
           version: "2019101802"
       });
@@ -138,8 +138,8 @@ describe("manualFlowReducer", () => {
       auth: "native",
       siteMaintenance: false,
       theme: {
-        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        colorBrand: "#CCFFCC"
+        urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
+        colorPrimary: "#CCFFCC"
       },
       version: "2019101802"
     };
@@ -163,8 +163,8 @@ describe("manualFlowReducer", () => {
       auth: "native",
       siteMaintenance: false,
       theme: {
-        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        colorBrand: "#CCFFCC"
+        urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
+        colorPrimary: "#CCFFCC"
       },
       version: "2019101802"
     };
@@ -188,8 +188,8 @@ describe("manualFlowReducer", () => {
       auth: "native",
       siteMaintenance: false,
       theme: {
-        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        colorBrand: "#CCFFCC"
+        urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
+        colorPrimary: "#CCFFCC"
       },
       version: "2019101802"
     };
@@ -262,8 +262,8 @@ describe("manualFlowReducer", () => {
       auth: "browser",
       siteMaintenance: false,
       theme: {
-        logoUrl: "https://mytotara.client.com/totara/mobile/logo.png",
-        colorBrand: "#CCFFCC"
+        urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
+        colorPrimary: "#CCFFCC"
       },
       version: "2019101802"
     };

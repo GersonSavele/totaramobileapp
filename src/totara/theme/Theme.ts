@@ -22,13 +22,13 @@
 import { normalize } from "./PlatformUtility";
 import { ViewStyle, TextStyle } from "react-native";
 
-const colorBrand = "#8CA83D";
+const colorPrimary = "#8CA83D";
 const colorAccent = "#FFFFFF";
 const colorNeutral5 = "#C7C7C7";
 const textColorDark = "#3D444B";
 
 export type Theme = {
-  logoUrl?: string,
+  urlLogo?: string,
   
   viewContainer: ViewStyle,
   textH1: TextStyle,
@@ -46,7 +46,10 @@ export type Theme = {
   fontSizeButtonTitle: number,
 
   //---- Theme color: customizable by [User/Developer] ------
-  colorBrand: string,
+  colorPrimary: string,
+  colorText: string,
+  
+  //---- Theme color: customizable by [Developer] ------
   colorAccent: string,
   colorSecondary1: string,
   colorSecondary2: string,
@@ -77,7 +80,7 @@ export type Theme = {
   textColorSubdued: string,
   textColorDisabled: string,
 
-  //---- Navigation color: customizable by [User/Developer] ------
+  //---- Navigation color: customizable by [Developer] ------
   navigationHeaderTintColor: string,
 
   //---- TabBar color: customizable by [Developer] ------
@@ -102,9 +105,12 @@ const TotaraTheme: Theme = {
   textLabel: { fontSize: 10, color: textColorDark }, // lineHeight: 12
 
   fontSizeButtonTitle: 16,
+  
+  //---- Theme color: customizable by [User, Developer] ------
+  colorPrimary: colorPrimary,
+  colorText: "#FFFFFF",
 
-  //---- Theme color: customizable by [User/Developer] ------
-  colorBrand: colorBrand,
+  //---- Theme color: customizable by [Developer] ------
   colorAccent: colorAccent,
   colorSecondary1: "#F5F5F5",
   colorSecondary2: "#FFFFFF", 
@@ -139,14 +145,14 @@ const TotaraTheme: Theme = {
   navigationHeaderTintColor: "#3D444B",
 
   //---- TabBar color: customizable by [Developer] ------
-  tabBarActiveTintColor: colorBrand,
+  tabBarActiveTintColor: colorPrimary,
   tabBarInactiveTintColor: colorNeutral5
 }
 
 const applyTheme = (theme: Partial<Theme>) => {
   let newTheme = TotaraTheme;
-  if (theme.colorBrand) {
-    newTheme.tabBarActiveTintColor = theme.colorBrand;
+  if (theme.colorPrimary) {
+    newTheme.tabBarActiveTintColor = theme.colorPrimary;
   }
   if (theme.colorAccent) {
     newTheme.viewContainer = {...newTheme.viewContainer, ...{backgroundColor: theme.colorAccent}};

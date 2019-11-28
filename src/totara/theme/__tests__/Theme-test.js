@@ -24,8 +24,9 @@ import { applyTheme } from "../Theme";
 describe("Set default and custom theme", () => {
   it("All theme colors and dependant styles should be applied with new theme", () => {
     const newCustomizeTheme = {
-      logoUrl: "http://logoUrl.png",
-      colorBrand: "colorBrand",
+      urlLogo: "http://urlLogo.png",
+      colorText: "colorText",
+      colorPrimary: "colorPrimary",
       colorAccent: "colorAccent",
       colorSecondary1: "colorSecondary1",
       colorSecondary2: "colorSecondary2",
@@ -58,8 +59,9 @@ describe("Set default and custom theme", () => {
 
     const newTheme = applyTheme(newCustomizeTheme);
 
-    expect(newTheme.colorBrand).toBe("colorBrand");
-    expect(newTheme.tabBarActiveTintColor).toBe("colorBrand");
+    expect(newTheme.colorPrimary).toBe("colorPrimary");
+    expect(newTheme.colorText).toBe("colorText");
+    expect(newTheme.tabBarActiveTintColor).toBe("colorPrimary");
 
     expect(newTheme.colorAccent).toBe("colorAccent");
     expect(newTheme.viewContainer.backgroundColor).toBe("colorAccent");
@@ -104,13 +106,15 @@ describe("Set default and custom theme", () => {
 
   it("Advanced setting for tabbar theme without apply general theme", () => {
     const newCustomizeTheme = {
-      colorBrand: "colorBrand",
+      colorPrimary: "colorPrimary",
+      colorText: "colorText",
       colorNeutral5: "colorNeutral5",
       tabBarInactiveTintColor: "tabBarInactiveTintColor",
       tabBarActiveTintColor: "tabBarActiveTintColor"
     }
     const newTheme = applyTheme(newCustomizeTheme);
-    expect(newTheme.colorBrand).toBe("colorBrand");
+    expect(newTheme.colorPrimary).toBe("colorPrimary");
+    expect(newTheme.colorText).toBe("colorText");
     expect(newTheme.tabBarActiveTintColor).toBe("tabBarActiveTintColor");
 
     expect(newTheme.colorNeutral5).toBe("colorNeutral5");
