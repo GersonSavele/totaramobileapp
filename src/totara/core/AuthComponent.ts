@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -16,16 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
 import React from "react";
 
-import { Setup } from "./AuthContextHook";
+import { Setup } from "./AuthHook";
 
 export class AuthComponent<P = {}, S = {}> extends React.Component<AuthProviderStateLift & P, S> {}
 
 export type AuthProviderStateLift = {
-  onLoginSuccess: (setup: Setup) => {}
-  onLoginFailure: (error: Error) => {}
+  onLoginSuccess: (setup: Setup) => void;
+  onLoginFailure: (error: Error) => void;
 };

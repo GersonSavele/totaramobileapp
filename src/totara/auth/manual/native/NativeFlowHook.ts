@@ -23,7 +23,7 @@ import { useReducer, useEffect } from "react";
 
 import { config, Log } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
-import { asyncEffectWrapper } from "../../AuthRoutines";
+import { asyncEffectWrapper } from "@totara/core/AuthRoutines";
 import { ManualAuthProps } from "../ManualAuthProps";
 
 const initialState = {

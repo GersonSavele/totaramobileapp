@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -45,7 +45,7 @@ import { SiteInfo, AppState } from "./AuthContext";
  *  apolloClient an authenticated apollo client
  * }
  */
-export const useAuthContext = (
+export const useAuth = (
   bootstrap: () => Promise<AppState | undefined>,
   registerDevice: (setup: Setup) => Promise<AppState>,
   deviceCleanup: (deviceDelete: () => Promise<any>) => Promise<boolean>,
@@ -174,7 +174,7 @@ export const useAuthContext = (
   };
 };
 
-const authContextReducer = (state: State, action: Action): State => {
+const authContextReducer = (state: AuthContextState, action: Action): AuthContextState => {
   Log.debug("authContextReducer: state", state, "action", action);
   switch (action.type) {
     case "register": {
@@ -252,7 +252,7 @@ export const deleteDevice = gql`
 `;
 
 type Props = {
-  initialState: State;
+  initialState: AuthContextState;
 };
 
 export enum AuthStep {
@@ -263,7 +263,7 @@ export enum AuthStep {
   authError
 }
 
-type State = {
+export type AuthContextState = {
   isLoading: boolean;
   isAuthenticated: boolean;
   appState?: AppState;
@@ -271,7 +271,7 @@ type State = {
   authStep: AuthStep;
 };
 
-export const initialState: State = {
+export const initialState: AuthContextState = {
   appState: undefined,
   setup: undefined,
   isLoading: true,

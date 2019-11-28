@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com>
- *
  */
 
 
@@ -25,20 +24,30 @@ import React from "react";
 
 import { config } from "@totara/lib";
 import { Theme } from "@totara/theme";
+import { AuthContextState, initialState } from "./AuthHook";
+import { AuthProviderStateLift } from "./AuthComponent";
+import { ApolloClient } from "apollo-client";
+import { NormalizedCacheObject } from "apollo-cache-inmemory";
 
 export const AuthContext = React.createContext<State>({
   isAuthenticated: false,
   appState: undefined,
+  authContextState: initialState,
   logOut: () => {
     return Promise.resolve();
-  }
+  },
+  onLoginSuccess: () => {},
+  onLoginFailure: () => {},
+  apolloClient: null
 });
 
 export type State = {
   isAuthenticated: boolean;
   appState?: AppState;
-  logOut: () => Promise<void>;
-};
+  authContextState: AuthContextState;
+  logOut: (local: boolean) => Promise<void>;
+  apolloClient: ApolloClient<NormalizedCacheObject> | null;
+} & AuthProviderStateLift;
 
 export type SiteInfo = {
   auth: string;

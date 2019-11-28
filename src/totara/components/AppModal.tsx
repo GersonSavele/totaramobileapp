@@ -22,7 +22,7 @@
 import React, { useContext } from "react";
 
 import { translate } from "@totara/locale";
-import { AuthContext, isValidApiVersion } from "@totara/auth/AuthContext";
+import { AuthContext, isValidApiVersion } from "@totara/core/AuthContext";
 import { InfoModal} from "./infoModal"
 import PrimaryButton from "./PrimaryButton";
 import { config } from "@totara/lib";

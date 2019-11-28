@@ -24,7 +24,7 @@ import { Modal } from "react-native";
 import NativeLogin from "./NativeLogin";
 import { useNativeFlow } from "./NativeFlowHook";
 import { ManualAuthProps } from "../ManualAuthProps";
-import { fetchData } from "../../AuthRoutines";
+import { fetchData } from "@totara/core/AuthRoutines";
 
 const NativeFlow = (props: ManualAuthProps) => {
   // fetch from global

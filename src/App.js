@@ -62,7 +62,8 @@ import {
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
 import { Log } from "@totara/lib";
 import { ActivitySheetProvider } from "@totara/activities";
-import { AuthProvider } from "@totara/auth";
+import { AuthProvider } from "@totara/core/AuthProvider";
+import { AuthFlow } from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { TouchableIcon, AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
@@ -122,11 +123,13 @@ class App extends React.Component<{}> {
     return (
       <ThemeProvider>
         <AuthProvider asyncStorage={AsyncStorage}>
-          <ActivitySheetProvider>
-            <AppContainer />
-          </ActivitySheetProvider>
-          <AdditionalAction />
-          <AppModal />
+          <AuthFlow>
+            <ActivitySheetProvider>
+              <AppContainer />
+            </ActivitySheetProvider>
+            <AdditionalAction />
+            <AppModal />
+          </AuthFlow>
         </AuthProvider>
       </ThemeProvider>
     );

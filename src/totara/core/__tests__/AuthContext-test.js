@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import { isCompatible, isValidApiVersion } from "@totara/auth/AuthContext";
+import { isCompatible, isValidApiVersion } from "../AuthContext";
 import { config } from "@totara/lib";
 
 describe("AppModal", () => {

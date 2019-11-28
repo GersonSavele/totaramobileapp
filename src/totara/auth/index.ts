@@ -19,9 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { AuthProvider } from "./AuthProvider";
 import { AuthenticatedWebView } from "./AuthenticatedWebView";
 export {
-  AuthProvider,
   AuthenticatedWebView,
 };

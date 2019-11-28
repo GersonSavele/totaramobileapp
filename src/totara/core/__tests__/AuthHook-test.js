@@ -18,7 +18,7 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
-import { AuthStep, initialState, useAuthContext } from "@totara/auth/AuthContextHook";
+import { AuthStep, initialState, useAuth } from "../AuthHook";
 import { renderHook, act } from "@testing-library/react-hooks";
 
 describe("useAuthContext", () => {
@@ -38,7 +38,7 @@ describe("useAuthContext", () => {
       authStep: AuthStep.registered
     };
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuthContext(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
       { initialProps: { initialState: state } }
     );
 
@@ -98,7 +98,7 @@ describe("useAuthContext", () => {
       authStep: AuthStep.bootstrapDone
     };
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuthContext(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
       { initialProps: { initialState: state } }
     );
 
@@ -123,7 +123,7 @@ describe("useAuthContext", () => {
     const mockDeviceCleanup = jest.fn();
     const mockCreateApolloClient = jest.fn();
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuthContext(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
       { initialProps: { initialState: initialState } }
     );
 
@@ -146,7 +146,7 @@ describe("useAuthContext", () => {
     const mockDeviceCleanup = jest.fn();
     const mockCreateApolloClient = jest.fn();
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuthContext(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
       { initialProps: { initialState: initialState } }
     );
 
@@ -191,7 +191,7 @@ describe("useAuthContext", () => {
       authStep: AuthStep.setupSecretInit
     };
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuthContext(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
       { initialProps: { initialState: state } }
     );
 
@@ -233,7 +233,7 @@ describe("useAuthContext", () => {
       authStep: AuthStep.bootstrapDone
     };
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuthContext(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
       { initialProps: { initialState: state } }
     );
 

@@ -24,7 +24,7 @@ import { Linking } from "react-native";
 
 import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { AuthConsumer } from "@totara/auth/AuthContext";
+import { AuthConsumer } from "@totara/core/AuthContext";
 import { AdditionalActionRule } from "./AdditionalActionRule";
 
 class AdditionalAction extends React.Component {

@@ -20,10 +20,10 @@
  */
 import { Linking, Platform } from "react-native";
 
-import { AuthProviderStateLift, AuthComponent } from "../AuthComponent";
+import { AuthProviderStateLift, AuthComponent } from "@totara/core/AuthComponent";
 import { Log, config } from "@totara/lib";
-import { fetchData } from "../AuthRoutines";
-import { SiteInfo } from "../AuthContext";
+import { fetchData } from "@totara/core/AuthRoutines";
+import { SiteInfo } from "@totara/core/AuthContext";
 import VersionInfo from "react-native-version-info";
 
 export default class AppLinkFlow extends AuthComponent {

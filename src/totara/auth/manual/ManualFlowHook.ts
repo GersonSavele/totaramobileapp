@@ -25,9 +25,9 @@ import VersionInfo from "react-native-version-info";
 import { ThemeContext, applyTheme } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { config, Log } from "@totara/lib";
-import { isValidApiVersion, SiteInfo } from "../AuthContext";
-import { AuthProviderStateLift } from "../AuthComponent";
-import { asyncEffectWrapper } from "../AuthRoutines";
+import { isValidApiVersion, SiteInfo } from "@totara/core/AuthContext";
+import { AuthProviderStateLift } from "@totara/core/AuthComponent";
+import { asyncEffectWrapper } from "@totara/core/AuthRoutines";
 
 /**
  * Custom react hook that manages the state of the manual flow

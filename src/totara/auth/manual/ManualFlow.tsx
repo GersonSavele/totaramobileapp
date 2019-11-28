@@ -23,7 +23,7 @@
 import React from "react";
 import { View } from "react-native";
 
-import { AuthProviderStateLift } from "../AuthComponent";
+import { AuthProviderStateLift } from "@totara/core/AuthComponent";
 import WebviewFlow from "./webview";
 import NativeFlow from "./native";
 import BrowserLogin from "./browser";
@@ -32,7 +32,7 @@ import SiteUrl from "./SiteUrl";
 import { useSiteUrl } from "./SiteUrlHook";
 import { AppModal, InfoModal, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { fetchData } from "../AuthRoutines";
+import { fetchData } from "@totara/core/AuthRoutines";
 
 /**
  * ManualFlow starts with a siteUrl, then depending what configured on the server

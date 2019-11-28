@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -24,14 +24,14 @@ import { ApolloLink } from "apollo-link";
 import { RetryLink } from "apollo-link-retry";
 import { HttpLink } from "apollo-link-http";
 import { onError, ErrorResponse } from "apollo-link-error";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 
 import { config, Log } from "@totara/lib";
 import { AUTHORIZATION } from "@totara/lib/Constant";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { LearningItem } from "@totara/types";
-import { Setup } from "./AuthContextHook";
+import { Setup } from "./AuthHook";
 import { AppState, SiteInfo } from "./AuthContext";
 
 /**
@@ -165,7 +165,7 @@ export const createApolloClient = (
   apiKey: string,
   uri: string,
   logOut: (localOnly: boolean) => Promise<void>
-) => {
+): ApolloClient<NormalizedCacheObject> => {
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
