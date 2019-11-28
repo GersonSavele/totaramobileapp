@@ -45,25 +45,21 @@ export type Theme = {
 
   fontSizeButtonTitle: number,
 
-  //---- Theme color: customizable by [User/Developer] ------
   colorPrimary: string,
   colorText: string,
   
-  //---- Theme color: customizable by [Developer] ------
   colorAccent: string,
   colorSecondary1: string,
   colorSecondary2: string,
   colorSecondary3: string,
   colorSecondary4: string,
 
-  //---- Notification color: customizable by [Developer] ------
   colorInfo: string,
   colorSuccess: string,
   colorWarning: string,
   colorAlert: string,
   colorHighlight: string,
 
-  //---- Neutral color: customizable by [Developer] ------
   colorNeutral1: string,
   colorNeutral2: string,
   colorNeutral3: string,
@@ -73,17 +69,14 @@ export type Theme = {
   colorNeutral7: string,
   colorNeutral8: string,
 
-  //---- Text color: customizable by [Developer] ------
   textColorDark: string,
   textColorSecondary: string,
   textColorLight: string,
   textColorSubdued: string,
   textColorDisabled: string,
 
-  //---- Navigation color: customizable by [Developer] ------
   navigationHeaderTintColor: string,
 
-  //---- TabBar color: customizable by [Developer] ------
   tabBarActiveTintColor: string,
   tabBarInactiveTintColor: string
 }
@@ -102,7 +95,7 @@ const TotaraTheme: Theme = {
   textB3: { fontSize: 14, lineHeight: 18, color: textColorDark },
   
   textSmall: { fontSize: 12, lineHeight: 16, color: textColorDark },
-  textLabel: { fontSize: 10, color: textColorDark }, // lineHeight: 12
+  textLabel: { fontSize: 10, color: textColorDark },
 
   fontSizeButtonTitle: 16,
   
@@ -141,7 +134,7 @@ const TotaraTheme: Theme = {
   textColorSubdued: "#7D7D7D",
   textColorDisabled: "#C7C7C7",
 
-  //---- Navigation color: customizable by [User/Developer] ------
+  //---- Navigation color: customizable by [Developer] ------
   navigationHeaderTintColor: "#3D444B",
 
   //---- TabBar color: customizable by [Developer] ------
