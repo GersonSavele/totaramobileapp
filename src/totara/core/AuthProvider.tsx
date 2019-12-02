@@ -22,6 +22,7 @@
 
 import React, { ReactNode } from "react";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
+import { ApolloProvider } from "@apollo/react-common";
 
 import { AuthContext } from "./AuthContext";
 import { useAuth, initialState } from "./AuthHook";
@@ -56,18 +57,20 @@ export const AuthProvider = ( {asyncStorage, children}: Props) => {
   } = useAuth(bootstrap(asyncStorage), registerDevice(fetchData(fetch), asyncStorage), deviceCleanup(asyncStorage), createApolloClient)({initialState: initialState });
 
   const providerValue = {
-    isAuthenticated: authContextState.isAuthenticated,
-    appState: authContextState.appState,
     authContextState: authContextState,
     logOut: logOut,
     onLoginSuccess: onLoginSuccess,
     onLoginFailure: onLoginFailure,
-    apolloClient: apolloClient
   };
 
   return (
     <AuthContext.Provider value={providerValue}>
-      {children}
+      { apolloClient
+        ? <ApolloProvider client={apolloClient}>
+            {children}
+          </ApolloProvider>
+        : children
+      }
     </AuthContext.Provider>
   );
 };

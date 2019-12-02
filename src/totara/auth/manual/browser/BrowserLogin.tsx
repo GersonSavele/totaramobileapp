@@ -24,9 +24,9 @@ import { Linking } from "react-native";
 
 import { PrimaryButton, TertiaryButton, InfoModal } from "@totara/components";
 import { translate } from "@totara/locale";
-import { ManualAuthProps } from "../ManualAuthProps";
+import { ManualFlowChildProps } from "../ManualFlowChildProps";
 
-const BrowserLogin = ({ onSetupSecretCancel, siteUrl }: ManualAuthProps) => {
+const BrowserLogin = ({ onSetupSecretCancel, siteUrl }: ManualFlowChildProps) => {
   return (
     <InfoModal
       title={translate("browser_login.title")}

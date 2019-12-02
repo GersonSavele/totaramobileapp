@@ -21,11 +21,7 @@
 
 import React from 'react';
 import { renderHook, act } from "@testing-library/react-hooks";
-import {
-  ManualFlowSteps,
-  useManualFlow,
-  manualFlowReducer
-} from "../ManualFlowHook";
+import { useManualFlow, manualFlowReducer } from "../ManualFlowHook";
 import { config } from "@totara/lib";
 import BrowserLogin from '../browser';
 import renderer from 'react-test-renderer';
@@ -70,7 +66,7 @@ describe("useManualFlow", () => {
     await act(async () => waitForNextUpdate());
 
     expect(result.current.manualFlowState).toMatchObject({
-      flowStep: ManualFlowSteps.webview,
+      flowStep: "webview",
       isSiteUrlSubmitted: true,
       siteUrl: "https://success.com"
     });
@@ -80,7 +76,7 @@ describe("useManualFlow", () => {
     });
 
     expect(result.current.manualFlowState).toMatchObject({
-      flowStep: ManualFlowSteps.done,
+      flowStep: "done",
       isSiteUrlSubmitted: false,
       setupSecret: "theSecret",
       siteUrl: "https://success.com"
@@ -118,14 +114,14 @@ describe("manualFlowReducer", () => {
   it("should put flowStep into siteUrl when it is cancelled", () => {
     const currentState = {
       isSiteUrlSubmitted: true,
-      flowStep: ManualFlowSteps.native
+      flowStep: "native"
     };
     const action = {
       type: "cancelManualFlow"
     };
 
     const newState = manualFlowReducer(currentState, action);
-    expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
+    expect(newState.flowStep).toBe("siteUrl");
     expect(newState.isSiteUrlSubmitted).toBeFalsy();
   });
 
@@ -133,7 +129,7 @@ describe("manualFlowReducer", () => {
     config.minApiVersion = "2019111100";
     const currentState = {
       isSiteUrlSubmitted: true,
-      flowStep: ManualFlowSteps.siteUrl
+      flowStep: "siteUrl"
     };
     const testSiteInfo = {
       auth: "native",
@@ -150,7 +146,7 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-    expect(newState.flowStep).toBe(ManualFlowSteps.native);
+    expect(newState.flowStep).toBe("native");
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
   });
 
@@ -158,7 +154,7 @@ describe("manualFlowReducer", () => {
     config.minApiVersion = "2019111100";
     const currentState = {
       isSiteUrlSubmitted: true,
-      flowStep: ManualFlowSteps.siteUrl
+      flowStep: "siteUrl"
     };
     const testSiteInfo = {
       auth: "native",
@@ -175,7 +171,7 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-    expect(newState.flowStep).toBe(ManualFlowSteps.incompatible);
+    expect(newState.flowStep).toBe("incompatible");
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
   });
 
@@ -183,7 +179,7 @@ describe("manualFlowReducer", () => {
     config.minApiVersion = "disabled";
     const currentState = {
       isSiteUrlSubmitted: true,
-      flowStep: ManualFlowSteps.siteUrl
+      flowStep: "siteUrl"
     };
     const testSiteInfo = {
       auth: "native",
@@ -200,7 +196,7 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-    expect(newState.flowStep).toBe(ManualFlowSteps.native);
+    expect(newState.flowStep).toBe("native");
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
   });
 
@@ -208,7 +204,7 @@ describe("manualFlowReducer", () => {
     const currentState = {
       isSiteUrlSubmitted: false,
       siteUrl: undefined,
-      flowStep: ManualFlowSteps.siteUrl
+      flowStep: "siteUrl"
     };
     const action = {
       type: "siteInfoApiInit",
@@ -216,7 +212,7 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-    expect(newState.flowStep).toBe(ManualFlowSteps.siteUrl);
+    expect(newState.flowStep).toBe("siteUrl");
     expect(newState.isSiteUrlSubmitted).toBeTruthy();
     expect(newState.siteUrl).toBe("https://totarasite.com");
   });
@@ -225,7 +221,7 @@ describe("manualFlowReducer", () => {
     const currentState = {
       isSiteUrlSubmitted: true,
       siteUrl: "https://totarasite.com",
-      flowStep: ManualFlowSteps.native
+      flowStep: "native"
     };
     const action = {
       type: "setupSecretSuccess",
@@ -233,7 +229,7 @@ describe("manualFlowReducer", () => {
     };
 
     const newState = manualFlowReducer(currentState, action);
-    expect(newState.flowStep).toBe(ManualFlowSteps.done);
+    expect(newState.flowStep).toBe("done");
     expect(newState.isSiteUrlSubmitted).toBeFalsy();
     expect(newState.setupSecret).toBe("the_secret");
   });
@@ -242,14 +238,14 @@ describe("manualFlowReducer", () => {
     const currentState = {
       isSiteUrlSubmitted: true,
       siteUrl: "https://totarasite.com",
-      flowStep: ManualFlowSteps.native
+      flowStep: "native"
     };
     const action = {
       type: "siteInfoApiFailure",
       payload: new Error()
     };
     const newState = manualFlowReducer(currentState, action);
-    expect(newState.flowStep).toBe(ManualFlowSteps.native);
+    expect(newState.flowStep).toBe("native");
     expect(newState.isSiteUrlSubmitted).toBeFalsy();
     expect(newState.isSiteUrlFailure).toBe(true);
   });
@@ -257,7 +253,7 @@ describe("manualFlowReducer", () => {
   it("should set flowStep to browser login and take screen-shot in Information modal", () => {
     const currentState = {
       isSiteUrlSubmitted: true,
-      flowStep: ManualFlowSteps.siteUrl
+      flowStep: "siteUrl"
     };
     const testSiteInfo = {
       auth: "browser",
@@ -275,10 +271,10 @@ describe("manualFlowReducer", () => {
 
     const newState = manualFlowReducer(currentState, action);
 
-    expect(newState.flowStep).toBe(ManualFlowSteps.browser);
+    expect(newState.flowStep).toBe("browser");
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
     const tree = renderer
-      .create(<BrowserLogin siteUrl={ManualFlowSteps.siteUrl} onSetupSecretCancel={jest.fn()} />)
+      .create(<BrowserLogin siteUrl={"siteUrl"} onSetupSecretCancel={jest.fn()} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });

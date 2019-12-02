@@ -27,12 +27,15 @@ import { AuthContext } from "@totara/core/AuthContext";
 import { config } from "@totara/lib";
 
 describe("AppModal", () => {
-  
+  const authContextState = {
+    isAuthenticated: false
+  };
+
   it("it should not show any modal screens for valid apiVersion or disabled minApiVersion", async () => {
     config.minApiVersion = "2019101802";
     const validSetupVersion = { apiVersion: "2019101802"};
     const validVersionComponent = renderer.create(
-      <AuthContext.Provider value={{setup: validSetupVersion}} >
+      <AuthContext.Provider value={{setup: validSetupVersion, authContextState: authContextState}} >
         <AppModal />
       </AuthContext.Provider>
     );
@@ -40,7 +43,7 @@ describe("AppModal", () => {
 
     const higherSetupVersion = { apiVersion: "2030101802"};
     const higherVersionComponent = renderer.create(
-      <AuthContext.Provider value={{setup: higherSetupVersion}} >
+      <AuthContext.Provider value={{setup: higherSetupVersion, authContextState: authContextState}} >
         <AppModal />
       </AuthContext.Provider>
     );
@@ -48,7 +51,7 @@ describe("AppModal", () => {
 
     config.minApiVersion = "disabled";
     const disabledAppMinVersionComponent = renderer.create(
-      <AuthContext.Provider value={{setup: validSetupVersion}} >
+      <AuthContext.Provider value={{setup: validSetupVersion, authContextState: authContextState}} >
         <AppModal />
       </AuthContext.Provider>
     );
@@ -58,7 +61,7 @@ describe("AppModal", () => {
     config.minApiVersion = "2019101802";
     const oldSetupVersion = { apiVersion: "2010101802"};
     const oldVersionComponent = renderer.create(
-      <AuthContext.Provider value={{setup: oldSetupVersion}} >
+      <AuthContext.Provider value={{setup: oldSetupVersion, authContextState: authContextState}} >
         <AppModal />
       </AuthContext.Provider>
     );

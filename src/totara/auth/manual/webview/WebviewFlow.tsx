@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  *
  */
 
@@ -24,10 +24,10 @@ import React from "react";
 import { Modal } from "react-native";
 
 import WebviewLogin from "./WebviewLogin";
-import { ManualAuthProps } from "../ManualAuthProps";
+import { ManualFlowChildProps } from "../ManualFlowChildProps";
 import { useWebviewFlow } from "./WebviewFlowHook";
 
-const WebviewFlow = ({ siteUrl, onSetupSecretSuccess, onSetupSecretCancel }: ManualAuthProps) => {
+const WebviewFlow = ({ siteUrl, onSetupSecretSuccess, onSetupSecretCancel }: ManualFlowChildProps) => {
 
   const UserWebviewLogin = () => WebviewLogin(
       useWebviewFlow({

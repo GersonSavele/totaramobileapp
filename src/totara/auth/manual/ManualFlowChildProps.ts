@@ -21,7 +21,7 @@
 
 import { SiteInfo } from "@totara/core/AuthContext";
 
-export type ManualAuthProps = {
+export type ManualFlowChildProps = {
   siteUrl: string,
   siteInfo?: SiteInfo,
   onSetupSecretSuccess?: (url: string) => void

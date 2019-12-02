@@ -20,45 +20,40 @@
  */
 
 import React, { ReactNode, useContext } from "react";
+
 import { InfoModal, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-
 import { AuthContext } from "@totara/core/AuthContext";
-import { AuthStep } from "@totara/core/AuthHook";
-import ManualFlow from "./manual/ManualFlow";
-import AppLinkFlow from "@totara/auth/app-link";
-import { Text } from "react-native";
-import { ApolloProvider } from "@apollo/react-common";
+import { AuthContextState } from "@totara/core/AuthHook";
 
+import ManualFlow from "./manual/ManualFlow";
+import AppLinkFlow from "./app-link/AppLinkFlow";
 
 export const AuthFlow = ({children}: Props) => {
 
-  const { authContextState, logOut, onLoginSuccess, onLoginFailure, apolloClient } = useContext(AuthContext);
+  const { authContextState, logOut, onLoginSuccess, onLoginFailure } = useContext(AuthContext);
 
   // TODO MOB-307 improve and make this testable, logic is getting more complicated
-  const showUIFor = (authStep: AuthStep) => {
+  const showUIFor = (authStep: AuthContextState["authStep"]) => {
     switch (authStep) {
-      case AuthStep.authError:
-        return <AuthErrorModal action={()=> logOut(true)}/>;
-      case AuthStep.setupDone:
-      case AuthStep.bootstrapDone:
+      case "authError":
+        return <AuthErrorModal action={() => logOut(true)}/>;
+      case "setupDone":
+      case "bootstrapDone":
         return <ManualFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>;
-      case AuthStep.setupSecretInit:
-      case AuthStep.loading:
+      case "setupSecretInit":
+      case "loading":
         return null;
     }
   };
 
   return (
     <React.Fragment>
-      <AppLinkFlow onLoginFailure={onLoginFailure} onLoginSuccess={onLoginSuccess}/>
       {
         authContextState.isLoading
-        ? <Text>TODO replace with error feedback screen see MOB-117</Text>
-        : apolloClient
-          ? <ApolloProvider client={apolloClient}>
-            {children}
-            </ApolloProvider>
+        ? <AppLinkFlow onLoginFailure={onLoginFailure} onLoginSuccess={onLoginSuccess}/>
+        : authContextState.isAuthenticated
+          ? children
           : showUIFor(authContextState.authStep)
       }
     </React.Fragment>

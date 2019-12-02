@@ -24,7 +24,7 @@ import { useReducer, useEffect } from "react";
 import { config, Log } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { asyncEffectWrapper } from "@totara/core/AuthRoutines";
-import { ManualAuthProps } from "../ManualAuthProps";
+import { ManualFlowChildProps } from "../ManualFlowChildProps";
 
 const initialState = {
   setupSecret: undefined,
@@ -44,7 +44,7 @@ export const useNativeFlow = (
   onSetupSecretFailure,
   siteUrl,
   onSetupSecretCancel
-}: ManualAuthProps): OutProps => {
+}: ManualFlowChildProps) => {
   const [nativeLoginState, dispatch] = useReducer(nativeReducer, initialState);
 
   const inputUsernameWithShowError = (username: string) => {
@@ -110,7 +110,6 @@ export const useNativeFlow = (
   return {
     nativeLoginState,
     onSetupSecretCancel,
-    siteUrl,
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,
@@ -238,14 +237,4 @@ type LoginSetup = {
 
 type SetupSecret = {
   setupsecret: string;
-};
-
-export type OutProps = {
-  nativeLoginState: NativeLoginState;
-  onSetupSecretCancel: () => void;
-  siteUrl: string;
-  onClickEnter: () => void;
-  inputUsernameWithShowError: (text: string) => void;
-  inputPasswordWithShowError: (text: string) => void;
-  onFocusInput: () => void;
 };

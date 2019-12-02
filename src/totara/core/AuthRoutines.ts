@@ -26,10 +26,10 @@ import { HttpLink } from "apollo-link-http";
 import { onError, ErrorResponse } from "apollo-link-error";
 import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
+import { AsyncStorageStatic } from "@react-native-community/async-storage";
 
 import { config, Log } from "@totara/lib";
 import { AUTHORIZATION } from "@totara/lib/Constant";
-import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { LearningItem } from "@totara/types";
 import { Setup } from "./AuthHook";
 import { AppState, SiteInfo } from "./AuthContext";

@@ -28,19 +28,28 @@ import { config } from "@totara/lib";
 import { resizeByScreenSize, gutter, ThemeContext} from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, TouchableIcon, FormError } from "@totara/components";
 import { translate } from "@totara/locale";
+import { fetchData } from "@totara/core/AuthRoutines";
 
-import { OutProps } from "./NativeFlowHook";
+import { ManualFlowChildProps } from "../ManualFlowChildProps";
+import { useNativeFlow } from "./NativeFlowHook";
 
-const NativeLogin = ({
-  nativeLoginState,
-  onSetupSecretCancel,
-  siteUrl,
-  onClickEnter,
-  inputUsernameWithShowError,
-  inputPasswordWithShowError,
-  onFocusInput
-}: OutProps) => {
+const NativeLogin = (props: ManualFlowChildProps) => {
+
+  // fetch from global
+  // eslint-disable-next-line no-undef
+  const fetchDataWithFetch = fetchData(fetch);
+
+  const {
+    nativeLoginState,
+    onSetupSecretCancel,
+    onClickEnter,
+    inputUsernameWithShowError,
+    inputPasswordWithShowError,
+    onFocusInput
+  } = useNativeFlow(fetchDataWithFetch)(props);
+
   const [ theme ] = useContext(ThemeContext);
+
   return (
     <Container style={[{ flex: 0 }, theme.viewContainer]}>
       <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
@@ -86,7 +95,7 @@ const NativeLogin = ({
             </InputTextWithInfo>
           </View>
           <View style={[ styles.forgotCredentialContainer, theme.textB1 ]}>
-            <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(siteUrl)); }} >
+            <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(props.siteUrl)); }} >
               <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
             </TouchableOpacity>
           </View>
@@ -95,7 +104,7 @@ const NativeLogin = ({
       </Content>
     </Container>    
   );
-}
+};
 
 const styles = StyleSheet.create({
   navigation: {

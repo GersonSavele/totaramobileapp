@@ -18,7 +18,7 @@
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
-import { AuthStep, initialState, useAuth } from "../AuthHook";
+import { initialState, useAuth } from "../AuthHook";
 import { renderHook, act } from "@testing-library/react-hooks";
 
 describe("useAuthContext", () => {
@@ -35,7 +35,7 @@ describe("useAuthContext", () => {
       setup: undefined,
       isLoading: false,
       isAuthenticated: true,
-      authStep: AuthStep.registered
+      authStep: "registered"
     };
 
     const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
@@ -52,7 +52,7 @@ describe("useAuthContext", () => {
     expect(result.current.authContextState.appState).toBeFalsy();
     expect(result.current.authContextState.isAuthenticated).toBeFalsy();
     expect(result.current.authContextState.isLoading).toBeFalsy();
-    expect(result.current.authContextState.authStep).toBe(AuthStep.bootstrapDone);
+    expect(result.current.authContextState.authStep).toBe("bootstrapDone");
   });
 
   it("should register device when login is successful", async () => {
@@ -95,7 +95,7 @@ describe("useAuthContext", () => {
       setup: undefined,
       isLoading: false,
       isAuthenticated: false,
-      authStep: AuthStep.bootstrapDone
+      authStep: "bootstrapDone"
     };
 
     const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
@@ -112,7 +112,7 @@ describe("useAuthContext", () => {
     expect(result.current.authContextState.appState).toMatchObject(expectedAppState);
     expect(result.current.authContextState.isAuthenticated).toBeTruthy();
     expect(result.current.authContextState.isLoading).toBeFalsy();
-    expect(result.current.authContextState.authStep).toBe(AuthStep.setupDone);
+    expect(result.current.authContextState.authStep).toBe("setupDone");
 
   });
 
@@ -188,7 +188,7 @@ describe("useAuthContext", () => {
       setup: setup,
       isLoading: false,
       isAuthenticated: false,
-      authStep: AuthStep.setupSecretInit
+      authStep: "setupSecretInit"
     };
 
     const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
@@ -201,7 +201,7 @@ describe("useAuthContext", () => {
     expect(result.current.authContextState.appState.apiKey).toBe("apiKey");
     expect(result.current.authContextState.isAuthenticated).toBeTruthy();
     expect(result.current.authContextState.isLoading).toBeFalsy();
-    expect(result.current.authContextState.authStep).toBe(AuthStep.setupDone);
+    expect(result.current.authContextState.authStep).toBe("setupDone");
   });
 
   it("should be setup error when device registration is not successful", async () => {
@@ -230,7 +230,7 @@ describe("useAuthContext", () => {
       setup: undefined,
       isLoading: false,
       isAuthenticated: false,
-      authStep: AuthStep.bootstrapDone
+      authStep: "bootstrapDone"
     };
 
     const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
@@ -246,7 +246,7 @@ describe("useAuthContext", () => {
     expect(result.current.authContextState.appState).toBeFalsy();
     expect(result.current.authContextState.isAuthenticated).toBeFalsy();
     expect(result.current.authContextState.isLoading).toBeFalsy();
-    expect(result.current.authContextState.authStep).toBe(AuthStep.authError);
+    expect(result.current.authContextState.authStep).toBe("authError");
 
   });
 

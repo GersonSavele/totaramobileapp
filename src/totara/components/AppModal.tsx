@@ -35,7 +35,7 @@ type Props = {
 }
 
 const AppModal = ({onCancel, siteUrl}: Props) => {
-  const { appState, isAuthenticated, logOut } = useContext(AuthContext);
+  const { authContextState: {isAuthenticated, appState}, logOut } = useContext(AuthContext);
   const isShowIncompatibleApi = appState ? !isValidApiVersion(appState.siteInfo.version) : true;
   const site = appState ? appState.host : siteUrl;
   if (isShowIncompatibleApi) 

@@ -141,7 +141,7 @@ export const useAuth = (
       });
     };
 
-    if (authContextState.authStep === AuthStep.loading) doBootStrap();
+    if (authContextState.authStep === "loading") doBootStrap();
   }, [authContextState.authStep]);
 
   /**
@@ -161,9 +161,9 @@ export const useAuth = (
       }
     };
 
-    if (authContextState.authStep === AuthStep.setupSecretInit)
+    if (authContextState.authStep === "setupSecretInit")
       doRegisterDevice();
-  }, [authContextState.authStep]);
+  }, [authContextState.authStep, authContextState.isAuthenticated]);
 
   return {
     authContextState,
@@ -182,7 +182,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
         return {
           ...state,
           setup: action.payload,
-          authStep: AuthStep.setupSecretInit
+          authStep: "setupSecretInit"
         };
       else throw new Error(`unexpected payload in action ${action}`);
     }
@@ -193,7 +193,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
           ...state,
           appState: action.payload,
           isAuthenticated: true,
-          authStep: AuthStep.setupDone
+          authStep: "setupDone"
         };
       else throw new Error(`unexpected payload in action ${action}`);
     }
@@ -205,14 +205,14 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
           appState: action.payload,
           isAuthenticated: true,
           isLoading: false,
-          authStep: AuthStep.bootstrapDone
+          authStep: "bootstrapDone"
         };
       else
         return {
           ...state,
           isAuthenticated: false,
           isLoading: false,
-          authStep: AuthStep.bootstrapDone
+          authStep: "bootstrapDone"
         };
     }
 
@@ -222,7 +222,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
         appState: undefined,
         isAuthenticated: false,
         isLoading: false,
-        authStep: AuthStep.bootstrapDone
+        authStep: "bootstrapDone"
       };
 
     case "authError":
@@ -232,7 +232,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
         appState: undefined,
         isAuthenticated: false,
         isLoading: false,
-        authStep: AuthStep.authError
+        authStep: "authError"
       };
 
     case "reload":
@@ -255,20 +255,17 @@ type Props = {
   initialState: AuthContextState;
 };
 
-export enum AuthStep {
-  loading,
-  bootstrapDone,
-  setupSecretInit,
-  setupDone,
-  authError
-}
-
 export type AuthContextState = {
   isLoading: boolean;
   isAuthenticated: boolean;
   appState?: AppState;
   setup?: Setup;
-  authStep: AuthStep;
+  authStep:
+    | "loading"
+    | "bootstrapDone"
+    | "setupSecretInit"
+    | "setupDone"
+    | "authError";
 };
 
 export const initialState: AuthContextState = {
@@ -276,7 +273,7 @@ export const initialState: AuthContextState = {
   setup: undefined,
   isLoading: true,
   isAuthenticated: false,
-  authStep: AuthStep.loading
+  authStep: "loading"
 };
 
 export interface Setup {

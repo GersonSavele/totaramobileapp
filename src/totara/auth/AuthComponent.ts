@@ -21,11 +21,11 @@
 
 import React from "react";
 
-import { Setup } from "./AuthHook";
+import { Setup } from "@totara/core/AuthHook";
 
-export class AuthComponent<P = {}, S = {}> extends React.Component<AuthProviderStateLift & P, S> {}
+export class AuthComponent<P = {}, S = {}> extends React.Component<AuthFlowChildProps & P, S> {}
 
-export type AuthProviderStateLift = {
+export type AuthFlowChildProps = {
   onLoginSuccess: (setup: Setup) => void;
   onLoginFailure: (error: Error) => void;
 };

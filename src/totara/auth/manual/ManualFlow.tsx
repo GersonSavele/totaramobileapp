@@ -23,28 +23,35 @@
 import React from "react";
 import { View } from "react-native";
 
-import { AuthProviderStateLift } from "@totara/core/AuthComponent";
-import WebviewFlow from "./webview";
-import NativeFlow from "./native";
-import BrowserLogin from "./browser";
-import { useManualFlow, ManualFlowSteps, OutProps } from "./ManualFlowHook";
-import SiteUrl from "./SiteUrl";
-import { useSiteUrl } from "./SiteUrlHook";
+import { AuthFlowChildProps } from "@totara/auth/AuthComponent";
 import { AppModal, InfoModal, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData } from "@totara/core/AuthRoutines";
+
+import WebviewFlow from "./webview";
+import NativeFlow from "./native";
+import BrowserLogin from "./browser";
+import { useManualFlow } from "./ManualFlowHook";
+import SiteUrl from "./SiteUrl";
+import { useSiteUrl } from "./SiteUrlHook";
 
 /**
  * ManualFlow starts with a siteUrl, then depending what configured on the server
  * will dispatch the next flow
  */
-const ManualFlow = ({
-  manualFlowState,
-  onSiteUrlSuccess,
-  onSetupSecretSuccess,
-  onSetupSecretCancel,
-  onSetupSecretFailure
-}: OutProps) => {
+const ManualFlow = (props: AuthFlowChildProps) => {
+  // fetch is available on global scope
+// eslint-disable-next-line no-undef
+  const fetchDataWithFetch = fetchData(fetch);
+
+  const {
+    manualFlowState,
+    onSiteUrlSuccess,
+    onSetupSecretSuccess,
+    onSetupSecretCancel,
+    onSetupSecretFailure
+  } = useManualFlow(fetchDataWithFetch)(props);
+
   const StartComponent = () =>
     SiteUrl(
       useSiteUrl({
@@ -66,7 +73,7 @@ const ManualFlow = ({
       <View style={{ flex: 1 }}>
         {(() => {
           switch (manualFlowState.flowStep) {
-            case ManualFlowSteps.native:
+            case "native":
               return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
                 <NativeFlow
                   siteUrl={manualFlowState.siteUrl}
@@ -78,7 +85,7 @@ const ManualFlow = ({
               ) : (
                 <StartComponent />
               );
-            case ManualFlowSteps.webview:
+            case "webview":
               return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
                 <WebviewFlow
                   siteUrl={manualFlowState.siteUrl}
@@ -90,7 +97,7 @@ const ManualFlow = ({
               ) : (
                 <StartComponent />
               );
-            case ManualFlowSteps.browser:
+            case "browser":
               return manualFlowState.siteUrl ? (
                 <BrowserLogin
                   siteUrl={manualFlowState.siteUrl}
@@ -99,11 +106,11 @@ const ManualFlow = ({
               ) : (
                 <StartComponent />
               );
-            case ManualFlowSteps.incompatible:
+            case "incompatible":
               return <AppModal onCancel={onSetupSecretCancel} siteUrl={manualFlowState.siteUrl} />;
-            case ManualFlowSteps.done:
+            case "done":
               return null;
-            default:
+            case "siteUrl":
               return <StartComponent />;
           }
         })()}
@@ -132,9 +139,4 @@ const SiteErrorModal = ({ onCancel }: PropSiteError) => (
   </InfoModal>
 );
 
-// fetch is available on global scope
-// eslint-disable-next-line no-undef
-const fetchDataWithFetch = fetchData(fetch);
-
-export default (props: AuthProviderStateLift) =>
-  ManualFlow(useManualFlow(fetchDataWithFetch)(props));
+export default ManualFlow;

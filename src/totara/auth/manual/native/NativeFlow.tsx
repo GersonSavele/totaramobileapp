@@ -22,23 +22,13 @@
 import React from "react";
 import { Modal } from "react-native";
 import NativeLogin from "./NativeLogin";
-import { useNativeFlow } from "./NativeFlowHook";
-import { ManualAuthProps } from "../ManualAuthProps";
-import { fetchData } from "@totara/core/AuthRoutines";
+import { ManualFlowChildProps } from "../ManualFlowChildProps";
 
-const NativeFlow = (props: ManualAuthProps) => {
-  // fetch from global
-  // eslint-disable-next-line no-undef
-  const fetchDataWithFetch = fetchData(fetch);
-
-  const UserNativeLogin = () =>
-    NativeLogin(
-      useNativeFlow(fetchDataWithFetch)(props)
-    );
+const NativeFlow = (props: ManualFlowChildProps) => {
 
   return (
       <Modal animationType="slide" transparent={false}>
-        <UserNativeLogin />
+        <NativeLogin {...props}/>
       </Modal>
   );
 };

@@ -26,8 +26,9 @@ import { ThemeContext, applyTheme } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { config, Log } from "@totara/lib";
 import { isValidApiVersion, SiteInfo } from "@totara/core/AuthContext";
-import { AuthProviderStateLift } from "@totara/core/AuthComponent";
 import { asyncEffectWrapper } from "@totara/core/AuthRoutines";
+
+import { AuthFlowChildProps } from "../AuthComponent";
 
 /**
  * Custom react hook that manages the state of the manual flow
@@ -38,19 +39,19 @@ import { asyncEffectWrapper } from "@totara/core/AuthRoutines";
 
 export const useManualFlow = (
   fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>
-) => (props: AuthProviderStateLift): OutProps => {
+) => (props: AuthFlowChildProps) => {
   const [, setTheme] = useContext(ThemeContext);
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
     isSiteUrlSubmitted: false,
-    flowStep: ManualFlowSteps.siteUrl,
+    flowStep: "siteUrl",
     isSiteUrlFailure: false
   });
   Log.debug("manualFlowState", manualFlowState);
 
   // right state to call onLoginSuccess
   if (
-    manualFlowState.flowStep === ManualFlowSteps.done &&
+    manualFlowState.flowStep === "done" &&
     manualFlowState.siteUrl &&
     manualFlowState.setupSecret &&
     manualFlowState.siteInfo
@@ -75,7 +76,7 @@ export const useManualFlow = (
       fetchSiteInfo,
       () =>
         manualFlowState.isSiteUrlSubmitted &&
-        manualFlowState.flowStep === ManualFlowSteps.siteUrl &&
+        manualFlowState.flowStep === "siteUrl" &&
         manualFlowState.siteUrl
           ? true
           : false,
@@ -91,12 +92,12 @@ export const useManualFlow = (
 
   useEffect(() => {
     if (
-      manualFlowState.flowStep === ManualFlowSteps.siteUrl &&
+      manualFlowState.flowStep === "siteUrl" &&
       !manualFlowState.isSiteUrlSubmitted
     ) {
       setTheme(applyTheme(TotaraTheme));
     } else if (
-      manualFlowState.flowStep !== ManualFlowSteps.siteUrl &&
+      manualFlowState.flowStep !== "siteUrl" &&
       manualFlowState.isSiteUrlSubmitted
     ) {
       setTheme(
@@ -160,18 +161,18 @@ export const manualFlowReducer = (
 
     case "siteInfoApiSuccess": {
       const siteInfo = action.payload as SiteInfo;
-      const flowStep = siteInfo.auth as ManualFlowSteps;
+      const flowStep = siteInfo.auth;
       const isCompatible = isValidApiVersion(siteInfo.version);
       if (!isCompatible) {
         return {
           ...state,
-          flowStep: ManualFlowSteps.incompatible,
+          flowStep: "incompatible",
           siteInfo: siteInfo
         };
       } else if (
-        flowStep === ManualFlowSteps.native ||
-        flowStep === ManualFlowSteps.webview ||
-        flowStep === ManualFlowSteps.browser
+        flowStep === "native" ||
+        flowStep === "webview" ||
+        flowStep === "browser"
       ) {
         return {
           ...state,
@@ -179,6 +180,8 @@ export const manualFlowReducer = (
           siteInfo: siteInfo
         };
       } else {
+        Log.warn("Unsupported manual flow", flowStep);
+
         return {
           ...state,
           isSiteUrlSubmitted: false,
@@ -199,7 +202,7 @@ export const manualFlowReducer = (
       return {
         ...state,
         isSiteUrlSubmitted: false,
-        flowStep: ManualFlowSteps.siteUrl,
+        flowStep: "siteUrl",
         isSiteUrlFailure: false
       };
 
@@ -209,26 +212,23 @@ export const manualFlowReducer = (
         isSiteUrlSubmitted: false,
         isSiteUrlFailure: false,
         setupSecret: action.payload as string,
-        flowStep: ManualFlowSteps.done
+        flowStep: "done"
       };
   }
 };
-
-export enum ManualFlowSteps {
-  siteUrl = "siteUrl",
-  native = "native",
-  webview = "webview",
-  browser = "browser",
-  done = "done",
-  incompatible = "incompatible"
-}
 
 type ManualFlowState = {
   siteUrl?: string;
   siteInfo?: SiteInfo;
   setupSecret?: string;
   isSiteUrlSubmitted: boolean;
-  flowStep: ManualFlowSteps;
+  flowStep:
+    | "siteUrl"
+    | "native"
+    | "webview"
+    | "browser"
+    | "done"
+    | "incompatible";
   isSiteUrlFailure: boolean;
 };
 
@@ -240,12 +240,4 @@ type Action = {
     | "cancelManualFlow"
     | "siteInfoApiFailure";
   payload?: string | SiteInfo;
-};
-
-export type OutProps = {
-  manualFlowState: ManualFlowState;
-  onSiteUrlSuccess: (url: string) => void;
-  onSetupSecretSuccess: (setupSecret: string) => void;
-  onSetupSecretCancel: () => void;
-  onSetupSecretFailure: (error: Error) => void;
 };

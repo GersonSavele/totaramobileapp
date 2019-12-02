@@ -24,30 +24,24 @@ import React from "react";
 
 import { config } from "@totara/lib";
 import { Theme } from "@totara/theme";
-import { AuthContextState, initialState } from "./AuthHook";
-import { AuthProviderStateLift } from "./AuthComponent";
-import { ApolloClient } from "apollo-client";
-import { NormalizedCacheObject } from "apollo-cache-inmemory";
+
+import { AuthContextState, initialState, Setup } from "./AuthHook";
 
 export const AuthContext = React.createContext<State>({
-  isAuthenticated: false,
-  appState: undefined,
   authContextState: initialState,
   logOut: () => {
     return Promise.resolve();
   },
   onLoginSuccess: () => {},
   onLoginFailure: () => {},
-  apolloClient: null
 });
 
 export type State = {
-  isAuthenticated: boolean;
-  appState?: AppState;
   authContextState: AuthContextState;
-  logOut: (local: boolean) => Promise<void>;
-  apolloClient: ApolloClient<NormalizedCacheObject> | null;
-} & AuthProviderStateLift;
+  logOut: (local?: boolean) => Promise<void>;
+  onLoginSuccess: (setup: Setup) => void;
+  onLoginFailure: (error: Error) => void;
+}
 
 export type SiteInfo = {
   auth: string;
