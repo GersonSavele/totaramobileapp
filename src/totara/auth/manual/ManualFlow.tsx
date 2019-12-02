@@ -33,10 +33,9 @@ import NativeFlow from "./native";
 import BrowserLogin from "./browser";
 import { useManualFlow } from "./ManualFlowHook";
 import SiteUrl from "./SiteUrl";
-import { useSiteUrl } from "./SiteUrlHook";
 
 /**
- * ManualFlow starts with a siteUrl, then depending what configured on the server
+ * ManualFlow starts with a StartStep, then depending what configured on the server
  * will dispatch the next flow
  */
 const ManualFlow = (props: AuthFlowChildProps) => {
@@ -52,72 +51,68 @@ const ManualFlow = (props: AuthFlowChildProps) => {
     onSetupSecretFailure
   } = useManualFlow(fetchDataWithFetch)(props);
 
-  const StartComponent = () =>
-    SiteUrl(
-      useSiteUrl({
-        onSiteUrlSuccess: onSiteUrlSuccess,
-        siteUrl: manualFlowState.siteUrl,
-        isSiteUrlSubmitted: manualFlowState.isSiteUrlSubmitted
-      })
-    );
+  const StartStep = () =>  <SiteUrl
+      onSiteUrlSuccess={onSiteUrlSuccess}
+      siteUrl={manualFlowState.siteUrl}
+      isSiteUrlSubmitted={manualFlowState.isSiteUrlSubmitted}/>;
+
+  const ManualFlowUI = () => {
+    switch (manualFlowState.flowStep) {
+      case "native":
+        return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+          <NativeFlow
+            siteUrl={manualFlowState.siteUrl}
+            siteInfo={manualFlowState.siteInfo}
+            onSetupSecretSuccess={onSetupSecretSuccess}
+            onSetupSecretCancel={onSetupSecretCancel}
+            onSetupSecretFailure={onSetupSecretFailure}
+          />
+        ) : (
+          <StartStep />
+        );
+      case "webview":
+        return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+          <WebviewFlow
+            siteUrl={manualFlowState.siteUrl}
+            siteInfo={manualFlowState.siteInfo}
+            onSetupSecretSuccess={onSetupSecretSuccess}
+            onSetupSecretCancel={onSetupSecretCancel}
+            onSetupSecretFailure={onSetupSecretFailure}
+          />
+        ) : (
+          <StartStep />
+        );
+      case "browser":
+        return manualFlowState.siteUrl ? (
+          <BrowserLogin
+            siteUrl={manualFlowState.siteUrl}
+            onSetupSecretCancel={onSetupSecretCancel}
+          />
+        ) : (
+          <StartStep />
+        );
+      case "incompatible":
+        return <AppModal onCancel={onSetupSecretCancel} siteUrl={manualFlowState.siteUrl} />;
+      case "done":
+        return null;
+      case "siteUrl":
+        return <StartStep/>;
+    }
+  };
+
   if (manualFlowState.isSiteUrlFailure) {
     return (
-      <SiteErrorModal
-        onCancel={() => {
-          onSetupSecretCancel();
-        }}
-      />
+      <SiteErrorModal onCancel={onSetupSecretCancel}/>
     );
   } else {
     return (
       <View style={{ flex: 1 }}>
-        {(() => {
-          switch (manualFlowState.flowStep) {
-            case "native":
-              return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-                <NativeFlow
-                  siteUrl={manualFlowState.siteUrl}
-                  siteInfo={manualFlowState.siteInfo}
-                  onSetupSecretSuccess={onSetupSecretSuccess}
-                  onSetupSecretCancel={onSetupSecretCancel}
-                  onSetupSecretFailure={onSetupSecretFailure}
-                />
-              ) : (
-                <StartComponent />
-              );
-            case "webview":
-              return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-                <WebviewFlow
-                  siteUrl={manualFlowState.siteUrl}
-                  siteInfo={manualFlowState.siteInfo}
-                  onSetupSecretSuccess={onSetupSecretSuccess}
-                  onSetupSecretCancel={onSetupSecretCancel}
-                  onSetupSecretFailure={onSetupSecretFailure}
-                />
-              ) : (
-                <StartComponent />
-              );
-            case "browser":
-              return manualFlowState.siteUrl ? (
-                <BrowserLogin
-                  siteUrl={manualFlowState.siteUrl}
-                  onSetupSecretCancel={onSetupSecretCancel}
-                />
-              ) : (
-                <StartComponent />
-              );
-            case "incompatible":
-              return <AppModal onCancel={onSetupSecretCancel} siteUrl={manualFlowState.siteUrl} />;
-            case "done":
-              return null;
-            case "siteUrl":
-              return <StartComponent />;
-          }
-        })()}
+        <ManualFlowUI/>
       </View>
     );
   }
 };
+
 
 type PropSiteError = {
   onCancel: () => void;
@@ -132,9 +127,7 @@ const SiteErrorModal = ({ onCancel }: PropSiteError) => (
   >
     <PrimaryButton
       text={translate("auth_invalid_site.action_primary")}
-      onPress={() => {
-        onCancel();
-      }}
+      onPress={onCancel}
     />
   </InfoModal>
 );

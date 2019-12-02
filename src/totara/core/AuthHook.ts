@@ -25,7 +25,7 @@ import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import SplashScreen from "react-native-splash-screen";
 
 import { config, Log } from "@totara/lib";
-import { SiteInfo, AppState } from "./AuthContext";
+import { AppState, SiteInfo } from "@totara/types";
 
 /**
  * Custom react hook for AuthContext.

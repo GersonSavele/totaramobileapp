@@ -19,7 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-import { SiteInfo } from "@totara/core/AuthContext";
+import { SiteInfo } from "@totara/types";
 
 export type ManualFlowChildProps = {
   siteUrl: string,

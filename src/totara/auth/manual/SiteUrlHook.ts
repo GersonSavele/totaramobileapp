@@ -16,14 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
-import { config } from "@totara/lib";
-import { translate } from "@totara/locale";
 import { useReducer } from "react";
 
+import { config } from "@totara/lib";
+import { translate } from "@totara/locale";
 
-export const useSiteUrl = ({siteUrl, onSiteUrlSuccess, isSiteUrlSubmitted}: Props): OutProps => {
+
+export const useSiteUrl = ({siteUrl, onSiteUrlSuccess, isSiteUrlSubmitted}: Props) => {
 
   const [siteUrlState, dispatch] = useReducer(siteUrlReducer,
     { inputSiteUrlStatus: undefined, inputSiteUrlMessage: undefined, inputSiteUrl: siteUrl });
@@ -76,7 +77,7 @@ const siteUrlReducer = (state: State, action: Action): State => {
 };
 
 
-type Props = {
+export type Props = {
   onSiteUrlSuccess: (data: string) => void
   siteUrl?: string,
   isSiteUrlSubmitted : boolean
@@ -92,14 +93,6 @@ type Action = {
   type: "submit" | "change"
   payload?: string
 }
-
-export type OutProps = {
-  siteUrlState: State,
-  onChangeInputSiteUrl: (siteUrl: string) => void,
-  onSubmit: () => void,
-  isSiteUrlSubmitted : boolean
-}
-
 
 const isValidUrlText = (urlText: string) => {
   const pattern = new RegExp("^(https?:\\/\\/)?" + // protocol

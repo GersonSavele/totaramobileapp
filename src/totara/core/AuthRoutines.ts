@@ -30,9 +30,8 @@ import { AsyncStorageStatic } from "@react-native-community/async-storage";
 
 import { config, Log } from "@totara/lib";
 import { AUTHORIZATION } from "@totara/lib/Constant";
-import { LearningItem } from "@totara/types";
+import { LearningItem, AppState, SiteInfo } from "@totara/types";
 import { Setup } from "./AuthHook";
-import { AppState, SiteInfo } from "./AuthContext";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions

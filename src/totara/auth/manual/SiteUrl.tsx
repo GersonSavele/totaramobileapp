@@ -18,9 +18,6 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import { InputTextWithInfo, PrimaryButton } from "@totara/components";
-import { translate } from "@totara/locale";
-import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { Container, Content, Form, Input } from "native-base";
 import React, { useContext } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -30,15 +27,20 @@ import {
 } from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
 import VersionInfo from "react-native-version-info";
-import { OutProps } from "./SiteUrlHook";
+import { useSiteUrl, Props } from "./SiteUrlHook";
 
-const SiteUrl = ({
-  siteUrlState,
-  onChangeInputSiteUrl,
-  onSubmit,
-  isSiteUrlSubmitted
-}: OutProps) => {
+import { InputTextWithInfo, PrimaryButton } from "@totara/components";
+import { translate } from "@totara/locale";
+import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
+
+const SiteUrl = (props: Props) => {
   const [theme] = useContext(ThemeContext);
+  const {
+    siteUrlState,
+    onChangeInputSiteUrl,
+    onSubmit,
+    isSiteUrlSubmitted
+  } = useSiteUrl(props);
 
   return (
     <Container style={[{ flex: 0 }, theme.viewContainer]}>

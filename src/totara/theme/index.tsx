@@ -19,7 +19,7 @@
 
 
 import { resizeByScreenSize, normalize } from "./PlatformUtility";
-import { Theme, applyTheme } from "./Theme";
+import { applyTheme } from "./Theme";
 import { ThemeContext, ThemeProvider, ThemeConsumer} from "./ThemeContext"
 
 const gutter = resizeByScreenSize(8, 16, 16, 24);
@@ -32,11 +32,8 @@ export {
   gutter,
   tbPadding,
   lrPadding,
-
-  Theme,
   applyTheme,
-  
-  ThemeContext, 
+  ThemeContext,
   ThemeProvider, 
   ThemeConsumer
 };

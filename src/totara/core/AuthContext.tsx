@@ -23,7 +23,6 @@
 import React from "react";
 
 import { config } from "@totara/lib";
-import { Theme } from "@totara/theme";
 
 import { AuthContextState, initialState, Setup } from "./AuthHook";
 
@@ -36,25 +35,12 @@ export const AuthContext = React.createContext<State>({
   onLoginFailure: () => {},
 });
 
-export type State = {
+type State = {
   authContextState: AuthContextState;
   logOut: (local?: boolean) => Promise<void>;
   onLoginSuccess: (setup: Setup) => void;
   onLoginFailure: (error: Error) => void;
 }
-
-export type SiteInfo = {
-  auth: string;
-  siteMaintenance: boolean;
-  theme?: Theme;
-  version: string;
-};
-
-export type AppState = {
-  apiKey: string;
-  host: string;
-  siteInfo: SiteInfo;
-};
 
 enum Compatible {
   Api = 1

@@ -20,68 +20,15 @@
  */
 
 import { normalize } from "./PlatformUtility";
-import { ViewStyle, TextStyle } from "react-native";
+import { Theme } from "@totara/types";
+import { TextStyle, ViewStyle } from "react-native";
 
 const colorPrimary = "#8CA83D";
 const colorAccent = "#FFFFFF";
 const colorNeutral5 = "#C7C7C7";
 const textColorDark = "#3D444B";
 
-export type Theme = {
-  urlLogo?: string,
-  
-  viewContainer: ViewStyle,
-  textH1: TextStyle,
-  textH2: TextStyle,
-  textH3: TextStyle,
-  textH4: TextStyle,
-
-  textB1: TextStyle,
-  textB2: TextStyle,
-  textB3: TextStyle,
-  
-  textSmall: TextStyle,
-  textLabel: TextStyle,
-
-  fontSizeButtonTitle: number,
-
-  colorPrimary: string,
-  colorText: string,
-  
-  colorAccent: string,
-  colorSecondary1: string,
-  colorSecondary2: string,
-  colorSecondary3: string,
-  colorSecondary4: string,
-
-  colorInfo: string,
-  colorSuccess: string,
-  colorWarning: string,
-  colorAlert: string,
-  colorHighlight: string,
-
-  colorNeutral1: string,
-  colorNeutral2: string,
-  colorNeutral3: string,
-  colorNeutral4: string,
-  colorNeutral5: string,
-  colorNeutral6: string,
-  colorNeutral7: string,
-  colorNeutral8: string,
-
-  textColorDark: string,
-  textColorSecondary: string,
-  textColorLight: string,
-  textColorSubdued: string,
-  textColorDisabled: string,
-
-  navigationHeaderTintColor: string,
-
-  tabBarActiveTintColor: string,
-  tabBarInactiveTintColor: string
-}
-
-const TotaraTheme: Theme = {
+const TotaraTheme: AppliedTheme = {
   viewContainer: { backgroundColor: colorAccent },
 
   //---- Text styles: customizable by [Developer] ------
@@ -140,7 +87,22 @@ const TotaraTheme: Theme = {
   //---- TabBar color: customizable by [Developer] ------
   tabBarActiveTintColor: colorPrimary,
   tabBarInactiveTintColor: colorNeutral5
-}
+};
+
+export type AppliedTheme = {
+  viewContainer: ViewStyle;
+  textH1: TextStyle;
+  textH2: TextStyle;
+  textH3: TextStyle;
+  textH4: TextStyle;
+
+  textB1: TextStyle;
+  textB2: TextStyle;
+  textB3: TextStyle;
+
+  textSmall: TextStyle;
+  textLabel: TextStyle;
+} & Theme
 
 const applyTheme = (theme: Partial<Theme>) => {
   let newTheme = TotaraTheme;
@@ -167,5 +129,6 @@ const applyTheme = (theme: Partial<Theme>) => {
     newTheme.textLabel = {...newTheme.textLabel, ...{color: theme.textColorDark}};
   }
   return { ...newTheme, ...theme };
-}
+};
+
 export  { TotaraTheme, applyTheme };

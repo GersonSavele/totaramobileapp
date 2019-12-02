@@ -25,8 +25,9 @@ import VersionInfo from "react-native-version-info";
 import { ThemeContext, applyTheme } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { config, Log } from "@totara/lib";
-import { isValidApiVersion, SiteInfo } from "@totara/core/AuthContext";
+import { isValidApiVersion} from "@totara/core/AuthContext";
 import { asyncEffectWrapper } from "@totara/core/AuthRoutines";
+import { SiteInfo } from "@totara/types";
 
 import { AuthFlowChildProps } from "../AuthComponent";
 

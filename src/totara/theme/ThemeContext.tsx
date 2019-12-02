@@ -20,13 +20,13 @@
  */
 import React, { ReactNode, useState, Dispatch, SetStateAction } from "react";
 
-import { Theme, TotaraTheme } from "./Theme";
+import { AppliedTheme, TotaraTheme } from "./Theme";
 
 type Props = {
   children: ReactNode;
 };
 
-const ThemeContext = React.createContext<[Theme, Dispatch<SetStateAction<Theme>>]>([TotaraTheme, () => {}]);
+const ThemeContext = React.createContext<[AppliedTheme, Dispatch<SetStateAction<AppliedTheme>>]>([TotaraTheme, () => {}]);
 
 const ThemeProvider = ( { children }: Props) => {
   return (
