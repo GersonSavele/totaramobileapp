@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
 import { Logger } from "./Logger"
@@ -33,15 +33,15 @@ class ConsoleLogger implements Logger {
   }
 
   debug(message: string, ...others: any[]) {
-    console.log("[DEBUG]", message, others);
+    console.debug("[DEBUG]", message, others);
   }
 
   info(message: string, ...others: any[]) {
-    console.log("[INFO]", message, others);
+    console.info("[INFO]", message, others);
   }
 
   warn(message: string, ...others: any[]) {
-    console.log("[WARN]", message, others);
+    console.warn("[WARN]", message, others);
   }
 
   error(message: string, error: Error, ...others: any[]){
