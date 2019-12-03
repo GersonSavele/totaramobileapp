@@ -33,11 +33,11 @@ const query = gql`
             fullname
             summary #: description
             #summaryFormat: description_format
-            duedateState # missing from real api
+            duedateState
             duedate
             progress
             # status # missing from real api
-            imageSrc # missing from real api
+            imageSrc
         }
     }
 `;

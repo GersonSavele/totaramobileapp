@@ -25,12 +25,12 @@ import { StyleSheet, View, StatusBar, Text } from "react-native";
 import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { ActivityType } from "@totara/types";
+import { ModuleType } from "@totara/types";
 import ScormActivity from "./scorm/ScormActivity";
 import { WebviewActivity } from "./webview/WebviewActivity";
 
 type contextData = {
-  setCurrentActivity: (activity: ActivityType) => void
+  setCurrentActivity: (activity: ModuleType) => void
 }
 
 const ActivitySheetContext = React.createContext<contextData>({
@@ -63,11 +63,11 @@ const panelRef = createRef<SlidingUpPanel>();
 
 export class ActivitySheetProvider extends React.Component {
   state = {
-    setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
+    setCurrentActivity: (activity: ModuleType) => this.setCurrentActivity(activity),
     currentActivity: undefined,
   };
 
-  setCurrentActivity(activity: ActivityType) {
+  setCurrentActivity(activity: ModuleType) {
     this.setState({
       currentActivity: activity
     }, () => panelRef.current!.show(0));
@@ -113,11 +113,11 @@ const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity,
 );
 
 type Props = {
-  currentActivity: ActivityType,
+  currentActivity: ModuleType,
   onClose: () => void
 }
 
-const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
+const ActivityWrapper = ({activity}: { activity: ModuleType }) => {
   switch (activity.type) {
     case "scorm":
       return (<ScormActivity activity={activity}/>);

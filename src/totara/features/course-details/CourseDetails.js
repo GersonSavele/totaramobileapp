@@ -37,7 +37,7 @@ import ActivityList from "./ActivityList";
 import { getCourse } from "./api";
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
-const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
+const CourseDetails = withNavigation(getCourse(({loading, core_course, error}) => {
   if (loading) return <Text>{translate("general.loading")}</Text>;
 
   if (error) {
@@ -45,9 +45,9 @@ const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
     return <GeneralErrorModal /> 
   }
 
-  if (course) {
+  if (core_course) {
     return(
-      <CourseDetailsComponent course={course}/>
+      <CourseDetailsComponent course={core_course}/>
     )
   }
 }));
@@ -96,7 +96,7 @@ class CourseDetailsComponent extends React.Component {
               <Text style={(!this.state.showActivities) ? styles.tabActive : styles.tabInActive}>{translate("course-details.outline")}</Text>
             </TouchableOpacity>
           </View>
-          { (this.state.showActivities) ? <ActivityList activityGroups={item.sections} onScroll={this.onScroll}/> : <Text>{translate("course-details.outline")}</Text> }
+          { (this.state.showActivities) ? <ActivityList moduleGroups={item.sections} onScroll={this.onScroll}/> : <Text>{translate("course-details.outline")}</Text> }
         </View>
       </View>
     );

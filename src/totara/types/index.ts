@@ -18,7 +18,7 @@
  */
 
 import { LearningItem, LearningItemType } from "./LearningItem";
-import { Activity, ActivityType, ScormActivity } from "./Activity";
+import { Module, ModuleType, ScormModule } from "./Module";
 import { Course } from "./Course";
 import { Program } from "./Program";
 import { Status, LearningStatus } from "./LearningStatus";
@@ -29,9 +29,9 @@ import { Theme } from "./Theme";
 export {
   LearningItem,
   LearningItemType,
-  ScormActivity,
-  Activity,
-  ActivityType,
+  ScormModule,
+  Module,
+  ModuleType,
   Course,
   Program,
   Status,

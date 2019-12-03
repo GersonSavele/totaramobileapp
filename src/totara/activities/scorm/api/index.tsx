@@ -20,10 +20,10 @@
  */
 
 import gql from "graphql-tag";
-import { ScormActivity } from "@totara/types";
+import { ScormModule } from "@totara/types";
 
 type Response = {
-    scorm: ScormActivity;
+    scorm: ScormModule;
 }
   
 interface Variables {

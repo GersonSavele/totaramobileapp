@@ -58,7 +58,6 @@ class ActivityList extends React.Component {
 
 
   renderActivity = ({item, index, section}) => {
-
     const BuildContentIcon = ({type}) => {
       switch (type) {
         case "scorm":
@@ -81,17 +80,17 @@ class ActivityList extends React.Component {
       return (
       <View style={styles.activity}>
         {
-          (item.status === Status.done)
+          (item.completionstatus === Status.done)
             ? <CheckBadge size={8} offsetSize={2}>
-                <BuildContentIcon type={item.type}/>
+                <BuildContentIcon type={item.modType}/>
               </CheckBadge>
-            : <BuildContentIcon type={item.type}/>
+            : <BuildContentIcon type={item.modType}/>
         }
         <ActivitySheetConsumer>
           {({setCurrentActivity}) => {
             return (
             <TouchableOpacity style={{flex: 1}} onPress={() => setCurrentActivity(item)}>
-              <Text numberOfLines={1} style={[theme.textH4, (item.status) === Status.active ? styles.activeActivityText : styles.activityText]}>{item.itemName}</Text>
+              <Text numberOfLines={1} style={[theme.textH4, (item.completionstatus) === Status.active ? styles.activeActivityText : styles.activityText]}>{item.name}</Text>
               <Text numberOfLines={1} style={[theme.textB1, styles.activitySummaryText]}>{item.summary}</Text>
             </TouchableOpacity>
             );
@@ -99,7 +98,7 @@ class ActivityList extends React.Component {
           }
         </ActivitySheetConsumer>
         {
-          (item.type === "scorm") ?
+          (item.modType === "scorm") ?
             <View style={{paddingLeft: lrPadding}}>
               <FontAwesomeIcon icon="cloud-download-alt" size={24} color="black"/>
             </View>
@@ -116,21 +115,20 @@ class ActivityList extends React.Component {
           <Activity/>
           <View style={styles.disabledOverlay}/>
         </View>);
-    else if (item.status === Status.active)
+    else if (item.completionstatus === Status.active)
       return(
         <View style={styles.activeActivityContainer}>
           <Activity/>
         </View>);
     else
-      return <Activity/>
+      return <Activity/>   
   };
 
   render() {
-    const {activityGroups, onScroll} = this.props;
-
+    const {moduleGroups, onScroll} = this.props;
     return(
     <SectionList style={styles.activities}
-                 sections={activityGroups}
+                 sections={moduleGroups}
                  renderSectionHeader={this.renderSection}
                  renderItem={this.renderActivity}
                  renderSectionFooter={this.renderFooter}
@@ -141,7 +139,7 @@ class ActivityList extends React.Component {
 }
 
 ActivityList.propTypes = {
-  activityGroups: PropTypes.array.isRequired,
+  moduleGroups: PropTypes.array.isRequired,
   onScroll: PropTypes.func
 };
 

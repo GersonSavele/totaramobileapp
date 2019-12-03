@@ -16,56 +16,63 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  *
  */
 
-import {graphql} from "react-apollo";
+import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-import {Course} from "@totara/types";
-import {NavigationInjectedProps} from "react-navigation";
+import { Course } from "@totara/types";
+import { NavigationInjectedProps } from "react-navigation";
 
 const query = gql`
-  query course($id: ID!) {
-    course(id: $id) {
+  query totara_mobile_course($courseid: ID!) {
+    core_course(courseid: $courseid) {
       id
-      itemtype
-      shortname
       fullname
+      shortname
       summary
-      progress
-      imageSrc
+      coursetype
+      enddate
+      lang
+      image
       sections {
-        sectionName
-        status  
-        data {
-            id
-            type
-            itemName
-            status
-            summary
-            url
+        id
+        title
+        data : modules  {
+          id
+          modType
+          name
+          viewurl
+          uservisible
+          completion
+          completionstatus
         }
-      }  
+      }
+      modcount
+      completion: core_course_completion {
+        status
+        statuskey
+        progress
+        timecompleted
+      }
     }
   }
 `;
 
 type CourseId = {
-  courseId: number
-}
+  courseid: number;
+};
 
 export type Response = {
-  course: Course;
-} & NavigationInjectedProps<CourseId>
+  core_course: Course;
+} & NavigationInjectedProps<CourseId>;
 
-export const getCourse = graphql<NavigationInjectedProps, Response>(
-  query,
-  {
-    options: (props) => ({
-      variables: { id: props.navigation.state.params.courseId },
-    }),
-    props: ( {data} ) => ({...data})
-    // needed magic for double HOC, I have no idea why extracting data here makes wrapped totara.components props passed down.  As opposed to extracting data on the calling function
-    // it is just stated to be better with static typing, but it doesn't work w/o this.  see: https://www.apollographql.com/docs/react/recipes/static-typing.html#props
-  });
+export const getCourse = graphql<NavigationInjectedProps, Response>(query, {
+  options: props => ({
+    variables: { courseid: props.navigation.state.params.courseId }
+  }),
+  props: ({ data }) => ({ ...data })
+  // needed magic for double HOC, I have no idea why extracting data here makes wrapped totara.components props passed down.  As opposed to extracting data on the calling function
+  // it is just stated to be better with static typing, but it doesn't work w/o this.  see: https://www.apollographql.com/docs/react/recipes/static-typing.html#props
+});

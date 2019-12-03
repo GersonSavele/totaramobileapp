@@ -16,21 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  *
  */
 
-import {Section} from "./LearningItem"
-import {LearningStatus} from "./LearningStatus";
+ import {Section} from "./LearningItem"
 
+export interface Course {
+  id: number,
+  fullname?: string,
+  shortname: string,
+  summary?: string,
+  coursetype?: number,
+  enddate?: string,
+  lang?: string,
+  image?: string,
+  sections: [Section],
+  modcount: number,
+  completion: Completion
+}
 
-export interface Course extends LearningStatus {
-  id: number
-  itemtype: string
-  shortname: string
-  fullname?: string
-  summary?: string
-  progress?: number
-  sections: [Section]
-  imageSrc?: string
+export interface Completion {
+  status: number,
+  statuskey?: string,
+  progress: number,
+  timecompleted?: Date
 }

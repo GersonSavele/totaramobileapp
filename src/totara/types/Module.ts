@@ -19,19 +19,17 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { LearningStatus } from "./LearningStatus";
-
-export interface Activity extends LearningStatus {
-  id: number,
-  type: string,
-  itemName: string,
-  summary?: string,
-  imgSrc?: string,
-  progressPercentage?: number,
-  url: string
+export interface Module {
+  id: number
+  modType?: string
+  name?: string
+  viewurl?: string
+  uservisible: boolean
+  completion?: number
+  completionstatus?: number
 }
 
-export interface ScormActivity extends Activity {
+export interface ScormModule extends Module {
   type: "scorm",
   currentAttempt : number,
   maxAttempt : number,
@@ -40,25 +38,25 @@ export interface ScormActivity extends Activity {
   isAvailable :boolean
 }
 
-export interface SeminarActivity extends Activity {
+export interface SeminarModule extends Module {
   type: "facetoface"
 }
 
-export interface ForumsActivity extends Activity {
+export interface ForumsModule extends Module {
   type: "forum"
 }
 
-export interface QuizActivity extends Activity {
+export interface QuizModule extends Module {
   type: "quiz"
 }
 
-export interface AssignmentActivity extends Activity {
+export interface AssignmentModule extends Module {
   type: "assign"
 }
 
-export type ActivityType =
-  ScormActivity |
-  SeminarActivity |
-  ForumsActivity |
-  QuizActivity |
-  AssignmentActivity;
+export type ModuleType =
+  ScormModule |
+  SeminarModule |
+  ForumsModule |
+  QuizModule |
+  AssignmentModule;

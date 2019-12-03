@@ -19,21 +19,21 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { LearningStatus } from "./LearningStatus";
-import { Activity } from "./Activity";
+import { Module } from "./Module";
 
 export interface Section {
-  sectionName: string
-  activities: [Activity]
+  id: number
+  title: string
+  modules? : [Module]
 }
 
 export enum LearningItemType {
-  Course = "Course",
-  Program = "Program",
-  Certification = "Certification"
+  Course = "course",
+  Program = "program",
+  Certification = "certification"
 }
 
-export interface LearningItem extends LearningStatus {
+export interface LearningItem {
   id: number
   itemtype: string
   shortname: string
