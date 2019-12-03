@@ -23,8 +23,8 @@ import { SiteInfo } from "@totara/types";
 
 export type ManualFlowChildProps = {
   siteUrl: string,
-  siteInfo?: SiteInfo,
-  onSetupSecretSuccess?: (url: string) => void
+  siteInfo: SiteInfo,
+  onSetupSecretSuccess: (setupSecret: string) => void
   onSetupSecretCancel: () => void
-  onSetupSecretFailure?: (error: Error) => void;
+  onSetupSecretFailure: (error: Error) => void;
 };

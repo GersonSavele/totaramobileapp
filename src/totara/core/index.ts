@@ -17,22 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jun Yamog <jun.yamog@totaralearning.com>
- *
  */
 
-import React from "react";
-import { Modal } from "react-native";
+import { AuthContext, AuthConsumer } from "./AuthContext";
+import { AuthContextState } from "./AuthHook"
 
-import WebviewLogin from "./WebviewLogin";
-import { ManualFlowChildProps } from "../ManualFlowChildProps";
-
-const WebviewFlow = (props: ManualFlowChildProps) => {
-
-  return (
-    <Modal animationType="slide">
-      <WebviewLogin {...props}/>
-    </Modal>
-  );
-};
-
-export default  WebviewFlow;
+export {
+  AuthContext,
+  AuthConsumer,
+  AuthContextState
+}

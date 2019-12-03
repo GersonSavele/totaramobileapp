@@ -143,13 +143,11 @@ describe("WebviewLoginHook", () => {
   });
 
   it("Handling the completion of successful login", () => {
-    const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
     const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
-        onCancelWebviewLogin: mockOnCancelWebviewLogin,
-        onRecievedSetupSecret: mockOnRecievedSetupSecret
+        onSetupSecretSuccess: mockOnRecievedSetupSecret
       }
     });
     const webvieNativeEvent = {
@@ -164,13 +162,11 @@ describe("WebviewLoginHook", () => {
   });
 
   it("Handling the completion of login for invalid values", () => {
-    const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
     const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
-        onCancelWebviewLogin: mockOnCancelWebviewLogin,
-        onRecievedSetupSecret: mockOnRecievedSetupSecret
+        onSetupSecretSuccess: mockOnRecievedSetupSecret
       }
     });
     const webvieNativeEventForNull = {
@@ -200,8 +196,8 @@ describe("WebviewLoginHook", () => {
     const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
-        onCancelWebviewLogin: mockOnCancelWebviewLogin,
-        onRecievedSetupSecret: mockOnRecievedSetupSecret
+        onSetupSecretCancel: mockOnCancelWebviewLogin,
+        onSetupSecretSuccess: mockOnRecievedSetupSecret
       }
     });
 

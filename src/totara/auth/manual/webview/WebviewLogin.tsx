@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  *
  */
 
@@ -29,20 +29,24 @@ import { Container, Header, Content, Footer } from "native-base";
 
 import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
-import { OutProps } from "./WebviewFlowHook";
 import { TouchableIcon } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
 
-const WebviewLogin = ({
-  loginUrl,
-  navProtocol,
-  navEndPoint,
-  cancelLogin,
-  didReceiveOnMessage,
-  canWebGoBackward,
-  canWebGoForward,
-  onLogViewNavigate
-}: OutProps) => {
+import { useWebviewFlow } from "./WebviewFlowHook";
+import { ManualFlowChildProps } from "../ManualFlowChildProps";
+
+const WebviewLogin = (props: ManualFlowChildProps) => {
+
+  const {
+    loginUrl,
+    navProtocol,
+    navEndPoint,
+    cancelLogin,
+    didReceiveOnMessage,
+    canWebGoBackward,
+    canWebGoForward,
+    onLogViewNavigate
+  } = useWebviewFlow(props);
   
   const jsCode = "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
 
@@ -70,7 +74,6 @@ const WebviewLogin = ({
           javaScriptEnabled={true}
           onMessage={didReceiveOnMessage}
           injectedJavaScript={jsCode}
-          useWebKit={true}
           onNavigationStateChange={onLogViewNavigate}
         />
       </Content>

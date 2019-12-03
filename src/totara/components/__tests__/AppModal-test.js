@@ -23,7 +23,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 
 import AppModal from "../AppModal";
-import { AuthContext } from "@totara/core/AuthContext";
+import { AuthContext } from "@totara/core";
 import { config } from "@totara/lib";
 
 describe("AppModal", () => {

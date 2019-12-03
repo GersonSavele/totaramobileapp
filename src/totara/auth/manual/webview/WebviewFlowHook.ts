@@ -24,23 +24,22 @@ import { WebViewMessageEvent, WebViewNavigation } from "react-native-webview/lib
 import CookieManager from "react-native-cookies";
 
 import { config } from "@totara/lib";
+import { ManualFlowChildProps } from "@totara/auth/manual/ManualFlowChildProps";
 
 export const useWebviewFlow = ({
   siteUrl,
-  onCancelWebviewLogin,
-  onRecievedSetupSecret
-}: Props): OutProps => {
+  onSetupSecretSuccess,
+  onSetupSecretCancel
+}: ManualFlowChildProps) => {
   
   const getProtocolEndpoint = (url: string) => url.split("://");
 
-  const cancelLogin = () => {
-    onCancelWebviewLogin();
-  };
+  const cancelLogin = onSetupSecretCancel;
 
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if (typeof setupSecretValue !== "undefined" && setupSecretValue != "null" && setupSecretValue) {
-      onRecievedSetupSecret(setupSecretValue);
+      onSetupSecretSuccess(setupSecretValue);
     }
   };
 
@@ -79,21 +78,4 @@ export const useWebviewFlow = ({
     didReceiveOnMessage,
     onLogViewNavigate
   };
-};
-
-type Props = {
-  siteUrl: string;
-  onCancelWebviewLogin: () => void;
-  onRecievedSetupSecret: (setsecret: string) => void;
-};
-
-export type OutProps = {
-  loginUrl: string;
-  navProtocol: string;
-  navEndPoint: string;
-  canWebGoForward: boolean;
-  canWebGoBackward: boolean;
-  cancelLogin: () => void;
-  didReceiveOnMessage: (event: WebViewMessageEvent) => void;
-  onLogViewNavigate: (navState: WebViewNavigation) => void;
 };

@@ -99,12 +99,12 @@ export const useNativeFlow = (
     ), [nativeLoginState.isRequestingLogin]);
     
   if ( nativeLoginState.unhandleLoginError ) {
-    onSetupSecretFailure!(nativeLoginState.unhandleLoginError);
+    onSetupSecretFailure(nativeLoginState.unhandleLoginError);
   }
 
   if ( nativeLoginState.setupSecret ) {
     Log.debug("Setup Secret", nativeLoginState.setupSecret);
-    onSetupSecretSuccess!(nativeLoginState.setupSecret);
+    onSetupSecretSuccess(nativeLoginState.setupSecret);
   }
 
   return {

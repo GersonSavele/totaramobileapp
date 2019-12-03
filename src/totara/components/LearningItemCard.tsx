@@ -27,7 +27,7 @@ import { LearningItem, Status } from "@totara/types";
 import DueDateState  from "./DueDateState";
 import { normalize, ThemeContext } from "@totara/theme";
 import { AUTHORIZATION } from "@totara/lib/Constant";
-import { AuthContext } from "@totara/core/AuthContext";
+import { AuthContext } from "@totara/core";
 
 interface Props {
   item: LearningItem

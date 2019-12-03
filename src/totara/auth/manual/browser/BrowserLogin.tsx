@@ -26,7 +26,10 @@ import { PrimaryButton, TertiaryButton, InfoModal } from "@totara/components";
 import { translate } from "@totara/locale";
 import { ManualFlowChildProps } from "../ManualFlowChildProps";
 
-const BrowserLogin = ({ onSetupSecretCancel, siteUrl }: ManualFlowChildProps) => {
+const BrowserLogin = ({
+  onSetupSecretCancel,
+  siteUrl
+}: Pick<ManualFlowChildProps, "onSetupSecretCancel" | "siteUrl">) => {
   return (
     <InfoModal
       title={translate("browser_login.title")}

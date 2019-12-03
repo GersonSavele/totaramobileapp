@@ -25,7 +25,7 @@ import { View, StyleSheet, Image, Dimensions, Text, Linking } from "react-native
 import { PrimaryButton } from "@totara/components";
 import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { AuthConsumer } from "@totara/core/AuthContext";
+import { AuthConsumer } from "@totara/core";
 
 const NoCurrentLearning = () => {
 

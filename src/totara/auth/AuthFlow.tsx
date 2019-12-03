@@ -23,8 +23,7 @@ import React, { ReactNode, useContext } from "react";
 
 import { InfoModal, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { AuthContext } from "@totara/core/AuthContext";
-import { AuthContextState } from "@totara/core/AuthHook";
+import { AuthContext, AuthContextState } from "@totara/core";
 
 import ManualFlow from "./manual/ManualFlow";
 import AppLinkFlow from "./app-link/AppLinkFlow";
