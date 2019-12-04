@@ -29,12 +29,12 @@ import { ManualFlowChildProps } from "@totara/auth/manual/ManualFlowChildProps";
 export const useWebviewFlow = ({
   siteUrl,
   onSetupSecretSuccess,
-  onSetupSecretCancel
+  onManualFlowCancel
 }: ManualFlowChildProps) => {
   
   const getProtocolEndpoint = (url: string) => url.split("://");
 
-  const cancelLogin = onSetupSecretCancel;
+  const cancelLogin = onManualFlowCancel;
 
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;

@@ -28,7 +28,9 @@ import { fetchData } from "@totara/core/AuthRoutines";
 
 import { AuthFlowChildProps, AuthComponent } from "../AuthComponent";
 
-
+/**
+ * AppLinkFlow uses deep linking to capture the setup secret from the link
+ */
 export default class AppLinkFlow extends AuthComponent {
 
   constructor(props: AuthFlowChildProps) {

@@ -24,7 +24,7 @@ import { useNativeFlow, nativeReducer } from "../NativeFlowHook";
 import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
 import { config } from "@totara/lib";
 
-const onSetupSecretCancel = jest.fn();
+const onManualFlowCancel = jest.fn();
 const onSetupSecretSuccess = jest.fn();
 
 describe("useNativeLogin", () => {
@@ -32,7 +32,7 @@ describe("useNativeLogin", () => {
     initialProps: {
       siteUrl: "http://mobiledemo.wlg.totaralms.com",
       onSetupSecretSuccess: { onSetupSecretSuccess },
-      onSetupSecretCancel: { onSetupSecretCancel }
+      onManualFlowCancel: { onManualFlowCancel: onManualFlowCancel }
     }
   });
   it("both empty 'username' and 'password'", () => {

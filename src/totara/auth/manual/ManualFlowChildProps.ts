@@ -25,6 +25,6 @@ export type ManualFlowChildProps = {
   siteUrl: string,
   siteInfo: SiteInfo,
   onSetupSecretSuccess: (setupSecret: string) => void
-  onSetupSecretCancel: () => void
   onSetupSecretFailure: (error: Error) => void;
+  onManualFlowCancel: () => void
 };

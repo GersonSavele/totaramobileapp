@@ -47,7 +47,7 @@ const ManualFlow = (props: AuthFlowChildProps) => {
     manualFlowState,
     onSiteUrlSuccess,
     onSetupSecretSuccess,
-    onSetupSecretCancel,
+    onManualFlowCancel,
     onSetupSecretFailure
   } = useManualFlow(fetchDataWithFetch)(props);
 
@@ -64,7 +64,7 @@ const ManualFlow = (props: AuthFlowChildProps) => {
             siteUrl={manualFlowState.siteUrl}
             siteInfo={manualFlowState.siteInfo}
             onSetupSecretSuccess={onSetupSecretSuccess}
-            onSetupSecretCancel={onSetupSecretCancel}
+            onManualFlowCancel={onManualFlowCancel}
             onSetupSecretFailure={onSetupSecretFailure}
           />
         ) : (
@@ -76,7 +76,7 @@ const ManualFlow = (props: AuthFlowChildProps) => {
             siteUrl={manualFlowState.siteUrl}
             siteInfo={manualFlowState.siteInfo}
             onSetupSecretSuccess={onSetupSecretSuccess}
-            onSetupSecretCancel={onSetupSecretCancel}
+            onManualFlowCancel={onManualFlowCancel}
             onSetupSecretFailure={onSetupSecretFailure}
           />
         ) : (
@@ -86,13 +86,13 @@ const ManualFlow = (props: AuthFlowChildProps) => {
         return manualFlowState.siteUrl ? (
           <BrowserLogin
             siteUrl={manualFlowState.siteUrl}
-            onSetupSecretCancel={onSetupSecretCancel}
+            onManualFlowCancel={onManualFlowCancel}
           />
         ) : (
           <StartStep />
         );
       case "incompatible":
-        return <AppModal onCancel={onSetupSecretCancel} siteUrl={manualFlowState.siteUrl} />;
+        return <AppModal onCancel={onManualFlowCancel} siteUrl={manualFlowState.siteUrl} />;
       case "done":
         return null;
       case "siteUrl":
@@ -102,7 +102,7 @@ const ManualFlow = (props: AuthFlowChildProps) => {
 
   if (manualFlowState.isSiteUrlFailure) {
     return (
-      <SiteErrorModal onCancel={onSetupSecretCancel}/>
+      <SiteErrorModal onCancel={onManualFlowCancel}/>
     );
   } else {
     return (

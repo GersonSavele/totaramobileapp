@@ -196,7 +196,7 @@ describe("WebviewLoginHook", () => {
     const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
-        onSetupSecretCancel: mockOnCancelWebviewLogin,
+        onManualFlowCancel: mockOnCancelWebviewLogin,
         onSetupSecretSuccess: mockOnRecievedSetupSecret
       }
     });

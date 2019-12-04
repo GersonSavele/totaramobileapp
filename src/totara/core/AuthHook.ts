@@ -28,9 +28,10 @@ import { config, Log } from "@totara/lib";
 import { AppState, SiteInfo } from "@totara/types";
 
 /**
- * Custom react hook for AuthContext.
+ * Custom react hook and its primary role is managing the auth state which is in authContextState.
+ * Provides state lift functions to change state
  *
- * Manages the state of auth in authContextState
+ * Requires external dep routines
  *
  * @param bootstrap
  * @param registerDevice
@@ -38,11 +39,11 @@ import { AppState, SiteInfo } from "@totara/types";
  * @param createApolloClient
  *
  * @returns {
- *  authContextState, key state of auth
- *  onLoginSuccess, call back for successful login
- *  onLoginFailure, call back for a failed login
- *  logOut, logout the current user
- *  apolloClient an authenticated apollo client
+ *  authContextState - key state of auth
+ *  onLoginSuccess - on a successful login, pass setup parameter and it would do device registration process
+ *  onLoginFailure - call this function if an error can't be handled locally
+ *  logOut - logout the current user and start clean up process locally and on the server
+ *  apolloClient - an authenticated apollo client
  * }
  */
 export const useAuth = (

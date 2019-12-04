@@ -85,9 +85,11 @@ describe("useManualFlow", () => {
   });
 
   it("should be on step fail when url is invalid", async () => {
+    const mockOnLoginSuccess = jest.fn();
+
     const mockFetchError = () => Promise.reject(new Error("server error"));
     const { result, waitForNextUpdate } = renderHook(() =>
-      useManualFlow(mockFetchError)()
+      useManualFlow(mockFetchError)({ onLoginSuccess: mockOnLoginSuccess })
     );
 
     act(() => {
@@ -274,7 +276,7 @@ describe("manualFlowReducer", () => {
     expect(newState.flowStep).toBe("browser");
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
     const tree = renderer
-      .create(<BrowserLogin siteUrl={"siteUrl"} onSetupSecretCancel={jest.fn()} />)
+      .create(<BrowserLogin siteUrl={"siteUrl"} onManualFlowCancel={jest.fn()} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });

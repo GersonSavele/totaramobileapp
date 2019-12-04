@@ -28,18 +28,16 @@ import { AuthContextState, initialState, Setup } from "./AuthHook";
 
 export const AuthContext = React.createContext<State>({
   authContextState: initialState,
-  logOut: () => {
-    return Promise.resolve();
-  },
-  onLoginSuccess: () => {},
-  onLoginFailure: () => {},
+  logOut: () => Promise.resolve(),
+  onLoginSuccess: () => Promise.resolve(),
+  onLoginFailure: () => Promise.resolve(),
 });
 
 type State = {
   authContextState: AuthContextState;
   logOut: (local?: boolean) => Promise<void>;
-  onLoginSuccess: (setup: Setup) => void;
-  onLoginFailure: (error: Error) => void;
+  onLoginSuccess: (setup: Setup) => Promise<void>;
+  onLoginFailure: (error: Error) => Promise<void>;
 }
 
 enum Compatible {

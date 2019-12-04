@@ -28,6 +28,13 @@ import { AuthContext, AuthContextState } from "@totara/core";
 import ManualFlow from "./manual/ManualFlow";
 import AppLinkFlow from "./app-link/AppLinkFlow";
 
+/**
+ * Returns the UI component depending on the authContextState.authStep value
+ *
+ * AuthFlow child components for authentication must use AuthFlowChildProps type for props
+ *
+ * @param children - when authenticated it would mount the children
+ */
 export const AuthFlow = ({children}: Props) => {
 
   const { authContextState, logOut, onLoginSuccess, onLoginFailure } = useContext(AuthContext);
@@ -42,7 +49,7 @@ export const AuthFlow = ({children}: Props) => {
         return <ManualFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>;
       case "setupSecretInit":
       case "loading":
-        return null;
+        return null; // it's in the middle of transitioning don't return any element
     }
   };
 

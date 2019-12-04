@@ -43,7 +43,7 @@ export const useNativeFlow = (
   onSetupSecretSuccess,
   onSetupSecretFailure,
   siteUrl,
-  onSetupSecretCancel
+  onManualFlowCancel
 }: ManualFlowChildProps) => {
   const [nativeLoginState, dispatch] = useReducer(nativeReducer, initialState);
 
@@ -109,7 +109,7 @@ export const useNativeFlow = (
 
   return {
     nativeLoginState,
-    onSetupSecretCancel,
+    onManualFlowCancel,
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,

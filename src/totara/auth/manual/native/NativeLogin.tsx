@@ -41,7 +41,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
 
   const {
     nativeLoginState,
-    onSetupSecretCancel,
+    onManualFlowCancel,
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,
@@ -55,7 +55,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
       <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
         <SafeAreaView />
         <View style={styles.navigation}>
-          <TouchableIcon onPress={() => { onSetupSecretCancel()}} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
+          <TouchableIcon onPress={onManualFlowCancel} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
         </View>
       </View>
       <View style={{position: "relative", zIndex: 2}}>

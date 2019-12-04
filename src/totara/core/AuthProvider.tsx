@@ -46,27 +46,19 @@ import { registerDevice, deviceCleanup, bootstrap, createApolloClient, fetchData
  */
 export const AuthProvider = ( {asyncStorage, children}: Props) => {
 
-  const {
-    authContextState,
-    onLoginSuccess,
-    onLoginFailure,
-    logOut,
-    apolloClient
+  const auth = useAuth(
+    bootstrap(asyncStorage),
     // get fetch from global namespace
     // eslint-disable-next-line no-undef
-  } = useAuth(bootstrap(asyncStorage), registerDevice(fetchData(fetch), asyncStorage), deviceCleanup(asyncStorage), createApolloClient)({initialState: initialState });
-
-  const providerValue = {
-    authContextState: authContextState,
-    logOut: logOut,
-    onLoginSuccess: onLoginSuccess,
-    onLoginFailure: onLoginFailure,
-  };
+    registerDevice(fetchData(fetch), asyncStorage),
+    deviceCleanup(asyncStorage),
+    createApolloClient
+  )({ initialState: initialState });
 
   return (
-    <AuthContext.Provider value={providerValue}>
-      { apolloClient
-        ? <ApolloProvider client={apolloClient}>
+    <AuthContext.Provider value={auth}>
+      { auth.apolloClient
+        ? <ApolloProvider client={auth.apolloClient}>
             {children}
           </ApolloProvider>
         : children

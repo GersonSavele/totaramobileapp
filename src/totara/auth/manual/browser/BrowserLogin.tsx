@@ -27,9 +27,9 @@ import { translate } from "@totara/locale";
 import { ManualFlowChildProps } from "../ManualFlowChildProps";
 
 const BrowserLogin = ({
-  onSetupSecretCancel,
+  onManualFlowCancel,
   siteUrl
-}: Pick<ManualFlowChildProps, "onSetupSecretCancel" | "siteUrl">) => {
+}: Pick<ManualFlowChildProps, "onManualFlowCancel" | "siteUrl">) => {
   return (
     <InfoModal
       title={translate("browser_login.title")}
@@ -47,7 +47,7 @@ const BrowserLogin = ({
       <TertiaryButton
         text={translate("browser_login.tertiary_title")}
         onPress={() => {
-          onSetupSecretCancel && onSetupSecretCancel();
+          onManualFlowCancel && onManualFlowCancel();
         }}
       />
     </InfoModal>

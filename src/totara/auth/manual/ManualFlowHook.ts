@@ -34,13 +34,13 @@ import { AuthFlowChildProps } from "../AuthComponent";
 /**
  * Custom react hook that manages the state of the manual flow
  *
- * @param fetch - as param so test can easily pass a mock implementation
+ * @param fetchData - as param so test can easily pass a mock implementation
  * @returns state and functions that will change the state of the manual flow
  */
 
 export const useManualFlow = (
   fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>
-) => (props: AuthFlowChildProps) => {
+) => ({onLoginSuccess, onLoginFailure}: AuthFlowChildProps) => {
   const [, setTheme] = useContext(ThemeContext);
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
@@ -57,7 +57,7 @@ export const useManualFlow = (
     manualFlowState.setupSecret &&
     manualFlowState.siteInfo
   )
-    props.onLoginSuccess({
+    onLoginSuccess({
       secret: manualFlowState.setupSecret,
       uri: manualFlowState.siteUrl,
       siteInfo: manualFlowState.siteInfo
@@ -123,19 +123,19 @@ export const useManualFlow = (
     dispatch({ type: "setupSecretSuccess", payload: setupSecret });
   };
 
-  const onSetupSecretCancel = () => {
+  const onManualFlowCancel = () => {
     dispatch({ type: "cancelManualFlow" });
   };
 
   const onSetupSecretFailure = (error: Error) => {
-    props.onLoginFailure(error);
+    onLoginFailure(error);
   };
 
   return {
     manualFlowState,
     onSiteUrlSuccess,
     onSetupSecretSuccess,
-    onSetupSecretCancel,
+    onManualFlowCancel,
     onSetupSecretFailure
   };
 };
