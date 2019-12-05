@@ -27,36 +27,33 @@ import { NavigationInjectedProps } from "react-navigation";
 
 const query = gql`
   query totara_mobile_course($courseid: ID!) {
-    core_course(courseid: $courseid) {
-      id
-      fullname
-      shortname
-      summary
-      coursetype
-      enddate
-      lang
-      image
-      sections {
-        id
-        title
-        data : modules  {
+      course: core_course(courseid: $courseid) {
           id
-          modType
-          name
-          viewurl
-          uservisible
-          completion
-          completionstatus
-        }
+          fullname
+          shortname
+          summary(format: PLAIN)
+          startdate(format: ISO8601)
+          enddate(format: ISO8601)
+          lang
+          imageSrc: image # can we use imageSrc here to make it consistent learning items?
+          sections {
+              id
+              title
+              data: modules { # for now need to alias this to data
+                  id
+                  modType
+                  name
+                  viewurl
+                  completion
+                  completionstatus
+              }
+          }
+          completion {
+              statuskey
+              progress
+              timecompleted(format: ISO8601)
+          }
       }
-      modcount
-      completion: core_course_completion {
-        status
-        statuskey
-        progress
-        timecompleted
-      }
-    }
   }
 `;
 
@@ -65,7 +62,7 @@ type CourseId = {
 };
 
 export type Response = {
-  core_course: Course;
+  course: Course;
 } & NavigationInjectedProps<CourseId>;
 
 export const getCourse = graphql<NavigationInjectedProps, Response>(query, {

@@ -32,15 +32,15 @@ import { ActivitySheetConsumer } from "@totara/activities";
 
 
 class ActivityList extends React.Component {
-  renderSection = ({section: {sectionName, status}}) => {
+  renderSection = ({section: {title, status}}) => {
     const SectionHeader = () => (status === Status.hidden)
       ? <View style={styles.withLock}>
-          <Text style={styles.sectionHeaderText}>{sectionName}</Text>
+          <Text style={styles.sectionHeaderText}>{title}</Text>
           <View style={styles.sectionLock}>
             <FontAwesomeIcon icon="lock" size={16} color="white"/>
           </View>
         </View>
-      : <Text style={styles.sectionHeaderText}>{sectionName}</Text>;
+      : <Text style={styles.sectionHeaderText}>{title}</Text>;
 
     return (
       <View style={styles.sectionHeader}>
@@ -92,6 +92,8 @@ class ActivityList extends React.Component {
             <TouchableOpacity style={{flex: 1}} onPress={() => setCurrentActivity(item)}>
               <Text numberOfLines={1} style={[theme.textH4, (item.completionstatus) === Status.active ? styles.activeActivityText : styles.activityText]}>{item.name}</Text>
               <Text numberOfLines={1} style={[theme.textB1, styles.activitySummaryText]}>{item.summary}</Text>
+              <Text>{item.completion}</Text>
+              <Text>{item.completionstatus}</Text>
             </TouchableOpacity>
             );
           }

@@ -24,21 +24,19 @@
 
 export interface Course {
   id: number,
-  fullname?: string,
+  fullname: string,
   shortname: string,
-  summary?: string,
-  coursetype?: number,
-  enddate?: string,
-  lang?: string,
-  image?: string,
+  lang: string,
   sections: [Section],
-  modcount: number,
   completion: Completion
+  summary?: string,
+  startdate?: Date
+  enddate?: Date
+  imageSrc?: string,
 }
 
 export interface Completion {
-  status: number,
   statuskey?: string,
-  progress: number,
+  progress?: number,
   timecompleted?: Date
 }

@@ -31,7 +31,7 @@ import { AuthenticatedWebView } from "@totara/auth";
 const WebviewActivity = ({activity}: Props) => (
   <View style={{flex: 1}}>
     <View style={{flex: 1}}>
-      <AuthenticatedWebView uri={activity.url}/>
+      <AuthenticatedWebView uri={activity.viewurl}/>
     </View>
   </View>
 );

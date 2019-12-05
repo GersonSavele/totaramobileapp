@@ -21,10 +21,9 @@
 
 export interface Module {
   id: number
-  modType?: string
-  name?: string
-  viewurl?: string
-  uservisible: boolean
+  modType: string
+  name: string
+  viewurl: string
   completion?: number
   completionstatus?: number
 }
