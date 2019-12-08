@@ -25,17 +25,17 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
-import { ContentIcon, CheckBadge } from "@totara/components";
+import { ContentIcon, AddBadge } from "@totara/components";
 import { normalize, resizeByScreenSize, lrPadding, ThemeContext } from "@totara/theme";
 import { Status } from "@totara/types";
 import { ActivitySheetConsumer } from "@totara/activities";
 
 
 class ActivityList extends React.Component {
-  renderSection = ({section: {title, status}}) => {
-    const SectionHeader = () => (status === Status.hidden)
+  renderSection = ({section: {title, available, availablereason}}) => {
+    const SectionHeader = () => (!available)
       ? <View style={styles.withLock}>
-          <Text style={styles.sectionHeaderText}>{title}</Text>
+          <Text style={styles.sectionHeaderText}>{title} {availablereason}</Text>
           <View style={styles.sectionLock}>
             <FontAwesomeIcon icon="lock" size={16} color="white"/>
           </View>
@@ -57,8 +57,10 @@ class ActivityList extends React.Component {
   };
 
 
-  renderActivity = ({item, index, section}) => {
+  renderActivity = ({item, section}) => {
     const BuildContentIcon = ({type}) => {
+      console.log("type", type);
+
       switch (type) {
         case "scorm":
           return <ContentIcon icon={"film"} iconSize={24} size={50}/>;
@@ -77,14 +79,15 @@ class ActivityList extends React.Component {
 
     const Activity = () => {
       const [theme] = useContext(ThemeContext);
+      console.log("item", item);
       return (
       <View style={styles.activity}>
         {
-          (item.completionstatus === Status.done)
-            ? <CheckBadge size={8} offsetSize={2}>
-                <BuildContentIcon type={item.modType}/>
-              </CheckBadge>
-            : <BuildContentIcon type={item.modType}/>
+          (item.completionstatus === "COMPLETION_INCOMPLETE")
+            ? <BuildContentIcon type={item.modtype}/>
+            : <AddBadge status={Status.done} size={8} offsetSize={2}>
+                <BuildContentIcon type={item.modtype}/>
+              </AddBadge>
         }
         <ActivitySheetConsumer>
           {({setCurrentActivity}) => {
@@ -94,13 +97,15 @@ class ActivityList extends React.Component {
               <Text numberOfLines={1} style={[theme.textB1, styles.activitySummaryText]}>{item.summary}</Text>
               <Text>{item.completion}</Text>
               <Text>{item.completionstatus}</Text>
+              <Text>{item.available.toString()}</Text>
+              <Text>{item.availablereason}</Text>
             </TouchableOpacity>
             );
           }
           }
         </ActivitySheetConsumer>
         {
-          (item.modType === "scorm") ?
+          (item.modtype === "scorm") ?
             <View style={{paddingLeft: lrPadding}}>
               <FontAwesomeIcon icon="cloud-download-alt" size={24} color="black"/>
             </View>
@@ -111,16 +116,11 @@ class ActivityList extends React.Component {
       );
     };
 
-    if (section.status === Status.hidden)
+    if (!section.available)
       return(
         <View>
           <Activity/>
           <View style={styles.disabledOverlay}/>
-        </View>);
-    else if (item.completionstatus === Status.active)
-      return(
-        <View style={styles.activeActivityContainer}>
-          <Activity/>
         </View>);
     else
       return <Activity/>   

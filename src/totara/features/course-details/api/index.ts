@@ -39,10 +39,14 @@ const query = gql`
           sections {
               id
               title
+              available
+              availablereason(format: PLAIN)
               data: modules { # for now need to alias this to data
                   id
-                  modType
+                  modtype
                   name
+                  available
+                  availablereason(format: PLAIN)
                   viewurl
                   completion
                   completionstatus

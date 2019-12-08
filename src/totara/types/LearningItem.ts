@@ -24,6 +24,8 @@ import { Module } from "./Module";
 export interface Section {
   id: number
   title: string
+  available: boolean
+  availablereason?: string
   modules? : [Module]
 }
 

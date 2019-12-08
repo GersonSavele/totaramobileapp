@@ -21,15 +21,17 @@
 
 export interface Module {
   id: number
-  modType: string
+  modtype: string
   name: string
-  viewurl: string
-  completion?: number
-  completionstatus?: number
+  viewurl?: string
+  completion?: number // TODO change to : "COMPLETION_TRACKING_NONE" | "COMPLETION_TRACKING_MANUAL" | "COMPLETION_TRACKING_AUTOMATIC"
+  completionstatus?: number // TODO change to : "COMPLETION_INCOMPLETE" | "COMPLETION_COMPLETE" | "COMPLETION_COMPLETE_PASS" | "COMPLETION_COMPLETE_FAIL"
+  available: boolean
+  availablereason?: string
 }
 
 export interface ScormModule extends Module {
-  type: "scorm",
+  modtype: "scorm",
   currentAttempt : number,
   maxAttempt : number,
   score : number,
@@ -38,19 +40,19 @@ export interface ScormModule extends Module {
 }
 
 export interface SeminarModule extends Module {
-  type: "facetoface"
+  modtype: "facetoface"
 }
 
 export interface ForumsModule extends Module {
-  type: "forum"
+  modtype: "forum"
 }
 
 export interface QuizModule extends Module {
-  type: "quiz"
+  modtype: "quiz"
 }
 
 export interface AssignmentModule extends Module {
-  type: "assign"
+  modtype: "assign"
 }
 
 export type ModuleType =
