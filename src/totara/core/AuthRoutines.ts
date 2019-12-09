@@ -32,6 +32,7 @@ import { config, Log } from "@totara/lib";
 import { AUTHORIZATION } from "@totara/lib/Constant";
 import { LearningItem, AppState, SiteInfo } from "@totara/types";
 import { Setup } from "./AuthHook";
+import { ServerError } from "apollo-link-http-common";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -173,12 +174,9 @@ export const createApolloClient = (
     http: { includeQuery: !config.mobileApi.persistentQuery }
   }));
 
-  const logoutLink = onError(({ response }: ErrorResponse) => {
-    Log.warn("Apollo client error", response);
-    if (
-      response.errors[0].extensions.exception.networkError.statusCode === 401
-    ) {
-      // TODO MOB-231 this is not the documented way to get status code fix this
+  const logoutLink = onError(({ networkError }: ErrorResponse) => {
+    Log.warn("Apollo client network error", networkError);
+    if (networkError && (networkError as ServerError).statusCode === 401) {
       logOut(true);
     }
   });
@@ -187,7 +185,18 @@ export const createApolloClient = (
 
   const link = ApolloLink.from([
     logoutLink,
-    new RetryLink({ attempts: { max: 10 } }),
+    new RetryLink({
+      attempts: {
+        max: 10,
+        retryIf: (error) => {
+          if (error.statusCode && error.statusCode === 401 ) {
+            return false; // do not retry on 401 errors, fail fast
+          } else {
+            return !!error
+          }
+        }
+      }
+    }),
     authLink,
     httpLink
   ]);

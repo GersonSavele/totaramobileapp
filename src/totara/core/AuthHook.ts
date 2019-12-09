@@ -24,7 +24,7 @@ import { gql } from "apollo-boost";
 import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import SplashScreen from "react-native-splash-screen";
 
-import { config, Log } from "@totara/lib";
+import { Log } from "@totara/lib";
 import { AppState, SiteInfo } from "@totara/types";
 
 /**
@@ -67,7 +67,11 @@ export const useAuth = (
   const apolloClient = useRef<ApolloClient<NormalizedCacheObject> | null>(null);
 
   /**
-   * call logOut to clean any state of auth
+   * call logOut to clean any state of auth both local state and server state
+   *
+   * @param localOnly - only perform local logout, do not attempt to contact the server.  Use this
+   * when it is know that there is an issue with server already.  This flag maybe removed in the
+   * future if a better suitable solution is found.
    */
   const logOut = async (localOnly: boolean = false) => {
     // TODO MOB-231 should remove this localOnly flag, a bit of a hack
