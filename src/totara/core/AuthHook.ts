@@ -94,7 +94,7 @@ export const useAuth = (
     Log.debug("creating apolloClient");
     apolloClient.current = createApolloClient(
       authContextState.appState.apiKey,
-      config.mobileApi.uri,
+      authContextState.appState.host,
       logOut
     );
   } else if (apolloClient.current && !authContextState.isAuthenticated) {

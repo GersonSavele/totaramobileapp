@@ -25,16 +25,15 @@ import ConsoleLogger from "./logger/ConsoleLogger";
 const defaultConfig = {
   urlProtocol: "https",
   mobileApi: {
-    uri: "https://mocks.mobile.demo.totara.software/graphql",
     persistentQuery: false
   },
   userAgent: "TotaraMobileApp",
+  apiUri: (host: string) => (`${host}/totara/mobile/api.php`),
   infoUri: (host: string) => (`${host}/totara/mobile/site_info.php`),
   loginUri: (host: string) => (`${host}/login/index.php`),
   deviceRegisterUri: (host: string) => (`${host}/totara/mobile/device_register.php`),
   webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`),
   forgotPasswordUri: (host: string) => (`${host}/login/forgot_password.php`),
-  // infoUri: (host: string) => (`${host}/totara/mobile/info.php`),
   nativeLoginSetupUri: (host: string) => (`${host}/totara/mobile/login_setup.php`),
   nativeLoginUri: (host: string) => (`${host}/totara/mobile/login.php`),
   appLinkDomain: "https://mobile.totaralearning.com",

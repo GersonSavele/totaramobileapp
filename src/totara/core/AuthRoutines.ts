@@ -162,7 +162,7 @@ export const bootstrap = (
  */
 export const createApolloClient = (
   apiKey: string,
-  uri: string,
+  host: string,
   logOut: (localOnly: boolean) => Promise<void>
 ): ApolloClient<NormalizedCacheObject> => {
   const authLink = setContext((_, { headers }) => ({
@@ -183,7 +183,7 @@ export const createApolloClient = (
     }
   });
 
-  const httpLink = new HttpLink({ uri: uri });
+  const httpLink = new HttpLink({ uri: config.apiUri(host) });
 
   const link = ApolloLink.from([
     logoutLink,
