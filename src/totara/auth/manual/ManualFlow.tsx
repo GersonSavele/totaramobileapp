@@ -23,7 +23,7 @@
 import React from "react";
 import { View } from "react-native";
 
-import { AuthFlowChildProps } from "@totara/auth/AuthComponent";
+import { AuthFlowChildProps } from "../AuthComponent";
 import { AppModal, InfoModal, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData } from "@totara/core/AuthRoutines";
@@ -56,50 +56,6 @@ const ManualFlow = (props: AuthFlowChildProps) => {
       siteUrl={manualFlowState.siteUrl}
       isSiteUrlSubmitted={manualFlowState.isSiteUrlSubmitted}/>;
 
-  const ManualFlowUI = () => {
-    switch (manualFlowState.flowStep) {
-      case "native":
-        return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-          <NativeFlow
-            siteUrl={manualFlowState.siteUrl}
-            siteInfo={manualFlowState.siteInfo}
-            onSetupSecretSuccess={onSetupSecretSuccess}
-            onManualFlowCancel={onManualFlowCancel}
-            onSetupSecretFailure={onSetupSecretFailure}
-          />
-        ) : (
-          <StartStep />
-        );
-      case "webview":
-        return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-          <WebviewFlow
-            siteUrl={manualFlowState.siteUrl}
-            siteInfo={manualFlowState.siteInfo}
-            onSetupSecretSuccess={onSetupSecretSuccess}
-            onManualFlowCancel={onManualFlowCancel}
-            onSetupSecretFailure={onSetupSecretFailure}
-          />
-        ) : (
-          <StartStep />
-        );
-      case "browser":
-        return manualFlowState.siteUrl ? (
-          <BrowserLogin
-            siteUrl={manualFlowState.siteUrl}
-            onManualFlowCancel={onManualFlowCancel}
-          />
-        ) : (
-          <StartStep />
-        );
-      case "incompatible":
-        return <AppModal onCancel={onManualFlowCancel} siteUrl={manualFlowState.siteUrl} />;
-      case "done":
-        return null;
-      case "siteUrl":
-        return <StartStep/>;
-    }
-  };
-
   if (manualFlowState.isSiteUrlFailure) {
     return (
       <SiteErrorModal onCancel={onManualFlowCancel}/>
@@ -107,7 +63,53 @@ const ManualFlow = (props: AuthFlowChildProps) => {
   } else {
     return (
       <View style={{ flex: 1 }}>
-        <ManualFlowUI/>
+        {(
+          () => { // this a inline switch anonymous component, for now for unknown reasons yet the modal on child
+            // elements fails when the theme is re-applied.  Need to investigate in the future
+            // PREVIOUS VERSION ONLY FAILS ON IOS ON PRODUCTION BUILD, Android and iOS dev build works.
+            switch (manualFlowState.flowStep) {
+              case "native":
+                return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+                  <NativeFlow
+                    siteUrl={manualFlowState.siteUrl}
+                    siteInfo={manualFlowState.siteInfo}
+                    onSetupSecretSuccess={onSetupSecretSuccess}
+                    onManualFlowCancel={onManualFlowCancel}
+                    onSetupSecretFailure={onSetupSecretFailure}
+                  />
+                ) : (
+                  <StartStep />
+                );
+              case "webview":
+                return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+                  <WebviewFlow
+                    siteUrl={manualFlowState.siteUrl}
+                    siteInfo={manualFlowState.siteInfo}
+                    onSetupSecretSuccess={onSetupSecretSuccess}
+                    onManualFlowCancel={onManualFlowCancel}
+                    onSetupSecretFailure={onSetupSecretFailure}
+                  />
+                ) : (
+                  <StartStep />
+                );
+              case "browser":
+                return manualFlowState.siteUrl ? (
+                  <BrowserLogin
+                    siteUrl={manualFlowState.siteUrl}
+                    onManualFlowCancel={onManualFlowCancel}
+                  />
+                ) : (
+                  <StartStep />
+                );
+              case "incompatible":
+                return <AppModal onCancel={onManualFlowCancel} siteUrl={manualFlowState.siteUrl} />;
+              case "done":
+                return null;
+              case "siteUrl":
+                return <StartStep/>;
+            }
+          })()
+        }
       </View>
     );
   }
