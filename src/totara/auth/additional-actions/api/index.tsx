@@ -53,19 +53,13 @@ query totara_mobile_me {
             request_user_consent,
             request_user_fields,
         }
-        enrolled_courses {
-            id,
-            fullname,
-            shortname,
-            idnumber
-        }
     }
 }
 `;
 
 const GetMe = ({props} : any) => {
    return (<Query <Response>  query = { QueryMe }>
-    {({ loading, data, error, refetch }) =>  
+    {({ loading, data, error, refetch }) =>
        props({
         loading : loading,
         data : data,

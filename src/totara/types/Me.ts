@@ -26,7 +26,7 @@ export interface User {
     fullname: string,
     email: string,
   }
-  
+
 export interface System {
     wwwroot: string,
     apiurl : string,
@@ -36,15 +36,7 @@ export interface System {
     request_user_fields :boolean
 }
 
-export interface EnrolledCourses {
-    id: number,
-    fullname: string,
-    shortname: string,
-    idnumber: number
-}
-
 export interface Me {
     user: User,
     system: System,
-    enrolled_courses: EnrolledCourses
 }

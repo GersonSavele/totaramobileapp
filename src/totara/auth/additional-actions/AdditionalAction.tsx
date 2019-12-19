@@ -54,7 +54,7 @@ const ActionButtonPrimary = () => {
   return (
     <AuthConsumer>
       {auth => (
-        auth.appState && auth.appState.host && <PrimaryButton text={translate("additional-actions-modal.auth_model_go_to_browser")} icon={"external-link-alt"} onPress={() => { Linking.openURL(auth.appState!.host); }} />
+        auth.authContextState.appState && auth.authContextState.appState.host && <PrimaryButton text={translate("additional-actions-modal.auth_model_go_to_browser")} icon={"external-link-alt"} onPress={() => { Linking.openURL(auth.authContextState.appState!.host); }} />
       )}
     </AuthConsumer>
   );
