@@ -21,10 +21,10 @@
  */
 
 import React, { useContext } from "react";
+import { Image } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import AsyncStorage from "@react-native-community/async-storage";
 import messaging from "@react-native-firebase/messaging";
 
@@ -212,7 +212,28 @@ const downloads = createStackNavigator(
   }
 );
 
-const tabIcon = (color, icon) => ( <FontAwesomeIcon icon={icon} color={color} size={24} /> );
+const tabBarIconImages = {
+  current_learning : {
+    solid: require("@resources/images/tabbar/current_learning_solid.png"),
+    regular: require("@resources/images/tabbar/current_learning_regular.png"),
+  },
+  downloads: {
+    solid: require("@resources/images/tabbar/downloads_solid.png"),
+    regular: require("@resources/images/tabbar/downloads_regular.png")
+  },
+  notifications: {
+    solid: require("@resources/images/tabbar/notifications_solid.png"),
+    regular: require("@resources/images/tabbar/notifications_regular.png"),
+  },
+  profile: {
+    solid: require("@resources/images/tabbar/profile_solid.png"),
+    regular: require("@resources/images/tabbar/profile_regular.png")
+  }
+ };
+
+const tabBarIcon = (focused, color, imageSet) => {
+  return <Image source={focused ? imageSet.solid : imageSet.regular} style={{tintColor: color, width: 32, height: 32 }} resizeMode='contain' />
+};
 
 const tabNavigation = (theme) => (
   createMaterialBottomTabNavigator(
@@ -220,26 +241,25 @@ const tabNavigation = (theme) => (
       MyLearning: {
         screen: myLearning,
         navigationOptions: () => ({
-          tabBarIcon: ({ tintColor }) => tabIcon(tintColor, faHome)
+          tabBarIcon: ({  focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.current_learning)
         }),
       },
       Downloads: {
         screen: downloads,
         navigationOptions: () => ({
-          tabBarIcon: ({ tintColor }) =>
-            tabIcon(tintColor, faCloudDownloadAlt)
+          tabBarIcon: ({ focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.downloads)
         })
       },
       Notification: {
         screen: notification,
         navigationOptions: () => ({
-          tabBarIcon: ({ tintColor }) => tabIcon(tintColor, faEnvelope)
+          tabBarIcon: ({ focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.notifications)
         })
       },
       Profile: {
         screen: profile,
         navigationOptions: () => ({
-          tabBarIcon: ({ tintColor }) => tabIcon(tintColor, faUser)
+          tabBarIcon: ({ focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.profile)
         })
       }
     },
