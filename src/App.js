@@ -55,8 +55,7 @@ import {
   faBook,
   faPen,
   faChevronLeft,
-  faUnlockAlt,
-  faEnvelope
+  faUnlockAlt
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
@@ -232,7 +231,7 @@ const tabBarIconImages = {
  };
 
 const tabBarIcon = (focused, color, imageSet) => {
-  return <Image source={focused ? imageSet.solid : imageSet.regular} style={{tintColor: color, width: 32, height: 32 }} resizeMode='contain' />
+  return <Image source={focused ? imageSet.solid : imageSet.regular} style={{tintColor: color, width: 24, height: 24 }} resizeMode='contain' />
 };
 
 const tabNavigation = (theme) => (
