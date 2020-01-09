@@ -26,13 +26,13 @@ import {
   View,
   FlatList,
   Image,
-  TouchableOpacity
 } from "react-native";
 import { Cell, Separator } from "react-native-tableview-simple";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { AuthConsumer } from "@totara/core";
 import { Log } from "@totara/lib";
 import { NavigationInjectedProps } from "react-navigation";
+import { resizeByScreenSize } from "@totara/theme";
 
 const profileList = [
   {
@@ -61,10 +61,14 @@ const reusableCellRender = ({ key, title }: cellDetailsProps) => {
         <AuthConsumer>
           {auth => (
             <Cell
-              title={title}
-              onPress={() => {
+            cellContentView={
+              <Text style={styles.cellInfo}>
+                {title}
+              </Text>
+            }
+            onPress={() => {
                 auth.logOut();
-              }}
+            }}
             />
           )}
         </AuthConsumer>
@@ -72,32 +76,24 @@ const reusableCellRender = ({ key, title }: cellDetailsProps) => {
     case "Your profile":
       return (
         <Cell
-          title={title}
-          onPress={() => {
-            <View style={styles.container}>
-              <TouchableOpacity
-                onPress={() => Log.debug("App is in Inactive mode.")}
-              >
-                <Text>{title}</Text>
-              </TouchableOpacity>
-            </View>;
-          }}
-          accessory="DisclosureIndicator"
+        cellContentView={
+          <Text style={styles.cellInfo}>
+            {title}
+          </Text>
+        }
+        onPress={() => Log.debug("Cell is clicked")}
+        accessory="DisclosureIndicator"
         />
       );
     case "Settings":
       return (
         <Cell
-          title={title}
-          onPress={() => {
-            <View style={styles.container}>
-              <TouchableOpacity
-                onPress={() => Log.debug("App is in Inactive mode.")}
-              >
-                <Text>{title}</Text>
-              </TouchableOpacity>
-            </View>;
-          }}
+          cellContentView={
+            <Text style={styles.cellInfo}>
+              {title}
+            </Text>
+          }
+          onPress={() => Log.debug("Cell is clicked")}
           accessory="DisclosureIndicator"
         />
       );
@@ -128,7 +124,7 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={styles.name}>Manage</Text>
+        <Text style={styles.tableHeader}>Manage</Text>
       </View>
       <FlatList
         data={profileList}
@@ -186,12 +182,23 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#778899",
     fontWeight: "200",
-    marginTop: 10
+    marginTop: resizeByScreenSize(8, 8, 16, 16)
   },
   info: {
     width: "100%",
     height: 30,
     marginTop: 10,
     marginLeft: 15
+  }, 
+  cellInfo: {
+    fontSize: resizeByScreenSize(14, 18, 22, 24),
+    color: "#000000",
+    fontWeight: "normal",
+    width: wp("100%") - 50
+  },
+  tableHeader:{
+    fontSize: resizeByScreenSize(14, 18, 22, 24),
+    color: "#000000",
+    fontWeight: "600"
   }
 });
