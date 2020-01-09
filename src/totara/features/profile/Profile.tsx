@@ -33,7 +33,7 @@ import { AuthConsumer } from "@totara/core";
 import { Log } from "@totara/lib";
 import { NavigationInjectedProps } from "react-navigation";
 import { NAVIGATION_SETTING } from "@totara/lib/Constant";
-import { ThemeContext, resizeByScreenSize } from "@totara/theme";
+import { ThemeContext } from "@totara/theme";
 
 const Profile = ({ navigation }: NavigationInjectedProps) => {
   useEffect(() => {
@@ -41,8 +41,8 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
   }, []);
   const [theme] = useContext(ThemeContext);
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[theme.viewContainer]}>
+      <View style={{backgroundColor : theme.colorSecondary1}}>
         <View style={styles.headerContent}>
           <Image
             style={styles.avatar}
@@ -50,29 +50,26 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
               uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
             }}
           />
-          <Text style={[theme.textH3, { color: "#000" }]}>John Doe </Text>
-          <Text style={[theme.textB3, { color: "#778899" }]}>
+          <Text style={[theme.textH3]}>John Doe </Text>
+          <Text style={[theme.textB3, { color: theme.textColorSubdued }]}>
             jhonnydoe@mail.com
           </Text>
-          <Text style={[theme.textSmall, { color: "#778899" }]}>
+          <Text style={[theme.textSmall, { color: theme.textColorSubdued }]}>
             Logged in as : Florida
           </Text>
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={[theme.textH2, { color: "#000" }]}>Manage</Text>
+        <Text style={[theme.textH2]}>Manage</Text>
       </View>
-      <ScrollView contentContainerStyle={styles.stage}>
+      <ScrollView contentContainerStyle={{backgroundColor : theme.colorSecondary1}}>
         <TableView>
           <Cell
             cellContentView={
               <Text
                 style={[
                   theme.textB2,
-                  {
-                    fontSize: resizeByScreenSize(14, 16, 16, 20),
-                    width: wp("100%") - 50
-                  }
+                  {width: wp("100%") - 50}
                 ]}
               >
                 Your profile
@@ -87,10 +84,7 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
               <Text
                 style={[
                   theme.textB2,
-                  {
-                    fontSize: resizeByScreenSize(14, 16, 16, 20),
-                    width: wp("100%") - 50
-                  }
+                  {width: wp("100%") - 50}
                 ]}
               >
                 Settings
@@ -109,9 +103,7 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
                   <Text
                     style={[
                       theme.textB2,
-                      {
-                        fontSize: resizeByScreenSize(14, 16, 16, 20),
-                        width: wp("100%") - 50
+                      {width: wp("100%") - 50
                       }
                     ]}
                   >
@@ -138,18 +130,6 @@ Profile.navigationOptions = () => ({
 export default Profile;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 0,
-    textAlign: "center",
-    fontWeight: "bold",
-    margin: 0,
-    backgroundColor: "#FFFFFF",
-    width: wp("100%")
-  },
-  header: {
-    backgroundColor: "#f5f5f5"
-  },
   headerContent: {
     padding: 30,
     alignItems: "center"
@@ -158,8 +138,6 @@ const styles = StyleSheet.create({
     width: 130,
     height: 130,
     borderRadius: 63,
-    borderWidth: 4,
-    borderColor: "white",
     marginBottom: 10
   },
   info: {
@@ -167,8 +145,5 @@ const styles = StyleSheet.create({
     height: 30,
     marginTop: 10,
     marginLeft: 15
-  },
-  stage: {
-    backgroundColor: "#EFEFF4"
   }
 });
