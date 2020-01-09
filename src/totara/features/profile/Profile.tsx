@@ -19,94 +19,27 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  FlatList,
   Image,
+  ScrollView
 } from "react-native";
-import { Cell, Separator } from "react-native-tableview-simple";
+import { Cell, TableView } from "react-native-tableview-simple";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { AuthConsumer } from "@totara/core";
 import { Log } from "@totara/lib";
 import { NavigationInjectedProps } from "react-navigation";
-import { resizeByScreenSize } from "@totara/theme";
-
-const profileList = [
-  {
-    key: "1",
-    title: "Your profile"
-  },
-  {
-    key: "2",
-    title: "Settings"
-  },
-  {
-    key: "3",
-    title: "Logout"
-  }
-];
-
-type cellDetailsProps = {
-  key: string;
-  title: string;
-};
-
-const reusableCellRender = ({ key, title }: cellDetailsProps) => {
-  switch (title) {
-    case "Logout":
-      return (
-        <AuthConsumer>
-          {auth => (
-            <Cell
-            cellContentView={
-              <Text style={styles.cellInfo}>
-                {title}
-              </Text>
-            }
-            onPress={() => {
-                auth.logOut();
-            }}
-            />
-          )}
-        </AuthConsumer>
-      );
-    case "Your profile":
-      return (
-        <Cell
-        cellContentView={
-          <Text style={styles.cellInfo}>
-            {title}
-          </Text>
-        }
-        onPress={() => Log.debug("Cell is clicked")}
-        accessory="DisclosureIndicator"
-        />
-      );
-    case "Settings":
-      return (
-        <Cell
-          cellContentView={
-            <Text style={styles.cellInfo}>
-              {title}
-            </Text>
-          }
-          onPress={() => Log.debug("Cell is clicked")}
-          accessory="DisclosureIndicator"
-        />
-      );
-    default:
-      return null;
-  }
-};
+import { NAVIGATION_SETTING } from "@totara/lib/Constant";
+import { ThemeContext, resizeByScreenSize } from "@totara/theme";
 
 const Profile = ({ navigation }: NavigationInjectedProps) => {
   useEffect(() => {
     navigation.setParams({ title: "Profile" });
   }, []);
-
+  const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -117,22 +50,83 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
               uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
             }}
           />
-
-          <Text style={styles.name}>John Doe </Text>
-          <Text style={styles.userEmail}>jhonnydoe@mail.com </Text>
-          <Text style={styles.userName}>Logged in as : Florida </Text>
+          <Text style={[theme.textH3, { color: "#000" }]}>John Doe </Text>
+          <Text style={[theme.textB3, { color: "#778899" }]}>
+            jhonnydoe@mail.com
+          </Text>
+          <Text style={[theme.textSmall, { color: "#778899" }]}>
+            Logged in as : Florida
+          </Text>
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={styles.tableHeader}>Manage</Text>
+        <Text style={[theme.textH2, { color: "#000" }]}>Manage</Text>
       </View>
-      <FlatList
-        data={profileList}
-        renderItem={({ item }) => reusableCellRender(item)}
-        ItemSeparatorComponent={({ highlighted }) => (
-          <Separator isHidden={highlighted} />
-        )}
-      />
+      <ScrollView contentContainerStyle={styles.stage}>
+        <TableView>
+          <Cell
+            cellContentView={
+              <Text
+                style={[
+                  theme.textB2,
+                  {
+                    fontSize: resizeByScreenSize(14, 16, 16, 20),
+                    width: wp("100%") - 50
+                  }
+                ]}
+              >
+                Your profile
+              </Text>
+            }
+            onPress={() => Log.debug("Cell is clicked")}
+            accessory="DisclosureIndicator"
+          />
+          <View style={{ height: 1, paddingLeft: 20 }}></View>
+          <Cell
+            cellContentView={
+              <Text
+                style={[
+                  theme.textB2,
+                  {
+                    fontSize: resizeByScreenSize(14, 16, 16, 20),
+                    width: wp("100%") - 50
+                  }
+                ]}
+              >
+                Settings
+              </Text>
+            }
+            onPress={() => {
+              navigation.navigate(NAVIGATION_SETTING);
+            }}
+            accessory="DisclosureIndicator"
+          />
+          <View style={{ height: 1, paddingLeft: 20 }}></View>
+          <AuthConsumer>
+            {auth => (
+              <Cell
+                cellContentView={
+                  <Text
+                    style={[
+                      theme.textB2,
+                      {
+                        fontSize: resizeByScreenSize(14, 16, 16, 20),
+                        width: wp("100%") - 50
+                      }
+                    ]}
+                  >
+                    Logout
+                  </Text>
+                }
+                onPress={() => {
+                  auth.logOut();
+                }}
+              />
+            )}
+          </AuthConsumer>
+          <View style={{ height: 1, paddingLeft: 20 }}></View>
+        </TableView>
+      </ScrollView>
     </View>
   );
 };
@@ -168,37 +162,13 @@ const styles = StyleSheet.create({
     borderColor: "white",
     marginBottom: 10
   },
-  name: {
-    fontSize: 18,
-    color: "#000000",
-    fontWeight: "600"
-  },
-  userEmail: {
-    fontSize: 12,
-    color: "#778899",
-    fontWeight: "600"
-  },
-  userName: {
-    fontSize: 10,
-    color: "#778899",
-    fontWeight: "200",
-    marginTop: resizeByScreenSize(8, 8, 16, 16)
-  },
   info: {
     width: "100%",
     height: 30,
     marginTop: 10,
     marginLeft: 15
-  }, 
-  cellInfo: {
-    fontSize: resizeByScreenSize(14, 18, 22, 24),
-    color: "#000000",
-    fontWeight: "normal",
-    width: wp("100%") - 50
   },
-  tableHeader:{
-    fontSize: resizeByScreenSize(14, 18, 22, 24),
-    color: "#000000",
-    fontWeight: "600"
+  stage: {
+    backgroundColor: "#EFEFF4"
   }
 });
