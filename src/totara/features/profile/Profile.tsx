@@ -37,6 +37,8 @@ import { ThemeContext } from "@totara/theme";
 
 const Profile = ({ navigation }: NavigationInjectedProps) => {
   useEffect(() => {
+    // To Do: React Navigation 5.x haven't released yet,We need to stop re-render set navigation title.
+    // We should remove following line from inside of useEffect once they update their library
     navigation.setParams({ title: "Profile" });
   }, []);
   const [theme] = useContext(ThemeContext);
