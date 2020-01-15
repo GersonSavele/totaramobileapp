@@ -56,7 +56,7 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
           <Text style={[theme.textB3, { color: theme.textColorSubdued }]}>
             jhonnydoe@mail.com
           </Text>
-          <Text style={[theme.textSmall, { color: theme.textColorSubdued }]}>
+          <Text style={[theme.textSmall, { color: theme.textColorSubdued, marginTop : 4 }]}>
             Logged in as : Florida
           </Text>
         </View>
@@ -133,7 +133,7 @@ export default Profile;
 
 const styles = StyleSheet.create({
   headerContent: {
-    padding: 30,
+    padding: 24,
     alignItems: "center"
   },
   avatar: {
@@ -145,7 +145,8 @@ const styles = StyleSheet.create({
   info: {
     width: "100%",
     height: 30,
-    marginTop: 10,
-    marginLeft: 15
+    marginTop: 16,
+    marginLeft: 15,
+    marginBottom: 16,
   }
 });
