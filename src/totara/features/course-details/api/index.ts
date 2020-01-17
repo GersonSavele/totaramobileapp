@@ -35,13 +35,13 @@ const query = gql`
           startdate(format: ISO8601)
           enddate(format: ISO8601)
           lang
-          imageSrc: image # can we use imageSrc here to make it consistent learning items?
+          imageSrc: image
           sections {
               id
               title
               available
               availablereason(format: PLAIN)
-              data: modules { # for now need to alias this to data
+              data: modules {
                   id
                   modtype
                   name
@@ -50,6 +50,10 @@ const query = gql`
                   viewurl
                   completion
                   completionstatus
+                  showdescription
+                  description(format: PLAIN)
+                  gradefinal
+                  gradepercentage
               }
           }
           completion {

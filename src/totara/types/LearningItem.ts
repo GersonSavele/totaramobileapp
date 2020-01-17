@@ -19,14 +19,14 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { Module } from "./Module";
+import { Activity } from "totara/types/Activity";
 
 export interface Section {
   id: number
   title: string
   available: boolean
   availablereason?: string
-  modules? : [Module]
+  modules? : [Activity]
 }
 
 export enum LearningItemType {

@@ -22,7 +22,7 @@
 import React from "react";
 import { View } from "react-native";
 
-import { Module } from "@totara/types";
+import { Activity } from "@totara/types";
 import { AuthenticatedWebView } from "@totara/auth";
 
 /**
@@ -37,7 +37,7 @@ const WebviewActivity = ({activity}: Props) => (
 );
 
 type Props = {
-  activity: Module
+  activity: Activity
 }
 
 export { WebviewActivity };

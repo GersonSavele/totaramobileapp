@@ -22,10 +22,10 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Button } from "native-base";
-import { Module } from "@totara/types";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"; 
+import { Activity } from "@totara/types";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Query } from "react-apollo";
-import { Response, Variables, ScormGQLQuery }  from "./api";
+import { Response, ScormGQLQuery }  from "./api";
 
 import { GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus } from "./components/GradeDetailsCircle";
 import { ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton } from "../components/ActivityBottomView";
@@ -37,7 +37,7 @@ import { translate } from "@totara/locale";
 
 type ScormActivityViewParam = {
   data: any,
-  error: any, 
+  error: any,
   loading : boolean,
   headerViewFontSize? : number,
   gradeDetailsTitle : string,
@@ -55,7 +55,7 @@ class ScormActivity extends React.Component<Props, States> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { 
+    this.state = {
       screen : 1
     };
   }
@@ -68,7 +68,7 @@ class ScormActivity extends React.Component<Props, States> {
     if (error) return <Text>{translate("general.error")}(</Text>;
     if (data) {
       return(
-        <View style = {styles.container}>      
+        <View style = {styles.container}>
          <ActivityHeaderView title = {this.props.activity.itemName}
          fontSize = {headerViewFontSize}></ActivityHeaderView>
          <GradeDetailsCircle>
@@ -78,9 +78,9 @@ class ScormActivity extends React.Component<Props, States> {
          </GradeDetailsCircle>
          <ActivityBottomView>
           <ActivityBottomViewTitle currentAttempts ={data.scorm.currentAttempt.toString()} maxAttempts = {data.scorm.maxAttempt.toString()}></ActivityBottomViewTitle>
-          <ActivityBottomViewButton buttonBackgroundColor = {bottomViewButtonBackgroundColor} buttonBorderColor = {bottomViewButtonBorderColor} 
+          <ActivityBottomViewButton buttonBackgroundColor = {bottomViewButtonBackgroundColor} buttonBorderColor = {bottomViewButtonBorderColor}
           onPress = {this.loadScormPlayer} buttonTitleColor = {bottomViewButtonTitleColor} buttonTitle = {bottomViewButtonTitle} buttonTitleFontWeight = {bottomViewButtonTitleFontWeight}></ActivityBottomViewButton>
-        </ActivityBottomView> 
+        </ActivityBottomView>
         </View>)
       }
     }
@@ -94,8 +94,8 @@ class ScormActivity extends React.Component<Props, States> {
               <Query <Response>  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
               {({ data, error, loading }) => (
                 this.showScormDetails({
-                   data : data, 
-                   error : error, 
+                   data : data,
+                   error : error,
                    loading : loading,
                    headerViewFontSize : 12,
                    gradeDetailsTitle : translate("Your highest grade"),
@@ -125,8 +125,8 @@ class ScormActivity extends React.Component<Props, States> {
               <Query <Response>  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
               {({ loading, data, error }) => (
                 this.showScormDetails({
-                  data : data, 
-                  error : error, 
+                  data : data,
+                  error : error,
                   loading : loading,
                   headerViewFontSize : 12,
                   gradeDetailsTitle : translate("Your highest grade"),
@@ -158,17 +158,17 @@ class ScormActivity extends React.Component<Props, States> {
 }
 
 type Props = {
-  activity: Module
+  activity: Activity
 }
 
-type States = { 
+type States = {
   screen : number
 };
 const styles = StyleSheet.create({
   container:{
-    flex : 1, 
-    alignItems: 'center', 
-    flexDirection:'column', 
+    flex : 1,
+    alignItems: 'center',
+    flexDirection:'column',
     alignContent:"space-between"
   }
 });

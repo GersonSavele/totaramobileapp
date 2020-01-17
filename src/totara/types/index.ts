@@ -18,7 +18,7 @@
  */
 
 import { LearningItem, LearningItemType } from "./LearningItem";
-import { Module, ModuleType, ScormModule } from "./Module";
+import { Activity, ModuleType, ScormModule } from "./Activity";
 import { Course } from "./Course";
 import { Program } from "./Program";
 import { Status, LearningStatus } from "./LearningStatus";
@@ -30,7 +30,7 @@ export {
   LearningItem,
   LearningItemType,
   ScormModule,
-  Module,
+  Activity,
   ModuleType,
   Course,
   Program,

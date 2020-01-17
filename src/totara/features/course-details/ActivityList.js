@@ -83,7 +83,7 @@ class ActivityList extends React.Component {
       return (
       <View style={styles.activity}>
         {
-          (item.completionstatus === "COMPLETION_INCOMPLETE")
+          (item.completionstatus === "incomplete")
             ? <BuildContentIcon type={item.modtype}/>
             : <AddBadge status={Status.done} size={8} offsetSize={2}>
                 <BuildContentIcon type={item.modtype}/>
@@ -123,7 +123,7 @@ class ActivityList extends React.Component {
           <View style={styles.disabledOverlay}/>
         </View>);
     else
-      return <Activity/>   
+      return <Activity/>
   };
 
   render() {

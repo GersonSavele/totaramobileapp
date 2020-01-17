@@ -19,18 +19,18 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-export interface Module {
+export interface Activity {
   id: number
   modtype: string
   name: string
   viewurl?: string
-  completion?: number // TODO change to : "COMPLETION_TRACKING_NONE" | "COMPLETION_TRACKING_MANUAL" | "COMPLETION_TRACKING_AUTOMATIC"
-  completionstatus?: number // TODO change to : "COMPLETION_INCOMPLETE" | "COMPLETION_COMPLETE" | "COMPLETION_COMPLETE_PASS" | "COMPLETION_COMPLETE_FAIL"
+  completion?: "tracking_none" | "tracking_manual" | "tracking_automatic"
+  completionstatus?: "unknown" | "incomplete" | "complete" | "complete_pass" | "complete_fail"
   available: boolean
   availablereason?: string
 }
 
-export interface ScormModule extends Module {
+export interface ScormModule extends Activity {
   modtype: "scorm",
   currentAttempt : number,
   maxAttempt : number,
@@ -39,19 +39,19 @@ export interface ScormModule extends Module {
   isAvailable :boolean
 }
 
-export interface SeminarModule extends Module {
+export interface SeminarModule extends Activity {
   modtype: "facetoface"
 }
 
-export interface ForumsModule extends Module {
+export interface ForumsModule extends Activity {
   modtype: "forum"
 }
 
-export interface QuizModule extends Module {
+export interface QuizModule extends Activity {
   modtype: "quiz"
 }
 
-export interface AssignmentModule extends Module {
+export interface AssignmentModule extends Activity {
   modtype: "assign"
 }
 
