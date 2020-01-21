@@ -59,7 +59,6 @@ class ActivityList extends React.Component {
 
   renderActivity = ({item, section}) => {
     const BuildContentIcon = ({type}) => {
-      console.log("type", type);
 
       switch (type) {
         case "scorm":
@@ -79,7 +78,6 @@ class ActivityList extends React.Component {
 
     const Activity = () => {
       const [theme] = useContext(ThemeContext);
-      console.log("item", item);
       return (
       <View style={styles.activity}>
         {
@@ -95,10 +93,12 @@ class ActivityList extends React.Component {
             <TouchableOpacity style={{flex: 1}} onPress={() => setCurrentActivity(item)}>
               <Text numberOfLines={1} style={[theme.textH4, (item.completionstatus) === Status.active ? styles.activeActivityText : styles.activityText]}>{item.name}</Text>
               <Text numberOfLines={1} style={[theme.textB1, styles.activitySummaryText]}>{item.summary}</Text>
-              <Text>{item.completion}</Text>
-              <Text>{item.completionstatus}</Text>
-              <Text>{item.available.toString()}</Text>
-              <Text>{item.availablereason}</Text>
+              <View style={{flexDirection: "row"}}>
+                <Text>{item.completion} | </Text>
+                <Text>{item.completionstatus} | </Text>
+                <Text>{item.available.toString()} | </Text>
+                <Text>{item.availablereason}</Text>
+              </View>
             </TouchableOpacity>
             );
           }

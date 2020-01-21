@@ -42,7 +42,7 @@ const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
 
   if (error) {
     Log.error("Error getting course details", error);
-    return <GeneralErrorModal /> 
+    return <GeneralErrorModal />
   }
 
   if (course) {
@@ -60,7 +60,7 @@ class CourseDetailsComponent extends React.Component {
     super(props);
     this.learningItemRef = React.createRef();
   }
-  
+
   state = {
     showActivities: true,
   };

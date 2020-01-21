@@ -56,7 +56,7 @@ class ScormActivity extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      screen : 1
+      screen : 2
     };
   }
 
@@ -69,7 +69,7 @@ class ScormActivity extends React.Component<Props, States> {
     if (data) {
       return(
         <View style = {styles.container}>
-         <ActivityHeaderView title = {this.props.activity.itemName}
+         <ActivityHeaderView title = {this.props.activity.name}
          fontSize = {headerViewFontSize}></ActivityHeaderView>
          <GradeDetailsCircle>
           <GradeDetailsTitle text = {gradeDetailsTitle}></GradeDetailsTitle>
@@ -117,7 +117,7 @@ class ScormActivity extends React.Component<Props, States> {
               <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
               <FontAwesomeIcon icon="arrow-right" size={24}/>
               </Button>
-              <AuthenticatedWebView uri={this.props.activity.url}/>
+              <AuthenticatedWebView uri={this.props.activity.viewurl}/>
             </View>)
         default:
           return (

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
 export interface Activity {
@@ -30,7 +30,7 @@ export interface Activity {
   availablereason?: string
 }
 
-export interface ScormModule extends Activity {
+export interface ScormActivity extends Activity {
   modtype: "scorm",
   currentAttempt : number,
   maxAttempt : number,
@@ -39,25 +39,25 @@ export interface ScormModule extends Activity {
   isAvailable :boolean
 }
 
-export interface SeminarModule extends Activity {
+export interface SeminarActivity extends Activity {
   modtype: "facetoface"
 }
 
-export interface ForumsModule extends Activity {
+export interface ForumsActivity extends Activity {
   modtype: "forum"
 }
 
-export interface QuizModule extends Activity {
+export interface QuizActivity extends Activity {
   modtype: "quiz"
 }
 
-export interface AssignmentModule extends Activity {
+export interface AssignmentActivity extends Activity {
   modtype: "assign"
 }
 
-export type ModuleType =
-  ScormModule |
-  SeminarModule |
-  ForumsModule |
-  QuizModule |
-  AssignmentModule;
+export type ActivityType =
+  ScormActivity |
+  SeminarActivity |
+  ForumsActivity |
+  QuizActivity |
+  AssignmentActivity;

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Jun Yamog <jun.yamog@totaralearning.com>
  *
  */
 
@@ -101,10 +101,10 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     return (
       <AuthConsumer>
         {auth =>
-          (this.state.webviewSecret && auth.appState)
+          (this.state.webviewSecret && auth.authContextState.appState)
             ? <WebView
                 source={{
-                  uri: config.webViewUri(auth.appState.host),
+                  uri: config.webViewUri(auth.authContextState.appState.host),
                   headers: { [WEBVIEW_SECRET]: this.state.webviewSecret }
                 }}
                 userAgent={config.userAgent}
