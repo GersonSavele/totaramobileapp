@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { LearningItem, LearningItemType } from "./LearningItem";
+import { LearningItem, LearningItemType, Section } from "./LearningItem";
 import { Activity, ActivityType, ScormActivity } from "./Activity";
 import { Course } from "./Course";
 import { Program } from "./Program";
@@ -39,5 +39,6 @@ export {
   Me,
   SiteInfo,
   AppState,
-  Theme
+  Theme,
+  Section
 }

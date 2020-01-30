@@ -24,7 +24,7 @@ import { ApolloLink } from "apollo-link";
 import { RetryLink } from "apollo-link-retry";
 import { HttpLink } from "apollo-link-http";
 import { onError, ErrorResponse } from "apollo-link-error";
-import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
+import { InMemoryCache, NormalizedCacheObject, defaultDataIdFromObject } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
 
@@ -210,7 +210,7 @@ export const createApolloClient = (
             const learningItem = object as unknown as LearningItem;
             return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
           }
-          default: return object.id; // fall back to `id` for all other types
+          default: return defaultDataIdFromObject(object); // fall back to default for all other types
         }
       }
     })

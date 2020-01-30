@@ -55,7 +55,9 @@ import {
   faBook,
   faPen,
   faChevronLeft,
-  faUnlockAlt
+  faUnlockAlt,
+  faCaretUp,
+  faCaretDown
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
@@ -165,7 +167,7 @@ const myLearning = createStackNavigator(
     CourseDetails: {
       screen: CourseDetails,
       navigationOptions: ({ screenProps }) =>
-        navigationOptions(screenProps.theme, null, null, faCloudDownloadAlt)
+        navigationOptions(screenProps.theme, null, null)
     },
     ProgramDetails: {
       screen: ProgramDetails,
@@ -303,7 +305,9 @@ const initFontAwesome = () => {
     faBook,
     faPen,
     faChevronLeft,
-    faUnlockAlt
+    faUnlockAlt,
+    faCaretUp,
+    faCaretDown
   );
 };
 initFontAwesome();

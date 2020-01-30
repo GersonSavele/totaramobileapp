@@ -30,18 +30,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 type Props = {
   icon: string
   iconSize: number
-  size: number
+  size: number,
+  backgroundColor?:string,
+  iconColor?:string
+  borderColor?: string,
+  isDashedCircle? :boolean
 }
 
-const ContentIcon = ({icon, iconSize, size}: Props) => {
+const ContentIcon = ({icon, iconSize, size, backgroundColor, iconColor, borderColor, isDashedCircle }: Props) => {
 
   const styles = StyleSheet.create({
     iconCircle: {
       padding: 0,
-      backgroundColor: "#3D444B",
+      backgroundColor: backgroundColor == null ? "#3D444B" : backgroundColor,
       borderRadius: 25,
       borderWidth: 1,
-      borderColor: "#3D444B",
+      borderStyle: isDashedCircle == true ?'dashed' : "solid",
+      borderColor: borderColor == null ? "#3D444B" : borderColor,
       height: normalize(size),
       width: normalize(size),
       justifyContent: "center",
@@ -51,10 +56,9 @@ const ContentIcon = ({icon, iconSize, size}: Props) => {
   
   return(
     <View style={styles.iconCircle}>
-      <FontAwesomeIcon icon={icon} size={iconSize} color={"white"}/>
+      <FontAwesomeIcon icon={icon} size={iconSize} color={iconColor== null ?"white" : iconColor}/>
     </View>
   );
-
 };
 
 

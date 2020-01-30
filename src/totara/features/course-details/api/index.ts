@@ -48,7 +48,7 @@ const query = gql`
                   available
                   availablereason(format: PLAIN)
                   viewurl
-                  completion
+                  completion 
                   completionstatus
                   showdescription
                   description(format: PLAIN)
@@ -57,6 +57,7 @@ const query = gql`
               }
           }
           completion {
+              id
               statuskey
               progress
               timecompleted(format: ISO8601)
@@ -64,6 +65,12 @@ const query = gql`
       }
   }
 `;
+
+export type CourseResponse = {
+  loading : boolean,
+  course : Course,
+  error : Error
+}
 
 type CourseId = {
   courseid: number;

@@ -28,14 +28,16 @@ export interface Course {
   shortname: string,
   lang: string,
   sections: [Section],
-  completion: Completion
+  completion?: Completion
   summary?: string,
   startdate?: Date
   enddate?: Date
   imageSrc?: string,
+  itemtype: "course"
 }
 
 export interface Completion {
+  id: number,
   statuskey?: string,
   progress?: number,
   timecompleted?: Date

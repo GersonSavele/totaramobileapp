@@ -26,7 +26,7 @@ export interface Section {
   title: string
   available: boolean
   availablereason?: string
-  modules? : [Activity]
+  data? : [Activity]
 }
 
 export enum LearningItemType {

@@ -8,8 +8,8 @@
     "cancel": "Cancel"
   }, 
   "course-details": {
-    "activities": "Activities",
-    "outline": "Outline"
+    "activities": "ACTIVITIES",
+    "overview": "OVERVIEW"
   }, 
   "my-learning": {
     "action_primary": "Current learning",
