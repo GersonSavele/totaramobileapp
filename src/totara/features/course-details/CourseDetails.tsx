@@ -19,7 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -32,20 +32,16 @@ import {
 import { withNavigation } from "react-navigation";
 import { GeneralErrorModal, LearningItemCard } from "@totara/components";
 import { Log } from "@totara/lib";
-import { gutter } from "@totara/theme";
-import { tbPadding } from "@totara/theme";
+import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { getCourse, CourseResponse } from "./api";
 import { Course } from "@totara/types";
-import ActivityAccordionList from "./ActivityAccordionList";
-
-type courseProps = {
-  course: Course;
-};
+import ActivityList from "./ActivityList";
+import { ThemeContext } from "@totara/theme";
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
 const CourseDetails = withNavigation(
-  getCourse(({ loading, course, error }: CourseResponse) => {
+  getCourse(({loading, course, error}: CourseResponse) => {
     if (loading) return <Text>{translate("general.loading")}</Text>;
     if (error) {
       Log.error("Error getting course details", error);
@@ -57,62 +53,48 @@ const CourseDetails = withNavigation(
   })
 );
 
-const CourseDetailsComponent = ({ course }: courseProps) => {
+const CourseDetailsComponent = ({ course }: {course: Course}) => {
   const [showActivities, setShowActivities] = useState(false);
+  const [theme] = useContext(ThemeContext);
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
+        <View style={[styles.headerContainer, {backgroundColor: theme.colorNeutral2}]}>
           <LearningItemCard
             item={course}
             imageStyle={styles.itemImage}
             cardStyle={styles.itemCard}
           >
-            <View style = {{width: 48, marginTop: 8,
-  height: 16,
-  borderRadius: 8,
-  borderStyle: "solid",
-  borderWidth: 1,
-  borderColor: "#7d7d7d"}}><Text style = {{ width: 46,
-   height: 14,
-  fontSize: 10,
-  fontWeight: "500",
-  fontStyle: "normal",
-  lineHeight: 12,
-  letterSpacing: 0,
-  textAlign: "center",
-  color: "#888888"}}>Course</Text></View>
+        <View style = {[styles.courseLabelWrap, {borderColor: theme.colorNeutral6}]}><Text style = {[styles.courseLabelText, {color: theme.colorNeutral6}]}>Course</Text></View>
         </LearningItemCard>
         </View>
-        <View style={styles.tabBarContainer}>
-          <View style={styles.viewSeparator}></View>
+        <View style={[styles.tabBarContainer,{backgroundColor: theme.colorNeutral2}]}>
+          <View style={[styles.viewSeparator, {backgroundColor: theme.colorNeutral3}]}></View>
           <View style={styles.tabNav}>
-          {/* <TouchableOpacity style= {{borderBottomWidth: 3,borderColor: "#4a4a4a"}} onPress={() => setShowActivities(false)}> */}
-            <TouchableOpacity onPress={() => setShowActivities(false)}>
-              <Text style={!showActivities ? styles.textActive : styles.textInActive}>
+            <TouchableOpacity style = {!showActivities ? [styles.tabSelected, {borderBottomColor:theme.colorNeutral7, borderBottomWidth:2}] : [styles.tabSelected]} onPress={() => setShowActivities(false)}>
+              <Text style={!showActivities ? [theme.textH4] : [theme.textH4, {color: theme.colorNeutral6}]}>
                 {translate("course-details.overview")}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShowActivities(true)}>
-              <Text style={showActivities ? styles.textActive : styles.textInActive}>
+            <TouchableOpacity style = {showActivities ? [styles.tabSelected, {borderBottomColor:theme.colorNeutral7, borderBottomWidth:2}] : [styles.tabSelected]} onPress={() => setShowActivities(true)}>
+              <Text style={showActivities ? [theme.textH4] : [theme.textH4, {color: theme.colorNeutral6}]}>
                 {translate("course-details.activities")}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.activitiesContainer}>
-          {/* <View style={styles.toggleViewContainer}>
-            <Text style={styles.toggleText}>Expand/ Collapse all topics</Text>
+        <View style={[styles.activitiesContainer,{ backgroundColor: theme.colorNeutral1}]}>
+          <View style={[styles.toggleViewContainer,{backgroundColor: theme.colorNeutral1}]}>
+            <Text style={[theme.textH4, {color: theme.colorNeutral8}]}>Expand/ Collapse all topics</Text>
             <Switch
-              style={styles.toggleView}
+              style={[{borderColor: theme.colorNeutral5}]}
               value={true} // set the value into the tracked state
               onValueChange={() => console.log()} // give the function that would handle value change for this component
               //   disabled={false}
-              trackColor={{ true: "#c7c7c7", false: "#FFF" }}
+              trackColor={{ true: theme.colorNeutral5, false: theme.colorNeutral1 }}
             />
-          </View> */}
-          {showActivities ? <ActivityAccordionList sections ={course.sections} /> : <View></View>}
-          
+          </View>
+          {showActivities ? <ActivityList sections ={course.sections} /> : <View></View>}
         </View>
       </View>
     </ScrollView>
@@ -125,12 +107,12 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
-    maxHeight: 250,
-    minHeight: 200
+    maxHeight: 380,
+    minHeight: 350
   },
   itemImage: {
-    flex: 3
+    flex: 3,
+    minHeight: 200
   },
   itemCard: {
     flex: 0.6,
@@ -139,58 +121,59 @@ const styles = StyleSheet.create({
   },
   tabBarContainer: {
     flex: 0.25,
-    backgroundColor: "#f5f5f5",
     maxHeight: 50,
     minHeight: 44
   },
   viewSeparator: {
     height: 0.5,
-    backgroundColor: "#e6e6e6",
     marginLeft: 20,
     marginRight: 20
   },
   tabNav: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: gutter,
-    paddingTop: tbPadding,
-    paddingBottom: tbPadding,
-    marginLeft:gutter,
-    width: Dimensions.get("window").width*0.6
+    marginLeft: normalize(48),
+    width: Dimensions.get("window").width*0.5,
+    alignItems:"center",
+    flex:1
   },
   activitiesContainer: {
     flex: 3,
-    padding: 0,
-    backgroundColor: "#FFFFFF"
+    padding: 0
   },
   toggleViewContainer: {
     flex: 0.25,
-    backgroundColor: "#FFFFFF",
-    maxHeight: 50,
+    marginLeft: 16,
+    marginRight:16,
     minHeight: 44,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: Dimensions.get("window").width
+    width: Dimensions.get("window").width - 32
   },
-  toggleText: {
-    fontWeight: "500",
-    marginLeft: 16,
-    color: "#3d444b",
+  courseLabelWrap: {
+    marginTop: 5,
+    marginBottom: 5,
+    borderRadius: 8,
+    borderStyle: "solid",
+    borderWidth: 1,
+    alignSelf: 'flex-start'
+  },
+  courseLabelText:{
+   fontSize: 10,
+   fontWeight: "500",
+   fontStyle: "normal",
+   lineHeight: 12,
+   textAlign: "center",
+   flexWrap: "wrap",
+   paddingLeft:4,
+   paddingRight:4,
+   paddingTop:2,
+   paddingBottom:2
+  },
+  tabSelected : {
+    height:"100%", 
     justifyContent: "center"
-  },
-  toggleView: {
-    marginRight: 16,
-    borderColor: "#c7c7c7"
-  },
-  textActive: {
-    fontWeight: "500",
-    color: "#3d444b",
-    justifyContent: "center"
-  },
-  textInActive: {
-    fontSize: 15,
-    color: "#CECECE"
   }
 });
 
