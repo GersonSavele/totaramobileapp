@@ -19,7 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -41,7 +41,7 @@ import { ThemeContext } from "@totara/theme";
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
 const CourseDetails = withNavigation(
-  getCourse(({loading, course, error}: CourseResponse) => {
+  getCourse(({ loading, course, error }: CourseResponse) => {
     if (loading) return <Text>{translate("general.loading")}</Text>;
     if (error) {
       Log.error("Error getting course details", error);
@@ -53,48 +53,127 @@ const CourseDetails = withNavigation(
   })
 );
 
-const CourseDetailsComponent = ({ course }: {course: Course}) => {
+const CourseDetailsComponent = ({ course }: { course: Course }) => {
   const [showActivities, setShowActivities] = useState(false);
   const [theme] = useContext(ThemeContext);
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={[styles.headerContainer, {backgroundColor: theme.colorNeutral2}]}>
+        <View
+          style={[
+            styles.headerContainer,
+            { backgroundColor: theme.colorNeutral2 }
+          ]}
+        >
           <LearningItemCard
             item={course}
             imageStyle={styles.itemImage}
             cardStyle={styles.itemCard}
           >
-        <View style = {[styles.courseLabelWrap, {borderColor: theme.colorNeutral6}]}><Text style = {[styles.courseLabelText, {color: theme.colorNeutral6}]}>Course</Text></View>
-        </LearningItemCard>
+            <View
+              style={[
+                styles.courseLabelWrap,
+                { borderColor: theme.colorNeutral6 }
+              ]}
+            >
+              <Text
+                style={[styles.courseLabelText, { color: theme.colorNeutral6 }]}
+              >
+                Course
+              </Text>
+            </View>
+          </LearningItemCard>
         </View>
-        <View style={[styles.tabBarContainer,{backgroundColor: theme.colorNeutral2}]}>
-          <View style={[styles.viewSeparator, {backgroundColor: theme.colorNeutral3}]}></View>
+        <View
+          style={[
+            styles.tabBarContainer,
+            { backgroundColor: theme.colorNeutral2 }
+          ]}
+        >
+          <View
+            style={[
+              styles.viewSeparator,
+              { backgroundColor: theme.colorNeutral3 }
+            ]}
+          ></View>
           <View style={styles.tabNav}>
-            <TouchableOpacity style = {!showActivities ? [styles.tabSelected, {borderBottomColor:theme.colorNeutral7, borderBottomWidth:2}] : [styles.tabSelected]} onPress={() => setShowActivities(false)}>
-              <Text style={!showActivities ? [theme.textH4] : [theme.textH4, {color: theme.colorNeutral6}]}>
+            <TouchableOpacity
+              style={
+                !showActivities
+                  ? [
+                      styles.tabSelected,
+                      {
+                        borderBottomColor: theme.colorNeutral7,
+                        borderBottomWidth: 2
+                      }
+                    ]
+                  : [styles.tabSelected]
+              }
+              onPress={() => setShowActivities(false)}
+            >
+              <Text
+                style={
+                  !showActivities
+                    ? [theme.textH4]
+                    : [theme.textH4, { color: theme.colorNeutral6 }]
+                }
+              >
                 {translate("course-details.overview")}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style = {showActivities ? [styles.tabSelected, {borderBottomColor:theme.colorNeutral7, borderBottomWidth:2}] : [styles.tabSelected]} onPress={() => setShowActivities(true)}>
-              <Text style={showActivities ? [theme.textH4] : [theme.textH4, {color: theme.colorNeutral6}]}>
+            <TouchableOpacity
+              style={
+                showActivities
+                  ? [
+                      styles.tabSelected,
+                      {
+                        borderBottomColor: theme.colorNeutral7,
+                        borderBottomWidth: 2
+                      }
+                    ]
+                  : [styles.tabSelected]
+              }
+              onPress={() => setShowActivities(true)}
+            >
+              <Text
+                style={
+                  showActivities
+                    ? [theme.textH4]
+                    : [theme.textH4, { color: theme.colorNeutral6 }]
+                }
+              >
                 {translate("course-details.activities")}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={[styles.activitiesContainer,{ backgroundColor: theme.colorNeutral1}]}>
-          <View style={[styles.toggleViewContainer,{backgroundColor: theme.colorNeutral1}]}>
-            <Text style={[theme.textH4, {color: theme.colorNeutral8}]}>Expand/ Collapse all topics</Text>
+        <View
+          style={[
+            styles.activitiesContainer,
+            { backgroundColor: theme.colorNeutral1 }
+          ]}
+        >
+          <View
+            style={[
+              styles.toggleViewContainer,
+              { backgroundColor: theme.colorNeutral1 }
+            ]}
+          >
+            <Text style={[theme.textH4, { color: theme.colorNeutral8 }]}>
+              Expand/ Collapse all topics
+            </Text>
             <Switch
-              style={[{borderColor: theme.colorNeutral5}]}
+              style={[{ borderColor: theme.colorNeutral5 }]}
               value={true} // set the value into the tracked state
               onValueChange={() => console.log()} // give the function that would handle value change for this component
               //   disabled={false}
-              trackColor={{ true: theme.colorNeutral5, false: theme.colorNeutral1 }}
+              trackColor={{
+                true: theme.colorNeutral5,
+                false: theme.colorNeutral1
+              }}
             />
           </View>
-          {showActivities ? <ActivityList sections ={course.sections} /> : <View></View>}
+          {showActivities ? <ActivityList sections={course.sections} /> : null}
         </View>
       </View>
     </ScrollView>
@@ -133,9 +212,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginLeft: normalize(48),
-    width: Dimensions.get("window").width*0.5,
-    alignItems:"center",
-    flex:1
+    width: Dimensions.get("window").width * 0.5,
+    alignItems: "center",
+    flex: 1
   },
   activitiesContainer: {
     flex: 3,
@@ -144,7 +223,7 @@ const styles = StyleSheet.create({
   toggleViewContainer: {
     flex: 0.25,
     marginLeft: 16,
-    marginRight:16,
+    marginRight: 16,
     minHeight: 44,
     flexDirection: "row",
     alignItems: "center",
@@ -157,22 +236,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderStyle: "solid",
     borderWidth: 1,
-    alignSelf: 'flex-start'
+    alignSelf: "flex-start"
   },
-  courseLabelText:{
-   fontSize: 10,
-   fontWeight: "500",
-   fontStyle: "normal",
-   lineHeight: 12,
-   textAlign: "center",
-   flexWrap: "wrap",
-   paddingLeft:4,
-   paddingRight:4,
-   paddingTop:2,
-   paddingBottom:2
+  courseLabelText: {
+    fontSize: 10,
+    fontWeight: "500",
+    fontStyle: "normal",
+    lineHeight: 12,
+    textAlign: "center",
+    flexWrap: "wrap",
+    paddingLeft: 4,
+    paddingRight: 4,
+    paddingTop: 2,
+    paddingBottom: 2
   },
-  tabSelected : {
-    height:"100%", 
+  tabSelected: {
+    height: "100%",
     justifyContent: "center"
   }
 });

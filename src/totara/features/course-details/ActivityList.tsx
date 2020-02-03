@@ -33,6 +33,7 @@ import { normalize, ThemeContext } from "@totara/theme";
 import { ActivitySheetConsumer } from "@totara/activities";
 import { Section, Activity } from "@totara/types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import ActivityRestrictionView from "./ActivityRestrictionView";
 
 const ActivityList = ({ sections }: { sections: [Section] }) => {
   return (
@@ -174,7 +175,7 @@ const BuildContent = ({ completion, completionStatus }: BuildContentProps) => {
   }
 };
 
-const ActivityListBody = ({ data }: { data?: Array<Activity>}) => {
+const ActivityListBody = ({ data }: { data?: Array<Activity> }) => {
   const [theme] = useContext(ThemeContext);
 
   if (data && data.length != 0) {
@@ -184,75 +185,23 @@ const ActivityListBody = ({ data }: { data?: Array<Activity>}) => {
       >
         {data.map((item: Activity, key: number) => {
           return (
-            <ActivitySheetConsumer key={key}>
-              {({ setCurrentActivity }) => {
-                return (
-                  <TouchableOpacity
-                    style={{ flex: 1 }}
-                    onPress={() => setCurrentActivity(item.modtype)}
-                  >
-                    <View style={styles.activityBodyContainer}>
-                      <BuildContent
-                        completion={item.completion as string}
-                        completionStatus={item.completionstatus as string}
-                      ></BuildContent>
-                      {item.completion == "tracking_none" ||
-                      item.completionstatus == "unknown" ? (
-                        <View style={styles.activityBodyLockContainer}>
-                          <Text
-                            numberOfLines={1}
-                            style={[
-                              styles.bodyType,
-                              { color: theme.colorNeutral6, opacity: 0.5 }
-                            ]}
-                          >
-                            {item.modtype.toUpperCase()}
-                          </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={[
-                              styles.bodyName,
-                              { color: theme.textColorDark, opacity: 0.5 }
-                            ]}
-                          >
-                            {item.name}
-                          </Text>
-                        </View>
-                      ) : (
-                        <View style={styles.activityBodyUnLockContainer}>
-                          <Text
-                            numberOfLines={1}
-                            style={[
-                              styles.bodyType,
-                              { color: theme.colorNeutral6 }
-                            ]}
-                          >
-                            {item.modtype.toUpperCase()}
-                          </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={[
-                              styles.bodyName,
-                              { color: theme.textColorDark }
-                            ]}
-                          >
-                            {item.name}
-                          </Text>
-                        </View>
-                      )}
-                    </View>
-                    {data.length - 1 === key ? null : (
-                      <View
-                        style={[
-                          styles.activityBodySeparator,
-                          { backgroundColor: theme.colorNeutral3 }
-                        ]}
-                      ></View>
-                    )}
-                  </TouchableOpacity>
-                );
-              }}
-            </ActivitySheetConsumer>
+            <View key={key}>
+              {item.completion == "tracking_none" ||
+              item.completionstatus == "unknown" ? (
+                <ActivityLock item={item} />
+              ) : (
+                <ActivityUnLock item={item} />
+              )}
+
+              {data.length - 1 === key ? null : (
+                <View
+                  style={[
+                    styles.activityBodySeparator,
+                    { backgroundColor: theme.colorNeutral3 }
+                  ]}
+                ></View>
+              )}
+            </View>
           );
         })}
       </View>
@@ -260,6 +209,92 @@ const ActivityListBody = ({ data }: { data?: Array<Activity>}) => {
   } else {
     return null;
   }
+};
+
+const ActivityUnLock = ({ item }: { item: Activity }) => {
+  const [theme] = useContext(ThemeContext);
+  return (
+    <View>
+      <ActivitySheetConsumer>
+        {({ setCurrentActivity }) => {
+          return (
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() => setCurrentActivity(item)}
+            >
+              <View style={styles.activityBodyContainer}>
+                <BuildContent
+                  completion={item.completion as string}
+                  completionStatus={item.completionstatus as string}
+                ></BuildContent>
+                <View style={styles.activityBodyUnLockContainer}>
+                  <Text
+                    numberOfLines={1}
+                    style={[styles.bodyType, { color: theme.colorNeutral6 }]}
+                  >
+                    {item.modtype.toUpperCase()}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={[styles.bodyName, { color: theme.textColorDark }]}
+                  >
+                    {item.name}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+      </ActivitySheetConsumer>
+    </View>
+  );
+};
+
+const restrictionView = () => {
+  return (
+    <ActivityRestrictionView
+      title=""
+      description=""
+      imageType="complete_action"
+      visible={true}
+    />
+  );
+};
+
+const ActivityLock = ({ item }: { item: Activity }) => {
+  const [theme] = useContext(ThemeContext);
+  return (
+    <View>
+      <TouchableOpacity style={{ flex: 1 }} onPress={() => restrictionView}>
+        <View style={styles.activityBodyContainer}>
+          <BuildContent
+            completion={item.completion as string}
+            completionStatus={item.completionstatus as string}
+          ></BuildContent>
+          <View style={styles.activityBodyLockContainer}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.bodyType,
+                { color: theme.colorNeutral6, opacity: 0.5 }
+              ]}
+            >
+              {item.modtype.toUpperCase()}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.bodyName,
+                { color: theme.textColorDark, opacity: 0.5 }
+              ]}
+            >
+              {item.name}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 const ActivityListHeader = ({ title }: Section) => {
