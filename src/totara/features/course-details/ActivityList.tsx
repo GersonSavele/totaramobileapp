@@ -27,7 +27,7 @@ import {
   View,
   FlatList
 } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ContentIcon } from "@totara/components";
 import { normalize, ThemeContext } from "@totara/theme";
 import { ActivitySheetConsumer } from "@totara/activities";
@@ -62,17 +62,22 @@ const ActivityUI = ({ section }: { section: Section }) => {
         ) : (
           <SectionDataNotAvailable {...section} />
         )}
+      
       </TouchableOpacity>
       {show && <ActivityListBody data={section.data}></ActivityListBody>}
     </View>
   );
 };
 
-const SectionDataNotAvailable = ({ title }: Section) => {
+const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
   const [theme] = useContext(ThemeContext);
   const [show, setShow] = useState(false);
+  // useEffect(() => {
+  //    setShow(false)
+  // }, [show]);
+  
   return (
-    <View>
+    <View >
       <TouchableOpacity
         style={styles.headerViewContainer}
         onPress={() => {
@@ -105,7 +110,7 @@ const SectionDataNotAvailable = ({ title }: Section) => {
           Not available
         </Text>
       </TouchableOpacity>
-      {show && <ActivityRestrictionView />}
+      {show && <ActivityRestrictionView description={availablereason == null ? "" : availablereason}/>}
     </View>
   );
 };
@@ -347,7 +352,7 @@ const ActivityLock = ({ item }: { item: Activity }) => {
           </View>
         </View>
       </TouchableOpacity>
-      {show && <ActivityRestrictionView />}
+      {show && <ActivityRestrictionView description={item.availablereason  == null ? "" : item.availablereason} />}
     </View>
   );
 };

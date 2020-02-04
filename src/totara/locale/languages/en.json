@@ -99,6 +99,7 @@
   },
   "activity_not_available": {
     "title" : "This activity is not available unless",
-    "description": "The activity video test is marked complete\nYour language is English(en)"
+    "description_01": "The activity ",
+    "description_02": " is marked complete\nYour language is English(en)"
   }
 }

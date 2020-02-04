@@ -153,30 +153,39 @@ const CourseDetailsComponent = ({ course }: { course: Course }) => {
             { backgroundColor: theme.colorNeutral1 }
           ]}
         >
-          <View
-            style={[
-              styles.toggleViewContainer,
-              { backgroundColor: theme.colorNeutral1 }
-            ]}
-          >
-            <Text style={[theme.textH4, { color: theme.colorNeutral8 }]}>
-              Expand/ Collapse all topics
-            </Text>
-            <Switch
-              style={[{ borderColor: theme.colorNeutral5 }]}
-              value={true} // set the value into the tracked state
-              onValueChange={() => console.log()} // give the function that would handle value change for this component
-              //   disabled={false}
-              trackColor={{
-                true: theme.colorNeutral5,
-                false: theme.colorNeutral1
-              }}
-            />
-          </View>
-          {showActivities ? <ActivityList sections={course.sections} /> : null}
+          {showActivities ? <Activities course={course} /> : null}
         </View>
       </View>
     </ScrollView>
+  );
+};
+
+const Activities = ({ course }: { course: Course }) => {
+  const [theme] = useContext(ThemeContext);
+  return (
+    <View>
+      <View
+        style={[
+          styles.toggleViewContainer,
+          { backgroundColor: theme.colorNeutral1 }
+        ]}
+      >
+        <Text style={[theme.textH3, { color: theme.colorNeutral8 }]}>
+          Expand/ Collapse all topics
+        </Text>
+        <Switch
+          style={[{ borderColor: theme.colorNeutral5 }]}
+          value={true} // set the value into the tracked state
+          onValueChange={() => console.log()} // give the function that would handle value change for this component
+          //   disabled={false}
+          trackColor={{
+            true: theme.colorNeutral5,
+            false: theme.colorNeutral1
+          }}
+        />
+      </View>
+      <ActivityList sections={course.sections} />
+    </View>
   );
 };
 

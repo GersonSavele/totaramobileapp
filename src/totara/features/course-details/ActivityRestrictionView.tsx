@@ -21,7 +21,7 @@
  *
  */
 
-import React, { ReactNode, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Modal, Image, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -29,7 +29,12 @@ import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { Text } from "react-native-animatable";
 import { translate } from "@totara/locale";
 
-const ActivityRestrictionView = () => {
+// type Props = {
+//   description: string,
+//   show: boolean
+// }
+
+const ActivityRestrictionView = (description: { description: string }) => {
   const [theme] = useContext(ThemeContext);
   const [visible, setVisible] = useState(true);
   return (
@@ -52,7 +57,7 @@ const ActivityRestrictionView = () => {
             >
               <FontAwesomeIcon
                 icon="times"
-                size="20"
+                size= {20}
                 color={theme.textColorDisabled}
               />
             </TouchableOpacity>
@@ -60,7 +65,7 @@ const ActivityRestrictionView = () => {
           <View style={styles.alertStyle}>
             <Image
               style={styles.imageStyle}
-              source={require("@resources/images/general_error/general_error.png")}
+              source={require("@resources/images/restriction_view/restriction_view.png")}
             />
             <View style={styles.componentWrapStyle}>
               <Text style={[theme.textH4, { fontWeight: "bold" }]}>
@@ -75,7 +80,7 @@ const ActivityRestrictionView = () => {
                   color: theme.colorNeutral6
                 }}
               >
-                {translate("activity_not_available.description")}
+                {translate("activity_not_available.description_01") + description + translate("activity_not_available.description_02")}
               </Text>
             </View>
           </View>
@@ -92,7 +97,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end"
   },
   containerStyle: {
-    borderRadius: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     marginLeft: 0,
     marginRight: 0,
     flex: 0.4,
@@ -103,17 +109,17 @@ const styles = StyleSheet.create({
     flex: 1
   },
   componentWrapStyle: {
-    marginVertical: resizeByScreenSize(8, 8, 16, 16),
-    marginHorizontal: resizeByScreenSize(16, 24, 32, 32),
-    alignItems: "center"
+    marginVertical: resizeByScreenSize(8, 8, 8, 8),
+    marginHorizontal: resizeByScreenSize(16, 24, 24, 24),
+    alignItems: "center",
+    marginBottom: 16
   },
   imageStyle: {
-    marginTop: resizeByScreenSize(32, 32, 48, 48),
-    marginVertical: resizeByScreenSize(8, 8, 16, 16),
     justifyContent: "center",
     height: "40%",
     width: "50%",
-    resizeMode: "contain"
+    resizeMode: "contain",
+    marginTop: 4
   }
 });
 
