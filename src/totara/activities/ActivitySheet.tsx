@@ -95,7 +95,7 @@ export class ActivitySheetProvider extends React.Component {
 }
 
 const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity, onClose}, ref) =>
-  <SlidingUpPanel ref={ref} friction={0.25}>
+  <SlidingUpPanel ref={ref} friction={0.25} allowDragging={false}>
     <View style={styles.panel}>
       <View style={styles.navigationStyle}>
         <StatusBar hidden/>
