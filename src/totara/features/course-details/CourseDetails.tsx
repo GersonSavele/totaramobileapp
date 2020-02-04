@@ -37,6 +37,7 @@ import { translate } from "@totara/locale";
 import { getCourse, CourseResponse } from "./api";
 import { Course } from "@totara/types";
 import ActivityList from "./ActivityList";
+import OverviewDetails from "./OverviewDetails"
 import { ThemeContext } from "@totara/theme";
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
@@ -153,7 +154,7 @@ const CourseDetailsComponent = ({ course }: { course: Course }) => {
             { backgroundColor: theme.colorNeutral1 }
           ]}
         >
-          {showActivities ? <Activities course={course} /> : null}
+          {showActivities ? <Activities course={course} /> : <OverviewDetails course = {course}/>}
         </View>
       </View>
     </ScrollView>
