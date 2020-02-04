@@ -21,41 +21,65 @@
  *
  */
 
-import React, { ReactNode, useContext } from "react";
-import { View, StyleSheet, Modal } from "react-native";
-import SafeAreaView from "react-native-safe-area-view";
+import React, { ReactNode, useContext, useState } from "react";
+import { View, StyleSheet, Modal, Image, TouchableOpacity } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { resizeByScreenSize, ThemeContext } from "@totara/theme";
+import { Text } from "react-native-animatable";
+import { translate } from "@totara/locale";
 
-type Params = {
-  title?: string;
-  description?: string;
-  imageType?: string;
-  children?: ReactNode;
-  visible: boolean;
-};
-
-const ActivityRestrictionView = ({
-  title,
-  description,
-  imageType,
-  ...rest
-}: Params) => {
+const ActivityRestrictionView = () => {
   const [theme] = useContext(ThemeContext);
+  const [visible, setVisible] = useState(true);
   return (
-    <Modal {...rest}>
+    <Modal transparent={true} visible={visible}>
       <View style={styles.transparentViewStyle}>
-        <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
+        <View
+          style={[
+            styles.containerStyle,
+            { backgroundColor: theme.colorNeutral1 }
+          ]}
+        >
           <View
-            style={[
-              styles.containerStyle,
-              { backgroundColor: theme.colorNeutral1 }
-            ]}
+            style={{ marginLeft: 16, marginTop: 16, height: 20, width: 20 }}
           >
-            <View style={styles.sectionContainer}></View>
-            <View style={styles.sectionContainer}></View>
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() => {
+                setVisible(false);
+              }}
+            >
+              <FontAwesomeIcon
+                icon="times"
+                size="20"
+                color={theme.textColorDisabled}
+              />
+            </TouchableOpacity>
           </View>
-        </SafeAreaView>
+          <View style={styles.alertStyle}>
+            <Image
+              style={styles.imageStyle}
+              source={require("@resources/images/general_error/general_error.png")}
+            />
+            <View style={styles.componentWrapStyle}>
+              <Text style={[theme.textH4, { fontWeight: "bold" }]}>
+                {translate("activity_not_available.title")}
+              </Text>
+            </View>
+            <View style={styles.componentWrapStyle}>
+              <Text
+                style={{
+                  alignSelf: "center",
+                  textAlign: "center",
+                  color: theme.colorNeutral6
+                }}
+              >
+                {translate("activity_not_available.description")}
+              </Text>
+            </View>
+          </View>
+        </View>
       </View>
     </Modal>
   );
@@ -64,28 +88,32 @@ const ActivityRestrictionView = ({
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)"
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "flex-end"
   },
   containerStyle: {
-    flex: 1,
-    borderRadius: 4,
-    marginHorizontal: resizeByScreenSize(16, 16, 20, 20),
-    marginVertical: resizeByScreenSize(32, 32, 32, 32),
-    flexDirection: "column",
-    marginLeft: "5%",
-    marginRight: "5%",
-    alignItems: "center",
-    justifyContent: "center"
+    borderRadius: 16,
+    marginLeft: 0,
+    marginRight: 0,
+    flex: 0.4,
+    flexDirection: "column"
   },
-  sectionContainer: {
+  alertStyle: {
+    alignItems: "center",
+    flex: 1
+  },
+  componentWrapStyle: {
     marginVertical: resizeByScreenSize(8, 8, 16, 16),
     marginHorizontal: resizeByScreenSize(16, 24, 32, 32),
     alignItems: "center"
   },
-  actionContainer: {
+  imageStyle: {
+    marginTop: resizeByScreenSize(32, 32, 48, 48),
     marginVertical: resizeByScreenSize(8, 8, 16, 16),
-    minHeight: 104,
-    justifyContent: "space-between"
+    justifyContent: "center",
+    height: "40%",
+    width: "50%",
+    resizeMode: "contain"
   }
 });
 

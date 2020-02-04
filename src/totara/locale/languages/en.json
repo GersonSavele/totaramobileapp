@@ -96,5 +96,9 @@
     "description" : "You needs to login through the\nmobile site to authenticate you. Would\nyou like us to take you there now?",
     "primary_title" : "Yes, go to browser",
     "tertiary_title" : "Cancel"
+  },
+  "activity_not_available": {
+    "title" : "This activity is not available unless",
+    "description": "The activity video test is marked complete\nYour language is English(en)"
   }
 }

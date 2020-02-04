@@ -48,7 +48,8 @@ const ActivityList = ({ sections }: { sections: [Section] }) => {
 
 const ActivityUI = ({ section }: { section: Section }) => {
   const [show, setShow] = useState(false);
-  const [theme] = useContext(ThemeContext);
+  const activities = section.data as Array<Activity>;
+  const { title } = section;
   return (
     <View>
       <TouchableOpacity
@@ -56,24 +57,82 @@ const ActivityUI = ({ section }: { section: Section }) => {
           setShow(!show);
         }}
       >
-        <View style={styles.headerViewContainer}>
-          <ActivityListHeader {...section} />
-          {show ? (
-            <FontAwesomeIcon
-              icon={"caret-up"}
-              color={theme.colorNeutral5}
-              size={16}
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={"caret-down"}
-              color={theme.colorNeutral5}
-              size={16}
-            />
-          )}
-        </View>
+        {activities && activities.length != 0 ? (
+          <CellExpandUI show={show} title={title} />
+        ) : (
+          <SectionDataNotAvailable {...section} />
+        )}
       </TouchableOpacity>
       {show && <ActivityListBody data={section.data}></ActivityListBody>}
+    </View>
+  );
+};
+
+const SectionDataNotAvailable = ({ title }: Section) => {
+  const [theme] = useContext(ThemeContext);
+  const [show, setShow] = useState(false);
+  return (
+    <View>
+      <TouchableOpacity
+        style={styles.headerViewContainer}
+        onPress={() => {
+          setShow(!show);
+        }}
+      >
+        <Text
+          style={[
+            theme.textH3,
+            { fontWeight: "bold", color: theme.colorNeutral6 }
+          ]}
+        >
+          {title}
+        </Text>
+        <Text
+          style={[
+            theme.textH3,
+            {
+              color: theme.colorNeutral6,
+              fontWeight: "500",
+              borderRadius: 8,
+              margin: 4,
+              fontSize: normalize(11),
+              backgroundColor: theme.colorNeutral2,
+              paddingRight: 4,
+              paddingLeft: 4
+            }
+          ]}
+        >
+          Not available
+        </Text>
+      </TouchableOpacity>
+      {show && <ActivityRestrictionView />}
+    </View>
+  );
+};
+
+type CellExpandUIProps = {
+  show: boolean;
+  title: string;
+};
+
+const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
+  const [theme] = useContext(ThemeContext);
+  return (
+    <View style={styles.headerViewContainer}>
+      <Text style={[theme.textH3, { fontWeight: "bold" }]}>{title}</Text>
+      {show ? (
+        <FontAwesomeIcon
+          icon={"caret-up"}
+          color={theme.colorNeutral5}
+          size={16}
+        />
+      ) : (
+        <FontAwesomeIcon
+          icon={"caret-down"}
+          color={theme.colorNeutral5}
+          size={16}
+        />
+      )}
     </View>
   );
 };
@@ -250,22 +309,17 @@ const ActivityUnLock = ({ item }: { item: Activity }) => {
   );
 };
 
-const restrictionView = () => {
-  return (
-    <ActivityRestrictionView
-      title=""
-      description=""
-      imageType="complete_action"
-      visible={true}
-    />
-  );
-};
-
 const ActivityLock = ({ item }: { item: Activity }) => {
   const [theme] = useContext(ThemeContext);
+  const [show, setShow] = useState(false);
   return (
     <View>
-      <TouchableOpacity style={{ flex: 1 }} onPress={() => restrictionView}>
+      <TouchableOpacity
+        style={{ flex: 1 }}
+        onPress={() => {
+          setShow(!show);
+        }}
+      >
         <View style={styles.activityBodyContainer}>
           <BuildContent
             completion={item.completion as string}
@@ -293,15 +347,7 @@ const ActivityLock = ({ item }: { item: Activity }) => {
           </View>
         </View>
       </TouchableOpacity>
-    </View>
-  );
-};
-
-const ActivityListHeader = ({ title }: Section) => {
-  const [theme] = useContext(ThemeContext);
-  return (
-    <View>
-      <Text style={[theme.textH3, { fontWeight: "bold" }]}>{title}</Text>
+      {show && <ActivityRestrictionView />}
     </View>
   );
 };
