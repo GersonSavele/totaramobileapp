@@ -87,7 +87,10 @@ const ActivityUI = ({ section }: { section: Section }) => {
   );
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> MOB-367 features: Implemented course overview UI
 const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
   const [theme] = useContext(ThemeContext);
   const [show, setShow] = useState(false);
@@ -120,7 +123,11 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
           Not available
         </Text>
       </TouchableOpacity>
+<<<<<<< HEAD
       {show && <ActivityRestrictionView description={availablereason == null ? "" : availablereason} onClose = {onClose}/>}
+=======
+      {show && <ActivityRestrictionView description={availablereason!} />}
+>>>>>>> MOB-367 features: Implemented course overview UI
     </View>
   );
 };
@@ -348,7 +355,11 @@ const ActivityLock = ({item, theme }: ActivityProps) => {
           </View>
         </View>
       </TouchableOpacity>
+<<<<<<< HEAD
       {show && <ActivityRestrictionView description={item.availablereason  == null ? "" : item.availablereason} onClose = {onClose}/>}
+=======
+      {show && <ActivityRestrictionView description={item.availablereason!} />}
+>>>>>>> MOB-367 features: Implemented course overview UI
     </View>
   );
 };

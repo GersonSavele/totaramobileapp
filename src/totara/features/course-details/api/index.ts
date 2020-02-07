@@ -61,6 +61,8 @@ const query = gql`
               statuskey
               progress
               timecompleted(format: ISO8601)
+              gradefinal
+              grademax
           }
       }
   }

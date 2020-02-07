@@ -40,5 +40,8 @@ export interface Completion {
   id: number,
   statuskey?: string,
   progress?: number,
-  timecompleted?: Date
+  timecompleted?: Date,
+  grademax :number,
+  gradefinal : number
+
 }

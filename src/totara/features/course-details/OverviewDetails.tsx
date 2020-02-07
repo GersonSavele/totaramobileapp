@@ -22,29 +22,184 @@
  */
 
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    FlatList
-  } from "react-native";
-  import React, { useState, useContext } from "react";
-  import { ContentIcon } from "@totara/components";
-  import { normalize, ThemeContext } from "@totara/theme";
-  import { ActivitySheetConsumer } from "@totara/activities";
-  import { Section, Activity, Course } from "@totara/types";
-  import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-  import ActivityRestrictionView from "./ActivityRestrictionView";
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+  Dimensions
+} from "react-native";
+import React, { useContext } from "react";
+import { normalize, ThemeContext } from "@totara/theme";
+import { Course } from "@totara/types";
+import { AddBadge } from "@totara/components";
 
+// type SectionSwipeListProps = {
+//   id : number,
+//   title: string,
+//   description: string,
+//   value: number
+// }
 
-  const OverviewDetails = ({ course }: { course: Course }) => {
+const OverviewDetails = ({ course }: { course: Course }) => {
+  const [theme] = useContext(ThemeContext);
+
+  const renderItem = ({ item }: any) => {
+    const itemStyle = StyleSheet.create({
+      container: {
+        borderRadius: normalize(10),
+        shadowColor: theme.colorNeutral8,
+        shadowOpacity: 0.16,
+        shadowRadius: normalize(13),
+        backgroundColor: theme.colorNeutral1,
+        borderWidth: 1,
+        borderColor: theme.colorNeutral3,
+        marginBottom: normalize(16),
+        marginTop: normalize(16)
+      },
+      content: {
+        borderRadius: normalize(10),
+        overflow: "hidden",
+        flexDirection: "row",
+        justifyContent: "center"
+      },
+      carouselTextContainer: {
+        justifyContent: "center",
+        flexDirection: "column",
+        flex: 5,
+        margin: 16,
+        maxWidth: Dimensions.get("window").width * 0.5
+      }
+    });
+
     return (
-null
-)}
+      <TouchableOpacity style={itemStyle.container} activeOpacity={1.0}>
+        <View style={itemStyle.content}>
+          <View
+            style={{
+              marginLeft: 16,
+              alignContent: "center",
+              justifyContent: "center"
+            }}
+          >
+            {item.id == 1 ? (
+              <ProgressCircle value={item.value}></ProgressCircle>
+            ) : (
+              <Text style={[theme.textH2, { fontWeight: "bold" }]}>
+                {item.value != null ? item.value.toString() : ""}
+              </Text>
+            )}
+          </View>
+          <View style={itemStyle.carouselTextContainer}>
+            <Text numberOfLines={1} style={[theme.textH4]}>
+              {item.title}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={[theme.textB3, { color: theme.colorNeutral6 }]}
+            >
+              {item.description}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
+  let progressStatus = "Haven't started the course";
+  let progress = 0;
+  let userGradeFinal = 0;
+  let userGradeMax = 0;
+  if (course.completion) {
+    if (course.completion.progress && course.completion.progress > 50) {
+      progressStatus = "Almost there! Keep going";
+      progress = course.completion.progress;
+    } else if (
+      course.completion.progress &&
+      course.completion.progress < 50 && course.completion.progress != 0
+    ) {
+      progressStatus = "Good start! Keep going";
+      progress = course.completion.progress;
+    }
+    userGradeFinal = course.completion.gradefinal;
+    userGradeMax = course.completion.grademax;
+  }
 
-  export default OverviewDetails;
+  const item = [
+    {
+      id: 1,
+      title: "Your course progress",
+      description: progressStatus,
+      value: progress
+    },
+    {
+      id: 2,
+      title: "Your grade overview",
+      description:
+        "Out of " + (userGradeMax != 0 ? userGradeMax.toString() : "0"),
+      value: userGradeFinal
+    }
+  ];
 
+  return (
+    <View>
+      <View>
+        <FlatList
+          style={{ flexGrow: 1 }}
+          horizontal={true}
+          contentContainerStyle={{ padding: 16 }}
+          showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={{ margin: 16 }} />}
+          data={item}
+          keyExtractor={item => item.title.toString()}
+          renderItem={renderItem}
+        />
+      </View>
+      <View
+        style={{
+          backgroundColor: theme.colorNeutral3,
+          height: 0.5,
+          margin: 10
+        }}
+      />
+      <View style={{ flex: 4 }}>
+        <CourseSummary course={course} />
+      </View>
+    </View>
+  );
+};
 
+const CourseSummary = ({ course }: { course: Course }) => {
+  const [theme] = useContext(ThemeContext);
+  return (
+    <View style={{ marginLeft: 16 }}>
+      <View style={{ marginTop: 8 }}>
+        <Text numberOfLines={1} style={theme.textH3}>
+          Course summary
+        </Text>
+      </View>
+      <View style={{ marginTop: 16 }}>
+        <Text style={[theme.textB3, { color: theme.colorNeutral6 }]}>
+          {course.summary}
+        </Text>
+      </View>
+    </View>
+  );
+};
 
+const ProgressCircle = ({ value }: { value: number }) => {
+  return (
+    <View style={styles.badgeContainer}>
+      <AddBadge status={value} size={16}></AddBadge>
+    </View>
+  );
+};
 
+const styles = StyleSheet.create({
+  badgeContainer: {
+    marginLeft: 16,
+    marginBottom: 16
+  }
+});
+
+export default OverviewDetails;
