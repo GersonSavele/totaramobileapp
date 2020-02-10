@@ -34,12 +34,6 @@ import { normalize, ThemeContext } from "@totara/theme";
 import { Course } from "@totara/types";
 import { AddBadge } from "@totara/components";
 
-// type SectionSwipeListProps = {
-//   id : number,
-//   title: string,
-//   description: string,
-//   value: number
-// }
 
 const OverviewDetails = ({ course }: { course: Course }) => {
   const [theme] = useContext(ThemeContext);
@@ -86,7 +80,7 @@ const OverviewDetails = ({ course }: { course: Course }) => {
               <ProgressCircle value={item.value}></ProgressCircle>
             ) : (
               <Text style={[theme.textH2, { fontWeight: "bold" }]}>
-                {item.value != null ? item.value.toString() : ""}
+                {item.value != null ? item.value.toString() : "0"}
               </Text>
             )}
           </View>
@@ -172,7 +166,7 @@ const OverviewDetails = ({ course }: { course: Course }) => {
 const CourseSummary = ({ course }: { course: Course }) => {
   const [theme] = useContext(ThemeContext);
   return (
-    <View style={{ marginLeft: 16 }}>
+    <View style={{ marginLeft: 16, marginRight: 8 }}>
       <View style={{ marginTop: 8 }}>
         <Text numberOfLines={1} style={theme.textH3}>
           Course summary

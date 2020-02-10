@@ -115,8 +115,8 @@ const CourseDetailsComponent = ({ course }: { course: Course }) => {
               <Text
                 style={
                   !showActivities
-                    ? [theme.textH4]
-                    : [theme.textH4, { color: theme.colorNeutral6 }]
+                    ? [theme.textB3]
+                    : [theme.textB3, { color: theme.colorNeutral6 }]
                 }
               >
                 {translate("course-details.overview")}
@@ -139,8 +139,8 @@ const CourseDetailsComponent = ({ course }: { course: Course }) => {
               <Text
                 style={
                   showActivities
-                    ? [theme.textH4]
-                    : [theme.textH4, { color: theme.colorNeutral6 }]
+                    ? [theme.textB3]
+                    : [theme.textB3, { color: theme.colorNeutral6, paddingLeft: 8, paddingRight: 8 }]
                 }
               >
                 {translate("course-details.activities")}
@@ -198,12 +198,12 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: 380,
-    minHeight: 350
+    maxHeight: 350,
+    minHeight: 300
   },
   itemImage: {
     flex: 3,
-    minHeight: 200
+    minHeight: 150
   },
   itemCard: {
     flex: 0.6,
@@ -248,23 +248,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderStyle: "solid",
     borderWidth: 1,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
+    alignItems: "center"
   },
   courseLabelText: {
     fontSize: 10,
     fontWeight: "500",
     fontStyle: "normal",
-    lineHeight: 12,
     textAlign: "center",
-    flexWrap: "wrap",
     paddingLeft: 4,
     paddingRight: 4,
-    paddingTop: 2,
+    paddingTop: 1,
     paddingBottom: 2
   },
   tabSelected: {
     height: "100%",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingLeft: 12, 
+    paddingRight: 12
   }
 });
 
