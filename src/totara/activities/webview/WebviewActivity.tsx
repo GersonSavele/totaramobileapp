@@ -46,7 +46,7 @@ const WebviewActivity = ({activity}: Props) => {
     <View style={{ flex: 1 }}>
       <AuthenticatedWebView uri={activity.viewurl!} ref={refWebview} onNavigationStateChange={onNavigationStateChange}/>
     </View>
-    <View style={styles.footer}>
+    <View style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
       <View style={styles.barContent}>
         <TouchableIcon disabled={!canWebGoBackward} icon={"chevron-left"} onPress={() => {
           refWebview.current && refWebview.current!.goBack();

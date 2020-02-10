@@ -19,15 +19,16 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React, { createRef } from "react";
-import SlidingUpPanel from "rn-sliding-up-panel";
-import { StyleSheet, View, StatusBar, Text } from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, View, StatusBar, Text, Modal } from "react-native";
 import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { ActivityType } from "@totara/types";
 import ScormActivity from "./scorm/ScormActivity";
 import { WebviewActivity } from "./webview/WebviewActivity";
+import SafeAreaView from "react-native-safe-area-view";
+import { ThemeContext } from "@totara/theme";
 
 type contextData = {
   setCurrentActivity: (activity: ActivityType) => void
@@ -59,24 +60,24 @@ export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
  * </ActivitySheetConsumer/>
  */
 
-const panelRef = createRef<SlidingUpPanel>();
-
 export class ActivitySheetProvider extends React.Component {
   state = {
     setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
     currentActivity: undefined,
+    show: false
   };
 
   setCurrentActivity(activity: ActivityType) {
     this.setState({
-      currentActivity: activity
-    }, () => panelRef.current!.show(0));
+      currentActivity: activity,
+      show: true
+    })
   }
 
   onClose = () => {
-    panelRef.current!.hide();
     this.setState({
-      currentActivity: undefined
+      currentActivity: undefined,
+      show: false
     })
   };
 
@@ -87,34 +88,39 @@ export class ActivitySheetProvider extends React.Component {
         {this.props.children}
         {
           (this.state.currentActivity) &&
-            <ActivitySheet ref={panelRef} currentActivity={this.state.currentActivity!} onClose={this.onClose}/>
+            <ActivitySheet currentActivity={this.state.currentActivity!} onClose={this.onClose} show={this.state.show}/>
         }
       </ActivitySheetContext.Provider>
       </View>)
   }
 }
 
-const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity, onClose}, ref) =>
-  <SlidingUpPanel ref={ref} friction={0.25} allowDragging={false}>
-    <View style={styles.panel}>
-      <View style={styles.navigationStyle}>
-        <StatusBar hidden/>
-        <View style={styles.rightContainer}>
-          <Button style={styles.buttonStyle} onPress={onClose}>
-            <FontAwesomeIcon icon="times" size={24}/>
-          </Button>
+const ActivitySheet = ({currentActivity, onClose}: Props) => {
+  const [ theme ] = useContext(ThemeContext);
+
+  return (<Modal animationType="slide" visible={currentActivity != undefined} onRequestClose={onClose}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colorSecondary1 }} forceInset={{ bottom: "always" }}>
+      <View style={styles.panel}>
+        <View style={[styles.navigationStyle, { backgroundColor: theme.colorSecondary1 }]}>
+          <StatusBar hidden/>
+          <View style={styles.rightContainer}>
+            <Button style={styles.buttonStyle} onPress={onClose}>
+              <FontAwesomeIcon icon="times" size={24}/>
+            </Button>
+          </View>
+          <Text style={styles.titleStyle}> {currentActivity.name} </Text>
+          <View style={styles.rightContainer}></View>
         </View>
-        <Text style={styles.titleStyle}> {currentActivity.name} </Text>
-        <View style={styles.rightContainer}></View>
+        {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
       </View>
-      {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
-    </View>
-  </SlidingUpPanel>
-);
+    </SafeAreaView>
+  </Modal>);
+}
 
 type Props = {
   currentActivity: ActivityType,
   onClose: () => void
+  show: boolean
 }
 
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
@@ -129,13 +135,10 @@ const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
 const styles = StyleSheet.create({
   panel: {
     flex: 1,
-    paddingTop: 5,
     flexDirection: "column",
     backgroundColor: "#FFFFFF"
   },
   navigationStyle :{
-    flex: 0.1,
-    paddingTop: 10,
     alignItems: "center",
     flexDirection: 'row',
     justifyContent: 'space-between',
