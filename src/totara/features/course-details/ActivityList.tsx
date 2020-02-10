@@ -34,6 +34,24 @@ import { ActivitySheetConsumer } from "@totara/activities";
 import { Section, Activity } from "@totara/types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import ActivityRestrictionView from "./ActivityRestrictionView";
+import { AppliedTheme } from "@totara/theme/Theme";
+
+
+type ActivityProps = {
+  item: Activity;
+  theme : AppliedTheme;
+}
+
+type BuildContentProps = {
+  completion?: string;
+  completionStatus?: string;
+  theme : AppliedTheme;
+};
+
+type CellExpandUIProps = {
+  show: boolean;
+  title: string;
+};
 
 const ActivityList = ({ sections }: { sections: [Section] }) => {
   return (
@@ -69,21 +87,18 @@ const ActivityUI = ({ section }: { section: Section }) => {
   );
 };
 
+
 const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
   const [theme] = useContext(ThemeContext);
   const [show, setShow] = useState(false);
-  // useEffect(() => {
-  //    setShow(false)
-  // }, [show]);
-  
+  const onClose = () => {
+    setShow(!show);
+  }
   return (
     <View >
       <TouchableOpacity
         style={styles.headerViewContainer}
-        onPress={() => {
-          setShow(!show);
-        }}
-      >
+        onPress={onClose}>
         <Text
           style={[
             theme.textH3,
@@ -95,29 +110,19 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
         <Text
           style={[
             theme.textH3,
+            styles.notAvailableText,
             {
               color: theme.colorNeutral6,
-              fontWeight: "500",
-              borderRadius: 8,
-              margin: 4,
-              fontSize: normalize(11),
               backgroundColor: theme.colorNeutral2,
-              paddingRight: 4,
-              paddingLeft: 4
             }
           ]}
         >
           Not available
         </Text>
       </TouchableOpacity>
-      {show && <ActivityRestrictionView description={availablereason == null ? "" : availablereason}/>}
+      {show && <ActivityRestrictionView description={availablereason == null ? "" : availablereason} onClose = {onClose}/>}
     </View>
   );
-};
-
-type CellExpandUIProps = {
-  show: boolean;
-  title: string;
 };
 
 const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
@@ -140,16 +145,9 @@ const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
       )}
     </View>
   );
-};
+}
 
-type BuildContentProps = {
-  completion?: string;
-  completionStatus?: string;
-};
-
-const BuildContent = ({ completion, completionStatus }: BuildContentProps) => {
-  const [theme] = useContext(ThemeContext);
-
+const BuildContent = ({ completion, completionStatus, theme }: BuildContentProps) => {
   if (
     completion == "tracking_automatic" &&
     completionStatus == "complete_pass"
@@ -252,9 +250,9 @@ const ActivityListBody = ({ data }: { data?: Array<Activity> }) => {
             <View key={key}>
               {item.completion == "tracking_none" ||
               item.completionstatus == "unknown" ? (
-                <ActivityLock item={item} />
+                <ActivityLock item={item} theme = {theme}/>
               ) : (
-                <ActivityUnLock item={item} />
+                <ActivityUnLock item={item} theme = {theme}/>
               )}
 
               {data.length - 1 === key ? null : (
@@ -275,8 +273,7 @@ const ActivityListBody = ({ data }: { data?: Array<Activity> }) => {
   }
 };
 
-const ActivityUnLock = ({ item }: { item: Activity }) => {
-  const [theme] = useContext(ThemeContext);
+const ActivityUnLock = ({item, theme }: ActivityProps) => {
   return (
     <View>
       <ActivitySheetConsumer>
@@ -289,7 +286,7 @@ const ActivityUnLock = ({ item }: { item: Activity }) => {
               <View style={styles.activityBodyContainer}>
                 <BuildContent
                   completion={item.completion as string}
-                  completionStatus={item.completionstatus as string}
+                  completionStatus={item.completionstatus as string} theme = {theme}
                 ></BuildContent>
                 <View style={styles.activityBodyUnLockContainer}>
                   <Text
@@ -314,21 +311,20 @@ const ActivityUnLock = ({ item }: { item: Activity }) => {
   );
 };
 
-const ActivityLock = ({ item }: { item: Activity }) => {
-  const [theme] = useContext(ThemeContext);
+const ActivityLock = ({item, theme }: ActivityProps) => {
   const [show, setShow] = useState(false);
+  const onClose = () => {
+    setShow(!show);
+  }
   return (
     <View>
       <TouchableOpacity
         style={{ flex: 1 }}
-        onPress={() => {
-          setShow(!show);
-        }}
-      >
+        onPress={onClose}>
         <View style={styles.activityBodyContainer}>
           <BuildContent
             completion={item.completion as string}
-            completionStatus={item.completionstatus as string}
+            completionStatus={item.completionstatus as string} theme = {theme}
           ></BuildContent>
           <View style={styles.activityBodyLockContainer}>
             <Text
@@ -352,7 +348,7 @@ const ActivityLock = ({ item }: { item: Activity }) => {
           </View>
         </View>
       </TouchableOpacity>
-      {show && <ActivityRestrictionView description={item.availablereason  == null ? "" : item.availablereason} />}
+      {show && <ActivityRestrictionView description={item.availablereason  == null ? "" : item.availablereason} onClose = {onClose}/>}
     </View>
   );
 };
@@ -409,6 +405,14 @@ const styles = StyleSheet.create({
   },
   activityBodySeparator: {
     height: 0.5
+  },
+  notAvailableText : {
+    fontWeight: "500",
+    borderRadius: 8,
+    margin: 4,
+    fontSize: normalize(11),
+    paddingRight: 4,
+    paddingLeft: 4
   }
 });
 

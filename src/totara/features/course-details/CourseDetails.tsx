@@ -161,10 +161,12 @@ const CourseDetailsComponent = ({ course }: { course: Course }) => {
 };
 
 const Activities = ({ course }: { course: Course }) => {
-  const [theme] = useContext(ThemeContext);
+  //To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented   
+ 
+  // const [theme] = useContext(ThemeContext);
   return (
     <View>
-      <View
+      {/* <View
         style={[
           styles.toggleViewContainer,
           { backgroundColor: theme.colorNeutral1 }
@@ -183,7 +185,7 @@ const Activities = ({ course }: { course: Course }) => {
             false: theme.colorNeutral1
           }}
         />
-      </View>
+      </View> */}
       <ActivityList sections={course.sections} />
     </View>
   );

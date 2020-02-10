@@ -29,16 +29,15 @@ import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { Text } from "react-native-animatable";
 import { translate } from "@totara/locale";
 
-// type Props = {
-//   description: string,
-//   show: boolean
-// }
+type Props = {
+  description: string,
+  onClose: ()=> void
+}
 
-const ActivityRestrictionView = (description: { description: string }) => {
+const ActivityRestrictionView = ({description, onClose} : Props) => {
   const [theme] = useContext(ThemeContext);
-  const [visible, setVisible] = useState(true);
   return (
-    <Modal transparent={true} visible={visible}>
+    <Modal transparent={true}>
       <View style={styles.transparentViewStyle}>
         <View
           style={[
@@ -51,10 +50,7 @@ const ActivityRestrictionView = (description: { description: string }) => {
           >
             <TouchableOpacity
               style={{ flex: 1 }}
-              onPress={() => {
-                setVisible(false);
-              }}
-            >
+              onPress={onClose}>
               <FontAwesomeIcon
                 icon="times"
                 size= {20}
