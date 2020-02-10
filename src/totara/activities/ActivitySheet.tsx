@@ -104,7 +104,7 @@ const ActivitySheet = React.forwardRef<SlidingUpPanel, Props>(({currentActivity,
             <FontAwesomeIcon icon="times" size={24}/>
           </Button>
         </View>
-        <Text style={styles.titleStyle}> {currentActivity.itemName} </Text>
+        <Text style={styles.titleStyle}> {currentActivity.name} </Text>
         <View style={styles.rightContainer}></View>
       </View>
       {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}

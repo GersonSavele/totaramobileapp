@@ -20,8 +20,8 @@
  *
  */
 
-import React from "react";
-import { WebView } from "react-native-webview";
+import React, { forwardRef } from "react";
+import { WebView, WebViewNavigation } from "react-native-webview";
 import { graphql, MutationFunction } from "react-apollo";
 import { compose } from "recompose";
 import gql from "graphql-tag";
@@ -98,6 +98,9 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
   }
 
   render() {
+
+    const {innerRef} = this.props;
+
     return (
       <AuthConsumer>
         {auth =>
@@ -109,6 +112,8 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
                 }}
                 userAgent={config.userAgent}
                 style={{ flex: 1}}
+                ref={innerRef}
+                onNavigationStateChange={this.props.onNavigationStateChange}
                 />
             : null
         }
@@ -132,6 +137,13 @@ type Props = {
   uri: string
   createWebview: MutationFunction<CreateWebViewResponse, { url: string }>
   deleteWebview: MutationFunction<DeleteWebViewResponse, { secret: string }>
+  innerRef: React.Ref<WebView>
+  onNavigationStateChange: (navState: WebViewNavigation) => void
+}
+
+type OuterProps = {
+  uri: string
+  onNavigationStateChange: (navState: WebViewNavigation) => void
 }
 
 type State = {
@@ -139,11 +151,16 @@ type State = {
   webviewSecret?: string
 }
 
-const AuthenticatedWebView = compose(
+const AuthenticatedWebViewGraphQL = compose<Props, {innerRef: React.Ref<WebView>}>(
   graphql(createWebview, { name: "createWebview" }),
   graphql(deleteWebview, { name: "deleteWebview" }),
-)(AuthenticatedWebViewComponent as any);
+)(AuthenticatedWebViewComponent);
 
+const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>((props, ref) => (
+  <AuthenticatedWebViewGraphQL innerRef={ref} {...props}/>
+));
 
-export { AuthenticatedWebView };
+AuthenticatedWebViewComponentForwardRef.displayName = 'AuthenticatedWebViewComponentWrap';
+
+export { AuthenticatedWebViewComponentForwardRef as AuthenticatedWebView };
 
