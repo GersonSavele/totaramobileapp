@@ -35,13 +35,3 @@ target 'TotaraMobileApp' do
 
   use_native_modules!
 end
-
-target 'TotaraMobileApp-tvOS' do
-  # Pods for TotaraMobileApp-tvOS
-
-  target 'TotaraMobileApp-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
