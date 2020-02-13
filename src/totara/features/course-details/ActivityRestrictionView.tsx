@@ -21,7 +21,7 @@
  *
  */
 
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, Modal, Image, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -76,7 +76,7 @@ const ActivityRestrictionView = ({description, onClose} : Props) => {
                   color: theme.colorNeutral6
                 }}
               >
-                {translate("activity_not_available.description_01") + description + translate("activity_not_available.description_02")}
+                {description}
               </Text>
             </View>
           </View>

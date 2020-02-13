@@ -98,8 +98,16 @@
     "tertiary_title" : "Cancel"
   },
   "activity_not_available": {
-    "title" : "This activity is not available unless",
-    "description_01": "The activity ",
-    "description_02": " is marked complete\nYour language is English(en)"
+    "title" : "This activity is not available unless"
+  },
+  "course_overview_progress" : {
+    "title" : "Your course progress",
+    "progress_status_init": "Haven't started the course",
+    "progress_status_mid" : "Almost there! Keep going",
+    "progress_status_final": "Good start! Keep going"
+  },
+  "course_overview_grade" : {
+    "title" : "Your grade overview",
+    "progress_status": "Out of "
   }
 }

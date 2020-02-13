@@ -26,7 +26,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Switch,
+  Switch,//To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented    
   Dimensions
 } from "react-native";
 import { withNavigation } from "react-navigation";
@@ -198,17 +198,17 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: 350,
-    minHeight: 300
+    maxHeight: 340,
+    minHeight: 320
   },
   itemImage: {
-    flex: 3,
-    minHeight: 150
+    flex: 2.5,
+    minHeight: normalize(160)
   },
   itemCard: {
     flex: 0.6,
-    maxHeight: 80,
-    minHeight: 60
+    maxHeight: normalize(100),
+    minHeight: normalize(70)
   },
   tabBarContainer: {
     flex: 0.25,

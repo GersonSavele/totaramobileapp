@@ -27,7 +27,7 @@ import {
   View,
   FlatList
 } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { ContentIcon } from "@totara/components";
 import { normalize, ThemeContext } from "@totara/theme";
 import { ActivitySheetConsumer } from "@totara/activities";
@@ -98,10 +98,10 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
       <TouchableOpacity
         style={styles.headerViewContainer}
         onPress={onClose}>
-        <Text
+        <Text numberOfLines={1}
           style={[
             theme.textH3,
-            { fontWeight: "bold", color: theme.colorNeutral6 }
+            { fontWeight: "bold", color: theme.colorNeutral6, flex: 3 }
           ]}
         >
           {title}
@@ -113,6 +113,7 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
             {
               color: theme.colorNeutral6,
               backgroundColor: theme.colorNeutral2,
+              flex: 1
             }
           ]}
         >
@@ -407,11 +408,12 @@ const styles = StyleSheet.create({
   },
   notAvailableText : {
     fontWeight: "500",
-    borderRadius: 8,
+    borderRadius: 12,
     margin: 4,
     fontSize: normalize(11),
     paddingRight: 4,
-    paddingLeft: 4
+    paddingLeft: 4,
+    textAlign: "center"
   }
 });
 

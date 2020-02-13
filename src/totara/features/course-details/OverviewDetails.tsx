@@ -33,6 +33,7 @@ import React, { useContext } from "react";
 import { normalize, ThemeContext } from "@totara/theme";
 import { Course } from "@totara/types";
 import { AddBadge } from "@totara/components";
+import { translate } from "@totara/locale";
 
 
 const OverviewDetails = ({ course }: { course: Course }) => {
@@ -44,12 +45,16 @@ const OverviewDetails = ({ course }: { course: Course }) => {
         borderRadius: normalize(10),
         shadowColor: theme.colorNeutral8,
         shadowOpacity: 0.16,
-        shadowRadius: normalize(13),
+        shadowRadius: normalize(14),
         backgroundColor: theme.colorNeutral1,
-        borderWidth: 1,
-        borderColor: theme.colorNeutral3,
+        borderWidth: 0.5,
+        borderColor: theme.colorNeutral2,
         marginBottom: normalize(16),
-        marginTop: normalize(16)
+        marginTop: normalize(16),
+        shadowOffset: {
+          width: 0,
+          height: 10
+        }
       },
       content: {
         borderRadius: normalize(10),
@@ -62,7 +67,7 @@ const OverviewDetails = ({ course }: { course: Course }) => {
         flexDirection: "column",
         flex: 5,
         margin: 16,
-        maxWidth: Dimensions.get("window").width * 0.5
+        maxWidth: Dimensions.get("window").width * 0.6
       }
     });
 
@@ -100,19 +105,19 @@ const OverviewDetails = ({ course }: { course: Course }) => {
     );
   };
 
-  let progressStatus = "Haven't started the course";
+  let progressStatus = translate("course_overview_progress.progress_status_init");
   let progress = 0;
   let userGradeFinal = 0;
   let userGradeMax = 0;
   if (course.completion) {
     if (course.completion.progress && course.completion.progress > 50) {
-      progressStatus = "Almost there! Keep going";
+      progressStatus = translate("course_overview_progress.progress_status_final");
       progress = course.completion.progress;
     } else if (
       course.completion.progress &&
       course.completion.progress < 50 && course.completion.progress != 0
     ) {
-      progressStatus = "Good start! Keep going";
+      progressStatus = translate("course_overview_progress.progress_status_mid");
       progress = course.completion.progress;
     }
     userGradeFinal = course.completion.gradefinal;
@@ -122,15 +127,15 @@ const OverviewDetails = ({ course }: { course: Course }) => {
   const item = [
     {
       id: 1,
-      title: "Your course progress",
+      title: translate("course_overview_progress.title"),
       description: progressStatus,
       value: progress
     },
     {
       id: 2,
-      title: "Your grade overview",
+      title: translate("course_overview_grade.title"),
       description:
-        "Out of " + (userGradeMax != 0 ? userGradeMax.toString() : "0"),
+        translate("course_overview_grade.progress_status") + (userGradeMax != 0 ? userGradeMax.toString() : "0"),
       value: userGradeFinal
     }
   ];
@@ -143,7 +148,7 @@ const OverviewDetails = ({ course }: { course: Course }) => {
           horizontal={true}
           contentContainerStyle={{ padding: 16 }}
           showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={() => <View style={{ margin: 16 }} />}
+          ItemSeparatorComponent={() => <View style={{ margin: 6 }} />}
           data={item}
           keyExtractor={item => item.title.toString()}
           renderItem={renderItem}
@@ -184,15 +189,15 @@ const CourseSummary = ({ course }: { course: Course }) => {
 const ProgressCircle = ({ value }: { value: number }) => {
   return (
     <View style={styles.badgeContainer}>
-      <AddBadge status={value} size={16}></AddBadge>
+      <AddBadge status={value} size={normalize(24)}></AddBadge>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   badgeContainer: {
-    marginLeft: 16,
-    marginBottom: 16
+    marginLeft: normalize(32),
+    marginBottom: normalize(32)
   }
 });
 
