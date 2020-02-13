@@ -31,11 +31,21 @@ import SafeAreaView from "react-native-safe-area-view";
 import { ThemeContext } from "@totara/theme";
 
 type contextData = {
+  /**
+   * set the activity, and the activity sheet will be visible and use the right component
+   * @param activity
+   */
   setCurrentActivity: (activity: ActivityType) => void
+  /**
+   * set a callback to called when the activity sheet closes
+   * @param onCloseCallback
+   */
+  setOnClose: (onCloseCallback: () => {}) => void
 }
 
 const ActivitySheetContext = React.createContext<contextData>({
-  setCurrentActivity: () => {}
+  setCurrentActivity: () => {},
+  setOnClose: () => {}
 });
 
 export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
@@ -60,12 +70,14 @@ export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
  * </ActivitySheetConsumer/>
  */
 
+const initialState = {
+  currentActivity: undefined,
+  onClose: () => {},
+  show: false
+};
+
 export class ActivitySheetProvider extends React.Component {
-  state = {
-    setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
-    currentActivity: undefined,
-    show: false
-  };
+  state = initialState;
 
   setCurrentActivity(activity: ActivityType) {
     this.setState({
@@ -74,17 +86,25 @@ export class ActivitySheetProvider extends React.Component {
     })
   }
 
-  onClose = () => {
+  setOnClose(onAfterCloseFunc: () => {}) {
     this.setState({
-      currentActivity: undefined,
-      show: false
+      onClose: onAfterCloseFunc
     })
+  }
+
+  onClose = () => {
+    this.state.onClose();
+    this.setState(initialState);
   };
 
   render() {
     return(
       <View style ={{flex:1}}>
-      <ActivitySheetContext.Provider value={this.state}>
+      <ActivitySheetContext.Provider value={{
+        ...this.state,
+        setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
+        setOnClose: (onCloseCallback: () => {}) => this.setOnClose(onCloseCallback)
+      }}>
         {this.props.children}
         {
           (this.state.currentActivity) &&
@@ -115,7 +135,7 @@ const ActivitySheet = ({currentActivity, onClose}: Props) => {
       </View>
     </SafeAreaView>
   </Modal>);
-}
+};
 
 type Props = {
   currentActivity: ActivityType,

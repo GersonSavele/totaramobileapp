@@ -88,9 +88,12 @@ class ActivityList extends React.Component {
               </AddBadge>
         }
         <ActivitySheetConsumer>
-          {({setCurrentActivity}) => {
+          {({setCurrentActivity, setOnClose}) => {
             return (
-            <TouchableOpacity style={{flex: 1}} onPress={() => setCurrentActivity(item)}>
+            <TouchableOpacity style={{flex: 1}} onPress={() => {
+              setCurrentActivity(item);
+              setOnClose(this.props.onRedisplay);
+            }}>
               <Text numberOfLines={1} style={[theme.textH4, (item.completionstatus) === Status.active ? styles.activeActivityText : styles.activityText]}>{item.name}</Text>
               <Text numberOfLines={1} style={[theme.textB1, styles.activitySummaryText]}>{item.summary}</Text>
               <View style={{flexDirection: "row"}}>
@@ -142,7 +145,8 @@ class ActivityList extends React.Component {
 
 ActivityList.propTypes = {
   moduleGroups: PropTypes.array.isRequired,
-  onScroll: PropTypes.func
+  onScroll: PropTypes.func,
+  onRedisplay: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

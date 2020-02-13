@@ -37,7 +37,7 @@ import ActivityList from "./ActivityList";
 import { getCourse } from "./api";
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
-const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
+const CourseDetails = withNavigation(getCourse(({loading, course, error, refetch}) => {
   if (loading) return <Text>{translate("general.loading")}</Text>;
 
   if (error) {
@@ -46,9 +46,7 @@ const CourseDetails = withNavigation(getCourse(({loading, course, error}) => {
   }
 
   if (course) {
-    return(
-      <CourseDetailsComponent course={course}/>
-    )
+    return(<CourseDetailsComponent course={course} onRedisplay={refetch}/>);
   }
 }));
 
@@ -81,7 +79,7 @@ class CourseDetailsComponent extends React.Component {
  };
 
   render() {
-    const item = this.props.course;
+    const {course: item, onRedisplay} = this.props;
     return (
       <View style={styles.container}>
         <Animatable.View style={styles.learningItem} ref={this.learningItemRef}>
@@ -97,7 +95,7 @@ class CourseDetailsComponent extends React.Component {
             </TouchableOpacity>
           </View>
           { (this.state.showActivities)
-            ? <ActivityList moduleGroups={item.sections} onScroll={this.onScroll}/>
+            ? <ActivityList moduleGroups={item.sections} onScroll={this.onScroll} onRedisplay={onRedisplay}/>
             : <View>
               <Text>{item.summary}</Text>
               <Text>{item.startdate}</Text>
@@ -113,7 +111,8 @@ class CourseDetailsComponent extends React.Component {
 }
 
 CourseDetailsComponent.propTypes = {
-  course: PropTypes.object.isRequired
+  course: PropTypes.object.isRequired,
+  onRedisplay: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
