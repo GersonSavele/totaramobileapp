@@ -33,7 +33,8 @@ export interface System {
     release : string,
     request_policy_agreement : boolean,
     request_user_consent: boolean,
-    request_user_fields :boolean
+    request_user_fields :boolean,
+    password_change_required: boolean
 }
 
 export interface Me {

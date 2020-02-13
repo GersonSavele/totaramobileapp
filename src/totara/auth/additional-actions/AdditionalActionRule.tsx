@@ -40,7 +40,8 @@ const AdditionalActionRule = ({ children }: Params) => {
           AdditionalActionRuleCondition(
             data.me.system.request_policy_agreement,
             data.me.system.request_user_consent,
-            data.me.system.request_user_fields
+            data.me.system.request_user_fields,
+            data.me.system.password_change_required
           )
         ) {
           return (
@@ -57,9 +58,11 @@ const AdditionalActionRule = ({ children }: Params) => {
 const AdditionalActionRuleCondition = (
   policyAgreement: boolean,
   userConsent: boolean,
-  userFields: boolean
+  userFields: boolean,
+  changePassword: boolean
+  
 ) => {
-  if (policyAgreement || userConsent || userFields) {
+  if (policyAgreement || userConsent || userFields || changePassword) {
     return true;
   } else {
     return false;

@@ -52,6 +52,7 @@ query totara_mobile_me {
             request_policy_agreement,
             request_user_consent,
             request_user_fields,
+            password_change_required,
         }
     }
 }
