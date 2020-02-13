@@ -114,61 +114,53 @@ describe("AdditionalActionRule, Apollo MockedProvider should test three state su
 });
 
 describe("AdditionalActionRuleCondition, Passing different bool params which relate policyAgreement,userConsent,userFields and get a bool value", () => {
-  it("Test result : if all bool values are true it should return true", () => {
-    const actualResult = AdditionalActionRuleCondition(true, true, true, true);
-    expect(actualResult).toBe(true);
-  });
+  it("It should return true for any of passing booleans are true, and return false for all the passing values are false", () => {
+    let actualResultSingle = AdditionalActionRuleCondition(true, false, false, false);
+    expect(actualResultSingle).toBe(true);
 
-  it("Test result : if either once bool value are true it should return true", () => {
-    let actualResult = AdditionalActionRuleCondition(true, false, false, false);
-    expect(actualResult).toBe(true);
+    actualResultSingle = AdditionalActionRuleCondition(false, true, false, false);
+    expect(actualResultSingle).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(false, true, false, false);
-    expect(actualResult).toBe(true);
+    actualResultSingle = AdditionalActionRuleCondition(false, false, true, false);
+    expect(actualResultSingle).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(false, false, true, false);
-    expect(actualResult).toBe(true);
+    actualResultSingle = AdditionalActionRuleCondition(false, false, false, true);
+    expect(actualResultSingle).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(false, false, false, true);
-    expect(actualResult).toBe(true);
-  });
+    let actualResultDouble = AdditionalActionRuleCondition(true, true, false, false);
+    expect(actualResultDouble).toBe(true);
 
-  it("Test result : if non of the bool value are true it should return false", () => {
-    const actualResult = AdditionalActionRuleCondition(false, false, false, false);
-    expect(actualResult).toBe(false);
-  });
+    actualResultDouble = AdditionalActionRuleCondition(true, false, true, false);
+    expect(actualResultDouble).toBe(true);
 
-  it("Test result : if two booleans are true, it should return true", () => {
-    let actualResult = AdditionalActionRuleCondition(true, true, false, false);
-    expect(actualResult).toBe(true);
+    actualResultDouble = AdditionalActionRuleCondition(true, false, false, true);
+    expect(actualResultDouble).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(true, false, true, false);
-    expect(actualResult).toBe(true);
+    actualResultDouble = AdditionalActionRuleCondition(false, true, true, false);
+    expect(actualResultDouble).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(true, false, false, true);
-    expect(actualResult).toBe(true);
+    actualResultDouble = AdditionalActionRuleCondition(false, true, false, true);
+    expect(actualResultDouble).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(false, true, true, false);
-    expect(actualResult).toBe(true);
+    actualResultDouble = AdditionalActionRuleCondition(false, false, true, true);
+    expect(actualResultDouble).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(false, true, false, true);
-    expect(actualResult).toBe(true);
+    let actualResultThribble = AdditionalActionRuleCondition(true, true, true, false);
+    expect(actualResultThribble).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(false, false, true, true);
-    expect(actualResult).toBe(true);
-  });
+    actualResultThribble = AdditionalActionRuleCondition(true, true, false, true);
+    expect(actualResultThribble).toBe(true);
 
-  it("Test result : if three booleans are true, it should return true", () => {
-    let actualResult = AdditionalActionRuleCondition(true, true, true, false);
-    expect(actualResult).toBe(true);
+    actualResultThribble = AdditionalActionRuleCondition(true, false, true, true);
+    expect(actualResultThribble).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(true, true, false, true);
-    expect(actualResult).toBe(true);
+    actualResultThribble = AdditionalActionRuleCondition(false, true, true, true);
+    expect(actualResultThribble).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(true, false, true, true);
-    expect(actualResult).toBe(true);
+    const actualResultAll = AdditionalActionRuleCondition(true, true, true, true);
+    expect(actualResultAll).toBe(true);
 
-    actualResult = AdditionalActionRuleCondition(false, true, true, true);
-    expect(actualResult).toBe(true);
+    const actualResultNone = AdditionalActionRuleCondition(false, false, false, false);
+    expect(actualResultNone).toBe(false);
   });
 });
