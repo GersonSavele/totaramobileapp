@@ -20,20 +20,26 @@
  */
 
 import React, { useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView
-} from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { Cell, TableView } from "react-native-tableview-simple";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { Query } from "react-apollo";
 import { AuthConsumer } from "@totara/core";
-import { Log } from "@totara/lib";
 import { NavigationInjectedProps } from "react-navigation";
 import { NAVIGATION_SETTING } from "@totara/lib/Constant";
 import { ThemeContext } from "@totara/theme";
+import { UserOwnProfile } from "./api";
+import GeneralErrorModal from "@totara/components/GeneralErrorModal";
+import { UserProfile } from "@totara/types";
+
+type Response = {
+  profile: UserProfile;
+};
+
+type ProfileViewProps = {
+  profile: UserProfile
+  navigation:  NavigationInjectedProps
+}
 
 const Profile = ({ navigation }: NavigationInjectedProps) => {
   useEffect(() => {
@@ -41,54 +47,67 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
     // We should remove following line from inside of useEffect once they update their library
     navigation.setParams({ title: "Profile" });
   }, []);
+  return (
+    <Query<Response> query={UserOwnProfile}>
+      {({ loading, data, error }) => {
+        if (loading) return <Text>Loading...</Text>
+        if (error) return <GeneralErrorModal />
+        if (data) {
+          return <ProfileViewDidAppear profile = {data.profile} navigation = {navigation}/>
+        }
+      }}
+    </Query>
+  );
+};
+
+const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={[theme.viewContainer]}>
-      <View style={{backgroundColor : theme.colorSecondary1}}>
+      <View style={{ backgroundColor: theme.colorSecondary1 }}>
         <View style={styles.headerContent}>
           <Image
             style={styles.avatar}
             source={{
-              uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+              uri: profile.profileimage
             }}
           />
-          <Text style={[theme.textH3]}>John Doe </Text>
-          <Text style={[theme.textB3, { color: theme.textColorSubdued }]}>
-            jhonnydoe@mail.com
+          <Text style={[theme.textH3]}>
+            {profile.firstname} {profile.username}
           </Text>
-          <Text style={[theme.textSmall, { color: theme.textColorSubdued, marginTop : 4 }]}>
-            Logged in as : Florida
+          <Text style={[theme.textB3, { color: theme.textColorSubdued }]}>
+            {profile.email}
+          </Text>
+          <Text
+            style={[
+              theme.textSmall,
+              { color: theme.textColorSubdued, marginTop: 4 }
+            ]}
+          >
+            Logged in as : {profile.username}
           </Text>
         </View>
       </View>
       <View style={styles.info}>
         <Text style={[theme.textH2]}>Manage</Text>
       </View>
-      <ScrollView contentContainerStyle={{backgroundColor : theme.colorSecondary1}}>
+      <ScrollView
+        contentContainerStyle={{ backgroundColor: theme.colorSecondary1 }}
+      >
         <TableView>
-          <Cell
+          {/* <Cell // To Do : this ui for future implementation
             cellContentView={
-              <Text
-                style={[
-                  theme.textB2,
-                  {width: wp("100%") - 50}
-                ]}
-              >
+              <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
                 Your profile
               </Text>
             }
             onPress={() => Log.debug("Cell is clicked")}
             accessory="DisclosureIndicator"
           />
-          <View style={{ height: 1, paddingLeft: 20 }}></View>
+          <View style={{ height: 1, paddingLeft: 20 }}></View> */}
           <Cell
             cellContentView={
-              <Text
-                style={[
-                  theme.textB2,
-                  {width: wp("100%") - 50}
-                ]}
-              >
+              <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
                 Settings
               </Text>
             }
@@ -102,13 +121,7 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
             {auth => (
               <Cell
                 cellContentView={
-                  <Text
-                    style={[
-                      theme.textB2,
-                      {width: wp("100%") - 50
-                      }
-                    ]}
-                  >
+                  <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
                     Logout
                   </Text>
                 }
@@ -147,6 +160,6 @@ const styles = StyleSheet.create({
     height: 30,
     marginTop: 16,
     marginLeft: 15,
-    marginBottom: 16,
+    marginBottom: 16
   }
 });
