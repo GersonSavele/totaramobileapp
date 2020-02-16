@@ -71,7 +71,8 @@ const query = gql`
 export type CourseResponse = {
   loading : boolean,
   course : Course,
-  error : Error
+  error : Error,
+  refetch : () => {}
 }
 
 type CourseId = {

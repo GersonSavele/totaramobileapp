@@ -40,21 +40,27 @@ import ActivityList from "./ActivityList";
 import OverviewDetails from "./OverviewDetails"
 import { ThemeContext } from "@totara/theme";
 
+type CourseDetailsProps = {
+  course: Course,
+  refetch : () => {}
+}
+
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
 const CourseDetails = withNavigation(
-  getCourse(({ loading, course, error }: CourseResponse) => {
+  getCourse(({ loading, course, error, refetch }: CourseResponse) => {
+   
     if (loading) return <Text>{translate("general.loading")}</Text>;
     if (error) {
       Log.error("Error getting course details", error);
-      return <GeneralErrorModal siteUrl="" />;
+      return <GeneralErrorModal siteUrl= "" />;
     }
     if (course) {
-      return <CourseDetailsComponent course={course} />;
+      return <CourseDetailsComponent course={course} refetch = {refetch}/>;
     }
   })
 );
 
-const CourseDetailsComponent = ({ course }: { course: Course }) => {
+const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
   const [showActivities, setShowActivities] = useState(false);
   const [theme] = useContext(ThemeContext);
   return (
@@ -154,14 +160,14 @@ const CourseDetailsComponent = ({ course }: { course: Course }) => {
             { backgroundColor: theme.colorNeutral1 }
           ]}
         >
-          {showActivities ? <Activities course={course} /> : <OverviewDetails course = {course}/>}
+          {showActivities ? <Activities course={course} refetch = {refetch}/> : <OverviewDetails course = {course}/>}
         </View>
       </View>
     </ScrollView>
   );
 };
 
-const Activities = ({ course }: { course: Course }) => {
+const Activities = ({ course, refetch }: CourseDetailsProps) => {
   //To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented   
  
   // const [theme] = useContext(ThemeContext);
@@ -187,7 +193,7 @@ const Activities = ({ course }: { course: Course }) => {
           }}
         />
       </View> */}
-      <ActivityList sections={course.sections} />
+      <ActivityList sections={course.sections} refetch = {refetch}/>
     </View>
   );
 };

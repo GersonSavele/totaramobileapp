@@ -40,6 +40,7 @@ import { AppliedTheme } from "@totara/theme/Theme";
 type ActivityProps = {
   item: Activity;
   theme : AppliedTheme;
+  refetch? : () => {}
 }
 
 type BuildContentProps = {
@@ -53,18 +54,32 @@ type CellExpandUIProps = {
   title: string;
 };
 
-const ActivityList = ({ sections }: { sections: [Section] }) => {
+type ActivityListProps = {
+  sections: [Section];
+  refetch : () => {}
+}
+
+type ActivityUIProps = {
+  refetch : () => {};
+  section : Section;
+}
+
+type ActivityListBodyProps= {
+  data?: Array<Activity>;
+  refetch : () => {}
+}
+const ActivityList = ({ sections , refetch }: ActivityListProps) => {
   return (
     <FlatList
       data={sections}
       renderItem={({ item }) => {
-        return <ActivityUI section={item} />;
+        return <ActivityUI section={item} refetch = {refetch}/>;
       }}
     />
   );
 };
 
-const ActivityUI = ({ section }: { section: Section }) => {
+const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
   const [show, setShow] = useState(false);
   const activities = section.data as Array<Activity>;
   const { title } = section;
@@ -82,7 +97,7 @@ const ActivityUI = ({ section }: { section: Section }) => {
         )}
       
       </TouchableOpacity>
-      {show && <ActivityListBody data={section.data}></ActivityListBody>}
+      {show && <ActivityListBody data={section.data} refetch = {refetch}></ActivityListBody>}
     </View>
   );
 };
@@ -237,7 +252,7 @@ const BuildContent = ({ completion, completionStatus, theme }: BuildContentProps
   }
 };
 
-const ActivityListBody = ({ data }: { data?: Array<Activity> }) => {
+const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   const [theme] = useContext(ThemeContext);
 
   if (data && data.length != 0) {
@@ -250,9 +265,9 @@ const ActivityListBody = ({ data }: { data?: Array<Activity> }) => {
             <View key={key}>
               {item.completion == "tracking_none" ||
               item.completionstatus == "unknown" ? (
-                <ActivityLock item={item} theme = {theme}/>
+                <ActivityLock item={item} theme = {theme} />
               ) : (
-                <ActivityUnLock item={item} theme = {theme}/>
+                <ActivityUnLock item={item} theme = {theme}  refetch = {refetch}/>
               )}
 
               {data.length - 1 === key ? null : (
@@ -273,15 +288,19 @@ const ActivityListBody = ({ data }: { data?: Array<Activity> }) => {
   }
 };
 
-const ActivityUnLock = ({item, theme }: ActivityProps) => {
+const ActivityUnLock = ({item, theme, refetch }: ActivityProps) => {
+  console.log("print ---", refetch)
   return (
     <View>
       <ActivitySheetConsumer>
-        {({ setCurrentActivity }) => {
+        {({ setCurrentActivity , setOnClose}) => {
           return (
             <TouchableOpacity
               style={{ flex: 1 }}
-              onPress={() => setCurrentActivity(item)}
+              onPress={() => {
+                setCurrentActivity(item);
+                setOnClose(refetch!);
+              }}
             >
               <View style={styles.activityBodyContainer}>
                 <BuildContent
