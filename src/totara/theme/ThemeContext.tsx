@@ -18,9 +18,10 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React, { ReactNode, useState, Dispatch, SetStateAction } from "react";
+import React, { ReactNode, useState, Dispatch, SetStateAction, useContext } from "react";
 
-import { AppliedTheme, TotaraTheme } from "./Theme";
+import { AppliedTheme, TotaraTheme, applyTheme } from "./Theme";
+import { AuthContext } from "@totara/core";
 
 type Props = {
   children: ReactNode;
@@ -29,8 +30,12 @@ type Props = {
 const ThemeContext = React.createContext<[AppliedTheme, Dispatch<SetStateAction<AppliedTheme>>]>([TotaraTheme, () => {}]);
 
 const ThemeProvider = ( { children }: Props) => {
+
+  const { authContextState: {appState} } = useContext(AuthContext);
+  const customerTheme = (appState && appState.siteInfo && appState.siteInfo.theme) ? applyTheme(appState.siteInfo.theme) : TotaraTheme;
+
   return (
-    <ThemeContext.Provider value={ useState(TotaraTheme) }>
+    <ThemeContext.Provider value={ useState(customerTheme) }>
       { children }
     </ThemeContext.Provider>
   );

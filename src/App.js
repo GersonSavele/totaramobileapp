@@ -122,8 +122,8 @@ class App extends React.Component<{}> {
 
   render() {
     return (
-      <ThemeProvider>
-        <AuthProvider asyncStorage={AsyncStorage}>
+      <AuthProvider asyncStorage={AsyncStorage}>
+        <ThemeProvider>
           <AuthFlow>
             <ActivitySheetProvider>
               <AppContainer />
@@ -131,13 +131,14 @@ class App extends React.Component<{}> {
             <AdditionalAction />
             <AppModal />
           </AuthFlow>
-        </AuthProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+       </AuthProvider>
     );
   }
 }
 const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
+  console.log('i am here appcontainer..........');
   const AppMainNavigation = createAppContainer(tabNavigation(theme));
 
 return (
