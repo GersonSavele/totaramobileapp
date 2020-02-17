@@ -36,17 +36,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import ActivityRestrictionView from "./ActivityRestrictionView";
 import { AppliedTheme } from "@totara/theme/Theme";
 
+// To Do : refetch props should be removed from going nested component(MOB-381)
 
 type ActivityProps = {
   item: Activity;
-  theme : AppliedTheme;
-  refetch? : () => {}
-}
+  theme: AppliedTheme;
+  refetch?: () => {};
+};
 
 type BuildContentProps = {
   completion?: string;
   completionStatus?: string;
-  theme : AppliedTheme;
+  theme: AppliedTheme;
 };
 
 type CellExpandUIProps = {
@@ -56,24 +57,24 @@ type CellExpandUIProps = {
 
 type ActivityListProps = {
   sections: [Section];
-  refetch : () => {}
-}
+  refetch: () => {};
+};
 
 type ActivityUIProps = {
-  refetch : () => {};
-  section : Section;
-}
+  refetch: () => {};
+  section: Section;
+};
 
-type ActivityListBodyProps= {
+type ActivityListBodyProps = {
   data?: Array<Activity>;
-  refetch : () => {}
-}
-const ActivityList = ({ sections , refetch }: ActivityListProps) => {
+  refetch: () => {};
+};
+const ActivityList = ({ sections, refetch }: ActivityListProps) => {
   return (
     <FlatList
       data={sections}
       renderItem={({ item }) => {
-        return <ActivityUI section={item} refetch = {refetch}/>;
+        return <ActivityUI section={item} refetch={refetch} />;
       }}
     />
   );
@@ -95,9 +96,13 @@ const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
         ) : (
           <SectionDataNotAvailable {...section} />
         )}
-      
       </TouchableOpacity>
-      {show && <ActivityListBody data={section.data} refetch = {refetch}></ActivityListBody>}
+      {show && (
+        <ActivityListBody
+          data={section.data}
+          refetch={refetch}
+        ></ActivityListBody>
+      )}
     </View>
   );
 };
@@ -107,13 +112,12 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
   const [show, setShow] = useState(false);
   const onClose = () => {
     setShow(!show);
-  }
+  };
   return (
-    <View >
-      <TouchableOpacity
-        style={styles.headerViewContainer}
-        onPress={onClose}>
-        <Text numberOfLines={1}
+    <View>
+      <TouchableOpacity style={styles.headerViewContainer} onPress={onClose}>
+        <Text
+          numberOfLines={1}
           style={[
             theme.textH3,
             { fontWeight: "bold", color: theme.colorNeutral6, flex: 3 }
@@ -135,7 +139,12 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
           Not available
         </Text>
       </TouchableOpacity>
-      {show && <ActivityRestrictionView description={availablereason == null ? "" : availablereason} onClose = {onClose}/>}
+      {show && (
+        <ActivityRestrictionView
+          description={availablereason == null ? "" : availablereason}
+          onClose={onClose}
+        />
+      )}
     </View>
   );
 };
@@ -160,9 +169,13 @@ const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
       )}
     </View>
   );
-}
+};
 
-const BuildContent = ({ completion, completionStatus, theme }: BuildContentProps) => {
+const BuildContent = ({
+  completion,
+  completionStatus,
+  theme
+}: BuildContentProps) => {
   if (
     completion == "tracking_automatic" &&
     completionStatus == "complete_pass"
@@ -265,9 +278,9 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
             <View key={key}>
               {item.completion == "tracking_none" ||
               item.completionstatus == "unknown" ? (
-                <ActivityLock item={item} theme = {theme} />
+                <ActivityLock item={item} theme={theme} />
               ) : (
-                <ActivityUnLock item={item} theme = {theme}  refetch = {refetch}/>
+                <ActivityUnLock item={item} theme={theme} refetch={refetch} />
               )}
 
               {data.length - 1 === key ? null : (
@@ -288,12 +301,11 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   }
 };
 
-const ActivityUnLock = ({item, theme, refetch }: ActivityProps) => {
-  console.log("print ---", refetch)
+const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
   return (
     <View>
       <ActivitySheetConsumer>
-        {({ setCurrentActivity , setOnClose}) => {
+        {({ setCurrentActivity, setOnClose }) => {
           return (
             <TouchableOpacity
               style={{ flex: 1 }}
@@ -305,7 +317,8 @@ const ActivityUnLock = ({item, theme, refetch }: ActivityProps) => {
               <View style={styles.activityBodyContainer}>
                 <BuildContent
                   completion={item.completion as string}
-                  completionStatus={item.completionstatus as string} theme = {theme}
+                  completionStatus={item.completionstatus as string}
+                  theme={theme}
                 ></BuildContent>
                 <View style={styles.activityBodyUnLockContainer}>
                   <Text
@@ -330,20 +343,19 @@ const ActivityUnLock = ({item, theme, refetch }: ActivityProps) => {
   );
 };
 
-const ActivityLock = ({item, theme }: ActivityProps) => {
+const ActivityLock = ({ item, theme }: ActivityProps) => {
   const [show, setShow] = useState(false);
   const onClose = () => {
     setShow(!show);
-  }
+  };
   return (
     <View>
-      <TouchableOpacity
-        style={{ flex: 1 }}
-        onPress={onClose}>
+      <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
         <View style={styles.activityBodyContainer}>
           <BuildContent
             completion={item.completion as string}
-            completionStatus={item.completionstatus as string} theme = {theme}
+            completionStatus={item.completionstatus as string}
+            theme={theme}
           ></BuildContent>
           <View style={styles.activityBodyLockContainer}>
             <Text
@@ -367,7 +379,12 @@ const ActivityLock = ({item, theme }: ActivityProps) => {
           </View>
         </View>
       </TouchableOpacity>
-      {show && <ActivityRestrictionView description={item.availablereason  == null ? "" : item.availablereason} onClose = {onClose}/>}
+      {show && (
+        <ActivityRestrictionView
+          description={item.availablereason == null ? "" : item.availablereason}
+          onClose={onClose}
+        />
+      )}
     </View>
   );
 };
@@ -425,7 +442,7 @@ const styles = StyleSheet.create({
   activityBodySeparator: {
     height: 0.5
   },
-  notAvailableText : {
+  notAvailableText: {
     fontWeight: "500",
     borderRadius: 12,
     margin: 4,

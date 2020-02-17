@@ -100,6 +100,9 @@
   "activity_not_available": {
     "title" : "This activity is not available unless"
   },
+  "course_overview":  {
+    "course_summery" : "Course summary"
+  },
   "course_overview_progress" : {
     "title" : "Your course progress",
     "progress_status_init": "Haven't started the course",

@@ -35,6 +35,10 @@ import { Course } from "@totara/types";
 import { AddBadge } from "@totara/components";
 import { translate } from "@totara/locale";
 
+let progressStatus = translate("course_overview_progress.progress_status_init");
+let progress = 0;
+let userGradeFinal = 0;
+let userGradeMax = 0;
 
 const OverviewDetails = ({ course }: { course: Course }) => {
   const [theme] = useContext(ThemeContext);
@@ -105,19 +109,20 @@ const OverviewDetails = ({ course }: { course: Course }) => {
     );
   };
 
-  let progressStatus = translate("course_overview_progress.progress_status_init");
-  let progress = 0;
-  let userGradeFinal = 0;
-  let userGradeMax = 0;
   if (course.completion) {
     if (course.completion.progress && course.completion.progress > 50) {
-      progressStatus = translate("course_overview_progress.progress_status_final");
+      progressStatus = translate(
+        "course_overview_progress.progress_status_final"
+      );
       progress = course.completion.progress;
     } else if (
       course.completion.progress &&
-      course.completion.progress < 50 && course.completion.progress != 0
+      course.completion.progress < 50 &&
+      course.completion.progress != 0
     ) {
-      progressStatus = translate("course_overview_progress.progress_status_mid");
+      progressStatus = translate(
+        "course_overview_progress.progress_status_mid"
+      );
       progress = course.completion.progress;
     }
     userGradeFinal = course.completion.gradefinal;
@@ -135,7 +140,8 @@ const OverviewDetails = ({ course }: { course: Course }) => {
       id: 2,
       title: translate("course_overview_grade.title"),
       description:
-        translate("course_overview_grade.progress_status") + (userGradeMax != 0 ? userGradeMax.toString() : "0"),
+        translate("course_overview_grade.progress_status") +
+        (userGradeMax != 0 ? userGradeMax.toString() : "0"),
       value: userGradeFinal
     }
   ];
@@ -174,7 +180,7 @@ const CourseSummary = ({ course }: { course: Course }) => {
     <View style={{ marginLeft: 16, marginRight: 8 }}>
       <View style={{ marginTop: 8 }}>
         <Text numberOfLines={1} style={theme.textH3}>
-          Course summary
+          {translate("course_overview.course_summery")}
         </Text>
       </View>
       <View style={{ marginTop: 16 }}>
