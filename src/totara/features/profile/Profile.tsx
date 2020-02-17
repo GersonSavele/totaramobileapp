@@ -23,12 +23,12 @@ import React, { useEffect, useContext } from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { Cell, TableView } from "react-native-tableview-simple";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { Query } from "react-apollo";
+import { useQuery } from '@apollo/react-hooks';
 import { AuthConsumer } from "@totara/core";
-import { NavigationInjectedProps } from "react-navigation";
+import { NavigationInjectedProps, NavigationParams } from "react-navigation";
 import { NAVIGATION_SETTING } from "@totara/lib/Constant";
 import { ThemeContext } from "@totara/theme";
-import { UserOwnProfile } from "./api";
+import { USER_OWN_PROFILE } from "./api";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
 
@@ -38,7 +38,7 @@ type Response = {
 
 type ProfileViewProps = {
   profile: UserProfile
-  navigation:  NavigationInjectedProps
+  navigation:  NavigationParams
 }
 
 const Profile = ({ navigation }: NavigationInjectedProps) => {
@@ -47,17 +47,13 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
     // We should remove following line from inside of useEffect once they update their library
     navigation.setParams({ title: "Profile" });
   }, []);
-  return (
-    <Query<Response> query={UserOwnProfile}>
-      {({ loading, data, error }) => {
-        if (loading) return <Text>Loading...</Text>
-        if (error) return <GeneralErrorModal />
-        if (data) {
-          return <ProfileViewDidAppear profile = {data.profile} navigation = {navigation}/>
-        }
-      }}
-    </Query>
-  );
+
+  const { loading, error, data } = useQuery(USER_OWN_PROFILE);
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <GeneralErrorModal/>
+  if (data) {
+    return <ProfileViewDidAppear profile = {data.profile} navigation = {navigation}/>
+  }
 };
 
 const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
