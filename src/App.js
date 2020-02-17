@@ -138,12 +138,11 @@ class App extends React.Component<{}> {
 }
 const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
-  console.log('i am here appcontainer..........');
   const AppMainNavigation = createAppContainer(tabNavigation(theme));
-
-return (
+  
+  return (
    <AppMainNavigation screenProps={{ theme: theme }}/>
-);
+  );
 };
 const navigationOptions = (theme, title, backTitle, rightIcon) => ({
   headerStyle: {
