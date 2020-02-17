@@ -162,7 +162,7 @@ const myLearning = createStackNavigator(
     MyLearning: {
       screen: MyLearning,
       navigationOptions: ({ screenProps }) =>
-        navigationOptions(screenProps.theme, null, null, faBell)
+        navigationOptions(screenProps.theme, null, null, /**faBell**/) //TODO: MOB-373 hiding it for beta release
     },
     CourseDetails: {
       screen: CourseDetails,
@@ -245,7 +245,10 @@ const tabNavigation = (theme) => (
           tabBarIcon: ({  focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.current_learning)
         }),
       },
-      Downloads: {
+      /** TODO: MOB-373 hiding it for beta release
+       *
+       *
+       * Downloads: {
         screen: downloads,
         navigationOptions: () => ({
           tabBarIcon: ({ focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.downloads)
@@ -256,7 +259,7 @@ const tabNavigation = (theme) => (
         navigationOptions: () => ({
           tabBarIcon: ({ focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.notifications)
         })
-      },
+      },**/
       Profile: {
         screen: profile,
         navigationOptions: () => ({
