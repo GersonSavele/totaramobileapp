@@ -28,7 +28,7 @@ export type QueryResult = {
   error: Error;
 };
 
-const USER_OWN_PROFILE = gql`
+const userOwnProfile = gql`
   query totara_mobile_user_own_profile {
     profile: core_user_own_profile {
       id
@@ -41,4 +41,4 @@ const USER_OWN_PROFILE = gql`
   }
 `;
 
-export { USER_OWN_PROFILE };
+export { userOwnProfile };

@@ -28,9 +28,11 @@ import { AuthConsumer } from "@totara/core";
 import { NavigationInjectedProps, NavigationParams } from "react-navigation";
 import { NAVIGATION_SETTING } from "@totara/lib/Constant";
 import { ThemeContext } from "@totara/theme";
-import { USER_OWN_PROFILE } from "./api";
+import { userOwnProfile } from "./api";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
+import { AuthContext } from "@totara/core";
+import { AUTHORIZATION } from "@totara/lib/Constant";
 
 type Response = {
   profile: UserProfile;
@@ -48,9 +50,9 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
     navigation.setParams({ title: "Profile" });
   }, []);
 
-  const { loading, error, data } = useQuery(USER_OWN_PROFILE);
+  const { loading, error, data } = useQuery(userOwnProfile);
   if (loading) return <Text>Loading...</Text>
-  if (error) return <GeneralErrorModal/>
+  if (error) return <GeneralErrorModal siteUrl = ""/>
   if (data) {
     return <ProfileViewDidAppear profile = {data.profile} navigation = {navigation}/>
   }
@@ -58,6 +60,8 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
 
 const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
   const [theme] = useContext(ThemeContext);
+  const { authContextState: {appState} } = useContext(AuthContext);
+  const apiKey = appState!.apiKey;
   return (
     <View style={[theme.viewContainer]}>
       <View style={{ backgroundColor: theme.colorSecondary1 }}>
@@ -65,7 +69,11 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
           <Image
             style={styles.avatar}
             source={{
-              uri: profile.profileimage
+              uri: profile.profileimage,
+              headers: {
+                [AUTHORIZATION]: `Bearer ${apiKey}`
+              }
+              
             }}
           />
           <Text style={[theme.textH3]}>
