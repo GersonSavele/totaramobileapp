@@ -77,7 +77,7 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
             }}
           />
           <Text style={[theme.textH3]}>
-            {profile.firstname} {profile.username}
+            {profile.firstname} {profile.surname}
           </Text>
           <Text style={[theme.textB3, { color: theme.textColorSubdued }]}>
             {profile.email}
