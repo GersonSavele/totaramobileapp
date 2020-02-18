@@ -33,6 +33,9 @@ import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
 import { AuthContext } from "@totara/core";
 import { AUTHORIZATION } from "@totara/lib/Constant";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { translate } from "@totara/locale";
 
 type Response = {
   profile: UserProfile;
@@ -59,6 +62,8 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
 };
 
 const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
+  // To Do: Mean while, we need to determine, user profile image is default or not from hacking url which is received from API
+  //However, after fixing api we should clean code in this ticket - MOB-386 
   const [theme] = useContext(ThemeContext);
   const { authContextState: {appState} } = useContext(AuthContext);
   const apiKey = appState!.apiKey;
@@ -66,17 +71,21 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
     <View style={[theme.viewContainer]}>
       <View style={{ backgroundColor: theme.colorSecondary1 }}>
         <View style={styles.headerContent}>
-          <Image
-            style={styles.avatar}
-            source={{
-              uri: profile.profileimage,
-              headers: {
-                [AUTHORIZATION]: `Bearer ${apiKey}`
-              }
-              
-            }}
-          />
-          <Text style={[theme.textH3]}>
+          {profile.profileimage.indexOf("theme/image.php/basis/core/") == -1?
+           <Image
+           style={styles.avatar}
+           source={{
+             uri: profile.profileimage,
+             headers: {
+               [AUTHORIZATION]: `Bearer ${apiKey}`
+             }
+           }}
+         /> : 
+         <View style={[styles.avatar, {backgroundColor: theme.colorNeutral3, alignItems: "center", justifyContent: "center"}]}>
+         <FontAwesomeIcon icon={"user"} color={theme.colorNeutral4} size={65} />
+         </View>
+          }
+          <Text style={[theme.textH2, {fontWeight: "bold"}]}>
             {profile.firstname} {profile.surname}
           </Text>
           <Text style={[theme.textB3, { color: theme.textColorSubdued }]}>
@@ -86,14 +95,13 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
             style={[
               theme.textSmall,
               { color: theme.textColorSubdued, marginTop: 4 }
-            ]}
-          >
-            Logged in as : {profile.username}
+            ]}>
+          {translate("user_profile.login_as")} : {profile.username}
           </Text>
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={[theme.textH2]}>Manage</Text>
+        <Text style={[[theme.textH2, {fontWeight: "bold"}]]}>{translate("user_profile.manage_section")}</Text>
       </View>
       <ScrollView
         contentContainerStyle={{ backgroundColor: theme.colorSecondary1 }}
@@ -112,7 +120,7 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
           <Cell
             cellContentView={
               <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
-                Settings
+                {translate("user_profile.setting_cell")}
               </Text>
             }
             onPress={() => {
@@ -126,7 +134,7 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
               <Cell
                 cellContentView={
                   <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
-                    Logout
+                   {translate("user_profile.logout")}
                   </Text>
                 }
                 onPress={() => {

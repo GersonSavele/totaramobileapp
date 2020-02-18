@@ -112,5 +112,11 @@
   "course_overview_grade" : {
     "title" : "Your grade overview",
     "progress_status": "Out of "
+  },
+  "user_profile" : {
+    "login_as" : "Logged in as",
+    "manage_section" : "Manage",
+    "setting_cell" : "Settings",
+    "logout" : "Logout"
   }
 }
