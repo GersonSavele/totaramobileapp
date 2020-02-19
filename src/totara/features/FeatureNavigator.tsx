@@ -22,15 +22,15 @@
 
 import React, {useContext} from "react";
 import { Image } from "react-native";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, NavigationRouteConfigMap } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"; //TODO: SHOULD IMPORT FROM A GLOBAL EXPORT?
 
 import { TouchableIcon } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
 
-const CourseDetails = require("./course-details").default;
 const MyLearning = require("./my-learning").default;
+const CourseDetails = require("./course-details").default;
 const ProgramDetails = require("./program-details").default;
 const Settings = require("./settings").default;
 const Profile = require("./profile").default;
@@ -47,10 +47,10 @@ const FeatureNavigator = () => {
                         tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
                     },
                 },
-                Downloads: {
+                /**Downloads: {
                     screen: downloadsNavigation,
                     navigationOptions: {
-                       tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
+                       tabBarIcon: (tabIconProps: { focused: boolean, tintColor : string}) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
                     }
                   },
                 Notification: {
@@ -58,7 +58,7 @@ const FeatureNavigator = () => {
                     navigationOptions:{
                        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
                     }
-                },
+                },**/
                 Profile: {
                     screen: profileNavigation,
                     navigationOptions: {
@@ -69,15 +69,25 @@ const FeatureNavigator = () => {
             {
                 initialRouteName: "MyLearning",
                 labeled: false,
-                barStyle: { backgroundColor: theme.colorNeutral1, shadowRadius: 0 },
-                activeTintColor: theme.tabBarActiveTintColor,
-                inactiveTintColor: theme.tabBarInactiveTintColor
+                barStyle: { backgroundColor: theme.colorNeutral1, shadowRadius: 5 },
+                activeColor: theme.tabBarActiveTintColor,
+                inactiveColor: theme.tabBarInactiveTintColor
             }
         )
     )
 };
 
-const myLearningNavigation = createStackNavigator(
+const stackNavigatorBuilder = (routeConfigMap : NavigationRouteConfigMap, initialRouteName: string) => {
+    return createStackNavigator(
+        routeConfigMap,
+        {
+            initialRouteName: initialRouteName,
+            defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
+        }
+    )
+}
+
+const myLearningNavigation = stackNavigatorBuilder(
     {
         MyLearning: {
             screen: MyLearning,
@@ -94,42 +104,27 @@ const myLearningNavigation = createStackNavigator(
             navigationOptions: ({ screenProps } : any) =>
                 navigationOptions(screenProps.theme, null, null, faCloudDownloadAlt)
         }
-    },
-    {
-        initialRouteName: "MyLearning",
-        defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
-    }
-);
+    }, "MyLearning");
 
-const profileNavigation = createStackNavigator(
+
+
+const profileNavigation = stackNavigatorBuilder(
     {
         Profile: Profile,
         Settings: Settings
-    },
-    {
-        initialRouteName: "Profile",
-        defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
-    }
+    },"Profile"
 );
 
-const notificationNavigation = createStackNavigator(
+const notificationNavigation = stackNavigatorBuilder(
     {
         Notification: PlaceHolder
-    },
-    {
-        initialRouteName: "Notification",
-        defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
-    }
+    },"Notification"
 );
 
-const downloadsNavigation = createStackNavigator(
+const downloadsNavigation = stackNavigatorBuilder(
     {
         Downloads: PlaceHolder
-    },
-    {
-        initialRouteName: "Downloads",
-        defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
-    }
+    },"Downloads"
 );
 
 const navigationOptions = (theme: any, title?: any, backTitle?: any, rightIcon?: any) => ({

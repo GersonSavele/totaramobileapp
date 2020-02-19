@@ -65,9 +65,9 @@ import { AuthFlow } from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
+import {FeatureNavigator} from "@totara/features";
 
 import * as notifications from "./Notifications";
-import {FeatureNavigator} from "@totara/features";
 
 class App extends React.Component<{}> {
 
