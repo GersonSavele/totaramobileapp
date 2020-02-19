@@ -29,12 +29,20 @@ import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"; //TODO: 
 import { TouchableIcon } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
 
-const MyLearning = require("./my-learning").default;
-const CourseDetails = require("./course-details").default;
-const ProgramDetails = require("./program-details").default;
-const Settings = require("./settings").default;
-const Profile = require("./profile").default;
-const PlaceHolder = require("./place-holder").default;
+
+// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
+import MyLearning from "./my-learning";
+// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
+import CourseDetails from "./course-details";
+// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
+import ProgramDetails from "./program-details";
+// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
+import Settings from "./settings";
+// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
+import PlaceHolder from "./place-holder";
+
+import Profile from "./profile";
+
 
 const FeatureNavigator = () => {
     const [theme] = useContext(ThemeContext);
