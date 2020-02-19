@@ -26,6 +26,7 @@ import Profile from "./profile";
 import Settings from "./settings";
 import PlaceHolder from "./place-holder";
 import ProgramDetails from "./program-details";
+import FeatureNavigator from "./FeatureNavigator";
 
 export {
   MyLearning,
@@ -33,5 +34,6 @@ export {
   ProgramDetails,
   Profile,
   Settings,
-  PlaceHolder
+  PlaceHolder,
+  FeatureNavigator
 };

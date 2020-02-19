@@ -21,9 +21,7 @@
  */
 
 import React, { useContext } from "react";
-import { Image } from "react-native";
-import { createStackNavigator, createAppContainer } from "react-navigation";
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { createAppContainer } from "react-navigation";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import AsyncStorage from "@react-native-community/async-storage";
 import messaging from "@react-native-firebase/messaging";
@@ -60,17 +58,16 @@ import {
   faCaretDown
 } from "@fortawesome/free-solid-svg-icons";
 
-import { MyLearning, CourseDetails, ProgramDetails, Profile, Settings, PlaceHolder } from "@totara/features";
 import { Log } from "@totara/lib";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/core/AuthProvider";
 import { AuthFlow } from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
-import { TouchableIcon, AppModal } from "@totara/components";
+import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 
 import * as notifications from "./Notifications";
-
+import {FeatureNavigator} from "@totara/features";
 
 class App extends React.Component<{}> {
 
@@ -136,146 +133,16 @@ class App extends React.Component<{}> {
     );
   }
 }
+
 const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
-  const AppMainNavigation = createAppContainer(tabNavigation(theme));
+  const AppMainNavigation = createAppContainer(FeatureNavigator());
   
   return (
    <AppMainNavigation screenProps={{ theme: theme }}/>
   );
 };
-const navigationOptions = (theme, title, backTitle, rightIcon) => ({
-  headerStyle: {
-    borderBottomWidth: 0,
-    backgroundColor: theme.colorSecondary1,
-    shadowOpacity: 0,
-    elevation: 0
-  },
-  title: title,
-  headerBackTitle: null,
-  headerTintColor: theme.navigationHeaderTintColor,
-  headerRight: rightIcon ? <TouchableIcon icon={rightIcon} disabled={false} size={24} color={theme.navigationHeaderTintColor}/> : null,      
-});
 
-const myLearning = createStackNavigator(
-  {
-    MyLearning: {
-      screen: MyLearning,
-      navigationOptions: ({ screenProps }) =>
-        navigationOptions(screenProps.theme, null, null, /**faBell**/) //TODO: MOB-373 hiding it for beta release
-    },
-    CourseDetails: {
-      screen: CourseDetails,
-      navigationOptions: ({ screenProps }) =>
-        navigationOptions(screenProps.theme, null, null)
-    },
-    ProgramDetails: {
-      screen: ProgramDetails,
-      navigationOptions: ({ screenProps }) =>
-        navigationOptions(screenProps.theme, null, null, faCloudDownloadAlt)
-    }
-  },
-  {
-    initialRouteName: "MyLearning",
-    defaultNavigationOptions: ({ screenProps }) =>
-      navigationOptions(screenProps.theme, null, null, null)
-  }
-);
-
-const profile = createStackNavigator(
-  {
-    Profile: Profile,
-    Settings: Settings
-  },
-  {
-    initialRouteName: "Profile",
-    defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
-  }
-);
-
-const notification = createStackNavigator(
-  {
-    Notification: PlaceHolder
-  },
-  {
-    initialRouteName: "Notification",
-    defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
-  }
-);
-
-const downloads = createStackNavigator(
-  {
-    Downloads: PlaceHolder
-  },
-  {
-    initialRouteName: "Downloads",
-    defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
-  }
-);
-
-const tabBarIconImages = {
-  current_learning : {
-    solid: require("@resources/images/tabbar/current_learning_solid.png"),
-    regular: require("@resources/images/tabbar/current_learning_regular.png"),
-  },
-  downloads: {
-    solid: require("@resources/images/tabbar/downloads_solid.png"),
-    regular: require("@resources/images/tabbar/downloads_regular.png")
-  },
-  notifications: {
-    solid: require("@resources/images/tabbar/notifications_solid.png"),
-    regular: require("@resources/images/tabbar/notifications_regular.png"),
-  },
-  profile: {
-    solid: require("@resources/images/tabbar/profile_solid.png"),
-    regular: require("@resources/images/tabbar/profile_regular.png")
-  }
- };
-
-const tabBarIcon = (focused, color, imageSet) => {
-  return <Image source={focused ? imageSet.solid : imageSet.regular} style={{tintColor: color, width: 24, height: 24 }} resizeMode='contain' />
-};
-
-const tabNavigation = (theme) => (
-  createMaterialBottomTabNavigator(
-    {
-      MyLearning: {
-        screen: myLearning,
-        navigationOptions: () => ({
-          tabBarIcon: ({  focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.current_learning)
-        }),
-      },
-      /** TODO: MOB-373 hiding it for beta release
-       *
-       *
-       * Downloads: {
-        screen: downloads,
-        navigationOptions: () => ({
-          tabBarIcon: ({ focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.downloads)
-        })
-      },
-      Notification: {
-        screen: notification,
-        navigationOptions: () => ({
-          tabBarIcon: ({ focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.notifications)
-        })
-      },**/
-      Profile: {
-        screen: profile,
-        navigationOptions: () => ({
-          tabBarIcon: ({ focused, tintColor }) => tabBarIcon(focused, tintColor, tabBarIconImages.profile)
-        })
-      }
-    },
-    {
-      initialRouteName: "MyLearning",
-      labeled: false,
-      barStyle: { backgroundColor: theme.colorNeutral1, shadowRadius: 0 },
-      activeTintColor: theme.tabBarActiveTintColor,
-      inactiveTintColor: theme.tabBarInactiveTintColor
-    }
-  )
-);
 
 // init is needeed for FA to bundle the only needed icons
 // https://github.com/FortAwesome/react-native-fontawesome#build-a-library-to-reference-icons-throughout-your-app-more-conveniently
