@@ -117,7 +117,7 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
             accessory="DisclosureIndicator"
           />
           <View style={{ height: 1, paddingLeft: 20 }}></View> */}
-          <Cell
+          {/* <Cell
             cellContentView={
               <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
                 {translate("user_profile.setting_cell")}
@@ -127,7 +127,7 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
               navigation.navigate(NAVIGATION_SETTING);
             }}
             accessory="DisclosureIndicator"
-          />
+          /> */}
           <View style={{ height: 1, paddingLeft: 20 }}></View>
           <AuthConsumer>
             {auth => (
