@@ -24,9 +24,10 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { gutter, ThemeContext } from "@totara/theme";
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 type Props = {
-  icon: string;
+  icon: IconDefinition | string;
   onPress?: (() => void);
   disabled: boolean;
   color?: string;

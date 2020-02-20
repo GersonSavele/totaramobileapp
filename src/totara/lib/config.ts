@@ -25,7 +25,7 @@ import ConsoleLogger from "./logger/ConsoleLogger";
 const defaultConfig = {
   urlProtocol: "https",
   mobileApi: {
-    persistentQuery: false
+    persistentQuery: true
   },
   userAgent: "TotaraMobileApp",
   apiUri: (host: string) => (`${host}/totara/mobile/api.php`),
@@ -38,7 +38,12 @@ const defaultConfig = {
   nativeLoginUri: (host: string) => (`${host}/totara/mobile/login.php`),
   appLinkDomain: "https://mobile.totaralearning.com",
   deepLinkSchema: "totara://",
-  minApiVersion: "2019111100" // "disabled"
+  minApiVersion: "2019111100", // "disabled"
+
+  features:{
+    downloads: false,
+    notifications: false
+  }
 };
 
 export const internalConfig = {
