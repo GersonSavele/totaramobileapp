@@ -25,10 +25,11 @@ import { Image } from "react-native";
 import { createStackNavigator, NavigationRouteConfigMap } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"; //TODO: SHOULD IMPORT FROM A GLOBAL EXPORT?
-
-import { TouchableIcon } from "@totara/components";
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { ThemeContext } from "@totara/theme";
-
+import { Theme } from "@totara/types";
+import { TouchableIcon } from "@totara/components";
+import { config } from "@totara/lib";
 
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import MyLearning from "./my-learning";
@@ -43,39 +44,22 @@ import PlaceHolder from "./place-holder";
 
 import Profile from "./profile";
 
-
 const FeatureNavigator = () => {
     const [theme] = useContext(ThemeContext);
     return(
         createMaterialBottomTabNavigator(
             {
-                MyLearning : {
-                    screen: myLearningNavigation,
-                    navigationOptions: {
-                        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
-                    },
+                MyLearningTab,
+                ...config.features.downloads && {
+                    DownloadsTab
                 },
-                /**Downloads: {
-                    screen: downloadsNavigation,
-                    navigationOptions: {
-                       tabBarIcon: (tabIconProps: { focused: boolean, tintColor : string}) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
-                    }
-                  },
-                Notification: {
-                    screen: notificationNavigation,
-                    navigationOptions:{
-                       tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
-                    }
-                },**/
-                Profile: {
-                    screen: profileNavigation,
-                    navigationOptions: {
-                        tabBarIcon:  (tabIconProps: { focused: boolean, tintColor: any  }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.profile)
-                    }
-                }
+                ...config.features.notifications && {
+                    NotificationsTab
+                },
+                ProfileTab
             },
             {
-                initialRouteName: "MyLearning",
+                initialRouteName: "MyLearningTab",
                 labeled: false,
                 barStyle: { backgroundColor: theme.colorNeutral1, shadowRadius: 5 },
                 activeColor: theme.tabBarActiveTintColor,
@@ -90,62 +74,90 @@ const stackNavigatorBuilder = (routeConfigMap : NavigationRouteConfigMap, initia
         routeConfigMap,
         {
             initialRouteName: initialRouteName,
-            defaultNavigationOptions: ({ screenProps }) => navigationOptions(screenProps.theme, null, null, null)
+            defaultNavigationOptions: ({ screenProps }) => navigationOptions({theme: screenProps.theme})
         }
     )
 }
 
-const myLearningNavigation = stackNavigatorBuilder(
-    {
-        MyLearning: {
-            screen: MyLearning,
-            navigationOptions: ({ screenProps } : any) =>
-                navigationOptions(screenProps.theme, null, null, /**faBell**/) //TODO: MOB-373 hiding it for beta release
-        },
-        CourseDetails: {
-            screen: CourseDetails,
-            navigationOptions: ({ screenProps } : any) =>
-                navigationOptions(screenProps.theme, null, null)
-        },
-        ProgramDetails: {
-            screen: ProgramDetails,
-            navigationOptions: ({ screenProps } : any) =>
-                navigationOptions(screenProps.theme, null, null, faCloudDownloadAlt)
-        }
-    }, "MyLearning");
+//TABS
+const MyLearningTab = {
+    screen: stackNavigatorBuilder(
+        {
+            MyLearning: {
+                screen: MyLearning,
+                navigationOptions: ({ screenProps } : any) =>
+                    navigationOptions({theme: screenProps.theme}) //TODO: MOB-373 hiding it for beta release
+            },
+            CourseDetails: {
+                screen: CourseDetails,
+                navigationOptions: ({ screenProps } : any) =>
+                    navigationOptions({theme: screenProps.theme})
+            },
+            ProgramDetails: {
+                screen: ProgramDetails,
+                navigationOptions: ({ screenProps } : any) =>
+                    navigationOptions({theme: screenProps.theme, rightIcon: faCloudDownloadAlt}, )
+            }
+        }, "MyLearning"),
+    navigationOptions: {
+        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
+    },
+}
+
+const DownloadsTab = {
+    screen: stackNavigatorBuilder(
+        {
+            Downloads: PlaceHolder
+        },"Downloads"
+    ),
+    navigationOptions: {
+        tabBarIcon: (tabIconProps: { focused: boolean, tintColor : string}) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
+    }
+}
+
+const NotificationsTab = {
+    screen: stackNavigatorBuilder(
+        {
+            Notification: PlaceHolder
+        },"Notification"
+    ),
+    navigationOptions:{
+        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
+    }
+}
+
+const ProfileTab = {
+    screen: stackNavigatorBuilder(
+        {
+            Profile: Profile,
+            Settings: Settings
+        },"Profile"
+    ),
+    navigationOptions: {
+        tabBarIcon:  (tabIconProps: { focused: boolean, tintColor: any  }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.profile)
+    }
+}
 
 
 
-const profileNavigation = stackNavigatorBuilder(
-    {
-        Profile: Profile,
-        Settings: Settings
-    },"Profile"
-);
+type navigationOptionsProps = {
+    theme: Theme,
+    title? : string,
+    backTitle? : string,
+    rightIcon? : IconDefinition
+}
 
-const notificationNavigation = stackNavigatorBuilder(
-    {
-        Notification: PlaceHolder
-    },"Notification"
-);
-
-const downloadsNavigation = stackNavigatorBuilder(
-    {
-        Downloads: PlaceHolder
-    },"Downloads"
-);
-
-const navigationOptions = (theme: any, title?: any, backTitle?: any, rightIcon?: any) => ({
+const navigationOptions = (props: navigationOptionsProps) => ({
     headerStyle: {
         borderBottomWidth: 0,
-        backgroundColor: theme.colorSecondary1,
+        backgroundColor: props.theme.colorSecondary1,
         shadowOpacity: 0,
         elevation: 0
     },
-    title: title,
+    title: props.title,
     headerBackTitle: null,
-    headerTintColor: theme.navigationHeaderTintColor,
-    headerRight: rightIcon ? <TouchableIcon icon={rightIcon} disabled={false} size={24} color={theme.navigationHeaderTintColor}/> : null,
+    headerTintColor: props.theme.navigationHeaderTintColor,
+    headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} disabled={false} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
 });
 
 const tabBarIconBuilder = (focused: boolean, color: any, imageSet: any) => {
