@@ -51,6 +51,7 @@
     "recompose": "^0.30.0"
   },
   "devDependencies": {
+    "@apollo/react-testing": "^3.1.0",
     "@testing-library/react-hooks": "^2.0.1",
     "@types/i18n-js": "^3.0.1",
     "@types/jest": "^24.0.18",
@@ -60,9 +61,11 @@
     "@types/react-native-snap-carousel": "^3.7.4",
     "@types/react-navigation": "^3.0.8",
     "@types/react-test-renderer": "^16.9.0",
+    "@types/recompose": "^0.30.7",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "babel-jest": "^24.9.0",
+    "detox": "^15.2.2",
     "eslint": "^6.4.0",
     "eslint-plugin-react": "^7.14.3",
     "jest": "^24.9.0",
@@ -73,9 +76,7 @@
     "react-test-renderer": "^16.9.0",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.3",
-    "waait": "^1.0.5",
-    "@types/recompose": "^0.30.7",
-    "@apollo/react-testing": "^3.1.0"
+    "waait": "^1.0.5"
   },
   "config": {
     "maxPackagesNumber": 100,
@@ -87,5 +88,18 @@
       "publicDomain",
       "uncategorized"
     ]
+  },
+  "detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/TotaraMobileApp.app",
+        "build": "xcodebuild -workspace ios/TotaraMobileApp.xcworkspace -scheme TotaraMobileApp -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11"
+        }
+      }
+    },
+    "test-runner": "jest"
   }
 }

@@ -75,6 +75,7 @@ const SiteUrl = (props: Props) => {
                 value={siteUrlState.inputSiteUrl}
                 style={styles.inputText}
                 autoFocus={!isSiteUrlSubmitted}
+                testID={"urlInput"}
               />
             </InputTextWithInfo>
             <PrimaryButton
