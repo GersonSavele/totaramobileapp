@@ -21,8 +21,8 @@
  */
 
 import React, {useContext} from "react";
-import { Image } from "react-native";
-import { createStackNavigator, NavigationRouteConfigMap } from "react-navigation";
+import { Image, ImageSourcePropType } from "react-native";
+import { createStackNavigator, NavigationRouteConfigMap, NavigationScreenProps } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"; //TODO: SHOULD IMPORT FROM A GLOBAL EXPORT?
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
@@ -77,7 +77,7 @@ const stackNavigatorBuilder = (routeConfigMap : NavigationRouteConfigMap, initia
             defaultNavigationOptions: ({ screenProps }) => navigationOptions({theme: screenProps.theme})
         }
     )
-}
+};
 
 //TABS
 const MyLearningTab = {
@@ -85,24 +85,24 @@ const MyLearningTab = {
         {
             MyLearning: {
                 screen: MyLearning,
-                navigationOptions: ({ screenProps } : any) =>
-                    navigationOptions({theme: screenProps.theme}) //TODO: MOB-373 hiding it for beta release
+                navigationOptions: ({ screenProps }: NavigationScreenProps ) =>
+                    navigationOptions({ theme: screenProps!.theme, /*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
             },
             CourseDetails: {
                 screen: CourseDetails,
-                navigationOptions: ({ screenProps } : any) =>
-                    navigationOptions({theme: screenProps.theme})
+                navigationOptions: ({ screenProps } : NavigationScreenProps) =>
+                    navigationOptions({theme: screenProps!.theme})
             },
             ProgramDetails: {
                 screen: ProgramDetails,
-                navigationOptions: ({ screenProps } : any) =>
-                    navigationOptions({theme: screenProps.theme, rightIcon: faCloudDownloadAlt}, )
+                navigationOptions: ({ screenProps } : NavigationScreenProps) =>
+                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt}, )
             }
         }, "MyLearning"),
     navigationOptions: {
-        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
+        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
     },
-}
+};
 
 const DownloadsTab = {
     screen: stackNavigatorBuilder(
@@ -113,7 +113,7 @@ const DownloadsTab = {
     navigationOptions: {
         tabBarIcon: (tabIconProps: { focused: boolean, tintColor : string}) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
     }
-}
+};
 
 const NotificationsTab = {
     screen: stackNavigatorBuilder(
@@ -122,9 +122,9 @@ const NotificationsTab = {
         },"Notification"
     ),
     navigationOptions:{
-        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: any }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
+        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
     }
-}
+};
 
 const ProfileTab = {
     screen: stackNavigatorBuilder(
@@ -134,11 +134,9 @@ const ProfileTab = {
         },"Profile"
     ),
     navigationOptions: {
-        tabBarIcon:  (tabIconProps: { focused: boolean, tintColor: any  }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.profile)
+        tabBarIcon:  (tabIconProps: { focused: boolean, tintColor: string  }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.profile)
     }
-}
-
-
+};
 
 type navigationOptionsProps = {
     theme: Theme,
@@ -160,11 +158,22 @@ const navigationOptions = (props: navigationOptionsProps) => ({
     headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} disabled={false} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
 });
 
-const tabBarIconBuilder = (focused: boolean, color: any, imageSet: any) => {
+
+const tabBarIconBuilder = (focused: boolean, color: string, imageSet: iconImageProps) => {
     return <Image source={focused ? imageSet.solid : imageSet.regular} style={{tintColor: color, width: 24, height: 24 }} resizeMode='contain' />
 };
 
-const tabBarIconImages = {
+type iconImageProps = {
+    solid: ImageSourcePropType;
+    regular: ImageSourcePropType;
+}
+
+const tabBarIconImages: {
+    current_learning: iconImageProps;
+    downloads: iconImageProps;
+    notifications: iconImageProps;
+    profile: iconImageProps;
+} = {
     current_learning : {
         solid: require("@resources/images/tabbar/current_learning_solid.png"),
         regular: require("@resources/images/tabbar/current_learning_regular.png"),
