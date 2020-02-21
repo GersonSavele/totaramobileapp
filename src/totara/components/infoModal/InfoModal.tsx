@@ -33,14 +33,15 @@ type Params = {
   imageType: string;
   children? : ReactNode;
   visible: boolean;
+  transparent? : boolean
 };
 
-const InfoModal = ({ title, description, imageType, children, ...rest }: Params) => {
+const InfoModal = ({ title, description, imageType, children, transparent, ...rest }: Params) => {
   
   const [theme] = useContext(ThemeContext);
   
   return (
-    <Modal {...rest}>
+    <Modal {...rest} transparent={transparent}>
       <View style={styles.transparentViewStyle}>
         <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
           <View style={[styles.containerStyle, { backgroundColor: theme.colorNeutral1 }]}>

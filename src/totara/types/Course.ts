@@ -28,7 +28,7 @@ export interface Course {
   shortname: string,
   lang: string,
   sections: [Section],
-  completion?: Completion
+  completion?: Completion,
   summary?: string,
   startdate?: Date
   enddate?: Date
@@ -38,7 +38,7 @@ export interface Course {
 
 export interface Completion {
   id: number,
-  statuskey?: string,
+  statuskey:  "" | "completeviarpl" | "complete" | "inprogress" | "notyetstarted"
   progress?: number,
   timecompleted?: Date,
   grademax :number,

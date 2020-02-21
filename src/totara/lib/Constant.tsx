@@ -31,6 +31,7 @@ export const PLATFORM_ANDROID = "";
 export const NAVIGATION_COURSE_DETAILS ="CourseDetails";
 export const NAVIGATION_PROGRAM_DETAILS ="ProgramDetails";
 export const NAVIGATION_SETTING = "Settings";
+export const NAVIGATION_MY_LEARNING = "MyLearning"
 
 export const SCREEN_WIDTH_X_LARGE = "xlarge";
 export const SCREEN_WIDTH_LARGE = "large";

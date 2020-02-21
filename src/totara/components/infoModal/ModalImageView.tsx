@@ -26,7 +26,8 @@ export const IMAGES = {
   complete_action: require("@resources/images/complete_action/complete_action.png"),
   url_not_valid: require("@resources/images/url_not_valid/url_not_valid.png"),
   general_error: require("@resources/images/general_error/general_error.png"),
-  browser_login: require("@resources/images/browser_login/browser_login.png")
+  browser_login: require("@resources/images/browser_login/browser_login.png"),
+  course_complete: require("@resources/images/course_complete/course_complete.png")
 };
 
 type Params = {
@@ -54,6 +55,10 @@ const setImage = ({ imageType }: Params) => {
     case "browser_login":
       return (
         <Image style={styles.containerStyle} source={IMAGES.browser_login} />
+      );
+    case "course_complete":
+        return (
+          <Image style={styles.containerStyle} source={IMAGES.course_complete} />
       );
     default:
       return (

@@ -37,9 +37,6 @@ import { AUTHORIZATION } from "@totara/lib/Constant";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { translate } from "@totara/locale";
 
-type Response = {
-  profile: UserProfile;
-};
 
 type ProfileViewProps = {
   profile: UserProfile

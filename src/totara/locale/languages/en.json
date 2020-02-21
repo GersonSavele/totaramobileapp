@@ -118,5 +118,10 @@
     "manage_section" : "Manage",
     "setting_cell" : "Settings",
     "logout" : "Logout"
+  },
+  "course_complete" : {
+    "title" : "Awesome!",
+    "description" : "You have successfully completed\nthe course.",
+    "button_title" : "Continue learning"
   }
 }
