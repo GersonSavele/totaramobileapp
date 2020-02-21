@@ -26,8 +26,8 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useQuery } from '@apollo/react-hooks';
 import { AuthConsumer } from "@totara/core";
 import { NavigationInjectedProps, NavigationParams } from "react-navigation";
-import { NAVIGATION_SETTING } from "@totara/lib/Constant";
-import { ThemeContext } from "@totara/theme";
+// import { NAVIGATION_SETTING } from "@totara/lib/Constant";
+import { ThemeContext, normalize } from "@totara/theme";
 import { userOwnProfile } from "./api";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
@@ -85,23 +85,23 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
          <FontAwesomeIcon icon={"user"} color={theme.colorNeutral4} size={65} />
          </View>
           }
-          <Text style={[theme.textH2, {fontWeight: "bold"}]}>
+          <Text style={[theme.textH2, {fontWeight: "bold", fontSize: normalize(22)}]}>
             {profile.firstname} {profile.surname}
           </Text>
-          <Text style={[theme.textB3, { color: theme.textColorSubdued }]}>
+          <Text style={[theme.textB3, { color: theme.textColorSubdued, fontSize: normalize(15) }]}>
             {profile.email}
           </Text>
           <Text
             style={[
               theme.textSmall,
-              { color: theme.textColorSubdued, marginTop: 4 }
+              { color: theme.textColorSubdued, marginTop: 6, fontSize: normalize(12) }
             ]}>
-          {translate("user_profile.login_as")} : {profile.username}
+          {translate("user_profile.login_as")}: {profile.username}
           </Text>
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={[[theme.textH2, {fontWeight: "bold"}]]}>{translate("user_profile.manage_section")}</Text>
+        <Text style={[[theme.textH2, {fontWeight: "bold", fontSize : normalize(22)}]]}>{translate("user_profile.manage_section")}</Text>
       </View>
       <ScrollView
         contentContainerStyle={{ backgroundColor: theme.colorSecondary1 }}
@@ -133,7 +133,7 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
             {auth => (
               <Cell
                 cellContentView={
-                  <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
+                  <Text style={[theme.textB2, { width: wp("100%") - 50, fontSize: normalize(17) }]}>
                    {translate("user_profile.logout")}
                   </Text>
                 }

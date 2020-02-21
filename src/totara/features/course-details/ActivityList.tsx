@@ -120,7 +120,7 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
           numberOfLines={1}
           style={[
             theme.textH3,
-            { fontWeight: "bold", color: theme.colorNeutral6, flex: 3 }
+            { fontWeight: "bold", color: theme.colorNeutral6, flex: 3, fontSize : normalize(17) }
           ]}
         >
           {title}
@@ -153,7 +153,7 @@ const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.headerViewContainer}>
-      <Text style={[theme.textH3, { fontWeight: "bold" }]}>{title}</Text>
+      <Text style={[theme.textH3, { fontWeight: "bold", fontSize : normalize(17) }]}>{title}</Text>
       {show ? (
         <FontAwesomeIcon
           icon={"caret-up"}

@@ -46,10 +46,10 @@ const ActivityRestrictionView = ({description, onClose} : Props) => {
           ]}
         >
           <View
-            style={{ marginLeft: 16, marginTop: 16, height: 20, width: 20 }}
+            style={{ marginTop: 8, height: 48, width: 48, alignItems: "center" , justifyContent: "center" }}
           >
             <TouchableOpacity
-              style={{ flex: 1 }}
+              style={{ flex: 0.5 }}
               onPress={onClose}>
               <FontAwesomeIcon
                 icon="times"

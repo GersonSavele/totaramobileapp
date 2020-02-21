@@ -120,8 +120,11 @@ const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
               <Text
                 style={
                   !showActivities
-                    ? [theme.textB3]
-                    : [theme.textB3, { color: theme.colorNeutral6 }]
+                    ? [theme.textB3 , { fontWeight : "bold"}]
+                    : [theme.textB3, { 
+                        color: theme.colorNeutral6, 
+                    
+                    }]
                 }
               >
                 {translate("course-details.overview")}
@@ -144,15 +147,11 @@ const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
               <Text
                 style={
                   showActivities
-                    ? [theme.textB3]
-                    : [
-                        theme.textB3,
-                        {
-                          color: theme.colorNeutral6,
-                          paddingLeft: 8,
-                          paddingRight: 8
-                        }
-                      ]
+                    ? [theme.textB3 , { fontWeight : "bold"}]
+                    : [theme.textB3, {
+                        color: theme.colorNeutral6,
+                        
+                    }]
                 }
               >
                 {translate("course-details.activities")}
@@ -227,7 +226,7 @@ const styles = StyleSheet.create({
     minHeight: normalize(70)
   },
   tabBarContainer: {
-    flex: 0.25,
+    flex: 0.4,
     maxHeight: 50,
     minHeight: 44
   },
@@ -239,7 +238,7 @@ const styles = StyleSheet.create({
   tabNav: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginLeft: normalize(48),
+    marginLeft: normalize(16),
     width: Dimensions.get("window").width * 0.5,
     alignItems: "center",
     flex: 1
@@ -280,8 +279,8 @@ const styles = StyleSheet.create({
   tabSelected: {
     height: "100%",
     justifyContent: "center",
-    paddingLeft: 12,
-    paddingRight: 12
+    paddingLeft: 24,
+    paddingRight: 24
   }
 });
 

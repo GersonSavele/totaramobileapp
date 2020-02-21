@@ -59,7 +59,7 @@ const TotaraTheme: AppliedTheme = {
 
   //---- Notification color: customizable by [Developer] ------
   colorInfo: "#337AB7",
-  colorSuccess: "#677B2D",
+  colorSuccess: "#69bd45",
   colorWarning: "#8E660D",
   colorAlert: "#953539",
   colorHighlight: "#FDF8E4",
