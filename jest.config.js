@@ -19,5 +19,6 @@ module.exports = {
   moduleNameMapper: {
     "@totara/(.*)": "<rootDir>/src/totara/$1",
     "@resources/(.*)": "<rootDir>/src/resources/$1"
-  }
+  },
+  testPathIgnorePatterns: ["e2e"]
 };
