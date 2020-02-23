@@ -23,7 +23,7 @@ import React, { useEffect, useContext } from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { Cell, TableView } from "react-native-tableview-simple";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from "@apollo/react-hooks";
 import { AuthConsumer } from "@totara/core";
 import { NavigationInjectedProps, NavigationParams } from "react-navigation";
 // import { NAVIGATION_SETTING } from "@totara/lib/Constant";
@@ -37,11 +37,10 @@ import { AUTHORIZATION } from "@totara/lib/Constant";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { translate } from "@totara/locale";
 
-
 type ProfileViewProps = {
-  profile: UserProfile
-  navigation:  NavigationParams
-}
+  profile: UserProfile;
+  navigation: NavigationParams;
+};
 
 const Profile = ({ navigation }: NavigationInjectedProps) => {
   useEffect(() => {
@@ -51,54 +50,93 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
   }, []);
 
   const { loading, error, data } = useQuery(userOwnProfile);
-  if (loading) return <Text>Loading...</Text>
-  if (error) return <GeneralErrorModal siteUrl = ""/>
+  if (loading) return <Text>Loading...</Text>;
+  if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
-    return <ProfileViewDidAppear profile = {data.profile} navigation = {navigation}/>
+    return (
+      <ProfileViewDidAppear profile={data.profile} navigation={navigation} />
+    );
   }
 };
 
 const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
   // To Do: Mean while, we need to determine, user profile image is default or not from hacking url which is received from API
-  //However, after fixing api we should clean code in this ticket - MOB-386 
+  //However, after fixing api we should clean code in this ticket - MOB-386
   const [theme] = useContext(ThemeContext);
-  const { authContextState: {appState} } = useContext(AuthContext);
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
   const apiKey = appState!.apiKey;
   return (
     <View style={[theme.viewContainer]}>
       <View style={{ backgroundColor: theme.colorSecondary1 }}>
         <View style={styles.headerContent}>
-          {profile.profileimage.indexOf("theme/image.php/basis/core/") == -1?
-           <Image
-           style={styles.avatar}
-           source={{
-             uri: profile.profileimage,
-             headers: {
-               [AUTHORIZATION]: `Bearer ${apiKey}`
-             }
-           }}
-         /> : 
-         <View style={[styles.avatar, {backgroundColor: theme.colorNeutral3, alignItems: "center", justifyContent: "center"}]}>
-         <FontAwesomeIcon icon={"user"} color={theme.colorNeutral4} size={65} />
-         </View>
-          }
-          <Text style={[theme.textH2, {fontWeight: "bold", fontSize: normalize(22)}]}>
+          {profile.profileimage.indexOf("theme/image.php/basis/core/") == -1 ? (
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: profile.profileimage,
+                headers: {
+                  [AUTHORIZATION]: `Bearer ${apiKey}`
+                }
+              }}
+            />
+          ) : (
+            <View
+              style={[
+                styles.avatar,
+                {
+                  backgroundColor: theme.colorNeutral3,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }
+              ]}
+            >
+              <FontAwesomeIcon
+                icon={"user"}
+                color={theme.colorNeutral4}
+                size={65}
+              />
+            </View>
+          )}
+          <Text
+            style={[
+              theme.textH2,
+              { fontWeight: "bold", fontSize: normalize(22) }
+            ]}
+          >
             {profile.firstname} {profile.surname}
           </Text>
-          <Text style={[theme.textB3, { color: theme.textColorSubdued, fontSize: normalize(15) }]}>
+          <Text
+            style={[
+              theme.textB3,
+              { color: theme.textColorSubdued, fontSize: normalize(15) }
+            ]}
+          >
             {profile.email}
           </Text>
           <Text
             style={[
               theme.textSmall,
-              { color: theme.textColorSubdued, marginTop: 6, fontSize: normalize(12) }
-            ]}>
-          {translate("user_profile.login_as")}: {profile.username}
+              {
+                color: theme.textColorSubdued,
+                marginTop: 6,
+                fontSize: normalize(12)
+              }
+            ]}
+          >
+            {translate("user_profile.login_as")}: {profile.username}
           </Text>
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={[[theme.textH2, {fontWeight: "bold", fontSize : normalize(22)}]]}>{translate("user_profile.manage_section")}</Text>
+        <Text
+          style={[
+            [theme.textH2, { fontWeight: "bold", fontSize: normalize(22) }]
+          ]}
+        >
+          {translate("user_profile.manage_section")}
+        </Text>
       </View>
       <ScrollView
         contentContainerStyle={{ backgroundColor: theme.colorSecondary1 }}
@@ -130,8 +168,13 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
             {auth => (
               <Cell
                 cellContentView={
-                  <Text style={[theme.textB2, { width: wp("100%") - 50, fontSize: normalize(17) }]}>
-                   {translate("user_profile.logout")}
+                  <Text
+                    style={[
+                      theme.textB2,
+                      { width: wp("100%") - 50, fontSize: normalize(17) }
+                    ]}
+                  >
+                    {translate("user_profile.logout")}
                   </Text>
                 }
                 onPress={() => {

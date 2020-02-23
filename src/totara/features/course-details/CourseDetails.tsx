@@ -47,18 +47,18 @@ import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
 
 type CourseDetailsProps = {
-  course: Course
-  refetch: () => {}
+  course: Course;
+  refetch: () => {};
 };
 
 type CourseCompletedProps = {
-  course : Course,
-  navigation? :  NavigationParams
-}
+  course: Course;
+  navigation?: NavigationParams;
+};
 
 // TODO: turn the graphql loading, error, HOC and navigation to be a single component
 const CourseDetails = withNavigation(
-  getCourse(({ loading, course, error, refetch }: CourseResponse ) => {
+  getCourse(({ loading, course, error, refetch }: CourseResponse) => {
     if (loading) return <Text>{translate("general.loading")}</Text>;
     if (error) {
       Log.error("Error getting course details", error);
@@ -135,7 +135,7 @@ const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
                 <Text
                   style={
                     !showActivities
-                      ? [theme.textB3, { fontWeight : "bold"}]
+                      ? [theme.textB3, { fontWeight: "bold" }]
                       : [theme.textB3, { color: theme.colorNeutral6 }]
                   }
                 >
@@ -159,12 +159,11 @@ const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
                 <Text
                   style={
                     showActivities
-                      ? [theme.textB3, { fontWeight : "bold"}]
+                      ? [theme.textB3, { fontWeight: "bold" }]
                       : [
                           theme.textB3,
                           {
-                            color: theme.colorNeutral6,
-                           
+                            color: theme.colorNeutral6
                           }
                         ]
                   }
@@ -193,38 +192,37 @@ const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
   );
 };
 
-
 const CourseCompleted = withNavigation(
   ({ navigation, course }: CourseCompletedProps) => {
-
     const [show, setShow] = useState(true);
     const onClose = () => {
       setShow(!show);
       navigation!.navigate(NAVIGATION_MY_LEARNING);
-    }
+    };
 
-  if (
-    course.completion &&
-    (course.completion.statuskey as string) == "notyetstarted"
-  ) {
-    return (
-      <InfoModal
-        transparent={true}
-        title={translate("course_complete.title")}
-        description={translate("course_complete.description")}
-        imageType="course_complete"
-        visible={show}
-      >
-        <PrimaryButton
-          text={translate("course_complete.button_title")}
-          onPress={onClose}
-        />
-      </InfoModal>
-    );
-  } else {
-    return null;
+    if (
+      course.completion &&
+      (course.completion.statuskey as string) == "complete"
+    ) {
+      return (
+        <InfoModal
+          transparent={true}
+          title={translate("course_complete.title")}
+          description={translate("course_complete.description")}
+          imageType="course_complete"
+          visible={show}
+        >
+          <PrimaryButton
+            text={translate("course_complete.button_title")}
+            onPress={onClose}
+          />
+        </InfoModal>
+      );
+    } else {
+      return null;
+    }
   }
-});
+);
 
 const Activities = ({ course, refetch }: CourseDetailsProps) => {
   //To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented
