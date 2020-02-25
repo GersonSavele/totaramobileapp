@@ -135,8 +135,8 @@ const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
                 <Text
                   style={
                     !showActivities
-                      ? [theme.textB3, { fontWeight: "bold" }]
-                      : [theme.textB3, { color: theme.colorNeutral6 }]
+                      ? [theme.textB3, { fontWeight: "400" }]
+                      : [theme.textB3, { color: theme.colorNeutral6, fontWeight:"400" }]
                   }
                 >
                   {translate("course-details.overview")}
@@ -159,11 +159,12 @@ const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
                 <Text
                   style={
                     showActivities
-                      ? [theme.textB3, { fontWeight: "bold" }]
+                      ? [theme.textB3, { fontWeight: "400" }]
                       : [
                           theme.textB3,
                           {
-                            color: theme.colorNeutral6
+                            color: theme.colorNeutral6,
+                            fontWeight:"400"
                           }
                         ]
                   }
@@ -261,8 +262,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: 340,
-    minHeight: 320
+    maxHeight: normalize(340),
+    minHeight: normalize(320)
   },
   itemImage: {
     flex: 2.5,
