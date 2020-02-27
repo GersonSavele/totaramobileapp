@@ -143,7 +143,7 @@ type Props = {
 
 type OuterProps = {
   uri: string
-  onNavigationStateChange: (navState: WebViewNavigation) => void
+  onNavigationStateChange?: (navState: WebViewNavigation) => void
 }
 
 type State = {
