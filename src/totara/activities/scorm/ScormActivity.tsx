@@ -19,25 +19,20 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { Activity } from "@totara/types";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
+import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
 
-class ScormActivity extends React.Component<Props, States> {
-
-  constructor(props: Props) {
-    super(props);
-  }
-
-  render(){
-    return <OnlineScormActivity activity={this.props.activity} />
-  }
+const ScormActivity = (props: Props) => {
+  const [offline] = useState<boolean>(true);
+  return (
+      offline ? <OfflineScormActivity activity={props.activity} /> : <OnlineScormActivity activity={props.activity} />
+  );
 }
 
 type Props = {
   activity: Activity
 }
-
-type States = {};
 
 export default ScormActivity;
