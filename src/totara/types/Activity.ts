@@ -36,7 +36,8 @@ export interface ScormActivity extends Activity {
   maxAttempt : number,
   score : number,
   webEntryUrl?: string,
-  isAvailable :boolean
+  isAvailable :boolean,
+  offlineAttemptsAllowed: boolean
 }
 
 export interface SeminarActivity extends Activity {

@@ -19,20 +19,20 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import React, { useState } from "react";
-import { Activity } from "@totara/types";
+import React from "react";
+import { ScormActivity } from "@totara/types";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
 import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
 
-const ScormActivity = (props: Props) => {
-  const [offline] = useState<boolean>(true);
+const ScormActivityView = (props: Props) => {
+  const offlineAttemptsAllowed = true;//props.activity.offlineAttemptsAllowed;
   return (
-      offline ? <OfflineScormActivity activity={props.activity} /> : <OnlineScormActivity activity={props.activity} />
+      offlineAttemptsAllowed ? <OfflineScormActivity activity={props.activity} /> : <OnlineScormActivity activity={props.activity} />
   );
 }
 
 type Props = {
-  activity: Activity
+  activity: ScormActivity
 }
 
-export default ScormActivity;
+export default ScormActivityView;
