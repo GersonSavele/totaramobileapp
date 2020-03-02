@@ -187,6 +187,7 @@ android {
         }
     }
 
+
     packagingOptions {
         pickFirst '**/armeabi-v7a/libc++_shared.so'
         pickFirst '**/x86/libc++_shared.so'
@@ -195,9 +196,13 @@ android {
         pickFirst '**/x86/libjsc.so'
         pickFirst '**/armeabi-v7a/libjsc.so'
     }
+
+    sourceSets { main { assets.srcDirs = ['src/main/assets', '../../TotaraMobileOfflineScorm'] } }
+
 }
 
 dependencies {
+    implementation project(':react-native-fs')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.android.support:multidex:1.0.1'

@@ -28,6 +28,10 @@ target 'TotaraMobileApp' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'React-ART', :path => '../node_modules/react-native/Libraries/ART'
 
+
+
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'TotaraMobileAppTests' do
     inherit! :search_paths
     # Pods for testing
