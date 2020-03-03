@@ -13,7 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		74B1386F3D6ECBAD5482310E /* libPods-TotaraMobileAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C3129A1A230450CFB9613DFE /* libPods-TotaraMobileAppTests.a */; };
-		78C187D2240C5C9D001F9C2C /* TotaraMobileOfflineScorm in Resources */ = {isa = PBXBuildFile; fileRef = 78C187D1240C5C9D001F9C2C /* TotaraMobileOfflineScorm */; };
+		784253FF240DD98700386AD6 /* html in Resources */ = {isa = PBXBuildFile; fileRef = 784253FE240DD98700386AD6 /* html */; };
 		BF3221A62357FAA90071F0E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF3221A52357FAA90071F0E2 /* GoogleService-Info.plist */; };
 		DFDD2EF665544F979F5C0433 /* libPods-TotaraMobileApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA545A92C393AB0B780FCC0B /* libPods-TotaraMobileApp.a */; };
 /* End PBXBuildFile section */
@@ -48,7 +48,7 @@
 		66149A4925BCAFCF2EB883E5 /* Pods-TotaraMobileApp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TotaraMobileApp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-TotaraMobileApp-tvOSTests/Pods-TotaraMobileApp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		66673891B73CC20398472580 /* Pods-TotaraMobileApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TotaraMobileApp.debug.xcconfig"; path = "Target Support Files/Pods-TotaraMobileApp/Pods-TotaraMobileApp.debug.xcconfig"; sourceTree = "<group>"; };
 		6CC69B3876D6E436CCD52C18 /* Pods-TotaraMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TotaraMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-TotaraMobileAppTests/Pods-TotaraMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		78C187D1240C5C9D001F9C2C /* TotaraMobileOfflineScorm */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TotaraMobileOfflineScorm; path = ../TotaraMobileOfflineScorm; sourceTree = "<group>"; };
+		784253FE240DD98700386AD6 /* html */ = {isa = PBXFileReference; lastKnownFileType = folder; name = html; path = ../TotaraMobileOfflineScorm/html; sourceTree = "<group>"; };
 		9AA94EADC28F8F413FF234D4 /* libPods-TotaraMobileApp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TotaraMobileApp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF3221A52357FAA90071F0E2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C3129A1A230450CFB9613DFE /* libPods-TotaraMobileAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TotaraMobileAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,7 +135,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				78C187D1240C5C9D001F9C2C /* TotaraMobileOfflineScorm */,
+				784253FE240DD98700386AD6 /* html */,
 				13B07FAE1A68108700A75B9A /* TotaraMobileApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* TotaraMobileAppTests */,
@@ -267,8 +267,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				784253FF240DD98700386AD6 /* html in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				78C187D2240C5C9D001F9C2C /* TotaraMobileOfflineScorm in Resources */,
 				BF3221A62357FAA90071F0E2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
