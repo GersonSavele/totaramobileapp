@@ -202,9 +202,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-static-server')
-    implementation project(':react-native-zip-archive')
-    implementation project(':react-native-fs')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.android.support:multidex:1.0.1'

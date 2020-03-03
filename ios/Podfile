@@ -32,11 +32,8 @@ target 'TotaraMobileApp' do
 
 
 
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
 
-  pod 'RNZipArchive', :path => '../node_modules/react-native-zip-archive'
 
-  pod 'react-native-static-server', :path => '../node_modules/react-native-static-server'
 
   target 'TotaraMobileAppTests' do
     inherit! :search_paths

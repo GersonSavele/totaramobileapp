@@ -3,9 +3,6 @@ package com.totaramobileapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.futurepress.staticserver.FPStaticServerPackage;
-import com.rnziparchive.RNZipArchivePackage;
-import com.rnfs.RNFSPackage;
 import cx.evermeet.versioninfo.RNVersionInfoPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
@@ -37,9 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new FPStaticServerPackage(),
-            new RNZipArchivePackage(),
-            new RNFSPackage(),
             new RNVersionInfoPackage(),
             new AsyncStoragePackage(),
             new CookieManagerPackage(),
