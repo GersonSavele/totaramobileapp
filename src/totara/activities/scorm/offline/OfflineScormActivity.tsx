@@ -15,9 +15,6 @@ const OfflineScormActivity = (props: Props) => {
     const [server, setServer] = useState<StaticServer>();
     const [serverRunning, setServerRunning] = useState<boolean>();
 
-
-
-
     useEffect(()=>{
         const copyServerRootPath = async() =>{
             return new Promise<string>(resolve =>
@@ -37,9 +34,6 @@ const OfflineScormActivity = (props: Props) => {
            setScormFilesPath(_scormFilesPath);
         });
     }, [props.activity.id]);
-
-
-
 
 
     //ONCE WE GOT scormFilesPath, LOAD THE JSCODE

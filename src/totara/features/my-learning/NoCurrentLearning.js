@@ -26,21 +26,32 @@ import { PrimaryButton } from "@totara/components";
 import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/core";
+import ScormActivityView from "@totara/activities/scorm/ScormActivity"
+import {ScormActivity} from "@totara/types"
 
 const NoCurrentLearning = () => {
 
   const [theme] = useContext(ThemeContext);
-  return (
-    <View style={styles.containerStyle}>
-      <Image style={styles.imageContainer} source={require("@resources/images/no_current_learning/no_current_learning.png")} />
-      <Text style={[theme.textH2, styles.description]}>{translate("my-learning.no_learning_message")}</Text>
-      <AuthConsumer>
-        {auth => (
-          <PrimaryButton onPress={() => { Linking.openURL(auth.appState.host); }} text={translate("additional-actions-modal.auth_model_go_to_browser")} icon="external-link-alt" style={{ alignSelf: "center" }} />
-        )}
-      </AuthConsumer>
-    </View>
-  );
+
+  const _fakeActivity = {
+    id: 13,
+  };
+
+  return <ScormActivityView activity={_fakeActivity} />
+
+
+  //
+  // return (
+  //   <View style={styles.containerStyle}>
+  //     <Image style={styles.imageContainer} source={require("@resources/images/no_current_learning/no_current_learning.png")} />
+  //     <Text style={[theme.textH2, styles.description]}>{translate("my-learning.no_learning_message")}</Text>
+  //     <AuthConsumer>
+  //       {auth => (
+  //         <PrimaryButton onPress={() => { Linking.openURL(auth.appState.host); }} text={translate("additional-actions-modal.auth_model_go_to_browser")} icon="external-link-alt" style={{ alignSelf: "center" }} />
+  //       )}
+  //     </AuthConsumer>
+  //   </View>
+  // );
 };
 
 const styles = StyleSheet.create({
