@@ -27,8 +27,15 @@ import { Text, View } from "react-native"
 import { downloadSCORMPackage, unzipSCORMPackageToServer } from "./offline/SCORMFileHandler";
 
 const ScormActivityView = (props: Props) => {
-  const offlineAttemptsAllowed = true;//props.activity.offlineAttemptsAllowed; //TODO: CHANGE BACK TO offlineAttemptsAllowed
+  const offlineAttemptsAllowed = props.activity.offlineAttemptsAllowed; //TODO: CHANGE BACK TO offlineAttemptsAllowed
 
+
+
+
+
+
+
+  //TEMPORARY CODE DUE WE DONT HAVE DOWNLOAD TAB YET - begin
   const [offlineApiResponse, setOfflineApiResponse] = useState<any>();
   const [downloadClomplete, setDownloadClomplete] = useState<boolean>(false);
   const [unZipPath, setUnZipPath] = useState<string>();
@@ -104,6 +111,18 @@ const ScormActivityView = (props: Props) => {
     else{
       return <View><Text>loading...</Text></View>
     }
+  }
+  //TEMPORARY CODE DUE WE DONT HAVE DOWNLOAD TAB YET - end
+
+
+
+
+
+
+
+  //REAL CODE
+  if(offlineAttemptsAllowed){
+    return <OfflineScormActivity activity={props.activity} />
   }
 
   return <OnlineScormActivity activity={props.activity} />;

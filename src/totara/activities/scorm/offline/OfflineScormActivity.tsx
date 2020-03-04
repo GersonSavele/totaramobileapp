@@ -4,8 +4,16 @@ import { Activity } from "@totara/types";
 
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from 'react-native-static-server';
+import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer"
+import { initializeSCORMWebplayer } from "@totara/activities/scorm/offline/SCORMFileHandler"
 
 const OfflineScormActivity = (props: Props) => {
+
+    //WE GOT:
+
+    ///FILES UNZIPED ON PATH XYX
+
+
     const serverPort = 7777;
     const [serverRootPath, setServerRootPath] = useState<string>();
     const [scormFilesPath, setScormFilesPath] = useState<string>();
@@ -16,24 +24,15 @@ const OfflineScormActivity = (props: Props) => {
     const [serverRunning, setServerRunning] = useState<boolean>();
 
     useEffect(()=>{
-        const copyServerRootPath = async() =>{
-            return new Promise<string>(resolve =>
-                setTimeout(() => resolve("PATH/TO/SERVER/ROOT"), 1000)
-            );
-        }
 
-        const setupScormData = async() =>{
-            return new Promise<string>(resolve =>
-                setTimeout(() => resolve("PATH/TO/EXTRACTED/FILES"), 1000)
-            );
-        }
-
-        Promise.all([copyServerRootPath(), setupScormData()]).then(result=>{
-           const [_serverRootPath, _scormFilesPath] = result;
-           setServerRootPath(_serverRootPath);
-           setScormFilesPath(_scormFilesPath);
-        });
+        initializeSCORMWebplayer().then(()=>{
+            setServerRootPath('/PATH/');
+        }).catch((error)=>{
+            console.log(error);
+        })
     }, [props.activity.id]);
+
+
 
 
     //ONCE WE GOT scormFilesPath, LOAD THE JSCODE
@@ -52,9 +51,6 @@ const OfflineScormActivity = (props: Props) => {
 
     }, [scormFilesPath]);
 
-
-
-
     //ONCE WE GOT serverRootPath, INITIALIZES SERVER
     useEffect(()=>{
         if(serverRootPath && !server){
@@ -63,8 +59,6 @@ const OfflineScormActivity = (props: Props) => {
             startServer();
         }
     }, [serverRootPath]);
-
-
 
     //ONCE WE GOT serverRootPath, jsCode and server
     useEffect(()=>{
@@ -112,8 +106,29 @@ const OfflineScormActivity = (props: Props) => {
 
 
 
-    if(!serverRootPath && !scormFilesPath) return <View><Text>loading scorm files....</Text></View>
 
+
+
+
+
+
+
+
+
+
+    //EVERTHING IS PERFECT!  HAPPY END
+
+    const onExitPlayerHandler = () => {
+        console.log('player exited');
+    }
+
+    const onPlayerMessageHandler = (messageData: string) => {
+        console.log('onPlayerMessageHandler data: ')
+        console.log(messageData);
+    }
+
+
+    if(!serverRootPath && !scormFilesPath) return <View><Text>loading scorm files....</Text></View>
     if(!server) return <View><Text>loading server....</Text></View>
 
     console.log(url);
@@ -121,12 +136,7 @@ const OfflineScormActivity = (props: Props) => {
     console.log(serverRootPath);
     console.log(scormFilesPath);
 
-    return <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Server is {serverRunning? 'running ' : 'not running'}</Text>
-        <Button onPress={serverRunning ? stopServer: startServer} title={serverRunning ? 'Stop': 'Start'}/>
-
-        {url && <Text>URL is {url} and jscode is {jsCode} now we can load the player</Text>}
-    </View>;
+    return <OfflineSCORMPlayer url={url!} injectScript={jsCode} onExitHandler={onExitPlayerHandler} onMessageHandler={onPlayerMessageHandler}/>
 }
 
 type Props = {

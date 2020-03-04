@@ -40,6 +40,7 @@ export const scormQuery = gql`
         description(format: PLAIN)
         type
         packageUrl: package_url
+        offlineAttemptsAllowed: offlineAttemptsAllowed
         attemptsMax: attempts_max
         attemptsCurrent: attempts_current
         attemptsForceNew: attempts_forcenew
