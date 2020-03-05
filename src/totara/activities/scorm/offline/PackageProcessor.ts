@@ -105,7 +105,7 @@ const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string) => {
         const queryString = scoNode[0].getAttribute('parameters');
         const resourceNode = xpath.select("//*[local-name(.)='resources']/*[local-name(.)='resource' and @identifier ='"+resouceId+"']", manifestDom);
         if (resourceNode && resourceNode.length === 1 && resourceNode[0].getAttribute('href') ) {
-            return `./complexscorm/${resourceNode[0].getAttribute('href')}${queryString}`;
+            return `${resourceNode[0].getAttribute('href')}${queryString}`;
         }
     }
     return null;

@@ -20,17 +20,37 @@
  */
 
 import React from "react";
+import { View } from "react-native";
+
 import { ScormActivity } from "@totara/types";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
 import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
+import { downloadSCORMPackage } from "./offline/SCORMFileHandler";
+import SCORMPackageLoader from "./SCORMPackageLoader";
 
+type ScormActivitySummary = {
+  isOffline: boolean, 
+  activity: ScormActivity,
+};
 const ScormActivityView = (props: Props) => {
   const offlineAttemptsAllowed = true;//props.activity.offlineAttemptsAllowed;
+  const tmpactivity = {...props.activity, ...{id: "13"}};
+  const isOffline = true;//TODO - need to check internet connection.
+  
   return (
-      offlineAttemptsAllowed ? <OfflineScormActivity activity={props.activity} /> : <OnlineScormActivity activity={props.activity} />
+    <View style={{flex: 1}} >
+      <SCORMPackageLoader activity={tmpactivity} />
+      <SCORMActivitySummary isOffline={offlineAttemptsAllowed && isOffline} activity={props.activity} />
+    </View>
   );
+  
 }
-
+const SCORMActivitySummary = ({isOffline, activity} : ScormActivitySummary) => {
+  if (isOffline) {
+    return <OfflineScormActivity courseId={"2"} scormId={"13"} />
+  }
+  return <OnlineScormActivity activity={activity} />
+}
 type Props = {
   activity: ScormActivity
 }
