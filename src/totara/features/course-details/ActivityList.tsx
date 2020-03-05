@@ -93,7 +93,7 @@ const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
           setShow(!show);
         }}
       >
-        {available == true? (
+        {available === true? (
           <CellExpandUI show={show} title={title} />
         ) : (
           <SectionDataNotAvailable {...section} />
@@ -144,7 +144,7 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
       </TouchableOpacity>
       {show && (
         <ActivityRestrictionView
-          description={availablereason == null ? "" : availablereason}
+          description={availablereason === null ? "" : availablereason}
           onClose={onClose}
         />
       )}
@@ -181,8 +181,8 @@ const BuildContent = ({
   available
 }: BuildContentProps) => {
   if (
-    completion == "tracking_automatic" &&
-    (completionStatus == "complete_pass" || completionStatus == "complete")
+    completion === "tracking_automatic" &&
+    (completionStatus === "complete_pass" || completionStatus === "complete")
   ) {
     return (
       <ContentIcon
@@ -196,8 +196,8 @@ const BuildContent = ({
       />
     );
   } else if (
-    completion == "tracking_automatic" &&
-    completionStatus == "incomplete"
+    completion === "tracking_automatic" &&
+    completionStatus === "incomplete"
   ) {
     return (
       <ContentIcon
@@ -210,7 +210,7 @@ const BuildContent = ({
         isDashedCircle={false}
       />
     );
-  } else if (completionStatus == "complete_fail") {
+  } else if (completionStatus === "complete_fail") {
     return (
       <ContentIcon
         icon={"times"}
@@ -222,7 +222,7 @@ const BuildContent = ({
         isDashedCircle={false}
       />
     );
-  } else if (completionStatus == "unknown" || completionStatus == null || available == false) {
+  } else if (completionStatus === "unknown" || completionStatus === null || available === false) {
     return (
       <ContentIcon
         icon={"lock"}
@@ -235,8 +235,8 @@ const BuildContent = ({
       />
     );
   } else if (
-    completion == "tracking_manual" &&
-    (completionStatus == "complete_pass" || completionStatus == "complete")
+    completion === "tracking_manual" &&
+    (completionStatus === "complete_pass" || completionStatus === "complete")
   ) {
     return (
       <ContentIcon
@@ -250,8 +250,8 @@ const BuildContent = ({
       />
     );
   } else if (
-    completion == "tracking_manual" &&
-    completionStatus == "incomplete"
+    completion === "tracking_manual" &&
+    completionStatus === "incomplete"
   ) {
     return (
       <ContentIcon
@@ -278,7 +278,7 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
         {data!.map((item: Activity, key: number) => {
           return (
             <View key={key}>
-              {item.completionstatus == "unknown" || item.completionstatus == null || item.available == false ? (
+              {item.completionstatus === "unknown" || item.completionstatus === null || item.available === false ? (
                 <ActivityLock item={item} theme={theme} />
               ) : (
                 <ActivityUnLock item={item} theme={theme} refetch={refetch} />

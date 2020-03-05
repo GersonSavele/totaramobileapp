@@ -20,7 +20,7 @@
  *
  */
 
-import LearningItemCard from "./LearningItemCard";
+import {LearningItemCard, CardElement, ImageElement} from "./LearningItemCard";
 import DueDateState from "./DueDateState";
 import ContentIcon from "./ContentIcon";
 import {AddBadge, CheckBadge} from "./AddBadge";
@@ -38,6 +38,8 @@ import FormError from "./FormError";
 
 export {
   LearningItemCard,
+  CardElement,
+  ImageElement,
   AddBadge,
   DueDateState,
   ContentIcon,
