@@ -7,7 +7,7 @@ const loadScormData = async (scormId: string, attemptMode: string, scoId: string
     console.log(`scoId: ${scoId}`);
     console.log(`attempt: ${attempt}`);  //TODO: IS ATTEMP REALLY NECESSARY?
 
-    const keyScorm = `${scormId}_scorm`;
+    const keyScorm = getSCORMPackageDataKey(scormId);
 
     return Promise.all([storageGet(keyScorm), getLastAttemptForScorm(scormId)]).then(([defaultScormData, lastAttempt]) => {
         let scormCmi: { } | null = null;
@@ -29,10 +29,12 @@ const loadScormData = async (scormId: string, attemptMode: string, scoId: string
             scormCmi = buildCMI(defaultScormData, offlineDefaultSco.scoId, offlineAttempt);
         }
 
-        const keyId = `${scormId}_${scoId ? scoId : offlineDefaultSco.scoId}_${offlineAttempt}`;
         console.log('offlineAttempt: ', offlineAttempt);
-        const cmiPromise = storageGet(`${keyId}_cmi`);
-        const commitsPromise = storageGet(`${keyId}_commits`);
+        const tmpScoId = scoId ? scoId : offlineDefaultSco.scoId;
+        const keyCMI = getSCORMCMIDataKey(scormId, tmpScoId, offlineAttempt)
+        const keyCommit = getSCORMCommitDataKey(scormId, tmpScoId, offlineAttempt)
+        const cmiPromise =  storageGet(keyCMI);
+        const commitsPromise = storageGet(keyCommit);
 
         return Promise.all([cmiPromise, commitsPromise]).then(
             ([cmiData, commitsData]) => {
@@ -136,19 +138,23 @@ const buildSCODefinition = (studentId: string, studentName: string) =>{
 }
 
 //SAVING
-const saveScormData = async(commitData: any) => {
+const getSCORMCommitDataKey = (scormId: string, scoId: string, attempt: number) => `OFFLINECOMMIT_${scormId}_${scoId}_${attempt}`
+const getSCORMCMIDataKey = (scormId: string, scoId: string, attempt: number) => `OFFLINECMI_${scormId}_${scoId}_${attempt}`
+const saveSCORMData = async(commitData: any) => {
     console.log('saveData: ', commitData);
-    const keyid = `${commitData.data.scormid}_${commitData.data.scoid}_${commitData.data.attempt}`;
-    await storageSet(`${keyid}_cmi`, commitData.data.cmi);
+    const keyCMIData = getSCORMCMIDataKey(commitData.data.scormid, commitData.data.scoid, commitData.data.attempt);
+    await storageSet(keyCMIData, commitData.data.cmi);
 
     let data = commitData.data.data;
     // read old commits and append to array
-    const commits = await storageGet(`${keyid}_commits`);
+    const keyCommitData = getSCORMCommitDataKey(commitData.data.scormid, commitData.data.scoId, commitData.data.attempt)
+    const commits = await storageGet(keyCommitData);
     if (commits) {
         commits.push(data);
-        await storageSet(`${keyid}_commits`, commits);
+        await storageSet(keyCommitData, commits);
+    } else {
+        await storageSet(keyCommitData, [data]);
     }
-    else await storageSet(`${keyid}_commits`, [data]);
 
     return setLastAttemptFormScorm(commitData.data.scormid, commitData.data.attempt);
 };
@@ -183,4 +189,52 @@ const storageClear = async () => {
     }
 };
 
-export {loadScormData, saveScormData, storageGetList, storageClear}
+const getSCORMPackageDataKey = (scormId: string) => (`SCORM_${scormId}`);
+
+const setSCORMPackageData = (scormId: string, data: any) => {
+    const scormPackageDataKey = getSCORMPackageDataKey(scormId);
+    return AsyncStorage.setItem(scormPackageDataKey, JSON.stringify(data));
+};
+
+const getSCORMPackageData = (scormId: string) => {
+    const scormPackageDataKey = getSCORMPackageDataKey(scormId);
+    return AsyncStorage.getItem(scormPackageDataKey).then(data => {
+        if(data) {
+            return JSON.parse(data) as OfflineScormPackage;    
+        }
+        return data;
+    });
+};
+
+
+export { setSCORMPackageData, getSCORMPackageData, saveSCORMData }
+
+export type OfflineScormPackage = {
+    id: string,
+    courseid: string,
+    name: string,
+    description: string,
+    type: string,
+    packageUrl: string,
+    attemptsMax: number,
+    attemptsCurrent: number,
+    attemptsForceNew: boolean,
+    attemptsLockFinal: boolean,
+    autoContinue: boolean,
+    launchUrl: string,
+    calculatedGrade: string,
+    offlineAttemptsAllowed: boolean,
+    offlinePackageUrl: string,
+    offlinePackageContentHash: string,
+    offlinePackageScoIdentifiers: [string],
+    offlinePackageData: {
+        scos: [Sco], 
+        defaultSco: Sco
+    }
+};
+
+export type Sco = {
+    id: string,
+    organizationId: string,
+    launchSrc: string 
+}
