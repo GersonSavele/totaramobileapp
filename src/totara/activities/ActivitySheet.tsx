@@ -25,10 +25,10 @@ import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { ActivityType } from "@totara/types";
-import ScormActivity from "./scorm/ScormActivity";
 import { WebviewActivity } from "./webview/WebviewActivity";
 import SafeAreaView from "react-native-safe-area-view";
 import { ThemeContext } from "@totara/theme";
+import SCORMActivityAPI from "./scorm/SCORMActivity"
 
 type contextData = {
   /**
@@ -146,7 +146,7 @@ type Props = {
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
   switch (activity.modtype) {
     case "scorm":
-      return (<ScormActivity activity={activity}/>);
+      return (<SCORMActivityAPI activity={activity}/>);
     default:
       return (<WebviewActivity activity={activity}/>);
   }

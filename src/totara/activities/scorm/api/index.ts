@@ -20,15 +20,10 @@
  */
 
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
 import { ScormActivity } from "@totara/types";
 
 export type Response = {
     scorm: ScormActivity;
-}
-
-export type Variables = {
-    scormid: number;
 }
 
 export const scormQuery = gql` 

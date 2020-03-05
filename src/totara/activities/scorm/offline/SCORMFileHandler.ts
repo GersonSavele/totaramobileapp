@@ -18,16 +18,11 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import { useContext } from "react";
 import * as RNFS from 'react-native-fs';
 import { unzip } from 'react-native-zip-archive';
-
-import { AuthContext } from "@totara/core";
 import { Platform } from "react-native";
 
-const downloadSCORMPackage = (courseId: string, scormId: string, resourceUrl: string) => {
-  const { authContextState: {appState} } = useContext(AuthContext);
-  const apiKey = appState && appState.apiKey ? appState.apiKey : null; 
+const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string, resourceUrl: string) => {
   const offlineSCORMPackageName = getOfflineSCORMPackageName(courseId, scormId);
   const downloadingFilePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
   const downloaderOptions = { 
