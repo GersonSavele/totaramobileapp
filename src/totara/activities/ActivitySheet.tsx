@@ -146,7 +146,7 @@ type Props = {
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
   switch (activity.modtype) {
     case "scorm":
-      return (<SCORMActivityAPI activity={activity}/>);
+      return (<SCORMActivityAPI activity={activity} scormId={'13'}/>);
     default:
       return (<WebviewActivity activity={activity}/>);
   }

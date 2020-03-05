@@ -6,12 +6,22 @@ import { Activity } from "@totara/types";
 import StaticServer from 'react-native-static-server';
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer"
 import { initializeSCORMWebplayer } from "@totara/activities/scorm/offline/SCORMFileHandler"
+import { OfflineScormPackage } from "@totara/types/Scorm"
+
+
+type Props = {
+    storedPackageData: OfflineScormPackage
+}
+
 
 const OfflineScormActivity = (props: Props) => {
 
-    //WE GOT:
+    //COPY SERVER FILES
+    //EXTRACT THE ZIP FILE
+    //PREPARE DATA AND JSCODE
+    //START THE SERVER
 
-    ///FILES UNZIPED ON PATH XYX
+    console.log(props);
 
 
     const serverPort = 7777;
@@ -30,7 +40,7 @@ const OfflineScormActivity = (props: Props) => {
         }).catch((error)=>{
             console.log(error);
         })
-    }, [props.activity.id]);
+    }, [props.storedPackageData.scorm.id]);
 
 
 
@@ -137,10 +147,6 @@ const OfflineScormActivity = (props: Props) => {
     console.log(scormFilesPath);
 
     return <OfflineSCORMPlayer url={url!} injectScript={jsCode} onExitHandler={onExitPlayerHandler} onMessageHandler={onPlayerMessageHandler}/>
-}
-
-type Props = {
-    activity: Activity
 }
 
 export default OfflineScormActivity;

@@ -38,7 +38,7 @@ export interface ScormActivity extends Activity {
   webEntryUrl?: string,
   isAvailable :boolean,
   offlineAttemptsAllowed: boolean,
-  offlinePackageUrl: string,
+  packageUrl: string,
   courseid: number
 }
 

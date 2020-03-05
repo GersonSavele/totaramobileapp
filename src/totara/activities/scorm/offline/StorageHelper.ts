@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import { OfflineScormPackage } from "@totara/types/Scorm"
 
 const loadScormData = async (scormId: string, attemptMode: string, scoId: string, attempt: number) => {
     console.log('loading scorm data......');
@@ -191,7 +192,7 @@ const storageClear = async () => {
 
 const getSCORMPackageDataKey = (scormId: string) => (`SCORM_${scormId}`);
 
-const setSCORMPackageData = (scormId: string, data: any) => {
+const setSCORMPackageData = (scormId: string, data: OfflineScormPackage) => {
     const scormPackageDataKey = getSCORMPackageDataKey(scormId);
     return AsyncStorage.setItem(scormPackageDataKey, JSON.stringify(data));
 };
@@ -202,39 +203,9 @@ const getSCORMPackageData = (scormId: string) => {
         if(data) {
             return JSON.parse(data) as OfflineScormPackage;    
         }
-        return data;
+        return null;
     });
 };
 
 
 export { setSCORMPackageData, getSCORMPackageData, saveSCORMData }
-
-export type OfflineScormPackage = {
-    id: string,
-    courseid: string,
-    name: string,
-    description: string,
-    type: string,
-    packageUrl: string,
-    attemptsMax: number,
-    attemptsCurrent: number,
-    attemptsForceNew: boolean,
-    attemptsLockFinal: boolean,
-    autoContinue: boolean,
-    launchUrl: string,
-    calculatedGrade: string,
-    offlineAttemptsAllowed: boolean,
-    offlinePackageUrl: string,
-    offlinePackageContentHash: string,
-    offlinePackageScoIdentifiers: [string],
-    offlinePackageData: {
-        scos: [Sco], 
-        defaultSco: Sco
-    }
-};
-
-export type Sco = {
-    id: string,
-    organizationId: string,
-    launchSrc: string 
-}

@@ -22,49 +22,53 @@
 import React, { useContext, useEffect, useState } from "react";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
 import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
-import { Button, Text, View } from "react-native"
-import { Activity, ScormActivity } from "@totara/types"
+import { Button, Modal, Text, View } from "react-native"
 import { useQuery } from "@apollo/react-hooks";
 import { scormQuery } from "@totara/activities/scorm/api"
 import { downloadSCORMPackage } from "@totara/activities/scorm/offline/SCORMFileHandler"
 import { DownloadResult } from "react-native-fs"
-import { setSCORMPackageData } from "@totara/activities/scorm/offline/StorageHelper"
+import { getSCORMPackageData, setSCORMPackageData } from "@totara/activities/scorm/offline/StorageHelper"
 import { AuthContext } from "@totara/core"
+import { OfflineScormPackage, Scorm } from "@totara/types/Scorm"
+import { Activity } from "@totara/types"
 
-const SCORMActivityAPI = (props: Activity) => {
+const SCORMActivityAPI = (props: {activity: Activity, scormId: string}) => {
+  console.log(props);
   const { loading, error, data } = useQuery(scormQuery, {
-    variables: { scormid: '13' }, //TODO: PUT THE CORRECT SCORMID FOR QUERY
+    variables: { scormid: props.scormId }, //TODO: PUT THE CORRECT SCORMID FOR QUERY
   });
   if (loading) return <Text>loading...</Text>;
   if (error) return <Text>error, go back</Text>;
 
-  return <SCORMActivity scormActivity={data.scorm} />;
+  return <SCORMActivity activity={props.activity} scorm={data.scorm} />;
 };
 
-
 type SCORMActivityProps = {
-  scormActivity: ScormActivity,
+  activity: Activity,
+  scorm: Scorm,
 }
+
+enum SCORMModalState {
+  Closed,
+  Offline,
+  Online
+}
+
+
 
 const SCORMActivity = (props: SCORMActivityProps) => {
   const { authContextState: {appState} } = useContext(AuthContext);
   const apiKey = appState && appState.apiKey ? appState.apiKey : null;
 
-  const scormActivity = props.scormActivity;
-  const [scormAPIData, setScormAPIData] = useState<any>(scormActivity);
+  const [scormModalState, setSCORMModalState] = useState<SCORMModalState>(SCORMModalState.Closed);
+
+  const scorm = props.scorm;
   const [downloadContentCompleted, setDownloadContentCompleted] = useState<boolean>(false);
   const [mustDownloadContent, setMustDownloadContent] = useState<boolean>(false);
-  const [userIsOnline, setUserIsOnline] = useState<boolean>(true);
+  const [scormOfflineData, setScormOfflineData] = useState<OfflineScormPackage>();
+  const [userIsOnline] = useState<boolean>(true);
 
-  const onStartAttemptTap = () => {
-    //TODO: CHECK IS USER IS ONLINE
-    //TODO: CHECK IS CONTENT IS DOWNLOADED
-    if(scormActivity!.offlineAttemptsAllowed){
-      return <OfflineScormActivity activity={scormActivity} />
-    }
-    return <OnlineScormActivity activity={scormActivity} />;
-  }
-
+  //DOWNLOAD CONTENT - BEGIN
   const onDownloadContentTap = () => {
     setMustDownloadContent(true);
   }
@@ -74,14 +78,22 @@ const SCORMActivity = (props: SCORMActivityProps) => {
       return;
 
     console.log('onDownloadContentTap');
-    const _url = scormAPIData.packageUrl;
-    const _scormId = scormAPIData.id;
-    const _courseId = scormAPIData.courseid;
+    const _url = scorm.packageUrl!;
+    const _scormId = scorm.id;
+    const _courseId = scorm.courseid;
 
     downloadSCORMPackage(apiKey!, _courseId, _scormId, _url).then((response: DownloadResult)=>{
       if(response.statusCode == 200){
         console.log('download done');
-        return setSCORMPackageData(_scormId, scormAPIData);
+
+        const _offlineScormData = {
+          scorm : scorm,
+          offlinePackageData: {
+            packageLocation: 'HERE GOES THE PACKAGE LOCATION RETURNED BY downloadSCORMPackage'
+          }
+        } as OfflineScormPackage;
+
+        return setSCORMPackageData(_scormId, _offlineScormData);
       }
       else {
         throw new Error('file not downloaded');
@@ -93,13 +105,55 @@ const SCORMActivity = (props: SCORMActivityProps) => {
       setDownloadContentCompleted(false);
     });
   }, [mustDownloadContent]);
+  //DOWNLOAD CONTENT - END
 
+
+
+  //START NEW ATTEMPT
+  const onStartAttemptTap = () => {
+    //TODO: CHECK IS USER IS ONLINE
+    //TODO: CHECK IS CONTENT IS DOWNLOADED
+
+    const goOnline = false;
+
+    if(!goOnline) {
+      getSCORMPackageData(props.scorm.id).then(scormdata => { //TODO: PUT THE CORRECT SCORMID
+        if(scormdata) {
+          setScormOfflineData(scormdata);
+          setSCORMModalState(SCORMModalState.Offline);
+        }else {
+          console.log("Cannot find data");
+        }
+      })
+    } else {
+      setSCORMModalState(SCORMModalState.Online);
+    }
+
+  }
+  //START NEW ATTEMPT
+
+  let modalOpen = scormModalState === SCORMModalState.Online || scormModalState === SCORMModalState.Offline;
 
   return <View>
-    <Button disabled={!userIsOnline} title={"DOWNLOAD CONTENT"} onPress={onDownloadContentTap}></Button>
+    <Button disabled={!userIsOnline} title={"DOWNLOAD CONTENT"} onPress={onDownloadContentTap}/>
+    <Button disabled={!userIsOnline && !downloadContentCompleted} title={"START NEW ATTEMPT"} onPress={onStartAttemptTap}/>
 
-    <Button disabled={!userIsOnline && !downloadContentCompleted} title={"START NEW ATTEMPT"} onPress={onStartAttemptTap}></Button>
+    {modalOpen &&
+      <Modal visible={modalOpen} onDismiss={
+        ()=>{
+
+          setSCORMModalState(SCORMModalState.Closed);
+        }
+      } >
+        {scormModalState === SCORMModalState.Online && <OnlineScormActivity activity={props.activity} />}
+        {scormModalState === SCORMModalState.Offline &&  (
+
+            <OfflineScormActivity storedPackageData={scormOfflineData!} />
+        )}
+      </Modal>
+    }
   </View>
+
 };
 
 export default SCORMActivityAPI;
