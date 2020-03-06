@@ -22,6 +22,8 @@ import * as RNFS from 'react-native-fs';
 import { unzip } from 'react-native-zip-archive';
 import { Platform } from "react-native";
 
+import { config } from "@totara/lib";
+
 const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string, resourceUrl: string) => {
   const offlineSCORMPackageName = getOfflineSCORMPackageName(courseId, scormId);
   const downloadingFilePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
@@ -33,26 +35,31 @@ const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string,
     headers: { Authorization: `Bearer ${apiKey}`}
   };
 
-  return RNFS.downloadFile(downloaderOptions).promise;
+  return RNFS.downloadFile(downloaderOptions).promise.then(response => {
+    if (response.statusCode === 200) {
+      return unzipSCORMPackageToServer(offlineSCORMPackageName, downloadingFilePath);
+    } else {
+      throw new Error("Package download failed.");
+    }
+  }).then(unzippedLocation => {
+    return RNFS.unlink(downloadingFilePath).then(()=> unzippedLocation);
+  });
 }
 
-const unzipSCORMPackageToServer = (courseId: string, scormId: string) => {
-  const offlineSCORMPackageName = getOfflineSCORMPackageName(courseId, scormId);
-  const downloadedFilePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
-  const destinationUnzip = `${SCORMWebPlayerPath}/${offlineSCORMPackageName}`;
-
-  return unzip(downloadedFilePath, destinationUnzip);
+const unzipSCORMPackageToServer = (packageName: string, packageSource: string) => {
+  const destinationUnzip = `${config.rootOfflineScormPlayer}/${packageName}`;
+  return unzip(packageSource, destinationUnzip);
 }
 
 const initializeSCORMWebplayer = () => {
-  return RNFS.mkdir(SCORMWebPlayerPath).then(() => {
+  return RNFS.mkdir(config.rootOfflineScormPlayer).then(() => {
     const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
     return getPackageContent().then(result => {
         if (result && result.length) {
           let promisesToCopyFiles = [];
           for (let i = 0; i < result.length; i++) {
             const itemPathFrom = result[i].path;
-            const itemPathTo = `${SCORMWebPlayerPath}/${result[i].name}`;
+            const itemPathTo = `${config.rootOfflineScormPlayer}/${result[i].name}`;
             const copyAssetsToPlayer =  () => (Platform.OS === "android") ? RNFS.copyFileAssets(itemPathFrom, itemPathTo) : RNFS.copyFile(itemPathFrom, itemPathTo);
             const promiseCopyItem =  RNFS.exists(itemPathTo).then(isExist => { 
               if (!isExist) { 
@@ -76,25 +83,6 @@ const initializeSCORMWebplayer = () => {
 
 const getOfflineSCORMPackageName = (courseId: string, scormId: string) => `OfflineSCORM_${courseId}_${scormId}`;
 const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
-const SCORMWebPlayerPath = `${RNFS.DocumentDirectoryPath}/html`; 
 const SCORMPlayerPackagePath = Platform.OS === 'android' ? 'html' : RNFS.MainBundlePath + '/html';
 
-
-export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, SCORMWebPlayerPath, getOfflineSCORMPackageName }
-//TODO - remove following code
-/*
-------- usage ----
-downloadSCORMPackage("2", "13", "http://10.0.8.139/totara/mobile/pluginfile.php/110/mod_scorm/package/1/complexscorm.zip")
-  .then(response => { 
-    console.log('Package downloaded with response: ',response);  
-    if (response.statusCode === 200) {
-      return unzipSCORMPackageToServer("2", "13").then(unzipPath => console.log("unzip path: ", unzipPath));
-    } else {
-      throw new Error(`Invalid response code ${response.statusCode}`);
-    }
-  });
-
-  initializeSCORMWebplayer().then(copied => {
-    console.log("copied...", copied);
-  }).catch(e => console.log("Its error>>>>> ", e));
-*/
+export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName }

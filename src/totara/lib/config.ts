@@ -22,6 +22,8 @@
 import localConfig from "./config.local";
 import ConsoleLogger from "./logger/ConsoleLogger";
 
+import {DocumentDirectoryPath} from "react-native-fs";
+
 const defaultConfig = {
   urlProtocol: "https",
   mobileApi: {
@@ -43,7 +45,8 @@ const defaultConfig = {
   features:{
     downloads: false,
     notifications: false
-  }
+  },
+  rootOfflineScormPlayer: `${DocumentDirectoryPath}/html`,
 };
 
 export const internalConfig = {

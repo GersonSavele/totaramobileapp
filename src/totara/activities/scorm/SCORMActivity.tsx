@@ -20,17 +20,18 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
-import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
 import { Button, Modal, Text, View } from "react-native"
 import { useQuery } from "@apollo/react-hooks";
-import { scormQuery } from "@totara/activities/scorm/api"
-import { downloadSCORMPackage } from "@totara/activities/scorm/offline/SCORMFileHandler"
-import { DownloadResult } from "react-native-fs"
-import { getSCORMPackageData, setSCORMPackageData } from "@totara/activities/scorm/offline/StorageHelper"
-import { AuthContext } from "@totara/core"
-import { OfflineScormPackage, Scorm } from "@totara/types/Scorm"
-import { Activity } from "@totara/types"
+
+import { scormQuery } from "@totara/activities/scorm/api";
+import { downloadSCORMPackage } from "@totara/activities/scorm/offline/SCORMFileHandler";
+import { getSCORMPackageData, setSCORMPackageData } from "@totara/activities/scorm/offline/StorageHelper";
+import { AuthContext } from "@totara/core";
+import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
+import { Activity } from "@totara/types";
+import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
+import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
+
 
 const SCORMActivityAPI = (props: {activity: Activity, scormId: string}) => {
   console.log(props);
@@ -81,24 +82,15 @@ const SCORMActivity = (props: SCORMActivityProps) => {
     const _url = scorm.packageUrl!;
     const _scormId = scorm.id;
     const _courseId = scorm.courseid;
-
-    downloadSCORMPackage(apiKey!, _courseId, _scormId, _url).then((response: DownloadResult)=>{
-      if(response.statusCode == 200){
-        console.log('download done');
-
-        const _offlineScormData = {
-          scorm : scorm,
-          offlinePackageData: {
-            packageLocation: 'HERE GOES THE PACKAGE LOCATION RETURNED BY downloadSCORMPackage'
-          }
-        } as OfflineScormPackage;
-
-        return setSCORMPackageData(_scormId, _offlineScormData);
-      }
-      else {
-        throw new Error('file not downloaded');
-      }
-    }).then(()=>{
+    downloadSCORMPackage(apiKey!, _courseId, _scormId, _url).then(packagePath =>{
+      const _offlineScormData = {
+        scorm : scorm,
+        offlinePackageData: {
+          packageLocation: packagePath
+        }
+      } as OfflineScormPackage;
+      return setSCORMPackageData(_scormId, _offlineScormData);
+    }).then(()=> {
       setDownloadContentCompleted(true);
     }).catch((error: any)=>{
       console.log(error);

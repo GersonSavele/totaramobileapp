@@ -1,6 +1,27 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { OfflineScormPackage } from "@totara/types/Scorm"
 
+const getSCORMAttemptData = async (scormId: string, scoId: string, attempt: number) => {
+  console.log("getSCORMAttemptData data......");
+  console.log(`scormId: ${scormId}`);
+  console.log(`scoId: ${scoId}`);
+
+  const keyCMI = getSCORMCMIDataKey(scormId, scoId, attempt);
+  const keyCommit = getSCORMCommitDataKey(scormId, scoId, attempt);
+  const cmiPromise = storageGet(keyCMI);
+  const commitsPromise = storageGet(keyCommit);
+
+  return Promise.all([cmiPromise, commitsPromise]).then(
+    ([cmiData, commitsData]) => {
+      return {
+        cmi: cmiData,
+        commits: commitsData
+      };
+    }
+  );
+};
+
+
 const loadScormData = async (scormId: string, attemptMode: string, scoId: string, attempt: number) => {
     console.log('loading scorm data......');
     console.log(`scormId: ${scormId}`);
@@ -8,9 +29,8 @@ const loadScormData = async (scormId: string, attemptMode: string, scoId: string
     console.log(`scoId: ${scoId}`);
     console.log(`attempt: ${attempt}`);  //TODO: IS ATTEMP REALLY NECESSARY?
 
-    const keyScorm = getSCORMPackageDataKey(scormId);
 
-    return Promise.all([storageGet(keyScorm), getLastAttemptForScorm(scormId)]).then(([defaultScormData, lastAttempt]) => {
+    return Promise.all([getSCORMPackageData(scormId), getLastAttemptForScorm(scormId)]).then(([defaultScormData, lastAttempt]) => {
         let scormCmi: { } | null = null;
         let offlineDefaultSco = null;
         let offlineAttempt = lastAttempt ? parseInt(lastAttempt) : 0;
@@ -208,4 +228,4 @@ const getSCORMPackageData = (scormId: string) => {
 };
 
 
-export { setSCORMPackageData, getSCORMPackageData, saveSCORMData }
+export { setSCORMPackageData, getSCORMPackageData, saveSCORMData, getSCORMAttemptData }
