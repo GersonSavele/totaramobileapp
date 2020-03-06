@@ -20,7 +20,7 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Modal, Text, View } from "react-native"
+import { Button, Text, View } from "react-native"
 import { useQuery } from "@apollo/react-hooks";
 
 import { scormQuery } from "@totara/activities/scorm/api";
@@ -35,8 +35,9 @@ import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormA
 
 const SCORMActivityAPI = (props: {activity: Activity, scormId: string}) => {
   console.log(props);
+
   const { loading, error, data } = useQuery(scormQuery, {
-    variables: { scormid: props.scormId }, //TODO: PUT THE CORRECT SCORMID FOR QUERY
+    variables: { scormid: props.scormId },
   });
   if (loading) return <Text>loading...</Text>;
   if (error) return <Text>error, go back</Text>;
@@ -49,8 +50,8 @@ type SCORMActivityProps = {
   scorm: Scorm,
 }
 
-enum SCORMModalState {
-  Closed,
+enum SCORMType {
+  None,
   Offline,
   Online
 }
@@ -61,7 +62,7 @@ const SCORMActivity = (props: SCORMActivityProps) => {
   const { authContextState: {appState} } = useContext(AuthContext);
   const apiKey = appState && appState.apiKey ? appState.apiKey : null;
 
-  const [scormModalState, setSCORMModalState] = useState<SCORMModalState>(SCORMModalState.Closed);
+  const [scormType, setSCORMType] = useState<SCORMType>(SCORMType.None);
 
   const scorm = props.scorm;
   const [downloadContentCompleted, setDownloadContentCompleted] = useState<boolean>(false);
@@ -109,41 +110,30 @@ const SCORMActivity = (props: SCORMActivityProps) => {
     const goOnline = false;
 
     if(!goOnline) {
-      getSCORMPackageData(props.scorm.id).then(scormdata => { //TODO: PUT THE CORRECT SCORMID
+      getSCORMPackageData(props.scorm.id).then(scormdata => {
         if(scormdata) {
           setScormOfflineData(scormdata);
-          setSCORMModalState(SCORMModalState.Offline);
+          setSCORMType(SCORMType.Offline);
         }else {
           console.log("Cannot find data");
         }
       })
     } else {
-      setSCORMModalState(SCORMModalState.Online);
+      setSCORMType(SCORMType.Online);
     }
 
   }
   //START NEW ATTEMPT
 
-  let modalOpen = scormModalState === SCORMModalState.Online || scormModalState === SCORMModalState.Offline;
-
   return <View>
-    <Button disabled={!userIsOnline} title={"DOWNLOAD CONTENT"} onPress={onDownloadContentTap}/>
-    <Button disabled={!userIsOnline && !downloadContentCompleted} title={"START NEW ATTEMPT"} onPress={onStartAttemptTap}/>
-
-    {modalOpen &&
-      <Modal visible={modalOpen} onDismiss={
-        ()=>{
-
-          setSCORMModalState(SCORMModalState.Closed);
-        }
-      } >
-        {scormModalState === SCORMModalState.Online && <OnlineScormActivity activity={props.activity} />}
-        {scormModalState === SCORMModalState.Offline &&  (
-
-            <OfflineScormActivity storedPackageData={scormOfflineData!} />
-        )}
-      </Modal>
-    }
+    {scormType === SCORMType.None&& (
+        <View>
+          <Button disabled={!userIsOnline} title={"DOWNLOAD CONTENT"} onPress={onDownloadContentTap}/>
+          <Button disabled={!userIsOnline && !downloadContentCompleted} title={"START NEW ATTEMPT"} onPress={onStartAttemptTap}/>
+        </View>
+    )}
+    {scormType === SCORMType.Online && <OnlineScormActivity activity={props.activity} />}
+    {scormType === SCORMType.Offline &&  <OfflineScormActivity storedPackageData={scormOfflineData!} />}
   </View>
 
 };

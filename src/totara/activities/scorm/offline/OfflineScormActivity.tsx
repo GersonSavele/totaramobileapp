@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { View, Text, Button } from "react-native"
-import { Activity } from "@totara/types";
+import { View, Text } from "react-native"
 
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from 'react-native-static-server';
@@ -15,6 +14,8 @@ type Props = {
 
 
 const OfflineScormActivity = (props: Props) => {
+
+    props.storedPackageData.scorm.
 
     //COPY SERVER FILES
     //EXTRACT THE ZIP FILE
@@ -32,6 +33,11 @@ const OfflineScormActivity = (props: Props) => {
 
     const [server, setServer] = useState<StaticServer>();
     const [serverRunning, setServerRunning] = useState<boolean>();
+
+
+
+
+
 
     useEffect(()=>{
 
@@ -61,6 +67,7 @@ const OfflineScormActivity = (props: Props) => {
 
     }, [scormFilesPath]);
 
+
     //ONCE WE GOT serverRootPath, INITIALIZES SERVER
     useEffect(()=>{
         if(serverRootPath && !server){
@@ -69,6 +76,7 @@ const OfflineScormActivity = (props: Props) => {
             startServer();
         }
     }, [serverRootPath]);
+
 
     //ONCE WE GOT serverRootPath, jsCode and server
     useEffect(()=>{
@@ -125,9 +133,6 @@ const OfflineScormActivity = (props: Props) => {
 
 
 
-
-    //EVERTHING IS PERFECT!  HAPPY END
-
     const onExitPlayerHandler = () => {
         console.log('player exited');
     }
@@ -141,6 +146,10 @@ const OfflineScormActivity = (props: Props) => {
     if(!serverRootPath && !scormFilesPath) return <View><Text>loading scorm files....</Text></View>
     if(!server) return <View><Text>loading server....</Text></View>
 
+
+
+
+    //EVERYTHING IS PERFECT!
     console.log(url);
     console.log(jsCode);
     console.log(serverRootPath);

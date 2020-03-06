@@ -85,4 +85,4 @@ const getOfflineSCORMPackageName = (courseId: string, scormId: string) => `Offli
 const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
 const SCORMPlayerPackagePath = Platform.OS === 'android' ? 'html' : RNFS.MainBundlePath + '/html';
 
-export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName }
+export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName };
