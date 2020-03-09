@@ -20,7 +20,7 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Text, View } from "react-native"
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 
 import { scormQuery } from "@totara/activities/scorm/api";
@@ -31,7 +31,9 @@ import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
 import { Activity } from "@totara/types";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
 import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
-
+import { PrimaryButton, SecondaryButton, TouchableIcon } from "@totara/components"
+import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
+import { ThemeContext } from "@totara/theme";
 
 const SCORMActivityAPI = (props: {activity: Activity, scormId: string}) => {
   console.log(props);
@@ -65,7 +67,6 @@ const SCORMActivity = (props: SCORMActivityProps) => {
   const [scormType, setSCORMType] = useState<SCORMType>(SCORMType.None);
 
   const scorm = props.scorm;
-  const [downloadContentCompleted, setDownloadContentCompleted] = useState<boolean>(false);
   const [mustDownloadContent, setMustDownloadContent] = useState<boolean>(false);
   const [scormOfflineData, setScormOfflineData] = useState<OfflineScormPackage>();
   const [userIsOnline] = useState<boolean>(true);
@@ -79,6 +80,8 @@ const SCORMActivity = (props: SCORMActivityProps) => {
     if(!mustDownloadContent)
       return;
 
+
+
     console.log('onDownloadContentTap');
     const _url = scorm.packageUrl!;
     const _scormId = scorm.id;
@@ -90,12 +93,8 @@ const SCORMActivity = (props: SCORMActivityProps) => {
           packageLocation: packagePath
         }
       } as OfflineScormPackage;
+      setScormOfflineData(_offlineScormData);
       return setSCORMPackageData(_scormId, _offlineScormData);
-    }).then(()=> {
-      setDownloadContentCompleted(true);
-    }).catch((error: any)=>{
-      console.log(error);
-      setDownloadContentCompleted(false);
     });
   }, [mustDownloadContent]);
   //DOWNLOAD CONTENT - END
@@ -121,22 +120,67 @@ const SCORMActivity = (props: SCORMActivityProps) => {
     } else {
       setSCORMType(SCORMType.Online);
     }
-
   }
   //START NEW ATTEMPT
 
-  return <View>
-    {scormType === SCORMType.None&& (
-        <View>
-          <Button disabled={!userIsOnline} title={"DOWNLOAD CONTENT"} onPress={onDownloadContentTap}/>
-          <Button disabled={!userIsOnline && !downloadContentCompleted} title={"START NEW ATTEMPT"} onPress={onStartAttemptTap}/>
+  const MainContent = () =>{
+    const [ theme ] = useContext(ThemeContext);
+
+    console.log(scormOfflineData);
+
+    const hasFileDownloaded = scormOfflineData && scormOfflineData.offlinePackageData.packageLocation!==undefined;
+    const downloadingFile = mustDownloadContent && !hasFileDownloaded;
+
+    return (
+        <View style={styles.expanded}>
+          <View style={{flex: 1, flexDirection:"row"}}>
+            <View style={{flex: 1, padding: 15}}>
+              <Text style={[theme.textH3]}>Summary</Text>
+            </View>
+            <View style={{flex: 1, alignItems:'flex-end'}}>
+              {downloadingFile && <ActivityIndicator />}
+              {!downloadingFile && <TouchableIcon size={25} icon={faCloudDownloadAlt} disabled={hasFileDownloaded!} onPress={onDownloadContentTap} />}
+            </View>
+          </View>
+
+          <View style={styles.attemptContainer}>
+            <View style={styles.attemptButtons}>
+              <SecondaryButton text={"Start new attempt"} mode={!hasFileDownloaded ? "disabled": undefined} onPress={onStartAttemptTap}/>
+              <PrimaryButton text={"Continue last attempt"} onPress={()=>{}} />
+            </View>
+          </View>
         </View>
-    )}
+    )
+  }
+
+  return <View style={styles.expanded}>
+    {scormType === SCORMType.None && <MainContent />}
     {scormType === SCORMType.Online && <OnlineScormActivity activity={props.activity} />}
     {scormType === SCORMType.Offline &&  <OfflineScormActivity storedPackageData={scormOfflineData!} />}
   </View>
 
 };
+
+
+const styles = StyleSheet.create({
+  expanded: {
+    flex: 1,
+  },
+
+  attemptContainer: {
+    position: 'absolute',
+    bottom: 5
+  },
+  attemptButtons:{
+    backgroundColor: '#FAFAFA',
+    width: '100%',
+    flex: 1,
+    alignItems: 'stretch',
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    display: 'flex',
+  }
+})
 
 export default SCORMActivityAPI;
 

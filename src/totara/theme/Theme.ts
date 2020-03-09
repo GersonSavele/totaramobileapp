@@ -44,7 +44,7 @@ const TotaraTheme: AppliedTheme = {
   textSmall: { fontSize: 12, lineHeight: 16, color: textColorDark },
   textLabel: { fontSize: 10, color: textColorDark },
 
-  fontSizeButtonTitle: 16,
+  fontSizeButtonTitle: 14,
   
   //---- Theme color: customizable by [User, Developer] ------
   colorPrimary: colorPrimary,

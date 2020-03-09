@@ -15,15 +15,12 @@ type Props = {
 
 const OfflineScormActivity = (props: Props) => {
 
-    props.storedPackageData.scorm.
-
     //COPY SERVER FILES
     //EXTRACT THE ZIP FILE
     //PREPARE DATA AND JSCODE
     //START THE SERVER
 
     console.log(props);
-
 
     const serverPort = 7777;
     const [serverRootPath, setServerRootPath] = useState<string>();
@@ -34,11 +31,6 @@ const OfflineScormActivity = (props: Props) => {
     const [server, setServer] = useState<StaticServer>();
     const [serverRunning, setServerRunning] = useState<boolean>();
 
-
-
-
-
-
     useEffect(()=>{
 
         initializeSCORMWebplayer().then(()=>{
@@ -47,8 +39,6 @@ const OfflineScormActivity = (props: Props) => {
             console.log(error);
         })
     }, [props.storedPackageData.scorm.id]);
-
-
 
 
     //ONCE WE GOT scormFilesPath, LOAD THE JSCODE
