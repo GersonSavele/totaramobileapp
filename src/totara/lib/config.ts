@@ -47,6 +47,7 @@ const defaultConfig = {
     notifications: false
   },
   rootOfflineScormPlayer: `${DocumentDirectoryPath}/html`,
+  portOfflineScormPlayer: 0,
 };
 
 export const internalConfig = {

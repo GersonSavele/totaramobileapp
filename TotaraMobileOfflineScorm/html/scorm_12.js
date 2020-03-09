@@ -17,7 +17,6 @@
 // SCORM 1.2 API Implementation
 //
 
-// alert('SCORM 1.2 ver: 9');
 function SCORMapi1_2(def, cmiobj, cmiint, scormdebugging, scormauto, scormid, scoid, attempt, autocommit, masteryoverride, hidetoc, oldcmi) {
     LogAPICall("SCORMapi1_2");
     

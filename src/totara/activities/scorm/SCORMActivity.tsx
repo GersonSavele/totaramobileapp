@@ -79,7 +79,6 @@ const SCORMActivity = (props: SCORMActivityProps) => {
     if(!mustDownloadContent)
       return;
 
-    console.log('onDownloadContentTap');
     const _url = scorm.packageUrl!;
     const _scormId = scorm.id;
     const _courseId = scorm.courseid;
@@ -125,7 +124,7 @@ const SCORMActivity = (props: SCORMActivityProps) => {
   }
   //START NEW ATTEMPT
 
-  return <View>
+  return <View style={{flex: 1}}>
     {scormType === SCORMType.None&& (
         <View>
           <Button disabled={!userIsOnline} title={"DOWNLOAD CONTENT"} onPress={onDownloadContentTap}/>
