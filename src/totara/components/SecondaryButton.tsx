@@ -34,18 +34,18 @@ type Props = {
   icon?: string,
   style?: ViewStyle,
   onPress?: (() => void),
-  mode?: "loading" | undefined
+  mode?: "disabled" | "loading" | undefined
 }
 
 type TitleProps = {
   text?: string,
   style?: TextStyle ,
-  mode?: "loading" | undefined,
+  mode?: "disabled" | "loading" | undefined,
 }
 
 type IndicatorProps = {
   icon?: string,
-  mode?: "loading" | undefined,
+  mode?: "disabled" | "loading" | undefined,
   color?: string,
   size?: number
 }
@@ -69,7 +69,7 @@ const ButtonIndicator = ({mode, icon, color, size}: IndicatorProps) => {
   }
 };
 
-const PrimaryButton = ({ children, text, icon, style, onPress, mode, ...rest}: Props) => {
+const SecondaryButton = ({ children, text, icon, style, onPress, mode, ...rest}: Props) => {
   
   const [theme] = useContext(ThemeContext);
   
@@ -79,13 +79,15 @@ const PrimaryButton = ({ children, text, icon, style, onPress, mode, ...rest}: P
       paddingHorizontal: 16,
       minWidth: 150,
       borderRadius: 3,
-      backgroundColor: theme.colorPrimary,
+      borderWidth: mode === 'disabled' ? 0 : 1,
+      borderColor: theme.colorPrimary,
+      backgroundColor: mode === 'disabled' ? theme.colorSecondary1 : theme.colorNeutral1,
       opacity: (mode == "loading" || mode == "disabled") ? 0.5 : 1
     }, 
     title: {
       fontWeight: "bold", 
       fontSize: theme.fontSizeButtonTitle, 
-      color: theme.colorText
+      color: mode === 'disabled' ? theme.colorNeutral7 : theme.textColorSecondary
     }
   });
   
@@ -101,4 +103,4 @@ const PrimaryButton = ({ children, text, icon, style, onPress, mode, ...rest}: P
   );
 }
 
-export default PrimaryButton;
+export default SecondaryButton;

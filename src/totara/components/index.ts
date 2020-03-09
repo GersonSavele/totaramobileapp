@@ -29,6 +29,7 @@ import ActivityLauncher from "./ActivityLauncher";
 import { InfoModal } from "./infoModal";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
 import GeneralErrorModal from "./GeneralErrorModal";
 import InputTextWithInfo from "./InputTextWithInfo";
 import TertiaryButton from "./TertiaryButton";
@@ -52,5 +53,6 @@ export {
   TertiaryButton,
   TouchableIcon,
   AppModal,
-  FormError
+  FormError,
+  SecondaryButton,
 }
