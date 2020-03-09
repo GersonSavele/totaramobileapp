@@ -19,61 +19,49 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useContext } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
-import SafeAreaView, { getInset } from "react-native-safe-area-view";
+import React  from "react";
+import { Dimensions, StyleSheet, View, Text } from "react-native";
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 
-import { TouchableIcon } from "@totara/components";
-import { gutter, ThemeContext } from "@totara/theme";
 
 type Props = {
   url: string,
   injectScript?: string,
-  onMessageHandler?: ((data: string) => void),
+  onMessageHandler?: ((data: JSON) => void),
   onExitHandler?: (() => void);
 }
 
-const OfflineSCORMPlayer = ({ url, injectScript, onMessageHandler, onExitHandler }: Props) => {
-  const [theme] = useContext(ThemeContext);
-  const bottomPadding = getInset("bottom", false);
-  const topPadding = getInset("top", false);
-  const navContentHeight = theme.textH3.fontSize ? theme.textH3.fontSize : 20;
-  const playerScreenHeight = Dimensions.get("window").height - bottomPadding - topPadding - (2 * gutter) - navContentHeight;
-
+const OfflineSCORMPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
+  
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
-    const postEvent = event.nativeEvent.data;
-    onMessageHandler && onMessageHandler(postEvent);
+    const eventdata = JSON.parse(event.nativeEvent.data);
+    const cmidata = eventdata.data.cmi;
+    console.log("cmi: ", cmidata);
+    onMessageHandler && onMessageHandler(eventdata);
   };
 
   return (
-    <SafeAreaView style={{ flexDirection: "column" }}>
-      <View style={styles.navigation}>
-        <TouchableIcon onPress={() => {onExitHandler && onExitHandler()}} icon={"times"} disabled={false} size={navContentHeight} />
-      </View>
-      <View style={[styles.playerContainer, {height: playerScreenHeight}]} >
-        <WebView
-          source={{ uri: url }}
-          javaScriptEnabled={true}
-          onMessage={didReceiveOnMessage}
-          injectedJavaScript={injectScript}
-        />
-      </View>
-    </SafeAreaView>
+    <View style={styles.playerContainer} >
+      <WebView
+        source={{ uri: url }}
+        javaScriptEnabled={true}
+        onMessage={didReceiveOnMessage}
+        injectedJavaScript={injectScript}
+        style={styles.player}
+      /> 
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  navigation: {
-    alignItems: "flex-start",
-    borderBottomWidth: 0,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
   playerContainer: {
+    flexDirection: "row",
     flexGrow: 1,
-    flexDirection: "column",
     width: Dimensions.get("window").width,
+  },
+  player: {
+    width: "100%",
+    // overflow: "scroll",
   }
 });
 

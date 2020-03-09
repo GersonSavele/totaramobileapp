@@ -48,11 +48,15 @@ const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string,
 
 const unzipSCORMPackageToServer = (packageName: string, packageSource: string) => {
   const destinationUnzip = `${config.rootOfflineScormPlayer}/${packageName}`;
-  return unzip(packageSource, destinationUnzip);
+  return unzip(packageSource, destinationUnzip).then(resultDestination => {
+    console.log("zipped to: ", resultDestination);
+    return packageName;
+  });
 }
 
 const initializeSCORMWebplayer = () => {
   return RNFS.mkdir(config.rootOfflineScormPlayer).then(() => {
+    console.log("make html/");
     const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
     return getPackageContent().then(result => {
         if (result && result.length) {
@@ -81,8 +85,36 @@ const initializeSCORMWebplayer = () => {
   );
 };
 
+const isSCORMPlayerInitialized = () => {
+  const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
+  return getPackageContent().then(result => {
+    if (result && result.length) {
+      let promisesToExistFiles = [];
+      for (let i = 0; i < result.length; i++) {
+        const itemPathTo = `${config.rootOfflineScormPlayer}/${result[i].name}`;
+        
+        promisesToExistFiles.push(RNFS.exists(itemPathTo));
+      }
+      return Promise.all(promisesToExistFiles).then(resultExistsFiles => {
+        if(resultExistsFiles && resultExistsFiles.length) {
+          for(let index = 0; index < resultExistsFiles.length; index++) {
+            if (!resultExistsFiles[index]) {
+              return false;
+            }
+          }
+          return true;
+        } else {
+          throw new Error("No files");
+        }
+      })
+    } else {
+      throw new Error()
+    }
+  })
+}
+
 const getOfflineSCORMPackageName = (courseId: string, scormId: string) => `OfflineSCORM_${courseId}_${scormId}`;
 const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
 const SCORMPlayerPackagePath = Platform.OS === 'android' ? 'html' : RNFS.MainBundlePath + '/html';
 
-export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName };
+export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized };

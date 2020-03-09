@@ -16,15 +16,17 @@ export type Scorm = {
 
 export type OfflineScormPackage  = {
     scorm: Scorm,
-    offlinePackageData: {
-        packageLocation: string,
-        scos: [Sco],
-        defaultSco: Sco
-    }
+    offlinePackageData: ScormPackageData
 };
 
 export type Sco = {
-    id: string,
-    organizationId: string,
-    launchSrc: string
-}
+    id: string | null,
+    organizationId: string | null,
+    launchSrc: string | null
+};
+
+export type ScormPackageData  = {
+    packageLocation: string,
+    scos: [Sco],
+    defaultSco: Sco
+};

@@ -23,19 +23,18 @@ import * as RNFS from 'react-native-fs';
 const xpath = require('xpath');
 const dom = require('xmldom').DOMParser;
 
-export const getScormPackageData = (path: string, packageName: string) => {
-    return new Promise(function (resolve, reject) {
-        const manifestFilePath = `${path}/${packageName}/imsmanifest.xml`;
-        RNFS.readFile(manifestFilePath)
-            .then(xmlcontent => {
-                const xmlData = new dom().parseFromString(xmlcontent);
-                const scosList = getScosDataForPackage(xmlData);
-                const defaultSco = getInitialScormLoadData(xmlData);
-                resolve({scos: scosList, default: defaultSco});
-            }).catch((error: any)=>{
-                reject(error);
+import { Sco } from "@totara/types/Scorm";
+
+
+export const getScormPackageData = (path: string, packagName: string) => {
+    const manifestFilePath = `${path}/${packagName}/imsmanifest.xml`;
+    return RNFS.readFile(manifestFilePath)
+        .then(xmlcontent => {
+            const xmlData = new dom().parseFromString(xmlcontent);
+            const scosList = getScosDataForPackage(xmlData);
+            const defaultSco = getInitialScormLoadData(xmlData);
+            return {scos: scosList, defaultSco: defaultSco};
         });
-    });
 };
 
 const getScosDataForPackage = (manifestDom: any) => {
@@ -55,7 +54,7 @@ const getScosDataForPackage = (manifestDom: any) => {
         let itemNode = itemResult.iterateNext();
         while (itemNode) {
             const valLaunchUrl = getDefaultScoLaunchUrl(manifestDom, itemNode.nodeValue);
-            const sco = {scoId: itemNode.nodeValue, organizationId:  organizationNode.nodeValue, launchSrc: valLaunchUrl};
+            const sco: Sco = {id: itemNode.nodeValue, organizationId:  organizationNode.nodeValue, launchSrc: valLaunchUrl};
             scos.push(sco);
             itemNode = itemResult.iterateNext();
         }
@@ -66,7 +65,7 @@ const getScosDataForPackage = (manifestDom: any) => {
 
 const getInitialScormLoadData = (manifestDom: any) => {
     const defaultOrgizationsNode = xpath.select("//*[local-name(.)='organizations']/*[local-name(.)='organization']/@identifier", manifestDom);
-    let defaultOrgizationId = null;
+    let defaultOrgizationId: string | null = null;
     if (defaultOrgizationsNode && defaultOrgizationsNode.length > 0) {
         if (defaultOrgizationsNode.length === 1) {
             defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
@@ -86,19 +85,19 @@ const getInitialScormLoadData = (manifestDom: any) => {
             }
         }
     }
-    let defaultScoId = null;
-    let defaultLaunchSrc = null;
+    let defaultScoId: string | null = null;
+    let defaultLaunchSrc: string | null = null;
     if (defaultOrgizationId !== null) {
         const firstScoOnDefaultOrgNode = xpath.select("//*[local-name(.)='organizations']/*[local-name(.)='organization' and @identifier='"+defaultOrgizationId+"']/*[local-name(.)='item'][1]", manifestDom);
         if (firstScoOnDefaultOrgNode && firstScoOnDefaultOrgNode.length === 1) {
             defaultScoId = firstScoOnDefaultOrgNode[0].getAttribute('identifier');
-            defaultLaunchSrc = getDefaultScoLaunchUrl(manifestDom, defaultScoId);
+            defaultLaunchSrc = getDefaultScoLaunchUrl(manifestDom, defaultScoId!);
         }
     }
-    return {scoId: defaultScoId, organizationId: defaultOrgizationId, launchSrc: defaultLaunchSrc};
+    return {id: defaultScoId, organizationId: defaultOrgizationId, launchSrc: defaultLaunchSrc};
 };
 
-const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string) => {
+const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string)  => {
     const scoNode = xpath.select("//*[local-name(.)='item' and @identifier ='"+scoId+"']", manifestDom);
     if (scoNode.length === 1) {
         const resouceId = scoNode[0].getAttribute('identifierref');
