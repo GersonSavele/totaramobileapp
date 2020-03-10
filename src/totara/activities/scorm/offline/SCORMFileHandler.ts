@@ -18,6 +18,7 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
+
 import * as RNFS from 'react-native-fs';
 import { unzip } from 'react-native-zip-archive';
 import { Platform } from "react-native";

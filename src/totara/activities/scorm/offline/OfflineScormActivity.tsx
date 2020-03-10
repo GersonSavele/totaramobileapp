@@ -1,4 +1,25 @@
-import React, { useEffect, useState } from "react"
+/**
+ * This file is part of Totara Mobile
+ *
+ * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ */
+
+import React, { useEffect, useState, useRef } from "react"
 import { Text } from "react-native"
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from 'react-native-static-server';
@@ -7,108 +28,107 @@ import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORM
 import { initializeSCORMWebplayer, isSCORMPlayerInitialized } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline/PackageProcessor"
 import { OfflineScormPackage, ScormPackageData, Sco } from "@totara/types/Scorm"
-import { config } from "@totara/lib";
-import { saveSCORMData, getSCORMAttemptData } from "./StorageHelper";
+import { config, Log } from "@totara/lib";
+import { saveSCORMActivityData, getSCORMAttemptData } from "./StorageHelper";
 
 type Props = {
     storedPackageData: OfflineScormPackage
 }
 
-
 const OfflineScormActivity = (props: Props) => {
 
-    console.log(props);
-    
-    const [isWebPlayerInitialized, setIsWebPlayerInitialized] = useState<boolean>();
-    const [server, setServer] = useState<StaticServer>();
-    const [url, setUrl] = useState<string>();
-    // const [cmi, setCMI] = useState<any>();
-    const [jsCode, setJsCode] = useState<string>();
+    const server = useRef<StaticServer>(null);
     const [scormPackageData, setScormPackageData] = useState<ScormPackageData>(props.storedPackageData.offlinePackageData);
-    
+    const [url, setUrl] = useState<string>();
+    const [jsCode, setJsCode] = useState<string>();
     
     useEffect(()=>{
-        if(!isWebPlayerInitialized) {
-            isSCORMPlayerInitialized().then((isInit) => {
-                if(!isInit) {
-                    initializeSCORMWebplayer().then(()=> {
-                        setIsWebPlayerInitialized(true);
-                    })
-                } else {
-                    setIsWebPlayerInitialized(true);
-                }
-            })
-        }
-        if(props.storedPackageData.offlinePackageData && props.storedPackageData.offlinePackageData.packageLocation) {
-            loadSCORMPackageData(props.storedPackageData.offlinePackageData);
-        } 
+        setUpOfflineSCORMPlayer().then(offlineServer => {
+            if (offlineServer) {
+                startServer(offlineServer.path, offlineServer.port)
+                .then((serverOrigin: string) => setUrl(serverOrigin));
+            } else {
+                Log.debug("Cannot fine offline server details.");
+            }
+        }).catch(e => {
+            Log.debug(e.messageData);
+        })
         
+       loadSCORMPackageData(props.storedPackageData.offlinePackageData).then(data => {
+           setScormPackageData(data);
+        }).catch(e => {
+            Log.debug(e.messageData);
+        });                        
     }, [props.storedPackageData.scorm.id]);
 
     useEffect(()=> { 
-        // TODO - need to pass attempt
-        getSCORMAttemptData(props.storedPackageData.scorm.id, 1).then(cmiData=> {
-            console.log("saved cmi: ", cmiData);
-            if (scormPackageData && scormPackageData.scos && scormPackageData.defaultSco) {
-                // TODO - need to pass attempt
-                const cmi = buildCMI(props.storedPackageData.scorm.id, scormPackageData.scos, scormPackageData.defaultSco.id!, 1, scormPackageData.packageLocation);
-                setJsCode(scormDataIntoJsInitCode(cmi, null));
-            }
-        });
-    }, [scormPackageData])
-
-    useEffect(()=>{
-        console.log('isWebPlayerInitialized: ', isWebPlayerInitialized);
-        if(isWebPlayerInitialized) {
-            startServer();
+        if(url && scormPackageData) {
+            // TODO - need to pass attem
+            getSCORMAttemptData(props.storedPackageData.scorm.id, 1).then(cmiData=> {
+                if (scormPackageData && scormPackageData.scos && scormPackageData.defaultSco) {
+                    // TODO - need to pass attempt
+                    const selectedScoId = scormPackageData.defaultSco.id!;
+                    const lastActivityCmi = (cmiData && cmiData[selectedScoId]) ? cmiData[selectedScoId] : null;
+                    const cmi = buildCMI(props.storedPackageData.scorm.id, scormPackageData.scos, selectedScoId, 1, scormPackageData.packageLocation);
+                    setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
+                }
+            });
         }
-    }, [isWebPlayerInitialized]);
+    }, [scormPackageData, url])
 
-    useEffect(()=>{
-        if (!server){
-            const _server = new StaticServer(config.portOfflineScormPlayer, config.rootOfflineScormPlayer, {keepAlive: true, localOnly: true});
-            setServer(_server);
-            startServer();
+    const stopServer = ()=> {
+        if (server && server.current) {
+            server.current!.stop();
+            server.current = null;
         }
-    }, [server]);
+        setUrl(undefined);
+    }
 
-    // const stopServer = ()=> {
-    //     if (!server) return;
-
-    //     server.stop();
-    //     setServerRunning(false);
-    //     console.log('server has stopped');
-    // }
-
-    const startServer = ()=> {
-        if (!server) return;
-
-        server.start().then((url: string) => {
-            setUrl(url);
-        });
+    const startServer = (path: string, port: number) => {
+        if (server && server.current) {
+            server.current.stop();
+            server.current = null;
+        }
+        server.current = new StaticServer(port, path, {keepAlive: true, localOnly: true});
+        return server.current.start();
     }
 
     const onExitPlayerHandler = () => {
         console.log('player exited');
+        stopServer();
     };
 
+    const setUpOfflineSCORMPlayer = () => {
+        const _serverDetails = {path: config.rootOfflineScormPlayer, port: config.portOfflineScormPlayer};
+        return isSCORMPlayerInitialized().then((isInit) => {
+            if (isInit) {
+                return _serverDetails;
+            } else {
+                return initializeSCORMWebplayer().then(()=> {
+                    return _serverDetails;
+                });
+            }
+        })
+    }
+
     const onPlayerMessageHandler = (messageData: any) => {
-        console.log('onPlayerMessageHandler data: ');
         if (messageData.tmsevent && messageData.tmsevent === "SCORMCOMMIT" && messageData.data) {
-            console.log("data saving.....");
-            saveSCORMData(messageData.data);
+            saveSCORMActivityData(messageData.data);
         }      
     };
 
-    const loadSCORMPackageData = (packageData: ScormPackageData) => {
-        if (packageData.scos && packageData.defaultSco) {
-            setScormPackageData(packageData)
+    const loadSCORMPackageData = (packageData?: ScormPackageData) => {
+        if (packageData && packageData.packageLocation) {
+            if (packageData.scos && packageData.defaultSco) {
+                return Promise.resolve(packageData);
+            } else {
+                return getScormPackageData(config.rootOfflineScormPlayer, packageData.packageLocation).then(data=> {
+                    const tmpPackageData = {...packageData, ...data } as ScormPackageData
+                    return tmpPackageData;
+                });
+            }
         } else {
-            getScormPackageData(config.rootOfflineScormPlayer, packageData.packageLocation).then(data=> {
-                // console.log('>>>>>>>>>>>>>>>>>>> data: ', data);
-                const tmpPackageData = {...packageData, ...data } as ScormPackageData
-                setScormPackageData(tmpPackageData);
-            });
+            return Promise.reject("Cannot find offline package data");
         }
     };
     
