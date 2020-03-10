@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   button: {
     height: 48,
     paddingHorizontal: 16,
-    minWidth: 200,
+    // minWidth: 200,
     borderRadius: 3
   }
 });

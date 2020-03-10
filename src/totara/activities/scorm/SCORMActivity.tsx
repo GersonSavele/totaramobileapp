@@ -20,21 +20,19 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
-
 import { scormQuery } from "@totara/activities/scorm/api";
 import { downloadSCORMPackage } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getSCORMPackageData, setSCORMPackageData } from "@totara/activities/scorm/offline/StorageHelper";
 import { AuthContext } from "@totara/core";
 import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
 import { Activity } from "@totara/types";
+import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon, MoreText} from "@totara/components"
+import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
+import { gutter, ThemeContext } from "@totara/theme";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
 import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
-import { PrimaryButton, SecondaryButton, TouchableIcon } from "@totara/components"
-import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
-import { ThemeContext } from "@totara/theme";
-import MoreText from "@totara/components/MoreText"
 
 const SCORMActivityAPI = (props: {activity: Activity, scormId: string}) => {
   console.log(props);
@@ -59,17 +57,15 @@ enum SCORMType {
   Online
 }
 
-
-
 const SCORMActivity = (props: SCORMActivityProps) => {
   const { authContextState: {appState} } = useContext(AuthContext);
   const apiKey = appState && appState.apiKey ? appState.apiKey : null;
 
   const [scormType, setSCORMType] = useState<SCORMType>(SCORMType.None);
+  const { scorm, activity } = props
 
-  const scorm = props.scorm;
   const [mustDownloadContent, setMustDownloadContent] = useState<boolean>(false);
-  const [scormOfflineData, setScormOfflineData] = useState<OfflineScormPackage>();
+  const [scormStoredData, setScormStoredData] = useState<OfflineScormPackage>();
   const [userIsOnline] = useState<boolean>(true);
 
   //DOWNLOAD CONTENT - BEGIN
@@ -94,7 +90,7 @@ const SCORMActivity = (props: SCORMActivityProps) => {
           packageLocation: packagePath
         }
       } as OfflineScormPackage;
-      setScormOfflineData(_offlineScormData);
+      setScormStoredData(_offlineScormData);
       return setSCORMPackageData(_scormId, _offlineScormData);
     });
   }, [mustDownloadContent]);
@@ -110,9 +106,9 @@ const SCORMActivity = (props: SCORMActivityProps) => {
     const goOnline = false;
 
     if(!goOnline) {
-      getSCORMPackageData(props.scorm.id).then(scormdata => {
+      getSCORMPackageData(scorm.id).then(scormdata => {
         if(scormdata) {
-          setScormOfflineData(scormdata);
+          setScormStoredData(scormdata);
           setSCORMType(SCORMType.Offline);
         }else {
           console.log("Cannot find data");
@@ -124,47 +120,98 @@ const SCORMActivity = (props: SCORMActivityProps) => {
   }
   //START NEW ATTEMPT
 
+
+
   const MainContent = () =>{
     const [ theme ] = useContext(ThemeContext);
 
-    console.log(scormOfflineData);
-
-    const hasFileDownloaded = scormOfflineData && scormOfflineData.offlinePackageData.packageLocation!==undefined;
+    const hasFileDownloaded = scormStoredData && scormStoredData.offlinePackageData.packageLocation!==undefined;
     const downloadingFile = mustDownloadContent && !hasFileDownloaded;
 
+    debugger;
+
     return (
-        <View style={styles.expanded}>
-          <View style={{flexDirection:"column"}}>
+          <View style={styles.expanded}>
+            <ScrollView>
+            <View style={{flexDirection:"column"}}>
 
-            <View style={{flexDirection:"row"}}>
-              <View style={{flex: 1, padding: 15}}>
-                <Text style={[theme.textH3]}>Summary</Text>
+              <View style={{padding: gutter}}>
+                <View style={{flexDirection:"row", display: 'flex', justifyContent: 'space-between'}}>
+                  <View>
+                    <Text style={[theme.textH2]}>Summary</Text>
+                  </View>
+                  <View>
+                    {downloadingFile && <View style={{marginTop: 20, marginRight: 20}}><ProgressCircle indeterminate size={25} /></View>}
+                    {!downloadingFile && <TouchableIcon size={25} icon={faCloudDownloadAlt} disabled={hasFileDownloaded!} onPress={onDownloadContentTap} />}
+                  </View>
+                </View>
+                <View style={{padding: 5}}>
+                  <MoreText longText={scorm!.description}/>
+                </View>
               </View>
-              <View style={{flex: 1, alignItems:'flex-end'}}>
-                {downloadingFile && <View style={{marginTop: 20, marginRight: 20}}><ActivityIndicator /></View>}
-                {!downloadingFile && <TouchableIcon size={25} icon={faCloudDownloadAlt} disabled={hasFileDownloaded!} onPress={onDownloadContentTap} />}
+
+              <View style={{flexDirection:"column", padding: gutter}}>
+                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
+                  <View>
+                    <Text style={[theme.textH2]}>Grade details</Text>
+                  </View>
+                  <View>
+                    <TertiaryButton text={"View all"}/>
+                  </View>
+                </View>
+
+                <View style={{borderRadius: 5, backgroundColor: '#eee', height: 100  }}>
+
+                </View>
+
+                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
+                  <Text>Grading method</Text>
+                  <View>
+                    <Text>{"Highest attempt"}</Text>
+                  </View>
+                </View>
+                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
+                  <Text>Grading reported</Text>
+                  <Text>{"3"}</Text>
+                </View>
+              </View>
+
+
+
+
+              <View style={{flexDirection:"column", padding: gutter}}>
+                <View>
+                  <Text style={[theme.textH2]}>Attempt details</Text>
+                </View>
+                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
+                  <Text>Total attempts allowed</Text>
+                  <Text>{scorm!.attemptsMax.toString()}</Text>
+                </View>
+                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
+                  <Text>Total attempts done</Text>
+                  <Text>{scormStoredData? scormStoredData!.scorm.attemptsCurrent.toString() : scorm!.attemptsCurrent.toString()}</Text>
+                </View>
+              </View>
+
+            </View>
+
+
+        </ScrollView>
+            <View style={styles.attemptContainer}>
+              <View style={styles.attemptButtons}>
+                <SecondaryButton text={"Start new attempt"} mode={!hasFileDownloaded ? "disabled": undefined} onPress={onStartAttemptTap}/>
+                <PrimaryButton text={"Continue last attempt"} onPress={()=>{}} />
               </View>
             </View>
-            <View style={{padding: 15}}>
-              <MoreText longText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et mi pellentesque, iaculis mi at, dapibus dui. Cras vulputate eget ante eget pellentesque. Nam nec efficitur risus, ac dictum nibh. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent in odio neque. Ut leo est, accumsan nec tincidunt nec, varius sed nibh. Suspendisse tincidunt malesuada erat, nec molestie est tincidunt at. Proin convallis interdum arcu, ac egestas diam faucibus nec. Proin elementum ipsum ante, quis gravida est sodales vitae. Suspendisse dictum vitae dui ac ultricies. Nullam volutpat ex ac magna ornare fermentum. Duis volutpat elementum sem sit amet sodales."/>
-            </View>
-
           </View>
 
-          <View style={styles.attemptContainer}>
-            <View style={styles.attemptButtons}>
-              <SecondaryButton text={"Start new attempt"} mode={!hasFileDownloaded ? "disabled": undefined} onPress={onStartAttemptTap}/>
-              <PrimaryButton text={"Continue last attempt"} onPress={()=>{}} />
-            </View>
-          </View>
-        </View>
     )
   }
 
   return <View style={styles.expanded}>
     {scormType === SCORMType.None && <MainContent />}
-    {scormType === SCORMType.Online && <OnlineScormActivity activity={props.activity} />}
-    {scormType === SCORMType.Offline &&  <OfflineScormActivity storedPackageData={scormOfflineData!} />}
+    {scormType === SCORMType.Online && <OnlineScormActivity activity={activity} />}
+    {scormType === SCORMType.Offline &&  <OfflineScormActivity storedPackageData={scormStoredData!} />}
   </View>
 
 };
