@@ -6,7 +6,7 @@ const MoreText = (props: {longText: string}) =>{
     const renderViewMore = (event: () => void) => {
         return(
             <View style={styles.moreLessContainer}>
-                <Text onPress={event} style={styles.moreLess}>View more</Text>
+                <Text onPress={event} style={styles.moreLess}>more</Text>
             </View>
         )
     }
@@ -14,7 +14,7 @@ const MoreText = (props: {longText: string}) =>{
     const renderViewLess = (event: () => void) => {
         return(
             <View style={styles.moreLessContainer}>
-                <Text style={styles.moreLess} onPress={event} >View less</Text>
+                <Text style={styles.moreLess} onPress={event} >less</Text>
             </View>
         )
     }

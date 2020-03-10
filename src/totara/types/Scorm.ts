@@ -6,7 +6,7 @@ export type Scorm = {
     attemptsCurrent: number,
     attemptsForceNew:  boolean,
     attemptsLockFinal: boolean,
-
+    description: string,
     launchUrl: string,
 
     offlineAttemptsAllowed: boolean,

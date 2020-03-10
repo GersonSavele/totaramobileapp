@@ -25,14 +25,15 @@ import * as Progress from "react-native-progress";
 import { ThemeContext } from "@totara/theme";
 
 type ProgressCircleParam = {
-  progress: number,
+  progress?: number,
+  indeterminate?: boolean,
   size: number,
   progressColor?: string,
   color?: string,
   unfilledColor?: string
 }
 
-const ProgressCircle = ({size, progress, progressColor, color, unfilledColor}: ProgressCircleParam) => {
+const ProgressCircle = ({size, progress= 0, progressColor, color, unfilledColor, indeterminate= false}: ProgressCircleParam) => {
 
   const [theme] = useContext(ThemeContext);
 
@@ -43,6 +44,7 @@ const ProgressCircle = ({size, progress, progressColor, color, unfilledColor}: P
   color={(progressColor? progressColor : theme.colorInfo)}
   thickness={3}
   borderWidth={0}
+  indeterminate={indeterminate}
   formatText={() =>  progress+"%"}
   showsText={true}
   textStyle={{fontSize: theme.textSmall.fontSize, color: (color ? color: theme.textColorDark), fontWeight: "bold"}}/>
