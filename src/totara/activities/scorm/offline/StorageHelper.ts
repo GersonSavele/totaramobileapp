@@ -1,123 +1,33 @@
+/**
+ * This file is part of Totara Mobile
+ *
+ * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ */
+
 import AsyncStorage from '@react-native-community/async-storage';
 import { OfflineScormPackage } from "@totara/types/Scorm"
 
 
-
-
-const loadScormData = async (scormId: string, attemptMode: string, scoId: string, attempt: number) => {
-    console.log('loading scorm data......');
-    console.log(`scormId: ${scormId}`);
-    console.log(`attemptMode: ${attemptMode}`);
-    console.log(`scoId: ${scoId}`);
-    console.log(`attempt: ${attempt}`);  //TODO: IS ATTEMP REALLY NECESSARY?
-
-
-    return Promise.all([getSCORMPackageData(scormId), getLastAttemptForScorm(scormId)]).then(([defaultScormData, lastAttempt]) => {
-        let scormCmi: { } | null = null;
-        let offlineDefaultSco = null;
-        let offlineAttempt = lastAttempt ? parseInt(lastAttempt) : 0;
-
-        if (attemptMode === 'normal') { //TODO: MAKE THIS A TYPE?
-            if (offlineAttempt === 0 ) {
-                // alert("There is not previous attempt, new attempt is starting.");
-                offlineAttempt = offlineAttempt + 1;
-            }
-        } else {
-            offlineAttempt = offlineAttempt + 1;
-        }
-
-        if (defaultScormData) {
-            offlineDefaultSco = defaultScormData.offline_package_data.default;
-            //const offlineScos = defaultScormData.offline_package_data.scos;
-            scormCmi = buildCMI(defaultScormData, offlineDefaultSco.scoId, offlineAttempt);
-        }
-
-        console.log('offlineAttempt: ', offlineAttempt);
-        const tmpScoId = scoId ? scoId : offlineDefaultSco.scoId;
-        const keyCMI = getSCORMCMIDataKey(scormId, tmpScoId, offlineAttempt)
-        const keyCommit = getSCORMCommitDataKey(scormId, tmpScoId, offlineAttempt)
-        const cmiPromise =  storageGet(keyCMI);
-        const commitsPromise = storageGet(keyCommit);
-
-        return Promise.all([cmiPromise, commitsPromise]).then(
-            ([cmiData, commitsData]) => {
-                if (cmiData == null) {
-                    return {default: scormCmi};
-                } else {
-                    return  {
-                        default: scormCmi,
-                        cmi: cmiData,
-                        commits: commitsData
-                    }
-                }
-            });
-    });
-};
-const getLastAttemptForScorm = (scormId: string) => storageGet(`${scormId}_last_attempt`);
-
-
-//SAVING
-// const getSCORMCommitDataKey = (scormId: string, scoId: string, attempt: number) => `OFFLINECOMMIT_${scormId}_${scoId}_${attempt}`
-// const getSCORMCMIDataKey = (scormId: string, scoId: string, attempt: number) => `OFFLINECMI_${scormId}_${scoId}_${attempt}`
-const getSCORMCommitDataKey = (scormId: string, attempt: number) => `OFFLINECOMMIT_${scormId}_${attempt}`
-const getSCORMCMIDataKey = (scormId: string, attempt: number) => `OFFLINECMI_${scormId}_${attempt}`
-const saveSCORMData = async(commitData: any) => {
-    console.log('saveData: ', commitData);
-    // const keyCMIData = getSCORMCMIDataKey(commitData.data.scormid, commitData.data.scoid, commitData.data.attempt);
-    const keyCMIData = getSCORMCMIDataKey(commitData.data.scormid, commitData.data.attempt);
-    await storageSet(keyCMIData, commitData.cmi);
-
-    let data = commitData.data;
-    // read old commits and append to array
-    // const keyCommitData = getSCORMCommitDataKey(commitData.scormid, commitData.scoId, commitData.attempt)
-    const keyCommitData = getSCORMCommitDataKey(commitData.scormid, commitData.attempt)
-    const commits = await storageGet(keyCommitData);
-    if (commits) {
-        commits.push(data);
-        await storageSet(keyCommitData, commits);
-    } else {
-        await storageSet(keyCommitData, [data]);
-    }
-
-    return setLastAttemptFormScorm(commitData.scormid, commitData.attempt);
-};
-
-const setLastAttemptFormScorm = (scormId: string, newAttempt: any) => storageSet(`OFFLINELAST_ATTEMPT_${scormId}`, newAttempt);
-
-const getSCORMAttemptData = async (scormId: string, attempt: number) => {
-    const keyCMIData = getSCORMCMIDataKey(scormId, attempt);
-    return storageGet(keyCMIData);
-};
-
-
-//STORAGE RELATED
-const storageSet = (key: string, value: any) => {
-    if (value) {
-        return AsyncStorage.setItem(key, JSON.stringify(value));
-    } else {
-        throw Error('value not set');
-    }
-};
-
-const storageGet = async (key: string) => {
-    const result = await AsyncStorage.getItem(key);
-    return JSON.parse(result!);
-};
-
-//EXTERNAL STORAGE RELATED
-const storageGetList = async (keys: string[]) => {
-    return AsyncStorage.multiGet(keys);
-};
-
-const storageClear = async () => {
-    const asyncStorageKeys = await AsyncStorage.getAllKeys();
-    if (asyncStorageKeys.length > 0) {
-        console.log('cleaning AsyncStorage');
-        return AsyncStorage.clear();
-    }
-};
-
-const getSCORMPackageDataKey = (scormId: string) => (`SCORM_${scormId}`);
+const ScormDataPre = "@TOTARAMOBILE_SCORM";
+const getSCORMPackageDataKey = (scormId: string) => (`${ScormDataPre}_API_DATA_${scormId}`);
+const getSCORMCommitDataKey = (scormId: string, attempt: number) => (`${ScormDataPre}_OFFLINE_COMMIT_${scormId}_${attempt}`);
+const getSCORMCMIDataKey = (scormId: string, attempt: number) => (`${ScormDataPre}_OFFLINE_CMI_${scormId}_${attempt}`);
+const getSCORMLastAttemptKey = (scormId: string) => (`${ScormDataPre}_OFFLINELAST_ATTEMPT_${scormId}`);
 
 const setSCORMPackageData = (scormId: string, data: OfflineScormPackage) => {
     const scormPackageDataKey = getSCORMPackageDataKey(scormId);
@@ -134,5 +44,64 @@ const getSCORMPackageData = (scormId: string) => {
     });
 };
 
+const getLastAttemptForScorm = (scormId: string) => {
+    return AsyncStorage.getItem(getSCORMLastAttemptKey(scormId)).then(storageData => {
+        if(storageData) {
+            return parseInt(storageData);
+        }
+        return null;
+    });
+}
 
-export { setSCORMPackageData, getSCORMPackageData, saveSCORMData, getSCORMAttemptData }
+const saveSCORMActivityData = (commitData: any) => {
+    const keyScormCMIData = getSCORMCMIDataKey(commitData.scormid, commitData.attempt);
+    const keyScormCommitData = getSCORMCommitDataKey(commitData.scormid, commitData.attempt);
+    const keyScormLastAttempt = getSCORMLastAttemptKey(commitData.scormid);
+    
+    return AsyncStorage.multiGet([keyScormCMIData, keyScormCommitData, keyScormLastAttempt]).then(([storageCMIData, storageCommitData, storageLastAttempt]) => {
+         const scoidKey = commitData.scoid;
+         let scormCommitData = {[scoidKey] : [commitData.data]};
+         let scormCMIData = {[scoidKey] : commitData.cmi};
+         let scormLastAttempt = parseInt(commitData.data.attempt);
+        
+         if (storageCMIData && (storageCMIData.length === 2) && (storageCMIData[1] === keyScormCMIData) && JSON.parse(storageCMIData[1])) {
+            let existingCMIData = JSON.parse(storageCMIData[1]);
+            scormCMIData = {...existingCMIData[scoidKey], ...commitData.cmi};
+        }
+         if (storageCommitData && (storageCommitData.length === 2) && (storageCommitData[1] === keyScormCommitData) && JSON.parse(storageCommitData[1])) {
+            let existingCommitData = JSON.parse(storageCommitData[1]);
+            if (existingCommitData[scoidKey]) {
+                existingCommitData[scoidKey].push(commitData.data);
+            } else {
+                existingCommitData[scoidKey] = [commitData.data];
+            }
+            scormCommitData = existingCommitData;
+        }
+        if (storageLastAttempt && (storageLastAttempt.length === 2) && (storageLastAttempt[1] === keyScormLastAttempt) &&  (scormLastAttempt < parseInt(storageLastAttempt[1]))) {
+            scormLastAttempt = parseInt(storageLastAttempt[1]);
+        }
+        return [JSON.stringify(scormCMIData), JSON.stringify(scormCommitData), scormLastAttempt.toString()];
+    }).then(([formattedCMIData, formattedCommitData, formattedScormLastAttempt]) => {
+        return AsyncStorage.multiSet([[keyScormCMIData, formattedCMIData], [keyScormCommitData, formattedCommitData], [keyScormLastAttempt, formattedScormLastAttempt]]);
+    });
+};
+
+const getSCORMAttemptData = async (scormId: string, attempt: number) => {
+    const keyCMIData = getSCORMCMIDataKey(scormId, attempt);
+    return AsyncStorage.getItem(keyCMIData).then(data => {
+        if (data) {
+            return JSON.parse(data);
+        }
+        return null;
+    });
+};
+
+const storageClear = async () => {
+    const asyncStorageKeys = await AsyncStorage.getAllKeys();
+    if (asyncStorageKeys.length > 0) {
+        console.log('cleaning AsyncStorage');
+        return AsyncStorage.clear();
+    }
+};
+
+export { setSCORMPackageData, getSCORMPackageData, saveSCORMActivityData, getSCORMAttemptData, getLastAttemptForScorm, storageClear };
