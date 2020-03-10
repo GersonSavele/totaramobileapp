@@ -34,6 +34,7 @@ import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormA
 import { PrimaryButton, SecondaryButton, TouchableIcon } from "@totara/components"
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "@totara/theme";
+import MoreText from "@totara/components/MoreText"
 
 const SCORMActivityAPI = (props: {activity: Activity, scormId: string}) => {
   console.log(props);
@@ -133,14 +134,21 @@ const SCORMActivity = (props: SCORMActivityProps) => {
 
     return (
         <View style={styles.expanded}>
-          <View style={{flex: 1, flexDirection:"row"}}>
-            <View style={{flex: 1, padding: 15}}>
-              <Text style={[theme.textH3]}>Summary</Text>
+          <View style={{flexDirection:"column"}}>
+
+            <View style={{flexDirection:"row"}}>
+              <View style={{flex: 1, padding: 15}}>
+                <Text style={[theme.textH3]}>Summary</Text>
+              </View>
+              <View style={{flex: 1, alignItems:'flex-end'}}>
+                {downloadingFile && <View style={{marginTop: 20, marginRight: 20}}><ActivityIndicator /></View>}
+                {!downloadingFile && <TouchableIcon size={25} icon={faCloudDownloadAlt} disabled={hasFileDownloaded!} onPress={onDownloadContentTap} />}
+              </View>
             </View>
-            <View style={{flex: 1, alignItems:'flex-end'}}>
-              {downloadingFile && <ActivityIndicator />}
-              {!downloadingFile && <TouchableIcon size={25} icon={faCloudDownloadAlt} disabled={hasFileDownloaded!} onPress={onDownloadContentTap} />}
+            <View style={{padding: 15}}>
+              <MoreText longText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et mi pellentesque, iaculis mi at, dapibus dui. Cras vulputate eget ante eget pellentesque. Nam nec efficitur risus, ac dictum nibh. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent in odio neque. Ut leo est, accumsan nec tincidunt nec, varius sed nibh. Suspendisse tincidunt malesuada erat, nec molestie est tincidunt at. Proin convallis interdum arcu, ac egestas diam faucibus nec. Proin elementum ipsum ante, quis gravida est sodales vitae. Suspendisse dictum vitae dui ac ultricies. Nullam volutpat ex ac magna ornare fermentum. Duis volutpat elementum sem sit amet sodales."/>
             </View>
+
           </View>
 
           <View style={styles.attemptContainer}>
