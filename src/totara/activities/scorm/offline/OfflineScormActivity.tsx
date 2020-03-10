@@ -18,7 +18,6 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-
 import React, { useEffect, useState, useRef } from "react"
 import { Text } from "react-native"
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
@@ -112,8 +111,8 @@ const OfflineScormActivity = (props: Props) => {
     }
 
     const onPlayerMessageHandler = (messageData: any) => {
-        if (messageData.tmsevent && messageData.tmsevent === "SCORMCOMMIT" && messageData.data) {
-            saveSCORMActivityData(messageData.data);
+        if (messageData.tmsevent && messageData.tmsevent === "SCORMCOMMIT" && messageData.result) {
+            saveSCORMActivityData(messageData.result);
         }      
     };
 

@@ -22,6 +22,7 @@
 import React  from "react";
 import { Dimensions, StyleSheet, View, Text } from "react-native";
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
+import { Log } from "@totara/lib";
 
 
 type Props = {
@@ -34,9 +35,9 @@ type Props = {
 const OfflineSCORMPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
   
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
+    Log.debug('event data: ', eventdata);
     const eventdata = JSON.parse(event.nativeEvent.data);
-    const cmidata = eventdata.data.cmi;
-    console.log("cmi: ", cmidata);
+    Log.debug('event data: ', eventdata);
     onMessageHandler && onMessageHandler(eventdata);
   };
 

@@ -20,6 +20,7 @@
  */
 
 import AsyncStorage from '@react-native-community/async-storage';
+
 import { OfflineScormPackage } from "@totara/types/Scorm"
 
 
@@ -53,27 +54,27 @@ const getLastAttemptForScorm = (scormId: string) => {
     });
 }
 
-const saveSCORMActivityData = (commitData: any) => {
-    const keyScormCMIData = getSCORMCMIDataKey(commitData.scormid, commitData.attempt);
-    const keyScormCommitData = getSCORMCommitDataKey(commitData.scormid, commitData.attempt);
-    const keyScormLastAttempt = getSCORMLastAttemptKey(commitData.scormid);
+const saveSCORMActivityData = (data: any) => {
+    const keyScormCMIData = getSCORMCMIDataKey(data.scormid, data.attempt);
+    const keyScormCommitData = getSCORMCommitDataKey(data.scormid, data.attempt);
+    const keyScormLastAttempt = getSCORMLastAttemptKey(data.scormid);
     
     return AsyncStorage.multiGet([keyScormCMIData, keyScormCommitData, keyScormLastAttempt]).then(([storageCMIData, storageCommitData, storageLastAttempt]) => {
-         const scoidKey = commitData.scoid;
-         let scormCommitData = {[scoidKey] : [commitData.data]};
-         let scormCMIData = {[scoidKey] : commitData.cmi};
-         let scormLastAttempt = parseInt(commitData.data.attempt);
+         const scoidKey = data.scoid;
+         let scormCommitData = {[scoidKey] : [data.commit]};
+         let scormCMIData = {[scoidKey] : data.cmi};
+         let scormLastAttempt = parseInt(data.commit.attempt);
         
          if (storageCMIData && (storageCMIData.length === 2) && (storageCMIData[1] === keyScormCMIData) && JSON.parse(storageCMIData[1])) {
             let existingCMIData = JSON.parse(storageCMIData[1]);
-            scormCMIData = {...existingCMIData[scoidKey], ...commitData.cmi};
+            scormCMIData = {...existingCMIData[scoidKey], ...data.cmi};
         }
          if (storageCommitData && (storageCommitData.length === 2) && (storageCommitData[1] === keyScormCommitData) && JSON.parse(storageCommitData[1])) {
             let existingCommitData = JSON.parse(storageCommitData[1]);
             if (existingCommitData[scoidKey]) {
-                existingCommitData[scoidKey].push(commitData.data);
+                existingCommitData[scoidKey].push(data.commit);
             } else {
-                existingCommitData[scoidKey] = [commitData.data];
+                existingCommitData[scoidKey] = [data.commit];
             }
             scormCommitData = existingCommitData;
         }

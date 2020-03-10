@@ -73,16 +73,16 @@
         loggerWindow.appendChild(item);
       } 
     };
-    const onpostCommitDataToNative = (scormid, scoid, attempt, data, cmi) => {
-      console.log('commitScormData data:> ', data, 'cmi:', cmi);
+    const onpostCommitDataToNative = (scormid, scoid, attempt, commit, cmi) => {
+      console.log('commitScormData commit:> ', commit, 'cmi:', cmi);
       var scormData = {
         scormid: scormid,
         attempt: attempt,
         scoid: scoid,
-        data: data,
+        commit: commit,
         cmi: cmi
       }
-      const postData = { tmsevent: "SCORMCOMMIT", data: scormData }
+      const postData = { tmsevent: "SCORMCOMMIT", result: scormData }
       if (window.ReactNativeWebView !== undefined) {
         window.ReactNativeWebView.postMessage(JSON.stringify(postData));
       }
