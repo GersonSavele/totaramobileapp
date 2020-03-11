@@ -26,8 +26,6 @@ import { PrimaryButton } from "@totara/components";
 import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/core";
-import ScormActivityView from "@totara/activities/scorm/SCORMActivity"
-import {ScormActivity} from "@totara/types"
 
 const NoCurrentLearning = () => {
 

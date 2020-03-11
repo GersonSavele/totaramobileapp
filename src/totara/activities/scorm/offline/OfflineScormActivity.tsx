@@ -93,7 +93,6 @@ const OfflineScormActivity = (props: Props) => {
     }
 
     const onExitPlayerHandler = () => {
-        console.log('player exited');
         stopServer();
     };
 

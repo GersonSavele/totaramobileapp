@@ -17,6 +17,7 @@
 // SCORM 1.2 API Implementation
 //
 
+/* eslint no-use-before-define: 0 */ 
 function SCORMapi1_2(def, cmiobj, cmiint, scormdebugging, scormauto, scormid, scoid, attempt, autocommit, masteryoverride, hidetoc, oldcmi) {
     LogAPICall("SCORMapi1_2");
     

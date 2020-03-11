@@ -28,15 +28,13 @@ import { getSCORMPackageData, setSCORMPackageData } from "@totara/activities/sco
 import { AuthContext } from "@totara/core";
 import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
 import { Activity } from "@totara/types";
-import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon, MoreText} from "@totara/components"
+import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon } from "@totara/components"
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import { gutter, ThemeContext } from "@totara/theme";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
 import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
 
 const SCORMActivityAPI = (props: {activity: Activity}) => {
-  console.log(props);
-
   const { loading, error, data } = useQuery(scormQuery, {
     variables: { scormid: props.activity.instanceid },
   });
@@ -66,7 +64,7 @@ const SCORMActivity = (props: SCORMActivityProps) => {
 
   const [mustDownloadContent, setMustDownloadContent] = useState<boolean>(false);
   const [scormStoredData, setScormStoredData] = useState<OfflineScormPackage>();
-  const [userIsOnline] = useState<boolean>(true);
+  // const [userIsOnline] = useState<boolean>(true);
 
   //DOWNLOAD CONTENT - BEGIN
   const onDownloadContentTap = () => {
@@ -79,7 +77,6 @@ const SCORMActivity = (props: SCORMActivityProps) => {
 
 
 
-    console.log('onDownloadContentTap');
     const _url = scorm.packageUrl!;
     const _scormId = scorm.id;
     const _courseId = scorm.courseid;

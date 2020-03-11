@@ -50,14 +50,12 @@ const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string,
 const unzipSCORMPackageToServer = (packageName: string, packageSource: string) => {
   const destinationUnzip = `${config.rootOfflineScormPlayer}/${packageName}`;
   return unzip(packageSource, destinationUnzip).then(resultDestination => {
-    console.log("zipped to: ", resultDestination);
     return packageName;
   });
 }
 
 const initializeSCORMWebplayer = () => {
   return RNFS.mkdir(config.rootOfflineScormPlayer).then(() => {
-    console.log("make html/");
     const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
     return getPackageContent().then(result => {
         if (result && result.length) {
