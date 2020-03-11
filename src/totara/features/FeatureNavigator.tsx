@@ -26,7 +26,7 @@ import { createStackNavigator, NavigationRouteConfigMap, NavigationScreenProps }
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"; //TODO: SHOULD IMPORT FROM A GLOBAL EXPORT?
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
-import { ThemeContext } from "@totara/theme";
+import { ThemeContext, normalize } from "@totara/theme";
 import { Theme } from "@totara/types";
 import { TouchableIcon } from "@totara/components";
 import { config } from "@totara/lib";
@@ -90,8 +90,8 @@ const MyLearningTab = {
             },
             CourseDetails: {
                 screen: CourseDetails,
-                navigationOptions: ({ screenProps } : NavigationScreenProps) =>
-                    navigationOptions({theme: screenProps!.theme})
+                navigationOptions: ({ screenProps,navigation } : NavigationScreenProps) =>
+                    navigationOptions({theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             },
             ProgramDetails: {
                 screen: ProgramDetails,
@@ -142,7 +142,8 @@ type navigationOptionsProps = {
     theme: Theme,
     title? : string,
     backTitle? : string,
-    rightIcon? : IconDefinition
+    rightIcon? : IconDefinition,
+    opacity? : number
 }
 
 const navigationOptions = (props: navigationOptionsProps) => ({
@@ -151,6 +152,11 @@ const navigationOptions = (props: navigationOptionsProps) => ({
         backgroundColor: props.theme.colorSecondary1,
         shadowOpacity: 0,
         elevation: 0
+    },
+    headerTitleStyle: {
+        color: props.theme.navigationHeaderTintColor,
+        fontSize: normalize(20),
+        opacity: props.opacity
     },
     title: props.title,
     headerBackTitle: null,

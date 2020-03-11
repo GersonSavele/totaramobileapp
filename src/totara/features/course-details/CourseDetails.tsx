@@ -24,31 +24,37 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   //Switch, To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented
   Dimensions
 } from "react-native";
-import { withNavigation, NavigationParams } from "react-navigation";
+import {
+  withNavigation,
+  NavigationParams,
+  NavigationInjectedProps
+} from "react-navigation";
 import {
   GeneralErrorModal,
-  LearningItemCard,
+  CardElement,
+  ImageElement,
   PrimaryButton,
   InfoModal
 } from "@totara/components";
-import { Log } from "@totara/lib";
+import { useQuery } from "@apollo/react-hooks";
 import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { getCourse, CourseResponse } from "./api";
+import { coreCourse } from "./api";
 import { Course } from "@totara/types";
 import ActivityList from "./ActivityList";
 import OverviewDetails from "./OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
+import ParallaxScrollView from "./ParallaxScrollView/ParallaxScrollView";
 
 type CourseDetailsProps = {
   course: Course;
   refetch: () => {};
+  navigation?: NavigationParams;
 };
 
 type CourseCompletedProps = {
@@ -56,141 +62,170 @@ type CourseCompletedProps = {
   navigation?: NavigationParams;
 };
 
-// TODO: turn the graphql loading, error, HOC and navigation to be a single component
-const CourseDetails = withNavigation(
-  getCourse(({ loading, course, error, refetch }: CourseResponse) => {
-    if (loading) return <Text>{translate("general.loading")}</Text>;
-    if (error) {
-      Log.error("Error getting course details", error);
-      return <GeneralErrorModal siteUrl="" />;
-    }
-    if (course) {
-      return <CourseDetailsComponent course={course} refetch={refetch} />;
-    }
-  })
-);
+const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
+  const { loading, error, data, refetch } = useQuery(coreCourse, {
+    variables: { courseid: navigation.state.params.courseId }
+  });
+  if (loading) return <Text>Loading...</Text>;
+  if (error) return <GeneralErrorModal siteUrl="" />;
+  if (data) {
+    return <CourseDetailsComponent course={data.course} refetch={refetch} />;
+  }
+};
 
-const CourseDetailsComponent = ({ course, refetch }: CourseDetailsProps) => {
-  const [showActivities, setShowActivities] = useState(false);
-  const [theme] = useContext(ThemeContext);
-  return (
-    <View>
-      <ScrollView>
-        <View style={styles.container}>
-          <View
-            style={[
-              styles.headerContainer,
-              { backgroundColor: theme.colorNeutral2 }
-            ]}
-          >
-            <LearningItemCard
-              item={course}
-              imageStyle={styles.itemImage}
-              cardStyle={styles.itemCard}
+const CourseDetailsComponent = withNavigation(
+  ({ navigation, course, refetch }: CourseDetailsProps) => {
+    const [showActivities, setShowActivities] = useState(false);
+    const [theme] = useContext(ThemeContext);
+    const renderNavigationTitle = () => {
+      return (
+        <View style={{ backgroundColor: theme.colorNeutral2 }}>
+          <CardElement item={course} cardStyle={styles.itemCard}>
+            <View
+              style={[
+                styles.courseLabelWrap,
+                { borderColor: theme.colorNeutral6 }
+              ]}
             >
-              <View
-                style={[
-                  styles.courseLabelWrap,
-                  { borderColor: theme.colorNeutral6 }
-                ]}
+              <Text
+                style={[styles.courseLabelText, { color: theme.colorNeutral6 }]}
               >
-                <Text
-                  style={[
-                    styles.courseLabelText,
-                    { color: theme.colorNeutral6 }
-                  ]}
-                >
-                  Course
-                </Text>
-              </View>
-            </LearningItemCard>
+                Course
+              </Text>
+            </View>
+          </CardElement>
+        </View>
+      );
+    };
+
+    const renderNavigationTab = () => {
+      return (
+        <View
+          style={[
+            styles.tabBarContainer,
+            { backgroundColor: theme.colorNeutral2 }
+          ]}
+        >
+          <View style={styles.tabNav}>
+            <TouchableOpacity
+              style={
+                !showActivities
+                  ? [
+                      styles.tabSelected,
+                      {
+                        borderBottomColor: theme.colorNeutral7,
+                        borderBottomWidth: 2
+                      }
+                    ]
+                  : [styles.tabSelected]
+              }
+              onPress={() => setShowActivities(false)}
+            >
+              <Text
+                style={
+                  !showActivities
+                    ? [theme.textB3, { fontWeight: "400" }]
+                    : [
+                        theme.textB3,
+                        { color: theme.colorNeutral6, fontWeight: "400" }
+                      ]
+                }
+              >
+                {translate("course-details.overview")}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                showActivities
+                  ? [
+                      styles.tabSelected,
+                      {
+                        borderBottomColor: theme.colorNeutral7,
+                        borderBottomWidth: 2
+                      }
+                    ]
+                  : [styles.tabSelected]
+              }
+              onPress={() => setShowActivities(true)}
+            >
+              <Text
+                style={
+                  showActivities
+                    ? [theme.textB3, { fontWeight: "400" }]
+                    : [
+                        theme.textB3,
+                        {
+                          color: theme.colorNeutral6,
+                          fontWeight: "400"
+                        }
+                      ]
+                }
+              >
+                {translate("course-details.activities")}
+              </Text>
+            </TouchableOpacity>
           </View>
+        </View>
+      );
+    };
+    const scrollViewRender = () => {
+      return (
+        <View
+          style={[
+            styles.headerContainer,
+            { backgroundColor: theme.colorNeutral2 }
+          ]}
+        >
+          <ImageElement item={course} imageStyle={styles.itemImage} />
+        </View>
+      );
+    };
+
+    return (
+      <View style={styles.container}>
+        <ParallaxScrollView
+          parallaxHeaderHeight={normalize(320)}
+          renderBackground={scrollViewRender}
+          tabBar={renderNavigationTab}
+          titleBar={renderNavigationTitle}
+          onChangeHeaderVisibility={(value: number) => {
+            if (value > 0) {
+              navigation!.setParams({
+                opacity: value / 100 > 0.5 ? 1 : value / 100
+              });
+              navigation!.setParams({ title: course.fullname });
+            } else if (-value / 100 > 1) {
+              navigation!.setParams({
+                opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100
+              });
+              navigation!.setParams({ title: course.fullname });
+            } else {
+              navigation!.setParams({ title: "" });
+            }
+          }}
+        >
           <View
-            style={[
-              styles.tabBarContainer,
-              { backgroundColor: theme.colorNeutral2 }
-            ]}
+            style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
           >
             <View
               style={[
-                styles.viewSeparator,
-                { backgroundColor: theme.colorNeutral3 }
+                styles.activitiesContainer,
+                { backgroundColor: theme.colorNeutral1 }
               ]}
-            ></View>
-            <View style={styles.tabNav}>
-              <TouchableOpacity
-                style={
-                  !showActivities
-                    ? [
-                        styles.tabSelected,
-                        {
-                          borderBottomColor: theme.colorNeutral7,
-                          borderBottomWidth: 2
-                        }
-                      ]
-                    : [styles.tabSelected]
-                }
-                onPress={() => setShowActivities(false)}
-              >
-                <Text
-                  style={
-                    !showActivities
-                      ? [theme.textB3, { fontWeight: "bold" }]
-                      : [theme.textB3, { color: theme.colorNeutral6 }]
-                  }
-                >
-                  {translate("course-details.overview")}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={
-                  showActivities
-                    ? [
-                        styles.tabSelected,
-                        {
-                          borderBottomColor: theme.colorNeutral7,
-                          borderBottomWidth: 2
-                        }
-                      ]
-                    : [styles.tabSelected]
-                }
-                onPress={() => setShowActivities(true)}
-              >
-                <Text
-                  style={
-                    showActivities
-                      ? [theme.textB3, { fontWeight: "bold" }]
-                      : [
-                          theme.textB3,
-                          {
-                            color: theme.colorNeutral6
-                          }
-                        ]
-                  }
-                >
-                  {translate("course-details.activities")}
-                </Text>
-              </TouchableOpacity>
+            >
+              {showActivities ? (
+                <Activities course={course} refetch={refetch} />
+              ) : (
+                <OverviewDetails course={course} />
+              )}
             </View>
           </View>
-          <View
-            style={[
-              styles.activitiesContainer,
-              { backgroundColor: theme.colorNeutral1 }
-            ]}
-          >
-            {showActivities ? (
-              <Activities course={course} refetch={refetch} />
-            ) : (
-              <OverviewDetails course={course} />
-            )}
-          </View>
-        </View>
-      </ScrollView>
-      <CourseCompleted course={course} />
-    </View>
-  );
-};
+        </ParallaxScrollView>
+        <CourseCompleted course={course} />
+      </View>
+    );
+  }
+);
 
 const CourseCompleted = withNavigation(
   ({ navigation, course }: CourseCompletedProps) => {
@@ -261,27 +296,28 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: 340,
-    minHeight: 320
+    maxHeight: normalize(340),
+    minHeight: normalize(320)
   },
   itemImage: {
     flex: 2.5,
     minHeight: normalize(160)
   },
   itemCard: {
-    flex: 0.6,
-    maxHeight: normalize(100),
-    minHeight: normalize(70)
+    maxHeight: normalize(80),
+    minHeight: normalize(60)
+  },
+  courseLabelWrap: {
+    borderRadius: 8,
+    borderStyle: "solid",
+    borderWidth: 1,
+    alignSelf: "flex-start",
+    alignItems: "center"
   },
   tabBarContainer: {
     flex: 0.4,
     maxHeight: 50,
     minHeight: 44
-  },
-  viewSeparator: {
-    height: 0.5,
-    marginLeft: 20,
-    marginRight: 20
   },
   tabNav: {
     flexDirection: "row",
@@ -305,17 +341,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: Dimensions.get("window").width - 32
   },
-  courseLabelWrap: {
-    marginTop: 5,
-    marginBottom: 5,
-    borderRadius: 8,
-    borderStyle: "solid",
-    borderWidth: 1,
-    alignSelf: "flex-start",
-    alignItems: "center"
-  },
   courseLabelText: {
-    fontSize: 10,
+    fontSize: normalize(10),
     fontWeight: "500",
     fontStyle: "normal",
     textAlign: "center",

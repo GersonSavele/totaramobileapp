@@ -35,10 +35,6 @@ import { Course } from "@totara/types";
 import { AddBadge } from "@totara/components";
 import { translate } from "@totara/locale";
 
-let progressStatus = translate("course_overview_progress.progress_status_init");
-let progress = 0;
-let userGradeFinal = 0;
-let userGradeMax = 0;
 
 const OverviewDetails = ({ course }: { course: Course }) => {
   const [theme] = useContext(ThemeContext);
@@ -108,6 +104,11 @@ const OverviewDetails = ({ course }: { course: Course }) => {
       </TouchableOpacity>
     );
   };
+
+let progressStatus = translate("course_overview_progress.progress_status_init");
+let progress = 0;
+let userGradeFinal = 0;
+let userGradeMax = 0;
 
   if (course.completion) {
     if (course.completion.progress && course.completion.progress > 50) {

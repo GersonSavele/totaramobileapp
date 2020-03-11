@@ -47,6 +47,7 @@ type ActivityProps = {
 type BuildContentProps = {
   completion?: string;
   completionStatus?: string;
+  available : boolean,
   theme: AppliedTheme;
 };
 
@@ -83,15 +84,16 @@ const ActivityList = ({ sections, refetch }: ActivityListProps) => {
 const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
   const [show, setShow] = useState(false);
   const activities = section.data as Array<Activity>;
-  const { title } = section;
+  const { title, available } = section;
   return (
+    activities && activities.length != 0 ? 
     <View>
       <TouchableOpacity
         onPress={() => {
           setShow(!show);
         }}
       >
-        {activities && activities.length != 0 ? (
+        {available === true? (
           <CellExpandUI show={show} title={title} />
         ) : (
           <SectionDataNotAvailable {...section} />
@@ -99,11 +101,12 @@ const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
       </TouchableOpacity>
       {show && (
         <ActivityListBody
-          data={section.data}
+          data={activities}
           refetch={refetch}
         ></ActivityListBody>
       )}
-    </View>
+    </View> : null
+    
   );
 };
 
@@ -141,7 +144,7 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
       </TouchableOpacity>
       {show && (
         <ActivityRestrictionView
-          description={availablereason == null ? "" : availablereason}
+          description={availablereason === null ? "" : availablereason}
           onClose={onClose}
         />
       )}
@@ -153,7 +156,7 @@ const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.headerViewContainer}>
-      <Text style={[theme.textH3, { fontWeight: "bold", fontSize : normalize(17) }]}>{title}</Text>
+      <Text numberOfLines={1} style={[theme.textH3, { fontWeight: "bold", fontSize : normalize(17) }]}>{title}</Text>
       {show ? (
         <FontAwesomeIcon
           icon={"caret-up"}
@@ -174,11 +177,12 @@ const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
 const BuildContent = ({
   completion,
   completionStatus,
-  theme
+  theme, 
+  available
 }: BuildContentProps) => {
   if (
-    completion == "tracking_automatic" &&
-    completionStatus == "complete_pass"
+    completion === "tracking_automatic" &&
+    (completionStatus === "complete_pass" || completionStatus === "complete")
   ) {
     return (
       <ContentIcon
@@ -192,8 +196,8 @@ const BuildContent = ({
       />
     );
   } else if (
-    completion == "tracking_automatic" &&
-    completionStatus == "incomplete"
+    completion === "tracking_automatic" &&
+    completionStatus === "incomplete"
   ) {
     return (
       <ContentIcon
@@ -206,7 +210,7 @@ const BuildContent = ({
         isDashedCircle={false}
       />
     );
-  } else if (completionStatus == "complete_fail") {
+  } else if (completionStatus === "complete_fail") {
     return (
       <ContentIcon
         icon={"times"}
@@ -218,7 +222,7 @@ const BuildContent = ({
         isDashedCircle={false}
       />
     );
-  } else if (completion == "tracking_none" || completionStatus == "unknown") {
+  } else if (completionStatus === "unknown" || completionStatus === null || available === false) {
     return (
       <ContentIcon
         icon={"lock"}
@@ -231,8 +235,8 @@ const BuildContent = ({
       />
     );
   } else if (
-    completion == "tracking_manual" &&
-    completionStatus == "complete"
+    completion === "tracking_manual" &&
+    (completionStatus === "complete_pass" || completionStatus === "complete")
   ) {
     return (
       <ContentIcon
@@ -246,8 +250,8 @@ const BuildContent = ({
       />
     );
   } else if (
-    completion == "tracking_manual" &&
-    completionStatus == "incomplete"
+    completion === "tracking_manual" &&
+    completionStatus === "incomplete"
   ) {
     return (
       <ContentIcon
@@ -261,29 +265,25 @@ const BuildContent = ({
       />
     );
   } else {
-    return null;
+    return <View style ={{height: 28, width: 28}}></View>;
   }
 };
 
 const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   const [theme] = useContext(ThemeContext);
-
-  if (data && data.length != 0) {
     return (
       <View
         style={[styles.accordionListWrap, { borderColor: theme.colorNeutral3 }]}
       >
-        {data.map((item: Activity, key: number) => {
+        {data!.map((item: Activity, key: number) => {
           return (
             <View key={key}>
-              {item.completion == "tracking_none" ||
-              item.completionstatus == "unknown" ? (
+              {item.completionstatus === "unknown" || item.completionstatus === null || item.available === false ? (
                 <ActivityLock item={item} theme={theme} />
               ) : (
                 <ActivityUnLock item={item} theme={theme} refetch={refetch} />
               )}
-
-              {data.length - 1 === key ? null : (
+              {data!.length - 1 === key ? null : (
                 <View
                   style={[
                     styles.activityBodySeparator,
@@ -296,9 +296,6 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
         })}
       </View>
     );
-  } else {
-    return null;
-  }
 };
 
 const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
@@ -319,6 +316,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
                   completion={item.completion as string}
                   completionStatus={item.completionstatus as string}
                   theme={theme}
+                  available = {item.available}
                 ></BuildContent>
                 <View style={styles.activityBodyUnLockContainer}>
                   <Text
@@ -331,7 +329,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
                     numberOfLines={1}
                     style={[styles.bodyName, { color: theme.textColorDark }]}
                   >
-                    {item.name}
+                    {item.name.trim()}
                   </Text>
                 </View>
               </View>
@@ -356,6 +354,7 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
             completion={item.completion as string}
             completionStatus={item.completionstatus as string}
             theme={theme}
+            available = {item.available}
           ></BuildContent>
           <View style={styles.activityBodyLockContainer}>
             <Text

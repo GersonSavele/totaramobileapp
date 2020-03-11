@@ -106,8 +106,8 @@
   "course_overview_progress" : {
     "title" : "Your course progress",
     "progress_status_init": "Haven't started the course",
-    "progress_status_mid" : "Almost there! Keep going",
-    "progress_status_final": "Good start! Keep going"
+    "progress_status_mid" : "Good start! Keep going",
+    "progress_status_final": "Almost there! Keep going"
   },
   "course_overview_grade" : {
     "title" : "Your grade overview",

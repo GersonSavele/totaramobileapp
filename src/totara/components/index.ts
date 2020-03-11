@@ -20,7 +20,7 @@
  *
  */
 
-import LearningItemCard from "./LearningItemCard";
+import {LearningItemCard, CardElement, ImageElement} from "./LearningItemCard";
 import DueDateState from "./DueDateState";
 import ContentIcon from "./ContentIcon";
 import {AddBadge, CheckBadge} from "./AddBadge";
@@ -40,6 +40,8 @@ import MoreText from "./MoreText";
 
 export {
   LearningItemCard,
+  CardElement,
+  ImageElement,
   AddBadge,
   DueDateState,
   ContentIcon,

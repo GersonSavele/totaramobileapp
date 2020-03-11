@@ -20,77 +20,88 @@
  *
  */
 
-import { Image, ImageStyle, StyleSheet, Text, View, ViewStyle } from "react-native";
+import {
+  Image,
+  ImageStyle,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle
+} from "react-native";
 import React, { useContext } from "react";
 
-import { LearningItem, Status } from "@totara/types";
-import DueDateState  from "./DueDateState";
+import { LearningItem } from "@totara/types";
+import DueDateState from "./DueDateState";
 import { normalize, ThemeContext } from "@totara/theme";
 import { AUTHORIZATION } from "@totara/lib/Constant";
 import { AuthContext } from "@totara/core";
 
 interface Props {
-  item: LearningItem
-  imageStyle: ImageStyle
-  cardStyle: ViewStyle,
-  children: JSX.Element
+  item: LearningItem;
+  imageStyle?: ImageStyle;
+  cardStyle?: ViewStyle;
+  children?: JSX.Element;
 }
 
-const LearningItemCard = ({item, imageStyle, cardStyle, children}: Props) => {
-
-  const [theme] = useContext(ThemeContext);
-
-  const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
-  const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
+const LearningItemCard = ({ item, imageStyle, cardStyle, children }: Props) => {
   return (
     <View style={{ flex: 1 }}>
-      <View style={imageStyleSheet}>
-        { item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} /> }
-        <ImageElement item={item} />
-      </View>
-      <View style={cardStyleSheet}>
-        <View style={{ flexDirection: "row" }}>
-          <Text numberOfLines={2} style={[theme.textH2, styles.itemFullName]} ellipsizeMode="tail">{item.fullname}</Text>
-        </View>
+      <ImageElement item={item} imageStyle={imageStyle} />
+      <CardElement item={item} cardStyle={cardStyle}>
         {children}
-      </View>
+      </CardElement>
     </View>
   );
 };
 
-const ImageElement = ({item}: {item: LearningItem}) => {
-
-  const { authContextState: {appState} } = useContext(AuthContext);
-  const apiKey = appState!.apiKey;
-
-  const imgSrc = item.imageSrc;
-  if (item.status === Status.hidden) {
-    const [theme] = useContext(ThemeContext);
-    return (
-      <View style={{flex: 1}}>
-        <Image source={{
-          uri: imgSrc,
-          headers: {
-            [AUTHORIZATION]: `Bearer ${apiKey}`
-          }
-        }} style={{flex: 1, width: "100%", height: "100%"}}/>
-        <View style={[styles.disabledOverlay, { backgroundColor: theme.colorNeutral1 }]}/>
+const CardElement = ({ item, cardStyle, children }: Props) => {
+  const [theme] = useContext(ThemeContext);
+  const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
+  return (
+    <View style={cardStyleSheet}>
+      <View style={{ flexDirection: "row" }}>
+        <Text
+          numberOfLines={2}
+          style={[theme.textH2, styles.itemFullName]}
+          ellipsizeMode="tail"
+        >
+          {item.fullname}
+        </Text>
       </View>
-      );
-    } else {
-      return(<Image source={{
+      {children}
+    </View>
+  );
+};
+
+const ImageElement = ({ item, imageStyle }: Props) => {
+  const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+  const apiKey = appState!.apiKey;
+  const imgSrc = item.imageSrc;
+  return (
+    <View style={imageStyleSheet}>
+      {item.duedate && (
+        <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />
+      )}
+      <Image
+        source={{
           uri: imgSrc,
           headers: {
             [AUTHORIZATION]: `Bearer ${apiKey}`
           }
-      }} style={{flex: 1, width: "100%", height: "100%"}}/>);
-    }
+        }}
+        style={{ flex: 1, width: "100%", height: "100%" }}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   itemImage: {
     flex: 1,
-    flexDirection: "column-reverse",
+    flexDirection: "column-reverse"
   },
   itemCard: {
     padding: normalize(16),
@@ -107,7 +118,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     height: "100%",
     width: "100%"
-  },
+  }
 });
 
-export default LearningItemCard
+export  { LearningItemCard, CardElement, ImageElement };
