@@ -45,7 +45,7 @@ import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import { Course } from "@totara/types";
-import ActivityList from "./ActivityList";
+import { ActivityList } from "./ActivityList";
 import OverviewDetails from "./OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
@@ -63,17 +63,19 @@ type CourseCompletedProps = {
 };
 
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
+  const courseId  = navigation.getParam("courseId")
   const { loading, error, data, refetch } = useQuery(coreCourse, {
-    variables: { courseid: navigation.state.params.courseId }
+     variables: { courseid: courseId }
+    // variables: { courseid: 1 }
   });
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
     return <CourseDetailsComponent course={data.course} refetch={refetch} />;
   }
 };
 
-const CourseDetailsComponent = withNavigation(
+ const CourseDetailsComponent = withNavigation(
   ({ navigation, course, refetch }: CourseDetailsProps) => {
     const [showActivities, setShowActivities] = useState(false);
     const [theme] = useContext(ThemeContext);
@@ -359,4 +361,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CourseDetails;
+export  { CourseDetails, CourseDetailsComponent, CourseCompleted };

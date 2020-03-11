@@ -19,5 +19,5 @@
  * $author
  */
 
-export {default} from "./CourseDetails";
+export { CourseDetails, CourseDetailsComponent, CourseCompleted, ActivityUI } from "./CourseDetails";
 
