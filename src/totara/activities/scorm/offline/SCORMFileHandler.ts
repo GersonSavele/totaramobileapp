@@ -25,6 +25,8 @@ import { Platform } from "react-native";
 
 import { config } from "@totara/lib";
 
+const OfflineSCORMServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
+
 const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string, resourceUrl: string) => {
   const offlineSCORMPackageName = getOfflineSCORMPackageName(courseId, scormId);
   const downloadingFilePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
@@ -48,21 +50,25 @@ const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string,
 }
 
 const unzipSCORMPackageToServer = (packageName: string, packageSource: string) => {
-  const destinationUnzip = `${config.rootOfflineScormPlayer}/${packageName}`;
+  const destinationUnzip = `${OfflineSCORMServerRoot}/${packageName}`;
   return unzip(packageSource, destinationUnzip).then(resultDestination => {
-    return packageName;
+    if (resultDestination) {
+      return packageName;
+    } else {
+      throw new Error("Cannot find unzipped location.");
+    }
   });
 }
 
 const initializeSCORMWebplayer = () => {
-  return RNFS.mkdir(config.rootOfflineScormPlayer).then(() => {
+  return RNFS.mkdir(OfflineSCORMServerRoot).then(() => {
     const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
     return getPackageContent().then(result => {
         if (result && result.length) {
           let promisesToCopyFiles = [];
           for (let i = 0; i < result.length; i++) {
             const itemPathFrom = result[i].path;
-            const itemPathTo = `${config.rootOfflineScormPlayer}/${result[i].name}`;
+            const itemPathTo = `${OfflineSCORMServerRoot}/${result[i].name}`;
             const copyAssetsToPlayer =  () => (Platform.OS === "android") ? RNFS.copyFileAssets(itemPathFrom, itemPathTo) : RNFS.copyFile(itemPathFrom, itemPathTo);
             const promiseCopyItem =  RNFS.exists(itemPathTo).then(isExist => { 
               if (!isExist) { 
@@ -90,7 +96,7 @@ const isSCORMPlayerInitialized = () => {
     if (result && result.length) {
       let promisesToExistFiles = [];
       for (let i = 0; i < result.length; i++) {
-        const itemPathTo = `${config.rootOfflineScormPlayer}/${result[i].name}`;
+        const itemPathTo = `${OfflineSCORMServerRoot}/${result[i].name}`;
         
         promisesToExistFiles.push(RNFS.exists(itemPathTo));
       }
@@ -116,4 +122,4 @@ const getOfflineSCORMPackageName = (courseId: string, scormId: string) => `Offli
 const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
 const SCORMPlayerPackagePath = Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
 
-export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized };
+export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized, OfflineSCORMServerRoot };

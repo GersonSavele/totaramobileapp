@@ -19,10 +19,10 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  *
  */
+
 import localConfig from "./config.local";
 import ConsoleLogger from "./logger/ConsoleLogger";
 
-import {DocumentDirectoryPath} from "react-native-fs";
 
 const defaultConfig = {
   urlProtocol: "https",
@@ -46,8 +46,7 @@ const defaultConfig = {
     downloads: false,
     notifications: false
   },
-  rootOfflineScormPlayer: `${DocumentDirectoryPath}/html`,
-  portOfflineScormPlayer: 0,
+  rootOfflineScormPlayer: "html",
 };
 
 export const internalConfig = {

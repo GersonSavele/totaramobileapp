@@ -24,10 +24,10 @@ import { Text } from "react-native"
 import StaticServer from "react-native-static-server";
 
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
-import { initializeSCORMWebplayer, isSCORMPlayerInitialized } from "@totara/activities/scorm/offline/SCORMFileHandler";
+import { initializeSCORMWebplayer, isSCORMPlayerInitialized, OfflineSCORMServerRoot } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline/PackageProcessor"
 import { OfflineScormPackage, ScormPackageData, Sco } from "@totara/types/Scorm"
-import { config, Log } from "@totara/lib";
+import { Log } from "@totara/lib";
 import { saveSCORMActivityData, getSCORMAttemptData } from "./StorageHelper";
 
 type Props = {
@@ -42,9 +42,9 @@ const OfflineScormActivity = (props: Props) => {
     const [jsCode, setJsCode] = useState<string>();
     
     useEffect(()=>{
-        setUpOfflineSCORMPlayer().then(offlineServer => {
-            if (offlineServer) {
-                startServer(offlineServer.path, offlineServer.port)
+        setUpOfflineSCORMPlayer().then(offlineServerPath => {
+            if (offlineServerPath) {
+                startServer(offlineServerPath)
                 .then((serverOrigin: string) => setUrl(serverOrigin));
             } else {
                 Log.debug("Cannot fine offline server details.");
@@ -83,12 +83,12 @@ const OfflineScormActivity = (props: Props) => {
         setUrl(undefined);
     }
 
-    const startServer = (path: string, port: number) => {
+    const startServer = (path: string) => {
         if (server && server.current) {
             server.current.stop();
             server.current = null;
         }
-        server.current = new StaticServer(port, path, {keepAlive: true, localOnly: true});
+        server.current = new StaticServer(0, path, {keepAlive: true, localOnly: true});
         return server.current.start();
     }
 
@@ -97,13 +97,13 @@ const OfflineScormActivity = (props: Props) => {
     };
 
     const setUpOfflineSCORMPlayer = () => {
-        const _serverDetails = {path: config.rootOfflineScormPlayer, port: config.portOfflineScormPlayer};
+        const _serverPath = OfflineSCORMServerRoot;
         return isSCORMPlayerInitialized().then((isInit) => {
             if (isInit) {
-                return _serverDetails;
+                return _serverPath;
             } else {
                 return initializeSCORMWebplayer().then(()=> {
-                    return _serverDetails;
+                    return _serverPath;
                 });
             }
         })
@@ -120,7 +120,7 @@ const OfflineScormActivity = (props: Props) => {
             if (packageData.scos && packageData.defaultSco) {
                 return Promise.resolve(packageData);
             } else {
-                return getScormPackageData(config.rootOfflineScormPlayer, packageData.packageLocation).then(data=> {
+                return getScormPackageData(OfflineSCORMServerRoot, packageData.packageLocation).then(data=> {
                     const tmpPackageData = {...packageData, ...data } as ScormPackageData
                     return tmpPackageData;
                 });

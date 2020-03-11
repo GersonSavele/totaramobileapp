@@ -28,7 +28,7 @@ import { getSCORMPackageData, setSCORMPackageData } from "@totara/activities/sco
 import { AuthContext } from "@totara/core";
 import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
 import { Activity } from "@totara/types";
-import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon } from "@totara/components"
+import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon, MoreText } from "@totara/components"
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import { gutter, ThemeContext } from "@totara/theme";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
@@ -104,11 +104,9 @@ const SCORMActivity = (props: SCORMActivityProps) => {
 
     if(!goOnline) {
       getSCORMPackageData(scorm.id).then(scormdata => {
-        if(scormdata) {
+        if (scormdata) {
           setScormStoredData(scormdata);
           setSCORMType(SCORMType.Offline);
-        }else {
-          console.log("Cannot find data");
         }
       })
     } else {
