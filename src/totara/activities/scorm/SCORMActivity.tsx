@@ -178,11 +178,11 @@ const SCORMActivity = (props: SCORMActivityProps) => {
                 </View>
                 <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
                   <Text>Total attempts allowed</Text>
-                  <Text>{scorm!.attemptsMax.toString()}</Text>
+                  <Text>{scorm!.attemptsMax ? scorm!.attemptsMax.toString() : ""}</Text>
                 </View>
                 <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
                   <Text>Total attempts done</Text>
-                  <Text>{scormStoredData? scormStoredData!.scorm.attemptsCurrent.toString() : scorm!.attemptsCurrent.toString()}</Text>
+                  <Text>{scormStoredData && scormStoredData!.scorm.attemptsCurrent ? scormStoredData!.scorm.attemptsCurrent.toString() : (scorm!.attemptsCurrent ? scorm!.attemptsCurrent.toString() : "")}</Text>
                 </View>
               </View>
 
