@@ -43,6 +43,7 @@ const query = gql`
               availablereason(format: PLAIN)
               data: modules {
                   id
+                  instanceid
                   modtype
                   name
                   available

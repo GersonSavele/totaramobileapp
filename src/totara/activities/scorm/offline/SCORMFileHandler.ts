@@ -19,8 +19,8 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import * as RNFS from 'react-native-fs';
-import { unzip } from 'react-native-zip-archive';
+import * as RNFS from "react-native-fs";
+import { unzip } from "react-native-zip-archive";
 import { Platform } from "react-native";
 
 import { config } from "@totara/lib";
@@ -116,6 +116,6 @@ const isSCORMPlayerInitialized = () => {
 
 const getOfflineSCORMPackageName = (courseId: string, scormId: string) => `OfflineSCORM_${courseId}_${scormId}`;
 const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
-const SCORMPlayerPackagePath = Platform.OS === 'android' ? 'html' : RNFS.MainBundlePath + '/html';
+const SCORMPlayerPackagePath = Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
 
 export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized };

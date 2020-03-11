@@ -34,11 +34,11 @@ import { gutter, ThemeContext } from "@totara/theme";
 import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
 import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
 
-const SCORMActivityAPI = (props: {activity: Activity, scormId: string}) => {
+const SCORMActivityAPI = (props: {activity: Activity}) => {
   console.log(props);
 
   const { loading, error, data } = useQuery(scormQuery, {
-    variables: { scormid: props.scormId },
+    variables: { scormid: props.activity.instanceid },
   });
   if (loading) return <Text>loading...</Text>;
   if (error) return <Text>error, go back</Text>;
@@ -127,8 +127,6 @@ const SCORMActivity = (props: SCORMActivityProps) => {
 
     const hasFileDownloaded = scormStoredData && scormStoredData.offlinePackageData.packageLocation!==undefined;
     const downloadingFile = mustDownloadContent && !hasFileDownloaded;
-
-    debugger;
 
     return (
           <View style={styles.expanded}>

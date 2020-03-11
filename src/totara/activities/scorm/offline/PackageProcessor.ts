@@ -19,12 +19,11 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import * as RNFS from 'react-native-fs';
-const xpath = require('xpath');
-const dom = require('xmldom').DOMParser;
+import * as RNFS from "react-native-fs";
+const xpath = require("xpath");
+const dom = require("xmldom").DOMParser;
 
 import { Sco } from "@totara/types/Scorm";
-
 
 export const getScormPackageData = (path: string, packagName: string) => {
     const manifestFilePath = `${path}/${packagName}/imsmanifest.xml`;

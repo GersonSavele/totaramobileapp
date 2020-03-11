@@ -20,6 +20,7 @@
  */
 
 import gql from "graphql-tag";
+
 import { ScormActivity } from "@totara/types";
 
 export type Response = {

@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 
 import { OfflineScormPackage } from "@totara/types/Scorm"
 
@@ -100,7 +100,7 @@ const getSCORMAttemptData = async (scormId: string, attempt: number) => {
 const storageClear = async () => {
     const asyncStorageKeys = await AsyncStorage.getAllKeys();
     if (asyncStorageKeys.length > 0) {
-        console.log('cleaning AsyncStorage');
+        console.log("cleaning AsyncStorage");
         return AsyncStorage.clear();
     }
 };

@@ -21,7 +21,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import { Text } from "react-native"
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
-import StaticServer from 'react-native-static-server';
+import StaticServer from "react-native-static-server";
 
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
 import { initializeSCORMWebplayer, isSCORMPlayerInitialized } from "@totara/activities/scorm/offline/SCORMFileHandler";
@@ -108,7 +108,7 @@ const OfflineScormActivity = (props: Props) => {
                 });
             }
         })
-    }
+    };
 
     const onPlayerMessageHandler = (messageData: any) => {
         if (messageData.tmsevent && messageData.tmsevent === "SCORMCOMMIT" && messageData.result) {
@@ -212,7 +212,7 @@ const OfflineScormActivity = (props: Props) => {
             "cmi.student_preference.text": text,
         }
         return _def;
-    }
+    };
 
     const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
         const _entrysrc = "'" + scormData.entrysrc + "'";
@@ -258,10 +258,11 @@ const OfflineScormActivity = (props: Props) => {
         ')}'
         );
     };
-return (<>
+    
+    return (<>
         { url && <OfflineSCORMPlayer url={url} injectScript={jsCode} onExitHandler={onExitPlayerHandler} onMessageHandler={onPlayerMessageHandler}/>}
         { !url && <Text>Player loading......</Text>}
-        </>)
+        </>);
         
 }
 
