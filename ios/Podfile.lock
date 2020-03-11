@@ -183,7 +183,7 @@ PODS:
     - RNFBApp
   - RNFS (2.16.6):
     - React
-  - RNGestureHandler (1.4.1):
+  - RNGestureHandler (1.6.0):
     - React
   - RNLocalize (1.2.1):
     - React
@@ -386,7 +386,7 @@ SPEC CHECKSUMS:
   RNFBApp: 5dd12fdb688ddd25aa756d8cd2780abaadf15709
   RNFBMessaging: f47ff44a2d40958fecdb19f113a7f9d1985799d2
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
-  RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
+  RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNLocalize: 7206d44eb341d6e2a61a8184b831c64a5539fcdf
   RNSVG: 435cda60cd9e1ea6188eb0e21c12fc0f85def8e8
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
