@@ -51,6 +51,7 @@ export const useAuth = (
   registerDevice: (setup: Setup) => Promise<AppState>,
   deviceCleanup: (deviceDelete: () => Promise<any>) => Promise<boolean>,
   createApolloClient: (
+      // connectToDevtools: boolean,
     apiKey: string,
     uri: string,
     logOut: (localOnly: boolean) => Promise<void>
@@ -97,6 +98,7 @@ export const useAuth = (
   ) {
     Log.debug("creating apolloClient");
     apolloClient.current = createApolloClient(
+      // false,
       authContextState.appState.apiKey,
       authContextState.appState.host,
       logOut

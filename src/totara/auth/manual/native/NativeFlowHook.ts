@@ -28,8 +28,8 @@ import { ManualFlowChildProps } from "../ManualFlowChildProps";
 
 const initialState = {
   setupSecret: undefined,
-  inputUsername: "",
-  inputPassword: "",
+  inputUsername: config.userName || "",
+  inputPassword: config.password || "",
   inputUsernameStatus: undefined,
   inputPasswordStatus: undefined,
   isRequestingLogin: false,

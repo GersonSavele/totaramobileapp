@@ -30,6 +30,7 @@ import { AuthConsumer } from "@totara/core";
 const NoCurrentLearning = () => {
 
   const [theme] = useContext(ThemeContext);
+
   return (
     <View style={styles.containerStyle}>
       <Image style={styles.imageContainer} source={require("@resources/images/no_current_learning/no_current_learning.png")} />

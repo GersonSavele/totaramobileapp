@@ -19,8 +19,10 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  *
  */
+
 import localConfig from "./config.local";
 import ConsoleLogger from "./logger/ConsoleLogger";
+
 
 const defaultConfig = {
   urlProtocol: "https",
@@ -43,7 +45,8 @@ const defaultConfig = {
   features:{
     downloads: false,
     notifications: false
-  }
+  },
+  rootOfflineScormPlayer: "html",
 };
 
 export const internalConfig = {

@@ -29,12 +29,14 @@ import ActivityLauncher from "./ActivityLauncher";
 import { InfoModal } from "./infoModal";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
 import GeneralErrorModal from "./GeneralErrorModal";
 import InputTextWithInfo from "./InputTextWithInfo";
 import TertiaryButton from "./TertiaryButton";
 import TouchableIcon from "./TouchableIcon";
 import AppModal from "./AppModal";
 import FormError from "./FormError";
+import MoreText from "./MoreText";
 
 export {
   LearningItemCard,
@@ -54,5 +56,7 @@ export {
   TertiaryButton,
   TouchableIcon,
   AppModal,
-  FormError
+  FormError,
+  SecondaryButton,
+  MoreText,
 }

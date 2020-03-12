@@ -21,6 +21,7 @@
 
 export interface Activity {
   id: number
+  instanceid: number
   modtype: string
   name: string
   viewurl?: string
@@ -36,7 +37,10 @@ export interface ScormActivity extends Activity {
   maxAttempt : number,
   score : number,
   webEntryUrl?: string,
-  isAvailable :boolean
+  isAvailable :boolean,
+  offlineAttemptsAllowed: boolean,
+  packageUrl: string,
+  courseid: number
 }
 
 export interface SeminarActivity extends Activity {

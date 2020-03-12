@@ -25,11 +25,11 @@ import { Button } from "native-base";
 import { Activity } from "@totara/types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Query } from "react-apollo";
-import { Response, ScormGQLQuery }  from "./api";
+import { Response, ScormGQLQuery }  from "../api";
 
-import { GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus } from "./components/GradeDetailsCircle";
-import { ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton } from "../components/ActivityBottomView";
-import ActivityHeaderView from "../components/ActivityHeaderView";
+import { GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus } from "../components/GradeDetailsCircle";
+import { ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton } from "../../components/ActivityBottomView";
+import ActivityHeaderView from "../../components/ActivityHeaderView";
 import { AuthenticatedWebView } from "@totara/auth";
 import { translate } from "@totara/locale";
 
@@ -51,7 +51,7 @@ type ScormActivityViewParam = {
   bottomViewButtonTitleFontWeight : string
 }
 
-class ScormActivity extends React.Component<Props, States> {
+class OnlineScormActivity extends React.Component<Props, States> {
 
   constructor(props: Props) {
     super(props);
@@ -59,7 +59,6 @@ class ScormActivity extends React.Component<Props, States> {
       screen : 2
     };
   }
-
 
   showScormDetails = ({data, error, loading, headerViewFontSize, gradeDetailsTitle, gradeDetailsStatus, borderColor,
     color,bottomViewButtonTitle,bottomViewButtonTitleColor,bottomViewButtonBackgroundColor,bottomViewButtonBorderColor,
@@ -70,16 +69,16 @@ class ScormActivity extends React.Component<Props, States> {
       return(
         <View style = {styles.container}>
          <ActivityHeaderView title = {this.props.activity.name}
-         fontSize = {headerViewFontSize}></ActivityHeaderView>
+         fontSize = {headerViewFontSize}/>
          <GradeDetailsCircle>
-          <GradeDetailsTitle text = {gradeDetailsTitle}></GradeDetailsTitle>
-          <GradeDetailsProgress text = {data.scorm.score.toString()}></GradeDetailsProgress>
-          <GradeDetailsStatus text = {gradeDetailsStatus} borderColor = {borderColor} color = {color} ></GradeDetailsStatus>
+          <GradeDetailsTitle text = {gradeDetailsTitle}/>
+          <GradeDetailsProgress text = {data.scorm.score.toString()}/>
+          <GradeDetailsStatus text = {gradeDetailsStatus} borderColor = {borderColor} color = {color} />
          </GradeDetailsCircle>
          <ActivityBottomView>
-          <ActivityBottomViewTitle currentAttempts ={data.scorm.currentAttempt.toString()} maxAttempts = {data.scorm.maxAttempt.toString()}></ActivityBottomViewTitle>
+          <ActivityBottomViewTitle currentAttempts ={data.scorm.currentAttempt.toString()} maxAttempts = {data.scorm.maxAttempt.toString()}/>
           <ActivityBottomViewButton buttonBackgroundColor = {bottomViewButtonBackgroundColor} buttonBorderColor = {bottomViewButtonBorderColor}
-          onPress = {this.loadScormPlayer} buttonTitleColor = {bottomViewButtonTitleColor} buttonTitle = {bottomViewButtonTitle} buttonTitleFontWeight = {bottomViewButtonTitleFontWeight}></ActivityBottomViewButton>
+          onPress = {this.loadScormPlayer} buttonTitleColor = {bottomViewButtonTitleColor} buttonTitle = {bottomViewButtonTitle} buttonTitleFontWeight = {bottomViewButtonTitleFontWeight}/>
         </ActivityBottomView>
         </View>)
       }
@@ -117,7 +116,7 @@ class ScormActivity extends React.Component<Props, States> {
               <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
               <FontAwesomeIcon icon="arrow-right" size={24}/>
               </Button>
-              <AuthenticatedWebView uri={this.props.activity.viewurl}/>
+              <AuthenticatedWebView uri={this.props.activity.viewurl!} />
             </View>)
         default:
           return (
@@ -173,4 +172,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ScormActivity;
+export default OnlineScormActivity;
