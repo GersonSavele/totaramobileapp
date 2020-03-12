@@ -68,6 +68,7 @@ import { ThemeProvider, ThemeContext } from "@totara/theme";
 import {FeatureNavigator} from "@totara/features";
 
 import * as notifications from "./Notifications";
+import downloadManagerSubject, {DownloadManagerObserver} from "@totara/core/DownloadManager/DownloadList";
 
 class App extends React.Component<{}> {
 
@@ -137,7 +138,12 @@ class App extends React.Component<{}> {
 const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
   const AppMainNavigation = createAppContainer(FeatureNavigator());
-  
+
+
+  setInterval(()=>{
+    downloadManagerSubject.getInstance().updateFile({name: 'TEST'})
+  }, 2000);
+
   return (
    <AppMainNavigation screenProps={{ theme: theme }}/>
   );

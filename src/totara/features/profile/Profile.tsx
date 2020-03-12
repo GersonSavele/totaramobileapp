@@ -36,6 +36,7 @@ import { AUTHORIZATION } from "@totara/lib/Constant";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { translate } from "@totara/locale";
+import downloadManagerSubject, { DownloadManagerObserver } from "@totara/core/DownloadManager/DownloadList"
 
 type ProfileViewProps = {
   profile: UserProfile;
@@ -48,6 +49,17 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
     // We should remove following line from inside of useEffect once they update their library
     navigation.setParams({ title: "Profile" });
   }, []);
+
+  const onDownloadFileUpdated : DownloadManagerObserver = (downloadFile) => {
+    console.log('from profile => ', downloadFile);
+  }
+
+  useEffect(()=>{
+    downloadManagerSubject.getInstance().attach(onDownloadFileUpdated);
+    return () =>{
+      downloadManagerSubject.getInstance().detach(onDownloadFileUpdated)
+    }
+  }, [])
 
   const { loading, error, data } = useQuery(userOwnProfile);
   if (loading) return <Text>Loading...</Text>;

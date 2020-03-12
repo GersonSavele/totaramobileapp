@@ -64,7 +64,7 @@ type CourseCompletedProps = {
 
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   const { loading, error, data, refetch } = useQuery(coreCourse, {
-    variables: { courseid: navigation.state.params.courseId }
+    variables: { courseid: navigation.state.params!.courseId }
   });
   if (loading) return <Text>Loading...</Text>;
   if (error) return <GeneralErrorModal siteUrl="" />;

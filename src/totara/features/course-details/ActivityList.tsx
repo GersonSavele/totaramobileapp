@@ -27,7 +27,7 @@ import {
   View,
   FlatList
 } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ContentIcon } from "@totara/components";
 import { normalize, ThemeContext } from "@totara/theme";
 import { ActivitySheetConsumer } from "@totara/activities";
@@ -35,6 +35,7 @@ import { Section, Activity } from "@totara/types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import ActivityRestrictionView from "./ActivityRestrictionView";
 import { AppliedTheme } from "@totara/theme/Theme";
+import downloadManagerSubject, { DownloadManagerObserver } from "@totara/core/DownloadManager/DownloadList"
 
 // To Do : refetch props should be removed from going nested component(MOB-381)
 
@@ -271,7 +272,21 @@ const BuildContent = ({
 
 const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   const [theme] = useContext(ThemeContext);
-    return (
+
+  const onDownloadFileUpdated : DownloadManagerObserver = (downloadFile) => {
+    console.log('ActivityListBody', downloadFile);
+  }
+
+  useEffect(()=>{
+    downloadManagerSubject.getInstance().attach(onDownloadFileUpdated);
+
+    return () =>{
+      downloadManagerSubject.getInstance().detach(onDownloadFileUpdated)
+    }
+  }, []);
+
+
+  return (
       <View
         style={[styles.accordionListWrap, { borderColor: theme.colorNeutral3 }]}
       >
