@@ -46,10 +46,10 @@ import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import { Course } from "@totara/types";
 import { ActivityList } from "./ActivityList";
-import OverviewDetails from "./OverviewDetails";
+import OverviewDetails from "../Overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
-import ParallaxScrollView from "./ParallaxScrollView/ParallaxScrollView";
+import ParallaxScrollView from "../ParallaxScrollView/ParallaxScrollView";
 
 type CourseDetailsProps = {
   course: Course;
@@ -66,7 +66,6 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   const courseId  = navigation.getParam("courseId")
   const { loading, error, data, refetch } = useQuery(coreCourse, {
      variables: { courseid: courseId }
-    // variables: { courseid: 1 }
   });
   if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
@@ -218,7 +217,8 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
               {showActivities ? (
                 <Activities course={course} refetch={refetch} />
               ) : (
-                <OverviewDetails course={course} />
+                <OverviewDetails progress={course.completion.progress} gradeFinal = {course.completion.gradefinal} gradeMax = {course.completion.grademax}
+                summary = {course.summary != null ? course.summary : ""} summaryTypeTitle = "Course Summary"/>
               )}
             </View>
           </View>

@@ -16,32 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com>
+ * @author Jun Yamog <jun.yamog@totaralearning.com
  *
  */
 
- import {Section} from "./LearningItem"
+export { default } from "./ProgramDetails";
 
-export interface Course {
-  id: number,
-  fullname: string,
-  shortname: string,
-  lang: string,
-  sections: [Section],
-  completion: Completion,
-  summary?: string,
-  startdate?: Date
-  enddate?: Date
-  imageSrc?: string,
-  itemtype: "course"
-}
-
-export interface Completion {
-  id: number,
-  statuskey:  "" | "completeviarpl" | "complete" | "inprogress" | "notyetstarted"
-  progress: number,
-  timecompleted?: Date,
-  grademax :number,
-  gradefinal : number
-
-}

@@ -24,7 +24,7 @@ import {Section} from "./LearningItem"
 
 export interface Program {
   id: number
-  itemtype: string
+  itemtype: "Program"
   shortname: string
   fullname?: string
   summary?: string
@@ -34,3 +34,33 @@ export interface Program {
   sections: [Section]
   imageSrc?: string
 }
+
+
+
+
+// id
+// itemtype
+// shortname
+// fullname
+// summary
+// duedateState
+// duedate
+// progress
+// imageSrc
+// courseSet {
+//   id
+//   label  
+//   courses {
+//     id
+//     itemtype
+//     shortname
+//     fullname
+//     summary
+//     progress
+//     status
+//     imageSrc  
+//   }
+//   nextSet {
+//     nextID
+//     operator
+//   }
