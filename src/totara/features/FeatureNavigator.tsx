@@ -85,8 +85,8 @@ const MyLearningTab = {
         {
             MyLearning: {
                 screen: MyLearning,
-                navigationOptions: ({ screenProps }: NavigationScreenProps ) =>
-                    navigationOptions({ theme: screenProps!.theme, /*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
+                navigationOptions: ({ screenProps, navigation }: NavigationScreenProps ) =>
+                    navigationOptions({ theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")/*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
             },
             CourseDetails: {
                 screen: CourseDetails,
@@ -95,8 +95,8 @@ const MyLearningTab = {
             },
             ProgramDetails: {
                 screen: ProgramDetails,
-                navigationOptions: ({ screenProps } : NavigationScreenProps) =>
-                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt}, )
+                navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
+                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             }
         }, "MyLearning"),
     navigationOptions: {

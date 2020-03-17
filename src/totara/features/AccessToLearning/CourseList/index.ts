@@ -16,32 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ *
+ *
  */
 
-import { Course } from "./Course";
+ import CourseSet from "./CourseSet"
+ import CourseList from "./CourseList"
 
-export interface Program {
-  id: number;
-  itemtype: "program" | string;
-  shortname: string;
-  fullname?: string;
-  summary?: string;
-  duedateState?: string;
-  duedate?: Date;
-  progress?: number;
-  courseSets: [CourseSets];
-  imageSrc?: string;
-}
-
-export interface CourseSets {
-  id: number;
-  label: string;
-  courses: [Course];
-  nextSet?: NextSet;
-}
-
-interface NextSet {
-  nextID: number;
-  operator?: string;
-}
+ export { CourseSet, CourseList };

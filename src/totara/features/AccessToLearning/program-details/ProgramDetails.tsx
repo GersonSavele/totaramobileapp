@@ -29,10 +29,10 @@ import {
   View,
   Dimensions
 } from "react-native";
-import { NavigationParams } from "react-navigation";
-import { useQuery } from "@apollo/react-hooks";
+import { NavigationParams, NavigationInjectedProps } from "react-navigation";
+// import { useQuery } from "@apollo/react-hooks";
 import {
-  GeneralErrorModal,
+  // GeneralErrorModal,
   CardElement,
   ImageElement
   // PrimaryButton,
@@ -41,29 +41,37 @@ import {
 import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
-import CourseSetList from "./CourseSetList";
+import { CourseList } from "../CourseList";
 import OverviewDetails from "../Overview/OverviewDetails";
 import { Program } from "@totara/types";
-import { coreProgram } from "./api";
+// import { coreProgram } from "./api";
 import ParallaxScrollView from "../ParallaxScrollView/ParallaxScrollView";
+//Import mock data from js file once API has been fixed should remove from here(only for UI testing)
+import { program } from "../mock-data";
 
 type ProgramProps = {
   program: Program;
   navigation: NavigationParams;
 };
 
-const ProgramDetails = ({ navigation }: ProgramProps) => {
-  const programId = navigation.getParam("programId");
-  const { loading, error, data } = useQuery(coreProgram, {
-    variables: { programId: programId }
-  });
-  if (loading) return null;
-  if (error) return <GeneralErrorModal siteUrl="" />;
-  if (data) {
-    return (
-      <ProgramDetailsComponent program={data.program} navigation={navigation} />
-    );
-  }
+//To do : - implementing GraphQL query once api's has been done should remove here
+
+// const ProgramDetails = ({ navigation }: NavigationInjectedProps) => {
+//   const programId = navigation.getParam("programId");
+//   const { loading, error, data } = useQuery(coreProgram, {
+//     variables: { programId: programId }
+//   });
+//   if (loading) return null;
+//   if (error) return <GeneralErrorModal siteUrl= "" />;
+//   if (data) {
+//     return (
+//       <ProgramDetailsComponent program={data.program} navigation={navigation} />
+//     );
+//   }
+// };
+
+const ProgramDetails = ({ navigation }: NavigationInjectedProps) => {
+  return <ProgramDetailsComponent program={program} navigation={navigation} />;
 };
 
 const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
@@ -123,7 +131,7 @@ const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
                     ]
               }
             >
-              {translate("program-details.overview")}
+              {translate("Program-details.overview")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -153,7 +161,7 @@ const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
                     ]
               }
             >
-              {translate("program-details.activities")}
+              {translate("Program-details.courses")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -206,7 +214,7 @@ const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
             ]}
           >
             {showActivities ? (
-              <CourseSetList sections={program} />
+              <CourseList program={program} navigation={navigation} />
             ) : (
               <OverviewDetails
                 progress={60}
