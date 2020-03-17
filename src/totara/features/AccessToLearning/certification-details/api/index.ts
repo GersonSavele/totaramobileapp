@@ -19,22 +19,42 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-export const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
-export const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
-export const AUTHORIZATION = "AUTHORIZATION";
+import gql from "graphql-tag";
 
-export const DATE_FORMAT = "D MMM, YYYY";
 
-export const PLATFORM_IOS = "ios";
-export const PLATFORM_ANDROID = "";
+const coreCertification = gql`
+  query certification($id: ID!) {
+    certification(id: $id) {
+      id
+      itemtype
+      shortname
+      fullname
+      summary
+      duedateState
+      duedate
+      progress
+      imageSrc
+      courseSet {
+        id
+        label  
+        courses {
+          id
+          itemtype
+          shortname
+          fullname
+          summary
+          progress
+          status
+          imageSrc  
+        }
+        nextSet {
+          nextID
+          operator
+        }
+      }  
+    }
+  }
+`;
 
-export const NAVIGATION_COURSE_DETAILS ="CourseDetails";
-export const NAVIGATION_PROGRAM_DETAILS ="ProgramDetails";
-export const NAVIGATION_CERTIFICATE_DETAILS ="CertificationDetails";
-export const NAVIGATION_SETTING = "Settings";
-export const NAVIGATION_MY_LEARNING = "MyLearning"
 
-export const SCREEN_WIDTH_X_LARGE = "xlarge";
-export const SCREEN_WIDTH_LARGE = "large";
-export const SCREEN_WIDTH_MEDIUM = "medium";
-export const SCREEN_WIDTH_SMALL = "small";
+export { coreCertification }

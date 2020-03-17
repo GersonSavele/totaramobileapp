@@ -38,6 +38,8 @@ import { CourseDetails } from "./AccessToLearning/course-details";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import ProgramDetails from "./AccessToLearning/program-details";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
+import CertificationDetails from "./AccessToLearning/certification-details";
+// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import Settings from "./settings";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import PlaceHolder from "./place-holder";
@@ -95,6 +97,11 @@ const MyLearningTab = {
             },
             ProgramDetails: {
                 screen: ProgramDetails,
+                navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
+                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
+            },
+            CertificationDetails: {
+                screen: CertificationDetails,
                 navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
                     navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             }

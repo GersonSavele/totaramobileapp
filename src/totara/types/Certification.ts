@@ -19,22 +19,18 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-export const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
-export const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
-export const AUTHORIZATION = "AUTHORIZATION";
+import { CourseSets } from "./Course";
 
-export const DATE_FORMAT = "D MMM, YYYY";
+export interface Certification {
+  id: number;
+  itemtype: "certificate" | string;
+  shortname: string;
+  fullname?: string;
+  summary?: string;
+  duedateState?: string;
+  duedate?: Date;
+  progress?: number;
+  courseSets: [CourseSets];
+  imageSrc?: string;
+}
 
-export const PLATFORM_IOS = "ios";
-export const PLATFORM_ANDROID = "";
-
-export const NAVIGATION_COURSE_DETAILS ="CourseDetails";
-export const NAVIGATION_PROGRAM_DETAILS ="ProgramDetails";
-export const NAVIGATION_CERTIFICATE_DETAILS ="CertificationDetails";
-export const NAVIGATION_SETTING = "Settings";
-export const NAVIGATION_MY_LEARNING = "MyLearning"
-
-export const SCREEN_WIDTH_X_LARGE = "xlarge";
-export const SCREEN_WIDTH_LARGE = "large";
-export const SCREEN_WIDTH_MEDIUM = "medium";
-export const SCREEN_WIDTH_SMALL = "small";

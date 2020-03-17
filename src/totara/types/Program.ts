@@ -19,7 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import { Course } from "./Course";
+import { CourseSets } from "./Course";
 
 export interface Program {
   id: number;
@@ -34,14 +34,3 @@ export interface Program {
   imageSrc?: string;
 }
 
-export interface CourseSets {
-  id: number;
-  label: string;
-  courses: [Course];
-  nextSet?: NextSet;
-}
-
-interface NextSet {
-  nextID: number;
-  operator?: string;
-}
