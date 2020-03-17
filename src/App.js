@@ -68,7 +68,7 @@ import { ThemeProvider, ThemeContext } from "@totara/theme";
 import {FeatureNavigator} from "@totara/features";
 
 import * as notifications from "./Notifications";
-import downloadManagerSubject, {DownloadManagerObserver} from "@totara/core/DownloadManager/DownloadList";
+import downloadManagerSubject, {DownloadManagerObserver} from "@totara/core/DownloadManager/DownloadManager";
 
 class App extends React.Component<{}> {
 

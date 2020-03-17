@@ -36,7 +36,7 @@ import { AUTHORIZATION } from "@totara/lib/Constant";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { translate } from "@totara/locale";
-import downloadManagerSubject, { DownloadManagerObserver } from "@totara/core/DownloadManager/DownloadList"
+import downloadManagerSubject, { DownloadManagerObserver } from "@totara/core/DownloadManager/DownloadManager"
 
 type ProfileViewProps = {
   profile: UserProfile;
