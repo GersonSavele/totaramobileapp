@@ -43,6 +43,7 @@ import Settings from "./settings";
 import PlaceHolder from "./place-holder";
 
 import Profile from "./profile";
+import Downloads from "./downloads";
 
 const FeatureNavigator = () => {
     const [theme] = useContext(ThemeContext);
@@ -107,7 +108,11 @@ const MyLearningTab = {
 const DownloadsTab = {
     screen: stackNavigatorBuilder(
         {
-            Downloads: PlaceHolder
+            Downloads: {
+                screen: Downloads,
+                navigationOptions: ({ screenProps,navigation } : NavigationScreenProps) =>
+                    navigationOptions({theme: screenProps!.theme, title : navigation.getParam("title") })
+            }
         },"Downloads"
     ),
     navigationOptions: {
