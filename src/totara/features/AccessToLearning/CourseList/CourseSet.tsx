@@ -81,8 +81,7 @@ const CourseSet = ({ courseSets, navigation }: CourseSetProps) => {
       <FlatList
         data={courseSets.courses}
         renderItem={renderItem}
-        //To Do : Adding unique key when we have real data
-        //keyExtractor={item => item.id.toString()}
+        keyExtractor={(item, id) => id.toString()}
         showsHorizontalScrollIndicator={false}
         horizontal={true}
       />

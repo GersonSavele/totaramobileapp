@@ -16,47 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ * @author @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  *
  *
  */
 
-import gql from "graphql-tag";
+ import HeaderView from "./HeaderView"
 
-
-const coreCertification = gql`
-  query certification($id: ID!) {
-    certification(id: $id) {
-      id
-      itemtype
-      shortname
-      fullname
-      summary
-      duedateState
-      duedate
-      progress
-      imageSrc
-      courseSet {
-        id
-        label  
-        courses {
-          id
-          itemtype
-          shortname
-          fullname
-          summary
-          progress
-          status
-          imageSrc  
-        }
-        nextSet {
-          nextID
-          operator
-        }
-      }  
-    }
-  }
-`;
-
-
-export { coreCertification }
+ export { HeaderView }

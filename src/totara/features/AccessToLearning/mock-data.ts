@@ -346,7 +346,7 @@ const certifications = {
   progress: 10,
   duedateState: "warning",
   imageSrc:
-    "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/358/course/images/1584314311/image",
+    "https://cdn.auckland.ac.nz/aem/content/auckland/en/_jcr_content/par/responsivegrid_567117200/par1/flexicomponent/image.img.480.low.jpg/1584491866597.jpg",
   courseSets: [
     {
       id: 10,
@@ -385,7 +385,7 @@ const program = {
   progress: 10,
   duedateState: "warning",
   imageSrc:
-    "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/358/course/images/1584314311/image",
+    "https://s18670.pcdn.co/wp-content/uploads/FHI360_financialliteracy-556x312.jpg",
   courseSets: [
     {
       id: 10,

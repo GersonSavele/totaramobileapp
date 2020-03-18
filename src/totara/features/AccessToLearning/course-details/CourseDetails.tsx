@@ -22,11 +22,8 @@
 import React, { useState, useContext } from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
   //Switch, To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented
-  Dimensions
 } from "react-native";
 import {
   withNavigation,
@@ -35,13 +32,10 @@ import {
 } from "react-navigation";
 import {
   GeneralErrorModal,
-  CardElement,
-  ImageElement,
   PrimaryButton,
   InfoModal
 } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
-import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import { Course } from "@totara/types";
@@ -49,7 +43,7 @@ import { ActivityList } from "./ActivityList";
 import OverviewDetails from "../Overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
-import ParallaxScrollView from "../ParallaxScrollView/ParallaxScrollView";
+import { HeaderView } from "../Components";
 
 type CourseDetailsProps = {
   course: Course;
@@ -76,158 +70,43 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
 
  const CourseDetailsComponent = withNavigation(
   ({ navigation, course, refetch }: CourseDetailsProps) => {
-    const [showActivities, setShowActivities] = useState(false);
+    const [showOverview, setShowOverview] = useState(true);
+    const onSwitchTab = () => {
+      setShowOverview(!showOverview);
+    };
     const [theme] = useContext(ThemeContext);
-    const renderNavigationTitle = () => {
-      return (
-        <View style={{ backgroundColor: theme.colorNeutral2 }}>
-          <CardElement item={course} cardStyle={styles.itemCard}>
-            <View
-              style={[
-                styles.courseLabelWrap,
-                { borderColor: theme.colorNeutral6 }
-              ]}
-            >
-              <Text
-                style={[styles.courseLabelText, { color: theme.colorNeutral6 }]}
-              >
-                Course
-              </Text>
-            </View>
-          </CardElement>
-        </View>
-      );
-    };
-
-    const renderNavigationTab = () => {
-      return (
-        <View
-          style={[
-            styles.tabBarContainer,
-            { backgroundColor: theme.colorNeutral2 }
-          ]}
-        >
-          <View style={styles.tabNav}>
-            <TouchableOpacity
-              style={
-                !showActivities
-                  ? [
-                      styles.tabSelected,
-                      {
-                        borderBottomColor: theme.colorNeutral7,
-                        borderBottomWidth: 2
-                      }
-                    ]
-                  : [styles.tabSelected]
-              }
-              onPress={() => setShowActivities(false)}
-            >
-              <Text
-                style={
-                  !showActivities
-                    ? [theme.textB3, { fontWeight: "400" }]
-                    : [
-                        theme.textB3,
-                        { color: theme.colorNeutral6, fontWeight: "400" }
-                      ]
-                }
-              >
-                {translate("course-details.overview")}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                showActivities
-                  ? [
-                      styles.tabSelected,
-                      {
-                        borderBottomColor: theme.colorNeutral7,
-                        borderBottomWidth: 2
-                      }
-                    ]
-                  : [styles.tabSelected]
-              }
-              onPress={() => setShowActivities(true)}
-            >
-              <Text
-                style={
-                  showActivities
-                    ? [theme.textB3, { fontWeight: "400" }]
-                    : [
-                        theme.textB3,
-                        {
-                          color: theme.colorNeutral6,
-                          fontWeight: "400"
-                        }
-                      ]
-                }
-              >
-                {translate("course-details.activities")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    };
-    const scrollViewRender = () => {
-      return (
-        <View
-          style={[
-            styles.headerContainer,
-            { backgroundColor: theme.colorNeutral2 }
-          ]}
-        >
-          <ImageElement item={course} imageStyle={styles.itemImage} />
-        </View>
-      );
-    };
-
     return (
-      <View style={styles.container}>
-        <ParallaxScrollView
-          parallaxHeaderHeight={normalize(320)}
-          renderBackground={scrollViewRender}
-          tabBar={renderNavigationTab}
-          titleBar={renderNavigationTitle}
-          onChangeHeaderVisibility={(value: number) => {
-            if (value > 0) {
-              navigation!.setParams({
-                opacity: value / 100 > 0.5 ? 1 : value / 100
-              });
-              navigation!.setParams({ title: course.fullname });
-            } else if (-value / 100 > 1) {
-              navigation!.setParams({
-                opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100
-              });
-              navigation!.setParams({ title: course.fullname });
-            } else {
-              navigation!.setParams({ title: "" });
-            }
-          }}
+      <HeaderView
+        details={course}
+        navigation={navigation!}
+        tabBarLeft={translate("Course-details.overview")}
+        tabBarRight={translate("Course-details.activities")}
+        onPress={onSwitchTab}
+        showOverview={showOverview}
+        badgeTitle = "Course"
+      >
+        <View
+          style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
         >
           <View
-            style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
+            style={[
+              styles.activitiesContainer,
+              { backgroundColor: theme.colorNeutral1 }
+            ]}
           >
-            <View
-              style={[
-                styles.activitiesContainer,
-                { backgroundColor: theme.colorNeutral1 }
-              ]}
-            >
-              {showActivities ? (
-                <Activities course={course} refetch={refetch} />
-              ) : (
-                <OverviewDetails progress={course.completion.progress} gradeFinal = {course.completion.gradefinal} gradeMax = {course.completion.grademax}
-                summary = {course.summary != null ? course.summary : ""} summaryTypeTitle = "Course Summary"/>
-              )}
-            </View>
+            {!showOverview ? (
+            <Activities course={course} refetch={refetch} />
+            ) : (
+              <OverviewDetails progress={course.completion.progress} gradeFinal = {course.completion.gradefinal} gradeMax = {course.completion.grademax}
+              summary = {course.summary != null ? course.summary : ""} summaryTypeTitle = "Course Summary"/>
+            )}         
           </View>
-        </ParallaxScrollView>
-        <CourseCompleted course={course} />
-      </View>
+        </View>
+      </HeaderView>
     );
   }
 );
+
 
 const CourseCompleted = withNavigation(
   ({ navigation, course }: CourseCompletedProps) => {
@@ -296,68 +175,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  headerContainer: {
-    flex: 1,
-    maxHeight: normalize(340),
-    minHeight: normalize(320)
-  },
-  itemImage: {
-    flex: 2.5,
-    minHeight: normalize(160)
-  },
-  itemCard: {
-    maxHeight: normalize(80),
-    minHeight: normalize(60)
-  },
-  courseLabelWrap: {
-    borderRadius: 8,
-    borderStyle: "solid",
-    borderWidth: 1,
-    alignSelf: "flex-start",
-    alignItems: "center"
-  },
-  tabBarContainer: {
-    flex: 0.4,
-    maxHeight: 50,
-    minHeight: 44
-  },
-  tabNav: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: normalize(16),
-    width: Dimensions.get("window").width * 0.5,
-    alignItems: "center",
-    flex: 1
-  },
   activitiesContainer: {
     flex: 3,
     padding: 0
-  },
-  toggleViewContainer: {
-    flex: 0.25,
-    marginLeft: 16,
-    marginRight: 16,
-    minHeight: 44,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: Dimensions.get("window").width - 32
-  },
-  courseLabelText: {
-    fontSize: normalize(10),
-    fontWeight: "500",
-    fontStyle: "normal",
-    textAlign: "center",
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 1,
-    paddingBottom: 2
-  },
-  tabSelected: {
-    height: "100%",
-    justifyContent: "center",
-    paddingLeft: 24,
-    paddingRight: 24
   }
 });
 

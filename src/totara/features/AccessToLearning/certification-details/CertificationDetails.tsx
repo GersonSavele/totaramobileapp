@@ -22,30 +22,16 @@
  */
 
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Dimensions
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { NavigationParams, NavigationInjectedProps } from "react-navigation";
 // import { useQuery } from "@apollo/react-hooks";
-import {
-  // GeneralErrorModal,
-  CardElement,
-  ImageElement
-  // PrimaryButton,
-  // InfoModal
-} from "@totara/components";
-import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
 import { CourseList } from "../CourseList";
 import OverviewDetails from "../Overview/OverviewDetails";
 import { Certification } from "@totara/types";
 //import { coreCertification } from "./api";
-import ParallaxScrollView from "../ParallaxScrollView/ParallaxScrollView";
+import { HeaderView } from "../Components";
 //Import mock data from js file once API has been fixed should remove from here(only for UI testing)
 import { certifications } from "../mock-data";
 
@@ -71,163 +57,56 @@ type CertificationProps = {
 // };
 
 const CertificationDetails = ({ navigation }: NavigationInjectedProps) => {
-  return <CertificationDetailsComponent certifications={certifications} navigation={navigation} />;
+  return (
+    <CertificationDetailsComponent
+      certifications={certifications}
+      navigation={navigation}
+    />
+  );
 };
 
-const CertificationDetailsComponent = ({ navigation, certifications }: CertificationProps) => {
-  const [showActivities, setShowActivities] = useState(false);
+const CertificationDetailsComponent = ({
+  navigation,
+  certifications
+}: CertificationProps) => {
+  const [showOverview, setShowOverview] = useState(true);
+  const onSwitchTab = () => {
+    setShowOverview(!showOverview);
+  };
   const [theme] = useContext(ThemeContext);
-  const renderNavigationTitle = () => {
-    return (
-      <View style={{ backgroundColor: theme.colorNeutral2 }}>
-        <CardElement item={certifications} cardStyle={styles.itemCard}>
-          <View
-            style={[
-              styles.programLabelWrap,
-              { borderColor: theme.colorNeutral6 }
-            ]}
-          >
-            <Text
-              style={[styles.programLabelText, { color: theme.colorNeutral6 }]}
-            >
-              Certificate
-            </Text>
-          </View>
-        </CardElement>
-      </View>
-    );
-  };
-
-  const renderNavigationTab = () => {
-    return (
-      <View
-        style={[
-          styles.tabBarContainer,
-          { backgroundColor: theme.colorNeutral2 }
-        ]}
-      >
-        <View style={styles.tabNav}>
-          <TouchableOpacity
-            style={
-              !showActivities
-                ? [
-                    styles.tabSelected,
-                    {
-                      borderBottomColor: theme.colorNeutral7,
-                      borderBottomWidth: 2
-                    }
-                  ]
-                : [styles.tabSelected]
-            }
-            onPress={() => setShowActivities(false)}
-          >
-            <Text
-              style={
-                !showActivities
-                  ? [theme.textB3, { fontWeight: "400" }]
-                  : [
-                      theme.textB3,
-                      { color: theme.colorNeutral6, fontWeight: "400" }
-                    ]
-              }
-            >
-              {translate("Certificate-details.overview")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              showActivities
-                ? [
-                    styles.tabSelected,
-                    {
-                      borderBottomColor: theme.colorNeutral7,
-                      borderBottomWidth: 2
-                    }
-                  ]
-                : [styles.tabSelected]
-            }
-            onPress={() => setShowActivities(true)}
-          >
-            <Text
-              style={
-                showActivities
-                  ? [theme.textB3, { fontWeight: "400" }]
-                  : [
-                      theme.textB3,
-                      {
-                        color: theme.colorNeutral6,
-                        fontWeight: "400"
-                      }
-                    ]
-              }
-            >
-              {translate("Certificate-details.courses")}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-  const scrollViewRender = () => {
-    return (
-      <View
-        style={[
-          styles.headerContainer,
-          { backgroundColor: theme.colorNeutral2 }
-        ]}
-      >
-        <ImageElement item={certifications} imageStyle={styles.itemImage} />
-      </View>
-    );
-  };
-
   return (
-    <View style={styles.container}>
-      <ParallaxScrollView
-        parallaxHeaderHeight={normalize(320)}
-        renderBackground={scrollViewRender}
-        tabBar={renderNavigationTab}
-        titleBar={renderNavigationTitle}
-        onChangeHeaderVisibility={(value: number) => {
-          if (value > 0) {
-            navigation!.setParams({
-              opacity: value / 100 > 0.5 ? 1 : value / 100
-            });
-            navigation!.setParams({ title: certifications.fullname });
-          } else if (-value / 100 > 1) {
-            navigation!.setParams({
-              opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100
-            });
-            navigation!.setParams({ title: certifications.fullname });
-          } else {
-            navigation!.setParams({ title: "" });
-          }
-        }}
+    <HeaderView
+      details={certifications}
+      navigation={navigation}
+      tabBarLeft={translate("Certificate-details.overview")}
+      tabBarRight={translate("Certificate-details.courses")}
+      onPress={onSwitchTab}
+      showOverview={showOverview}
+      badgeTitle = "Certificate"
+    >
+      <View
+        style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
       >
         <View
-          style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
+          style={[
+            styles.activitiesContainer,
+            { backgroundColor: theme.colorNeutral1 }
+          ]}
         >
-          <View
-            style={[
-              styles.activitiesContainer,
-              { backgroundColor: theme.colorNeutral1 }
-            ]}
-          >
-            {showActivities ? (
-              <CourseList program={certifications} navigation={navigation} />
-            ) : (
-              <OverviewDetails
-                progress={60}
-                gradeFinal={100}
-                gradeMax={100}
-                summary="More than just an LMS in your pocket, the _mLearn Totara App_ is\nproductivity, evidence gathering, content delivery and creation tool for\nlearning on the go.\n\nUpload media and submit evidence of learning, receive important\nnotifications, search and enrol in courses, task notifications for managers\nand approve training requests in-app.\n\nCapable of being fully branded to your clients' requirements, the mLearn\nTotara App gives you constant online and offline access to all your\nlearning content. \n\n"
-                summaryTypeTitle="Certifications Summary"
-              />
-            )}
-          </View>
+          {!showOverview ? (
+            <CourseList program={certifications} navigation={navigation} />
+          ) : (
+            <OverviewDetails
+              progress={60}
+              gradeFinal={100}
+              gradeMax={100}
+              summary="More than just an LMS in your pocket, the _mLearn Totara App_ is\nproductivity, evidence gathering, content delivery and creation tool for\nlearning on the go.\n\nUpload media and submit evidence of learning, receive important\nnotifications, search and enrol in courses, task notifications for managers\nand approve training requests in-app.\n\nCapable of being fully branded to your clients' requirements, the mLearn\nTotara App gives you constant online and offline access to all your\nlearning content. \n\n"
+              summaryTypeTitle="Certifications Summary"
+            />
+          )}
         </View>
-      </ParallaxScrollView>
-    </View>
+      </View>
+    </HeaderView>
   );
 };
 
@@ -235,72 +114,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  headerContainer: {
-    flex: 1,
-    maxHeight: normalize(340),
-    minHeight: normalize(320)
-  },
-  itemImage: {
-    flex: 2.5,
-    minHeight: normalize(160)
-  },
-  itemCard: {
-    maxHeight: normalize(80),
-    minHeight: normalize(60)
-  },
-  programLabelWrap: {
-    borderRadius: 8,
-    borderStyle: "solid",
-    borderWidth: 1,
-    alignSelf: "flex-start",
-    alignItems: "center"
-  },
-  tabBarContainer: {
-    flex: 0.4,
-    maxHeight: 50,
-    minHeight: 44
-  },
-  tabNav: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: normalize(16),
-    width: Dimensions.get("window").width * 0.5,
-    alignItems: "center",
-    flex: 1
-  },
   activitiesContainer: {
     flex: 3,
     padding: 0
-  },
-  toggleViewContainer: {
-    flex: 0.25,
-    marginLeft: 16,
-    marginRight: 16,
-    minHeight: 44,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: Dimensions.get("window").width - 32
-  },
-  programLabelText: {
-    fontSize: normalize(10),
-    fontWeight: "500",
-    fontStyle: "normal",
-    textAlign: "center",
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 1,
-    paddingBottom: 2
-  },
-  tabSelected: {
-    height: "100%",
-    justifyContent: "center",
-    paddingLeft: 24,
-    paddingRight: 24
   }
 });
 
 export default CertificationDetails;
-
-
-

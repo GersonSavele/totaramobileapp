@@ -45,3 +45,15 @@ export interface Completion {
   gradefinal : number
 
 }
+
+export interface CourseSets {
+  id: number;
+  label: string;
+  courses: [Course];
+  nextSet?: NextSet;
+}
+
+interface NextSet {
+  nextID: number;
+  operator?: string;
+}

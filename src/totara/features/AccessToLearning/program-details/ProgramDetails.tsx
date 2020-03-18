@@ -24,28 +24,20 @@
 import React, { useState, useContext } from "react";
 import {
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
   Dimensions
 } from "react-native";
 import { NavigationParams, NavigationInjectedProps } from "react-navigation";
 // import { useQuery } from "@apollo/react-hooks";
-import {
-  // GeneralErrorModal,
-  CardElement,
-  ImageElement
-  // PrimaryButton,
-  // InfoModal
-} from "@totara/components";
+
 import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
 import { CourseList } from "../CourseList";
 import OverviewDetails from "../Overview/OverviewDetails";
 import { Program } from "@totara/types";
+import { HeaderView } from "../Components";
 // import { coreProgram } from "./api";
-import ParallaxScrollView from "../ParallaxScrollView/ParallaxScrollView";
 //Import mock data from js file once API has been fixed should remove from here(only for UI testing)
 import { program } from "../mock-data";
 
@@ -75,159 +67,44 @@ const ProgramDetails = ({ navigation }: NavigationInjectedProps) => {
 };
 
 const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
-  const [showActivities, setShowActivities] = useState(false);
+  const [showOverview, setShowOverview] = useState(true);
+  const onSwitchTab = () => {
+    setShowOverview(!showOverview);
+  };
   const [theme] = useContext(ThemeContext);
-  const renderNavigationTitle = () => {
-    return (
-      <View style={{ backgroundColor: theme.colorNeutral2 }}>
-        <CardElement item={program} cardStyle={styles.itemCard}>
-          <View
-            style={[
-              styles.programLabelWrap,
-              { borderColor: theme.colorNeutral6 }
-            ]}
-          >
-            <Text
-              style={[styles.programLabelText, { color: theme.colorNeutral6 }]}
-            >
-              Program
-            </Text>
-          </View>
-        </CardElement>
-      </View>
-    );
-  };
-
-  const renderNavigationTab = () => {
-    return (
-      <View
-        style={[
-          styles.tabBarContainer,
-          { backgroundColor: theme.colorNeutral2 }
-        ]}
-      >
-        <View style={styles.tabNav}>
-          <TouchableOpacity
-            style={
-              !showActivities
-                ? [
-                    styles.tabSelected,
-                    {
-                      borderBottomColor: theme.colorNeutral7,
-                      borderBottomWidth: 2
-                    }
-                  ]
-                : [styles.tabSelected]
-            }
-            onPress={() => setShowActivities(false)}
-          >
-            <Text
-              style={
-                !showActivities
-                  ? [theme.textB3, { fontWeight: "400" }]
-                  : [
-                      theme.textB3,
-                      { color: theme.colorNeutral6, fontWeight: "400" }
-                    ]
-              }
-            >
-              {translate("Program-details.overview")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              showActivities
-                ? [
-                    styles.tabSelected,
-                    {
-                      borderBottomColor: theme.colorNeutral7,
-                      borderBottomWidth: 2
-                    }
-                  ]
-                : [styles.tabSelected]
-            }
-            onPress={() => setShowActivities(true)}
-          >
-            <Text
-              style={
-                showActivities
-                  ? [theme.textB3, { fontWeight: "400" }]
-                  : [
-                      theme.textB3,
-                      {
-                        color: theme.colorNeutral6,
-                        fontWeight: "400"
-                      }
-                    ]
-              }
-            >
-              {translate("Program-details.courses")}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-  const scrollViewRender = () => {
-    return (
-      <View
-        style={[
-          styles.headerContainer,
-          { backgroundColor: theme.colorNeutral2 }
-        ]}
-      >
-        <ImageElement item={program} imageStyle={styles.itemImage} />
-      </View>
-    );
-  };
-
   return (
-    <View style={styles.container}>
-      <ParallaxScrollView
-        parallaxHeaderHeight={normalize(320)}
-        renderBackground={scrollViewRender}
-        tabBar={renderNavigationTab}
-        titleBar={renderNavigationTitle}
-        onChangeHeaderVisibility={(value: number) => {
-          if (value > 0) {
-            navigation!.setParams({
-              opacity: value / 100 > 0.5 ? 1 : value / 100
-            });
-            navigation!.setParams({ title: program.fullname });
-          } else if (-value / 100 > 1) {
-            navigation!.setParams({
-              opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100
-            });
-            navigation!.setParams({ title: program.fullname });
-          } else {
-            navigation!.setParams({ title: "" });
-          }
-        }}
+    <HeaderView
+      details={program}
+      navigation={navigation}
+      tabBarLeft={translate("Program-details.overview")}
+      tabBarRight={translate("Program-details.courses")}
+      onPress={onSwitchTab}
+      showOverview={showOverview}
+      badgeTitle = "Program"
+    >
+      <View
+        style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
       >
         <View
-          style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
+          style={[
+            styles.activitiesContainer,
+            { backgroundColor: theme.colorNeutral1 }
+          ]}
         >
-          <View
-            style={[
-              styles.activitiesContainer,
-              { backgroundColor: theme.colorNeutral1 }
-            ]}
-          >
-            {showActivities ? (
-              <CourseList program={program} navigation={navigation} />
-            ) : (
-              <OverviewDetails
-                progress={60}
-                gradeFinal={100}
-                gradeMax={100}
-                summary="More than just an LMS in your pocket, the _mLearn Totara App_ is\nproductivity, evidence gathering, content delivery and creation tool for\nlearning on the go.\n\nUpload media and submit evidence of learning, receive important\nnotifications, search and enrol in courses, task notifications for managers\nand approve training requests in-app.\n\nCapable of being fully branded to your clients' requirements, the mLearn\nTotara App gives you constant online and offline access to all your\nlearning content. \n\n"
-                summaryTypeTitle="Program Summary"
-              />
-            )}
-          </View>
+          {!showOverview ? (
+            <CourseList program={program} navigation={navigation} />
+          ) : (
+            <OverviewDetails
+              progress={60}
+              gradeFinal={100}
+              gradeMax={100}
+              summary="More than just an LMS in your pocket, the _mLearn Totara App_ is\nproductivity, evidence gathering, content delivery and creation tool for\nlearning on the go.\n\nUpload media and submit evidence of learning, receive important\nnotifications, search and enrol in courses, task notifications for managers\nand approve training requests in-app.\n\nCapable of being fully branded to your clients' requirements, the mLearn\nTotara App gives you constant online and offline access to all your\nlearning content. \n\n"
+              summaryTypeTitle="Certifications Summary"
+            />
+          )}
         </View>
-      </ParallaxScrollView>
-    </View>
+      </View>
+    </HeaderView>
   );
 };
 
