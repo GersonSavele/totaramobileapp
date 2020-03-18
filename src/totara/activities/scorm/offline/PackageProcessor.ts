@@ -23,16 +23,16 @@ import * as RNFS from "react-native-fs";
 const xpath = require("xpath");
 const dom = require("xmldom").DOMParser;
 
-import { Sco } from "@totara/types/Scorm";
+import { Sco, ScormPackage } from "@totara/types/Scorm";
 
-export const getScormPackageData = (path: string, packagName: string) => {
+const getSCORMPackageData = (path: string, packagName: string) => {
     const manifestFilePath = `${path}/${packagName}/imsmanifest.xml`;
     return RNFS.readFile(manifestFilePath)
         .then(xmlcontent => {
             const xmlData = new dom().parseFromString(xmlcontent);
             const scosList = getScosDataForPackage(xmlData);
             const defaultSco = getInitialScormLoadData(xmlData);
-            return {scos: scosList, defaultSco: defaultSco};
+            return {scos: scosList, defaultSco: defaultSco} as ScormPackage;
         });
 };
 
@@ -108,3 +108,5 @@ const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string)  => {
     }
     return null;
 };
+
+export { getSCORMPackageData };
