@@ -31,7 +31,7 @@ import { scormQuery } from "@totara/activities/scorm/api";
 import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
 import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon, MoreText, ContentIcon } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
-import { OfflineScormActivity, downloadSCORMPackage, getSCORMData, setSCORMPackageData } from "./offline";
+import { AttemptSynchronizer, OfflineScormActivity, downloadSCORMPackage, getSCORMData, setSCORMPackageData, getUnsyncedData } from "./offline";
 import GradeDetails from "./GradeDetails";
 import OnlineScormActivity from "./online/OnlineScormActivity";
 import { Log } from "@totara/lib";
@@ -82,15 +82,11 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
   }, [netInfo]);
 
   useEffect(() => {
-    // Network.isReachable().then((isOnline: boolean) => {
       console.log("isUserOnline: ", isUserOnline);
       if (isUserOnline) {
         setScormResultData({scorm: scorm});
       } else {
         getSCORMData(activity.instanceid).then(result => {
-          // let _sscorm = scorm;
-          // _sscorm.description = "dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk anfkansdflkdfnkfknanflkas klfakln fklan falk nfa fkla jfa fkdsnao nflka nfaoifn alknfoa nfklaofankfnaofan olfaoi lkano fna";
-          // let apiSyncedData: OfflineScormPackage = {scorm: _sscorm};
           let apiSyncedData: OfflineScormPackage = {scorm: scorm}; //TODO have to reset
           if (result) {
             if (result.offlineActivity) {
@@ -103,7 +99,6 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
           setScormResultData(apiSyncedData);
         });
       }
-    // });
   }, [scorm, isUserOnline]);
 
 
@@ -202,7 +197,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
               <View style={styles.sectionField} >
                 <Text style={theme.textB1}>Grading reported</Text>
                 {/* TODO */}
-                <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ scormResultData  && scormResultData.scorm && scormResultData.scorm.attemptsCurrent ? scormResultData.scorm.attemptsCurrent : "0"}</Text>
+                <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ scormResultData  && scormResultData.scorm && scormResultData.scorm.calculatedGrade ? scormResultData.scorm.calculatedGrade : "0"}</Text>
               </View>
               
               <Text style={[theme.textH2, styles.sectionBreak]}>Attempt details</Text>
@@ -220,6 +215,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
         {(scormResultData && scormResultData.scorm && (isUserOnline || (scormResultData.scorm.offlineAttemptsAllowed && scormResultData.package && scormResultData.package.path)) && 
           <AttemptController isOnline={isUserOnline} maxAttempt={scormResultData.scorm.attemptsMax} currentAttempt={scormResultData.scorm.attemptsCurrent} offlineLastAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt} offlineStartedAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.start.attempt} actionPrimary={onStartAttemptTap} actionSecondary={onContinueAttemptTap} />
         )}
+        <AttemptSynchronizer />
       </View>
     );
   };
@@ -279,7 +275,7 @@ const AttemptController = (attempt: PropsAttempt) => {
         // TODO check offline attempt count for Continue last attempt
         setIsEnabledLastAttempt(attempt.currentAttempt !== null && attempt.currentAttempt > 0);
       } else {
-        const isCompletedOfflineAttempt = (attempt.maxAttempt && attempt.offlineLastAttempt !== undefined && attempt.offlineLastAttempt < attempt.maxAttempt)
+        const isCompletedOfflineAttempt = (attempt.maxAttempt && attempt.offlineLastAttempt !== undefined && attempt.offlineLastAttempt >= attempt.maxAttempt)
         setIsEnabledNewAttempt(!(isCompletedAllAttempt || isCompletedOfflineAttempt));
         // TODO check offline attempt count for Continue last attempt
         setIsEnabledLastAttempt(attempt.offlineStartedAttempt !== undefined && attempt.offlineLastAttempt !== undefined && (attempt.offlineStartedAttempt > 0) && (attempt.offlineLastAttempt >= attempt.offlineStartedAttempt));

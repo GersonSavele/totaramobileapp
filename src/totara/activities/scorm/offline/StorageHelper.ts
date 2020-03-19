@@ -113,6 +113,21 @@ const getSCORMAttemptData = async (scormId: number, attempt: number) => {
     });
 };
 
+const getUnsyncedData = () => {
+    return AsyncStorage.getItem(KeySCORMCommitData).then((storedCommitsData) => {
+        if (storedCommitsData && JSON.parse(storedCommitsData)) {
+            const commitsData = JSON.parse(storedCommitsData);
+            let formattedUnsyncedData = [];
+            for(let commitScormId in commitsData ) {
+                formattedUnsyncedData.push({scormid: commitScormId, attempts: commitsData[commitScormId]});
+            }
+            return formattedUnsyncedData;
+        } else {
+            return null;
+        }
+    });
+};
+
 const storageClear = async () => {
     const asyncStorageKeys = await AsyncStorage.getAllKeys();
     if (asyncStorageKeys.length > 0) {
@@ -120,4 +135,4 @@ const storageClear = async () => {
     }
 };
 
-export { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, storageClear };
+export { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, getUnsyncedData, storageClear };

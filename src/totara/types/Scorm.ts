@@ -7,10 +7,12 @@ export type Scorm = {
     attemptsLockFinal: boolean,
     description: string,
     launchUrl: string,
+    calculatedGrade: string,
 
     offlineAttemptsAllowed: boolean,
     packageUrl?: string,
     offlinePackageUrl?: string,
+    offlinePackageContentHash?: string
 };
 
 export type OfflineScormPackage  = {
