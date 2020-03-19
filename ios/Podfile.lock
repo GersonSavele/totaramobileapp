@@ -137,6 +137,8 @@ PODS:
   - React-jsinspector (0.60.5)
   - react-native-cookies (3.2.0):
     - React
+  - react-native-netinfo (5.6.2):
+    - React
   - react-native-notifications (2.1.5):
     - React
   - react-native-splash-screen (3.2.0):
@@ -214,6 +216,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-cookies (from `../node_modules/react-native-cookies/ios`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-static-server (from `../node_modules/react-native-static-server`)
@@ -285,6 +288,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-cookies:
     :path: "../node_modules/react-native-cookies/ios"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
   react-native-splash-screen:
@@ -366,6 +371,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 90ad2f9db09513fc763bc757fdc3c4ff8bde2a30
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
   react-native-cookies: 854d59c4135c70b92a02ca4930e68e4e2eb58150
+  react-native-netinfo: c67896313964727ddae153d6e119f65dae840d51
   react-native-notifications: 38f4b851c642c7e6b928f8f6dccbf59d7434cfc3
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-static-server: af5ae03c8114e5756e27c7ae32a116002f23be02
@@ -394,6 +400,6 @@ SPEC CHECKSUMS:
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: dd04974f073f664339b36570db474496e9190276
+PODFILE CHECKSUM: 18d2168cd6755915adf445f29d0658961585db8d
 
 COCOAPODS: 1.8.4

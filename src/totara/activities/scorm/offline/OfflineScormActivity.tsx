@@ -25,19 +25,21 @@ import StaticServer from "react-native-static-server";
 
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
 import { initializeSCORMWebplayer, isSCORMPlayerInitialized, OfflineSCORMServerRoot } from "@totara/activities/scorm/offline/SCORMFileHandler";
-import { getScormPackageData } from "@totara/activities/scorm/offline/PackageProcessor"
-import { OfflineScormPackage, ScormPackageData, Sco } from "@totara/types/Scorm"
+import { getSCORMPackageData } from "@totara/activities/scorm/offline"
+import { OfflineScormPackage, ScormPackage, Sco } from "@totara/types/Scorm"
 import { Log } from "@totara/lib";
 import { saveSCORMActivityData, getSCORMAttemptData } from "./StorageHelper";
 
 type Props = {
-    storedPackageData: OfflineScormPackage
+    storedPackageData: OfflineScormPackage,
+    attempt: number,
+    scoid?: string,
 }
 
 const OfflineScormActivity = (props: Props) => {
 
     const server = useRef<StaticServer>(null);
-    const [scormPackageData, setScormPackageData] = useState<ScormPackageData>(props.storedPackageData.offlinePackageData);
+    const [scormPackageData, setScormPackageData] = useState<ScormPackage>(props.storedPackageData.package);
     const [url, setUrl] = useState<string>();
     const [jsCode, setJsCode] = useState<string>();
     
@@ -53,7 +55,7 @@ const OfflineScormActivity = (props: Props) => {
             Log.debug(e.messageData);
         })
         
-       loadSCORMPackageData(props.storedPackageData.offlinePackageData).then(data => {
+       loadSCORMPackageData(props.storedPackageData.package).then(data => {
            setScormPackageData(data);
         }).catch(e => {
             Log.debug(e.messageData);
@@ -63,12 +65,12 @@ const OfflineScormActivity = (props: Props) => {
     useEffect(()=> { 
         if(url && scormPackageData) {
             // TODO - need to pass attem
-            getSCORMAttemptData(props.storedPackageData.scorm.id, 1).then(cmiData=> {
+            getSCORMAttemptData(props.storedPackageData.scorm.id, props.attempt).then(cmiData=> {
                 if (scormPackageData && scormPackageData.scos && scormPackageData.defaultSco) {
                     // TODO - need to pass attempt
-                    const selectedScoId = scormPackageData.defaultSco.id!;
+                    const selectedScoId = props.scoid ? props.scoid : scormPackageData.defaultSco.id!;
                     const lastActivityCmi = (cmiData && cmiData[selectedScoId]) ? cmiData[selectedScoId] : null;
-                    const cmi = buildCMI(props.storedPackageData.scorm.id, scormPackageData.scos, selectedScoId, 1, scormPackageData.packageLocation);
+                    const cmi = buildCMI(props.storedPackageData.scorm.id, scormPackageData.scos, selectedScoId, props.attempt, scormPackageData.path);
                     setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
                 }
             });
@@ -115,13 +117,13 @@ const OfflineScormActivity = (props: Props) => {
         }      
     };
 
-    const loadSCORMPackageData = (packageData?: ScormPackageData) => {
-        if (packageData && packageData.packageLocation) {
+    const loadSCORMPackageData = (packageData?: ScormPackage) => {
+        if (packageData && packageData.path) {
             if (packageData.scos && packageData.defaultSco) {
                 return Promise.resolve(packageData);
             } else {
-                return getScormPackageData(OfflineSCORMServerRoot, packageData.packageLocation).then(data=> {
-                    const tmpPackageData = {...packageData, ...data } as ScormPackageData
+                return getSCORMPackageData(OfflineSCORMServerRoot, packageData.path).then(data=> {
+                    const tmpPackageData = {...packageData, ...data } as ScormPackage
                     return tmpPackageData;
                 });
             }

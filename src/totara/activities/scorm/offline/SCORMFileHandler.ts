@@ -27,7 +27,7 @@ import { config } from "@totara/lib";
 
 const OfflineSCORMServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
 
-const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string, resourceUrl: string) => {
+const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: number, resourceUrl: string) => {
   const offlineSCORMPackageName = getOfflineSCORMPackageName(courseId, scormId);
   const downloadingFilePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
   const downloaderOptions = { 
@@ -118,7 +118,7 @@ const isSCORMPlayerInitialized = () => {
   })
 }
 
-const getOfflineSCORMPackageName = (courseId: string, scormId: string) => `OfflineSCORM_${courseId}_${scormId}`;
+const getOfflineSCORMPackageName = (courseId: string, scormId: number) => `OfflineSCORM_${courseId}_${scormId}`;
 const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
 const SCORMPlayerPackagePath = Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
 

@@ -26,6 +26,7 @@ import { Me } from "./Me"
 import { SiteInfo, AppState } from "./Auth";
 import { Theme } from "./Theme";
 import { UserProfile } from "./UserProfile"
+import { Scorm } from "./Scorm"
 
 export {
   LearningItem,
@@ -42,5 +43,6 @@ export {
   SiteInfo,
   AppState,
   Theme,
-  Section
+  Section,
+  Scorm
 }
