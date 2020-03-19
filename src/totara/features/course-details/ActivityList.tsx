@@ -35,7 +35,6 @@ import { Section, Activity } from "@totara/types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import ActivityRestrictionView from "./ActivityRestrictionView";
 import { AppliedTheme } from "@totara/theme/Theme";
-import downloadManagerSubject, { DownloadManagerObserver } from "@totara/core/DownloadManager/DownloadManager"
 
 // To Do : refetch props should be removed from going nested component(MOB-381)
 
@@ -272,19 +271,6 @@ const BuildContent = ({
 
 const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   const [theme] = useContext(ThemeContext);
-
-  const onDownloadFileUpdated : DownloadManagerObserver = (downloadFile) => {
-    console.log('ActivityListBody', downloadFile);
-  }
-
-  useEffect(()=>{
-    downloadManagerSubject.getInstance().attach(onDownloadFileUpdated);
-
-    return () =>{
-      downloadManagerSubject.getInstance().detach(onDownloadFileUpdated)
-    }
-  }, []);
-
 
   return (
       <View

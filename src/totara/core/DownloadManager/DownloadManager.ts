@@ -1,5 +1,4 @@
-// @ts-ignore
-// import RNBackgroundDownloader from 'react-native-background-downloader';
+import { DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResult, unlink } from "react-native-fs"
 
 export enum DownloadableFileState {
     Added,
@@ -11,8 +10,8 @@ export enum DownloadableFileState {
 
 export interface DownloadableFile {
     id: string,
-    url: string,
-    hash?: string,
+    resourceUrl: string,
+    fileNamePath: string,
     percentCompleted: number,
     state?: DownloadableFileState
 }
@@ -50,28 +49,49 @@ class DownloadManager{
         return this.files;
     }
 
-    public download(id: string, url: string, hash?: string) : void{
-        this.files.push({id: id, url: url, hash: hash, percentCompleted: 0, state : DownloadableFileState.Added});
 
-        // const task = RNBackgroundDownloader.download({
-        //     id: id,
-        //     url: url,
-        //     destination: `${(new Date().toISOString())}.zip`
-        // }).begin((expectedBytes: number) => {
-        //     console.log(`Going to download ${expectedBytes} bytes!`);
-        //     this.update(id, 0, DownloadableFileState.Waiting);
-        // }).progress((percent: number) => {
-        //     const perc = percent * 100;
-        //     console.log(`Downloaded: ${perc.toFixed(2)}%`);
-        //     this.update(id, Math.round(perc), DownloadableFileState.Downloading);
-        // }).done(() => {
-        //     console.log('Download is done!');
-        //     this.update(id, 100, DownloadableFileState.Completed);
-        // }).error((error: any) => {
-        //     console.log('Download canceled due to error: ', error);
-        //     this.update(id, -1, DownloadableFileState.Errored);
-        // });
+    downloadBegin = (id: string, res: DownloadBeginCallbackResult) =>{
+        console.log(`downloadBegin ${id} length: ${res.contentLength}`);
+        this.update(id, 0, DownloadableFileState.Downloading);
     }
+
+    downloadProgress = (id: string, res: DownloadProgressCallbackResult) =>{
+        console.log(`downloadProgress ${id} length: ${res.contentLength}`);
+        const _completed = (res.bytesWritten/res.bytesWritten)*100;
+        this.update(id, _completed, DownloadableFileState.Downloading);
+    }
+
+    public download(apiKey: string, id: string, resourceUrl: string, fileNamePath: string) : void{
+        //TODO: CHECK IF ALREADY EXISTS
+
+        this.files.push({id: id, resourceUrl: resourceUrl, fileNamePath: fileNamePath, percentCompleted: 0, state : DownloadableFileState.Added});
+
+        const downloaderOptions = {
+            fromUrl: resourceUrl,
+            toFile: fileNamePath,
+            background: true,
+            begin: (res: DownloadBeginCallbackResult)=>{
+                this.downloadBegin(id, res)
+            },
+            progress: (res: DownloadProgressCallbackResult)=>{
+                this.downloadProgress(id, res)
+            },
+            progressDivider: 10,
+            headers: { Authorization: `Bearer ${apiKey}`}
+        };
+
+        downloadFile(downloaderOptions).promise.then(response => {
+            if (response.statusCode === 200) {
+                this.update(id, 100, DownloadableFileState.Completed)
+            } else {
+                this.update(id, 0, DownloadableFileState.Errored);
+            }
+        });
+    }
+
+    // const deletePackage = (filePath: string) => {
+    //     return unlink(filePath);
+    // }
 
     public remove(id: string) : void {
         this.files = this.files.filter(x=>x.id !== id);
@@ -91,5 +111,6 @@ class DownloadManager{
         this.observers.forEach(observer => observer(file));
     }
 }
+
 
 export default DownloadManager;

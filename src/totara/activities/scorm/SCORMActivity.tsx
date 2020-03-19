@@ -23,6 +23,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
+// @ts-ignore
 import { useNetInfo } from "@react-native-community/netinfo"; //TO continue
 
 import { Activity } from "@totara/types";
@@ -31,10 +32,17 @@ import { scormQuery } from "@totara/activities/scorm/api";
 import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
 import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon, MoreText, ContentIcon } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
-import { OfflineScormActivity, downloadSCORMPackage, getSCORMData, setSCORMPackageData } from "./offline";
+import {
+  OfflineScormActivity,
+  getSCORMData,
+  setSCORMPackageData,
+  getOfflineSCORMPackageName
+} from "./offline";
 import GradeDetails from "./GradeDetails";
 import OnlineScormActivity from "./online/OnlineScormActivity";
 import { Log } from "@totara/lib";
+import DownloadManager, { DownloadManagerObserver } from "@totara/core/DownloadManager/DownloadManager"
+import * as RNFS from "react-native-fs"
 
 const SCORMActivityAPI = (props: {activity: Activity}) => {
   const { loading, error, data } = useQuery(scormQuery, {
@@ -113,25 +121,65 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
     setMustDownloadContent(true);
   };
 
+  const onDownloadFileUpdated : DownloadManagerObserver = (downloadFile) => {
+    console.log(downloadFile);
+    const _offlineScormData = {
+      scorm: scorm,
+      package: {
+        path: downloadFile.fileNamePath
+      }
+    } as OfflineScormPackage;
+    setScormResultData(_offlineScormData);
+  }
+
+  const [downloadManager] = useState<DownloadManager>(DownloadManager.getInstance);
+  useEffect(()=>{
+    downloadManager.attach(onDownloadFileUpdated);
+    return () =>{
+      downloadManager.detach(onDownloadFileUpdated)
+    }
+  }, []);
+
   useEffect(() => {
     if (!mustDownloadContent) return;
 
     const _url = scorm.packageUrl!;
     const _scormId = scorm.id;
     const _courseId = scorm.courseid;
-    downloadSCORMPackage(apiKey!, _courseId, _scormId, _url).then(
-      packagePath => {
-        const _offlineScormData = {
-          scorm: scorm,
-          package: {
-            path: packagePath
-          }
-        } as OfflineScormPackage;
-        setScormResultData(_offlineScormData);
-      }
-    );
+
+    const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
+    const offlineSCORMPackageName = getOfflineSCORMPackageName(_courseId, _scormId);
+    const _filePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
+
+    const _downloadId = _scormId.toString();
+    downloadManager.download(
+        apiKey!,
+        _downloadId,
+        _url,
+        _filePath);
+
+    // downloadSCORMPackage(apiKey!, _courseId, _scormId, _url).then(
+    //     (packagePath) => {
+    //     const _offlineScormData = {
+    //       scorm: scorm,
+    //       package: {
+    //         path: packagePath
+    //       }
+    //     } as OfflineScormPackage;
+    //     setScormResultData(_offlineScormData);
+    //   }
+    // );
   }, [mustDownloadContent]);
   //DOWNLOAD CONTENT - END
+
+
+
+
+
+
+
+
+
 
   //START NEW ATTEMPT
   const onStartAttemptTap = () => {
