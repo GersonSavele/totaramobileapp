@@ -24,6 +24,7 @@ import OfflineScormActivity from "./OfflineScormActivity";
 import { getSCORMPackageData } from "./PackageProcessor";
 import { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized, OfflineSCORMServerRoot } from "./SCORMFileHandler";
 import { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, storageClear } from "./StorageHelper";
+import { synchronizeOfflineAttempt } from "./AttemptSynchronizer";
 
 export {
   OfflineScormActivity,

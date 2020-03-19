@@ -77,7 +77,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
   useEffect(()=> {
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null)) {
-      setIsUserOnline(netInfo.isInternetReachable);
+      // setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
     }
   }, [netInfo]);
 
@@ -92,8 +92,13 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
           // _sscorm.description = "dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk dfhafjal fndakl faklf fnaklfja klfnalk flka jflkan klanfdlk anfkansdflkdfnkfknanflkas klfakln fklan falk nfa fkla jfa fkdsnao nflka nfaoifn alknfoa nfklaofankfnaofan olfaoi lkano fna";
           // let apiSyncedData: OfflineScormPackage = {scorm: _sscorm};
           let apiSyncedData: OfflineScormPackage = {scorm: scorm}; //TODO have to reset
-          if(result) {
-            apiSyncedData.package = result.package
+          if (result) {
+            if (result.offlineActivity) {
+              apiSyncedData.offlineActivity = result.offlineActivity;
+            }
+            if (result.package) {
+              apiSyncedData.package = result.package;
+            }
           }
           setScormResultData(apiSyncedData);
         });
@@ -166,7 +171,10 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
     const hasFileDownloaded = scormResultData && scormResultData.package && (scormResultData.package.path !== undefined || scormResultData.package.path !== "") ? true : false;
     const downloadingFile = mustDownloadContent && !hasFileDownloaded;
-    const totalAttempt = 7;
+    let totalAttempt = scormResultData && scormResultData.scorm && scormResultData.scorm.attemptsCurrent ? scormResultData.scorm.attemptsCurrent : 0;
+    if (!isUserOnline && scormResultData && scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt) {
+      totalAttempt = scormResultData.offlineActivity.last.attempt;
+    }
     return (
       <View style={styles.expanded}>
         <View style={{flex: 1}}>
@@ -209,7 +217,9 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
             </View>
           </ScrollView>
         </View>
-        {(scormResultData && scormResultData.scorm && (isUserOnline || (scormResultData.scorm.offlineAttemptsAllowed && scormResultData.package && scormResultData.package.path)) && <AttemptController isOnline={isUserOnline} maxAttempt={scormResultData.scorm.attemptsMax} currentAttempt={scormResultData.scorm.attemptsCurrent} offlineLastAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt} offlineStartedAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.start.attempt} actionPrimary={onStartAttemptTap} actionSecondary={onContinueAttemptTap} />)}
+        {(scormResultData && scormResultData.scorm && (isUserOnline || (scormResultData.scorm.offlineAttemptsAllowed && scormResultData.package && scormResultData.package.path)) && 
+          <AttemptController isOnline={isUserOnline} maxAttempt={scormResultData.scorm.attemptsMax} currentAttempt={scormResultData.scorm.attemptsCurrent} offlineLastAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt} offlineStartedAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.start.attempt} actionPrimary={onStartAttemptTap} actionSecondary={onContinueAttemptTap} />
+        )}
       </View>
     );
   };
@@ -290,7 +300,7 @@ const AttemptController = (attempt: PropsAttempt) => {
       </View>
       <View style={{flexDirection: "row", justifyContent: "space-between",  alignItems: "stretch"}}>
         <SecondaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} />
-        <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={() => { attempt.actionSecondary}} />
+        <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} />
       </View>
     </View>);
 };
