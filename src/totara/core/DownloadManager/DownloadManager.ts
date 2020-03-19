@@ -1,6 +1,6 @@
 import { DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResult, unlink } from "react-native-fs"
 
-export enum DownloadableFileState {
+export enum ResourceState {
     Added,
     Errored,
     Waiting,
@@ -8,15 +8,15 @@ export enum DownloadableFileState {
     Completed
 }
 
-export interface DownloadableFile {
+export interface Resource {
     id: string,
     resourceUrl: string,
     fileNamePath: string,
     percentCompleted: number,
-    state?: DownloadableFileState
+    state?: ResourceState
 }
 
-export type DownloadManagerObserver = (downloadFile: DownloadableFile) => void;
+export type DownloadManagerObserver = (resourceFile: Resource) => void;
 
 class DownloadManager{
     private static instance: DownloadManager;
@@ -43,28 +43,30 @@ class DownloadManager{
     }
 
     //FILES
-    private files: DownloadableFile[] = [];
+    private files: Resource[] = [];
 
-    get snapshot() : DownloadableFile[] {
+    get snapshot() : Resource[] {
         return this.files;
     }
 
 
     downloadBegin = (id: string, res: DownloadBeginCallbackResult) =>{
         console.log(`downloadBegin ${id} length: ${res.contentLength}`);
-        this.update(id, 0, DownloadableFileState.Downloading);
+        this.update(id, 0, ResourceState.Downloading);
     }
 
     downloadProgress = (id: string, res: DownloadProgressCallbackResult) =>{
-        console.log(`downloadProgress ${id} length: ${res.contentLength}`);
-        const _completed = (res.bytesWritten/res.bytesWritten)*100;
-        this.update(id, _completed, DownloadableFileState.Downloading);
+        console.log(`downloadProgress ${id} written: ${res.bytesWritten} length: ${res.contentLength}`);
+        const _completed = (res.bytesWritten/res.contentLength)*100;
+        this.update(id, _completed, ResourceState.Downloading);
     }
 
     public download(apiKey: string, id: string, resourceUrl: string, fileNamePath: string) : void{
-        //TODO: CHECK IF ALREADY EXISTS
+        //CHECK IF FILE ALREADY EXISTS
+        if(this.files.filter(x=>x.id === id).length>0)
+            return;
 
-        this.files.push({id: id, resourceUrl: resourceUrl, fileNamePath: fileNamePath, percentCompleted: 0, state : DownloadableFileState.Added});
+        this.files.push({id: id, resourceUrl: resourceUrl, fileNamePath: fileNamePath, percentCompleted: 0, state : ResourceState.Added});
 
         const downloaderOptions = {
             fromUrl: resourceUrl,
@@ -82,9 +84,9 @@ class DownloadManager{
 
         downloadFile(downloaderOptions).promise.then(response => {
             if (response.statusCode === 200) {
-                this.update(id, 100, DownloadableFileState.Completed)
+                this.update(id, 100, ResourceState.Completed)
             } else {
-                this.update(id, 0, DownloadableFileState.Errored);
+                this.update(id, 0, ResourceState.Errored);
             }
         });
     }
@@ -97,7 +99,7 @@ class DownloadManager{
         this.files = this.files.filter(x=>x.id !== id);
     }
 
-    public update(id: string, percentage: number, state: DownloadableFileState){
+    public update(id: string, percentage: number, state: ResourceState){
         this.files.filter(file=>file.id === id).map(file => {
             file.percentCompleted = percentage;
             file.state = state
@@ -107,7 +109,7 @@ class DownloadManager{
         this.notify(this.files.filter(x=>x.id === id)[0]);
     }
 
-    public notify(file: DownloadableFile){
+    public notify(file: Resource){
         this.observers.forEach(observer => observer(file));
     }
 }

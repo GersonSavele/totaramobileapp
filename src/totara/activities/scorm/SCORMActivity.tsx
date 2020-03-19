@@ -22,27 +22,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
-import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 // @ts-ignore
 import { useNetInfo } from "@react-native-community/netinfo"; //TO continue
-
 import { Activity } from "@totara/types";
 import { AuthContext } from "@totara/core";
 import { scormQuery } from "@totara/activities/scorm/api";
 import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
-import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon, MoreText, ContentIcon } from "@totara/components"
+import { ContentIcon, MoreText, PrimaryButton, SecondaryButton, TertiaryButton } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
-import {
-  OfflineScormActivity,
-  getSCORMData,
-  setSCORMPackageData,
-  getOfflineSCORMPackageName
-} from "./offline";
+import { getOfflineSCORMPackageName, getSCORMData, OfflineScormActivity, setSCORMPackageData } from "./offline";
 import GradeDetails from "./GradeDetails";
 import OnlineScormActivity from "./online/OnlineScormActivity";
 import { Log } from "@totara/lib";
-import DownloadManager, { DownloadManagerObserver } from "@totara/core/DownloadManager/DownloadManager"
+import DownloadManager, {
+  DownloadManagerObserver,
+  Resource,
+  ResourceState
+} from "@totara/core/DownloadManager/DownloadManager"
 import * as RNFS from "react-native-fs"
+import ResourceDownloader from "@totara/components/ResourceDownloader"
 
 const SCORMActivityAPI = (props: {activity: Activity}) => {
   const { loading, error, data } = useQuery(scormQuery, {
@@ -70,7 +68,7 @@ enum SCORMType {
   None,
   Offline,
   Online
-};
+}
 
 const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
   const {authContextState: { appState }} = useContext(AuthContext);
@@ -79,7 +77,6 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
   // const [netInfo, setNetInfo] = useState<boolean>(false);
   const [isUserOnline, setIsUserOnline] = useState<boolean>(false);//TODO: need to set default true
-  const [mustDownloadContent, setMustDownloadContent] = useState<boolean>(false);
   const [scormResultData, setScormResultData] = useState<OfflineScormPackage>();
   const netInfo = useNetInfo();
 
@@ -92,6 +89,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
   useEffect(() => {
     // Network.isReachable().then((isOnline: boolean) => {
       console.log("isUserOnline: ", isUserOnline);
+
       if (isUserOnline) {
         setScormResultData({scorm: scorm});
       } else {
@@ -118,31 +116,10 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
   //DOWNLOAD CONTENT - BEGIN
   const onDownloadContentTap = () => {
-    setMustDownloadContent(true);
-  };
+    if(resource)
+      return;
 
-  const onDownloadFileUpdated : DownloadManagerObserver = (downloadFile) => {
-    console.log(downloadFile);
-    const _offlineScormData = {
-      scorm: scorm,
-      package: {
-        path: downloadFile.fileNamePath
-      }
-    } as OfflineScormPackage;
-    setScormResultData(_offlineScormData);
-  }
-
-  const [downloadManager] = useState<DownloadManager>(DownloadManager.getInstance);
-  useEffect(()=>{
-    downloadManager.attach(onDownloadFileUpdated);
-    return () =>{
-      downloadManager.detach(onDownloadFileUpdated)
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!mustDownloadContent) return;
-
+    //TODO: PREVENT DOWNLOAD CONTENT TWICE
     const _url = scorm.packageUrl!;
     const _scormId = scorm.id;
     const _courseId = scorm.courseid;
@@ -157,19 +134,69 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
         _downloadId,
         _url,
         _filePath);
+  };
 
-    // downloadSCORMPackage(apiKey!, _courseId, _scormId, _url).then(
-    //     (packagePath) => {
-    //     const _offlineScormData = {
-    //       scorm: scorm,
-    //       package: {
-    //         path: packagePath
-    //       }
-    //     } as OfflineScormPackage;
-    //     setScormResultData(_offlineScormData);
-    //   }
-    // );
-  }, [mustDownloadContent]);
+  const [resource, setResource] = useState<Resource>();
+  const onDownloadFileUpdated : DownloadManagerObserver = (resourceFile) => {
+    console.log(resourceFile);
+    setResource(resourceFile);
+    const _offlineScormData = {
+      scorm: scorm,
+      package: {
+        path: resourceFile.fileNamePath
+      }
+    } as OfflineScormPackage;
+    setScormResultData(_offlineScormData);
+  }
+
+  const [downloadManager] = useState<DownloadManager>(DownloadManager.getInstance);
+  useEffect(()=>{
+    if(!scorm) return;
+
+    downloadManager.attach(onDownloadFileUpdated);
+
+    debugger;
+    const filter = downloadManager.snapshot.filter(x=>x.id === scorm.id.toString());
+    if(filter.length>0){
+      const existingResource = filter[0];
+      setResource(existingResource);
+    }
+
+    return () =>{
+      downloadManager.detach(onDownloadFileUpdated)
+    }
+  }, [scorm, downloadManager]);
+
+  // useEffect(() => {
+  //   if (!mustDownloadContent) return;
+  //
+  //   const _url = scorm.packageUrl!;
+  //   const _scormId = scorm.id;
+  //   const _courseId = scorm.courseid;
+  //
+  //   const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
+  //   const offlineSCORMPackageName = getOfflineSCORMPackageName(_courseId, _scormId);
+  //   const _filePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
+  //
+  //   const _downloadId = _scormId.toString();
+  //   downloadManager.download(
+  //       apiKey!,
+  //       _downloadId,
+  //       _url,
+  //       _filePath);
+  //
+  //   // downloadSCORMPackage(apiKey!, _courseId, _scormId, _url).then(
+  //   //     (packagePath) => {
+  //   //     const _offlineScormData = {
+  //   //       scorm: scorm,
+  //   //       package: {
+  //   //         path: packagePath
+  //   //       }
+  //   //     } as OfflineScormPackage;
+  //   //     setScormResultData(_offlineScormData);
+  //   //   }
+  //   // );
+  // }, [mustDownloadContent]);
   //DOWNLOAD CONTENT - END
 
 
@@ -212,8 +239,9 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
   const MainContent = () => {
     const [theme] = useContext(ThemeContext);
 
-    const hasFileDownloaded = scormResultData && scormResultData.package && (scormResultData.package.path !== undefined || scormResultData.package.path !== "") ? true : false;
-    const downloadingFile = mustDownloadContent && !hasFileDownloaded;
+    const downloadingFile = resource && resource!.state === ResourceState.Downloading;
+    const hasFileDownloaded = resource && resource!.state === ResourceState.Completed;
+
     const totalAttempt = 7;
     return (
       <View style={styles.expanded}>
@@ -222,10 +250,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
             <View style={{ padding: gutter }}>
               <View style={[styles.sectionBreak, {marginTop: 0}]}>
                 { scormResultData && scormResultData.scorm && scormResultData.scorm.description !== undefined && scormResultData.scorm.description !== null && <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>Summary</Text> }
-                { downloadingFile ? 
-                  <ProgressCircle indeterminate size={25} /> : 
-                  <TouchableIcon size={25} icon={faCloudDownloadAlt} disabled={hasFileDownloaded!} onPress={()=> {onDownloadContentTap()}} /> 
-                }
+                <ResourceDownloader downloading={downloadingFile!} onDownloadTap={onDownloadContentTap} progress={resource && resource.percentCompleted ? resource.percentCompleted! : 0} downloadOK={hasFileDownloaded}/>
               </View>
               { scormResultData && scormResultData.scorm && scormResultData.scorm.description !== undefined && scormResultData.scorm.description !== null && <MoreText longText={scormResultData.scorm.description} /> }
               
