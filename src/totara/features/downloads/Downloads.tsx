@@ -1,15 +1,13 @@
-import React /*, { useEffect, useState }*/ from "react"
-import { View, Text } from "react-native"
-// import DownloadManager, {
-//     DownloadableFile,
-//     DownloadableFileState,
-//     DownloadManagerObserver
-// } from "@totara/core/DownloadManager/DownloadManager"
 import { UserProfile } from "@totara/types"
-import { NavigationParams } from "react-navigation";
-// import { faCloudDownloadAlt, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-// import { ProgressCircle, TouchableIcon } from "@totara/components";
-
+import { NavigationParams } from "react-navigation"
+import React, { useEffect, useState } from "react"
+import ResourceManager, { ResourceObserver } from "@totara/core/ResourceManager/ResourceManager";
+import { StyleSheet, Text, View } from "react-native";
+import { gutter } from "@totara/theme";
+import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
+import { faCaretRight } from "@fortawesome/free-solid-svg-icons"
+import { TouchableIcon } from "@totara/components"
+import ResourceDownloader from "@totara/components/ResourceDownloader"
 
 type DownloadsTabsProps = {
     profile: UserProfile;
@@ -17,64 +15,63 @@ type DownloadsTabsProps = {
 };
 
 const Downloads = (props: DownloadsTabsProps) => {
-    // const url = 'http://mirror.filearena.net/pub/speed/SpeedTest_32MB.dat?_ga=2.215647135.942130395.1584504578-1212100665.1584504578';
-    // const [downloadManager] = useState<DownloadManager>(DownloadManager.getInstance);
-    // const [files, setFiles] = useState<DownloadableFile[]>([
-    //     {id: '1', percentCompleted : 0, url: url, state: DownloadableFileState.Added},
-    //     {id: '2', percentCompleted : 0, url: url, state: DownloadableFileState.Added},
-    //     {id: '3', percentCompleted : 0, url: url, state: DownloadableFileState.Added},
-    //     {id: '4', percentCompleted : 0, url: url, state: DownloadableFileState.Added}
-    // ]);
-    //
-    // useEffect(() => {
-    //     // TODO: We should remove following line from inside of useEffect once they update their library
-    //     props.navigation.setParams({ title: "Downloads" });
-    // }, []);
-    //
-    // const onDownloadFileUpdated : DownloadManagerObserver = (downloadFile) => {
-    //     // console.log(downloadFile);
-    //     const idx = files.findIndex(x=>x.id === downloadFile.id);
-    //     files[idx] = downloadFile;
-    //     setFiles([...files]);
-    // }
-    //
-    // useEffect(()=>{
-    //     downloadManager.attach(onDownloadFileUpdated);
-    //     return () =>{
-    //         downloadManager.detach(onDownloadFileUpdated)
-    //     }
-    // }, [downloadManager]);
-    //
-    // const onDownloadPress = (id: string)=> {
-    //     const file = files.filter(x => x.id === id)[0];
-    //     downloadManager.download(file.id, file.url, file.hash);
-    // }
-    //
-    // return (
-    //     <View style={{alignContent: 'center'}}>
-    //         <View style={{alignContent: 'center', alignItems: 'center'}}>
-    //             {files!.map((downloadableFile)=>{
-    //                return (
-    //                    <View key={downloadableFile.id} style={{margin: 10}}>
-    //                        {(downloadableFile.state === DownloadableFileState.Added) &&
-    //                             <TouchableIcon disabled={false} size={30} icon={faCloudDownloadAlt} onPress={() => {
-    //                                onDownloadPress(downloadableFile.id);
-    //                            }}/>}
-    //                        {(downloadableFile.state === DownloadableFileState.Waiting || downloadableFile.state === DownloadableFileState.Downloading) &&
-    //                             <ProgressCircle progress={downloadableFile.percentCompleted} size={45}/>}
-    //                        {downloadableFile.state === DownloadableFileState.Errored &&
-    //                            <TouchableIcon disabled={false} size={30} icon={faExclamationTriangle} onPress={() => {
-    //                                onDownloadPress(downloadableFile.id);
-    //                            }}/>
-    //                        }
-    //                    </View>
-    //                )
-    //             })}
-    //         </View>
-    //     </View>
-    // )
+    useEffect(() => {
+        // TODO: We should remove following line from inside of useEffect once they update their library
+        props.navigation.setParams({ title: "Downloads" });
+    }, []);
 
-    return <View><Text>Downloads tab</Text></View>
+    const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
+    const [resources, setResources] = useState<IResource[]>(ResourceManager.getInstance().snapshot);
+    const onDownloadFileUpdated : ResourceObserver = (received) => {
+        console.log(received);
+        const idx = resources.findIndex(res=>res.id === received.id);
+        resources[idx] = received;
+        setResources([...resources]);
+    }
+
+    useEffect(()=>{
+        downloadManager.attach(onDownloadFileUpdated);
+        return () =>{
+            downloadManager.detach(onDownloadFileUpdated)
+        }
+    }, [downloadManager]);
+
+    return <View>
+        {
+            resources.map((res: IResource)=>{
+                const fileSize = res.sizeInBytes/1024 < 1000 ? `${Math.round((res.sizeInBytes/1024))} Kb` : `${(res.sizeInBytes/1024/1024).toFixed(2)} Mb`
+                return <View key={res.id} style={styles.item}>
+                    <View style={{display: 'flex', width: '100%', flexDirection: 'row'}}>
+                        <View style={{display: 'flex', flex: 3, flexDirection: 'column', justifyContent:'center'}}>
+                            <Text>{res.name}</Text>
+                            <Text style={{color: '#AAA'}}>{`${fileSize}`}</Text>
+                        </View>
+                        <View style={{display: 'flex', flex: 3, alignItems:'flex-end', justifyContent:'center'}}>
+                            <ResourceDownloader size={25} downloading={false} progress={res.percentCompleted ? res.percentCompleted! : 0} downloadOK={res.state === ResourceState.Completed}/>
+                        </View>
+                        <View style={{display: 'flex', flex: 1, justifyContent:'flex-end', alignContent:'center'}}>
+                            <TouchableIcon size={25} icon={faCaretRight} disabled={true} />
+                        </View>
+                    </View>
+                    <View style={styles.divider}/>
+                </View>
+            })
+        }
+    </View>
 }
+
+
+
+const styles = StyleSheet.create({
+    divider:{
+        backgroundColor: "#EEEEEE",
+        width: '100%',
+        height: 1
+    },
+    item:{
+        width: '100%',
+        padding: gutter
+    }
+});
 
 export default  Downloads;

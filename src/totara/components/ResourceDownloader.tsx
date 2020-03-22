@@ -1,28 +1,35 @@
 import { View } from "react-native"
-import { ProgressCircle, TouchableIcon } from "@totara/components/index"
-import { faCloud, faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"
+import { TouchableIcon } from "@totara/components/index"
+import { faCheckCircle, faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"
 import React from "react";
+import * as Progress from "react-native-progress";
 
 type ResourceDownloader = {
     downloading: boolean,
     downloadOK?: boolean,
-    onDownloadTap(): void,
+    onDownloadTap?(): void,
     progress: number,
+    size?: number
 }
 
 const ResourceDownloader = (props: ResourceDownloader) =>{
 
+    const size = props.size? props.size! : 40;
+
     return (
-        <View>
-            {props.downloading ? <ProgressCircle indeterminate size={35} progress={props.progress}/>
+        <View style={{height: size, width: size, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            {props.downloading ? <Progress.Circle showsText animated size={size} progress={props.progress/100}
+                                                  formatText={() => {
+                                                      return `${props.progress.toFixed(0)}%`
+                                                  }}/>
 
                 :
 
                 (
                     props.downloadOK ?
-                        <TouchableIcon size={35} icon={faCloud} disabled={true} />
+                        <TouchableIcon size={size} icon={faCheckCircle} color={'green'} disabled={true} />
                         :
-                        <TouchableIcon size={35} icon={faCloudDownloadAlt} disabled={props.downloading} onPress={props.onDownloadTap} />
+                        <TouchableIcon size={size} icon={faCloudDownloadAlt} disabled={props.downloading} onPress={props.onDownloadTap} />
 
                 )
             }

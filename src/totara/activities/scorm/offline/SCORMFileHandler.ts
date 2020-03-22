@@ -24,7 +24,7 @@ import { unzip } from "react-native-zip-archive";
 import { Platform } from "react-native";
 
 import { config } from "@totara/lib";
-// import { downloadPackage } from "@totara/core/DownloadManager/DownloadHandler"
+// import { downloadPackage } from "@totara/core/ResourceManager/DownloadHandler"
 // import { DownloadProgressCallbackResult } from "react-native-fs"
 
 const OfflineSCORMServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
