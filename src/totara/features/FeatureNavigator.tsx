@@ -34,9 +34,11 @@ import { config } from "@totara/lib";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import MyLearning from "./my-learning";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import CourseDetails from "./course-details";
+import { CourseDetails } from "./AccessToLearning/course-details";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import ProgramDetails from "./program-details";
+import ProgramDetails from "./AccessToLearning/program-details";
+// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
+import CertificationDetails from "./AccessToLearning/certification-details";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import Settings from "./settings";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
@@ -86,8 +88,8 @@ const MyLearningTab = {
         {
             MyLearning: {
                 screen: MyLearning,
-                navigationOptions: ({ screenProps }: NavigationScreenProps ) =>
-                    navigationOptions({ theme: screenProps!.theme, /*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
+                navigationOptions: ({ screenProps, navigation }: NavigationScreenProps ) =>
+                    navigationOptions({ theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")/*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
             },
             CourseDetails: {
                 screen: CourseDetails,
@@ -96,8 +98,13 @@ const MyLearningTab = {
             },
             ProgramDetails: {
                 screen: ProgramDetails,
-                navigationOptions: ({ screenProps } : NavigationScreenProps) =>
-                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt}, )
+                navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
+                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
+            },
+            CertificationDetails: {
+                screen: CertificationDetails,
+                navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
+                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             }
         }, "MyLearning"),
     navigationOptions: {

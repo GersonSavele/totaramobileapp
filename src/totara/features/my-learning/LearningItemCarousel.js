@@ -34,7 +34,7 @@ import {
 import { LearningItemCard, AddBadge } from "@totara/components";
 import { resizeByScreenSize, normalize, ThemeContext } from "@totara/theme";
 import { LearningItemType } from "@totara/types";
-import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS } from "@totara/lib/Constant";
+import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS, NAVIGATION_CERTIFICATE_DETAILS } from "@totara/lib/Constant";
 import { Log } from "@totara/lib";
 
 const LearningItemCarousel = withNavigation(
@@ -174,8 +174,8 @@ let navigateTo = (navigation, item) => {
     case LearningItemType.Program:
       navigation.navigate(NAVIGATION_PROGRAM_DETAILS, { programId: item.id });
       break;
-    case LearningItemType.Certification: // TODO for now certifaction is the same as Program
-      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, { programId: item.id });
+    case LearningItemType.Certification:
+      navigation.navigate(NAVIGATION_CERTIFICATE_DETAILS, { certificateId: item.id });
       break;
     default:
       Log.error(

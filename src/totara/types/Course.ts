@@ -28,7 +28,7 @@ export interface Course {
   shortname: string,
   lang: string,
   sections: [Section],
-  completion?: Completion,
+  completion: Completion,
   summary?: string,
   startdate?: Date
   enddate?: Date
@@ -39,9 +39,21 @@ export interface Course {
 export interface Completion {
   id: number,
   statuskey:  "" | "completeviarpl" | "complete" | "inprogress" | "notyetstarted"
-  progress?: number,
+  progress: number,
   timecompleted?: Date,
   grademax :number,
   gradefinal : number
 
+}
+
+export interface CourseSets {
+  id: number;
+  label: string;
+  courses: [Course];
+  nextSet?: NextSet;
+}
+
+interface NextSet {
+  nextID: number;
+  operator?: string;
 }

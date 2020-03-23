@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -16,8 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $author
+ * @author @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ *
+ *
  */
 
-export {default} from "./CourseDetails";
+ import HeaderView from "./HeaderView"
 
+ export { HeaderView }

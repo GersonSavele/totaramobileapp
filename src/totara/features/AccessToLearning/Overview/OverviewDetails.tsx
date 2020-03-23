@@ -31,15 +31,33 @@ import {
 } from "react-native";
 import React, { useContext } from "react";
 import { normalize, ThemeContext } from "@totara/theme";
-import { Course } from "@totara/types";
 import { AddBadge } from "@totara/components";
 import { translate } from "@totara/locale";
 
+type OverviewProps = {
+  progress :number,
+  gradeFinal: number,
+  gradeMax : number,
+  summary : string,
+  summaryTypeTitle : string
+}
 
-const OverviewDetails = ({ course }: { course: Course }) => {
+type SummaryProps = {
+  summary : string,
+  summaryTypeTitle : string
+}
+
+type ItemProps = {
+  id : number,
+  title: string,
+  description: string,
+  value : number
+}
+
+const OverviewDetails = ({ progress, gradeFinal, gradeMax, summary, summaryTypeTitle }: OverviewProps) => {
   const [theme] = useContext(ThemeContext);
 
-  const renderItem = ({ item }: any) => {
+const renderItem = ({ item }:  { item : ItemProps}) => {
     const itemStyle = StyleSheet.create({
       container: {
         borderRadius: normalize(10),
@@ -106,44 +124,39 @@ const OverviewDetails = ({ course }: { course: Course }) => {
   };
 
 let progressStatus = translate("course_overview_progress.progress_status_init");
-let progress = 0;
-let userGradeFinal = 0;
-let userGradeMax = 0;
+let userProgress = 0;
 
-  if (course.completion) {
-    if (course.completion.progress && course.completion.progress > 50) {
+    if (progress && progress > 50) {
       progressStatus = translate(
         "course_overview_progress.progress_status_final"
       );
-      progress = course.completion.progress;
+      userProgress = progress;
     } else if (
-      course.completion.progress &&
-      course.completion.progress < 50 &&
-      course.completion.progress != 0
+      progress &&
+      progress < 50 &&
+      progress != 0
     ) {
       progressStatus = translate(
         "course_overview_progress.progress_status_mid"
       );
-      progress = course.completion.progress;
+      userProgress = progress;
     }
-    userGradeFinal = course.completion.gradefinal;
-    userGradeMax = course.completion.grademax;
-  }
+  
 
   const item = [
     {
       id: 1,
       title: translate("course_overview_progress.title"),
       description: progressStatus,
-      value: progress
+      value: userProgress
     },
     {
       id: 2,
       title: translate("course_overview_grade.title"),
       description:
         translate("course_overview_grade.progress_status") +
-        (userGradeMax != 0 ? userGradeMax.toString() : "0"),
-      value: userGradeFinal
+        (gradeMax != 0 ? gradeMax.toString() : "0"),
+      value: gradeFinal
     }
   ];
 
@@ -169,24 +182,25 @@ let userGradeMax = 0;
         }}
       />
       <View style={{ flex: 4 }}>
-        <CourseSummary course={course} />
+        <CourseSummary summary={summary} summaryTypeTitle = {summaryTypeTitle}/>
       </View>
     </View>
   );
 };
 
-const CourseSummary = ({ course }: { course: Course }) => {
+const CourseSummary = ({ summary, summaryTypeTitle }: SummaryProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={{ marginLeft: 16, marginRight: 8 }}>
       <View style={{ marginTop: 8 }}>
         <Text numberOfLines={1} style={theme.textH3}>
-          {translate("course_overview.course_summery")}
+          {/* {translate("course_overview.course_summery")} */}
+        {summaryTypeTitle}
         </Text>
       </View>
       <View style={{ marginTop: 16 }}>
         <Text style={[theme.textB3, { color: theme.colorNeutral6 }]}>
-          {course.summary}
+          {summary}
         </Text>
       </View>
     </View>
