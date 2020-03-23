@@ -67,6 +67,7 @@ import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 import {FeatureNavigator} from "@totara/features";
 import * as notifications from "./Notifications";
+import ResourceManager from "@totara/core/ResourceManager/ResourceManager"
 
 class App extends React.Component<{}> {
 
@@ -108,6 +109,7 @@ class App extends React.Component<{}> {
   }
 
   async componentDidMount() {
+    await new ResourceManager().init();
     await notifications.init(
       this.onNotificationReceivedForeground,
       this.onNotificationOpened,

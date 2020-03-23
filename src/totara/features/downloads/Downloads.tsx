@@ -23,7 +23,7 @@ const Downloads = (props: DownloadsTabsProps) => {
     const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
     const [resources, setResources] = useState<IResource[]>(ResourceManager.getInstance().snapshot);
     const onDownloadFileUpdated : ResourceObserver = (received) => {
-        console.log(received);
+        // console.log(received);
         const idx = resources.findIndex(res=>res.id === received.id);
         resources[idx] = received;
         setResources([...resources]);
