@@ -22,7 +22,6 @@
 import React, { useContext, useEffect, useState }  from "react";
 import { Text, View } from "react-native";
 
-import { TertiaryButton} from "@totara/components";
 import { ThemeContext, gutter } from "@totara/theme";
 import { Scorm } from "@totara/types";
 
@@ -31,11 +30,18 @@ type GradeDetailsProps = {
 }
 const  GradeDetails = ({scorm}: GradeDetailsProps) => {
   const [theme] = useContext(ThemeContext);
-  const [gradeMethod, setGradeMethod] = useState("Highest attempt grade");
-  const [acheivedGrade, setAcheivedGrade] = useState("80");
-  const [numberOfAttmept, setNumberOfAttmept] = useState("1");
-  const [lastSixAttemptsReport, setLastSixAttemptsReport] = useState([{attempt:7, marks: 84, grade: "pass"}, {attempt:6, marks: 84, grade: "pass"}, {attempt:5, marks: 72, grade: "pass"}, {attempt:4, marks: 35, grade: "fail"}, {attempt:3, marks: 72, grade: "pass"}, {attempt:2, marks: 50, grade: "pass"}, {attempt:1, marks: 30, grade: "fail"}]);
-  const totalAttempt = lastSixAttemptsReport ? lastSixAttemptsReport.length : 0;
+  const [gradeMethod, setGradeMethod] = useState<string>("");
+  const [acheivedGrade, setAcheivedGrade] = useState<string>("");
+  const [offlineAttemptsReport, setOfflineAttemptsReport] = useState<[{attempt: number, grade: string, marks: number}]>();
+  
+  useEffect(()=> {
+    setGradeMethod("Highest attempt grade");
+    setAcheivedGrade("80");
+    setOfflineAttemptsReport([{attempt:7, marks: 84, grade: "pass"}, {attempt:6, marks: 84, grade: "pass"}, {attempt:5, marks: 72, grade: "pass"}, {attempt:4, marks: 35, grade: "fail"}, {attempt:3, marks: 72, grade: "pass"}, {attempt:2, marks: 50, grade: "pass"}, {attempt:1, marks: 30, grade: "fail"}]);
+  }, [scorm]);
+
+  const totalAttempt = offlineAttemptsReport !== undefined ? offlineAttemptsReport.length : 0;
+
   return (
     <View style={{ borderRadius: 5, backgroundColor: "#eee", flexDirection: "row", padding: gutter, marginVertical: 8 }} >
       <View style={{flex: 1, paddingHorizontal: 4}}>
@@ -45,7 +51,7 @@ const  GradeDetails = ({scorm}: GradeDetailsProps) => {
       </View>
       { totalAttempt > 0 && (
         <View style={{flex: 2, height: 100, padding: 4, flexDirection: "row-reverse"}}>
-        { lastSixAttemptsReport && lastSixAttemptsReport.slice(0, 6).map(attemptReport => attemptReport.grade && attemptReport.attempt && attemptReport.marks  && <AttemptGrade attempt={attemptReport.attempt} marks={attemptReport.marks} grade={attemptReport.grade} />)}
+        { offlineAttemptsReport && offlineAttemptsReport.slice(0, 6).map(attemptReport => attemptReport.grade && attemptReport.attempt && attemptReport.marks  && <AttemptGrade attempt={attemptReport.attempt} marks={attemptReport.marks} grade={attemptReport.grade} />)}
         </View>
       )}
   </View>);
