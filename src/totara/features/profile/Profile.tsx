@@ -20,7 +20,7 @@
  */
 
 import React, { useEffect, useContext } from "react";
-import { StyleSheet, Text, View, Image, ScrollView, Button } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { Cell, TableView } from "react-native-tableview-simple";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useQuery } from "@apollo/react-hooks";

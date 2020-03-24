@@ -35,7 +35,6 @@ import {
   OfflineScormActivity,
   getSCORMData,
   setSCORMPackageData,
-  getUnsyncedData,
   getOfflineSCORMPackageName
 } from "./offline";
 
@@ -87,13 +86,11 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
   useEffect(()=> {
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null)) {
-      // setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
+      setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
     }
   }, [netInfo]);
 
   useEffect(() => {
-      console.log("isUserOnline: ", isUserOnline);
-
       if (isUserOnline) {
         setScormResultData({scorm: scorm});
       } else {
@@ -145,7 +142,6 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
   const [resource, setResource] = useState<IResource>();
   const onDownloadFileUpdated : ResourceObserver = (resourceFile) => {
-    console.log(resourceFile);
     setResource(resourceFile);
     const _offlineScormData = {
       scorm: scorm,
