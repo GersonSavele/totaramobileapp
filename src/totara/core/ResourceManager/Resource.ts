@@ -3,7 +3,8 @@ export enum ResourceState {
     Errored,
     Waiting,
     Downloading,
-    Completed
+    Completed,
+    Deleted
 }
 
 export interface IResource {
