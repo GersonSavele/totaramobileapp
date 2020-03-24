@@ -48,6 +48,8 @@ const AttemptSynchronizer = () => {
       getUnsyncedData().then(data => {
         if (data && data.length > 0) {
           setUnsyncData(data);
+        } else {
+          setStatusText("Data synced.");
         }
       });
     } else {
