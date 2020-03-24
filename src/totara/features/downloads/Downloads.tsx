@@ -7,8 +7,7 @@ import { gutter, ThemeContext } from "@totara/theme";
 import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons"
 import { TouchableIcon } from "@totara/components"
-import ResourceDownloader from "@totara/components/ResourceDownloader"
-import { TotaraTheme } from "@totara/theme/Theme"
+import ResourceDownloader from "@totara/components/ResourceDownloader";
 
 type DownloadsTabsProps = {
     profile: UserProfile;
