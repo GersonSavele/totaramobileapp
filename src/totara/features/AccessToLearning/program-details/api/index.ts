@@ -19,37 +19,42 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import {FlatList, StyleSheet} from "react-native";
-import React from "react";
-import PropTypes from "prop-types";
-import CourseSet from "./CourseSet";
+import gql from "graphql-tag";
 
-class CourseSetList extends React.Component {
 
-  renderCourseSet = ({item}) => <CourseSet {...item}/>;
-
-  render() {
-    const {courseSet, onScroll} = this.props;
-    return(
-      <FlatList
-        data={courseSet}
-        renderItem={this.renderCourseSet}
-        keyExtractor={(item, index) => item.id.toString() + index}
-        style={styles.container}
-        onScroll={onScroll}/>
-    );
+const coreProgram = gql`
+  query program($id: ID!) {
+    program(id: $id) {
+      id
+      itemtype
+      shortname
+      fullname
+      summary
+      duedateState
+      duedate
+      progress
+      imageSrc
+      courseSet {
+        id
+        label  
+        courses {
+          id
+          itemtype
+          shortname
+          fullname
+          summary
+          progress
+          status
+          imageSrc  
+        }
+        nextSet {
+          nextID
+          operator
+        }
+      }  
+    }
   }
-}
+`;
 
-CourseSetList.propTypes = {
-  courseSet: PropTypes.array.isRequired,
-  onScroll: PropTypes.func
-};
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#FFFFFF"
-  }
-});
-
-export default CourseSetList;
+export {coreProgram}

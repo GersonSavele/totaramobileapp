@@ -31,7 +31,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { ContentIcon } from "@totara/components";
 import { normalize, ThemeContext } from "@totara/theme";
 import { ActivitySheetConsumer } from "@totara/activities";
-import { Section, Activity } from "@totara/types";
+import { Section, Activity, ActivityType } from "@totara/types";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import ActivityRestrictionView from "./ActivityRestrictionView";
 import { AppliedTheme } from "@totara/theme/Theme";
@@ -88,7 +89,7 @@ const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
   return (
     activities && activities.length != 0 ? 
     <View>
-      <TouchableOpacity
+      <TouchableOpacity 
         onPress={() => {
           setShow(!show);
         }}
@@ -144,7 +145,7 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
       </TouchableOpacity>
       {show && (
         <ActivityRestrictionView
-          description={availablereason === null ? "" : availablereason}
+          description={availablereason == null ? "" : availablereason}
           onClose={onClose}
         />
       )}
@@ -308,7 +309,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
             <TouchableOpacity
               style={{ flex: 1 }}
               onPress={() => {
-                setCurrentActivity(item);
+                setCurrentActivity(item as ActivityType);
                 setOnClose(refetch!);
               }}
             >
@@ -453,4 +454,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ActivityList;
+export  { ActivityList, ActivityUI };

@@ -16,9 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ *
  *
  */
 
-export {default} from "./ProgramDetails";
+ import CourseSet from "./CourseSet"
+ import CourseList from "./CourseList"
 
+ export { CourseSet, CourseList };

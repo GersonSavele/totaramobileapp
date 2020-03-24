@@ -1,30 +1,43 @@
 import { DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResult, unlink } from "react-native-fs"
 import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 export type ResourceObserver = (resourceFile: IResource) => void;
+
+const TOTARA_RESOURCES = '@TOTARA_RESOURCES';
 
 class ResourceManager{
     private static instance: ResourceManager;
     private constructor(){}
 
     public static getInstance(): ResourceManager {
+        return ResourceManager.instance;
+    }
+
+    public init = () =>{
         if(!ResourceManager.instance){
             ResourceManager.instance = new ResourceManager();
+            this.retrieveStorage().then(saved =>{
+                if(!saved){
+                    ResourceManager.instance.files = [];
+                    return;
+                }
+                const parsed = JSON.parse(saved!);
+                ResourceManager.instance.files = Object.values(parsed);
+            });
         }
-        return ResourceManager.instance;
     }
 
     private observers: ResourceObserver[] = [];
 
     public attach(observer: ResourceObserver) : void {
-        console.log('Subject: Attached an observer.');
         this.observers.push(observer);
     }
 
     public detach(observer: ResourceObserver) : void {
         const observerIndex = this.observers.indexOf(observer);
         this.observers.splice(observerIndex, 1);
-        console.log('Subject: Detached an observer.');
     }
 
     //FILES
@@ -34,20 +47,16 @@ class ResourceManager{
         return this.files;
     }
 
-
-    downloadBegin = (id: string, res: DownloadBeginCallbackResult) =>{
-        console.log(`downloadBegin ${id} length: ${res.contentLength}`);
+    private downloadBegin = (id: string, res: DownloadBeginCallbackResult) =>{
         this.update(id, 0, ResourceState.Downloading, res.contentLength);
     }
 
-    downloadProgress = (id: string, res: DownloadProgressCallbackResult) =>{
-        console.log(`downloadProgress ${id} written: ${res.bytesWritten} length: ${res.contentLength}`);
+    private downloadProgress = (id: string, res: DownloadProgressCallbackResult) =>{
         const _completed = (res.bytesWritten/res.contentLength)*100;
         this.update(id, _completed, ResourceState.Downloading);
     }
 
     public download(apiKey: string, id: string, name: string, resourceUrl: string, fileNamePath: string) : void{
-        //CHECK IF FILE ALREADY EXISTS
         if(this.files.filter(x=>x.id === id).length>0)
             return;
 
@@ -77,10 +86,26 @@ class ResourceManager{
 
         downloadFile(downloaderOptions).promise.then(response => {
             if (response.statusCode === 200) {
+                this.saveStorage(id);
                 this.update(id, 100, ResourceState.Completed)
             } else {
                 this.update(id, 0, ResourceState.Errored);
             }
+        });
+    }
+
+    public retrieveStorage = () =>{
+        return AsyncStorage.getItem(TOTARA_RESOURCES);
+    }
+
+    public saveStorage = (id: string) =>{
+        const strObj = this.files.find(f=>f.id === id);
+        this.retrieveStorage().then(storedData => {
+            let newData = {[id]: strObj}
+            if (storedData && JSON.parse(storedData)) {
+                newData = {...JSON.parse(storedData), ...newData};
+            }
+            return AsyncStorage.setItem(TOTARA_RESOURCES, JSON.stringify(newData));
         });
     }
 

@@ -19,18 +19,18 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import {Section} from "./LearningItem"
-
+import { CourseSets } from "./Course";
 
 export interface Program {
-  id: number
-  itemtype: string
-  shortname: string
-  fullname?: string
-  summary?: string
-  duedateState?: string
-  duedate?: Date
-  progress?: number
-  sections: [Section]
-  imageSrc?: string
+  id: number;
+  itemtype: "program" | string;
+  shortname: string;
+  fullname?: string;
+  summary?: string;
+  duedateState?: string;
+  duedate?: Date;
+  progress?: number;
+  courseSets: [CourseSets];
+  imageSrc?: string;
 }
+

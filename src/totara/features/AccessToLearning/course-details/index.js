@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -15,35 +15,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * $author
  */
 
-import { LearningItem, LearningItemType, Section } from "./LearningItem";
-import { Activity, ActivityType, ScormActivity } from "./Activity";
-import { Course, CourseSets } from "./Course";
-import { Program } from "./Program";
-import { Status, LearningStatus } from "./LearningStatus";
-import { Me } from "./Me"
-import { SiteInfo, AppState } from "./Auth";
-import { Theme } from "./Theme";
-import { UserProfile } from "./UserProfile"
-import { Certification } from "./Certification"
+export { CourseDetails, CourseDetailsComponent, CourseCompleted, ActivityUI } from "./CourseDetails";
 
-export {
-  LearningItem,
-  LearningItemType,
-  ScormActivity,
-  Activity,
-  ActivityType,
-  Course,
-  Program,
-  Status,
-  LearningStatus,
-  Me,
-  UserProfile,
-  SiteInfo,
-  AppState,
-  Theme,
-  Section,
-  CourseSets,
-  Certification
-}
