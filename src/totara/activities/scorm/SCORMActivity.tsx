@@ -214,7 +214,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
         <View style={{flex: 1}}>
           <ScrollView >
             <View style={{ padding: gutter }}>
-              <View style={[styles.sectionBreak, {marginTop: 0}]}>
+              <View style={[styles.sectionBreak, {paddingTop: 0}]}>
                 { scormResultData && scormResultData.scorm && scormResultData.scorm.description !== undefined && scormResultData.scorm.description !== null && <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>Summary</Text> }
                 <ResourceDownloader downloading={downloadingFile!} onDownloadTap={onDownloadContentTap} progress={resource && resource.percentCompleted ? resource.percentCompleted! : 0} downloadOK={hasFileDownloaded}/>
               </View>
@@ -271,13 +271,15 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   sectionBreak: {
-    marginTop: 16,
     flexDirection: "row",
+    paddingTop: 8,
+    paddingBottom: 8,
     justifyContent: "space-between" 
   },
   sectionField: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    paddingVertical: 8
   },
   attemptContainer: {
     paddingHorizontal: gutter,
@@ -330,8 +332,9 @@ const AttemptController = (attempt: PropsAttempt) => {
           <Text style={theme.textSmall}>Manually mark this activity as completed when you finish learning</Text>
         </View>
       </View>
-      <View style={{flexDirection: "row", justifyContent: "space-between",  alignItems: "stretch"}}>
+      <View style={{flexDirection: "row", justifyContent: "space-between",  alignItems: "stretch" }}>
         <SecondaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} />
+        <View style={{width: 16}}></View>
         <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} />
       </View>
     </View>);
