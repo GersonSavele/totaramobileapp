@@ -40,24 +40,19 @@ const SaveAttemptMutation = gql`
 const AttemptSynchronizer = () => {
   const [unSyncData, setUnsyncData] = useState<[any]>();
   const [syncData, setSyncData] = useState();
-  const [saveAttempt, {data}] = useMutation(SaveAttemptMutation);
-  const [statusText, setStatusText] = useState("Syncing data");
+  const [saveAttempt] = useMutation(SaveAttemptMutation);
   useEffect(()=> {
     if (!unSyncData) {
       getUnsyncedData().then(data => {
         if (data && data.length > 0) {
           setUnsyncData(data);
-        } else {
-          setStatusText("Data synced.");
-        }
+        } 
       });
     } else {
-      console.log("un: ", unSyncData);
       if (unSyncData && unSyncData!.length > 0) {
         const syncIndex = {index: 0};
         const unsyncScormData = unSyncData[syncIndex.index];
         getSCORMLastActivity(unsyncScormData.scormid).then(storedLastActivityData => {
-          console.log("last Attempt", storedLastActivityData);
           if (storedLastActivityData) {
             setSyncData({...unsyncScormData, ...storedLastActivityData, ...syncIndex});
           }
@@ -67,7 +62,6 @@ const AttemptSynchronizer = () => {
     }
     
   }, [unSyncData]);
-  console.log("statusText: ", statusText);
 
   useEffect(()=> {
     if(syncData && syncData !== undefined) {
@@ -81,7 +75,7 @@ const AttemptSynchronizer = () => {
           unsavedAttemptTracks = unsavedAttemptTracks.concat(tmpSyncAttemptScos[scoId]);
         }
       }
-      console.log("scosTrack[scoId: >> ", unsavedAttemptTracks);
+
       saveAttempt({
         variables: {
           scormid: tmpSyncScormId,
@@ -119,7 +113,9 @@ const AttemptSynchronizer = () => {
     }
     
   }, [syncData]);
- return null; //<Text>{statusText}</Text>;
+
+ return null; //TODO - need to check with Binu for UI
+ 
 };
 
 export default AttemptSynchronizer;
