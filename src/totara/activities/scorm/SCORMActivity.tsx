@@ -312,7 +312,6 @@ const AttemptController = (attempt: PropsAttempt) => {
         setIsEnabledNewAttempt(!isCompletedAllAttempt);
         // TODO check offline attempt count for Continue last attempt
         setIsEnabledLastAttempt(attempt.currentAttempt !== null && attempt.currentAttempt > 0);
-        
       } else {
         const isCompletedOfflineAttempt = (attempt.maxAttempt && attempt.offlineLastAttempt !== undefined && attempt.offlineLastAttempt >= attempt.maxAttempt)
         setIsEnabledNewAttempt(!(isCompletedAllAttempt || isCompletedOfflineAttempt));
@@ -321,6 +320,14 @@ const AttemptController = (attempt: PropsAttempt) => {
       }
     
   }, [attempt]);
+
+  const styleForButtonStatus = (enabledNewAttempt: boolean, enabledLastAttempt: boolean) => {
+    if(enabledLastAttempt && enabledNewAttempt) {
+      return {}
+    } else {
+      return {flex: 1}
+    }
+  }
 
   return (
     <View style={stylesAction.attemptContainer}>
@@ -335,10 +342,9 @@ const AttemptController = (attempt: PropsAttempt) => {
       </View>
       <View style={{flexDirection: "row", justifyContent: "space-between" }}>
         { isEnabledNewAttempt && isEnabledLastAttempt && <SecondaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} /> }
-        { isEnabledNewAttempt && !isEnabledLastAttempt && <PrimaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} style={{flex: 1}}/> }
+        { isEnabledNewAttempt && !isEnabledLastAttempt && <PrimaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} style={styleForButtonStatus(isEnabledNewAttempt, isEnabledLastAttempt)}/> }
         { isEnabledNewAttempt && isEnabledLastAttempt && <View style={{ width: 8 }}></View> }
-        { isEnabledNewAttempt && isEnabledLastAttempt && <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} /> }
-        { !isEnabledNewAttempt && isEnabledLastAttempt && <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} style={{flex: 1}} /> }
+        { isEnabledLastAttempt && <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} style={styleForButtonStatus(isEnabledNewAttempt, isEnabledLastAttempt)} /> }
       </View>
     </View>);
 };
