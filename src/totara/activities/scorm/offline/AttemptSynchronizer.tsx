@@ -19,8 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useEffect, useState } from "react";
-import { Text } from "react-native";
+import { useEffect, useState } from "react";
 import { gql } from "apollo-boost";
 import { useMutation } from '@apollo/react-hooks';
 
@@ -68,6 +67,7 @@ const AttemptSynchronizer = () => {
     }
     
   }, [unSyncData]);
+  console.log("statusText: ", statusText);
 
   useEffect(()=> {
     if(syncData && syncData !== undefined) {
