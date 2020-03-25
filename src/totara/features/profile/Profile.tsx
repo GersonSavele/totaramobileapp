@@ -163,7 +163,7 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
             }}
             accessory="DisclosureIndicator"
           /> */}
-          <View style={{ height: 1, paddingLeft: 20 }}></View>
+          <View style={{ height: 1, paddingLeft: 20 }}/>
           <AuthConsumer>
             {auth => (
               <Cell
@@ -183,7 +183,7 @@ const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
               />
             )}
           </AuthConsumer>
-          <View style={{ height: 1, paddingLeft: 20 }}></View>
+          <View style={{ height: 1, paddingLeft: 20 }}/>
         </TableView>
       </ScrollView>
     </View>

@@ -1,6 +1,5 @@
-
 export type Scorm = {
-    id: string,
+    id: number,
     courseid: string,
     attemptsMax: number,
     attemptsCurrent: number,
@@ -8,15 +7,21 @@ export type Scorm = {
     attemptsLockFinal: boolean,
     description: string,
     launchUrl: string,
+    calculatedGrade: string,
 
     offlineAttemptsAllowed: boolean,
     packageUrl?: string,
     offlinePackageUrl?: string,
-}
+    offlinePackageContentHash?: string
+};
 
 export type OfflineScormPackage  = {
     scorm: Scorm,
-    offlinePackageData: ScormPackageData
+    package?: ScormPackage,
+    offlineActivity?: {
+        last: ScormOfflineActivity,
+        start: ScormOfflineActivity
+    }
 };
 
 export type Sco = {
@@ -25,8 +30,12 @@ export type Sco = {
     launchSrc: string | null
 };
 
-export type ScormPackageData  = {
-    packageLocation: string,
+export type ScormPackage = {
+    path: string,
     scos: [Sco],
     defaultSco: Sco
+};
+export type ScormOfflineActivity = {
+    attempt: number,
+    scoid: string
 };

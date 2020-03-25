@@ -44,6 +44,7 @@ export const scormQuery = gql`
         autoContinue: compatibility_autocontinue
         launchUrl: launch_url
         calculatedGrade: calculated_grade
+        offlinePackageContentHash: offlinePackageContentHash
       }
     }
 `;

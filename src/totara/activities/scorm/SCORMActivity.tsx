@@ -22,32 +22,51 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
-import { scormQuery } from "@totara/activities/scorm/api";
-import { downloadSCORMPackage } from "@totara/activities/scorm/offline/SCORMFileHandler";
-import { getSCORMPackageData, setSCORMPackageData } from "@totara/activities/scorm/offline/StorageHelper";
-import { AuthContext } from "@totara/core";
-import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
+// @ts-ignore
+import { useNetInfo } from "@react-native-community/netinfo"; //TO continue
 import { Activity } from "@totara/types";
-import { PrimaryButton, ProgressCircle, SecondaryButton, TertiaryButton, TouchableIcon, MoreText } from "@totara/components"
-import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from "@totara/core";
+import { scormQuery } from "@totara/activities/scorm/api";
+import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
+import { ContentIcon, MoreText, PrimaryButton, SecondaryButton, TertiaryButton } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
-import OnlineScormActivity from "@totara/activities/scorm/online/OnlineScormActivity";
-import OfflineScormActivity from "@totara/activities/scorm/offline/OfflineScormActivity";
+import {
+  AttemptSynchronizer,
+  OfflineScormActivity,
+  getSCORMData,
+  setSCORMPackageData,
+  getOfflineSCORMPackageName
+} from "./offline";
+
+import GradeDetails from "./GradeDetails";
+import OnlineScormActivity from "./online/OnlineScormActivity";
+import { Log } from "@totara/lib";
+import ResourceManager , { ResourceObserver} from "@totara/core/ResourceManager/ResourceManager";
+import * as RNFS from "react-native-fs"
+import ResourceDownloader from "@totara/components/ResourceDownloader"
+import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
 
 const SCORMActivityAPI = (props: {activity: Activity}) => {
   const { loading, error, data } = useQuery(scormQuery, {
     variables: { scormid: props.activity.instanceid },
   });
-  if (loading) return <Text>loading...</Text>;
-  if (error) return <Text>error, go back</Text>;
-
-  return <SCORMActivity activity={props.activity} scorm={data.scorm} />;
+  if (loading) { return <Text>Loading...</Text>; }
+  if (error) { return <Text>Something went wrong, please try again later.</Text>; }
+  if (data) {
+    return <SCORMActivity activity={props.activity} scorm={data ? data.scorm : null} />;
+  } else { return <Text>Something went wrong, please try again later.</Text>; }
 };
 
 type SCORMActivityProps = {
   activity: Activity,
   scorm: Scorm,
-}
+};
+
+type SCORMAction = {
+  mode: SCORMType,
+  attempt?: number,
+  scoId?: string
+};
 
 enum SCORMType {
   None,
@@ -55,180 +74,280 @@ enum SCORMType {
   Online
 }
 
-const SCORMActivity = (props: SCORMActivityProps) => {
-  const { authContextState: {appState} } = useContext(AuthContext);
+const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
+  const {authContextState: { appState }} = useContext(AuthContext);
   const apiKey = appState && appState.apiKey ? appState.apiKey : null;
+  const [scormAction, setScormAction] = useState<SCORMAction>({mode: SCORMType.None});
 
-  const [scormType, setSCORMType] = useState<SCORMType>(SCORMType.None);
-  const { scorm, activity } = props
+  // const [netInfo, setNetInfo] = useState<boolean>(false);
+  const [isUserOnline, setIsUserOnline] = useState<boolean>(false);//TODO: need to set default true
+  const [scormResultData, setScormResultData] = useState<OfflineScormPackage>();
+  const netInfo = useNetInfo();
 
-  const [mustDownloadContent, setMustDownloadContent] = useState<boolean>(false);
-  const [scormStoredData, setScormStoredData] = useState<OfflineScormPackage>();
-  // const [userIsOnline] = useState<boolean>(true);
+  useEffect(()=> {
+    if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null)) {
+      setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
+    }
+  }, [netInfo]);
+
+  useEffect(() => {
+      if (isUserOnline) {
+        setScormResultData({scorm: scorm});
+      } else {
+        getSCORMData(activity.instanceid).then(result => {
+          let apiSyncedData: OfflineScormPackage = {scorm: scorm}; //TODO have to reset
+          if (result) {
+            if (result.offlineActivity) {
+              apiSyncedData.offlineActivity = result.offlineActivity;
+            }
+            if (result.package) {
+              apiSyncedData.package = result.package;
+            }
+          }
+          setScormResultData(apiSyncedData);
+        });
+      }
+  }, [scorm, isUserOnline]);
+
+
+  useEffect(() => {
+    if (scormResultData && scormResultData.scorm) {
+      setSCORMPackageData(activity.instanceid, scormResultData);
+    }
+  }, [scormResultData, isUserOnline]);
 
   //DOWNLOAD CONTENT - BEGIN
   const onDownloadContentTap = () => {
-    setMustDownloadContent(true);
-  }
-
-  useEffect(()=>{
-    if(!mustDownloadContent)
+    if(resource)
       return;
 
-
-
+    //TODO: PREVENT DOWNLOAD CONTENT TWICE
     const _url = scorm.packageUrl!;
     const _scormId = scorm.id;
     const _courseId = scorm.courseid;
-    downloadSCORMPackage(apiKey!, _courseId, _scormId, _url).then(packagePath =>{
-      const _offlineScormData = {
-        scorm : scorm,
-        offlinePackageData: {
-          packageLocation: packagePath
-        }
-      } as OfflineScormPackage;
-      setScormStoredData(_offlineScormData);
-      return setSCORMPackageData(_scormId, _offlineScormData);
-    });
-  }, [mustDownloadContent]);
-  //DOWNLOAD CONTENT - END
 
+    const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
+    const offlineSCORMPackageName = getOfflineSCORMPackageName(_courseId, _scormId);
+    const _filePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
+
+    const _downloadId = _scormId.toString();
+    const _resourceName = activity.name;
+    downloadManager.download(
+        apiKey!,
+        _downloadId,
+        _resourceName,
+        _url,
+        _filePath);
+  };
+
+  const [resource, setResource] = useState<IResource>();
+  const onDownloadFileUpdated : ResourceObserver = (resourceFile) => {
+    setResource(resourceFile);
+    const _offlineScormData = {
+      scorm: scorm,
+      package: {
+        path: resourceFile.fileNamePath
+      }
+    } as OfflineScormPackage;
+    setScormResultData(_offlineScormData);
+  }
+
+  const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
+  useEffect(()=>{
+    if(!scorm) return;
+
+    downloadManager.attach(onDownloadFileUpdated);
+
+    const filter = downloadManager.snapshot.filter(x=>x.id === scorm.id.toString());
+    if(filter.length>0){
+      const existingResource = filter[0];
+      setResource(existingResource);
+    }
+
+    return () =>{
+      downloadManager.detach(onDownloadFileUpdated)
+    }
+  }, [scorm, downloadManager]);
+  //DOWNLOAD CONTENT - END
 
 
   //START NEW ATTEMPT
   const onStartAttemptTap = () => {
-    //TODO: CHECK IS USER IS ONLINE
-    //TODO: CHECK IS CONTENT IS DOWNLOADED
-
-    const goOnline = false;
-
-    if(!goOnline) {
-      getSCORMPackageData(scorm.id).then(scormdata => {
-        if (scormdata) {
-          setScormStoredData(scormdata);
-          setSCORMType(SCORMType.Offline);
-        }
-      })
-    } else {
-      setSCORMType(SCORMType.Online);
+    if(scormResultData) {
+      if (!isUserOnline) {
+        const offlineLastAttempt = scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt ? scormResultData.offlineActivity.last.attempt : 0;
+        const newOfflineAttempt = !scormResultData.scorm.attemptsCurrent || scormResultData.scorm.attemptsCurrent < offlineLastAttempt ? offlineLastAttempt + 1 : scormResultData.scorm.attemptsCurrent + 1;
+        setScormAction({mode: SCORMType.Offline, attempt: newOfflineAttempt})
+      } else {
+        setScormAction({mode: SCORMType.Online});
+      }
     }
-  }
-  //START NEW ATTEMPT
+  };
 
+  //START Continue ATTEMPT
+  const onContinueAttemptTap = () => {
+    if(scormResultData) {
+      if (!isUserOnline) {
+        if (scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt) {
+          setScormAction({mode: SCORMType.Offline, attempt: scormResultData.offlineActivity.last.attempt})
+        } else {
+          Log.debug("No pending offline attempt to complete"); //TODO handle this
+        }
+      } else {
+        setScormAction({mode: SCORMType.Online});
+      }
+    }
+  };
 
+  const MainContent = () => {
+    const [theme] = useContext(ThemeContext);
 
-  const MainContent = () =>{
-    const [ theme ] = useContext(ThemeContext);
+    const downloadingFile = resource && resource!.state === ResourceState.Downloading;
+    const hasFileDownloaded = resource && resource!.state === ResourceState.Completed;
 
-    const hasFileDownloaded = scormStoredData && scormStoredData.offlinePackageData.packageLocation!==undefined;
-    const downloadingFile = mustDownloadContent && !hasFileDownloaded;
-
+    let totalAttempt = scormResultData && scormResultData.scorm && scormResultData.scorm.attemptsCurrent ? scormResultData.scorm.attemptsCurrent : 0;
+    if (!isUserOnline && scormResultData && scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt) {
+      totalAttempt = scormResultData.offlineActivity.last.attempt;
+    }
     return (
-          <View style={styles.expanded}>
-            <ScrollView>
-            <View style={{flexDirection:"column"}}>
-
-              <View style={{padding: gutter}}>
-                <View style={{flexDirection:"row", display: 'flex', justifyContent: 'space-between'}}>
-                  <View>
-                    <Text style={[theme.textH2]}>Summary</Text>
-                  </View>
-                  <View>
-                    {downloadingFile && <View style={{marginTop: 20, marginRight: 20}}><ProgressCircle indeterminate size={25} /></View>}
-                    {!downloadingFile && <TouchableIcon size={25} icon={faCloudDownloadAlt} disabled={hasFileDownloaded!} onPress={onDownloadContentTap} />}
-                  </View>
-                </View>
-                <View style={{padding: 5}}>
-                  <MoreText longText={scorm!.description}/>
-                </View>
+      <View style={styles.expanded}>
+        <View style={{flex: 1}}>
+          <ScrollView >
+            <View style={{ padding: gutter }}>
+              <View style={[styles.sectionBreak, {paddingTop: 0}]}>
+                { scormResultData && scormResultData.scorm && scormResultData.scorm.description !== undefined && scormResultData.scorm.description !== null && <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>Summary</Text> }
+                <ResourceDownloader downloading={downloadingFile!} onDownloadTap={onDownloadContentTap} progress={resource && resource.percentCompleted ? resource.percentCompleted! : 0} downloadOK={hasFileDownloaded}/>
               </View>
-
-              <View style={{flexDirection:"column", padding: gutter}}>
-                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
-                  <View>
-                    <Text style={[theme.textH2]}>Grade details</Text>
-                  </View>
-                  <View>
-                    <TertiaryButton text={"View all"}/>
-                  </View>
-                </View>
-
-                <View style={{borderRadius: 5, backgroundColor: '#eee', height: 100  }}>
-
-                </View>
-
-                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
-                  <Text>Grading method</Text>
-                  <View>
-                    <Text>{"Highest attempt"}</Text>
-                  </View>
-                </View>
-                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
-                  <Text>Grading reported</Text>
-                  <Text>{"3"}</Text>
-                </View>
+              { scormResultData && scormResultData.scorm && scormResultData.scorm.description !== undefined && scormResultData.scorm.description !== null && <MoreText longText={scormResultData.scorm.description} /> }
+              
+              <View style={styles.sectionBreak}>
+                <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>Grade details</Text>
+                {totalAttempt > 6 && <TertiaryButton text={"View all"} />}
               </View>
-
-
-
-
-              <View style={{flexDirection:"column", padding: gutter}}>
-                <View>
-                  <Text style={[theme.textH2]}>Attempt details</Text>
-                </View>
-                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
-                  <Text>Total attempts allowed</Text>
-                  <Text>{scorm!.attemptsMax ? scorm!.attemptsMax.toString() : ""}</Text>
-                </View>
-                <View style={{flexDirection:"row", paddingTop: 10, display: 'flex', justifyContent: 'space-between'}}>
-                  <Text>Total attempts done</Text>
-                  <Text>{scormStoredData && scormStoredData!.scorm.attemptsCurrent ? scormStoredData!.scorm.attemptsCurrent.toString() : (scorm!.attemptsCurrent ? scorm!.attemptsCurrent.toString() : "")}</Text>
-                </View>
+              { scormResultData && totalAttempt > 0 && <GradeDetails scorm={scormResultData.scorm} /> }
+              <View style={styles.sectionField} >
+                <Text style={theme.textB1}>Grading method</Text>
+                {/* TODO */}
+                <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ scormResultData  && scormResultData.scorm && scormResultData.scorm.attemptsCurrent ? scormResultData!.scorm.attemptsCurrent.toString() : "0"}</Text>
               </View>
-
-            </View>
-
-
-        </ScrollView>
-            <View style={styles.attemptContainer}>
-              <View style={styles.attemptButtons}>
-                <SecondaryButton text={"Start new attempt"} mode={!hasFileDownloaded ? "disabled": undefined} onPress={onStartAttemptTap}/>
-                <PrimaryButton text={"Continue last attempt"} onPress={()=>{}} />
+              <View style={styles.sectionField} >
+                <Text style={theme.textB1}>Grading reported</Text>
+                {/* TODO */}
+                <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ scormResultData  && scormResultData.scorm && scormResultData.scorm.calculatedGrade ? scormResultData.scorm.calculatedGrade : "0"}</Text>
+              </View>
+              
+              <Text style={[theme.textH2, styles.sectionBreak]}>Attempt details</Text>
+              <View style={styles.sectionField} >
+                <Text style={theme.textB1}>Total attempts allowed</Text>
+                <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ scormResultData  && scormResultData.scorm && scormResultData.scorm.attemptsMax ? scormResultData.scorm.attemptsMax.toString() : "Unlimited"}</Text>
+              </View>
+              <View style={styles.sectionField} >
+                <Text style={theme.textB1}>Total attempts done</Text>
+                <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ totalAttempt}</Text>
               </View>
             </View>
-          </View>
+          </ScrollView>
+        </View>
+        {(scormResultData && scormResultData.scorm && (isUserOnline || (scormResultData.scorm.offlineAttemptsAllowed && scormResultData.package && scormResultData.package.path)) && 
+          <AttemptController isOnline={isUserOnline} maxAttempt={scormResultData.scorm.attemptsMax} currentAttempt={scormResultData.scorm.attemptsCurrent} offlineLastAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt} offlineStartedAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.start.attempt} actionPrimary={onStartAttemptTap} actionSecondary={onContinueAttemptTap} />
+        )}
+        <AttemptSynchronizer />
+      </View>
+    );
+  };
 
-    )
-  }
-
-  return <View style={styles.expanded}>
-    {scormType === SCORMType.None && <MainContent />}
-    {scormType === SCORMType.Online && <OnlineScormActivity activity={activity} />}
-    {scormType === SCORMType.Offline &&  <OfflineScormActivity storedPackageData={scormStoredData!} />}
-  </View>
-
+  return (
+    <View style={styles.expanded}>
+      {scormAction.mode === SCORMType.None && <MainContent />}
+      {scormAction.mode === SCORMType.Online && (<OnlineScormActivity activity={activity} />)}
+      {scormAction.mode === SCORMType.Offline && (<OfflineScormActivity storedPackageData={scormResultData!} attempt={scormAction.attempt!} scoid={scormAction.scoId} />)}
+    </View>
+  );
 };
-
 
 const styles = StyleSheet.create({
   expanded: {
     flex: 1,
+    flexDirection: "column"
   },
-
+  sectionBreak: {
+    flexDirection: "row",
+    paddingTop: 8,
+    paddingBottom: 8,
+    justifyContent: "space-between" 
+  },
+  sectionField: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 8
+  },
   attemptContainer: {
-    position: 'absolute',
-    bottom: 5
-  },
-  attemptButtons:{
-    backgroundColor: '#FAFAFA',
-    width: '100%',
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'space-evenly',
-    flexDirection: 'row',
-    display: 'flex',
+    paddingHorizontal: gutter,
+    paddingVertical: 8,
+    flexDirection: "column",
+    alignItems: "stretch"
   }
-})
+});
+
+type PropsAttempt = {
+  isOnline: boolean,
+  maxAttempt: number | null,
+  currentAttempt: number | null,
+  offlineStartedAttempt?: number,
+  offlineLastAttempt?: number,
+  actionPrimary: ()=>void,
+  actionSecondary: ()=>void
+};
+
+const AttemptController = (attempt: PropsAttempt) => {
+
+  const [theme] = useContext(ThemeContext);
+
+  const [isEnabledNewAttempt, setIsEnabledNewAttempt] = useState<boolean>(false);
+  const [isEnabledLastAttempt, setIsEnabledLastAttempt] = useState<boolean>(false);
+ 
+  useEffect(()=> {
+      const isCompletedAllAttempt = attempt.maxAttempt && attempt.currentAttempt && attempt.currentAttempt >= attempt.maxAttempt;
+      if (attempt.isOnline) {
+        setIsEnabledNewAttempt(!isCompletedAllAttempt);
+        // TODO check offline attempt count for Continue last attempt
+        setIsEnabledLastAttempt(attempt.currentAttempt !== null && attempt.currentAttempt > 0);
+      } else {
+        const isCompletedOfflineAttempt = (attempt.maxAttempt && attempt.offlineLastAttempt !== undefined && attempt.offlineLastAttempt >= attempt.maxAttempt)
+        setIsEnabledNewAttempt(!(isCompletedAllAttempt || isCompletedOfflineAttempt));
+        // TODO check offline attempt count for Continue last attempt
+        setIsEnabledLastAttempt(attempt.offlineStartedAttempt !== undefined && attempt.offlineLastAttempt !== undefined && (attempt.offlineStartedAttempt > 0) && (attempt.offlineLastAttempt >= attempt.offlineStartedAttempt));
+      }
+    
+  }, [attempt]);
+
+  return (
+    <View style={stylesAction.attemptContainer}>
+      <View style={{flexDirection: "row", alignContent: "flex-start", paddingBottom: 8 }}>
+        <View style={{paddingRight: 8}}>
+          <ContentIcon icon={"check"} iconSize={15} size={30} backgroundColor={theme.colorSuccess} iconColor={theme.colorAccent} borderColor={theme.colorSuccess} isDashedCircle={false} />
+        </View>
+        <View style={{flexDirection: "column", flex: 1}}>
+          <Text style={theme.textB1}>Mark as completed.</Text>
+          <Text style={theme.textSmall}>Manually mark this activity as completed when you finish learning</Text>
+        </View>
+      </View>
+      <View style={{flexDirection: "row", justifyContent: "space-between",  alignItems: "stretch" }}>
+        <SecondaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} />
+        <View style={{width: 16}}></View>
+        <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} />
+      </View>
+    </View>);
+};
+
+const stylesAction = StyleSheet.create({
+  attemptContainer: {
+    paddingHorizontal: gutter,
+    paddingVertical: 8,
+    flexDirection: "column",
+    alignItems: "stretch"
+  }
+});
 
 export default SCORMActivityAPI;
 

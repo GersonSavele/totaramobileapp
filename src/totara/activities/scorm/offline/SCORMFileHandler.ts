@@ -24,30 +24,16 @@ import { unzip } from "react-native-zip-archive";
 import { Platform } from "react-native";
 
 import { config } from "@totara/lib";
+// import { downloadPackage } from "@totara/core/ResourceManager/DownloadHandler"
+// import { DownloadProgressCallbackResult } from "react-native-fs"
 
 const OfflineSCORMServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
 
-const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: string, resourceUrl: string) => {
-  const offlineSCORMPackageName = getOfflineSCORMPackageName(courseId, scormId);
-  const downloadingFilePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
-  const downloaderOptions = { 
-    fromUrl: resourceUrl, 
-    toFile: downloadingFilePath, 
-    background: true, 
-    progressDivider: 10, 
-    headers: { Authorization: `Bearer ${apiKey}`}
-  };
-
-  return RNFS.downloadFile(downloaderOptions).promise.then(response => {
-    if (response.statusCode === 200) {
-      return unzipSCORMPackageToServer(offlineSCORMPackageName, downloadingFilePath);
-    } else {
-      throw new Error("Package download failed.");
-    }
-  }).then(unzippedLocation => {
-    return RNFS.unlink(downloadingFilePath).then(()=> unzippedLocation);
-  });
-}
+// const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: number, resourceUrl: string) => {
+//   const offlineSCORMPackageName = getOfflineSCORMPackageName(courseId, scormId);
+//   const downloadingFilePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
+//   return downloadPackage(apiKey, resourceUrl, downloadingFilePath, onProgress);
+// }
 
 const unzipSCORMPackageToServer = (packageName: string, packageSource: string) => {
   const destinationUnzip = `${OfflineSCORMServerRoot}/${packageName}`;
@@ -118,8 +104,8 @@ const isSCORMPlayerInitialized = () => {
   })
 }
 
-const getOfflineSCORMPackageName = (courseId: string, scormId: string) => `OfflineSCORM_${courseId}_${scormId}`;
-const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
+const getOfflineSCORMPackageName = (courseId: string, scormId: number) => `OfflineSCORM_${courseId}_${scormId}`;
+// const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
 const SCORMPlayerPackagePath = Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
 
-export { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized, OfflineSCORMServerRoot };
+export { initializeSCORMWebplayer, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized, OfflineSCORMServerRoot };

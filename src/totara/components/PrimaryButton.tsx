@@ -34,18 +34,18 @@ type Props = {
   icon?: string,
   style?: ViewStyle,
   onPress?: (() => void),
-  mode?: "loading" | undefined
+  mode?: "disabled" | "loading" | undefined
 }
 
 type TitleProps = {
   text?: string,
   style?: TextStyle ,
-  mode?: "loading" | undefined,
+  mode?: "disabled" | "loading" | undefined,
 }
 
 type IndicatorProps = {
   icon?: string,
-  mode?: "loading" | undefined,
+  mode?: "disabled" | "loading" | undefined,
   color?: string,
   size?: number
 }

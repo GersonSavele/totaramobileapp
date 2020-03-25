@@ -43,7 +43,7 @@ const defaultConfig = {
   minApiVersion: "2019111100", // "disabled"
 
   features:{
-    downloads: false,
+    downloads: true,
     notifications: false
   },
   rootOfflineScormPlayer: "html",

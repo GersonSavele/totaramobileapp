@@ -272,7 +272,8 @@ const BuildContent = ({
 
 const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   const [theme] = useContext(ThemeContext);
-    return (
+
+  return (
       <View
         style={[styles.accordionListWrap, { borderColor: theme.colorNeutral3 }]}
       >

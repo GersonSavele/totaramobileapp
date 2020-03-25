@@ -13,6 +13,7 @@
 #import <React/RCTLinkingManager.h>
 #import <Firebase.h>
 #import <RNNotifications.h>
+#import <RNFSManager.h>
 
 @implementation AppDelegate
 
@@ -45,6 +46,10 @@
   return YES;
 }
 
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler
+{
+  [RNFSManager setCompletionHandlerForIdentifier:identifier completionHandler:completionHandler];
+}
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id>*)options{
    return [RCTLinkingManager application:app openURL:url options:options];
