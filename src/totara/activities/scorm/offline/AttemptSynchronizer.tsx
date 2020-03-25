@@ -119,7 +119,7 @@ const AttemptSynchronizer = () => {
     }
     
   }, [syncData]);
- return <Text>{statusText}</Text>;
+ return null; //<Text>{statusText}</Text>;
 };
 
 export default AttemptSynchronizer;
