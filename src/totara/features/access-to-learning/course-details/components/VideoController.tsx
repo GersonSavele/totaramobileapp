@@ -20,45 +20,23 @@
  *
  *
  */
-import React from 'react';
-import { StyleSheet } from "react-native";
+import React from "react";
 import Video from "react-native-video";
-
-import { normalize } from "@totara/theme";
+import styles from "./styles";
 
 type VideoType = {
-    url : string
-}
-
-const VideoController = ({url}: VideoType) => {
-
-  return (
-      <Video
-        paused={true}
-        source={{ uri: url }}
-        style={styles.mediaPlayer}
-        volume={10}
-        resizeMode= "cover"
-        controls = {true}
-      />
-  );
+  url: string;
 };
 
-const styles = StyleSheet.create({
-<<<<<<< HEAD
-=======
-  container: {
-    flex: 1
-  },
->>>>>>> MOB-437 features: Course Activity Label
-  mediaPlayer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    borderRadius:normalize(12)
-  }
-});
+const VideoController = ({ url }: VideoType) => (
+  <Video
+    paused={true}
+    source={{ uri: url }}
+    style={styles.mediaPlayer}
+    volume={10}
+    resizeMode="cover"
+    controls={true}
+  />
+);
 
 export default VideoController;

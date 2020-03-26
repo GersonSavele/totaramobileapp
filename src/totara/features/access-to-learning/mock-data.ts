@@ -452,7 +452,6 @@ const labelDoc = {
       "content": [
         {
           "type": "text",
-<<<<<<< HEAD
           "text": "Documents : As learning designers, developers and administrators it can be easy to focus on our primary job; creating great learning content for our learners. But how do you make sure learners find the content that’s right for them? How do you enable them to browse, filter and search for learning?In this course, you’ll look at ways to use the course catalogue to ensure your learners find learning as quickly and easily as possible. Specifically, you’ll explore how to:Set up and populate the tile item and detail 	templatesCreate meaningful filtersMake content easily browsable and 			searchableTo complete the course and achieve your badge, you need to pass the mandatory activities which are marked with a red asterisk*, although we encourage you to explore many more of the activities available in the course. Your badge is valid for Totara Learn version 12.",
           "content": [
           {"type": "link_media",
@@ -470,18 +469,12 @@ const labelDoc = {
       ]
       }
       ]
-=======
-          "text": "Documents : As learning designers, developers and administrators it can be easy to focus on our primary job; creating great learning content for our learners. But how do you make sure learners find the content that’s right for them? How do you enable them to browse, filter and search for learning?In this course, you’ll look at ways to use the course catalogue to ensure your learners find learning as quickly and easily as possible. Specifically, you’ll explore how to:Set up and populate the tile item and detail 	templatesCreate meaningful filtersMake content easily browsable and 			searchableTo complete the course and achieve your badge, you need to pass the mandatory activities which are marked with a red asterisk*, although we encourage you to explore many more of the activities available in the course. Your badge is valid for Totara Learn version 12."
-        }
-      ]
->>>>>>> MOB-437 features: Course Activity Label
     },
     {
       "type": "paragraph",
       "content": [
         {
           "type": "text",
-<<<<<<< HEAD
           "text": "Documents : Here, Alt text tells people what is in an image, such as text or basic essential details. If an image fails to load, alt text will display in its place. Search engines also index alt text information and consider it a factor when determining search engine ratings.",
           "content": [
             {
@@ -494,9 +487,6 @@ const labelDoc = {
                 }
             }
           ]
-=======
-          "text": "Documents : Here, Alt text tells people what is in an image, such as text or basic essential details. If an image fails to load, alt text will display in its place. Search engines also index alt text information and consider it a factor when determining search engine ratings."
->>>>>>> MOB-437 features: Course Activity Label
         }
       ]
     }

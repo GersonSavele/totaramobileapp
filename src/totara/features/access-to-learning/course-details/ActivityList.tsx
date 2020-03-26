@@ -301,11 +301,7 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
 const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
   return item.modtype == "label" ? (
     <View style={{ backgroundColor: theme.colorSecondary1 }}>
-<<<<<<< HEAD
       <ActivityLabel label={item} theme={theme}></ActivityLabel>
-=======
-      <ActivityLabel labelType={item} theme={theme}></ActivityLabel>
->>>>>>> MOB-437 features: Course Activity Label
     </View>
   ) : (
     <View
