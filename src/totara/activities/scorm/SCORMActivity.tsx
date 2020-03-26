@@ -86,7 +86,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
   useEffect(()=> {
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null)) {
-      // setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
+      setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
     }
   }, [netInfo]);
 
@@ -130,7 +130,6 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
     const offlineSCORMPackageName = getOfflineSCORMPackageName(_courseId, _scormId);
     const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
     const _unzipPath = `${OfflineSCORMServerRoot}/${offlineSCORMPackageName}`;
-
     const _downloadId = _scormId.toString();
     const _name = activity.name;
 
@@ -146,13 +145,19 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
   const [resource, setResource] = useState<IResource>();
   const onDownloadFileUpdated : ResourceObserver = (resourceFile) => {
     setResource(resourceFile);
-    const _offlineScormData = {
-      scorm: scorm,
-      package: {
-        path: resourceFile.unzipPath
+    if(resourceFile.state === ResourceState.Completed) {
+      const offlineSCORMPackageName = getOfflineSCORMPackageName(scorm.courseid, scorm.id);
+      const _unzipPath = `${OfflineSCORMServerRoot}/${offlineSCORMPackageName}`;
+      if(resourceFile.unzipPath === _unzipPath) {
+        const _offlineScormData = {
+          scorm: scorm,
+          package: {
+            path: offlineSCORMPackageName
+          }
+        } as OfflineScormPackage;
+        setScormResultData(_offlineScormData);
       }
-    } as OfflineScormPackage;
-    setScormResultData(_offlineScormData);
+    }
   }
 
   const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
@@ -254,7 +259,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
         {(scormResultData && scormResultData.scorm && (isUserOnline || (scormResultData.scorm.offlineAttemptsAllowed && scormResultData.package && scormResultData.package.path)) && 
           <AttemptController isOnline={isUserOnline} maxAttempt={scormResultData.scorm.attemptsMax} currentAttempt={scormResultData.scorm.attemptsCurrent} offlineLastAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.last.attempt} offlineStartedAttempt={scormResultData.offlineActivity && scormResultData.offlineActivity.start.attempt} actionPrimary={onStartAttemptTap} actionSecondary={onContinueAttemptTap} />
         )}
-        <AttemptSynchronizer />
+        {/* <AttemptSynchronizer /> */}
       </View>
     );
   };

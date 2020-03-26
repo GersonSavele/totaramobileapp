@@ -122,7 +122,7 @@ const OfflineScormActivity = (props: Props) => {
             if (packageData.scos && packageData.defaultSco) {
                 return Promise.resolve(packageData);
             } else {
-                return getSCORMPackageData(OfflineSCORMServerRoot, packageData.path).then(data=> {
+                return getSCORMPackageData(`${OfflineSCORMServerRoot}/${packageData.path}`).then(data=> {
                     const tmpPackageData = {...packageData, ...data } as ScormPackage
                     return tmpPackageData;
                 });
