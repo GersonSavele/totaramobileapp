@@ -35,7 +35,7 @@ import {
   OfflineScormActivity,
   getSCORMData,
   setSCORMPackageData,
-  getOfflineSCORMPackageName
+  getOfflineSCORMPackageName, OfflineSCORMServerRoot
 } from "./offline";
 
 import GradeDetails from "./GradeDetails";
@@ -86,7 +86,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
   useEffect(()=> {
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null)) {
-      setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
+      // setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
     }
   }, [netInfo]);
 
@@ -128,16 +128,19 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
     const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
     const offlineSCORMPackageName = getOfflineSCORMPackageName(_courseId, _scormId);
-    const _filePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
+    const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
+    const _unzipPath = `${OfflineSCORMServerRoot}/${offlineSCORMPackageName}`;
 
     const _downloadId = _scormId.toString();
-    const _resourceName = activity.name;
+    const _name = activity.name;
+
     downloadManager.download(
         apiKey!,
         _downloadId,
-        _resourceName,
+        _name,
         _url,
-        _filePath);
+        _targetZipFile,
+        _unzipPath);
   };
 
   const [resource, setResource] = useState<IResource>();
@@ -146,7 +149,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
     const _offlineScormData = {
       scorm: scorm,
       package: {
-        path: resourceFile.fileNamePath
+        path: resourceFile.unzipPath
       }
     } as OfflineScormPackage;
     setScormResultData(_offlineScormData);

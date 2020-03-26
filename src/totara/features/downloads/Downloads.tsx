@@ -61,7 +61,7 @@ const Downloads = (props: DownloadsTabsProps) => {
         data={resources}
         disableRightSwipe
         renderItem={ (data: ListRenderItemInfo<IResource>, rowMap) => (
-            <View key={data.item.id} style={styles.item}>
+            <View key={data.item.id} style={[styles.item, {backgroundColor: theme.colorNeutral1}]}>
                 <View style={{display: 'flex', width: '100%', flexDirection: 'row'}}>
                     <View style={{display: 'flex', flex: 3, flexDirection: 'column', justifyContent:'center'}}>
                         <Text>{data.item.name}</Text>
@@ -85,23 +85,23 @@ const Downloads = (props: DownloadsTabsProps) => {
             <View style={[styles.rowBack, {backgroundColor: theme.colorNeutral2}]}>
                 <TouchableHighlight style={styles.backButtonDelete} onPress={()=>onDeleteItemTap(data.item.id)} underlayColor={theme.colorNeutral3}>
                     <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                        <View style={styles.circle}>
+                        <View style={[styles.circle, {backgroundColor: theme.colorAlert}]}>
                             <FontAwesomeIcon size={20} color={theme.colorNeutral2} icon={faTrashAlt} />
                         </View>
-                        <Text style={styles.deleteText}>Remove</Text>
+                        <Text style={{backgroundColor: theme.colorAlert}}>Remove</Text>
                     </View>
                 </TouchableHighlight>
             </View>
         )}
         rightOpenValue={-75}
     />
-}
+};
+
 
 const styles = StyleSheet.create({
     item:{
         paddingLeft: gutter,
-        paddingTop: gutter,
-        backgroundColor: 'white'
+        paddingTop: gutter
     },
     rowBack: {
         alignItems: 'center',
@@ -123,11 +123,7 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 50/2,
-        backgroundColor: 'red'
-    },
-    deleteText:{
-        color: 'red'
+        borderRadius: 50/2
     }
 });
 

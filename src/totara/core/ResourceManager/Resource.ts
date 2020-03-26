@@ -12,7 +12,8 @@ export interface IResource {
     name: string,
     sizeInBytes: number,
     resourceUrl: string,
-    fileNamePath: string,
+    hash: string,
+    unzipPath: string,
     percentCompleted: number,
     state?: ResourceState
 }

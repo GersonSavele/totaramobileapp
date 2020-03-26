@@ -1,11 +1,9 @@
-import {DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResult} from "react-native-fs"
-import {IResource, ResourceState} from "@totara/core/ResourceManager/Resource"
-import AsyncStorage from '@react-native-community/async-storage';
-
+import {DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResult, unlink} from "react-native-fs"
+import {IResource, ResourceState} from "@totara/core/ResourceManager/Resource";
+import {unzip} from "react-native-zip-archive";
+import {DeleteStorage, RetrieveStorage, SaveStorage} from "@totara/core/ResourceManager/StorageManager";
 
 export type ResourceObserver = (resourceFile: IResource) => void;
-
-const TOTARA_RESOURCES = '@TOTARA_RESOURCES';
 
 class ResourceManager{
     private static instance: ResourceManager;
@@ -18,7 +16,7 @@ class ResourceManager{
     public init = () =>{
         if(!ResourceManager.instance){
             ResourceManager.instance = new ResourceManager();
-            this._retrieveStorage().then(saved =>{
+            RetrieveStorage().then(saved =>{
                 if(!saved){
                     ResourceManager.instance.files = [];
                     return;
@@ -49,14 +47,14 @@ class ResourceManager{
 
     private downloadBegin = (id: string, res: DownloadBeginCallbackResult) =>{
         this.update(id, 0, ResourceState.Downloading, res.contentLength);
-    }
+    };
 
     private downloadProgress = (id: string, res: DownloadProgressCallbackResult) =>{
         const _completed = (res.bytesWritten/res.contentLength)*100;
         this.update(id, _completed, ResourceState.Downloading);
-    }
+    };
 
-    public download(apiKey: string, id: string, name: string, resourceUrl: string, fileNamePath: string) : void{
+    public download(apiKey: string, id: string, name: string, resourceUrl: string, targetFile: string, targetUnzipPath: string) : void{
         if(this.files.filter(x=>x.id === id).length>0)
             return;
 
@@ -64,7 +62,7 @@ class ResourceManager{
             id: id,
             name: name,
             resourceUrl: resourceUrl,
-            fileNamePath: fileNamePath,
+            unzipPath: targetUnzipPath,
             percentCompleted: 0,
             state : ResourceState.Added} as IResource;
         this.files.push(newFile);
@@ -72,7 +70,7 @@ class ResourceManager{
 
         const downloaderOptions = {
             fromUrl: resourceUrl,
-            toFile: fileNamePath,
+            toFile: targetFile,
             background: true,
             begin: (res: DownloadBeginCallbackResult)=>{
                 this.downloadBegin(id, res)
@@ -86,47 +84,26 @@ class ResourceManager{
 
         downloadFile(downloaderOptions).promise.then(response => {
             if (response.statusCode === 200) {
-                //TODO: VERIFY HASH CODE
-                this._saveStorage(id);
-                this.update(id, 100, ResourceState.Completed)
+                return unzip(targetFile, targetUnzipPath);
             } else {
                 this.update(id, 0, ResourceState.Errored);
             }
-        });
+        }).then(()=>{
+            console.log(targetFile);
+            return unlink(targetFile);
+        }).then(()=>{
+            const strObj = this.files.find(f=>f.id === id);
+            SaveStorage(id, strObj!);
+            this.update(id, 100, ResourceState.Completed);
+        })
     }
-
-    private _retrieveStorage = () =>{
-        return AsyncStorage.getItem(TOTARA_RESOURCES);
-    };
-
-    private _saveStorage = (id: string) =>{
-        const strObj = this.files.find(f=>f.id === id);
-        this._retrieveStorage().then(storedData => {
-            let newData = {[id]: strObj}
-            if (storedData && JSON.parse(storedData)) {
-                newData = {...JSON.parse(storedData), ...newData};
-                return AsyncStorage.setItem(TOTARA_RESOURCES, JSON.stringify(newData));
-            }
-        });
-    };
-
-    private _deleteStorage = (id: string) =>{
-        this._retrieveStorage().then(storedData => {
-            if (storedData && JSON.parse(storedData)) {
-                const files = JSON.parse(storedData);
-                delete files[id];
-                return AsyncStorage.setItem(TOTARA_RESOURCES, JSON.stringify(files));
-            }
-        });
-    };
 
     public delete = (id: string) => {
         const idx = this.files.findIndex(f=>f.id === id);
         if(idx<0)
             return;
 
-
-        this._deleteStorage(id);
+        DeleteStorage(id);
 
         const toBeUpdated =  Object.assign({}, this.files[idx]);
         const files = [...this.files];
