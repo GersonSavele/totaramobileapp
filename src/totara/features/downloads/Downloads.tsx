@@ -2,14 +2,12 @@ import { UserProfile } from "@totara/types"
 import { NavigationParams } from "react-navigation"
 import React, { useContext, useEffect, useState } from "react"
 import ResourceManager, { ResourceObserver } from "@totara/core/ResourceManager/ResourceManager";
-import { ListRenderItemInfo, StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { gutter, ThemeContext } from "@totara/theme";
 import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
-import { faCaretRight, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
+import { faCaretRight } from "@fortawesome/free-solid-svg-icons"
 import { TouchableIcon } from "@totara/components"
 import ResourceDownloader from "@totara/components/ResourceDownloader";
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"
 
 type DownloadsTabsProps = {
     profile: UserProfile;
@@ -27,15 +25,7 @@ const Downloads = (props: DownloadsTabsProps) => {
     const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
     const [resources, setResources] = useState<IResource[]>(ResourceManager.getInstance().snapshot);
     const onDownloadFileUpdated : ResourceObserver = (received) => {
-
-        if(received.state === ResourceState.Deleted){
-            const newResources = [...resources];
-            const prevIndex = resources.findIndex(item => item.id === received.id);
-            newResources.splice(prevIndex, 1);
-            setResources(newResources);
-            return;
-        }
-
+        // console.log(received);
         const idx = resources.findIndex(res=>res.id === received.id);
         resources[idx] = received;
         setResources([...resources]);
@@ -48,85 +38,38 @@ const Downloads = (props: DownloadsTabsProps) => {
         }
     }, [downloadManager]);
 
-    const fileSize = (res: IResource) =>{
-        return res.sizeInBytes/1024 < 1000 ? `${Math.round((res.sizeInBytes/1024))} Kb` : `${(res.sizeInBytes/1024/1024).toFixed(2)} Mb`
-    }
-
-    const onDeleteItemTap = (id: string) =>{
-        ResourceManager.getInstance().delete(id).then(()=>{})
-    }
-
-    return <SwipeListView
-        data={resources}
-        disableRightSwipe
-        renderItem={ (data: ListRenderItemInfo<IResource>, rowMap) => (
-            <View key={data.item.id} style={styles.item}>
-                <View style={{display: 'flex', width: '100%', flexDirection: 'row'}}>
-                    <View style={{display: 'flex', flex: 3, flexDirection: 'column', justifyContent:'center'}}>
-                        <Text>{data.item.name}</Text>
-                        <Text style={{color: theme.colorNeutral5}}>{`${fileSize(data.item)}`}</Text>
+    return <View>
+        {
+            resources.map((res: IResource)=>{
+                const fileSize = res.sizeInBytes/1024 < 1000 ? `${Math.round((res.sizeInBytes/1024))} Kb` : `${(res.sizeInBytes/1024/1024).toFixed(2)} Mb`
+                return <View key={res.id} style={styles.item}>
+                    <View style={{display: 'flex', width: '100%', flexDirection: 'row'}}>
+                        <View style={{display: 'flex', flex: 3, flexDirection: 'column', justifyContent:'center'}}>
+                            <Text>{res.name}</Text>
+                            <Text style={{color: theme.colorNeutral5}}>{`${fileSize}`}</Text>
+                        </View>
+                        <View style={{display: 'flex', flex: 3, alignItems:'flex-end', justifyContent:'center'}}>
+                            <ResourceDownloader size={25} downloading={false} progress={res.percentCompleted ? res.percentCompleted! : 0} downloadOK={res.state === ResourceState.Completed}/>
+                        </View>
+                        <View style={{display: 'flex', flex: 1, justifyContent:'flex-end', alignContent:'center'}}>
+                            <TouchableIcon size={25} icon={faCaretRight} disabled={true} />
+                        </View>
                     </View>
-                    <View style={{display: 'flex', flex: 3, alignItems:'flex-end', justifyContent:'center'}}>
-                        <ResourceDownloader size={25} downloading={false} progress={data.item.percentCompleted ? data.item.percentCompleted! : 0} downloadOK={data.item.state === ResourceState.Completed}/>
-                    </View>
-                    <View style={{display: 'flex', flex: 1, justifyContent:'flex-end', alignContent:'center'}}>
-                        <TouchableIcon size={25} icon={faCaretRight} disabled={true} />
-                    </View>
+                    <View style={{
+                        backgroundColor: theme.colorNeutral6,
+                        width: '100%',
+                        height: 1
+                    }}/>
                 </View>
-                <View style={{
-                    backgroundColor: theme.colorNeutral6,
-                    width: '100%',
-                    height: 1
-                }}/>
-            </View>
-        )}
-        renderHiddenItem={ (data, rowMap) => (
-            <View style={[styles.rowBack, {backgroundColor: theme.colorNeutral2}]}>
-                <TouchableHighlight style={styles.backButtonDelete} onPress={()=>onDeleteItemTap(data.item.id)} underlayColor={theme.colorNeutral3}>
-                   <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                       <View style={styles.circle}>
-                           <FontAwesomeIcon size={20} color={theme.colorNeutral2} icon={faTrashAlt} />
-                       </View>
-                       <Text style={styles.deleteText}>Remove</Text>
-                   </View>
-                </TouchableHighlight>
-            </View>
-        )}
-        rightOpenValue={-75}
-    />
+            })
+        }
+    </View>
 }
 
 const styles = StyleSheet.create({
     item:{
-        paddingLeft: gutter,
-        paddingTop: gutter,
-        backgroundColor: 'white'
-    },
-    rowBack: {
-        alignItems: 'center',
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    backButtonDelete: {
-        alignItems: 'center',
-        bottom: 0,
-        top: 0,
-        right: 0,
-        width: 75,
-        justifyContent: 'center',
-        position: 'absolute',
-    },
-    circle: {
-        width: 40,
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 50/2,
-        backgroundColor: 'red'
-    },
-    deleteText:{
-        color: 'red'
+        width: '100%',
+        padding: gutter
     }
 });
 

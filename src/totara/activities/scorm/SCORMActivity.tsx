@@ -321,6 +321,14 @@ const AttemptController = (attempt: PropsAttempt) => {
     
   }, [attempt]);
 
+  const styleForButtonStatus = (enabledNewAttempt: boolean, enabledLastAttempt: boolean) => {
+    if(enabledLastAttempt && enabledNewAttempt) {
+      return {}
+    } else {
+      return {flex: 1}
+    }
+  }
+
   return (
     <View style={stylesAction.attemptContainer}>
       <View style={{flexDirection: "row", alignContent: "flex-start", paddingBottom: 8 }}>
@@ -332,10 +340,11 @@ const AttemptController = (attempt: PropsAttempt) => {
           <Text style={theme.textSmall}>Manually mark this activity as completed when you finish learning</Text>
         </View>
       </View>
-      <View style={{flexDirection: "row", justifyContent: "space-between",  alignItems: "stretch" }}>
-        <SecondaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} />
-        <View style={{width: 16}}></View>
-        <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} />
+      <View style={{flexDirection: "row", justifyContent: "space-between" }}>
+        { isEnabledNewAttempt && isEnabledLastAttempt && <SecondaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} /> }
+        { isEnabledNewAttempt && !isEnabledLastAttempt && <PrimaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} style={styleForButtonStatus(isEnabledNewAttempt, isEnabledLastAttempt)}/> }
+        { isEnabledNewAttempt && isEnabledLastAttempt && <View style={{ width: 8 }}></View> }
+        { isEnabledLastAttempt && <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} style={styleForButtonStatus(isEnabledNewAttempt, isEnabledLastAttempt)} /> }
       </View>
     </View>);
 };
