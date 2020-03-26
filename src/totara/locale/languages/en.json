@@ -102,7 +102,7 @@
   },
   "browser_login": {
     "title": "Confirm!",
-    "description" : "You needs to login through the\nmobile site to authenticate you. Would\nyou like us to take you there now?",
+    "description" : "You need to login through the\nmobile site to authenticate you. Would\nyou like us to take you there now?",
     "primary_title" : "Yes, go to browser",
     "tertiary_title" : "Cancel"
   },

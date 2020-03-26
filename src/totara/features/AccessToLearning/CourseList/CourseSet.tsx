@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: wp("3%"),
     width: wp("70"),
-    height: hp("26%")
+    height: normalize(220)
   },
   learningItem: {
     borderRadius: normalize(10),
