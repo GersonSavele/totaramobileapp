@@ -34,9 +34,10 @@ import { ActivitySheetConsumer } from "@totara/activities";
 import { Section, Activity, ActivityType } from "@totara/types";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import ActivityRestrictionView from "./ActivityRestrictionView";
 import { AppliedTheme } from "@totara/theme/Theme";
-
+import ActivityLabel from "./ActivityLabel";
 // To Do : refetch props should be removed from going nested component(MOB-381)
 
 type ActivityProps = {
@@ -48,7 +49,7 @@ type ActivityProps = {
 type BuildContentProps = {
   completion?: string;
   completionStatus?: string;
-  available : boolean,
+  available: boolean;
   theme: AppliedTheme;
 };
 
@@ -76,7 +77,7 @@ const ActivityList = ({ sections, refetch }: ActivityListProps) => {
     <FlatList
       data={sections}
       renderItem={({ item }) => {
-        return <ActivityUI section={item} refetch={refetch} />;
+        return <ActivityUI section={item} refetch={refetch}/>
       }}
     />
   );
@@ -86,29 +87,23 @@ const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
   const [show, setShow] = useState(false);
   const activities = section.data as Array<Activity>;
   const { title, available } = section;
-  return (
-    activities && activities.length != 0 ? 
-    <View>
-      <TouchableOpacity 
+  const [theme] = useContext(ThemeContext);
+  return activities && activities.length != 0 ? (
+    <View style={{ backgroundColor: theme.colorSecondary1 }}>
+      <TouchableOpacity
         onPress={() => {
           setShow(!show);
         }}
       >
-        {available === true? (
+        {available === true ? (
           <CellExpandUI show={show} title={title} />
         ) : (
           <SectionDataNotAvailable {...section} />
         )}
       </TouchableOpacity>
-      {show && (
-        <ActivityListBody
-          data={activities}
-          refetch={refetch}
-        ></ActivityListBody>
-      )}
-    </View> : null
-    
-  );
+      {show && <ActivityListBody data={activities} refetch={refetch} />}
+    </View>
+  ) : null;
 };
 
 const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
@@ -124,7 +119,12 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
           numberOfLines={1}
           style={[
             theme.textH3,
-            { fontWeight: "bold", color: theme.colorNeutral6, flex: 3, fontSize : normalize(17) }
+            {
+              fontWeight: "bold",
+              color: theme.colorNeutral6,
+              flex: 3,
+              fontSize: normalize(17)
+            }
           ]}
         >
           {title}
@@ -157,16 +157,21 @@ const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.headerViewContainer}>
-      <Text numberOfLines={1} style={[theme.textH3, { fontWeight: "bold", fontSize : normalize(17) }]}>{title}</Text>
+      <Text
+        numberOfLines={1}
+        style={[theme.textH3, { fontWeight: "bold", fontSize: normalize(17) }]}
+      >
+        {title}
+      </Text>
       {show ? (
         <FontAwesomeIcon
-          icon={"caret-up"}
+          icon={faChevronUp}
           color={theme.colorNeutral5}
           size={16}
         />
       ) : (
         <FontAwesomeIcon
-          icon={"caret-down"}
+          icon={faChevronDown}
           color={theme.colorNeutral5}
           size={16}
         />
@@ -178,167 +183,171 @@ const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
 const BuildContent = ({
   completion,
   completionStatus,
-  theme, 
-  available
+  theme
 }: BuildContentProps) => {
   if (
     completion === "tracking_automatic" &&
     (completionStatus === "complete_pass" || completionStatus === "complete")
   ) {
     return (
-      <ContentIcon
-        icon={"check"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorSuccess}
-        iconColor={theme.colorAccent}
-        borderColor={theme.colorSuccess}
-        isDashedCircle={false}
-      />
+      <View style={{ marginRight: 16 }}>
+        <ContentIcon
+          icon={"check"}
+          iconSize={15}
+          size={30}
+          backgroundColor={theme.colorSuccess}
+          iconColor={theme.colorAccent}
+          borderColor={theme.colorSuccess}
+          isDashedCircle={false}
+        />
+      </View>
     );
   } else if (
     completion === "tracking_automatic" &&
     completionStatus === "incomplete"
   ) {
     return (
-      <ContentIcon
-        icon={"check"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorAccent}
-        iconColor={theme.colorNeutral5}
-        borderColor={theme.colorNeutral5}
-        isDashedCircle={false}
-      />
+      <View style={{ marginRight: 16 }}>
+        <ContentIcon
+          icon={"check"}
+          iconSize={15}
+          size={30}
+          backgroundColor={theme.colorAccent}
+          iconColor={theme.colorNeutral5}
+          borderColor={theme.colorNeutral5}
+          isDashedCircle={false}
+        />
+      </View>
     );
   } else if (completionStatus === "complete_fail") {
     return (
-      <ContentIcon
-        icon={"times"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorAlert}
-        iconColor={theme.colorAccent}
-        borderColor={theme.colorAlert}
-        isDashedCircle={false}
-      />
-    );
-  } else if (completionStatus === "unknown" || completionStatus === null || available === false) {
-    return (
-      <ContentIcon
-        icon={"lock"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorNeutral5}
-        iconColor={theme.colorAccent}
-        borderColor={theme.colorNeutral5}
-        isDashedCircle={false}
-      />
+      <View style={{ marginRight: 16 }}>
+        <ContentIcon
+          icon={"times"}
+          iconSize={15}
+          size={30}
+          backgroundColor={theme.colorAlert}
+          iconColor={theme.colorAccent}
+          borderColor={theme.colorAlert}
+          isDashedCircle={false}
+        />
+      </View>
     );
   } else if (
     completion === "tracking_manual" &&
     (completionStatus === "complete_pass" || completionStatus === "complete")
   ) {
     return (
-      <ContentIcon
-        icon={"check"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorAccent}
-        iconColor={theme.colorSuccess}
-        borderColor={theme.colorSuccess}
-        isDashedCircle={true}
-      />
+      <View style={{ marginRight: 16 }}>
+        <ContentIcon
+          icon={"check"}
+          iconSize={15}
+          size={30}
+          backgroundColor={theme.colorAccent}
+          iconColor={theme.colorSuccess}
+          borderColor={theme.colorSuccess}
+          isDashedCircle={true}
+        />
+      </View>
     );
   } else if (
     completion === "tracking_manual" &&
     completionStatus === "incomplete"
   ) {
     return (
-      <ContentIcon
-        icon={"check"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorAccent}
-        iconColor={theme.colorNeutral5}
-        borderColor={theme.colorNeutral5}
-        isDashedCircle={true}
-      />
+      <View style={{ marginRight: 16 }}>
+        <ContentIcon
+          icon={"check"}
+          iconSize={15}
+          size={30}
+          backgroundColor={theme.colorAccent}
+          iconColor={theme.colorNeutral5}
+          borderColor={theme.colorNeutral5}
+          isDashedCircle={true}
+        />
+      </View>
     );
   } else {
-    return <View style ={{height: 28, width: 28}}></View>;
+    return null;
   }
 };
 
 const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   const [theme] = useContext(ThemeContext);
-
   return (
-      <View
-        style={[styles.accordionListWrap, { borderColor: theme.colorNeutral3 }]}
-      >
-        {data!.map((item: Activity, key: number) => {
-          return (
-            <View key={key}>
-              {item.completionstatus === "unknown" || item.completionstatus === null || item.available === false ? (
-                <ActivityLock item={item} theme={theme} />
-              ) : (
-                <ActivityUnLock item={item} theme={theme} refetch={refetch} />
-              )}
-              {data!.length - 1 === key ? null : (
-                <View
-                  style={[
-                    styles.activityBodySeparator,
-                    { backgroundColor: theme.colorNeutral3 }
-                  ]}
-                ></View>
-              )}
-            </View>
-          );
-        })}
-      </View>
-    );
+    <View>
+      {data!.map((item: Activity, key: number) => {
+        return (
+          <View key={key}>
+            {item.completionstatus === "unknown" ||
+            item.completionstatus === null ||
+            item.available === false ? (
+              <ActivityLock item={item} theme={theme} key={key} />
+            ) : (
+              <ActivityUnLock
+                item={item}
+                theme={theme}
+                refetch={refetch}
+                key={key}
+              />
+            )}
+          </View>
+        );
+      })}
+    </View>
+  );
 };
 
 const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
-  return (
-    <View>
-      <ActivitySheetConsumer>
-        {({ setCurrentActivity, setOnClose }) => {
-          return (
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={() => {
-                setCurrentActivity(item as ActivityType);
-                setOnClose(refetch!);
-              }}
-            >
-              <View style={styles.activityBodyContainer}>
-                <BuildContent
-                  completion={item.completion as string}
-                  completionStatus={item.completionstatus as string}
-                  theme={theme}
-                  available = {item.available}
-                ></BuildContent>
-                <View style={styles.activityBodyUnLockContainer}>
-                  <Text
-                    numberOfLines={1}
-                    style={[styles.bodyType, { color: theme.colorNeutral6 }]}
-                  >
-                    {item.modtype.toUpperCase()}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={[styles.bodyName, { color: theme.textColorDark }]}
-                  >
-                    {item.name.trim()}
-                  </Text>
+  return item.modtype == "label" ? (
+    <View style={{ backgroundColor: theme.colorSecondary1 }}>
+      <ActivityLabel labelType={item} theme={theme}></ActivityLabel>
+    </View>
+  ) : (
+    <View
+      style={[styles.accordionListWrap, { backgroundColor: theme.colorAccent }]}
+    >
+      <View>
+        <ActivitySheetConsumer>
+          {({ setCurrentActivity, setOnClose }) => {
+            return (
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                onPress={() => {
+                  setCurrentActivity(item as ActivityType);
+                  setOnClose(refetch!);
+                }}
+              >
+                <View style={styles.activityBodyContainer}>
+                  <BuildContent
+                    completion={item.completion as string}
+                    completionStatus={item.completionstatus as string}
+                    theme={theme}
+                    available={item.available}
+                  ></BuildContent>
+                  <View style={styles.activityContainer}>
+                    <Text
+                      numberOfLines={1}
+                      style={[
+                        styles.bodyName,
+                        { color: theme.colorNeutral8, textAlign: "center" }
+                      ]}
+                    >
+                      {item.name.trim()}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      </ActivitySheetConsumer>
+              </TouchableOpacity>
+            );
+          }}
+        </ActivitySheetConsumer>
+        <View
+          style={[
+            styles.activityBodySeparator,
+            { backgroundColor: theme.colorNeutral8 }
+          ]}
+        ></View>
+      </View>
     </View>
   );
 };
@@ -349,43 +358,46 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
     setShow(!show);
   };
   return (
-    <View>
-      <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
-        <View style={styles.activityBodyContainer}>
-          <BuildContent
-            completion={item.completion as string}
-            completionStatus={item.completionstatus as string}
-            theme={theme}
-            available = {item.available}
-          ></BuildContent>
-          <View style={styles.activityBodyLockContainer}>
-            <Text
-              numberOfLines={1}
-              style={[
-                styles.bodyType,
-                { color: theme.colorNeutral6, opacity: 0.5 }
-              ]}
-            >
-              {item.modtype.toUpperCase()}
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={[
-                styles.bodyName,
-                { color: theme.textColorDark, opacity: 0.5 }
-              ]}
-            >
-              {item.name}
-            </Text>
+    <View
+      style={[styles.accordionListWrap, { backgroundColor: theme.colorAccent }]}
+    >
+      <View>
+        <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
+          <View style={styles.activityBodyContainer}>
+            <ContentIcon
+              icon={"lock"}
+              iconSize={15}
+              size={30}
+              backgroundColor={theme.colorNeutral5}
+              iconColor={theme.colorAccent}
+              borderColor={theme.colorNeutral5}
+              isDashedCircle={false}
+            />
+            <View style={[styles.activityContainer, { marginLeft: 16 }]}>
+              <Text
+                numberOfLines={1}
+                style={[styles.bodyName, { color: theme.colorNeutral8 }]}
+              >
+                {item.name}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-      {show && (
-        <ActivityRestrictionView
-          description={item.availablereason == null ? "" : item.availablereason}
-          onClose={onClose}
-        />
-      )}
+        </TouchableOpacity>
+        {show && (
+          <ActivityRestrictionView
+            description={
+              item.availablereason == null ? "" : item.availablereason
+            }
+            onClose={onClose}
+          />
+        )}
+        <View
+          style={[
+            styles.activityBodySeparator,
+            { backgroundColor: theme.colorNeutral8 }
+          ]}
+        ></View>
+      </View>
     </View>
   );
 };
@@ -393,9 +405,9 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
 const styles = StyleSheet.create({
   bodyName: {
     alignSelf: "flex-start",
-    flex: 3,
     fontSize: normalize(17),
-    fontWeight: "normal"
+    fontWeight: "500",
+    justifyContent: "center"
   },
   bodyType: {
     alignSelf: "flex-start",
@@ -412,36 +424,26 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   accordionListWrap: {
-    flexDirection: "column",
-    marginLeft: 16,
-    marginRight: 16,
-    borderRadius: 4,
-    borderWidth: 1
+    flexDirection: "column"
   },
   activityBodyContainer: {
     height: 60,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-    marginLeft: 8
+    marginLeft: 16
   },
-  activityBodyLockContainer: {
+  activityContainer: {
     height: 45,
     justifyContent: "center",
-    flexDirection: "column",
-    flex: 5,
-    margin: 16
-  },
-  activityBodyUnLockContainer: {
-    height: 45,
-    justifyContent: "center",
-    flexDirection: "column",
-    flex: 5,
-    margin: 16
+    marginRight: 16
   },
   activityBodySeparator: {
-    height: 0.5
+    height: 0.5,
+    opacity: 0.2,
+    marginLeft: 16,
+    marginRight: 16
   },
   notAvailableText: {
     fontWeight: "500",
@@ -454,4 +456,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export  { ActivityList, ActivityUI };
+export { ActivityList, ActivityUI };

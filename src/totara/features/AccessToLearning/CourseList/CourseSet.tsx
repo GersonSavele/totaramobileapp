@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   itemSummary: {
     flex: 10,
-    paddingBottom: 24,
+    paddingBottom: 10,
     paddingTop: 8,
     fontSize: 15,
     lineHeight: 15

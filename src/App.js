@@ -41,6 +41,7 @@ import {
   faExternalLinkAlt,
   faCheck,
   faChevronUp,
+  faChevronDown,
   faExclamationTriangle,
   faLock,
   faBoxOpen,
@@ -56,9 +57,9 @@ import {
   faUnlockAlt,
   faCaretUp,
   faCaretDown,
-    faTrashAlt,
-    faCaretRight,
-    faBolt
+  faTrashAlt,
+  faCaretRight,
+  faBolt
 } from "@fortawesome/free-solid-svg-icons";
 
 import { ActivitySheetProvider } from "@totara/activities";
@@ -193,7 +194,8 @@ const initFontAwesome = () => {
     faCaretDown,
     faTrashAlt,
     faCaretRight,
-    faBolt
+    faBolt,
+    faChevronDown
   );
 };
 initFontAwesome();
