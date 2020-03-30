@@ -67,7 +67,8 @@ import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 import {FeatureNavigator} from "@totara/features";
 import * as notifications from "./Notifications";
-import ResourceManager from "@totara/core/ResourceManager/ResourceManager"
+import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
+import {AttemptSynchronizer} from "@totara/activities/scorm/offline"; 
 
 class App extends React.Component<{}> {
 
@@ -128,6 +129,7 @@ class App extends React.Component<{}> {
             </ActivitySheetProvider>
             <AdditionalAction />
             <AppModal />
+            <AttemptSynchronizer />
           </AuthFlow>
         </ThemeProvider>
        </AuthProvider>

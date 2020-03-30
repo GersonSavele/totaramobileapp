@@ -24,34 +24,40 @@ import { Text, View } from "react-native";
 
 import { ThemeContext, gutter } from "@totara/theme";
 import { Scorm } from "@totara/types";
+import { getGradesReport } from "./offline";
 
-type GradeDetailsProps = {
-  scorm: Scorm
-}
-const  GradeDetails = ({scorm}: GradeDetailsProps) => {
+const  GradeDetails = (scorm: Scorm) => {
   const [theme] = useContext(ThemeContext);
-  const [gradeMethod, setGradeMethod] = useState<string>("");
-  const [acheivedGrade, setAcheivedGrade] = useState<string>("");
-  const [offlineAttemptsReport, setOfflineAttemptsReport] = useState<[{attempt: number, grade: string, marks: number}]>();
+  const [gradeMethod, setGradeMethod] = useState<string>();
+  const [acheivedGrade, setAcheivedGrade] = useState<string>();
+  const [offlineAttemptsReport, setOfflineAttemptsReport] = useState<[AttemptGradeProp]>();
   
   useEffect(()=> {
     setGradeMethod("Highest attempt grade");
     setAcheivedGrade("80");
-    setOfflineAttemptsReport([{attempt:7, marks: 84, grade: "pass"}, {attempt:6, marks: 84, grade: "pass"}, {attempt:5, marks: 72, grade: "pass"}, {attempt:4, marks: 35, grade: "fail"}, {attempt:3, marks: 72, grade: "pass"}, {attempt:2, marks: 50, grade: "pass"}, {attempt:1, marks: 30, grade: "fail"}]);
-  }, [scorm]);
+    if (scorm.id) {
+      getGradesReport(scorm.id).then(offlineActivityReport => {
+        if (offlineActivityReport && offlineActivityReport.length) {
+          setOfflineAttemptsReport(offlineActivityReport as [AttemptGradeProp]);
+        } else {
+          setOfflineAttemptsReport(undefined);
+        }
+      });
+    }
+  }, [scorm.id]);
 
-  const totalAttempt = offlineAttemptsReport !== undefined ? offlineAttemptsReport.length : 0;
+  const totalOfflineAttempts = offlineAttemptsReport !== undefined ? offlineAttemptsReport.length : 0;
 
   return (
     <View style={{ borderRadius: 5, backgroundColor: "#eee", flexDirection: "row", padding: gutter, marginVertical: 8 }} >
       <View style={{flex: 1, paddingHorizontal: 4}}>
         <Text style={theme.textB2}>{gradeMethod}</Text>
         <Text><Text style={theme.textH1}>{acheivedGrade}</Text><Text>%</Text></Text>
-        <Text style={theme.textSmall}>In attempt {totalAttempt}</Text>
+        <Text style={theme.textSmall}>In attempt {totalOfflineAttempts}</Text>
       </View>
-      { totalAttempt > 0 && (
+      { totalOfflineAttempts > 0 && (
         <View style={{flex: 2, height: 100, padding: 4, flexDirection: "row-reverse"}}>
-        { offlineAttemptsReport && offlineAttemptsReport.slice(0, 6).map(attemptReport => attemptReport.grade && attemptReport.attempt && attemptReport.marks  && <AttemptGrade attempt={attemptReport.attempt} marks={attemptReport.marks} grade={attemptReport.grade} />)}
+        { totalOfflineAttempts > 0 && offlineAttemptsReport && offlineAttemptsReport.slice(Math.max(totalOfflineAttempts - 6, 0)).map(attemptReport => attemptReport.attempt  && attemptReport.grade  && attemptReport.score  && <AttemptGrade attempt={attemptReport.attempt} score={attemptReport.score} grade={attemptReport.grade} />)}
         </View>
       )}
   </View>);
@@ -59,18 +65,18 @@ const  GradeDetails = ({scorm}: GradeDetailsProps) => {
 
 type AttemptGradeProp = {
   attempt: number,
-  marks: number,
-  grade: "pass" | "fail" | undefined
+  score: number,
+  grade: "pass" | "failed" | undefined
 };
 
-const AttemptGrade = ({grade, attempt, marks}: AttemptGradeProp) => {
+const AttemptGrade = ({grade, attempt, score: marks}: AttemptGradeProp) => {
   const [theme] = useContext(ThemeContext);
 
   return (
     <View style={{justifyContent: "space-between", paddingHorizontal: 4}}>
       <Text style={[theme.textLabel, {color: theme.textColorSubdued, textAlign: "center"}]}>{`${marks}%`}</Text>
       <View style={{width: 8, borderRadius: 4, flex: 1, backgroundColor: theme.colorNeutral3, flexDirection: "column-reverse", alignSelf: "center", marginVertical: 4}}>
-        <View style={{width: "100%", height: `${marks}%`, backgroundColor: grade && grade === "fail" ? theme.colorAlert : theme.colorSuccess, borderRadius: 4}}></View>
+        <View style={{width: "100%", height: `${marks}%`, backgroundColor: grade && grade === "failed" ? theme.colorAlert : theme.colorSuccess, borderRadius: 4}}></View>
       </View>
       <Text style={[theme.textLabel, {textAlign: "center"}]}>{attempt}</Text>
     </View>

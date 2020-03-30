@@ -74,14 +74,27 @@ const saveSCORMActivityData = (data: any) => {
         
         if (storageCMIData && (storageCMIData.length === 2) && (storageCMIData[0] === KeySCORMCMIData) && storageCMIData[1] && JSON.parse(storageCMIData[1])) {
             let existingCMIData = JSON.parse(storageCMIData[1]);
-            scormCMIData = {...existingCMIData, ...scormCMIData}
+            if (existingCMIData[data.scormid] && existingCMIData[data.scormid][data.attempt] && existingCMIData[data.scormid][data.attempt][data.scoid]) {
+                existingCMIData[data.scormid][data.attempt][data.scoid] = data.cmi;
+            } else if(existingCMIData[data.scormid] && existingCMIData[data.scormid][data.attempt]) {
+                existingCMIData[data.scormid][data.attempt][data.scoid] =  data.cmi;
+            } else if(existingCMIData[data.scormid]) {
+                existingCMIData[data.scormid][data.attempt] = {[data.scoid]: data.cmi};
+            } else {
+                existingCMIData[data.scormid] = {[data.attempt]: {[data.scoid]: data.cmi}};
+            }
+            scormCMIData = existingCMIData;
         }
         if (storageCommitData && (storageCommitData.length === 2) && (storageCommitData[0] === KeySCORMCommitData) && storageCommitData[1] && JSON.parse(storageCommitData[1])) {
             let existingCommitData = JSON.parse(storageCommitData[1]);
-            if (existingCommitData[data.scormid][data.attempt][data.scoid]) {
+            if (existingCommitData[data.scormid] && existingCommitData[data.scormid][data.attempt] && existingCommitData[data.scormid][data.attempt][data.scoid]) {
                 existingCommitData[data.scormid][data.attempt][data.scoid].push(data.commit);
+            } else if (existingCommitData[data.scormid] && existingCommitData[data.scormid][data.attempt]) {
+                existingCommitData[data.scormid][data.attempt][data.scoid] = [data.commit];
+            } else if (existingCommitData[data.scormid]) {
+                existingCommitData[data.scormid][data.attempt] = {[data.scoid]: [data.commit]};
             } else {
-                existingCommitData = {...existingCommitData, ...scormCommitData};
+                existingCommitData[data.scormid] = {[data.attempt]: {[data.scoid]: [data.commit]}};
             }
             scormCommitData = existingCommitData;
         }
@@ -186,6 +199,24 @@ const setSyncedScormActivity = (scormId: number, attempt: number) => {
     });
 };
 
+const getGradesReport = (scormId: number) => {
+    return AsyncStorage.getItem(KeySCORMCMIData).then(storageData => {
+        if (storageData && JSON.parse(storageData)) {
+            const dataCMIs = JSON.parse(storageData);
+            if (dataCMIs[scormId]) {
+                const cmiData = dataCMIs[scormId];
+                let scoresData = [];
+                for (let [attempt, scosData] of Object.entries(cmiData)) {
+                    for (let [, cmi] of Object.entries(scosData as any)) {
+                        scoresData.push({ attempt: parseInt(attempt), score: parseInt(cmi.core.score.raw), grade: cmi.core.lesson_status});
+                    }
+                }    
+                return scoresData; 
+            }
+        } 
+        return null;
+    });
+};
 
 const storageClear = async () => {
     const asyncStorageKeys = await AsyncStorage.getAllKeys();
@@ -194,4 +225,4 @@ const storageClear = async () => {
     }
 };
 
-export { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, getUnsyncedData, setSyncedScormActivity, storageClear };
+export { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, getUnsyncedData, setSyncedScormActivity, getGradesReport, storageClear };

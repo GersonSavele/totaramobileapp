@@ -22,6 +22,7 @@ export type OfflineScormPackage  = {
         last: ScormOfflineActivity,
         start: ScormOfflineActivity
     }
+    lastsynced: number
 };
 
 export type Sco = {

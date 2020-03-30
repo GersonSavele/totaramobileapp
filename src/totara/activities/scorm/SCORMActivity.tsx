@@ -24,19 +24,19 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 // @ts-ignore
 import { useNetInfo } from "@react-native-community/netinfo"; //TO continue
-import { Activity } from "@totara/types";
+import { Activity, ActivityType } from "@totara/types";
 import { AuthContext } from "@totara/core";
 import { scormQuery } from "@totara/activities/scorm/api";
 import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
 import { ContentIcon, MoreText, PrimaryButton, SecondaryButton, TertiaryButton } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
 import {
-  AttemptSynchronizer,
   OfflineScormActivity,
   getSCORMData,
   setSCORMPackageData,
   getOfflineSCORMPackageName, OfflineSCORMServerRoot
 } from "./offline";
+import moment from "moment";
 
 import GradeDetails from "./GradeDetails";
 import OnlineScormActivity from "./online/OnlineScormActivity";
@@ -45,6 +45,7 @@ import ResourceManager , { ResourceObserver} from "@totara/core/ResourceManager/
 import * as RNFS from "react-native-fs"
 import ResourceDownloader from "@totara/components/ResourceDownloader"
 import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
+import { ActivitySheetContext } from "../ActivitySheet";
 
 const SCORMActivityAPI = (props: {activity: Activity}) => {
   const { loading, error, data } = useQuery(scormQuery, {
@@ -52,8 +53,8 @@ const SCORMActivityAPI = (props: {activity: Activity}) => {
   });
   if (loading) { return <Text>Loading...</Text>; }
   if (error) { return <Text>Something went wrong, please try again later.</Text>; }
-  if (data) {
-    return <SCORMActivity activity={props.activity} scorm={data ? data.scorm : null} />;
+  if (data && data.scorm) {
+    return <SCORMActivity activity={props.activity} scorm={data.scorm} />;
   } else { return <Text>Something went wrong, please try again later.</Text>; }
 };
 
@@ -79,32 +80,41 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
   const apiKey = appState && appState.apiKey ? appState.apiKey : null;
   const [scormAction, setScormAction] = useState<SCORMAction>({mode: SCORMType.None});
 
-  // const [netInfo, setNetInfo] = useState<boolean>(false);
   const [isUserOnline, setIsUserOnline] = useState<boolean>(false);//TODO: need to set default true
   const [scormResultData, setScormResultData] = useState<OfflineScormPackage>();
   const netInfo = useNetInfo();
+  const ativitySheet = useContext(ActivitySheetContext);
+
+  useEffect(()=> {
+    if(scormAction.mode === SCORMType.Offline || scormAction.mode === SCORMType.Online) {
+      ativitySheet.setFeedbackActivity(activity as ActivityType);
+    } else {
+      ativitySheet.setFeedbackActivity(undefined);
+    }
+  }, [scormAction])
 
   useEffect(()=> {
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null)) {
-      setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
+      // setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
     }
   }, [netInfo]);
 
   useEffect(() => {
       if (isUserOnline) {
-        setScormResultData({scorm: scorm});
+        setScormResultData({scorm: scorm, lastsynced: moment.now()});
       } else {
         getSCORMData(activity.instanceid).then(result => {
-          let apiSyncedData: OfflineScormPackage = {scorm: scorm}; //TODO have to reset
+          // let apiSyncedData: OfflineScormPackage = {scorm: scorm}; //TODO have to reset
           if (result) {
-            if (result.offlineActivity) {
-              apiSyncedData.offlineActivity = result.offlineActivity;
-            }
-            if (result.package) {
-              apiSyncedData.package = result.package;
-            }
-          }
-          setScormResultData(apiSyncedData);
+            // if (result.offlineActivity) {
+            //   apiSyncedData.offlineActivity = result.offlineActivity;
+            // }
+            // if (result.package) {
+            //   apiSyncedData.package = result.package;
+            // }
+            setScormResultData(result as OfflineScormPackage);
+          } 
+          // setScormResultData(apiSyncedData);
         });
       }
   }, [scorm, isUserOnline]);
@@ -219,6 +229,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
     }
     return (
       <View style={styles.expanded}>
+        {!isUserOnline && scormResultData && <Text style={[theme.textSmall,{ backgroundColor: "#007aff", color: theme.colorNeutral1, padding: 8}]}>⚡︎ Last synced {moment(scormResultData.lastsynced).toNow(true)}</Text> }
         <View style={{flex: 1}}>
           <ScrollView >
             <View style={{ padding: gutter }}>
@@ -232,7 +243,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
                 <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>Grade details</Text>
                 {totalAttempt > 6 && <TertiaryButton text={"View all"} />}
               </View>
-              { scormResultData && totalAttempt > 0 && <GradeDetails scorm={scormResultData.scorm} /> }
+              { scormResultData && scormResultData.scorm && totalAttempt > 0 && <GradeDetails scorm={scormResultData.scorm} /> }
               <View style={styles.sectionField} >
                 <Text style={theme.textB1}>Grading method</Text>
                 {/* TODO */}

@@ -113,7 +113,9 @@ const OfflineScormActivity = (props: Props) => {
 
     const onPlayerMessageHandler = (messageData: any) => {
         if (messageData.tmsevent && messageData.tmsevent === "SCORMCOMMIT" && messageData.result) {
-            saveSCORMActivityData(messageData.result);
+            saveSCORMActivityData(messageData.result).then(()=> {
+                console.log("data saved.");
+            });
         }      
     };
 
