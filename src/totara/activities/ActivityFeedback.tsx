@@ -56,7 +56,7 @@ const ActivityFeedback = ({activity, onClose}: Props) => {
       <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
         <View style={[styles.containerStyle, {backgroundColor: theme.colorNeutral1}]}>
           <View>
-            <Text> Grade </Text>
+            <Text> {activity.name} </Text>
             <View></View>
             <PrimaryButton onPress={onClose} text={"Back to course"} />
             </View>
