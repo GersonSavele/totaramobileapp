@@ -35,8 +35,6 @@ const  GradeDetails = ({scorm}: Scorm) => {
   useEffect(()=> {
     setGradeMethod("Highest attempt grade");
     setAcheivedGrade("80");
-    console.log("scorm.id: ", scorm, "\n\n");
-    console.log("scorm.id: ", scorm.id);
     if (scorm.id) {
       getGradesReport(scorm.id).then(offlineActivityReport => {
         if (offlineActivityReport && offlineActivityReport.length) {
