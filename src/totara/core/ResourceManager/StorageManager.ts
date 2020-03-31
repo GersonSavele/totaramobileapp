@@ -5,8 +5,18 @@ const RetrieveStorage = () =>{
     return AsyncStorage.getItem(TOTARA_RESOURCES);
 };
 
+const RetrieveStorageDataById = (id: string) =>{
+    return RetrieveStorage().then(storedData => {
+        if (storedData && JSON.parse(storedData)) {
+            return JSON.parse(storedData)[id];
+        } else {
+            return null;
+        }
+    });
+};
+
 const SaveStorage = (id: string, data: Object) =>{
-    RetrieveStorage().then(storedData => {
+    return RetrieveStorage().then(storedData => {
         let newData = {[id]: data}
         if (storedData && JSON.parse(storedData)) {
             newData = {...JSON.parse(storedData), ...newData};
@@ -16,7 +26,7 @@ const SaveStorage = (id: string, data: Object) =>{
 };
 
 const DeleteStorage = (id: string) =>{
-    RetrieveStorage().then(storedData => {
+    return RetrieveStorage().then(storedData => {
         if (storedData && JSON.parse(storedData)) {
             const files = JSON.parse(storedData);
             delete files[id];
@@ -25,4 +35,4 @@ const DeleteStorage = (id: string) =>{
     });
 };
 
-export {RetrieveStorage, SaveStorage, DeleteStorage}
+export {RetrieveStorage, RetrieveStorageDataById, SaveStorage, DeleteStorage}

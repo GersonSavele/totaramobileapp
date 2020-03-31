@@ -22,6 +22,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { OfflineScormPackage } from "@totara/types/Scorm";
+import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
 
 
 const ScormDataPre = "@TOTARAMOBILE_SCORM";
@@ -30,7 +31,7 @@ const KeySCORMCommitData = `${ScormDataPre}_OFFLINE_COMMIT`;
 const KeySCORMCMIData = `${ScormDataPre}_OFFLINE_CMI`;
 const KeySCORMActivityData = `${ScormDataPre}_OFFLINE_ACTIVITY`;
 
-const setSCORMPackageData = (scormId: number, data: OfflineScormPackage) => {
+const setSCORMPackageData = (scormId: number, data: any) => {
     return AsyncStorage.getItem(KeySCORMPackageData).then(storedData=> {
         let newData = {[scormId]: data}
         if (storedData && JSON.parse(storedData)) {
@@ -40,18 +41,47 @@ const setSCORMPackageData = (scormId: number, data: OfflineScormPackage) => {
     });
 };
 
-const getSCORMData = (scormId: number) => {
-    return AsyncStorage.multiGet([KeySCORMPackageData, KeySCORMActivityData]).then(([dataScormPackage, dataActivity]) => {
-        let scormData = null;
-        if(dataScormPackage.length === 2 && dataScormPackage[1] && JSON.parse(dataScormPackage[1])) {
-            scormData = JSON.parse(dataScormPackage[1])[scormId];
-            let activityData = undefined; 
-            if (dataActivity.length === 2 && dataActivity[1] && JSON.parse(dataActivity[1])){
-                activityData = JSON.parse(dataActivity[1])[scormId];
-            }
-            scormData = {...scormData, ...{offlineActivity: activityData}} as OfflineScormPackage;   
+const removeSCORMPackageData = (scormId: number) => {
+    return AsyncStorage.getItem(KeySCORMPackageData).then(storageData => {
+        if(storageData && JSON.parse(storageData) && JSON.parse(storageData)[scormId]) {
+            let existingData = JSON.parse(storageData);
+            delete existingData[scormId];
+            return existingData;
         }
-        return scormData;
+        return null;
+    }).then(newData => {
+        if (newData) {
+            return AsyncStorage.setItem(KeySCORMPackageData, JSON.stringify(newData));
+        } else {
+            return AsyncStorage.removeItem(KeySCORMPackageData);
+        }
+    });
+};
+
+const getSCORMData = (scormId: number) => {
+    return RetrieveStorageDataById(scormId.toString()).then(storedResourceData => { 
+        if(!storedResourceData || storedResourceData === undefined || storedResourceData === null) {
+            return removeSCORMPackageData(scormId);
+        } else {
+            return Promise.resolve()
+        }
+    }).then(()=> {
+        return AsyncStorage.multiGet([KeySCORMPackageData, KeySCORMActivityData]).then(([dataScormPackage, dataActivity]) => {
+            let scormData = null;
+            if(dataScormPackage.length === 2 && dataScormPackage[1] && JSON.parse(dataScormPackage[1])) {
+                const scormDataSet = JSON.parse(dataScormPackage[1]);
+                if (scormDataSet[scormId]) {
+                    scormData = scormDataSet[scormId];
+                    let activityData = undefined; 
+                    if (dataActivity.length === 2 && dataActivity[1] && JSON.parse(dataActivity[1])){
+                        activityData = JSON.parse(dataActivity[1])[scormId];
+                    }
+                    scormData = {...scormData, ...{offlineActivity: activityData}} as OfflineScormPackage;  
+                }                 
+            }
+            return scormData;
+        });
+
     });
 };
 
@@ -65,7 +95,6 @@ const getSCORMLastActivity = async (scormId: number) => {
 };
 
 const saveSCORMActivityData = (data: any) => {
-    
     return AsyncStorage.multiGet([KeySCORMCMIData, KeySCORMCommitData, KeySCORMActivityData]).then(([storageCMIData, storageCommitData, storageActivity]) => {
         let scormCMIData = {[data.scormid] : {[data.attempt]: {[data.scoid]: data.cmi}}};
         let scormCommitData = {[data.scormid] : {[data.attempt]: {[data.scoid]: [data.commit]}}};

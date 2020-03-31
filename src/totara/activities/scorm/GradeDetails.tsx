@@ -26,7 +26,7 @@ import { ThemeContext, gutter } from "@totara/theme";
 import { Scorm } from "@totara/types";
 import { getGradesReport } from "./offline";
 
-const  GradeDetails = (scorm: Scorm) => {
+const  GradeDetails = ({scorm}: Scorm) => {
   const [theme] = useContext(ThemeContext);
   const [gradeMethod, setGradeMethod] = useState<string>();
   const [acheivedGrade, setAcheivedGrade] = useState<string>();
@@ -35,6 +35,8 @@ const  GradeDetails = (scorm: Scorm) => {
   useEffect(()=> {
     setGradeMethod("Highest attempt grade");
     setAcheivedGrade("80");
+    console.log("scorm.id: ", scorm, "\n\n");
+    console.log("scorm.id: ", scorm.id);
     if (scorm.id) {
       getGradesReport(scorm.id).then(offlineActivityReport => {
         if (offlineActivityReport && offlineActivityReport.length) {

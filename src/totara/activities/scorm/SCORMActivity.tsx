@@ -95,7 +95,7 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
 
   useEffect(()=> {
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null)) {
-      // setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
+      setIsUserOnline(netInfo.isInternetReachable); //TODO - need to enable
     }
   }, [netInfo]);
 
@@ -104,25 +104,17 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
         setScormResultData({scorm: scorm, lastsynced: moment.now()});
       } else {
         getSCORMData(activity.instanceid).then(result => {
-          // let apiSyncedData: OfflineScormPackage = {scorm: scorm}; //TODO have to reset
           if (result) {
-            // if (result.offlineActivity) {
-            //   apiSyncedData.offlineActivity = result.offlineActivity;
-            // }
-            // if (result.package) {
-            //   apiSyncedData.package = result.package;
-            // }
             setScormResultData(result as OfflineScormPackage);
           } 
-          // setScormResultData(apiSyncedData);
         });
       }
   }, [scorm, isUserOnline]);
 
 
   useEffect(() => {
-    if (scormResultData && scormResultData.scorm) {
-      setSCORMPackageData(activity.instanceid, scormResultData);
+    if (scormResultData && scormResultData.scorm) { //TODO - add checking whether online 
+      setSCORMPackageData(activity.instanceid, {scorm: scormResultData.scorm, package: scormResultData.package, lastsynced: scormResultData.lastsynced});
     }
   }, [scormResultData, isUserOnline]);
 
