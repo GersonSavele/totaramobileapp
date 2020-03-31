@@ -10,8 +10,8 @@ const SaveStorage = (id: string, data: Object) =>{
         let newData = {[id]: data}
         if (storedData && JSON.parse(storedData)) {
             newData = {...JSON.parse(storedData), ...newData};
-            return AsyncStorage.setItem(TOTARA_RESOURCES, JSON.stringify(newData));
         }
+        return AsyncStorage.setItem(TOTARA_RESOURCES, JSON.stringify(newData));
     });
 };
 

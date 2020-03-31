@@ -88,7 +88,7 @@ const Downloads = (props: DownloadsTabsProps) => {
                         <View style={[styles.circle, {backgroundColor: theme.colorAlert}]}>
                             <FontAwesomeIcon size={20} color={theme.colorNeutral2} icon={faTrashAlt} />
                         </View>
-                        <Text style={{backgroundColor: theme.colorAlert}}>Remove</Text>
+                        <Text style={{color: theme.colorAlert}}>Remove</Text>
                     </View>
                 </TouchableHighlight>
             </View>

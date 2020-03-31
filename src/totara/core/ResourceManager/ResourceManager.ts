@@ -2,6 +2,7 @@ import {DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResul
 import {IResource, ResourceState} from "@totara/core/ResourceManager/Resource";
 import {unzip} from "react-native-zip-archive";
 import {DeleteStorage, RetrieveStorage, SaveStorage} from "@totara/core/ResourceManager/StorageManager";
+import {Log, Logger} from "@totara/lib";
 
 export type ResourceObserver = (resourceFile: IResource) => void;
 
@@ -89,7 +90,7 @@ class ResourceManager{
                 this.update(id, 0, ResourceState.Errored);
             }
         }).then(()=>{
-            console.log(targetFile);
+            //console.log(targetFile);
             return unlink(targetFile);
         }).then(()=>{
             const strObj = this.files.find(f=>f.id === id);
@@ -98,7 +99,7 @@ class ResourceManager{
         })
     }
 
-    public delete = (id: string) => {
+    public delete = async(id: string) => {
         const idx = this.files.findIndex(f=>f.id === id);
         if(idx<0)
             return;
@@ -112,9 +113,15 @@ class ResourceManager{
         this.files = files;
 
         toBeUpdated.state = ResourceState.Deleted;
-        this.notify(toBeUpdated);
 
-        //return unlink(filePath);
+        try {
+            await unlink(toBeUpdated.unzipPath);
+        }
+        catch(error){
+            Log.error(error.toString(),error);
+        }
+
+        this.notify(toBeUpdated);
     };
 
     public remove(id: string) : void {
