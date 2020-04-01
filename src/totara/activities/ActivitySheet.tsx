@@ -23,12 +23,13 @@ import React, { useContext } from "react";
 import { StyleSheet, View, StatusBar, Text, Modal } from "react-native";
 import { Button } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import SafeAreaView from "react-native-safe-area-view";
 
 import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
-import SafeAreaView from "react-native-safe-area-view";
 import { ThemeContext } from "@totara/theme";
 import SCORMActivityAPI from "./scorm/SCORMActivity"
+import ActivityFeedback from "./ActivityFeedback";
 
 type contextData = {
   /**
@@ -41,11 +42,19 @@ type contextData = {
    * @param onCloseCallback
    */
   setOnClose: (onCloseCallback: () => {}) => void
+
+  /**
+   * set the activity, and the activity sheet will be visible and use the right component
+   * @param activity
+   */
+  setFeedbackActivity: (activity: ActivityType | undefined) => void
+ 
 }
 
-const ActivitySheetContext = React.createContext<contextData>({
+export const ActivitySheetContext = React.createContext<contextData>({
   setCurrentActivity: () => {},
-  setOnClose: () => {}
+  setOnClose: () => {},
+  setFeedbackActivity: () => {}
 });
 
 export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
@@ -73,7 +82,8 @@ export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
 const initialState = {
   currentActivity: undefined,
   onClose: () => {},
-  show: false
+  show: false,
+  feedbackActivity: undefined
 };
 
 export class ActivitySheetProvider extends React.Component {
@@ -92,9 +102,16 @@ export class ActivitySheetProvider extends React.Component {
     })
   }
 
+  setFeedbackActivity(activity: ActivityType) {
+    this.setState({
+      feedbackActivity: activity
+    })
+  }
+
   onClose = () => {
+    const newState = this.state.feedbackActivity && this.state.currentActivity ? {...initialState, ...{feedbackActivity: this.state.feedbackActivity}} : initialState;
     this.state.onClose();
-    this.setState(initialState);
+    this.setState(newState);
   };
 
   render() {
@@ -103,13 +120,12 @@ export class ActivitySheetProvider extends React.Component {
       <ActivitySheetContext.Provider value={{
         ...this.state,
         setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
+        setFeedbackActivity: (feedbackActivity: ActivityType) => this.setFeedbackActivity(feedbackActivity),
         setOnClose: (onCloseCallback: () => {}) => this.setOnClose(onCloseCallback)
       }}>
         {this.props.children}
-        {
-          (this.state.currentActivity) &&
-            <ActivitySheet currentActivity={this.state.currentActivity!} onClose={this.onClose} show={this.state.show}/>
-        }
+        {(this.state.currentActivity) && <ActivitySheet currentActivity={this.state.currentActivity!} onClose={this.onClose} show={this.state.show}/> }
+        {(this.state.feedbackActivity && this.state.currentActivity === undefined) && <ActivityFeedback activity={this.state.feedbackActivity} onClose={this.onClose} />}
       </ActivitySheetContext.Provider>
       </View>)
   }
@@ -140,7 +156,8 @@ const ActivitySheet = ({currentActivity, onClose}: Props) => {
 type Props = {
   currentActivity: ActivityType,
   onClose: () => void
-  show: boolean
+  show: boolean,
+  feedbackActivity: ActivityType
 }
 
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {

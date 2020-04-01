@@ -22,8 +22,8 @@
 
 import OfflineScormActivity from "./OfflineScormActivity";
 import { getSCORMPackageData } from "./PackageProcessor";
-import { initializeSCORMWebplayer, downloadSCORMPackage, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized, OfflineSCORMServerRoot } from "./SCORMFileHandler";
-import { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, getUnsyncedData, setSyncedScormActivity, storageClear } from "./StorageHelper";
+import { initializeSCORMWebplayer, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized, OfflineSCORMServerRoot } from "./SCORMFileHandler";
+import { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, getUnsyncedData, setSyncedScormActivity, getGradesReport, storageClear } from "./StorageHelper";
 import AttemptSynchronizer from "./AttemptSynchronizer";
 
 export {
@@ -32,7 +32,6 @@ export {
   getSCORMPackageData,
   
   initializeSCORMWebplayer, 
-  downloadSCORMPackage, 
   unzipSCORMPackageToServer, 
   getOfflineSCORMPackageName, 
   isSCORMPlayerInitialized, 
@@ -45,6 +44,7 @@ export {
   getSCORMLastActivity, 
   getUnsyncedData,
   setSyncedScormActivity,
+  getGradesReport,
   storageClear,
 
   AttemptSynchronizer

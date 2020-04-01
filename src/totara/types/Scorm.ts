@@ -17,11 +17,12 @@ export type Scorm = {
 
 export type OfflineScormPackage  = {
     scorm: Scorm,
-    package?: ScormPackage,
+    package: ScormPackage | undefined,
     offlineActivity?: {
         last: ScormOfflineActivity,
         start: ScormOfflineActivity
     }
+    lastsynced: number
 };
 
 export type Sco = {

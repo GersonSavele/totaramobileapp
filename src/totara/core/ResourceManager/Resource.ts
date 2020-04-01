@@ -3,7 +3,8 @@ export enum ResourceState {
     Errored,
     Waiting,
     Downloading,
-    Completed
+    Completed,
+    Deleted
 }
 
 export interface IResource {
@@ -11,7 +12,8 @@ export interface IResource {
     name: string,
     sizeInBytes: number,
     resourceUrl: string,
-    fileNamePath: string,
+    hash: string,
+    unzipPath: string,
     percentCompleted: number,
     state?: ResourceState
 }

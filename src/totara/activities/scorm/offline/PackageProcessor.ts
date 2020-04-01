@@ -25,8 +25,8 @@ const dom = require("xmldom").DOMParser;
 
 import { Sco, ScormPackage } from "@totara/types/Scorm";
 
-const getSCORMPackageData = (path: string, packagName: string) => {
-    const manifestFilePath = `${path}/${packagName}/imsmanifest.xml`;
+const getSCORMPackageData = (packagPath: string) => {
+    const manifestFilePath = `${packagPath}/imsmanifest.xml`;
     return RNFS.readFile(manifestFilePath)
         .then(xmlcontent => {
             const xmlData = new dom().parseFromString(xmlcontent);
