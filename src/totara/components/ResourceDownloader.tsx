@@ -1,6 +1,5 @@
 import { View } from "react-native"
-import { TouchableIcon } from "@totara/components/index"
-import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"
+import { TouchableIcon } from "@totara/components/index";
 import React, { useContext } from "react";
 import * as Progress from "react-native-progress";
 import { ThemeContext } from "@totara/theme"
@@ -23,8 +22,8 @@ const ResourceDownloader = (props: ResourceDownloader) =>{
                                                       return `${props.progress.toFixed(0)}%`
                                                   }}/> :
                 (
-                    props.downloadOK ? <TouchableIcon size={size} icon={faCloudDownloadAlt} color={theme.colorSuccess} disabled={true} /> :
-                        <TouchableIcon size={size} icon={faCloudDownloadAlt} disabled={props.downloading} onPress={props.onDownloadTap} />
+                    props.downloadOK ? <TouchableIcon size={size} icon="cloud-download-alt" color={theme.colorSuccess} disabled={true} /> :
+                        <TouchableIcon size={size} icon="cloud-download-alt" disabled={props.downloading} onPress={props.onDownloadTap} />
 
                 )
             }

@@ -24,7 +24,6 @@ import React, {useContext} from "react";
 import { Image, ImageSourcePropType } from "react-native";
 import { createStackNavigator, NavigationRouteConfigMap, NavigationScreenProps } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
-import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons"; //TODO: SHOULD IMPORT FROM A GLOBAL EXPORT?
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { ThemeContext, normalize } from "@totara/theme";
 import { Theme } from "@totara/types";
@@ -99,12 +98,12 @@ const MyLearningTab = {
             ProgramDetails: {
                 screen: ProgramDetails,
                 navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
-                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
+                    navigationOptions({theme: screenProps!.theme, rightIcon: "cloud-download-alt", title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             },
             CertificationDetails: {
                 screen: CertificationDetails,
                 navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
-                    navigationOptions({theme: screenProps!.theme, rightIcon: faCloudDownloadAlt, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
+                    navigationOptions({theme: screenProps!.theme, rightIcon: "cloud-download-alt", title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             }
         }, "MyLearning"),
     navigationOptions: {
@@ -154,7 +153,7 @@ type navigationOptionsProps = {
     theme: Theme,
     title? : string,
     backTitle? : string,
-    rightIcon? : IconDefinition,
+    rightIcon? : IconDefinition | string,
     opacity? : number
 }
 

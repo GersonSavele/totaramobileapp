@@ -5,7 +5,6 @@ import ResourceManager, { ResourceObserver } from "@totara/core/ResourceManager/
 import { ListRenderItemInfo, StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import { gutter, ThemeContext } from "@totara/theme";
 import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
-import { faCaretRight, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import { TouchableIcon } from "@totara/components"
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -60,7 +59,7 @@ const Downloads = (props: DownloadsTabsProps) => {
     return <SwipeListView
         data={resources}
         disableRightSwipe
-        renderItem={ (data: ListRenderItemInfo<IResource>, rowMap) => (
+        renderItem={ (data: ListRenderItemInfo<IResource>) => (
             <View key={data.item.id} style={[styles.item, {backgroundColor: theme.colorNeutral1}]}>
                 <View style={{display: 'flex', width: '100%', flexDirection: 'row'}}>
                     <View style={{display: 'flex', flex: 3, flexDirection: 'column', justifyContent:'center'}}>
@@ -71,7 +70,7 @@ const Downloads = (props: DownloadsTabsProps) => {
                         <ResourceDownloader size={25} downloading={false} progress={data.item.percentCompleted ? data.item.percentCompleted! : 0} downloadOK={data.item.state === ResourceState.Completed}/>
                     </View>
                     <View style={{display: 'flex', flex: 1, justifyContent:'flex-end', alignContent:'center'}}>
-                        <TouchableIcon size={25} icon={faCaretRight} disabled={true} />
+                        <TouchableIcon size={25} icon={"caret-right"} disabled={true} />
                     </View>
                 </View>
                 <View style={{
@@ -81,12 +80,12 @@ const Downloads = (props: DownloadsTabsProps) => {
                 }}/>
             </View>
         )}
-        renderHiddenItem={ (data, rowMap) => (
+        renderHiddenItem={ (data) => (
             <View style={[styles.rowBack, {backgroundColor: theme.colorNeutral2}]}>
                 <TouchableHighlight style={styles.backButtonDelete} onPress={()=>onDeleteItemTap(data.item.id)} underlayColor={theme.colorNeutral3}>
                     <View style={{alignItems: 'center', justifyContent: 'center'}}>
                         <View style={[styles.circle, {backgroundColor: theme.colorAlert}]}>
-                            <FontAwesomeIcon size={20} color={theme.colorNeutral2} icon={faTrashAlt} />
+                            <FontAwesomeIcon size={20} color={theme.colorNeutral2} icon={"trash-alt"} />
                         </View>
                         <Text style={{color: theme.colorAlert}}>Remove</Text>
                     </View>
