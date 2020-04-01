@@ -19,12 +19,12 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React, { useContext } from "react";
-import { StyleSheet, View, Text, Modal } from "react-native";
+import { StyleSheet, View, Text, Modal, Image, Dimensions, ImageBackground } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { ActivityType } from "@totara/types";
-import { resizeByScreenSize, ThemeContext } from "@totara/theme";
-import { PrimaryButton } from "@totara/components";
+import { resizeByScreenSize, ThemeContext, normalize } from "@totara/theme";
+import { PrimaryButton, TertiaryButton } from "@totara/components";
 
  type Props = {
    activity: ActivityType,
@@ -33,35 +33,68 @@ import { PrimaryButton } from "@totara/components";
  const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)"
+    backgroundColor: "rgba(0, 0, 0, 0.6)"
   },
   containerStyle: {
     flex: 1,
+    height: Dimensions.get("window").height * 0.7, 
+    width: Dimensions.get("window").width * 0.7, 
     borderRadius: 4,
-    marginHorizontal: resizeByScreenSize(16, 16, 20, 20),
-    marginVertical: resizeByScreenSize(32, 32, 32, 32),
-    flexDirection: "column",
-    marginLeft: "5%",
-    marginRight: "5%",
+    marginHorizontal: "8%",
     alignItems: "center",
-    justifyContent: "center"
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignSelf: "center"
   },
+  gradeContainer: {
+    width: Dimensions.get("window").width * 0.7 * 0.6, 
+    height: Dimensions.get("window").width * 0.7 * 0.6, 
+    borderWidth: 4, 
+    borderRadius: Dimensions.get("window").width * 0.7 * 0.6 * 0.5, 
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: 8,
+  },
+  completionStatusImage: {
+    alignSelf: "center",
+    height: "50%",
+    width: "50%",
+    resizeMode: "contain",
+  },
+  grade: {
+    textAlign: "center", 
+    borderRadius: 7, 
+    height: 14, 
+    lineHeight: 14, 
+    paddingHorizontal: 16
+  }
 });
 const ActivityFeedback = ({activity, onClose}: Props) => {
 
   const [ theme ] = useContext(ThemeContext);
 
-  return (<Modal animationType="slide">
+  return (<Modal animationType="slide" transparent>
     <View style={styles.transparentViewStyle}>
-      <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
+      <SafeAreaView />
+      <View style={{flexDirection: "row", justifyContent: "space-around", flex: 1}}>
         <View style={[styles.containerStyle, {backgroundColor: theme.colorNeutral1}]}>
-          <View>
-            <Text> {activity.name} </Text>
-            <View></View>
-            <PrimaryButton onPress={onClose} text={"Back to course"} />
+          <View  style={{ flex: 1, justifyContent: "center"}}>
+            <View style={[styles.gradeContainer, {borderColor: theme.colorSuccess}]}> 
+              { !activity.completionstatus && <Image style={styles.completionStatusImage} source={require("@resources/images/success_tick/success_tick.png")} /> }
+              <Text style={[theme.textB3, {textAlign: "center", fontWeight: "600"}]}>YOUR LAST ATTEMPT GRADE</Text>
+              <Text style={[theme.textH2, {textAlign: "center", marginVertical: 8}]}>80%</Text>
+              <Text style={[theme.textLabel, styles.grade, {color: theme.colorNeutral1, backgroundColor: theme.colorAlert}]}>Failed</Text>
             </View>
+            <Text style={[theme.textH1,]}>Awesome!</Text>
+          </View>
+          <View style={{ paddingBottom: 24}}>
+            <PrimaryButton onPress={onClose} text={"Back to course"} style={{marginBottom: 8}} />
+            <TertiaryButton onPress={onClose} text={"Attempt again"} style={{marginBottom: 8}} />
+          </View>
         </View>
-      </SafeAreaView>
+      </View >
+      <SafeAreaView />
     </View>
   </Modal>);
 }

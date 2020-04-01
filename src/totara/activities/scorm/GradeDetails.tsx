@@ -51,7 +51,7 @@ const  GradeDetails = ({scorm}: Scorm) => {
   return (
     <View style={{ borderRadius: 5, backgroundColor: "#eee", flexDirection: "row", padding: gutter, marginVertical: 8 }} >
       <View style={{flex: 1, paddingHorizontal: 4}}>
-        <Text style={theme.textB2}>{gradeMethod}</Text>
+        <Text style={theme.textB2}>Grading reported</Text>
         <Text><Text style={theme.textH1}>{acheivedGrade}</Text><Text>%</Text></Text>
         <Text style={theme.textSmall}>In attempt {totalOfflineAttempts}</Text>
       </View>

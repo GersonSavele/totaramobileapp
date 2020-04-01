@@ -63,6 +63,8 @@ const TotaraTheme: AppliedTheme = {
   colorWarning: "#8E660D",
   colorAlert: "#953539",
   colorHighlight: "#FDF8E4",
+  colorLink: "#007AFF",
+  colorDestructive: "#FF3B30",
 
   //---- Neutral color: customizable by [Developer] ------
   colorNeutral1: "#FFFFFF", 

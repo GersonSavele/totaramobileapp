@@ -20,7 +20,7 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Alert } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 // @ts-ignore
 import { useNetInfo } from "@react-native-community/netinfo"; //TO continue
@@ -28,7 +28,7 @@ import { Activity, ActivityType } from "@totara/types";
 import { AuthContext } from "@totara/core";
 import { scormQuery } from "@totara/activities/scorm/api";
 import { OfflineScormPackage, Scorm } from "@totara/types/Scorm";
-import { ContentIcon, MoreText, PrimaryButton, SecondaryButton, TertiaryButton } from "@totara/components"
+import { ContentIcon, MoreText, PrimaryButton, SecondaryButton, TertiaryButton, LinkText } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
 import {
   OfflineScormActivity,
@@ -233,20 +233,19 @@ const SCORMActivity = ({ activity, scorm }: SCORMActivityProps) => {
               
               <View style={styles.sectionBreak}>
                 <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>Grade details</Text>
-                {totalAttempt > 6 && <TertiaryButton text={"View all"} />}
+                {totalAttempt > 6 && <LinkText text={"View all"} onPress={()=> {Alert.alert("All the grading screen should be shown.")}}/>}
               </View>
-              { scormResultData && scormResultData.scorm && totalAttempt > 0 && <GradeDetails scorm={scormResultData.scorm} /> }
+              { scormResultData && scormResultData.scorm && <GradeDetails scorm={scormResultData.scorm} /> }
               <View style={styles.sectionField} >
                 <Text style={theme.textB1}>Grading method</Text>
                 {/* TODO */}
                 <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ scormResultData  && scormResultData.scorm && scormResultData.scorm.attemptsCurrent ? scormResultData!.scorm.attemptsCurrent.toString() : "0"}</Text>
               </View>
-              <View style={styles.sectionField} >
+              {/* <View style={styles.sectionField} >
                 <Text style={theme.textB1}>Grading reported</Text>
-                {/* TODO */}
                 <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ scormResultData  && scormResultData.scorm && scormResultData.scorm.calculatedGrade ? scormResultData.scorm.calculatedGrade : "0"}</Text>
               </View>
-              
+               */}
               <Text style={[theme.textH2, styles.sectionBreak]}>Attempt details</Text>
               <View style={styles.sectionField} >
                 <Text style={theme.textB1}>Total attempts allowed</Text>
@@ -352,9 +351,9 @@ const AttemptController = (attempt: PropsAttempt) => {
         </View>
       </View>
       <View style={{flexDirection: "row", justifyContent: "space-between" }}>
-        { isEnabledNewAttempt && isEnabledLastAttempt && <SecondaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} /> }
-        { isEnabledNewAttempt && !isEnabledLastAttempt && <PrimaryButton text={"Start new attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} style={styleForButtonStatus(isEnabledNewAttempt, isEnabledLastAttempt)}/> }
-        { isEnabledNewAttempt && isEnabledLastAttempt && <View style={{ width: 8 }}></View> }
+        { isEnabledNewAttempt && isEnabledLastAttempt && <SecondaryButton text={"New attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} /> }
+        { isEnabledNewAttempt && !isEnabledLastAttempt && <PrimaryButton text={"New attempt"} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} style={styleForButtonStatus(isEnabledNewAttempt, isEnabledLastAttempt)}/> }
+        { isEnabledNewAttempt && isEnabledLastAttempt && <View style={{ width: 16 }}></View> }
         { isEnabledLastAttempt && <PrimaryButton text={"Continue last attempt"} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} style={styleForButtonStatus(isEnabledNewAttempt, isEnabledLastAttempt)} /> }
       </View>
     </View>);

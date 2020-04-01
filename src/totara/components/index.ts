@@ -37,6 +37,7 @@ import TouchableIcon from "./TouchableIcon";
 import AppModal from "./AppModal";
 import FormError from "./FormError";
 import MoreText from "./MoreText";
+import LinkText from "./LinkText";
 
 export {
   LearningItemCard,
@@ -59,4 +60,5 @@ export {
   FormError,
   SecondaryButton,
   MoreText,
+  LinkText,
 }

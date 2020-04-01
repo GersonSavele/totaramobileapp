@@ -38,6 +38,8 @@ export type Theme = {
   colorWarning: string;
   colorAlert: string;
   colorHighlight: string;
+  colorLink: string;
+  colorDestructive: string;
 
   colorNeutral1: string;
   colorNeutral2: string;

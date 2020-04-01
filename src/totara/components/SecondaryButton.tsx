@@ -80,14 +80,14 @@ const SecondaryButton = ({ children, text, icon, style, onPress, mode, ...rest}:
       minWidth: 150,
       borderRadius: 3,
       borderWidth: mode === 'disabled' ? 0 : 1,
-      borderColor: theme.colorPrimary,
+      borderColor: theme.colorNeutral7,
       backgroundColor: mode === 'disabled' ? theme.colorSecondary1 : theme.colorNeutral1,
       opacity: (mode == "loading" || mode == "disabled") ? 0.5 : 1
     }, 
     title: {
       fontWeight: "bold", 
       fontSize: theme.fontSizeButtonTitle, 
-      color: mode === 'disabled' ? theme.colorNeutral7 : theme.textColorSecondary
+      color: mode === 'disabled' ? theme.colorNeutral7 : theme.textColorDark
     }
   });
   
