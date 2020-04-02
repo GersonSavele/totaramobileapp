@@ -55,7 +55,9 @@ import {
   faChevronLeft,
   faUnlockAlt,
   faCaretUp,
-  faCaretDown
+  faCaretDown,
+    faTrashAlt,
+    faCaretRight
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Log } from "@totara/lib";
@@ -180,7 +182,9 @@ const initFontAwesome = () => {
     faChevronLeft,
     faUnlockAlt,
     faCaretUp,
-    faCaretDown
+    faCaretDown,
+      faTrashAlt,
+      faCaretRight
   );
 };
 initFontAwesome();
