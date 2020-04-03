@@ -131,5 +131,34 @@
     "title" : "Awesome!",
     "description" : "You have successfully completed\nthe course.",
     "button_title" : "Continue learning"
+  },
+  "scorm" : {
+    "last_synced" : "Last synced",
+    "ago": "ago",
+    "summary" : {
+      "summary": "Summary",
+      "grade": 
+      {
+        "title": "Grade details",
+        "view_all": "View all",
+        "method": "Grading method",
+        "reported": "Grade reported",
+        "in_attempt": "In attempt"
+      },
+      "attempt": {
+        "title": "Attempt details",
+        "total_attempts": "Total attempts allowed",
+        "completed_attempts": "Total attempts done"
+      },
+      "new_attempt": "New attempt",
+      "last_attempt": "Last attempt",
+    },
+    "feedback" : {
+      "grade_title": "YOUR LAST ATTEMPT GRADE",
+      "awesome": "Awesome!",
+      "sorry": "Sorry!",
+      "back": "Back to course",
+      "attempt_again": "Attempt again",
+    }
   }
 }

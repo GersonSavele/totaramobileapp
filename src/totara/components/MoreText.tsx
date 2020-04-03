@@ -1,12 +1,14 @@
 import ViewMoreText from 'react-native-view-more-text';
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from "react-native";
+import { ThemeContext } from '@totara/theme';
 
 const MoreText = (props: {longText: string}) =>{
+    const [theme] = useContext(ThemeContext);
     const renderViewMore = (event: () => void) => {
         return(
             <View style={styles.moreLessContainer}>
-                <Text onPress={event} style={styles.moreLess}>more</Text>
+                <Text onPress={event} style={{color: theme.colorLink}}>more</Text>
             </View>
         )
     }
@@ -14,7 +16,7 @@ const MoreText = (props: {longText: string}) =>{
     const renderViewLess = (event: () => void) => {
         return(
             <View style={styles.moreLessContainer}>
-                <Text style={styles.moreLess} onPress={event} >less</Text>
+                <Text style={{color: theme.colorLink}} onPress={event} >less</Text>
             </View>
         )
     }
@@ -37,10 +39,6 @@ const styles = StyleSheet.create({
     moreLessContainer: {
         display: 'flex', width: '100%', alignItems:"flex-end"
     },
-
-    moreLess: {
-        color: 'blue'
-    }
 })
 
 

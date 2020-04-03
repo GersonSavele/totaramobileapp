@@ -22,8 +22,10 @@
 import { useEffect, useState } from "react";
 import { gql } from "apollo-boost";
 import { useMutation } from '@apollo/react-hooks';
+import { useNetInfo } from "@react-native-community/netinfo";
 
 import { getUnsyncedData, getSCORMLastActivity, setSyncedScormActivity } from "./StorageHelper";
+import { Log } from "@totara/lib";
 
 const SaveAttemptMutation = gql`
   mutation mod_scorm_save_offline_attempts(
@@ -41,27 +43,32 @@ const AttemptSynchronizer = () => {
   const [unSyncData, setUnsyncData] = useState<[any]>();
   const [syncData, setSyncData] = useState();
   const [saveAttempt] = useMutation(SaveAttemptMutation);
+  const netInfo = useNetInfo();
+  
   useEffect(()=> {
-    if (!unSyncData) {
-      getUnsyncedData().then(data => {
-        if (data && data.length > 0) {
-          setUnsyncData(data);
-        } 
-      });
-    } else {
-      if (unSyncData && unSyncData!.length > 0) {
-        const syncIndex = {index: 0};
-        const unsyncScormData = unSyncData[syncIndex.index];
-        getSCORMLastActivity(unsyncScormData.scormid).then(storedLastActivityData => {
-          if (storedLastActivityData) {
-            setSyncData({...unsyncScormData, ...storedLastActivityData, ...syncIndex});
-          }
-        })
+    
+    if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null && netInfo.isInternetReachable)) {
+      if (!unSyncData) {
+        getUnsyncedData().then(data => {
+          if (data && data.length > 0) {
+            setUnsyncData(data as [any]);
+          } 
+        });
+      } else {
+        if (unSyncData && unSyncData!.length > 0) {
+          const syncIndex = {index: 0};
+          const unsyncScormData = unSyncData[syncIndex.index];
+          getSCORMLastActivity(unsyncScormData.scormid).then(storedLastActivityData => {
+            if (storedLastActivityData) {
+              setSyncData({...unsyncScormData, ...storedLastActivityData, ...syncIndex});
+            }
+          })
+        }
+        
       }
-      
     }
     
-  }, [unSyncData]);
+  }, [unSyncData, netInfo]);
 
   useEffect(()=> {
     if(syncData && syncData !== undefined) {
@@ -92,7 +99,6 @@ const AttemptSynchronizer = () => {
         if(isSaveSuccess) {
           setSyncedScormActivity(tmpSyncScormId, tmpSyncStartAttempt).then(() => {
             let tmpUnSyncData = unSyncData;
-            console.log("Before: ", tmpUnSyncData);
             delete tmpUnSyncData[syncData.index].attempts[syncData.start.attempt];
             if (!(tmpUnSyncData[syncData.index].attempts && tmpUnSyncData[syncData.index].attempts.length > 0)) {
               delete tmpUnSyncData[syncData.index]
@@ -100,7 +106,6 @@ const AttemptSynchronizer = () => {
             if(!(tmpUnSyncData && tmpUnSyncData.length > 0)) {
               tmpUnSyncData = undefined;
             }
-            console.log("After: ", tmpUnSyncData);
             setUnsyncData(tmpUnSyncData);
           });
         } else {
@@ -108,13 +113,13 @@ const AttemptSynchronizer = () => {
           throw new Error("Data sync failed.")
         }
       }).catch(e => {
-        console.log("error: ", e);
+        Log.debug("Data synchronizing failed. ", e);
       })
     }
     
   }, [syncData]);
-
- return null; //TODO - need to check with Binu for UI
+ 
+  return null; 
  
 };
 

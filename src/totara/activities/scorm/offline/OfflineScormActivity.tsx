@@ -45,15 +45,16 @@ const OfflineScormActivity = (props: Props) => {
     
     useEffect(()=>{
         setUpOfflineSCORMPlayer().then(offlineServerPath => {
-            if (offlineServerPath) {
-                startServer(offlineServerPath)
-                .then((serverOrigin: string) => setUrl(serverOrigin));
+            if (offlineServerPath && offlineServerPath !== "") {
+                return startServer(offlineServerPath);
             } else {
-                Log.debug("Cannot fine offline server details.");
+                throw new Error("Cannot fine offline server details.");
             }
+        }).then((serverOrigin: string) => {
+            setUrl(serverOrigin);
         }).catch(e => {
             Log.debug(e.messageData);
-        })
+        });
         
        loadSCORMPackageData(props.storedPackageData.package).then(data => {
            setScormPackageData(data);
@@ -124,7 +125,7 @@ const OfflineScormActivity = (props: Props) => {
                 return Promise.resolve(packageData);
             } else {
                 return getSCORMPackageData(`${OfflineSCORMServerRoot}/${packageData.path}`).then(data=> {
-                    const tmpPackageData = {...packageData, ...data } as ScormPackage
+                    const tmpPackageData = {...packageData, ...data } as ScormPackage;
                     return tmpPackageData;
                 });
             }

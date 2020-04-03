@@ -18,24 +18,25 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
+import React from "react";
 
-import React, { useContext } from "react";
-import { Text, TextStyle, TouchableOpacity } from "react-native";
-
-import { ThemeContext } from "@totara/theme";
+import OfflineSCORMFeedback from "./offline/OfflineSCORMFeedback";
+import OnlineSCORMFeedback from "./online/OnlineSCORMFeedback";
+import { ActivityType } from "@totara/types";
 
 type Props = {
-  text?: string,
-  style?: TextStyle,
-  onPress?: (() => void)
-}
-
-const LinkText = ({ text, style, onPress, ...rest }: Props) => {
-
-  const [theme] = useContext(ThemeContext);
-  
-  return (<TouchableOpacity onPress={onPress} >
-    <Text style={[{fontSize: 16, color: theme.colorLink}, style]} {...rest}>{text}</Text>
-  </TouchableOpacity>);
+  activity: ActivityType;
+  onClose: () => void;
+  onPrimary: () => void;
+  data?: any;
 };
-export default LinkText;
+
+const SCORMFeedback = ({ activity, onClose, onPrimary, data }: Props) => {
+  if (data.isonline) {
+    return (<OnlineSCORMFeedback activity={activity} onClose={onClose} onPrimary={onPrimary} />);
+  } else {
+    return (<OfflineSCORMFeedback activity={activity} onClose={onClose} onPrimary={onPrimary} />);
+  }
+};
+
+export default SCORMFeedback;

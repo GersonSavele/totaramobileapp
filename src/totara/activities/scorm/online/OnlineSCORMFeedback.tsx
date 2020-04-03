@@ -18,22 +18,36 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React from "react";
 
+import React from "react";
+import { Text } from "react-native";
+import { useQuery } from "@apollo/react-hooks";
+import { scormQuery } from "@totara/activities/scorm/api";
+
+import SCORMFeedbackModal from "../components/SCORMFeedbackModal";
 import { ActivityType } from "@totara/types";
-import SCORMFeedback from "./scorm/SCORMFeedback";
 
 type Props = {
   activity: ActivityType;
   onClose: () => void;
   onPrimary: () => void;
-  data?: any;
 };
 
-const ActivityFeedback = ({ activity, onClose, onPrimary, data }: Props) => {
-  if (activity.modtype === "scorm") {
-    return (<SCORMFeedback activity={activity} onClose={onClose} onPrimary={onPrimary} data={data} /> );
+const OnlineSCORMFeedback = ({ activity, onClose, onPrimary }: Props) => {
+  const { loading, error, data } = useQuery(scormQuery, {
+    variables: { scormid: activity.instanceid }
+  });
+  if (loading) {
+    return <Text>Loading...</Text>;
   }
-  return null;
+  if (error) {
+    return <Text>Something went wrong, please try again later.</Text>;
+  }
+  if (data && data.scorm) {
+    return (<SCORMFeedbackModal grade={data.scorm.calculatedGrade} score={data.scorm.calculatedGrade} method={"grade"} onClose={onClose} onPrimary={onPrimary} />);
+  } else {
+    return <Text>Something went wrong, please try again later.</Text>;
+  }
 };
-export default ActivityFeedback;
+
+export default OnlineSCORMFeedback;

@@ -43,10 +43,14 @@ const setSCORMPackageData = (scormId: number, data: any) => {
 
 const removeSCORMPackageData = (scormId: number) => {
     return AsyncStorage.getItem(KeySCORMPackageData).then(storageData => {
-        if(storageData && JSON.parse(storageData) && JSON.parse(storageData)[scormId]) {
+        if(storageData && JSON.parse(storageData)) {
             let existingData = JSON.parse(storageData);
-            delete existingData[scormId];
-            return existingData;
+            if (existingData[scormId]) {
+                delete existingData[scormId];
+            }
+            if (existingData) {
+                return existingData;
+            }
         }
         return null;
     }).then(newData => {
@@ -58,9 +62,9 @@ const removeSCORMPackageData = (scormId: number) => {
     });
 };
 
-const getSCORMData = (scormId: number) => {
+const getSCORMData = (scormId: number, apiData?: Scorm) => {
     return RetrieveStorageDataById(scormId.toString()).then(storedResourceData => { 
-        if(!storedResourceData || storedResourceData === undefined || storedResourceData === null) {
+        if (!storedResourceData || storedResourceData === undefined || storedResourceData === null) {
             return removeSCORMPackageData(scormId);
         } else {
             return Promise.resolve()
@@ -72,16 +76,22 @@ const getSCORMData = (scormId: number) => {
                 const scormDataSet = JSON.parse(dataScormPackage[1]);
                 if (scormDataSet[scormId]) {
                     scormData = scormDataSet[scormId];
+                    if(apiData) {
+                        scormData = {...scormData, ...{scorm: apiData}};
+                    }
                     let activityData = undefined; 
                     if (dataActivity.length === 2 && dataActivity[1] && JSON.parse(dataActivity[1])){
                         activityData = JSON.parse(dataActivity[1])[scormId];
+                        if(activityData && activityData.last && activityData.last.attempt && scormData.scorm) {
+                            scormData.scorm.attemptsCurrent = activityData.last.attempt
+                        }
                     }
                     scormData = {...scormData, ...{offlineActivity: activityData}} as OfflineScormPackage;  
+                    
                 }                 
             }
             return scormData;
         });
-
     });
 };
 
@@ -148,8 +158,11 @@ const saveSCORMActivityData = (data: any) => {
 
 const getSCORMAttemptData = async (scormId: number, attempt: number) => {
     return AsyncStorage.getItem(KeySCORMCMIData).then(data => {
-        if (data && JSON.parse(data) && JSON.parse(data)[scormId][attempt]) {
-            return JSON.parse(data)[scormId][attempt];
+        if (data && JSON.parse(data)) {
+            const storedAttemptData = JSON.parse(data);
+            if (storedAttemptData[scormId] && storedAttemptData[scormId][attempt]) {
+                return JSON.parse(data)[scormId][attempt];
+            }
         }
         return null;
     });
@@ -169,6 +182,7 @@ const getUnsyncedData = () => {
         }
     });
 };
+
 const setSyncedScormActivity = (scormId: number, attempt: number) => {
     return AsyncStorage.multiGet([KeySCORMCMIData, KeySCORMCommitData, KeySCORMActivityData]).then(([storageCMIData, storageCommitData, storageActivityData]) => {
         let scormCMIData = null;
@@ -237,13 +251,59 @@ const getGradesReport = (scormId: number) => {
                 let scoresData = [];
                 for (let [attempt, scosData] of Object.entries(cmiData)) {
                     for (let [, cmi] of Object.entries(scosData as any)) {
-                        scoresData.push({ attempt: parseInt(attempt), score: parseInt(cmi.core.score.raw), grade: cmi.core.lesson_status});
+                        const maxScore = parseInt(cmi.core.score.max) ? parseInt(cmi.core.score.max) : 100;
+                        const minScore = parseInt(cmi.core.score.min) ? parseInt(cmi.core.score.min) : 0;
+                        const rowScore = parseInt(cmi.core.score.raw) ? parseInt(cmi.core.score.raw) : 0;
+                        
+                        const scoScorePercent = (rowScore / ( maxScore - minScore)) * 100;
+                        scoresData.push({ attempt: parseInt(attempt), scoreRaw: rowScore, scoreMax: maxScore, lessonStatus: cmi.core.lesson_status});
                     }
                 }    
                 return scoresData; 
             }
         } 
         return null;
+    });
+};
+
+const getLastAttemptScore = (scormId: number) => {
+    return AsyncStorage.getItem(KeySCORMActivityData).then(storedActivityData => {
+        if(storedActivityData && JSON.parse(storedActivityData)) {
+            const storedActivitiesData = JSON.parse(storedActivityData);
+            if (storedActivitiesData[scormId] && storedActivitiesData[scormId].last && storedActivitiesData[scormId].last.attempt) {
+                return storedActivitiesData[scormId].last.attempt
+            } 
+        }
+        return null;
+    }).then(lastAttempt=> {
+        if(lastAttempt) {
+            return AsyncStorage.getItem(KeySCORMCMIData).then(storageData => {
+                if (storageData && JSON.parse(storageData)) {
+                    const dataCMIs = JSON.parse(storageData);
+                    if (dataCMIs[scormId]) {
+                        const cmiData = dataCMIs[scormId];
+                        if(cmiData[lastAttempt]) {
+                            let grade = "passed";
+                            let score = "0%";
+                            const scosData = cmiData[lastAttempt];
+                             
+                            for (let [, cmi] of Object.entries(scosData as any)) {
+                                const maxScore = parseInt(cmi.core.score.max) ? parseInt(cmi.core.score.max) : 100;
+                                const minScore = parseInt(cmi.core.score.min) ? parseInt(cmi.core.score.min) : 0;
+                                const rowScore = parseInt(cmi.core.score.raw) ? parseInt(cmi.core.score.raw) : 0;
+                                
+                                const scoScorePercent = (rowScore / ( maxScore - minScore)) * 100;
+                                score = `${scoScorePercent}%`;
+                            }
+                            return {score: score, grade: grade};
+                        }
+                    }
+                } 
+                return null;
+            });
+        } else {
+            return null;
+        }
     });
 };
 
@@ -254,4 +314,4 @@ const storageClear = async () => {
     }
 };
 
-export { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, getUnsyncedData, setSyncedScormActivity, getGradesReport, storageClear };
+export { setSCORMPackageData, getSCORMData, saveSCORMActivityData, getSCORMAttemptData, getSCORMLastActivity, getUnsyncedData, setSyncedScormActivity, getGradesReport, getLastAttemptScore, storageClear };

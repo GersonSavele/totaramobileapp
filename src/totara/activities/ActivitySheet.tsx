@@ -83,7 +83,7 @@ const initialState = {
   currentActivity: undefined,
   onClose: () => {},
   show: false,
-  feedbackActivity: undefined
+  feedback: undefined
 };
 
 export class ActivitySheetProvider extends React.Component {
@@ -102,14 +102,14 @@ export class ActivitySheetProvider extends React.Component {
     })
   }
 
-  setFeedbackActivity(activity: ActivityType) {
+  setFeedback(data: {activity: ActivityType, data: any}) {
     this.setState({
-      feedbackActivity: activity
+      feedback: data
     })
   }
 
   onClose = () => {
-    const newState = this.state.feedbackActivity && this.state.currentActivity ? {...initialState, ...{feedbackActivity: this.state.feedbackActivity}} : initialState;
+    const newState = this.state.feedback && this.state.currentActivity ? {...initialState, ...{feedback: this.state.feedback}} : initialState;
     this.state.onClose();
     this.setState(newState);
   };
@@ -120,13 +120,13 @@ export class ActivitySheetProvider extends React.Component {
       <ActivitySheetContext.Provider value={{
         ...this.state,
         setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
-        setFeedbackActivity: (feedbackActivity: ActivityType) => this.setFeedbackActivity(feedbackActivity),
+        setFeedback: (data: {activity: ActivityType, data: any}) => this.setFeedback(data),
         setOnClose: (onCloseCallback: () => {}) => this.setOnClose(onCloseCallback)
       }}>
         {/* eslint-disable-next-line react/prop-types */}
         {this.props.children}
         {(this.state.currentActivity) && <ActivitySheet currentActivity={this.state.currentActivity!} onClose={this.onClose} show={this.state.show}/> }
-        {(this.state.feedbackActivity && this.state.currentActivity === undefined) && <ActivityFeedback activity={this.state.feedbackActivity} onClose={this.onClose} />}
+        {(this.state.feedback && this.state.feedback.activity && this.state.currentActivity === undefined) && <ActivityFeedback activity={this.state.feedback.activity} data={this.state.feedback.data} onClose={this.onClose} onPrimary={() => { this.setCurrentActivity(this.state.feedback.activity)}}/>}
       </ActivitySheetContext.Provider>
       </View>)
   }
@@ -159,7 +159,10 @@ type Props = {
   currentActivity: ActivityType,
   onClose: () => void
   show: boolean,
-  feedbackActivity: ActivityType
+  feedback: {
+    activity: ActivityType,
+    data?: any
+  }
 }
 
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {

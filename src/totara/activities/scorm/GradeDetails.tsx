@@ -20,17 +20,30 @@
  */
 
 import React, { useContext, useEffect, useState }  from "react";
-import { Text, View } from "react-native";
+import { Text, View, TextStyle } from "react-native";
 
 import { ThemeContext, gutter } from "@totara/theme";
 import { Scorm } from "@totara/types";
 import { getGradesReport } from "./offline";
+import { translate } from "@totara/locale";
 
-const  GradeDetails = ({scorm}: Scorm) => {
+type Props = {
+  scorm: Scorm,
+  limit?: number,
+};
+
+type AttemptGrade = {
+  attempt: number, 
+  scoreRaw: string, 
+  scoreMax: string, 
+  lessonStatus?: string
+};
+
+const  GradeDetails = ({scorm, limit}: Props) => {
   const [theme] = useContext(ThemeContext);
   const [gradeMethod, setGradeMethod] = useState<string>();
   const [acheivedGrade, setAcheivedGrade] = useState<string>();
-  const [offlineAttemptsReport, setOfflineAttemptsReport] = useState<[AttemptGradeProp]>();
+  const [attemptsGradeReport, setAttemptsGradeReport] = useState<[AttemptGrade]>();
   
   useEffect(()=> {
     setGradeMethod("Highest attempt grade");
@@ -38,48 +51,82 @@ const  GradeDetails = ({scorm}: Scorm) => {
     if (scorm.id) {
       getGradesReport(scorm.id).then(offlineActivityReport => {
         if (offlineActivityReport && offlineActivityReport.length) {
-          setOfflineAttemptsReport(offlineActivityReport as [AttemptGradeProp]);
+          setAttemptsGradeReport(offlineActivityReport as [AttemptGrade]);
         } else {
-          setOfflineAttemptsReport(undefined);
+          setAttemptsGradeReport(undefined);
         }
       });
     }
   }, [scorm.id]);
 
-  const totalOfflineAttempts = offlineAttemptsReport !== undefined ? offlineAttemptsReport.length : 0;
 
-  return (
-    <View style={{ borderRadius: 5, backgroundColor: "#eee", flexDirection: "row", padding: gutter, marginVertical: 8 }} >
-      <View style={{flex: 1, paddingHorizontal: 4}}>
-        <Text style={theme.textB2}>Grading reported</Text>
-        <Text><Text style={theme.textH1}>{acheivedGrade}</Text><Text>%</Text></Text>
-        <Text style={theme.textSmall}>In attempt {totalOfflineAttempts}</Text>
-      </View>
-      { totalOfflineAttempts > 0 && (
-        <View style={{flex: 2, height: 100, padding: 4, flexDirection: "row-reverse"}}>
-        { totalOfflineAttempts > 0 && offlineAttemptsReport && offlineAttemptsReport.slice(Math.max(totalOfflineAttempts - 6, 0)).map(attemptReport => attemptReport.attempt  && attemptReport.grade  && attemptReport.score  && <AttemptGrade attempt={attemptReport.attempt} score={attemptReport.score} grade={attemptReport.grade} />)}
+
+  const getRemainBars = (maxBars: number, attemptCurrent: number, attemptsMax?: number) => {
+    if(attemptCurrent < maxBars) {
+      let bars = [];
+      const activeBars = attemptsMax ? attemptsMax : maxBars;
+      for (let tmpAttempt =  attemptCurrent + 1; tmpAttempt <= maxBars; tmpAttempt++) {
+        bars.push(<AttemptGrade attempt={tmpAttempt} activebars={activeBars} score={"0%"} key={tmpAttempt} />);
+      }
+      return bars;
+    }
+    return null;
+  }
+  const remainBars = getRemainBars(limit, scorm.attemptsCurrent, scorm.attemptsMax);
+
+  if (limit) {
+    return (
+      <View style={{ borderRadius: 5, backgroundColor: "#eee", flexDirection: "row", padding: gutter, marginVertical: 8, justifyContent: "space-between" }} >
+        <View style={{flex: 1, paddingHorizontal: 4}}>
+          <Text style={theme.textB2}>{translate("scorm.summary.grade.reported")}</Text>
+          <Text style={theme.textH1}>{scorm.calculatedGrade}</Text>
+          <Text style={theme.textSmall}>{translate("scorm.summary.grade.in_attempt")} {scorm.attemptsCurrent ? scorm.attemptsCurrent : "0"}</Text>
         </View>
-      )}
-  </View>);
+        <View style={{flex: 2, height: 100, padding: 4, flexDirection: "row-reverse"}}>
+          <View style={{flexDirection: "row"}}>
+          { scorm.attemptsCurrent > 0 && attemptsGradeReport && attemptsGradeReport.slice(0, limit).map((attemptReport, attemptIndex) => attemptReport.attempt  && attemptReport.scoreRaw  && <AttemptGrade attempt={attemptReport.attempt} score={`${((attemptReport.scoreRaw/(attemptReport.scoreMax ? attemptReport.scoreMax : 100)) * 100)}%`} grade={attemptReport.lessonStatus} activebars={limit} key={attemptIndex} />)}
+          { remainBars }
+          </View>
+        </View>
+    </View>);
+  } else {
+    return (
+      <View style={{ borderRadius: 5, backgroundColor: "#eee", flexDirection: "row", padding: gutter, marginVertical: 8, justifyContent: "space-between" }} >
+        <View style={{flex: 1, paddingHorizontal: 4}}>
+          <Text style={theme.textB2}>{translate("scorm.summary.grade.reported")}</Text>
+          <Text style={theme.textH1}>{scorm.calculatedGrade}</Text>
+          <Text style={theme.textSmall}>{translate("scorm.summary.grade.in_attempt")} {scorm.attemptsCurrent ? scorm.attemptsCurrent : "0"}</Text>
+        </View>
+        <View style={{flex: 2, height: 100, padding: 4, flexDirection: "row-reverse"}}>
+          <View style={{flexDirection: "row"}}>
+          { scorm.attemptsCurrent > 0 && attemptsGradeReport && attemptsGradeReport.map((attemptReport, attemptIndex) => attemptReport.attempt  && attemptReport.scoreRaw  && <AttemptGrade attempt={attemptReport.attempt} score={attemptReport.scoreRaw} grade={attemptReport.lessonStatus} activebars={limit} key={attemptIndex} />)}
+          </View>
+        </View>
+    </View>);
+  }
+  
 };
 
-type AttemptGradeProp = {
+type AttemptGradeBarProp = {
   attempt: number,
-  score: number,
-  grade: "pass" | "failed" | undefined
+  activebars: number,
+  score?: string,
+  grade?: string
 };
 
-const AttemptGrade = ({grade, attempt, score: marks}: AttemptGradeProp) => {
+const AttemptGrade = ({attempt, activebars, score, grade}: AttemptGradeBarProp) => {
   const [theme] = useContext(ThemeContext);
-
+  const styleTextBar: TextStyle = {textAlign: "center", color: attempt <= activebars ? theme.textColorDark : theme.textColorDisabled };
   return (
     <View style={{justifyContent: "space-between", paddingHorizontal: 4}}>
-      <Text style={[theme.textLabel, {color: theme.textColorSubdued, textAlign: "center"}]}>{`${marks}%`}</Text>
+      <Text style={[theme.textLabel, styleTextBar]}>{score}</Text>
       <View style={{width: 8, borderRadius: 4, flex: 1, backgroundColor: theme.colorNeutral3, flexDirection: "column-reverse", alignSelf: "center", marginVertical: 4}}>
-        <View style={{width: "100%", height: `${marks}%`, backgroundColor: grade && grade === "failed" ? theme.colorAlert : theme.colorSuccess, borderRadius: 4}}></View>
+        <View style={{width: "100%", height: score, backgroundColor: grade && grade === "failed" ? theme.colorAlert : theme.colorSuccess, borderRadius: 4}}></View>
       </View>
-      <Text style={[theme.textLabel, {textAlign: "center"}]}>{attempt}</Text>
+      <Text style={[theme.textLabel, styleTextBar]}>{attempt}</Text>
     </View>
   )
 };
+
+
 export default GradeDetails;

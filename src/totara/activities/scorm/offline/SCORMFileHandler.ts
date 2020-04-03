@@ -44,11 +44,12 @@ const unzipSCORMPackageToServer = (packageName: string, packageSource: string) =
       throw new Error("Cannot find unzipped location.");
     }
   });
-}
+};
 
+const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
+  
 const initializeSCORMWebplayer = () => {
   return RNFS.mkdir(OfflineSCORMServerRoot).then(() => {
-    const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
     return getPackageContent().then(result => {
         if (result && result.length) {
           let promisesToCopyFiles = [];
@@ -77,13 +78,11 @@ const initializeSCORMWebplayer = () => {
 };
 
 const isSCORMPlayerInitialized = () => {
-  const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
   return getPackageContent().then(result => {
     if (result && result.length) {
       let promisesToExistFiles = [];
       for (let i = 0; i < result.length; i++) {
         const itemPathTo = `${OfflineSCORMServerRoot}/${result[i].name}`;
-        
         promisesToExistFiles.push(RNFS.exists(itemPathTo));
       }
       return Promise.all(promisesToExistFiles).then(resultExistsFiles => {
@@ -95,17 +94,16 @@ const isSCORMPlayerInitialized = () => {
           }
           return true;
         } else {
-          throw new Error("No files");
+          throw new Error("No files found.");
         }
-      })
+      });
     } else {
-      throw new Error()
+      throw new Error("No package content found.");
     }
-  })
-}
+  });
+};
 
 const getOfflineSCORMPackageName = (courseId: string, scormId: number) => `OfflineSCORM_${courseId}_${scormId}`;
-// const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
 const SCORMPlayerPackagePath = Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
 
 export { initializeSCORMWebplayer, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized, OfflineSCORMServerRoot };
