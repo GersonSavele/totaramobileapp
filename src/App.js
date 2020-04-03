@@ -24,7 +24,6 @@ import React, { useContext } from "react";
 import { createAppContainer } from "react-navigation";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import AsyncStorage from "@react-native-community/async-storage";
-import messaging from "@react-native-firebase/messaging";
 
 import {
   faHome,
@@ -82,8 +81,6 @@ class App extends React.Component<{}> {
   async onPushRegistered(deviceToken) {
     // TODO: Send the token to my server so it could send back push notifications...
     Log.info("Device Token Received", deviceToken);
-    let fcmToken = await messaging().getToken();
-    Log.info("fcmtoken", fcmToken);
   }
 
   // TODO: this is just basic notification callback to check if notification to RN.
