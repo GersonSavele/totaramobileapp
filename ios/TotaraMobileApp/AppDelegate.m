@@ -11,8 +11,8 @@
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
-#import <Firebase.h>
-#import <RNNotifications.h>
+//#import <Firebase.h>
+//#import <RNNotifications.h>
 #import <RNFSManager.h>
 
 @implementation AppDelegate
@@ -40,8 +40,8 @@
   [self.window makeKeyAndVisible];
   [RNSplashScreen show];
   
-  [FIRApp configure];
-  [RNNotifications startMonitorNotifications];
+//  [FIRApp configure];
+//  [RNNotifications startMonitorNotifications];
   
   return YES;
 }
@@ -62,19 +62,19 @@ restorationHandler: (nonnull void (^)(NSArray<id<UIUserActivityRestoring>> *_Nul
   return [RCTLinkingManager application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings // NS_AVAILABLE_IOS(8_0);
-{
-        [application registerForRemoteNotifications];
-}
+//- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings // NS_AVAILABLE_IOS(8_0);
+//{
+//        [application registerForRemoteNotifications];
+//}
+//
+//- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
+//
+//  NSLog(@"deviceToken: %@", deviceToken);
+//  [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+//}
 
-- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
-
-  NSLog(@"deviceToken: %@", deviceToken);
-  [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-}
-
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
-}
+//- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+//  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+//}
 
 @end
