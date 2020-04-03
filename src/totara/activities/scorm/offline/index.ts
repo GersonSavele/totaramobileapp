@@ -36,6 +36,7 @@ import {
   storageClear
 } from "./StorageHelper";
 import AttemptSynchronizer from "./AttemptSynchronizer";
+import OfflineSCORMFeedback from "./OfflineSCORMFeedback";
 
 export {
   OfflineScormActivity,
@@ -59,5 +60,7 @@ export {
   getLastAttemptScore,
   storageClear,
 
-  AttemptSynchronizer
+  AttemptSynchronizer,
+  
+  OfflineSCORMFeedback
 }

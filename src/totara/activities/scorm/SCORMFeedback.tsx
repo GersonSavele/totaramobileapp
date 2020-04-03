@@ -20,7 +20,7 @@
  */
 import React from "react";
 
-import OfflineSCORMFeedback from "./offline/OfflineSCORMFeedback";
+import { OfflineSCORMFeedback } from "./offline/";
 import OnlineSCORMFeedback from "./online/OnlineSCORMFeedback";
 import { ActivityType } from "@totara/types";
 
