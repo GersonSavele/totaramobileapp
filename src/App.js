@@ -20,7 +20,7 @@
  *
  */
 
-import React, { useContext } from "react";
+import React, {useContext, useEffect} from "react";
 import { createAppContainer } from "react-navigation";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import AsyncStorage from "@react-native-community/async-storage";
@@ -59,7 +59,6 @@ import {
     faCaretRight
 } from "@fortawesome/free-solid-svg-icons";
 
-import { Log } from "@totara/lib";
 import { ActivitySheetProvider } from "@totara/activities";
 import { AuthProvider } from "@totara/core/AuthProvider";
 import { AuthFlow } from "@totara/auth/AuthFlow";
@@ -67,74 +66,76 @@ import { AdditionalAction } from "@totara/auth/additional-actions";
 import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 import {FeatureNavigator} from "@totara/features";
-import * as notifications from "./Notifications";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import {AttemptSynchronizer} from "@totara/activities/scorm/offline"; 
 
-class App extends React.Component<{}> {
+const App : () => React$Node = () => {
 
-  constructor() {
-    super();
-  }
+  // constructor() {
+  //   super();
+  // }
+  //
+  // // TODO: this is just basic notification callback to check if notification to RN.
+  // async onPushRegistered(deviceToken) {
+  //   // TODO: Send the token to my server so it could send back push notifications...
+  //   Log.info("Device Token Received", deviceToken);
+  // }
+  //
+  // // TODO: this is just basic notification callback to check if notification to RN.
+  // onPushRegistrationFailed(error) {
+  //   Log.error(error);
+  // }
+  //
+  // // TODO: this is just basic notification callback to check if notification to RN.
+  // onNotificationReceivedForeground(notification) {
+  //   Log.info("Notification Received - Foreground", notification);
+  // }
+  //
+  // // TODO: this is just basic notification callback to check if notification to RN.
+  // onNotificationReceived(notification) {
+  //   Log.info("Notification Received", notification);
+  // }
+  //
+  // // TODO: this is just basic notification callback to check if notification to RN.
+  // onNotificationOpened(notification) {
+  //   Log.info("Notification opened by device user", notification);
+  // }
+  //
+  // async componentWillUnmount() {
+  //   // prevent memory leaks!
+  //   await notifications.cleanUp();
+  // }
+  //
+  // async componentDidMount() {
+  //   await new ResourceManager().init();
+  //   await notifications.init(
+  //     this.onNotificationReceivedForeground,
+  //     this.onNotificationOpened,
+  //     this.onPushRegistered,
+  //     this.onPushRegistrationFailed
+  //   );
+  // }
 
-  // TODO: this is just basic notification callback to check if notification to RN.
-  async onPushRegistered(deviceToken) {
-    // TODO: Send the token to my server so it could send back push notifications...
-    Log.info("Device Token Received", deviceToken);
-  }
+  useEffect(()=>{
+    new ResourceManager().init();
+  });
 
-  // TODO: this is just basic notification callback to check if notification to RN.
-  onPushRegistrationFailed(error) {
-    Log.error(error);
-  }
 
-  // TODO: this is just basic notification callback to check if notification to RN.
-  onNotificationReceivedForeground(notification) {
-    Log.info("Notification Received - Foreground", notification);
-  }
-
-  // TODO: this is just basic notification callback to check if notification to RN.
-  onNotificationReceived(notification) {
-    Log.info("Notification Received", notification);
-  }
-
-  // TODO: this is just basic notification callback to check if notification to RN.
-  onNotificationOpened(notification) {
-    Log.info("Notification opened by device user", notification);
-  }
-
-  async componentWillUnmount() {
-    // prevent memory leaks!
-    await notifications.cleanUp();
-  }
-
-  async componentDidMount() {
-    await new ResourceManager().init();
-    await notifications.init(
-      this.onNotificationReceivedForeground,
-      this.onNotificationOpened,
-      this.onPushRegistered,
-      this.onPushRegistrationFailed
-    );
-  }
-
-  render() {
-    return (
-      <AuthProvider asyncStorage={AsyncStorage}>
-        <ThemeProvider>
-          <AuthFlow>
-            <ActivitySheetProvider>
-              <AppContainer />
-            </ActivitySheetProvider>
-            <AdditionalAction />
-            <AppModal />
-            <AttemptSynchronizer />
-          </AuthFlow>
-        </ThemeProvider>
-       </AuthProvider>
-    );
-  }
-}
+  return (
+    <AuthProvider asyncStorage={AsyncStorage}>
+      <ThemeProvider>
+        <AuthFlow>
+          <ActivitySheetProvider>
+            <AppContainer />
+          </ActivitySheetProvider>
+          <AdditionalAction />
+          <AppModal />
+          <AttemptSynchronizer />
+        </AuthFlow>
+      </ThemeProvider>
+     </AuthProvider>
+  );
+};
 
 const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
