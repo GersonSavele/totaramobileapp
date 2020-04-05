@@ -21,7 +21,7 @@
 
 import { useState, useEffect } from "react";
 import { WebViewMessageEvent, WebViewNavigation } from "react-native-webview/lib/WebViewTypes";
-import CookieManager from "react-native-cookies";
+import CookieManager from "@react-native-community/cookies";
 
 import { config } from "@totara/lib";
 import { ManualFlowChildProps } from "@totara/auth/manual/ManualFlowChildProps";

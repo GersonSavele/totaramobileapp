@@ -25,7 +25,7 @@ import { WebView, WebViewNavigation } from "react-native-webview";
 import { graphql, MutationFunction } from "react-apollo";
 import { compose } from "recompose";
 import gql from "graphql-tag";
-import CookieManager from "react-native-cookies";
+import CookieManager from "@react-native-community/cookies";
 
 import { config, Log } from "@totara/lib";
 import { AuthConsumer } from "@totara/core";

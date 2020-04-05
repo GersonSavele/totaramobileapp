@@ -192,7 +192,7 @@ PODS:
     - React-cxxreact (= 0.61.0)
     - React-jsi (= 0.61.0)
   - React-jsinspector (0.61.0)
-  - react-native-cookies (3.2.0):
+  - react-native-cookies (2.0.7):
     - React
   - react-native-netinfo (5.6.2):
     - React
@@ -243,7 +243,7 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.0)
   - RNCAsyncStorage (1.6.2):
     - React
-  - RNDeviceInfo (5.2.1):
+  - RNDeviceInfo (5.5.4):
     - React
   - RNFS (2.16.6):
     - React
@@ -283,7 +283,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-cookies (from `../node_modules/react-native-cookies/ios`)
+  - "react-native-cookies (from `../node_modules/@react-native-community/cookies`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -348,7 +348,7 @@ EXTERNAL SOURCES:
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-cookies:
-    :path: "../node_modules/react-native-cookies/ios"
+    :path: "../node_modules/@react-native-community/cookies"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
@@ -417,7 +417,7 @@ SPEC CHECKSUMS:
   React-jsi: 4b5e521350c455b5eb4be50ea98c02de25b44fad
   React-jsiexecutor: 5532ab4389aabbbf1b87904de04c8ddd7dda7036
   React-jsinspector: 99b82aeb51d67d9025ab4eb8ccb8132f8dcebf69
-  react-native-cookies: 854d59c4135c70b92a02ca4930e68e4e2eb58150
+  react-native-cookies: 379becdac3ac4aa0e0eeec9dd10869a0043b97a9
   react-native-netinfo: c67896313964727ddae153d6e119f65dae840d51
   react-native-notifications: 38f4b851c642c7e6b928f8f6dccbf59d7434cfc3
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -435,7 +435,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: c8e67f140a83a14a1ad9042950cca08ab29423fd
   ReactCommon: 584ef683c340894c1c82be43ce760390493ae8bf
   RNCAsyncStorage: 5ae4d57458804e99f73d427214442a6b10a53856
-  RNDeviceInfo: 223aea06c561ce99ae2045b621882bd7b7db1e59
+  RNDeviceInfo: 82e0a23d22ec73b2f71bd686a95d3dd278f223d7
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNLocalize: 7206d44eb341d6e2a61a8184b831c64a5539fcdf
@@ -447,4 +447,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 0b30391fba0e6eba52832add176fd88e4fa0eb4f
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.0

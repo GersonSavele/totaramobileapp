@@ -5,13 +5,13 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.cookies.CookieManagerPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.futurepress.staticserver.FPStaticServerPackage;
 import com.rnziparchive.RNZipArchivePackage;
 import com.rnfs.RNFSPackage;
 import cx.evermeet.versioninfo.RNVersionInfoPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
@@ -39,13 +39,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new CookieManagerPackage(),
             new NetInfoPackage(),
             new FPStaticServerPackage(),
             new RNZipArchivePackage(),
             new RNFSPackage(),
             new RNVersionInfoPackage(),
             new AsyncStoragePackage(),
-            new CookieManagerPackage(),
             new RNCWebViewPackage(),
             new SplashScreenReactPackage(),
             new RNLocalizePackage(),
