@@ -2,7 +2,7 @@ import {DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResul
 import {IResource, ResourceState} from "@totara/core/ResourceManager/Resource";
 import {unzip} from "react-native-zip-archive";
 import {DeleteStorage, RetrieveStorage, SaveStorage} from "@totara/core/ResourceManager/StorageManager";
-import {Log, Logger} from "@totara/lib";
+import {Log} from "@totara/lib";
 
 export type ResourceObserver = (resourceFile: IResource) => void;
 

@@ -50,6 +50,8 @@ target 'TotaraMobileApp' do
 
   pod 'react-native-cookies', :path => '../node_modules/@react-native-community/cookies'
 
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
   target 'TotaraMobileAppTests' do
     inherit! :search_paths
     # Pods for testing

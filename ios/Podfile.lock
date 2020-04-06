@@ -198,6 +198,8 @@ PODS:
     - React
   - react-native-notifications (2.1.5):
     - React
+  - react-native-safe-area-context (0.7.3):
+    - React
   - react-native-splash-screen (3.2.0):
     - React
   - react-native-static-server (0.4.2):
@@ -286,6 +288,7 @@ DEPENDENCIES:
   - "react-native-cookies (from `../node_modules/@react-native-community/cookies`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-static-server (from `../node_modules/react-native-static-server`)
   - react-native-version-info (from `../node_modules/react-native-version-info`)
@@ -353,6 +356,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
   react-native-static-server:
@@ -420,6 +425,7 @@ SPEC CHECKSUMS:
   react-native-cookies: 379becdac3ac4aa0e0eeec9dd10869a0043b97a9
   react-native-netinfo: c67896313964727ddae153d6e119f65dae840d51
   react-native-notifications: 38f4b851c642c7e6b928f8f6dccbf59d7434cfc3
+  react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-static-server: af5ae03c8114e5756e27c7ae32a116002f23be02
   react-native-version-info: daadd78b8fc93cf2764cb5aa52ec995961b62201

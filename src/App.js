@@ -67,7 +67,8 @@ import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 import {FeatureNavigator} from "@totara/features";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
-import {AttemptSynchronizer} from "@totara/activities/scorm/offline"; 
+import {AttemptSynchronizer} from "@totara/activities/scorm/offline";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App : () => React$Node = () => {
 
@@ -124,14 +125,16 @@ const App : () => React$Node = () => {
   return (
     <AuthProvider asyncStorage={AsyncStorage}>
       <ThemeProvider>
-        <AuthFlow>
-          <ActivitySheetProvider>
-            <AppContainer />
-          </ActivitySheetProvider>
-          <AdditionalAction />
-          <AppModal />
-          <AttemptSynchronizer />
-        </AuthFlow>
+        <SafeAreaProvider>
+          <AuthFlow>
+            <ActivitySheetProvider>
+              <AppContainer />
+            </ActivitySheetProvider>
+            <AdditionalAction />
+            <AppModal />
+            <AttemptSynchronizer />
+          </AuthFlow>
+        </SafeAreaProvider>
       </ThemeProvider>
      </AuthProvider>
   );
@@ -142,7 +145,7 @@ const AppContainer = () => {
   const AppMainNavigation = createAppContainer(FeatureNavigator());
 
   return (
-   <AppMainNavigation screenProps={{ theme: theme }}/>
+      <AppMainNavigation screenProps={{ theme: theme }}/>
   );
 };
 
