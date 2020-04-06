@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.art.ARTPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.reactnativecommunity.cookies.CookieManagerPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
@@ -40,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ARTPackage(),
             new SafeAreaContextPackage(),
             new CookieManagerPackage(),
             new NetInfoPackage(),
