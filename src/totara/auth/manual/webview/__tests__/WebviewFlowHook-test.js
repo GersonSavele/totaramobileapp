@@ -23,6 +23,15 @@ import { useWebviewFlow } from "../WebviewFlowHook";
 import { renderHook } from "@testing-library/react-hooks";
 import { act } from "react-test-renderer";
 
+jest.mock('react-native-cookies', () => ({
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn(),
+  openURL: jest.fn(),
+  canOpenURL: jest.fn(),
+  getInitialURL: jest.fn(),
+  get: () => Promise.resolve(null),
+}));
+
 describe("WebviewLoginHook", () => {
   it("initial props for the unsecured url(http://)", () => {
     const mockOnCancelWebviewLogin = jest.fn();

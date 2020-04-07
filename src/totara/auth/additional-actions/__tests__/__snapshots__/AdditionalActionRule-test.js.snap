@@ -132,7 +132,7 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
             accessibilityRole="button"
             accessibilityStates={Array []}
             accessible={true}
-            clickable={true}
+            focusable={true}
             isTVSelectable={true}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -174,7 +174,7 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
             accessibilityRole="button"
             accessibilityStates={Array []}
             accessible={true}
-            clickable={true}
+            focusable={true}
             isTVSelectable={true}
             onClick={[Function]}
             onResponderGrant={[Function]}

@@ -20,5 +20,8 @@ module.exports = {
     "@totara/(.*)": "<rootDir>/src/totara/$1",
     "@resources/(.*)": "<rootDir>/src/resources/$1"
   },
-  testPathIgnorePatterns: ["e2e"]
+  testPathIgnorePatterns: ["e2e"],
+  setupFiles: [
+    "<rootDir>/jest.setup.js"
+  ]
 };

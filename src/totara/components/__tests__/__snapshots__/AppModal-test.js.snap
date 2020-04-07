@@ -132,7 +132,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
             accessibilityRole="button"
             accessibilityStates={Array []}
             accessible={true}
-            clickable={true}
+            focusable={true}
             isTVSelectable={true}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -309,7 +309,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
             accessibilityRole="button"
             accessibilityStates={Array []}
             accessible={true}
-            clickable={true}
+            focusable={true}
             isTVSelectable={true}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -486,7 +486,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
             accessibilityRole="button"
             accessibilityStates={Array []}
             accessible={true}
-            clickable={true}
+            focusable={true}
             isTVSelectable={true}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -663,7 +663,7 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
             accessibilityRole="button"
             accessibilityStates={Array []}
             accessible={true}
-            clickable={true}
+            focusable={true}
             isTVSelectable={true}
             onClick={[Function]}
             onResponderGrant={[Function]}

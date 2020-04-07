@@ -110,5 +110,16 @@
       }
     },
     "test-runner": "jest"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleDirectories": [
+      "node_modules",
+      "src",
+      "test"
+    ],
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ]
   }
 }
