@@ -174,6 +174,43 @@ const getOfflineSCORMCommits = () => {
   return getAllCommits().then(storedData => {
     if (storedData) {
       // return storedData;
+      let formattedUnsyncedData = [];
+      for(let commitScormId in storedData ) {
+        const scormCommits = storedData[commitScormId];
+        const orededAttemptKeys = Object.keys(scormCommits).sort();
+        for(let index = 0; index < orededAttemptKeys.length; index++) {
+          const commitAttempt = orededAttemptKeys[index];
+          if (scormCommits[commitAttempt]) {
+            const commitTracks = getTracksForAllScos(scormCommits[commitAttempt]);
+            const commit = {scormId: parseInt(commitScormId), attempt: parseInt(commitAttempt), tracks: commitTracks};
+            formattedUnsyncedData.push(commit);
+          }
+        }
+        // formattedUnsyncedData.push({scormid: commitScormId, attempts: orededAttemptCommits});
+      }
+      return formattedUnsyncedData;
+    } else {
+      return undefined;
+    }
+  });
+}
+
+const getTracksForAllScos = (scosCommits: any) => {
+  let fullTracks = [];
+  for (let scoId in scosCommits) {
+    if(scosCommits[scoId] ) {
+      fullTracks = fullTracks.concat(scosCommits[scoId]);
+    }
+  }
+  return fullTracks;
+}
+
+
+
+const getOfflineSCORMCommitsOld = () => {
+  return getAllCommits().then(storedData => {
+    if (storedData) {
+      // return storedData;
       let formattedUnsyncedData = {};
       for(let commitScormId in storedData ) {
           const attemptCommits = storedData[commitScormId];

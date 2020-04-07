@@ -46,64 +46,50 @@ type SyncData = {
 }
 
 const AttemptSynchronizer = () => {
-  const [unSyncData, setUnsyncData] = useState<[any] | undefined>(undefined);
-  const [syncData, setSyncData] = useState<SyncData | undefined>(undefined);
+  const [unSyncData, setUnsyncData] = useState<[SyncData] | undefined>(undefined);
   const [saveAttempt] = useMutation(SaveAttemptMutation);
   const netInfo = useNetInfo();
   
   useEffect(()=> {
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null && netInfo.isInternetReachable)) {
-      if (!unSyncData) {
+      if (unSyncData && unSyncData.length &&  unSyncData.length > 0) {
+        syncScormRecord(unSyncData[0]).then(updatedUnsyncData => {
+          if (updatedUnsyncData && updatedUnsyncData.length > 0) {
+            setUnsyncData(updatedUnsyncData);
+          } else {
+            setUnsyncData(undefined);
+          }
+        }).catch(e=> {
+          Log.error("Data sync error: ", e);
+        });
+      } else {
         getOfflineSCORMCommits().then(data => {
-          if (data && Object.keys(data).length > 0) {
-            setUnsyncData(data as [any]);
+          if (data && data.length > 0) {
+            const syncDataSet = data as [SyncData];
+            setUnsyncData(syncDataSet);
           } 
         });
-      } else {              
-        if(Object.keys(unSyncData).length === 0 && unSyncData.constructor === Object) {
-          setUnsyncData(undefined);
-        } else {
-          const syncScormId = parseInt(Object.keys(unSyncData)[0]);
-          const pendingAttempts = unSyncData[syncScormId];
-          if(Object.keys(pendingAttempts).length === 0 && pendingAttempts.constructor === Object) {
-            let newUnsyncData = unSyncData;
-            delete newUnsyncData[syncScormId];
-            setUnsyncData(newUnsyncData);
-          } else {
-            const syncAttempt = parseInt(Object.keys(pendingAttempts)[0]);
-            const syncTracks = pendingAttempts[syncAttempt];
-            const syncingData = {scormId: syncScormId, attempt: syncAttempt, tracks: syncTracks};
-            setSyncData(syncingData);
-          }
-        }
       }
     }
   }, [unSyncData, netInfo]);
 
-  useEffect(()=> {
-    if(syncData && syncData.scormId && syncData.attempt && syncData.tracks) {
-      let unsavedAttemptTracks: any = [];
-      for (let scoId in syncData.tracks) {
-        if(syncData.tracks[scoId] && syncData.tracks[scoId] ) {
-          unsavedAttemptTracks = unsavedAttemptTracks.concat(syncData.tracks[scoId]);
+  const syncScormRecord = (syncData: SyncData) => {
+    return syncAttemptForScorm(syncData.scormId, syncData.tracks)
+      .then(isSynced => {
+        if (isSynced) {
+          return clearSyncedSCORMCommit(syncData.scormId, syncData.attempt);
+        } else {
+          throw new Error("Data sync failed.");
         }
-      }
-      syncAttemptForScorm(syncData.scormId, unsavedAttemptTracks)
-        .then(isSynced => {
-          if (isSynced) {
-            return clearSyncedSCORMCommit(syncData.scormId, syncData.attempt);
-          } else {
-            throw new Error("Data sync failed.");
-          }
-        })
-        .then(() => getUpdatedUnsyncData(syncData.scormId, syncData.attempt, unSyncData))
-        .then(updatedUnsyncData => {
-          setUnsyncData(updatedUnsyncData);
-        }).catch(e=> {
-          Log.error("Data sync error: ", e);
-        });
-    }
-  }, [syncData]);
+      })
+      .then(() => {
+        let newUnsyncData = unSyncData;
+        if (newUnsyncData) {
+          newUnsyncData.shift();
+        }
+        return newUnsyncData;
+      });
+  };
 
   const syncAttemptForScorm = (scormId: number, tracks: [any]) => {
     return saveAttempt({
@@ -123,20 +109,7 @@ const AttemptSynchronizer = () => {
       */
       return true;
     });
-  }
-  const getUpdatedUnsyncData = (scormId: number, attempt: number, unsyncdata: any) => {
-    let newUnsyncData = unsyncdata;
-    if (newUnsyncData) {
-      delete newUnsyncData[scormId][attempt];
-      if(Object.keys(newUnsyncData[scormId]).length === 0 && newUnsyncData[scormId].constructor === Object) {
-        delete newUnsyncData[scormId];
-      }
-      if(Object.keys(newUnsyncData).length === 0 && newUnsyncData.constructor === Object) {
-        newUnsyncData = undefined;
-      }
-    }
-    return newUnsyncData;
-  }
+  };
  
   return null; 
  

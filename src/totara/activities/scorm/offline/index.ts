@@ -26,8 +26,6 @@ import { initializeSCORMWebplayer, unzipSCORMPackageToServer, getOfflineSCORMPac
 import {
   saveSCORMActivityData,
   getSCORMAttemptData,
-  getOfflineSCORMActivity,
-  setSyncedScormActivity,
   getLastAttemptScore,
 } from "./StorageHelper";
 import AttemptSynchronizer from "./AttemptSynchronizer";
@@ -46,8 +44,6 @@ export {
 
   saveSCORMActivityData, 
   getSCORMAttemptData, 
-  getOfflineSCORMActivity, 
-  setSyncedScormActivity,
   getLastAttemptScore,
 
   AttemptSynchronizer,

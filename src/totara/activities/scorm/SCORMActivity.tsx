@@ -65,8 +65,8 @@ const SCORMActivity = ({activity}: SCORMActivityProps) => {
     NetInfo.fetch().then(state => {
       // console.log("Connection type", state.type);
       // console.log("Is connected?", state.isConnected);
-      // setIsReachable(false);
-      setIsReachable(state.isConnected ? Connectivity.online : Connectivity.offline);
+      setIsReachable(false);
+      // setIsReachable(state.isConnected ? Connectivity.online : Connectivity.offline);
     });
     return <Text>Loading...</Text>
   } else {

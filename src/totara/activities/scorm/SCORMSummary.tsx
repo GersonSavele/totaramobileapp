@@ -27,7 +27,7 @@ import * as RNFS from "react-native-fs";
 import { Activity } from "@totara/types";
 import { AuthContext } from "@totara/core";
 import { ScormBundle, AttemptGrade } from "@totara/types/Scorm";
-import { MoreText, PrimaryButton, SecondaryButton, LinkText } from "@totara/components"
+import { MoreText, PrimaryButton, SecondaryButton, LinkText, NotificationView } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
 import { getOfflineSCORMPackageName, OfflineSCORMServerRoot } from "./offline";
 import { Log } from "@totara/lib";
@@ -226,15 +226,19 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   const calculatedGrade = calculatedAttemptsGrade(scormBundle!.scorm.maxgrade, scormBundle!.scorm.whatgrade, scormBundle!.scorm.calculatedGrade, scormBundle!.scorm.attempts, offlineAttempts);
  
   const isCompletedAttempts = scormBundle && scormBundle!.scorm && scormBundle!.scorm.attemptsMax && totalAttempt >= scormBundle!.scorm.attemptsMax;
-  const isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > moment.now();
+  let isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > moment.now();
   console.log("isUpcomingActivity: ", isUpcomingActivity, "\tscormBundle!.scorm.timeopen: ", scormBundle!.scorm.timeopen, "\tnow: ", moment.now());
   console.log("isCompletedAttempts: ", isCompletedAttempts);
+  const lastsyncText = !isUserOnline && scormBundle ? `${translate("scorm.last_synced")}: ${moment(scormBundle.lastsynced).toNow(true)} ${translate("scorm.ago")} (${moment(scormBundle.lastsynced).format(DATE_FORMAT)})` : null;
+  const upcommingActivityText = isUpcomingActivity ? `${translate("scorm.info_upcoming_activity")} ${moment(scormBundle!.scorm.timeopen).format(DATE_FORMAT_FULL)}` : null;
+  const completedAttemptsText = !isUpcomingActivity && isCompletedAttempts ? translate("scorm.info_completed_attempts") : null;
+  
   return (
     <>
   <View style={styles.expanded}>
-    { !isUserOnline && scormBundle && <Text style={[theme.textSmall,{ backgroundColor: theme.colorInfo, color: theme.colorNeutral1, padding: 8}]}>⚡︎ {translate("scorm.last_synced")}: {moment(scormBundle.lastsynced).toNow(true)} {translate("scorm.ago")} ({moment(scormBundle.lastsynced).format(DATE_FORMAT)})</Text> }
-    { isUpcomingActivity && <Text style={[theme.textSmall,{ backgroundColor: theme.colorAlert, color: theme.colorNeutral1, padding: 8}]}>⌽ {translate("scorm.info_upcoming_activity")} {moment(scormBundle!.scorm.timeopen).format(DATE_FORMAT_FULL)}</Text> }
-    { !isUpcomingActivity && isCompletedAttempts && <Text style={[theme.textSmall,{ backgroundColor: theme.colorAlert, color: theme.colorNeutral1, padding: 8}]}> ⌽ {translate("scorm.info_completed_attempts")}</Text> }
+  { lastsyncText && <NotificationView mode={"info"} text={lastsyncText} /> }
+  { upcommingActivityText && <NotificationView mode={"alert"} text={upcommingActivityText} /> }
+  { completedAttemptsText && <NotificationView mode={"alert"} text={completedAttemptsText} /> }
    <View style={{flex: 1}}>
       <ScrollView>
         <View style={{ padding: gutter }}>

@@ -38,6 +38,7 @@ import AppModal from "./AppModal";
 import FormError from "./FormError";
 import MoreText from "./MoreText";
 import LinkText from "./LinkText";
+import NotificationView from "./NotificationView";
 
 export {
   LearningItemCard,
@@ -61,4 +62,5 @@ export {
   SecondaryButton,
   MoreText,
   LinkText,
+  NotificationView,
 }
