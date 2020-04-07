@@ -24,6 +24,7 @@ export const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
 export const AUTHORIZATION = "AUTHORIZATION";
 
 export const DATE_FORMAT = "D MMM, YYYY";
+export const DATE_FORMAT_FULL = "dddd, DD MMMM YYYY, h:mm A"
 
 export const PLATFORM_IOS = "ios";
 export const PLATFORM_ANDROID = "";

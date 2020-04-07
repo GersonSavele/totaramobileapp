@@ -26,12 +26,12 @@ import StaticServer from "react-native-static-server";
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
 import { initializeSCORMWebplayer, isSCORMPlayerInitialized, OfflineSCORMServerRoot } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getSCORMPackageData } from "@totara/activities/scorm/offline"
-import { OfflineScormPackage, ScormPackage, Sco } from "@totara/types/Scorm"
+import { ScormBundle, Package, Sco } from "@totara/types/Scorm"
 import { Log } from "@totara/lib";
 import { saveSCORMActivityData, getSCORMAttemptData } from "./StorageHelper";
 
 type Props = {
-    storedPackageData: OfflineScormPackage,
+    storedPackageData: ScormBundle,
     attempt: number,
     scoid?: string,
 }
@@ -39,7 +39,7 @@ type Props = {
 const OfflineScormActivity = (props: Props) => {
 
     const server = useRef<StaticServer>(null);
-    const [scormPackageData, setScormPackageData] = useState<ScormPackage>(props.storedPackageData.package);
+    const [scormPackageData, setScormPackageData] = useState<Package>(props.storedPackageData.package);
     const [url, setUrl] = useState<string>();
     const [jsCode, setJsCode] = useState<string>();
     
@@ -119,13 +119,13 @@ const OfflineScormActivity = (props: Props) => {
         }      
     };
 
-    const loadSCORMPackageData = (packageData?: ScormPackage) => {
+    const loadSCORMPackageData = (packageData?: Package) => {
         if (packageData && packageData.path) {
             if (packageData.scos && packageData.defaultSco) {
                 return Promise.resolve(packageData);
             } else {
                 return getSCORMPackageData(`${OfflineSCORMServerRoot}/${packageData.path}`).then(data=> {
-                    const tmpPackageData = {...packageData, ...data } as ScormPackage;
+                    const tmpPackageData = {...packageData, ...data } as Package;
                     return tmpPackageData;
                 });
             }

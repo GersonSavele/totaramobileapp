@@ -1,26 +1,66 @@
+export enum Grade {
+    objective = 0, //= "Learning objects",
+    highest, // = "Highest grade",
+    average, // = "Average grade",
+    sum // = "Sum grade"
+}
+
+export enum AttemptGrade {
+    highest = 0, // = "Highest attempt",
+    average, // = "Average attempts",
+    first, // = "First attempt",
+    last // = "Last completed attempt"
+}
+
+export enum Completion {
+    none = 0, //"Do not indicate activity completion"
+    manual, //"Learners can manually mark the activity as completed"
+    conditional //"Show activity as complete when conditions are met"
+}
+
 export type Scorm = {
     id: number,
     courseid: string,
+    name: string,
+    description: string,
     attemptsMax: number,
     attemptsCurrent: number,
     attemptsForceNew:  boolean,
     attemptsLockFinal: boolean,
-    description: string,
     launchUrl: string,
     calculatedGrade: string,
 
     offlineAttemptsAllowed: boolean,
     packageUrl?: string,
     offlinePackageUrl?: string,
-    offlinePackageContentHash?: string
+    offlinePackageContentHash?: string,
+
+    //TODO - missing data from api
+    attempts: [ScormActivityResult]
+    timeopen: number,
+    timeclose: number,
+
+    grademethod: number,
+    maxgrade: number,
+    
+    whatgrade: number,
+    completion: number,
+    completionview: boolean,
+    completionusegrade: boolean,
+    completionscorerequired: number,
+    completionstatusrequired: [string],
+    completionstatusallscos: boolean,
+    completionexpected: number
+    //-----------------------
 };
 
-export type OfflineScormPackage  = {
+export type ScormBundle  = {
     scorm: Scorm,
-    package: ScormPackage | undefined,
+    package?: Package,
     offlineActivity?: {
-        last: ScormOfflineActivity,
-        start: ScormOfflineActivity
+        last: OfflineActivity,
+        start: OfflineActivity,
+        attempts?: [ScormActivityResult]
     }
     lastsynced: number
 };
@@ -31,12 +71,20 @@ export type Sco = {
     launchSrc: string | null
 };
 
-export type ScormPackage = {
+export type Package = {
     path: string,
     scos: [Sco],
     defaultSco: Sco
 };
-export type ScormOfflineActivity = {
+
+export type OfflineActivity = {
     attempt: number,
     scoid: string
+};
+
+export type ScormActivityResult = {
+    attempt: number,
+    scoreRaw: number,
+    scoreMax: number,
+    lessonStatus: string
 };

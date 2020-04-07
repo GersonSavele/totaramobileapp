@@ -25,17 +25,20 @@ import { Text, TextStyle, TouchableOpacity } from "react-native";
 import { ThemeContext } from "@totara/theme";
 
 type Props = {
+  children?: Element,
   text?: string,
   style?: TextStyle,
   onPress?: (() => void)
 }
 
-const LinkText = ({ text, style, onPress, ...rest }: Props) => {
+const LinkText = ({ text, style, onPress, children, ...rest }: Props) => {
 
   const [theme] = useContext(ThemeContext);
   
   return (<TouchableOpacity onPress={onPress} >
-    <Text style={[{fontSize: 16, color: theme.colorLink}, style]} {...rest}>{text}</Text>
+    <Text style={[{fontSize: 16, color: theme.colorLink}, style]} {...rest}>
+      { children ? children : text }
+    </Text>
   </TouchableOpacity>);
 };
 export default LinkText;

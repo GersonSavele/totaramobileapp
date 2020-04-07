@@ -43,8 +43,8 @@ const SCORMFeedbackModal = ({score, grade, method, onClose, onPrimary}: SCORMFee
         <View style={[styles.container, {backgroundColor: theme.colorNeutral1}]}>
           <View style={styles.completion}>
             <View style={[styles.gradeContainer, {borderColor: grade === 'failed' ? theme.colorAlert : theme.colorSuccess}]}> 
-              { !method && <Image style={styles.completionStatusImage} source={require("@resources/images/success_tick/success_tick.png")} /> }
-              { method && 
+              { method && <Image style={styles.completionStatusImage} source={require("@resources/images/success_tick/success_tick.png")} /> }
+              { !method && 
               <View style={styles.result}>
                 <Text style={[theme.textB3, styles.resultTitle]}>{translate("scorm.feedback.grade_title")}</Text>
                 <Text style={[theme.textH2, styles.score]}>{score ? score : ""}</Text>
@@ -52,7 +52,7 @@ const SCORMFeedbackModal = ({score, grade, method, onClose, onPrimary}: SCORMFee
               </View>
               }
             </View>
-            <Text style={[theme.textH1, {textAlign: "center"}]}>{grade === "failed" ? translate("scorm.feedback.sorry") : translate("scorm.feedback.awesome")}</Text>
+            <Text style={[theme.textH1, {textAlign: "center", marginTop: 8}]}>{grade === "failed" ? translate("scorm.feedback.sorry") : translate("scorm.feedback.awesome")}</Text>
           </View>
           <View style={{ paddingBottom: 24}}>
             <PrimaryButton onPress={onClose} text={translate("scorm.feedback.back")} style={{marginBottom: 8}} />
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   result: {
     justifyContent: "center", 
     flexDirection: "column", 
-    alignItems: "center" 
+    alignItems: "center"
   },
   completionStatusImage: {
     alignSelf: "center",

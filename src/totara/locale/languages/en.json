@@ -135,6 +135,8 @@
   "scorm" : {
     "last_synced" : "Last synced",
     "ago": "ago",
+    "info_completed_attempts": "You have reached the maximum number of attempts",
+    "info_upcoming_activity": "Sorry, this activity is not available until",
     "summary" : {
       "summary": "Summary",
       "grade": 
@@ -148,17 +150,31 @@
       "attempt": {
         "title": "Attempt details",
         "total_attempts": "Total attempts allowed",
-        "completed_attempts": "Total attempts done"
+        "completed_attempts": "Total attempts done",
+        "unlimited": "Unlimited"
       },
       "new_attempt": "New attempt",
-      "last_attempt": "Last attempt",
+      "last_attempt": "Last attempt"
     },
     "feedback" : {
       "grade_title": "YOUR LAST ATTEMPT GRADE",
       "awesome": "Awesome!",
       "sorry": "Sorry!",
       "back": "Back to course",
-      "attempt_again": "Attempt again",
+      "attempt_again": "Attempt again"
+    },
+    "attempts" : {
+      "title": "All attempts grades",
+      "attempt": "Attempt",
+      "failed": "Failed",
+      "passed": "Passed"
+    }, 
+    "grading_method": {
+      "0": "Highest attempt",
+      "1": "Average attempts",
+      "2": "First attempt",
+      "3": "Last completed attempt"
     }
+
   }
 }

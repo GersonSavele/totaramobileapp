@@ -28,8 +28,8 @@ import SafeAreaView from "react-native-safe-area-view";
 import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
 import { ThemeContext } from "@totara/theme";
-import SCORMActivityAPI from "./scorm/SCORMActivity"
 import ActivityFeedback from "./ActivityFeedback";
+import SCORMActivity from "./scorm/SCORMActivity";
 
 type contextData = {
   /**
@@ -137,21 +137,21 @@ const ActivitySheet = ({currentActivity, onClose}: Props) => {
   const [ theme ] = useContext(ThemeContext);
 
   return (<Modal animationType="slide" visible={currentActivity != undefined} onRequestClose={onClose}>
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colorSecondary1 }} forceInset={{ bottom: "always" }}>
-      <View style={styles.panel}>
-        <View style={[styles.navigationStyle, { backgroundColor: theme.colorSecondary1 }]}>
-          <StatusBar hidden/>
-          <View style={styles.rightContainer}>
-            <Button style={styles.buttonStyle} onPress={onClose}>
-              <FontAwesomeIcon icon="times" size={24}/>
-            </Button>
-          </View>
-          <Text style={styles.titleStyle}> {currentActivity.name} </Text>
-          <View style={styles.rightContainer}></View>
+    <View style={styles.panel}>
+      <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
+      <View style={[styles.navigationStyle, { backgroundColor: theme.colorSecondary1 }]}>
+        <StatusBar hidden/>
+        <View style={styles.leftContainer}>
+          <Button style={styles.buttonStyle} onPress={onClose}>
+            <FontAwesomeIcon icon="times" size={24}/>
+          </Button>
         </View>
-        {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
+        <Text style={styles.titleStyle}> {currentActivity.name} </Text>
+        <View style={styles.rightContainer}></View>
       </View>
-    </SafeAreaView>
+      {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
+      <SafeAreaView forceInset={{bottom: "always"}} />
+    </View>
   </Modal>);
 };
 
@@ -168,7 +168,7 @@ type Props = {
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
   switch (activity.modtype) {
     case "scorm":
-      return (<SCORMActivityAPI activity={activity} />);
+      return (<SCORMActivity activity={activity} />);
     default:
       return (<WebviewActivity activity={activity} />);
   }
@@ -182,27 +182,27 @@ const styles = StyleSheet.create({
   },
   navigationStyle :{
     alignItems: "center",
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   leftContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
   },
   rightContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   buttonStyle : {
     backgroundColor: "transparent",
-    paddingLeft: 20,
+    padding: 20,
     alignSelf:"flex-start"
   },
   titleStyle: {
     fontSize: 16,
     color: "#3D444B",
     fontWeight: "bold",
-    textAlign: 'center',
+    textAlign: "center",
     alignSelf:"center"
   }
 });

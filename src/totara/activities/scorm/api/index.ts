@@ -33,18 +33,61 @@ export const scormQuery = gql`
         id
         courseid
         name
-        description(format: PLAIN)
-        type
-        packageUrl: package_url
-        offlineAttemptsAllowed: offlineAttemptsAllowed
-        attemptsMax: attempts_max
+        scormtype
+        reference
+        intro(format: PLAIN)
+        version
+        maxgrade
+        grademethod
+        whatgrade
+        maxattempt
+        forcecompleted
+        forcenewattempt
+        lastattemptlock
+        masteryoverride
+        displaycoursestructure
+        skipview
+        nav
+        navpositionleft
+        navpositiontop
+        auto
+        width
+        height
+        timeopen
+        timeclose
+        displayactivityname
+        autocommit
+        allowmobileoffline
+        completion
+        completionview
+        completionstatusrequired
+        completionscorerequired
+        completionstatusallscos
+        packageUrl:package_url
+        launchUrl:launch_url
         attemptsCurrent: attempts_current
-        attemptsForceNew: attempts_forcenew
-        attemptsLockFinal: attempts_lockfinal
-        autoContinue: compatibility_autocontinue
-        launchUrl: launch_url
         calculatedGrade: calculated_grade
-        offlinePackageContentHash: offlinePackageContentHash
+        offlinePackageUrl: offline_package_url
+        offlinePackageContentHash: offline_package_contenthash
+        offlinePackageScoIdentifiers: offline_package_sco_identifiers
+        attempts {
+          attempt
+          timestarted
+          defaults
+          objectives
+          interactions
+          __typename
+        }
+        # Deprecated properties
+        type: scormtype
+        description: intro(format: PLAIN)
+        attemptsMax: maxattempt
+        attemptsCurrent: attempts_current
+        attemptsForceNew: forcenewattempt
+        attemptsLockFinal: lastattemptlock
+        autoContinue: auto
+        offlineAttemptsAllowed: allowmobileoffline
+        __typename
       }
     }
 `;

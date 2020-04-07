@@ -24,7 +24,7 @@ import { gql } from "apollo-boost";
 import { useMutation } from '@apollo/react-hooks';
 import { useNetInfo } from "@react-native-community/netinfo";
 
-import { getUnsyncedData, getSCORMLastActivity, setSyncedScormActivity } from "./StorageHelper";
+import { getOfflineSCORMCommits, clearSyncedSCORMCommit } from "./OfflineSCORMController";
 import { Log } from "@totara/lib";
 
 const SaveAttemptMutation = gql`
@@ -39,85 +39,104 @@ const SaveAttemptMutation = gql`
   }
 `;
 
+type SyncData = {
+  scormId: number,
+  attempt: number,
+  tracks: [any]
+}
+
 const AttemptSynchronizer = () => {
-  const [unSyncData, setUnsyncData] = useState<[any]>();
-  const [syncData, setSyncData] = useState();
+  const [unSyncData, setUnsyncData] = useState<[any] | undefined>(undefined);
+  const [syncData, setSyncData] = useState<SyncData | undefined>(undefined);
   const [saveAttempt] = useMutation(SaveAttemptMutation);
   const netInfo = useNetInfo();
   
   useEffect(()=> {
-    
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null && netInfo.isInternetReachable)) {
       if (!unSyncData) {
-        getUnsyncedData().then(data => {
-          if (data && data.length > 0) {
+        getOfflineSCORMCommits().then(data => {
+          if (data && Object.keys(data).length > 0) {
             setUnsyncData(data as [any]);
           } 
         });
-      } else {
-        if (unSyncData && unSyncData!.length > 0) {
-          const syncIndex = {index: 0};
-          const unsyncScormData = unSyncData[syncIndex.index];
-          getSCORMLastActivity(unsyncScormData.scormid).then(storedLastActivityData => {
-            if (storedLastActivityData) {
-              setSyncData({...unsyncScormData, ...storedLastActivityData, ...syncIndex});
-            }
-          })
+      } else {              
+        if(Object.keys(unSyncData).length === 0 && unSyncData.constructor === Object) {
+          setUnsyncData(undefined);
+        } else {
+          const syncScormId = parseInt(Object.keys(unSyncData)[0]);
+          const pendingAttempts = unSyncData[syncScormId];
+          if(Object.keys(pendingAttempts).length === 0 && pendingAttempts.constructor === Object) {
+            let newUnsyncData = unSyncData;
+            delete newUnsyncData[syncScormId];
+            setUnsyncData(newUnsyncData);
+          } else {
+            const syncAttempt = parseInt(Object.keys(pendingAttempts)[0]);
+            const syncTracks = pendingAttempts[syncAttempt];
+            const syncingData = {scormId: syncScormId, attempt: syncAttempt, tracks: syncTracks};
+            setSyncData(syncingData);
+          }
         }
-        
       }
     }
-    
   }, [unSyncData, netInfo]);
 
   useEffect(()=> {
-    if(syncData && syncData !== undefined) {
-      const tmpSyncScormId = syncData!.scormid;
-      const tmpSyncStartAttempt = syncData!.start? syncData!.start!.attempt : 0;
-      const tmpSyncAttemptScos= syncData!.attempts[tmpSyncStartAttempt];
-
+    if(syncData && syncData.scormId && syncData.attempt && syncData.tracks) {
       let unsavedAttemptTracks: any = [];
-      for (let scoId in tmpSyncAttemptScos) {
-        if(tmpSyncAttemptScos[scoId] && tmpSyncAttemptScos[scoId] ) {
-          unsavedAttemptTracks = unsavedAttemptTracks.concat(tmpSyncAttemptScos[scoId]);
+      for (let scoId in syncData.tracks) {
+        if(syncData.tracks[scoId] && syncData.tracks[scoId] ) {
+          unsavedAttemptTracks = unsavedAttemptTracks.concat(syncData.tracks[scoId]);
         }
       }
-
-      saveAttempt({
-        variables: {
-          scormid: tmpSyncScormId,
-          attempts: unsavedAttemptTracks
-        }
-      }).then(value => {
-        let isSaveSuccess = true;
-        for(let result in value) {
-          if(!result) {
-            isSaveSuccess = false;
-            break;
+      syncAttemptForScorm(syncData.scormId, unsavedAttemptTracks)
+        .then(isSynced => {
+          if (isSynced) {
+            return clearSyncedSCORMCommit(syncData.scormId, syncData.attempt);
+          } else {
+            throw new Error("Data sync failed.");
           }
-        }
-        if(isSaveSuccess) {
-          setSyncedScormActivity(tmpSyncScormId, tmpSyncStartAttempt).then(() => {
-            let tmpUnSyncData = unSyncData;
-            delete tmpUnSyncData[syncData.index].attempts[syncData.start.attempt];
-            if (!(tmpUnSyncData[syncData.index].attempts && tmpUnSyncData[syncData.index].attempts.length > 0)) {
-              delete tmpUnSyncData[syncData.index]
-            }
-            if(!(tmpUnSyncData && tmpUnSyncData.length > 0)) {
-              tmpUnSyncData = undefined;
-            }
-            setUnsyncData(tmpUnSyncData);
-          });
-        } else {
-          setSyncData(undefined);
-          throw new Error("Data sync failed.")
-        }
-      }).catch(e => {
-        Log.debug("Data synchronizing failed. ", e);
-      })
+        })
+        .then(() => getUpdatedUnsyncData(syncData.scormId, syncData.attempt, unSyncData))
+        .then(updatedUnsyncData => {
+          setUnsyncData(updatedUnsyncData);
+        }).catch(e=> {
+          Log.error("Data sync error: ", e);
+        });
     }
-    
   }, [syncData]);
+
+  const syncAttemptForScorm = (scormId: number, tracks: [any]) => {
+    return saveAttempt({
+      variables: {
+        scormid: scormId,
+        attempts: tracks
+      }
+    }).then(value => {
+      //TODO - need to test
+      /*
+      let isSaveSuccess = true;
+      for(let result in value) {
+        if(!result) {
+          return false;
+        }
+      }
+      */
+      return true;
+    });
+  }
+  const getUpdatedUnsyncData = (scormId: number, attempt: number, unsyncdata: any) => {
+    let newUnsyncData = unsyncdata;
+    if (newUnsyncData) {
+      delete newUnsyncData[scormId][attempt];
+      if(Object.keys(newUnsyncData[scormId]).length === 0 && newUnsyncData[scormId].constructor === Object) {
+        delete newUnsyncData[scormId];
+      }
+      if(Object.keys(newUnsyncData).length === 0 && newUnsyncData.constructor === Object) {
+        newUnsyncData = undefined;
+      }
+    }
+    return newUnsyncData;
+  }
  
   return null; 
  
