@@ -6,27 +6,14 @@ import android.content.Context;
 
 import com.facebook.react.ReactApplication;
 import com.reactnativecommunity.art.ARTPackage;
-import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
-import com.reactnativecommunity.cookies.CookieManagerPackage;
-import com.reactnativecommunity.netinfo.NetInfoPackage;
-import com.futurepress.staticserver.FPStaticServerPackage;
-import com.rnziparchive.RNZipArchivePackage;
-import com.rnfs.RNFSPackage;
-import cx.evermeet.versioninfo.RNVersionInfoPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.reactcommunity.rnlocalize.RNLocalizePackage;
-import com.horcrux.svg.SvgPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
+
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -39,24 +26,10 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new ARTPackage(),
-            new SafeAreaContextPackage(),
-            new CookieManagerPackage(),
-            new NetInfoPackage(),
-            new FPStaticServerPackage(),
-            new RNZipArchivePackage(),
-            new RNFSPackage(),
-            new RNVersionInfoPackage(),
-            new AsyncStoragePackage(),
-            new RNCWebViewPackage(),
-            new SplashScreenReactPackage(),
-            new RNLocalizePackage(),
-            new SvgPackage(),
-            new RNGestureHandlerPackage(),
-            new VectorIconsPackage()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      packages.add(new ARTPackage());
+      return packages;
     }
 
     @Override
