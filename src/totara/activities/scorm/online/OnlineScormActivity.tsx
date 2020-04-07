@@ -21,9 +21,7 @@
 
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { Button } from "native-base";
 import { Activity } from "@totara/types";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Query } from "react-apollo";
 import { Response, ScormGQLQuery }  from "../api";
 

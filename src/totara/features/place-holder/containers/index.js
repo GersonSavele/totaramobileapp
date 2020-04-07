@@ -21,9 +21,7 @@
  */
 
 import React from "react";
-import { View, Button } from "react-native";
-import { AuthenticatedWebView } from "@totara/auth";
-
+import { View } from "react-native";
 
 class PlaceHolder extends React.Component {
   state = {

@@ -55,8 +55,8 @@ const ActivityBottomView = ({children}: ActivityBottomViewParam) => {
     );
 };
 
-const ActivityBottomViewTitle = ({fontSize, color, fontWeight, currentAttempts, maxAttempts}: ActivityBottomViewTitleParam) => {
-  return(
+const ActivityBottomViewTitle = ({ currentAttempts, maxAttempts}: ActivityBottomViewTitleParam) => {
+    return(
     <Text>
       <Text style= { styles.titleText }>You have done </Text>
       <Text style= {{fontWeight: "bold", fontSize : 14}}>{currentAttempts}</Text>

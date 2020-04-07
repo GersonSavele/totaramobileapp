@@ -59,7 +59,7 @@ const Profile = ({ navigation }: NavigationInjectedProps) => {
   }
 };
 
-const ProfileViewDidAppear = ({ profile, navigation }: ProfileViewProps) => {
+const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
   // To Do: Mean while, we need to determine, user profile image is default or not from hacking url which is received from API
   //However, after fixing api we should clean code in this ticket - MOB-386
   const [theme] = useContext(ThemeContext);

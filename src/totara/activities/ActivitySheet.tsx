@@ -123,6 +123,7 @@ export class ActivitySheetProvider extends React.Component {
         setFeedbackActivity: (feedbackActivity: ActivityType) => this.setFeedbackActivity(feedbackActivity),
         setOnClose: (onCloseCallback: () => {}) => this.setOnClose(onCloseCallback)
       }}>
+        {/* eslint-disable-next-line react/prop-types */}
         {this.props.children}
         {(this.state.currentActivity) && <ActivitySheet currentActivity={this.state.currentActivity!} onClose={this.onClose} show={this.state.show}/> }
         {(this.state.feedbackActivity && this.state.currentActivity === undefined) && <ActivityFeedback activity={this.state.feedbackActivity} onClose={this.onClose} />}
@@ -130,6 +131,7 @@ export class ActivitySheetProvider extends React.Component {
       </View>)
   }
 }
+
 
 const ActivitySheet = ({currentActivity, onClose}: Props) => {
   const [ theme ] = useContext(ThemeContext);

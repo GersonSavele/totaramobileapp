@@ -45,7 +45,7 @@ type CourseSetProps = {
   navigation: NavigationParams;
 };
 
-const CourseSet = ({ courseSets, navigation }: CourseSetProps) => {
+const CourseSet = ({ courseSets}: CourseSetProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.courseSet}>

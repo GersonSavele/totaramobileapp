@@ -66,7 +66,7 @@ const AttemptSynchronizer = () => {
   useEffect(()=> {
     if(syncData && syncData !== undefined) {
       const tmpSyncScormId = syncData!.scormid;
-      const tmpSyncStartAttempt = syncData!.start?.attempt;
+      const tmpSyncStartAttempt = syncData!.start? syncData!.start!.attempt : 0;
       const tmpSyncAttemptScos= syncData!.attempts[tmpSyncStartAttempt];
 
       let unsavedAttemptTracks: any = [];
