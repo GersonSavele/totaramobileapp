@@ -37,18 +37,18 @@ type SCORMFeedbackProps = {
 const SCORMFeedbackModal = ({score, grade, method, onClose, onPrimary}: SCORMFeedbackProps)=> {
   const [ theme ] = useContext(ThemeContext);
   return (<Modal animationType="slide" transparent>
-    <View style={styles.transparentViewStyle}>
+    <View style={stylesSCORMFeedback.transparentViewStyle}>
       <SafeAreaView />
-      <View style={styles.wrapper}>
-        <View style={[styles.container, {backgroundColor: theme.colorNeutral1}]}>
-          <View style={styles.completion}>
-            <View style={[styles.gradeContainer, {borderColor: grade === 'failed' ? theme.colorAlert : theme.colorSuccess}]}> 
-              { method && <Image style={styles.completionStatusImage} source={require("@resources/images/success_tick/success_tick.png")} /> }
+      <View style={stylesSCORMFeedback.wrapper}>
+        <View style={[stylesSCORMFeedback.container, {backgroundColor: theme.colorNeutral1}]}>
+          <View style={stylesSCORMFeedback.completion}>
+            <View style={[stylesSCORMFeedback.gradeContainer, {borderColor: grade === 'failed' ? theme.colorAlert : theme.colorSuccess}]}> 
+              { method && <Image style={stylesSCORMFeedback.completionStatusImage} source={require("@resources/images/success_tick/success_tick.png")} /> }
               { !method && 
-              <View style={styles.result}>
-                <Text style={[theme.textB3, styles.resultTitle]}>{translate("scorm.feedback.grade_title")}</Text>
-                <Text style={[theme.textH2, styles.score]}>{score ? score : ""}</Text>
-                <Text style={[theme.textLabel, styles.grade, {color: theme.colorNeutral1, backgroundColor: grade === "failed" ? theme.colorAlert : theme.colorSuccess}]}>{grade ? grade : ""}</Text>
+              <View style={stylesSCORMFeedback.result}>
+                <Text style={[theme.textB3, stylesSCORMFeedback.resultTitle]}>{translate("scorm.feedback.grade_title")}</Text>
+                <Text style={[theme.textH2, stylesSCORMFeedback.score]}>{score ? score : ""}</Text>
+                <Text style={[theme.textLabel, stylesSCORMFeedback.grade, {color: theme.colorNeutral1, backgroundColor: grade === "failed" ? theme.colorAlert : theme.colorSuccess}]}>{grade ? grade : ""}</Text>
               </View>
               }
             </View>
@@ -65,7 +65,7 @@ const SCORMFeedbackModal = ({score, grade, method, onClose, onPrimary}: SCORMFee
   </Modal>);
 };
 
-const styles = StyleSheet.create({
+const stylesSCORMFeedback = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.6)"
