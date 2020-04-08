@@ -23,27 +23,31 @@ import React, { useContext } from "react";
 import { Text, TextStyle, StyleSheet, View } from "react-native";
 
 import { ThemeContext } from "@totara/theme";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
-  mode: "info" | "alert"
+  icon?: IconProp,
   text?: string,
+  mode: "info" | "alert"
   style?: TextStyle,
 }
 
-const NotificationView = ({ text, mode, style}: Props) => {
+const NotificationView = ({ icon, text, mode, style}: Props) => {
 
   const [theme] = useContext(ThemeContext);
   let backgroundStyle = {backgroundColor: theme.colorInfo};
-  let indicator = "⚡︎";
   let textStyle = {...theme.textSmall, ...{ color: theme.colorNeutral1}};
-  if(mode === "alert") {
+  if(style) {
+    textStyle = {...textStyle, ...styles};
+  }
+  if (mode === "alert") {
     backgroundStyle.backgroundColor = theme.colorAlert;
-    indicator = "⌽";
   }
   
   return (<View style={[styles.container, backgroundStyle]} >
-    <Text style={[styles.indicator, textStyle, style]}>{indicator}</Text>
-    <Text style={[styles.indicator, textStyle, style]}>{text}</Text>
+    { icon && <FontAwesomeIcon icon={icon} size={textStyle.lineHeight} style={[styles.indicator, textStyle]} /> }
+    <Text style={[textStyle, style]}>{text}</Text>
   </View>);
 };
 
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   indicator: {
-    paddingRight: 8,
+    marginRight: 8,
     alignSelf: "center"
   }
 });

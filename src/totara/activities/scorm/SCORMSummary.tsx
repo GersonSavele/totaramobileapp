@@ -20,14 +20,14 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View, Alert, Modal } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Modal } from "react-native";
 import moment from "moment";
 import * as RNFS from "react-native-fs";
 
 import { Activity } from "@totara/types";
 import { AuthContext } from "@totara/core";
-import { ScormBundle, AttemptGrade } from "@totara/types/Scorm";
-import { MoreText, PrimaryButton, SecondaryButton, LinkText, NotificationView } from "@totara/components"
+import { ScormBundle } from "@totara/types/Scorm";
+import { MoreText, PrimaryButton, SecondaryButton, NotificationView } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
 import { getOfflineSCORMPackageName, OfflineSCORMServerRoot } from "./offline";
 import { Log } from "@totara/lib";
@@ -64,7 +64,7 @@ enum Section {
 
 const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) => {
   const {authContextState: { appState }} = useContext(AuthContext);
-  const [scormBundle, setScormBundle] = useState<ScormBundle>(data);
+  const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
   const [section, setSection] = useState(Section.None);
   const [theme] = useContext(ThemeContext);
   
@@ -79,20 +79,22 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     if(resource)
       return;
     //TODO: PREVENT DOWNLOAD CONTENT TWICE
-    const _url = scormBundle.scorm.packageUrl!;
-    const _scormId = scormBundle.scorm.id;
-    const _courseId = scormBundle.scorm.courseid;
-    const _name = scormBundle.scorm.name;
-
-    const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
-    const offlineSCORMPackageName = getOfflineSCORMPackageName(_courseId, _scormId);
-    const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
-    const _unzipPath = `${OfflineSCORMServerRoot}/${offlineSCORMPackageName}`;
-    const _downloadId = _scormId.toString();
-    if(appState && appState.apiKey) {
-      downloadManager.download(appState.apiKey, _downloadId, _name, _url, _targetZipFile, _unzipPath);
-    } else {
-      Log.debug("Cannot find api key");
+    if (scormBundle) {
+      const _url = scormBundle!.scorm.packageUrl!;
+      const _scormId = scormBundle!.scorm.id;
+      const _courseId = scormBundle!.scorm.courseid;
+      const _name = scormBundle!.scorm.name;
+  
+      const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
+      const offlineSCORMPackageName = getOfflineSCORMPackageName(_courseId, _scormId);
+      const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
+      const _unzipPath = `${OfflineSCORMServerRoot}/${offlineSCORMPackageName}`;
+      const _downloadId = _scormId.toString();
+      if(appState && appState.apiKey) {
+        downloadManager.download(appState.apiKey, _downloadId, _name, _url, _targetZipFile, _unzipPath);
+      } else {
+        Log.debug("Cannot find api key");
+      }  
     }
     
   };
@@ -187,7 +189,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     if(!isUserOnline) {
       getOfflineSCORMBundle(activity.instanceid).then(result => {
         if (result ) {
-          const storedBundle = result as ScormBundle;
+          const storedBundle = result! as ScormBundle;
           let newBundle: ScormBundle = storedBundle;
           if (scormBundle && scormBundle.lastsynced && scormBundle.lastsynced >= storedBundle.lastsynced) {
             newBundle.scorm = scormBundle.scorm;
@@ -208,13 +210,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
       
     }
   }, [data]);
-
-  // const getGrade = (grade: AttemptGrade) => {
-  //   switch(grade) {
-  //     case AttemptGrade.first: 
-  //     return 
-  //   }
-  // }
+  
   const description = scormBundle!.scorm.description && scormBundle!.scorm.description !== null ? scormBundle!.scorm.description : undefined;
   let totalAttempt = scormBundle!.scorm.attemptsCurrent ? scormBundle!.scorm.attemptsCurrent : 0;
   if (scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts) {
@@ -227,18 +223,17 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
  
   const isCompletedAttempts = scormBundle && scormBundle!.scorm && scormBundle!.scorm.attemptsMax && totalAttempt >= scormBundle!.scorm.attemptsMax;
   let isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > moment.now();
-  console.log("isUpcomingActivity: ", isUpcomingActivity, "\tscormBundle!.scorm.timeopen: ", scormBundle!.scorm.timeopen, "\tnow: ", moment.now());
-  console.log("isCompletedAttempts: ", isCompletedAttempts);
+  
   const lastsyncText = !isUserOnline && scormBundle ? `${translate("scorm.last_synced")}: ${moment(scormBundle.lastsynced).toNow(true)} ${translate("scorm.ago")} (${moment(scormBundle.lastsynced).format(DATE_FORMAT)})` : null;
   const upcommingActivityText = isUpcomingActivity ? `${translate("scorm.info_upcoming_activity")} ${moment(scormBundle!.scorm.timeopen).format(DATE_FORMAT_FULL)}` : null;
   const completedAttemptsText = !isUpcomingActivity && isCompletedAttempts ? translate("scorm.info_completed_attempts") : null;
   
   return (
-    <>
+  <>
   <View style={styles.expanded}>
-  { lastsyncText && <NotificationView mode={"info"} text={lastsyncText} /> }
-  { upcommingActivityText && <NotificationView mode={"alert"} text={upcommingActivityText} /> }
-  { completedAttemptsText && <NotificationView mode={"alert"} text={completedAttemptsText} /> }
+  { lastsyncText && <NotificationView mode={"info"} text={lastsyncText} icon={"bolt"} /> }
+  { upcommingActivityText && <NotificationView mode={"alert"} text={upcommingActivityText} icon={"exclamation-circle"}  /> }
+  { completedAttemptsText && <NotificationView mode={"alert"} text={completedAttemptsText} icon={"exclamation-circle"}  /> }
    <View style={{flex: 1}}>
       <ScrollView>
         <View style={{ padding: gutter }}>
@@ -276,9 +271,10 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     </View>
     {shouldShowAction && <AttemptController isOnline={isUserOnline} maxAttempt={scormBundle!.scorm.attemptsMax} currentAttempt={totalAttempt} actionPrimary={onTapNewAttempt} actionSecondary={onContinueAttemptTap} /> }
   </View>
+  { scormBundle &&
   <Modal visible={section === Section.Attempts}>
     <SCORMAttempts scormBundle={scormBundle} onExit={()=> setSection(Section.None)} />
-  </Modal>
+  </Modal> }
   </>
   );
 };

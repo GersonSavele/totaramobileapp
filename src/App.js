@@ -56,7 +56,8 @@ import {
   faCaretUp,
   faCaretDown,
     faTrashAlt,
-    faCaretRight
+    faCaretRight,
+    faBolt
 } from "@fortawesome/free-solid-svg-icons";
 
 import { ActivitySheetProvider } from "@totara/activities";
@@ -184,8 +185,9 @@ const initFontAwesome = () => {
     faUnlockAlt,
     faCaretUp,
     faCaretDown,
-      faTrashAlt,
-      faCaretRight
+    faTrashAlt,
+    faCaretRight,
+    faBolt
   );
 };
 initFontAwesome();

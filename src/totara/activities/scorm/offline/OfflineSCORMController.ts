@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import { Grade, Scorm, AttemptGrade, ScormActivityResult, ScormBundle } from "@totara/types/Scorm";
+import { Grade, AttemptGrade, ScormActivityResult, ScormBundle } from "@totara/types/Scorm";
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
 import { removeSCORMPackageData, getSCORMData, setSCORMPackageData, getSCORMPackageData, getAllCommits, clearCommit } from "./StorageHelper";
 
@@ -203,27 +203,6 @@ const getTracksForAllScos = (scosCommits: any) => {
     }
   }
   return fullTracks;
-}
-
-
-
-const getOfflineSCORMCommitsOld = () => {
-  return getAllCommits().then(storedData => {
-    if (storedData) {
-      // return storedData;
-      let formattedUnsyncedData = {};
-      for(let commitScormId in storedData ) {
-          const attemptCommits = storedData[commitScormId];
-          const orededAttemptCommits = Object.keys(attemptCommits).sort().reduce((r, k) => (r[k] = attemptCommits[k], r), {});
-          const tmpOrdedSCORMCommits = {[commitScormId]: orededAttemptCommits};
-          formattedUnsyncedData = {...formattedUnsyncedData, ...tmpOrdedSCORMCommits};
-          // formattedUnsyncedData.push({scormid: commitScormId, attempts: orededAttemptCommits});
-      }
-      return formattedUnsyncedData;
-    } else {
-      return undefined;
-    }
-  });
 }
 
 const clearSyncedSCORMCommit = (scormId: number, attempt: number) => {

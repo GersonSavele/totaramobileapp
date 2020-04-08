@@ -43,7 +43,7 @@ type SyncData = {
   scormId: number,
   attempt: number,
   tracks: [any]
-}
+};
 
 const AttemptSynchronizer = () => {
   const [unSyncData, setUnsyncData] = useState<[SyncData] | undefined>(undefined);
@@ -98,16 +98,16 @@ const AttemptSynchronizer = () => {
         attempts: tracks
       }
     }).then(value => {
-      //TODO - need to test
-      /*
-      let isSaveSuccess = true;
-      for(let result in value) {
-        if(!result) {
-          return false;
+      if(value) {
+        for(let result in value) {
+          if(!result) {
+            return false;
+          }
         }
+        return true;
+      } else {
+        return false
       }
-      */
-      return true;
     });
   };
  

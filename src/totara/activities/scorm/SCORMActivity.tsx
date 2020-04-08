@@ -20,15 +20,14 @@
  */
 
 import React, { useEffect, useState, useContext } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import moment from "moment";
-// import { useNetInfo } from "@react-native-community/netinfo";
 import NetInfo from "@react-native-community/netinfo";
 
 import { Activity, ActivityType } from "@totara/types";
 import SCORMSummary from "./SCORMSummary";
-import { Grade, AttemptGrade, Completion, ScormBundle } from "@totara/types/Scorm";
+import { ScormBundle } from "@totara/types/Scorm";
 import { scormQuery } from "./api";
 import { AuthenticatedWebView } from "@totara/auth";
 import { OfflineScormActivity } from "./offline";
@@ -65,8 +64,8 @@ const SCORMActivity = ({activity}: SCORMActivityProps) => {
     NetInfo.fetch().then(state => {
       // console.log("Connection type", state.type);
       // console.log("Is connected?", state.isConnected);
-      setIsReachable(false);
-      // setIsReachable(state.isConnected ? Connectivity.online : Connectivity.offline);
+      // setIsReachable(false);
+      setIsReachable(state.isConnected ? Connectivity.online : Connectivity.offline);
     });
     return <Text>Loading...</Text>
   } else {
@@ -114,8 +113,9 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
     };
     const scormData = {...data.scorm, ...additionalData};
     let scormBundleData = { scorm: scormData };
+    
     */
-    let scormBundleData = { scorm: data.scorm };
+    let scormBundleData = { scorm: data.scorm } as ScormBundle;
     if(isreachable) {
       scormBundleData.lastsynced = moment.now();
     }
@@ -134,14 +134,6 @@ type SCORMFlowProps = {
   mode: SCORMActivityType,
 };
 
-type SCORMActivityUIProps = {
-  activity: Activity,
-  data?: ScormBundle,
-  isUserOnline: boolean,
-  mode: SCORMActivityType,
-  setActionWithData: (action: SCORMActivityType, bundle: ScormBundle, data: any) => void
-};
-
 const SCORMFlow = ({activity, data, isUserOnline, mode}: SCORMFlowProps) => {
 
   const activitySheet = useContext(ActivitySheetContext);
@@ -150,8 +142,6 @@ const SCORMFlow = ({activity, data, isUserOnline, mode}: SCORMFlowProps) => {
     setActionData({mode: action, bundle: bundle, data: data});
   };
   
-  console.log("actionData: ", actionData);
-
   useEffect(()=> {
     if(actionData.mode !== SCORMActivityType.None) {
       activitySheet.setFeedback({activity: activity as ActivityType, data: {isOnline: isUserOnline}});

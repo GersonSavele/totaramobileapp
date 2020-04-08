@@ -31,6 +31,11 @@ import { ThemeContext } from "@totara/theme";
 import ActivityFeedback from "./ActivityFeedback";
 import SCORMActivity from "./scorm/SCORMActivity";
 
+type ActivityFeedbackProps = {
+  activity?: ActivityType, 
+  data?: any
+}; 
+
 type contextData = {
   /**
    * set the activity, and the activity sheet will be visible and use the right component
@@ -44,17 +49,17 @@ type contextData = {
   setOnClose: (onCloseCallback: () => {}) => void
 
   /**
-   * set the activity, and the activity sheet will be visible and use the right component
+   * set the feedback activity, and the activity sheet will be visible and use the right component
    * @param activity
    */
-  setFeedbackActivity: (activity: ActivityType | undefined) => void
+  setFeedback: (data: ActivityFeedbackProps) => void
  
 }
 
 export const ActivitySheetContext = React.createContext<contextData>({
   setCurrentActivity: () => {},
-  setOnClose: () => {},
-  setFeedbackActivity: () => {}
+  setFeedback: () => {},
+  setOnClose: () => {}
 });
 
 export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
@@ -102,7 +107,7 @@ export class ActivitySheetProvider extends React.Component {
     })
   }
 
-  setFeedback(data: {activity: ActivityType, data: any}) {
+  setFeedback(data: ActivityFeedbackProps) {
     this.setState({
       feedback: data
     })
@@ -120,13 +125,13 @@ export class ActivitySheetProvider extends React.Component {
       <ActivitySheetContext.Provider value={{
         ...this.state,
         setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
-        setFeedback: (data: {activity: ActivityType, data: any}) => this.setFeedback(data),
+        setFeedback: (data : ActivityFeedbackProps) => this.setFeedback(data),
         setOnClose: (onCloseCallback: () => {}) => this.setOnClose(onCloseCallback)
       }}>
         {/* eslint-disable-next-line react/prop-types */}
         {this.props.children}
         {(this.state.currentActivity) && <ActivitySheet currentActivity={this.state.currentActivity!} onClose={this.onClose} show={this.state.show}/> }
-        {(this.state.feedback && this.state.feedback.activity && this.state.currentActivity === undefined) && <ActivityFeedback activity={this.state.feedback.activity} data={this.state.feedback.data} onClose={this.onClose} onPrimary={() => { this.setCurrentActivity(this.state.feedback.activity)}}/>}
+        {(this.state.feedback && this.state.feedback!.activity && this.state.currentActivity === undefined) && <ActivityFeedback activity={this.state.feedback!.activity} data={this.state.feedback!.data} onClose={this.onClose} onPrimary={() => { this.setCurrentActivity(this.state.feedback!.activity)}}/>}
       </ActivitySheetContext.Provider>
       </View>)
   }
@@ -159,10 +164,7 @@ type Props = {
   currentActivity: ActivityType,
   onClose: () => void
   show: boolean,
-  feedback: {
-    activity: ActivityType,
-    data?: any
-  }
+  feedback?: ActivityFeedbackProps
 }
 
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
