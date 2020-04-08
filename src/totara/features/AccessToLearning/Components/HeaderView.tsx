@@ -166,7 +166,7 @@ const HeaderView = ({
   return (
     <View style={styles.container}>
       <ParallaxScrollView
-        parallaxHeaderHeight={normalize(320)}
+        parallaxHeaderHeight={normalize(300)}
         renderBackground={backgroundViewRender}
         tabBar={renderNavigationTab}
         titleBar={renderNavigationTitle}
@@ -198,8 +198,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: normalize(340),
-    minHeight: normalize(320)
+    maxHeight: normalize(320),
+    minHeight: normalize(300)
   },
   itemImage: {
     flex: 2.5,

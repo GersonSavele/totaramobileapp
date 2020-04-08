@@ -33,21 +33,10 @@ target 'TotaraMobileApp' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-<<<<<<< HEAD
-=======
-  pod 'React-ART', :path => '../node_modules/react-native/Libraries/ART'
-
-
-
-
-
-
-
-
-
->>>>>>> MOB-437 features: Course Activity Label
 
   pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
+
+  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
 
   target 'TotaraMobileAppTests' do
     inherit! :search_paths
