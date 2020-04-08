@@ -35,7 +35,7 @@ import ResourceManager , { ResourceObserver} from "@totara/core/ResourceManager/
 import ResourceDownloader from "@totara/components/ResourceDownloader"
 import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
 import { translate } from "@totara/locale";
-import { DATE_FORMAT, DATE_FORMAT_FULL } from "@totara/lib/Constant";
+import { DATE_FORMAT, DATE_FORMAT_FULL, SECONDS_FORMAT } from "@totara/lib/Constant";
 import { getOfflineSCORMBundle, calculatedAttemptsGrade, syncOfflineSCORMBundel } from "./offline/OfflineSCORMController";
 import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
@@ -48,13 +48,6 @@ type Props = {
   data?: ScormBundle,
   isUserOnline: boolean,
   setActionWithData: (action: SCORMActivityType, bundle: ScormBundle, data: any) => void
-};
-
-type SCORMAction = {
-  mode: SCORMActivityType,
-  attempt?: number,
-  scoId?: string,
-  url?: string
 };
 
 enum Section {
@@ -216,22 +209,22 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   if (scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts) {
     totalAttempt = totalAttempt + scormBundle!.offlineActivity.attempts.length;
   }
-  const shouldShowAction = (scormBundle && scormBundle.scorm  && (isUserOnline || (scormBundle.scorm.offlineAttemptsAllowed && scormBundle.package && scormBundle.package.path)));
   
   const offlineAttempts = scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts ? scormBundle!.offlineActivity.attempts : undefined;
   const calculatedGrade = calculatedAttemptsGrade(scormBundle!.scorm.maxgrade, scormBundle!.scorm.whatgrade, scormBundle!.scorm.calculatedGrade, scormBundle!.scorm.attempts, offlineAttempts);
  
   const isCompletedAttempts = scormBundle && scormBundle!.scorm && scormBundle!.scorm.attemptsMax && totalAttempt >= scormBundle!.scorm.attemptsMax;
-  let isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > moment.now();
+  const isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT));
+  const shouldShowAction = !isUpcomingActivity && !isCompletedAttempts && (scormBundle && scormBundle.scorm  && (isUserOnline || (scormBundle.scorm.offlineAttemptsAllowed && scormBundle.package && scormBundle.package.path)));
   
-  const lastsyncText = !isUserOnline && scormBundle ? `${translate("scorm.last_synced")}: ${moment(scormBundle.lastsynced).toNow(true)} ${translate("scorm.ago")} (${moment(scormBundle.lastsynced).format(DATE_FORMAT)})` : null;
-  const upcommingActivityText = isUpcomingActivity ? `${translate("scorm.info_upcoming_activity")} ${moment(scormBundle!.scorm.timeopen).format(DATE_FORMAT_FULL)}` : null;
+  const lastsyncText = !isUserOnline && scormBundle ? `${translate("scorm.last_synced")}: ${moment.unix(scormBundle.lastsynced).toNow(true)} ${translate("scorm.ago")} (${moment.unix(scormBundle.lastsynced).format(DATE_FORMAT)})` : null;
+  const upcommingActivityText = isUpcomingActivity ? `${translate("scorm.info_upcoming_activity")} ${moment.unix(scormBundle!.scorm.timeopen).format(DATE_FORMAT_FULL)}` : null;
   const completedAttemptsText = !isUpcomingActivity && isCompletedAttempts ? translate("scorm.info_completed_attempts") : null;
   
   return (
   <>
-  <View style={styles.expanded}>
-  { lastsyncText && <NotificationView mode={"info"} text={lastsyncText} icon={"bolt"} /> }
+  <View style={styles.expanded}>  
+  { shouldShowAction && lastsyncText && <NotificationView mode={"info"} text={lastsyncText} icon={"bolt"} /> }
   { upcommingActivityText && <NotificationView mode={"alert"} text={upcommingActivityText} icon={"exclamation-circle"}  /> }
   { completedAttemptsText && <NotificationView mode={"alert"} text={completedAttemptsText} icon={"exclamation-circle"}  /> }
    <View style={{flex: 1}}>

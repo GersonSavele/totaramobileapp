@@ -37,17 +37,17 @@ const NotificationView = ({ icon, text, mode, style}: Props) => {
 
   const [theme] = useContext(ThemeContext);
   let backgroundStyle = {backgroundColor: theme.colorInfo};
-  let textStyle = {...theme.textSmall, ...{ color: theme.colorNeutral1}};
+  let textStyle = [theme.textSmall, styles.content, { color: theme.colorNeutral1}];
   if(style) {
-    textStyle = {...textStyle, ...styles};
+    textStyle.push(style);
   }
   if (mode === "alert") {
     backgroundStyle.backgroundColor = theme.colorAlert;
   }
   
   return (<View style={[styles.container, backgroundStyle]} >
-    { icon && <FontAwesomeIcon icon={icon} size={textStyle.lineHeight} style={[styles.indicator, textStyle]} /> }
-    <Text style={[textStyle, style]}>{text}</Text>
+    { icon && <FontAwesomeIcon icon={icon} size={textStyle.fontSize} style={[styles.content, textStyle]} /> }
+    <Text style={textStyle}>{text}</Text>
   </View>);
 };
 
@@ -56,9 +56,10 @@ const styles = StyleSheet.create({
     padding: 8, 
     flexDirection: "row",
   },
-  indicator: {
+  content: {
     marginRight: 8,
-    alignSelf: "center"
+    alignSelf: "center",
+    flex: 1
   }
 });
 

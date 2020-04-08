@@ -25,6 +25,7 @@ export const AUTHORIZATION = "AUTHORIZATION";
 
 export const DATE_FORMAT = "D MMM, YYYY";
 export const DATE_FORMAT_FULL = "dddd, DD MMMM YYYY, h:mm A"
+export const SECONDS_FORMAT = "X";
 
 export const PLATFORM_IOS = "ios";
 export const PLATFORM_ANDROID = "";

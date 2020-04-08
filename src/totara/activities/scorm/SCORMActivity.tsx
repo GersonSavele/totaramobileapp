@@ -33,6 +33,7 @@ import { AuthenticatedWebView } from "@totara/auth";
 import { OfflineScormActivity } from "./offline";
 import { ActivitySheetContext } from "../ActivitySheet";
 import SCORMAttempts from "./SCORMAttempts";
+import { SECONDS_FORMAT } from "@totara/lib/Constant";
 
 type SCORMActivityProps = {
   activity: Activity,
@@ -115,8 +116,8 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
     
     */
     let scormBundleData = { scorm: data.scorm } as ScormBundle;
-    if(isreachable) {
-      scormBundleData.lastsynced = moment.now();
+    if (isreachable) {
+      scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
     }
     return <SCORMFlow activity={activity} data={scormBundleData as ScormBundle} isUserOnline={isreachable} mode={SCORMActivityType.None} />
   }  else {
