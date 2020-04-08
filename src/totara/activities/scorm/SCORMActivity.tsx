@@ -93,7 +93,6 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
   }
   if (data && data.scorm) {
     /*
-    console.log("********************* remove part from here **************************");
     const additionalData = {
       attempts: [],
       timeopen: moment("2021-12-25 09:00:00").unix(),
@@ -119,8 +118,6 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
     if(isreachable) {
       scormBundleData.lastsynced = moment.now();
     }
-    console.log("scormBundleData: ", scormBundleData);
-    console.log("********************* ===================== **************************");
     return <SCORMFlow activity={activity} data={scormBundleData as ScormBundle} isUserOnline={isreachable} mode={SCORMActivityType.None} />
   }  else {
     return <SCORMFlow activity={activity} data={undefined} isUserOnline={isreachable}  mode={SCORMActivityType.None} />
