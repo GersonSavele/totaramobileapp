@@ -54,11 +54,7 @@ const AttemptSynchronizer = () => {
     if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null && netInfo.isInternetReachable)) {
       if (unSyncData && unSyncData.length &&  unSyncData.length > 0) {
         syncScormRecord(unSyncData[0]).then(updatedUnsyncData => {
-          if (updatedUnsyncData && updatedUnsyncData.length > 0) {
-            setUnsyncData(updatedUnsyncData);
-          } else {
-            setUnsyncData(undefined);
-          }
+          setUnsyncData(updatedUnsyncData);
         }).catch(e=> {
           Log.error("Data sync error: ", e);
         });
