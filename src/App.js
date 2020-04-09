@@ -60,6 +60,7 @@ import {
   faTrashAlt,
   faCaretRight,
   faBolt
+
 } from "@fortawesome/free-solid-svg-icons";
 
 import { ActivitySheetProvider } from "@totara/activities";
