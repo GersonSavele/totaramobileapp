@@ -24,16 +24,8 @@ import { unzip } from "react-native-zip-archive";
 import { Platform } from "react-native";
 
 import { config } from "@totara/lib";
-// import { downloadPackage } from "@totara/core/ResourceManager/DownloadHandler"
-// import { DownloadProgressCallbackResult } from "react-native-fs"
 
 const OfflineSCORMServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
-
-// const downloadSCORMPackage = (apiKey: string, courseId: string, scormId: number, resourceUrl: string) => {
-//   const offlineSCORMPackageName = getOfflineSCORMPackageName(courseId, scormId);
-//   const downloadingFilePath = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
-//   return downloadPackage(apiKey, resourceUrl, downloadingFilePath, onProgress);
-// }
 
 const unzipSCORMPackageToServer = (packageName: string, packageSource: string) => {
   const destinationUnzip = `${OfflineSCORMServerRoot}/${packageName}`;

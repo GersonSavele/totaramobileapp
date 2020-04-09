@@ -60,12 +60,9 @@ enum Connectivity {
 }
 
 const SCORMActivity = ({activity}: SCORMActivityProps) => {
-  const [isReachable, setIsReachable] = useState(Connectivity.initial);//TODO: need to set default true
+  const [isReachable, setIsReachable] = useState(Connectivity.initial);
   if (isReachable === Connectivity.initial) {
     NetInfo.fetch().then(state => {
-      // console.log("Connection type", state.type);
-      // console.log("Is connected?", state.isConnected);
-      // setIsReachable(false);
       setIsReachable(state.isConnected ? Connectivity.online : Connectivity.offline);
     });
     return <Text>Loading...</Text>
@@ -93,28 +90,6 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
     }
   }
   if (data && data.scorm) {
-    /*
-    const additionalData = {
-      attempts: [],
-      timeopen: moment("2021-12-25 09:00:00").unix(),
-      timeclose: moment("2022-12-25 09:00:00").unix(),
-  
-      grademethod: Grade.highest,
-      maxgrade: 10,
-      
-      whatgrade: AttemptGrade.average,
-      completion: Completion.conditional,
-      completionview: true,
-      completionusegrade: true,
-      completionscorerequired: 70,
-      completionstatusrequired: ["passed", "completed"],
-      completionstatusallscos: true,
-      completionexpected: moment("2022-12-25").unix()
-    };
-    const scormData = {...data.scorm, ...additionalData};
-    let scormBundleData = { scorm: scormData };
-    
-    */
     let scormBundleData = { scorm: data.scorm } as ScormBundle;
     if (isreachable) {
       scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));

@@ -35,8 +35,7 @@ export type Scorm = {
     offlinePackageUrl?: string,
     offlinePackageContentHash?: string,
 
-    //TODO - missing data from api
-    attempts: [ScormActivityResult]
+    attempts: [ScormActivityResult],
     timeopen: number,
     timeclose: number,
 
@@ -51,7 +50,6 @@ export type Scorm = {
     completionstatusrequired: [string],
     completionstatusallscos: boolean,
     completionexpected: number
-    //-----------------------
 };
 
 export type ScormBundle  = {

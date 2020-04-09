@@ -38,7 +38,6 @@ const getSCORMPackageData = (packagPath: string) => {
 
 const getScosDataForPackage = (manifestDom: any) => {
     const resultOrganisations = xpath.evaluate(
-        // "//*[local-name(.)='organizations' and namespace-uri(.)='http://www.imsproject.org/xsd/imscp_rootv1p1p2']/*[local-name()='organization']/*[local-name()='item']/@identifier", // xpathExpression
         "//*[local-name(.)='organizations']/*[local-name()='organization']/@identifier",
         manifestDom, // contextNode
         null, // namespaceResolver

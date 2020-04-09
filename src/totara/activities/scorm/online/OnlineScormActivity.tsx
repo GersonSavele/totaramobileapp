@@ -111,9 +111,6 @@ class OnlineScormActivity extends React.Component<Props, States> {
         case 2:
           return (
             <View style={{ flex: 1 }} >
-              {/* <Button transparent onPress={this.loadFeedbackView} style= {{ padding: 8}} >
-              <FontAwesomeIcon icon="arrow-right" size={24}/>
-              </Button> */}
               <AuthenticatedWebView uri={this.props.activity.viewurl!} />
             </View>)
         default:

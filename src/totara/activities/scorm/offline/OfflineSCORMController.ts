@@ -111,15 +111,6 @@ const getOfflineSCORMBundle = (scormId: number) => {
         if(cmis) {
           const offlineReport = getOfflineAttemptsReport(cmis, formattedData.scorm.maxgrade, formattedData.scorm.grademethod, formattedData.scorm.completionscorerequired);
           formattedData = {...formattedData, ...{offlineActivity: {attempts: offlineReport}}};
-          // if(formattedData.scorm.attempts && formattedData.scorm.attempts.length > 0) {
-          //     formattedData.scorm.attempts = formattedData.scorm.attempts.concat(offlineReport);
-          // } else {
-          //     formattedData.scorm.attempts = offlineReport;
-          // } 
-          // formattedData.offlineActivity.attempts = offlineReport;
-          // const caculatedGradeReport = getAttemptsGrade(formattedData.scorm.attempts, formattedData.scorm.whatgrade);
-
-          // formattedData.scorm.calculatedGrade =  `${((caculatedGradeReport.scoreRaw / formattedData.scorm.maxgrade) * 100)}%`;
         }
       }
       return formattedData;
@@ -173,7 +164,6 @@ const syncOfflineSCORMBundel = (scormId: number, data: any) => {
 const getOfflineSCORMCommits = () => {
   return getAllCommits().then(storedData => {
     if (storedData) {
-      // return storedData;
       let formattedUnsyncedData = [];
       for(let commitScormId in storedData ) {
         const scormCommits = storedData[commitScormId];
@@ -186,7 +176,6 @@ const getOfflineSCORMCommits = () => {
             formattedUnsyncedData.push(commit);
           }
         }
-        // formattedUnsyncedData.push({scormid: commitScormId, attempts: orededAttemptCommits});
       }
       return formattedUnsyncedData;
     } else {

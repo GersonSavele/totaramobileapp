@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
   },
   player: {
     width: "100%",
-    // overflow: "scroll",
   }
 });
 
