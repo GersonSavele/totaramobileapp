@@ -28,6 +28,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { ThemeContext, normalize } from "@totara/theme";
 import { TouchableIcon } from "@totara/components";
 import { config } from "@totara/lib";
+import {Theme} from "@totara/types";
 
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import MyLearning from "./my-learning";
@@ -44,7 +45,6 @@ import PlaceHolder from "./place-holder";
 
 import Profile from "./profile";
 import Downloads from "./downloads";
-import {Theme} from "@totara/types";
 
 const FeatureNavigator = () => {
     const [theme] = useContext(ThemeContext);
@@ -163,25 +163,23 @@ type navigationOptionsProps = {
     opacity? : number
 }
 
-const navigationOptions = (props: navigationOptionsProps) => {
-    return {
-        headerStyle: {
-            borderBottomWidth: 0,
-                backgroundColor: props.theme.colorSecondary1,
-                shadowOpacity: 0,
-                elevation: 0
-        },
-        headerTitleStyle: {
-            color: props.theme.navigationHeaderTintColor,
-                fontSize: normalize(20),
-                opacity: props.opacity
-        },
-        title: props.title,
-            headerBackTitle: null,
-        headerTintColor: props.theme.navigationHeaderTintColor,
-        headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} disabled={false} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
-    }
-};
+const navigationOptions = (props: navigationOptionsProps) => ({
+    headerStyle: {
+        borderBottomWidth: 0,
+        backgroundColor: props.theme.colorSecondary1,
+        shadowOpacity: 0,
+        elevation: 0
+    },
+    headerTitleStyle: {
+        color: props.theme.navigationHeaderTintColor,
+        fontSize: normalize(20),
+        opacity: props.opacity
+    },
+    title: props.title,
+    headerBackTitle: null,
+    headerTintColor: props.theme.navigationHeaderTintColor,
+    headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} disabled={false} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
+});
 
 
 const tabBarIconBuilder = (focused: boolean, color: string, imageSet: iconImageProps) => {
