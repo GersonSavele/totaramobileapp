@@ -45,9 +45,6 @@ const VideoController = ({url}: VideoType) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   mediaPlayer: {
     position: "absolute",
     top: 0,

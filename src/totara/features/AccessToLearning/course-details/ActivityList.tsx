@@ -301,7 +301,7 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
 const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
   return item.modtype == "label" ? (
     <View style={{ backgroundColor: theme.colorSecondary1 }}>
-      <ActivityLabel labelType={item} theme={theme}></ActivityLabel>
+      <ActivityLabel label={item} theme={theme}></ActivityLabel>
     </View>
   ) : (
     <View

@@ -452,8 +452,22 @@ const labelDoc = {
       "content": [
         {
           "type": "text",
-          "text": "Documents : As learning designers, developers and administrators it can be easy to focus on our primary job; creating great learning content for our learners. But how do you make sure learners find the content that’s right for them? How do you enable them to browse, filter and search for learning?In this course, you’ll look at ways to use the course catalogue to ensure your learners find learning as quickly and easily as possible. Specifically, you’ll explore how to:Set up and populate the tile item and detail 	templatesCreate meaningful filtersMake content easily browsable and 			searchableTo complete the course and achieve your badge, you need to pass the mandatory activities which are marked with a red asterisk*, although we encourage you to explore many more of the activities available in the course. Your badge is valid for Totara Learn version 12."
+          "text": "Documents : As learning designers, developers and administrators it can be easy to focus on our primary job; creating great learning content for our learners. But how do you make sure learners find the content that’s right for them? How do you enable them to browse, filter and search for learning?In this course, you’ll look at ways to use the course catalogue to ensure your learners find learning as quickly and easily as possible. Specifically, you’ll explore how to:Set up and populate the tile item and detail 	templatesCreate meaningful filtersMake content easily browsable and 			searchableTo complete the course and achieve your badge, you need to pass the mandatory activities which are marked with a red asterisk*, although we encourage you to explore many more of the activities available in the course. Your badge is valid for Totara Learn version 12.",
+          "content": [
+          {"type": "link_media",
+          "attrs": {
+              "url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+              "image": "https://www.abdn.ac.uk/news/images/childrens_university_16x9.jpg",
+              "title": "Video title",
+              "description":"Key Points In a business setting most work is \naccomplished by teams of individuals. Because of this, \nit is important for employees to have the skills necessary to work effectively with others. Organizations use many kinds of teams, \nsome of which are permanent and some of which are temporary. Teams are used to accomplish tasks that are too large or complex to be done by an individual or that require a diverse set of skills and expertise. Key Terms team: A group of people working toward a common purpose.",
+              "resolution": {
+                  "width": 1920,
+                  "height": 1080
+              }
+          }
         }
+      ]
+      }
       ]
     },
     {
@@ -461,7 +475,18 @@ const labelDoc = {
       "content": [
         {
           "type": "text",
-          "text": "Documents : Here, Alt text tells people what is in an image, such as text or basic essential details. If an image fails to load, alt text will display in its place. Search engines also index alt text information and consider it a factor when determining search engine ratings."
+          "text": "Documents : Here, Alt text tells people what is in an image, such as text or basic essential details. If an image fails to load, alt text will display in its place. Search engines also index alt text information and consider it a factor when determining search engine ratings.",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "image": "https://www.nbnco.com.au/content/dam/nbnco2/images/blog/new/uniassignments-1043.jpg.transform/w1440/optimized/image.jpg",
+                "url": "http://example.com",
+                "title": "Image title",
+                "description": "Image description: If someone went on your website or profile with their eyes closed, would they still be able to find their way around? As more and more people develop vision impairments, they turn to assistive technology in order to access content- read more about this in my World Sight Day 2017 post here. By adding alt text and image descriptions, barriers are lifted and more people can access your content. Read on to learn more about how to create alt text and image descriptions.",
+                }
+            }
+          ]
         }
       ]
     }
