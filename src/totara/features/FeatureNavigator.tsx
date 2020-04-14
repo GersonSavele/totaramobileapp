@@ -22,11 +22,10 @@
 
 import React, {useContext} from "react";
 import { Image, ImageSourcePropType } from "react-native";
-import { createStackNavigator, NavigationRouteConfigMap, NavigationScreenProps } from "react-navigation";
+import { createStackNavigator } from 'react-navigation-stack';
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { ThemeContext, normalize } from "@totara/theme";
-import { Theme } from "@totara/types";
 import { TouchableIcon } from "@totara/components";
 import { config } from "@totara/lib";
 
@@ -45,6 +44,7 @@ import PlaceHolder from "./place-holder";
 
 import Profile from "./profile";
 import Downloads from "./downloads";
+import {Theme} from "@totara/types";
 
 const FeatureNavigator = () => {
     const [theme] = useContext(ThemeContext);
@@ -71,55 +71,53 @@ const FeatureNavigator = () => {
     )
 };
 
-const stackNavigatorBuilder = (routeConfigMap : NavigationRouteConfigMap, initialRouteName: string) => {
-    return createStackNavigator(
-        routeConfigMap,
-        {
-            initialRouteName: initialRouteName,
-            defaultNavigationOptions: ({ screenProps }) => navigationOptions({theme: screenProps.theme})
-        }
-    )
-};
-
 //TABS
 const MyLearningTab = {
-    screen: stackNavigatorBuilder(
+    screen: createStackNavigator(
         {
             MyLearning: {
                 screen: MyLearning,
-                navigationOptions: ({ screenProps, navigation }: NavigationScreenProps ) =>
-                    navigationOptions({ theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")/*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
+                navigationOptions: ({ screenProps, navigation } ) =>
+                    navigationOptions({theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")/*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
             },
             CourseDetails: {
                 screen: CourseDetails,
-                navigationOptions: ({ screenProps,navigation } : NavigationScreenProps) =>
+                navigationOptions: ({ screenProps, navigation } ) =>
                     navigationOptions({theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             },
             ProgramDetails: {
                 screen: ProgramDetails,
-                navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
+                navigationOptions: ({ screenProps, navigation } ) =>
                     navigationOptions({theme: screenProps!.theme, rightIcon: "cloud-download-alt", title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             },
             CertificationDetails: {
                 screen: CertificationDetails,
-                navigationOptions: ({ screenProps, navigation } : NavigationScreenProps) =>
+                navigationOptions: ({ screenProps, navigation }) =>
                     navigationOptions({theme: screenProps!.theme, rightIcon: "cloud-download-alt", title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             }
-        }, "MyLearning"),
+        },
+        {
+            initialRouteName: "MyLearning",
+            defaultNavigationOptions: ({ screenProps } ) => navigationOptions({theme: screenProps.theme})
+        }
+    ),
     navigationOptions: {
         tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
     },
 };
 
 const DownloadsTab = {
-    screen: stackNavigatorBuilder(
+    screen: createStackNavigator(
         {
             Downloads: {
                 screen: Downloads,
-                navigationOptions: ({ screenProps,navigation } : NavigationScreenProps) =>
-                    navigationOptions({theme: screenProps!.theme, title : navigation.getParam("title") })
+                navigationOptions: ({ screenProps, navigation }) => navigationOptions({theme: screenProps.theme, title : navigation.getParam("title") })
             }
-        },"Downloads"
+        },
+        {
+            initialRouteName: "Downloads",
+            defaultNavigationOptions: ({ screenProps } ) => navigationOptions({theme: screenProps.theme})
+        }
     ),
     navigationOptions: {
         tabBarIcon: (tabIconProps: { focused: boolean, tintColor : string}) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
@@ -127,10 +125,14 @@ const DownloadsTab = {
 };
 
 const NotificationsTab = {
-    screen: stackNavigatorBuilder(
+    screen: createStackNavigator(
         {
             Notification: PlaceHolder
-        },"Notification"
+        },
+        {
+            initialRouteName: "Notification",
+            defaultNavigationOptions: ({ screenProps } ) => navigationOptions({theme: screenProps.theme})
+        }
     ),
     navigationOptions:{
         tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
@@ -138,11 +140,15 @@ const NotificationsTab = {
 };
 
 const ProfileTab = {
-    screen: stackNavigatorBuilder(
+    screen: createStackNavigator(
         {
             Profile: Profile,
             Settings: Settings
-        },"Profile"
+        },
+        {
+            initialRouteName: "Profile",
+            defaultNavigationOptions: ({ screenProps } ) => navigationOptions({theme: screenProps.theme})
+        }
     ),
     navigationOptions: {
         tabBarIcon:  (tabIconProps: { focused: boolean, tintColor: string  }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.profile)
@@ -157,23 +163,25 @@ type navigationOptionsProps = {
     opacity? : number
 }
 
-const navigationOptions = (props: navigationOptionsProps) => ({
-    headerStyle: {
-        borderBottomWidth: 0,
-        backgroundColor: props.theme.colorSecondary1,
-        shadowOpacity: 0,
-        elevation: 0
-    },
-    headerTitleStyle: {
-        color: props.theme.navigationHeaderTintColor,
-        fontSize: normalize(20),
-        opacity: props.opacity
-    },
-    title: props.title,
-    headerBackTitle: null,
-    headerTintColor: props.theme.navigationHeaderTintColor,
-    headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} disabled={false} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
-});
+const navigationOptions = (props: navigationOptionsProps) => {
+    return {
+        headerStyle: {
+            borderBottomWidth: 0,
+                backgroundColor: props.theme.colorSecondary1,
+                shadowOpacity: 0,
+                elevation: 0
+        },
+        headerTitleStyle: {
+            color: props.theme.navigationHeaderTintColor,
+                fontSize: normalize(20),
+                opacity: props.opacity
+        },
+        title: props.title,
+            headerBackTitle: null,
+        headerTintColor: props.theme.navigationHeaderTintColor,
+        headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} disabled={false} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
+    }
+};
 
 
 const tabBarIconBuilder = (focused: boolean, color: string, imageSet: iconImageProps) => {
