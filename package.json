@@ -10,7 +10,19 @@
     "test": "jest --config jest.config.js",
     "test-junit": "jest --config jest.config.js --ci --reporters=jest-junit --reporters=default",
     "eslint": "eslint -c .eslintrc.json --ext .js --ext .ts --ext .tsx ./src/totara",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules",
+    "reconnect": "adb reverse tcp:8081 tcp:8081 && yarn refresh",
+    "menu": "adb shell input keyevent 82",
+    "refresh": "adb shell input text \"RR\"",
+    "xcode": "open ios/TotaraMobileApp.xcworkspace",
+    "clear_cache:temp": "rm -rf $TMPDIR/react-*",
+    "clear_cache:watchman": "watchman watch-del-all",
+    "clear_cache:ios": "rm -rf ios/build/ModuleCache/*",
+    "clear_cache:npm": "npm cache clean --force",
+    "clear:modules": "rm -rf node_modules",
+    "clean:pods": "rm -rf ios/Pods/ && cd ios && pod install && cd ..",
+    "clear:cache": "npm-run-all --parallel clear_cache:*",
+    "clear:all": "npm-run-all clear:cache clear:modules && npm i && yarn clean:pods"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
@@ -87,6 +99,7 @@
     "jest-junit": "^8.0.0",
     "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "^0.54.1",
+    "npm-run-all": "^4.1.5",
     "react-native-typescript-transformer": "^1.2.13",
     "react-test-renderer": "^16.9.0",
     "ts-jest": "^24.1.0",

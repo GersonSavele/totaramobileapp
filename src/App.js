@@ -24,6 +24,7 @@ import React, {useContext, useEffect} from "react";
 import { createAppContainer } from "react-navigation";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import AsyncStorage from "@react-native-community/async-storage";
+import * as Sentry from "@sentry/react-native";
 
 import {
   faHome,
@@ -70,6 +71,11 @@ import {FeatureNavigator} from "@totara/features";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import {AttemptSynchronizer} from "@totara/activities/scorm/offline";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { config } from "@totara/lib";
+
+Sentry.init({
+  dsn: config.sentryUri,
+});
 
 const App : () => React$Node = () => {
 
