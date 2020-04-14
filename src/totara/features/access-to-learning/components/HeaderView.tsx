@@ -30,7 +30,7 @@ import {
   Dimensions
 } from "react-native";
 
-import ParallaxScrollView from "../ParallaxScrollView/ParallaxScrollView";
+import ParallaxScrollView from "../parallax-scroll-view/ParallaxScrollView";
 import { CardElement, ImageElement } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { ThemeContext } from "@totara/theme";

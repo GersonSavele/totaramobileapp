@@ -37,6 +37,7 @@
     "apollo-link-retry": "^2.2.15",
     "graphql": "^15.0.0",
     "i18n-js": "^3.3.0",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "native-base": "^2.13.8",
     "prop-types": "^15.7.2",

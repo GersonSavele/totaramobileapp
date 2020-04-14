@@ -16,24 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ *
  *
  */
 
-import MyLearning from "./my-learning";
-import CourseDetails from "./access-to-learning/course-details";
-import Profile from "./profile";
-import Settings from "./settings";
-import PlaceHolder from "./place-holder";
-import ProgramDetails from "./access-to-learning/program-details";
-import FeatureNavigator from "./FeatureNavigator";
+ import VideoController from "./VideoController"
 
-export {
-  MyLearning,
-  CourseDetails,
-  ProgramDetails,
-  Profile,
-  Settings,
-  PlaceHolder,
-  FeatureNavigator
-};
+ export {
+     VideoController
+    };

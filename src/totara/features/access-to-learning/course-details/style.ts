@@ -17,13 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
- *
- *
  */
 
- import VideoController from "./VideoController"
-
-
- export {
-     VideoController
-    };
+const textStyle = {
+    bold: "bold",  
+    strong: "strong",
+    fontWeight_700 : "700",
+    short_code_prefix: "0x"
+}
+ const marginStyle = {
+    marginXXS: 2,
+    marginXS: 4,
+    marginS: 6,
+    marginM: 8,
+    marginL: 12,
+    marginXXL: 16,
+    margin3XL: 24
+}
+export { textStyle, marginStyle }

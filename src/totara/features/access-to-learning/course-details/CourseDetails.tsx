@@ -40,10 +40,10 @@ import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import { Course } from "@totara/types";
 import { ActivityList } from "./ActivityList";
-import OverviewDetails from "../Overview/OverviewDetails";
+import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
-import { HeaderView } from "../Components";
+import { HeaderView } from "../components";
 
 type CourseDetailsProps = {
   course: Course;
