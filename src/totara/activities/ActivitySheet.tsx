@@ -155,7 +155,7 @@ const ActivitySheet = ({currentActivity, onClose}: Props) => {
         <View style={styles.rightContainer}></View>
       </View>
       {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
-      <SafeAreaView forceInset={{bottom: "always"}} />
+      <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
     </View>
   </Modal>);
 };
