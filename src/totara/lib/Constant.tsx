@@ -24,17 +24,17 @@ export const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
 export const AUTHORIZATION = "AUTHORIZATION";
 
 export const DATE_FORMAT = "D MMM, YYYY";
-export const DATE_FORMAT_FULL = "dddd, DD MMMM YYYY, h:mm A"
+export const DATE_FORMAT_FULL = "dddd, DD MMMM YYYY, h:mm A";
 export const SECONDS_FORMAT = "X";
 
 export const PLATFORM_IOS = "ios";
 export const PLATFORM_ANDROID = "";
 
-export const NAVIGATION_COURSE_DETAILS ="CourseDetails";
-export const NAVIGATION_PROGRAM_DETAILS ="ProgramDetails";
-export const NAVIGATION_CERTIFICATE_DETAILS ="CertificationDetails";
+export const NAVIGATION_COURSE_DETAILS = "CourseDetails";
+export const NAVIGATION_PROGRAM_DETAILS = "ProgramDetails";
+export const NAVIGATION_CERTIFICATE_DETAILS = "CertificationDetails";
 export const NAVIGATION_SETTING = "Settings";
-export const NAVIGATION_MY_LEARNING = "MyLearning"
+export const NAVIGATION_MY_LEARNING = "MyLearning";
 
 export const SCREEN_WIDTH_X_LARGE = "xlarge";
 export const SCREEN_WIDTH_LARGE = "large";

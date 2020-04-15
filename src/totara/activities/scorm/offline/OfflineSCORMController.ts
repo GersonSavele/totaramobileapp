@@ -23,75 +23,73 @@ import { Grade, AttemptGrade, ScormActivityResult, ScormBundle } from "@totara/t
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
 import { removeSCORMPackageData, getSCORMData, setSCORMPackageData, getSCORMPackageData, getAllCommits, clearCommit } from "./StorageHelper";
 
-const getGradeForAttempt = (attemptcmi: any, grademethod?: number) => {
-  if(grademethod) {
-    let sumGrade = 0;
-    let highestGrade = 0;
-    
+const getGradeForAttempt = (attemptcmi: any, maxgrade: number, grademethod: Grade) => {
+  let sumGrade = 0;
+  let highestGrade = 0;
+  let completedScos = 0;
+  let average = 0;
+  if (Object.keys(attemptcmi) && Object.keys(attemptcmi).length > 0) {
+    const numberOfScors = Object.keys(attemptcmi).length;
     for (let [, cmi] of Object.entries(attemptcmi)) {
-      const rowScore = parseInt(cmi.core.score.raw) ? parseInt(cmi.core.score.raw) : 0;
+      let rowScore = 0;
+      if (cmi.core && cmi.core.score && cmi.core.score.raw) {
+        rowScore = parseInt(cmi.core.score.raw)
+      } else if (cmi.score && cmi.score.raw) {
+        rowScore = parseInt(cmi.core.score.raw)
+      }
+      const lessonStatus = cmi.core.lesson_status.toLowerCase();
+      if (lessonStatus == "passed" || lessonStatus == "completed") {
+        completedScos = completedScos + 1;
+      }
       sumGrade = sumGrade + rowScore
-      if(highestGrade < rowScore) {
+      if (highestGrade < rowScore) {
         highestGrade = rowScore
       }
     }
-
-    switch(grademethod) {
-      case Grade.objective: 
-        return 0;
-      case Grade.average: {
-        if(attemptcmi && attemptcmi.length) {
-          return (sumGrade / attemptcmi.length);
-        }
-        return 0;
-      }
-      case Grade.highest: 
-        return highestGrade;
-      case Grade.sum:
-        return sumGrade; 
-    }
-  } else {
-    return 0;
+    average = Math.round((sumGrade / numberOfScors));
+  }
+  
+  
+  switch (grademethod) {
+    case Grade.objective: 
+      return completedScos;
+    case Grade.average: 
+      return (average / maxgrade) * 100;
+    case Grade.highest: 
+      return (highestGrade / maxgrade) * 100;
+    case Grade.sum:
+      return (sumGrade / maxgrade) * 100; 
   }
 };
 
-const getAttemptsGrade = (attemptsreport: [any], whatgrade?: number) => {
-  if( attemptsreport && attemptsreport.length > 0) {
-    switch(whatgrade) {
-      case AttemptGrade.highest: {
-        const highestAttempt = attemptsreport.reduce((highest: any, attemptResult: any) => { 
-          if (highest && (highest.scoreRaw >= attemptResult.scoreRaw)) {
-              return highest;
-          } 
-          return attemptResult;
-        }, undefined);
-        return highestAttempt;
-      }
-      case AttemptGrade.average: {
-        const sumofscores = attemptsreport.reduce((scores: number, attemptResult: any) => (scores + attemptResult.scoreRaw), 0);
-        return {scoreRaw: (sumofscores / attemptsreport.length)};
-      }
-      case AttemptGrade.first: 
-        return attemptsreport[0];
-      case AttemptGrade.last:
-        return attemptsreport[attemptsreport.length - 1]; 
-      default:
-        return {scoreRaw: 0};
+const getAttemptsGrade = (attemptsreport: [any], whatgrade: AttemptGrade) => {
+  switch(whatgrade) {
+    case AttemptGrade.highest: {
+      const highestAttempt = attemptsreport.reduce((highest: any, attemptResult: any) => { 
+        if (highest && (highest.gradereported >= attemptResult.gradereported)) {
+            return highest.gradereported;
+        } 
+        return attemptResult;
+      }, undefined);
+      return highestAttempt;
     }
-  } 
+    case AttemptGrade.average: {
+      const sumofscores = attemptsreport.reduce((scores: number, attemptResult: any) => (scores + attemptResult.gradereported), 0);
+      return Math.round(sumofscores / attemptsreport.length);
+    }
+    case AttemptGrade.first: 
+      return attemptsreport[0].gradereported;
+    case AttemptGrade.last:
+      return attemptsreport[attemptsreport.length - 1].gradereported; 
+  }
 };
 
-const getOfflineAttemptsReport = (cmiList:any, maxgrade: number, grademethod?: number, completionscorerequired: number) => {
+const getOfflineAttemptsReport = (cmiList:any, maxgrade: number, grademethod: Grade) => {
   let scoresData = [];
   for (let [attempt, scosData] of Object.entries(cmiList)) {
-    const attemptScore = getGradeForAttempt(scosData, grademethod);
-    let lessonStatus = "completed";
-    if(completionscorerequired <= attemptScore) {
-        lessonStatus = "passed";
-    } else if(attemptScore < completionscorerequired) {
-        lessonStatus = "failed";
-    }
-    scoresData.push({ attempt: parseInt(attempt), scoreRaw: attemptScore, scoreMax: maxgrade, lessonStatus: lessonStatus});
+    const attemptScore = getGradeForAttempt(scosData, maxgrade, grademethod);
+    
+    scoresData.push({ attempt: parseInt(attempt), gradereported: attemptScore});
   }    
   return scoresData; 
 };
@@ -109,27 +107,27 @@ const getOfflineSCORMBundle = (scormId: number) => {
       let formattedData = bundle;
       if (formattedData && formattedData && formattedData.scorm) {
         if(cmis) {
-          const offlineReport = getOfflineAttemptsReport(cmis, formattedData.scorm.maxgrade, formattedData.scorm.grademethod, formattedData.scorm.completionscorerequired);
-          formattedData = {...formattedData, ...{offlineActivity: {attempts: offlineReport}}};
+          const gradeMethod = parseInt(formattedData.scorm.grademethod) as Grade;
+          const maxGrade = formattedData.scorm.maxgrade
+          if (gradeMethod != null && maxGrade != null) {
+            const offlineReport = getOfflineAttemptsReport(cmis, maxGrade, gradeMethod);
+            formattedData = {...formattedData, ...{offlineActivity: {attempts: offlineReport}}};
+          }
         }
       }
       return formattedData;
     });
  };
 
-const calculatedAttemptsGrade = (maxgrade: number, whatgrade: number, onlineCalculatedGrade?: string, onlineAttempts?:[ScormActivityResult], offlineAttempts?: [ScormActivityResult]) => {
-  if(offlineAttempts && offlineAttempts.length > 0) {
+const calculatedAttemptsGrade = (maxgrade: number, whatgrade: AttemptGrade, grademethod: Grade, onlineCalculatedGrade?: number, onlineAttempts?:[ScormActivityResult], offlineAttempts?: [ScormActivityResult]) => {
+  if (offlineAttempts && offlineAttempts.length > 0 && whatgrade != null && grademethod != null) {
     let allAttempts = offlineAttempts;
     if (onlineAttempts && onlineAttempts.length > 0) {
       allAttempts = onlineAttempts.concat(offlineAttempts);
     }
+
     const caculatedGradeReport = getAttemptsGrade(allAttempts, whatgrade);
-    if(maxgrade === 0) {
-      return `${Math.round(caculatedGradeReport.scoreRaw)}`;
-    } else {
-      const calValue = ((caculatedGradeReport.scoreRaw / maxgrade) * 100);
-      return `${Math.round(calValue)}%`;
-    }    
+    return (grademethod == Grade.objective) ? caculatedGradeReport.toString() : `${caculatedGradeReport}%`;
   } else {
     return onlineCalculatedGrade;
   }

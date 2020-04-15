@@ -34,17 +34,12 @@ import { OfflineScormActivity } from "./offline";
 import { ActivitySheetContext } from "../ActivitySheet";
 import SCORMAttempts from "./SCORMAttempts";
 import { SECONDS_FORMAT } from "@totara/lib/Constant";
+import { Log } from "@totara/lib";
 
 type SCORMActivityProps = {
   activity: Activity,
 };
 
-type SCORMAction = {
-  mode: SCORMActivityType,
-  attempt?: number,
-  scoId?: string,
-  url?: string
-};
 
 export enum SCORMActivityType {
   None,
@@ -90,13 +85,23 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
     }
   }
   if (data && data.scorm) {
-    let scormBundleData = { scorm: data.scorm } as ScormBundle;
+    let scormData = data.scorm;
+    if(data.scorm.attempts && data.scorm.attempts.length > 0) {
+      let scormAttempts = data.scorm.attempts;
+      const defaultCMI = data.scorm.attempts[data.scorm.attempts.length - 1];
+      if (!defaultCMI.timestarted) {
+        scormAttempts = scormAttempts.slice(0, -1);
+      }
+      scormData = {...data.scorm, ...{attempts: scormAttempts, defaultCMI: defaultCMI}};
+    }
+    let scormBundleData = { scorm: scormData } as ScormBundle;
     if (isreachable) {
       scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
     }
     return <SCORMFlow activity={activity} data={scormBundleData as ScormBundle} isUserOnline={isreachable} mode={SCORMActivityType.None} />
   }  else {
-    return <SCORMFlow activity={activity} data={undefined} isUserOnline={isreachable}  mode={SCORMActivityType.None} />
+    Log.debug("Invalid server response. ", data);
+    return <Text>Something went wrong, please try again later.</Text>; 
   }
 };
 
@@ -123,21 +128,16 @@ const SCORMFlow = ({activity, data, isUserOnline, mode}: SCORMFlowProps) => {
     }
   }, [actionData.mode]);
   
-    
-    
   switch(actionData.mode) {        
-    case SCORMActivityType.Offline:
-      return <OfflineScormActivity storedPackageData={actionData.bundle} attempt={actionData.data.attempt} />;
+    case SCORMActivityType.Offline: 
+      return <OfflineScormActivity scormBundle={actionData.bundle} attempt={actionData.data.attempt} scoid={actionData.data.scoid} />;      
     case SCORMActivityType.Online:
       return <AuthenticatedWebView uri={actionData.data.url} />;
     case SCORMActivityType.Attempts:
       return <SCORMAttempts scormBundle={actionData.bundle} setActionWithData={onSetActionWithData} />;
-    default: {
+    case SCORMActivityType.None: 
       return <SCORMSummary activity={activity} data={actionData.bundle} isUserOnline={isUserOnline} setActionWithData={onSetActionWithData} />;
-    }
   }
 };
 
 export default SCORMActivity;
-
-

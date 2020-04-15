@@ -65,6 +65,7 @@ export const scormQuery = gql`
         completionstatusallscos
         packageUrl:package_url
         launchUrl:launch_url
+        repeatUrl: repeat_url
         attemptsCurrent: attempts_current
         calculatedGrade: calculated_grade
         offlinePackageUrl: offline_package_url
@@ -73,10 +74,10 @@ export const scormQuery = gql`
         attempts {
           attempt
           timestarted
+          gradereported
           defaults
           objectives
           interactions
-          __typename
         }
         # Deprecated properties
         type: scormtype

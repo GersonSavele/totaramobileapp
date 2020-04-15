@@ -20,12 +20,12 @@
  */
 
 import React, { useContext, useEffect, useState }  from "react";
-import { Text, View, TextStyle, StyleSheet, FlatList, } from "react-native";
+import { Text, View, StyleSheet, FlatList, } from "react-native";
 import { Button } from "native-base";
 
 import { ThemeContext, gutter } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { ScormActivityResult, ScormBundle } from "@totara/types/Scorm";
+import { ScormActivityResult, ScormBundle, Grade } from "@totara/types/Scorm";
 import { SafeAreaView } from "react-navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -51,13 +51,13 @@ const  SCORMAttempts = ({scormBundle, onExit}: Props) => {
     setAllAttempts(dataAllAttemptsReport);
   }, [scormBundle]);
 
-  const attemptReport = (attemptReport: ScormActivityResult, index: number, completionscorerequired: number) => {
-    return <AttemptReport attemptReport={attemptReport} attempt={index + 1} completionscorerequired={completionscorerequired} />
+  const attemptReport = (attemptReport: ScormActivityResult, index: number, grademethod: Grade) => {
+    return <AttemptReport attemptReport={attemptReport} attempt={index + 1} grademethod={grademethod} />
   };
 
   return (
     <>
-      <View style={gradesStyle.panel}>
+      <View style={[theme.viewContainer, gradesStyle.panel]}>
         <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
         <View style={[gradesStyle.navigationStyle,{ backgroundColor: theme.colorSecondary1 }]}>
           <View style={gradesStyle.leftContainer}>
@@ -73,7 +73,9 @@ const  SCORMAttempts = ({scormBundle, onExit}: Props) => {
           style={{flex: 1}}
           data={allAttemptsReport}
           renderItem={({ item, index }) =>
-            attemptReport( item as ScormActivityResult, index, scormBundle.scorm.completionscorerequired)
+          {
+            return attemptReport( item as ScormActivityResult, index, scormBundle.scorm.grademethod as Grade, scormBundle.scorm.completionscorerequired)
+          }
           }
           alwaysBounceVertical={false}
           scrollIndicatorInsets={{right:8}}
@@ -90,7 +92,6 @@ const gradesStyle = StyleSheet.create({
   panel: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#FFFFFF"
   },
   navigationStyle :{
     alignItems: "center",
@@ -126,36 +127,21 @@ const gradesStyle = StyleSheet.create({
 type AttemptReport = {
   attemptReport: ScormActivityResult,
   attempt: number,
-  completionscorerequired: number
+  grademethod: Grade,
 };
 
-const AttemptReport = ({attemptReport, attempt, completionscorerequired}: AttemptReport) => {
+const AttemptReport = ({attemptReport, attempt, grademethod}: AttemptReport) => {
   
   const [theme] = useContext(ThemeContext);
   
-  let calculatedScore = attemptReport.scoreRaw;
-  let formattedScore = "";
-  if (attemptReport.scoreMax) {
-    calculatedScore = ((attemptReport.scoreRaw / attemptReport.scoreMax)*100);
-    calculatedScore = Math.round(calculatedScore);
-    formattedScore = `${calculatedScore}%`;
-  } else {
-    formattedScore = `${attemptReport.scoreRaw}`;
-  }
-
-  let styleMarks: TextStyle = {color: theme.colorSuccess};
-  let lessonStatus = translate("scorm.attempts.passed");
-  if (completionscorerequired > calculatedScore) {
-    styleMarks.color = theme.colorAlert;
-    lessonStatus = translate("scorm.attempts.failed");
-  } 
-
+  const calculatedScore = attemptReport.gradereported;
+  const formattedScore = (grademethod == Grade.objective) ? calculatedScore.toString() : `${calculatedScore}%`;
+  
   return (
     <View style={attemptResult.holder} key={"holder"}>
       <Text style={[theme.textH4, attemptResult.attempt]}>{translate("scorm.attempts.attempt")} {attempt}</Text>
       <View style={attemptResult.result}>
         <Text style={theme.textH4}>{formattedScore}</Text>
-        <Text style={[theme.textSmall, styleMarks]}>{lessonStatus}</Text>
       </View>
     </View>
   );

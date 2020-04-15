@@ -28,6 +28,7 @@ export type Scorm = {
     attemptsForceNew:  boolean,
     attemptsLockFinal: boolean,
     launchUrl: string,
+    repeatUrl: string,
     calculatedGrade: string,
 
     offlineAttemptsAllowed: boolean,
@@ -49,7 +50,12 @@ export type Scorm = {
     completionscorerequired: number,
     completionstatusrequired: [string],
     completionstatusallscos: boolean,
-    completionexpected: number
+    completionexpected: number,
+    defaultCMI: {
+        defaults: any,
+        objectives: any,
+        interactions: any
+    }
 };
 
 export type ScormBundle  = {
@@ -82,7 +88,7 @@ export type OfflineActivity = {
 
 export type ScormActivityResult = {
     attempt: number,
-    scoreRaw: number,
+    gradereported: number,
     scoreMax: number,
     lessonStatus: string
 };

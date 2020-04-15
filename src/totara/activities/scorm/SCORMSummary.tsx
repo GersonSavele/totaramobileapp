@@ -26,7 +26,7 @@ import * as RNFS from "react-native-fs";
 
 import { Activity } from "@totara/types";
 import { AuthContext } from "@totara/core";
-import { ScormBundle } from "@totara/types/Scorm";
+import { ScormBundle, AttemptGrade, Grade } from "@totara/types/Scorm";
 import { MoreText, PrimaryButton, SecondaryButton, NotificationView } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
 import { getOfflineSCORMPackageName, OfflineSCORMServerRoot } from "./offline";
@@ -140,14 +140,12 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
           newAttempt = newAttempt + scormBundle.offlineActivity.attempts.length;
         }
         newAttempt = newAttempt + 1;
-        // setScormAction({mode: SCORMType.Offline, attempt: newAttempt});
         setActionWithData(SCORMActivityType.Offline, scormBundle, {attempt: newAttempt});
       } else {
         if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
-          // setScormAction({mode: SCORMType.Online, url: scormBundle.scorm.launchUrl});
           setActionWithData(SCORMActivityType.Online, scormBundle, {url: scormBundle.scorm.launchUrl});
         } else {
-          Log.debug("Url cannot find. ", scormBundle.scorm.launchUrl);
+          Log.debug("Launch url cannot find. ", scormBundle.scorm.launchUrl);
         }
       }
     } else {
@@ -164,20 +162,20 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   };
 
   //START Continue ATTEMPT
-  const onContinueAttemptTap = () => {
+  const onTapContinueLastAttempt = () => {
     if(isUserOnline) {
       if (scormBundle) {
-        if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
-          // TODO - need to set corrent url for continue last attmept
-          setActionWithData(SCORMActivityType.Online, scormBundle, {url: scormBundle.scorm.launchUrl});
+        if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
+          setActionWithData(SCORMActivityType.Online, scormBundle, {url: scormBundle.scorm.repeatUrl});
         } else {
-          Log.debug("Url cannot find. ", scormBundle.scorm.launchUrl);
+          Log.debug("Repeat url cannot find. ", scormBundle.scorm.repeatUrl);
         }
       } else {
         Log.debug("Scorm data could not found", scormBundle);
       }
     }
   };
+  
   useEffect(()=> {  
     if(!isUserOnline) {
       getOfflineSCORMBundle(activity.instanceid).then(result => {
@@ -210,12 +208,19 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     totalAttempt = totalAttempt + scormBundle!.offlineActivity.attempts.length;
   }
   
+  const attemptGrade = parseInt(scormBundle!.scorm.whatgrade) as AttemptGrade;
+  const gradeMethod = parseInt(scormBundle!.scorm.grademethod) as Grade;
   const offlineAttempts = scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts ? scormBundle!.offlineActivity.attempts : undefined;
-  const calculatedGrade = calculatedAttemptsGrade(scormBundle!.scorm.maxgrade, scormBundle!.scorm.whatgrade, scormBundle!.scorm.calculatedGrade, scormBundle!.scorm.attempts, offlineAttempts);
- 
+  const calculatedGrade = calculatedAttemptsGrade(scormBundle!.scorm.maxgrade, attemptGrade, gradeMethod, scormBundle!.scorm.calculatedGrade, scormBundle!.scorm.attempts, offlineAttempts, );
+  
   const isCompletedAttempts = scormBundle && scormBundle!.scorm && scormBundle!.scorm.attemptsMax && totalAttempt >= scormBundle!.scorm.attemptsMax;
   const isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT));
-  const shouldShowAction = !isUpcomingActivity && !isCompletedAttempts && (scormBundle && scormBundle.scorm  && (isUserOnline || (scormBundle.scorm.offlineAttemptsAllowed && scormBundle.package && scormBundle.package.path)));
+  const hasStartNewAttempt = ((isUserOnline && scormBundle && scormBundle!.scorm && scormBundle!.scorm.launchUrl) || (!isUserOnline && scormBundle.scorm.offlineAttemptsAllowed && scormBundle.package && scormBundle.package.path));
+  const hasRepeatAttempt = isUserOnline && scormBundle && scormBundle!.scorm && scormBundle!.scorm.repeatUrl;
+  let actionPrimary = (hasStartNewAttempt) ? { title: translate("scorm.summary.new_attempt"), action: onTapNewAttempt} : undefined;
+  let actionSecondary = (hasRepeatAttempt) ? { title: translate("scorm.summary.last_attempt"), action: onTapContinueLastAttempt} : undefined;
+  
+  const shouldShowAction = !isUpcomingActivity && !isCompletedAttempts && (hasStartNewAttempt || hasRepeatAttempt);
   
   const lastsyncText = !isUserOnline && scormBundle ? `${translate("scorm.last_synced")}: ${moment.unix(scormBundle.lastsynced).toNow(true)} ${translate("scorm.ago")} (${moment.unix(scormBundle.lastsynced).format(DATE_FORMAT)})` : null;
   const upcommingActivityText = isUpcomingActivity ? `${translate("scorm.info_upcoming_activity")} ${moment.unix(scormBundle!.scorm.timeopen).format(DATE_FORMAT_FULL)}` : null;
@@ -241,7 +246,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
           </View>
           <View style={styles.sectionField} >
             <Text style={theme.textB1}>{translate("scorm.summary.grade.method")}</Text>
-            { scormBundle!.scorm.whatgrade && <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{translate(`scorm.grading_method.${scormBundle!.scorm.whatgrade}`)}</Text>}
+            { attemptGrade && <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{translate(`scorm.grading_method.${attemptGrade}`)}</Text>}
           </View>
           <TouchableOpacity style={styles.sectionField} onPress={onTapViewAllAttempts}>
             <Text style={theme.textB1}>{translate("scorm.summary.grade.reported")}</Text>
@@ -262,7 +267,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
         </View>
       </ScrollView>
     </View>
-    {shouldShowAction && <AttemptController isOnline={isUserOnline} maxAttempt={scormBundle!.scorm.attemptsMax} currentAttempt={totalAttempt} actionPrimary={onTapNewAttempt} actionSecondary={onContinueAttemptTap} /> }
+    {shouldShowAction && <AttemptController primary={actionPrimary} secondary={actionSecondary} /> }
   </View>
   { scormBundle &&
   <Modal visible={section === Section.Attempts}>
@@ -297,44 +302,33 @@ const styles = StyleSheet.create({
 });
 
 type PropsAttempt = {
-  isOnline: boolean,
-  maxAttempt: number | null,
-  currentAttempt: number | null,
-  actionPrimary: ()=>void,
-  actionSecondary: ()=>void
+  primary: PropsInfo | undefined,
+  secondary: PropsInfo | undefined
 };
 
-const AttemptController = (attempt: PropsAttempt) => {
+type PropsInfo = {
+  title: string,
+  action: ()=>void
+};
 
-  const [isEnabledNewAttempt, setIsEnabledNewAttempt] = useState(false);
-  const [isEnabledLastAttempt, setIsEnabledLastAttempt] = useState(false);
-
-  useEffect(()=> {
-      const isCompletedAllAttempt = attempt.maxAttempt && attempt.currentAttempt && attempt.currentAttempt >= attempt.maxAttempt;
-      setIsEnabledNewAttempt(!isCompletedAllAttempt);
-      if (attempt.isOnline) {
-        // TODO check offline attempt count for Continue last attempt
-        setIsEnabledLastAttempt(attempt.currentAttempt !== null && attempt.currentAttempt > 0);
-      } 
-  }, [attempt]);
+const AttemptController = ({ primary, secondary }: PropsAttempt) => {
 
   return (<View style={stylesAction.attemptContainer}>
     <View style={{flexDirection: "row", justifyContent: "space-between" }}>
-      { isEnabledNewAttempt && isEnabledLastAttempt && <SecondaryButton text={translate("scorm.summary.last_attempt")} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} style={{flex: 1}} /> }
-      { !isEnabledNewAttempt && isEnabledLastAttempt && <PrimaryButton text={translate("scorm.summary.last_attempt")} mode={!isEnabledLastAttempt ? "disabled" : undefined} onPress={attempt.actionSecondary} style={{flex: 1}}/> }
-      { isEnabledNewAttempt && isEnabledLastAttempt && <View style={{ width: 16 }}></View> }
-      { isEnabledNewAttempt && <PrimaryButton text={translate("scorm.summary.new_attempt")} mode={!isEnabledNewAttempt ? "disabled" : undefined} onPress={attempt.actionPrimary} style={{flex: 1}} /> }
+      { secondary && <SecondaryButton text={secondary.title} onPress={secondary.action} style={{flex: 1}} /> }
+      { secondary && primary && <View style={{ width: 16 }}></View> }
+      { primary && <PrimaryButton text={primary.title} onPress={primary.action} style={{flex: 1}} /> }
     </View>
   </View>);
 };
 
 const stylesAction = StyleSheet.create({
-attemptContainer: {
-  paddingHorizontal: gutter,
-  paddingVertical: 8,
-  flexDirection: "column",
-  alignItems: "stretch"
-}
+  attemptContainer: {
+    paddingHorizontal: gutter,
+    paddingVertical: 8,
+    flexDirection: "column",
+    alignItems: "stretch"
+  }
 });
 
 export default SCORMSummary;

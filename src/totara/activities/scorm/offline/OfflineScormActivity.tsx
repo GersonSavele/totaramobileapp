@@ -31,15 +31,15 @@ import { Log } from "@totara/lib";
 import { saveSCORMActivityData, getSCORMAttemptData } from "./StorageHelper";
 
 type Props = {
-    storedPackageData: ScormBundle,
+    scormBundle: ScormBundle,
     attempt: number,
     scoid?: string,
 }
 
-const OfflineScormActivity = (props: Props) => {
+const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
 
     const server = useRef<StaticServer>(null);
-    const [scormPackageData, setScormPackageData] = useState<Package>(props.storedPackageData.package);
+    const [scormPackageData, setScormPackageData] = useState<Package>(scormBundle.package);
     const [url, setUrl] = useState<string>();
     const [jsCode, setJsCode] = useState<string>();
     
@@ -56,22 +56,22 @@ const OfflineScormActivity = (props: Props) => {
             Log.debug(e.messageData);
         });
         
-       loadSCORMPackageData(props.storedPackageData.package).then(data => {
+       loadSCORMPackageData(scormBundle.package).then(data => {
            setScormPackageData(data);
         }).catch(e => {
             Log.debug(e.messageData);
         });                        
-    }, [props.storedPackageData.scorm.id]);
+    }, [scormBundle.scorm.id]);
 
     useEffect(()=> { 
         if(url && scormPackageData) {
             // TODO - need to pass attem
-            getSCORMAttemptData(props.storedPackageData.scorm.id, props.attempt).then(cmiData=> {
+            getSCORMAttemptData(scormBundle.scorm.id, attempt).then(cmiData=> {
                 if (scormPackageData && scormPackageData.scos && scormPackageData.defaultSco) {
                     // TODO - need to pass attempt
-                    const selectedScoId = props.scoid ? props.scoid : scormPackageData.defaultSco.id!;
+                    const selectedScoId = scoid ? scoid : scormPackageData.defaultSco.id!;
                     const lastActivityCmi = (cmiData && cmiData[selectedScoId]) ? cmiData[selectedScoId] : null;
-                    const cmi = buildCMI(props.storedPackageData.scorm.id, scormPackageData.scos, selectedScoId, props.attempt, scormPackageData.path);
+                    const cmi = buildCMI(scormBundle.scorm.id, scormPackageData.scos, selectedScoId, attempt, scormPackageData.path);
                     setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
                 }
             });
