@@ -157,13 +157,13 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
         }
         
         const _entrysrc = `${packageLocation}/${selectedSCO!.launchSrc}`;
-        const _scormdebugging = false; //TODO - apply correct value
-        const _scormauto = 0; //TODO - apply correct value
+        const _scormdebugging = false;
+        const _scormauto = 0;
         const _scormid = scormId;
         const _scoid = selectedSCO!.id;
-        const _autocommit = false; //TODO - apply correct value
-        const _masteryoverride = true; //TODO - apply correct value
-        const _hidetoc = 1; //TODO - apply correct value
+        const _autocommit = false;
+        const _masteryoverride = true;
+        const _hidetoc = 1;
 
         return {
             entrysrc: _entrysrc,
