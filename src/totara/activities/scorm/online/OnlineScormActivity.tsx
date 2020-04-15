@@ -20,151 +20,17 @@
  */
 
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { Activity } from "@totara/types";
-import { Query } from "react-apollo";
-import { Response, ScormGQLQuery }  from "../api";
 
-import { GradeDetailsCircle,GradeDetailsTitle,GradeDetailsProgress,GradeDetailsStatus } from "../components/GradeDetailsCircle";
-import { ActivityBottomView, ActivityBottomViewTitle,ActivityBottomViewButton } from "../../components/ActivityBottomView";
-import ActivityHeaderView from "../../components/ActivityHeaderView";
 import { AuthenticatedWebView } from "@totara/auth";
-import { translate } from "@totara/locale";
 
-
-
-type ScormActivityViewParam = {
-  data: any,
-  error: any,
-  loading : boolean,
-  headerViewFontSize? : number,
-  gradeDetailsTitle : string,
-  gradeDetailsStatus : string,
-  borderColor : string,
-  color : string,
-  bottomViewButtonTitle : string,
-  bottomViewButtonTitleColor : string,
-  bottomViewButtonBackgroundColor : string,
-  bottomViewButtonBorderColor : string,
-  bottomViewButtonTitleFontWeight : string
+type OnlineScormActivityProps = {
+  url: string
 }
 
-class OnlineScormActivity extends React.Component<Props, States> {
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      screen : 2
-    };
-  }
-
-  showScormDetails = ({data, error, loading, headerViewFontSize, gradeDetailsTitle, gradeDetailsStatus, borderColor,
-    color,bottomViewButtonTitle,bottomViewButtonTitleColor,bottomViewButtonBackgroundColor,bottomViewButtonBorderColor,
-    bottomViewButtonTitleFontWeight }: ScormActivityViewParam )  => {
-    if (loading) return <Text>{translate("general.loading")}</Text>;
-    if (error) return <Text>{translate("general.error")}(</Text>;
-    if (data) {
-      return(
-        <View style = {styles.container}>
-         <ActivityHeaderView title = {this.props.activity.name}
-         fontSize = {headerViewFontSize}/>
-         <GradeDetailsCircle>
-          <GradeDetailsTitle text = {gradeDetailsTitle}/>
-          <GradeDetailsProgress text = {data.scorm.score.toString()}/>
-          <GradeDetailsStatus text = {gradeDetailsStatus} borderColor = {borderColor} color = {color} />
-         </GradeDetailsCircle>
-         <ActivityBottomView>
-          <ActivityBottomViewTitle currentAttempts ={data.scorm.currentAttempt.toString()} maxAttempts = {data.scorm.maxAttempt.toString()}/>
-          <ActivityBottomViewButton buttonBackgroundColor = {bottomViewButtonBackgroundColor} buttonBorderColor = {bottomViewButtonBorderColor}
-          onPress = {this.loadScormPlayer} buttonTitleColor = {bottomViewButtonTitleColor} buttonTitle = {bottomViewButtonTitle} buttonTitleFontWeight = {bottomViewButtonTitleFontWeight}/>
-        </ActivityBottomView>
-        </View>)
-      }
-    }
-
-
-  render(){
-    switch (this.state.screen) {
-        case 1:
-          return (
-             <View style = {styles.container}>
-              <Query <Response>  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
-              {({ data, error, loading }) => (
-                this.showScormDetails({
-                   data : data,
-                   error : error,
-                   loading : loading,
-                   headerViewFontSize : 12,
-                   gradeDetailsTitle : translate("Your highest grade"),
-                   gradeDetailsStatus : translate("VIEW TO COMPLETE"),
-                   borderColor : "#000",
-                   color: "#000",
-                   bottomViewButtonTitle : translate("Begin"),
-                   bottomViewButtonTitleColor: "#FFF",
-                   bottomViewButtonBackgroundColor: "#69BD45",
-                   bottomViewButtonBorderColor: "#69BD45",
-                   bottomViewButtonTitleFontWeight: "600"
-                }) || null
-              )}
-            </Query>
-            </View>)
-        case 2:
-          return (
-            <View style={{ flex: 1 }} >
-              <AuthenticatedWebView uri={this.props.activity.viewurl!} />
-            </View>)
-        default:
-          return (
-            <View style = {styles.container}>
-              <Query <Response>  query= { ScormGQLQuery } variables = {{ id : this.props.activity.id }}>
-              {({ loading, data, error }) => (
-                this.showScormDetails({
-                  data : data,
-                  error : error,
-                  loading : loading,
-                  headerViewFontSize : 12,
-                  gradeDetailsTitle : translate("Your highest grade"),
-                  gradeDetailsStatus : translate("PASSED"),
-                  borderColor : "#69BD45",
-                  color: "#69BD45",
-                  bottomViewButtonTitle : translate("Attempt again"),
-                  bottomViewButtonTitleColor: "#3D444B",
-                  bottomViewButtonBackgroundColor: "#FFF",
-                  bottomViewButtonBorderColor: "#3D444B",
-                  bottomViewButtonTitleFontWeight: "600"
-               }) || null
-               )}
-            </Query>
-            </View>)
-      }
-  }
-  loadScormPlayer = () => {
-    this.setState({screen : 2})
-  }
-
-  loadFeedbackView = () => {
-    this.setState({screen : 3})
-  }
-
-  loadInformationView = () => {
-    this.setState({screen : 1})
-  }
+const OnlineScormActivity = ({url}: OnlineScormActivityProps) => {
+  
+  return <AuthenticatedWebView uri={url} />;
 }
 
-type Props = {
-  activity: Activity
-}
-
-type States = {
-  screen : number
-};
-const styles = StyleSheet.create({
-  container:{
-    flex : 1,
-    alignItems: 'center',
-    flexDirection:'column',
-    alignContent:"space-between"
-  }
-});
 
 export default OnlineScormActivity;

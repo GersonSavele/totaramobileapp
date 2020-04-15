@@ -62,7 +62,7 @@ const getGradeForAttempt = (attemptcmi: any, maxgrade: number, grademethod: Grad
   }
 };
 
-const getAttemptsGrade = (attemptsreport: [any], whatgrade: AttemptGrade) => {
+const getAttemptsGrade = (attemptsreport: [any], whatgrade: AttemptGrade, maxgrade: number) => {
   switch(whatgrade) {
     case AttemptGrade.highest: {
       const highestAttempt = attemptsreport.reduce((highest: any, attemptResult: any) => { 
@@ -75,7 +75,9 @@ const getAttemptsGrade = (attemptsreport: [any], whatgrade: AttemptGrade) => {
     }
     case AttemptGrade.average: {
       const sumofscores = attemptsreport.reduce((scores: number, attemptResult: any) => (scores + attemptResult.gradereported), 0);
-      return Math.round(sumofscores / attemptsreport.length);
+      const rawSum = (sumofscores / 100) * maxgrade;
+      const avgRawSum = Math.round(rawSum / attemptsreport.length);
+      return (avgRawSum / maxgrade) * 100;
     }
     case AttemptGrade.first: 
       return attemptsreport[0].gradereported;
@@ -117,14 +119,14 @@ const getOfflineSCORMBundle = (scormId: number) => {
     });
  };
 
-const calculatedAttemptsGrade = (whatgrade: AttemptGrade, grademethod: Grade, onlineCalculatedGrade?: number, onlineAttempts?:[ScormActivityResult], offlineAttempts?: [ScormActivityResult]) => {
+const calculatedAttemptsGrade = (whatgrade: AttemptGrade, grademethod: Grade, maxgrade: number, onlineCalculatedGrade?: number, onlineAttempts?:[ScormActivityResult], offlineAttempts?: [ScormActivityResult]) => {
   if (offlineAttempts && offlineAttempts.length > 0 && whatgrade != null && grademethod != null) {
     let allAttempts = offlineAttempts;
     if (onlineAttempts && onlineAttempts.length > 0) {
       allAttempts = onlineAttempts.concat(offlineAttempts);
     }
 
-    const caculatedGradeReport = getAttemptsGrade(allAttempts, whatgrade);
+    const caculatedGradeReport = getAttemptsGrade(allAttempts, whatgrade, maxgrade);
     return (grademethod == Grade.objective) ? caculatedGradeReport.toString() : `${caculatedGradeReport}%`;
   } else {
     return onlineCalculatedGrade;

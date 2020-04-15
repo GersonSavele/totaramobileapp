@@ -29,8 +29,8 @@ import { Activity, ActivityType } from "@totara/types";
 import SCORMSummary from "./SCORMSummary";
 import { ScormBundle } from "@totara/types/Scorm";
 import { scormQuery } from "./api";
-import { AuthenticatedWebView } from "@totara/auth";
 import { OfflineScormActivity } from "./offline";
+import OnlineScormActivity from "./online/OnlineScormActivity";
 import { ActivitySheetContext } from "../ActivitySheet";
 import SCORMAttempts from "./SCORMAttempts";
 import { SECONDS_FORMAT } from "@totara/lib/Constant";
@@ -127,7 +127,7 @@ const SCORMFlow = ({activity, data, isUserOnline, mode}: SCORMFlowProps) => {
     case SCORMActivityType.Offline: 
       return <OfflineScormActivity scormBundle={actionData.bundle} attempt={actionData.data.attempt} scoid={actionData.data.scoid} />;      
     case SCORMActivityType.Online:
-      return <AuthenticatedWebView uri={actionData.data.url} />;
+      return <OnlineScormActivity url={actionData.data.url} />;
     case SCORMActivityType.Attempts:
       return <SCORMAttempts scormBundle={actionData.bundle} setActionWithData={onSetActionWithData} />;
     case SCORMActivityType.None: 

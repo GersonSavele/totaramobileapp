@@ -181,7 +181,6 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     }
   };
 
-  //START Continue ATTEMPT
   const onTapContinueLastAttempt = () => {
     if(isUserOnline) {
       if (scormBundle) {
@@ -231,7 +230,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   const attemptGrade = scormBundle!.scorm.whatgrade ? parseInt(scormBundle!.scorm.whatgrade) as AttemptGrade : null;
   const gradeMethod = scormBundle!.scorm.grademethod ? parseInt(scormBundle!.scorm.grademethod) as Grade : null;
   const offlineAttempts = scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts ? scormBundle!.offlineActivity.attempts : undefined;
-  const calculatedGrade = calculatedAttemptsGrade(attemptGrade, gradeMethod, scormBundle!.scorm.calculatedGrade, scormBundle!.scorm.attempts, offlineAttempts, );
+  const calculatedGrade = calculatedAttemptsGrade(attemptGrade, gradeMethod, scormBundle!.scorm.maxgrade, scormBundle!.scorm.calculatedGrade, scormBundle!.scorm.attempts, offlineAttempts, );
   
   const isCompletedAttempts = scormBundle && scormBundle!.scorm && scormBundle!.scorm.attemptsMax && totalAttempt >= scormBundle!.scorm.attemptsMax;
   const isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT));
@@ -243,15 +242,15 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   const shouldShowAction = !isUpcomingActivity && !isCompletedAttempts && (hasStartNewAttempt || hasRepeatAttempt);
   
   const lastsyncText = !isUserOnline && scormBundle ? `${translate("scorm.last_synced")}: ${moment.unix(scormBundle.lastsynced).toNow(true)} ${translate("scorm.ago")} (${moment.unix(scormBundle.lastsynced).format(DATE_FORMAT)})` : null;
-  const upcommingActivityText = isUpcomingActivity ? `${translate("scorm.info_upcoming_activity")} ${moment.unix(scormBundle!.scorm.timeopen).format(DATE_FORMAT_FULL)}` : null;
-  const completedAttemptsText = !isUpcomingActivity && isCompletedAttempts ? translate("scorm.info_completed_attempts") : null;
+  const completedAttemptsText = isCompletedAttempts ? translate("scorm.info_completed_attempts") : null;
+  const upcommingActivityText = !isCompletedAttempts && isUpcomingActivity ? `${translate("scorm.info_upcoming_activity")} ${moment.unix(scormBundle!.scorm.timeopen).format(DATE_FORMAT_FULL)}` : null;
   
   return (
   <>
   <View style={styles.expanded}>  
   { shouldShowAction && lastsyncText && <NotificationView mode={"info"} text={lastsyncText} icon={"bolt"} /> }
-  { upcommingActivityText && <NotificationView mode={"alert"} text={upcommingActivityText} icon={"exclamation-circle"}  /> }
   { completedAttemptsText && <NotificationView mode={"alert"} text={completedAttemptsText} icon={"exclamation-circle"}  /> }
+  { upcommingActivityText && <NotificationView mode={"alert"} text={upcommingActivityText} icon={"exclamation-circle"}  /> }
    <View style={{flex: 1}}>
       <ScrollView>
         <View style={{ padding: gutter }}>
@@ -260,7 +259,6 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
             { isUserOnline && <ResourceDownloader downloading={downloadingFile!} onDownloadTap={onDownloadContentTap} progress={resource && resource.percentCompleted ? resource.percentCompleted! : 0} downloadOK={hasFileDownloaded}/> }
           </View>
           { description && <MoreText longText={description} />}
-          
           <View style={styles.sectionField}>
             <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>{translate("scorm.summary.grade.title")}</Text>
           </View>

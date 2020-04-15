@@ -34,7 +34,7 @@ type Props = {
     scormBundle: ScormBundle,
     attempt: number,
     scoid?: string,
-}
+};
 
 const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
 
@@ -65,13 +65,11 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
 
     useEffect(()=> { 
         if(url && scormPackageData) {
-            // TODO - need to pass attem
             getSCORMAttemptData(scormBundle.scorm.id, attempt).then(cmiData=> {
                 if (scormPackageData && scormPackageData.scos && scormPackageData.defaultSco) {
-                    // TODO - need to pass attempt
                     const selectedScoId = scoid ? scoid : scormPackageData.defaultSco.id!;
                     const lastActivityCmi = (cmiData && cmiData[selectedScoId]) ? cmiData[selectedScoId] : null;
-                    const cmi = buildCMI(scormBundle.scorm.id, scormPackageData.scos, selectedScoId, attempt, scormPackageData.path);
+                    const cmi = buildCMI(scormBundle.scorm.id, scormPackageData.scos, selectedScoId, attempt, scormPackageData.path, scormBundle.scorm.defaultCMI);
                     setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
                 }
             });
@@ -134,14 +132,14 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
         }
     };
     
-    const buildCMI = (scormId: string, scos: [Sco], scoId: string, attempt: number, packageLocation: string) => {
+    const buildCMI = (scormId: string, scos: [Sco], scoId: string, attempt: number, packageLocation: string, defaultCMI: any) => {
         let selectedSCO: Sco | null = null;
         let _def : any = {};
         let _int : any = {};
         let _obj : any = {};
-
-        //TODO: need to be integrated
-        const studentId = 'kamala', studentName = 'Tennakoon, Kamala';
+        const defaultsData = JSON.parse(defaultCMI.defaults);
+        const interactionsData = JSON.parse(defaultCMI.interactions);
+        const objectivesData = JSON.parse(defaultCMI.objectives);
 
         if (scos) {
             for (let index = 0; index < scos.length; index++) {
@@ -152,12 +150,12 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
 
                 const tmpScoId: string = tmpSCO.id!;
 
-                _def[tmpScoId] = buildSCODefinition(studentId, studentName);
-                _int[tmpScoId] = "";
-                _obj[tmpScoId] = "";
+                _def[tmpScoId] = defaultsData[tmpScoId];
+                _int[tmpScoId] = interactionsData[tmpScoId];
+                _obj[tmpScoId] = objectivesData[tmpScoId];
             }
         }
-
+        
         const _entrysrc = `${packageLocation}/${selectedSCO!.launchSrc}`;
         const _scormdebugging = false; //TODO - apply correct value
         const _scormauto = 0; //TODO - apply correct value
@@ -181,40 +179,6 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
             masteryoverride: _masteryoverride,
             hidetoc: _hidetoc
         };
-    };
-    
-    const buildSCODefinition = (studentId: string, studentName: string) => { 
-        //TODO: MOVE THESE PROPERTIES TO PARAMETERS AS NECESSARY
-        const credit = 'credit', entry = 'ab-initio',
-            lessonMode = 'normal', launchData = '', masteryScore = '', maxTimeAllowed = '', timeLimitAction = '', totalTime = "00:00:00",
-            lessonLocation = '', lessonStatus = '', raw = '', max = '', min = '', exit = '',
-            suspendData = '', comments = '', language = '', audio = '0', speed = '0', text = '0';
-
-        const _def = {
-            "cmi.core.student_id": studentId,
-            "cmi.core.student_name": studentName,
-            "cmi.core.credit": credit,
-            "cmi.core.entry": entry,
-            "cmi.core.lesson_mode": lessonMode,
-            "cmi.launch_data": launchData,
-            "cmi.student_data.mastery_score": masteryScore,
-            "cmi.student_data.max_time_allowed": maxTimeAllowed,
-            "cmi.student_data.time_limit_action": timeLimitAction,
-            "cmi.core.total_time": totalTime,
-            "cmi.core.lesson_location": lessonLocation,
-            "cmi.core.lesson_status": lessonStatus,
-            "cmi.core.score.raw": raw,
-            "cmi.core.score.max": max,
-            "cmi.core.score.min": min,
-            "cmi.core.exit": exit,
-            "cmi.suspend_data": suspendData,
-            "cmi.comments": comments,
-            "cmi.student_preference.language": language,
-            "cmi.student_preference.audio": audio,
-            "cmi.student_preference.speed": speed,
-            "cmi.student_preference.text": text,
-        }
-        return _def;
     };
 
     const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
