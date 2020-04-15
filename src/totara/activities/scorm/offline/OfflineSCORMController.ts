@@ -105,21 +105,19 @@ const getOfflineSCORMBundle = (scormId: number) => {
       return getSCORMData(scormId);
     }).then(({bundle, cmis}) => {
       let formattedData = bundle;
-      if (formattedData && formattedData && formattedData.scorm) {
+      if (formattedData && formattedData.scorm && formattedData.scorm.grademethod && formattedData.scorm.maxgrade) {
         if(cmis) {
           const gradeMethod = parseInt(formattedData.scorm.grademethod) as Grade;
-          const maxGrade = formattedData.scorm.maxgrade
-          if (gradeMethod != null && maxGrade != null) {
-            const offlineReport = getOfflineAttemptsReport(cmis, maxGrade, gradeMethod);
-            formattedData = {...formattedData, ...{offlineActivity: {attempts: offlineReport}}};
-          }
+          const maxGrade = formattedData.scorm.maxgrade;
+          const offlineReport = getOfflineAttemptsReport(cmis, maxGrade, gradeMethod);
+          formattedData = {...formattedData, ...{offlineActivity: {attempts: offlineReport}}};
         }
       }
       return formattedData;
     });
  };
 
-const calculatedAttemptsGrade = (maxgrade: number, whatgrade: AttemptGrade, grademethod: Grade, onlineCalculatedGrade?: number, onlineAttempts?:[ScormActivityResult], offlineAttempts?: [ScormActivityResult]) => {
+const calculatedAttemptsGrade = (whatgrade: AttemptGrade, grademethod: Grade, onlineCalculatedGrade?: number, onlineAttempts?:[ScormActivityResult], offlineAttempts?: [ScormActivityResult]) => {
   if (offlineAttempts && offlineAttempts.length > 0 && whatgrade != null && grademethod != null) {
     let allAttempts = offlineAttempts;
     if (onlineAttempts && onlineAttempts.length > 0) {

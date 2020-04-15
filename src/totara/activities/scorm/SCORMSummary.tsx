@@ -41,6 +41,7 @@ import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { AppliedTheme } from "@totara/theme/Theme";
 
 
 type Props = {
@@ -54,6 +55,25 @@ enum Section {
   None,
   Attempts
 }
+
+const gridStyle = (theme: AppliedTheme) => ([theme.textB1, {color: theme.textColorSubdued}]);
+
+type GridLabelProps = {
+  theme: AppliedTheme,
+  textId: string,
+  value: string,
+  children?: Element,
+};
+
+const GridLabelValue = ({theme, textId, value, children}: GridLabelProps ) => (
+  <View style={styles.sectionField} >
+    <Text style={theme.textB1}>{translate(textId)}</Text>
+    <View style={{flexDirection: "row"}}>
+      <Text style={gridStyle(theme)}>{value}</Text>
+      {children}
+    </View>
+  </View>
+);
 
 const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) => {
   const {authContextState: { appState }} = useContext(AuthContext);
@@ -208,10 +228,10 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     totalAttempt = totalAttempt + scormBundle!.offlineActivity.attempts.length;
   }
   
-  const attemptGrade = parseInt(scormBundle!.scorm.whatgrade) as AttemptGrade;
-  const gradeMethod = parseInt(scormBundle!.scorm.grademethod) as Grade;
+  const attemptGrade = scormBundle!.scorm.whatgrade ? parseInt(scormBundle!.scorm.whatgrade) as AttemptGrade : null;
+  const gradeMethod = scormBundle!.scorm.grademethod ? parseInt(scormBundle!.scorm.grademethod) as Grade : null;
   const offlineAttempts = scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts ? scormBundle!.offlineActivity.attempts : undefined;
-  const calculatedGrade = calculatedAttemptsGrade(scormBundle!.scorm.maxgrade, attemptGrade, gradeMethod, scormBundle!.scorm.calculatedGrade, scormBundle!.scorm.attempts, offlineAttempts, );
+  const calculatedGrade = calculatedAttemptsGrade(attemptGrade, gradeMethod, scormBundle!.scorm.calculatedGrade, scormBundle!.scorm.attempts, offlineAttempts, );
   
   const isCompletedAttempts = scormBundle && scormBundle!.scorm && scormBundle!.scorm.attemptsMax && totalAttempt >= scormBundle!.scorm.attemptsMax;
   const isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT));
@@ -244,26 +264,30 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
           <View style={styles.sectionField}>
             <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>{translate("scorm.summary.grade.title")}</Text>
           </View>
-          <View style={styles.sectionField} >
-            <Text style={theme.textB1}>{translate("scorm.summary.grade.method")}</Text>
-            { attemptGrade && <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{translate(`scorm.grading_method.${attemptGrade}`)}</Text>}
-          </View>
-          <TouchableOpacity style={styles.sectionField} onPress={onTapViewAllAttempts}>
-            <Text style={theme.textB1}>{translate("scorm.summary.grade.reported")}</Text>
-            <View style={{flexDirection: "row"}}>
-              <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{calculatedGrade}</Text>
+          <GridLabelValue
+            theme={theme}
+            textId={"scorm.summary.grade.method"} 
+            value={attemptGrade !=  null ? translate(`scorm.grading_method.${attemptGrade}`) : translate("scorm.summary.attempt.unlimited")} 
+          />
+          <TouchableOpacity onPress={onTapViewAllAttempts}>
+            <GridLabelValue
+              theme={theme}
+              textId={"scorm.summary.grade.reported"} 
+              value={calculatedGrade} >
               <FontAwesomeIcon icon="chevron-right" size={theme.textB1.fontSize} style={{alignSelf: "center", marginLeft: 8}} color={theme.textColorSubdued} />
-            </View>
+            </GridLabelValue>
           </TouchableOpacity>
           <Text style={[theme.textH2, styles.sectionBreak]}>{translate("scorm.summary.attempt.title")}</Text>
-          <View style={styles.sectionField} >
-            <Text style={theme.textB1}>{translate("scorm.summary.attempt.total_attempts")}</Text>
-            <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ scormBundle!.scorm.attemptsMax ? scormBundle!.scorm.attemptsMax.toString() : translate("scorm.summary.attempt.unlimited")}</Text>
-          </View>
-          <View style={styles.sectionField} >
-            <Text style={theme.textB1}>{translate("scorm.summary.attempt.completed_attempts")}</Text>
-            <Text style={[theme.textB1, {color: theme.textColorSubdued}]}>{ totalAttempt}</Text>
-          </View>
+          <GridLabelValue
+            theme={theme}
+            textId={"scorm.summary.attempt.total_attempts"} 
+            value={scormBundle!.scorm.attemptsMax ? scormBundle!.scorm.attemptsMax.toString() : translate("scorm.summary.attempt.unlimited")} 
+          />
+          <GridLabelValue
+            theme={theme}
+            textId={"scorm.summary.attempt.completed_attempts"} 
+            value={totalAttempt.toString()} 
+          />
         </View>
       </ScrollView>
     </View>

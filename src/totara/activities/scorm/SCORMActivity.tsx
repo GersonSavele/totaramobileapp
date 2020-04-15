@@ -77,12 +77,7 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
   
   if (loading) { return <Text>Loading...</Text>; }
   if (error) { 
-    if (isreachable) {
       return <Text>Something went wrong, please try again later.</Text>; 
-    } 
-    else {
-      return <SCORMFlow activity={activity} data={undefined} isUserOnline={isreachable} mode={SCORMActivityType.None} />
-    }
   }
   if (data && data.scorm) {
     let scormData = data.scorm;
