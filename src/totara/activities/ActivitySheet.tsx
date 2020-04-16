@@ -29,6 +29,8 @@ import { WebviewActivity } from "./webview/WebviewActivity";
 import { ThemeContext } from "@totara/theme";
 import ActivityFeedback from "./ActivityFeedback";
 import SCORMActivity from "./scorm/SCORMActivity";
+import { ActivityNavigation, ActionItem, Header } from "./components/ActivityNavigationBar";
+import ResourceDownloader from "@totara/components/ResourceDownloader";
 
 type ActivityFeedbackProps = {
   activity?: ActivityType, 
@@ -142,7 +144,7 @@ const ActivitySheet = ({currentActivity, onClose}: Props) => {
 
   return (<Modal animationType="slide" visible={currentActivity != undefined} onRequestClose={onClose}>
     <View style={styles.panel}>
-      <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
+      {/* <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
       <View style={[styles.navigationStyle, { backgroundColor: theme.colorSecondary1 }]}>
         <StatusBar hidden/>
         <View style={styles.leftContainer}>
@@ -152,7 +154,14 @@ const ActivitySheet = ({currentActivity, onClose}: Props) => {
         </View>
         <Text style={styles.titleStyle}> {currentActivity.name} </Text>
         <View style={styles.rightContainer}></View>
-      </View>
+      </View> */}
+      <ActivityNavigation>
+        <ActionItem icon={"times"} action={onClose} />
+        <Header title={currentActivity.name} info={"You are offline"}  />
+        <ActionItem action={()=>{}}>
+          <ResourceDownloader mode={"downloaded"} progress={10} size={24} />
+        </ActionItem>
+      </ActivityNavigation>
       {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
       <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
     </View>

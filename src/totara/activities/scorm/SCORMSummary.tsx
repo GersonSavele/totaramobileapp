@@ -42,6 +42,7 @@ import SCORMAttempts from "./SCORMAttempts";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { AppliedTheme } from "@totara/theme/Theme";
+import SCORMPackageDownloader from "./SCORMPackageDownloader";
 
 
 type Props = {
@@ -256,7 +257,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
         <View style={{ padding: gutter }}>
           <View style={[styles.sectionBreak, {paddingTop: 0}]}>
             { description && <Text style={[theme.textH2, {alignSelf: "center", flex: 1}]}>{translate("scorm.summary.summary")}</Text> }
-            { isUserOnline && <ResourceDownloader downloading={downloadingFile!} onDownloadTap={onDownloadContentTap} progress={resource && resource.percentCompleted ? resource.percentCompleted! : 0} downloadOK={hasFileDownloaded}/> }
+            {/* { isUserOnline && <ResourceDownloader downloading={downloadingFile!} onDownloadTap={onDownloadContentTap} progress={resource && resource.percentCompleted ? resource.percentCompleted! : 0} downloadOK={hasFileDownloaded}/> } */}
           </View>
           { description && <MoreText longText={description} />}
           <View style={styles.sectionField}>
