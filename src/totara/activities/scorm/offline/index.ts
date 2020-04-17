@@ -21,11 +21,11 @@
  */
 
 import OfflineScormActivity from "./OfflineScormActivity";
-import { getSCORMPackageData } from "./PackageProcessor";
-import { initializeSCORMWebplayer, unzipSCORMPackageToServer, getOfflineSCORMPackageName, isSCORMPlayerInitialized, OfflineSCORMServerRoot } from "./SCORMFileHandler";
+import { getScormPackageData } from "./PackageProcessor";
+import { initializeScormWebplayer, unzipScormPackageToServer, getOfflineScormPackageName, isScormPlayerInitialized, OfflineScormServerRoot } from "./SCORMFileHandler";
 import {
-  saveSCORMActivityData,
-  getSCORMAttemptData,
+  saveScormActivityData,
+  getScormAttemptData,
   getLastAttemptScore,
 } from "./StorageHelper";
 import AttemptSynchronizer from "./AttemptSynchronizer";
@@ -34,16 +34,16 @@ import OfflineSCORMFeedback from "./OfflineSCORMFeedback";
 export {
   OfflineScormActivity,
   
-  getSCORMPackageData,
+  getScormPackageData,
   
-  initializeSCORMWebplayer, 
-  unzipSCORMPackageToServer, 
-  getOfflineSCORMPackageName, 
-  isSCORMPlayerInitialized, 
-  OfflineSCORMServerRoot,
+  initializeScormWebplayer, 
+  unzipScormPackageToServer, 
+  getOfflineScormPackageName, 
+  isScormPlayerInitialized, 
+  OfflineScormServerRoot,
 
-  saveSCORMActivityData, 
-  getSCORMAttemptData, 
+  saveScormActivityData, 
+  getScormAttemptData, 
   getLastAttemptScore,
 
   AttemptSynchronizer,

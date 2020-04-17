@@ -29,14 +29,14 @@ import { AuthContext } from "@totara/core";
 import { ScormBundle, AttemptGrade, Grade } from "@totara/types/Scorm";
 import { MoreText, PrimaryButton, SecondaryButton, NotificationView } from "@totara/components"
 import { gutter, ThemeContext } from "@totara/theme";
-import { getOfflineSCORMPackageName, OfflineSCORMServerRoot } from "./offline";
+import { getOfflineScormPackageName, OfflineScormServerRoot } from "./offline";
 import { Log } from "@totara/lib";
 import ResourceManager , { ResourceObserver} from "@totara/core/ResourceManager/ResourceManager";
 import ResourceDownloader from "@totara/components/ResourceDownloader"
 import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
 import { translate } from "@totara/locale";
 import { DATE_FORMAT, DATE_FORMAT_FULL, SECONDS_FORMAT } from "@totara/lib/Constant";
-import { getOfflineSCORMBundle, calculatedAttemptsGrade, syncOfflineSCORMBundel } from "./offline/OfflineSCORMController";
+import { getOfflineScormBundle, calculatedAttemptsGrade, syncOfflineScormBundle } from "./offline/OfflineSCORMController";
 import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -99,9 +99,9 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
       const _name = scormBundle!.scorm.name;
   
       const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
-      const offlineSCORMPackageName = getOfflineSCORMPackageName(_courseId, _scormId);
+      const offlineSCORMPackageName = getOfflineScormPackageName(_courseId, _scormId);
       const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
-      const _unzipPath = `${OfflineSCORMServerRoot}/${offlineSCORMPackageName}`;
+      const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
       const _downloadId = _scormId.toString();
       if(appState && appState.apiKey) {
         downloadManager.download(appState.apiKey, _downloadId, _name, _url, _targetZipFile, _unzipPath);
@@ -116,18 +116,18 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     if(scormBundle && scormBundle.scorm) {
       setResource(resourceFile);
       if(resourceFile.state === ResourceState.Completed) {
-        const offlineSCORMPackageName = getOfflineSCORMPackageName(scormBundle.scorm.courseid, scormBundle.scorm.id);
-        const _unzipPath = `${OfflineSCORMServerRoot}/${offlineSCORMPackageName}`;
+        const offlineSCORMPackageName = getOfflineScormPackageName(scormBundle.scorm.courseid, scormBundle.scorm.id);
+        const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
         if(resourceFile.unzipPath === _unzipPath) {
           const _offlineScormData = {
             scorm: scormBundle.scorm,
-            package: {
+            scormPackage: {
               path: offlineSCORMPackageName
             },
             lastsynced: scormBundle.lastsynced
           } as ScormBundle;
           
-          syncOfflineSCORMBundel(activity.instanceid, _offlineScormData).then(()=> {
+          syncOfflineScormBundle(activity.instanceid, _offlineScormData).then(()=> {
             setScormBundle(_offlineScormData);
           });
         }
@@ -197,14 +197,14 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   
   useEffect(()=> {  
     if(!isUserOnline) {
-      getOfflineSCORMBundle(activity.instanceid).then(result => {
+      getOfflineScormBundle(activity.instanceid).then(result => {
         if (result ) {
           const storedBundle = result! as ScormBundle;
           let newBundle: ScormBundle = storedBundle;
           if (scormBundle && scormBundle.lastsynced && scormBundle.lastsynced >= storedBundle.lastsynced) {
             newBundle.scorm = scormBundle.scorm;
             newBundle.lastsynced = scormBundle.lastsynced;
-            syncOfflineSCORMBundel(activity.instanceid, {scorm: newBundle.scorm, lastsynced: newBundle.lastsynced}).then(()=> {
+            syncOfflineScormBundle(activity.instanceid, {scorm: newBundle.scorm, lastsynced: newBundle.lastsynced}).then(()=> {
               setScormBundle(newBundle);
             });
           } else {
@@ -215,7 +215,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     } else {
       setScormBundle(data);
       if(data && data.scorm && data.lastsynced) {
-        syncOfflineSCORMBundel(activity.instanceid, {scorm: data.scorm, lastsynced: data.lastsynced});
+        syncOfflineScormBundle(activity.instanceid, {scorm: data.scorm, lastsynced: data.lastsynced});
       }
       
     }
@@ -234,7 +234,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   
   const isCompletedAttempts = scormBundle && scormBundle!.scorm && scormBundle!.scorm.attemptsMax && totalAttempt >= scormBundle!.scorm.attemptsMax;
   const isUpcomingActivity = scormBundle && scormBundle!.scorm && scormBundle!.scorm.timeopen && scormBundle!.scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT));
-  const hasStartNewAttempt = ((isUserOnline && scormBundle && scormBundle!.scorm && scormBundle!.scorm.launchUrl) || (!isUserOnline && scormBundle.scorm.offlineAttemptsAllowed && scormBundle.package && scormBundle.package.path));
+  const hasStartNewAttempt = ((isUserOnline && scormBundle && scormBundle!.scorm && scormBundle!.scorm.launchUrl) || (!isUserOnline && scormBundle.scorm.offlineAttemptsAllowed && scormBundle.scormPackage && scormBundle.scormPackage.path));
   const hasRepeatAttempt = isUserOnline && scormBundle && scormBundle!.scorm && scormBundle!.scorm.repeatUrl;
   let actionPrimary = (hasStartNewAttempt) ? { title: translate("scorm.summary.new_attempt"), action: onTapNewAttempt} : undefined;
   let actionSecondary = (hasRepeatAttempt) ? { title: translate("scorm.summary.last_attempt"), action: onTapContinueLastAttempt} : undefined;

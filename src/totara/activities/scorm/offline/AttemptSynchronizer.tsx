@@ -24,7 +24,7 @@ import { gql } from "apollo-boost";
 import { useMutation } from '@apollo/react-hooks';
 import { useNetInfo } from "@react-native-community/netinfo";
 
-import { getOfflineSCORMCommits, clearSyncedSCORMCommit } from "./OfflineSCORMController";
+import { getOfflineScormCommits, clearSyncedScormCommit } from "./OfflineSCORMController";
 import { Log } from "@totara/lib";
 
 const SaveAttemptMutation = gql`
@@ -59,7 +59,7 @@ const AttemptSynchronizer = () => {
           Log.error("Data sync error: ", e);
         });
       } else {
-        getOfflineSCORMCommits().then(data => {
+        getOfflineScormCommits().then(data => {
           if (data && data.length > 0) {
             const syncDataSet = data as [SyncData];
             setUnsyncData(syncDataSet);
@@ -73,7 +73,7 @@ const AttemptSynchronizer = () => {
     return syncAttemptForScorm(syncData.scormId, syncData.tracks)
       .then(isSynced => {
         if (isSynced) {
-          return clearSyncedSCORMCommit(syncData.scormId, syncData.attempt);
+          return clearSyncedScormCommit(syncData.scormId, syncData.attempt);
         } else {
           throw new Error("Data sync failed.");
         }

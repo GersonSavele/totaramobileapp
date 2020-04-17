@@ -18,17 +18,18 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
+
 import React, { useEffect, useState, useRef } from "react"
 import { Text } from "react-native"
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from "react-native-static-server";
 
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
-import { initializeSCORMWebplayer, isSCORMPlayerInitialized, OfflineSCORMServerRoot } from "@totara/activities/scorm/offline/SCORMFileHandler";
-import { getSCORMPackageData } from "@totara/activities/scorm/offline"
+import { initializeScormWebplayer, isScormPlayerInitialized, OfflineScormServerRoot } from "@totara/activities/scorm/offline/SCORMFileHandler";
+import { getScormPackageData } from "@totara/activities/scorm/offline"
 import { ScormBundle, Package, Sco } from "@totara/types/Scorm"
 import { Log } from "@totara/lib";
-import { saveSCORMActivityData, getSCORMAttemptData } from "./StorageHelper";
+import { saveScormActivityData, getScormAttemptData } from "./StorageHelper";
 
 type Props = {
     scormBundle: ScormBundle,
@@ -38,13 +39,24 @@ type Props = {
 
 const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
 
+    if (!scormBundle) {
+        return <Text>Sorry scorm bundle is empty.</Text>;
+    }
+    
+    const { scorm, scormPackage } = scormBundle;
+    if (!scorm || !scormPackage) {
+        return <Text>Sorry scorm bundle is empty.</Text>;
+    }
+
     const server = useRef<StaticServer>(null);
-    const [scormPackageData, setScormPackageData] = useState<Package>(scormBundle.package);
+    const [scormPackageData, setScormPackageData] = useState<Package>(scormPackage);
+    const { scos, defaultSco, path } = scormPackageData;
+
     const [url, setUrl] = useState<string>();
     const [jsCode, setJsCode] = useState<string>();
     
     useEffect(()=>{
-        setUpOfflineSCORMPlayer().then(offlineServerPath => {
+        setupOfflineScormPlayer().then(offlineServerPath => {
             if (offlineServerPath && offlineServerPath !== "") {
                 return startServer(offlineServerPath);
             } else {
@@ -56,22 +68,20 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
             Log.debug(e.messageData);
         });
         
-       loadSCORMPackageData(scormBundle.package).then(data => {
+       loadScormPackageData(scormPackage).then(data => {
            setScormPackageData(data);
         }).catch(e => {
             Log.debug(e.messageData);
         });                        
-    }, [scormBundle.scorm.id]);
+    }, [scorm.id]);
 
     useEffect(()=> { 
-        if(url && scormPackageData) {
-            getSCORMAttemptData(scormBundle.scorm.id, attempt).then(cmiData=> {
-                if (scormPackageData && scormPackageData.scos && scormPackageData.defaultSco) {
-                    const selectedScoId = scoid ? scoid : scormPackageData.defaultSco.id!;
-                    const lastActivityCmi = (cmiData && cmiData[selectedScoId]) ? cmiData[selectedScoId] : null;
-                    const cmi = buildCMI(scormBundle.scorm.id, scormPackageData.scos, selectedScoId, attempt, scormPackageData.path, scormBundle.scorm.defaultCMI);
-                    setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
-                }
+        if(url && scos && (scoid || defaultSco)) {
+            getScormAttemptData(scorm.id, attempt).then(cmiData=> {
+                const selectedScoId = scoid || defaultSco.id!;
+                const lastActivityCmi = (cmiData && cmiData[selectedScoId]) ? cmiData[selectedScoId] : null;
+                const cmi = getScormPackageCMI(scorm.id, scos, selectedScoId, attempt, path, scorm.defaultCMI);
+                setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
             });
         }
     }, [scormPackageData, url])
@@ -97,13 +107,13 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
         stopServer();
     };
 
-    const setUpOfflineSCORMPlayer = () => {
-        const _serverPath = OfflineSCORMServerRoot;
-        return isSCORMPlayerInitialized().then((isInit) => {
+    const setupOfflineScormPlayer = () => {
+        const _serverPath = OfflineScormServerRoot;
+        return isScormPlayerInitialized().then((isInit) => {
             if (isInit) {
                 return _serverPath;
             } else {
-                return initializeSCORMWebplayer().then(()=> {
+                return initializeScormWebplayer().then(()=> {
                     return _serverPath;
                 });
             }
@@ -112,17 +122,17 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
 
     const onPlayerMessageHandler = (messageData: any) => {
         if (messageData.tmsevent && messageData.tmsevent === "SCORMCOMMIT" && messageData.result) {
-            saveSCORMActivityData(messageData.result).then(()=> {
+            saveScormActivityData(messageData.result).then(()=> {
             });
         }      
     };
 
-    const loadSCORMPackageData = (packageData?: Package) => {
+    const loadScormPackageData = (packageData?: Package) => {
         if (packageData && packageData.path) {
             if (packageData.scos && packageData.defaultSco) {
                 return Promise.resolve(packageData);
             } else {
-                return getSCORMPackageData(`${OfflineSCORMServerRoot}/${packageData.path}`).then(data=> {
+                return getScormPackageData(`${OfflineScormServerRoot}/${packageData.path}`).then(data=> {
                     const tmpPackageData = {...packageData, ...data } as Package;
                     return tmpPackageData;
                 });
@@ -132,11 +142,11 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
         }
     };
     
-    const buildCMI = (scormId: string, scos: [Sco], scoId: string, attempt: number, packageLocation: string, defaultCMI: any) => {
+    const getScormPackageCMI = (scormId: number, scos: [Sco], scoId: string, attempt: number, packageLocation: string, defaultCMI: any) => {
         let selectedSCO: Sco | null = null;
-        let _def : any = {};
-        let _int : any = {};
-        let _obj : any = {};
+        let _defaultsCmi : any = {};
+        let _interactionsCmi : any = {};
+        let _objectivesCmi : any = {};
         const defaultsData = JSON.parse(defaultCMI.defaults);
         const interactionsData = JSON.parse(defaultCMI.interactions);
         const objectivesData = JSON.parse(defaultCMI.objectives);
@@ -150,9 +160,9 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
 
                 const tmpScoId: string = tmpSCO.id!;
 
-                _def[tmpScoId] = defaultsData[tmpScoId];
-                _int[tmpScoId] = interactionsData[tmpScoId];
-                _obj[tmpScoId] = objectivesData[tmpScoId];
+                _defaultsCmi[tmpScoId] = defaultsData[tmpScoId];
+                _interactionsCmi[tmpScoId] = interactionsData[tmpScoId];
+                _objectivesCmi[tmpScoId] = objectivesData[tmpScoId];
             }
         }
         
@@ -167,9 +177,9 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
 
         return {
             entrysrc: _entrysrc,
-            def: _def,
-            obj: _obj,
-            int: _int,
+            def: _defaultsCmi,
+            obj: _objectivesCmi,
+            int: _interactionsCmi,
             scormdebugging: _scormdebugging,
             scormauto: _scormauto,
             scormid:_scormid,

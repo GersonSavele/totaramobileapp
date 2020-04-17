@@ -25,7 +25,7 @@ const dom = require("xmldom").DOMParser;
 
 import { Sco, Package } from "@totara/types/Scorm";
 
-const getSCORMPackageData = (packagPath: string) => {
+const getScormPackageData = (packagPath: string) => {
     const manifestFilePath = `${packagPath}/imsmanifest.xml`;
     return RNFS.readFile(manifestFilePath)
         .then(xmlcontent => {
@@ -108,4 +108,4 @@ const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string)  => {
     return null;
 };
 
-export { getSCORMPackageData };
+export { getScormPackageData };

@@ -60,7 +60,7 @@ export type Scorm = {
 
 export type ScormBundle  = {
     scorm: Scorm,
-    package?: Package,
+    scormPackage?: Package,
     offlineActivity?: {
         last: OfflineActivity,
         start: OfflineActivity,
@@ -89,6 +89,5 @@ export type OfflineActivity = {
 export type ScormActivityResult = {
     attempt: number,
     gradereported: number,
-    scoreMax: number,
-    lessonStatus: string
+    timestarted?: string
 };
