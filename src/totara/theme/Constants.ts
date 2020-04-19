@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Totara Mobile
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
@@ -16,8 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $author
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-export { CourseDetails, CourseDetailsComponent, CourseCompleted, ActivityUI } from "./CourseDetails";
-
+const textStyle = {
+  bold: "bold",
+  strong: "strong",
+  short_code_prefix: "0x",
+};
+const marginStyle = {
+  marginXS: 6,
+  marginS: 8,
+  marginM: 12,
+  marginL: 16,
+  marginXXL: 24,
+  margin3XL: 32,
+};
+const headerViewStyle = {
+  header_view_min_height : 300,
+  header_view_max_height : 320
+}
+export { textStyle, marginStyle, headerViewStyle };

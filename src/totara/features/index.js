@@ -21,11 +21,11 @@
  */
 
 import MyLearning from "./my-learning";
-import CourseDetails from "./access-to-learning/course-details";
+import CourseDetails from "./AccessToLearning/course-details";
 import Profile from "./profile";
 import Settings from "./settings";
 import PlaceHolder from "./place-holder";
-import ProgramDetails from "./access-to-learning/program-details";
+import ProgramDetails from "./AccessToLearning/program-details";
 import FeatureNavigator from "./FeatureNavigator";
 
 export {

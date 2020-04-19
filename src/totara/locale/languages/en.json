@@ -8,15 +8,11 @@
     "cancel": "Cancel",
     "error_unknown":"Something went wrong, please try again later."
   }, 
-  "Course-details": {
+  "course-details": {
     "activities": "ACTIVITIES",
     "overview": "OVERVIEW"
   }, 
-  "Program-details": {
-    "courses": "COURSES",
-    "overview": "OVERVIEW"
-  }, 
-  "Certificate-details": {
+  "certificate-details": {
     "courses": "COURSES",
     "overview": "OVERVIEW"
   },
@@ -30,9 +26,10 @@
     "no_learning_message": "No current learning"
   }, 
   "program-details": {
-    "courses": "Courses",
     "details": "Details",
-    "outline": "Outline"
+    "outline": "Outline",
+    "courses": "COURSES",
+    "overview": "OVERVIEW"
   }, 
   "totara-component" : {
     "section_title_continue_learn": "Continue your learning",

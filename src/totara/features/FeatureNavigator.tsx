@@ -33,11 +33,11 @@ import {Theme} from "@totara/types";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import MyLearning from "./my-learning";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import { CourseDetails } from "./access-to-learning/course-details";
+import { CourseDetails } from "./AccessToLearning/course-details";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import ProgramDetails from "./access-to-learning/program-details";
+import ProgramDetails from "./AccessToLearning/program-details";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import CertificationDetails from "./access-to-learning/certification-details";
+import CertificationDetails from "./AccessToLearning/certification-details";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import Settings from "./settings";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT

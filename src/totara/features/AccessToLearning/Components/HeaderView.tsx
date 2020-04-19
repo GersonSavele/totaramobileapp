@@ -30,12 +30,13 @@ import {
   Dimensions
 } from "react-native";
 
-import ParallaxScrollView from "../parallax-scroll-view/ParallaxScrollView";
+import ParallaxScrollView from "../ParallaxScrollView/ParallaxScrollView";
 import { CardElement, ImageElement } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { ThemeContext } from "@totara/theme";
 import { Certification, Program, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
+import { headerViewStyle } from "@totara/theme/Constants"
 
 type HeaderViewProps = {
   details: Certification | Program | Course;
@@ -166,7 +167,7 @@ const HeaderView = ({
   return (
     <View style={styles.container}>
       <ParallaxScrollView
-        parallaxHeaderHeight={normalize(300)}
+        parallaxHeaderHeight={normalize(headerViewStyle.header_view_min_height)}
         renderBackground={backgroundViewRender}
         tabBar={renderNavigationTab}
         titleBar={renderNavigationTitle}
@@ -198,8 +199,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: normalize(320),
-    minHeight: normalize(300)
+    maxHeight: normalize(headerViewStyle.header_view_max_height),
+    minHeight: normalize(headerViewStyle.header_view_min_height)
   },
   itemImage: {
     flex: 2.5,

@@ -28,7 +28,7 @@ import { AppliedTheme } from "@totara/theme/Theme";
 import { labelDoc } from "../mock-data";
 import { VideoController } from "./components";
 import { Image } from "react-native-animatable";
-import { textStyle, marginStyle } from "./style";
+import { textStyle, marginStyle } from "@totara/theme/Constants";
 
 type ActivityLabelProps = {
   label: any;
@@ -152,11 +152,11 @@ const AttachmentTypeLabel = ({ label = {} }: ActivityLabelProps) => {
 const TextTypeLabel = ({ label = {}, theme }: ActivityLabelProps) => {
   var fontWeight, fontStyle;
   if (Array.isArray(label.marks) && label.marks.length) {
-    map(label.marks,(mark: any) => {
+    map(label.marks, (mark: any) => {
       if (mark.type == textStyle.bold) {
         fontWeight = textStyle.bold;
       } else if (mark.type == textStyle.strong) {
-        fontWeight = textStyle.fontWeight_700;
+        fontWeight = textStyle.fontWeight_strong;
       }
     });
   }
@@ -246,7 +246,11 @@ const BulletListTypeLabel = ({ children, theme }: LabelConfigProps) => {
   return (
     <View style={styles.listContainer}>
       <Text
-        style={{ color: theme.colorNeutral6, marginRight: marginStyle.marginM, marginTop: marginStyle.marginS }}
+        style={{
+          color: theme.colorNeutral6,
+          marginRight: marginStyle.marginM,
+          marginTop: marginStyle.marginS,
+        }}
       >
         •
       </Text>
@@ -278,7 +282,9 @@ const ListItemTypeLabel = ({ children }: ChildProps) => {
 };
 
 const EmojiTypeLabel = ({ label }: any = {}) => {
-  let emo = String.fromCodePoint(parseInt(textStyle.short_code_prefix + label.attrs.shortcode));
+  let emo = String.fromCodePoint(
+    parseInt(textStyle.short_code_prefix + label.attrs.shortcode)
+  );
   return (
     <View style={styles.textWrapViewContainer}>
       <Text style={styles.labelText}>{emo}</Text>
@@ -337,9 +343,9 @@ const RulerTypeLabel = ({ label = {}, theme }: LabelConfigProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal:marginStyle.marginXXL,
-    marginVertical:marginStyle.marginXXS,
-    justifyContent: "center",
+    marginHorizontal: marginStyle.marginXXL,
+    marginVertical: marginStyle.marginXS,
+    justifyContent: "center"
   },
   labelWrap: {
     marginVertical: marginStyle.marginXS,
@@ -347,7 +353,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     textAlign: "left",
-    fontSize: normalize(17)
+    fontSize: normalize(17),
   },
   textLabeWrap: {
     justifyContent: "center",
@@ -365,7 +371,7 @@ const styles = StyleSheet.create({
     fontSize: normalize(17),
     fontWeight: "normal",
     marginTop: marginStyle.marginXXL,
-    fontStyle: "normal"
+    fontStyle: "normal",
   },
   listContainer: {
     flexDirection: "row",

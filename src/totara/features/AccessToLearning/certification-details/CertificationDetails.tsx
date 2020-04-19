@@ -22,51 +22,53 @@
  */
 
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Dimensions
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { NavigationParams, NavigationInjectedProps } from "react-navigation";
 // import { useQuery } from "@apollo/react-hooks";
-
-import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
-import { CourseList } from "../course-list";
-import OverviewDetails from "../overview/OverviewDetails";
-import { Program } from "@totara/types";
-import { HeaderView } from "../components";
-// import { coreProgram } from "./api";
+import { CourseList } from "../CourseList";
+import OverviewDetails from "../Overview/OverviewDetails";
+import { Certification } from "@totara/types";
+//import { coreCertification } from "./api";
+import { HeaderView } from "../Components";
 //Import mock data from js file once API has been fixed should remove from here(only for UI testing)
-import { program } from "../mock-data";
+import { certifications } from "../mock-data";
 
-type ProgramProps = {
-  program: Program;
+type CertificationProps = {
+  certifications: Certification;
   navigation: NavigationParams;
 };
 
 //To do : - implementing GraphQL query once api's has been done should remove here
 
-// const ProgramDetails = ({ navigation }: NavigationInjectedProps) => {
+// const CertificationDetails = ({ navigation }: NavigationInjectedProps) => {
 //   const programId = navigation.getParam("programId");
-//   const { loading, error, data } = useQuery(coreProgram, {
+//   const { loading, error, data } = useQuery(coreCertification, {
 //     variables: { programId: programId }
 //   });
 //   if (loading) return null;
 //   if (error) return <GeneralErrorModal siteUrl= "" />;
 //   if (data) {
 //     return (
-//       <ProgramDetailsComponent program={data.program} navigation={navigation} />
+//       <CertificationDetailsComponent program={data.program} navigation={navigation} />
 //     );
 //   }
 // };
 
-const ProgramDetails = ({ navigation }: NavigationInjectedProps) => {
-  return <ProgramDetailsComponent program={program} navigation={navigation} />;
+const CertificationDetails = ({ navigation }: NavigationInjectedProps) => {
+  return (
+    <CertificationDetailsComponent
+      certifications={certifications}
+      navigation={navigation}
+    />
+  );
 };
 
-const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
+const CertificationDetailsComponent = ({
+  navigation,
+  certifications
+}: CertificationProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
     setShowOverview(!showOverview);
@@ -74,13 +76,13 @@ const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <HeaderView
-      details={program}
+      details={certifications}
       navigation={navigation}
-      tabBarLeft={translate("Program-details.overview")}
-      tabBarRight={translate("Program-details.courses")}
+      tabBarLeft={translate("certificate-details.overview")}
+      tabBarRight={translate("certificate-details.courses")}
       onPress={onSwitchTab}
       showOverview={showOverview}
-      badgeTitle = "Program"
+      badgeTitle = "Certificate"
     >
       <View
         style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
@@ -92,7 +94,7 @@ const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
           ]}
         >
           {!showOverview ? (
-            <CourseList program={program} navigation={navigation} />
+            <CourseList program={certifications} navigation={navigation} />
           ) : (
             <OverviewDetails
               progress={60}
@@ -112,69 +114,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  headerContainer: {
-    flex: 1,
-    maxHeight: normalize(340),
-    minHeight: normalize(320)
-  },
-  itemImage: {
-    flex: 2.5,
-    minHeight: normalize(160)
-  },
-  itemCard: {
-    maxHeight: normalize(80),
-    minHeight: normalize(60)
-  },
-  programLabelWrap: {
-    borderRadius: 8,
-    borderStyle: "solid",
-    borderWidth: 1,
-    alignSelf: "flex-start",
-    alignItems: "center"
-  },
-  tabBarContainer: {
-    flex: 0.4,
-    maxHeight: 50,
-    minHeight: 44
-  },
-  tabNav: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: normalize(16),
-    width: Dimensions.get("window").width * 0.5,
-    alignItems: "center",
-    flex: 1
-  },
   activitiesContainer: {
     flex: 3,
     padding: 0
-  },
-  toggleViewContainer: {
-    flex: 0.25,
-    marginLeft: 16,
-    marginRight: 16,
-    minHeight: 44,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: Dimensions.get("window").width - 32
-  },
-  programLabelText: {
-    fontSize: normalize(10),
-    fontWeight: "500",
-    fontStyle: "normal",
-    textAlign: "center",
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 1,
-    paddingBottom: 2
-  },
-  tabSelected: {
-    height: "100%",
-    justifyContent: "center",
-    paddingLeft: 24,
-    paddingRight: 24
   }
 });
 
-export default ProgramDetails;
+export default CertificationDetails;

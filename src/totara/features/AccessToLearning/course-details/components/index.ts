@@ -21,8 +21,6 @@
  *
  */
 
- import VideoController from "./VideoController"
+import VideoController from "./VideoController";
 
- export {
-     VideoController
-    };
+export { VideoController };

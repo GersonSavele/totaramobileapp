@@ -40,10 +40,10 @@ import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import { Course } from "@totara/types";
 import { ActivityList } from "./ActivityList";
-import OverviewDetails from "../overview/OverviewDetails";
+import OverviewDetails from "../Overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
-import { HeaderView } from "../components";
+import { HeaderView } from "../Components";
 
 type CourseDetailsProps = {
   course: Course;
@@ -79,8 +79,8 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
       <HeaderView
         details={course}
         navigation={navigation!}
-        tabBarLeft={translate("Course-details.overview")}
-        tabBarRight={translate("Course-details.activities")}
+        tabBarLeft={translate("course-details.overview")}
+        tabBarRight={translate("course-details.activities")}
         onPress={onSwitchTab}
         showOverview={showOverview}
         badgeTitle = "Course"
