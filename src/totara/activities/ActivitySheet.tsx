@@ -20,8 +20,7 @@
  */
 
 import React, { useContext } from "react";
-import { StyleSheet, View, StatusBar, Text, Modal } from "react-native";
-import { Button } from "native-base";
+import {StyleSheet, View, StatusBar, Text, Modal, TouchableOpacity} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -147,9 +146,9 @@ const ActivitySheet = ({currentActivity, onClose}: Props) => {
       <View style={[styles.navigationStyle, { backgroundColor: theme.colorSecondary1 }]}>
         <StatusBar hidden/>
         <View style={styles.leftContainer}>
-          <Button style={styles.buttonStyle} onPress={onClose}>
+          <TouchableOpacity style={styles.buttonStyle} onPress={onClose}>
             <FontAwesomeIcon icon="times" size={24}/>
-          </Button>
+          </TouchableOpacity>
         </View>
         <Text style={styles.titleStyle}> {currentActivity.name} </Text>
         <View style={styles.rightContainer}></View>
