@@ -9,7 +9,7 @@ React Native App
 - React Native = 0.61.0
 - Android SDK (API 28)
 - XCode >= 11.3.1
-- Cocoapods >= 1.8.4
+- Cocoapods = 1.9.1
 
 # Setup
 
