@@ -1,27 +1,18 @@
 /**
- * This file is part of Totara Mobile
- *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * This file is part of Totara Enterprise.
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
-
 
 import { getGradeForAttempt, getAttemptsGrade } from "../OfflineSCORMController";
 import { Grade, AttemptGrade } from "@totara/types/scorm";
+import { LessonStatus } from "@totara/lib/Constant";
 
 describe("getGradeForAttempt", () => {
   it("return correct values for complete `attemptcmi`", () => {
@@ -31,7 +22,7 @@ describe("getGradeForAttempt", () => {
           score: {
             raw: 4
           },
-          lesson_status: "completed"
+          lesson_status: LessonStatus.completed
         }
       },
       "id2": {
@@ -39,7 +30,7 @@ describe("getGradeForAttempt", () => {
           score: {
             raw: 2
           },
-          lesson_status: "failed"
+          lesson_status: LessonStatus.failed
         }
       },
       "id3": {
@@ -47,7 +38,7 @@ describe("getGradeForAttempt", () => {
           score: {
             raw: 8
           },
-          lesson_status: "passed"
+          lesson_status: LessonStatus.passed
         }
       }
     });
@@ -61,12 +52,12 @@ describe("getGradeForAttempt", () => {
     const blankAttemptCmi = eval({ 
       "id1": {
         core: {
-          lesson_status: "completed"
+          lesson_status: LessonStatus.completed
         }
       },
       "id2": {
         core: {
-          lesson_status: "failed"
+          lesson_status: LessonStatus.failed
         }
       },
       "id3": {

@@ -43,5 +43,6 @@ export const SCREEN_WIDTH_SMALL = "small";
 
 export enum LessonStatus {
   passed = "passed",
-  completed = "completed"
+  completed = "completed",
+  failed = "failed"
 }
