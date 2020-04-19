@@ -6,7 +6,7 @@ React Native App
 
 - node >= v13.7.0
 - yarn >= 1.21.1
-- React Native = 0.61.0
+- React Native = 0.61.5
 - Android SDK (API 28)
 - XCode >= 11.3.1
 - Cocoapods = 1.9.1
