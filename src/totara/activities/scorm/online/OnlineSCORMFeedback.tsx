@@ -26,6 +26,7 @@ import { scormQuery } from "@totara/activities/scorm/api";
 
 import SCORMFeedbackModal from "../components/SCORMFeedbackModal";
 import { ActivityType } from "@totara/types";
+import { translate } from "@totara/locale";
 
 type Props = {
   activity: ActivityType;
@@ -38,15 +39,15 @@ const OnlineSCORMFeedback = ({ activity, onClose, onPrimary }: Props) => {
     variables: { scormid: activity.instanceid }
   });
   if (loading) {
-    return <Text>Loading...</Text>;
+    return <Text>{translate("general.loading")}</Text>;
   }
   if (error) {
-    return <Text>Something went wrong, please try again later.</Text>;
+    return <Text>{translate("general.error_unknown")}</Text>;
   }
   if (data && data.scorm) {
     return (<SCORMFeedbackModal grade={data.scorm.calculatedGrade} score={data.scorm.calculatedGrade} method={"grade"} onClose={onClose} onPrimary={onPrimary} />);
   } else {
-    return <Text>Something went wrong, please try again later.</Text>;
+    return <Text>{translate("general.error_unknown")}</Text>;
   }
 };
 

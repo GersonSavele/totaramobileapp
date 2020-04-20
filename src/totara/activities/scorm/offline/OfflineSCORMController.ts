@@ -58,7 +58,7 @@ const getGradeForAttempt = (attemptCmi: any, maxGrade: number, gradeMethod: Grad
 };
 
 
-const getAttemptsGrade = (attemptsReport: ScormActivityResult[], attemptGrade: AttemptGrade, maxGrade: number) => {
+const getAttemptsGrade = (attemptsReport: ScormActivityResult[], attemptGrade: AttemptGrade, maxGrade: number): number => {
   if(!attemptsReport || attemptsReport.length === 0 ) {
     return 0;
   }
@@ -118,9 +118,9 @@ const getOfflineScormBundle = (scormId: number) => {
     });
  };
 
-const calculatedAttemptsGrade = (attemptGrade: AttemptGrade, gradeMethod: Grade, maxGrade: number, onlineCalculatedGrade?: number, onlineAttempts?:ScormActivityResult[], offlineAttempts?: ScormActivityResult[]) => {
-  if (offlineAttempts && offlineAttempts.length > 0 && attemptGrade != null && gradeMethod != null) {
-    const allAttempts = (onlineAttempts && onlineAttempts.length > 0) ? onlineAttempts.concat(offlineAttempts)! : offlineAttempts!
+ const calculatedAttemptsGrade = (attemptGrade: AttemptGrade, gradeMethod: Grade, maxGrade: number, onlineCalculatedGrade?: number, onlineAttempts : ScormActivityResult[] = [], offlineAttempts : ScormActivityResult[] = []) => {
+  if (offlineAttempts && onlineAttempts && offlineAttempts.length > 0 && attemptGrade != null && gradeMethod != null) {
+    const allAttempts = [ ...onlineAttempts, ...offlineAttempts];
     const caculatedGradeReport = getAttemptsGrade(allAttempts, attemptGrade, maxGrade);
     return (gradeMethod == Grade.objective) ? caculatedGradeReport.toString() : `${caculatedGradeReport}%`;
   } else {

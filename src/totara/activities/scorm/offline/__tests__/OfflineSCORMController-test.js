@@ -10,7 +10,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { getGradeForAttempt, getAttemptsGrade } from "../OfflineSCORMController";
+import { getGradeForAttempt, getAttemptsGrade, calculatedAttemptsGrade } from "../OfflineSCORMController";
 import { Grade, AttemptGrade } from "@totara/types/scorm";
 import { LessonStatus } from "@totara/lib/Constant";
 
@@ -118,6 +118,37 @@ describe("getAttemptsGrade", () => {
     expect(getAttemptsGrade(attemptsReport, AttemptGrade.average, 10)).toEqual(0);
     expect(getAttemptsGrade(attemptsReport, AttemptGrade.first, 10)).toEqual(0);
     expect(getAttemptsGrade(attemptsReport, AttemptGrade.last, 10)).toEqual(0);
+  });
+
+});
+
+describe("calculatedAttemptsGrade", () => {
+
+  it("return particular value for calculated grade", () => {
+    const attemptsOnlineReport = [{ 
+      attempt: 1,
+      gradereported: 60
+    }, { 
+      attempt: 2,
+      gradereported: 40
+    }, { 
+      attempt: 3,
+      gradereported: 70
+    }, { 
+      attempt: 4,
+      gradereported: 50
+    }];
+    const attemptsOfflineReport = [{ 
+      attempt: 5,
+      gradereported: 60
+    }, { 
+      attempt: 6,
+      gradereported: 50
+    }];
+    expect(calculatedAttemptsGrade(1, 2, 100, "40%", attemptsOnlineReport, attemptsOfflineReport)).toEqual("55%");
+    expect(calculatedAttemptsGrade(1, 0, 100, "60", attemptsOnlineReport, attemptsOfflineReport)).toEqual("55");
+    expect(calculatedAttemptsGrade(1, 0, 100, "60", undefined, undefined)).toEqual("60");
+    expect(calculatedAttemptsGrade(1, 0, 100, "60", null, null)).toEqual("60");    
   });
 
 });

@@ -337,8 +337,7 @@ const AttemptController = ({ primary, secondary }: PropsAttempt) => {
 
   return (<View style={stylesAction.attemptContainer}>
     <View style={{flexDirection: "row", justifyContent: "space-between" }}>
-      { secondary && <SecondaryButton text={secondary.title} onPress={secondary.action} style={{flex: 1}} /> }
-      { secondary && primary && <View style={{ width: 16 }}></View> }
+      { secondary && <SecondaryButton text={secondary.title} onPress={secondary.action} style={{flex: 1, marginRight: primary ? 16 : 0}} /> }
       { primary && <PrimaryButton text={primary.title} onPress={primary.action} style={{flex: 1}} /> }
     </View>
   </View>);

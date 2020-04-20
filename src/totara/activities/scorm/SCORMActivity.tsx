@@ -35,6 +35,7 @@ import SCORMAttempts from "./SCORMAttempts";
 import { SECONDS_FORMAT } from "@totara/lib/Constant";
 import { Log } from "@totara/lib";
 import { AuthenticatedWebView } from "@totara/auth";
+import { translate } from "@totara/locale";
 
 type SCORMActivityProps = {
   activity: Activity,
@@ -75,9 +76,9 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
     variables: { scormid: activity.instanceid },
   });
   
-  if (loading) { return <Text>Loading...</Text>; }
+  if (loading) { return <Text>{translate("general.loading")}</Text>; }
   if (error) { 
-      return <Text>Something went wrong, please try again later.</Text>; 
+      return <Text>{translate("general.error_unknown")}</Text>; 
   }
   if (data && data.scorm) {
     let scormData = data.scorm;
@@ -95,8 +96,7 @@ const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
     }
     return <SCORMFlow activity={activity} data={scormBundleData as ScormBundle} isUserOnline={isreachable} mode={SCORMActivityType.None} />
   }  else {
-    Log.debug("Invalid server response. ", data);
-    return <Text>Something went wrong, please try again later.</Text>; 
+    return <Text>{translate("general.error_unknown")}</Text>; 
   }
 };
 

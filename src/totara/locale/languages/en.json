@@ -5,7 +5,8 @@
     "enter": "Enter",
     "version": "Version",
     "try_again": "Try again",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "error_unknown":"Something went wrong, please try again later."
   }, 
   "Course-details": {
     "activities": "ACTIVITIES",
