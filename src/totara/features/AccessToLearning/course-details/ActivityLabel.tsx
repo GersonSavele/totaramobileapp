@@ -28,7 +28,7 @@ import { AppliedTheme } from "@totara/theme/Theme";
 import { labelDoc } from "../mock-data";
 import { VideoController } from "./components";
 import { Image } from "react-native-animatable";
-import { textStyle, marginStyle } from "@totara/theme/Constants";
+import { textStyle, marginStyle } from "@totara/theme/constants";
 
 type ActivityLabelProps = {
   label: any;

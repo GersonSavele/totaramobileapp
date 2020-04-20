@@ -36,7 +36,7 @@ import { normalize } from "@totara/theme";
 import { ThemeContext } from "@totara/theme";
 import { Certification, Program, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
-import { headerViewStyle } from "@totara/theme/Constants"
+import { headerViewStyle } from "@totara/theme/constants"
 
 type HeaderViewProps = {
   details: Certification | Program | Course;
