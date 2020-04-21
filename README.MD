@@ -25,7 +25,11 @@ Copy .env.sample and set your environment variables. These variables will be loo
 
 ### Beta setup
 
-Copy .env.sample and set your environment variables. These variables will be looked up in compile time.
+Copy .env.beta.sample and set your environment variables. These variables will be looked up in compile time.
+
+### Beta SENTRY_PROJECT_URL
+
+Go to client config section and choose the beta config : https://docs.sentry.io/clients/react-native/#configure
 
 # Scripts
 
@@ -46,3 +50,19 @@ Run iOS app: beta config.
 ### `android-beta`
 
 Run Android app: beta config.
+
+# DevOps
+
+## Beta job
+
+You should set up the following variables:
+
+ - `SENTRY_PROJECT_URL`: Client config section: https://docs.sentry.io/clients/react-native/#configure
+ - `SENTRY_AUTH_TOKEN`: You can find it [here](https://sentry.io/settings/account/api/auth-tokens/)
+
+
+# Troubleshooting
+
+## When you switch branches and you suspect that there was native code changes(e.g: dependencies additions or upgrades)
+
+Kill RN packger server. Run script `clear:all`. This will clean all the builds and caches on both Android and iOS. Then run your platform script.
