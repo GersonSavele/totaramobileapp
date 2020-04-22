@@ -20,7 +20,7 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View, Modal, SafeAreaView, TextStyle } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Modal, SafeAreaView, TextStyle, TouchableOpacity } from "react-native";
 import moment from "moment";
 import * as RNFS from "react-native-fs";
 
@@ -44,7 +44,6 @@ import { translate } from "@totara/locale";
 import { DATE_FORMAT, DATE_FORMAT_FULL, SECONDS_FORMAT } from "@totara/lib/Constant";
 import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";

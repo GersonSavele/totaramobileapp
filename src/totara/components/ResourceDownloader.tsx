@@ -18,7 +18,7 @@ const DownloadIcon = {
     regular: require("@resources/images/tabbar/downloads_regular.png")
 };
 
-const ResourceDownloader = ({mode, onPress, progress, size, style}: ResourceDownloaderProps) =>{
+const RosourceDownloaderComponent = ({mode, progress, size, style}: ResourceDownloaderProps) => {
     const [theme] = useContext(ThemeContext);
     if (mode === ResourceState.Downloading) {
         return (
@@ -35,12 +35,16 @@ const ResourceDownloader = ({mode, onPress, progress, size, style}: ResourceDown
             />);
     } else {
         const iconSource = mode === ResourceState.Completed ? DownloadIcon.solid : DownloadIcon.regular;
-        return (
-            <TouchableOpacity onPress={()=> {onPress && onPress()}}> 
-                <Image source={iconSource} style={[{tintColor: theme.colorLink, height: size}, style]} resizeMode='contain' />
-            </TouchableOpacity>
-        );
-    }    
-}
+        return <Image source={iconSource} style={[{tintColor: theme.colorLink, height: size}, style]} resizeMode='contain' />;
+    }  
+};
+
+const ResourceDownloader = ({mode, onPress, progress, size, style}: ResourceDownloaderProps) =>{
+    return (
+    <TouchableOpacity onPress={()=> {onPress && onPress()}} disabled={!onPress}>
+        <RosourceDownloaderComponent mode={mode} size={size} style={style} progress={progress} />
+    </TouchableOpacity>
+    );
+};
 
 export default ResourceDownloader;

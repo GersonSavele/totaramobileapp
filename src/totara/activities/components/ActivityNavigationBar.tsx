@@ -11,10 +11,9 @@
  */
 
 import React, { useContext } from "react";
-import { SafeAreaView, View, Text, StyleSheet } from "react-native";
+import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import { ThemeContext } from "@totara/theme";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
@@ -76,7 +75,6 @@ const ActivityNavigation = ({children}: ActivityNavigationBarProps) => {
   },
   action: {
     width: 44,
-    flex: 1,
     height: "100%",
     justifyContent: "center",
     flexDirection: "column",

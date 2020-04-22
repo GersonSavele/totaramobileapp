@@ -144,7 +144,7 @@ const ActivitySheet = ({currentActivity, onClose, resource}: Props) => {
         {/* TODO - info need to from activity list props ["You are offline"]*/}
         <Header title={currentActivity.name} info={undefined}  />
         <ActionItem action={resource && resource.action}>
-        { resource && resource.action && <ResourceDownloader mode={resource && resource.data && resource.data.state} progress={resource && resource.data && resource.data.percentCompleted || 0} size={28} onPress={undefined} /> }
+        { resource && <ResourceDownloader mode={resource && resource.data && resource.data.state} progress={resource && resource.data && resource.data.percentCompleted || 0} size={28} /> }
         </ActionItem>
       </ActivityNavigation>
       {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
