@@ -20,14 +20,12 @@
  */
 
 import React, { useContext, useEffect, useState }  from "react";
-import { Text, View, StyleSheet, FlatList, } from "react-native";
-import { Button } from "native-base";
+import { Text, View, StyleSheet, FlatList, SafeAreaView } from "react-native";
 
 import { ThemeContext, gutter } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ScormActivityResult, ScormBundle, Grade } from "@totara/types/Scorm";
-import { SafeAreaView } from "react-navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { ActivityNavigation, ActionItem, Header } from "../components/ActivityNavigationBar";
 
 type Props = {
   scormBundle: ScormBundle,
@@ -57,17 +55,13 @@ const  SCORMAttempts = ({scormBundle, onExit}: Props) => {
 
   return (
     <>
-      <View style={[theme.viewContainer, gradesStyle.panel]}>
-        <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
-        <View style={[gradesStyle.navigationStyle,{ backgroundColor: theme.colorSecondary1 }]}>
-          <View style={gradesStyle.leftContainer}>
-            <Button style={gradesStyle.buttonStyle} onPress={onExit}>
-              <FontAwesomeIcon icon="times" size={24} />
-            </Button>
-          </View>
-          <Text style={gradesStyle.titleStyle}>{scormBundle.scorm.name}</Text>
-          <View style={gradesStyle.rightContainer} />
-        </View>
+      <View style={theme.viewContainer}>
+        <ActivityNavigation>
+          <ActionItem icon={"times"} action={onExit} />
+          {/* TODO - info need to from activity list props ["You are offline"] */}
+          <Header title={scormBundle.scorm.name} info={undefined} />
+          <ActionItem />
+        </ActivityNavigation>
         <Text style={[theme.textH2, gradesStyle.heading]}>{translate("scorm.attempts.title")}</Text>
         <FlatList
           style={{flex: 1}}
@@ -81,7 +75,7 @@ const  SCORMAttempts = ({scormBundle, onExit}: Props) => {
           scrollIndicatorInsets={{right:8}}
           keyExtractor={(item, index) => `${(item as ScormActivityResult).attempt}-${index}`}
         />
-        <SafeAreaView forceInset={{ bottom: "always" }} />
+        <SafeAreaView style={{ backgroundColor: theme.viewContainer.backgroundColor }} />
       </View>
     </>
   );
@@ -89,10 +83,6 @@ const  SCORMAttempts = ({scormBundle, onExit}: Props) => {
 };
 
 const gradesStyle = StyleSheet.create({
-  panel: {
-    flex: 1,
-    flexDirection: "column",
-  },
   navigationStyle :{
     alignItems: "center",
     flexDirection: "row",

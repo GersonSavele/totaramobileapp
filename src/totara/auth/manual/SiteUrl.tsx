@@ -43,7 +43,7 @@ const SiteUrl = (props: Props) => {
   } = useSiteUrl(props);
 
   return (
-    <Container style={[{ flex: 0 }, theme.viewContainer]}>
+    <Container style={[theme.viewContainer, { flex: 0 }]}>
       <Content enableOnAndroid>
         <Form style={styles.siteUrlContainer}>
           <View style={styles.headerContainer}>

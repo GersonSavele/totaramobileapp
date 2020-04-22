@@ -20,7 +20,7 @@
  */
 
 import React, { useContext, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 
 import { Activity } from "@totara/types";
 import { AuthenticatedWebView } from "@totara/auth";
@@ -42,8 +42,9 @@ const WebviewActivity = ({activity}: Props) => {
     setCanWebGoForward(navState.canGoForward);
   };
 
-  return (<View style={{ flex: 1 }}>
-    <View style={{ flex: 1 }}>
+  return (
+  <View style={theme.viewContainer}>
+    <View style={{flex: 1}}>
       <AuthenticatedWebView uri={activity.viewurl!} ref={refWebview} onNavigationStateChange={onNavigationStateChange}/>
     </View>
     <View style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
@@ -56,6 +57,7 @@ const WebviewActivity = ({activity}: Props) => {
         }} color={theme.navigationHeaderTintColor}/>
       </View>
     </View>
+    <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
   </View>)
 };
 

@@ -29,7 +29,7 @@ const colorNeutral5 = "#C7C7C7";
 const textColorDark = "#3D444B";
 
 const TotaraTheme: AppliedTheme = {
-  viewContainer: { backgroundColor: colorAccent },
+  viewContainer: { backgroundColor: colorAccent, flex: 1 },
 
   //---- Text styles: customizable by [Developer] ------
   textH1: { fontSize: normalize(32), lineHeight:  normalize(38), color: textColorDark, fontWeight: "bold" },

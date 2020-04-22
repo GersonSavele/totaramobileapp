@@ -20,17 +20,16 @@
  */
 
 import React, { useContext } from "react";
-import {StyleSheet, View, StatusBar, Text, Modal, TouchableOpacity} from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import SafeAreaView from "react-native-safe-area-view";
+import { View, Modal } from "react-native";
+
 
 import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
-import { ThemeContext } from "@totara/theme";
 import ActivityFeedback from "./ActivityFeedback";
 import SCORMActivity from "./scorm/SCORMActivity";
 import { ActivityNavigation, ActionItem, Header } from "./components/ActivityNavigationBar";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
+import { ThemeContext } from "@totara/theme";
 
 type ActivityFeedbackProps = {
   activity?: ActivityType, 
@@ -54,42 +53,30 @@ type contextData = {
    * @param activity
    */
   setFeedback: (data: ActivityFeedbackProps) => void
+
+  /**
+   * set the activity resource, and the activity sheet will be visible and use the right component
+   * @param activity
+   */
+  setActivityResource: (data: any) => void
  
 }
 
 export const ActivitySheetContext = React.createContext<contextData>({
   setCurrentActivity: () => {},
   setFeedback: () => {},
-  setOnClose: () => {}
+  setOnClose: () => {},
+  setActivityResource: () => {}
 });
 
 export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
-
-/**
- * Works with React Context, when a consumer calls setCurrentActivity this provider will bring up the
- * ActivitySheet with activity passed in
- *
- * @example
- *
- * // some on the upper hierarchy of the app
- * <ActivitySheetProvider>
- *   <ElementsThatWillHaveTheActivitySheetInScope/>
- * </ActivitySheetProvider>
- *
- * // deep down nested component of the app
- * <ActivitySheetConsumer>
- *   {
- *     ({setCurrentActivity}) =>
- *       <Component onPress={() => setCurrentActivity(activity)}/>
- *   }
- * </ActivitySheetConsumer/>
- */
 
 const initialState = {
   currentActivity: undefined,
   onClose: () => {},
   show: false,
-  feedback: undefined
+  feedback: undefined,
+  resource: undefined
 };
 
 export class ActivitySheetProvider extends React.Component {
@@ -120,6 +107,12 @@ export class ActivitySheetProvider extends React.Component {
     this.setState(newState);
   };
 
+  setActivityResource(data: any) {
+    this.setState({
+      resource: data
+    })
+  }
+
   render() {
     return(
       <View style ={{flex:1}}>
@@ -127,11 +120,12 @@ export class ActivitySheetProvider extends React.Component {
         ...this.state,
         setCurrentActivity: (activity: ActivityType) => this.setCurrentActivity(activity),
         setFeedback: (data : ActivityFeedbackProps) => this.setFeedback(data),
-        setOnClose: (onCloseCallback: () => {}) => this.setOnClose(onCloseCallback)
+        setOnClose: (onCloseCallback: () => {}) => this.setOnClose(onCloseCallback),
+        setActivityResource: (data : any) => this.setActivityResource(data)
       }}>
         {/* eslint-disable-next-line react/prop-types */}
         {this.props.children}
-        {(this.state.currentActivity) && <ActivitySheet currentActivity={this.state.currentActivity!} onClose={this.onClose} show={this.state.show}/> }
+        {(this.state.currentActivity) && <ActivitySheet currentActivity={this.state.currentActivity!} onClose={this.onClose} show={this.state.show} resource={this.state.resource} /> }
         {(this.state.feedback && this.state.feedback!.activity && this.state.currentActivity === undefined) && <ActivityFeedback activity={this.state.feedback!.activity} data={this.state.feedback!.data} onClose={this.onClose} onPrimary={() => { this.setCurrentActivity(this.state.feedback!.activity)}}/>}
       </ActivitySheetContext.Provider>
       </View>)
@@ -139,31 +133,21 @@ export class ActivitySheetProvider extends React.Component {
 }
 
 
-const ActivitySheet = ({currentActivity, onClose}: Props) => {
-  const [ theme ] = useContext(ThemeContext);
+const ActivitySheet = ({currentActivity, onClose, resource}: Props) => {  
+  
+  const [theme] = useContext(ThemeContext);
 
   return (<Modal animationType="slide" visible={currentActivity != undefined} onRequestClose={onClose}>
-    <View style={styles.panel}>
-      {/* <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
-      <View style={[styles.navigationStyle, { backgroundColor: theme.colorSecondary1 }]}>
-        <StatusBar hidden/>
-        <View style={styles.leftContainer}>
-          <TouchableOpacity style={styles.buttonStyle} onPress={onClose}>
-            <FontAwesomeIcon icon="times" size={24}/>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.titleStyle}> {currentActivity.name} </Text>
-        <View style={styles.rightContainer}></View>
-      </View> */}
+    <View style={theme.viewContainer}>
       <ActivityNavigation>
         <ActionItem icon={"times"} action={onClose} />
-        <Header title={currentActivity.name} info={"You are offline"}  />
-        <ActionItem action={()=>{}}>
-          <ResourceDownloader mode={"downloaded"} progress={10} size={24} />
+        {/* TODO - info need to from activity list props ["You are offline"]*/}
+        <Header title={currentActivity.name} info={undefined}  />
+        <ActionItem action={resource && resource.action}>
+        { resource && resource.action && <ResourceDownloader mode={resource && resource.data && resource.data.state} progress={resource && resource.data && resource.data.percentCompleted || 0} size={28} onPress={undefined} /> }
         </ActionItem>
       </ActivityNavigation>
       {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
-      <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
     </View>
   </Modal>);
 };
@@ -172,7 +156,8 @@ type Props = {
   currentActivity: ActivityType,
   onClose: () => void
   show: boolean,
-  feedback?: ActivityFeedbackProps
+  feedback?: ActivityFeedbackProps,
+  resource: any
 }
 
 const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
@@ -183,36 +168,3 @@ const ActivityWrapper = ({activity}: { activity: ActivityType }) => {
       return (<WebviewActivity activity={activity} />);
   }
 };
-
-const styles = StyleSheet.create({
-  panel: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#FFFFFF"
-  },
-  navigationStyle :{
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  leftContainer: {
-    flex: 1,
-    justifyContent: "flex-start",
-  },
-  rightContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  buttonStyle : {
-    backgroundColor: "transparent",
-    padding: 20,
-    alignSelf:"flex-start"
-  },
-  titleStyle: {
-    fontSize: 16,
-    color: "#3D444B",
-    fontWeight: "bold",
-    textAlign: "center",
-    alignSelf:"center"
-  }
-});

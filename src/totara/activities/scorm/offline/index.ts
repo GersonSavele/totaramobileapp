@@ -20,33 +20,40 @@
  *
  */
 
-import OfflineScormActivity from "./OfflineScormActivity";
+import OfflineSCORMActivity from "./OfflineSCORMActivity";
 import { getScormPackageData } from "./PackageProcessor";
-import { initializeScormWebplayer, unzipScormPackageToServer, getOfflineScormPackageName, isScormPlayerInitialized, OfflineScormServerRoot } from "./SCORMFileHandler";
+import { initializeScormWebplayer, unzipScormPackageToServer, isScormPlayerInitialized, OfflineScormServerRoot } from "./SCORMFileHandler";
 import {
   saveScormActivityData,
   getScormAttemptData,
   getLastAttemptScore,
+  removeScormPackageData
 } from "./StorageHelper";
 import AttemptSynchronizer from "./AttemptSynchronizer";
 import OfflineSCORMFeedback from "./OfflineSCORMFeedback";
+import { getOfflineScormBundle, calculatedAttemptsGrade, syncOfflineScormBundle, getOfflineScormPackageName} from "./OfflineSCORMController";
 
 export {
-  OfflineScormActivity,
+  OfflineSCORMActivity,
   
   getScormPackageData,
   
   initializeScormWebplayer, 
   unzipScormPackageToServer, 
-  getOfflineScormPackageName, 
   isScormPlayerInitialized, 
   OfflineScormServerRoot,
 
   saveScormActivityData, 
   getScormAttemptData, 
   getLastAttemptScore,
+  removeScormPackageData,
 
   AttemptSynchronizer,
   
-  OfflineSCORMFeedback
+  OfflineSCORMFeedback,
+
+  getOfflineScormBundle, 
+  calculatedAttemptsGrade, 
+  syncOfflineScormBundle, 
+  getOfflineScormPackageName
 }

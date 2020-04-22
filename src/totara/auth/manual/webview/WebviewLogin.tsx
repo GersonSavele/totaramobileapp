@@ -55,7 +55,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
   const [ theme ] = useContext(ThemeContext);
 
   return (
-    <Container style={[{ flex: 0 }, theme.viewContainer]}>
+    <Container style={[theme.viewContainer, { flex: 0 }]}>
       <Header style={[styles.navigation,  { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
         <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} color={ theme.navigationHeaderTintColor } />
         <View style={styles.addressContainer}>

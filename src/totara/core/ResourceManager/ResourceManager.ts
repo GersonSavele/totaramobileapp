@@ -67,7 +67,7 @@ class ResourceManager{
             percentCompleted: 0,
             state : ResourceState.Added} as IResource;
         this.files.push(newFile);
-        this.notify(newFile);
+        // this.notify(newFile);
 
         const downloaderOptions = {
             fromUrl: resourceUrl,

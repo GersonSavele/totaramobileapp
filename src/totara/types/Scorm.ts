@@ -1,15 +1,15 @@
 export enum Grade {
-    objective = 0, //= "Learning objects",
-    highest, // = "Highest grade",
-    average, // = "Average grade",
-    sum // = "Sum grade"
+    objective = "0", //= "Learning objects",
+    highest = "1", // = "Highest grade",
+    average = "2", // = "Average grade",
+    sum = "3" // = "Sum grade"
 }
 
 export enum AttemptGrade {
-    highest = 0, // = "Highest attempt",
-    average, // = "Average attempts",
-    first, // = "First attempt",
-    last // = "Last completed attempt"
+    highest = "0", // = "Highest attempt",
+    average = "1", // = "Average attempts",
+    first = "2", // = "First attempt",
+    last = "3" // = "Last completed attempt"
 }
 
 export enum Completion {
@@ -40,10 +40,10 @@ export type Scorm = {
     timeopen: number,
     timeclose: number,
 
-    grademethod: number,
+    grademethod: string,
     maxgrade: number,
     
-    whatgrade: number,
+    whatgrade: string,
     completion: number,
     completionview: boolean,
     completionusegrade: boolean,

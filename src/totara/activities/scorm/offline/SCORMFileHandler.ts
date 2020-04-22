@@ -95,7 +95,6 @@ const isScormPlayerInitialized = () => {
   });
 };
 
-const getOfflineScormPackageName = (courseId: string, scormId: number) => `OfflineSCORM_${courseId}_${scormId}`;
 const SCORMPlayerPackagePath = Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
 
-export { initializeScormWebplayer, unzipScormPackageToServer, getOfflineScormPackageName, isScormPlayerInitialized, OfflineScormServerRoot };
+export { initializeScormWebplayer, unzipScormPackageToServer, isScormPlayerInitialized, OfflineScormServerRoot };

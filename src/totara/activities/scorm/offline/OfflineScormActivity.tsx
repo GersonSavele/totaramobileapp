@@ -37,7 +37,7 @@ type Props = {
     scoid?: string,
 };
 
-const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
+const OfflineSCORMActivity = ({scormBundle, attempt, scoid}: Props) => {
 
     if (!scormBundle) {
         return <Text>Sorry scorm bundle is empty.</Text>;
@@ -243,4 +243,4 @@ const OfflineScormActivity = ({scormBundle, attempt, scoid}: Props) => {
         
 }
 
-export default OfflineScormActivity;
+export default OfflineSCORMActivity;

@@ -40,7 +40,7 @@ const MyLearning = learningItemsList(({loading, currentLearning, error }) => {
     return <GeneralErrorModal />
   } else {
     return (
-      <View style={[{ flex: 1}, theme.viewContainer]}>
+      <View style={theme.viewContainer}>
         <View style={[styles.myLearningHeader, { backgroundColor: theme.colorSecondary1 }]}>
           <Text style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
             {translate("my-learning.action_primary")}

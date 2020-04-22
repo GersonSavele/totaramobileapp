@@ -26,6 +26,8 @@ import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageMan
 import { removeScormPackageData, getScormData, setScormPackageData, getScormPackageData, getAllCommits, clearCommit } from "./StorageHelper";
 import { LessonStatus } from "@totara/lib/Constant";
 
+const getOfflineScormPackageName = (scormId: number) => `OfflineSCORM_${scormId}`;
+
 const getGradeForAttempt = (attemptCmi: any, maxGrade: number, gradeMethod: Grade) => {
   let sumGrade = 0;
   let highestGrade = 0;
@@ -98,20 +100,38 @@ const getOfflineAttemptsReport = (cmiList:any, maxgrade: number, grademethod: Gr
 const getOfflineScormBundle = (scormId: number) => {
    return RetrieveStorageDataById(scormId.toString()).then(storedResourceData => { 
       if (!storedResourceData || storedResourceData === undefined || storedResourceData === null) {
-          return removeScormPackageData(scormId);
+          return removeScormPackageData(scormId).then(()=> undefined);
       } else {
-          return Promise.resolve()
+          return Promise.resolve(storedResourceData.unzipPath)
       }
-    }).then(() => {
-      return getScormData(scormId);
+    }).then(packageName => {
+      return getScormData(scormId).then(({bundle, cmis}) => {
+        let storedBundle = bundle as ScormBundle | undefined;
+        if(storedBundle && !storedBundle.scormPackage && packageName) {
+          const resourcePackageName = getOfflineScormPackageName(scormId);
+          const dataScormPackage = {scormPackage: {path: resourcePackageName}};
+          return syncOfflineScormBundle(scormId, dataScormPackage).then(()=> {
+              return {bundle: {...storedBundle, ...dataScormPackage}, cmis: cmis};
+          });
+        } else {
+          return {bundle: storedBundle, cmis: cmis};
+        }
+      });
     }).then(({bundle, cmis}) => {
       let formattedData = bundle as ScormBundle | undefined;
-      if (formattedData && formattedData.scorm && formattedData.scorm.grademethod && formattedData.scorm.maxgrade) {
-        if(cmis) {
-          const gradeMethod = formattedData.scorm.grademethod as Grade
-          const maxGrade = formattedData.scorm.maxgrade;
-          const offlineReport = getOfflineAttemptsReport(cmis, maxGrade, gradeMethod);
-          return {...formattedData, ...{offlineActivity: {attempts: offlineReport}}};
+      if (formattedData && formattedData.scorm) {
+
+        if (!formattedData.scormPackage ) {
+          const resourcePackageName = getOfflineScormPackageName(scormId);
+          formattedData = {...formattedData, ...{scormPackage: {path: resourcePackageName}}}
+        }
+        if (formattedData.scorm.grademethod && formattedData.scorm.maxgrade) {
+          if(cmis) {
+            const gradeMethod = formattedData.scorm.grademethod as Grade
+            const maxGrade = formattedData.scorm.maxgrade;
+            const offlineReport = getOfflineAttemptsReport(cmis, maxGrade, gradeMethod);
+            return {...formattedData, ...{offlineActivity: {attempts: offlineReport}}};
+          }
         }
       }
       return formattedData;
@@ -119,7 +139,7 @@ const getOfflineScormBundle = (scormId: number) => {
  };
 
  const calculatedAttemptsGrade = (attemptGrade: AttemptGrade, gradeMethod: Grade, maxGrade: number, onlineCalculatedGrade?: number, onlineAttempts : ScormActivityResult[] = [], offlineAttempts : ScormActivityResult[] = []) => {
-  if (offlineAttempts && onlineAttempts && offlineAttempts.length > 0 && attemptGrade != null && gradeMethod != null) {
+  if (offlineAttempts && onlineAttempts && offlineAttempts.length > 0 && attemptGrade !== null && gradeMethod !== null && maxGrade !== null) {
     const allAttempts = [ ...onlineAttempts, ...offlineAttempts];
     const caculatedGradeReport = getAttemptsGrade(allAttempts, attemptGrade, maxGrade);
     return (gradeMethod == Grade.objective) ? caculatedGradeReport.toString() : `${caculatedGradeReport}%`;
@@ -179,4 +199,4 @@ const getOfflineScormCommits = () => {
 const clearSyncedScormCommit = (scormId: number, attempt: number) => {
   return clearCommit(scormId, attempt);
 } 
-export { getOfflineScormBundle, calculatedAttemptsGrade, syncOfflineScormBundle, getOfflineScormCommits, clearSyncedScormCommit, getGradeForAttempt, getAttemptsGrade };
+export { getOfflineScormBundle, calculatedAttemptsGrade, syncOfflineScormBundle, getOfflineScormCommits, clearSyncedScormCommit, getGradeForAttempt, getAttemptsGrade, getOfflineScormPackageName };

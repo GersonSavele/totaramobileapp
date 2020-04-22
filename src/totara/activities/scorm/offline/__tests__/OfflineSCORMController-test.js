@@ -124,7 +124,7 @@ describe("getAttemptsGrade", () => {
 
 describe("calculatedAttemptsGrade", () => {
 
-  it("return particular value for calculated grade", () => {
+  it("return grade with appending `%` for the `gradeMethod` [highest, average, sum] else it should return grade", () => {
     const attemptsOnlineReport = [{ 
       attempt: 1,
       gradereported: 60
@@ -133,22 +133,35 @@ describe("calculatedAttemptsGrade", () => {
       gradereported: 40
     }, { 
       attempt: 3,
-      gradereported: 70
+      gradereported: 60
     }, { 
       attempt: 4,
       gradereported: 50
     }];
     const attemptsOfflineReport = [{ 
       attempt: 5,
-      gradereported: 60
+      gradereported: 70
     }, { 
       attempt: 6,
       gradereported: 50
     }];
-    expect(calculatedAttemptsGrade(1, 2, 100, "40%", attemptsOnlineReport, attemptsOfflineReport)).toEqual("55%");
-    expect(calculatedAttemptsGrade(1, 0, 100, "60", attemptsOnlineReport, attemptsOfflineReport)).toEqual("55");
-    expect(calculatedAttemptsGrade(1, 0, 100, "60", undefined, undefined)).toEqual("60");
-    expect(calculatedAttemptsGrade(1, 0, 100, "60", null, null)).toEqual("60");    
+    
+    expect(calculatedAttemptsGrade(AttemptGrade.average, Grade.average, 100, "40%", attemptsOnlineReport, attemptsOfflineReport)).toEqual("55%");
+    expect(calculatedAttemptsGrade(AttemptGrade.average, Grade.highest, 100, "60%", attemptsOnlineReport, attemptsOfflineReport)).toEqual("55%");
+    expect(calculatedAttemptsGrade(AttemptGrade.average, Grade.sum, 100, "40%", attemptsOnlineReport, attemptsOfflineReport)).toEqual("55%");
+    expect(calculatedAttemptsGrade(AttemptGrade.average, Grade.objective, 100, "60", attemptsOnlineReport, attemptsOfflineReport)).toEqual("55");
+
+    expect(calculatedAttemptsGrade(AttemptGrade.highest, Grade.average, 100, "40%", attemptsOnlineReport, attemptsOfflineReport)).toEqual("70%");
+    expect(calculatedAttemptsGrade(AttemptGrade.highest, Grade.objective, 100, "40%", attemptsOnlineReport, attemptsOfflineReport)).toEqual("70");
+    
+    expect(calculatedAttemptsGrade(AttemptGrade.first, Grade.highest, 100, "60", attemptsOnlineReport, attemptsOfflineReport)).toEqual("60%");
+    expect(calculatedAttemptsGrade(AttemptGrade.first, Grade.objective, 100, "60", attemptsOnlineReport, attemptsOfflineReport)).toEqual("60");
+    
+    expect(calculatedAttemptsGrade(AttemptGrade.last, Grade.sum, 100, "40%", attemptsOnlineReport, attemptsOfflineReport)).toEqual("50%");
+    expect(calculatedAttemptsGrade(AttemptGrade.last, Grade.objective, 100, "40", attemptsOnlineReport, attemptsOfflineReport)).toEqual("50");
+    
+    expect(calculatedAttemptsGrade(AttemptGrade.average, Grade.objective, 100, "60", undefined, undefined)).toEqual("60");
+    expect(calculatedAttemptsGrade(AttemptGrade.average, Grade.objective, 100, "60", null, null)).toEqual("60");    
   });
 
 });
