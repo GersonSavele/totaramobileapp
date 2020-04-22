@@ -120,17 +120,16 @@ const getOfflineScormBundle = (scormId: number) => {
     }).then(({bundle, cmis}) => {
       let formattedData = bundle as ScormBundle | undefined;
       if (formattedData && formattedData.scorm) {
-
         if (!formattedData.scormPackage ) {
           const resourcePackageName = getOfflineScormPackageName(scormId);
-          formattedData = {...formattedData, ...{scormPackage: {path: resourcePackageName}}}
+          formattedData = {...formattedData!, ...{scormPackage: {path: resourcePackageName}}} as ScormBundle;
         }
-        if (formattedData.scorm.grademethod && formattedData.scorm.maxgrade) {
+        if (formattedData!.scorm.grademethod && formattedData!.scorm.maxgrade) {
           if(cmis) {
-            const gradeMethod = formattedData.scorm.grademethod as Grade
-            const maxGrade = formattedData.scorm.maxgrade;
+            const gradeMethod = formattedData!.scorm.grademethod as Grade
+            const maxGrade = formattedData!.scorm.maxgrade;
             const offlineReport = getOfflineAttemptsReport(cmis, maxGrade, gradeMethod);
-            return {...formattedData, ...{offlineActivity: {attempts: offlineReport}}};
+            formattedData = {...formattedData, ...{offlineActivity: {attempts: offlineReport}}} as ScormBundle;
           }
         }
       }
