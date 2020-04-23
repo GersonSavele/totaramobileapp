@@ -175,5 +175,8 @@
       "3": "Last completed attempt"
     }
 
+  },
+  "notifications": {
+    "action_primary": "Notifications"
   }
 }

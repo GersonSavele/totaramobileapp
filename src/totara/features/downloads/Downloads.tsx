@@ -1,5 +1,3 @@
-import { UserProfile } from "@totara/types"
-import { NavigationParams } from "react-navigation"
 import React, { useContext, useEffect, useState } from "react"
 import ResourceManager, { ResourceObserver } from "@totara/core/ResourceManager/ResourceManager";
 import { ListRenderItemInfo, StyleSheet, Text, TouchableHighlight, View } from "react-native";
@@ -12,12 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"
 import {createStackNavigator} from "react-navigation-stack";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
-type DownloadsTabsProps = {
-    profile: UserProfile;
-    navigation: NavigationParams;
-};
-
-const Downloads = (props: DownloadsTabsProps) => {
+const Downloads = () => {
     const [theme] = useContext(ThemeContext);
 
     const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());

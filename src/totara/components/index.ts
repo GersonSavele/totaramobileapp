@@ -40,6 +40,8 @@ import MoreText from "./MoreText";
 import LinkText from "./LinkText";
 import NotificationView from "./NotificationView";
 import TopHeader from "./TopHeader";
+import TotaraNavigationOptions from "./NavigationOptions";
+import NotificationBell from "./NotificationBell";
 
 export {
   LearningItemCard,
@@ -64,5 +66,7 @@ export {
   MoreText,
   LinkText,
   NotificationView,
-  TopHeader
+  TopHeader,
+  TotaraNavigationOptions,
+  NotificationBell,
 }
