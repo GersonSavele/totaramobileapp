@@ -24,11 +24,9 @@ import React, {useContext} from "react";
 import { Image, ImageSourcePropType } from "react-native";
 import { createStackNavigator } from 'react-navigation-stack';
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
-import { IconDefinition } from "@fortawesome/fontawesome-common-types";
-import { ThemeContext, normalize } from "@totara/theme";
-import { TouchableIcon } from "@totara/components";
+import { ThemeContext } from "@totara/theme";
 import { config } from "@totara/lib";
-import {Theme} from "@totara/types";
+import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import MyLearning from "./my-learning";
@@ -41,10 +39,11 @@ import CertificationDetails from "./currentLearning/certificationDetails";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import Settings from "./settings";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import PlaceHolder from "./place-holder";
+// import PlaceHolder from "./place-holder";
 
 import Profile from "./profile";
-import Downloads from "./downloads";
+import NotificationsStack from "./notifications";
+import DownloadsStack from "./downloads";
 
 const FeatureNavigator = () => {
     const [theme] = useContext(ThemeContext);
@@ -78,27 +77,27 @@ const MyLearningTab = {
             MyLearning: {
                 screen: MyLearning,
                 navigationOptions: ({ screenProps, navigation } ) =>
-                    navigationOptions({theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")/*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
+                    totaraNavigationOptions({theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")/*rightIcon: faCloudDownloadAlt*/}) //TODO: MOB-373 hiding it for beta release
             },
             CourseDetails: {
                 screen: CourseDetails,
                 navigationOptions: ({ screenProps, navigation } ) =>
-                    navigationOptions({theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
+                    totaraNavigationOptions({theme: screenProps!.theme, title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             },
             ProgramDetails: {
                 screen: ProgramDetails,
                 navigationOptions: ({ screenProps, navigation } ) =>
-                    navigationOptions({theme: screenProps!.theme, rightIcon: "cloud-download-alt", title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
+                    totaraNavigationOptions({theme: screenProps!.theme, rightIcon: "cloud-download-alt", title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             },
             CertificationDetails: {
                 screen: CertificationDetails,
                 navigationOptions: ({ screenProps, navigation }) =>
-                    navigationOptions({theme: screenProps!.theme, rightIcon: "cloud-download-alt", title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
+                    totaraNavigationOptions({theme: screenProps!.theme, rightIcon: "cloud-download-alt", title : navigation.getParam("title"), opacity : navigation.getParam("opacity")})
             }
         },
         {
             initialRouteName: "MyLearning",
-            defaultNavigationOptions: ({ screenProps } ) => navigationOptions({theme: screenProps.theme})
+            defaultNavigationOptions: ({ screenProps } ) => totaraNavigationOptions({theme: screenProps.theme})
         }
     ),
     navigationOptions: {
@@ -107,35 +106,16 @@ const MyLearningTab = {
 };
 
 const DownloadsTab = {
-    screen: createStackNavigator(
-        {
-            Downloads: {
-                screen: Downloads,
-                navigationOptions: ({ screenProps, navigation }) => navigationOptions({theme: screenProps.theme, title : navigation.getParam("title") })
-            }
-        },
-        {
-            initialRouteName: "Downloads",
-            defaultNavigationOptions: ({ screenProps } ) => navigationOptions({theme: screenProps.theme})
-        }
-    ),
+    screen: DownloadsStack,
     navigationOptions: {
         tabBarIcon: (tabIconProps: { focused: boolean, tintColor : string}) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
     }
 };
 
 const NotificationsTab = {
-    screen: createStackNavigator(
-        {
-            Notification: PlaceHolder
-        },
-        {
-            initialRouteName: "Notification",
-            defaultNavigationOptions: ({ screenProps } ) => navigationOptions({theme: screenProps.theme})
-        }
-    ),
+    screen: NotificationsStack,
     navigationOptions:{
-        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
+        tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.notifications)
     }
 };
 
@@ -147,40 +127,13 @@ const ProfileTab = {
         },
         {
             initialRouteName: "Profile",
-            defaultNavigationOptions: ({ screenProps } ) => navigationOptions({theme: screenProps.theme})
+            defaultNavigationOptions: ({ screenProps } ) => totaraNavigationOptions({theme: screenProps.theme})
         }
     ),
     navigationOptions: {
         tabBarIcon:  (tabIconProps: { focused: boolean, tintColor: string  }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.profile)
     }
 };
-
-type navigationOptionsProps = {
-    theme: Theme,
-    title? : string,
-    backTitle? : string,
-    rightIcon? : IconDefinition | string,
-    opacity? : number
-}
-
-const navigationOptions = (props: navigationOptionsProps) => ({
-    headerStyle: {
-        borderBottomWidth: 0,
-        backgroundColor: props.theme.colorSecondary1,
-        shadowOpacity: 0,
-        elevation: 0
-    },
-    headerTitleStyle: {
-        color: props.theme.navigationHeaderTintColor,
-        fontSize: normalize(20),
-        opacity: props.opacity
-    },
-    title: props.title,
-    headerBackTitle: null,
-    headerTintColor: props.theme.navigationHeaderTintColor,
-    headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
-});
-
 
 const tabBarIconBuilder = (focused: boolean, color: string, imageSet: iconImageProps) => {
     return <Image source={focused ? imageSet.solid : imageSet.regular} style={{tintColor: color, width: 24, height: 24 }} resizeMode='contain' />

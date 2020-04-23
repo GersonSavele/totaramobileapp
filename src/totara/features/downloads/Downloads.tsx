@@ -9,6 +9,8 @@ import { TouchableIcon } from "@totara/components"
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"
+import {createStackNavigator} from "react-navigation-stack";
+import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
 type DownloadsTabsProps = {
     profile: UserProfile;
@@ -17,12 +19,6 @@ type DownloadsTabsProps = {
 
 const Downloads = (props: DownloadsTabsProps) => {
     const [theme] = useContext(ThemeContext);
-
-    useEffect(() => {
-        // TODO: We should remove following line from inside of useEffect once they update their library
-        props.navigation.setParams({ title: "Downloads" });
-
-    }, []);
 
     const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
     const [resources, setResources] = useState<IResource[]>([]);
@@ -96,6 +92,18 @@ const Downloads = (props: DownloadsTabsProps) => {
     />
 };
 
+const DownloadsStack = createStackNavigator(
+    {
+        Downloads: {
+            screen: Downloads,
+            navigationOptions: {title: "Downloads"}
+        }
+    },
+    {
+        initialRouteName: "Downloads",
+        defaultNavigationOptions: ({ screenProps } : any ) => totaraNavigationOptions({theme: screenProps.theme})
+    }
+);
 
 const styles = StyleSheet.create({
     item:{
@@ -126,4 +134,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default  Downloads;
+export default DownloadsStack;
