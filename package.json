@@ -8,6 +8,7 @@
     "debug": "REACT_DEBUGGER=\"open -g 'rndebugger://set-debugger-loc?port=8001' ||\" react-native start",
     "start": "react-native start",
     "test": "jest --config jest.config.js",
+    "test-coverage": "jest --config jest.config.js --collectCoverage",
     "test-junit": "jest --config jest.config.js --ci --reporters=jest-junit --reporters=default",
     "eslint": "eslint -c .eslintrc.json --ext .js --ext .ts --ext .tsx ./src/totara",
     "clean": "rm -rf node_modules",

@@ -23,5 +23,8 @@ module.exports = {
   testPathIgnorePatterns: ["e2e"],
   setupFiles: [
     "<rootDir>/jest.setup.js"
+  ],
+  collectCoverageFrom: [
+    "src/totara/**/*.{js,jsx,ts,tsx}"
   ]
 };

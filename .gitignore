@@ -80,7 +80,7 @@ nodejs-assets/nodejs-project/sample-package.json
 # ignore test generated files
 .jest
 junit.xml
-converage
+coverage
 
 # CocoaPods
 /ios/Pods/
