@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Image, TouchableOpacity, ImageStyle } from "react-native";
 import * as Progress from "react-native-progress";
 
-import { ThemeContext } from "@totara/theme";
+import { ThemeContext, gutter } from "@totara/theme";
 import { ResourceState } from "@totara/core/ResourceManager/Resource";
 
 type ResourceDownloaderProps = {
@@ -18,7 +18,7 @@ const DownloadIcon = {
     regular: require("@resources/images/tabbar/downloads_regular.png")
 };
 
-const RosourceDownloaderComponent = ({mode, progress, size, style}: ResourceDownloaderProps) => {
+const RosourceDownloaderComponent = ({mode, progress, size}: ResourceDownloaderProps) => {
     const [theme] = useContext(ThemeContext);
     if (mode === ResourceState.Downloading) {
         return (
@@ -35,14 +35,14 @@ const RosourceDownloaderComponent = ({mode, progress, size, style}: ResourceDown
             />);
     } else {
         const iconSource = mode === ResourceState.Completed ? DownloadIcon.solid : DownloadIcon.regular;
-        return <Image source={iconSource} style={[{tintColor: theme.colorLink, height: size}, style]} resizeMode='contain' />;
+        return <Image source={iconSource} style={[{tintColor: theme.colorLink, height: size}]} resizeMode='contain' />;
     }  
 };
 
 const ResourceDownloader = ({mode, onPress, progress, size, style}: ResourceDownloaderProps) =>{
     return (
-    <TouchableOpacity onPress={()=> {onPress && onPress()}} disabled={!onPress}>
-        <RosourceDownloaderComponent mode={mode} size={size} style={style} progress={progress} />
+    <TouchableOpacity onPress={()=> {onPress && onPress()}} disabled={!onPress} style={[{padding: gutter}, style]} >
+        <RosourceDownloaderComponent mode={mode} size={size} progress={progress} />
     </TouchableOpacity>
     );
 };

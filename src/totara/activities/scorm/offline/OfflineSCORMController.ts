@@ -137,7 +137,7 @@ const getOfflineScormBundle = (scormId: number) => {
     });
  };
 
- const calculatedAttemptsGrade = (attemptGrade: AttemptGrade, gradeMethod: Grade, maxGrade: number, onlineCalculatedGrade?: number, onlineAttempts : ScormActivityResult[] = [], offlineAttempts : ScormActivityResult[] = []) => {
+ const calculatedAttemptsGrade = (attemptGrade: AttemptGrade, gradeMethod: Grade, maxGrade: number, onlineCalculatedGrade?: string, onlineAttempts : ScormActivityResult[] = [], offlineAttempts : ScormActivityResult[] = []) => {
   if (offlineAttempts && onlineAttempts && offlineAttempts.length > 0 && attemptGrade !== null && gradeMethod !== null && maxGrade !== null) {
     const allAttempts = [ ...onlineAttempts, ...offlineAttempts];
     const caculatedGradeReport = getAttemptsGrade(allAttempts, attemptGrade, maxGrade);

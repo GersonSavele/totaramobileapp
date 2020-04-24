@@ -23,11 +23,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View, Modal, SafeAreaView, TextStyle, TouchableOpacity } from "react-native";
 import moment from "moment";
 import * as RNFS from "react-native-fs";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { Activity } from "@totara/types";
 import { AuthContext } from "@totara/core";
 import { ScormBundle, AttemptGrade, Grade } from "@totara/types/Scorm";
-import { MoreText, PrimaryButton, SecondaryButton, NotificationView } from "@totara/components"
+import { MoreText, PrimaryButton, SecondaryButton, NotificationView } from "@totara/components";
 import { gutter, ThemeContext } from "@totara/theme";
 import { 
   OfflineScormServerRoot,
@@ -39,12 +40,11 @@ import {
 } from "./offline";
 import { Log } from "@totara/lib";
 import ResourceManager , { ResourceObserver} from "@totara/core/ResourceManager/ResourceManager";
-import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
+import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource";
 import { translate } from "@totara/locale";
 import { DATE_FORMAT, DATE_FORMAT_FULL, SECONDS_FORMAT } from "@totara/lib/Constant";
 import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";
 
@@ -95,9 +95,6 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   const activitySheet = useContext(ActivitySheetContext);
   const [section, setSection] = useState(Section.None);
   const [theme] = useContext(ThemeContext);
-
-  //====== Download ==========
-  const [resource, setResource] = useState<IResource>();
   const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
 
   const getDataForScormSummary = (scormBundle?: ScormBundle): any => {
@@ -167,7 +164,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   } = getDataForScormSummary(scormBundle);
 
   const onTapDownloadResource = () => {    
-    if(resource) 
+    if(!downloadManager) 
       return;
     if (scormBundle) {
       const _url = scormBundle!.scorm.packageUrl!;
@@ -198,33 +195,55 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     downloadManager.delete(_scormId.toString());
   };
 
+  const setResource = (resource?: IResource) => {
+    let onResourceTap : (()=> void) | undefined = onTapDownloadResource;
+    if(resource) {
+      switch(resource.state) {
+        case ResourceState.Downloading:
+          onResourceTap = undefined;
+          break;
+        case ResourceState.Completed:
+          onResourceTap = onTapDeleteResource;
+          break;
+      }
+    }
+    activitySheet.setActivityResource({data: resource, action: onResourceTap});
+  }
+
   const onDownloadFileUpdated : ResourceObserver = (resourceFile) => {
     if(scormBundle && scormBundle.scorm) {      
-      if(resourceFile.state === ResourceState.Completed) {
-        const offlineSCORMPackageName = getOfflineScormPackageName(scormBundle.scorm.id);
-        const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
-        if(resourceFile.unzipPath === _unzipPath) {
-          const _offlineScormData = {
-            scorm: scormBundle.scorm,
-            scormPackage: {
-              path: offlineSCORMPackageName
-            },
-            lastsynced: scormBundle.lastsynced
-          } as ScormBundle;
-          
-          syncOfflineScormBundle(activity.instanceid, _offlineScormData).then(()=> {
-            setResource(resourceFile);
-          });
+      switch(resourceFile.state) {
+        case ResourceState.Completed: {
+          const offlineSCORMPackageName = getOfflineScormPackageName(scormBundle.scorm.id);
+          const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
+          if(resourceFile.unzipPath === _unzipPath) {
+            const _offlineScormData = {
+              scorm: scormBundle.scorm,
+              scormPackage: {
+                path: offlineSCORMPackageName
+              },
+              lastsynced: scormBundle.lastsynced
+            } as ScormBundle;
+            
+            syncOfflineScormBundle(activity.instanceid, _offlineScormData).then(()=> {
+              setResource(resourceFile);
+            });
+          }
+          break;
         }
-      } 
-      if (resourceFile.state === ResourceState.Deleted) {
-        removeScormPackageData(scormBundle.scorm.id).then(()=> {
-          setResource(undefined);
-        });
+        case ResourceState.Deleted : {         
+          removeScormPackageData(scormBundle.scorm.id).then(()=> {
+            setResource(undefined);
+          });
+          break;
+        }
+        case ResourceState.Downloading : {
+          setResource(resourceFile);
+          break;
+        }
       }
     }
   }
-  //====== ======= ============
 
   const onTapNewAttempt = () => {
     if(scormBundle && scormBundle.scorm) {
@@ -295,7 +314,7 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   }, [data]);
  
   useEffect(()=>{
-    if(!scormBundle || !scormBundle.scorm) {
+    if (!scormBundle || !scormBundle.scorm || !isUserOnline || !shouldShowAction) {
       return;
     }
     
@@ -305,6 +324,8 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     if (filter.length>0) {
       const existingResource = filter[0];
       setResource(existingResource);
+    } else {
+      setResource(undefined);
     }
 
     return () => {
@@ -312,15 +333,6 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     }
   }, [scormBundle && scormBundle.scorm, downloadManager]);
 
-  useEffect(()=> {
-    if (isUserOnline && shouldShowAction) {
-      const resourceAction = resource && resource.state && resource.state === ResourceState.Completed ? onTapDeleteResource : onTapDownloadResource;
-      activitySheet.setActivityResource({data: resource, action: resourceAction});
-    }
-    
-  }, [resource && resource.state])
-
-  
   return (
   <>
   <View style={styles.expanded}>  

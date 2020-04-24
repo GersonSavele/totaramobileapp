@@ -51,10 +51,10 @@ const WebviewActivity = ({activity}: Props) => {
       <View style={styles.barContent}>
         <TouchableIcon disabled={!canWebGoBackward} icon={"chevron-left"} onPress={() => {
           refWebview.current && refWebview.current!.goBack();
-        }} color={theme.navigationHeaderTintColor}/>
+        }} color={theme.navigationHeaderTintColor} size={theme.textH3.fontSize} />
         <TouchableIcon disabled={!canWebGoForward} icon={"chevron-right"} onPress={() => {
           refWebview.current && refWebview.current!.goForward();
-        }} color={theme.navigationHeaderTintColor}/>
+        }} color={theme.navigationHeaderTintColor} size={theme.textH3.fontSize} />
       </View>
     </View>
     <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />

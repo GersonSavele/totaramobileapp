@@ -21,11 +21,12 @@
 
 import React, { useContext, useEffect, useState }  from "react";
 import { Text, View, StyleSheet, FlatList, SafeAreaView } from "react-native";
+import { Header, Body, Title } from "native-base";
 
-import { ThemeContext, gutter } from "@totara/theme";
+import { ThemeContext, gutter, baseSpace } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ScormActivityResult, ScormBundle, Grade } from "@totara/types/Scorm";
-import { ActivityNavigation, ActionItem, Header } from "../components/ActivityNavigationBar";
+import { TouchableIcon } from "@totara/components";
 
 type Props = {
   scormBundle: ScormBundle,
@@ -56,19 +57,19 @@ const  SCORMAttempts = ({scormBundle, onExit}: Props) => {
   return (
     <>
       <View style={theme.viewContainer}>
-        <ActivityNavigation>
-          <ActionItem icon={"times"} action={onExit} />
-          {/* TODO - info need to from activity list props ["You are offline"] */}
-          <Header title={scormBundle.scorm.name} info={undefined} />
-          <ActionItem />
-        </ActivityNavigation>
-        <Text style={[theme.textH2, gradesStyle.heading]}>{translate("scorm.attempts.title")}</Text>
+        <Header style={{backgroundColor: theme.colorSecondary1, borderBottomWidth: 0}}>
+          <TouchableIcon icon={"times"} onPress={onExit} size={theme.textH2.fontSize} style={{padding: baseSpace}} />
+          <Body style={{marginRight: (theme.textH2.fontSize && theme.textH2.fontSize + baseSpace)}}>
+            <Title style={theme.textH4}>{scormBundle.scorm.name}</Title>
+          </Body>
+        </Header>
+        <Text style={[theme.textH2, {marginVertical: baseSpace, paddingHorizontal: gutter}]}>{translate("scorm.attempts.title")}</Text>
         <FlatList
           style={{flex: 1}}
           data={allAttemptsReport}
           renderItem={({ item, index }) =>
           {
-            return attemptReport( item as ScormActivityResult, index, scormBundle.scorm.grademethod as Grade, scormBundle.scorm.completionscorerequired)
+            return attemptReport( item as ScormActivityResult, index, scormBundle.scorm.grademethod as Grade)
           }
           }
           alwaysBounceVertical={false}
@@ -79,40 +80,7 @@ const  SCORMAttempts = ({scormBundle, onExit}: Props) => {
       </View>
     </>
   );
-  
 };
-
-const gradesStyle = StyleSheet.create({
-  navigationStyle :{
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  leftContainer: {
-    flex: 1,
-    justifyContent: "flex-start",
-  },
-  rightContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  buttonStyle : {
-    backgroundColor: "transparent",
-    padding: 20,
-    alignSelf:"flex-start"
-  },
-  titleStyle: {
-    fontSize: 16,
-    color: "#3D444B",
-    fontWeight: "bold",
-    textAlign: 'center',
-    alignSelf:"center"
-  },
-  heading: {
-    marginVertical: 8,
-    paddingHorizontal: gutter, 
-  },
-});
 
 type AttemptReport = {
   attemptReport: ScormActivityResult,

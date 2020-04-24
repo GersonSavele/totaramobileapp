@@ -178,7 +178,7 @@ const navigationOptions = (props: navigationOptionsProps) => ({
     title: props.title,
     headerBackTitle: null,
     headerTintColor: props.theme.navigationHeaderTintColor,
-    headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} disabled={false} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
+    headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} size={24} color={props.theme.navigationHeaderTintColor}/> : null,
 });
 
 

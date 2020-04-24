@@ -57,7 +57,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
   return (
     <Container style={[theme.viewContainer, { flex: 0 }]}>
       <Header style={[styles.navigation,  { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
-        <TouchableIcon icon={"times"} disabled={false} onPress={cancelLogin} color={ theme.navigationHeaderTintColor } />
+        <TouchableIcon icon={"times"} onPress={cancelLogin} color={ theme.navigationHeaderTintColor } size={theme.textH3.fontSize} />
         <View style={styles.addressContainer}>
           <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} color={ theme.navigationHeaderTintColor } />
           <Text style={[styles.addressText, {color: theme.navigationHeaderTintColor}]} numberOfLines={1} ellipsizeMode={"tail"} >{navEndPoint}</Text>
@@ -79,11 +79,11 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
       </Content>
       <Footer style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
         <View style={styles.barContent}>
-          <TouchableIcon icon={"chevron-left"} disabled={!canWebGoBackward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goBack(); }} color={theme.navigationHeaderTintColor} />
-          <TouchableIcon icon={"chevron-right"} disabled={!canWebGoForward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goForward(); }} color={theme.navigationHeaderTintColor} />
+          <TouchableIcon icon={"chevron-left"} disabled={!canWebGoBackward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goBack(); }} color={theme.navigationHeaderTintColor}  size={theme.textH3.fontSize} />
+          <TouchableIcon icon={"chevron-right"} disabled={!canWebGoForward} onPress={() => { refLoginWebview.current && refLoginWebview.current!.goForward(); }} color={theme.navigationHeaderTintColor}  size={theme.textH3.fontSize} />
         </View>
         <View style={styles.barContent}>
-          <TouchableIcon icon={"external-link-alt"} disabled={false} onPress={() => { Linking.openURL(navProtocol + "://" + navEndPoint); }} color={theme.navigationHeaderTintColor} />
+          <TouchableIcon icon={"external-link-alt"} onPress={() => { Linking.openURL(navProtocol + "://" + navEndPoint); }} color={theme.navigationHeaderTintColor}  size={theme.textH3.fontSize} />
         </View>
       </Footer>
     </Container>

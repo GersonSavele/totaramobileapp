@@ -67,7 +67,7 @@ const Downloads = (props: DownloadsTabsProps) => {
                         <Text style={{color: theme.colorNeutral5}}>{`${fileSize(data.item)}`}</Text>
                     </View>
                     <View style={{display: 'flex', flex: 3, alignItems:'flex-end', justifyContent:'center'}}>
-                        <ResourceDownloader size={25} downloading={false} progress={data.item.percentCompleted ? data.item.percentCompleted! : 0} downloadOK={data.item.state === ResourceState.Completed}/>
+                        <ResourceDownloader size={25} progress={data.item.percentCompleted ? data.item.percentCompleted! : 0} mode={data.item.state}/>
                     </View>
                     <View style={{display: 'flex', flex: 1, justifyContent:'flex-end', alignContent:'center'}}>
                         <TouchableIcon size={25} icon={"caret-right"} disabled={true} />

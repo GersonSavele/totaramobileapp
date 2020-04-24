@@ -18,28 +18,31 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React, { useContext } from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import { TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { gutter, ThemeContext } from "@totara/theme";
+import { gutter } from "@totara/theme";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 type Props = {
   icon: IconDefinition | string;
   onPress?: (() => void);
-  disabled: boolean;
+  disabled?: boolean;
   color?: string;
   size?: number;
+  style?: ViewStyle;
 };
 
-const TouchableIcon = ({ icon, onPress, color, disabled, size, ...rest }: Props) => {
-  const [theme] = useContext(ThemeContext);
+const TouchableIcon = ({ icon, onPress, disabled, size, style, ...rest }: Props) => {
+
   return (
-  <TouchableOpacity onPress={onPress} style={styles.container} disabled={disabled}>
-    <FontAwesomeIcon icon={icon} size={ size ? size : theme.textH3.fontSize} color={ color ? color : theme.textColorDark} {...rest} style={{ opacity: disabled ? 0.5 : 1}}/>
-  </TouchableOpacity>
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]} disabled={disabled}>
+      <FontAwesomeIcon 
+      icon={icon as IconDefinition} 
+      size={size} {...rest} style={{ opacity: disabled ? 0.5 : 1}}/>
+    </TouchableOpacity>
   );
 };
 

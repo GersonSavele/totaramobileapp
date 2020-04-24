@@ -55,7 +55,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
       <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
         <SafeAreaView />
         <View style={styles.navigation}>
-          <TouchableIcon onPress={onManualFlowCancel} icon={"times"} disabled={false} color={theme.navigationHeaderTintColor} />
+          <TouchableIcon onPress={onManualFlowCancel} icon={"times"} color={theme.navigationHeaderTintColor}  size={theme.textH3.fontSize} />
         </View>
       </View>
       <View style={{position: "relative", zIndex: 2}}>

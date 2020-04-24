@@ -25,6 +25,7 @@ import { ThemeContext, ThemeProvider, ThemeConsumer} from "./ThemeContext"
 const gutter = resizeByScreenSize(8, 16, 16, 24);
 const tbPadding = resizeByScreenSize(8, 16, 24, 32);
 const lrPadding = resizeByScreenSize(10, 12, 16, 20);
+const baseSpace = 8;
 
 export {
   resizeByScreenSize,
@@ -35,5 +36,6 @@ export {
   applyTheme,
   ThemeContext,
   ThemeProvider, 
-  ThemeConsumer
+  ThemeConsumer,
+  baseSpace
 };

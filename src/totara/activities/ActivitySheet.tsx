@@ -21,15 +21,15 @@
 
 import React, { useContext } from "react";
 import { View, Modal } from "react-native";
-
+import { Header, Body, Title } from "native-base";
 
 import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
 import ActivityFeedback from "./ActivityFeedback";
 import SCORMActivity from "./scorm/SCORMActivity";
-import { ActivityNavigation, ActionItem, Header } from "./components/ActivityNavigationBar";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
-import { ThemeContext } from "@totara/theme";
+import { ThemeContext, baseSpace } from "@totara/theme";
+import { TouchableIcon } from "@totara/components";
 
 type ActivityFeedbackProps = {
   activity?: ActivityType, 
@@ -137,19 +137,35 @@ const ActivitySheet = ({currentActivity, onClose, resource}: Props) => {
   
   const [theme] = useContext(ThemeContext);
 
-  return (<Modal animationType="slide" visible={currentActivity != undefined} onRequestClose={onClose}>
-    <View style={theme.viewContainer}>
-      <ActivityNavigation>
-        <ActionItem icon={"times"} action={onClose} />
-        {/* TODO - info need to from activity list props ["You are offline"]*/}
-        <Header title={currentActivity.name} info={undefined}  />
-        <ActionItem action={resource && resource.action}>
-        { resource && <ResourceDownloader mode={resource && resource.data && resource.data.state} progress={resource && resource.data && resource.data.percentCompleted || 0} size={28} /> }
-        </ActionItem>
-      </ActivityNavigation>
-      {(currentActivity) && <ActivityWrapper activity={currentActivity}/>}
-    </View>
-  </Modal>);
+  return (
+    <Modal animationType="slide" visible={currentActivity != undefined} onRequestClose={onClose}>
+      <Header style={{backgroundColor: theme.colorSecondary1, borderBottomWidth: 0}}>
+        <TouchableIcon icon={"times"} onPress={onClose} size={theme.textH2.fontSize} style={{padding: baseSpace}} />
+        <Body style={{marginRight: (resource && 0) || (theme.textH2.fontSize && theme.textH2.fontSize + baseSpace)}}>
+          <Title style={theme.textH4}>{currentActivity.name}</Title>
+          {/* TODO - need to set sub header after connectivity check on activity sheet */}
+          {/* <Text style={[theme.textSmall, {color: theme.textColorSubdued, paddingBottom: baseSpace}]}>You are offline</Text> */}
+        </Body>
+          {resource && (
+            <ResourceDownloader
+              mode={resource && resource.data && resource.data.state}
+              progress={
+                (resource &&
+                  resource.data &&
+                  resource.data.percentCompleted) ||
+                0
+              }
+              size={theme.textH2.fontSize}
+              onPress={resource && resource.action}
+              style={{padding: baseSpace}}
+            />
+          )}
+      </Header>
+      <View style={theme.viewContainer}>
+        {currentActivity && <ActivityWrapper activity={currentActivity} />}
+      </View>
+    </Modal>
+  );
 };
 
 type Props = {
