@@ -60,6 +60,27 @@ You should set up the following variables:
  - `SENTRY_PROJECT_URL`: Client config section: https://docs.sentry.io/clients/react-native/#configure
  - `SENTRY_AUTH_TOKEN`: You can find it [here](https://sentry.io/settings/account/api/auth-tokens/)
 
+# Contributing to the repository
+
+## JavaScript (TypeScript) and Node
+
+> JavaScript should be readable, modular, and splittable.
+
+### Project Structure (for JS/Typescript/React Native)
+
+We accept directories named with widgets group, for instance, buttons should be added to `components/buttons`, whenever possible.
+
+We discourage name files "_feature_.component.js" or "_feature_.container.js".
+
+### Formatting
+
+We delegate that to [Prettier](https://prettier.io/).
+
+Make sure your text editor has [that extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), and that it's configured to auto-format on save.
+
+### Modules
+
+- single component export default per file
 
 # Troubleshooting
 
