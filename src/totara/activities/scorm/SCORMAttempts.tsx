@@ -19,109 +19,148 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useContext, useEffect, useState }  from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View, StyleSheet, FlatList, SafeAreaView } from "react-native";
-import { Header, Body, Title } from "native-base";
 
 import { ThemeContext, gutter, baseSpace } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ScormActivityResult, ScormBundle, Grade } from "@totara/types/Scorm";
-import { TouchableIcon } from "@totara/components";
+import { TopHeader } from "@totara/components";
 
 type Props = {
-  scormBundle: ScormBundle,
-  onExit: () => void
+  scormBundle: ScormBundle;
+  onExit: () => void;
 };
 
-
-const  SCORMAttempts = ({scormBundle, onExit}: Props) => {
-
+const SCORMAttempts = ({ scormBundle, onExit }: Props) => {
   const [theme] = useContext(ThemeContext);
-  const [allAttemptsReport, setAllAttempts] = useState<[ScormActivityResult?]>([]);
+  const [allAttemptsReport, setAllAttempts] = useState<[ScormActivityResult?]>(
+    []
+  );
 
-  useEffect(()=> {
+  useEffect(() => {
     let dataAllAttemptsReport: [ScormActivityResult?] = [];
     if (scormBundle && scormBundle.scorm && scormBundle.scorm.attempts) {
-      dataAllAttemptsReport = dataAllAttemptsReport.concat(scormBundle.scorm.attempts) as [ScormActivityResult];
+      dataAllAttemptsReport = dataAllAttemptsReport.concat(
+        scormBundle.scorm.attempts
+      ) as [ScormActivityResult];
     }
-    if (scormBundle && scormBundle.offlineActivity && scormBundle.offlineActivity.attempts) {
-      dataAllAttemptsReport = dataAllAttemptsReport.concat(scormBundle.offlineActivity.attempts) as [ScormActivityResult];
-    } 
+    if (
+      scormBundle &&
+      scormBundle.offlineActivity &&
+      scormBundle.offlineActivity.attempts
+    ) {
+      dataAllAttemptsReport = dataAllAttemptsReport.concat(
+        scormBundle.offlineActivity.attempts
+      ) as [ScormActivityResult];
+    }
     setAllAttempts(dataAllAttemptsReport);
   }, [scormBundle]);
 
-  const attemptReport = (attemptReport: ScormActivityResult, index: number, grademethod: Grade) => {
-    return <AttemptReport attemptReport={attemptReport} attempt={index + 1} grademethod={grademethod} />
+  const attemptReport = (
+    attemptReport: ScormActivityResult,
+    index: number,
+    grademethod: Grade
+  ) => {
+    return (
+      <AttemptReport
+        attemptReport={attemptReport}
+        attempt={index + 1}
+        grademethod={grademethod}
+      />
+    );
   };
 
   return (
     <>
       <View style={theme.viewContainer}>
-        <Header style={{backgroundColor: theme.colorSecondary1, borderBottomWidth: 0}}>
-          <TouchableIcon icon={"times"} onPress={onExit} size={theme.textH2.fontSize} style={{padding: baseSpace}} />
-          <Body style={{marginRight: (theme.textH2.fontSize && theme.textH2.fontSize + baseSpace)}}>
-            <Title style={theme.textH4}>{scormBundle.scorm.name}</Title>
-          </Body>
-        </Header>
-        <Text style={[theme.textH2, {marginVertical: baseSpace, paddingHorizontal: gutter}]}>{translate("scorm.attempts.title")}</Text>
-        <FlatList
-          style={{flex: 1}}
-          data={allAttemptsReport}
-          renderItem={({ item, index }) =>
-          {
-            return attemptReport( item as ScormActivityResult, index, scormBundle.scorm.grademethod as Grade)
-          }
-          }
-          alwaysBounceVertical={false}
-          scrollIndicatorInsets={{right:8}}
-          keyExtractor={(item, index) => `${(item as ScormActivityResult).attempt}-${index}`}
+        <TopHeader
+          iconSize={theme.textH2.fontSize}
+          color={theme.colorSecondary1}
+          title={scormBundle.scorm.name}
+          titleTextStyle={theme.textH4}
+          infoTextStyle={[theme.textSmall, { color: theme.textColorSubdued }]}
+          onClose={onExit}
         />
-        <SafeAreaView style={{ backgroundColor: theme.viewContainer.backgroundColor }} />
+        <Text
+          style={[
+            theme.textH2,
+            { marginVertical: baseSpace, paddingHorizontal: gutter },
+          ]}
+        >
+          {translate("scorm.attempts.title")}
+        </Text>
+        <FlatList
+          style={{ flex: 1 }}
+          data={allAttemptsReport}
+          renderItem={({ item, index }) => {
+            return attemptReport(
+              item as ScormActivityResult,
+              index,
+              scormBundle.scorm.grademethod as Grade
+            );
+          }}
+          alwaysBounceVertical={false}
+          scrollIndicatorInsets={{ right: 8 }}
+          keyExtractor={(item, index) =>
+            `${(item as ScormActivityResult).attempt}-${index}`
+          }
+        />
+        <SafeAreaView
+          style={{ backgroundColor: theme.viewContainer.backgroundColor }}
+        />
       </View>
     </>
   );
 };
 
 type AttemptReport = {
-  attemptReport: ScormActivityResult,
-  attempt: number,
-  grademethod: Grade,
+  attemptReport: ScormActivityResult;
+  attempt: number;
+  grademethod: Grade;
 };
 
-const AttemptReport = ({attemptReport, attempt, grademethod}: AttemptReport) => {
-  
+const AttemptReport = ({
+  attemptReport,
+  attempt,
+  grademethod,
+}: AttemptReport) => {
   const [theme] = useContext(ThemeContext);
-  
+
   const calculatedScore = attemptReport.gradereported;
-  const formattedScore = (grademethod == Grade.objective) ? calculatedScore.toString() : `${calculatedScore}%`;
-  
+  const formattedScore =
+    grademethod == Grade.objective
+      ? calculatedScore.toString()
+      : `${calculatedScore}%`;
+
   return (
     <View style={attemptResult.holder} key={"holder"}>
-      <Text style={[theme.textH4, attemptResult.attempt]}>{translate("scorm.attempts.attempt")} {attempt}</Text>
+      <Text style={[theme.textH4, attemptResult.attempt]}>
+        {translate("scorm.attempts.attempt")} {attempt}
+      </Text>
       <View style={attemptResult.result}>
         <Text style={theme.textH4}>{formattedScore}</Text>
       </View>
     </View>
   );
-  
 };
 
 const attemptResult = StyleSheet.create({
   holder: {
-    justifyContent: "space-between", 
+    justifyContent: "space-between",
     flexDirection: "row",
     marginVertical: 8,
-    paddingHorizontal: gutter
+    paddingHorizontal: gutter,
   },
   attempt: {
     flex: 2,
     alignSelf: "center",
-    fontWeight: "normal"
+    fontWeight: "normal",
   },
   result: {
-    flex: 1, 
-    alignItems: "flex-end"
-  }
+    flex: 1,
+    alignItems: "flex-end",
+  },
 });
 
 export default SCORMAttempts;

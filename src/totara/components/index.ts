@@ -39,6 +39,7 @@ import FormError from "./FormError";
 import MoreText from "./MoreText";
 import LinkText from "./LinkText";
 import NotificationView from "./NotificationView";
+import TopHeader from "./TopHeader";
 
 export {
   LearningItemCard,
@@ -63,4 +64,5 @@ export {
   MoreText,
   LinkText,
   NotificationView,
+  TopHeader
 }
