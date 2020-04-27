@@ -64,7 +64,7 @@ You should set up the following variables:
 
 ## JavaScript (TypeScript) and Node
 
-> JavaScript should be readable, modular, and splittable.
+JavaScript should be readable, modular, and splittable. Take advantadge of functional programming and if you find business logic, generally put inside a utils file.
 
 ### Project Structure (for JS/Typescript/React Native)
 
@@ -78,9 +78,63 @@ We delegate that to [Prettier](https://prettier.io/).
 
 Make sure your text editor has [that extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), and that it's configured to auto-format on save.
 
+### Undefined and Null check
+
+Javascript already has the `undefined` type to indicate the absence of value, so there is no need to have a second type that represent the same concept. Said that, avoid use of null. Yet sometime the server returns it, therefore you still have check.
+
+```
+//if the parameter is not a number, then this should be good
+if ( param ) then ...
+
+//if the parameter is a number, then we need to do this
+if ( param !== null && param !== undefined ) then ...
+```
+
+### React components
+
+Each component should have its own file preferably. Try to avoid lots of components in the same file. For instance:
+
+```
+//Button.tsx
+const Button () => (
+  <View><Icon name={iconName}/></View>
+)
+
+//This icon should be extracted so you promote reusability
+const Icon = () => (<View />);
+
+//nice default export
+//we dont normally export two components
+export default Button;
+```
+
+### Typescript interfaces and types
+
+We use PascalCase
+
+### Business logic/rules outside components
+
+Business rules and logic, that can be encapsulated in pure functions, should be in `@totara/lib` module.
+
+### Function parameters
+
+Multiple arguments vs. options object
+
+```
+// bad
+function exemple(nodeList, callback, thisObject, fromIndex, toIndex){
+    ...
+}
+
+// good. That is better because it more readable when you call the function
+function exemple({ nodeList, callback, thisObject, fromIndex, toIndex }){
+    ...
+}
+```
+
 ### Modules
 
-- single component export default per file
+- Single component export default per file
 
 # Troubleshooting
 
