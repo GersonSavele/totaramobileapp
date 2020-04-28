@@ -38,21 +38,43 @@ type Props = {
 };
 
 const OfflineSCORMFeedback = ({ activity, onClose, onPrimary }: Props) => {
-  const [offlineLastAttemptResult, setOfflineLastAttemptResult] = useState<AttemptResult>();
+  const [offlineLastAttemptResult, setOfflineLastAttemptResult] = useState<
+    AttemptResult
+  >();
   useEffect(() => {
-    getLastAttemptScore(activity.instanceid).then(lastAttemptResult => {
+    getLastAttemptScore(activity.instanceid).then((lastAttemptResult) => {
       if (lastAttemptResult) {
-        const result: AttemptResult = {...lastAttemptResult, ...{ method: "grade" }};
+        const result: AttemptResult = {
+          ...lastAttemptResult,
+          ...{ method: "grade" },
+        };
         setOfflineLastAttemptResult(result);
       }
     });
   }, [activity.instanceid]);
 
-  const resultGrade = offlineLastAttemptResult && offlineLastAttemptResult.grade ? offlineLastAttemptResult.grade : undefined;
-  const resultScore = offlineLastAttemptResult && offlineLastAttemptResult.score ? offlineLastAttemptResult.score : undefined;
-  const resultMethod = offlineLastAttemptResult && offlineLastAttemptResult.method ? offlineLastAttemptResult.method : undefined;
+  const resultGrade =
+    offlineLastAttemptResult && offlineLastAttemptResult.grade
+      ? offlineLastAttemptResult.grade
+      : undefined;
+  const resultScore =
+    offlineLastAttemptResult && offlineLastAttemptResult.score
+      ? offlineLastAttemptResult.score
+      : undefined;
+  const resultMethod =
+    offlineLastAttemptResult && offlineLastAttemptResult.method
+      ? offlineLastAttemptResult.method
+      : undefined;
 
-  return (<SCORMFeedbackModal grade={resultGrade} score={resultScore} method={resultMethod} onClose={onClose} onPrimary={onPrimary} />);
+  return (
+    <SCORMFeedbackModal
+      grade={resultGrade}
+      score={resultScore}
+      method={resultMethod}
+      onClose={onClose}
+      onPrimary={onPrimary}
+    />
+  );
 };
 
 export default OfflineSCORMFeedback;

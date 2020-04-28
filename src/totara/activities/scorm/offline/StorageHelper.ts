@@ -21,244 +21,386 @@
 
 import AsyncStorage from "@react-native-community/async-storage";
 
-
 const ScormDataPre = "@TOTARAMOBILE_SCORM";
 const KeyScormPackageData = `${ScormDataPre}_API_DATA`;
 const KeyScormCommitData = `${ScormDataPre}_OFFLINE_COMMIT`;
 const KeyScormCMIData = `${ScormDataPre}_OFFLINE_CMI`;
 const KeyScormActivityData = `${ScormDataPre}_OFFLINE_ACTIVITY`;
 
-const setScormPackageData = (scormId: number, data: any) => {
-    return AsyncStorage.getItem(KeyScormPackageData).then(storedData=> {
-        let scormData = {scorm: data.scorm, lastsynced: data.lastsynced, scormPackage: data.scormPackage};
-        let newData = {[scormId]: scormData}
-        if (storedData && JSON.parse(storedData)) {
-            const storedScormsData = JSON.parse(storedData);
-            newData = {...storedScormsData, ...newData};
+const setScormPackageData = (scormId: string, data: any) => {
+  return AsyncStorage.getItem(KeyScormPackageData).then((storedData) => {
+    let scormData = {
+      scorm: data.scorm,
+      lastsynced: data.lastsynced,
+      scormPackage: data.scormPackage,
+    };
+    let newData = { [scormId]: scormData };
+    if (storedData && JSON.parse(storedData)) {
+      const storedScormsData = JSON.parse(storedData);
+      newData = { ...storedScormsData, ...newData };
+    }
+    return AsyncStorage.setItem(KeyScormPackageData, JSON.stringify(newData));
+  });
+};
+
+const getScormPackageData = (scormId: string) => {
+  return AsyncStorage.getItem(KeyScormPackageData).then((storedData) => {
+    if (storedData && JSON.parse(storedData)) {
+      const storedScormsData = JSON.parse(storedData);
+      if (storedScormsData[scormId]) {
+        return storedScormsData[scormId];
+      }
+    }
+    return undefined;
+  });
+};
+
+const removeScormPackageData = (scormId: string) => {
+  return AsyncStorage.getItem(KeyScormPackageData)
+    .then((storageData) => {
+      if (storageData && JSON.parse(storageData)) {
+        let existingData = JSON.parse(storageData);
+        if (existingData[scormId]) {
+          delete existingData[scormId];
         }
-        return AsyncStorage.setItem(KeyScormPackageData, JSON.stringify(newData));
+        if (existingData) {
+          return existingData;
+        }
+      }
+      return null;
+    })
+    .then((newData) => {
+      if (Object.keys(newData).length === 0 && newData.constructor === Object) {
+        return AsyncStorage.removeItem(KeyScormPackageData);
+      } else {
+        return AsyncStorage.setItem(
+          KeyScormPackageData,
+          JSON.stringify(newData)
+        );
+      }
     });
 };
 
-const getScormPackageData = (scormId: number) => {
-    return AsyncStorage.getItem(KeyScormPackageData).then(storedData=> {
-        if (storedData && JSON.parse(storedData)) {
-            const storedScormsData = JSON.parse(storedData);
-            if(storedScormsData[scormId]) {
-                return storedScormsData[scormId];
-            }
+const getScormData = (scormId: string) => {
+  return AsyncStorage.multiGet([KeyScormPackageData, KeyScormCMIData]).then(
+    ([dataScormPackage, dataCMIs]) => {
+      // let scormData = null;
+      let storedScormData = { bundle: undefined, cmis: undefined };
+      if (
+        dataScormPackage.length === 2 &&
+        dataScormPackage[1] &&
+        JSON.parse(dataScormPackage[1])
+      ) {
+        const scormDataSet = JSON.parse(dataScormPackage[1]);
+        if (scormDataSet[scormId]) {
+          storedScormData.bundle = scormDataSet[scormId];
         }
-        return undefined;
-    });
-};
-
-const removeScormPackageData = (scormId: number) => {
-    return AsyncStorage.getItem(KeyScormPackageData).then(storageData => {
-        if(storageData && JSON.parse(storageData)) {
-            let existingData = JSON.parse(storageData);
-            if (existingData[scormId]) {
-                delete existingData[scormId];
-            }
-            if (existingData) {
-                return existingData;
-            }
+      }
+      if (dataCMIs.length === 2 && dataCMIs[1] && JSON.parse(dataCMIs[1])) {
+        const cmiData = JSON.parse(dataCMIs[1]);
+        if (cmiData[scormId]) {
+          storedScormData.cmis = cmiData[scormId];
         }
-        return null;
-    }).then(newData => {
-        if (Object.keys(newData).length === 0 && newData.constructor === Object) {
-            return AsyncStorage.removeItem(KeyScormPackageData);
-        } else {
-            return AsyncStorage.setItem(KeyScormPackageData, JSON.stringify(newData));
-        }
-    });
-};
-
-const getScormData = (scormId: number) => {
-    return AsyncStorage.multiGet([KeyScormPackageData, KeyScormCMIData]).then(([dataScormPackage, dataCMIs]) => {
-        // let scormData = null;
-        let storedScormData = {bundle: undefined, cmis: undefined};
-        if(dataScormPackage.length === 2 && dataScormPackage[1] && JSON.parse(dataScormPackage[1])) {
-            const scormDataSet = JSON.parse(dataScormPackage[1]);
-            if (scormDataSet[scormId]) {
-                storedScormData.bundle = scormDataSet[scormId];
-            }                 
-        }
-        if(dataCMIs.length === 2 && dataCMIs[1] && JSON.parse(dataCMIs[1])) {
-            const cmiData = JSON.parse(dataCMIs[1]);
-            if(cmiData[scormId]) {
-                storedScormData.cmis = cmiData[scormId];
-            }
-        }
-        return storedScormData;
-    });
+      }
+      return storedScormData;
+    }
+  );
 };
 
 const saveScormActivityData = (data: any) => {
-    return AsyncStorage.multiGet([KeyScormCMIData, KeyScormCommitData, KeyScormActivityData]).then(([storageCMIData, storageCommitData, storageActivity]) => {
-        let scormCMIData = {[data.scormid] : {[data.attempt]: {[data.scoid]: data.cmi}}};
-        let scormCommitData = {[data.scormid] : {[data.attempt]: {[data.scoid]: [data.commit]}}};
-        const activityInfo = {attempt: parseInt(data.attempt), scoid: data.scoid};
-        let scormActivityData = {[data.scormid] : {last: activityInfo, start: activityInfo}};
-        
-        if (storageCMIData && (storageCMIData.length === 2) && (storageCMIData[0] === KeyScormCMIData) && storageCMIData[1] && JSON.parse(storageCMIData[1])) {
-            let existingCMIData = JSON.parse(storageCMIData[1]);
-            if (existingCMIData[data.scormid] && existingCMIData[data.scormid][data.attempt] && existingCMIData[data.scormid][data.attempt][data.scoid]) {
-                existingCMIData[data.scormid][data.attempt][data.scoid] = data.cmi;
-            } else if(existingCMIData[data.scormid] && existingCMIData[data.scormid][data.attempt]) {
-                existingCMIData[data.scormid][data.attempt][data.scoid] =  data.cmi;
-            } else if(existingCMIData[data.scormid]) {
-                existingCMIData[data.scormid][data.attempt] = {[data.scoid]: data.cmi};
-            } else {
-                existingCMIData[data.scormid] = {[data.attempt]: {[data.scoid]: data.cmi}};
-            }
-            scormCMIData = existingCMIData;
+  return AsyncStorage.multiGet([
+    KeyScormCMIData,
+    KeyScormCommitData,
+    KeyScormActivityData,
+  ])
+    .then(([storageCMIData, storageCommitData, storageActivity]) => {
+      let scormCMIData = {
+        [data.scormid]: { [data.attempt]: { [data.scoid]: data.cmi } },
+      };
+      let scormCommitData = {
+        [data.scormid]: { [data.attempt]: { [data.scoid]: [data.commit] } },
+      };
+      const activityInfo = {
+        attempt: parseInt(data.attempt),
+        scoid: data.scoid,
+      };
+      let scormActivityData = {
+        [data.scormid]: { last: activityInfo, start: activityInfo },
+      };
+
+      if (
+        storageCMIData &&
+        storageCMIData.length === 2 &&
+        storageCMIData[0] === KeyScormCMIData &&
+        storageCMIData[1] &&
+        JSON.parse(storageCMIData[1])
+      ) {
+        let existingCMIData = JSON.parse(storageCMIData[1]);
+        if (
+          existingCMIData[data.scormid] &&
+          existingCMIData[data.scormid][data.attempt] &&
+          existingCMIData[data.scormid][data.attempt][data.scoid]
+        ) {
+          existingCMIData[data.scormid][data.attempt][data.scoid] = data.cmi;
+        } else if (
+          existingCMIData[data.scormid] &&
+          existingCMIData[data.scormid][data.attempt]
+        ) {
+          existingCMIData[data.scormid][data.attempt][data.scoid] = data.cmi;
+        } else if (existingCMIData[data.scormid]) {
+          existingCMIData[data.scormid][data.attempt] = {
+            [data.scoid]: data.cmi,
+          };
+        } else {
+          existingCMIData[data.scormid] = {
+            [data.attempt]: { [data.scoid]: data.cmi },
+          };
         }
-        if (storageCommitData && (storageCommitData.length === 2) && (storageCommitData[0] === KeyScormCommitData) && storageCommitData[1] && JSON.parse(storageCommitData[1])) {
-            let existingCommitData = JSON.parse(storageCommitData[1]);
-            if (existingCommitData[data.scormid] && existingCommitData[data.scormid][data.attempt] && existingCommitData[data.scormid][data.attempt][data.scoid]) {
-                existingCommitData[data.scormid][data.attempt][data.scoid].push(data.commit);
-            } else if (existingCommitData[data.scormid] && existingCommitData[data.scormid][data.attempt]) {
-                existingCommitData[data.scormid][data.attempt][data.scoid] = [data.commit];
-            } else if (existingCommitData[data.scormid]) {
-                existingCommitData[data.scormid][data.attempt] = {[data.scoid]: [data.commit]};
-            } else {
-                existingCommitData[data.scormid] = {[data.attempt]: {[data.scoid]: [data.commit]}};
-            }
-            scormCommitData = existingCommitData;
+        scormCMIData = existingCMIData;
+      }
+      if (
+        storageCommitData &&
+        storageCommitData.length === 2 &&
+        storageCommitData[0] === KeyScormCommitData &&
+        storageCommitData[1] &&
+        JSON.parse(storageCommitData[1])
+      ) {
+        let existingCommitData = JSON.parse(storageCommitData[1]);
+        if (
+          existingCommitData[data.scormid] &&
+          existingCommitData[data.scormid][data.attempt] &&
+          existingCommitData[data.scormid][data.attempt][data.scoid]
+        ) {
+          existingCommitData[data.scormid][data.attempt][data.scoid].push(
+            data.commit
+          );
+        } else if (
+          existingCommitData[data.scormid] &&
+          existingCommitData[data.scormid][data.attempt]
+        ) {
+          existingCommitData[data.scormid][data.attempt][data.scoid] = [
+            data.commit,
+          ];
+        } else if (existingCommitData[data.scormid]) {
+          existingCommitData[data.scormid][data.attempt] = {
+            [data.scoid]: [data.commit],
+          };
+        } else {
+          existingCommitData[data.scormid] = {
+            [data.attempt]: { [data.scoid]: [data.commit] },
+          };
         }
-        if (storageActivity && (storageActivity.length === 2) && (storageActivity[0] === KeyScormActivityData) &&  storageActivity[1] && JSON.parse(storageActivity[1])) {
-            const existingActivityData = JSON.parse(storageActivity[1])[data.scormid];
-            if(existingActivityData) {
-                if (existingActivityData.last && existingActivityData.last.attempt && (existingActivityData.last.attempt > scormActivityData[data.scormid].last.attempt)) {
-                   scormActivityData[data.scormid].last = existingActivityData.last;
-                } 
-                if (existingActivityData.start && existingActivityData.start.attempt && (existingActivityData.start.attempt < scormActivityData[data.scormid].start.attempt)) {
-                    scormActivityData[data.scormid].start = existingActivityData.start;
-                }
-            } else {
-                scormActivityData = {...existingActivityData, ...scormActivityData};  
-            }
+        scormCommitData = existingCommitData;
+      }
+      if (
+        storageActivity &&
+        storageActivity.length === 2 &&
+        storageActivity[0] === KeyScormActivityData &&
+        storageActivity[1] &&
+        JSON.parse(storageActivity[1])
+      ) {
+        const existingActivityData = JSON.parse(storageActivity[1])[
+          data.scormid
+        ];
+        if (existingActivityData) {
+          if (
+            existingActivityData.last &&
+            existingActivityData.last.attempt &&
+            existingActivityData.last.attempt >
+              scormActivityData[data.scormid].last.attempt
+          ) {
+            scormActivityData[data.scormid].last = existingActivityData.last;
+          }
+          if (
+            existingActivityData.start &&
+            existingActivityData.start.attempt &&
+            existingActivityData.start.attempt <
+              scormActivityData[data.scormid].start.attempt
+          ) {
+            scormActivityData[data.scormid].start = existingActivityData.start;
+          }
+        } else {
+          scormActivityData = { ...existingActivityData, ...scormActivityData };
         }
-        return [JSON.stringify(scormCMIData), JSON.stringify(scormCommitData), JSON.stringify(scormActivityData)];
-    }).then(([formattedCMIData, formattedCommitData, formattedScormActivity]) => {
-        return AsyncStorage.multiSet([[KeyScormCMIData, formattedCMIData], [KeyScormCommitData, formattedCommitData], [KeyScormActivityData, formattedScormActivity]]);
+      }
+      return [
+        JSON.stringify(scormCMIData),
+        JSON.stringify(scormCommitData),
+        JSON.stringify(scormActivityData),
+      ];
+    })
+    .then(([formattedCMIData, formattedCommitData, formattedScormActivity]) => {
+      return AsyncStorage.multiSet([
+        [KeyScormCMIData, formattedCMIData],
+        [KeyScormCommitData, formattedCommitData],
+        [KeyScormActivityData, formattedScormActivity],
+      ]);
     });
 };
 
-const getScormAttemptData = async (scormId: number, attempt: number) => {
-    return AsyncStorage.getItem(KeyScormCMIData).then(data => {
-        if (data && JSON.parse(data)) {
-            const storedAttemptData = JSON.parse(data);
-            if (storedAttemptData[scormId] && storedAttemptData[scormId][attempt]) {
-                return JSON.parse(data)[scormId][attempt];
-            }
-        }
-        return null;
-    });
+const getScormAttemptData = async (scormId: string, attempt: number) => {
+  return AsyncStorage.getItem(KeyScormCMIData).then((data) => {
+    if (data && JSON.parse(data)) {
+      const storedAttemptData = JSON.parse(data);
+      if (storedAttemptData[scormId] && storedAttemptData[scormId][attempt]) {
+        return JSON.parse(data)[scormId][attempt];
+      }
+    }
+    return null;
+  });
 };
 
 const getAllCommits = () => {
-    return AsyncStorage.getItem(KeyScormCommitData).then((storedCommitsData) => {
-        if (storedCommitsData && JSON.parse(storedCommitsData)) {
-            const commitsData = JSON.parse(storedCommitsData);
-            return commitsData;
-        } else {
-            return undefined;
+  return AsyncStorage.getItem(KeyScormCommitData).then((storedCommitsData) => {
+    if (storedCommitsData && JSON.parse(storedCommitsData)) {
+      const commitsData = JSON.parse(storedCommitsData);
+      return commitsData;
+    } else {
+      return undefined;
+    }
+  });
+};
+
+const clearCommit = (scormId: string, attempt: number) => {
+  return AsyncStorage.multiGet([KeyScormCommitData, KeyScormCMIData])
+    .then(([storageCommitsData, storageCMIData]) => {
+      let existingData = { commits: undefined, cmis: undefined };
+      if (
+        storageCommitsData &&
+        storageCommitsData.length === 2 &&
+        storageCommitsData[0] === KeyScormCommitData &&
+        storageCommitsData[1] &&
+        JSON.parse(storageCMIData[1])
+      ) {
+        existingData.commits = JSON.parse(storageCommitsData[1]);
+      }
+      if (
+        storageCMIData &&
+        storageCMIData.length === 2 &&
+        storageCMIData[0] === KeyScormCMIData &&
+        storageCMIData[1] &&
+        JSON.parse(storageCMIData[1])
+      ) {
+        existingData.cmis = JSON.parse(storageCMIData[1]);
+      }
+      return existingData;
+    })
+    .then((storedata) => {
+      let updatedData = { commits: storedata.commits, cmis: storedata.cmis };
+      if (updatedData.commits) {
+        if (
+          updatedData.commits![scormId] &&
+          updatedData.commits![scormId][attempt]
+        ) {
+          delete updatedData.commits![scormId][attempt];
+          if (Object.keys(updatedData.commits![scormId]).length === 0) {
+            delete updatedData.commits![scormId];
+          }
+          if (Object.keys(updatedData.commits!).length === 0) {
+            updatedData.commits = undefined;
+          }
         }
+      }
+
+      if (updatedData.cmis) {
+        if (updatedData.cmis![scormId] && updatedData.cmis![scormId][attempt]) {
+          delete updatedData.cmis![scormId][attempt];
+          if (Object.keys(updatedData.cmis![scormId]).length === 0) {
+            delete updatedData.cmis![scormId];
+          }
+          if (Object.keys(updatedData.cmis!).length === 0) {
+            updatedData.cmis = undefined;
+          }
+        }
+      }
+      return updatedData;
+    })
+    .then((updatedData) => {
+      if (updatedData.commits) {
+        return AsyncStorage.setItem(
+          KeyScormCommitData,
+          JSON.stringify(updatedData.commits)
+        ).then(() => updatedData.cmis);
+      } else {
+        return AsyncStorage.removeItem(KeyScormCommitData).then(
+          () => updatedData.cmis
+        );
+      }
+    })
+    .then((updatedCmis) => {
+      if (updatedCmis) {
+        return AsyncStorage.setItem(
+          KeyScormCMIData,
+          JSON.stringify(updatedCmis)
+        );
+      } else {
+        return AsyncStorage.removeItem(KeyScormCMIData);
+      }
     });
 };
 
-const clearCommit = (scormId: number, attempt: number) => {
-    return AsyncStorage.multiGet([KeyScormCommitData, KeyScormCMIData]).then(([storageCommitsData, storageCMIData]) => {
-        let existingData = {commits: undefined, cmis: undefined}
-        if (storageCommitsData && (storageCommitsData.length === 2) && (storageCommitsData[0] === KeyScormCommitData) && storageCommitsData[1] && JSON.parse(storageCMIData[1])) {
-            existingData.commits = JSON.parse(storageCommitsData[1]);
+const getLastAttemptScore = (scormId: string) => {
+  return AsyncStorage.getItem(KeyScormActivityData)
+    .then((storedActivityData) => {
+      if (storedActivityData && JSON.parse(storedActivityData)) {
+        const storedActivitiesData = JSON.parse(storedActivityData);
+        if (
+          storedActivitiesData[scormId] &&
+          storedActivitiesData[scormId].last &&
+          storedActivitiesData[scormId].last.attempt
+        ) {
+          return storedActivitiesData[scormId].last.attempt;
         }
-        if (storageCMIData && (storageCMIData.length === 2) && (storageCMIData[0] === KeyScormCMIData) && storageCMIData[1] && JSON.parse(storageCMIData[1])) {
-            existingData.cmis =  JSON.parse(storageCMIData[1]);
-        }
-        return existingData
-    }).then(storedata => {
-        let updatedData = {commits: storedata.commits, cmis: storedata.cmis};
-        if (updatedData.commits) {
-            if(updatedData.commits![scormId] && updatedData.commits![scormId][attempt]) {
-                delete updatedData.commits![scormId][attempt];
-                if (Object.keys(updatedData.commits![scormId]).length === 0) {
-                    delete updatedData.commits![scormId]
-                }
-                if (Object.keys(updatedData.commits!).length === 0) {
-                    updatedData.commits = undefined;
-                }
-            }
-        }
+      }
+      return null;
+    })
+    .then((lastAttempt) => {
+      if (lastAttempt) {
+        return AsyncStorage.getItem(KeyScormCMIData).then((storageData) => {
+          if (storageData && JSON.parse(storageData)) {
+            const dataCMIs = JSON.parse(storageData);
+            if (dataCMIs[scormId]) {
+              const cmiData = dataCMIs[scormId];
+              if (cmiData[lastAttempt]) {
+                let grade = "passed";
+                let score = "0%";
+                const scosData = cmiData[lastAttempt];
 
-        if (updatedData.cmis) {
-            if(updatedData.cmis![scormId] && updatedData.cmis![scormId][attempt]) {
-                delete updatedData.cmis![scormId][attempt];
-                if (Object.keys(updatedData.cmis![scormId]).length === 0) {
-                    delete updatedData.cmis![scormId]
-                }
-                if (Object.keys(updatedData.cmis!).length === 0) {
-                    updatedData.cmis = undefined;
-                }
-            }
-        }
-        return updatedData
-    }).then(updatedData => {
-        if (updatedData.commits) {
-            return AsyncStorage.setItem(KeyScormCommitData, JSON.stringify(updatedData.commits)).then(()=> updatedData.cmis);
-        } else {
-            return AsyncStorage.removeItem(KeyScormCommitData).then(()=> updatedData.cmis);
-        }
-    }).then(updatedCmis => {
-        if (updatedCmis) {
-            return AsyncStorage.setItem(KeyScormCMIData, JSON.stringify(updatedCmis));
-        } else {
-            return AsyncStorage.removeItem(KeyScormCMIData);
-        }
-    });
-};
+                for (let [, cmi] of Object.entries(scosData as any)) {
+                  const maxScore = parseInt(cmi.core.score.max)
+                    ? parseInt(cmi.core.score.max)
+                    : 100;
+                  const minScore = parseInt(cmi.core.score.min)
+                    ? parseInt(cmi.core.score.min)
+                    : 0;
+                  const rowScore = parseInt(cmi.core.score.raw)
+                    ? parseInt(cmi.core.score.raw)
+                    : 0;
 
-const getLastAttemptScore = (scormId: number) => {
-    return AsyncStorage.getItem(KeyScormActivityData).then(storedActivityData => {
-        if(storedActivityData && JSON.parse(storedActivityData)) {
-            const storedActivitiesData = JSON.parse(storedActivityData);
-            if (storedActivitiesData[scormId] && storedActivitiesData[scormId].last && storedActivitiesData[scormId].last.attempt) {
-                return storedActivitiesData[scormId].last.attempt
-            } 
-        }
+                  const scoScorePercent =
+                    (rowScore / (maxScore - minScore)) * 100;
+                  score = `${scoScorePercent}%`;
+                }
+                return { score: score, grade: grade };
+              }
+            }
+          }
+          return null;
+        });
+      } else {
         return null;
-    }).then(lastAttempt=> {
-        if(lastAttempt) {
-            return AsyncStorage.getItem(KeyScormCMIData).then(storageData => {
-                if (storageData && JSON.parse(storageData)) {
-                    const dataCMIs = JSON.parse(storageData);
-                    if (dataCMIs[scormId]) {
-                        const cmiData = dataCMIs[scormId];
-                        if(cmiData[lastAttempt]) {
-                            let grade = "passed";
-                            let score = "0%";
-                            const scosData = cmiData[lastAttempt];
-                             
-                            for (let [, cmi] of Object.entries(scosData as any)) {
-                                const maxScore = parseInt(cmi.core.score.max) ? parseInt(cmi.core.score.max) : 100;
-                                const minScore = parseInt(cmi.core.score.min) ? parseInt(cmi.core.score.min) : 0;
-                                const rowScore = parseInt(cmi.core.score.raw) ? parseInt(cmi.core.score.raw) : 0;
-                                
-                                const scoScorePercent = (rowScore / ( maxScore - minScore)) * 100;
-                                score = `${scoScorePercent}%`;
-                            }
-                            return {score: score, grade: grade};
-                        }
-                    }
-                } 
-                return null;
-            });
-        } else {
-            return null;
-        }
+      }
     });
 };
 
-
-export { getScormPackageData, setScormPackageData, getScormData, saveScormActivityData, getScormAttemptData, getAllCommits, clearCommit, getLastAttemptScore, removeScormPackageData };
+export {
+  getScormPackageData,
+  setScormPackageData,
+  getScormData,
+  saveScormActivityData,
+  getScormAttemptData,
+  getAllCommits,
+  clearCommit,
+  getLastAttemptScore,
+  removeScormPackageData,
+};

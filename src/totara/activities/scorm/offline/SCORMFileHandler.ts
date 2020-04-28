@@ -27,9 +27,12 @@ import { config } from "@totara/lib";
 
 const OfflineScormServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
 
-const unzipScormPackageToServer = (packageName: string, packageSource: string) => {
+const unzipScormPackageToServer = (
+  packageName: string,
+  packageSource: string
+) => {
   const destinationUnzip = `${OfflineScormServerRoot}/${packageName}`;
-  return unzip(packageSource, destinationUnzip).then(resultDestination => {
+  return unzip(packageSource, destinationUnzip).then((resultDestination) => {
     if (resultDestination) {
       return packageName;
     } else {
@@ -38,48 +41,57 @@ const unzipScormPackageToServer = (packageName: string, packageSource: string) =
   });
 };
 
-const getPackageContent = () => (Platform.OS === "android") ? RNFS.readDirAssets(SCORMPlayerPackagePath) : RNFS.readDir(SCORMPlayerPackagePath);
-  
+const getPackageContent = () =>
+  Platform.OS === "android"
+    ? RNFS.readDirAssets(SCORMPlayerPackagePath)
+    : RNFS.readDir(SCORMPlayerPackagePath);
+
 const initializeScormWebplayer = () => {
   return RNFS.mkdir(OfflineScormServerRoot).then(() => {
-    return getPackageContent().then(result => {
-        if (result && result.length) {
-          let promisesToCopyFiles = [];
-          for (let i = 0; i < result.length; i++) {
-            const itemPathFrom = result[i].path;
-            const itemPathTo = `${OfflineScormServerRoot}/${result[i].name}`;
-            const copyAssetsToPlayer =  () => (Platform.OS === "android") ? RNFS.copyFileAssets(itemPathFrom, itemPathTo) : RNFS.copyFile(itemPathFrom, itemPathTo);
-            const promiseCopyItem =  RNFS.exists(itemPathTo).then(isExist => { 
-              if (!isExist) { 
+    return getPackageContent().then((result) => {
+      if (result && result.length) {
+        let promisesToCopyFiles = [];
+        for (let i = 0; i < result.length; i++) {
+          const itemPathFrom = result[i].path;
+          const itemPathTo = `${OfflineScormServerRoot}/${result[i].name}`;
+          const copyAssetsToPlayer = () =>
+            Platform.OS === "android"
+              ? RNFS.copyFileAssets(itemPathFrom, itemPathTo)
+              : RNFS.copyFile(itemPathFrom, itemPathTo);
+          const promiseCopyItem = RNFS.exists(itemPathTo).then((isExist) => {
+            if (!isExist) {
+              return copyAssetsToPlayer();
+            } else {
+              return RNFS.unlink(itemPathTo).then(() => {
                 return copyAssetsToPlayer();
-              } else {
-                return RNFS.unlink(itemPathTo).then(() => { 
-                  return copyAssetsToPlayer()
-                });
-              }
-            });
-            promisesToCopyFiles.push(promiseCopyItem);
-          }
-          return Promise.all(promisesToCopyFiles);
-        } else {
-          throw new Error("Cannot find any content in the location ("+SCORMPlayerPackagePath+")");
+              });
+            }
+          });
+          promisesToCopyFiles.push(promiseCopyItem);
         }
-      })
-    }
-  );
+        return Promise.all(promisesToCopyFiles);
+      } else {
+        throw new Error(
+          "Cannot find any content in the location (" +
+            SCORMPlayerPackagePath +
+            ")"
+        );
+      }
+    });
+  });
 };
 
 const isScormPlayerInitialized = () => {
-  return getPackageContent().then(result => {
+  return getPackageContent().then((result) => {
     if (result && result.length) {
       let promisesToExistFiles = [];
       for (let i = 0; i < result.length; i++) {
         const itemPathTo = `${OfflineScormServerRoot}/${result[i].name}`;
         promisesToExistFiles.push(RNFS.exists(itemPathTo));
       }
-      return Promise.all(promisesToExistFiles).then(resultExistsFiles => {
-        if(resultExistsFiles && resultExistsFiles.length) {
-          for(let index = 0; index < resultExistsFiles.length; index++) {
+      return Promise.all(promisesToExistFiles).then((resultExistsFiles) => {
+        if (resultExistsFiles && resultExistsFiles.length) {
+          for (let index = 0; index < resultExistsFiles.length; index++) {
             if (!resultExistsFiles[index]) {
               return false;
             }
@@ -95,6 +107,12 @@ const isScormPlayerInitialized = () => {
   });
 };
 
-const SCORMPlayerPackagePath = Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
+const SCORMPlayerPackagePath =
+  Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
 
-export { initializeScormWebplayer, unzipScormPackageToServer, isScormPlayerInitialized, OfflineScormServerRoot };
+export {
+  initializeScormWebplayer,
+  unzipScormPackageToServer,
+  isScormPlayerInitialized,
+  OfflineScormServerRoot,
+};

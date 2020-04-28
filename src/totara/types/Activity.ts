@@ -20,48 +20,53 @@
  */
 
 export interface Activity {
-  id: number
-  instanceid: number
-  modtype: string
-  name: string
-  viewurl?: string
-  completion?: "tracking_none" | "tracking_manual" | "tracking_automatic"
-  completionstatus?: "unknown" | "incomplete" | "complete" | "complete_pass" | "complete_fail"
-  available: boolean
-  availablereason?: string
+  id: number;
+  instanceid: string;
+  modtype: string;
+  name: string;
+  viewurl?: string;
+  completion?: "tracking_none" | "tracking_manual" | "tracking_automatic";
+  completionstatus?:
+    | "unknown"
+    | "incomplete"
+    | "complete"
+    | "complete_pass"
+    | "complete_fail";
+  available: boolean;
+  availablereason?: string;
 }
 
 export interface ScormActivity extends Activity {
-  modtype: "scorm",
-  currentAttempt : number,
-  maxAttempt : number,
-  score : number,
-  webEntryUrl?: string,
-  isAvailable :boolean,
-  offlineAttemptsAllowed: boolean,
-  packageUrl: string,
-  courseid: number
+  modtype: "scorm";
+  currentAttempt: number;
+  maxAttempt: number;
+  score: number;
+  webEntryUrl?: string;
+  isAvailable: boolean;
+  offlineAttemptsAllowed: boolean;
+  packageUrl: string;
+  courseid: number;
 }
 
 export interface SeminarActivity extends Activity {
-  modtype: "facetoface"
+  modtype: "facetoface";
 }
 
 export interface ForumsActivity extends Activity {
-  modtype: "forum"
+  modtype: "forum";
 }
 
 export interface QuizActivity extends Activity {
-  modtype: "quiz"
+  modtype: "quiz";
 }
 
 export interface AssignmentActivity extends Activity {
-  modtype: "assign"
+  modtype: "assign";
 }
 
 export type ActivityType =
-  ScormActivity |
-  SeminarActivity |
-  ForumsActivity |
-  QuizActivity |
-  AssignmentActivity;
+  | ScormActivity
+  | SeminarActivity
+  | ForumsActivity
+  | QuizActivity
+  | AssignmentActivity;

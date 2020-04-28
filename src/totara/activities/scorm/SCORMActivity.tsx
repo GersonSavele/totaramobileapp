@@ -37,100 +37,151 @@ import { translate } from "@totara/locale";
 import OnlineSCORMActivity from "./online/OnlineSCORMActivity";
 
 type SCORMActivityProps = {
-  activity: Activity,
+  activity: Activity;
 };
 
 export enum SCORMActivityType {
   None,
   Offline,
   Online,
-  Attempts
+  Attempts,
 }
 
 enum Connectivity {
   initial = 0,
   online,
-  offline
+  offline,
 }
 
-const SCORMActivity = ({activity}: SCORMActivityProps) => {
+const SCORMActivity = ({ activity }: SCORMActivityProps) => {
   const [isReachable, setIsReachable] = useState(Connectivity.initial);
   if (isReachable === Connectivity.initial) {
-    NetInfo.fetch().then(state => {
-      setIsReachable(state.isConnected ? Connectivity.online : Connectivity.offline);
+    NetInfo.fetch().then((state) => {
+      setIsReachable(
+        state.isConnected ? Connectivity.online : Connectivity.offline
+      );
     });
-    return <Text>{translate("general.loading")}</Text>
+    return <Text>{translate("general.loading")}</Text>;
   } else {
-    return <SCORMActivityRoute activity={activity} isreachable={isReachable === Connectivity.online} />
-  }  
-}
+    return (
+      <SCORMActivityRoute
+        activity={activity}
+        isreachable={isReachable === Connectivity.online}
+      />
+    );
+  }
+};
 
 type SCORMRouteProp = {
-  activity: Activity,
-  isreachable: boolean
-}
-const SCORMActivityRoute = ({activity, isreachable}: SCORMRouteProp) => {
+  activity: Activity;
+  isreachable: boolean;
+};
+const SCORMActivityRoute = ({ activity, isreachable }: SCORMRouteProp) => {
   const { loading, error, data } = useQuery(scormQuery, {
     variables: { scormid: activity.instanceid },
   });
-  
-  if (loading) { return <Text>{translate("general.loading")}</Text>; }
-  if (error) { 
-      return <Text>{translate("general.error_unknown")}</Text>; 
+
+  if (loading) {
+    return <Text>{translate("general.loading")}</Text>;
+  }
+  if (error) {
+    return <Text>{translate("general.error_unknown")}</Text>;
   }
   if (data && data.scorm) {
     let scormData = data.scorm;
-    if(data.scorm.attempts && data.scorm.attempts.length > 0) {
+    if (data.scorm.attempts && data.scorm.attempts.length > 0) {
       let scormAttempts = data.scorm.attempts;
       const defaultCMI = data.scorm.attempts[data.scorm.attempts.length - 1];
       if (!defaultCMI.timestarted) {
         scormAttempts = scormAttempts.slice(0, -1);
       }
-      scormData = {...data.scorm, ...{attempts: scormAttempts, defaultCMI: defaultCMI}};
+      scormData = {
+        ...data.scorm,
+        ...{ attempts: scormAttempts, defaultCMI: defaultCMI },
+      };
     }
     let scormBundleData = { scorm: scormData } as ScormBundle;
     if (isreachable) {
       scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
     }
-    return <SCORMFlow activity={activity} data={scormBundleData as ScormBundle} isUserOnline={isreachable} mode={SCORMActivityType.None} />
-  }  else {
-    return <Text>{translate("general.error_unknown")}</Text>; 
+    return (
+      <SCORMFlow
+        activity={activity}
+        data={scormBundleData as ScormBundle}
+        isUserOnline={isreachable}
+        mode={SCORMActivityType.None}
+      />
+    );
+  } else {
+    return <Text>{translate("general.error_unknown")}</Text>;
   }
 };
 
 type SCORMFlowProps = {
-  activity: Activity,
-  data?: ScormBundle,
-  isUserOnline: boolean,
-  mode: SCORMActivityType,
+  activity: Activity;
+  data?: ScormBundle;
+  isUserOnline: boolean;
+  mode: SCORMActivityType;
 };
 
-const SCORMFlow = ({activity, data, isUserOnline, mode}: SCORMFlowProps) => {
-
+const SCORMFlow = ({ activity, data, isUserOnline, mode }: SCORMFlowProps) => {
   const activitySheet = useContext(ActivitySheetContext);
-  const [actionData, setActionData] = useState({bundle: data, mode: mode, data: undefined});
-  const onSetActionWithData = (action: SCORMActivityType, bundle: ScormBundle, data: any) => {
-    setActionData({mode: action, bundle: bundle, data: data});
+  const [actionData, setActionData] = useState({
+    bundle: data,
+    mode: mode,
+    data: undefined,
+  });
+  const onSetActionWithData = (
+    action: SCORMActivityType,
+    bundle: ScormBundle,
+    data: any
+  ) => {
+    setActionData({ mode: action, bundle: bundle, data: data });
   };
-  
-  useEffect(()=> {
-    if(actionData.mode !== SCORMActivityType.None) {
-      activitySheet.setFeedback({activity: activity as ActivityType, data: {isOnline: isUserOnline}});
+
+  useEffect(() => {
+    if (actionData.mode !== SCORMActivityType.None) {
+      activitySheet.setFeedback({
+        activity: activity as ActivityType,
+        data: { isOnline: isUserOnline },
+      });
       activitySheet.setActivityResource(undefined);
     } else {
       activitySheet.setFeedback(undefined);
     }
   }, [actionData.mode]);
-  
-  switch(actionData.mode) {        
-    case SCORMActivityType.Offline: 
-      return <OfflineSCORMActivity scormBundle={actionData.bundle} attempt={actionData.data.attempt} scoid={actionData.data.scoid} />;      
+
+  switch (actionData.mode) {
+    case SCORMActivityType.Offline:
+      return (
+        <OfflineSCORMActivity
+          scormBundle={actionData.bundle}
+          attempt={actionData.data.attempt}
+          scoid={actionData.data.scoid}
+        />
+      );
     case SCORMActivityType.Online:
-      return <OnlineSCORMActivity uri={actionData && actionData.data && actionData.data.url} />;
+      return (
+        <OnlineSCORMActivity
+          uri={actionData && actionData.data && actionData.data.url}
+        />
+      );
     case SCORMActivityType.Attempts:
-      return <SCORMAttempts scormBundle={actionData.bundle} setActionWithData={onSetActionWithData} />;
-    case SCORMActivityType.None: 
-      return <SCORMSummary activity={activity} data={actionData.bundle} isUserOnline={isUserOnline} setActionWithData={onSetActionWithData} />;
+      return (
+        <SCORMAttempts
+          scormBundle={actionData.bundle}
+          setActionWithData={onSetActionWithData}
+        />
+      );
+    case SCORMActivityType.None:
+      return (
+        <SCORMSummary
+          activity={activity}
+          data={actionData.bundle}
+          isUserOnline={isUserOnline}
+          setActionWithData={onSetActionWithData}
+        />
+      );
   }
 };
 

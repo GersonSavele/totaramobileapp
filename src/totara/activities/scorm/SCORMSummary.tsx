@@ -202,12 +202,15 @@ const SCORMSummary = ({
   };
 
   const onDownloadFileUpdated: ResourceObserver = (resourceFile) => {
-    if (scormBundle && scormBundle.scorm) {
+    const resoureId = resourceFile.id;
+    if (
+      scormBundle &&
+      scormBundle.scorm &&
+      scormBundle.scorm.id === resoureId
+    ) {
       switch (resourceFile.state) {
         case ResourceState.Completed: {
-          const offlineSCORMPackageName = getOfflineScormPackageName(
-            scormBundle.scorm.id
-          );
+          const offlineSCORMPackageName = getOfflineScormPackageName(resoureId);
           const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
           if (resourceFile.unzipPath === _unzipPath) {
             const _offlineScormData = {
@@ -218,16 +221,14 @@ const SCORMSummary = ({
               lastsynced: scormBundle.lastsynced,
             } as ScormBundle;
 
-            syncOfflineScormBundle(activity.instanceid, _offlineScormData).then(
-              () => {
-                setResource(resourceFile);
-              }
-            );
+            syncOfflineScormBundle(resoureId, _offlineScormData).then(() => {
+              setResource(resourceFile);
+            });
           }
           break;
         }
         case ResourceState.Deleted: {
-          removeScormPackageData(scormBundle.scorm.id).then(() => {
+          removeScormPackageData(resoureId).then(() => {
             setResource(undefined);
           });
           break;

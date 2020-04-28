@@ -21,10 +21,13 @@
 
 import { useEffect, useState } from "react";
 import { gql } from "apollo-boost";
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
 
-import { getOfflineScormCommits, clearSyncedScormCommit } from "./OfflineSCORMController";
+import {
+  getOfflineScormCommits,
+  clearSyncedScormCommit,
+} from "./OfflineSCORMController";
 import { Log } from "@totara/lib";
 
 const SaveAttemptMutation = gql`
@@ -40,30 +43,39 @@ const SaveAttemptMutation = gql`
 `;
 
 type SyncData = {
-  scormId: number,
-  attempt: number,
-  tracks: [any]
+  scormId: string;
+  attempt: number;
+  tracks: [any];
 };
 
 const AttemptSynchronizer = () => {
-  const [unSyncData, setUnsyncData] = useState<[SyncData] | undefined>(undefined);
+  const [unSyncData, setUnsyncData] = useState<[SyncData] | undefined>(
+    undefined
+  );
   const [saveAttempt] = useMutation(SaveAttemptMutation);
   const netInfo = useNetInfo();
-  
-  useEffect(()=> {
-    if (netInfo.type !== "unknown" && (netInfo.isInternetReachable !== undefined && netInfo.isInternetReachable !== null && netInfo.isInternetReachable)) {
-      if (unSyncData && unSyncData.length &&  unSyncData.length > 0) {
-        syncScormRecord(unSyncData[0]).then(updatedUnsyncData => {
-          setUnsyncData(updatedUnsyncData);
-        }).catch(e=> {
-          Log.error("Data sync error: ", e);
-        });
+
+  useEffect(() => {
+    if (
+      netInfo.type !== "unknown" &&
+      netInfo.isInternetReachable !== undefined &&
+      netInfo.isInternetReachable !== null &&
+      netInfo.isInternetReachable
+    ) {
+      if (unSyncData && unSyncData.length && unSyncData.length > 0) {
+        syncScormRecord(unSyncData[0])
+          .then((updatedUnsyncData) => {
+            setUnsyncData(updatedUnsyncData);
+          })
+          .catch((e) => {
+            Log.error("Data sync error: ", e);
+          });
       } else {
-        getOfflineScormCommits().then(data => {
+        getOfflineScormCommits().then((data) => {
           if (data && data.length > 0) {
             const syncDataSet = data as [SyncData];
             setUnsyncData(syncDataSet);
-          } 
+          }
         });
       }
     }
@@ -71,7 +83,7 @@ const AttemptSynchronizer = () => {
 
   const syncScormRecord = (syncData: SyncData) => {
     return syncAttemptForScorm(syncData.scormId, syncData.tracks)
-      .then(isSynced => {
+      .then((isSynced) => {
         if (isSynced) {
           return clearSyncedScormCommit(syncData.scormId, syncData.attempt);
         } else {
@@ -87,28 +99,27 @@ const AttemptSynchronizer = () => {
       });
   };
 
-  const syncAttemptForScorm = (scormId: number, tracks: [any]) => {
+  const syncAttemptForScorm = (scormId: string, tracks: [any]) => {
     return saveAttempt({
       variables: {
         scormid: scormId,
-        attempts: tracks
-      }
-    }).then(value => {
-      if(value) {
-        for(let result in value) {
-          if(!result) {
+        attempts: tracks,
+      },
+    }).then((value) => {
+      if (value) {
+        for (let result in value) {
+          if (!result) {
             return false;
           }
         }
         return true;
       } else {
-        return false
+        return false;
       }
     });
   };
- 
-  return null; 
- 
+
+  return null;
 };
 
 export default AttemptSynchronizer;

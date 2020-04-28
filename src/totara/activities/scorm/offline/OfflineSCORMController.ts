@@ -21,14 +21,31 @@
 
 import { get, values } from "lodash";
 
-import { Grade, AttemptGrade, ScormActivityResult, ScormBundle } from "@totara/types/Scorm";
+import {
+  Grade,
+  AttemptGrade,
+  ScormActivityResult,
+  ScormBundle,
+} from "@totara/types/Scorm";
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
-import { removeScormPackageData, getScormData, setScormPackageData, getScormPackageData, getAllCommits, clearCommit } from "./StorageHelper";
+import {
+  removeScormPackageData,
+  getScormData,
+  setScormPackageData,
+  getScormPackageData,
+  getAllCommits,
+  clearCommit,
+} from "./StorageHelper";
 import { LessonStatus } from "@totara/lib/Constant";
 
-const getOfflineScormPackageName = (scormId: number) => `OfflineSCORM_${scormId}`;
+const getOfflineScormPackageName = (scormId: string) =>
+  `OfflineSCORM_${scormId}`;
 
-const getGradeForAttempt = (attemptCmi: any, maxGrade: number, gradeMethod: Grade) => {
+const getGradeForAttempt = (
+  attemptCmi: any,
+  maxGrade: number,
+  gradeMethod: Grade
+) => {
   let sumGrade = 0;
   let highestGrade = 0;
   let completedScos = 0;
@@ -38,9 +55,14 @@ const getGradeForAttempt = (attemptCmi: any, maxGrade: number, gradeMethod: Grad
     for (let [, cmi] of Object.entries(attemptCmi)) {
       // Check whether SCORM-1.2 can be "score.raw" and "core.score.raw"
       // Versions of scorm have different "score" paths
-      const rawScore =  parseInt(get(cmi,'core.score.raw', undefined) || get(cmi,'score.raw', 0));
-      const lessonStatus = get(cmi,'core.lesson_status', '').toLowerCase();
-      if (lessonStatus === LessonStatus.passed || lessonStatus === LessonStatus.completed) {
+      const rawScore = parseInt(
+        get(cmi, "core.score.raw", undefined) || get(cmi, "score.raw", 0)
+      );
+      const lessonStatus = get(cmi, "core.lesson_status", "").toLowerCase();
+      if (
+        lessonStatus === LessonStatus.passed ||
+        lessonStatus === LessonStatus.completed
+      ) {
         completedScos = completedScos + 1;
       }
       sumGrade = sumGrade + rawScore;
@@ -48,7 +70,7 @@ const getGradeForAttempt = (attemptCmi: any, maxGrade: number, gradeMethod: Grad
         highestGrade = rawScore;
       }
     }
-    averageGrade = (sumGrade / numberOfScors);
+    averageGrade = sumGrade / numberOfScors;
   }
   const getGrades = () => ({
     [Grade.objective]: completedScos,
@@ -59,106 +81,164 @@ const getGradeForAttempt = (attemptCmi: any, maxGrade: number, gradeMethod: Grad
   return getGrades()[gradeMethod];
 };
 
-
-const getAttemptsGrade = (attemptsReport: ScormActivityResult[], attemptGrade: AttemptGrade, maxGrade: number): number => {
-  if(!attemptsReport || attemptsReport.length === 0 ) {
+const getAttemptsGrade = (
+  attemptsReport: ScormActivityResult[],
+  attemptGrade: AttemptGrade,
+  maxGrade: number
+): number => {
+  if (!attemptsReport || attemptsReport.length === 0) {
     return 0;
   }
-  switch(attemptGrade) {
+  switch (attemptGrade) {
     case AttemptGrade.highest: {
-      const highestAttempt = attemptsReport.reduce((result: any, highestResult: any) => { 
-        if (result && result.gradereported > highestResult.gradereported) {
+      const highestAttempt = attemptsReport.reduce(
+        (result: any, highestResult: any) => {
+          if (result && result.gradereported > highestResult.gradereported) {
             return result;
-        } 
-        return highestResult;
-      }, undefined);
-      return get(highestAttempt, 'gradereported', 0);
+          }
+          return highestResult;
+        },
+        undefined
+      );
+      return get(highestAttempt, "gradereported", 0);
     }
     case AttemptGrade.average: {
-      const sumofscores = attemptsReport.reduce((scores: number, attemptResult: any) => (scores + attemptResult.gradereported), 0);
-      const rawSum = (sumofscores * (maxGrade / 100));
+      const sumofscores = attemptsReport.reduce(
+        (scores: number, attemptResult: any) =>
+          scores + attemptResult.gradereported,
+        0
+      );
+      const rawSum = sumofscores * (maxGrade / 100);
       const avgRawSum = Math.round(rawSum / attemptsReport.length);
-      return (avgRawSum * (100 / maxGrade));
+      return avgRawSum * (100 / maxGrade);
     }
-    case AttemptGrade.first: 
+    case AttemptGrade.first:
       return attemptsReport[0].gradereported;
     case AttemptGrade.last:
-      return attemptsReport[attemptsReport.length - 1].gradereported; 
+      return attemptsReport[attemptsReport.length - 1].gradereported;
   }
 };
 
-const getOfflineAttemptsReport = (cmiList:any, maxgrade: number, grademethod: Grade) => {
+const getOfflineAttemptsReport = (
+  cmiList: any,
+  maxgrade: number,
+  grademethod: Grade
+) => {
   let scoresData = [];
   for (let [attempt, scosData] of Object.entries(cmiList)) {
     const attemptScore = getGradeForAttempt(scosData, maxgrade, grademethod);
-    
-    scoresData.push({ attempt: parseInt(attempt), gradereported: attemptScore});
-  }    
-  return scoresData; 
+
+    scoresData.push({
+      attempt: parseInt(attempt),
+      gradereported: attemptScore,
+    });
+  }
+  return scoresData;
 };
 
-const getOfflineScormBundle = (scormId: number) => {
-   return RetrieveStorageDataById(scormId.toString()).then(storedResourceData => { 
-      if (!storedResourceData || storedResourceData === undefined || storedResourceData === null) {
-          return removeScormPackageData(scormId).then(()=> undefined);
+const getOfflineScormBundle = (scormId: string) => {
+  return RetrieveStorageDataById(scormId.toString())
+    .then((storedResourceData) => {
+      if (
+        !storedResourceData ||
+        storedResourceData === undefined ||
+        storedResourceData === null
+      ) {
+        return removeScormPackageData(scormId).then(() => undefined);
       } else {
-          return Promise.resolve(storedResourceData.unzipPath)
+        return Promise.resolve(storedResourceData.unzipPath);
       }
-    }).then(packageName => {
-      return getScormData(scormId).then(({bundle, cmis}) => {
+    })
+    .then((packageName) => {
+      return getScormData(scormId).then(({ bundle, cmis }) => {
         let storedBundle = bundle as ScormBundle | undefined;
-        if(storedBundle && !storedBundle.scormPackage && packageName) {
+        if (storedBundle && !storedBundle.scormPackage && packageName) {
           const resourcePackageName = getOfflineScormPackageName(scormId);
-          const dataScormPackage = {scormPackage: {path: resourcePackageName}};
-          return syncOfflineScormBundle(scormId, dataScormPackage).then(()=> {
-              return {bundle: {...storedBundle, ...dataScormPackage}, cmis: cmis};
+          const dataScormPackage = {
+            scormPackage: { path: resourcePackageName },
+          };
+          return syncOfflineScormBundle(scormId, dataScormPackage).then(() => {
+            return {
+              bundle: { ...storedBundle, ...dataScormPackage },
+              cmis: cmis,
+            };
           });
         } else {
-          return {bundle: storedBundle, cmis: cmis};
+          return { bundle: storedBundle, cmis: cmis };
         }
       });
-    }).then(({bundle, cmis}) => {
+    })
+    .then(({ bundle, cmis }) => {
       let formattedData = bundle as ScormBundle | undefined;
       if (formattedData && formattedData.scorm) {
-        if (!formattedData.scormPackage ) {
+        if (!formattedData.scormPackage) {
           const resourcePackageName = getOfflineScormPackageName(scormId);
-          formattedData = {...formattedData!, scormPackage: {path: resourcePackageName}} as ScormBundle;
+          formattedData = {
+            ...formattedData!,
+            scormPackage: { path: resourcePackageName },
+          } as ScormBundle;
         }
         if (formattedData!.scorm.grademethod && formattedData!.scorm.maxgrade) {
-          if(cmis) {
-            const gradeMethod = formattedData!.scorm.grademethod as Grade
+          if (cmis) {
+            const gradeMethod = formattedData!.scorm.grademethod as Grade;
             const maxGrade = formattedData!.scorm.maxgrade;
-            const offlineReport = getOfflineAttemptsReport(cmis, maxGrade, gradeMethod);
-            formattedData = {...formattedData, offlineActivity: {attempts: offlineReport}} as ScormBundle;
+            const offlineReport = getOfflineAttemptsReport(
+              cmis,
+              maxGrade,
+              gradeMethod
+            );
+            formattedData = {
+              ...formattedData,
+              offlineActivity: { attempts: offlineReport },
+            } as ScormBundle;
           }
         }
       }
       return formattedData;
     });
- };
+};
 
- const calculatedAttemptsGrade = (attemptGrade: AttemptGrade, gradeMethod: Grade, maxGrade: number, onlineCalculatedGrade?: string, onlineAttempts : ScormActivityResult[] = [], offlineAttempts : ScormActivityResult[] = []) => {
-  if (offlineAttempts && onlineAttempts && offlineAttempts.length > 0 && attemptGrade !== null && gradeMethod !== null && maxGrade !== null) {
-    const allAttempts = [ ...onlineAttempts, ...offlineAttempts];
-    const caculatedGradeReport = getAttemptsGrade(allAttempts, attemptGrade, maxGrade);
-    return (gradeMethod == Grade.objective) ? caculatedGradeReport.toString() : `${caculatedGradeReport}%`;
+const calculatedAttemptsGrade = (
+  attemptGrade: AttemptGrade,
+  gradeMethod: Grade,
+  maxGrade: number,
+  onlineCalculatedGrade?: string,
+  onlineAttempts: ScormActivityResult[] = [],
+  offlineAttempts: ScormActivityResult[] = []
+) => {
+  if (
+    offlineAttempts &&
+    onlineAttempts &&
+    offlineAttempts.length > 0 &&
+    attemptGrade !== null &&
+    gradeMethod !== null &&
+    maxGrade !== null
+  ) {
+    const allAttempts = [...onlineAttempts, ...offlineAttempts];
+    const caculatedGradeReport = getAttemptsGrade(
+      allAttempts,
+      attemptGrade,
+      maxGrade
+    );
+    return gradeMethod == Grade.objective
+      ? caculatedGradeReport.toString()
+      : `${caculatedGradeReport}%`;
   } else {
     return onlineCalculatedGrade;
   }
 };
 
-const syncOfflineScormBundle = (scormId: number, data: any) => {
-
-  return getScormPackageData(scormId).then(storedData => {
-    if(storedData){
+const syncOfflineScormBundle = (scormId: string, data: any) => {
+  return getScormPackageData(scormId).then((storedData) => {
+    if (storedData) {
       let newData = storedData as ScormBundle;
       if (data.scorm) {
         newData.scorm = data.scorm;
-      } 
+      }
       if (data.lastsynced) {
         newData.lastsynced = data.lastsynced;
       }
-      if (data.scormPackage) { 
+      if (data.scormPackage) {
         newData.scormPackage = data.scormPackage;
       }
       return setScormPackageData(scormId, newData);
@@ -170,32 +250,46 @@ const syncOfflineScormBundle = (scormId: number, data: any) => {
       }
     }
   });
-
-}
+};
 
 const getOfflineScormCommits = () => {
-  return getAllCommits().then(storedData => {
+  return getAllCommits().then((storedData) => {
     let formattedUnsyncedData = undefined;
     if (storedData) {
       formattedUnsyncedData = [];
-      for(let commitScormId in storedData ) {
+      for (let commitScormId in storedData) {
         const scormCommits = storedData[commitScormId];
         const orededAttemptKeys = Object.keys(scormCommits).sort();
-        for(let index = 0; index < orededAttemptKeys.length; index++) {
+        for (let index = 0; index < orededAttemptKeys.length; index++) {
           const commitAttempt = orededAttemptKeys[index];
           if (scormCommits[commitAttempt]) {
-            const commitTracks = values(scormCommits[commitAttempt]).filter(value => value);
-            const commit = {scormId: parseInt(commitScormId), attempt: parseInt(commitAttempt), tracks: commitTracks};
+            const commitTracks = values(scormCommits[commitAttempt]).filter(
+              (value) => value
+            );
+            const commit = {
+              scormId: commitScormId,
+              attempt: parseInt(commitAttempt),
+              tracks: commitTracks,
+            };
             formattedUnsyncedData.push(commit);
           }
         }
       }
-    } 
+    }
     return formattedUnsyncedData;
   });
-}
+};
 
-const clearSyncedScormCommit = (scormId: number, attempt: number) => {
+const clearSyncedScormCommit = (scormId: string, attempt: number) => {
   return clearCommit(scormId, attempt);
-} 
-export { getOfflineScormBundle, calculatedAttemptsGrade, syncOfflineScormBundle, getOfflineScormCommits, clearSyncedScormCommit, getGradeForAttempt, getAttemptsGrade, getOfflineScormPackageName };
+};
+export {
+  getOfflineScormBundle,
+  calculatedAttemptsGrade,
+  syncOfflineScormBundle,
+  getOfflineScormCommits,
+  clearSyncedScormCommit,
+  getGradeForAttempt,
+  getAttemptsGrade,
+  getOfflineScormPackageName,
+};
