@@ -20,59 +20,83 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View, Modal, SafeAreaView, TextStyle, TouchableOpacity } from "react-native";
-import moment from "moment";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  SafeAreaView,
+  TextStyle,
+  TouchableOpacity,
+} from "react-native";
 import * as RNFS from "react-native-fs";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { Activity } from "@totara/types";
 import { AuthContext } from "@totara/core";
-import { ScormBundle, AttemptGrade, Grade } from "@totara/types/Scorm";
-import { MoreText, PrimaryButton, SecondaryButton, NotificationView } from "@totara/components";
+import { ScormBundle } from "@totara/types/Scorm";
+import {
+  MoreText,
+  PrimaryButton,
+  SecondaryButton,
+  NotificationView,
+} from "@totara/components";
 import { gutter, ThemeContext } from "@totara/theme";
-import { 
+import {
   OfflineScormServerRoot,
-  getOfflineScormBundle, 
-  calculatedAttemptsGrade, 
-  syncOfflineScormBundle, 
+  getOfflineScormBundle,
+  syncOfflineScormBundle,
   getOfflineScormPackageName,
-  removeScormPackageData
+  removeScormPackageData,
 } from "./offline";
 import { Log } from "@totara/lib";
-import ResourceManager , { ResourceObserver} from "@totara/core/ResourceManager/ResourceManager";
-import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource";
+import ResourceManager, {
+  ResourceObserver,
+} from "@totara/core/ResourceManager/ResourceManager";
+import {
+  IResource,
+  ResourceState,
+} from "@totara/core/ResourceManager/Resource";
 import { translate } from "@totara/locale";
-import { DATE_FORMAT, DATE_FORMAT_FULL, SECONDS_FORMAT } from "@totara/lib/Constant";
 import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";
+import { getDataForScormSummary } from "@totara/lib/Scorm";
 
 type Props = {
-  activity: Activity,
-  data?: ScormBundle,
-  isUserOnline: boolean,
-  setActionWithData: (action: SCORMActivityType, bundle: ScormBundle, data: any) => void
+  activity: Activity;
+  data?: ScormBundle;
+  isUserOnline: boolean;
+  setActionWithData: (
+    action: SCORMActivityType,
+    bundle: ScormBundle,
+    data: any
+  ) => void;
 };
 
 enum Section {
   None,
-  Attempts
+  Attempts,
 }
 
-const gridStyle = (theme: AppliedTheme) => ([theme.textB1, {color: theme.textColorSubdued}]);
+const gridStyle = (theme: AppliedTheme) => [
+  theme.textB1,
+  { color: theme.textColorSubdued },
+];
 
 type GridLabelProps = {
-  theme: AppliedTheme,
-  textId: string,
-  value: string,
-  children?: Element,
+  theme: AppliedTheme;
+  textId: string;
+  value: string;
+  children?: Element;
 };
 
-const GridLabelValue = ({theme, textId, value, children}: GridLabelProps ) => (
-  <View style={styles.sectionField} >
+const GridLabelValue = ({ theme, textId, value, children }: GridLabelProps) => (
+  <View style={styles.sectionField}>
     <Text style={theme.textB1}>{translate(textId)}</Text>
-    <View style={{flexDirection: "row"}}>
+    <View style={{ flexDirection: "row" }}>
       <Text style={gridStyle(theme)}>{value}</Text>
       {children}
     </View>
@@ -80,74 +104,32 @@ const GridLabelValue = ({theme, textId, value, children}: GridLabelProps ) => (
 );
 
 type GridTitleProps = {
-  theme: AppliedTheme,
-  textId: string,
-  style?: TextStyle
+  theme: AppliedTheme;
+  textId: string;
+  style?: TextStyle;
 };
-const GridTitle = ({theme, textId, style}: GridTitleProps ) => (
-  <Text style={[theme.textH2, styles.sectionBreak, style]}>{translate(textId)}</Text>
+const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
+  <Text style={[theme.textH2, styles.sectionBreak, style]}>
+    {translate(textId)}
+  </Text>
 );
 
-const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) => {
-  
+const SCORMSummary = ({
+  activity,
+  data,
+  isUserOnline,
+  setActionWithData,
+}: Props) => {
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
-  const {authContextState: { appState }} = useContext(AuthContext);
+  const {
+    authContextState: { appState },
+  } = useContext(AuthContext);
   const activitySheet = useContext(ActivitySheetContext);
   const [section, setSection] = useState(Section.None);
   const [theme] = useContext(ThemeContext);
-  const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
-
-  const getDataForScormSummary = (scormBundle?: ScormBundle): any => {
-    let data: any = {
-      description: undefined,
-      totalAttempt: 0,
-      attemptGrade: undefined,
-      calculatedGrade: undefined,
-      actionPrimary: undefined,
-      actionSecondary: undefined,
-      shouldShowAction: false,
-      lastsyncText: undefined,
-      completedAttemptsText: undefined,
-      upcommingActivityText: undefined,
-      maxAttempts: undefined
-    }
-    if (!scormBundle) {
-      return data;
-    }
-    const {scorm, scormPackage} = scormBundle;
-    if (!scorm) {
-      return data;
-    }
-    data.description = scorm.description && scorm.description !== null ? scorm.description : undefined;
-    data.totalAttempt = scorm.attemptsCurrent ? scorm.attemptsCurrent : 0;
-    if (scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts) {
-      data.totalAttempt = data.totalAttempt + scormBundle!.offlineActivity.attempts.length;
-    }
-    
-    const attemptGrade = scorm.whatgrade as AttemptGrade;
-    const gradeMethod = scorm.grademethod as Grade;
-    const offlineAttempts = scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts ? scormBundle!.offlineActivity.attempts : undefined;
-
-    data.attemptGrade = translate(`scorm.grading_method.${attemptGrade}`);
-    data.calculatedGrade = calculatedAttemptsGrade(attemptGrade, gradeMethod, scorm.maxgrade, scorm.calculatedGrade, scorm.attempts, offlineAttempts);
-    
-    const isCompletedAttempts = scormBundle && scorm && scorm.attemptsMax && totalAttempt >= scorm.attemptsMax;
-    const isUpcomingActivity = scormBundle && scorm && scorm.timeopen && scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT));
-    const hasStartNewAttempt = ((isUserOnline && scormBundle && scorm && scorm.launchUrl) || (!isUserOnline && scorm.offlineAttemptsAllowed && scormPackage && scormPackage.path));
-    const hasRepeatAttempt = isUserOnline && scormBundle && scorm && scorm.repeatUrl;
-    data.actionPrimary = (hasStartNewAttempt) ? { title: translate("scorm.summary.new_attempt")} : undefined;
-    data.actionSecondary = (hasRepeatAttempt) ? { title: translate("scorm.summary.last_attempt")} : undefined;
-    
-    data.shouldShowAction = !isUpcomingActivity && !isCompletedAttempts && (hasStartNewAttempt || hasRepeatAttempt);
-    
-    data.lastsyncText = !isUserOnline && scormBundle ? `${translate("scorm.last_synced")}: ${moment.unix(scormBundle.lastsynced).toNow(true)} ${translate("scorm.ago")} (${moment.unix(scormBundle.lastsynced).format(DATE_FORMAT)})` : null;
-    data.completedAttemptsText = isCompletedAttempts ? translate("scorm.info_completed_attempts") : null;
-    data.upcommingActivityText = !isCompletedAttempts && isUpcomingActivity ? `${translate("scorm.info_upcoming_activity")} ${moment.unix(scorm.timeopen).format(DATE_FORMAT_FULL)}` : null;
-    
-    data.maxAttempts = (scorm.attemptsMax == null) ? translate("scorm.summary.attempt.unlimited") : scorm.attemptsMax;
-    
-    return data;
-  };
+  const [downloadManager] = useState<ResourceManager>(
+    ResourceManager.getInstance()
+  );
 
   const {
     description,
@@ -160,34 +142,40 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     lastsyncText,
     completedAttemptsText,
     upcommingActivityText,
-    maxAttempts
-  } = getDataForScormSummary(scormBundle);
+    maxAttempts,
+  } = getDataForScormSummary(isUserOnline, scormBundle);
 
-  const onTapDownloadResource = () => {    
-    if(!downloadManager) 
-      return;
+  const onTapDownloadResource = () => {
+    if (!downloadManager) return;
     if (scormBundle) {
       const _url = scormBundle!.scorm.packageUrl!;
       const _name = scormBundle!.scorm.name;
       const _scormId = scormBundle!.scorm.id;
-      
+
       const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
       const offlineSCORMPackageName = getOfflineScormPackageName(_scormId);
       const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
       const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
       const _downloadId = _scormId.toString();
       if (appState && appState.apiKey) {
-        downloadManager.download(appState.apiKey, _downloadId, _name, _url, _targetZipFile, _unzipPath);
+        downloadManager.download(
+          appState.apiKey,
+          _downloadId,
+          _name,
+          _url,
+          _targetZipFile,
+          _unzipPath
+        );
         const _offlineScormData = {
           scorm: scormBundle.scorm,
-          lastsynced: scormBundle.lastsynced
+          lastsynced: scormBundle.lastsynced,
         } as ScormBundle;
-        
+
         syncOfflineScormBundle(activity.instanceid, _offlineScormData);
       } else {
         Log.debug("Cannot find api key");
-      }  
-    }    
+      }
+    }
   };
 
   const onTapDeleteResource = () => {
@@ -196,9 +184,9 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   };
 
   const setResource = (resource?: IResource) => {
-    let onResourceTap : (()=> void) | undefined = onTapDownloadResource;
-    if(resource) {
-      switch(resource.state) {
+    let onResourceTap: (() => void) | undefined = onTapDownloadResource;
+    if (resource) {
+      switch (resource.state) {
         case ResourceState.Downloading:
           onResourceTap = undefined;
           break;
@@ -207,56 +195,73 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
           break;
       }
     }
-    activitySheet.setActivityResource({data: resource, action: onResourceTap});
-  }
+    activitySheet.setActivityResource({
+      data: resource,
+      action: onResourceTap,
+    });
+  };
 
-  const onDownloadFileUpdated : ResourceObserver = (resourceFile) => {
-    if(scormBundle && scormBundle.scorm) {      
-      switch(resourceFile.state) {
+  const onDownloadFileUpdated: ResourceObserver = (resourceFile) => {
+    if (scormBundle && scormBundle.scorm) {
+      switch (resourceFile.state) {
         case ResourceState.Completed: {
-          const offlineSCORMPackageName = getOfflineScormPackageName(scormBundle.scorm.id);
+          const offlineSCORMPackageName = getOfflineScormPackageName(
+            scormBundle.scorm.id
+          );
           const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
-          if(resourceFile.unzipPath === _unzipPath) {
+          if (resourceFile.unzipPath === _unzipPath) {
             const _offlineScormData = {
               scorm: scormBundle.scorm,
               scormPackage: {
-                path: offlineSCORMPackageName
+                path: offlineSCORMPackageName,
               },
-              lastsynced: scormBundle.lastsynced
+              lastsynced: scormBundle.lastsynced,
             } as ScormBundle;
-            
-            syncOfflineScormBundle(activity.instanceid, _offlineScormData).then(()=> {
-              setResource(resourceFile);
-            });
+
+            syncOfflineScormBundle(activity.instanceid, _offlineScormData).then(
+              () => {
+                setResource(resourceFile);
+              }
+            );
           }
           break;
         }
-        case ResourceState.Deleted : {         
-          removeScormPackageData(scormBundle.scorm.id).then(()=> {
+        case ResourceState.Deleted: {
+          removeScormPackageData(scormBundle.scorm.id).then(() => {
             setResource(undefined);
           });
           break;
         }
-        case ResourceState.Downloading : {
+        case ResourceState.Downloading: {
           setResource(resourceFile);
           break;
         }
       }
     }
-  }
+  };
 
   const onTapNewAttempt = () => {
-    if(scormBundle && scormBundle.scorm) {
+    if (scormBundle && scormBundle.scorm) {
       if (!isUserOnline) {
-        let newAttempt = scormBundle.scorm && scormBundle.scorm.attemptsCurrent ? scormBundle.scorm.attemptsCurrent : 0;
-        if(scormBundle.offlineActivity && scormBundle.offlineActivity.attempts) {
+        let newAttempt =
+          scormBundle.scorm && scormBundle.scorm.attemptsCurrent
+            ? scormBundle.scorm.attemptsCurrent
+            : 0;
+        if (
+          scormBundle.offlineActivity &&
+          scormBundle.offlineActivity.attempts
+        ) {
           newAttempt = newAttempt + scormBundle.offlineActivity.attempts.length;
         }
         newAttempt = newAttempt + 1;
-        setActionWithData(SCORMActivityType.Offline, scormBundle, {attempt: newAttempt});
+        setActionWithData(SCORMActivityType.Offline, scormBundle, {
+          attempt: newAttempt,
+        });
       } else {
         if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
-          setActionWithData(SCORMActivityType.Online, scormBundle, {url: scormBundle.scorm.launchUrl});
+          setActionWithData(SCORMActivityType.Online, scormBundle, {
+            url: scormBundle.scorm.launchUrl,
+          });
         } else {
           Log.debug("Launch url cannot find. ", scormBundle.scorm.launchUrl);
         }
@@ -267,7 +272,12 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   };
 
   const onTapViewAllAttempts = () => {
-    if(scormBundle && scormBundle.scorm && (scormBundle.scorm.attempts || scormBundle.offlineActivity && scormBundle.offlineActivity.attempts)) {
+    if (
+      scormBundle &&
+      scormBundle.scorm &&
+      (scormBundle.scorm.attempts ||
+        (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts))
+    ) {
       setSection(Section.Attempts);
     } else {
       Log.debug("Scorm data could not found", scormBundle);
@@ -275,10 +285,12 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
   };
 
   const onTapContinueLastAttempt = () => {
-    if(isUserOnline) {
+    if (isUserOnline) {
       if (scormBundle) {
         if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
-          setActionWithData(SCORMActivityType.Online, scormBundle, {url: scormBundle.scorm.repeatUrl});
+          setActionWithData(SCORMActivityType.Online, scormBundle, {
+            url: scormBundle.scorm.repeatUrl,
+          });
         } else {
           Log.debug("Repeat url cannot find. ", scormBundle.scorm.repeatUrl);
         }
@@ -288,40 +300,57 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
     }
   };
 
-  useEffect(()=> {  
-    if(!isUserOnline) {
-      getOfflineScormBundle(activity.instanceid).then(result => {
-        if (result ) {
+  useEffect(() => {
+    if (!isUserOnline) {
+      getOfflineScormBundle(activity.instanceid).then((result) => {
+        if (result) {
           const storedBundle = result! as ScormBundle;
           let newBundle: ScormBundle = storedBundle;
-          if (scormBundle && scormBundle.lastsynced && scormBundle.lastsynced >= storedBundle.lastsynced) {
+          if (
+            scormBundle &&
+            scormBundle.lastsynced &&
+            scormBundle.lastsynced >= storedBundle.lastsynced
+          ) {
             newBundle.scorm = scormBundle.scorm;
             newBundle.lastsynced = scormBundle.lastsynced;
-            syncOfflineScormBundle(activity.instanceid, {scorm: newBundle.scorm, lastsynced: newBundle.lastsynced}).then(()=> {
+            syncOfflineScormBundle(activity.instanceid, {
+              scorm: newBundle.scorm,
+              lastsynced: newBundle.lastsynced,
+            }).then(() => {
               setScormBundle(newBundle);
             });
           } else {
             setScormBundle(newBundle);
           }
-        } 
+        }
       });
     } else {
       setScormBundle(data);
-      if(data && data.scorm && data.lastsynced) {
-        syncOfflineScormBundle(activity.instanceid, {scorm: data.scorm, lastsynced: data.lastsynced});
+      if (data && data.scorm && data.lastsynced) {
+        syncOfflineScormBundle(activity.instanceid, {
+          scorm: data.scorm,
+          lastsynced: data.lastsynced,
+        });
       }
     }
   }, [data]);
- 
-  useEffect(()=>{
-    if (!scormBundle || !scormBundle.scorm || !isUserOnline || !shouldShowAction) {
+
+  useEffect(() => {
+    if (
+      !scormBundle ||
+      !scormBundle.scorm ||
+      !isUserOnline ||
+      !shouldShowAction
+    ) {
       return;
     }
-    
+
     downloadManager.attach(onDownloadFileUpdated);
 
-    const filter = downloadManager.snapshot.filter(x=>x.id === scormBundle.scorm.id.toString());
-    if (filter.length>0) {
+    const filter = downloadManager.snapshot.filter(
+      (x) => x.id === scormBundle.scorm.id.toString()
+    );
+    if (filter.length > 0) {
       const existingResource = filter[0];
       setResource(existingResource);
     } else {
@@ -330,103 +359,161 @@ const SCORMSummary = ({activity, data, isUserOnline, setActionWithData}: Props) 
 
     return () => {
       downloadManager.detach(onDownloadFileUpdated);
-    }
+    };
   }, [scormBundle && scormBundle.scorm, downloadManager]);
 
   return (
-  <>
-  <View style={styles.expanded}>  
-  { shouldShowAction && lastsyncText && <NotificationView mode={"info"} text={lastsyncText} icon={"bolt"} /> }
-  { completedAttemptsText && <NotificationView mode={"alert"} text={completedAttemptsText} icon={"exclamation-circle"}  /> }
-  { upcommingActivityText && <NotificationView mode={"alert"} text={upcommingActivityText} icon={"exclamation-circle"}  /> }
-   <View style={{flex: 1}}>
-      <ScrollView>
-        <View style={{ padding: gutter }}>
-          { description && <>
-              <GridTitle textId={"scorm.summary.summary"} theme={theme} style={{paddingTop: 0}} />
-              <MoreText longText={description} />
-          </>}
-          <GridTitle textId={"scorm.summary.grade.title"} theme={theme} />
-          <GridLabelValue
-            theme={theme}
-            textId={"scorm.summary.grade.method"} 
-            value={attemptGrade} 
+    <>
+      <View style={styles.expanded}>
+        {shouldShowAction && lastsyncText && (
+          <NotificationView mode={"info"} text={lastsyncText} icon={"bolt"} />
+        )}
+        {completedAttemptsText && (
+          <NotificationView
+            mode={"alert"}
+            text={completedAttemptsText}
+            icon={"exclamation-circle"}
           />
-          <TouchableOpacity onPress={onTapViewAllAttempts}>
-            <GridLabelValue
-              theme={theme}
-              textId={"scorm.summary.grade.reported"} 
-              value={calculatedGrade} >
-              <FontAwesomeIcon icon="chevron-right" size={theme.textB1.fontSize} style={{alignSelf: "center", marginLeft: 8}} color={theme.textColorSubdued} />
-            </GridLabelValue>
-          </TouchableOpacity>
-          <GridTitle textId={"scorm.summary.attempt.title"} theme={theme} />
-          <GridLabelValue
-            theme={theme}
-            textId={"scorm.summary.attempt.total_attempts"} 
-            value={maxAttempts} 
+        )}
+        {upcommingActivityText && (
+          <NotificationView
+            mode={"alert"}
+            text={upcommingActivityText}
+            icon={"exclamation-circle"}
           />
-          <GridLabelValue
-            theme={theme}
-            textId={"scorm.summary.attempt.completed_attempts"} 
-            value={totalAttempt} 
-          />
+        )}
+        <View style={{ flex: 1 }}>
+          <ScrollView>
+            <View style={{ padding: gutter }}>
+              {description && (
+                <>
+                  <GridTitle
+                    textId={"scorm.summary.summary"}
+                    theme={theme}
+                    style={{ paddingTop: 0 }}
+                  />
+                  <MoreText longText={description} />
+                </>
+              )}
+              <GridTitle textId={"scorm.summary.grade.title"} theme={theme} />
+              <GridLabelValue
+                theme={theme}
+                textId={"scorm.summary.grade.method"}
+                value={attemptGrade}
+              />
+              <TouchableOpacity onPress={onTapViewAllAttempts}>
+                <GridLabelValue
+                  theme={theme}
+                  textId={"scorm.summary.grade.reported"}
+                  value={calculatedGrade}
+                >
+                  <FontAwesomeIcon
+                    icon="chevron-right"
+                    size={theme.textB1.fontSize}
+                    style={{ alignSelf: "center", marginLeft: 8 }}
+                    color={theme.textColorSubdued}
+                  />
+                </GridLabelValue>
+              </TouchableOpacity>
+              <GridTitle textId={"scorm.summary.attempt.title"} theme={theme} />
+              <GridLabelValue
+                theme={theme}
+                textId={"scorm.summary.attempt.total_attempts"}
+                value={maxAttempts}
+              />
+              <GridLabelValue
+                theme={theme}
+                textId={"scorm.summary.attempt.completed_attempts"}
+                value={totalAttempt}
+              />
+            </View>
+          </ScrollView>
         </View>
-      </ScrollView>
-    </View>
-    {shouldShowAction && <AttemptController primary={actionPrimary && {...actionPrimary, ...{action: onTapNewAttempt}}} secondary={actionSecondary && {...actionSecondary, ...{action: onTapContinueLastAttempt}}} /> }
-    <SafeAreaView />
-  </View>
-  { scormBundle &&
-  <Modal visible={section === Section.Attempts}>
-    <SCORMAttempts scormBundle={scormBundle} onExit={()=> setSection(Section.None)} />
-  </Modal> }
-  </>
+        {shouldShowAction && (
+          <AttemptController
+            primary={
+              actionPrimary && {
+                ...actionPrimary,
+                ...{ action: onTapNewAttempt },
+              }
+            }
+            secondary={
+              actionSecondary && {
+                ...actionSecondary,
+                ...{ action: onTapContinueLastAttempt },
+              }
+            }
+          />
+        )}
+        <SafeAreaView />
+      </View>
+      {scormBundle && (
+        <Modal visible={section === Section.Attempts}>
+          <SCORMAttempts
+            scormBundle={scormBundle}
+            onExit={() => setSection(Section.None)}
+          />
+        </Modal>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   expanded: {
     flex: 1,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   sectionBreak: {
     flexDirection: "row",
     paddingTop: 8,
     paddingBottom: 8,
-    justifyContent: "space-between" 
+    justifyContent: "space-between",
   },
   sectionField: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: 8
+    paddingVertical: 8,
   },
   attemptContainer: {
     paddingHorizontal: gutter,
     paddingVertical: 8,
     flexDirection: "column",
-    alignItems: "stretch"
-  }
+    alignItems: "stretch",
+  },
 });
 
 type PropsAttempt = {
-  primary: PropsInfo | undefined,
-  secondary: PropsInfo | undefined
+  primary: PropsInfo | undefined;
+  secondary: PropsInfo | undefined;
 };
 
 type PropsInfo = {
-  title: string,
-  action: ()=>void
+  title: string;
+  action: () => void;
 };
 
 const AttemptController = ({ primary, secondary }: PropsAttempt) => {
-
-  return (<View style={stylesAction.attemptContainer}>
-    <View style={{flexDirection: "row", justifyContent: "space-between" }}>
-      { secondary && <SecondaryButton text={secondary.title} onPress={secondary.action} style={{flex: 1, marginRight: primary ? 16 : 0}} /> }
-      { primary && <PrimaryButton text={primary.title} onPress={primary.action} style={{flex: 1}} /> }
+  return (
+    <View style={stylesAction.attemptContainer}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        {secondary && (
+          <SecondaryButton
+            text={secondary.title}
+            onPress={secondary.action}
+            style={{ flex: 1, marginRight: primary ? 16 : 0 }}
+          />
+        )}
+        {primary && (
+          <PrimaryButton
+            text={primary.title}
+            onPress={primary.action}
+            style={{ flex: 1 }}
+          />
+        )}
+      </View>
     </View>
-  </View>);
+  );
 };
 
 const stylesAction = StyleSheet.create({
@@ -434,8 +521,8 @@ const stylesAction = StyleSheet.create({
     paddingHorizontal: gutter,
     paddingVertical: 8,
     flexDirection: "column",
-    alignItems: "stretch"
-  }
+    alignItems: "stretch",
+  },
 });
 
 export default SCORMSummary;
