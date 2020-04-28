@@ -16,11 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ * @author @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  *
  *
  */
 
-import VideoController from "./VideoController";
+import HeaderView from "./HeaderView";
+import CriteriaSheet from "./CriteriaSheet";
+import ParallaxScrollView from "./ParallaxScrollView";
 
-export { VideoController };
+export { HeaderView, CriteriaSheet, ParallaxScrollView };

@@ -31,6 +31,32 @@ export interface Certification {
   duedate?: Date;
   progress?: number;
   courseSets: [CourseSets];
+  completion: Completion;
   imageSrc?: string;
+  criteria?: [Criteria];
 }
 
+interface Completion {
+  id: number;
+  statuskey:
+    | ""
+    | "completeviarpl"
+    | "complete"
+    | "inprogress"
+    | "notyetstarted";
+  progress: number;
+  timecompleted?: Date;
+  grademax: number;
+  gradefinal: number;
+}
+
+interface Criteria {
+  id: number;
+  type?: string;
+  typeaggregation?: string;
+  criteria?: string;
+  requirement?: string;
+  status?: string;
+  complete: boolean;
+  completiondate?: Date;
+}

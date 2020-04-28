@@ -8,10 +8,6 @@
     "cancel": "Cancel",
     "error_unknown":"Something went wrong, please try again later."
   }, 
-  "course-details": {
-    "activities": "ACTIVITIES",
-    "overview": "OVERVIEW"
-  }, 
   "certificate-details": {
     "courses": "COURSES",
     "overview": "OVERVIEW"
@@ -106,29 +102,34 @@
   "activity_not_available": {
     "title" : "This activity is not available unless"
   },
-  "course_overview":  {
-    "course_summery" : "Course summary"
-  },
-  "course_overview_progress" : {
-    "title" : "Your course progress",
-    "progress_status_init": "Haven't started the course",
-    "progress_status_mid" : "Good start! Keep going",
-    "progress_status_final": "Almost there! Keep going"
-  },
-  "course_overview_grade" : {
-    "title" : "Your grade overview",
-    "progress_status": "Out of "
-  },
   "user_profile" : {
     "login_as" : "Logged in as",
     "manage_section" : "Manage",
     "setting_cell" : "Settings",
     "logout" : "Logout"
   },
-  "course_complete" : {
-    "title" : "Awesome!",
-    "description" : "You have successfully completed\nthe course.",
-    "button_title" : "Continue learning"
+  "course" :{
+    "course_overview":  {
+      "course_summery" : "Course summary"
+    },
+    "course_overview_progress" : {
+      "title" : "Your course progress"
+    },
+    "course_overview_grade" : {
+      "title" : "Your grade overview"
+    },
+    "course_complete" : {
+      "title" : "Awesome!",
+      "description" : "You have successfully completed\nthe course.",
+      "button_title" : "Continue learning"
+    },
+    "course_criteria":{
+      "title": "Course criteria"
+    },
+    "course-details": {
+      "activities": "ACTIVITIES",
+      "overview": "OVERVIEW"
+    }
   },
   "scorm" : {
     "last_synced" : "Last synced",

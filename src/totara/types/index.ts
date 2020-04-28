@@ -19,7 +19,7 @@
 
 import { LearningItem, LearningItemType, Section } from "./LearningItem";
 import { Activity, ActivityType, ScormActivity } from "./Activity";
-import { Course, CourseSets } from "./Course";
+import { Course, CourseSets, Criteria } from "./Course";
 import { Program } from "./Program";
 import { Status, LearningStatus } from "./LearningStatus";
 import { Me } from "./Me"
@@ -45,5 +45,6 @@ export {
   Theme,
   Section,
   CourseSets,
-  Certification
+  Certification,
+  Criteria
 }

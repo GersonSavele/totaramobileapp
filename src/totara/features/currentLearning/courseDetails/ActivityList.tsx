@@ -35,7 +35,7 @@ import { Section, Activity, ActivityType } from "@totara/types";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import ActivityRestrictionView from "./ActivityRestrictionView";
+import { ActivityRestrictionView } from "@totara/components/currentLearning/courseDetails";
 import { AppliedTheme } from "@totara/theme/Theme";
 import ActivityLabel from "./ActivityLabel";
 // To Do : refetch props should be removed from going nested component(MOB-381)

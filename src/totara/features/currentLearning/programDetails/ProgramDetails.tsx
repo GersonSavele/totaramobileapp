@@ -33,10 +33,10 @@ import { NavigationParams, NavigationInjectedProps } from "react-navigation";
 import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
-import { CourseList } from "../CourseList";
-import OverviewDetails from "../Overview/OverviewDetails";
+import { CourseList } from "../courseList";
+import OverviewDetails from "../overview/OverviewDetails";
 import { Program } from "@totara/types";
-import { HeaderView } from "../Components";
+import { HeaderView } from "@totara/components/currentLearning";
 // import { coreProgram } from "./api";
 //Import mock data from js file once API has been fixed should remove from here(only for UI testing)
 import { program } from "../mock-data";
@@ -95,10 +95,7 @@ const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
             <CourseList program={program} navigation={navigation} />
           ) : (
             <OverviewDetails
-              progress={60}
-              gradeFinal={100}
-              gradeMax={100}
-              summary="More than just an LMS in your pocket, the _mLearn Totara App_ is\nproductivity, evidence gathering, content delivery and creation tool for\nlearning on the go.\n\nUpload media and submit evidence of learning, receive important\nnotifications, search and enrol in courses, task notifications for managers\nand approve training requests in-app.\n\nCapable of being fully branded to your clients' requirements, the mLearn\nTotara App gives you constant online and offline access to all your\nlearning content. \n\n"
+              learningItem = {program}
               summaryTypeTitle="Certifications Summary"
             />
           )}

@@ -26,10 +26,10 @@ import {
   Animated,
   Dimensions,
   View,
-  StyleSheet,
   LayoutChangeEvent
 } from "react-native";
 import { ThemeContext, normalize } from "@totara/theme";
+import {parallaxScrollViewStyles} from "./styles"
 
 type Props = {
   fadeOutForeground?: boolean;
@@ -87,10 +87,10 @@ const ParallaxScrollView = ({
   const containerStyles = [{ backgroundColor: theme.colorAccent }];
   return (
     // Background image scrolling...
-    <View style={[styles.container]} onLayout={e => updateViewDimensions(e)}>
+    <View style={[parallaxScrollViewStyles.container]} onLayout={e => updateViewDimensions(e)}>
       <Animated.View
         style={[
-          styles.backgroundImage,
+          parallaxScrollViewStyles.backgroundImage,
           {
             backgroundColor: theme.colorAccent,
             height: parallaxHeaderHeight,
@@ -129,20 +129,18 @@ const ParallaxScrollView = ({
           bounces={false}
         />,
         {
-          style: [styles.scrollView],
+          style: [parallaxScrollViewStyles.scrollView],
           scrollEventThrottle: 10,
           stickyHeaderIndices: [2],
           onScroll: Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
             { useNativeDriver: true }
-            // if it is added listener, it will be trigger all the event when user scrolling. May be it will be use-full for the future.
-            //   { useNativeDriver: true, listener: onScroll }
           )
         },
-        <View style={styles.parallaxHeaderContainer}>
+        <View style={parallaxScrollViewStyles.parallaxHeaderContainer}>
           <Animated.View
             style={[
-              styles.parallaxHeader,
+              parallaxScrollViewStyles.parallaxHeader,
               {
                 height: parallaxHeaderHeight,
                 opacity: fadeOutForeground
@@ -166,29 +164,5 @@ const ParallaxScrollView = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "transparent"
-  },
-  parallaxHeaderContainer: {
-    backgroundColor: "transparent",
-    overflow: "hidden"
-  },
-  parallaxHeader: {
-    backgroundColor: "transparent",
-    overflow: "hidden"
-  },
-  backgroundImage: {
-    position: "absolute",
-    backgroundColor: "transparent",
-    overflow: "hidden",
-    top: 0
-  },
-  scrollView: {
-    backgroundColor: "transparent"
-  }
-});
 
 export default ParallaxScrollView;

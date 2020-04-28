@@ -27,16 +27,16 @@ import { NavigationParams, NavigationInjectedProps } from "react-navigation";
 // import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
-import { CourseList } from "../CourseList";
-import OverviewDetails from "../Overview/OverviewDetails";
+import { CourseList } from "../courseList";
+import OverviewDetails from "../overview/OverviewDetails";
 import { Certification } from "@totara/types";
 //import { coreCertification } from "./api";
-import { HeaderView } from "../Components";
+import { HeaderView } from "@totara/components/currentLearning";
 //Import mock data from js file once API has been fixed should remove from here(only for UI testing)
-import { certifications } from "../mock-data";
+import { certification } from "../mock-data";
 
 type CertificationProps = {
-  certifications: Certification;
+  certification: Certification;
   navigation: NavigationParams;
 };
 
@@ -59,7 +59,7 @@ type CertificationProps = {
 const CertificationDetails = ({ navigation }: NavigationInjectedProps) => {
   return (
     <CertificationDetailsComponent
-      certifications={certifications}
+      certification={certification}
       navigation={navigation}
     />
   );
@@ -67,7 +67,7 @@ const CertificationDetails = ({ navigation }: NavigationInjectedProps) => {
 
 const CertificationDetailsComponent = ({
   navigation,
-  certifications
+  certification,
 }: CertificationProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
@@ -76,13 +76,13 @@ const CertificationDetailsComponent = ({
   const [theme] = useContext(ThemeContext);
   return (
     <HeaderView
-      details={certifications}
+      details={certification}
       navigation={navigation}
       tabBarLeft={translate("certificate-details.overview")}
       tabBarRight={translate("certificate-details.courses")}
       onPress={onSwitchTab}
       showOverview={showOverview}
-      badgeTitle = "Certificate"
+      badgeTitle="Certificate"
     >
       <View
         style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
@@ -90,17 +90,14 @@ const CertificationDetailsComponent = ({
         <View
           style={[
             styles.activitiesContainer,
-            { backgroundColor: theme.colorNeutral1 }
+            { backgroundColor: theme.colorNeutral1 },
           ]}
         >
           {!showOverview ? (
-            <CourseList program={certifications} navigation={navigation} />
+            <CourseList program={certification} navigation={navigation} />
           ) : (
             <OverviewDetails
-              progress={60}
-              gradeFinal={100}
-              gradeMax={100}
-              summary="More than just an LMS in your pocket, the _mLearn Totara App_ is\nproductivity, evidence gathering, content delivery and creation tool for\nlearning on the go.\n\nUpload media and submit evidence of learning, receive important\nnotifications, search and enrol in courses, task notifications for managers\nand approve training requests in-app.\n\nCapable of being fully branded to your clients' requirements, the mLearn\nTotara App gives you constant online and offline access to all your\nlearning content. \n\n"
+              learningItem={certification}
               summaryTypeTitle="Certifications Summary"
             />
           )}
@@ -112,12 +109,12 @@ const CertificationDetailsComponent = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   activitiesContainer: {
     flex: 3,
-    padding: 0
-  }
+    padding: 0,
+  },
 });
 
 export default CertificationDetails;

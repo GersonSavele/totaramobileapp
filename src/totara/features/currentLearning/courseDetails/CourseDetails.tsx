@@ -28,22 +28,22 @@ import {
 import {
   withNavigation,
   NavigationParams,
-  NavigationInjectedProps
+  NavigationInjectedProps,
 } from "react-navigation";
 import {
   GeneralErrorModal,
   PrimaryButton,
-  InfoModal
+  InfoModal,
 } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import { Course } from "@totara/types";
 import { ActivityList } from "./ActivityList";
-import OverviewDetails from "../Overview/OverviewDetails";
+import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
-import { HeaderView } from "../Components";
+import { HeaderView } from "@totara/components/currentLearning";
 
 type CourseDetailsProps = {
   course: Course;
@@ -57,9 +57,9 @@ type CourseCompletedProps = {
 };
 
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
-  const courseId  = navigation.getParam("courseId")
+  const courseId = navigation.getParam("courseId");
   const { loading, error, data, refetch } = useQuery(coreCourse, {
-     variables: { courseid: courseId }
+    variables: { courseid: courseId },
   });
   if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
@@ -68,7 +68,7 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   }
 };
 
- const CourseDetailsComponent = withNavigation(
+const CourseDetailsComponent = withNavigation(
   ({ navigation, course, refetch }: CourseDetailsProps) => {
     const [showOverview, setShowOverview] = useState(true);
     const onSwitchTab = () => {
@@ -79,11 +79,11 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
       <HeaderView
         details={course}
         navigation={navigation!}
-        tabBarLeft={translate("course-details.overview")}
-        tabBarRight={translate("course-details.activities")}
+        tabBarLeft={translate("course.course-details.overview")}
+        tabBarRight={translate("course.course-details.activities")}
         onPress={onSwitchTab}
         showOverview={showOverview}
-        badgeTitle = "Course"
+        badgeTitle="Course"
       >
         <View
           style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
@@ -91,22 +91,25 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
           <View
             style={[
               styles.activitiesContainer,
-              { backgroundColor: theme.colorNeutral1 }
+              { backgroundColor: theme.colorNeutral1 },
             ]}
           >
             {!showOverview ? (
-            <Activities course={course} refetch={refetch} />
+              <Activities course={course} refetch={refetch} />
             ) : (
-              <OverviewDetails progress={course.completion.progress} gradeFinal = {course.completion.gradefinal} gradeMax = {course.completion.grademax}
-              summary = {course.summary != null ? course.summary : ""} summaryTypeTitle = "Course Summary"/>
-            )}         
+              <OverviewDetails
+                learningItem={course}
+                summaryTypeTitle={translate(
+                  "course.course_overview.course_summery"
+                )}
+              />
+            )}
           </View>
         </View>
       </HeaderView>
     );
   }
 );
-
 
 const CourseCompleted = withNavigation(
   ({ navigation, course }: CourseCompletedProps) => {
@@ -173,12 +176,12 @@ const Activities = ({ course, refetch }: CourseDetailsProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   activitiesContainer: {
     flex: 3,
-    padding: 0
-  }
+    padding: 0,
+  },
 });
 
-export  { CourseDetails, CourseDetailsComponent, CourseCompleted };
+export { CourseDetails, CourseDetailsComponent, CourseCompleted };

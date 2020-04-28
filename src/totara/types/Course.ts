@@ -20,7 +20,7 @@
  *
  */
 
- import {Section} from "./LearningItem"
+import {Section} from "./LearningItem"
 
 export interface Course {
   id: number,
@@ -28,6 +28,8 @@ export interface Course {
   shortname: string,
   lang: string,
   sections: [Section],
+  criteriaaggregation: string,
+  criteria? : [Criteria],
   completion: Completion,
   summary?: string,
   startdate?: Date
@@ -57,3 +59,15 @@ interface NextSet {
   nextID: number;
   operator?: string;
 }
+
+export interface Criteria {
+  id : number
+  type? : string,
+  typeaggregation? : string
+  criteria? : string,
+  requirement? : string
+  status? : string
+  complete : boolean
+  completiondate? : Date
+}
+

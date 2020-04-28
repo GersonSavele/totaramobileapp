@@ -30,7 +30,33 @@ export interface Program {
   duedateState?: string;
   duedate?: Date;
   progress?: number;
+  completion: Completion;
   courseSets: [CourseSets];
   imageSrc?: string;
+  criteria?: [Criteria];
 }
 
+interface Completion {
+  id: number;
+  statuskey:
+    | ""
+    | "completeviarpl"
+    | "complete"
+    | "inprogress"
+    | "notyetstarted";
+  progress: number;
+  timecompleted?: Date;
+  grademax: number;
+  gradefinal: number;
+}
+
+interface Criteria {
+  id: number;
+  type?: string;
+  typeaggregation?: string;
+  criteria?: string;
+  requirement?: string;
+  status?: string;
+  complete: boolean;
+  completiondate?: Date;
+}

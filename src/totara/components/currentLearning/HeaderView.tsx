@@ -23,21 +23,19 @@
 
 import React, { useContext, ReactNode } from "react";
 import {
-  StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  Dimensions
+  View
 } from "react-native";
 
-import ParallaxScrollView from "../ParallaxScrollView/ParallaxScrollView";
+import ParallaxScrollView from "./ParallaxScrollView";
 import { CardElement, ImageElement } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { ThemeContext } from "@totara/theme";
 import { Certification, Program, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
-import { headerViewStyle } from "@totara/theme/constants"
-
+import { headerViewStyles } from "./styles"
+import { headerViewSize } from "@totara/theme/constants"
 type HeaderViewProps = {
   details: Certification | Program | Course;
   navigation: NavigationParams;
@@ -63,15 +61,15 @@ const HeaderView = ({
   const renderNavigationTitle = () => {
     return (
       <View style={{ backgroundColor: theme.colorNeutral2 }}>
-        <CardElement item={details} cardStyle={styles.itemCard}>
+        <CardElement item={details} cardStyle={headerViewStyles.itemCard}>
           <View
             style={[
-              styles.LearningTypeLabelWrap,
+              headerViewStyles.LearningTypeLabelWrap,
               { borderColor: theme.colorNeutral6 }
             ]}
           >
             <Text
-              style={[styles.programLabelText, { color: theme.colorNeutral6 }]}
+              style={[headerViewStyles.programLabelText, { color: theme.colorNeutral6 }]}
             >
             {badgeTitle}
             </Text>
@@ -85,22 +83,22 @@ const HeaderView = ({
     return (
       <View
         style={[
-          styles.tabBarContainer,
+          headerViewStyles.tabBarContainer,
           { backgroundColor: theme.colorNeutral2 }
         ]}
       >
-        <View style={styles.tabNav}>
+        <View style={headerViewStyles.tabNav}>
           <TouchableOpacity
             style={
               showOverview
                 ? [
-                    styles.tabSelected,
+                  headerViewStyles.tabSelected,
                     {
                       borderBottomColor: theme.colorNeutral7,
                       borderBottomWidth: 2
                     }
                   ]
-                : [styles.tabSelected]
+                : [headerViewStyles.tabSelected]
             }
             onPress={onPress}
           >
@@ -121,13 +119,13 @@ const HeaderView = ({
             style={
               !showOverview
                 ? [
-                    styles.tabSelected,
+                  headerViewStyles.tabSelected,
                     {
                       borderBottomColor: theme.colorNeutral7,
                       borderBottomWidth: 2
                     }
                   ]
-                : [styles.tabSelected]
+                : [headerViewStyles.tabSelected]
             }
             onPress={onPress}
           >
@@ -155,19 +153,19 @@ const HeaderView = ({
     return (
       <View
         style={[
-          styles.headerContainer,
+          headerViewStyles.headerContainer,
           { backgroundColor: theme.colorNeutral2 }
         ]}
       >
-        <ImageElement item={details} imageStyle={styles.itemImage} />
+        <ImageElement item={details} imageStyle={headerViewStyles.itemImage} />
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <View style={headerViewStyles.container}>
       <ParallaxScrollView
-        parallaxHeaderHeight={normalize(headerViewStyle.header_view_min_height)}
+        parallaxHeaderHeight={normalize(headerViewSize.header_view_min_height)}
         renderBackground={backgroundViewRender}
         tabBar={renderNavigationTab}
         titleBar={renderNavigationTitle}
@@ -193,59 +191,6 @@ const HeaderView = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  headerContainer: {
-    flex: 1,
-    maxHeight: normalize(headerViewStyle.header_view_max_height),
-    minHeight: normalize(headerViewStyle.header_view_min_height)
-  },
-  itemImage: {
-    flex: 2.5,
-    minHeight: normalize(160)
-  },
-  itemCard: {
-    maxHeight: normalize(80),
-    minHeight: normalize(60)
-  },
-  LearningTypeLabelWrap: {
-    borderRadius: 8,
-    borderStyle: "solid",
-    borderWidth: 1,
-    alignSelf: "flex-start",
-    alignItems: "center"
-  },
-  tabBarContainer: {
-    flex: 0.4,
-    maxHeight: 50,
-    minHeight: 44
-  },
-  tabNav: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: normalize(16),
-    width: Dimensions.get("window").width * 0.5,
-    alignItems: "center",
-    flex: 1
-  },
-  programLabelText: {
-    fontSize: normalize(10),
-    fontWeight: "500",
-    fontStyle: "normal",
-    textAlign: "center",
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 1,
-    paddingBottom: 2
-  },
-  tabSelected: {
-    height: "100%",
-    justifyContent: "center",
-    paddingLeft: 24,
-    paddingRight: 24
-  }
-});
+
 
 export default HeaderView;

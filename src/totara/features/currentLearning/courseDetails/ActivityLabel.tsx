@@ -26,7 +26,7 @@ import { map } from "lodash";
 import { normalize } from "@totara/theme";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { labelDoc } from "../mock-data";
-import { VideoController } from "./components";
+import { VideoController } from "@totara/components/currentLearning/courseDetails";
 import { Image } from "react-native-animatable";
 import { textStyle, marginStyle } from "@totara/theme/constants";
 
