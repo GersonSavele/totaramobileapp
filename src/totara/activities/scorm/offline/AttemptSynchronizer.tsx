@@ -19,8 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { useEffect, useState } from "react";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
@@ -30,7 +29,7 @@ import {
   clearSyncedScormCommit,
 } from "./OfflineSCORMController";
 import { Log, showMessage } from "@totara/lib";
-import { translate } from '@totara/locale';
+import { translate } from "@totara/locale";
 
 const SaveAttemptMutation = gql`
   mutation mod_scorm_save_offline_attempts(
@@ -58,18 +57,15 @@ const AttemptSynchronizer = () => {
   const netInfo = useNetInfo();
 
   useEffect(() => {
-    if (
-      netInfo.type !== "unknown" &&
-      netInfo.isInternetReachable
-    ) {
+    if (netInfo.type !== "unknown" && netInfo.isInternetReachable) {
       if (unSyncData && unSyncData.length && unSyncData.length > 0) {
         syncScormRecord(unSyncData[0])
           .then((updatedUnsyncData) => {
             setUnsyncData(updatedUnsyncData);
           })
           .catch((e) => {
-            Log.error(translate('general.error'), e);
-            showMessage(translate('general.error_unknown'), () => null);
+            Log.error(translate("general.error"), e);
+            showMessage(translate("general.error_unknown"), () => null);
           });
       } else {
         getOfflineScormCommits().then((data) => {

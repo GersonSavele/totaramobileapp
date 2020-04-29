@@ -215,12 +215,12 @@ const onTapNewAttempt = ({
           url: scormBundle.scorm.launchUrl,
         });
       } else {
-        Log.warn("Launch url cannot find. ", scormBundle.scorm.launchUrl);
+        Log.warn("Cannot find new attempt url.", scormBundle.scorm.launchUrl);
         showMessage(translate("general.error_unknown"), () => null);
       }
     }
   } else {
-    Log.warn("Scorm data could not found", scormBundle);
+    Log.warn("Cannot find scorm data.", scormBundle);
     showMessage(translate("general.error_unknown"), () => null);
   }
 };
@@ -237,11 +237,11 @@ const onTapContinueLastAttempt = ({
           url: scormBundle.scorm.repeatUrl,
         });
       } else {
-        Log.warn("Repeat url cannot find. ", scormBundle.scorm.repeatUrl);
+        Log.warn("Cannot find last attempt url.", scormBundle.scorm.repeatUrl);
         showMessage(translate("general.error_unknown"), () => null);
       }
     } else {
-      Log.warn("Scorm data could not found", scormBundle);
+      Log.warn("Cannot find scorm data.", scormBundle);
       showMessage(translate("general.error_unknown"), () => null);
     }
   }
@@ -263,7 +263,7 @@ const onTapViewAllAttempts = ({
   ) {
     callback(scormSummarySection.attempts);
   } else {
-    Log.warn("Scorm data could not found", scormBundle);
+    Log.warn("Cannot find scorm data", scormBundle);
     showMessage(translate("general.error_unknown"), () => null);
   }
 };
