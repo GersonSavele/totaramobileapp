@@ -22,5 +22,6 @@
 
 import config from "./config";
 import { Logger, Log } from "./logger";
+import { showMessage } from "./tools";
 
-export { config, Logger, Log }
+export { config, Logger, Log, showMessage }

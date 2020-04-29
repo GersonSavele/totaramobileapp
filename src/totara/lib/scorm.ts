@@ -14,11 +14,16 @@
  */
 
 import moment from "moment";
-
+import * as RNFS from "react-native-fs";
 import { AttemptGrade, Grade, ScormBundle } from "@totara/types/Scorm";
 import { translate } from "@totara/locale";
-import { calculatedAttemptsGrade } from "@totara/activities/scorm/offline/OfflineSCORMController";
+import { calculatedAttemptsGrade, getOfflineScormPackageName } from "@totara/activities/scorm/offline/OfflineSCORMController";
 import { DATE_FORMAT, DATE_FORMAT_FULL, SECONDS_FORMAT } from "./Constant";
+import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
+import { Log } from "@totara/lib";
+import {
+  OfflineScormServerRoot,
+} from "@totara/activities/scorm/offline";
 
 const getDataForScormSummary = (
   isUserOnline: boolean,
@@ -128,4 +133,45 @@ const getDataForScormSummary = (
   return data;
 };
 
-export { getDataForScormSummary };
+type OnTapProps = {
+  callback: (scormId: string, data: any) => Promise<void>,
+  downloadManager: ResourceManager,
+  scormBundle: ScormBundle | undefined,
+  apiKey?: string
+}
+
+const onTapDownloadResource = ({ callback, downloadManager, scormBundle, apiKey }: OnTapProps) => () => {
+  if (!downloadManager) return;
+  if (scormBundle) {
+    const _url = scormBundle!.scorm.packageUrl!;
+    const _name = scormBundle!.scorm.name;
+    const _scormId = scormBundle!.scorm.id;
+
+    const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
+    const offlineSCORMPackageName = getOfflineScormPackageName(_scormId);
+    const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
+    const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
+    const _downloadId = _scormId.toString();
+    if (apiKey) {
+      downloadManager.download(
+        apiKey,
+        _downloadId,
+        _name,
+        _url,
+        _targetZipFile,
+        _unzipPath
+      );
+      const _offlineScormData = {
+        scorm: scormBundle.scorm,
+        lastsynced: scormBundle.lastsynced,
+      } as ScormBundle;
+
+      callback(_scormId, _offlineScormData);
+    } else {
+      Log.debug("Cannot find api key");
+    }
+  }
+};
+
+
+export { getDataForScormSummary, onTapDownloadResource };

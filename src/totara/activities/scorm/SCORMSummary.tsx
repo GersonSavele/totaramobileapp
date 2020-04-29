@@ -63,9 +63,9 @@ import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";
-import { getDataForScormSummary } from "@totara/lib/scorm";
+import { getDataForScormSummary, onTapDownloadResource } from "@totara/lib/scorm";
 
-type Props = {
+type SummaryProps = {
   activity: Activity;
   data?: ScormBundle;
   isUserOnline: boolean;
@@ -119,7 +119,7 @@ const SCORMSummary = ({
   data,
   isUserOnline,
   setActionWithData,
-}: Props) => {
+}: SummaryProps) => {
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
   const {
     authContextState: { appState },
@@ -145,46 +145,19 @@ const SCORMSummary = ({
     maxAttempts,
   } = getDataForScormSummary(isUserOnline, scormBundle);
 
-  const onTapDownloadResource = () => {
-    if (!downloadManager) return;
-    if (scormBundle) {
-      const _url = scormBundle!.scorm.packageUrl!;
-      const _name = scormBundle!.scorm.name;
-      const _scormId = scormBundle!.scorm.id;
-
-      const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
-      const offlineSCORMPackageName = getOfflineScormPackageName(_scormId);
-      const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
-      const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
-      const _downloadId = _scormId.toString();
-      if (appState && appState.apiKey) {
-        downloadManager.download(
-          appState.apiKey,
-          _downloadId,
-          _name,
-          _url,
-          _targetZipFile,
-          _unzipPath
-        );
-        const _offlineScormData = {
-          scorm: scormBundle.scorm,
-          lastsynced: scormBundle.lastsynced,
-        } as ScormBundle;
-
-        syncOfflineScormBundle(activity.instanceid, _offlineScormData);
-      } else {
-        Log.debug("Cannot find api key");
-      }
-    }
-  };
-
   const onTapDeleteResource = () => {
     const _scormId = scormBundle!.scorm.id;
     downloadManager.delete(_scormId.toString());
   };
 
   const setResource = (resource?: IResource) => {
-    let onResourceTap: (() => void) | undefined = onTapDownloadResource;
+    let onResourceTap: (() => void) | undefined = 
+      onTapDownloadResource({
+        callback: syncOfflineScormBundle,
+        downloadManager,
+        scormBundle,
+        apiKey: appState?.apiKey,
+      });
     if (resource) {
       switch (resource.state) {
         case ResourceState.Downloading:

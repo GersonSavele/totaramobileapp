@@ -228,7 +228,7 @@ const calculatedAttemptsGrade = (
   }
 };
 
-const syncOfflineScormBundle = (scormId: string, data: any) => {
+const syncOfflineScormBundle = (scormId: string, data: any): Promise<void> => {
   return getScormPackageData(scormId).then((storedData) => {
     if (storedData) {
       let newData = storedData as ScormBundle;
@@ -283,6 +283,7 @@ const getOfflineScormCommits = () => {
 const clearSyncedScormCommit = (scormId: string, attempt: number) => {
   return clearCommit(scormId, attempt);
 };
+
 export {
   getOfflineScormBundle,
   calculatedAttemptsGrade,

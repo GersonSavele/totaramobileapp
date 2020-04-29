@@ -19,7 +19,8 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { View, Text } from "react-native";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
@@ -28,9 +29,8 @@ import {
   getOfflineScormCommits,
   clearSyncedScormCommit,
 } from "./OfflineSCORMController";
-import { Log } from "@totara/lib";
+import { Log, showMessage } from "@totara/lib";
 import { translate } from '@totara/locale';
-import { showMessage } from "@totara/lib/tools";
 
 const SaveAttemptMutation = gql`
   mutation mod_scorm_save_offline_attempts(
@@ -68,7 +68,7 @@ const AttemptSynchronizer = () => {
             setUnsyncData(updatedUnsyncData);
           })
           .catch((e) => {
-            Log.error("Data sync error: ", e);
+            Log.error(translate('general.error'), e);
             showMessage(translate('general.error_unknown'), () => null);
           });
       } else {
