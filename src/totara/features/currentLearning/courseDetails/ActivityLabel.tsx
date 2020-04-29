@@ -343,7 +343,7 @@ const RulerTypeLabel = ({ label = {}, theme }: LabelConfigProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: marginStyle.marginXXL,
+    marginHorizontal: marginStyle.marginL,
     marginVertical: marginStyle.marginXS,
     justifyContent: "center"
   },
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
   },
   videoTitle: {
     fontWeight: "bold",
-    marginBottom: marginStyle.marginXXL,
+    marginBottom: marginStyle.margin2XL,
   },
   videoContainer: {
     height: normalize(200),
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
   videoDescription: {
     fontSize: normalize(17),
     fontWeight: "normal",
-    marginTop: marginStyle.marginXXL,
+    marginTop: marginStyle.margin2XL,
     fontStyle: "normal",
   },
   listContainer: {
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
   },
   textWrapViewContainer: {
     justifyContent: "center",
-    marginBottom: marginStyle.marginXXL,
+    marginBottom: marginStyle.margin2XL,
   },
   imageContainer: {
     height: normalize(200),

@@ -38,7 +38,7 @@ import {
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
-import { Course } from "@totara/types";
+import { Course, StatusKey } from "@totara/types";
 import { ActivityList } from "./ActivityList";
 import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
@@ -106,6 +106,7 @@ const CourseDetailsComponent = withNavigation(
             )}
           </View>
         </View>
+        <CourseCompleted course = {course}/>
       </HeaderView>
     );
   }
@@ -118,21 +119,20 @@ const CourseCompleted = withNavigation(
       setShow(!show);
       navigation!.navigate(NAVIGATION_MY_LEARNING);
     };
-
     if (
       course.completion &&
-      (course.completion.statuskey as string) == "complete"
+      (course.completion.statuskey) === StatusKey.complete
     ) {
       return (
         <InfoModal
           transparent={true}
-          title={translate("course_complete.title")}
-          description={translate("course_complete.description")}
+          title={translate("course.course_complete.title")}
+          description={translate("course.course_complete.description")}
           imageType="course_complete"
           visible={show}
         >
           <PrimaryButton
-            text={translate("course_complete.button_title")}
+            text={translate("course.course_complete.button_title")}
             onPress={onClose}
           />
         </InfoModal>

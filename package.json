@@ -74,7 +74,7 @@
     "react-navigation-material-bottom-tabs": "^2.0.0",
     "react-navigation-stack": "^1.10.3",
     "react-navigation-tabs": "^1.2.0",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.20",
+    "reanimated-bottom-sheet": "1.0.0-alpha.20",
     "recompose": "^0.30.0",
     "xmldom": "^0.3.0",
     "xpath": "0.0.27"

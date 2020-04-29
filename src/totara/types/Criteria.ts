@@ -15,18 +15,14 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-const textStyle = {
-  bold: "bold",
-  strong: "strong",
-  short_code_prefix: "0x",
-};
-const marginStyle = {
-  marginXS: 6,
-  marginS: 8,
-  marginM: 12,
-  marginL: 16,
-  marginXL: 24,
-  margin2XL: 32,
-  margin3XL: 48,
-};
-export { textStyle, marginStyle };
+
+export interface Criteria {
+    id: number;
+    type?: string;
+    typeaggregation?: string;
+    criteria?: string;
+    requirement?: string;
+    status?: string;
+    complete: boolean;
+    completiondate?: Date;
+  }

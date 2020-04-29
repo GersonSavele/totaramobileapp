@@ -20,6 +20,8 @@
  */
 
 import { CourseSets } from "./Course";
+import { Completion } from "./Completion"
+import { Criteria } from "./Criteria"
 
 export interface Certification {
   id: number;
@@ -36,27 +38,3 @@ export interface Certification {
   criteria?: [Criteria];
 }
 
-interface Completion {
-  id: number;
-  statuskey:
-    | ""
-    | "completeviarpl"
-    | "complete"
-    | "inprogress"
-    | "notyetstarted";
-  progress: number;
-  timecompleted?: Date;
-  grademax: number;
-  gradefinal: number;
-}
-
-interface Criteria {
-  id: number;
-  type?: string;
-  typeaggregation?: string;
-  criteria?: string;
-  requirement?: string;
-  status?: string;
-  complete: boolean;
-  completiondate?: Date;
-}

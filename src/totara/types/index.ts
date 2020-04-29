@@ -19,14 +19,16 @@
 
 import { LearningItem, LearningItemType, Section } from "./LearningItem";
 import { Activity, ActivityType, ScormActivity } from "./Activity";
-import { Course, CourseSets, Criteria } from "./Course";
+import { Course, CourseSets } from "./Course";
+import { StatusKey } from "./Completion";
+import { Criteria } from "./Criteria";
 import { Program } from "./Program";
 import { Status, LearningStatus } from "./LearningStatus";
-import { Me } from "./Me"
+import { Me } from "./Me";
 import { SiteInfo, AppState } from "./Auth";
 import { Theme } from "./Theme";
-import { UserProfile } from "./UserProfile"
-import { Certification } from "./Certification"
+import { UserProfile } from "./UserProfile";
+import { Certification } from "./Certification";
 
 export {
   LearningItem,
@@ -46,5 +48,6 @@ export {
   Section,
   CourseSets,
   Certification,
-  Criteria
-}
+  Criteria,
+  StatusKey,
+};

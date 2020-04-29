@@ -15,7 +15,7 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext } from "react";
 import { View, Modal, TouchableOpacity, SectionList, Text } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import _ from "lodash";
@@ -33,6 +33,11 @@ type Props = {
 
 const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
   const [theme] = useContext(ThemeContext);
+  const criteriaSectionList: any = [];
+  const groupedCriteriaList = _.groupBy(criteriaList, "type");
+  Object.entries(groupedCriteriaList).map(([key, value]) => {
+    criteriaSectionList.push({ title: key, data: value });
+  });
 
   const renderSectionHeader = ({ section }: any) => {
     return (
@@ -64,6 +69,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
                 },
               ]}
             >
+              {/* // item criteria return with URL and should replace the url and tags */}
               {item.criteria!.replace(/(<([^>]+)>)/gi, "")}
             </Text>
             <Text
@@ -75,25 +81,11 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
                 },
               ]}
             >
-              {item.requirement!.replace(/(<([^>]+)>)/gi, "")}
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              flex: 1,
-            }}
-          >
-            <Text
-              numberOfLines={1}
-              style={[
-                criteriaSheetStyles.statusText,
-                {
-                  color: theme.colorNeutral6,
-                },
-              ]}
-            >
-              {item.status!.replace(/(<([^>]+)>)/gi, "")}
+              {/* // requirement and status return with URL and should replace the url and tags */}
+              {item.requirement!.replace(/(<([^>]+)>)/gi)}
+              {item.status!.replace(/(<([^>]+)>)/gi) !== ""
+                ? " | " + item.status!.replace(/(<([^>]+)>)/gi)
+                : ""}
             </Text>
           </View>
         </View>
@@ -149,17 +141,6 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
     );
   };
 
-  var criteriaSectionList: any = [];
-  var groupedCriteriaList = _.groupBy(criteriaList, "type");
-  Object.entries(groupedCriteriaList).map(([key, value]) => {
-    criteriaSectionList.push({ title: key, data: value });
-  });
-
-  const bottomDrawerRef = useRef<any>(null);
-
-  useEffect(() => {
-    bottomDrawerRef.current.snapTo(1);
-  }, []);
   return (
     <Modal transparent={true}>
       <View style={criteriaSheetStyles.transparentView}>
@@ -168,8 +149,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
           renderContent={renderContent}
           renderHeader={renderBottomSheetHeader}
           enabledGestureInteraction={true}
-          enabledBottomInitialAnimation= {true}
-          ref={bottomDrawerRef}
+          enabledBottomInitialAnimation={true}
         />
       </View>
     </Modal>

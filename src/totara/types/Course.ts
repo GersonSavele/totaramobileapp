@@ -21,6 +21,8 @@
  */
 
 import {Section} from "./LearningItem"
+import { Completion } from "./Completion"
+import { Criteria } from "./Criteria"
 
 export interface Course {
   id: number,
@@ -38,16 +40,6 @@ export interface Course {
   itemtype: "course"
 }
 
-export interface Completion {
-  id: number,
-  statuskey:  "" | "completeviarpl" | "complete" | "inprogress" | "notyetstarted"
-  progress: number,
-  timecompleted?: Date,
-  grademax :number,
-  gradefinal : number
-
-}
-
 export interface CourseSets {
   id: number;
   label: string;
@@ -58,16 +50,5 @@ export interface CourseSets {
 interface NextSet {
   nextID: number;
   operator?: string;
-}
-
-export interface Criteria {
-  id : number
-  type? : string,
-  typeaggregation? : string
-  criteria? : string,
-  requirement? : string
-  status? : string
-  complete : boolean
-  completiondate? : Date
 }
 

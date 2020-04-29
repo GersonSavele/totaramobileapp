@@ -17,7 +17,7 @@ Please contact [sales@totaralearning.com] for more information.
 
 import { StyleSheet, Dimensions } from "react-native";
 import { normalize } from "@totara/theme";
-import { headerViewSize, marginStyle } from "@totara/theme/constants";
+import {  marginStyle } from "@totara/theme/constants";
 
 const criteriaSheetStyles = StyleSheet.create({
   transparentView: {
@@ -137,8 +137,8 @@ const headerViewStyles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: normalize(headerViewSize.header_view_max_height),
-    minHeight: normalize(headerViewSize.header_view_min_height),
+    maxHeight: normalize(320),
+    minHeight: normalize(300),
   },
   itemImage: {
     flex: 2.5,

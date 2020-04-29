@@ -35,7 +35,9 @@ import { ThemeContext } from "@totara/theme";
 import { Certification, Program, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
 import { headerViewStyles } from "./styles"
-import { headerViewSize } from "@totara/theme/constants"
+
+
+
 type HeaderViewProps = {
   details: Certification | Program | Course;
   navigation: NavigationParams;
@@ -165,7 +167,7 @@ const HeaderView = ({
   return (
     <View style={headerViewStyles.container}>
       <ParallaxScrollView
-        parallaxHeaderHeight={normalize(headerViewSize.header_view_min_height)}
+        parallaxHeaderHeight={normalize(300)}
         renderBackground={backgroundViewRender}
         tabBar={renderNavigationTab}
         titleBar={renderNavigationTitle}
