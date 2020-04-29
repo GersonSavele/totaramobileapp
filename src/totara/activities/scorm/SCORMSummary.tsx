@@ -22,7 +22,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   ScrollView,
-  StyleSheet,
   Text,
   View,
   Modal,
@@ -30,7 +29,6 @@ import {
   TextStyle,
   TouchableOpacity,
 } from "react-native";
-import * as RNFS from "react-native-fs";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { Activity } from "@totara/types";
@@ -50,7 +48,6 @@ import {
   getOfflineScormPackageName,
   removeScormPackageData,
 } from "./offline";
-import { Log } from "@totara/lib";
 import ResourceManager, {
   ResourceObserver,
 } from "@totara/core/ResourceManager/ResourceManager";
@@ -63,7 +60,14 @@ import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";
-import { getDataForScormSummary, onTapDownloadResource } from "@totara/lib/scorm";
+import {
+  getDataForScormSummary,
+  onTapDownloadResource,
+  onTapNewAttempt,
+  onTapContinueLastAttempt,
+  scormSummarySection,
+  onTapViewAllAttempts,
+} from "@totara/lib/scorm";
 import { scormSummaryStyles } from "@totara/theme/scorm";
 
 type SummaryProps = {
@@ -76,11 +80,6 @@ type SummaryProps = {
     data: any
   ) => void;
 };
-
-enum Section {
-  None,
-  Attempts,
-}
 
 const gridStyle = (theme: AppliedTheme) => [
   theme.textB1,
@@ -126,7 +125,7 @@ const SCORMSummary = ({
     authContextState: { appState },
   } = useContext(AuthContext);
   const activitySheet = useContext(ActivitySheetContext);
-  const [section, setSection] = useState(Section.None);
+  const [section, setSection] = useState(scormSummarySection.none);
   const [theme] = useContext(ThemeContext);
   const [downloadManager] = useState<ResourceManager>(
     ResourceManager.getInstance()
@@ -152,13 +151,12 @@ const SCORMSummary = ({
   };
 
   const setResource = (resource?: IResource) => {
-    let onResourceTap: (() => void) | undefined = 
-      onTapDownloadResource({
-        callback: syncOfflineScormBundle,
-        downloadManager,
-        scormBundle,
-        apiKey: appState?.apiKey,
-      });
+    let onResourceTap: (() => void) | undefined = onTapDownloadResource({
+      callback: syncOfflineScormBundle,
+      downloadManager,
+      scormBundle,
+      apiKey: appState && appState.apiKey,
+    });
     if (resource) {
       switch (resource.state) {
         case ResourceState.Downloading:
@@ -211,66 +209,6 @@ const SCORMSummary = ({
           setResource(resourceFile);
           break;
         }
-      }
-    }
-  };
-
-  const onTapNewAttempt = () => {
-    if (scormBundle && scormBundle.scorm) {
-      if (!isUserOnline) {
-        let newAttempt =
-          scormBundle.scorm && scormBundle.scorm.attemptsCurrent
-            ? scormBundle.scorm.attemptsCurrent
-            : 0;
-        if (
-          scormBundle.offlineActivity &&
-          scormBundle.offlineActivity.attempts
-        ) {
-          newAttempt = newAttempt + scormBundle.offlineActivity.attempts.length;
-        }
-        newAttempt = newAttempt + 1;
-        setActionWithData(SCORMActivityType.Offline, scormBundle, {
-          attempt: newAttempt,
-        });
-      } else {
-        if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
-          setActionWithData(SCORMActivityType.Online, scormBundle, {
-            url: scormBundle.scorm.launchUrl,
-          });
-        } else {
-          Log.debug("Launch url cannot find. ", scormBundle.scorm.launchUrl);
-        }
-      }
-    } else {
-      Log.debug("Scorm data could not found", scormBundle);
-    }
-  };
-
-  const onTapViewAllAttempts = () => {
-    if (
-      scormBundle &&
-      scormBundle.scorm &&
-      (scormBundle.scorm.attempts ||
-        (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts))
-    ) {
-      setSection(Section.Attempts);
-    } else {
-      Log.debug("Scorm data could not found", scormBundle);
-    }
-  };
-
-  const onTapContinueLastAttempt = () => {
-    if (isUserOnline) {
-      if (scormBundle) {
-        if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
-          setActionWithData(SCORMActivityType.Online, scormBundle, {
-            url: scormBundle.scorm.repeatUrl,
-          });
-        } else {
-          Log.debug("Repeat url cannot find. ", scormBundle.scorm.repeatUrl);
-        }
-      } else {
-        Log.debug("Scorm data could not found", scormBundle);
       }
     }
   };
@@ -376,7 +314,12 @@ const SCORMSummary = ({
                 textId={"scorm.summary.grade.method"}
                 value={attemptGrade}
               />
-              <TouchableOpacity onPress={onTapViewAllAttempts}>
+              <TouchableOpacity
+                onPress={onTapViewAllAttempts({
+                  scormBundle,
+                  callback: setSection,
+                })}
+              >
                 <GridLabelValue
                   theme={theme}
                   textId={"scorm.summary.grade.reported"}
@@ -409,13 +352,25 @@ const SCORMSummary = ({
             primary={
               actionPrimary && {
                 ...actionPrimary,
-                ...{ action: onTapNewAttempt },
+                ...{
+                  action: onTapNewAttempt({
+                    scormBundle,
+                    isUserOnline,
+                    callback: setActionWithData,
+                  }),
+                },
               }
             }
             secondary={
               actionSecondary && {
                 ...actionSecondary,
-                ...{ action: onTapContinueLastAttempt },
+                ...{
+                  action: onTapContinueLastAttempt({
+                    scormBundle,
+                    isUserOnline,
+                    callback: setActionWithData,
+                  }),
+                },
               }
             }
           />
@@ -423,10 +378,10 @@ const SCORMSummary = ({
         <SafeAreaView />
       </View>
       {scormBundle && (
-        <Modal visible={section === Section.Attempts}>
+        <Modal visible={section === scormSummarySection.attempts}>
           <SCORMAttempts
             scormBundle={scormBundle}
-            onExit={() => setSection(Section.None)}
+            onExit={() => setSection(scormSummarySection.none)}
           />
         </Modal>
       )}

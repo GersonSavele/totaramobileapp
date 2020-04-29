@@ -17,14 +17,21 @@ import moment from "moment";
 import * as RNFS from "react-native-fs";
 import { AttemptGrade, Grade, ScormBundle } from "@totara/types/Scorm";
 import { translate } from "@totara/locale";
-import { calculatedAttemptsGrade, getOfflineScormPackageName } from "@totara/activities/scorm/offline/OfflineSCORMController";
+import {
+  calculatedAttemptsGrade,
+  getOfflineScormPackageName,
+} from "@totara/activities/scorm/offline/OfflineSCORMController";
 import { DATE_FORMAT, DATE_FORMAT_FULL, SECONDS_FORMAT } from "./Constant";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { Log } from "@totara/lib";
-import {
-  OfflineScormServerRoot,
-} from "@totara/activities/scorm/offline";
+import { OfflineScormServerRoot } from "@totara/activities/scorm/offline";
+import { SCORMActivityType } from "@totara/activities/scorm/SCORMActivity";
+import { showMessage } from "./tools";
 
+enum scormSummarySection {
+  none,
+  attempts,
+}
 const getDataForScormSummary = (
   isUserOnline: boolean,
   scormBundle?: ScormBundle
@@ -134,13 +141,18 @@ const getDataForScormSummary = (
 };
 
 type OnTapProps = {
-  callback: (scormId: string, data: any) => Promise<void>,
-  downloadManager: ResourceManager,
-  scormBundle: ScormBundle | undefined,
-  apiKey?: string
-}
+  callback: (scormId: string, data: any) => Promise<void>;
+  downloadManager: ResourceManager;
+  scormBundle: ScormBundle | undefined;
+  apiKey?: string;
+};
 
-const onTapDownloadResource = ({ callback, downloadManager, scormBundle, apiKey }: OnTapProps) => () => {
+const onTapDownloadResource = ({
+  callback,
+  downloadManager,
+  scormBundle,
+  apiKey,
+}: OnTapProps) => () => {
   if (!downloadManager) return;
   if (scormBundle) {
     const _url = scormBundle!.scorm.packageUrl!;
@@ -173,5 +185,94 @@ const onTapDownloadResource = ({ callback, downloadManager, scormBundle, apiKey 
   }
 };
 
+type OnTapAttemptProps = {
+  callback: (action: SCORMActivityType, bundle: ScormBundle, data: any) => void;
+  scormBundle: ScormBundle | undefined;
+  isUserOnline: boolean;
+};
 
-export { getDataForScormSummary, onTapDownloadResource };
+const onTapNewAttempt = ({
+  scormBundle,
+  isUserOnline,
+  callback,
+}: OnTapAttemptProps) => () => {
+  if (scormBundle && scormBundle.scorm) {
+    if (!isUserOnline) {
+      let newAttempt =
+        scormBundle.scorm && scormBundle.scorm.attemptsCurrent
+          ? scormBundle.scorm.attemptsCurrent
+          : 0;
+      if (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts) {
+        newAttempt = newAttempt + scormBundle.offlineActivity.attempts.length;
+      }
+      newAttempt = newAttempt + 1;
+      callback(SCORMActivityType.Offline, scormBundle, {
+        attempt: newAttempt,
+      });
+    } else {
+      if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
+        callback(SCORMActivityType.Online, scormBundle, {
+          url: scormBundle.scorm.launchUrl,
+        });
+      } else {
+        Log.warn("Launch url cannot find. ", scormBundle.scorm.launchUrl);
+        showMessage(translate("general.error_unknown"), () => null);
+      }
+    }
+  } else {
+    Log.warn("Scorm data could not found", scormBundle);
+    showMessage(translate("general.error_unknown"), () => null);
+  }
+};
+
+const onTapContinueLastAttempt = ({
+  scormBundle,
+  isUserOnline,
+  callback,
+}: OnTapAttemptProps) => () => {
+  if (isUserOnline) {
+    if (scormBundle) {
+      if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
+        callback(SCORMActivityType.Online, scormBundle, {
+          url: scormBundle.scorm.repeatUrl,
+        });
+      } else {
+        Log.warn("Repeat url cannot find. ", scormBundle.scorm.repeatUrl);
+        showMessage(translate("general.error_unknown"), () => null);
+      }
+    } else {
+      Log.warn("Scorm data could not found", scormBundle);
+      showMessage(translate("general.error_unknown"), () => null);
+    }
+  }
+};
+
+type OnTapViewAttemptsProps = {
+  callback: React.Dispatch<React.SetStateAction<scormSummarySection>>;
+  scormBundle: ScormBundle | undefined;
+};
+const onTapViewAllAttempts = ({
+  scormBundle,
+  callback,
+}: OnTapViewAttemptsProps) => () => {
+  if (
+    scormBundle &&
+    scormBundle.scorm &&
+    (scormBundle.scorm.attempts ||
+      (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts))
+  ) {
+    callback(scormSummarySection.attempts);
+  } else {
+    Log.warn("Scorm data could not found", scormBundle);
+    showMessage(translate("general.error_unknown"), () => null);
+  }
+};
+
+export {
+  getDataForScormSummary,
+  onTapDownloadResource,
+  onTapNewAttempt,
+  onTapContinueLastAttempt,
+  onTapViewAllAttempts,
+  scormSummarySection,
+};
