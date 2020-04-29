@@ -64,6 +64,7 @@ import SCORMAttempts from "./SCORMAttempts";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";
 import { getDataForScormSummary, onTapDownloadResource } from "@totara/lib/scorm";
+import { scormSummaryStyles } from "@totara/theme/scorm";
 
 type SummaryProps = {
   activity: Activity;
@@ -94,7 +95,7 @@ type GridLabelProps = {
 };
 
 const GridLabelValue = ({ theme, textId, value, children }: GridLabelProps) => (
-  <View style={styles.sectionField}>
+  <View style={scormSummaryStyles.sectionField}>
     <Text style={theme.textB1}>{translate(textId)}</Text>
     <View style={{ flexDirection: "row" }}>
       <Text style={gridStyle(theme)}>{value}</Text>
@@ -109,7 +110,7 @@ type GridTitleProps = {
   style?: TextStyle;
 };
 const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
-  <Text style={[theme.textH2, styles.sectionBreak, style]}>
+  <Text style={[theme.textH2, scormSummaryStyles.sectionBreak, style]}>
     {translate(textId)}
   </Text>
 );
@@ -338,7 +339,7 @@ const SCORMSummary = ({
 
   return (
     <>
-      <View style={styles.expanded}>
+      <View style={scormSummaryStyles.expanded}>
         {shouldShowAction && lastsyncText && (
           <NotificationView mode={"info"} text={lastsyncText} icon={"bolt"} />
         )}
@@ -433,30 +434,6 @@ const SCORMSummary = ({
   );
 };
 
-const styles = StyleSheet.create({
-  expanded: {
-    flex: 1,
-    flexDirection: "column",
-  },
-  sectionBreak: {
-    flexDirection: "row",
-    paddingTop: 8,
-    paddingBottom: 8,
-    justifyContent: "space-between",
-  },
-  sectionField: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 8,
-  },
-  attemptContainer: {
-    paddingHorizontal: gutter,
-    paddingVertical: 8,
-    flexDirection: "column",
-    alignItems: "stretch",
-  },
-});
-
 type PropsAttempt = {
   primary: PropsInfo | undefined;
   secondary: PropsInfo | undefined;
@@ -469,7 +446,7 @@ type PropsInfo = {
 
 const AttemptController = ({ primary, secondary }: PropsAttempt) => {
   return (
-    <View style={stylesAction.attemptContainer}>
+    <View style={scormSummaryStyles.attemptContainer}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         {secondary && (
           <SecondaryButton
@@ -489,14 +466,5 @@ const AttemptController = ({ primary, secondary }: PropsAttempt) => {
     </View>
   );
 };
-
-const stylesAction = StyleSheet.create({
-  attemptContainer: {
-    paddingHorizontal: gutter,
-    paddingVertical: 8,
-    flexDirection: "column",
-    alignItems: "stretch",
-  },
-});
 
 export default SCORMSummary;
