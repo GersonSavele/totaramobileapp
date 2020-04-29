@@ -29,6 +29,8 @@ import {
   clearSyncedScormCommit,
 } from "./OfflineSCORMController";
 import { Log } from "@totara/lib";
+import { translate } from '@totara/locale';
+import { showMessage } from "@totara/lib/tools";
 
 const SaveAttemptMutation = gql`
   mutation mod_scorm_save_offline_attempts(
@@ -58,8 +60,6 @@ const AttemptSynchronizer = () => {
   useEffect(() => {
     if (
       netInfo.type !== "unknown" &&
-      netInfo.isInternetReachable !== undefined &&
-      netInfo.isInternetReachable !== null &&
       netInfo.isInternetReachable
     ) {
       if (unSyncData && unSyncData.length && unSyncData.length > 0) {
@@ -69,6 +69,7 @@ const AttemptSynchronizer = () => {
           })
           .catch((e) => {
             Log.error("Data sync error: ", e);
+            showMessage(translate('general.error_unknown'), () => null);
           });
       } else {
         getOfflineScormCommits().then((data) => {
