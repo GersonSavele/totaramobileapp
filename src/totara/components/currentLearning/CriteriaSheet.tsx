@@ -56,6 +56,11 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
   };
 
   const renderItem = ({ item }: any) => {
+    let description = item.requirement!.replace(/(<([^>]+)>)/gi,"");
+    {/* // requirement and status return with URL and should replace the url and tags */}
+    if (item.status!.replace(/(<([^>]+)>)/gi, "") !== undefined && item.status!.replace(/(<([^>]+)>)/gi,"") !== ""){
+      description += " | "+ item.status!.replace(/(<([^>]+)>)/gi,"")
+    }
     return (
       <View style={criteriaSheetStyles.renderOuterViewWrap}>
         <View style={criteriaSheetStyles.renderInnerViewWrap}>
@@ -81,11 +86,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
                 },
               ]}
             >
-              {/* // requirement and status return with URL and should replace the url and tags */}
-              {item.requirement!.replace(/(<([^>]+)>)/gi)}
-              {item.status!.replace(/(<([^>]+)>)/gi) !== ""
-                ? " | " + item.status!.replace(/(<([^>]+)>)/gi)
-                : ""}
+              {description}
             </Text>
           </View>
         </View>
