@@ -63,7 +63,7 @@ import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";
-import { getDataForScormSummary } from "@totara/lib/Scorm";
+import { getDataForScormSummary } from "@totara/lib/scorm-new";
 
 type Props = {
   activity: Activity;
