@@ -14,7 +14,7 @@
  */
 import moment from "moment";
 
-import { getDataForScormSummary } from "../Scorm";
+import { getDataForScormSummary } from "../scorm";
 import { translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/constants";
 

@@ -15,6 +15,7 @@
 
 import React from "react";
 import { View } from "react-native";
+import PropTypes from "prop-types";
 
 import { ActivityType } from "@totara/types";
 import { ActivitySheetContext, ActivitySheet } from "./ActivitySheet";
@@ -37,6 +38,8 @@ type ActivityFeedbackProps = {
 };
 
 class ActivitySheetWrapper extends React.Component {
+  public static propTypes = { children: PropTypes.node };
+
   state = initialState;
 
   setCurrentActivity(activity: ActivityType) {
