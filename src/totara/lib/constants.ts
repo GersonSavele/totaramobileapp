@@ -41,7 +41,7 @@ const SCREEN_WIDTH_LARGE = "large";
 const SCREEN_WIDTH_MEDIUM = "medium";
 const SCREEN_WIDTH_SMALL = "small";
 
-enum lessonStatus {
+enum scormLessonStatus {
   passed = "passed",
   completed = "completed",
   failed = "failed",
@@ -82,7 +82,7 @@ export {
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,
   SCREEN_WIDTH_SMALL,
-  lessonStatus,
+  scormLessonStatus,
   scormActivityType,
   scormSummarySection,
   connectivity,

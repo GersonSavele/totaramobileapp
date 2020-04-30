@@ -36,7 +36,7 @@ import {
   getAllCommits,
   clearCommit,
 } from "./StorageHelper";
-import { lessonStatus } from "@totara/lib/constants";
+import { scormLessonStatus } from "@totara/lib/constants";
 
 const getOfflineScormPackageName = (scormId: string) =>
   `OfflineSCORM_${scormId}`;
@@ -60,8 +60,8 @@ const getGradeForAttempt = (
       );
       const lessonStatus = get(cmi, "core.lesson_status", "").toLowerCase();
       if (
-        lessonStatus === lessonStatus.passed ||
-        lessonStatus === lessonStatus.completed
+        lessonStatus === scormLessonStatus.passed ||
+        lessonStatus === scormLessonStatus.completed
       ) {
         completedScos = completedScos + 1;
       }

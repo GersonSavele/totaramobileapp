@@ -19,7 +19,7 @@ import {
   calculatedAttemptsGrade,
 } from "../OfflineSCORMController";
 import { Grade, AttemptGrade } from "@totara/types/scorm";
-import { lessonStatus } from "@totara/lib/constants";
+import { scormLessonStatus } from "@totara/lib/constants";
 
 describe("getGradeForAttempt", () => {
   it("return correct values for complete `attemptcmi`", () => {
@@ -29,7 +29,7 @@ describe("getGradeForAttempt", () => {
           score: {
             raw: 4,
           },
-          lesson_status: lessonStatus.completed,
+          lesson_status: scormLessonStatus.completed,
         },
       },
       id2: {
@@ -37,7 +37,7 @@ describe("getGradeForAttempt", () => {
           score: {
             raw: 2,
           },
-          lesson_status: lessonStatus.failed,
+          lesson_status: scormLessonStatus.failed,
         },
       },
       id3: {
@@ -45,7 +45,7 @@ describe("getGradeForAttempt", () => {
           score: {
             raw: 8,
           },
-          lesson_status: lessonStatus.passed,
+          lesson_status: scormLessonStatus.passed,
         },
       },
     });
@@ -59,12 +59,12 @@ describe("getGradeForAttempt", () => {
     const blankAttemptCmi = eval({
       id1: {
         core: {
-          lesson_status: lessonStatus.completed,
+          lesson_status: scormLessonStatus.completed,
         },
       },
       id2: {
         core: {
-          lesson_status: lessonStatus.failed,
+          lesson_status: scormLessonStatus.failed,
         },
       },
       id3: {},
