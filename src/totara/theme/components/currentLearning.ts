@@ -17,7 +17,7 @@ Please contact [sales@totaralearning.com] for more information.
 
 import { StyleSheet, Dimensions } from "react-native";
 import { normalize } from "@totara/theme";
-import { marginStyle, paddingStyle } from "@totara/theme/constants";
+import { margins, paddings } from "@totara/theme/constants";
 
 const criteriaSheetStyles = StyleSheet.create({
   transparentView: {
@@ -26,8 +26,8 @@ const criteriaSheetStyles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   renderOuterViewWrap: {
-    marginHorizontal: marginStyle.marginL,
-    marginVertical: marginStyle.marginS,
+    marginHorizontal: margins.marginL,
+    marginVertical: margins.marginS,
   },
   renderInnerViewWrap: {
     flexDirection: "row",
@@ -40,8 +40,8 @@ const criteriaSheetStyles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   requirementText: {
-    marginTop: marginStyle.marginS,
-    marginBottom: marginStyle.marginL,
+    marginTop: margins.marginS,
+    marginBottom: margins.marginL,
     fontSize: normalize(15),
     fontWeight: "normal",
     opacity: 0.48,
@@ -59,7 +59,7 @@ const criteriaSheetStyles = StyleSheet.create({
     borderTopRightRadius: 16,
   },
   headerCloseButtonWrap: {
-    marginTop: marginStyle.marginS,
+    marginTop: margins.marginS,
     height: 48,
     width: 48,
     alignItems: "center",
@@ -73,8 +73,8 @@ const criteriaSheetStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: marginStyle.margin2XL,
-    marginTop: marginStyle.marginS,
+    marginRight: margins.margin2XL,
+    marginTop: margins.marginS,
   },
   indicatorWrap: {
     width: "20%",
@@ -96,10 +96,10 @@ const criteriaSheetStyles = StyleSheet.create({
   },
   container: {
     alignItems: "flex-start",
-    margin: marginStyle.marginL,
+    margin: margins.marginL,
   },
   titleWrap: {
-    margin: marginStyle.marginL,
+    margin: margins.marginL,
   },
   sectionList: {
     marginBottom: "5%",
@@ -154,13 +154,13 @@ const headerViewStyles = StyleSheet.create({
     borderWidth: 1,
     alignSelf: "flex-start",
     alignItems: "center",
-    marginTop: marginStyle.marginS,
+    marginTop: margins.marginS,
   },
   tabBarContainer: {
     flex: 0.4,
     maxHeight: 50,
     minHeight: 48,
-    marginTop: marginStyle.marginL,
+    marginTop: margins.marginL,
   },
   tabNav: {
     flexDirection: "row",
@@ -175,15 +175,15 @@ const headerViewStyles = StyleSheet.create({
     fontWeight: "500",
     fontStyle: "normal",
     textAlign: "center",
-    paddingLeft: paddingStyle.paddingL,
-    paddingRight: paddingStyle.paddingL,
-    paddingTop: paddingStyle.paddingXS,
-    paddingBottom: paddingStyle.paddingXS,
+    paddingLeft: paddings.paddingL,
+    paddingRight: paddings.paddingL,
+    paddingTop: paddings.paddingXS,
+    paddingBottom: paddings.paddingXS,
   },
   tabSelected: {
     height: "100%",
     justifyContent: "center",
-    paddingHorizontal: paddingStyle.margin2XL,
+    paddingHorizontal: paddings.margin2XL,
   },
 });
 

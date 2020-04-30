@@ -15,12 +15,12 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-const textStyle = {
+const textAttributes = {
   bold: "bold",
   strong: "600",
   short_code_prefix: "0x",
 };
-const marginStyle = {
+const margins = {
   marginXS: 6,
   marginS: 8,
   marginM: 12,
@@ -29,7 +29,7 @@ const marginStyle = {
   margin2XL: 32,
   margin3XL: 48,
 };
-const paddingStyle = {
+const paddings = {
   paddingXS: 2,
   paddingS: 4,
   paddingM: 6,
@@ -38,4 +38,4 @@ const paddingStyle = {
   margin2XL: 24,
   margin3XL: 32,
 };
-export { textStyle, marginStyle, paddingStyle };
+export { textAttributes, margins, paddings };

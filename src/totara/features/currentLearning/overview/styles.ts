@@ -17,7 +17,7 @@ Please contact [sales@totaralearning.com] for more information.
 
 import { StyleSheet, Dimensions } from "react-native";
 import { normalize } from "@totara/theme";
-import { marginStyle } from "@totara/theme/constants";
+import { margins } from "@totara/theme/constants";
 
 const detailsViewStyle = StyleSheet.create({
   container: {
@@ -25,7 +25,7 @@ const detailsViewStyle = StyleSheet.create({
     shadowOpacity: 0.16,
     shadowRadius: normalize(14),
     borderWidth: 0.5,
-    marginVertical: marginStyle.marginL,
+    marginVertical: margins.marginL,
     shadowOffset: {
       width: 0,
       height: 10,
@@ -38,15 +38,15 @@ const detailsViewStyle = StyleSheet.create({
     justifyContent: "center",
   },
   innerViewWrap: {
-    marginHorizontal: marginStyle.marginL,
+    marginHorizontal: margins.marginL,
     alignContent: "center",
     justifyContent: "center",
   },
   carouselTextContainer: {
     justifyContent: "center",
     flexDirection: "column",
-    marginVertical: marginStyle.marginXL,
-    marginHorizontal: marginStyle.marginL,
+    marginVertical: margins.marginXL,
+    marginHorizontal: margins.marginL,
     maxWidth: Dimensions.get("window").width * 0.6,
   },
   gradeMaxTextWrap: {
@@ -59,21 +59,21 @@ const detailsViewStyle = StyleSheet.create({
     alignSelf: "center",
   },
   listItemSeparator: {
-    margin: marginStyle.marginXS,
+    margin: margins.marginXS,
   },
   summarySeparator: {
     height: 0.5,
-    margin: marginStyle.marginM,
+    margin: margins.marginM,
   },
   summaryContainer: {
-    marginLeft: marginStyle.marginL,
-    marginRight: marginStyle.marginS,
+    marginLeft: margins.marginL,
+    marginRight: margins.marginS,
   },
   summaryTitleWrap: {
-    marginTop: marginStyle.marginS,
+    marginTop: margins.marginS,
   },
   summaryViewWrap: {
-    marginTop: marginStyle.marginL,
+    marginTop: margins.marginL,
   },
 });
 

@@ -17,18 +17,18 @@ Please contact [sales@totaralearning.com] for more information.
 
 import { StyleSheet } from "react-native";
 import { normalize } from "@totara/theme";
-import { marginStyle } from "@totara/theme/constants";
+import { margins } from "@totara/theme/constants";
 
 const textStyles = StyleSheet.create({
   container: {
-    margin: marginStyle.marginL,
+    margin: margins.marginL,
     justifyContent: "center",
   },
   labelTextName: {
     textAlign: "left",
     fontSize: normalize(17),
     fontWeight: "bold",
-    marginBottom: marginStyle.marginS
+    marginBottom: margins.marginS
   },
   labelTextDescription: {
     textAlign: "left",

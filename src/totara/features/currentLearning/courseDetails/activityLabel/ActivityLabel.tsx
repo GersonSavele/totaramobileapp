@@ -27,7 +27,7 @@ import { normalize } from "@totara/theme";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { VideoController } from "@totara/components/currentLearning/courseDetails";
 import { Image } from "react-native-animatable";
-import { textStyle, marginStyle } from "@totara/theme/constants";
+import { textAttributes, margins } from "@totara/theme/constants";
 import { TextTypeLabel } from "./types";
 
 type ActivityLabelProps = {
@@ -143,7 +143,7 @@ const LabelConfiguration = ({
 
 const AttachmentTypeLabel = ({ label = {} }: ActivityLabelProps) => {
   return (
-    <View style={{ marginBottom: marginStyle.marginM }}>
+    <View style={{ marginBottom: margins.marginM }}>
       <ImageTypeLabel image={label.attrs.filename}></ImageTypeLabel>
     </View>
   );
@@ -152,7 +152,7 @@ const AttachmentTypeLabel = ({ label = {} }: ActivityLabelProps) => {
 const VideoTypeLabel = ({ label = {}, theme }: ActivityLabelProps) => {
   return (
     <View>
-      <View style={{ marginBottom: marginStyle.marginXS }}>
+      <View style={{ marginBottom: margins.marginXS }}>
         <View>
           <Text
             numberOfLines={2}
@@ -219,8 +219,8 @@ const BulletListTypeLabel = ({ children, theme }: LabelConfigProps) => {
       <Text
         style={{
           color: theme.colorNeutral6,
-          marginRight: marginStyle.marginM,
-          marginTop: marginStyle.marginS,
+          marginRight: margins.marginM,
+          marginTop: margins.marginS,
         }}
       >
         •
@@ -254,7 +254,7 @@ const ListItemTypeLabel = ({ children }: ChildProps) => {
 
 const EmojiTypeLabel = ({ label }: any = {}) => {
   let emo = String.fromCodePoint(
-    parseInt(textStyle.short_code_prefix + label.attrs.shortcode)
+    parseInt(textAttributes.short_code_prefix + label.attrs.shortcode)
   );
   return (
     <View style={styles.textWrapViewContainer}>
@@ -314,12 +314,12 @@ const RulerTypeLabel = ({ label = {}, theme }: LabelConfigProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: marginStyle.marginL,
-    marginVertical: marginStyle.marginXS,
+    marginHorizontal: margins.marginL,
+    marginVertical: margins.marginXS,
     justifyContent: "center",
   },
   labelWrap: {
-    marginVertical: marginStyle.marginXS,
+    marginVertical: margins.marginXS,
     justifyContent: "center",
   },
   labelText: {
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
   },
   videoTitle: {
     fontWeight: "bold",
-    marginBottom: marginStyle.margin2XL,
+    marginBottom: margins.margin2XL,
   },
   videoContainer: {
     height: normalize(200),
@@ -341,22 +341,22 @@ const styles = StyleSheet.create({
   videoDescription: {
     fontSize: normalize(17),
     fontWeight: "normal",
-    marginTop: marginStyle.margin2XL,
+    marginTop: margins.margin2XL,
     fontStyle: "normal",
   },
   listContainer: {
     flexDirection: "row",
-    marginRight: marginStyle.marginM,
+    marginRight: margins.marginM,
     justifyContent: "flex-start",
   },
   orderNumberListText: {
-    marginRight: marginStyle.marginM,
-    marginVertical: marginStyle.marginM,
+    marginRight: margins.marginM,
+    marginVertical: margins.marginM,
     fontSize: normalize(17),
   },
   textWrapViewContainer: {
     justifyContent: "center",
-    marginBottom: marginStyle.margin2XL,
+    marginBottom: margins.margin2XL,
   },
   imageContainer: {
     height: normalize(200),
