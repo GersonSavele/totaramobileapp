@@ -36,8 +36,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { ActivityRestrictionView } from "@totara/components/currentLearning/courseDetails";
 import { AppliedTheme } from "@totara/theme/Theme";
-import ActivityLabel from "./ActivityLabel";
 import { ActivitySheetContext } from "@totara/activities/ActivitySheet";
+import { TextTypeLabel } from "./activityLabel/types";
 // To Do : refetch props should be removed from going nested component(MOB-381)
 
 type ActivityProps = {
@@ -123,7 +123,7 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
               fontWeight: "bold",
               color: theme.colorNeutral6,
               flex: 3,
-              fontSize: normalize(17)
+              fontSize: normalize(22)
             }
           ]}
         >
@@ -159,7 +159,7 @@ const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
     <View style={styles.headerViewContainer}>
       <Text
         numberOfLines={1}
-        style={[theme.textH3, { fontWeight: "bold", fontSize: normalize(17) }]}
+        style={[theme.textH3, { fontWeight: "bold", fontSize: normalize(22) }]}
       >
         {title}
       </Text>
@@ -301,7 +301,7 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
 const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
   return item.modtype == "label" ? (
     <View style={{ backgroundColor: theme.colorSecondary1 }}>
-      <ActivityLabel label={item} theme={theme}></ActivityLabel>
+      <TextTypeLabel label={item} theme={theme}></TextTypeLabel>
     </View>
   ) : (
     <View
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
   headerViewContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: 50,
+    height: normalize(58),
     marginLeft: 16,
     marginRight: 16,
     alignItems: "center"
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   activityBodyContainer: {
-    height: 60,
+    height: normalize(68),
     justifyContent: "flex-start",
     flexDirection: "row",
     alignItems: "center",

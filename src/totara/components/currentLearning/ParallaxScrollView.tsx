@@ -35,7 +35,7 @@ type Props = {
   fadeOutForeground?: boolean;
   fadeOutBackground?: boolean;
   onChangeHeaderVisibility: (value: number) => void;
-  parallaxHeaderHeight: number | 300;
+  parallaxHeaderHeight: number;
   renderBackground: () => {};
   titleBar: () => {};
   tabBar: () => {};

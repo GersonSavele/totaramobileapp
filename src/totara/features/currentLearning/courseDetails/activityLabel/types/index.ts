@@ -15,27 +15,6 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-const textStyle = {
-  bold: "bold",
-  strong: "600",
-  short_code_prefix: "0x",
-};
-const marginStyle = {
-  marginXS: 6,
-  marginS: 8,
-  marginM: 12,
-  marginL: 16,
-  marginXL: 24,
-  margin2XL: 32,
-  margin3XL: 48,
-};
-const paddingStyle = {
-  paddingXS: 2,
-  paddingS: 4,
-  paddingM: 6,
-  paddingL: 8,
-  marginXL: 16,
-  margin2XL: 24,
-  margin3XL: 32,
-};
-export { textStyle, marginStyle, paddingStyle };
+import TextTypeLabel from "./TextTypeLabel";
+
+export { TextTypeLabel };

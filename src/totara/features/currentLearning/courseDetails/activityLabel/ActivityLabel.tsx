@@ -25,10 +25,10 @@ import React, { ReactNode } from "react";
 import { map } from "lodash";
 import { normalize } from "@totara/theme";
 import { AppliedTheme } from "@totara/theme/Theme";
-import { labelDoc } from "../mock-data";
 import { VideoController } from "@totara/components/currentLearning/courseDetails";
 import { Image } from "react-native-animatable";
 import { textStyle, marginStyle } from "@totara/theme/constants";
+import { TextTypeLabel } from "./types";
 
 type ActivityLabelProps = {
   label: any;
@@ -50,7 +50,7 @@ type ChildProps = {
 };
 
 const ActivityLabel = ({ label = {}, theme }: ActivityLabelProps) => {
-  return <View style={styles.container}>{itemsExtract(labelDoc, theme)}</View>;
+  return <View style={styles.container}>{itemsExtract(label, theme)}</View>;
 };
 
 const itemsExtract = (label: any = {}, theme: AppliedTheme) => {
@@ -145,35 +145,6 @@ const AttachmentTypeLabel = ({ label = {} }: ActivityLabelProps) => {
   return (
     <View style={{ marginBottom: marginStyle.marginM }}>
       <ImageTypeLabel image={label.attrs.filename}></ImageTypeLabel>
-    </View>
-  );
-};
-
-const TextTypeLabel = ({ label = {}, theme }: ActivityLabelProps) => {
-  var fontWeight, fontStyle;
-  if (Array.isArray(label.marks) && label.marks.length) {
-    map(label.marks, (mark: any) => {
-      if (mark.type == textStyle.bold) {
-        fontWeight = textStyle.bold;
-      } else if (mark.type == textStyle.strong) {
-        fontWeight = textStyle.fontWeight_strong;
-      }
-    });
-  }
-  return (
-    <View style={styles.textLabeWrap}>
-      <Text
-        style={[
-          styles.labelText,
-          {
-            fontWeight: fontWeight,
-            color: theme.colorNeutral6,
-            fontStyle: fontStyle,
-          },
-        ]}
-      >
-        {label.text}
-      </Text>
     </View>
   );
 };
@@ -345,7 +316,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: marginStyle.marginL,
     marginVertical: marginStyle.marginXS,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   labelWrap: {
     marginVertical: marginStyle.marginXS,

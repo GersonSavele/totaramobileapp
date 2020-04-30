@@ -67,11 +67,11 @@ const HeaderView = ({
           <View
             style={[
               headerViewStyles.LearningTypeLabelWrap,
-              { borderColor: theme.colorNeutral6 }
+              { borderColor: theme.colorNeutral7 }
             ]}
           >
             <Text
-              style={[headerViewStyles.programLabelText, { color: theme.colorNeutral6 }]}
+              style={[headerViewStyles.programLabelText, { color: theme.colorNeutral7 }]}
             >
             {badgeTitle}
             </Text>
@@ -83,12 +83,13 @@ const HeaderView = ({
 
   const renderNavigationTab = () => {
     return (
+      <View style={[
+        { backgroundColor: theme.colorNeutral2 }
+      ]}>
       <View
         style={[
-          headerViewStyles.tabBarContainer,
-          { backgroundColor: theme.colorNeutral2 }
-        ]}
-      >
+          headerViewStyles.tabBarContainer
+        ]}>
         <View style={headerViewStyles.tabNav}>
           <TouchableOpacity
             style={
@@ -107,9 +108,9 @@ const HeaderView = ({
             <Text
               style={
                 showOverview
-                  ? [theme.textB3, { fontWeight: "400" }]
+                  ? [theme.textB2, { fontWeight: "400" }]
                   : [
-                      theme.textB3,
+                      theme.textB2,
                       { color: theme.colorNeutral6, fontWeight: "400" }
                     ]
               }
@@ -134,9 +135,9 @@ const HeaderView = ({
             <Text
               style={
                 !showOverview
-                  ? [theme.textB3, { fontWeight: "400" }]
+                  ? [theme.textB2, { fontWeight: "400" }]
                   : [
-                      theme.textB3,
+                      theme.textB2,
                       {
                         color: theme.colorNeutral6,
                         fontWeight: "400"
@@ -148,6 +149,7 @@ const HeaderView = ({
             </Text>
           </TouchableOpacity>
         </View>
+      </View>
       </View>
     );
   };
@@ -167,7 +169,7 @@ const HeaderView = ({
   return (
     <View style={headerViewStyles.container}>
       <ParallaxScrollView
-        parallaxHeaderHeight={normalize(300)}
+        parallaxHeaderHeight={normalize(260)}
         renderBackground={backgroundViewRender}
         tabBar={renderNavigationTab}
         titleBar={renderNavigationTitle}

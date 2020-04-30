@@ -17,7 +17,7 @@ Please contact [sales@totaralearning.com] for more information.
 
 import { StyleSheet, Dimensions } from "react-native";
 import { normalize } from "@totara/theme";
-import {  marginStyle } from "@totara/theme/constants";
+import {  marginStyle, paddingStyle } from "@totara/theme/constants";
 
 const criteriaSheetStyles = StyleSheet.create({
   transparentView: {
@@ -133,12 +133,12 @@ const parallaxScrollViewStyles = StyleSheet.create({
 
 const headerViewStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   headerContainer: {
     flex: 1,
-    maxHeight: normalize(320),
-    minHeight: normalize(300),
+    maxHeight: normalize(280),
+    minHeight: normalize(260),
   },
   itemImage: {
     flex: 2.5,
@@ -149,16 +149,18 @@ const headerViewStyles = StyleSheet.create({
     minHeight: normalize(60),
   },
   LearningTypeLabelWrap: {
-    borderRadius: 8,
+    borderRadius: 10,
     borderStyle: "solid",
     borderWidth: 1,
     alignSelf: "flex-start",
     alignItems: "center",
+    marginTop: marginStyle.marginS
   },
   tabBarContainer: {
     flex: 0.4,
     maxHeight: 50,
-    minHeight: 44,
+    minHeight: 48,
+    marginTop: marginStyle.marginL
   },
   tabNav: {
     flexDirection: "row",
@@ -169,20 +171,19 @@ const headerViewStyles = StyleSheet.create({
     flex: 1,
   },
   programLabelText: {
-    fontSize: normalize(10),
+    fontSize: normalize(11),
     fontWeight: "500",
     fontStyle: "normal",
     textAlign: "center",
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 1,
-    paddingBottom: 2,
+    paddingLeft: paddingStyle.paddingL,
+    paddingRight: paddingStyle.paddingL,
+    paddingTop: paddingStyle.paddingXS,
+    paddingBottom: paddingStyle.paddingXS,
   },
   tabSelected: {
     height: "100%",
     justifyContent: "center",
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingHorizontal: paddingStyle.margin2XL
   },
 });
 
