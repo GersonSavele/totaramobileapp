@@ -42,7 +42,7 @@ import {
 } from "@totara/components";
 import { gutter, ThemeContext } from "@totara/theme";
 import {
-  OfflineScormServerRoot,
+  offlineScormServerRoot,
   getOfflineScormBundle,
   syncOfflineScormBundle,
   getOfflineScormPackageName,
@@ -182,7 +182,7 @@ const SCORMSummary = ({
       switch (resourceFile.state) {
         case ResourceState.Completed: {
           const offlineSCORMPackageName = getOfflineScormPackageName(resoureId);
-          const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
+          const _unzipPath = `${offlineScormServerRoot}/${offlineSCORMPackageName}`;
           if (resourceFile.unzipPath === _unzipPath) {
             const _offlineScormData = {
               scorm: scormBundle.scorm,

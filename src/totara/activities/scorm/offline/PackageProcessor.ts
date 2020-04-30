@@ -26,86 +26,125 @@ const dom = require("xmldom").DOMParser;
 import { Sco, Package } from "@totara/types/Scorm";
 
 const getScormPackageData = (packagPath: string) => {
-    const manifestFilePath = `${packagPath}/imsmanifest.xml`;
-    return RNFS.readFile(manifestFilePath)
-        .then(xmlcontent => {
-            const xmlData = new dom().parseFromString(xmlcontent);
-            const scosList = getScosDataForPackage(xmlData);
-            const defaultSco = getInitialScormLoadData(xmlData);
-            return {scos: scosList, defaultSco: defaultSco} as Package;
-        });
+  const manifestFilePath = `${packagPath}/imsmanifest.xml`;
+  return RNFS.readFile(manifestFilePath).then((xmlcontent) => {
+    const xmlData = new dom().parseFromString(xmlcontent);
+    const scosList = getScosDataForPackage(xmlData);
+    const defaultSco = getInitialScormLoadData(xmlData);
+    return { scos: scosList, defaultSco: defaultSco } as Package;
+  });
 };
 
 const getScosDataForPackage = (manifestDom: any) => {
-    const resultOrganisations = xpath.evaluate(
-        "//*[local-name(.)='organizations']/*[local-name()='organization']/@identifier",
-        manifestDom, // contextNode
-        null, // namespaceResolver
-        xpath.XPathResult.ANY_TYPE, // resultType
-        null, // result
-    );
+  const resultOrganisations = xpath.evaluate(
+    "//*[local-name(.)='organizations']/*[local-name()='organization']/@identifier",
+    manifestDom, // contextNode
+    null, // namespaceResolver
+    xpath.XPathResult.ANY_TYPE, // resultType
+    null // result
+  );
 
-    let organizationNode = resultOrganisations.iterateNext();
-    let scos = [];
-    while (organizationNode) {
-        const itemResult = xpath.evaluate("//*[local-name(.)='item']/@identifier", organizationNode, null, xpath.XPathResult.ANY_TYPE, null);
-        let itemNode = itemResult.iterateNext();
-        while (itemNode) {
-            const valLaunchUrl = getDefaultScoLaunchUrl(manifestDom, itemNode.nodeValue);
-            const sco: Sco = {id: itemNode.nodeValue, organizationId:  organizationNode.nodeValue, launchSrc: valLaunchUrl};
-            scos.push(sco);
-            itemNode = itemResult.iterateNext();
-        }
-        organizationNode = resultOrganisations.iterateNext();
+  let organizationNode = resultOrganisations.iterateNext();
+  let scos = [];
+  while (organizationNode) {
+    const itemResult = xpath.evaluate(
+      "//*[local-name(.)='item']/@identifier",
+      organizationNode,
+      null,
+      xpath.XPathResult.ANY_TYPE,
+      null
+    );
+    let itemNode = itemResult.iterateNext();
+    while (itemNode) {
+      const valLaunchUrl = getDefaultScoLaunchUrl(
+        manifestDom,
+        itemNode.nodeValue
+      );
+      const sco: Sco = {
+        id: itemNode.nodeValue,
+        organizationId: organizationNode.nodeValue,
+        launchSrc: valLaunchUrl,
+      };
+      scos.push(sco);
+      itemNode = itemResult.iterateNext();
     }
-    return scos;
+    organizationNode = resultOrganisations.iterateNext();
+  }
+  return scos;
 };
 
 const getInitialScormLoadData = (manifestDom: any) => {
-    const defaultOrgizationsNode = xpath.select("//*[local-name(.)='organizations']/*[local-name(.)='organization']/@identifier", manifestDom);
-    let defaultOrgizationId: string | null = null;
-    if (defaultOrgizationsNode && defaultOrgizationsNode.length > 0) {
-        if (defaultOrgizationsNode.length === 1) {
-            defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
-        } else {
-            const defaultOrgNode = xpath.select("//*[local-name(.)='organizations']/@default", manifestDom);
-            if (defaultOrgNode.length === 1 && defaultOrgNode[0].nodeValue) {
-                const tempDefaultOrg = defaultOrgNode[0].nodeValue;
-                for (let i = 0; i < defaultOrgizationsNode.length; i++) {
-                    if (defaultOrgizationsNode[i].nodeValue === tempDefaultOrg) {
-                        defaultOrgizationId = tempDefaultOrg;
-                        break;
-                    }
-                }
-            }
-            if (!defaultOrgizationId) {
-                defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
-            }
+  const defaultOrgizationsNode = xpath.select(
+    "//*[local-name(.)='organizations']/*[local-name(.)='organization']/@identifier",
+    manifestDom
+  );
+  let defaultOrgizationId: string | null = null;
+  if (defaultOrgizationsNode && defaultOrgizationsNode.length > 0) {
+    if (defaultOrgizationsNode.length === 1) {
+      defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
+    } else {
+      const defaultOrgNode = xpath.select(
+        "//*[local-name(.)='organizations']/@default",
+        manifestDom
+      );
+      if (defaultOrgNode.length === 1 && defaultOrgNode[0].nodeValue) {
+        const tempDefaultOrg = defaultOrgNode[0].nodeValue;
+        for (let i = 0; i < defaultOrgizationsNode.length; i++) {
+          if (defaultOrgizationsNode[i].nodeValue === tempDefaultOrg) {
+            defaultOrgizationId = tempDefaultOrg;
+            break;
+          }
         }
+      }
+      if (!defaultOrgizationId) {
+        defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
+      }
     }
-    let defaultScoId: string | null = null;
-    let defaultLaunchSrc: string | null = null;
-    if (defaultOrgizationId !== null) {
-        const firstScoOnDefaultOrgNode = xpath.select("//*[local-name(.)='organizations']/*[local-name(.)='organization' and @identifier='"+defaultOrgizationId+"']/*[local-name(.)='item'][1]", manifestDom);
-        if (firstScoOnDefaultOrgNode && firstScoOnDefaultOrgNode.length === 1) {
-            defaultScoId = firstScoOnDefaultOrgNode[0].getAttribute('identifier');
-            defaultLaunchSrc = getDefaultScoLaunchUrl(manifestDom, defaultScoId!);
-        }
+  }
+  let defaultScoId: string | null = null;
+  let defaultLaunchSrc: string | null = null;
+  if (defaultOrgizationId !== null) {
+    const firstScoOnDefaultOrgNode = xpath.select(
+      "//*[local-name(.)='organizations']/*[local-name(.)='organization' and @identifier='" +
+        defaultOrgizationId +
+        "']/*[local-name(.)='item'][1]",
+      manifestDom
+    );
+    if (firstScoOnDefaultOrgNode && firstScoOnDefaultOrgNode.length === 1) {
+      defaultScoId = firstScoOnDefaultOrgNode[0].getAttribute("identifier");
+      defaultLaunchSrc = getDefaultScoLaunchUrl(manifestDom, defaultScoId!);
     }
-    return {id: defaultScoId, organizationId: defaultOrgizationId, launchSrc: defaultLaunchSrc};
+  }
+  return {
+    id: defaultScoId,
+    organizationId: defaultOrgizationId,
+    launchSrc: defaultLaunchSrc,
+  };
 };
 
-const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string)  => {
-    const scoNode = xpath.select("//*[local-name(.)='item' and @identifier ='"+scoId+"']", manifestDom);
-    if (scoNode.length === 1) {
-        const resouceId = scoNode[0].getAttribute('identifierref');
-        const queryString = scoNode[0].getAttribute('parameters');
-        const resourceNode = xpath.select("//*[local-name(.)='resources']/*[local-name(.)='resource' and @identifier ='"+resouceId+"']", manifestDom);
-        if (resourceNode && resourceNode.length === 1 && resourceNode[0].getAttribute('href') ) {
-            return `${resourceNode[0].getAttribute('href')}${queryString}`;
-        }
+const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string) => {
+  const scoNode = xpath.select(
+    "//*[local-name(.)='item' and @identifier ='" + scoId + "']",
+    manifestDom
+  );
+  if (scoNode.length === 1) {
+    const resouceId = scoNode[0].getAttribute("identifierref");
+    const queryString = scoNode[0].getAttribute("parameters");
+    const resourceNode = xpath.select(
+      "//*[local-name(.)='resources']/*[local-name(.)='resource' and @identifier ='" +
+        resouceId +
+        "']",
+      manifestDom
+    );
+    if (
+      resourceNode &&
+      resourceNode.length === 1 &&
+      resourceNode[0].getAttribute("href")
+    ) {
+      return `${resourceNode[0].getAttribute("href")}${queryString}`;
     }
-    return null;
+  }
+  return null;
 };
 
 export { getScormPackageData };

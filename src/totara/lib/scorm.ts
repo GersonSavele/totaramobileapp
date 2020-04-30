@@ -14,7 +14,6 @@
  */
 
 import moment from "moment";
-import * as RNFS from "react-native-fs";
 import { AttemptGrade, Grade, ScormBundle } from "@totara/types/Scorm";
 import { translate } from "@totara/locale";
 import {
@@ -30,8 +29,9 @@ import {
 } from "./constants";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { Log } from "@totara/lib";
-import { OfflineScormServerRoot } from "@totara/activities/scorm/offline";
+import { offlineScormServerRoot } from "@totara/activities/scorm/offline";
 import { showMessage } from "./tools";
+import { scormZipPackagePath } from "@totara/activities/scorm/offline/SCORMFileHandler";
 
 const getDataForScormSummary = (
   isUserOnline: boolean,
@@ -160,10 +160,9 @@ const onTapDownloadResource = ({
     const _name = scormBundle!.scorm.name;
     const _scormId = scormBundle!.scorm.id;
 
-    const SCORMPackageDownloadPath = `${RNFS.DocumentDirectoryPath}`;
     const offlineSCORMPackageName = getOfflineScormPackageName(_scormId);
-    const _targetZipFile = `${SCORMPackageDownloadPath}/${offlineSCORMPackageName}.zip`;
-    const _unzipPath = `${OfflineScormServerRoot}/${offlineSCORMPackageName}`;
+    const _targetZipFile = `${scormZipPackagePath}/${offlineSCORMPackageName}.zip`;
+    const _unzipPath = `${offlineScormServerRoot}/${offlineSCORMPackageName}`;
     const _downloadId = _scormId.toString();
     if (apiKey) {
       downloadManager.download(

@@ -28,7 +28,7 @@ import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORM
 import {
   initializeScormWebplayer,
   isScormPlayerInitialized,
-  OfflineScormServerRoot,
+  offlineScormServerRoot,
 } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline";
 import { ScormBundle, Package, Sco } from "@totara/types/Scorm";
@@ -129,7 +129,7 @@ const OfflineSCORMActivity = ({ scormBundle, attempt, scoid }: Props) => {
   };
 
   const setupOfflineScormPlayer = () => {
-    const _serverPath = OfflineScormServerRoot;
+    const _serverPath = offlineScormServerRoot;
     return isScormPlayerInitialized().then((isInit) => {
       if (isInit) {
         return _serverPath;
@@ -157,7 +157,7 @@ const OfflineSCORMActivity = ({ scormBundle, attempt, scoid }: Props) => {
         return Promise.resolve(packageData);
       } else {
         return getScormPackageData(
-          `${OfflineScormServerRoot}/${packageData.path}`
+          `${offlineScormServerRoot}/${packageData.path}`
         ).then((data) => {
           const tmpPackageData = { ...packageData, ...data } as Package;
           return tmpPackageData;

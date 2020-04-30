@@ -24,14 +24,14 @@ import { unzip } from "react-native-zip-archive";
 import { Platform } from "react-native";
 
 import { config } from "@totara/lib";
-
-const OfflineScormServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
+const scormZipPackagePath = `${RNFS.DocumentDirectoryPath}`;
+const offlineScormServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
 
 const unzipScormPackageToServer = (
   packageName: string,
   packageSource: string
 ) => {
-  const destinationUnzip = `${OfflineScormServerRoot}/${packageName}`;
+  const destinationUnzip = `${offlineScormServerRoot}/${packageName}`;
   return unzip(packageSource, destinationUnzip).then((resultDestination) => {
     if (resultDestination) {
       return packageName;
@@ -47,13 +47,13 @@ const getPackageContent = () =>
     : RNFS.readDir(SCORMPlayerPackagePath);
 
 const initializeScormWebplayer = () => {
-  return RNFS.mkdir(OfflineScormServerRoot).then(() => {
+  return RNFS.mkdir(offlineScormServerRoot).then(() => {
     return getPackageContent().then((result) => {
       if (result && result.length) {
         let promisesToCopyFiles = [];
         for (let i = 0; i < result.length; i++) {
           const itemPathFrom = result[i].path;
-          const itemPathTo = `${OfflineScormServerRoot}/${result[i].name}`;
+          const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
           const copyAssetsToPlayer = () =>
             Platform.OS === "android"
               ? RNFS.copyFileAssets(itemPathFrom, itemPathTo)
@@ -86,7 +86,7 @@ const isScormPlayerInitialized = () => {
     if (result && result.length) {
       let promisesToExistFiles = [];
       for (let i = 0; i < result.length; i++) {
-        const itemPathTo = `${OfflineScormServerRoot}/${result[i].name}`;
+        const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
         promisesToExistFiles.push(RNFS.exists(itemPathTo));
       }
       return Promise.all(promisesToExistFiles).then((resultExistsFiles) => {
@@ -114,5 +114,6 @@ export {
   initializeScormWebplayer,
   unzipScormPackageToServer,
   isScormPlayerInitialized,
-  OfflineScormServerRoot,
+  offlineScormServerRoot,
+  scormZipPackagePath,
 };
