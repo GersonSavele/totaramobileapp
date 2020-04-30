@@ -60,102 +60,14 @@ type contextData = {
   setActivityResource: (data: any) => void;
 };
 
-export const ActivitySheetContext = React.createContext<contextData>({
+const ActivitySheetContext = React.createContext<contextData>({
   setCurrentActivity: () => {},
   setFeedback: () => {},
   setOnClose: () => {},
   setActivityResource: () => {},
 });
 
-export const ActivitySheetConsumer = ActivitySheetContext.Consumer;
-
-const initialState = {
-  currentActivity: undefined,
-  onClose: () => {},
-  show: false,
-  feedback: undefined,
-  resource: undefined,
-};
-
-export class ActivitySheetProvider extends React.Component {
-  state = initialState;
-
-  setCurrentActivity(activity: ActivityType) {
-    this.setState({
-      currentActivity: activity,
-      show: true,
-    });
-  }
-
-  setOnClose(onAfterCloseFunc: () => {}) {
-    this.setState({
-      onClose: onAfterCloseFunc,
-    });
-  }
-
-  setFeedback(data: ActivityFeedbackProps) {
-    this.setState({
-      feedback: data,
-    });
-  }
-
-  onClose = () => {
-    const newState =
-      this.state.feedback && this.state.currentActivity
-        ? { ...initialState, ...{ feedback: this.state.feedback } }
-        : initialState;
-    this.state.onClose();
-    this.setState(newState);
-  };
-
-  setActivityResource(data: any) {
-    this.setState({
-      resource: data,
-    });
-  }
-
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <ActivitySheetContext.Provider
-          value={{
-            ...this.state,
-            setCurrentActivity: (activity: ActivityType) =>
-              this.setCurrentActivity(activity),
-            setFeedback: (data: ActivityFeedbackProps) =>
-              this.setFeedback(data),
-            setOnClose: (onCloseCallback: () => {}) =>
-              this.setOnClose(onCloseCallback),
-            setActivityResource: (data: any) => this.setActivityResource(data),
-          }}
-        >
-          {/* eslint-disable-next-line react/prop-types */}
-          {this.props.children}
-          {this.state.currentActivity && (
-            <ActivitySheet
-              currentActivity={this.state.currentActivity!}
-              onClose={this.onClose}
-              show={this.state.show}
-              resource={this.state.resource}
-            />
-          )}
-          {this.state.feedback &&
-            this.state.feedback!.activity &&
-            this.state.currentActivity === undefined && (
-              <ActivityFeedback
-                activity={this.state.feedback!.activity}
-                data={this.state.feedback!.data}
-                onClose={this.onClose}
-                onPrimary={() => {
-                  this.setCurrentActivity(this.state.feedback!.activity);
-                }}
-              />
-            )}
-        </ActivitySheetContext.Provider>
-      </View>
-    );
-  }
-}
+const ActivitySheetConsumer = ActivitySheetContext.Consumer;
 
 const ActivitySheet = ({ currentActivity, onClose, resource }: Props) => {
   const [theme] = useContext(ThemeContext);
@@ -209,3 +121,5 @@ const ActivityWrapper = ({ activity }: { activity: ActivityType }) => {
       return <WebviewActivity activity={activity} />;
   }
 };
+
+export { ActivitySheetConsumer, ActivitySheet, ActivitySheetContext };

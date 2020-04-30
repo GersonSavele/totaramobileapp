@@ -19,10 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import {ActivitySheetProvider, ActivitySheetConsumer} from "./ActivitySheet";
+import { ActivitySheetConsumer } from "./ActivitySheet";
+import { Activity } from "./ActivitySheetWrapper";
 
-
-export {
-  ActivitySheetProvider,
-  ActivitySheetConsumer
-}
+export { Activity, ActivitySheetConsumer };

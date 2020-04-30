@@ -20,9 +20,9 @@
  *
  */
 
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import { createAppContainer } from "react-navigation";
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { library } from "@fortawesome/fontawesome-svg-core";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Sentry from "@sentry/react-native";
 
@@ -59,28 +59,26 @@ import {
   faCaretDown,
   faTrashAlt,
   faCaretRight,
-  faBolt
-
+  faBolt,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { ActivitySheetProvider } from "@totara/activities";
+import { Activity } from "@totara/activities";
 import { AuthProvider } from "@totara/core/AuthProvider";
 import { AuthFlow } from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
-import {FeatureNavigator} from "@totara/features";
+import { FeatureNavigator } from "@totara/features";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
-import {AttemptSynchronizer} from "@totara/activities/scorm/offline";
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { config } from "@totara/lib";
 
 Sentry.init({
   dsn: config.sentryUri,
 });
 
-const App : () => React$Node = () => {
-
+const App: () => React$Node = () => {
   // constructor() {
   //   super();
   // }
@@ -126,26 +124,25 @@ const App : () => React$Node = () => {
   //   );
   // }
 
-  useEffect(()=>{
+  useEffect(() => {
     new ResourceManager().init();
   });
-
 
   return (
     <AuthProvider asyncStorage={AsyncStorage}>
       <ThemeProvider>
         <SafeAreaProvider>
           <AuthFlow>
-            <ActivitySheetProvider>
+            <Activity>
               <AppContainer />
-            </ActivitySheetProvider>
+            </Activity>
             <AdditionalAction />
             <AppModal />
             <AttemptSynchronizer />
           </AuthFlow>
         </SafeAreaProvider>
       </ThemeProvider>
-     </AuthProvider>
+    </AuthProvider>
   );
 };
 
@@ -153,11 +150,8 @@ const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
   const AppMainNavigation = createAppContainer(FeatureNavigator());
 
-  return (
-      <AppMainNavigation screenProps={{ theme: theme }}/>
-  );
+  return <AppMainNavigation screenProps={{ theme: theme }} />;
 };
-
 
 // init is needeed for FA to bundle the only needed icons
 // https://github.com/FortAwesome/react-native-fontawesome#build-a-library-to-reference-icons-throughout-your-app-more-conveniently
