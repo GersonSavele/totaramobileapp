@@ -39,7 +39,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import { Course, StatusKey } from "@totara/types";
-import { ActivityList } from "./ActivityList";
+import  ActivityList  from "./ActivityList";
 import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/constants";

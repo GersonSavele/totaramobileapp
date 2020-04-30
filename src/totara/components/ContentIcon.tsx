@@ -20,7 +20,7 @@
  *
  */
 
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import React from "react";
 
 import { normalize } from "@totara/theme";
@@ -28,24 +28,31 @@ import { normalize } from "@totara/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type Props = {
-  icon: string
-  iconSize: number
-  size: number,
-  backgroundColor?:string,
-  iconColor?:string
-  borderColor?: string,
-  isDashedCircle? :boolean
-}
+  icon?: any;
+  iconSize: number;
+  size: number;
+  backgroundColor?: string;
+  iconColor?: string;
+  borderColor?: string;
+  fontAwesomeIcon?: boolean;
+};
 
-const ContentIcon = ({icon, iconSize, size, backgroundColor, iconColor, borderColor, isDashedCircle }: Props) => {
-
+const ContentIcon = ({
+  icon,
+  iconSize,
+  size,
+  backgroundColor,
+  iconColor,
+  borderColor,
+  fontAwesomeIcon = true,
+}: Props) => {
   const styles = StyleSheet.create({
     iconCircle: {
       padding: 0,
       backgroundColor: backgroundColor == null ? "#3D444B" : backgroundColor,
       borderRadius: 25,
       borderWidth: 1,
-      borderStyle: isDashedCircle == true ?'dashed' : "solid",
+      borderStyle: "solid",
       borderColor: borderColor == null ? "#3D444B" : borderColor,
       height: normalize(size),
       width: normalize(size),
@@ -53,13 +60,21 @@ const ContentIcon = ({icon, iconSize, size, backgroundColor, iconColor, borderCo
       alignItems: "center",
     },
   });
-  
-  return(
+  return (
     <View style={styles.iconCircle}>
-      <FontAwesomeIcon icon={icon} size={iconSize} color={iconColor== null ?"white" : iconColor}/>
+      {icon ? (
+        fontAwesomeIcon ? (
+          <FontAwesomeIcon
+            icon={icon}
+            size={iconSize}
+            color={iconColor == null ? "white" : iconColor}
+          />
+        ) : (
+          <Image source={icon}></Image>
+        )
+      ) : null}
     </View>
   );
 };
 
-
-export default ContentIcon
+export default ContentIcon;

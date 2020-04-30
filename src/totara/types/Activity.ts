@@ -19,19 +19,28 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
+export enum CompletionTrack {
+  trackingManual = "tracking_manual",
+  trackingNone = "tracking_none",
+  trackingAutomatic = "tracking_automatic",
+}
+
+export enum CompletionStatus {
+  incomplete = "incomplete",
+  complete = "complete",
+  completePass = "complete_pass",
+  completeFail = "complete_fail",
+  unknown = "unknown",
+}
+
 export interface Activity {
   id: number;
-  instanceid: string;
+  instanceid: number;
   modtype: string;
   name: string;
   viewurl?: string;
-  completion?: "tracking_none" | "tracking_manual" | "tracking_automatic";
-  completionstatus?:
-    | "unknown"
-    | "incomplete"
-    | "complete"
-    | "complete_pass"
-    | "complete_fail";
+  completion?: CompletionTrack;
+  completionstatus?: CompletionStatus;
   available: boolean;
   availablereason?: string;
 }
