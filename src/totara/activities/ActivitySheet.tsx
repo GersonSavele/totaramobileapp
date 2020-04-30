@@ -24,7 +24,6 @@ import { View, Modal } from "react-native";
 
 import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
-import ActivityFeedback from "./ActivityFeedback";
 import SCORMActivity from "./scorm/SCORMActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { ThemeContext, baseSpace } from "@totara/theme";
@@ -67,8 +66,6 @@ const ActivitySheetContext = React.createContext<contextData>({
   setActivityResource: () => {},
 });
 
-const ActivitySheetConsumer = ActivitySheetContext.Consumer;
-
 const ActivitySheet = ({ currentActivity, onClose, resource }: Props) => {
   const [theme] = useContext(ThemeContext);
 
@@ -83,7 +80,7 @@ const ActivitySheet = ({ currentActivity, onClose, resource }: Props) => {
         color={theme.colorSecondary1}
         title={currentActivity.name}
         titleTextStyle={theme.textH4}
-        infoTextStyle={[theme.textSmall, { color: theme.textColorSubdued }]}
+        infoTextStyle={{ ...theme.textSmall, color: theme.textColorSubdued }}
         onClose={onClose}
       >
         {resource && (
@@ -122,4 +119,4 @@ const ActivityWrapper = ({ activity }: { activity: ActivityType }) => {
   }
 };
 
-export { ActivitySheetConsumer, ActivitySheet, ActivitySheetContext };
+export { ActivitySheet, ActivitySheetContext };

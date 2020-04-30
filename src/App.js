@@ -62,7 +62,7 @@ import {
   faBolt,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { Activity } from "@totara/activities";
+import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { AuthProvider } from "@totara/core/AuthProvider";
 import { AuthFlow } from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
@@ -133,9 +133,9 @@ const App: () => React$Node = () => {
       <ThemeProvider>
         <SafeAreaProvider>
           <AuthFlow>
-            <Activity>
+            <ActivitySheetWrapper>
               <AppContainer />
-            </Activity>
+            </ActivitySheetWrapper>
             <AdditionalAction />
             <AppModal />
             <AttemptSynchronizer />

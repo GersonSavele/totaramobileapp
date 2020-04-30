@@ -2,7 +2,8 @@ import {DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResul
 import {IResource, ResourceState} from "@totara/core/ResourceManager/Resource";
 import {unzip} from "react-native-zip-archive";
 import {DeleteStorage, RetrieveStorage, SaveStorage} from "@totara/core/ResourceManager/StorageManager";
-import {Log} from "@totara/lib";
+import {Log, showMessage} from "@totara/lib";
+import { translate } from "@totara/locale";
 
 export type ResourceObserver = (resourceFile: IResource) => void;
 
@@ -118,6 +119,7 @@ class ResourceManager{
             await unlink(toBeUpdated.unzipPath);
         }
         catch(error){
+            showMessage(translate('general.error_unknown'), () => null);
             Log.error(error.toString(),error);
         }
 

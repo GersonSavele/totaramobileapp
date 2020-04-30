@@ -36,7 +36,7 @@ type ActivityFeedbackProps = {
   data?: any;
 };
 
-class Activity extends React.Component {
+class ActivitySheetWrapper extends React.Component {
   state = initialState;
 
   setCurrentActivity(activity: ActivityType) {
@@ -115,4 +115,4 @@ class Activity extends React.Component {
   }
 }
 
-export { Activity };
+export default ActivitySheetWrapper;

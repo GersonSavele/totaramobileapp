@@ -30,7 +30,6 @@ import {
 import React, { useState, useContext } from "react";
 import { ContentIcon } from "@totara/components";
 import { normalize, ThemeContext } from "@totara/theme";
-import { ActivitySheetConsumer } from "@totara/activities";
 import { Section, Activity, ActivityType } from "@totara/types";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -38,6 +37,7 @@ import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { ActivityRestrictionView } from "@totara/components/currentLearning/courseDetails";
 import { AppliedTheme } from "@totara/theme/Theme";
 import ActivityLabel from "./ActivityLabel";
+import { ActivitySheetContext } from "@totara/activities/ActivitySheet";
 // To Do : refetch props should be removed from going nested component(MOB-381)
 
 type ActivityProps = {
@@ -308,7 +308,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
       style={[styles.accordionListWrap, { backgroundColor: theme.colorAccent }]}
     >
       <View>
-        <ActivitySheetConsumer>
+        <ActivitySheetContext.Consumer>
           {({ setCurrentActivity, setOnClose }) => {
             return (
               <TouchableOpacity
@@ -340,7 +340,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
               </TouchableOpacity>
             );
           }}
-        </ActivitySheetConsumer>
+        </ActivitySheetContext.Consumer>
         <View
           style={[
             styles.activityBodySeparator,
