@@ -24,12 +24,16 @@ import { ApolloLink } from "apollo-link";
 import { RetryLink } from "apollo-link-retry";
 import { HttpLink } from "apollo-link-http";
 import { onError, ErrorResponse } from "apollo-link-error";
-import { InMemoryCache, NormalizedCacheObject, defaultDataIdFromObject } from "apollo-cache-inmemory";
+import {
+  InMemoryCache,
+  NormalizedCacheObject,
+  defaultDataIdFromObject,
+} from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
 
 import { config, Log } from "@totara/lib";
-import { AUTHORIZATION } from "@totara/lib/Constant";
+import { AUTHORIZATION } from "@totara/lib/constants";
 import { LearningItem, AppState, SiteInfo } from "@totara/types";
 import { Setup } from "./AuthHook";
 import { ServerError } from "apollo-link-http-common";
@@ -57,29 +61,29 @@ import { ServerError } from "apollo-link-http-common";
  */
 export const registerDevice = (
   fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>,
-  asyncStorage: AsyncStorageStatic,
-) => async (
-  setup: Setup
-): Promise<AppState> => {
-
+  asyncStorage: AsyncStorageStatic
+) => async (setup: Setup): Promise<AppState> => {
   type ApiKey = {
-    apikey: string
+    apikey: string;
   };
 
   return fetchData<ApiKey>(config.deviceRegisterUri(setup.uri), {
-      method: "POST",
-      body: JSON.stringify({
-        setupsecret: setup.secret
-      })
-    }
-  ).then(apiKey => {
+    method: "POST",
+    body: JSON.stringify({
+      setupsecret: setup.secret,
+    }),
+  })
+    .then((apiKey) => {
       const siteInfoData = JSON.stringify(setup.siteInfo);
-      return Promise.all([asyncStorage.setItem("apiKey", apiKey.apikey), asyncStorage.setItem("siteInfo", siteInfoData), asyncStorage.setItem("host", setup.uri)])
-        .then(() => {
-          return apiKey;
-        })
-    }
-  ).then(apiKey => {
+      return Promise.all([
+        asyncStorage.setItem("apiKey", apiKey.apikey),
+        asyncStorage.setItem("siteInfo", siteInfoData),
+        asyncStorage.setItem("host", setup.uri),
+      ]).then(() => {
+        return apiKey;
+      });
+    })
+    .then((apiKey) => {
       const appState = {
         apiKey: apiKey.apikey,
         host: setup.uri,
@@ -87,16 +91,13 @@ export const registerDevice = (
       };
       Log.debug("appState done", appState);
       return appState;
-    }
-  ).catch(error => {
-    Log.error("unable to get apiKey", error);
-    throw error;
-  });
-
+    })
+    .catch((error) => {
+      Log.error("unable to get apiKey", error);
+      throw error;
+    });
 };
 
- 
-  
 /**
  *
  * During logOff this will clean up the device properly.  Will perform both local and remote
@@ -107,33 +108,43 @@ export const registerDevice = (
  *
  * @param deviceDelete - remote device deletion mutation
  */
-export const deviceCleanup = (
-  asyncStorage: AsyncStorageStatic
-) => async (
-  deviceDelete: () => Promise<{ data: { delete_device: boolean}}>
+export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
+  deviceDelete: () => Promise<{ data: { delete_device: boolean } }>
 ): Promise<boolean> => {
-
-    const remoteCleanUp = deviceDelete().then(({ data: { delete_device } }) => {
+  const remoteCleanUp = deviceDelete()
+    .then(({ data: { delete_device } }) => {
       Log.debug("Device deleted from server", delete_device);
-      if (!delete_device)
-        Log.warn("Unable to delete device from server");
-      return delete_device
-    }).catch(error => {
-      Log.warn("remote clean up had issues, but continue to do local clean up", error)
+      if (!delete_device) Log.warn("Unable to delete device from server");
+      return delete_device;
+    })
+    .catch((error) => {
+      Log.warn(
+        "remote clean up had issues, but continue to do local clean up",
+        error
+      );
     });
 
-    const localCleanUp = asyncStorage.clear().then(() => {
+  const localCleanUp = asyncStorage
+    .clear()
+    .then(() => {
       Log.debug("Cleared storage");
-    }).catch((error) => {
+    })
+    .catch((error) => {
       if (error.message.startsWith("Failed to delete storage directory")) {
-        Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
+        Log.warn(
+          "Fail to clear Async storage, this expected if user is sign out ",
+          error
+        );
       } else {
-        Log.warn("Error cleaning up device, but we still continue to logout the user", error);
+        Log.warn(
+          "Error cleaning up device, but we still continue to logout the user",
+          error
+        );
       }
     });
 
-    return Promise.all([localCleanUp, remoteCleanUp]).then(() => true);
-  };
+  return Promise.all([localCleanUp, remoteCleanUp]).then(() => true);
+};
 
 /**
  * Would get needed items from storage and return a valid state appState.
@@ -143,20 +154,24 @@ export const deviceCleanup = (
 export const bootstrap = (
   asyncStorage: AsyncStorageStatic
 ) => async (): Promise<AppState | undefined> => {
-    const [apiKey, host, siteInfo] = await Promise.all([asyncStorage.getItem("apiKey"), asyncStorage.getItem("host"), asyncStorage.getItem("siteInfo")]);
+  const [apiKey, host, siteInfo] = await Promise.all([
+    asyncStorage.getItem("apiKey"),
+    asyncStorage.getItem("host"),
+    asyncStorage.getItem("siteInfo"),
+  ]);
 
-    if (apiKey !== null && host !== null && siteInfo !== null) {
-      Log.info("bootstrap with existing apiKey and host");
-      return {
-        apiKey: apiKey,
-        host: host,
-        siteInfo: JSON.parse(siteInfo) as SiteInfo
-      }
-    } else {
-      Log.info("bootstrap with clean appState state");
-      return undefined;
-    }
-  };
+  if (apiKey !== null && host !== null && siteInfo !== null) {
+    Log.info("bootstrap with existing apiKey and host");
+    return {
+      apiKey: apiKey,
+      host: host,
+      siteInfo: JSON.parse(siteInfo) as SiteInfo,
+    };
+  } else {
+    Log.info("bootstrap with clean appState state");
+    return undefined;
+  }
+};
 
 /**
  * create an authenticated Apollo client that has the right credentials to the api
@@ -169,9 +184,9 @@ export const createApolloClient = (
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      [AUTHORIZATION]: `Bearer ${apiKey}`
+      [AUTHORIZATION]: `Bearer ${apiKey}`,
     },
-    http: { includeQuery: !config.mobileApi.persistentQuery }
+    http: { includeQuery: !config.mobileApi.persistentQuery },
   }));
 
   const logoutLink = onError(({ networkError }: ErrorResponse) => {
@@ -189,31 +204,32 @@ export const createApolloClient = (
       attempts: {
         max: 10,
         retryIf: (error) => {
-          if (error.statusCode && error.statusCode === 401 ) {
+          if (error.statusCode && error.statusCode === 401) {
             return false; // do not retry on 401 errors, fail fast
           } else {
-            return !!error
+            return !!error;
           }
-        }
-      }
+        },
+      },
     }),
     authLink,
-    httpLink
+    httpLink,
   ]);
 
   return new ApolloClient({
     link: link,
     cache: new InMemoryCache({
-      dataIdFromObject: object => {
+      dataIdFromObject: (object) => {
         switch (object.__typename) {
-          case 'totara_core_learning_item': {
-            const learningItem = object as unknown as LearningItem;
+          case "totara_core_learning_item": {
+            const learningItem = (object as unknown) as LearningItem;
             return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
           }
-          default: return defaultDataIdFromObject(object); // fall back to default for all other types
+          default:
+            return defaultDataIdFromObject(object); // fall back to default for all other types
         }
-      }
-    })
+      },
+    }),
   });
 };
 
@@ -238,13 +254,9 @@ export const createApolloClient = (
  */
 export const fetchData = (
   fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) => async <T>(
-  input: RequestInfo,
-  init?: RequestInit
-): Promise<T> => {
-
+) => async <T>(input: RequestInfo, init?: RequestInit): Promise<T> => {
   return fetch(input, init)
-    .then(response => {
+    .then((response) => {
       if (response.status === 200) {
         return response.json();
       } else {
@@ -252,15 +264,12 @@ export const fetchData = (
         throw new Error(response.status.toString());
       }
     })
-    .then(json => {
+    .then((json) => {
       Log.debug("json response", json);
-      if (json.data)
-        return (json.data as unknown) as T;
-      else
-        throw new Error("json expected to have data attribute");
+      if (json.data) return (json.data as unknown) as T;
+      else throw new Error("json expected to have data attribute");
     });
 };
-
 
 /**
  * When using async operation with React.useEffect use this wrapper
@@ -293,7 +302,7 @@ export const asyncEffectWrapper = <T>(
 
     if (useEffectIfTrue()) {
       asyncOperation()
-        .then(data => {
+        .then((data) => {
           if (!didCancel && data) {
             Log.debug("Not cancelled and successfully got data: ", data);
             dispatchOnSuccess(data);
@@ -301,9 +310,9 @@ export const asyncEffectWrapper = <T>(
             Log.warn("Cancelled and ignoring data: ", data);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           Log.debug("Error on asyncOperation with error: ", error);
-          dispatchOnFailure(error)
+          dispatchOnFailure(error);
         });
     }
 
@@ -312,4 +321,3 @@ export const asyncEffectWrapper = <T>(
     };
   };
 };
-

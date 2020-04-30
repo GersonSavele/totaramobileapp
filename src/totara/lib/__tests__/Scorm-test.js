@@ -16,7 +16,7 @@ import moment from "moment";
 
 import { getDataForScormSummary } from "../Scorm";
 import { translate } from "@totara/locale";
-import { DATE_FORMAT } from "@totara/lib/Constant";
+import { DATE_FORMAT } from "@totara/lib/constants";
 
 describe("getDataForScormSummary", () => {
   it("return correct object for valid `scormBundle` and default values for undefined ", () => {

@@ -22,7 +22,7 @@
 import { useReducer, useEffect } from "react";
 
 import { config, Log } from "@totara/lib";
-import { DEVICE_REGISTRATION } from "@totara/lib/Constant";
+import { DEVICE_REGISTRATION } from "@totara/lib/constants";
 import { asyncEffectWrapper } from "@totara/core/AuthRoutines";
 import { ManualFlowChildProps } from "../ManualFlowChildProps";
 
@@ -34,7 +34,7 @@ const initialState = {
   inputPasswordStatus: undefined,
   isRequestingLogin: false,
   errorStatusUnauthorized: false,
-  unhandleLoginError: undefined
+  unhandleLoginError: undefined,
 };
 
 export const useNativeFlow = (
@@ -43,7 +43,7 @@ export const useNativeFlow = (
   onSetupSecretSuccess,
   onSetupSecretFailure,
   siteUrl,
-  onManualFlowCancel
+  onManualFlowCancel,
 }: ManualFlowChildProps) => {
   const [nativeLoginState, dispatch] = useReducer(nativeReducer, initialState);
 
@@ -60,49 +60,48 @@ export const useNativeFlow = (
   };
 
   const onFocusInput = () => {
-    dispatch({ type: "resetform"});
+    dispatch({ type: "resetform" });
   };
 
-  const fetchLogin = () => fetchData<LoginSetup>(
-    config.nativeLoginSetupUri(siteUrl),
-    {
+  const fetchLogin = () =>
+    fetchData<LoginSetup>(config.nativeLoginSetupUri(siteUrl), {
       method: "GET",
-      headers: { [DEVICE_REGISTRATION]: config.userAgent }
-    }).then(loginSetup => {
-    // eslint-disable-next-line no-undef
-    return fetchData<SetupSecret>(
-      config.nativeLoginUri(siteUrl),
-      {
+      headers: { [DEVICE_REGISTRATION]: config.userAgent },
+    }).then((loginSetup) => {
+      // eslint-disable-next-line no-undef
+      return fetchData<SetupSecret>(config.nativeLoginUri(siteUrl), {
         method: "POST",
         body: JSON.stringify({
           loginsecret: loginSetup.loginsecret,
           username: nativeLoginState.inputUsername,
-          password: nativeLoginState.inputPassword
+          password: nativeLoginState.inputPassword,
         }),
-        headers: { [DEVICE_REGISTRATION]: config.userAgent }
+        headers: { [DEVICE_REGISTRATION]: config.userAgent },
       });
-
-  });
+    });
 
   useEffect(
     asyncEffectWrapper(
       fetchLogin,
       () => nativeLoginState.isRequestingLogin,
-      (setupSecret) => dispatch({ type: "setupsecret", payload: setupSecret.setupsecret }),
+      (setupSecret) =>
+        dispatch({ type: "setupsecret", payload: setupSecret.setupsecret }),
       (error) => {
         if (error.message === "401") {
-          dispatch({ type: "loginfailed"});
+          dispatch({ type: "loginfailed" });
         } else {
-          dispatch({ type: "unhandledloginfail", payload: error});
+          dispatch({ type: "unhandledloginfail", payload: error });
         }
       }
-    ), [nativeLoginState.isRequestingLogin]);
-    
-  if ( nativeLoginState.unhandleLoginError ) {
+    ),
+    [nativeLoginState.isRequestingLogin]
+  );
+
+  if (nativeLoginState.unhandleLoginError) {
     onSetupSecretFailure(nativeLoginState.unhandleLoginError);
   }
 
-  if ( nativeLoginState.setupSecret ) {
+  if (nativeLoginState.setupSecret) {
     Log.debug("Setup Secret", nativeLoginState.setupSecret);
     onSetupSecretSuccess(nativeLoginState.setupSecret);
   }
@@ -113,7 +112,7 @@ export const useNativeFlow = (
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,
-    onFocusInput
+    onFocusInput,
   };
 };
 
@@ -131,34 +130,34 @@ export const nativeReducer = (
     case "setupsecret":
       return {
         ...state,
-        setupSecret: action.payload as string
+        setupSecret: action.payload as string,
       };
     case "setusername":
       return {
         ...state,
-        inputUsername: action.payload as string
+        inputUsername: action.payload as string,
       };
     case "setpassword":
       return {
         ...state,
-        inputPassword: action.payload as string
+        inputPassword: action.payload as string,
       };
     case "loginfailed":
       return {
         ...state,
         isRequestingLogin: false,
-        errorStatusUnauthorized: true
+        errorStatusUnauthorized: true,
       };
     case "resetform":
       return {
         ...state,
-        errorStatusUnauthorized: false
+        errorStatusUnauthorized: false,
       };
     case "unhandledloginfail":
-        return {
-          ...state,
-          unhandleLoginError: action.payload as Error
-        };
+      return {
+        ...state,
+        unhandleLoginError: action.payload as Error,
+      };
     case "submit":
       if (
         state.inputUsername &&
@@ -172,35 +171,37 @@ export const nativeReducer = (
           inputUsernameStatus: undefined,
           inputPasswordStatus: undefined,
           errorStatusUnauthorized: false,
-          unhandleLoginError: undefined
+          unhandleLoginError: undefined,
         };
       } else {
         if (
           (!state.inputUsername || state.inputUsername == "") &&
-          (state.inputPassword && state.inputPassword != "")
+          state.inputPassword &&
+          state.inputPassword != ""
         ) {
           return {
             ...state,
             inputUsernameStatus: "error",
             inputPasswordStatus: undefined,
-            errorStatusUnauthorized: false
+            errorStatusUnauthorized: false,
           };
         } else if (
           (!state.inputPassword || state.inputPassword == "") &&
-          (state.inputUsername && state.inputUsername != "")
+          state.inputUsername &&
+          state.inputUsername != ""
         ) {
           return {
             ...state,
             inputUsernameStatus: undefined,
             inputPasswordStatus: "error",
-            errorStatusUnauthorized: false
+            errorStatusUnauthorized: false,
           };
         } else {
           return {
             ...state,
             inputUsernameStatus: "error",
             inputPasswordStatus: "error",
-            errorStatusUnauthorized: false
+            errorStatusUnauthorized: false,
           };
         }
       }
@@ -215,7 +216,7 @@ type NativeLoginState = {
   inputPasswordStatus?: "error" | undefined;
   isRequestingLogin: boolean;
   errorStatusUnauthorized: boolean;
-  unhandleLoginError?: Error
+  unhandleLoginError?: Error;
 };
 
 type Action = {

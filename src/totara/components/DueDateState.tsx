@@ -24,7 +24,7 @@ import moment from "moment";
 import React, { useContext } from "react";
 
 import { translate } from "@totara/locale";
-import { DATE_FORMAT } from "@totara/lib/Constant";
+import { DATE_FORMAT } from "@totara/lib/constants";
 import { ThemeContext } from "@totara/theme";
 
 /**
@@ -32,36 +32,38 @@ import { ThemeContext } from "@totara/theme";
  * it would also offer a button fire a function when state is on warning or danger
  */
 type Props = {
-  dueDate?: Date
-  dueDateState?: string
-}
+  dueDate?: Date;
+  dueDateState?: string;
+};
 
 const getDueDateModeStyle = (dueDateState?: string) => {
-  const [ theme ] = useContext(ThemeContext);
+  const [theme] = useContext(ThemeContext);
   switch (dueDateState) {
     case DueDateStateStatus.danger:
-      return  { backgroundColor: theme.colorAlert }
+      return { backgroundColor: theme.colorAlert };
     case DueDateStateStatus.warning:
-      return { backgroundColor: theme.colorWarning }
+      return { backgroundColor: theme.colorWarning };
     default:
-      return { backgroundColor: theme.colorInfo }
+      return { backgroundColor: theme.colorInfo };
   }
-}
- 
-const DueDateState = ({ dueDate, dueDateState }: Props) => {
+};
 
+const DueDateState = ({ dueDate, dueDateState }: Props) => {
   const dueDateModeStyle = getDueDateModeStyle(dueDateState);
-  const [ theme ] = useContext(ThemeContext);
+  const [theme] = useContext(ThemeContext);
 
   return (
     <View style={[styles.container, dueDateModeStyle]}>
-      <Text style={[theme.textB3, {color: theme.textColorLight}]}>
-        {(dueDateState && dueDateState == DueDateStateStatus.danger) ? translate("totara-component.overdue_by") : translate("totara-component.due_in")}&nbsp;
-        <Text style={{fontWeight: "bold"}}>
+      <Text style={[theme.textB3, { color: theme.textColorLight }]}>
+        {dueDateState && dueDateState == DueDateStateStatus.danger
+          ? translate("totara-component.overdue_by")
+          : translate("totara-component.due_in")}
+        &nbsp;
+        <Text style={{ fontWeight: "bold" }}>
           {moment(dueDate).toNow(true)}&nbsp;
         </Text>
       </Text>
-      <Text style={[theme.textB3, {color: theme.textColorLight}]}>
+      <Text style={[theme.textB3, { color: theme.textColorLight }]}>
         ({moment(dueDate).format(DATE_FORMAT)})
       </Text>
     </View>
@@ -71,7 +73,7 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
 enum DueDateStateStatus {
   warning = "warning",
   danger = "danger",
-  info = "info"
+  info = "info",
 }
 
 const styles = StyleSheet.create({
@@ -79,8 +81,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 8,
     flexWrap: "wrap",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 
 export default DueDateState;

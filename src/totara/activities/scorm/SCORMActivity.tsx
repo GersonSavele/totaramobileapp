@@ -32,33 +32,21 @@ import { scormQuery } from "./api";
 import { OfflineSCORMActivity } from "./offline";
 import { ActivitySheetContext } from "../ActivitySheet";
 import SCORMAttempts from "./SCORMAttempts";
-import { SECONDS_FORMAT } from "@totara/lib/Constant";
+import { SECONDS_FORMAT } from "@totara/lib/constants";
 import { translate } from "@totara/locale";
 import OnlineSCORMActivity from "./online/OnlineSCORMActivity";
+import { scormActivityType, connectivity } from "@totara/lib/constants";
 
 type SCORMActivityProps = {
   activity: Activity;
 };
 
-export enum SCORMActivityType {
-  None,
-  Offline,
-  Online,
-  Attempts,
-}
-
-enum Connectivity {
-  initial = 0,
-  online,
-  offline,
-}
-
 const SCORMActivity = ({ activity }: SCORMActivityProps) => {
-  const [isReachable, setIsReachable] = useState(Connectivity.initial);
-  if (isReachable === Connectivity.initial) {
+  const [isReachable, setIsReachable] = useState(connectivity.initial);
+  if (isReachable === connectivity.initial) {
     NetInfo.fetch().then((state) => {
       setIsReachable(
-        state.isConnected ? Connectivity.online : Connectivity.offline
+        state.isConnected ? connectivity.online : connectivity.offline
       );
     });
     return <Text>{translate("general.loading")}</Text>;
@@ -66,7 +54,7 @@ const SCORMActivity = ({ activity }: SCORMActivityProps) => {
     return (
       <SCORMActivityRoute
         activity={activity}
-        isreachable={isReachable === Connectivity.online}
+        isreachable={isReachable === connectivity.online}
       />
     );
   }
@@ -109,7 +97,7 @@ const SCORMActivityRoute = ({ activity, isreachable }: SCORMRouteProp) => {
         activity={activity}
         data={scormBundleData as ScormBundle}
         isUserOnline={isreachable}
-        mode={SCORMActivityType.None}
+        mode={scormActivityType.none}
       />
     );
   } else {
@@ -121,7 +109,7 @@ type SCORMFlowProps = {
   activity: Activity;
   data?: ScormBundle;
   isUserOnline: boolean;
-  mode: SCORMActivityType;
+  mode: scormActivityType;
 };
 
 const SCORMFlow = ({ activity, data, isUserOnline, mode }: SCORMFlowProps) => {
@@ -132,7 +120,7 @@ const SCORMFlow = ({ activity, data, isUserOnline, mode }: SCORMFlowProps) => {
     data: undefined,
   });
   const onSetActionWithData = (
-    action: SCORMActivityType,
+    action: scormActivityType,
     bundle: ScormBundle,
     data: any
   ) => {
@@ -140,7 +128,7 @@ const SCORMFlow = ({ activity, data, isUserOnline, mode }: SCORMFlowProps) => {
   };
 
   useEffect(() => {
-    if (actionData.mode !== SCORMActivityType.None) {
+    if (actionData.mode !== scormActivityType.none) {
       activitySheet.setFeedback({
         activity: activity as ActivityType,
         data: { isOnline: isUserOnline },
@@ -152,7 +140,7 @@ const SCORMFlow = ({ activity, data, isUserOnline, mode }: SCORMFlowProps) => {
   }, [actionData.mode]);
 
   switch (actionData.mode) {
-    case SCORMActivityType.Offline:
+    case scormActivityType.offline:
       return (
         <OfflineSCORMActivity
           scormBundle={actionData.bundle}
@@ -160,20 +148,20 @@ const SCORMFlow = ({ activity, data, isUserOnline, mode }: SCORMFlowProps) => {
           scoid={actionData.data.scoid}
         />
       );
-    case SCORMActivityType.Online:
+    case scormActivityType.online:
       return (
         <OnlineSCORMActivity
           uri={actionData && actionData.data && actionData.data.url}
         />
       );
-    case SCORMActivityType.Attempts:
+    case scormActivityType.attempts:
       return (
         <SCORMAttempts
           scormBundle={actionData.bundle}
           setActionWithData={onSetActionWithData}
         />
       );
-    case SCORMActivityType.None:
+    case scormActivityType.none:
       return (
         <SCORMSummary
           activity={activity}

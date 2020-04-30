@@ -26,13 +26,12 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useQuery } from "@apollo/react-hooks";
 import { AuthConsumer } from "@totara/core";
 import { NavigationInjectedProps, NavigationParams } from "react-navigation";
-// import { NAVIGATION_SETTING } from "@totara/lib/Constant";
 import { ThemeContext, normalize } from "@totara/theme";
 import { userOwnProfile } from "./api";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
 import { AuthContext } from "@totara/core";
-import { AUTHORIZATION } from "@totara/lib/Constant";
+import { AUTHORIZATION } from "@totara/lib/constants";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { translate } from "@totara/locale";
@@ -64,7 +63,7 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
   //However, after fixing api we should clean code in this ticket - MOB-386
   const [theme] = useContext(ThemeContext);
   const {
-    authContextState: { appState }
+    authContextState: { appState },
   } = useContext(AuthContext);
   const apiKey = appState!.apiKey;
   return (
@@ -77,8 +76,8 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
               source={{
                 uri: profile.profileimage,
                 headers: {
-                  [AUTHORIZATION]: `Bearer ${apiKey}`
-                }
+                  [AUTHORIZATION]: `Bearer ${apiKey}`,
+                },
               }}
             />
           ) : (
@@ -88,8 +87,8 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
                 {
                   backgroundColor: theme.colorNeutral3,
                   alignItems: "center",
-                  justifyContent: "center"
-                }
+                  justifyContent: "center",
+                },
               ]}
             >
               <FontAwesomeIcon
@@ -102,7 +101,7 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
           <Text
             style={[
               theme.textH2,
-              { fontWeight: "bold", fontSize: normalize(22) }
+              { fontWeight: "bold", fontSize: normalize(22) },
             ]}
           >
             {profile.firstname} {profile.surname}
@@ -110,7 +109,7 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
           <Text
             style={[
               theme.textB3,
-              { color: theme.textColorSubdued, fontSize: normalize(15) }
+              { color: theme.textColorSubdued, fontSize: normalize(15) },
             ]}
           >
             {profile.email}
@@ -121,8 +120,8 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
               {
                 color: theme.textColorSubdued,
                 marginTop: 6,
-                fontSize: normalize(12)
-              }
+                fontSize: normalize(12),
+              },
             ]}
           >
             {translate("user_profile.login_as")}: {profile.username}
@@ -132,7 +131,7 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
       <View style={styles.info}>
         <Text
           style={[
-            [theme.textH2, { fontWeight: "bold", fontSize: normalize(22) }]
+            [theme.textH2, { fontWeight: "bold", fontSize: normalize(22) }],
           ]}
         >
           {translate("user_profile.manage_section")}
@@ -163,15 +162,15 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
             }}
             accessory="DisclosureIndicator"
           /> */}
-          <View style={{ height: 1, paddingLeft: 20 }}/>
+          <View style={{ height: 1, paddingLeft: 20 }} />
           <AuthConsumer>
-            {auth => (
+            {(auth) => (
               <Cell
                 cellContentView={
                   <Text
                     style={[
                       theme.textB2,
-                      { width: wp("100%") - 50, fontSize: normalize(17) }
+                      { width: wp("100%") - 50, fontSize: normalize(17) },
                     ]}
                   >
                     {translate("user_profile.logout")}
@@ -183,7 +182,7 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
               />
             )}
           </AuthConsumer>
-          <View style={{ height: 1, paddingLeft: 20 }}/>
+          <View style={{ height: 1, paddingLeft: 20 }} />
         </TableView>
       </ScrollView>
     </View>
@@ -191,7 +190,7 @@ const ProfileViewDidAppear = ({ profile }: ProfileViewProps) => {
 };
 
 Profile.navigationOptions = () => ({
-  title: "Profile"
+  title: "Profile",
 });
 
 export default Profile;
@@ -199,19 +198,19 @@ export default Profile;
 const styles = StyleSheet.create({
   headerContent: {
     padding: 24,
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     width: 130,
     height: 130,
     borderRadius: 63,
-    marginBottom: 10
+    marginBottom: 10,
   },
   info: {
     width: "100%",
     height: 30,
     marginTop: 16,
     marginLeft: 15,
-    marginBottom: 16
-  }
+    marginBottom: 16,
+  },
 });

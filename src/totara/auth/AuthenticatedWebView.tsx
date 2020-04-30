@@ -29,18 +29,18 @@ import CookieManager from "@react-native-community/cookies";
 
 import { config, Log } from "@totara/lib";
 import { AuthConsumer } from "@totara/core";
-import { WEBVIEW_SECRET } from "@totara/lib/Constant";
+import { WEBVIEW_SECRET } from "@totara/lib/constants";
 
 const createWebview = gql`
-    mutation totara_mobile_create_webview($url: String!) {
-        create_webview: totara_mobile_create_webview(url: $url)
-    }
+  mutation totara_mobile_create_webview($url: String!) {
+    create_webview: totara_mobile_create_webview(url: $url)
+  }
 `;
 
 const deleteWebview = gql`
-    mutation totara_mobile_delete_webview($secret: String!) {
-        delete_webview: totara_mobile_delete_webview(secret: $secret)
-    }
+  mutation totara_mobile_delete_webview($secret: String!) {
+    delete_webview: totara_mobile_delete_webview(secret: $secret)
+  }
 `;
 
 /**
@@ -54,15 +54,13 @@ const deleteWebview = gql`
  *  if an existing session exists (either webview, cookie is still valid)
  */
 class AuthenticatedWebViewComponent extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
 
     this.state = {
       isAuthenticated: false,
-      webviewSecret: undefined
+      webviewSecret: undefined,
     };
-
   }
 
   async componentDidMount() {
@@ -75,15 +73,17 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
         if (response.data) {
           this.setState({
             webviewSecret: response.data.create_webview,
-            isAuthenticated: true
+            isAuthenticated: true,
           });
         } else {
           throw new Error("data missing on response");
         }
-      }).catch(error => Log.error("unable to create webview", error));
+      })
+      .catch((error) => Log.error("unable to create webview", error));
 
-    const clearCookiesPromise = CookieManager.clearAll(true)
-      .catch(error => Log.error("unable to clearcookies", error));
+    const clearCookiesPromise = CookieManager.clearAll(true).catch((error) =>
+      Log.error("unable to clearcookies", error)
+    );
 
     return Promise.all([createWebViewPromise, clearCookiesPromise]);
   }
@@ -93,74 +93,73 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     if (this.state.webviewSecret) {
       return deleteWebview({ variables: { secret: this.state.webviewSecret } })
         .then((data) => Log.debug("deleted webview", data))
-        .catch(error => Log.error("unable to create webview", error));
+        .catch((error) => Log.error("unable to create webview", error));
     }
   }
 
   render() {
-
-    const {innerRef} = this.props;
+    const { innerRef } = this.props;
 
     return (
       <AuthConsumer>
-        {auth =>
-          (this.state.webviewSecret && auth.authContextState.appState)
-            ? <WebView
-                source={{
-                  uri: config.webViewUri(auth.authContextState.appState.host),
-                  headers: { [WEBVIEW_SECRET]: this.state.webviewSecret }
-                }}
-                userAgent={config.userAgent}
-                style={{ flex: 1}}
-                ref={innerRef}
-                onNavigationStateChange={this.props.onNavigationStateChange}
-                />
-            : null
+        {(auth) =>
+          this.state.webviewSecret && auth.authContextState.appState ? (
+            <WebView
+              source={{
+                uri: config.webViewUri(auth.authContextState.appState.host),
+                headers: { [WEBVIEW_SECRET]: this.state.webviewSecret },
+              }}
+              userAgent={config.userAgent}
+              style={{ flex: 1 }}
+              ref={innerRef}
+              onNavigationStateChange={this.props.onNavigationStateChange}
+            />
+          ) : null
         }
       </AuthConsumer>
-
     );
   }
-
 }
-
 
 type CreateWebViewResponse = {
   create_webview: string;
-}
+};
 
 type DeleteWebViewResponse = {
   delete_webview: string;
-}
+};
 
 type Props = {
-  uri: string
-  createWebview: MutationFunction<CreateWebViewResponse, { url: string }>
-  deleteWebview: MutationFunction<DeleteWebViewResponse, { secret: string }>
-  innerRef: React.Ref<WebView>
-  onNavigationStateChange: (navState: WebViewNavigation) => void
-}
+  uri: string;
+  createWebview: MutationFunction<CreateWebViewResponse, { url: string }>;
+  deleteWebview: MutationFunction<DeleteWebViewResponse, { secret: string }>;
+  innerRef: React.Ref<WebView>;
+  onNavigationStateChange: (navState: WebViewNavigation) => void;
+};
 
 type OuterProps = {
-  uri: string
-  onNavigationStateChange?: (navState: WebViewNavigation) => void
-}
+  uri: string;
+  onNavigationStateChange?: (navState: WebViewNavigation) => void;
+};
 
 type State = {
-  isAuthenticated: boolean
-  webviewSecret?: string
-}
+  isAuthenticated: boolean;
+  webviewSecret?: string;
+};
 
-const AuthenticatedWebViewGraphQL = compose<Props, {innerRef: React.Ref<WebView>}>(
+const AuthenticatedWebViewGraphQL = compose<
+  Props,
+  { innerRef: React.Ref<WebView> }
+>(
   graphql(createWebview, { name: "createWebview" }),
-  graphql(deleteWebview, { name: "deleteWebview" }),
+  graphql(deleteWebview, { name: "deleteWebview" })
 )(AuthenticatedWebViewComponent);
 
-const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>((props, ref) => (
-  <AuthenticatedWebViewGraphQL innerRef={ref} {...props}/>
-));
+const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>(
+  (props, ref) => <AuthenticatedWebViewGraphQL innerRef={ref} {...props} />
+);
 
-AuthenticatedWebViewComponentForwardRef.displayName = 'AuthenticatedWebViewComponentWrap';
+AuthenticatedWebViewComponentForwardRef.displayName =
+  "AuthenticatedWebViewComponentWrap";
 
 export { AuthenticatedWebViewComponentForwardRef as AuthenticatedWebView };
-

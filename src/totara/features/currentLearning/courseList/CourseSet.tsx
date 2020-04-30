@@ -27,17 +27,16 @@ import {
   Text,
   TouchableOpacity,
   View,
-  FlatList
+  FlatList,
 } from "react-native";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { withNavigation, NavigationParams } from "react-navigation";
 import { Course, CourseSets } from "@totara/types";
 import { normalize } from "@totara/theme";
 import { AddBadge, LearningItemCard } from "@totara/components";
-// import { NAVIGATION_COURSE_DETAILS } from "@totara/lib/Constant";
 import { ThemeContext } from "@totara/theme";
 
 type CourseSetProps = {
@@ -45,7 +44,7 @@ type CourseSetProps = {
   navigation: NavigationParams;
 };
 
-const CourseSet = ({ courseSets}: CourseSetProps) => {
+const CourseSet = ({ courseSets }: CourseSetProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.courseSet}>
@@ -53,16 +52,18 @@ const CourseSet = ({ courseSets}: CourseSetProps) => {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          flex: 1
+          flex: 1,
         }}
       >
-          <Text style={[styles.courseSetLabel, {color: theme.colorNeutral8}]}>{courseSets.label}</Text>
+        <Text style={[styles.courseSetLabel, { color: theme.colorNeutral8 }]}>
+          {courseSets.label}
+        </Text>
         <TouchableOpacity
           style={{
             flex: 0.6,
             paddingRight: 16,
             alignItems: "flex-end",
-            justifyContent: "flex-end"
+            justifyContent: "flex-end",
           }}
           onPress={() => {}}
           activeOpacity={1.0}
@@ -71,7 +72,7 @@ const CourseSet = ({ courseSets}: CourseSetProps) => {
             style={{
               textAlign: "center",
               fontSize: normalize(17),
-              color: theme.colorInfo
+              color: theme.colorInfo,
             }}
           >
             View criteria
@@ -87,9 +88,20 @@ const CourseSet = ({ courseSets}: CourseSetProps) => {
       />
       {courseSets.nextSet && courseSets.nextSet.operator ? (
         <View style={styles.nextSet}>
-          <View style={[styles.separator, {backgroundColor: theme.colorNeutral6}]} />
-          <Text style={[styles.nextSetText, {color: theme.navigationHeaderTintColor}]}>{courseSets.nextSet.operator}</Text>
-          <View style={[styles.separator, {backgroundColor: theme.colorNeutral6,}]} />
+          <View
+            style={[styles.separator, { backgroundColor: theme.colorNeutral6 }]}
+          />
+          <Text
+            style={[
+              styles.nextSetText,
+              { color: theme.navigationHeaderTintColor },
+            ]}
+          >
+            {courseSets.nextSet.operator}
+          </Text>
+          <View
+            style={[styles.separator, { backgroundColor: theme.colorNeutral6 }]}
+          />
         </View>
       ) : null}
     </View>
@@ -125,18 +137,24 @@ type SummeryAndNavigationProps = {
 
 const CourseWithSummaryAndNavigation = ({
   // navigation,
-  item
+  item,
 }: SummeryAndNavigationProps) => {
   // const navigateTo = (item: Course) =>
   // navigation.navigate(NAVIGATION_COURSE_DETAILS, { courseId: item.id });
   const [theme] = useContext(ThemeContext);
-  const learningItemStyle = StyleSheet.flatten([styles.learningItem, {shadowColor: theme.colorNeutral8,backgroundColor: theme.colorNeutral1}]);
+  const learningItemStyle = StyleSheet.flatten([
+    styles.learningItem,
+    { shadowColor: theme.colorNeutral8, backgroundColor: theme.colorNeutral1 },
+  ]);
 
   const CourseDetails = (
     <View style={styles.itemContainer}>
       <LearningItemCard item={item}>
         <View style={{ flex: 1 }}>
-          <Text numberOfLines={3} style={[styles.itemSummary, {color: theme.colorNeutral7}]}>
+          <Text
+            numberOfLines={3}
+            style={[styles.itemSummary, { color: theme.colorNeutral7 }]}
+          >
             {item.summary}
           </Text>
         </View>
@@ -158,7 +176,7 @@ const CourseWithSummaryAndNavigation = ({
 
 const styles = StyleSheet.create({
   courseSet: {
-    marginTop: 20
+    marginTop: 20,
   },
   itemWithBadgeContainer: {
     marginTop: hp("3%"),
@@ -166,7 +184,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: wp("3%"),
     width: wp("70"),
-    height: normalize(220)
+    height: normalize(220),
   },
   learningItem: {
     borderRadius: normalize(10),
@@ -179,39 +197,39 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: normalize(10),
     overflow: "hidden",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   itemSummary: {
     flex: 10,
     paddingBottom: 10,
     paddingTop: 8,
     fontSize: 15,
-    lineHeight: 15
+    lineHeight: 15,
   },
   nextSet: {
     flex: 0,
     marginBottom: 16,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   separator: {
     height: 2,
     flex: 1,
     marginRight: 16,
-    marginLeft: 16
+    marginLeft: 16,
   },
   nextSetText: {
     textTransform: "uppercase",
     fontSize: 12,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   courseSetLabel: {
     fontSize: 22,
     marginLeft: 16,
     fontWeight: "bold",
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default withNavigation(CourseSet);

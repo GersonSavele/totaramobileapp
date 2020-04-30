@@ -56,7 +56,6 @@ import {
   ResourceState,
 } from "@totara/core/ResourceManager/Resource";
 import { translate } from "@totara/locale";
-import { SCORMActivityType } from "./SCORMActivity";
 import SCORMAttempts from "./SCORMAttempts";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";
@@ -65,17 +64,17 @@ import {
   onTapDownloadResource,
   onTapNewAttempt,
   onTapContinueLastAttempt,
-  scormSummarySection,
   onTapViewAllAttempts,
 } from "@totara/lib/scorm";
 import { scormSummaryStyles } from "@totara/theme/scorm";
+import { scormActivityType, scormSummarySection } from "@totara/lib/constants";
 
 type SummaryProps = {
   activity: Activity;
   data?: ScormBundle;
   isUserOnline: boolean;
   setActionWithData: (
-    action: SCORMActivityType,
+    action: scormActivityType,
     bundle: ScormBundle,
     data: any
   ) => void;

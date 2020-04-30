@@ -21,17 +21,18 @@ import {
   calculatedAttemptsGrade,
   getOfflineScormPackageName,
 } from "@totara/activities/scorm/offline/OfflineSCORMController";
-import { DATE_FORMAT, DATE_FORMAT_FULL, SECONDS_FORMAT } from "./Constant";
+import {
+  DATE_FORMAT,
+  DATE_FORMAT_FULL,
+  SECONDS_FORMAT,
+  scormSummarySection,
+  scormActivityType,
+} from "./constants";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { Log } from "@totara/lib";
 import { OfflineScormServerRoot } from "@totara/activities/scorm/offline";
-import { SCORMActivityType } from "@totara/activities/scorm/SCORMActivity";
 import { showMessage } from "./tools";
 
-enum scormSummarySection {
-  none,
-  attempts,
-}
 const getDataForScormSummary = (
   isUserOnline: boolean,
   scormBundle?: ScormBundle
@@ -186,7 +187,7 @@ const onTapDownloadResource = ({
 };
 
 type OnTapAttemptProps = {
-  callback: (action: SCORMActivityType, bundle: ScormBundle, data: any) => void;
+  callback: (action: scormActivityType, bundle: ScormBundle, data: any) => void;
   scormBundle: ScormBundle | undefined;
   isUserOnline: boolean;
 };
@@ -206,12 +207,12 @@ const onTapNewAttempt = ({
         newAttempt = newAttempt + scormBundle.offlineActivity.attempts.length;
       }
       newAttempt = newAttempt + 1;
-      callback(SCORMActivityType.Offline, scormBundle, {
+      callback(scormActivityType.offline, scormBundle, {
         attempt: newAttempt,
       });
     } else {
       if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
-        callback(SCORMActivityType.Online, scormBundle, {
+        callback(scormActivityType.online, scormBundle, {
           url: scormBundle.scorm.launchUrl,
         });
       } else {
@@ -233,7 +234,7 @@ const onTapContinueLastAttempt = ({
   if (isUserOnline) {
     if (scormBundle) {
       if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
-        callback(SCORMActivityType.Online, scormBundle, {
+        callback(scormActivityType.online, scormBundle, {
           url: scormBundle.scorm.repeatUrl,
         });
       } else {
@@ -274,5 +275,4 @@ export {
   onTapNewAttempt,
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
-  scormSummarySection,
 };

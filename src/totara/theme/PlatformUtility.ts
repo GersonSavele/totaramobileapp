@@ -20,39 +20,54 @@
  */
 
 import { Dimensions, PixelRatio } from "react-native";
-import { SCREEN_WIDTH_LARGE, SCREEN_WIDTH_MEDIUM, SCREEN_WIDTH_SMALL, SCREEN_WIDTH_X_LARGE} from "@totara/lib/Constant";
+import {
+  SCREEN_WIDTH_LARGE,
+  SCREEN_WIDTH_MEDIUM,
+  SCREEN_WIDTH_SMALL,
+  SCREEN_WIDTH_X_LARGE,
+} from "@totara/lib/constants";
 
-const {
-  width: SCREEN_WIDTH
-} = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const scale = SCREEN_WIDTH / 414;
 
 export function normalize(size: number) {
   const newSize = size * scale;
-    return Math.round(PixelRatio.roundToNearestPixel(newSize))
+  return Math.round(PixelRatio.roundToNearestPixel(newSize));
 }
 
 export const deviceSize = () => {
   if (SCREEN_WIDTH > 414) {
     return SCREEN_WIDTH_X_LARGE;
-  } if (SCREEN_WIDTH > 375) {
+  }
+  if (SCREEN_WIDTH > 375) {
     return SCREEN_WIDTH_LARGE;
-  } if (SCREEN_WIDTH > 320) {
-    return SCREEN_WIDTH_MEDIUM
+  }
+  if (SCREEN_WIDTH > 320) {
+    return SCREEN_WIDTH_MEDIUM;
   } else {
     return SCREEN_WIDTH_SMALL;
   }
 };
 
-const resizeByScreenSize = (smallSize: number, mediumSize: number, largeSize: number, xLargeSize: number) => {
+const resizeByScreenSize = (
+  smallSize: number,
+  mediumSize: number,
+  largeSize: number,
+  xLargeSize: number
+) => {
   switch (deviceSize()) {
-    case SCREEN_WIDTH_SMALL: return smallSize;
-    case SCREEN_WIDTH_MEDIUM: return mediumSize;
-    case SCREEN_WIDTH_LARGE: return largeSize;
-    case SCREEN_WIDTH_X_LARGE: return xLargeSize;
-    default: return mediumSize
+    case SCREEN_WIDTH_SMALL:
+      return smallSize;
+    case SCREEN_WIDTH_MEDIUM:
+      return mediumSize;
+    case SCREEN_WIDTH_LARGE:
+      return largeSize;
+    case SCREEN_WIDTH_X_LARGE:
+      return xLargeSize;
+    default:
+      return mediumSize;
   }
 };
 
-export { resizeByScreenSize }
+export { resizeByScreenSize };

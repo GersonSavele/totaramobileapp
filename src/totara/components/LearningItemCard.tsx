@@ -26,14 +26,14 @@ import {
   StyleSheet,
   Text,
   View,
-  ViewStyle
+  ViewStyle,
 } from "react-native";
 import React, { useContext } from "react";
 
 import { LearningItem } from "@totara/types";
 import DueDateState from "./DueDateState";
 import { normalize, ThemeContext } from "@totara/theme";
-import { AUTHORIZATION } from "@totara/lib/Constant";
+import { AUTHORIZATION } from "@totara/lib/constants";
 import { AuthContext } from "@totara/core";
 
 interface Props {
@@ -76,7 +76,7 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
 const ImageElement = ({ item, imageStyle }: Props) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const {
-    authContextState: { appState }
+    authContextState: { appState },
   } = useContext(AuthContext);
   const apiKey = appState!.apiKey;
   const imgSrc = item.imageSrc;
@@ -89,8 +89,8 @@ const ImageElement = ({ item, imageStyle }: Props) => {
         source={{
           uri: imgSrc,
           headers: {
-            [AUTHORIZATION]: `Bearer ${apiKey}`
-          }
+            [AUTHORIZATION]: `Bearer ${apiKey}`,
+          },
         }}
         style={{ flex: 1, width: "100%", height: "100%" }}
       />
@@ -101,15 +101,15 @@ const ImageElement = ({ item, imageStyle }: Props) => {
 const styles = StyleSheet.create({
   itemImage: {
     flex: 1,
-    flexDirection: "column-reverse"
+    flexDirection: "column-reverse",
   },
   itemCard: {
     padding: normalize(16),
     justifyContent: "flex-start",
-    flex: 1
+    flex: 1,
   },
   itemFullName: {
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   disabledOverlay: {
     position: "absolute",
@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
     top: 0,
     opacity: 0.5,
     height: "100%",
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
-export  { LearningItemCard, CardElement, ImageElement };
+export { LearningItemCard, CardElement, ImageElement };

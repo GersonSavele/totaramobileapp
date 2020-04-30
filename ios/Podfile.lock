@@ -182,9 +182,9 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-cookies (2.0.8):
+  - react-native-cookies (2.0.9):
     - React
-  - react-native-netinfo (5.7.1):
+  - react-native-netinfo (5.8.0):
     - React
   - react-native-notifications (2.1.5):
     - React
@@ -201,7 +201,7 @@ PODS:
     - react-native-video/Video (= 4.4.5)
   - react-native-video/Video (4.4.5):
     - React
-  - react-native-webview (9.2.1):
+  - react-native-webview (9.3.0):
     - React
   - React-RCTActionSheet (0.61.5):
     - React-Core/RCTActionSheetHeaders (= 0.61.5)
@@ -242,7 +242,7 @@ PODS:
     - React
   - RNCAsyncStorage (1.9.0):
     - React
-  - RNDeviceInfo (5.5.5):
+  - RNDeviceInfo (5.5.6):
     - React
   - RNFS (2.16.6):
     - React
@@ -252,7 +252,7 @@ PODS:
     - React
   - RNReanimated (1.8.0):
     - React
-  - RNScreens (2.5.0):
+  - RNScreens (2.7.0):
     - React
   - RNSentry (1.3.7):
     - React
@@ -441,15 +441,15 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-cookies: 4eb6243b344684bda432f661c28dab2c491ebb0c
-  react-native-netinfo: 38aefddbacc614a14b412ba653b355db49508e50
+  react-native-cookies: bc1f91a504ee091f1998a1b6c7ff4b7a9ed5b80e
+  react-native-netinfo: 6458a467af4b3b7b0b87a179776ba6ba469e4f22
   react-native-notifications: 38f4b851c642c7e6b928f8f6dccbf59d7434cfc3
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-static-server: af5ae03c8114e5756e27c7ae32a116002f23be02
   react-native-version-info: daadd78b8fc93cf2764cb5aa52ec995961b62201
   react-native-video: aa527b0acb37f94c4491e70df0274cb26979405d
-  react-native-webview: ac2927a8a5e48fabb738b393b289bd996e14ed32
+  react-native-webview: bdde2a3c4cbdc0122bc2bfba13603db193f0cc5c
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
@@ -462,12 +462,12 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeART: f003b07dfa7098aa419ed95b69560923440b1eee
   RNCAsyncStorage: b16697280b08bab4b5f2f67f752d93d13a52e9ed
-  RNDeviceInfo: 59d3d9a0ac50adfc3a2d3c27bbbb4efc7ae8984c
+  RNDeviceInfo: c3ea4a4d4547740c548cdd1e5a78f9b04e524688
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNLocalize: fc27ee5878ce5a3af73873fb2d8e866e0d1e6d84
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
-  RNScreens: ac02d0e4529f08ced69f5580d416f968a6ec3a1d
+  RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
   RNSentry: 370623102247ebea20191b5fb549ecc7a275b324
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4

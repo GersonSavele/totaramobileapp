@@ -42,7 +42,7 @@ import { Course, StatusKey } from "@totara/types";
 import { ActivityList } from "./ActivityList";
 import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
-import { NAVIGATION_MY_LEARNING } from "@totara/lib/Constant";
+import { NAVIGATION_MY_LEARNING } from "@totara/lib/constants";
 import { HeaderView } from "@totara/components/currentLearning";
 
 type CourseDetailsProps = {
@@ -106,7 +106,7 @@ const CourseDetailsComponent = withNavigation(
             )}
           </View>
         </View>
-        <CourseCompleted course = {course}/>
+        <CourseCompleted course={course} />
       </HeaderView>
     );
   }
@@ -121,7 +121,7 @@ const CourseCompleted = withNavigation(
     };
     if (
       course.completion &&
-      (course.completion.statuskey) === StatusKey.complete
+      course.completion.statuskey === StatusKey.complete
     ) {
       return (
         <InfoModal

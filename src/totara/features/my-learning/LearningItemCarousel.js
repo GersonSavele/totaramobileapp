@@ -22,53 +22,68 @@
 
 import React, { useContext } from "react";
 import { useState, useRef } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
 import { LearningItemCard, AddBadge } from "@totara/components";
 import { resizeByScreenSize, normalize, ThemeContext } from "@totara/theme";
 import { LearningItemType } from "@totara/types";
-import { NAVIGATION_COURSE_DETAILS, NAVIGATION_PROGRAM_DETAILS, NAVIGATION_CERTIFICATE_DETAILS } from "@totara/lib/Constant";
+import {
+  NAVIGATION_COURSE_DETAILS,
+  NAVIGATION_PROGRAM_DETAILS,
+  NAVIGATION_CERTIFICATE_DETAILS,
+} from "@totara/lib/constants";
 import { Log } from "@totara/lib";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning }) => {
     const [activeSlide, setActiveSlide] = useState(0);
-    const sliderRef = useRef(null)
+    const sliderRef = useRef(null);
 
     if (currentLearning) {
       // used for faster development to navigate at once to first course-details
       // courseNavigate(currentLearning[0])
       // return null;
       const [theme] = useContext(ThemeContext);
-  
+
       return (
         <View>
-            <Pagination 
-              activeDotIndex={activeSlide}
-              dotsLength={currentLearning.length}
-              containerStyle={{ borderStyle: "dashed", paddingVertical: 0, marginHorizontal: 0, paddingHorizontal: 0 }}
-              dotStyle={{
-                  width: (Dimensions.get("window").width)/(currentLearning.length),
-                  height: 1.5,
-                  borderRadius: 0,
-                  marginHorizontal: 0,
-                  backgroundColor: theme.colorNeutral6,
-              }}
-              dotContainerStyle={{
-                marginHorizontal: 0,
-              }}
-              carouselRef={sliderRef.current}
-              tappableDots={sliderRef && !!sliderRef.current}
-              inactiveDotOpacity={0}
-              inactiveDotScale={1}
-            />
+          <Pagination
+            activeDotIndex={activeSlide}
+            dotsLength={currentLearning.length}
+            containerStyle={{
+              borderStyle: "dashed",
+              paddingVertical: 0,
+              marginHorizontal: 0,
+              paddingHorizontal: 0,
+            }}
+            dotStyle={{
+              width: Dimensions.get("window").width / currentLearning.length,
+              height: 1.5,
+              borderRadius: 0,
+              marginHorizontal: 0,
+              backgroundColor: theme.colorNeutral6,
+            }}
+            dotContainerStyle={{
+              marginHorizontal: 0,
+            }}
+            carouselRef={sliderRef.current}
+            tappableDots={sliderRef && !!sliderRef.current}
+            inactiveDotOpacity={0}
+            inactiveDotScale={1}
+          />
           <Carousel
             ref={sliderRef}
             data={currentLearning}
@@ -77,7 +92,7 @@ const LearningItemCarousel = withNavigation(
             itemWidth={wp("82%")}
             sliderHeight={hp("100%")}
             inactiveSlideOpacity={0.6}
-            onSnapToItem={index => setActiveSlide(index)}
+            onSnapToItem={(index) => setActiveSlide(index)}
           />
         </View>
       );
@@ -85,7 +100,7 @@ const LearningItemCarousel = withNavigation(
   }
 );
 
-const renderItem = navigation => {
+const renderItem = (navigation) => {
   const LearningItem = ({ item }) => (
     <View style={styles.itemWithBadgeContainer}>
       <AddBadge status={item.progress} size={24}>
@@ -98,14 +113,13 @@ const renderItem = navigation => {
   );
 
   LearningItem.propTypes = {
-    item: PropTypes.object.isRequired
+    item: PropTypes.object.isRequired,
   };
 
   return LearningItem;
 };
 
 const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
-  
   const [theme] = useContext(ThemeContext);
 
   const itemStyle = StyleSheet.create({
@@ -116,13 +130,13 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       shadowRadius: normalize(13),
       backgroundColor: theme.colorNeutral1,
       borderWidth: 1,
-      borderColor: theme.colorNeutral3
+      borderColor: theme.colorNeutral3,
     },
     content: {
       borderRadius: normalize(10),
       width: "100%",
       height: "99%",
-      overflow: "hidden"
+      overflow: "hidden",
     },
     type: {
       marginTop: 8,
@@ -133,15 +147,15 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       borderRadius: 4,
       backgroundColor: theme.colorNeutral1,
       color: theme.textColorSubdued,
-      borderColor: theme.colorNeutral6
+      borderColor: theme.colorNeutral6,
     },
     summary: {
       flex: 1,
       alignSelf: "flex-start",
       width: "100%",
       paddingVertical: 16,
-      color: theme.textColorSubdued
-    }
+      color: theme.textColorSubdued,
+    },
   });
   return (
     <TouchableOpacity
@@ -154,7 +168,13 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
         <LearningItemCard item={item}>
           <Text style={[theme.textLabel, itemStyle.type]}>{item.itemtype}</Text>
           {/* // TODO handeling numberOfLines for dynamic height */}
-          <Text style={[theme.textB2, itemStyle.summary]} ellipsizeMode="tail" numberOfLines={resizeByScreenSize(3, 6, 6, 8)} >{item.summary}</Text>
+          <Text
+            style={[theme.textB2, itemStyle.summary]}
+            ellipsizeMode="tail"
+            numberOfLines={resizeByScreenSize(3, 6, 6, 8)}
+          >
+            {item.summary}
+          </Text>
         </LearningItemCard>
       </View>
     </TouchableOpacity>
@@ -163,7 +183,7 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
 
 LearningItemWithSummaryAndNavigation.propTypes = {
   item: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
 };
 
 let navigateTo = (navigation, item) => {
@@ -175,7 +195,9 @@ let navigateTo = (navigation, item) => {
       navigation.navigate(NAVIGATION_PROGRAM_DETAILS, { programId: item.id });
       break;
     case LearningItemType.Certification:
-      navigation.navigate(NAVIGATION_CERTIFICATE_DETAILS, { certificateId: item.id });
+      navigation.navigate(NAVIGATION_CERTIFICATE_DETAILS, {
+        certificateId: item.id,
+      });
       break;
     default:
       Log.error(
@@ -191,8 +213,8 @@ const styles = StyleSheet.create({
     marginTop: hp("2.5%"),
     marginBottom: hp("3%"),
     marginLeft: 8,
-    marginRight: 8
-  }
+    marginRight: 8,
+  },
 });
 
 export default LearningItemCarousel;
