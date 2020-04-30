@@ -11,33 +11,25 @@ exports[`Activity-Label-Type, testing UI with or without label name and descript
 >
   <Text
     style={
-      Array [
-        Object {
-          "fontSize": 31,
-          "fontWeight": "bold",
-          "marginBottom": 8,
-          "textAlign": "left",
-        },
-        Object {
-          "color": undefined,
-        },
-      ]
+      Object {
+        "color": undefined,
+        "fontSize": 31,
+        "fontWeight": "bold",
+        "marginBottom": 8,
+        "textAlign": "left",
+      }
     }
   >
     Some of the activities in this course make brief
   </Text>
   <Text
     style={
-      Array [
-        Object {
-          "fontSize": 31,
-          "lineHeight": 40,
-          "textAlign": "left",
-        },
-        Object {
-          "color": undefined,
-        },
-      ]
+      Object {
+        "color": undefined,
+        "fontSize": 31,
+        "lineHeight": 40,
+        "textAlign": "left",
+      }
     }
   >
     Some of the activities in this course make brief reference to the Site Administration menu on the left of the screen
