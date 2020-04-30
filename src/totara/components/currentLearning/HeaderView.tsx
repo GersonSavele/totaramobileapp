@@ -22,11 +22,7 @@
  */
 
 import React, { useContext, ReactNode } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import ParallaxScrollView from "./ParallaxScrollView";
 import { CardElement, ImageElement } from "@totara/components";
@@ -34,9 +30,7 @@ import { normalize } from "@totara/theme";
 import { ThemeContext } from "@totara/theme";
 import { Certification, Program, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
-import { headerViewStyles } from "./styles"
-
-
+import { headerViewStyles } from "@totara/theme/components/currentLearning";
 
 type HeaderViewProps = {
   details: Certification | Program | Course;
@@ -46,7 +40,7 @@ type HeaderViewProps = {
   tabBarRight: string;
   onPress: () => void;
   showOverview: boolean;
-  badgeTitle : string
+  badgeTitle: string;
 };
 
 const HeaderView = ({
@@ -57,7 +51,7 @@ const HeaderView = ({
   tabBarRight,
   onPress,
   showOverview,
-  badgeTitle
+  badgeTitle,
 }: HeaderViewProps) => {
   const [theme] = useContext(ThemeContext);
   const renderNavigationTitle = () => {
@@ -67,13 +61,16 @@ const HeaderView = ({
           <View
             style={[
               headerViewStyles.LearningTypeLabelWrap,
-              { borderColor: theme.colorNeutral7 }
+              { borderColor: theme.colorNeutral7 },
             ]}
           >
             <Text
-              style={[headerViewStyles.programLabelText, { color: theme.colorNeutral7 }]}
+              style={[
+                headerViewStyles.programLabelText,
+                { color: theme.colorNeutral7 },
+              ]}
             >
-            {badgeTitle}
+              {badgeTitle}
             </Text>
           </View>
         </CardElement>
@@ -83,73 +80,68 @@ const HeaderView = ({
 
   const renderNavigationTab = () => {
     return (
-      <View style={[
-        { backgroundColor: theme.colorNeutral2 }
-      ]}>
-      <View
-        style={[
-          headerViewStyles.tabBarContainer
-        ]}>
-        <View style={headerViewStyles.tabNav}>
-          <TouchableOpacity
-            style={
-              showOverview
-                ? [
-                  headerViewStyles.tabSelected,
-                    {
-                      borderBottomColor: theme.colorNeutral7,
-                      borderBottomWidth: 2
-                    }
-                  ]
-                : [headerViewStyles.tabSelected]
-            }
-            onPress={onPress}
-          >
-            <Text
+      <View style={[{ backgroundColor: theme.colorNeutral2 }]}>
+        <View style={[headerViewStyles.tabBarContainer]}>
+          <View style={headerViewStyles.tabNav}>
+            <TouchableOpacity
               style={
                 showOverview
-                  ? [theme.textB2, { fontWeight: "400" }]
-                  : [
-                      theme.textB2,
-                      { color: theme.colorNeutral6, fontWeight: "400" }
+                  ? [
+                      headerViewStyles.tabSelected,
+                      {
+                        borderBottomColor: theme.colorNeutral7,
+                        borderBottomWidth: 2,
+                      },
                     ]
+                  : [headerViewStyles.tabSelected]
               }
+              onPress={onPress}
             >
-              {tabBarLeft}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              !showOverview
-                ? [
-                  headerViewStyles.tabSelected,
-                    {
-                      borderBottomColor: theme.colorNeutral7,
-                      borderBottomWidth: 2
-                    }
-                  ]
-                : [headerViewStyles.tabSelected]
-            }
-            onPress={onPress}
-          >
-            <Text
+              <Text
+                style={
+                  showOverview
+                    ? [theme.textB2, { fontWeight: "400" }]
+                    : [
+                        theme.textB2,
+                        { color: theme.colorNeutral6, fontWeight: "400" },
+                      ]
+                }
+              >
+                {tabBarLeft}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={
                 !showOverview
-                  ? [theme.textB2, { fontWeight: "400" }]
-                  : [
-                      theme.textB2,
+                  ? [
+                      headerViewStyles.tabSelected,
                       {
-                        color: theme.colorNeutral6,
-                        fontWeight: "400"
-                      }
+                        borderBottomColor: theme.colorNeutral7,
+                        borderBottomWidth: 2,
+                      },
                     ]
+                  : [headerViewStyles.tabSelected]
               }
+              onPress={onPress}
             >
-              {tabBarRight}
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={
+                  !showOverview
+                    ? [theme.textB2, { fontWeight: "400" }]
+                    : [
+                        theme.textB2,
+                        {
+                          color: theme.colorNeutral6,
+                          fontWeight: "400",
+                        },
+                      ]
+                }
+              >
+                {tabBarRight}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
       </View>
     );
   };
@@ -158,7 +150,7 @@ const HeaderView = ({
       <View
         style={[
           headerViewStyles.headerContainer,
-          { backgroundColor: theme.colorNeutral2 }
+          { backgroundColor: theme.colorNeutral2 },
         ]}
       >
         <ImageElement item={details} imageStyle={headerViewStyles.itemImage} />
@@ -176,12 +168,12 @@ const HeaderView = ({
         onChangeHeaderVisibility={(value: number) => {
           if (value > 0) {
             navigation!.setParams({
-              opacity: value / 100 > 0.5 ? 1 : value / 100
+              opacity: value / 100 > 0.5 ? 1 : value / 100,
             });
             navigation!.setParams({ title: details.fullname });
           } else if (-value / 100 > 1) {
             navigation!.setParams({
-              opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100
+              opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100,
             });
             navigation!.setParams({ title: details.fullname });
           } else {
@@ -194,7 +186,5 @@ const HeaderView = ({
     </View>
   );
 };
-
-
 
 export default HeaderView;

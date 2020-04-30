@@ -22,7 +22,7 @@
  */
 import React from "react";
 import Video from "react-native-video";
-import styles from "./styles";
+import { videoControllerStyles } from "@totara/theme/components/currentLearning";
 
 type VideoType = {
   url: string;
@@ -32,7 +32,7 @@ const VideoController = ({ url }: VideoType) => (
   <Video
     paused={true}
     source={{ uri: url }}
-    style={styles.mediaPlayer}
+    style={videoControllerStyles.mediaPlayer}
     volume={10}
     resizeMode="cover"
     controls={true}

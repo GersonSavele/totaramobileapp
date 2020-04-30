@@ -22,14 +22,9 @@
  */
 
 import React, { useState, ReactNode, useContext } from "react";
-import {
-  Animated,
-  Dimensions,
-  View,
-  LayoutChangeEvent
-} from "react-native";
+import { Animated, Dimensions, View, LayoutChangeEvent } from "react-native";
 import { ThemeContext, normalize } from "@totara/theme";
-import {parallaxScrollViewStyles} from "./styles"
+import { parallaxScrollViewStyles } from "@totara/theme/components/currentLearning";
 
 type Props = {
   fadeOutForeground?: boolean;
@@ -60,7 +55,7 @@ const ParallaxScrollView = ({
   parallaxHeaderHeight,
   renderBackground,
   titleBar,
-  tabBar
+  tabBar,
 }: Props) => {
   const [viewHeight, setViewHeight] = useState(window.height);
   const [viewWidth, setViewWidth] = useState(window.width);
@@ -69,8 +64,8 @@ const ParallaxScrollView = ({
   const updateViewDimensions = (e: LayoutChangeEvent) => {
     const {
       nativeEvent: {
-        layout: { width, height }
-      }
+        layout: { width, height },
+      },
     } = e;
     if (width !== viewWidth || height !== viewHeight) {
       setViewWidth(width);
@@ -87,7 +82,10 @@ const ParallaxScrollView = ({
   const containerStyles = [{ backgroundColor: theme.colorAccent }];
   return (
     // Background image scrolling...
-    <View style={[parallaxScrollViewStyles.container]} onLayout={e => updateViewDimensions(e)}>
+    <View
+      style={[parallaxScrollViewStyles.container]}
+      onLayout={(e) => updateViewDimensions(e)}
+    >
       <Animated.View
         style={[
           parallaxScrollViewStyles.backgroundImage,
@@ -98,25 +96,25 @@ const ParallaxScrollView = ({
             opacity: interpolate(scrollY, {
               inputRange: [0, p * (1 / 2), p * (3 / 4), p],
               outputRange: [1, 0.9, 0.9, 0.7],
-              extrapolate: "clamp"
+              extrapolate: "clamp",
             }),
             transform: [
               {
                 translateY: interpolate(scrollY, {
                   inputRange: [0, p],
                   outputRange: [0, -(p / 5)],
-                  extrapolateLeft: "clamp"
-                })
+                  extrapolateLeft: "clamp",
+                }),
               },
               {
                 scale: interpolate(scrollY, {
                   inputRange: [-viewHeight, 1],
                   outputRange: [4, 1],
-                  extrapolate: "clamp"
-                })
-              }
-            ]
-          }
+                  extrapolate: "clamp",
+                }),
+              },
+            ],
+          },
         ]}
       >
         <View>{renderBackground()}</View>
@@ -135,7 +133,7 @@ const ParallaxScrollView = ({
           onScroll: Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
             { useNativeDriver: true }
-          )
+          ),
         },
         <View style={parallaxScrollViewStyles.parallaxHeaderContainer}>
           <Animated.View
@@ -147,10 +145,10 @@ const ParallaxScrollView = ({
                   ? interpolate(scrollY, {
                       inputRange: [0, p * (1 / 2), p * (3 / 4), p],
                       outputRange: [1, 0.3, 0.1, 0],
-                      extrapolate: "clamp"
+                      extrapolate: "clamp",
                     })
-                  : 1
-              }
+                  : 1,
+              },
             ]}
           >
             <View style={{ height: parallaxHeaderHeight }}></View>

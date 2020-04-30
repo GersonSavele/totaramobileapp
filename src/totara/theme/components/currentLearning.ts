@@ -17,7 +17,7 @@ Please contact [sales@totaralearning.com] for more information.
 
 import { StyleSheet, Dimensions } from "react-native";
 import { normalize } from "@totara/theme";
-import {  marginStyle, paddingStyle } from "@totara/theme/constants";
+import { marginStyle, paddingStyle } from "@totara/theme/constants";
 
 const criteriaSheetStyles = StyleSheet.create({
   transparentView: {
@@ -133,7 +133,7 @@ const parallaxScrollViewStyles = StyleSheet.create({
 
 const headerViewStyles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   headerContainer: {
     flex: 1,
@@ -154,13 +154,13 @@ const headerViewStyles = StyleSheet.create({
     borderWidth: 1,
     alignSelf: "flex-start",
     alignItems: "center",
-    marginTop: marginStyle.marginS
+    marginTop: marginStyle.marginS,
   },
   tabBarContainer: {
     flex: 0.4,
     maxHeight: 50,
     minHeight: 48,
-    marginTop: marginStyle.marginL
+    marginTop: marginStyle.marginL,
   },
   tabNav: {
     flexDirection: "row",
@@ -183,8 +183,24 @@ const headerViewStyles = StyleSheet.create({
   tabSelected: {
     height: "100%",
     justifyContent: "center",
-    paddingHorizontal: paddingStyle.margin2XL
+    paddingHorizontal: paddingStyle.margin2XL,
   },
 });
 
-export { criteriaSheetStyles, parallaxScrollViewStyles, headerViewStyles };
+const videoControllerStyles = StyleSheet.create({
+  mediaPlayer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    borderRadius: normalize(12),
+  },
+});
+
+export {
+  criteriaSheetStyles,
+  parallaxScrollViewStyles,
+  headerViewStyles,
+  videoControllerStyles,
+};
