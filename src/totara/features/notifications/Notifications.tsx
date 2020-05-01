@@ -47,7 +47,7 @@ const Notifications = () => {
 
 const styles = StyleSheet.create({
   notificationsContainer:{
-    display: 'flex', alignItems: 'center'
+    alignItems: 'center'
   }
 });
 

@@ -1,11 +1,10 @@
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
-import { normalize } from "@totara/theme";
 import { TouchableIcon } from "@totara/components/index";
-import {Theme} from "@totara/types";
 import React from "react";
+import {AppliedTheme} from "@totara/theme/Theme";
 
 type navigationOptionsProps = {
-    theme: Theme,
+    theme: AppliedTheme,
     title? : string,
     backTitle? : string,
     rightIcon? : IconDefinition | string,
@@ -22,7 +21,7 @@ const TotaraNavigationOptions = ({theme, opacity, title, rightIcon} : navigation
         },
         headerTitleStyle: {
             color: theme.navigationHeaderTintColor,
-            fontSize: normalize(20),
+            fontSize: theme.textH4.fontSize,
             opacity: opacity
         },
         title: title,

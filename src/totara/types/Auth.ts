@@ -19,12 +19,12 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-import { Theme } from "./Theme";
+import {AppliedTheme} from "@totara/theme/Theme";
 
 export type SiteInfo = {
   auth: string;
   siteMaintenance: boolean;
-  theme?: Theme;
+  theme?: AppliedTheme;
   version: string;
 };
 
