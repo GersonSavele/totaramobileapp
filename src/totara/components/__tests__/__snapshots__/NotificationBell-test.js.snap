@@ -8,13 +8,7 @@ exports[`NotificationBell active with 10 notifications 1`] = `
     }
   }
 >
-  <View
-    style={
-      Object {
-        "minWidth": 24,
-      }
-    }
-  >
+  <View>
     <Image
       resizeMode="contain"
       source={
@@ -23,11 +17,15 @@ exports[`NotificationBell active with 10 notifications 1`] = `
         }
       }
       style={
-        Object {
-          "height": 24,
-          "tintColor": "red",
-          "width": 24,
-        }
+        Array [
+          Object {
+            "height": 24,
+            "width": 24,
+          },
+          Object {
+            "tintColor": "red",
+          },
+        ]
       }
     />
   </View>
@@ -78,13 +76,7 @@ exports[`NotificationBell active with zero notifications 1`] = `
     }
   }
 >
-  <View
-    style={
-      Object {
-        "minWidth": 24,
-      }
-    }
-  >
+  <View>
     <Image
       resizeMode="contain"
       source={
@@ -93,11 +85,15 @@ exports[`NotificationBell active with zero notifications 1`] = `
         }
       }
       style={
-        Object {
-          "height": 24,
-          "tintColor": "red",
-          "width": 24,
-        }
+        Array [
+          Object {
+            "height": 24,
+            "width": 24,
+          },
+          Object {
+            "tintColor": "red",
+          },
+        ]
       }
     />
   </View>
@@ -112,13 +108,7 @@ exports[`NotificationBell inactive with 100 notifications 1`] = `
     }
   }
 >
-  <View
-    style={
-      Object {
-        "minWidth": 24,
-      }
-    }
-  >
+  <View>
     <Image
       resizeMode="contain"
       source={
@@ -127,11 +117,15 @@ exports[`NotificationBell inactive with 100 notifications 1`] = `
         }
       }
       style={
-        Object {
-          "height": 24,
-          "tintColor": "red",
-          "width": 24,
-        }
+        Array [
+          Object {
+            "height": 24,
+            "width": 24,
+          },
+          Object {
+            "tintColor": "red",
+          },
+        ]
       }
     />
   </View>
