@@ -1,5 +1,6 @@
 import React from "react";
 import {Image, View, Text, StyleSheet} from "react-native";
+import {tabBar} from "@totara/theme/constants";
 
 const notificationsSolid = require("@resources/images/tabbar/notifications_solid.png");
 const notificationsRegular = require("@resources/images/tabbar/notifications_solid.png");
@@ -10,18 +11,18 @@ type notificationBellProps = {
     counting: number
 }
 
-const NotificationBell = (props: notificationBellProps) => {
+const NotificationBell = ({active, tintColor, counting}: notificationBellProps) => {
     return <View style={styles.container}>
-        <View style={styles.icon}>
+        <View>
             <Image
-                source={props.active ? notificationsSolid : notificationsRegular}
-                style={{tintColor: props.tintColor, width: 24, height: 24}}
+                source={active ? notificationsSolid : notificationsRegular}
+                style={[styles.icon, {tintColor: tintColor}]}
                 resizeMode='contain'/>
         </View>
-        {props.counting > 0 && (
+        {counting > 0 && (
             <View style={styles.counting}>
                 <View style={styles.countingCircle}>
-                    <Text numberOfLines={1} style={{...styles.countingNumber}}>{props.counting > 99 ? '99+' : props.counting}</Text>
+                    <Text numberOfLines={1} style={{...styles.countingNumber}}>{counting > 99 ? '99+' : counting}</Text>
                 </View>
             </View>
         )
@@ -35,7 +36,8 @@ const styles = StyleSheet.create({
         width: 36,
     },
     icon:{
-        minWidth: 24
+        width: tabBar.icon.width,
+        height: tabBar.icon.height
     },
     counting:{
         width: '100%',

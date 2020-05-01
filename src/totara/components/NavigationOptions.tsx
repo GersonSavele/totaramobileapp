@@ -12,22 +12,24 @@ type navigationOptionsProps = {
     opacity? : number
 }
 
-const TotaraNavigationOptions = (props: navigationOptionsProps) => ({
-    headerStyle: {
-        borderBottomWidth: 0,
-        backgroundColor: props.theme.colorSecondary1,
-        shadowOpacity: 0,
-        elevation: 0
-    },
-    headerTitleStyle: {
-        color: props.theme.navigationHeaderTintColor,
-        fontSize: normalize(20),
-        opacity: props.opacity
-    },
-    title: props.title,
-    headerBackTitle: null,
-    headerTintColor: props.theme.navigationHeaderTintColor,
-    headerRight: props.rightIcon ? <TouchableIcon icon={props.rightIcon} disabled={false} size={24} color={props.theme.navigationHeaderTintColor}/> : null
-});
+const TotaraNavigationOptions = ({theme, opacity, title, rightIcon} : navigationOptionsProps) => {
+    return {
+        headerStyle: {
+            borderBottomWidth: 0,
+            backgroundColor: theme.colorSecondary1,
+            shadowOpacity: 0,
+            elevation: 0
+        },
+        headerTitleStyle: {
+            color: theme.navigationHeaderTintColor,
+            fontSize: normalize(20),
+            opacity: opacity
+        },
+        title: title,
+        headerBackTitle: null,
+        headerTintColor: theme.navigationHeaderTintColor,
+        headerRight: rightIcon ? <TouchableIcon icon={rightIcon} disabled={false} size={24} color={theme.navigationHeaderTintColor}/> : null
+    }
+};
 
 export default TotaraNavigationOptions;

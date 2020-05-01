@@ -21,7 +21,7 @@
  */
 
 import React, {useContext} from "react";
-import {View, Text} from "react-native";
+import {View, Text, StyleSheet} from "react-native";
 import {createStackNavigator} from "react-navigation-stack";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 import {ThemeContext} from "@totara/theme";
@@ -37,13 +37,19 @@ const Notifications = () => {
         {translate("notifications.action_primary")}
       </Text>
     </View>
-    <View style={{display: 'flex', alignItems: 'center'}}>
+    <View style={styles.notificationsContainer}>
       <View>
         <Text>Notification list goes here</Text>
       </View>
     </View>
   </View>
 }
+
+const styles = StyleSheet.create({
+  notificationsContainer:{
+    display: 'flex', alignItems: 'center'
+  }
+});
 
 const NotificationsStack = createStackNavigator(
   {

@@ -38,4 +38,12 @@ const paddings = {
   margin2XL: 24,
   margin3XL: 32,
 };
-export { textAttributes, margins, paddings };
+
+const tabBar = {
+  icon: {
+    width: 24,
+    height: 24
+  }
+}
+
+export { textAttributes, margins, paddings, tabBar };
