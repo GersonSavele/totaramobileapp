@@ -1,0 +1,162 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and  completionStatus completeFail 1`] = `null`;
+
+exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and auto-completion, completionStatus complete, complete-pass 1`] = `
+<View
+  style={
+    Object {
+      "marginRight": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#3D444B",
+        "borderColor": "#3D444B",
+        "borderRadius": 25,
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "height": 55,
+        "justifyContent": "center",
+        "padding": 0,
+        "width": 55,
+      }
+    }
+  >
+    <Text>
+      mock icon
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and auto-completion, completionStatus incomplete 1`] = `
+<View
+  style={
+    Object {
+      "marginRight": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#3D444B",
+        "borderColor": "#3D444B",
+        "borderRadius": 25,
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "height": 55,
+        "justifyContent": "center",
+        "padding": 0,
+        "width": 55,
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../src/resources/images/auto_complete_tick/auto_complete_tick.png",
+        }
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and completion, completionStatus undefined 1`] = `
+<View
+  style={
+    Object {
+      "marginRight": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#3D444B",
+        "borderColor": "#3D444B",
+        "borderRadius": 25,
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "height": 55,
+        "justifyContent": "center",
+        "padding": 0,
+        "width": 55,
+      }
+    }
+  >
+    <Text>
+      mock icon
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and manual-completion is undefined, completionStatus is undefined 1`] = `null`;
+
+exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and manual-completion, completionStatus complete 1`] = `
+<View
+  style={
+    Object {
+      "marginRight": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#3D444B",
+        "borderColor": "#3D444B",
+        "borderRadius": 25,
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "height": 55,
+        "justifyContent": "center",
+        "padding": 0,
+        "width": 55,
+      }
+    }
+  >
+    <Text>
+      mock icon
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and manual-completion, completionStatus incomplete 1`] = `
+<View
+  style={
+    Object {
+      "marginRight": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#3D444B",
+        "borderColor": "#3D444B",
+        "borderRadius": 25,
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "height": 55,
+        "justifyContent": "center",
+        "padding": 0,
+        "width": 55,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is not available and completion, completionStatus undefined 1`] = `null`;

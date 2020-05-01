@@ -21,8 +21,8 @@ import { View } from "react-native";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { CompletionTrack, CompletionStatus } from "@totara/types";
 import { ContentIcon } from "@totara/components";
-import { Images } from "@totara/lib";
-import {activityIconStyles} from "@totara/theme/activityList";
+import { imageName } from "@totara/lib/constants";
+import { activityIconStyles } from "@totara/theme/activityList";
 
 type BuildContentProps = {
   completion?: string;
@@ -74,7 +74,7 @@ const ActivityContentIcon = ({
     return (
       <View style={activityIconStyles.container}>
         <ContentIcon
-          icon={Images.autoCompleteTick}
+          icon={imageName.autoCompleteTick}
           iconSize={15}
           size={30}
           backgroundColor={theme.colorAccent}

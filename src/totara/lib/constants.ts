@@ -19,6 +19,8 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
+import { images } from "@resources/images";
+
 const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
 const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
 const AUTHORIZATION = "AUTHORIZATION";
@@ -64,6 +66,10 @@ enum connectivity {
   offline,
 }
 
+enum imageName {
+  autoCompleteTick = images.autoCompleteTick
+}
+
 export {
   DEVICE_REGISTRATION,
   WEBVIEW_SECRET,
@@ -86,4 +92,5 @@ export {
   scormActivityType,
   scormSummarySection,
   connectivity,
+  imageName
 };

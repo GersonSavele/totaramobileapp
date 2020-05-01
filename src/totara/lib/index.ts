@@ -22,7 +22,6 @@
 
 import config from "./config";
 import { Logger, Log } from "./logger";
-import Images from "./images";
 import { showMessage } from "./tools";
 
-export { config, Logger, Log, showMessage, Images };
+export { config, Logger, Log, showMessage };
