@@ -16,7 +16,7 @@
 import { StyleSheet } from "react-native";
 
 import { gutter } from "./";
-import { marginStyle } from "./constants";
+import { margins } from "./constants";
 
 const scormSummaryStyles = StyleSheet.create({
   expanded: {
@@ -25,18 +25,18 @@ const scormSummaryStyles = StyleSheet.create({
   },
   sectionBreak: {
     flexDirection: "row",
-    paddingTop: marginStyle.marginS,
-    paddingBottom: marginStyle.marginS,
+    paddingTop: margins.marginS,
+    paddingBottom: margins.marginS,
     justifyContent: "space-between",
   },
   sectionField: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: marginStyle.marginS,
+    paddingVertical: margins.marginS,
   },
   attemptContainer: {
     paddingHorizontal: gutter,
-    paddingVertical: marginStyle.marginS,
+    paddingVertical: margins.marginS,
     flexDirection: "column",
     alignItems: "stretch",
   },
