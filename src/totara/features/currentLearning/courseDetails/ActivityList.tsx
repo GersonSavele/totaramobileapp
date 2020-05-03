@@ -273,7 +273,7 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
     >
       <View>
         <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
-          <View style={activityStyles.activityBodyContainer}>
+          <View style={{...activityStyles.activityBodyContainer,  opacity: 0.25}}>
             <ActivityContentIcon
               completion={item.completion}
               completionStatus={item.completionstatus}

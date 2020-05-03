@@ -44,9 +44,9 @@ const ActivityContentIcon = ({
           icon={"lock"}
           iconSize={15}
           size={30}
-          backgroundColor={theme.colorNeutral5}
-          iconColor={theme.colorAccent}
-          borderColor={theme.colorNeutral5}
+          backgroundColor={theme.colorAccent}
+          iconColor={theme.colorNeutral7}
+          borderColor={theme.colorNeutral7}
         />
       </View>
     );
@@ -78,8 +78,8 @@ const ActivityContentIcon = ({
           iconSize={15}
           size={30}
           backgroundColor={theme.colorAccent}
-          iconColor={theme.colorNeutral5}
-          borderColor={theme.colorNeutral5}
+          iconColor={theme.colorNeutral6}
+          borderColor={theme.colorNeutral6}
           fontAwesomeIcon={false}
         />
       </View>
@@ -124,8 +124,8 @@ const ActivityContentIcon = ({
           iconSize={15}
           size={30}
           backgroundColor={theme.colorAccent}
-          iconColor={theme.colorNeutral5}
-          borderColor={theme.colorNeutral5}
+          iconColor={theme.colorNeutral6}
+          borderColor={theme.colorNeutral6}
         />
       </View>
     );
