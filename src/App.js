@@ -72,7 +72,7 @@ import { FeatureNavigator } from "@totara/features";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { config } from "@totara/lib";
+import { config, Log } from "@totara/lib";
 import messaging from '@react-native-firebase/messaging';
 
 Sentry.init({
@@ -80,18 +80,18 @@ Sentry.init({
 });
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in the background!', remoteMessage);
+  Log.info('Message handled in the background: ', JSON.stringify(remoteMessage));
 });
 
 const App: () => React$Node = () => {
 
   useEffect(() => {
     messaging().getToken().then(token=>{
-      console.log('FIREBASE TOKEN', token);
+      Log.info('FIREBASE TOKEN: ', token);
     })
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      Log.info('A new FCM message arrived: ', JSON.stringify(remoteMessage));
     });
     return unsubscribe;
   }, []);
