@@ -20,39 +20,26 @@
  */
 
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  //Switch, To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
   withNavigation,
   NavigationParams,
   NavigationInjectedProps,
 } from "react-navigation";
-import {
-  GeneralErrorModal,
-  PrimaryButton,
-  InfoModal,
-} from "@totara/components";
+import { GeneralErrorModal } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
-import { Course, StatusKey } from "@totara/types";
 import Activities from "./Activities";
+import { Course } from "@totara/types";
 import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
-import { NAVIGATION_MY_LEARNING } from "@totara/lib/constants";
 import { HeaderView } from "@totara/components/currentLearning";
+import CourseCompletionSuccessModal from "./CourseCompletionSuccessModal";
 
 type CourseDetailsProps = {
   course: Course;
   refetch: () => {};
-  navigation?: NavigationParams;
-};
-
-type CourseCompletedProps = {
-  course: Course;
   navigation?: NavigationParams;
 };
 
@@ -106,40 +93,9 @@ const CourseDetailsComponent = withNavigation(
             )}
           </View>
         </View>
-        <CourseCompleted course={course} />
+        <CourseCompletionSuccessModal course={course} navigation={navigation} />
       </HeaderView>
     );
-  }
-);
-
-const CourseCompleted = withNavigation(
-  ({ navigation, course }: CourseCompletedProps) => {
-    const [show, setShow] = useState(true);
-    const onClose = () => {
-      setShow(!show);
-      navigation!.navigate(NAVIGATION_MY_LEARNING);
-    };
-    if (
-      course.completion &&
-      course.completion.statuskey === StatusKey.complete
-    ) {
-      return (
-        <InfoModal
-          transparent={true}
-          title={translate("course.course_complete.title")}
-          description={translate("course.course_complete.description")}
-          imageType="course_complete"
-          visible={show}
-        >
-          <PrimaryButton
-            text={translate("course.course_complete.button_title")}
-            onPress={onClose}
-          />
-        </InfoModal>
-      );
-    } else {
-      return null;
-    }
   }
 );
 
@@ -153,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { CourseDetails, CourseDetailsComponent, CourseCompleted };
+export default CourseDetails;

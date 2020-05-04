@@ -18,10 +18,6 @@
  *
  * $author
  */
+import CourseDetails from "./CourseDetails";
 
-export {
-  CourseDetails,
-  CourseDetailsComponent,
-  CourseCompleted,
-  ActivityUI,
-} from "./CourseDetails";
+export default CourseDetails;
