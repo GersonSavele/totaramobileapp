@@ -60,6 +60,7 @@ import {
   faTrashAlt,
   faCaretRight,
   faBolt,
+  faCheckCircle
 } from "@fortawesome/free-solid-svg-icons";
 
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
@@ -106,11 +107,11 @@ const App: () => React$Node = () => {
         <SafeAreaProvider>
           <AuthFlow>
             <ActivitySheetWrapper>
-              <AppContainer />
+              <AppContainer/>
             </ActivitySheetWrapper>
-            <AdditionalAction />
-            <AppModal />
-            <AttemptSynchronizer />
+            <AdditionalAction/>
+            <AppModal/>
+            <AttemptSynchronizer/>
           </AuthFlow>
         </SafeAreaProvider>
       </ThemeProvider>
@@ -122,7 +123,7 @@ const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
   const AppMainNavigation = createAppContainer(FeatureNavigator());
 
-  return <AppMainNavigation screenProps={{ theme: theme }} />;
+  return <AppMainNavigation screenProps={{ theme: theme }}/>;
 };
 
 // init is needeed for FA to bundle the only needed icons
@@ -162,7 +163,8 @@ const initFontAwesome = () => {
     faTrashAlt,
     faCaretRight,
     faBolt,
-    faChevronDown
+    faChevronDown,
+    faCheckCircle
   );
 };
 initFontAwesome();

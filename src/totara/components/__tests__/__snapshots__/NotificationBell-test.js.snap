@@ -13,7 +13,7 @@ exports[`NotificationBell active with 10 notifications 1`] = `
       resizeMode="contain"
       source={
         Object {
-          "testUri": "../../../src/resources/images/tabbar/notifications_solid.png",
+          "testUri": "../../../src/resources/images/tabbar/notificationsSolid.png",
         }
       }
       style={
@@ -57,7 +57,7 @@ exports[`NotificationBell active with 10 notifications 1`] = `
         style={
           Object {
             "color": "white",
-            "fontSize": 12,
+            "fontSize": 15,
           }
         }
       >
@@ -81,7 +81,7 @@ exports[`NotificationBell active with zero notifications 1`] = `
       resizeMode="contain"
       source={
         Object {
-          "testUri": "../../../src/resources/images/tabbar/notifications_solid.png",
+          "testUri": "../../../src/resources/images/tabbar/notificationsSolid.png",
         }
       }
       style={
@@ -113,7 +113,7 @@ exports[`NotificationBell inactive with 100 notifications 1`] = `
       resizeMode="contain"
       source={
         Object {
-          "testUri": "../../../src/resources/images/tabbar/notifications_solid.png",
+          "testUri": "../../../src/resources/images/tabbar/notificationsRegular.png",
         }
       }
       style={
@@ -157,7 +157,7 @@ exports[`NotificationBell inactive with 100 notifications 1`] = `
         style={
           Object {
             "color": "white",
-            "fontSize": 12,
+            "fontSize": 15,
           }
         }
       >

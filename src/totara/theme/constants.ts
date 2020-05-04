@@ -72,6 +72,11 @@ const tabBar = {
 const viewHeight = {
   activityContainerHeight: 45,
 };
+const header = {
+  icon:{
+    size: 24
+  }
+}
 export {
   textAttributes,
   margins,
@@ -81,4 +86,5 @@ export {
   fontWeights,
   borderRadius,
   tabBar,
+  header
 };

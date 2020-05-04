@@ -44,7 +44,9 @@ import Settings from "./settings";
 import Profile from "./profile";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
-import {NotificationBell} from "@totara/components";
+import { NotificationBell, TouchableIcon } from "@totara/components";
+import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
+import { header } from "@totara/theme/constants";
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
@@ -99,7 +101,7 @@ const MyLearningTab = {
         navigationOptions: ({screenProps, navigation}) =>
           totaraNavigationOptions({
             theme: screenProps!.theme,
-            rightIcon: "cloud-download-alt",
+            rightAction: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={header.icon.size} color={screenProps!.theme.navigationHeaderTintColor}/>,
             title: navigation.getParam("title"),
             opacity: navigation.getParam("opacity")
           })
@@ -109,7 +111,7 @@ const MyLearningTab = {
         navigationOptions: ({screenProps, navigation}) =>
           totaraNavigationOptions({
             theme: screenProps!.theme,
-            rightIcon: "cloud-download-alt",
+            rightAction: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={header.icon.size} color={screenProps!.theme.navigationHeaderTintColor}/>,
             title: navigation.getParam("title"),
             opacity: navigation.getParam("opacity")
           })
@@ -138,7 +140,7 @@ const NotificationsTab = {
     tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => NotificationBell({
       active: tabIconProps.focused,
       tintColor: tabIconProps.tintColor,
-      counting: 100
+      counting: 5
     })
   }
 };
