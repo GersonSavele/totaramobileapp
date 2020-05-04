@@ -73,60 +73,32 @@ import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { config } from "@totara/lib";
+import messaging from '@react-native-firebase/messaging';
 
 Sentry.init({
   dsn: config.sentryUri,
 });
 
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
 const App: () => React$Node = () => {
-  // constructor() {
-  //   super();
-  // }
-  //
-  // // TODO: this is just basic notification callback to check if notification to RN.
-  // async onPushRegistered(deviceToken) {
-  //   // TODO: Send the token to my server so it could send back push notifications...
-  //   Log.info("Device Token Received", deviceToken);
-  // }
-  //
-  // // TODO: this is just basic notification callback to check if notification to RN.
-  // onPushRegistrationFailed(error) {
-  //   Log.error(error);
-  // }
-  //
-  // // TODO: this is just basic notification callback to check if notification to RN.
-  // onNotificationReceivedForeground(notification) {
-  //   Log.info("Notification Received - Foreground", notification);
-  // }
-  //
-  // // TODO: this is just basic notification callback to check if notification to RN.
-  // onNotificationReceived(notification) {
-  //   Log.info("Notification Received", notification);
-  // }
-  //
-  // // TODO: this is just basic notification callback to check if notification to RN.
-  // onNotificationOpened(notification) {
-  //   Log.info("Notification opened by device user", notification);
-  // }
-  //
-  // async componentWillUnmount() {
-  //   // prevent memory leaks!
-  //   await notifications.cleanUp();
-  // }
-  //
-  // async componentDidMount() {
-  //   await new ResourceManager().init();
-  //   await notifications.init(
-  //     this.onNotificationReceivedForeground,
-  //     this.onNotificationOpened,
-  //     this.onPushRegistered,
-  //     this.onPushRegistrationFailed
-  //   );
-  // }
+
+  useEffect(() => {
+    messaging().getToken().then(token=>{
+      console.log('FIREBASE TOKEN', token);
+    })
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     new ResourceManager().init();
-  });
+  }, []);
 
   return (
     <AuthProvider asyncStorage={AsyncStorage}>

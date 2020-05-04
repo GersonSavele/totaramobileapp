@@ -11,7 +11,7 @@
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
-//#import <Firebase.h>
+#import <Firebase.h>
 //#import <RNNotifications.h>
 #import <RNFSManager.h>
 
@@ -19,6 +19,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
   NSURL *jsCodeLocation;
 
   #ifdef DEBUG
@@ -40,7 +43,7 @@
   [self.window makeKeyAndVisible];
   [RNSplashScreen show];
   
-//  [FIRApp configure];
+
 //  [RNNotifications startMonitorNotifications];
   
   return YES;
