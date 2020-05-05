@@ -39,7 +39,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import { Course, StatusKey } from "@totara/types";
-import  ActivityList  from "./ActivityList";
+import Activities from "./Activities";
 import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/constants";
@@ -95,7 +95,7 @@ const CourseDetailsComponent = withNavigation(
             ]}
           >
             {!showOverview ? (
-              <Activities course={course} refetch={refetch} />
+              <Activities sections={course.sections} refetch={refetch} />
             ) : (
               <OverviewDetails
                 learningItem={course}
@@ -143,36 +143,36 @@ const CourseCompleted = withNavigation(
   }
 );
 
-const Activities = ({ course, refetch }: CourseDetailsProps) => {
-  //To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented
+// const Activities = ({ course, refetch }: CourseDetailsProps) => {
+//   //To Do: This UI implementation not related for this ticket(All activity expanding), Later this design will be usefull when function will be implemented
 
-  // const [theme] = useContext(ThemeContext);
-  return (
-    <View>
-      {/* <View
-        style={[
-          styles.toggleViewContainer,
-          { backgroundColor: theme.colorNeutral1 }
-        ]}
-      >
-        <Text style={[theme.textH3, { color: theme.colorNeutral8 }]}>
-          Expand/ Collapse all topics
-        </Text>
-        <Switch
-          style={[{ borderColor: theme.colorNeutral5 }]}
-          value={true} // set the value into the tracked state
-          onValueChange={() => console.log()} // give the function that would handle value change for this component
-          //   disabled={false}
-          trackColor={{
-            true: theme.colorNeutral5,
-            false: theme.colorNeutral1
-          }}
-        />
-      </View> */}
-      <ActivityList sections={course.sections} refetch={refetch} />
-    </View>
-  );
-};
+//   // const [theme] = useContext(ThemeContext);
+//   return (
+//     <View>
+//       {/* <View
+//         style={[
+//           styles.toggleViewContainer,
+//           { backgroundColor: theme.colorNeutral1 }
+//         ]}
+//       >
+//         <Text style={[theme.textH3, { color: theme.colorNeutral8 }]}>
+//           Expand/ Collapse all topics
+//         </Text>
+//         <Switch
+//           style={[{ borderColor: theme.colorNeutral5 }]}
+//           value={true} // set the value into the tracked state
+//           onValueChange={() => console.log()} // give the function that would handle value change for this component
+//           //   disabled={false}
+//           trackColor={{
+//             true: theme.colorNeutral5,
+//             false: theme.colorNeutral1
+//           }}
+//         />
+//       </View> */}
+//       <Activities sections={course.sections} refetch={refetch} />
+//     </View>
+//   );
+// };
 
 const styles = StyleSheet.create({
   container: {

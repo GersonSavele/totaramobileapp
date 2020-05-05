@@ -16,10 +16,33 @@ Please contact [sales@totaralearning.com] for more information.
 */
 
 const textAttributes = {
-  bold: "bold",
-  strong: "600",
   short_code_prefix: "0x",
 };
+
+const borderRadius = {
+  borderRadiusM: 12,
+};
+
+const fontWeights = {
+  fontWeightXS: "200",
+  fontWeightS: "300",
+  fontWeightM: "400",
+  fontWeightL: "500",
+  fontWeightXL: "600",
+  fontWeight2XL: "700",
+  fontWeight3XL: "800",
+};
+
+const fontSizes = {
+  fontSizeXS: 11,
+  fontSizeS: 15,
+  fontSizeM: 17,
+  fontSizeL: 22,
+  fontSizeXL: 32,
+  fontSize2XL: 58,
+  fontSize3XL: 68,
+};
+
 const margins = {
   marginXS: 6,
   marginS: 8,
@@ -42,8 +65,20 @@ const paddings = {
 const tabBar = {
   icon: {
     width: 24,
-    height: 24
-  }
-}
+    height: 24,
+  },
+};
 
-export { textAttributes, margins, paddings, tabBar };
+const viewHeight = {
+  activityContainerHeight: 45,
+};
+export {
+  textAttributes,
+  margins,
+  paddings,
+  viewHeight,
+  fontSizes,
+  fontWeights,
+  borderRadius,
+  tabBar,
+};

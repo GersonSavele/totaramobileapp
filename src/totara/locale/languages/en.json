@@ -6,8 +6,8 @@
     "version": "Version",
     "try_again": "Try again",
     "cancel": "Cancel",
-    "error_unknown":"Something went wrong, please try again later."
-  }, 
+    "error_unknown": "Something went wrong, please try again later."
+  },
   "certificate-details": {
     "courses": "COURSES",
     "overview": "OVERVIEW"
@@ -15,19 +15,19 @@
   "my-learning": {
     "action_primary": "Current learning",
     "primary_info": {
-        "zero": "You have no learning",
-        "one": "You have {{count}} learning item to complete",
-        "other": "You have {{count}} learning items to complete"
+      "zero": "You have no learning",
+      "one": "You have {{count}} learning item to complete",
+      "other": "You have {{count}} learning items to complete"
     },
     "no_learning_message": "No current learning"
-  }, 
+  },
   "program-details": {
     "details": "Details",
     "outline": "Outline",
     "courses": "COURSES",
     "overview": "OVERVIEW"
-  }, 
-  "totara-component" : {
+  },
+  "totara-component": {
     "section_title_continue_learn": "Continue your learning",
     "due_in": "Due in",
     "extend_date": "Extend Date",
@@ -45,15 +45,15 @@
   },
   "additional-actions-modal": {
     "auth_model_title": "Action required",
-    "auth_model_description" : "You are required to visit a browser\nto complete some action(s).",
-    "auth_model_go_to_browser" : "Go to browser",
-    "auth_model_logout":"Logout"
+    "auth_model_description": "You are required to visit a browser\nto complete some action(s).",
+    "auth_model_go_to_browser": "Go to browser",
+    "auth_model_logout": "Logout"
   },
   "general_error_feedback-modal": {
     "title": "Ooops!",
-    "description" : "Something went wrong",
-    "action_primary" : "Refresh",
-    "action_tertiary" : "Try in browser"
+    "description": "Something went wrong",
+    "action_primary": "Refresh",
+    "action_tertiary": "Try in browser"
   },
   "message": {
     "enter_valid_url": "Enter a valid site address",
@@ -72,74 +72,76 @@
   },
   "auth_invalid_site": {
     "title": "Sorry",
-    "description" : "The URL is not compatible. Please check the URL and try again.",
-    "action_primary" : "OK"
+    "description": "The URL is not compatible. Please check the URL and try again.",
+    "action_primary": "OK"
   },
   "auth_general_error": {
     "title": "Ooops!",
-    "description" : "Something went wrong",
-    "action_primary" : "OK"
+    "description": "Something went wrong",
+    "action_primary": "OK"
   },
   "incompatible_api": {
     "title": "Sorry",
-    "description" : "The URL is not compatible with the mobile app. Would you like to try in browser?",
-    "action_primary" : "Yes, try in browser",
-    "action_tertiary" : "Logout",
-    "action_tertiary_cancel" : "Cancel"
+    "description": "The URL is not compatible with the mobile app. Would you like to try in browser?",
+    "action_primary": "Yes, try in browser",
+    "action_tertiary": "Logout",
+    "action_tertiary_cancel": "Cancel"
   },
   "error-not-valid-url": {
     "title": "Sorry!",
-    "description" : "The URL you have entered is not valid.",
-    "primary_title" : "Try again",
-    "tertiary_title" : "Try in browser"
+    "description": "The URL you have entered is not valid.",
+    "primary_title": "Try again",
+    "tertiary_title": "Try in browser"
   },
   "browser_login": {
     "title": "Confirm!",
-    "description" : "You need to login through the\nmobile site to authenticate you. Would\nyou like us to take you there now?",
-    "primary_title" : "Yes, go to browser",
-    "tertiary_title" : "Cancel"
+    "description": "You need to login through the\nmobile site to authenticate you. Would\nyou like us to take you there now?",
+    "primary_title": "Yes, go to browser",
+    "tertiary_title": "Cancel"
   },
   "activity_not_available": {
-    "title" : "This activity is not available unless"
+    "title": "This activity is not available unless"
   },
-  "user_profile" : {
-    "login_as" : "Logged in as",
-    "manage_section" : "Manage",
-    "setting_cell" : "Settings",
-    "logout" : "Logout"
+  "user_profile": {
+    "login_as": "Logged in as",
+    "manage_section": "Manage",
+    "setting_cell": "Settings",
+    "logout": "Logout"
   },
-  "course" :{
-    "course_overview":  {
-      "course_summery" : "Course summary"
+  "course": {
+    "course_overview": {
+      "course_summery": "Course summary"
     },
-    "course_overview_progress" : {
-      "title" : "Your course progress"
+    "course_overview_progress": {
+      "title": "Your course progress"
     },
-    "course_overview_grade" : {
-      "title" : "Your grade overview"
+    "course_overview_grade": {
+      "title": "Your grade overview"
     },
-    "course_complete" : {
-      "title" : "Awesome!",
-      "description" : "You have successfully completed\nthe course.",
-      "button_title" : "Continue learning"
+    "course_complete": {
+      "title": "Awesome!",
+      "description": "You have successfully completed\nthe course.",
+      "button_title": "Continue learning"
     },
-    "course_criteria":{
+    "course_criteria": {
       "title": "Course criteria"
     },
     "course-details": {
       "activities": "ACTIVITIES",
       "overview": "OVERVIEW"
+    },
+    "course_activity_section": {
+      "not_available": "Not available"
     }
   },
-  "scorm" : {
-    "last_synced" : "Last synced",
+  "scorm": {
+    "last_synced": "Last synced",
     "ago": "ago",
     "info_completed_attempts": "You have reached the maximum number of attempts",
     "info_upcoming_activity": "Sorry, this activity is not available until",
-    "summary" : {
+    "summary": {
       "summary": "Summary",
-      "grade": 
-      {
+      "grade": {
         "title": "Grade details",
         "view_all": "View all",
         "method": "Grading method",
@@ -155,26 +157,25 @@
       "new_attempt": "New attempt",
       "last_attempt": "Last attempt"
     },
-    "feedback" : {
+    "feedback": {
       "grade_title": "YOUR LAST ATTEMPT GRADE",
       "awesome": "Awesome!",
       "sorry": "Sorry!",
       "back": "Back to course",
       "attempt_again": "Attempt again"
     },
-    "attempts" : {
+    "attempts": {
       "title": "All attempts grades",
       "attempt": "Attempt",
       "failed": "Failed",
       "passed": "Passed"
-    }, 
+    },
     "grading_method": {
       "0": "Highest attempt",
       "1": "Average attempts",
       "2": "First attempt",
       "3": "Last completed attempt"
     }
-
   },
   "notifications": {
     "action_primary": "Notifications"

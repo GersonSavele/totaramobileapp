@@ -21,8 +21,8 @@ import { View } from "react-native";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { CompletionTrack, CompletionStatus } from "@totara/types";
 import { ContentIcon } from "@totara/components";
-import  autoCompleteTick  from "@resources/images/auto_complete_tick/auto_complete_tick.png";
-import { activityIconStyles } from "@totara/theme/activityList";
+import autoCompleteTick from "@resources/images/auto_complete_tick/auto_complete_tick.png";
+import { styles } from "@totara/theme/activities";
 
 type BuildContentProps = {
   completion?: string;
@@ -39,7 +39,7 @@ const ContentIconWrapper = ({
 }: BuildContentProps) => {
   if (!available) {
     return (
-      <View style={activityIconStyles.container}>
+      <View style={styles.activityIconContainer}>
         <ContentIcon
           icon={"lock"}
           iconSize={15}
@@ -56,7 +56,7 @@ const ContentIconWrapper = ({
       completionStatus === CompletionStatus.complete)
   ) {
     return (
-      <View style={activityIconStyles.container}>
+      <View style={styles.activityIconContainer}>
         <ContentIcon
           icon={"check"}
           iconSize={15}
@@ -72,7 +72,7 @@ const ContentIconWrapper = ({
     completionStatus === CompletionStatus.incomplete
   ) {
     return (
-      <View style={activityIconStyles.container}>
+      <View style={styles.activityIconContainer}>
         <ContentIcon
           icon={autoCompleteTick}
           iconSize={15}
@@ -86,7 +86,7 @@ const ContentIconWrapper = ({
     );
   } else if (completionStatus === CompletionStatus.completeFail) {
     return (
-      <View style={activityIconStyles.container}>
+      <View style={styles.activityIconContainer}>
         <ContentIcon
           icon={"times"}
           iconSize={15}
@@ -103,7 +103,7 @@ const ContentIconWrapper = ({
       completionStatus === CompletionStatus.complete)
   ) {
     return (
-      <View style={activityIconStyles.container}>
+      <View style={styles.activityIconContainer}>
         <ContentIcon
           icon={"check"}
           iconSize={15}
@@ -119,7 +119,7 @@ const ContentIconWrapper = ({
     completionStatus === CompletionStatus.incomplete
   ) {
     return (
-      <View style={activityIconStyles.container}>
+      <View style={styles.activityIconContainer}>
         <ContentIcon
           iconSize={15}
           size={30}

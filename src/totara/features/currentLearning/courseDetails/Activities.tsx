@@ -22,7 +22,7 @@
 
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import React, { useState, useContext } from "react";
-import { normalize, ThemeContext } from "@totara/theme";
+import { ThemeContext } from "@totara/theme";
 import {
   Section,
   Activity,
@@ -37,8 +37,18 @@ import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "@totara/activities/ActivitySheet";
 import { TextTypeLabel } from "./activityLabel/types";
 import ContentIconWrapper from "./ContentIconWrapper";
-import { activityStyles } from "@totara/theme/activityList";
-
+import {
+  sectionDataNotAvailableTitle,
+  sectionDataNotAvailable,
+  activitySeparateView,
+  sectionDataAvailableTitle,
+  activityContainerWrap,
+  unLockActivityTextWrap,
+  lockActivityTextWrap,
+  activityBodyWrap,
+  styles,
+} from "@totara/theme/activities";
+import { translate } from "@totara/locale";
 // To Do : refetch props should be removed from going nested component(MOB-381)
 
 type ActivityProps = {
@@ -67,7 +77,7 @@ type ActivityListBodyProps = {
   refetch: () => {};
 };
 
-const ActivityList = ({ sections, refetch }: ActivityListProps) => {
+const Activities = ({ sections, refetch }: ActivityListProps) => {
   return (
     <FlatList
       data={sections}
@@ -91,9 +101,9 @@ const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
         }}
       >
         {available === true ? (
-          <CellExpandUI show={show} title={title} />
+          <ExpandableSection show={show} title={title} />
         ) : (
-          <SectionDataNotAvailable {...section} />
+          <RestrictionSection {...section} />
         )}
       </TouchableOpacity>
       {show && <ActivityListBody data={activities} refetch={refetch} />}
@@ -101,7 +111,7 @@ const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
   ) : null;
 };
 
-const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
+const RestrictionSection = ({ title, availablereason }: Section) => {
   const [theme] = useContext(ThemeContext);
   const [show, setShow] = useState(false);
   const onClose = () => {
@@ -109,33 +119,12 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
   };
   return (
     <View>
-      <TouchableOpacity
-        style={activityStyles.headerViewContainer}
-        onPress={onClose}
-      >
-        <Text
-          numberOfLines={1}
-          style={{
-            ...theme.textH3,
-
-            fontWeight: "bold",
-            color: theme.colorNeutral6,
-            flex: 3,
-            fontSize: normalize(22),
-          }}
-        >
+      <TouchableOpacity style={styles.sectionViewWrap} onPress={onClose}>
+        <Text numberOfLines={1} style={sectionDataNotAvailableTitle(theme)}>
           {title}
         </Text>
-        <Text
-          style={{
-            ...theme.textH3,
-            ...activityStyles.notAvailableText,
-            color: theme.colorNeutral6,
-            backgroundColor: theme.colorNeutral2,
-            flex: 1,
-          }}
-        >
-          Not available
+        <Text style={sectionDataNotAvailable(theme)}>
+          {translate("course.course_activity_section.not_available")}
         </Text>
       </TouchableOpacity>
       {show && (
@@ -148,14 +137,11 @@ const SectionDataNotAvailable = ({ title, availablereason }: Section) => {
   );
 };
 
-const CellExpandUI = ({ show, title }: CellExpandUIProps) => {
+const ExpandableSection = ({ show, title }: CellExpandUIProps) => {
   const [theme] = useContext(ThemeContext);
   return (
-    <View style={activityStyles.headerViewContainer}>
-      <Text
-        numberOfLines={1}
-        style={{ ...theme.textH3, fontWeight: "bold", fontSize: normalize(22) }}
-      >
+    <View style={styles.sectionViewWrap}>
+      <Text numberOfLines={1} style={sectionDataAvailableTitle(theme)}>
         {title}
       </Text>
       {show ? (
@@ -207,12 +193,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
       <TextTypeLabel label={item} theme={theme}></TextTypeLabel>
     </View>
   ) : (
-    <View
-      style={{
-        ...activityStyles.accordionListWrap,
-        backgroundColor: theme.colorAccent,
-      }}
-    >
+    <View style={activityContainerWrap(theme)}>
       <View>
         <ActivitySheetContext.Consumer>
           {({ setCurrentActivity, setOnClose }) => {
@@ -224,21 +205,17 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
                   setOnClose(refetch!);
                 }}
               >
-                <View style={activityStyles.activityBodyContainer}>
+                <View style={styles.activityBodyContainer}>
                   <ContentIconWrapper
                     completion={item.completion}
                     completionStatus={item.completionstatus}
                     theme={theme}
                     available={item.available}
                   ></ContentIconWrapper>
-                  <View style={activityStyles.activityContainer}>
+                  <View style={styles.activityContainer}>
                     <Text
                       numberOfLines={1}
-                      style={{
-                        ...activityStyles.bodyName,
-                        color: theme.colorNeutral8,
-                        textAlign: "center",
-                      }}
+                      style={unLockActivityTextWrap(theme)}
                     >
                       {item.name.trim()}
                     </Text>
@@ -248,12 +225,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
             );
           }}
         </ActivitySheetContext.Consumer>
-        <View
-          style={{
-            ...activityStyles.activityBodySeparator,
-            backgroundColor: theme.colorNeutral8,
-          }}
-        ></View>
+        <View style={activitySeparateView(theme)}></View>
       </View>
     </View>
   );
@@ -265,29 +237,18 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
     setShow(!show);
   };
   return (
-    <View
-      style={{
-        ...activityStyles.accordionListWrap,
-        backgroundColor: theme.colorAccent,
-      }}
-    >
+    <View style={activityContainerWrap(theme)}>
       <View>
         <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
-          <View style={{...activityStyles.activityBodyContainer,  opacity: 0.25}}>
+          <View style={activityBodyWrap()}>
             <ContentIconWrapper
               completion={item.completion}
               completionStatus={item.completionstatus}
               theme={theme}
               available={item.available}
             ></ContentIconWrapper>
-            <View style={activityStyles.activityContainer}>
-              <Text
-                numberOfLines={1}
-                style={{
-                  ...activityStyles.bodyName,
-                  color: theme.colorNeutral8,
-                }}
-              >
+            <View style={styles.activityContainer}>
+              <Text numberOfLines={1} style={lockActivityTextWrap(theme)}>
                 {item.name}
               </Text>
             </View>
@@ -301,15 +262,10 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
             onClose={onClose}
           />
         )}
-        <View
-          style={{
-            ...activityStyles.activityBodySeparator,
-            backgroundColor: theme.colorNeutral8,
-          }}
-        ></View>
+        <View style={activitySeparateView(theme)}></View>
       </View>
     </View>
   );
 };
 
-export default ActivityList;
+export default Activities;
