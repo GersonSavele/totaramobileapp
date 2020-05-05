@@ -22,13 +22,6 @@
 
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import React, { useState, useContext } from "react";
-import { ThemeContext } from "@totara/theme";
-import {
-  Section,
-  Activity,
-  ActivityType,
-  CompletionStatus,
-} from "@totara/types";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -40,7 +33,6 @@ import ContentIconWrapper from "./ContentIconWrapper";
 import {
   sectionDataNotAvailableTitle,
   sectionDataNotAvailable,
-  activitySeparateView,
   sectionDataAvailableTitle,
   activityContainerWrap,
   unLockActivityTextWrap,
@@ -48,7 +40,12 @@ import {
   activityBodyWrap,
   styles,
 } from "@totara/theme/activities";
+import { ThemeContext } from "@totara/theme";
+import { Section, Activity, ActivityType } from "@totara/types";
+import { ListSeparator } from "@totara/components";
 import { translate } from "@totara/locale";
+import { completionStatus } from "@totara/lib/constants";
+
 // To Do : refetch props should be removed from going nested component(MOB-381)
 
 type ActivityProps = {
@@ -168,7 +165,7 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
       {data!.map((item: Activity, key: number) => {
         return (
           <View key={key}>
-            {item.completionstatus === CompletionStatus.unknown ||
+            {item.completionstatus === completionStatus.unknown ||
             item.completionstatus === null ||
             item.available === false ? (
               <ActivityLock item={item} theme={theme} key={key} />
@@ -208,7 +205,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
                 <View style={styles.activityBodyContainer}>
                   <ContentIconWrapper
                     completion={item.completion}
-                    completionStatus={item.completionstatus}
+                    status={item.completionstatus}
                     theme={theme}
                     available={item.available}
                   ></ContentIconWrapper>
@@ -225,7 +222,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
             );
           }}
         </ActivitySheetContext.Consumer>
-        <View style={activitySeparateView(theme)}></View>
+        <ListSeparator />
       </View>
     </View>
   );
@@ -243,7 +240,7 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
           <View style={activityBodyWrap()}>
             <ContentIconWrapper
               completion={item.completion}
-              completionStatus={item.completionstatus}
+              status={item.completionstatus}
               theme={theme}
               available={item.available}
             ></ContentIconWrapper>
@@ -262,7 +259,7 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
             onClose={onClose}
           />
         )}
-        <View style={activitySeparateView(theme)}></View>
+        <ListSeparator />
       </View>
     </View>
   );

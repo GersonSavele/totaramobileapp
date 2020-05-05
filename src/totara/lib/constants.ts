@@ -47,6 +47,20 @@ enum scormLessonStatus {
   failed = "failed",
 }
 
+enum completionTrack {
+  trackingManual = "tracking_manual",
+  trackingNone = "tracking_none",
+  trackingAutomatic = "tracking_automatic",
+}
+
+enum completionStatus {
+  incomplete = "incomplete",
+  complete = "complete",
+  completePass = "complete_pass",
+  completeFail = "complete_fail",
+  unknown = "unknown",
+}
+
 enum scormActivityType {
   none,
   offline,
@@ -85,5 +99,7 @@ export {
   scormLessonStatus,
   scormActivityType,
   scormSummarySection,
-  connectivity
+  connectivity,
+  completionTrack,
+  completionStatus,
 };

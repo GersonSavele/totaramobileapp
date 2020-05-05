@@ -19,19 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-export enum CompletionTrack {
-  trackingManual = "tracking_manual",
-  trackingNone = "tracking_none",
-  trackingAutomatic = "tracking_automatic",
-}
-
-export enum CompletionStatus {
-  incomplete = "incomplete",
-  complete = "complete",
-  completePass = "complete_pass",
-  completeFail = "complete_fail",
-  unknown = "unknown",
-}
+import { completionTrack, completionStatus } from "@totara/lib/constants";
 
 export interface Activity {
   id: number;
@@ -39,8 +27,8 @@ export interface Activity {
   modtype: string;
   name: string;
   viewurl?: string;
-  completion?: CompletionTrack;
-  completionstatus?: CompletionStatus;
+  completion?: completionTrack;
+  completionstatus?: completionStatus;
   available: boolean;
   availablereason?: string;
 }

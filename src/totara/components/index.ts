@@ -42,7 +42,7 @@ import NotificationView from "./NotificationView";
 import TopHeader from "./TopHeader";
 import TotaraNavigationOptions from "./NavigationOptions";
 import NotificationBell from "./NotificationBell";
-
+import ListSeparator from "./ListSeparator"
 export {
   LearningItemCard,
   CardElement,
@@ -69,4 +69,5 @@ export {
   TopHeader,
   TotaraNavigationOptions,
   NotificationBell,
+  ListSeparator
 }

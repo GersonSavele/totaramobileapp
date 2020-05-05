@@ -16,118 +16,104 @@ Please contact [sales@totaralearning.com] for more information.
 */
 
 import React from "react";
-import { View } from "react-native";
 
 import { AppliedTheme } from "@totara/theme/Theme";
-import { CompletionTrack, CompletionStatus } from "@totara/types";
+import { completionTrack, completionStatus } from "@totara/lib/constants";
 import { ContentIcon } from "@totara/components";
 import autoCompleteTick from "@resources/images/auto_complete_tick/auto_complete_tick.png";
-import { styles } from "@totara/theme/activities";
 
 type BuildContentProps = {
   completion?: string;
-  completionStatus?: string;
+  status?: string;
   available: boolean;
   theme: AppliedTheme;
 };
 
 const ContentIconWrapper = ({
   completion,
-  completionStatus,
+  status,
   available,
   theme,
 }: BuildContentProps) => {
   if (!available) {
     return (
-      <View style={styles.activityIconContainer}>
-        <ContentIcon
-          icon={"lock"}
-          iconSize={15}
-          size={30}
-          backgroundColor={theme.colorAccent}
-          iconColor={theme.colorNeutral7}
-          borderColor={theme.colorNeutral7}
-        />
-      </View>
+      <ContentIcon
+        icon={"lock"}
+        iconSize={15}
+        size={30}
+        backgroundColor={theme.colorAccent}
+        iconColor={theme.colorNeutral7}
+        borderColor={theme.colorNeutral7}
+      />
     );
   } else if (
-    completion === CompletionTrack.trackingAutomatic &&
-    (completionStatus === CompletionStatus.completePass ||
-      completionStatus === CompletionStatus.complete)
+    completion === completionTrack.trackingAutomatic &&
+    (status === completionStatus.completePass ||
+      status === completionStatus.complete)
   ) {
     return (
-      <View style={styles.activityIconContainer}>
-        <ContentIcon
-          icon={"check"}
-          iconSize={15}
-          size={30}
-          backgroundColor={theme.colorSuccess}
-          iconColor={theme.colorAccent}
-          borderColor={theme.colorSuccess}
-        />
-      </View>
+      <ContentIcon
+        icon={"check"}
+        iconSize={15}
+        size={30}
+        backgroundColor={theme.colorSuccess}
+        iconColor={theme.colorAccent}
+        borderColor={theme.colorSuccess}
+      />
     );
   } else if (
-    completion === CompletionTrack.trackingAutomatic &&
-    completionStatus === CompletionStatus.incomplete
+    completion === completionTrack.trackingAutomatic &&
+    status === completionStatus.incomplete
   ) {
     return (
-      <View style={styles.activityIconContainer}>
-        <ContentIcon
-          icon={autoCompleteTick}
-          iconSize={15}
-          size={30}
-          backgroundColor={theme.colorAccent}
-          iconColor={theme.colorNeutral6}
-          borderColor={theme.colorNeutral6}
-          fontAwesomeIcon={false}
-        />
-      </View>
+      <ContentIcon
+        icon={autoCompleteTick}
+        iconSize={15}
+        size={30}
+        backgroundColor={theme.colorAccent}
+        iconColor={theme.colorNeutral6}
+        borderColor={theme.colorNeutral6}
+        fontAwesomeIcon={false}
+      />
     );
-  } else if (completionStatus === CompletionStatus.completeFail) {
+  } else if (status === completionStatus.completeFail) {
     return (
-      <View style={styles.activityIconContainer}>
-        <ContentIcon
-          icon={"times"}
-          iconSize={15}
-          size={30}
-          backgroundColor={theme.colorAlert}
-          iconColor={theme.colorAccent}
-          borderColor={theme.colorAlert}
-        />
-      </View>
+      <ContentIcon
+        icon={"times"}
+        iconSize={15}
+        size={30}
+        backgroundColor={theme.colorAlert}
+        iconColor={theme.colorAccent}
+        borderColor={theme.colorAlert}
+      />
     );
   } else if (
-    completion === CompletionTrack.trackingManual &&
-    (completionStatus === CompletionStatus.completePass ||
-      completionStatus === CompletionStatus.complete)
+    completion === completionTrack.trackingManual &&
+    (status === completionStatus.completePass ||
+      status === completionStatus.complete)
   ) {
     return (
-      <View style={styles.activityIconContainer}>
-        <ContentIcon
-          icon={"check"}
-          iconSize={15}
-          size={30}
-          backgroundColor={theme.colorSuccess}
-          iconColor={theme.colorAccent}
-          borderColor={theme.colorSuccess}
-        />
-      </View>
+      <ContentIcon
+        icon={"check"}
+        iconSize={15}
+        size={30}
+        backgroundColor={theme.colorSuccess}
+        iconColor={theme.colorAccent}
+        borderColor={theme.colorSuccess}
+      />
     );
   } else if (
-    completion === CompletionTrack.trackingManual &&
-    completionStatus === CompletionStatus.incomplete
+    completion === completionTrack.trackingManual &&
+    status === completionStatus.incomplete
   ) {
     return (
-      <View style={styles.activityIconContainer}>
-        <ContentIcon
-          iconSize={15}
-          size={30}
-          backgroundColor={theme.colorAccent}
-          iconColor={theme.colorNeutral6}
-          borderColor={theme.colorNeutral6}
-        />
-      </View>
+      <ContentIcon
+        iconSize={15}
+        size={30}
+        backgroundColor={theme.colorAccent}
+        iconColor={theme.colorNeutral6}
+        borderColor={theme.colorNeutral6}
+      />
     );
   } else {
     return null;

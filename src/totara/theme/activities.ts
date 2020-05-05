@@ -82,13 +82,6 @@ const activityBodyWrap = () => {
   };
 };
 
-const activitySeparateView = (theme: AppliedTheme) => {
-  return {
-    ...styles.activityBodySeparator,
-    backgroundColor: theme.colorNeutral8,
-  };
-};
-
 const styles = StyleSheet.create({
   bodyName: {
     alignSelf: "flex-start",
@@ -121,13 +114,8 @@ const styles = StyleSheet.create({
     marginHorizontal: normalize(margins.marginL),
   },
   activityContainer: {
-    height: viewHeight.activityContainsHeight,
+    height: viewHeight.activityContainerHeight,
     justifyContent: "center",
-    marginRight: margins.marginL,
-  },
-  activityBodySeparator: {
-    height: 0.5,
-    opacity: 0.2,
     marginHorizontal: margins.marginL,
   },
   notAvailableText: {
@@ -141,17 +129,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontWeight: fontWeights.fontWeight2XL,
     fontSize: normalize(fontSizes.fontSizeL),
-  },
-  activityIconContainer: {
-    marginRight: margins.marginL,
-  },
+  }
 });
 
 export {
   styles,
   sectionDataNotAvailableTitle,
   sectionDataNotAvailable,
-  activitySeparateView,
   sectionDataAvailableTitle,
   activityContainerWrap,
   unLockActivityTextWrap,

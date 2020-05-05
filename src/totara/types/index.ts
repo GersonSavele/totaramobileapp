@@ -18,7 +18,7 @@
  */
 
 import { LearningItem, LearningItemType, Section } from "./LearningItem";
-import { Activity, ActivityType, ScormActivity, CompletionTrack, CompletionStatus } from "./Activity";
+import { Activity, ActivityType, ScormActivity } from "./Activity";
 import { Course, CourseSets } from "./Course";
 import { StatusKey } from "./Completion";
 import { Criteria } from "./Criteria";
@@ -50,6 +50,4 @@ export {
   Certification,
   Criteria,
   StatusKey,
-  CompletionTrack,
-  CompletionStatus
 };
