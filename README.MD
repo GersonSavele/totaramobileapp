@@ -82,6 +82,29 @@ We delegate that to [Prettier](https://prettier.io/).
 
 Make sure your text editor has [that extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), and that it's configured to auto-format on save.
 
+Here is a sample of settings.json file you can place in VSCode or your favourite IDE:
+
+```
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": false,
+  "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+  },
+  "[typescript]": {
+      "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+      "editor.formatOnSave": true
+  },
+  "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+  }
+}
+```
+
 ### Undefined and Null check
 
 Javascript already has the `undefined` type to indicate the absence of value, so there is no need to have a second type that represent the same concept. Said that, avoid use of null. Yet sometime the server returns it, therefore you still have check.
