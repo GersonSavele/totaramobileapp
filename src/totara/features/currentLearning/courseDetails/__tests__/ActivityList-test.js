@@ -17,102 +17,102 @@ Please contact [sales@totaralearning.com] for more information.
 
 import renderer from "react-test-renderer";
 import React from "react";
-import ActivityContentIcon from "../ActivityContentIcon";
+import ContentIconWrapper from "../ContentIconWrapper";
 
 const theme = jest.fn();
 
 describe("Activity-Icon, testing UI activity checkbox for self-completion or auto-completion", () => {
   it("Test result : Activity is available and completion, completionStatus undefined", () => {
     const component = renderer.create(
-      <ActivityContentIcon
+      <ContentIconWrapper
         theme={theme}
         completion="tracking_none"
         completionStatus="unknown"
         available={false}
-      ></ActivityContentIcon>
+      ></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
 
   it("Test result : Activity is not available and completion, completionStatus undefined", () => {
     const component = renderer.create(
-      <ActivityContentIcon
+      <ContentIconWrapper
         theme={theme}
         completion="tracking_none"
         completionStatus="unknown"
         available={true}
-      ></ActivityContentIcon>
+      ></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
 
   it("Test result : Activity is available and auto-completion, completionStatus complete, complete-pass", () => {
     const component = renderer.create(
-      <ActivityContentIcon
+      <ContentIconWrapper
         theme={theme}
         completion="tracking_automatic"
         completionStatus="complete"
         available={true}
-      ></ActivityContentIcon>
+      ></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
 
   it("Test result : Activity is available and auto-completion, completionStatus incomplete", () => {
     const component = renderer.create(
-      <ActivityContentIcon
+      <ContentIconWrapper
         theme={theme}
         completion="tracking_automatic"
         completionStatus="incomplete"
         available={true}
-      ></ActivityContentIcon>
+      ></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
 
   it("Test result : Activity is available and  completionStatus completeFail", () => {
     const component = renderer.create(
-      <ActivityContentIcon
+      <ContentIconWrapper
         theme={theme}
         completion="tracking_none"
         completionStatus="completeFail"
         available={true}
-      ></ActivityContentIcon>
+      ></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
 
   it("Test result : Activity is available and manual-completion, completionStatus incomplete", () => {
     const component = renderer.create(
-      <ActivityContentIcon
+      <ContentIconWrapper
         theme={theme}
         completion="tracking_manual"
         completionStatus="incomplete"
         available={true}
-      ></ActivityContentIcon>
+      ></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
 
   it("Test result : Activity is available and manual-completion, completionStatus complete", () => {
     const component = renderer.create(
-      <ActivityContentIcon
+      <ContentIconWrapper
         theme={theme}
         completion="tracking_manual"
         completionStatus="complete"
         available={true}
-      ></ActivityContentIcon>
+      ></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
   it("Test result : Activity is available and manual-completion is undefined, completionStatus is undefined", () => {
     const component = renderer.create(
-      <ActivityContentIcon
+      <ContentIconWrapper
         theme={theme}
         completion="tracking_none"
         completionStatus="unknown"
         available={true}
-      ></ActivityContentIcon>
+      ></ContentIconWrapper>
     );
     expect(component).toMatchSnapshot();
   });

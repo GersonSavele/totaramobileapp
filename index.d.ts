@@ -15,8 +15,7 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-const images = {
-    autoCompleteTick: require("@resources/images/auto_complete_tick/auto_complete_tick.png")
-};
-
-export { images };
+declare module "*.png" {
+  const content: string;
+  export default content;
+}

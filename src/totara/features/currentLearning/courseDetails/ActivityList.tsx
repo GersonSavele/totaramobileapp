@@ -36,7 +36,7 @@ import { ActivityRestrictionView } from "@totara/components/currentLearning/cour
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "@totara/activities/ActivitySheet";
 import { TextTypeLabel } from "./activityLabel/types";
-import ActivityContentIcon from "./ActivityContentIcon";
+import ContentIconWrapper from "./ContentIconWrapper";
 import { activityStyles } from "@totara/theme/activityList";
 
 // To Do : refetch props should be removed from going nested component(MOB-381)
@@ -225,12 +225,12 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
                 }}
               >
                 <View style={activityStyles.activityBodyContainer}>
-                  <ActivityContentIcon
+                  <ContentIconWrapper
                     completion={item.completion}
                     completionStatus={item.completionstatus}
                     theme={theme}
                     available={item.available}
-                  ></ActivityContentIcon>
+                  ></ContentIconWrapper>
                   <View style={activityStyles.activityContainer}>
                     <Text
                       numberOfLines={1}
@@ -274,12 +274,12 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
       <View>
         <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
           <View style={{...activityStyles.activityBodyContainer,  opacity: 0.25}}>
-            <ActivityContentIcon
+            <ContentIconWrapper
               completion={item.completion}
               completionStatus={item.completionstatus}
               theme={theme}
               available={item.available}
-            ></ActivityContentIcon>
+            ></ContentIconWrapper>
             <View style={activityStyles.activityContainer}>
               <Text
                 numberOfLines={1}
