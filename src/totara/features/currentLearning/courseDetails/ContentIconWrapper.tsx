@@ -1,17 +1,17 @@
 /*
-
-This file is part of Totara Enterprise.
 *
-Copyright (C) 2020 onwards Totara Learning Solutions LTD
+* This file is part of Totara Enterprise.
 *
-Totara Enterprise is provided only to Totara Learning Solutions
-LTD’s customers and partners, pursuant to the terms and
-conditions of a separate agreement with Totara Learning
-Solutions LTD or its affiliate.
+* Copyright (C) 2020 onwards Totara Learning Solutions LTD
 *
-If you do not have an agreement with Totara Learning Solutions
-LTD, you may not access, use, modify, or distribute this software.
-Please contact [sales@totaralearning.com] for more information.
+* Totara Enterprise is provided only to Totara Learning Solutions
+* LTD’s customers and partners, pursuant to the terms and
+* conditions of a separate agreement with Totara Learning
+* Solutions LTD or its affiliate.
+*
+* If you do not have an agreement with Totara Learning Solutions
+* LTD, you may not access, use, modify, or distribute this software.
+* Please contact [sales@totaralearning.com] for more information.
 *
 */
 
@@ -20,7 +20,8 @@ import React from "react";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { completionTrack, completionStatus } from "@totara/lib/constants";
 import { ContentIcon } from "@totara/components";
-import autoCompleteTick from "@resources/images/auto_complete_tick/auto_complete_tick.png";
+// @ts-ignore NOTE: tried "@resources/*": ["resources/*"] in tslint file and did not work
+import { Images } from "@resources/images";
 
 type BuildContentProps = {
   completion?: string;
@@ -67,7 +68,7 @@ const ContentIconWrapper = ({
   ) {
     return (
       <ContentIcon
-        icon={autoCompleteTick}
+        icon={Images.autoCompleteTick}
         iconSize={15}
         size={30}
         backgroundColor={theme.colorAccent}
