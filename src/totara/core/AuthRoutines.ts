@@ -30,13 +30,15 @@ import {
   defaultDataIdFromObject,
 } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
-import { AsyncStorageStatic } from "@react-native-community/async-storage";
+import AsyncStorage, { AsyncStorageStatic } from "@react-native-community/async-storage";
+import { persistCache } from 'apollo-cache-persist';
 
 import { config, Log } from "@totara/lib";
 import { AUTHORIZATION } from "@totara/lib/constants";
 import { LearningItem, AppState, SiteInfo } from "@totara/types";
 import { Setup } from "./AuthHook";
 import { ServerError } from "apollo-link-http-common";
+import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -216,20 +218,29 @@ export const createApolloClient = (
     httpLink,
   ]);
 
+  const cache = new InMemoryCache({
+    dataIdFromObject: (object) => {
+      switch (object.__typename) {
+        case "totara_core_learning_item": {
+          const learningItem = (object as unknown) as LearningItem;
+          return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
+        }
+        default:
+          return defaultDataIdFromObject(object); // fall back to default for all other types
+      }
+    },
+  });
+
+  persistCache({
+    cache,
+    storage: AsyncStorage as PersistentStorage<
+    PersistedData<NormalizedCacheObject>
+    >,
+  });
+
   return new ApolloClient({
     link: link,
-    cache: new InMemoryCache({
-      dataIdFromObject: (object) => {
-        switch (object.__typename) {
-          case "totara_core_learning_item": {
-            const learningItem = (object as unknown) as LearningItem;
-            return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
-          }
-          default:
-            return defaultDataIdFromObject(object); // fall back to default for all other types
-        }
-      },
-    }),
+    cache,
   });
 };
 
