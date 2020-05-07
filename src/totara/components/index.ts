@@ -20,10 +20,14 @@
  *
  */
 
-import {LearningItemCard, CardElement, ImageElement} from "./LearningItemCard";
+import {
+  LearningItemCard,
+  CardElement,
+  ImageElement,
+} from "./LearningItemCard";
 import DueDateState from "./DueDateState";
 import ContentIcon from "./ContentIcon";
-import {AddBadge, CheckBadge} from "./AddBadge";
+import { AddBadge, CheckBadge } from "./AddBadge";
 import ProgressCircle from "./ProgressCircle";
 import ActivityLauncher from "./ActivityLauncher";
 import { InfoModal } from "./infoModal";
@@ -38,11 +42,11 @@ import AppModal from "./AppModal";
 import FormError from "./FormError";
 import MoreText from "./MoreText";
 import LinkText from "./LinkText";
-import NotificationView from "./NotificationView";
+import MessageBar from "./MessageBar";
 import TopHeader from "./TopHeader";
 import TotaraNavigationOptions from "./NavigationOptions";
 import NotificationBell from "./NotificationBell";
-import ListSeparator from "./ListSeparator"
+import ListSeparator from "./ListSeparator";
 export {
   LearningItemCard,
   CardElement,
@@ -65,9 +69,9 @@ export {
   SecondaryButton,
   MoreText,
   LinkText,
-  NotificationView,
+  MessageBar,
   TopHeader,
   TotaraNavigationOptions,
   NotificationBell,
-  ListSeparator
-}
+  ListSeparator,
+};

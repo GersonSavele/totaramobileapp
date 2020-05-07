@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, View, Text, StyleSheet } from "react-native";
-import { fontSizes, tabBar } from "@totara/theme/constants";
+import { fontSizes, paddings, tabBar } from "@totara/theme/constants";
 import { Icons } from "@resources/images";
 
 type notificationBellProps = {
@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   countingCircle: {
-    paddingLeft: 4,
-    paddingRight: 4,
+    paddingLeft: paddings.paddingM,
+    paddingRight: paddings.paddingM,
     backgroundColor: "red",
     alignItems: "center",
     justifyContent: "center",
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   countingNumber: {
     color: "white",
-    fontSize: fontSizes.fontSizeS,
+    fontSize: fontSizes.fontSizeXS,
   },
 });
 

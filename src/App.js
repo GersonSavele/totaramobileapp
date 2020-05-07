@@ -22,46 +22,8 @@
 
 import React, { useContext, useEffect } from "react";
 import { createAppContainer } from "react-navigation";
-import { library } from "@fortawesome/fontawesome-svg-core";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Sentry from "@sentry/react-native";
-
-import {
-  faHome,
-  faCloudDownloadAlt,
-  faBell,
-  faUser,
-  faVideo,
-  faTimes,
-  faChevronRight,
-  faFilm,
-  faListUl,
-  faTasks,
-  faComments,
-  faExternalLinkAlt,
-  faCheck,
-  faChevronUp,
-  faChevronDown,
-  faExclamationTriangle,
-  faLock,
-  faBoxOpen,
-  faExclamationCircle,
-  faArrowRight,
-  faArrowLeft,
-  faBullhorn,
-  faBookOpen,
-  faPenSquare,
-  faBook,
-  faPen,
-  faChevronLeft,
-  faUnlockAlt,
-  faCaretUp,
-  faCaretDown,
-  faTrashAlt,
-  faCaretRight,
-  faBolt,
-  faCheckCircle
-} from "@fortawesome/free-solid-svg-icons";
 
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { AuthProvider } from "@totara/core/AuthProvider";
@@ -74,25 +36,32 @@ import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { config, Log } from "@totara/lib";
-import messaging from '@react-native-firebase/messaging';
+import messaging from "@react-native-firebase/messaging";
+import FontAwesome from "@totara/lib/fontAwesome";
 
 Sentry.init({
   dsn: config.sentryUri,
 });
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  Log.info('Message handled in the background: ', JSON.stringify(remoteMessage));
+FontAwesome.init();
+
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  Log.info(
+    "Message handled in the background: ",
+    JSON.stringify(remoteMessage)
+  );
 });
 
 const App: () => React$Node = () => {
-
   useEffect(() => {
-    messaging().getToken().then(token=>{
-      Log.info('FIREBASE TOKEN: ', token);
-    })
+    messaging()
+      .getToken()
+      .then((token) => {
+        Log.info("FIREBASE TOKEN: ", token);
+      });
 
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Log.info('A new FCM message arrived: ', JSON.stringify(remoteMessage));
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      Log.info("A new FCM message arrived: ", JSON.stringify(remoteMessage));
     });
     return unsubscribe;
   }, []);
@@ -107,11 +76,11 @@ const App: () => React$Node = () => {
         <SafeAreaProvider>
           <AuthFlow>
             <ActivitySheetWrapper>
-              <AppContainer/>
+              <AppContainer />
             </ActivitySheetWrapper>
-            <AdditionalAction/>
-            <AppModal/>
-            <AttemptSynchronizer/>
+            <AdditionalAction />
+            <AppModal />
+            <AttemptSynchronizer />
           </AuthFlow>
         </SafeAreaProvider>
       </ThemeProvider>
@@ -123,50 +92,7 @@ const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
   const AppMainNavigation = createAppContainer(FeatureNavigator());
 
-  return <AppMainNavigation screenProps={{ theme: theme }}/>;
+  return <AppMainNavigation screenProps={{ theme: theme }} />;
 };
-
-// init is needeed for FA to bundle the only needed icons
-// https://github.com/FortAwesome/react-native-fontawesome#build-a-library-to-reference-icons-throughout-your-app-more-conveniently
-// TODO this will be an issue extending this app, probably best to put this somewhere else
-const initFontAwesome = () => {
-  library.add(
-    faHome,
-    faCloudDownloadAlt,
-    faBell,
-    faUser,
-    faVideo,
-    faTimes,
-    faChevronRight,
-    faFilm,
-    faListUl,
-    faTasks,
-    faComments,
-    faExternalLinkAlt,
-    faCheck,
-    faExclamationTriangle,
-    faChevronUp,
-    faLock,
-    faBoxOpen,
-    faExclamationCircle,
-    faArrowLeft,
-    faArrowRight,
-    faBullhorn,
-    faBookOpen,
-    faPenSquare,
-    faBook,
-    faPen,
-    faChevronLeft,
-    faUnlockAlt,
-    faCaretUp,
-    faCaretDown,
-    faTrashAlt,
-    faCaretRight,
-    faBolt,
-    faChevronDown,
-    faCheckCircle
-  );
-};
-initFontAwesome();
 
 export default App;

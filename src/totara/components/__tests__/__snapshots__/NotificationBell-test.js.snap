@@ -47,8 +47,8 @@ exports[`NotificationBell active with 10 notifications 1`] = `
           "borderRadius": 8,
           "flex": 1,
           "justifyContent": "center",
-          "paddingLeft": 4,
-          "paddingRight": 4,
+          "paddingLeft": 6,
+          "paddingRight": 6,
         }
       }
     >
@@ -57,7 +57,7 @@ exports[`NotificationBell active with 10 notifications 1`] = `
         style={
           Object {
             "color": "white",
-            "fontSize": 15,
+            "fontSize": 11,
           }
         }
       >
@@ -147,8 +147,8 @@ exports[`NotificationBell inactive with 100 notifications 1`] = `
           "borderRadius": 8,
           "flex": 1,
           "justifyContent": "center",
-          "paddingLeft": 4,
-          "paddingRight": 4,
+          "paddingLeft": 6,
+          "paddingRight": 6,
         }
       }
     >
@@ -157,7 +157,7 @@ exports[`NotificationBell inactive with 100 notifications 1`] = `
         style={
           Object {
             "color": "white",
-            "fontSize": 15,
+            "fontSize": 11,
           }
         }
       >

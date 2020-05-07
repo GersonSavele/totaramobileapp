@@ -38,7 +38,7 @@ import {
   MoreText,
   PrimaryButton,
   SecondaryButton,
-  NotificationView,
+  MessageBar,
 } from "@totara/components";
 import { gutter, ThemeContext } from "@totara/theme";
 import {
@@ -278,17 +278,17 @@ const SCORMSummary = ({
     <>
       <View style={scormSummaryStyles.expanded}>
         {shouldShowAction && lastsyncText && (
-          <NotificationView mode={"info"} text={lastsyncText} icon={"bolt"} />
+          <MessageBar mode={"info"} text={lastsyncText} icon={"bolt"} />
         )}
         {completedAttemptsText && (
-          <NotificationView
+          <MessageBar
             mode={"alert"}
             text={completedAttemptsText}
             icon={"exclamation-circle"}
           />
         )}
         {upcommingActivityText && (
-          <NotificationView
+          <MessageBar
             mode={"alert"}
             text={upcommingActivityText}
             icon={"exclamation-circle"}
@@ -317,13 +317,11 @@ const SCORMSummary = ({
                 onPress={onTapViewAllAttempts({
                   scormBundle,
                   callback: setSection,
-                })}
-              >
+                })}>
                 <GridLabelValue
                   theme={theme}
                   textId={"scorm.summary.grade.reported"}
-                  value={calculatedGrade}
-                >
+                  value={calculatedGrade}>
                   <FontAwesomeIcon
                     icon="chevron-right"
                     size={theme.textB1.fontSize}
