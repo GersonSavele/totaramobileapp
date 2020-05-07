@@ -35,7 +35,7 @@ import { Course } from "@totara/types";
 import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { HeaderView } from "@totara/components/currentLearning";
-import CourseCompletionSuccessModal from "./CourseCompletionSuccessModal";
+import { CourseCompletionSuccessModal } from "@totara/components/currentLearning/courseDetails";
 
 type CourseDetailsProps = {
   course: Course;
@@ -70,17 +70,14 @@ const CourseDetailsComponent = withNavigation(
         tabBarRight={translate("course.course-details.activities")}
         onPress={onSwitchTab}
         showOverview={showOverview}
-        badgeTitle="Course"
-      >
+        badgeTitle="Course">
         <View
-          style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
-        >
+          style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}>
           <View
             style={[
               styles.activitiesContainer,
               { backgroundColor: theme.colorNeutral1 },
-            ]}
-          >
+            ]}>
             {!showOverview ? (
               <Activities sections={course.sections} refetch={refetch} />
             ) : (

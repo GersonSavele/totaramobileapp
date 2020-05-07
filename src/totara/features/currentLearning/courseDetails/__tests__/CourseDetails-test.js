@@ -22,8 +22,8 @@ import wait from "waait";
 
 import { coreCourse } from "../api";
 import  CourseDetails  from "../CourseDetails";
-import CourseCompletionSuccessModal from "../CourseCompletionSuccessModal"
-import { GeneralErrorModal } from "../../../../components/GeneralErrorModal";
+import CourseCompletionSuccessModal from "@totara/components/currentLearning/courseDetails/CourseCompletionSuccessModal"
+import { GeneralErrorModal } from "@totara//components/GeneralErrorModal";
 const response = {
   course: course,
 };
