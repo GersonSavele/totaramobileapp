@@ -22,6 +22,6 @@
  */
 
 import VideoController from "./VideoController";
-import ActivityRestrictionView from "./ActivityRestrictionView"
-import CourseCompletionSuccessModal from "./CourseCompletionSuccessModal"
-export { VideoController, ActivityRestrictionView, CourseCompletionSuccessModal };
+import ActivityRestrictionView from "./ActivityRestrictionView";
+
+export { VideoController, ActivityRestrictionView };

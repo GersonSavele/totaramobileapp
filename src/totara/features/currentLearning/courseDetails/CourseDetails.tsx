@@ -31,11 +31,12 @@ import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
-import { Course } from "@totara/types";
+import { Course, StatusKey } from "@totara/types";
 import OverviewDetails from "../overview/OverviewDetails";
 import { ThemeContext } from "@totara/theme";
 import { HeaderView } from "@totara/components/currentLearning";
-import { CourseCompletionSuccessModal } from "@totara/components/currentLearning/courseDetails";
+import { CourseCompletionModal } from "@totara/components/currentLearning";
+import { NAVIGATION_MY_LEARNING } from "@totara/lib/constants";
 
 type CourseDetailsProps = {
   course: Course;
@@ -56,8 +57,14 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
 };
 
 const CourseDetailsComponent = withNavigation(
-  ({ navigation, course, refetch }: CourseDetailsProps) => {
+  ({ navigation = {}, course, refetch }: CourseDetailsProps) => {
     const [showOverview, setShowOverview] = useState(true);
+    const [showCompletionModal, setShowCompletionModal] = useState(true);
+
+    const onClose = () => {
+      setShowCompletionModal(!showCompletionModal);
+      navigation.navigate(NAVIGATION_MY_LEARNING);
+    };
     const onSwitchTab = () => {
       setShowOverview(!showOverview);
     };
@@ -90,7 +97,10 @@ const CourseDetailsComponent = withNavigation(
             )}
           </View>
         </View>
-        <CourseCompletionSuccessModal course={course} navigation={navigation} />
+        {course.completion &&
+          course.completion.statuskey === StatusKey.complete && (
+            <CourseCompletionModal onClose={onClose} />
+          )}
       </HeaderView>
     );
   }

@@ -22,7 +22,7 @@ import wait from "waait";
 
 import { coreCourse } from "../api";
 import  CourseDetails  from "../CourseDetails";
-import CourseCompletionSuccessModal from "@totara/components/currentLearning/courseDetails/CourseCompletionSuccessModal"
+import CourseCompletionModal from "@totara/components/currentLearning/CourseCompletionModal"
 import { GeneralErrorModal } from "@totara//components/GeneralErrorModal";
 const response = {
   course: course,
@@ -162,21 +162,11 @@ describe("Testing: Apollo MockedProvider should test three state such as loading
 describe("Testing: Course manual completion", () => {
   it("Test result : course complete and loading action modal to confirm", () => {
     const component = renderer.create(
-      <CourseCompletionSuccessModal
+      <CourseCompletionModal
         course={course}
         navigation={navigation}
-      ></CourseCompletionSuccessModal>
+      ></CourseCompletionModal>
     );
     expect(component.toJSON()).toMatchSnapshot();
-  });
-
-  it("Test result : return null completion status return not complete yet", () => {
-    const component = renderer.create(
-      <CourseCompletionSuccessModal
-        course={courseNotComplete}
-        navigation={navigation}
-      ></CourseCompletionSuccessModal>
-    );
-    expect(component.toJSON()).toBeNull();
   });
 });

@@ -354,7 +354,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
             accessibilityRole="button"
             accessibilityStates={Array []}
             accessible={true}
-            focusable={true}
+            focusable={false}
             isTVSelectable={true}
             onClick={[Function]}
             onResponderGrant={[Function]}
