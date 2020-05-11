@@ -18,6 +18,7 @@
 // TODO: separate icons from images
 import autoCompleteTick from "./auto_complete_tick/auto_complete_tick.png";
 import notificationBell from "./notifications/notificationsBell.png";
+import generalError from "./general_error/general_error.png";
 
 import iconBell from "./tabbar/notificationsRegular.png";
 import iconBellSolid from "./tabbar/notificationsSolid.png";
@@ -25,6 +26,7 @@ import iconBellSolid from "./tabbar/notificationsSolid.png";
 const Images = {
   autoCompleteTick,
   notificationBell,
+  generalError,
 };
 
 const Icons = {

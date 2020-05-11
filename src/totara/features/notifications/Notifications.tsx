@@ -38,6 +38,7 @@ import listViewStyles from "@totara/theme/listView";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationActions } from "react-navigation";
 import { Images } from "@resources/images";
+import LoadingError from "@totara/components/LoadingError";
 
 type NotificationItem = {
   id: number;
@@ -53,6 +54,7 @@ const Notifications = ({ navigation }: any) => {
     []
   );
   const [selectable, setSelectable] = useState(false);
+  const [error] = useState(true);
 
   useEffect(() => {
     setNotificationList(
@@ -193,33 +195,7 @@ const Notifications = ({ navigation }: any) => {
     );
   };
 
-  const notificationContainer =
-    notificationList.length == 0 ? (
-      <View
-        style={{
-          height: "100%",
-          justifyContent: "center",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}>
-        <Image source={Images.notificationBell} />
-        <Text style={[theme.textH2, { fontWeight: "bold" }]}>
-          No notifications yet!
-        </Text>
-      </View>
-    ) : (
-      <FlatList<NotificationItem>
-        style={{ flexGrow: 1 }}
-        contentContainerStyle={listViewStyles.contentContainerStyle}
-        ItemSeparatorComponent={() => (
-          <View style={listViewStyles.itemSeparator} />
-        )}
-        data={notificationList}
-        keyExtractor={(notificationItem) => notificationItem.id.toString()}
-        renderItem={renderItem}
-      />
-    );
+  const onContentRefreshTap = () => {};
 
   return (
     <View style={[{ flex: 1 }, theme.viewContainer]}>
@@ -235,7 +211,31 @@ const Notifications = ({ navigation }: any) => {
       </View>
       <View style={styles.notificationsContainer}>
         <View>
-          <View>{notificationContainer}</View>
+          <View>
+            {error && <LoadingError onRefreshTap={onContentRefreshTap} />}
+            {!error && notificationList.length == 0 && (
+              <View style={styles.noContent}>
+                <Image source={Images.notificationBell} />
+                <Text style={[theme.textH2, { fontWeight: "bold" }]}>
+                  No notifications yet!
+                </Text>
+              </View>
+            )}
+            {!error && notificationList.length > 0 && (
+              <FlatList<NotificationItem>
+                style={{ flexGrow: 1 }}
+                contentContainerStyle={listViewStyles.contentContainerStyle}
+                ItemSeparatorComponent={() => (
+                  <View style={listViewStyles.itemSeparator} />
+                )}
+                data={notificationList}
+                keyExtractor={(notificationItem) =>
+                  notificationItem.id.toString()
+                }
+                renderItem={renderItem}
+              />
+            )}
+          </View>
         </View>
       </View>
     </View>
@@ -245,6 +245,13 @@ const Notifications = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   notificationsContainer: {
     flex: 1,
+  },
+  noContent: {
+    height: "100%",
+    justifyContent: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
 });
 
