@@ -21,43 +21,55 @@
  */
 
 import React, { useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
-
-import { gutter, ThemeContext } from "@totara/theme";
+import {Text, View } from "react-native";
+import { Content, Spinner } from "native-base";
+import { useQuery } from "@apollo/react-hooks";
+import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import LearningItemCarousel from "./LearningItemCarousel";
-import { learningItemsList } from "./api";
+import { query } from "./api";
 import { Log } from "@totara/lib";
 import { GeneralErrorModal } from "@totara/components";
 import NoCurrentLearning from "./NoCurrentLearning";
-
-const MyLearning = learningItemsList(({loading, currentLearning, error }) => {
-
-  const [ theme ] = useContext(ThemeContext);
-
+import {
+  headerViewWrap,
+  headerViewTitleWrap,
+  headerViewSubTitleWrap,
+  contentWrap,
+  spinnerContainer,
+} from "@totara/theme/myLearning";
+const MyLearning = () => {
+  const { loading, error, data } = useQuery(query);
+  const [theme] = useContext(ThemeContext);
+  if (loading)
+    return (
+      <Content contentContainerStyle={spinnerContainer()}>
+        <Spinner color={theme.textColorDark} animating={loading} />
+      </Content>
+    );
   if (error) {
     Log.error("Error getting current learning", error);
-    return <GeneralErrorModal />
-  } else {
+    return <GeneralErrorModal siteUrl="" />;
+  }
+  if (data) {
+    const currentLearning = data.currentLearning;
     return (
       <View style={theme.viewContainer}>
-        <View style={[styles.myLearningHeader, { backgroundColor: theme.colorSecondary1 }]}>
-          <Text style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
+        <View style={headerViewWrap(theme)}>
+          <Text style={headerViewTitleWrap(theme)}>
             {translate("my-learning.action_primary")}
           </Text>
-          <Text style={[theme.textSmall, { color: theme.navigationHeaderTintColor }]}>
+          <Text style={headerViewSubTitleWrap(theme)}>
             {translate("my-learning.primary_info", {
               count:
-                !loading && currentLearning && currentLearning.length
+                currentLearning && currentLearning.length
                   ? currentLearning.length
-                  : 0
+                  : 0,
             })}
           </Text>
         </View>
-        <View style={{flex: 1, backgroundColor: "transparent"}}>
-          {loading ? (
-            <Text>{translate("general.loading")}</Text>
-          ) : currentLearning && currentLearning.length > 0 ? (
+        <View style={contentWrap()}>
+          {currentLearning && currentLearning.length > 0 ? (
             <LearningItemCarousel currentLearning={currentLearning} />
           ) : (
             <NoCurrentLearning />
@@ -66,15 +78,6 @@ const MyLearning = learningItemsList(({loading, currentLearning, error }) => {
       </View>
     );
   }
-});
+};
 
 export default MyLearning;
-
-const styles = StyleSheet.create({
-  myLearningHeader: {
-    flexDirection: "column",
-    justifyContent: "space-between",
-    paddingHorizontal: gutter,
-    paddingVertical: 8
-  }
-});
