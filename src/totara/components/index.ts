@@ -47,6 +47,8 @@ import TopHeader from "./TopHeader";
 import TotaraNavigationOptions from "./NavigationOptions";
 import NotificationBell from "./NotificationBell";
 import ListSeparator from "./ListSeparator";
+import Loading from "./Loading";
+
 export {
   LearningItemCard,
   CardElement,
@@ -74,4 +76,5 @@ export {
   TotaraNavigationOptions,
   NotificationBell,
   ListSeparator,
+  Loading,
 };

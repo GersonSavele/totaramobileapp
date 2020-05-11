@@ -36,6 +36,7 @@ import { SECONDS_FORMAT } from "@totara/lib/constants";
 import { translate } from "@totara/locale";
 import OnlineSCORMActivity from "./online/OnlineSCORMActivity";
 import { scormActivityType, connectivity } from "@totara/lib/constants";
+import { Loading } from "@totara/components/";
 
 type SCORMActivityProps = {
   activity: Activity;
@@ -49,7 +50,7 @@ const SCORMActivity = ({ activity }: SCORMActivityProps) => {
         state.isConnected ? connectivity.online : connectivity.offline
       );
     });
-    return <Text>{translate("general.loading")}</Text>;
+    return <Loading />;
   } else {
     return (
       <SCORMActivityRoute
@@ -68,9 +69,8 @@ const SCORMActivityRoute = ({ activity, isreachable }: SCORMRouteProp) => {
   const { loading, error, data } = useQuery(scormQuery, {
     variables: { scormid: activity.instanceid },
   });
-
   if (loading) {
-    return <Text>{translate("general.loading")}</Text>;
+    return <Loading />;
   }
   if (error) {
     return <Text>{translate("general.error_unknown")}</Text>;
@@ -93,12 +93,14 @@ const SCORMActivityRoute = ({ activity, isreachable }: SCORMRouteProp) => {
       scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
     }
     return (
-      <SCORMFlow
-        activity={activity}
-        data={scormBundleData as ScormBundle}
-        isUserOnline={isreachable}
-        mode={scormActivityType.none}
-      />
+      <>
+        <SCORMFlow
+          activity={activity}
+          data={scormBundleData as ScormBundle}
+          isUserOnline={isreachable}
+          mode={scormActivityType.none}
+        />
+      </>
     );
   } else {
     return <Text>{translate("general.error_unknown")}</Text>;
