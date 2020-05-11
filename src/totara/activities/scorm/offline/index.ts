@@ -16,7 +16,7 @@
  *
  */
 
-import OfflineSCORMActivity from "./OfflineSCORMActivity";
+import OfflineScormActivity from "./OfflineScormActivity";
 import { getScormPackageData } from "./PackageProcessor";
 import {
   initializeScormWebplayer,
@@ -40,7 +40,7 @@ import {
 } from "./OfflineSCORMController";
 
 export {
-  OfflineSCORMActivity,
+  OfflineScormActivity,
   getScormPackageData,
   initializeScormWebplayer,
   unzipScormPackageToServer,

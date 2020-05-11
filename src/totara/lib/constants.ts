@@ -62,10 +62,9 @@ enum completionStatus {
 }
 
 enum scormActivityType {
-  none,
+  summary,
   offline,
   online,
-  attempts,
 }
 enum scormSummarySection {
   none,

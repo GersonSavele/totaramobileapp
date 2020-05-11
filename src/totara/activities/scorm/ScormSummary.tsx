@@ -31,7 +31,6 @@ import {
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { Activity } from "@totara/types";
 import { AuthContext } from "@totara/core";
 import { ScormBundle } from "@totara/types/Scorm";
 import {
@@ -39,6 +38,7 @@ import {
   PrimaryButton,
   SecondaryButton,
   MessageBar,
+  Loading,
 } from "@totara/components";
 import { gutter, ThemeContext } from "@totara/theme";
 import {
@@ -56,7 +56,7 @@ import {
   ResourceState,
 } from "@totara/core/ResourceManager/Resource";
 import { translate } from "@totara/locale";
-import SCORMAttempts from "./SCORMAttempts";
+import ScormAttempts from "./ScormAttempts";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { ActivitySheetContext } from "../ActivitySheet";
 import {
@@ -67,16 +67,22 @@ import {
   onTapViewAllAttempts,
 } from "@totara/lib/scorm";
 import { scormSummaryStyles } from "@totara/theme/scorm";
-import { scormActivityType, scormSummarySection } from "@totara/lib/constants";
+import {
+  scormActivityType,
+  scormSummarySection,
+  SECONDS_FORMAT,
+} from "@totara/lib/constants";
+import { useQuery } from "@apollo/react-hooks";
+import { scormQuery } from "./api";
+import moment from "moment";
 
 type SummaryProps = {
-  activity: Activity;
-  data?: ScormBundle;
+  id: string;
   isUserOnline: boolean;
   setActionWithData: (
     action: scormActivityType,
-    bundle: ScormBundle,
-    data: any
+    bundle?: ScormBundle,
+    data?: any
   ) => void;
 };
 
@@ -113,13 +119,37 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
   </Text>
 );
 
-const SCORMSummary = ({
-  activity,
-  data,
+const ScormSummary = ({
+  id,
   isUserOnline,
   setActionWithData,
 }: SummaryProps) => {
-  const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
+  const { loading, error, data } = useQuery(scormQuery, {
+    variables: { scormid: id },
+  });
+  const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>();
+  useEffect(() => {
+    if (data && data.scorm) {
+      let scormData = data.scorm;
+      if (data.scorm.attempts && data.scorm.attempts.length > 0) {
+        let scormAttempts = data.scorm.attempts;
+        const defaultCMI = data.scorm.attempts[data.scorm.attempts.length - 1];
+        if (!defaultCMI.timestarted) {
+          scormAttempts = scormAttempts.slice(0, -1);
+        }
+        scormData = {
+          ...data.scorm,
+          ...{ attempts: scormAttempts, defaultCMI: defaultCMI },
+        };
+      }
+      let scormBundleData = { scorm: scormData } as ScormBundle;
+      if (isUserOnline) {
+        scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
+      }
+      setScormBundle(scormBundleData);
+    }
+  }, [data && data.scorm]);
+
   const {
     authContextState: { appState },
   } = useContext(AuthContext);
@@ -214,7 +244,7 @@ const SCORMSummary = ({
 
   useEffect(() => {
     if (!isUserOnline) {
-      getOfflineScormBundle(activity.instanceid).then((result) => {
+      getOfflineScormBundle(id).then((result) => {
         if (result) {
           const storedBundle = result! as ScormBundle;
           let newBundle: ScormBundle = storedBundle;
@@ -225,7 +255,7 @@ const SCORMSummary = ({
           ) {
             newBundle.scorm = scormBundle.scorm;
             newBundle.lastsynced = scormBundle.lastsynced;
-            syncOfflineScormBundle(activity.instanceid, {
+            syncOfflineScormBundle(id, {
               scorm: newBundle.scorm,
               lastsynced: newBundle.lastsynced,
             }).then(() => {
@@ -239,7 +269,7 @@ const SCORMSummary = ({
     } else {
       setScormBundle(data);
       if (data && data.scorm && data.lastsynced) {
-        syncOfflineScormBundle(activity.instanceid, {
+        syncOfflineScormBundle(id, {
           scorm: data.scorm,
           lastsynced: data.lastsynced,
         });
@@ -273,6 +303,13 @@ const SCORMSummary = ({
       downloadManager.detach(onDownloadFileUpdated);
     };
   }, [scormBundle && scormBundle.scorm, downloadManager]);
+
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <Text>{translate("general.error_unknown")}</Text>;
+  }
 
   return (
     <>
@@ -376,7 +413,7 @@ const SCORMSummary = ({
       </View>
       {scormBundle && (
         <Modal visible={section === scormSummarySection.attempts}>
-          <SCORMAttempts
+          <ScormAttempts
             scormBundle={scormBundle}
             onExit={() => setSection(scormSummarySection.none)}
           />
@@ -419,4 +456,4 @@ const AttemptController = ({ primary, secondary }: PropsAttempt) => {
   );
 };
 
-export default SCORMSummary;
+export default ScormSummary;

@@ -24,7 +24,7 @@ import { View, Modal } from "react-native";
 
 import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
-import SCORMActivity from "./scorm/SCORMActivity";
+import ScormActivity from "./scorm/SCORMActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { ThemeContext, baseSpace } from "@totara/theme";
 import { TopHeader } from "@totara/components";
@@ -50,7 +50,7 @@ type contextData = {
    * set the feedback activity, and the activity sheet will be visible and use the right component
    * @param activity
    */
-  setFeedback: (data: ActivityFeedbackProps) => void;
+  setFeedback: (data?: ActivityFeedbackProps) => void;
 
   /**
    * set the activity resource, and the activity sheet will be visible and use the right component
@@ -73,16 +73,14 @@ const ActivitySheet = ({ currentActivity, onClose, resource }: Props) => {
     <Modal
       animationType="slide"
       visible={currentActivity != undefined}
-      onRequestClose={onClose}
-    >
+      onRequestClose={onClose}>
       <TopHeader
         iconSize={theme.textH2.fontSize}
         color={theme.colorSecondary1}
         title={currentActivity.name}
         titleTextStyle={theme.textH4}
         infoTextStyle={{ ...theme.textSmall, color: theme.textColorSubdued }}
-        onClose={onClose}
-      >
+        onClose={onClose}>
         {resource && (
           <ResourceDownloader
             mode={resource && resource.data && resource.data.state}
@@ -113,7 +111,12 @@ type Props = {
 const ActivityWrapper = ({ activity }: { activity: ActivityType }) => {
   switch (activity.modtype) {
     case "scorm":
-      return <SCORMActivity activity={activity} />;
+      return (
+        <ScormActivity
+          id={activity.instanceid.toString()}
+          activity={activity}
+        />
+      );
     default:
       return <WebviewActivity activity={activity} />;
   }

@@ -34,21 +34,22 @@ import { getScormPackageData } from "@totara/activities/scorm/offline";
 import { ScormBundle, Package, Sco } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { saveScormActivityData, getScormAttemptData } from "./StorageHelper";
+import { translate } from "i18n-js";
 
 type Props = {
-  scormBundle: ScormBundle;
   attempt: number;
+  scormBundle?: ScormBundle;
   scoid?: string;
 };
 
-const OfflineSCORMActivity = ({ scormBundle, attempt, scoid }: Props) => {
+const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
   if (!scormBundle) {
-    return <Text>Sorry scorm bundle is empty.</Text>;
+    return <Text>{translate("general.error_unknown")}</Text>;
   }
 
   const { scorm, scormPackage } = scormBundle;
   if (!scorm || !scormPackage) {
-    return <Text>Sorry scorm bundle is empty.</Text>;
+    return <Text>{translate("general.error_unknown")}</Text>;
   }
 
   const server = useRef<StaticServer>(null);
@@ -286,4 +287,4 @@ const OfflineSCORMActivity = ({ scormBundle, attempt, scoid }: Props) => {
   );
 };
 
-export default OfflineSCORMActivity;
+export default OfflineScormActivity;

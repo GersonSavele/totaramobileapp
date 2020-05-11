@@ -55,7 +55,7 @@ class ActivitySheetWrapper extends React.Component {
     });
   }
 
-  setFeedback(data: ActivityFeedbackProps) {
+  setFeedback(data?: ActivityFeedbackProps) {
     this.setState({
       feedback: data,
     });
@@ -84,13 +84,12 @@ class ActivitySheetWrapper extends React.Component {
             ...this.state,
             setCurrentActivity: (activity: ActivityType) =>
               this.setCurrentActivity(activity),
-            setFeedback: (data: ActivityFeedbackProps) =>
+            setFeedback: (data?: ActivityFeedbackProps) =>
               this.setFeedback(data),
             setOnClose: (onCloseCallback: () => {}) =>
               this.setOnClose(onCloseCallback),
             setActivityResource: (data: any) => this.setActivityResource(data),
-          }}
-        >
+          }}>
           {this.props.children}
           {this.state.currentActivity && (
             <ActivitySheet

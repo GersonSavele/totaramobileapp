@@ -28,34 +28,37 @@ import { ScormActivityResult, ScormBundle, Grade } from "@totara/types/Scorm";
 import { TopHeader } from "@totara/components";
 
 type Props = {
-  scormBundle: ScormBundle;
+  scormBundle?: ScormBundle;
   onExit: () => void;
 };
 
-const SCORMAttempts = ({ scormBundle, onExit }: Props) => {
+const ScormAttempts = ({ scormBundle, onExit }: Props) => {
   const [theme] = useContext(ThemeContext);
   const [allAttemptsReport, setAllAttempts] = useState<[ScormActivityResult?]>(
     []
   );
+  if (!scormBundle) {
+    return <Text>{translate("general.error_unknown")}</Text>;
+  }
+  const { scorm, offlineActivity } = scormBundle;
+  if (!scorm) {
+    return <Text>{translate("general.error_unknown")}</Text>;
+  }
 
   useEffect(() => {
     let dataAllAttemptsReport: [ScormActivityResult?] = [];
-    if (scormBundle && scormBundle.scorm && scormBundle.scorm.attempts) {
-      dataAllAttemptsReport = dataAllAttemptsReport.concat(
-        scormBundle.scorm.attempts
-      ) as [ScormActivityResult];
+    if (scorm.attempts) {
+      dataAllAttemptsReport = dataAllAttemptsReport.concat(scorm.attempts) as [
+        ScormActivityResult
+      ];
     }
-    if (
-      scormBundle &&
-      scormBundle.offlineActivity &&
-      scormBundle.offlineActivity.attempts
-    ) {
+    if (offlineActivity && offlineActivity.attempts) {
       dataAllAttemptsReport = dataAllAttemptsReport.concat(
-        scormBundle.offlineActivity.attempts
+        offlineActivity.attempts
       ) as [ScormActivityResult];
     }
     setAllAttempts(dataAllAttemptsReport);
-  }, [scormBundle]);
+  }, [scorm, offlineActivity]);
 
   const attemptReport = (
     attemptReport: ScormActivityResult,
@@ -77,17 +80,16 @@ const SCORMAttempts = ({ scormBundle, onExit }: Props) => {
         <TopHeader
           iconSize={theme.textH2.fontSize}
           color={theme.colorSecondary1}
-          title={scormBundle.scorm.name}
+          title={scorm.name}
           titleTextStyle={theme.textH4}
-          infoTextStyle={[theme.textSmall, { color: theme.textColorSubdued }]}
+          infoTextStyle={{ ...theme.textSmall, color: theme.textColorSubdued }}
           onClose={onExit}
         />
         <Text
           style={[
             theme.textH2,
             { marginVertical: baseSpace, paddingHorizontal: gutter },
-          ]}
-        >
+          ]}>
           {translate("scorm.attempts.title")}
         </Text>
         <FlatList
@@ -97,7 +99,7 @@ const SCORMAttempts = ({ scormBundle, onExit }: Props) => {
             return attemptReport(
               item as ScormActivityResult,
               index,
-              scormBundle.scorm.grademethod as Grade
+              scorm.grademethod as Grade
             );
           }}
           alwaysBounceVertical={false}
@@ -163,4 +165,4 @@ const attemptResult = StyleSheet.create({
   },
 });
 
-export default SCORMAttempts;
+export default ScormAttempts;
