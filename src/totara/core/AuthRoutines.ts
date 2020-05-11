@@ -31,7 +31,7 @@ import {
 } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import AsyncStorage, { AsyncStorageStatic } from "@react-native-community/async-storage";
-import { persistCache } from 'apollo-cache-persist';
+import { CachePersistor } from "apollo-cache-persist";
 
 import { config, Log } from "@totara/lib";
 import { AUTHORIZATION } from "@totara/lib/constants";
@@ -39,6 +39,7 @@ import { LearningItem, AppState, SiteInfo } from "@totara/types";
 import { Setup } from "./AuthHook";
 import { ServerError } from "apollo-link-http-common";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
+import { useApolloClient } from "@apollo/react-hooks";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -145,8 +146,26 @@ export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
       }
     });
 
-  return Promise.all([localCleanUp, remoteCleanUp]).then(() => true);
-};
+    const userCleanUp = () => {
+      const client = useApolloClient();
+      const persistor = new CachePersistor({
+        cache: client.cache,
+        storage: asyncStorage as any,
+      });
+      client.clearStore().then(() => {
+        persistor
+          .purge()
+          .then(() => {
+            Log.debug("Cleared current user");
+          })
+          .catch((error) => {
+            Log.warn("Current user clean up had issues", error);
+          });
+      });
+    };
+  
+    return Promise.all([localCleanUp, remoteCleanUp, userCleanUp]).then(() => true);
+  };
 
 /**
  * Would get needed items from storage and return a valid state appState.
@@ -231,7 +250,7 @@ export const createApolloClient = (
     },
   });
 
-  persistCache({
+ new CachePersistor({
     cache,
     storage: AsyncStorage as PersistentStorage<
     PersistedData<NormalizedCacheObject>
