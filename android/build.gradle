@@ -37,19 +37,3 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
-
-// this is needed for react-native-notifications RN 59 which is older RN not to be part of the build
-subprojects { subproject ->
-        afterEvaluate {
-            if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-                android {
-                    variantFilter { variant ->
-                        def names = variant.flavors*.name
-                        if (names.contains("reactNative59")) {
-                            setIgnore(true)
-                        }
-                   }
-               }
-           }
-       }
-   }

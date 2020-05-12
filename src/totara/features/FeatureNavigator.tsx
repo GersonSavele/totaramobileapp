@@ -20,18 +20,17 @@
  *
  */
 
-import React, {useContext} from "react";
-import {Image, ImageSourcePropType} from "react-native";
-import {createStackNavigator} from 'react-navigation-stack';
-import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
-import {ThemeContext} from "@totara/theme";
-import {config} from "@totara/lib";
+import React, { useContext } from "react";
+import { Image, ImageSourcePropType } from "react-native";
+import { createStackNavigator } from "react-navigation-stack";
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { ThemeContext } from "@totara/theme";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import MyLearning from "./myLearning";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import  CourseDetails  from "./currentLearning/courseDetails";
+import CourseDetails from "./currentLearning/courseDetails";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import ProgramDetails from "./currentLearning/programDetails";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
@@ -39,7 +38,6 @@ import CertificationDetails from "./currentLearning/certificationDetails";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import Settings from "./settings";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-// import PlaceHolder from "./place-holder";
 
 import Profile from "./profile";
 import NotificationsStack from "./notifications";
@@ -47,31 +45,27 @@ import DownloadsStack from "./downloads";
 import { NotificationBell, TouchableIcon } from "@totara/components";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import { header } from "@totara/theme/constants";
+import { useQuery } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
 
-  return (
-    createMaterialBottomTabNavigator(
-      {
-        MyLearningTab,
-        ...config.features.downloads && {
-          DownloadsTab
-        },
-        ...config.features.notifications && {
-          NotificationsTab
-        },
-        ProfileTab
-      },
-      {
-        initialRouteName: "MyLearningTab",
-        labeled: false,
-        barStyle: {backgroundColor: theme.colorNeutral1, shadowRadius: 5,},
-        activeColor: theme.tabBarActiveTintColor,
-        inactiveColor: theme.tabBarInactiveTintColor,
-      }
-    )
-  )
+  return createMaterialBottomTabNavigator(
+    {
+      MyLearningTab,
+      DownloadsTab,
+      notificationTab: NotificationsTab(),
+      ProfileTab,
+    },
+    {
+      initialRouteName: "MyLearningTab",
+      labeled: false,
+      barStyle: { backgroundColor: theme.colorNeutral1, shadowRadius: 5 },
+      activeColor: theme.tabBarActiveTintColor,
+      inactiveColor: theme.tabBarInactiveTintColor,
+    }
+  );
 };
 
 //TABS
@@ -80,96 +74,155 @@ const MyLearningTab = {
     {
       MyLearning: {
         screen: MyLearning,
-        navigationOptions: ({screenProps, navigation}) =>
+        navigationOptions: ({ screenProps, navigation }) =>
           totaraNavigationOptions({
             theme: screenProps!.theme,
             title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity")/*rightIcon: faCloudDownloadAlt*/
-          }) //TODO: MOB-373 hiding it for beta release
+            opacity: navigation.getParam(
+              "opacity"
+            ) /*rightIcon: faCloudDownloadAlt*/,
+          }), //TODO: MOB-373 hiding it for beta release
       },
       CourseDetails: {
         screen: CourseDetails,
-        navigationOptions: ({screenProps, navigation}) =>
+        navigationOptions: ({ screenProps, navigation }) =>
           totaraNavigationOptions({
             theme: screenProps!.theme,
             title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity")
-          })
+            opacity: navigation.getParam("opacity"),
+          }),
       },
       ProgramDetails: {
         screen: ProgramDetails,
-        navigationOptions: ({screenProps, navigation}) =>
+        navigationOptions: ({ screenProps, navigation }) =>
           totaraNavigationOptions({
             theme: screenProps!.theme,
-            rightAction: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={header.icon.size} color={screenProps!.theme.navigationHeaderTintColor}/>,
+            rightAction: (
+              <TouchableIcon
+                icon={faCloudDownloadAlt}
+                disabled={false}
+                size={header.icon.size}
+                color={screenProps!.theme.navigationHeaderTintColor}
+              />
+            ),
             title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity")
-          })
+            opacity: navigation.getParam("opacity"),
+          }),
       },
       CertificationDetails: {
         screen: CertificationDetails,
-        navigationOptions: ({screenProps, navigation}) =>
+        navigationOptions: ({ screenProps, navigation }) =>
           totaraNavigationOptions({
             theme: screenProps!.theme,
-            rightAction: <TouchableIcon icon={faCloudDownloadAlt} disabled={false} size={header.icon.size} color={screenProps!.theme.navigationHeaderTintColor}/>,
+            rightAction: (
+              <TouchableIcon
+                icon={faCloudDownloadAlt}
+                disabled={false}
+                size={header.icon.size}
+                color={screenProps!.theme.navigationHeaderTintColor}
+              />
+            ),
             title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity")
-          })
-      }
+            opacity: navigation.getParam("opacity"),
+          }),
+      },
     },
     {
       initialRouteName: "MyLearning",
-      defaultNavigationOptions: ({screenProps}) => totaraNavigationOptions({theme: screenProps.theme})
+      defaultNavigationOptions: ({ screenProps }) =>
+        totaraNavigationOptions({ theme: screenProps.theme }),
     }
   ),
   navigationOptions: {
-    tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
+    tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
+      tabBarIconBuilder(
+        tabIconProps.focused,
+        tabIconProps.tintColor,
+        tabBarIconImages.current_learning
+      ),
   },
 };
 
 const DownloadsTab = {
   screen: DownloadsStack,
   navigationOptions: {
-    tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
-  }
-};
-
-const NotificationsTab = {
-  screen: NotificationsStack,
-    navigationOptions: {
-    tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => NotificationBell({
-      active: tabIconProps.focused,
-      tintColor: tabIconProps.tintColor,
-      counting: 5
-    })
-  }
+    tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
+      tabBarIconBuilder(
+        tabIconProps.focused,
+        tabIconProps.tintColor,
+        tabBarIconImages.downloads
+      ),
+  },
 };
 
 const ProfileTab = {
   screen: createStackNavigator(
     {
       Profile: Profile,
-      Settings: Settings
+      Settings: Settings,
     },
     {
       initialRouteName: "Profile",
-      defaultNavigationOptions: ({screenProps}) => totaraNavigationOptions({theme: screenProps.theme})
+      defaultNavigationOptions: ({ screenProps }) =>
+        totaraNavigationOptions({ theme: screenProps.theme }),
     }
   ),
   navigationOptions: {
-    tabBarIcon: (tabIconProps: { focused: boolean, tintColor: string }) => tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.profile)
-  }
+    tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
+      tabBarIconBuilder(
+        tabIconProps.focused,
+        tabIconProps.tintColor,
+        tabBarIconImages.profile
+      ),
+  },
 };
 
-const tabBarIconBuilder = (focused: boolean, color: string, imageSet: iconImageProps) => {
-  return <Image source={focused ? imageSet.solid : imageSet.regular} style={{tintColor: color, width: 24, height: 24}}
-                resizeMode='contain'/>
+const NotificationsTab = () => {
+  const QUERY_NOTIFICATIONS = gql`
+    {
+      notifications {
+        id
+        read
+      }
+    }
+  `;
+
+  const { data: notificationsData } = useQuery(QUERY_NOTIFICATIONS);
+  const notificationCount = notificationsData.notifications.map(
+    (not) => not.read === false
+  ).length;
+
+  return {
+    screen: NotificationsStack,
+    navigationOptions: {
+      tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
+        NotificationBell({
+          active: tabIconProps.focused,
+          tintColor: tabIconProps.tintColor,
+          counting: notificationCount,
+        }),
+    },
+  };
+};
+
+const tabBarIconBuilder = (
+  focused: boolean,
+  color: string,
+  imageSet: iconImageProps
+) => {
+  return (
+    <Image
+      source={focused ? imageSet.solid : imageSet.regular}
+      style={{ tintColor: color, width: 24, height: 24 }}
+      resizeMode="contain"
+    />
+  );
 };
 
 type iconImageProps = {
   solid: ImageSourcePropType;
   regular: ImageSourcePropType;
-}
+};
 
 const tabBarIconImages: {
   current_learning: iconImageProps;
@@ -182,12 +235,12 @@ const tabBarIconImages: {
   },
   downloads: {
     solid: require("@resources/images/tabbar/downloads_solid.png"),
-    regular: require("@resources/images/tabbar/downloads_regular.png")
+    regular: require("@resources/images/tabbar/downloads_regular.png"),
   },
   profile: {
     solid: require("@resources/images/tabbar/profile_solid.png"),
-    regular: require("@resources/images/tabbar/profile_regular.png")
-  }
+    regular: require("@resources/images/tabbar/profile_regular.png"),
+  },
 };
 
 export default FeatureNavigator;

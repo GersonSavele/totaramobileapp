@@ -29,6 +29,7 @@ import { SiteInfo, AppState } from "./Auth";
 import { Theme } from "./Theme";
 import { UserProfile } from "./UserProfile";
 import { Certification } from "./Certification";
+import { NotificationMessage } from "./NotificationMessage";
 
 export {
   LearningItem,
@@ -50,4 +51,5 @@ export {
   Certification,
   Criteria,
   StatusKey,
+  NotificationMessage
 };

@@ -41,11 +41,6 @@ const defaultConfig = {
   appLinkDomain: "https://mobile.totaralearning.com",
   deepLinkSchema: "totara://",
   minApiVersion: "2019111100", // "disabled"
-
-  features:{
-    downloads: true,
-    notifications: true
-  },
   rootOfflineScormPlayer: "html",
   sentryUri: "https://24dc78cc484a4aabaa3b1f2da277eeb3@o377397.ingest.sentry.io/5199484",
 };

@@ -24,6 +24,7 @@ import React, { useContext, useEffect } from "react";
 import { createAppContainer } from "react-navigation";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Sentry from "@sentry/react-native";
+import { useApolloClient } from "@apollo/react-hooks";
 
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { AuthProvider } from "@totara/core/AuthProvider";
@@ -35,37 +36,19 @@ import { FeatureNavigator } from "@totara/features";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { config, Log } from "@totara/lib";
-import messaging from "@react-native-firebase/messaging";
+import { config } from "@totara/lib";
 import FontAwesome from "@totara/lib/fontAwesome";
+import NotificationCenter from "@totara/lib/notificationCenter";
 
 Sentry.init({
   dsn: config.sentryUri,
 });
 
+NotificationCenter.handleMessagesInBackground();
+
 FontAwesome.init();
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  Log.info(
-    "Message handled in the background: ",
-    JSON.stringify(remoteMessage)
-  );
-});
-
 const App: () => React$Node = () => {
-  useEffect(() => {
-    messaging()
-      .getToken()
-      .then((token) => {
-        Log.info("FIREBASE TOKEN: ", token);
-      });
-
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      Log.info("A new FCM message arrived: ", JSON.stringify(remoteMessage));
-    });
-    return unsubscribe;
-  }, []);
-
   useEffect(() => {
     new ResourceManager().init();
   }, []);
@@ -89,6 +72,11 @@ const App: () => React$Node = () => {
 };
 
 const AppContainer = () => {
+  const client = useApolloClient();
+  useEffect(() => {
+    return NotificationCenter.init(client);
+  }, []);
+
   const [theme] = useContext(ThemeContext);
   const AppMainNavigation = createAppContainer(FeatureNavigator());
 

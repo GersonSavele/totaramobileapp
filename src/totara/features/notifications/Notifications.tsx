@@ -35,14 +35,40 @@ import { NavigationActions } from "react-navigation";
 import { Images } from "@resources/images";
 import LoadingError from "@totara/components/LoadingError";
 import NetworkStatus from "@totara/components/NetworkStatus";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
+import { Spinner } from "native-base";
+import { icons, paddings } from "@totara/theme/constants";
 
 type NotificationItem = {
   id: number;
   title: string;
-  subtitle: string;
+  body: string;
   read: boolean;
   selected?: boolean;
+  received: number;
 };
+
+const QUERY_NOTIFICATIONS = gql`
+  {
+    notifications {
+      id
+      title
+      payload
+      read
+      received
+    }
+  }
+`;
+
+const MUTATION_NOTIFICATION = gql`
+  {
+    mutation notifications {
+      title
+      payload
+    }
+  }
+`;
 
 const Notifications = ({ navigation }: any) => {
   const [theme] = useContext(ThemeContext);
@@ -50,20 +76,24 @@ const Notifications = ({ navigation }: any) => {
     []
   );
   const [selectable, setSelectable] = useState(false);
-  const [error] = useState(false);
-
+  const { loading, data, error }  = useQuery(QUERY_NOTIFICATIONS);
+  // const [markAsRead, { data : mutationData }] = useMutation(MUTATION_NOTIFICATION);
+  
   useEffect(() => {
+    const _list = data ? data.notifications : [];
     setNotificationList(
-      Array.from({ length: 0 }, (value, key) => {
+      _list.map(notification=>{
         return {
-          id: key,
-          title: `this is a title ${key}`,
-          subtitle: `this is a subtitle ${key}`,
-          read: false,
-        };
+          id: notification.id,
+          title: notification.title,
+          body: notification.payload,
+          read: notification.read,
+          received: notification.received,
+          selected: false,
+        }
       })
     );
-  }, []);
+  }, [data]);
 
   const onNotificationItemPress = (item: NotificationItem) => {
     //open notification view
@@ -71,12 +101,19 @@ const Notifications = ({ navigation }: any) => {
     //mark item as read or selected
     if (selectable) {
       item.selected = !item.selected;
-    } else item.read = true;
+    } else{
+      //mark as read
+       markNotificationAsRead(item);
+    }
 
-    const idx = notificationList.findIndex((x) => x.id == item.id);
-    notificationList[idx] = item;
-    setNotificationList([...notificationList]);
+    // const idx = notificationList.findIndex((x) => x.id == item.id);
+    // notificationList[idx] = item;
+    // setNotificationList([...notificationList]);
   };
+
+  const markNotificationAsRead = (item: NotificationItem)=>{
+    item.read = true;
+  }
 
   const onNotificationItemLongPress = (item: NotificationItem) => {
     item.selected = true;
@@ -139,50 +176,57 @@ const Notifications = ({ navigation }: any) => {
           key={item.id}
           style={{
             display: "flex",
-            flex: 1,
             flexDirection: "row",
             backgroundColor: theme.colorNeutral1,
           }}>
           {selectable && (
             <View
-              style={{
-                padding: 16,
-                display: "flex",
-                justifyContent: "center",
-              }}>
+              style={styles.itemCircle}>
               <FontAwesomeIcon
-                size={32}
+                size={icons.sizeL}
                 icon={"check-circle"}
                 color={item.selected ? theme.colorPrimary : theme.colorNeutral3}
               />
             </View>
           )}
           <View style={{ flex: 2 }}>
-            <Text
-              style={[
-                theme.textH3,
-                { padding: 5, fontWeight: item.read ? "normal" : "bold" },
-              ]}>
-              {item.title}
-            </Text>
+            <View style={{justifyContent: "space-between", flexDirection: "row"}}>
+              <View>
+                <Text
+                  style={[
+                    theme.textH3,
+                    { padding: paddings.paddingM, fontWeight: item.read ? "normal" : "bold" },
+                  ]}>
+                  {item.title}
+                </Text>
+              </View>
+              <View>
+                <Text
+                  style={[
+                    theme.textB3,
+                    { padding: paddings.paddingM, fontWeight: item.read ? "normal" : "bold" },
+                  ]}>
+                  {item.received}
+                </Text>
+              </View>
+            </View>
             <Text
               style={[
                 theme.textH4,
-                { padding: 5, fontWeight: item.read ? "normal" : "bold" },
+                { padding: paddings.paddingM, fontWeight: item.read ? "normal" : "bold" },
               ]}>
-              {item.subtitle}
+              {item.body}
             </Text>
           </View>
           <View
             style={{
-              flex: 1,
               alignItems: "flex-end",
               justifyContent: "center",
             }}>
             <FontAwesomeIcon
-              size={25}
+              size={icons.sizeM}
               color={theme.colorNeutral3}
-              style={{ padding: 5 }}
+              style={{ padding: paddings.paddingM }}
               icon={"caret-right"}
             />
           </View>
@@ -194,7 +238,7 @@ const Notifications = ({ navigation }: any) => {
   const onContentRefreshTap = () => {};
 
   return (
-    <View style={[{ flex: 1 }, theme.viewContainer]}>
+    <View style={theme.viewContainer}>
       <View
         style={[
           headerStyles.navigationHeader,
@@ -206,11 +250,12 @@ const Notifications = ({ navigation }: any) => {
         </Text>
       </View>
       <NetworkStatus />
-      <View style={styles.notificationsContainer}>
+      <View>
         <View>
           <View>
+            {loading && <Spinner/>}
             {error && <LoadingError onRefreshTap={onContentRefreshTap} />}
-            {!error && notificationList.length == 0 && (
+            {!loading && !error && notificationList.length == 0 && (
               <View style={styles.noContent}>
                 <Image source={Images.notificationBell} />
                 <Text style={[theme.textH2, { fontWeight: "bold" }]}>
@@ -218,7 +263,7 @@ const Notifications = ({ navigation }: any) => {
                 </Text>
               </View>
             )}
-            {!error && notificationList.length > 0 && (
+            {!loading && !error && notificationList.length > 0 && (
               <FlatList<NotificationItem>
                 style={{ flexGrow: 1 }}
                 contentContainerStyle={listViewStyles.contentContainerStyle}
@@ -240,8 +285,10 @@ const Notifications = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  notificationsContainer: {
-    flex: 1,
+  itemCircle:{
+    padding: paddings.marginXL,
+    display: "flex",
+    justifyContent: "center",
   },
   noContent: {
     height: "100%",
