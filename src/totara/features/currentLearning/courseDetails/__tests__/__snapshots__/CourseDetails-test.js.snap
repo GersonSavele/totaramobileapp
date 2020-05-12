@@ -219,7 +219,443 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
 </Modal>
 `;
 
-exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Set mock-error response and return Error UI 1`] = `null`;
+exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Render loading state initially and return no component 1`] = `
+<Modal
+  hardwareAccelerated={false}
+  visible={true}
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "rgba(0, 0, 0, 0.7)",
+        "flex": 1,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 4,
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "marginHorizontal": 20,
+              "marginLeft": "5%",
+              "marginRight": "5%",
+              "marginVertical": 32,
+            },
+            Object {
+              "backgroundColor": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "marginHorizontal": 32,
+              "marginVertical": 16,
+            }
+          }
+        >
+          <Image
+            source={
+              Object {
+                "testUri": "../../../src/resources/images/general_error/general_error.png",
+              }
+            }
+            style={
+              Object {
+                "alignItems": "center",
+                "height": 375,
+                "resizeMode": "contain",
+                "width": 525,
+              }
+            }
+          />
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "marginHorizontal": 32,
+              "marginVertical": 16,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "paddingBottom": 16,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "textAlign": "center",
+                  },
+                  Object {
+                    "color": "#3D444B",
+                    "fontSize": 44,
+                    "fontWeight": "500",
+                  },
+                ]
+              }
+            >
+              translated general_error_feedback-modal.title with undefined
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "paddingBottom": 16,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "textAlign": "center",
+                  },
+                  Object {
+                    "color": "#3D444B",
+                    "fontSize": 16,
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              translated general_error_feedback-modal.description with undefined
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "justifyContent": "space-between",
+              "marginVertical": 16,
+              "minHeight": 104,
+            }
+          }
+        >
+          <View
+            accessibilityRole="button"
+            accessibilityStates={Array []}
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#007AFF",
+                      "fontSize": 18,
+                      "padding": 8,
+                      "textAlign": "center",
+                    },
+                  ]
+                }
+              >
+                this is a mock button
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityRole="button"
+            accessibilityStates={Array []}
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#007AFF",
+                      "fontSize": 18,
+                      "padding": 8,
+                      "textAlign": "center",
+                    },
+                  ]
+                }
+              >
+                this is a mock button
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Set mock-error response and return Error UI 1`] = `
+<Modal
+  hardwareAccelerated={false}
+  visible={true}
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "rgba(0, 0, 0, 0.7)",
+        "flex": 1,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderRadius": 4,
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "marginHorizontal": 20,
+              "marginLeft": "5%",
+              "marginRight": "5%",
+              "marginVertical": 32,
+            },
+            Object {
+              "backgroundColor": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "marginHorizontal": 32,
+              "marginVertical": 16,
+            }
+          }
+        >
+          <Image
+            source={
+              Object {
+                "testUri": "../../../src/resources/images/general_error/general_error.png",
+              }
+            }
+            style={
+              Object {
+                "alignItems": "center",
+                "height": 375,
+                "resizeMode": "contain",
+                "width": 525,
+              }
+            }
+          />
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "marginHorizontal": 32,
+              "marginVertical": 16,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "paddingBottom": 16,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "textAlign": "center",
+                  },
+                  Object {
+                    "color": "#3D444B",
+                    "fontSize": 44,
+                    "fontWeight": "500",
+                  },
+                ]
+              }
+            >
+              translated general_error_feedback-modal.title with undefined
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "paddingBottom": 16,
+              }
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "textAlign": "center",
+                  },
+                  Object {
+                    "color": "#3D444B",
+                    "fontSize": 16,
+                    "fontWeight": "normal",
+                  },
+                ]
+              }
+            >
+              translated general_error_feedback-modal.description with undefined
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "justifyContent": "space-between",
+              "marginVertical": 16,
+              "minHeight": 104,
+            }
+          }
+        >
+          <View
+            accessibilityRole="button"
+            accessibilityStates={Array []}
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#007AFF",
+                      "fontSize": 18,
+                      "padding": 8,
+                      "textAlign": "center",
+                    },
+                  ]
+                }
+              >
+                this is a mock button
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityRole="button"
+            accessibilityStates={Array []}
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#007AFF",
+                      "fontSize": 18,
+                      "padding": 8,
+                      "textAlign": "center",
+                    },
+                  ]
+                }
+              >
+                this is a mock button
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;
 
 exports[`Testing: Course manual completion Test result : course complete and loading action modal to confirm 1`] = `
 <Modal
@@ -354,7 +790,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
             accessibilityRole="button"
             accessibilityStates={Array []}
             accessible={true}
-            focusable={false}
+            focusable={true}
             isTVSelectable={true}
             onClick={[Function]}
             onResponderGrant={[Function]}

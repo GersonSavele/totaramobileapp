@@ -28,8 +28,11 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
 import { withNavigation } from "react-navigation";
+import { useNetInfo } from "@react-native-community/netinfo";
 import PropTypes from "prop-types";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import {
@@ -48,7 +51,7 @@ import {
 import { Log } from "@totara/lib";
 
 const LearningItemCarousel = withNavigation(
-  ({ navigation, currentLearning }) => {
+  ({ navigation, currentLearning, loading, onRefresh }) => {
     const [activeSlide, setActiveSlide] = useState(0);
     const sliderRef = useRef(null);
 
@@ -84,16 +87,23 @@ const LearningItemCarousel = withNavigation(
             inactiveDotOpacity={0}
             inactiveDotScale={1}
           />
-          <Carousel
-            ref={sliderRef}
-            data={currentLearning}
-            renderItem={renderItem(navigation)}
-            sliderWidth={wp("100%")}
-            itemWidth={wp("82%")}
-            sliderHeight={hp("100%")}
-            inactiveSlideOpacity={0.6}
-            onSnapToItem={(index) => setActiveSlide(index)}
-          />
+          <ScrollView
+            contentContainerStyle={{ height: "100%" }}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+            }>
+            <Carousel
+              ref={sliderRef}
+              data={currentLearning}
+              renderItem={renderItem(navigation)}
+              sliderWidth={wp("100%")}
+              itemWidth={wp("82%")}
+              sliderHeight={hp("100%")}
+              inactiveSlideOpacity={0.6}
+              onSnapToItem={(index) => setActiveSlide(index)}
+            />
+          </ScrollView>
         </View>
       );
     } else return null;
@@ -115,13 +125,13 @@ const renderItem = (navigation) => {
   LearningItem.propTypes = {
     item: PropTypes.object.isRequired,
   };
-
   return LearningItem;
 };
 
 const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
   const [theme] = useContext(ThemeContext);
-
+  const { isConnected, isInternetReachable } = useNetInfo();
+  const isOnline = isConnected && isInternetReachable;
   const itemStyle = StyleSheet.create({
     container: {
       borderRadius: normalize(10),
@@ -161,9 +171,8 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
     <TouchableOpacity
       style={itemStyle.container}
       key={item.id}
-      onPress={() => navigateTo(navigation, item)}
-      activeOpacity={1.0}
-    >
+      onPress={isOnline ? () => navigateTo(navigation, item) : () => {}}
+      activeOpacity={1.0}>
       <View style={itemStyle.content}>
         <LearningItemCard item={item}>
           <Text style={[theme.textLabel, itemStyle.type]}>{item.itemtype}</Text>
@@ -171,8 +180,7 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
           <Text
             style={[theme.textB2, itemStyle.summary]}
             ellipsizeMode="tail"
-            numberOfLines={resizeByScreenSize(3, 6, 6, 8)}
-          >
+            numberOfLines={resizeByScreenSize(3, 6, 6, 8)}>
             {item.summary}
           </Text>
         </LearningItemCard>

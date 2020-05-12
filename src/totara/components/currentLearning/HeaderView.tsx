@@ -30,7 +30,7 @@ import { normalize } from "@totara/theme";
 import { ThemeContext } from "@totara/theme";
 import { Certification, Program, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
-import { headerViewStyles } from "@totara/theme/components/currentLearning";
+import { headerViewStyles } from "@totara/theme/currentLearning";
 
 type HeaderViewProps = {
   details: Certification | Program | Course;
@@ -62,14 +62,12 @@ const HeaderView = ({
             style={[
               headerViewStyles.LearningTypeLabelWrap,
               { borderColor: theme.colorNeutral7 },
-            ]}
-          >
+            ]}>
             <Text
               style={[
                 headerViewStyles.programLabelText,
                 { color: theme.colorNeutral7 },
-              ]}
-            >
+              ]}>
               {badgeTitle}
             </Text>
           </View>
@@ -95,8 +93,7 @@ const HeaderView = ({
                     ]
                   : [headerViewStyles.tabSelected]
               }
-              onPress={onPress}
-            >
+              onPress={onPress}>
               <Text
                 style={
                   showOverview
@@ -105,8 +102,7 @@ const HeaderView = ({
                         theme.textB2,
                         { color: theme.colorNeutral6, fontWeight: "400" },
                       ]
-                }
-              >
+                }>
                 {tabBarLeft}
               </Text>
             </TouchableOpacity>
@@ -122,8 +118,7 @@ const HeaderView = ({
                     ]
                   : [headerViewStyles.tabSelected]
               }
-              onPress={onPress}
-            >
+              onPress={onPress}>
               <Text
                 style={
                   !showOverview
@@ -135,8 +130,7 @@ const HeaderView = ({
                           fontWeight: "400",
                         },
                       ]
-                }
-              >
+                }>
                 {tabBarRight}
               </Text>
             </TouchableOpacity>
@@ -151,8 +145,7 @@ const HeaderView = ({
         style={[
           headerViewStyles.headerContainer,
           { backgroundColor: theme.colorNeutral2 },
-        ]}
-      >
+        ]}>
         <ImageElement item={details} imageStyle={headerViewStyles.itemImage} />
       </View>
     );
@@ -179,8 +172,7 @@ const HeaderView = ({
           } else {
             navigation!.setParams({ title: "" });
           }
-        }}
-      >
+        }}>
         {children}
       </ParallaxScrollView>
     </View>

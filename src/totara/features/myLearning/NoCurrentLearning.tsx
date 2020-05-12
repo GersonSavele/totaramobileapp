@@ -20,7 +20,14 @@
  **/
 
 import React, { useContext } from "react";
-import { View, StyleSheet, Image, Dimensions, Text, Linking } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Dimensions,
+  Text,
+  Linking,
+} from "react-native";
 
 import { PrimaryButton } from "@totara/components";
 import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
@@ -28,17 +35,33 @@ import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/core";
 
 const NoCurrentLearning = () => {
-
   const [theme] = useContext(ThemeContext);
 
   return (
     <View style={styles.containerStyle}>
-      <Image style={styles.imageContainer} source={require("@resources/images/no_current_learning/no_current_learning.png")} />
-      <Text style={[theme.textH2, styles.description]}>{translate("my-learning.no_learning_message")}</Text>
+      <Image
+        style={styles.imageContainer}
+        source={require("@resources/images/no_current_learning/no_current_learning.png")}
+      />
+      <Text style={[theme.textH2, styles.description]}>
+        {translate("my-learning.no_learning_message")}
+      </Text>
       <AuthConsumer>
-        {auth => (
-          auth.authContextState.appState && auth.authContextState.appState.host && <PrimaryButton onPress={() => { Linking.openURL(auth.authContextState.appState.host) }} text={translate("additional-actions-modal.auth_model_go_to_browser")} icon="external-link-alt" style={{ alignSelf: "center" }} />
-        )}
+        {(auth) =>
+          auth.authContextState.appState &&
+          auth.authContextState.appState.host && (
+            <PrimaryButton
+              onPress={() => {
+                Linking.openURL(auth.authContextState.appState!.host);
+              }}
+              text={translate(
+                "additional-actions-modal.auth_model_go_to_browser"
+              )}
+              icon="external-link-alt"
+              style={{ alignSelf: "center" }}
+            />
+          )
+        }
       </AuthConsumer>
     </View>
   );
@@ -49,18 +72,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: gutter
+    padding: gutter,
   },
   imageContainer: {
     height: Dimensions.get("window").width * 0.5,
     width: Dimensions.get("window").width * 0.7,
     resizeMode: "contain",
-    paddingBottom: resizeByScreenSize(32, 32, 48, 48)
+    paddingBottom: resizeByScreenSize(32, 32, 48, 48),
   },
   description: {
     alignItems: "flex-start",
-    marginVertical: resizeByScreenSize(32, 32, 48, 48)
-  }
+    marginVertical: resizeByScreenSize(32, 32, 48, 48),
+  },
 });
 
 export default NoCurrentLearning;

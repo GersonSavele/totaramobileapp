@@ -225,7 +225,7 @@ export const createApolloClient = (
   const cache = new InMemoryCache({
     dataIdFromObject: (object) => {
       switch (object.__typename) {
-        case "totara_core_learning_item": {
+        case "totara_mobile_my_current_learning": {
           const learningItem = (object as unknown) as LearningItem;
           return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
         }

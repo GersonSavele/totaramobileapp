@@ -23,7 +23,7 @@
 import {
   LearningItemCard,
   CardElement,
-  ImageElement,
+  ImageElement
 } from "./LearningItemCard";
 import DueDateState from "./DueDateState";
 import ContentIcon from "./ContentIcon";
@@ -47,6 +47,8 @@ import TopHeader from "./TopHeader";
 import TotaraNavigationOptions from "./NavigationOptions";
 import NotificationBell from "./NotificationBell";
 import ListSeparator from "./ListSeparator";
+import LoadingError from "./LoadingError";
+import NetworkStatus from "./NetworkStatus";
 import Loading from "./Loading";
 
 export {
@@ -77,4 +79,6 @@ export {
   NotificationBell,
   ListSeparator,
   Loading,
+  LoadingError,
+  NetworkStatus
 };

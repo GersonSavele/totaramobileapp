@@ -15,9 +15,11 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, ViewStyle } from "react-native";
 import { normalize } from "@totara/theme";
 import { margins, paddings } from "@totara/theme/constants";
+import { gutter } from "@totara/theme";
+import { TotaraTheme } from "./Theme";
 
 const criteriaSheetStyles = StyleSheet.create({
   transparentView: {
@@ -198,9 +200,46 @@ const videoControllerStyles = StyleSheet.create({
   },
 });
 
+const headerViewTitleWrap = {
+  ...TotaraTheme.textH1,
+  color: TotaraTheme.navigationHeaderTintColor,
+};
+
+const headerViewSubTitleWrap = {
+  ...TotaraTheme.textSmall,
+  color: TotaraTheme.navigationHeaderTintColor,
+};
+
+const viewHeader: ViewStyle = {
+  flexDirection: "column",
+  justifyContent: "space-between",
+  paddingHorizontal: gutter,
+  paddingVertical: paddings.paddingL,
+};
+
+const viewStyles = StyleSheet.create({
+  viewHeader,
+  spinnerContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  contentWrap: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
+  headerViewTitleWrap,
+  headerViewSubTitleWrap,
+  headerViewWrap: {
+    ...viewHeader,
+    color: TotaraTheme.colorSecondary1,
+    backgroundColor: TotaraTheme.colorNeutral2,
+  },
+});
+
 export {
   criteriaSheetStyles,
   parallaxScrollViewStyles,
   headerViewStyles,
   videoControllerStyles,
+  viewStyles,
 };

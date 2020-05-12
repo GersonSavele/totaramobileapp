@@ -36,8 +36,9 @@ const query = gql`
       progress
       # status # missing from real api
       imageSrc
+      __typename
     }
   }
 `;
 
-export  {query};
+export default query;

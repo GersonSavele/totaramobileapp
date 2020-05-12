@@ -16,14 +16,13 @@ Please contact [sales@totaralearning.com] for more information.
 */
 
 import { MockedProvider } from "@apollo/react-testing";
-import renderer from "react-test-renderer";
+import TestRenderer from "react-test-renderer";
 import React from "react";
 import wait from "waait";
 
 import { coreCourse } from "../api";
-import  CourseDetails  from "../CourseDetails";
-import CourseCompletionModal from "@totara/components/currentLearning/CourseCompletionModal"
-import { GeneralErrorModal } from "@totara//components/GeneralErrorModal";
+import CourseDetails from "../CourseDetails";
+import CourseCompletionModal from "@totara/components/currentLearning/CourseCompletionModal";
 const response = {
   course: course,
 };
@@ -90,26 +89,16 @@ const course = {
   summary:
     "GROUPING YOUR USERS TO PROVIDE A PERSONALISED LEARNING EXPERIENCE↵↵Audiences are a powerful tool in Totara Learn, allowing you to group your users in order to assign them learning and performance management activities.↵↵Enrol in this course to explore how to:↵↵	* Create set and dynamic audiences↵↵	* Assign learning to an audience ↵↵ The course will take you around one hour 15 minutes to complete.↵↵",
 };
-const courseNotComplete = {
-  completion: {
-    gradefinal: 0,
-    grademax: 100,
-    id: 63,
-    progress: 16,
-    statuskey: "notyetstarted",
-    timecompleted: null
-  },
-};
 
 const navigation = { getParam: jest.fn() };
 const mocks = [
   {
     request: {
       query: coreCourse,
-      variables: { courseId: 4 }
+      variables: { courseId: 4 },
     },
     result: {
-      data: response
+      data: response,
     },
   },
 ];
@@ -118,55 +107,62 @@ const mocksError = [
   {
     request: {
       query: coreCourse,
-      variables: { courseId: 8 }
+      variables: { courseId: 8 },
     },
-    error: new Error("Error")
+    error: new Error("Error"),
   },
 ];
 
 describe("Testing: Apollo MockedProvider should test three state such as loading, final and error", () => {
-  it("Test result : Render loading state initially and return no component", () => {
-    const component = renderer.create(
-      <MockedProvider mocks={[]} addTypename={false}>
-        <CourseDetails navigation={navigation} />
-      </MockedProvider>
-    );
+  it("Test result : Render loading state initially and return no component", async () => {
+    let component;
+    await TestRenderer.act(async () => {
+      component = TestRenderer.create(
+        <MockedProvider mocks={[]} addTypename={false}>
+          <CourseDetails navigation={navigation} />
+        </MockedProvider>
+      );
+    });
     const tree = component.toJSON();
-    expect(tree).toBeNull();
+    expect(tree).toMatchSnapshot();
   });
 
   it("Test result : Once render, it will return child component", async () => {
-    const component = renderer.create(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <CourseDetails navigation={navigation} />
-      </MockedProvider>
-    );
+    let component;
+    await TestRenderer.act(async () => {
+      component = TestRenderer.create(
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <CourseDetails navigation={navigation} />
+        </MockedProvider>
+      );
+    });
     await wait(0); // wait for response
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 
   it("Test result : Set mock-error response and return Error UI", async () => {
-    const component = renderer.create(
-      <MockedProvider mocks={mocksError} addTypename={false}>
-        <CourseDetails navigation={navigation}>
-          <GeneralErrorModal siteUrl="" />;
-        </CourseDetails>
-      </MockedProvider>
-    );
+    let component;
+    await TestRenderer.act(async () => {
+      component = TestRenderer.create(
+        <MockedProvider mocks={mocksError} addTypename={false}>
+          <CourseDetails navigation={navigation} />
+        </MockedProvider>
+      );
+    });
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 });
 
 describe("Testing: Course manual completion", () => {
-  it("Test result : course complete and loading action modal to confirm", () => {
-    const component = renderer.create(
-      <CourseCompletionModal
-        course={course}
-        navigation={navigation}
-      ></CourseCompletionModal>
-    );
+  it("Test result : course complete and loading action modal to confirm", async () => {
+    let component;
+    await TestRenderer.act(async () => {
+      component = TestRenderer.create(
+        <CourseCompletionModal onClose={jest.fn()} />
+      );
+    });
     expect(component.toJSON()).toMatchSnapshot();
   });
 });

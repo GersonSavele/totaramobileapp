@@ -20,7 +20,7 @@
  *
  */
 
-import MyLearning from "./my-learning";
+import MyLearning from "./myLearning";
 import CourseDetails from "./currentLearning/courseDetails";
 import Profile from "./profile";
 import Settings from "./settings";

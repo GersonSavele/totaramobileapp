@@ -8,7 +8,6 @@ const NetworkStatus = () => {
   const { isConnected, isInternetReachable } = useNetInfo();
   const messageNotConnected = "You are not connected to the internet";
   const messageConnecting = "Connecting...";
-
   return (
     <View>
       {(!isConnected || (isConnected && !isInternetReachable)) && (

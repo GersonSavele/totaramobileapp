@@ -29,7 +29,7 @@ import {config} from "@totara/lib";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import MyLearning from "./my-learning";
+import MyLearning from "./myLearning";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import  CourseDetails  from "./currentLearning/courseDetails";
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT

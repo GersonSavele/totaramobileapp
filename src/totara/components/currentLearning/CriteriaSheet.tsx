@@ -24,7 +24,7 @@ import BottomSheet from "reanimated-bottom-sheet";
 
 import { translate } from "@totara/locale";
 import { Criteria } from "@totara/types";
-import { criteriaSheetStyles } from "@totara/theme/components/currentLearning";
+import { criteriaSheetStyles } from "@totara/theme/currentLearning";
 
 type Props = {
   criteriaList?: [Criteria];
@@ -53,8 +53,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
           style={{
             ...criteriaSheetStyles.nameViewWrap,
             color: theme.colorNeutral8,
-          }}
-        >
+          }}>
           {section.title}
         </Text>
       </View>
@@ -81,8 +80,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
               style={{
                 ...criteriaSheetStyles.criteriaText,
                 color: theme.colorNeutral8,
-              }}
-            >
+              }}>
               {/* // item criteria return with URL and should replace the url and tags */}
               {item.criteria!.replace(/(<([^>]+)>)/gi, "")}
             </Text>
@@ -91,8 +89,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
               style={{
                 ...criteriaSheetStyles.requirementText,
                 color: theme.colorNeutral8,
-              }}
-            >
+              }}>
               {description}
             </Text>
           </View>
@@ -101,8 +98,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
           style={{
             ...criteriaSheetStyles.bodySeparator,
             backgroundColor: theme.colorNeutral8,
-          }}
-        ></View>
+          }}></View>
       </View>
     );
   };
@@ -113,8 +109,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
         <View style={criteriaSheetStyles.headerInnerViewWrap}>
           <TouchableOpacity
             style={criteriaSheetStyles.headerCloseButtonWrap}
-            onPress={onClose}
-          >
+            onPress={onClose}>
             <FontAwesomeIcon
               icon="times"
               size={20}

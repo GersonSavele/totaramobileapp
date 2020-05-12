@@ -24,7 +24,7 @@
 import React, { useState, ReactNode, useContext } from "react";
 import { Animated, Dimensions, View, LayoutChangeEvent } from "react-native";
 import { ThemeContext, normalize } from "@totara/theme";
-import { parallaxScrollViewStyles } from "@totara/theme/components/currentLearning";
+import { parallaxScrollViewStyles } from "@totara/theme/currentLearning";
 
 type Props = {
   fadeOutForeground?: boolean;
@@ -84,8 +84,7 @@ const ParallaxScrollView = ({
     // Background image scrolling...
     <View
       style={[parallaxScrollViewStyles.container]}
-      onLayout={(e) => updateViewDimensions(e)}
-    >
+      onLayout={(e) => updateViewDimensions(e)}>
       <Animated.View
         style={[
           parallaxScrollViewStyles.backgroundImage,
@@ -115,8 +114,7 @@ const ParallaxScrollView = ({
               },
             ],
           },
-        ]}
-      >
+        ]}>
         <View>{renderBackground()}</View>
       </Animated.View>
       {React.cloneElement(
@@ -149,8 +147,7 @@ const ParallaxScrollView = ({
                     })
                   : 1,
               },
-            ]}
-          >
+            ]}>
             <View style={{ height: parallaxHeaderHeight }}></View>
           </Animated.View>
         </View>,
