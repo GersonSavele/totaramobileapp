@@ -68,9 +68,15 @@ import {
   getScormBundleForApiData,
 } from "@totara/lib/scorm";
 import { scormSummaryStyles } from "@totara/theme/scorm";
-import { scormActivityType, scormSummarySection } from "@totara/lib/constants";
+import {
+  scormActivityType,
+  scormSummarySection,
+  apiRequestMode,
+} from "@totara/lib/constants";
 import { useQuery } from "@apollo/react-hooks";
 import { scormQuery } from "./api";
+import LoadingError from "@totara/components/LoadingError";
+import { NetworkStatus } from "apollo-boost";
 
 type SummaryProps = {
   id: string;
@@ -137,7 +143,7 @@ const ScormSummary = ({
   const [downloadManager] = useState<ResourceManager>(
     ResourceManager.getInstance()
   );
-  const [refreshing, setRefreshing] = useState(false);
+  const [requestMode, setRequestMode] = useState(apiRequestMode.none);
 
   const {
     description,
@@ -220,17 +226,25 @@ const ScormSummary = ({
     }
   };
 
-  const pullToRefresh = () => {
-    if (!refreshing) {
-      setRefreshing(true);
+  const onRefresh = (mode: apiRequestMode) => {
+    if (requestMode === apiRequestMode.none) {
+      setRequestMode(mode);
     }
   };
 
+  if (
+    networkStatus !== NetworkStatus.refetch &&
+    (requestMode === apiRequestMode.pullToRefresh ||
+      requestMode === apiRequestMode.tryAgain)
+  ) {
+    setRequestMode(apiRequestMode.none);
+  }
+
   useEffect(() => {
-    if (refreshing) {
+    if (requestMode != apiRequestMode.none) {
       refetch();
     }
-  }, [refreshing]);
+  }, [requestMode]);
 
   useEffect(() => {
     getScormBundleForApiData(id, isUserOnline, data)?.then((data) => {
@@ -262,18 +276,13 @@ const ScormSummary = ({
     };
   }, [scormBundle && scormBundle.scorm, downloadManager]);
 
-  if (networkStatus !== 4) {
-    if (refreshing) {
-      setRefreshing(false);
-    }
-  }
-
-  if (loading) {
+  if (loading && requestMode !== apiRequestMode.pullToRefresh) {
     return <Loading />;
   }
-
   if (error) {
-    return <Text>{translate("general.error_unknown")}</Text>;
+    return (
+      <LoadingError onRefreshTap={() => onRefresh(apiRequestMode.tryAgain)} />
+    );
   }
   return (
     <>
@@ -299,8 +308,8 @@ const ScormSummary = ({
           <ScrollView
             refreshControl={
               <RefreshControl
-                refreshing={refreshing}
-                onRefresh={pullToRefresh}
+                refreshing={requestMode === apiRequestMode.pullToRefresh}
+                onRefresh={() => onRefresh(apiRequestMode.pullToRefresh)}
               />
             }>
             <View style={{ padding: gutter }}>
