@@ -21,7 +21,7 @@ import {
   getOfflineScormPackageName,
   getOfflineScormBundle,
   syncOfflineScormBundle,
-} from "@totara/activities/scorm/offline/OfflineSCORMController";
+} from "@totara/activities/scorm/offline/offlineScormController";
 import {
   DATE_FORMAT,
   DATE_FORMAT_FULL,

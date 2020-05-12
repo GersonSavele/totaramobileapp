@@ -27,7 +27,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import {
   getOfflineScormCommits,
   clearSyncedScormCommit,
-} from "./OfflineSCORMController";
+} from "./offlineScormController";
 import { Log, showMessage } from "@totara/lib";
 import { translate } from "@totara/locale";
 

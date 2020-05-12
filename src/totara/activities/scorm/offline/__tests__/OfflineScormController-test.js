@@ -17,7 +17,7 @@ import {
   getGradeForAttempt,
   getAttemptsGrade,
   calculatedAttemptsGrade,
-} from "../OfflineSCORMController";
+} from "../offlineScormController";
 import { Grade, AttemptGrade } from "@totara/types/scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
 

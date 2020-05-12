@@ -37,7 +37,7 @@ import {
   calculatedAttemptsGrade,
   syncOfflineScormBundle,
   getOfflineScormPackageName,
-} from "./OfflineSCORMController";
+} from "./offlineScormController";
 
 export {
   OfflineScormActivity,

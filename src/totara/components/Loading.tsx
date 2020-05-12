@@ -15,7 +15,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React, { useContext } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Spinner } from "native-base";
 
 import { ThemeContext } from "@totara/theme";
@@ -24,17 +24,15 @@ const Loading = () => {
   const [theme] = useContext(ThemeContext);
 
   return (
-    <SafeAreaView style={loadingViewSyles.container}>
+    <View style={loadingViewSyles.container}>
       <Spinner color={theme.textColorDark} />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const loadingViewSyles = StyleSheet.create({
   container: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
+    flex: 1,
     alignSelf: "center",
     flexDirection: "column",
     justifyContent: "center",
