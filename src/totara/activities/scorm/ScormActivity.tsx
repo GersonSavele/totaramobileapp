@@ -23,7 +23,7 @@ import React, { useEffect, useState, useContext } from "react";
 import NetInfo from "@react-native-community/netinfo";
 
 import { Activity, ActivityType } from "@totara/types";
-import SCORMSummary from "./SCORMSummary";
+import ScormSummary from "./ScormSummary";
 import { ScormBundle } from "@totara/types/Scorm";
 import { OfflineScormActivity } from "./offline";
 import { ActivitySheetContext } from "../ActivitySheet";
@@ -68,7 +68,7 @@ const ScormActivity = ({
         );
       });
     }
-  }, [isReachable, scormModeData.mode]);
+  }, [isReachable]);
 
   useEffect(() => {
     if (
@@ -103,7 +103,7 @@ const ScormActivity = ({
       );
     case scormActivityType.summary:
       return (
-        <SCORMSummary
+        <ScormSummary
           id={id}
           isUserOnline={isReachable === connectivity.online}
           setActionWithData={onSetActionWithData}

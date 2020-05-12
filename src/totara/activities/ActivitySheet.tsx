@@ -24,10 +24,11 @@ import { View, Modal } from "react-native";
 
 import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
-import ScormActivity from "./scorm/SCORMActivity";
+import ScormActivity from "./scorm/ScormActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { ThemeContext, baseSpace } from "@totara/theme";
 import { TopHeader } from "@totara/components";
+import { scormActivityType } from "@totara/lib/constants";
 
 type ActivityFeedbackProps = {
   activity?: ActivityType;
@@ -115,6 +116,7 @@ const ActivityWrapper = ({ activity }: { activity: ActivityType }) => {
         <ScormActivity
           id={activity.instanceid.toString()}
           activity={activity}
+          mode={scormActivityType.summary}
         />
       );
     default:

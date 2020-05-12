@@ -19,6 +19,8 @@ import { translate } from "@totara/locale";
 import {
   calculatedAttemptsGrade,
   getOfflineScormPackageName,
+  getOfflineScormBundle,
+  syncOfflineScormBundle,
 } from "@totara/activities/scorm/offline/OfflineSCORMController";
 import {
   DATE_FORMAT,
@@ -32,6 +34,39 @@ import { Log } from "@totara/lib";
 import { offlineScormServerRoot } from "@totara/activities/scorm/offline";
 import { showMessage } from "./tools";
 import { scormZipPackagePath } from "@totara/activities/scorm/offline/SCORMFileHandler";
+
+const getScormBundleForApiData = (
+  id: string,
+  isUserOnline: boolean,
+  data?: any
+) => {
+  if (data && data.scorm) {
+    let scormData = data.scorm;
+    if (data.scorm.attempts && data.scorm.attempts.length > 0) {
+      let scormAttempts = data.scorm.attempts;
+      const defaultCMI = data.scorm.attempts[data.scorm.attempts.length - 1];
+      if (!defaultCMI.timestarted) {
+        scormAttempts = scormAttempts.slice(0, -1);
+      }
+      scormData = {
+        ...data.scorm,
+        ...{ attempts: scormAttempts, defaultCMI: defaultCMI },
+      };
+    }
+    return getOfflineScormBundle(id, scormData).then((storedData) => {
+      let scormBundleData = storedData as ScormBundle;
+      if (isUserOnline) {
+        scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
+        return syncOfflineScormBundle(id, {
+          lastsynced: scormBundleData.lastsynced,
+        }).then(() => {
+          return scormBundleData;
+        });
+      }
+      return scormBundleData;
+    });
+  }
+};
 
 const getDataForScormSummary = (
   isUserOnline: boolean,
@@ -174,7 +209,6 @@ const onTapDownloadResource = ({
         _unzipPath
       );
       const _offlineScormData = {
-        scorm: scormBundle.scorm,
         lastsynced: scormBundle.lastsynced,
       } as ScormBundle;
 
@@ -269,6 +303,7 @@ const onTapViewAllAttempts = ({
 };
 
 export {
+  getScormBundleForApiData,
   getDataForScormSummary,
   onTapDownloadResource,
   onTapNewAttempt,

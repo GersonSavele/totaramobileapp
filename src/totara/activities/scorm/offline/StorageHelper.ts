@@ -20,6 +20,7 @@
  */
 
 import AsyncStorage from "@react-native-community/async-storage";
+import { get } from "lodash";
 
 const ScormDataPre = "@TOTARAMOBILE_SCORM";
 const KeyScormPackageData = `${ScormDataPre}_API_DATA`;
@@ -30,7 +31,6 @@ const KeyScormActivityData = `${ScormDataPre}_OFFLINE_ACTIVITY`;
 const setScormPackageData = (scormId: string, data: any) => {
   return AsyncStorage.getItem(KeyScormPackageData).then((storedData) => {
     let scormData = {
-      scorm: data.scorm,
       lastsynced: data.lastsynced,
       scormPackage: data.scormPackage,
     };
@@ -67,10 +67,13 @@ const removeScormPackageData = (scormId: string) => {
           return existingData;
         }
       }
-      return null;
+      return undefined;
     })
     .then((newData) => {
-      if (Object.keys(newData).length === 0 && newData.constructor === Object) {
+      if (
+        !newData ||
+        (Object.keys(newData).length === 0 && newData.constructor === Object)
+      ) {
         return AsyncStorage.removeItem(KeyScormPackageData);
       } else {
         return AsyncStorage.setItem(
@@ -84,8 +87,10 @@ const removeScormPackageData = (scormId: string) => {
 const getScormData = (scormId: string) => {
   return AsyncStorage.multiGet([KeyScormPackageData, KeyScormCMIData]).then(
     ([dataScormPackage, dataCMIs]) => {
-      // let scormData = null;
-      let storedScormData = { bundle: undefined, cmis: undefined };
+      let storedScormData = {
+        bundle: undefined,
+        cmis: undefined,
+      };
       if (
         dataScormPackage.length === 2 &&
         dataScormPackage[1] &&
@@ -269,8 +274,7 @@ const clearCommit = (scormId: string, attempt: number) => {
         storageCommitsData &&
         storageCommitsData.length === 2 &&
         storageCommitsData[0] === KeyScormCommitData &&
-        storageCommitsData[1] &&
-        JSON.parse(storageCMIData[1])
+        storageCommitsData[1]
       ) {
         existingData.commits = JSON.parse(storageCommitsData[1]);
       }
@@ -367,15 +371,9 @@ const getLastAttemptScore = (scormId: string) => {
                 const scosData = cmiData[lastAttempt];
 
                 for (let [, cmi] of Object.entries(scosData as any)) {
-                  const maxScore = parseInt(cmi.core.score.max)
-                    ? parseInt(cmi.core.score.max)
-                    : 100;
-                  const minScore = parseInt(cmi.core.score.min)
-                    ? parseInt(cmi.core.score.min)
-                    : 0;
-                  const rowScore = parseInt(cmi.core.score.raw)
-                    ? parseInt(cmi.core.score.raw)
-                    : 0;
+                  const maxScore = parseInt(get(cmi, "core.score.max", "100"));
+                  const minScore = parseInt(get(cmi, "core.score.min", "0"));
+                  const rowScore = parseInt(get(cmi, "core.score.raw", "0"));
 
                   const scoScorePercent =
                     (rowScore / (maxScore - minScore)) * 100;

@@ -28,6 +28,7 @@ import {
   SafeAreaView,
   TextStyle,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -43,7 +44,6 @@ import {
 import { gutter, ThemeContext } from "@totara/theme";
 import {
   offlineScormServerRoot,
-  getOfflineScormBundle,
   syncOfflineScormBundle,
   getOfflineScormPackageName,
   removeScormPackageData,
@@ -65,16 +65,12 @@ import {
   onTapNewAttempt,
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
+  getScormBundleForApiData,
 } from "@totara/lib/scorm";
 import { scormSummaryStyles } from "@totara/theme/scorm";
-import {
-  scormActivityType,
-  scormSummarySection,
-  SECONDS_FORMAT,
-} from "@totara/lib/constants";
+import { scormActivityType, scormSummarySection } from "@totara/lib/constants";
 import { useQuery } from "@apollo/react-hooks";
 import { scormQuery } from "./api";
-import moment from "moment";
 
 type SummaryProps = {
   id: string;
@@ -124,32 +120,14 @@ const ScormSummary = ({
   isUserOnline,
   setActionWithData,
 }: SummaryProps) => {
-  const { loading, error, data } = useQuery(scormQuery, {
-    variables: { scormid: id },
-  });
-  const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>();
-  useEffect(() => {
-    if (data && data.scorm) {
-      let scormData = data.scorm;
-      if (data.scorm.attempts && data.scorm.attempts.length > 0) {
-        let scormAttempts = data.scorm.attempts;
-        const defaultCMI = data.scorm.attempts[data.scorm.attempts.length - 1];
-        if (!defaultCMI.timestarted) {
-          scormAttempts = scormAttempts.slice(0, -1);
-        }
-        scormData = {
-          ...data.scorm,
-          ...{ attempts: scormAttempts, defaultCMI: defaultCMI },
-        };
-      }
-      let scormBundleData = { scorm: scormData } as ScormBundle;
-      if (isUserOnline) {
-        scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
-      }
-      setScormBundle(scormBundleData);
+  const { loading, error, data, refetch, networkStatus } = useQuery(
+    scormQuery,
+    {
+      variables: { scormid: id },
+      notifyOnNetworkStatusChange: true,
     }
-  }, [data && data.scorm]);
-
+  );
+  const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>();
   const {
     authContextState: { appState },
   } = useContext(AuthContext);
@@ -159,6 +137,7 @@ const ScormSummary = ({
   const [downloadManager] = useState<ResourceManager>(
     ResourceManager.getInstance()
   );
+  const [refreshing, setRefreshing] = useState(false);
 
   const {
     description,
@@ -215,7 +194,6 @@ const ScormSummary = ({
           const _unzipPath = `${offlineScormServerRoot}/${offlineSCORMPackageName}`;
           if (resourceFile.unzipPath === _unzipPath) {
             const _offlineScormData = {
-              scorm: scormBundle.scorm,
               scormPackage: {
                 path: offlineSCORMPackageName,
               },
@@ -242,40 +220,23 @@ const ScormSummary = ({
     }
   };
 
-  useEffect(() => {
-    if (!isUserOnline) {
-      getOfflineScormBundle(id).then((result) => {
-        if (result) {
-          const storedBundle = result! as ScormBundle;
-          let newBundle: ScormBundle = storedBundle;
-          if (
-            scormBundle &&
-            scormBundle.lastsynced &&
-            scormBundle.lastsynced >= storedBundle.lastsynced
-          ) {
-            newBundle.scorm = scormBundle.scorm;
-            newBundle.lastsynced = scormBundle.lastsynced;
-            syncOfflineScormBundle(id, {
-              scorm: newBundle.scorm,
-              lastsynced: newBundle.lastsynced,
-            }).then(() => {
-              setScormBundle(newBundle);
-            });
-          } else {
-            setScormBundle(newBundle);
-          }
-        }
-      });
-    } else {
-      setScormBundle(data);
-      if (data && data.scorm && data.lastsynced) {
-        syncOfflineScormBundle(id, {
-          scorm: data.scorm,
-          lastsynced: data.lastsynced,
-        });
-      }
+  const pullToRefresh = () => {
+    if (!refreshing) {
+      setRefreshing(true);
     }
-  }, [data]);
+  };
+
+  useEffect(() => {
+    if (refreshing) {
+      refetch();
+    }
+  }, [refreshing]);
+
+  useEffect(() => {
+    getScormBundleForApiData(id, isUserOnline, data)?.then((data) => {
+      setScormBundle(data);
+    });
+  }, [data, isUserOnline]);
 
   useEffect(() => {
     if (
@@ -286,9 +247,7 @@ const ScormSummary = ({
     ) {
       return;
     }
-
     downloadManager.attach(onDownloadFileUpdated);
-
     const filter = downloadManager.snapshot.filter(
       (x) => x.id === scormBundle.scorm.id.toString()
     );
@@ -298,19 +257,24 @@ const ScormSummary = ({
     } else {
       setResource(undefined);
     }
-
     return () => {
       downloadManager.detach(onDownloadFileUpdated);
     };
   }, [scormBundle && scormBundle.scorm, downloadManager]);
 
+  if (networkStatus !== 4) {
+    if (refreshing) {
+      setRefreshing(false);
+    }
+  }
+
   if (loading) {
     return <Loading />;
   }
+
   if (error) {
     return <Text>{translate("general.error_unknown")}</Text>;
   }
-
   return (
     <>
       <View style={scormSummaryStyles.expanded}>
@@ -332,7 +296,13 @@ const ScormSummary = ({
           />
         )}
         <View style={{ flex: 1 }}>
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={pullToRefresh}
+              />
+            }>
             <View style={{ padding: gutter }}>
               {description && (
                 <>

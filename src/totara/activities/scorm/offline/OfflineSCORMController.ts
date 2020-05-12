@@ -26,6 +26,7 @@ import {
   AttemptGrade,
   ScormActivityResult,
   ScormBundle,
+  Scorm,
 } from "@totara/types/Scorm";
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
 import {
@@ -136,7 +137,7 @@ const getOfflineAttemptsReport = (
   return scoresData;
 };
 
-const getOfflineScormBundle = (scormId: string) => {
+const getOfflineScormBundle = (scormId: string, scorm: Scorm) => {
   return RetrieveStorageDataById(scormId.toString())
     .then((storedResourceData) => {
       if (
@@ -150,26 +151,30 @@ const getOfflineScormBundle = (scormId: string) => {
       }
     })
     .then((packageName) => {
-      return getScormData(scormId).then(({ bundle, cmis }) => {
-        let storedBundle = bundle as ScormBundle | undefined;
-        if (storedBundle && !storedBundle.scormPackage && packageName) {
-          const resourcePackageName = getOfflineScormPackageName(scormId);
-          const dataScormPackage = {
-            scormPackage: { path: resourcePackageName },
-          };
-          return syncOfflineScormBundle(scormId, dataScormPackage).then(() => {
-            return {
-              bundle: { ...storedBundle, ...dataScormPackage },
-              cmis: cmis,
+      return getScormData(scormId).then(
+        ({ bundle, cmis }: { bundle?: any; cmis?: any }) => {
+          let storedBundle = bundle;
+          if (storedBundle && !storedBundle.scormPackage && packageName) {
+            const resourcePackageName = getOfflineScormPackageName(scormId);
+            const dataScormPackage = {
+              scormPackage: { path: resourcePackageName },
             };
-          });
-        } else {
-          return { bundle: storedBundle, cmis: cmis };
+            return syncOfflineScormBundle(scormId, dataScormPackage).then(
+              () => {
+                return {
+                  bundle: { ...storedBundle, ...dataScormPackage },
+                  cmis: cmis,
+                };
+              }
+            );
+          } else {
+            return { bundle: storedBundle, cmis: cmis };
+          }
         }
-      });
+      );
     })
     .then(({ bundle, cmis }) => {
-      let formattedData = bundle as ScormBundle | undefined;
+      let formattedData = { scorm: scorm, ...bundle } as ScormBundle;
       if (formattedData && formattedData.scorm) {
         if (!formattedData.scormPackage) {
           const resourcePackageName = getOfflineScormPackageName(scormId);
@@ -178,10 +183,10 @@ const getOfflineScormBundle = (scormId: string) => {
             scormPackage: { path: resourcePackageName },
           } as ScormBundle;
         }
-        if (formattedData!.scorm.grademethod && formattedData!.scorm.maxgrade) {
+        if (scorm.grademethod && scorm.maxgrade) {
           if (cmis) {
-            const gradeMethod = formattedData!.scorm.grademethod as Grade;
-            const maxGrade = formattedData!.scorm.maxgrade;
+            const gradeMethod = scorm.grademethod as Grade;
+            const maxGrade = scorm.maxgrade;
             const offlineReport = getOfflineAttemptsReport(
               cmis,
               maxGrade,
@@ -232,9 +237,6 @@ const syncOfflineScormBundle = (scormId: string, data: any): Promise<void> => {
   return getScormPackageData(scormId).then((storedData) => {
     if (storedData) {
       let newData = storedData as ScormBundle;
-      if (data.scorm) {
-        newData.scorm = data.scorm;
-      }
       if (data.lastsynced) {
         newData.lastsynced = data.lastsynced;
       }
@@ -243,10 +245,8 @@ const syncOfflineScormBundle = (scormId: string, data: any): Promise<void> => {
       }
       return setScormPackageData(scormId, newData);
     } else {
-      if (data && data.scorm && data.scormPackage && data.scormPackage.path) {
+      if (data && data.scormPackage && data.scormPackage.path) {
         return setScormPackageData(scormId, data);
-      } else {
-        return;
       }
     }
   });
