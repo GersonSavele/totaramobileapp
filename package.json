@@ -38,6 +38,7 @@
     "apollo-boost": "^0.4.4",
     "apollo-cache-persist": "^0.1.1",
     "apollo-link-context": "^1.0.19",
+    "apollo-link-logger": "^1.2.3",
     "apollo-link-retry": "^2.2.15",
     "graphql": "^15.0.0",
     "i18n-js": "^3.3.0",

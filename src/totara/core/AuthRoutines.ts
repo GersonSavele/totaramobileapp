@@ -23,6 +23,7 @@ import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { RetryLink } from "apollo-link-retry";
 import { HttpLink } from "apollo-link-http";
+import apolloLogger from "apollo-link-logger";
 import { onError, ErrorResponse } from "apollo-link-error";
 import {
   InMemoryCache,
@@ -203,6 +204,7 @@ export const createApolloClient = (
   const httpLink = new HttpLink({ uri: config.apiUri(host) });
 
   const link = ApolloLink.from([
+    apolloLogger,
     logoutLink,
     new RetryLink({
       attempts: {

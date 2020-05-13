@@ -137,6 +137,11 @@ const getOfflineAttemptsReport = (
   return scoresData;
 };
 
+/**
+ *
+ * @param {string} id - scorm id
+ * @param {Object} data - scorm data
+ */
 const getOfflineScormBundle = (scormId: string, scorm: Scorm) => {
   return RetrieveStorageDataById(scormId.toString())
     .then((storedResourceData) => {

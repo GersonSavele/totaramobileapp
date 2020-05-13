@@ -14,7 +14,7 @@
  */
 
 import moment from "moment";
-import { AttemptGrade, Grade, ScormBundle } from "@totara/types/Scorm";
+import { AttemptGrade, Grade, ScormBundle, Scorm } from "@totara/types/Scorm";
 import { translate } from "@totara/locale";
 import {
   calculatedAttemptsGrade,
@@ -35,38 +35,69 @@ import { offlineScormServerRoot } from "@totara/activities/scorm/offline";
 import { showMessage } from "./tools";
 import { scormZipPackagePath } from "@totara/activities/scorm/offline/SCORMFileHandler";
 
-const getScormBundleForApiData = (
-  id: string,
-  isUserOnline: boolean,
-  data?: any
-) => {
-  if (data && data.scorm) {
-    let scormData = data.scorm;
-    if (data.scorm.attempts && data.scorm.attempts.length > 0) {
-      let scormAttempts = data.scorm.attempts;
-      const defaultCMI = data.scorm.attempts[data.scorm.attempts.length - 1];
+/**
+ * this formats the attempts of the SCORM bundle
+ * @param data
+ */
+const formatAttempts = (data: any) => {
+  let scormData = { ...data };
+  if (scormData) {
+    if (scormData.attempts && scormData.attempts.length > 0) {
+      let scormAttempts = scormData.attempts;
+      const defaultCMI = scormData.attempts[scormData.attempts.length - 1];
       if (!defaultCMI.timestarted) {
         scormAttempts = scormAttempts.slice(0, -1);
       }
       scormData = {
-        ...data.scorm,
-        ...{ attempts: scormAttempts, defaultCMI: defaultCMI },
+        ...scormData,
+        attempts: scormAttempts,
+        defaultCMI: defaultCMI,
       };
     }
-    return getOfflineScormBundle(id, scormData).then((storedData) => {
-      let scormBundleData = storedData as ScormBundle;
-      if (isUserOnline) {
-        scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
-        return syncOfflineScormBundle(id, {
-          lastsynced: scormBundleData.lastsynced,
-        }).then(() => {
-          return scormBundleData;
-        });
-      }
+  }
+  return scormData;
+};
+
+/**
+ *
+ * @param id
+ * @param isUserOnline
+ * @returns {Scorm} scorm
+ */
+const shouldScormSync = (id: string, isUserOnline: boolean) => (
+  storedData: ScormBundle
+) => {
+  let scormBundleData = storedData as ScormBundle;
+  if (isUserOnline) {
+    scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
+    return syncOfflineScormBundle(id, {
+      lastsynced: scormBundleData.lastsynced,
+    }).then(() => {
       return scormBundleData;
     });
   }
+  return scormBundleData;
 };
+
+/**
+ *
+ *  @param {boolean} isUserOnline - if network status is online
+ */
+// old code
+// const formatScormData = (
+//   id: string,
+//   isUserOnline: boolean,
+//   scormData?: any
+// ) => {
+//   if (scormData) {
+//     let newScormData = { ...scormData };
+
+//     return getOfflineScormBundle(id, newScormData).then(
+//       shouldScormSync(id, isUserOnline)
+//     );
+//   }
+//   return Promise.reject("invalid scorm data");
+// };
 
 const getDataForScormSummary = (
   isUserOnline: boolean,
@@ -303,7 +334,9 @@ const onTapViewAllAttempts = ({
 };
 
 export {
-  getScormBundleForApiData,
+  // formatScormData,
+  formatAttempts,
+  shouldScormSync,
   getDataForScormSummary,
   onTapDownloadResource,
   onTapNewAttempt,

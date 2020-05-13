@@ -65,14 +65,13 @@ import {
   onTapNewAttempt,
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
-  getScormBundleForApiData,
+  // formatScormData,
+  formatAttempts,
+  shouldScormSync,
 } from "@totara/lib/scorm";
+import { getOfflineScormBundle } from "@totara/activities/scorm/offline/offlineScormController";
 import { scormSummaryStyles } from "@totara/theme/scorm";
-import {
-  scormActivityType,
-  scormSummarySection,
-  apiRequestMode,
-} from "@totara/lib/constants";
+import { scormActivityType, scormSummarySection } from "@totara/lib/constants";
 import { useQuery } from "@apollo/react-hooks";
 import { scormQuery } from "./api";
 import LoadingError from "@totara/components/LoadingError";
@@ -133,7 +132,7 @@ const ScormSummary = ({
       notifyOnNetworkStatusChange: true,
     }
   );
-  const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>();
+  const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
   const {
     authContextState: { appState },
   } = useContext(AuthContext);
@@ -143,7 +142,6 @@ const ScormSummary = ({
   const [downloadManager] = useState<ResourceManager>(
     ResourceManager.getInstance()
   );
-  const [requestMode, setRequestMode] = useState(apiRequestMode.none);
 
   const {
     description,
@@ -226,30 +224,19 @@ const ScormSummary = ({
     }
   };
 
-  const onRefresh = (mode: apiRequestMode) => {
-    if (requestMode === apiRequestMode.none) {
-      setRequestMode(mode);
-    }
-  };
-
-  if (
-    networkStatus !== NetworkStatus.refetch &&
-    (requestMode === apiRequestMode.pullToRefresh ||
-      requestMode === apiRequestMode.tryAgain)
-  ) {
-    setRequestMode(apiRequestMode.none);
-  }
-
   useEffect(() => {
-    if (requestMode != apiRequestMode.none) {
-      refetch();
+    if (data && data.scorm) {
+      //REMAINS: I need to set the state(setScormBundle) with the new formatted Data
+      getOfflineScormBundle(id, formatAttempts(data.scorm)).then(
+        shouldScormSync(id, isUserOnline)
+      );
+      // The previous code
+      // formatScormData(id, isUserOnline, formatAttempts(data.scorm))?.then(
+      //   (formattedData) => {
+      //     setScormBundle(formattedData);
+      //   }
+      // );
     }
-  }, [requestMode]);
-
-  useEffect(() => {
-    getScormBundleForApiData(id, isUserOnline, data)?.then((data) => {
-      setScormBundle(data);
-    });
   }, [data, isUserOnline]);
 
   useEffect(() => {
@@ -276,13 +263,11 @@ const ScormSummary = ({
     };
   }, [scormBundle && scormBundle.scorm, downloadManager]);
 
-  if (loading && requestMode !== apiRequestMode.pullToRefresh) {
+  if (loading && !(scormBundle && scormBundle.scorm)) {
     return <Loading />;
   }
   if (error) {
-    return (
-      <LoadingError onRefreshTap={() => onRefresh(apiRequestMode.tryAgain)} />
-    );
+    return <LoadingError onRefreshTap={refetch} />;
   }
   return (
     <>
@@ -308,8 +293,8 @@ const ScormSummary = ({
           <ScrollView
             refreshControl={
               <RefreshControl
-                refreshing={requestMode === apiRequestMode.pullToRefresh}
-                onRefresh={() => onRefresh(apiRequestMode.pullToRefresh)}
+                refreshing={networkStatus === NetworkStatus.refetch}
+                onRefresh={refetch}
               />
             }>
             <View style={{ padding: gutter }}>

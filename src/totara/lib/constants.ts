@@ -77,12 +77,6 @@ enum connectivity {
   offline,
 }
 
-enum apiRequestMode {
-  none = 0,
-  pullToRefresh,
-  tryAgain,
-}
-
 export {
   DEVICE_REGISTRATION,
   WEBVIEW_SECRET,
@@ -107,5 +101,4 @@ export {
   connectivity,
   completionTrack,
   completionStatus,
-  apiRequestMode,
 };
