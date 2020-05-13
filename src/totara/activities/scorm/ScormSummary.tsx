@@ -65,11 +65,10 @@ import {
   onTapNewAttempt,
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
-  // formatScormData,
   formatAttempts,
   shouldScormSync,
+  getOfflineScormBundle,
 } from "@totara/lib/scorm";
-import { getOfflineScormBundle } from "@totara/activities/scorm/offline/offlineScormController";
 import { scormSummaryStyles } from "@totara/theme/scorm";
 import { scormActivityType, scormSummarySection } from "@totara/lib/constants";
 import { useQuery } from "@apollo/react-hooks";
@@ -227,9 +226,11 @@ const ScormSummary = ({
   useEffect(() => {
     if (data && data.scorm) {
       //REMAINS: I need to set the state(setScormBundle) with the new formatted Data
-      getOfflineScormBundle(id, formatAttempts(data.scorm)).then(
-        shouldScormSync(id, isUserOnline)
-      );
+      getOfflineScormBundle(id, formatAttempts(data.scorm))
+        .then(shouldScormSync(id, isUserOnline))
+        .then((formattedData) => {
+          setScormBundle(formattedData);
+        });
       // The previous code
       // formatScormData(id, isUserOnline, formatAttempts(data.scorm))?.then(
       //   (formattedData) => {
