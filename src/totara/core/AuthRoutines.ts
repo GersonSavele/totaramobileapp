@@ -151,6 +151,11 @@ export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
   return Promise.all([localCleanUp, remoteCleanUp]).then(() => true);
 };
 
+  return Promise.all([localCleanUp, remoteCleanUp, userCleanUp]).then(
+    () => true
+  );
+};
+
 /**
  * Would get needed items from storage and return a valid state appState.
  *

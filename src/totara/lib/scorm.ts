@@ -20,12 +20,12 @@ import {
   calculatedAttemptsGrade,
   getOfflineScormPackageName,
   getGradeForAttempt,
-  syncOfflineScormBundle,
+  syncOfflineScormBundle
 } from "@totara/activities/scorm/offline/offlineScormController";
 import {
   SECONDS_FORMAT,
   scormSummarySection,
-  scormActivityType,
+  scormActivityType
 } from "./constants";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { Log } from "@totara/lib";
@@ -35,7 +35,7 @@ import { scormZipPackagePath } from "@totara/activities/scorm/offline/SCORMFileH
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
 import {
   removeScormPackageData,
-  getScormData,
+  getScormData
 } from "@totara/activities/scorm/offline/StorageHelper";
 
 /**
@@ -55,7 +55,7 @@ const formatAttempts = (data: any) => {
       scormData = {
         ...scormData,
         attempts: scormAttempts,
-        defaultCMI: defaultCMI,
+        defaultCMI: defaultCMI
       };
     }
   }
@@ -93,13 +93,13 @@ const updateScormBundleWithOfflineAttempts = (
           ) {
             const resourcePackageName = getOfflineScormPackageName(scormId);
             const dataScormPackage = {
-              scormPackage: { path: resourcePackageName },
+              scormPackage: { path: resourcePackageName }
             };
             return syncOfflineScormBundle(scormId, dataScormPackage).then(
               () => {
                 return {
                   bundle: { ...storedBundle, ...dataScormPackage },
-                  cmis: cmis,
+                  cmis: cmis
                 };
               }
             );
@@ -116,7 +116,7 @@ const updateScormBundleWithOfflineAttempts = (
           const resourcePackageName = getOfflineScormPackageName(scormId);
           formattedData = {
             ...formattedData!,
-            scormPackage: { path: resourcePackageName },
+            scormPackage: { path: resourcePackageName }
           } as ScormBundle;
         }
         if (scorm.grademethod && scorm.maxgrade) {
@@ -130,7 +130,7 @@ const updateScormBundleWithOfflineAttempts = (
             );
             formattedData = {
               ...formattedData,
-              offlineActivity: { attempts: offlineReport },
+              offlineActivity: { attempts: offlineReport }
             } as ScormBundle;
           }
         }
@@ -150,7 +150,7 @@ const getOfflineAttemptsReport = (
 
     scoresData.push({
       attempt: parseInt(attempt),
-      gradereported: attemptScore,
+      gradereported: attemptScore
     });
   }
   return scoresData;
@@ -158,9 +158,30 @@ const getOfflineAttemptsReport = (
 
 // old code for our reference:
 /**
+ * @param id
+ * @param isUserOnline
+ * @returns {Scorm} scorm
+ */
+const shouldScormSync = (id: string, isUserOnline: boolean) => (
+  storedData: ScormBundle
+) => {
+  let scormBundleData = storedData as ScormBundle;
+  if (isUserOnline) {
+    scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
+    return syncOfflineScormBundle(id, {
+      lastsynced: scormBundleData.lastsynced
+    }).then(() => {
+      return scormBundleData;
+    });
+  }
+  return scormBundleData;
+};
+
+/**
  *
  *  @param {boolean} isUserOnline - if network status is online
  */
+// old code
 // const formatScormData = (
 //   id: string,
 //   isUserOnline: boolean,
@@ -192,7 +213,7 @@ const getDataForScormSummary = (
     lastsynced: undefined,
     timeOpen: undefined,
     maxAttempts: undefined,
-    attempts: undefined,
+    attempts: undefined
   };
   if (!scormBundle) {
     return data;
@@ -277,7 +298,7 @@ const onTapDownloadResource = ({
   callback,
   downloadManager,
   scormBundle,
-  apiKey,
+  apiKey
 }: OnTapProps) => () => {
   if (!downloadManager) return;
   if (scormBundle) {
@@ -299,7 +320,7 @@ const onTapDownloadResource = ({
         _unzipPath
       );
       const _offlineScormData = {
-        lastsynced: scormBundle.lastsynced,
+        lastsynced: scormBundle.lastsynced
       } as ScormBundle;
 
       callback(_scormId, _offlineScormData);
@@ -318,7 +339,7 @@ type OnTapAttemptProps = {
 const onTapNewAttempt = ({
   scormBundle,
   isUserOnline,
-  callback,
+  callback
 }: OnTapAttemptProps) => () => {
   if (scormBundle && scormBundle.scorm) {
     if (!isUserOnline) {
@@ -331,12 +352,12 @@ const onTapNewAttempt = ({
       }
       newAttempt = newAttempt + 1;
       callback(scormActivityType.offline, scormBundle, {
-        attempt: newAttempt,
+        attempt: newAttempt
       });
     } else {
       if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
         callback(scormActivityType.online, scormBundle, {
-          url: scormBundle.scorm.launchUrl,
+          url: scormBundle.scorm.launchUrl
         });
       } else {
         Log.warn("Cannot find new attempt url.", scormBundle.scorm.launchUrl);
@@ -352,13 +373,13 @@ const onTapNewAttempt = ({
 const onTapContinueLastAttempt = ({
   scormBundle,
   isUserOnline,
-  callback,
+  callback
 }: OnTapAttemptProps) => () => {
   if (isUserOnline) {
     if (scormBundle) {
       if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
         callback(scormActivityType.online, scormBundle, {
-          url: scormBundle.scorm.repeatUrl,
+          url: scormBundle.scorm.repeatUrl
         });
       } else {
         Log.warn("Cannot find last attempt url.", scormBundle.scorm.repeatUrl);
@@ -377,7 +398,7 @@ type OnTapViewAttemptsProps = {
 };
 const onTapViewAllAttempts = ({
   scormBundle,
-  callback,
+  callback
 }: OnTapViewAttemptsProps) => () => {
   if (
     scormBundle &&
@@ -395,9 +416,11 @@ const onTapViewAllAttempts = ({
 export {
   updateScormBundleWithOfflineAttempts,
   formatAttempts,
+  // formatScormData,
+  shouldScormSync,
   getDataForScormSummary,
   onTapDownloadResource,
   onTapNewAttempt,
   onTapContinueLastAttempt,
-  onTapViewAllAttempts,
+  onTapViewAllAttempts
 };

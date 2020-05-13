@@ -28,7 +28,7 @@ import {
   SafeAreaView,
   TextStyle,
   TouchableOpacity,
-  RefreshControl,
+  RefreshControl
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -39,21 +39,21 @@ import {
   PrimaryButton,
   SecondaryButton,
   MessageBar,
-  Loading,
+  Loading
 } from "@totara/components";
 import { gutter, ThemeContext } from "@totara/theme";
 import {
   offlineScormServerRoot,
   syncOfflineScormBundle,
   getOfflineScormPackageName,
-  removeScormPackageData,
+  removeScormPackageData
 } from "./offline";
 import ResourceManager, {
-  ResourceObserver,
+  ResourceObserver
 } from "@totara/core/ResourceManager/ResourceManager";
 import {
   IResource,
-  ResourceState,
+  ResourceState
 } from "@totara/core/ResourceManager/Resource";
 import { translate } from "@totara/locale";
 import ScormAttempts from "./ScormAttempts";
@@ -66,14 +66,15 @@ import {
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
   formatAttempts,
-  updateScormBundleWithOfflineAttempts,
+  updateScormBundleWithOfflineAttempts
 } from "@totara/lib/scorm";
+import { getOfflineScormBundle } from "@totara/activities/scorm/offline/offlineScormController";
 import { scormSummaryStyles } from "@totara/theme/scorm";
 import {
   scormActivityType,
   scormSummarySection,
   DATE_FORMAT,
-  DATE_FORMAT_FULL,
+  DATE_FORMAT_FULL
 } from "@totara/lib/constants";
 import { useQuery } from "@apollo/react-hooks";
 import { scormQuery } from "./api";
@@ -92,7 +93,7 @@ type SummaryProps = {
 
 const gridStyle = (theme: AppliedTheme) => [
   theme.textB1,
-  { color: theme.textColorSubdued },
+  { color: theme.textColorSubdued }
 ];
 
 type GridLabelProps = {
@@ -126,18 +127,18 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
 const ScormSummary = ({
   id,
   isUserOnline,
-  setActionWithData,
+  setActionWithData
 }: SummaryProps) => {
   const { loading, error, data, refetch, networkStatus } = useQuery(
     scormQuery,
     {
       variables: { scormid: id },
-      notifyOnNetworkStatusChange: true,
+      notifyOnNetworkStatusChange: true
     }
   );
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
   const {
-    authContextState: { appState },
+    authContextState: { appState }
   } = useContext(AuthContext);
   const activitySheet = useContext(ActivitySheetContext);
   const [section, setSection] = useState(scormSummarySection.none);
@@ -159,7 +160,7 @@ const ScormSummary = ({
     lastsynced,
     timeOpen,
     maxAttempts,
-    attempts,
+    attempts
   } = getDataForScormSummary(isUserOnline, scormBundle);
 
   const onTapDeleteResource = () => {
@@ -171,7 +172,7 @@ const ScormSummary = ({
       callback: syncOfflineScormBundle,
       downloadManager,
       scormBundle,
-      apiKey: appState && appState.apiKey,
+      apiKey: appState && appState.apiKey
     });
     if (resource) {
       switch (resource.state) {
@@ -185,7 +186,7 @@ const ScormSummary = ({
     }
     activitySheet.setActivityResource({
       data: resource,
-      action: onResourceTap,
+      action: onResourceTap
     });
   };
 
@@ -203,8 +204,8 @@ const ScormSummary = ({
           if (resourceFile.unzipPath === _unzipPath) {
             const _offlineScormData = {
               scormPackage: {
-                path: offlineSCORMPackageName,
-              },
+                path: offlineSCORMPackageName
+              }
             } as ScormBundle;
 
             //this updates the SCORM file unzipPath in the resource manager
@@ -333,7 +334,7 @@ const ScormSummary = ({
               <TouchableOpacity
                 onPress={onTapViewAllAttempts({
                   scormBundle,
-                  callback: setSection,
+                  callback: setSection
                 })}>
                 <GridLabelValue
                   theme={theme}
@@ -373,8 +374,8 @@ const ScormSummary = ({
                   action: onTapNewAttempt({
                     scormBundle,
                     isUserOnline,
-                    callback: setActionWithData,
-                  }),
+                    callback: setActionWithData
+                  })
                 }) ||
                 undefined
               }
@@ -384,8 +385,8 @@ const ScormSummary = ({
                   action: onTapContinueLastAttempt({
                     scormBundle,
                     isUserOnline,
-                    callback: setActionWithData,
-                  }),
+                    callback: setActionWithData
+                  })
                 }) ||
                 undefined
               }

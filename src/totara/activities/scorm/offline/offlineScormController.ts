@@ -25,13 +25,13 @@ import {
   Grade,
   AttemptGrade,
   ScormActivityResult,
-  ScormBundle,
+  ScormBundle
 } from "@totara/types/Scorm";
 import {
   setScormPackageData,
   getScormPackageData,
   getAllCommits,
-  clearCommit,
+  clearCommit
 } from "./StorageHelper";
 import { scormLessonStatus, SECONDS_FORMAT } from "@totara/lib/constants";
 import moment from "moment";
@@ -74,7 +74,7 @@ const getGradeForAttempt = (
     [Grade.objective]: completedScos,
     [Grade.highest]: Math.round(highestGrade * (100 / maxGrade)),
     [Grade.average]: Math.round(averageGrade * (100 / maxGrade)),
-    [Grade.sum]: Math.round(sumGrade * (100 / maxGrade)),
+    [Grade.sum]: Math.round(sumGrade * (100 / maxGrade))
   });
   return getGrades()[gradeMethod];
 };
@@ -151,12 +151,12 @@ const syncOfflineScormBundle = (scormId: string, data: any): Promise<void> => {
   return getScormPackageData(scormId).then((storedData) => {
     let newData = {
       ...data,
-      lastsynced: parseInt(moment().format(SECONDS_FORMAT)),
+      lastsynced: parseInt(moment().format(SECONDS_FORMAT))
     };
     if (storedData) {
       newData = {
         ...storedData,
-        lastsynced: newData.lastsynced,
+        lastsynced: newData.lastsynced
       } as ScormBundle;
 
       if (data.scormPackage) {
@@ -188,7 +188,7 @@ const getOfflineScormCommits = () => {
             const commit = {
               scormId: commitScormId,
               attempt: parseInt(commitAttempt),
-              tracks: commitTracks,
+              tracks: commitTracks
             };
             formattedUnsyncedData.push(commit);
           }
@@ -210,5 +210,5 @@ export {
   clearSyncedScormCommit,
   getGradeForAttempt,
   getAttemptsGrade,
-  getOfflineScormPackageName,
+  getOfflineScormPackageName
 };
