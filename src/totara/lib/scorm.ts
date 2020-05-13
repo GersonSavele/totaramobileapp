@@ -92,8 +92,7 @@ const shouldScormSync = (id: string, isUserOnline: boolean) => (
  */
 const updateScormBundleWithOfflineAttempts = (
   scormId: string,
-  scorm: Scorm,
-  isUserOnline: boolean
+  scorm: Scorm
 ) => {
   return RetrieveStorageDataById(scormId)
     .then((storedResourceData) => {

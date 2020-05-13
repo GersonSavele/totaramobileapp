@@ -223,13 +223,11 @@ const ScormSummary = ({
 
   useEffect(() => {
     if (data && data.scorm) {
-      updateScormBundleWithOfflineAttempts(
-        id,
-        formatAttempts(data.scorm),
-        isUserOnline
-      ).then((formattedData) => {
-        setScormBundle(formattedData);
-      });
+      updateScormBundleWithOfflineAttempts(id, formatAttempts(data.scorm)).then(
+        (formattedData) => {
+          setScormBundle(formattedData);
+        }
+      );
       // The previous code for our reference:
       // formatScormData(id, isUserOnline, formatAttempts(data.scorm))?.then(
       //   (formattedData) => {
