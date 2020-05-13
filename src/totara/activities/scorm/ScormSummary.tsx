@@ -67,7 +67,7 @@ import {
   onTapViewAllAttempts,
   formatAttempts,
   shouldScormSync,
-  getOfflineScormBundle,
+  updateScormBundleWithOfflineAttempts,
 } from "@totara/lib/scorm";
 import { scormSummaryStyles } from "@totara/theme/scorm";
 import { scormActivityType, scormSummarySection } from "@totara/lib/constants";
@@ -157,8 +157,7 @@ const ScormSummary = ({
   } = getDataForScormSummary(isUserOnline, scormBundle);
 
   const onTapDeleteResource = () => {
-    const _scormId = scormBundle!.scorm.id;
-    downloadManager.delete(_scormId.toString());
+    downloadManager.delete(id);
   };
 
   const setResource = (resource?: IResource) => {
@@ -200,7 +199,6 @@ const ScormSummary = ({
               scormPackage: {
                 path: offlineSCORMPackageName,
               },
-              lastsynced: scormBundle.lastsynced,
             } as ScormBundle;
 
             syncOfflineScormBundle(resoureId, _offlineScormData).then(() => {
@@ -225,11 +223,13 @@ const ScormSummary = ({
 
   useEffect(() => {
     if (data && data.scorm) {
-      getOfflineScormBundle(id, formatAttempts(data.scorm))
-        .then(shouldScormSync(id, isUserOnline))
-        .then((formattedData) => {
-          setScormBundle(formattedData);
-        });
+      updateScormBundleWithOfflineAttempts(
+        id,
+        formatAttempts(data.scorm),
+        isUserOnline
+      ).then((formattedData) => {
+        setScormBundle(formattedData);
+      });
       // The previous code for our reference:
       // formatScormData(id, isUserOnline, formatAttempts(data.scorm))?.then(
       //   (formattedData) => {

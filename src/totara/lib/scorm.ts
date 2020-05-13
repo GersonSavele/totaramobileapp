@@ -69,6 +69,7 @@ const formatAttempts = (data: any) => {
  * @param isUserOnline
  * @returns {Scorm} scorm
  */
+// Removed calling this one
 const shouldScormSync = (id: string, isUserOnline: boolean) => (
   storedData: ScormBundle
 ) => {
@@ -89,8 +90,12 @@ const shouldScormSync = (id: string, isUserOnline: boolean) => (
  * @param {string} id - scorm id
  * @param {Object} data - scorm data
  */
-const getOfflineScormBundle = (scormId: string, scorm: Scorm) => {
-  return RetrieveStorageDataById(scormId.toString())
+const updateScormBundleWithOfflineAttempts = (
+  scormId: string,
+  scorm: Scorm,
+  isUserOnline: boolean
+) => {
+  return RetrieveStorageDataById(scormId)
     .then((storedResourceData) => {
       if (
         !storedResourceData ||
@@ -106,7 +111,12 @@ const getOfflineScormBundle = (scormId: string, scorm: Scorm) => {
       return getScormData(scormId).then(
         ({ bundle, cmis }: { bundle?: any; cmis?: any }) => {
           let storedBundle = bundle;
-          if (storedBundle && !storedBundle.scormPackage && packageName) {
+          if (
+            storedBundle &&
+            !storedBundle.scormPackage &&
+            packageName &&
+            storedBundle.lastsynced
+          ) {
             const resourcePackageName = getOfflineScormPackageName(scormId);
             const dataScormPackage = {
               scormPackage: { path: resourcePackageName },
@@ -275,13 +285,16 @@ const getDataForScormSummary = (
     true;
 
   data.lastsyncText =
-    !isUserOnline && scormBundle
-      ? `${translate("scorm.last_synced")}: ${moment
-          .unix(scormBundle.lastsynced)
-          .toNow(true)} ${translate("scorm.ago")} (${moment
-          .unix(scormBundle.lastsynced)
-          .format(DATE_FORMAT)})`
-      : undefined;
+    (!isUserOnline &&
+      scormBundle &&
+      scormBundle.lastsynced &&
+      `${translate("scorm.last_synced")}: ${moment
+        .unix(scormBundle.lastsynced)
+        .toNow(true)} ${translate("scorm.ago")} (${moment
+        .unix(scormBundle.lastsynced)
+        .format(DATE_FORMAT)})`) ||
+    (!isUserOnline && translate("general.no_internet")) ||
+    undefined;
   data.completedAttemptsText = isCompletedAttempts
     ? translate("scorm.info_completed_attempts")
     : undefined;
@@ -427,7 +440,7 @@ const onTapViewAllAttempts = ({
 };
 
 export {
-  getOfflineScormBundle,
+  updateScormBundleWithOfflineAttempts,
   formatAttempts,
   shouldScormSync,
   getDataForScormSummary,

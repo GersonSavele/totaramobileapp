@@ -33,7 +33,8 @@ import {
   getAllCommits,
   clearCommit,
 } from "./StorageHelper";
-import { scormLessonStatus } from "@totara/lib/constants";
+import { scormLessonStatus, SECONDS_FORMAT } from "@totara/lib/constants";
+import moment from "moment";
 
 const getOfflineScormPackageName = (scormId: string) =>
   `OfflineSCORM_${scormId}`;
@@ -148,18 +149,23 @@ const calculatedAttemptsGrade = (
 
 const syncOfflineScormBundle = (scormId: string, data: any): Promise<void> => {
   return getScormPackageData(scormId).then((storedData) => {
+    let newData = {
+      ...data,
+      lastsynced: parseInt(moment().format(SECONDS_FORMAT)),
+    };
     if (storedData) {
-      let newData = storedData as ScormBundle;
-      if (data.lastsynced) {
-        newData.lastsynced = data.lastsynced;
-      }
+      newData = {
+        ...storedData,
+        lastsynced: newData.lastsynced,
+      } as ScormBundle;
+
       if (data.scormPackage) {
         newData.scormPackage = data.scormPackage;
       }
       return setScormPackageData(scormId, newData);
     } else {
-      if (data && data.scormPackage && data.scormPackage.path) {
-        return setScormPackageData(scormId, data);
+      if (newData && newData.scormPackage && newData.scormPackage.path) {
+        return setScormPackageData(scormId, newData);
       }
     }
   });

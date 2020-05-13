@@ -6,7 +6,8 @@
     "version": "Version",
     "try_again": "Try again",
     "cancel": "Cancel",
-    "error_unknown": "Something went wrong, please try again later."
+    "error_unknown": "Something went wrong, please try again later.",
+    "no_internet": "You are not connected to the internet"
   },
   "certificate-details": {
     "courses": "COURSES",
