@@ -33,7 +33,6 @@ import {
 import AttemptSynchronizer from "./AttemptSynchronizer";
 import OfflineSCORMFeedback from "./OfflineSCORMFeedback";
 import {
-  getOfflineScormBundle,
   calculatedAttemptsGrade,
   syncOfflineScormBundle,
   getOfflineScormPackageName,
@@ -52,7 +51,6 @@ export {
   removeScormPackageData,
   AttemptSynchronizer,
   OfflineSCORMFeedback,
-  getOfflineScormBundle,
   calculatedAttemptsGrade,
   syncOfflineScormBundle,
   getOfflineScormPackageName,
