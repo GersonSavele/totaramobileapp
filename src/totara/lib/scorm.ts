@@ -40,7 +40,7 @@ import {
 
 /**
  * this formats the attempts of the SCORM bundle
- * @param data
+ * @param {Object} data - scorm data from the Backend
  */
 const formatAttempts = (data: any) => {
   let scormData = { ...data };
@@ -49,6 +49,7 @@ const formatAttempts = (data: any) => {
       let scormAttempts = scormData.attempts;
       const defaultCMI = scormData.attempts[scormData.attempts.length - 1];
       if (!defaultCMI.timestarted) {
+        // remove the last scorm attempt from the original scorm data(from the backend)
         scormAttempts = scormAttempts.slice(0, -1);
       }
       scormData = {
@@ -62,7 +63,7 @@ const formatAttempts = (data: any) => {
 };
 
 /**
- *
+ * This function update the scorm bundle with the offline attempts
  * @param {string} id - scorm id
  * @param {Object} data - scorm data
  */
@@ -70,13 +71,11 @@ const updateScormBundleWithOfflineAttempts = (
   scormId: string,
   scorm: Scorm
 ) => {
+  // retrieve from the resource manager that comes from the downloads
   return RetrieveStorageDataById(scormId)
     .then((storedResourceData) => {
-      if (
-        !storedResourceData ||
-        storedResourceData === undefined ||
-        storedResourceData === null
-      ) {
+      if (!storedResourceData) {
+        // remove from the SCORM package data from the AsyncStorage
         return removeScormPackageData(scormId).then(() => undefined);
       } else {
         return Promise.resolve(storedResourceData.unzipPath);

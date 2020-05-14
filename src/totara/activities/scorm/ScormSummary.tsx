@@ -207,6 +207,9 @@ const ScormSummary = ({
               },
             } as ScormBundle;
 
+            //this updates the SCORM file unzipPath in the resource manager
+            // This update the relative path as well
+            //updates the LastSync
             syncOfflineScormBundle(resoureId, _offlineScormData).then(() => {
               setResource(resourceFile);
             });
@@ -229,6 +232,11 @@ const ScormSummary = ({
 
   useEffect(() => {
     if (data && data.scorm) {
+      // format scorm bundle with offline attempts
+      // create new scorm bundle with the offline
+      // the very first, we should not call this
+      // The reason to call this is to merge the attempts, and  (last API response timestamp - scormAPIDATA_LOCAL_STORAGE)
+      // and syncOfflineScormBundle(updates the package path)
       updateScormBundleWithOfflineAttempts(id, formatAttempts(data.scorm)).then(
         (formattedData) => {
           setScormBundle(formattedData);
