@@ -66,11 +66,15 @@ import {
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
   formatAttempts,
-  shouldScormSync,
   updateScormBundleWithOfflineAttempts,
 } from "@totara/lib/scorm";
 import { scormSummaryStyles } from "@totara/theme/scorm";
-import { scormActivityType, scormSummarySection } from "@totara/lib/constants";
+import {
+  scormActivityType,
+  scormSummarySection,
+  DATE_FORMAT,
+  DATE_FORMAT_FULL,
+} from "@totara/lib/constants";
 import { useQuery } from "@apollo/react-hooks";
 import { scormQuery } from "./api";
 import LoadingError from "@totara/components/LoadingError";
@@ -143,17 +147,19 @@ const ScormSummary = ({
   );
 
   const {
+    name,
     description,
     totalAttempt,
     attemptGrade,
+    gradeMethod,
     calculatedGrade,
     actionPrimary,
     actionSecondary,
     shouldShowAction,
-    lastsyncText,
-    completedAttemptsText,
-    upcommingActivityText,
+    lastsynced,
+    timeOpen,
     maxAttempts,
+    attempts,
   } = getDataForScormSummary(isUserOnline, scormBundle);
 
   const onTapDeleteResource = () => {
@@ -228,12 +234,6 @@ const ScormSummary = ({
           setScormBundle(formattedData);
         }
       );
-      // The previous code for our reference:
-      // formatScormData(id, isUserOnline, formatAttempts(data.scorm))?.then(
-      //   (formattedData) => {
-      //     setScormBundle(formattedData);
-      //   }
-      // );
     }
   }, [data, isUserOnline]);
 
@@ -267,23 +267,33 @@ const ScormSummary = ({
   if (error) {
     return <LoadingError onRefreshTap={refetch} />;
   }
+
+  const offlineMessage =
+    (lastsynced &&
+      `${translate("scorm.last_synced")}: ${lastsynced.toNow(true)} ${translate(
+        "scorm.ago"
+      )} (${lastsynced.format(DATE_FORMAT)})`) ||
+    (!isUserOnline && translate("general.no_internet")) ||
+    undefined;
   return (
     <>
       <View style={scormSummaryStyles.expanded}>
-        {shouldShowAction && lastsyncText && (
-          <MessageBar mode={"info"} text={lastsyncText} icon={"bolt"} />
+        {shouldShowAction && offlineMessage && (
+          <MessageBar mode={"info"} text={offlineMessage} icon={"bolt"} />
         )}
-        {completedAttemptsText && (
+        {maxAttempts && maxAttempts <= totalAttempt && (
           <MessageBar
             mode={"alert"}
-            text={completedAttemptsText}
+            text={translate("scorm.info_completed_attempts")}
             icon={"exclamation-circle"}
           />
         )}
-        {upcommingActivityText && (
+        {timeOpen && (
           <MessageBar
             mode={"alert"}
-            text={upcommingActivityText}
+            text={`${translate(
+              "scorm.info_upcoming_activity"
+            )} ${timeOpen.format(DATE_FORMAT_FULL)}`}
             icon={"exclamation-circle"}
           />
         )}
@@ -310,7 +320,7 @@ const ScormSummary = ({
               <GridLabelValue
                 theme={theme}
                 textId={"scorm.summary.grade.method"}
-                value={attemptGrade}
+                value={translate(`scorm.grading_method.${attemptGrade}`)}
               />
               <TouchableOpacity
                 onPress={onTapViewAllAttempts({
@@ -333,7 +343,9 @@ const ScormSummary = ({
               <GridLabelValue
                 theme={theme}
                 textId={"scorm.summary.attempt.total_attempts"}
-                value={maxAttempts}
+                value={
+                  maxAttempts || translate("scorm.summary.attempt.unlimited")
+                }
               />
               <GridLabelValue
                 theme={theme}
@@ -343,41 +355,43 @@ const ScormSummary = ({
             </View>
           </ScrollView>
         </View>
-        {shouldShowAction && (
-          <AttemptController
-            primary={
-              actionPrimary && {
-                ...actionPrimary,
-                ...{
+        {!data.timeOpen &&
+          (!data.attemptsMax || data.attemptsMax >= data.totalAttempt) &&
+          (actionPrimary || actionSecondary) && (
+            <AttemptController
+              primary={
+                (actionPrimary && {
+                  title: translate("scorm.summary.new_attempt"),
                   action: onTapNewAttempt({
                     scormBundle,
                     isUserOnline,
                     callback: setActionWithData,
                   }),
-                },
+                }) ||
+                undefined
               }
-            }
-            secondary={
-              actionSecondary && {
-                ...actionSecondary,
-                ...{
+              secondary={
+                (actionSecondary && {
+                  title: translate("scorm.summary.last_attempt"),
                   action: onTapContinueLastAttempt({
                     scormBundle,
                     isUserOnline,
                     callback: setActionWithData,
                   }),
-                },
+                }) ||
+                undefined
               }
-            }
-          />
-        )}
+            />
+          )}
         <SafeAreaView />
       </View>
       {scormBundle && (
         <Modal visible={section === scormSummarySection.attempts}>
           <ScormAttempts
-            scormBundle={scormBundle}
+            attempts={attempts}
             onExit={() => setSection(scormSummarySection.none)}
+            gradeMethod={gradeMethod}
+            name={name}
           />
         </Modal>
       )}

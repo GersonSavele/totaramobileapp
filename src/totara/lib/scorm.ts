@@ -23,8 +23,6 @@ import {
   syncOfflineScormBundle,
 } from "@totara/activities/scorm/offline/offlineScormController";
 import {
-  DATE_FORMAT,
-  DATE_FORMAT_FULL,
   SECONDS_FORMAT,
   scormSummarySection,
   scormActivityType,
@@ -61,28 +59,6 @@ const formatAttempts = (data: any) => {
     }
   }
   return scormData;
-};
-
-/**
- *
- * @param id
- * @param isUserOnline
- * @returns {Scorm} scorm
- */
-// Removed calling this one
-const shouldScormSync = (id: string, isUserOnline: boolean) => (
-  storedData: ScormBundle
-) => {
-  let scormBundleData = storedData as ScormBundle;
-  if (isUserOnline) {
-    scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
-    return syncOfflineScormBundle(id, {
-      lastsynced: scormBundleData.lastsynced,
-    }).then(() => {
-      return scormBundleData;
-    });
-  }
-  return scormBundleData;
 };
 
 /**
@@ -206,17 +182,18 @@ const getDataForScormSummary = (
   scormBundle?: ScormBundle
 ): any => {
   let data: any = {
+    name: undefined,
     description: undefined,
     totalAttempt: 0,
+    gradeMethod: undefined,
     attemptGrade: undefined,
     calculatedGrade: undefined,
-    actionPrimary: undefined,
-    actionSecondary: undefined,
-    shouldShowAction: false,
-    lastsyncText: undefined,
-    completedAttemptsText: undefined,
-    upcommingActivityText: undefined,
+    actionPrimary: false,
+    actionSecondary: false,
+    lastsynced: undefined,
+    timeOpen: undefined,
     maxAttempts: undefined,
+    attempts: undefined,
   };
   if (!scormBundle) {
     return data;
@@ -225,6 +202,7 @@ const getDataForScormSummary = (
   if (!scorm) {
     return data;
   }
+  data.name = scorm.name;
   data.description =
     scorm.description && scorm.description !== null
       ? scorm.description
@@ -235,80 +213,57 @@ const getDataForScormSummary = (
       data.totalAttempt + scormBundle!.offlineActivity.attempts.length;
   }
 
-  const attemptGrade = scorm.whatgrade as AttemptGrade;
-  const gradeMethod = scorm.grademethod as Grade;
+  data.attemptGrade = scorm.whatgrade as AttemptGrade;
+  data.gradeMethod = scorm.grademethod as Grade;
   const offlineAttempts =
     scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts
       ? scormBundle!.offlineActivity.attempts
       : undefined;
 
-  data.attemptGrade = translate(`scorm.grading_method.${attemptGrade}`);
   data.calculatedGrade = calculatedAttemptsGrade(
-    attemptGrade,
-    gradeMethod,
+    data.attemptGrade,
+    data.gradeMethod,
     scorm.maxgrade,
     scorm.calculatedGrade,
     scorm.attempts,
     offlineAttempts
   );
+  data.timeOpen =
+    (scormBundle &&
+      scorm &&
+      scorm.timeopen &&
+      scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT)) &&
+      moment.unix(scorm.timeopen)) ||
+    undefined;
 
-  const isCompletedAttempts =
-    scormBundle &&
-    scorm &&
-    scorm.attemptsMax &&
-    data.totalAttempt >= scorm.attemptsMax;
-  const isUpcomingActivity =
-    scormBundle &&
-    scorm &&
-    scorm.timeopen &&
-    scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT));
-  const hasStartNewAttempt =
-    (isUserOnline && scormBundle && scorm && scorm.launchUrl) ||
-    (!isUserOnline &&
-      scorm.offlineAttemptsAllowed &&
-      scormPackage &&
-      scormPackage.path);
-  const hasRepeatAttempt =
-    isUserOnline && scormBundle && scorm && scorm.repeatUrl;
-  data.actionPrimary = hasStartNewAttempt
-    ? { title: translate("scorm.summary.new_attempt") }
-    : undefined;
-  data.actionSecondary = hasRepeatAttempt
-    ? { title: translate("scorm.summary.last_attempt") }
-    : undefined;
+  data.actionPrimary =
+    (((isUserOnline && scormBundle && scorm && scorm.launchUrl) ||
+      (!isUserOnline &&
+        scorm.offlineAttemptsAllowed &&
+        scormPackage &&
+        scormPackage.path)) &&
+      true) ||
+    false;
+  data.actionSecondary =
+    (isUserOnline && scormBundle && scorm && scorm.repeatUrl && true) || false;
 
-  data.shouldShowAction =
-    !isUpcomingActivity &&
-    !isCompletedAttempts &&
-    (hasStartNewAttempt || hasRepeatAttempt) &&
-    true;
-
-  data.lastsyncText =
+  data.lastsynced =
     (!isUserOnline &&
       scormBundle &&
       scormBundle.lastsynced &&
-      `${translate("scorm.last_synced")}: ${moment
-        .unix(scormBundle.lastsynced)
-        .toNow(true)} ${translate("scorm.ago")} (${moment
-        .unix(scormBundle.lastsynced)
-        .format(DATE_FORMAT)})`) ||
-    (!isUserOnline && translate("general.no_internet")) ||
+      moment.unix(scormBundle.lastsynced)) ||
     undefined;
-  data.completedAttemptsText = isCompletedAttempts
-    ? translate("scorm.info_completed_attempts")
-    : undefined;
-  data.upcommingActivityText =
-    !isCompletedAttempts && isUpcomingActivity
-      ? `${translate("scorm.info_upcoming_activity")} ${moment
-          .unix(scorm.timeopen)
-          .format(DATE_FORMAT_FULL)}`
-      : undefined;
 
   data.maxAttempts =
-    scorm.attemptsMax == null
-      ? translate("scorm.summary.attempt.unlimited")
-      : scorm.attemptsMax;
+    (scorm.attemptsMax !== null && scorm.attemptsMax) || undefined;
 
+  data.attempts =
+    (scorm.attempts &&
+      scormBundle.offlineActivity &&
+      scormBundle.offlineActivity.attempts &&
+      scorm.attempts.concat(scormBundle.offlineActivity.attempts)) ||
+    scorm.attempts ||
+    (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts);
   return data;
 };
 
@@ -441,7 +396,6 @@ const onTapViewAllAttempts = ({
 export {
   updateScormBundleWithOfflineAttempts,
   formatAttempts,
-  shouldScormSync,
   getDataForScormSummary,
   onTapDownloadResource,
   onTapNewAttempt,

@@ -64,7 +64,7 @@ const ScormActivity = ({
     if (isReachable === connectivity.initial) {
       NetInfo.fetch().then((state) => {
         setIsReachable(
-          state.isConnected ? connectivity.online : connectivity.offline
+          state.isConnected ? connectivity.offline : connectivity.offline
         );
       });
     }

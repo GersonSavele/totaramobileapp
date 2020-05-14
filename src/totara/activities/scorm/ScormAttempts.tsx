@@ -19,57 +19,34 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Text, View, StyleSheet, FlatList, SafeAreaView } from "react-native";
 
 import { ThemeContext, gutter, baseSpace } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { ScormActivityResult, ScormBundle, Grade } from "@totara/types/Scorm";
+import { ScormActivityResult, Grade } from "@totara/types/Scorm";
 import { TopHeader } from "@totara/components";
 
 type Props = {
-  scormBundle?: ScormBundle;
+  name?: string;
+  gradeMethod: Grade;
+  attempts: [ScormActivityResult?];
   onExit: () => void;
 };
 
-const ScormAttempts = ({ scormBundle, onExit }: Props) => {
+const ScormAttempts = ({ name = "", gradeMethod, attempts, onExit }: Props) => {
   const [theme] = useContext(ThemeContext);
-  const [allAttemptsReport, setAllAttempts] = useState<[ScormActivityResult?]>(
-    []
-  );
-  if (!scormBundle) {
-    return <Text>{translate("general.error_unknown")}</Text>;
-  }
-  const { scorm, offlineActivity } = scormBundle;
-  if (!scorm) {
-    return <Text>{translate("general.error_unknown")}</Text>;
-  }
-
-  useEffect(() => {
-    let dataAllAttemptsReport: [ScormActivityResult?] = [];
-    if (scorm.attempts) {
-      dataAllAttemptsReport = dataAllAttemptsReport.concat(scorm.attempts) as [
-        ScormActivityResult
-      ];
-    }
-    if (offlineActivity && offlineActivity.attempts) {
-      dataAllAttemptsReport = dataAllAttemptsReport.concat(
-        offlineActivity.attempts
-      ) as [ScormActivityResult];
-    }
-    setAllAttempts(dataAllAttemptsReport);
-  }, [scorm, offlineActivity]);
 
   const attemptReport = (
     attemptReport: ScormActivityResult,
     index: number,
-    grademethod: Grade
+    gradeMethod: Grade
   ) => {
     return (
       <AttemptReport
         attemptReport={attemptReport}
         attempt={index + 1}
-        grademethod={grademethod}
+        gradeMethod={gradeMethod}
       />
     );
   };
@@ -80,7 +57,7 @@ const ScormAttempts = ({ scormBundle, onExit }: Props) => {
         <TopHeader
           iconSize={theme.textH2.fontSize}
           color={theme.colorSecondary1}
-          title={scorm.name}
+          title={name}
           titleTextStyle={theme.textH4}
           infoTextStyle={{ ...theme.textSmall, color: theme.textColorSubdued }}
           onClose={onExit}
@@ -94,12 +71,12 @@ const ScormAttempts = ({ scormBundle, onExit }: Props) => {
         </Text>
         <FlatList
           style={{ flex: 1 }}
-          data={allAttemptsReport}
+          data={attempts}
           renderItem={({ item, index }) => {
             return attemptReport(
               item as ScormActivityResult,
               index,
-              scorm.grademethod as Grade
+              gradeMethod
             );
           }}
           alwaysBounceVertical={false}
@@ -119,19 +96,19 @@ const ScormAttempts = ({ scormBundle, onExit }: Props) => {
 type AttemptReport = {
   attemptReport: ScormActivityResult;
   attempt: number;
-  grademethod: Grade;
+  gradeMethod: Grade;
 };
 
 const AttemptReport = ({
   attemptReport,
   attempt,
-  grademethod,
+  gradeMethod,
 }: AttemptReport) => {
   const [theme] = useContext(ThemeContext);
 
   const calculatedScore = attemptReport.gradereported;
   const formattedScore =
-    grademethod == Grade.objective
+    gradeMethod == Grade.objective
       ? calculatedScore.toString()
       : `${calculatedScore}%`;
 

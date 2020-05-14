@@ -15,8 +15,7 @@
 import moment from "moment";
 
 import { getDataForScormSummary } from "../scorm";
-import { translate } from "@totara/locale";
-import { DATE_FORMAT } from "@totara/lib/constants";
+import { AttemptGrade, Grade } from "@totara/types/Scorm";
 
 describe("getDataForScormSummary", () => {
   it("return correct object for valid `scormBundle` and default values for undefined ", () => {
@@ -30,8 +29,8 @@ describe("getDataForScormSummary", () => {
         intro: "",
         version: "SCORM_1.2",
         maxgrade: 100,
-        grademethod: "1",
-        whatgrade: "0",
+        grademethod: Grade.highest,
+        whatgrade: AttemptGrade.highest,
         maxattempt: null,
         forcecompleted: false,
         forcenewattempt: false,
@@ -83,59 +82,66 @@ describe("getDataForScormSummary", () => {
       lastsynced: 1588040660,
     });
     const expectResultDefault = {
+      name: undefined,
       description: undefined,
       totalAttempt: 0,
-      attemptGrade: undefined,
       calculatedGrade: undefined,
-      actionPrimary: undefined,
-      actionSecondary: undefined,
-      shouldShowAction: false,
-      lastsyncText: undefined,
-      completedAttemptsText: undefined,
-      upcommingActivityText: undefined,
+      actionPrimary: false,
+      actionSecondary: false,
+      grademethod: undefined,
+      attemptGrade: undefined,
+      lastsynced: undefined,
+      timeopen: undefined,
       maxAttempts: undefined,
+      attempts: undefined,
     };
     expect(getDataForScormSummary(true, undefined)).toEqual(
       expectResultDefault
     );
 
     const expectResultScormBundleOnline = {
-      description: scormBundle.scorm.description,
-      totalAttempt: scormBundle.scorm.attemptsCurrent,
-      attemptGrade: translate(
-        `scorm.grading_method.${scormBundle.scorm.whatgrade}`
-      ),
-      calculatedGrade: scormBundle.scorm.calculatedGrade,
-      actionPrimary: { title: translate("scorm.summary.new_attempt") },
-      actionSecondary: undefined,
-      shouldShowAction: true,
-      lastsyncText: undefined,
-      completedAttemptsText: undefined,
-      upcommingActivityText: undefined,
-      maxAttempts: translate("scorm.summary.attempt.unlimited"),
+      name: "Creating a dynamic audience",
+      description: "Title",
+      totalAttempt: 1,
+      calculatedGrade: "10%",
+      actionPrimary: true,
+      actionSecondary: false,
+      gradeMethod: Grade.highest,
+      attemptGrade: AttemptGrade.highest,
+      lastsynced: undefined,
+      timeOpen: undefined,
+      maxAttempts: undefined,
+      attempts: [
+        {
+          attempt: 1,
+          timestarted: null,
+          gradereported: 0,
+        },
+      ],
     };
     expect(getDataForScormSummary(true, scormBundle)).toEqual(
       expectResultScormBundleOnline
     );
 
     const expectResultScormBundleOffline = {
-      description: scormBundle.scorm.description,
-      totalAttempt: scormBundle.scorm.attemptsCurrent,
-      attemptGrade: translate(
-        `scorm.grading_method.${scormBundle.scorm.whatgrade}`
-      ),
-      calculatedGrade: scormBundle.scorm.calculatedGrade,
-      actionPrimary: undefined,
-      actionSecondary: undefined,
-      shouldShowAction: false,
-      lastsyncText: `${translate("scorm.last_synced")}: ${moment
-        .unix(scormBundle.lastsynced)
-        .toNow(true)} ${translate("scorm.ago")} (${moment
-        .unix(scormBundle.lastsynced)
-        .format(DATE_FORMAT)})`,
-      completedAttemptsText: undefined,
-      upcommingActivityText: undefined,
-      maxAttempts: translate("scorm.summary.attempt.unlimited"),
+      name: "Creating a dynamic audience",
+      description: "Title",
+      totalAttempt: 1,
+      calculatedGrade: "10%",
+      actionPrimary: false,
+      actionSecondary: false,
+      gradeMethod: Grade.highest,
+      attemptGrade: AttemptGrade.highest,
+      lastsynced: moment.unix(scormBundle.lastsynced),
+      timeOpen: undefined,
+      maxAttempts: undefined,
+      attempts: [
+        {
+          attempt: 1,
+          timestarted: null,
+          gradereported: 0,
+        },
+      ],
     };
     expect(getDataForScormSummary(false, scormBundle)).toEqual(
       expectResultScormBundleOffline
