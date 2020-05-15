@@ -51,13 +51,11 @@ export const useAuth = (
   registerDevice: (setup: Setup) => Promise<AppState>,
   deviceCleanup: (deviceDelete: () => Promise<any>) => Promise<boolean>,
   createApolloClient: (
-      // connectToDevtools: boolean,
     apiKey: string,
     uri: string,
     logOut: (localOnly: boolean) => Promise<void>
   ) => ApolloClient<NormalizedCacheObject>
 ) => ({ initialState }: Props) => {
-
   const [authContextState, dispatch] = useReducer(
     authContextReducer,
     initialState
@@ -77,10 +75,11 @@ export const useAuth = (
   const logOut = async (localOnly: boolean = false) => {
     // TODO MOB-231 should remove this localOnly flag, a bit of a hack
     Log.debug("logging out");
+    apolloClient.current && !localOnly && apolloClient.current!.clearStore();
     const mutationPromise = () =>
       apolloClient.current && !localOnly
         ? apolloClient.current.mutate({
-            mutation: deleteDevice
+            mutation: deleteDevice,
           })
         : Promise.resolve({ data: { delete_device: true } });
 
@@ -143,7 +142,7 @@ export const useAuth = (
     const doBootStrap = () => {
       Log.debug("doBootStrap", authContextState);
       if (SplashScreen) SplashScreen.hide();
-      bootstrap().then(appState => {
+      bootstrap().then((appState) => {
         dispatch({ type: "bootstrap", payload: appState });
       });
     };
@@ -158,18 +157,18 @@ export const useAuth = (
     const doRegisterDevice = () => {
       Log.debug("doRegisterDevice", authContextState);
       if (authContextState.setup) {
-        registerDevice(authContextState.setup).then(appState => {
-          dispatch({ type: "registered", payload: appState });
-        }).catch(error => {
+        registerDevice(authContextState.setup)
+          .then((appState) => {
+            dispatch({ type: "registered", payload: appState });
+          })
+          .catch((error) => {
             Log.error("error on registering", error);
             dispatch({ type: "authError" });
-          }
-        )
+          });
       }
     };
 
-    if (authContextState.authStep === "setupSecretInit")
-      doRegisterDevice();
+    if (authContextState.authStep === "setupSecretInit") doRegisterDevice();
   }, [authContextState.authStep, authContextState.isAuthenticated]);
 
   return {
@@ -177,11 +176,14 @@ export const useAuth = (
     onLoginSuccess,
     onLoginFailure,
     logOut,
-    apolloClient: apolloClient.current
+    apolloClient: apolloClient.current,
   };
 };
 
-const authContextReducer = (state: AuthContextState, action: Action): AuthContextState => {
+const authContextReducer = (
+  state: AuthContextState,
+  action: Action
+): AuthContextState => {
   Log.debug("authContextReducer: state", state, "action", action);
   switch (action.type) {
     case "register": {
@@ -189,7 +191,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
         return {
           ...state,
           setup: action.payload,
-          authStep: "setupSecretInit"
+          authStep: "setupSecretInit",
         };
       else throw new Error(`unexpected payload in action ${action}`);
     }
@@ -200,7 +202,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
           ...state,
           appState: action.payload,
           isAuthenticated: true,
-          authStep: "setupDone"
+          authStep: "setupDone",
         };
       else throw new Error(`unexpected payload in action ${action}`);
     }
@@ -212,14 +214,14 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
           appState: action.payload,
           isAuthenticated: true,
           isLoading: false,
-          authStep: "bootstrapDone"
+          authStep: "bootstrapDone",
         };
       else
         return {
           ...state,
           isAuthenticated: false,
           isLoading: false,
-          authStep: "bootstrapDone"
+          authStep: "bootstrapDone",
         };
     }
 
@@ -229,7 +231,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
         appState: undefined,
         isAuthenticated: false,
         isLoading: false,
-        authStep: "bootstrapDone"
+        authStep: "bootstrapDone",
       };
 
     case "authError":
@@ -239,7 +241,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
         appState: undefined,
         isAuthenticated: false,
         isLoading: false,
-        authStep: "authError"
+        authStep: "authError",
       };
 
     case "reload":
@@ -248,7 +250,13 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
 };
 
 type Action = {
-  type: "register" | "registered" | "bootstrap" | "deRegister" | "reload" | "authError";
+  type:
+    | "register"
+    | "registered"
+    | "bootstrap"
+    | "deRegister"
+    | "reload"
+    | "authError";
   payload?: AppState | Setup;
 };
 
@@ -280,7 +288,7 @@ export const initialState: AuthContextState = {
   setup: undefined,
   isLoading: true,
   isAuthenticated: false,
-  authStep: "loading"
+  authStep: "loading",
 };
 
 export interface Setup {
