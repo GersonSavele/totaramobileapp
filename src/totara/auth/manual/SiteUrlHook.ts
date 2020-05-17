@@ -23,21 +23,29 @@ import { useReducer } from "react";
 import { config } from "@totara/lib";
 import { translate } from "@totara/locale";
 
+export const useSiteUrl = ({
+  siteUrl,
+  onSiteUrlSuccess,
+  isSiteUrlSubmitted
+}: Props) => {
+  const [siteUrlState, dispatch] = useReducer(siteUrlReducer, {
+    inputSiteUrlStatus: undefined,
+    inputSiteUrlMessage: undefined,
+    inputSiteUrl: siteUrl
+  });
 
-export const useSiteUrl = ({siteUrl, onSiteUrlSuccess, isSiteUrlSubmitted}: Props) => {
-
-  const [siteUrlState, dispatch] = useReducer(siteUrlReducer,
-    { inputSiteUrlStatus: undefined, inputSiteUrlMessage: undefined, inputSiteUrl: siteUrl });
-
-  if (siteUrlState.inputSiteUrlStatus === "success" && siteUrlState.inputSiteUrl)
+  if (
+    siteUrlState.inputSiteUrlStatus === "success" &&
+    siteUrlState.inputSiteUrl
+  )
     onSiteUrlSuccess(siteUrlState.inputSiteUrl);
 
-  const onSubmit = () => {
-    dispatch({type: "submit"})
+  const onSubmit = (siteUrl: string) => {
+    dispatch({ type: "submit", payload: siteUrl });
   };
 
   const onChangeInputSiteUrl = (siteUrl: string) => {
-    dispatch({type: "change", payload: siteUrl})
+    dispatch({ type: "change", payload: siteUrl });
   };
 
   return {
@@ -45,62 +53,63 @@ export const useSiteUrl = ({siteUrl, onSiteUrlSuccess, isSiteUrlSubmitted}: Prop
     onChangeInputSiteUrl,
     onSubmit,
     isSiteUrlSubmitted
-  }
+  };
 };
-
 
 const siteUrlReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "submit": {
-      if (state.inputSiteUrl && isValidUrlText(state.inputSiteUrl)) {
+      if (action.payload && isValidUrlText(action.payload)) {
         return {
           ...state,
-          inputSiteUrl: formatUrl(state.inputSiteUrl),
-         inputSiteUrlStatus: "success"
-        }
+          inputSiteUrl: formatUrl(action.payload || ""),
+          inputSiteUrlStatus: "success"
+        };
       } else {
         return {
           ...state,
           inputSiteUrlStatus: "error",
           inputSiteUrlMessage: translate("message.enter_valid_url")
-        }
+        };
       }
     }
 
     case "change": {
       return {
         ...state,
-        inputSiteUrl: action.payload,
-      }
+        inputSiteUrl: action.payload
+      };
     }
   }
 };
 
-
 export type Props = {
-  onSiteUrlSuccess: (data: string) => void
-  siteUrl?: string,
-  isSiteUrlSubmitted : boolean
+  onSiteUrlSuccess: (data: string) => void;
+  siteUrl?: string;
+  isSiteUrlSubmitted: boolean;
 };
 
 type State = {
-  inputSiteUrlStatus?: "success" | "error",
-  inputSiteUrlMessage?: string,
-  inputSiteUrl?: string
+  inputSiteUrlStatus?: "success" | "error";
+  inputSiteUrlMessage?: string;
+  inputSiteUrl?: string;
 };
 
 type Action = {
-  type: "submit" | "change"
-  payload?: string
-}
+  type: "submit" | "change";
+  payload?: string;
+};
 
 const isValidUrlText = (urlText: string) => {
-  const pattern = new RegExp("^(https?:\\/\\/)?" + // protocol
+  const pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
     "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
     "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
     "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
     "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-    "(\\#[-a-z\\d_]*)?$", "i"); // fragment locator
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
   return pattern.test(urlText);
 };
 

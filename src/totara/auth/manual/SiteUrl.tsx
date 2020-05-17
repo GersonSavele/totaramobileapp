@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import { Container, Content, Form, Input } from "native-base";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import {
   heightPercentageToDP as hp,
@@ -34,16 +34,12 @@ import { translate } from "@totara/locale";
 import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { constants } from "@totara/lib";
 
-const { DEMO_ORG_URL, DEBUG_MODE } = constants;
+const { DEV_ORG_URL, DEBUG_MODE } = constants;
 
 const SiteUrl = (props: Props) => {
   const [theme] = useContext(ThemeContext);
-  const {
-    siteUrlState,
-    onChangeInputSiteUrl,
-    onSubmit,
-    isSiteUrlSubmitted
-  } = useSiteUrl(props);
+  const [siteUrl, setSiteUrl] = useState(DEBUG_MODE ? DEV_ORG_URL : "");
+  const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
 
   return (
     <Container style={[theme.viewContainer, { flex: 0 }]}>
@@ -73,16 +69,17 @@ const SiteUrl = (props: Props) => {
                 keyboardType="url"
                 clearButtonMode="while-editing"
                 autoCapitalize="none"
-                onChangeText={onChangeInputSiteUrl}
-                value={siteUrlState.inputSiteUrl}
-                defaultValue={DEBUG_MODE ? DEMO_ORG_URL : ""}
+                onChangeText={(text) => setSiteUrl(text)}
+                value={siteUrl}
                 style={styles.inputText}
                 autoFocus={!isSiteUrlSubmitted}
                 testID={"urlInput"}
+                returnKeyType={"done"}
+                onSubmitEditing={() => onSubmit(siteUrl)}
               />
             </InputTextWithInfo>
             <PrimaryButton
-              onPress={onSubmit}
+              onPress={() => onSubmit(siteUrl)}
               text={translate("general.enter")}
               style={styles.buttonEnter}
               mode={isSiteUrlSubmitted == true ? "loading" : undefined}

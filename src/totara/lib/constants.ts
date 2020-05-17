@@ -41,21 +41,22 @@ const SCREEN_WIDTH_LARGE = "large";
 const SCREEN_WIDTH_MEDIUM = "medium";
 const SCREEN_WIDTH_SMALL = "small";
 
-const DEBUG_MODE = true;
-const DEMO_ORG_URL = "mobile.demo.totara.software";
-const DEMO_USERNAME = "kamala";
-const DEMO_PASSWORD = "Abcd123$";
+// eslint-disable-next-line no-undef
+const DEBUG_MODE = __DEV__;
+const DEV_ORG_URL = "mobile.demo.totara.software";
+const DEV_USERNAME = "kamala";
+const DEV_PASSWORD = "Abcd123$";
 
 enum scormLessonStatus {
   passed = "passed",
   completed = "completed",
-  failed = "failed",
+  failed = "failed"
 }
 
 enum completionTrack {
   trackingManual = "tracking_manual",
   trackingNone = "tracking_none",
-  trackingAutomatic = "tracking_automatic",
+  trackingAutomatic = "tracking_automatic"
 }
 
 enum completionStatus {
@@ -63,23 +64,23 @@ enum completionStatus {
   complete = "complete",
   completePass = "complete_pass",
   completeFail = "complete_fail",
-  unknown = "unknown",
+  unknown = "unknown"
 }
 
 enum scormActivityType {
   summary,
   offline,
-  online,
+  online
 }
 enum scormSummarySection {
   none,
-  attempts,
+  attempts
 }
 
 enum connectivity {
   initial = 0,
   online,
-  offline,
+  offline
 }
 
 export {
@@ -100,14 +101,14 @@ export {
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,
   SCREEN_WIDTH_SMALL,
-  DEMO_ORG_URL,
-  DEMO_USERNAME,
-  DEMO_PASSWORD,
+  DEV_ORG_URL,
+  DEV_USERNAME,
+  DEV_PASSWORD,
   DEBUG_MODE,
   scormLessonStatus,
   scormActivityType,
   scormSummarySection,
   connectivity,
   completionTrack,
-  completionStatus,
+  completionStatus
 };
