@@ -20,7 +20,7 @@
  */
 
 import React, { useEffect, useState, useContext } from "react";
-import NetInfo from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 import { Activity, ActivityType } from "@totara/types";
 import ScormSummary from "./ScormSummary";
@@ -28,7 +28,7 @@ import { ScormBundle } from "@totara/types/Scorm";
 import { OfflineScormActivity } from "./offline";
 import { ActivitySheetContext } from "../ActivitySheet";
 import OnlineSCORMActivity from "./online/OnlineSCORMActivity";
-import { scormActivityType, connectivity } from "@totara/lib/constants";
+import { scormActivityType } from "@totara/lib/constants";
 
 type SCORMActivityProps = {
   id: string;
@@ -47,7 +47,6 @@ const ScormActivity = ({
   activity,
   mode = scormActivityType.summary,
 }: SCORMActivityProps) => {
-  const [isReachable, setIsReachable] = useState(connectivity.initial);
   const activitySheet = useContext(ActivitySheetContext);
   const [scormModeData, setScormModeData] = useState<scormModeDataProps>({
     mode: mode,
@@ -59,17 +58,6 @@ const ScormActivity = ({
   ) => {
     setScormModeData({ mode: action, bundle: bundle, data: data });
   };
-
-  useEffect(() => {
-    if (isReachable === connectivity.initial) {
-      NetInfo.fetch().then((state) => {
-        setIsReachable(
-          state.isConnected ? connectivity.offline : connectivity.offline
-        );
-      });
-    }
-  }, [isReachable]);
-
   useEffect(() => {
     if (
       activity &&
@@ -78,7 +66,9 @@ const ScormActivity = ({
     ) {
       activitySheet.setFeedback({
         activity: activity as ActivityType,
-        data: { isOnline: isReachable === connectivity.online },
+        data: {
+          isOnline: scormModeData.mode === scormActivityType.online,
+        },
       });
       activitySheet.setActivityResource(undefined);
     } else {
@@ -102,13 +92,7 @@ const ScormActivity = ({
         />
       );
     case scormActivityType.summary:
-      return (
-        <ScormSummary
-          id={id}
-          isUserOnline={isReachable === connectivity.online}
-          setActionWithData={onSetActionWithData}
-        />
-      );
+      return <ScormSummary id={id} setActionWithData={onSetActionWithData} />;
   }
 };
 

@@ -76,14 +76,14 @@ import {
   DATE_FORMAT,
   DATE_FORMAT_FULL
 } from "@totara/lib/constants";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useApolloClient } from "@apollo/react-hooks";
 import { scormQuery } from "./api";
 import LoadingError from "@totara/components/LoadingError";
 import { NetworkStatus } from "apollo-boost";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 type SummaryProps = {
   id: string;
-  isUserOnline: boolean;
   setActionWithData: (
     action: scormActivityType,
     bundle?: ScormBundle,
@@ -136,6 +136,7 @@ const ScormSummary = ({
       notifyOnNetworkStatusChange: true
     }
   );
+
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
   const {
     authContextState: { appState }
@@ -230,6 +231,7 @@ const ScormSummary = ({
       }
     }
   };
+  const client = useApolloClient();
 
   useEffect(() => {
     if (data && data.scorm) {
@@ -238,6 +240,8 @@ const ScormSummary = ({
       // the very first, we should not call this
       // The reason to call this is to merge the attempts, and  (last API response timestamp - scormAPIDATA_LOCAL_STORAGE)
       // and syncOfflineScormBundle(updates the package path)
+      //
+
       updateScormBundleWithOfflineAttempts(id, formatAttempts(data.scorm)).then(
         (formattedData) => {
           setScormBundle(formattedData);

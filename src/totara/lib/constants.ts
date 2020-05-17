@@ -108,7 +108,6 @@ export {
   scormLessonStatus,
   scormActivityType,
   scormSummarySection,
-  connectivity,
   completionTrack,
   completionStatus
 };
