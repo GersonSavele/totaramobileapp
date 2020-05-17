@@ -32,6 +32,9 @@ import { useSiteUrl, Props } from "./SiteUrlHook";
 import { InputTextWithInfo, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
+import { constants } from "@totara/lib";
+
+const { DEMO_ORG_URL, DEBUG_MODE } = constants;
 
 const SiteUrl = (props: Props) => {
   const [theme] = useContext(ThemeContext);
@@ -65,14 +68,14 @@ const SiteUrl = (props: Props) => {
             <InputTextWithInfo
               placeholder={translate("manual.site_url_text_placeholder")}
               message={siteUrlState.inputSiteUrlMessage}
-              status={siteUrlState.inputSiteUrlStatus}
-            >
+              status={siteUrlState.inputSiteUrlStatus}>
               <Input
                 keyboardType="url"
                 clearButtonMode="while-editing"
                 autoCapitalize="none"
                 onChangeText={onChangeInputSiteUrl}
                 value={siteUrlState.inputSiteUrl}
+                defaultValue={DEBUG_MODE ? DEMO_ORG_URL : ""}
                 style={styles.inputText}
                 autoFocus={!isSiteUrlSubmitted}
                 testID={"urlInput"}
@@ -93,8 +96,7 @@ const SiteUrl = (props: Props) => {
             styles.version,
             theme.textLabel,
             { color: theme.textColorDisabled }
-          ]}
-        >
+          ]}>
           {translate("general.version")}: {VersionInfo.appVersion}(
           {VersionInfo.buildVersion})
         </Text>

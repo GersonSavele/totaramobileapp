@@ -23,5 +23,6 @@
 import config from "./config";
 import { Logger, Log } from "./logger";
 import { showMessage } from "./tools";
+import * as constants from "./constants";
 
-export { config, Logger, Log, showMessage };
+export { config, Logger, Log, showMessage, constants };

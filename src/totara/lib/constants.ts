@@ -41,6 +41,11 @@ const SCREEN_WIDTH_LARGE = "large";
 const SCREEN_WIDTH_MEDIUM = "medium";
 const SCREEN_WIDTH_SMALL = "small";
 
+const DEBUG_MODE = true;
+const DEMO_ORG_URL = "mobile.demo.totara.software";
+const DEMO_USERNAME = "kamala";
+const DEMO_PASSWORD = "Abcd123$";
+
 enum scormLessonStatus {
   passed = "passed",
   completed = "completed",
@@ -95,6 +100,10 @@ export {
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,
   SCREEN_WIDTH_SMALL,
+  DEMO_ORG_URL,
+  DEMO_USERNAME,
+  DEMO_PASSWORD,
+  DEBUG_MODE,
   scormLessonStatus,
   scormActivityType,
   scormSummarySection,
