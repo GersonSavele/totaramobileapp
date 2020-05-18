@@ -1,22 +1,17 @@
 /**
- * This file is part of Totara Mobile
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * This file is part of Totara Enterprise.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Rodrigo Mathias <rodrigo.mathias@totaralearning.com
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  *
  */
 
@@ -24,8 +19,11 @@ import React, { useContext } from "react";
 import { Image, ImageSourcePropType } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
-import { ThemeContext } from "@totara/theme";
+import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
+import { NotificationBell, TouchableIcon } from "@totara/components";
+import { ThemeContext } from "@totara/theme";
+import { header } from "@totara/theme/constants";
 
 // @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
 import MyLearning from "./myLearning";
@@ -42,11 +40,6 @@ import Settings from "./settings";
 import Profile from "./profile";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
-import { NotificationBell, TouchableIcon } from "@totara/components";
-import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
-import { header } from "@totara/theme/constants";
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
@@ -178,19 +171,10 @@ const ProfileTab = {
 };
 
 const NotificationsTab = () => {
-  const QUERY_NOTIFICATIONS = gql`
-    {
-      notifications {
-        id
-        read
-      }
-    }
-  `;
-
-  const { data: notificationsData } = useQuery(QUERY_NOTIFICATIONS);
-  const notificationCount = notificationsData.notifications.map(
-    (not) => not.read === false
-  ).length;
+  // TODO: load counting from redux store. This is not possible yet because this tab needs to have its own context to avoid
+  // const notificationList = useSelector(
+  //   (state) => state.notificationReducer.notifications
+  // );
 
   return {
     screen: NotificationsStack,
@@ -199,7 +183,7 @@ const NotificationsTab = () => {
         NotificationBell({
           active: tabIconProps.focused,
           tintColor: tabIconProps.tintColor,
-          counting: notificationCount,
+          counting: 0,
         }),
     },
   };

@@ -15,7 +15,7 @@
  *
  */
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -30,109 +30,67 @@ import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import headerStyles from "@totara/theme/headers";
 import listViewStyles from "@totara/theme/listView";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationActions } from "react-navigation";
 import { Images } from "@resources/images";
-import LoadingError from "@totara/components/LoadingError";
 import NetworkStatus from "@totara/components/NetworkStatus";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-import { Spinner } from "native-base";
-import { icons, paddings } from "@totara/theme/constants";
-
-type NotificationItem = {
-  id: number;
-  title: string;
-  body: string;
-  read: boolean;
-  selected?: boolean;
-  received: number;
-};
-
-const QUERY_NOTIFICATIONS = gql`
-  {
-    notifications {
-      id
-      title
-      payload
-      read
-      received
-    }
-  }
-`;
-
-const MUTATION_NOTIFICATION = gql`
-  {
-    mutation notifications {
-      title
-      payload
-    }
-  }
-`;
+import { useDispatch, useSelector } from "react-redux";
+import { paddings } from "@totara/theme/constants";
+import { NotificationMessage } from "@totara/types";
+import NotificationItem from "@totara/features/notifications/NotificationItem";
 
 const Notifications = ({ navigation }: any) => {
   const [theme] = useContext(ThemeContext);
-  const [notificationList, setNotificationList] = useState<NotificationItem[]>(
-    []
-  );
   const [selectable, setSelectable] = useState(false);
-  const { loading, data, error }  = useQuery(QUERY_NOTIFICATIONS);
-  // const [markAsRead, { data : mutationData }] = useMutation(MUTATION_NOTIFICATION);
-  
-  useEffect(() => {
-    const _list = data ? data.notifications : [];
-    setNotificationList(
-      _list.map(notification=>{
-        return {
-          id: notification.id,
-          title: notification.title,
-          body: notification.payload,
-          read: notification.read,
-          received: notification.received,
-          selected: false,
-        }
-      })
-    );
-  }, [data]);
+  const notificationList = useSelector(
+    (state) => state.notificationReducer.notifications
+  );
+  const dispatch = useDispatch();
+  const [selectedList, setSelectedList] = useState<string[]>([]);
 
-  const onNotificationItemPress = (item: NotificationItem) => {
+  const onNotificationItemPress = (item: NotificationMessage) => {
     //open notification view
-
-    //mark item as read or selected
     if (selectable) {
-      item.selected = !item.selected;
-    } else{
-      //mark as read
-       markNotificationAsRead(item);
+      toggleSelected(item);
+    } else {
+      markNotificationAsRead(item);
     }
-
-    // const idx = notificationList.findIndex((x) => x.id == item.id);
-    // notificationList[idx] = item;
-    // setNotificationList([...notificationList]);
   };
 
-  const markNotificationAsRead = (item: NotificationItem)=>{
-    item.read = true;
-  }
+  const toggleSelected = (item: NotificationMessage) => {
+    const add = !selectedList.find((selected: string) => selected === item.id);
+    if (add) {
+      setSelectedList([...selectedList, item.id]);
+    } else {
+      //REMOVE
+      const newSelectedList = selectedList.filter(
+        (selected) => selected !== item.id
+      );
+      setSelectedList(newSelectedList);
+    }
+  };
 
-  const onNotificationItemLongPress = (item: NotificationItem) => {
-    item.selected = true;
-    const idx = notificationList.findIndex((x) => x.id == item.id);
-    notificationList[idx] = item;
-    setNotificationList([...notificationList]);
+  const toggleAllUnselected = () => {
+    setSelectedList([]);
+  };
+
+  const markNotificationAsRead = (item: NotificationMessage) => {
+    dispatch({ type: "READ_NOTIFICATION", payload: item.id });
+  };
+
+  const onNotificationItemLongPress = (item: NotificationMessage) => {
     setSelectable(true);
+    toggleSelected(item);
     showActions(true);
   };
 
   const showActions = (show: boolean) => {
     const setParamsAction = NavigationActions.setParams({
       params: {
-        tabBarVisible: false,
         leftAction: show && (
           <TouchableOpacity
-            onPress={onSelectAllPress}
-            style={{ paddingLeft: 16 }}>
-            <Text style={theme.textH3}>Select All</Text>
+            onPress={onDelete}
+            style={{ paddingLeft: paddings.marginXL }}>
+            <Text style={theme.textH3}>Delete</Text>
           </TouchableOpacity>
         ),
         rightAction: show && (
@@ -149,93 +107,19 @@ const Notifications = ({ navigation }: any) => {
   };
 
   const onCancelPress = () => {
+    toggleAllUnselected();
     setSelectable(false);
     showActions(false);
-    selectAll(false);
   };
 
-  const onSelectAllPress = () => {
-    selectAll(true);
+  const onDelete = () => {
+    const selected = selectedList;
+    dispatch({ type: "DELETE_NOTIFICATION", payload: selected });
   };
 
-  const selectAll = (selected: boolean) => {
-    const newList = notificationList.map((item) => {
-      item.selected = selected;
-      return item;
-    });
-
-    setNotificationList(Array.from(newList.values()));
+  const isSelected = (item: NotificationMessage) => {
+    return selectedList.some((selected: string) => selected === item.id);
   };
-
-  const renderItem = ({ item }: { item: NotificationItem }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => onNotificationItemPress(item)}
-        onLongPress={() => onNotificationItemLongPress(item)}>
-        <View
-          key={item.id}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            backgroundColor: theme.colorNeutral1,
-          }}>
-          {selectable && (
-            <View
-              style={styles.itemCircle}>
-              <FontAwesomeIcon
-                size={icons.sizeL}
-                icon={"check-circle"}
-                color={item.selected ? theme.colorPrimary : theme.colorNeutral3}
-              />
-            </View>
-          )}
-          <View style={{ flex: 2 }}>
-            <View style={{justifyContent: "space-between", flexDirection: "row"}}>
-              <View>
-                <Text
-                  style={[
-                    theme.textH3,
-                    { padding: paddings.paddingM, fontWeight: item.read ? "normal" : "bold" },
-                  ]}>
-                  {item.title}
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={[
-                    theme.textB3,
-                    { padding: paddings.paddingM, fontWeight: item.read ? "normal" : "bold" },
-                  ]}>
-                  {item.received}
-                </Text>
-              </View>
-            </View>
-            <Text
-              style={[
-                theme.textH4,
-                { padding: paddings.paddingM, fontWeight: item.read ? "normal" : "bold" },
-              ]}>
-              {item.body}
-            </Text>
-          </View>
-          <View
-            style={{
-              alignItems: "flex-end",
-              justifyContent: "center",
-            }}>
-            <FontAwesomeIcon
-              size={icons.sizeM}
-              color={theme.colorNeutral3}
-              style={{ padding: paddings.paddingM }}
-              icon={"caret-right"}
-            />
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  const onContentRefreshTap = () => {};
 
   return (
     <View style={theme.viewContainer}>
@@ -253,9 +137,7 @@ const Notifications = ({ navigation }: any) => {
       <View>
         <View>
           <View>
-            {loading && <Spinner/>}
-            {error && <LoadingError onRefreshTap={onContentRefreshTap} />}
-            {!loading && !error && notificationList.length == 0 && (
+            {notificationList.length == 0 && (
               <View style={styles.noContent}>
                 <Image source={Images.notificationBell} />
                 <Text style={[theme.textH2, { fontWeight: "bold" }]}>
@@ -263,8 +145,8 @@ const Notifications = ({ navigation }: any) => {
                 </Text>
               </View>
             )}
-            {!loading && !error && notificationList.length > 0 && (
-              <FlatList<NotificationItem>
+            {notificationList.length > 0 && (
+              <FlatList<NotificationMessage>
                 style={{ flexGrow: 1 }}
                 contentContainerStyle={listViewStyles.contentContainerStyle}
                 ItemSeparatorComponent={() => (
@@ -274,7 +156,15 @@ const Notifications = ({ navigation }: any) => {
                 keyExtractor={(notificationItem) =>
                   notificationItem.id.toString()
                 }
-                renderItem={renderItem}
+                renderItem={({ item }) => (
+                  <NotificationItem
+                    item={item}
+                    selectable={selectable}
+                    selected={isSelected(item)}
+                    onNotificationItemPress={onNotificationItemPress}
+                    onNotificationItemLongPress={onNotificationItemLongPress}
+                  />
+                )}
               />
             )}
           </View>
@@ -285,11 +175,6 @@ const Notifications = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  itemCircle:{
-    padding: paddings.marginXL,
-    display: "flex",
-    justifyContent: "center",
-  },
   noContent: {
     height: "100%",
     justifyContent: "center",

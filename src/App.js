@@ -24,7 +24,10 @@ import React, { useContext, useEffect } from "react";
 import { createAppContainer } from "react-navigation";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Sentry from "@sentry/react-native";
-import { useApolloClient } from "@apollo/react-hooks";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+import { store, persistor } from "./totara/store";
+import { useDispatch } from "react-redux";
 
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { AuthProvider } from "@totara/core/AuthProvider";
@@ -59,7 +62,11 @@ const App: () => React$Node = () => {
         <SafeAreaProvider>
           <AuthFlow>
             <ActivitySheetWrapper>
-              <AppContainer />
+              <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                  <AppContainer />
+                </PersistGate>
+              </Provider>
             </ActivitySheetWrapper>
             <AdditionalAction />
             <AppModal />
@@ -72,9 +79,10 @@ const App: () => React$Node = () => {
 };
 
 const AppContainer = () => {
-  const client = useApolloClient();
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    return NotificationCenter.init(client);
+    return NotificationCenter.init(dispatch);
   }, []);
 
   const [theme] = useContext(ThemeContext);

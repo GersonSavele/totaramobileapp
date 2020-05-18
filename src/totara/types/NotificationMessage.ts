@@ -15,11 +15,10 @@
  *
  */
 
-export interface NotificationMessage{
-  id: number,
+export interface NotificationMessage {
+  id: string;
   title: string;
-  payload: string;
+  body: string;
   read: boolean;
   received: number;
-  __typename: string;
 }

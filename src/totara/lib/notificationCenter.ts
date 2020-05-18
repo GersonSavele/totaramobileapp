@@ -17,44 +17,27 @@
 
 import messaging from "@react-native-firebase/messaging";
 import { Log } from "@totara/lib/logger";
-import { gql } from "apollo-boost";
-import ApolloClient from "apollo-client";
 import { NotificationMessage } from "@totara/types";
 import moment from "moment";
 
-const QUERY_NOTIFICATIONS = gql`
-  {
-    notifications @client {
-      id
-      title
-      payload
-      read
-      received
-    }
-  }
-`;
-
-const receivedMessageHandler = (client: ApolloClient<object>, message: any) => {
+const receivedMessageHandler = (notificationDispatch: any, message: any) => {
   const messageData = message.data;
+  const randomId =
+    new Date().getTime().toString(16) +
+    Math.floor(1e7 * Math.random()).toString(16);
 
   const notificationMessage: NotificationMessage = {
-    id: Math.random(),
+    id: randomId,
     title: messageData.title,
-    payload: messageData.payload,
+    body: messageData.body,
     read: false,
     received: moment.utc().valueOf(),
-    __typename: "totata_notification_message",
   };
 
-  const storedData = client.query({ query: QUERY_NOTIFICATIONS });
-  Log.info(JSON.stringify(storedData));
-
-  client.writeQuery({
-    query: QUERY_NOTIFICATIONS,
-    data: { notifications: [...storedData.notifications, notificationMessage] },
+  notificationDispatch({
+    type: "ADD_NOTIFICATION",
+    payload: notificationMessage,
   });
-
-  //
 };
 
 const handleMessagesInBackground = () => {
@@ -66,7 +49,7 @@ const handleMessagesInBackground = () => {
   });
 };
 
-const init = (client: ApolloClient<object>) => {
+const init = (notificationDispatch) => {
   messaging()
     .getToken()
     .then((token) => {
@@ -78,7 +61,7 @@ const init = (client: ApolloClient<object>) => {
     Log.info(
       `Message handled in the FOREGROUND: ${JSON.stringify(remoteMessage)}`
     );
-    receivedMessageHandler(client, remoteMessage);
+    receivedMessageHandler(notificationDispatch, remoteMessage);
   });
 };
 
