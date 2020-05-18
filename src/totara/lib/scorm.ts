@@ -84,13 +84,16 @@ const updateScormBundleWithOfflineAttempts = (
       }
     })
     .then((packageName) => {
-      let cacheData = undefined;
+      // starting cache data with the very first scorm data
+      let cacheData = { [scormId]: scorm };
       try {
+        // using cache in case we have cached scorms
         cacheData = client.readQuery({ query: scormBundlesQuery });
       } catch (e) {
         console.log("e");
       }
-      let newData = undefined;
+      // resulting data
+      let newData: { [x: string]: any } | undefined = { ...cacheData };
       if (packageName) {
         const resourcePackageName = getOfflineScormPackageName(scormId);
         newData = {
@@ -110,7 +113,6 @@ const updateScormBundleWithOfflineAttempts = (
           });
         }
       } else {
-        newData = cacheData;
         if (
           cacheData &&
           cacheData[scormId] &&
