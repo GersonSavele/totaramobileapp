@@ -24,71 +24,77 @@ import gql from "graphql-tag";
 import { ScormActivity } from "@totara/types";
 
 export type Response = {
-    scorm: ScormActivity;
-}
+  scorm: ScormActivity;
+};
 
-export const scormQuery = gql` 
-    query totara_mobile_scorm($scormid: core_id!) {
-      scorm: mod_scorm_scorm(scormid: $scormid) {
-        id
-        courseid
-        name
-        scormtype
-        reference
-        intro(format: PLAIN)
-        version
-        maxgrade
-        grademethod
-        whatgrade
-        maxattempt
-        forcecompleted
-        forcenewattempt
-        lastattemptlock
-        masteryoverride
-        displaycoursestructure
-        skipview
-        nav
-        navpositionleft
-        navpositiontop
-        auto
-        width
-        height
-        timeopen
-        timeclose
-        displayactivityname
-        autocommit
-        allowmobileoffline
-        completion
-        completionview
-        completionstatusrequired
-        completionscorerequired
-        completionstatusallscos
-        packageUrl:package_url
-        launchUrl:launch_url
-        repeatUrl: repeat_url
-        attemptsCurrent: attempts_current
-        calculatedGrade: calculated_grade
-        offlinePackageUrl: offline_package_url
-        offlinePackageContentHash: offline_package_contenthash
-        offlinePackageScoIdentifiers: offline_package_sco_identifiers
-        attempts {
-          attempt
-          timestarted
-          gradereported
-          defaults
-          objectives
-          interactions
-        }
-        # Deprecated properties
-        type: scormtype
-        description: intro(format: PLAIN)
-        attemptsMax: maxattempt
-        attemptsCurrent: attempts_current
-        attemptsForceNew: forcenewattempt
-        attemptsLockFinal: lastattemptlock
-        autoContinue: auto
-        offlineAttemptsAllowed: allowmobileoffline
-        __typename
+export const scormQuery = gql`
+  query totara_mobile_scorm($scormid: core_id!) {
+    scorm: mod_scorm_scorm(scormid: $scormid) {
+      id
+      courseid
+      name
+      scormtype
+      reference
+      intro(format: PLAIN)
+      version
+      maxgrade
+      grademethod
+      whatgrade
+      maxattempt
+      forcecompleted
+      forcenewattempt
+      lastattemptlock
+      masteryoverride
+      displaycoursestructure
+      skipview
+      nav
+      navpositionleft
+      navpositiontop
+      auto
+      width
+      height
+      timeopen
+      timeclose
+      displayactivityname
+      autocommit
+      allowmobileoffline
+      completion
+      completionview
+      completionstatusrequired
+      completionscorerequired
+      completionstatusallscos
+      packageUrl: package_url
+      launchUrl: launch_url
+      repeatUrl: repeat_url
+      attemptsCurrent: attempts_current
+      calculatedGrade: calculated_grade
+      offlinePackageUrl: offline_package_url
+      offlinePackageContentHash: offline_package_contenthash
+      offlinePackageScoIdentifiers: offline_package_sco_identifiers
+      attempts {
+        attempt
+        timestarted
+        gradereported
+        defaults
+        objectives
+        interactions
       }
+      # Deprecated properties
+      type: scormtype
+      description: intro(format: PLAIN)
+      attemptsMax: maxattempt
+      attemptsCurrent: attempts_current
+      attemptsForceNew: forcenewattempt
+      attemptsLockFinal: lastattemptlock
+      autoContinue: auto
+      offlineAttemptsAllowed: allowmobileoffline
+      __typename
     }
+  }
+`;
+
+export const scormBundlesQuery = gql`
+  query get_scorm_bundle {
+    scormBundles @client
+  }
 `;

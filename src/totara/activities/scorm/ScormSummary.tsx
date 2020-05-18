@@ -77,9 +77,9 @@ import {
   DATE_FORMAT_FULL
 } from "@totara/lib/constants";
 import { useQuery, useApolloClient } from "@apollo/react-hooks";
-import { scormQuery } from "./api";
+import { scormQuery, scormBundlesQuery } from "./api";
 import LoadingError from "@totara/components/LoadingError";
-import { NetworkStatus } from "apollo-boost";
+import { NetworkStatus, gql, ApolloClient } from "apollo-boost";
 import { useNetInfo } from "@react-native-community/netinfo";
 
 type SummaryProps = {
@@ -124,11 +124,11 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
   </Text>
 );
 
-const ScormSummary = ({
-  id,
-  isUserOnline,
-  setActionWithData
-}: SummaryProps) => {
+const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
+  const apolloClient = useApolloClient();
+  const { isConnected, isInternetReachable } = useNetInfo();
+  const isUserOnline = (isConnected && isInternetReachable && true) || false;
+
   const { loading, error, data, refetch, networkStatus } = useQuery(
     scormQuery,
     {
@@ -157,12 +157,16 @@ const ScormSummary = ({
     calculatedGrade,
     actionPrimary,
     actionSecondary,
-    shouldShowAction,
     lastsynced,
     timeOpen,
     maxAttempts,
     attempts
   } = getDataForScormSummary(isUserOnline, scormBundle);
+
+  const shouldShowAction =
+    !timeOpen &&
+    (!maxAttempts || maxAttempts >= totalAttempt) &&
+    (actionPrimary || actionSecondary);
 
   const onTapDeleteResource = () => {
     downloadManager.delete(id);
@@ -173,6 +177,7 @@ const ScormSummary = ({
       callback: syncOfflineScormBundle,
       downloadManager,
       scormBundle,
+      client: apolloClient,
       apiKey: appState && appState.apiKey
     });
     if (resource) {
@@ -190,6 +195,17 @@ const ScormSummary = ({
       action: onResourceTap
     });
   };
+
+  //=========================
+
+  // let cacheData = undefined;
+  // try {
+  //   cacheData = client.readQuery({ query: scormBundlesQuery });
+  // } catch (e) {
+  //   console.log("cacheData error: ", e);
+  // }
+  // console.log("cacheData: ", cacheData);
+  //=======================
 
   const onDownloadFileUpdated: ResourceObserver = (resourceFile) => {
     const resoureId = resourceFile.id;
@@ -211,8 +227,13 @@ const ScormSummary = ({
 
             //this updates the SCORM file unzipPath in the resource manager
             // This update the relative path as well
-            //updates the LastSync
-            syncOfflineScormBundle(resoureId, _offlineScormData).then(() => {
+            // updates the LastSync
+            // use client.writeQuery()
+            syncOfflineScormBundle(
+              resoureId,
+              _offlineScormData,
+              apolloClient
+            ).then(() => {
               setResource(resourceFile);
             });
           }
@@ -231,7 +252,6 @@ const ScormSummary = ({
       }
     }
   };
-  const client = useApolloClient();
 
   useEffect(() => {
     if (data && data.scorm) {
@@ -242,11 +262,14 @@ const ScormSummary = ({
       // and syncOfflineScormBundle(updates the package path)
       //
 
-      updateScormBundleWithOfflineAttempts(id, formatAttempts(data.scorm)).then(
-        (formattedData) => {
-          setScormBundle(formattedData);
-        }
-      );
+      updateScormBundleWithOfflineAttempts(
+        id,
+        formatAttempts(data.scorm),
+        apolloClient
+      ).then((formattedData) => {
+        console.log("formattedData: ", formattedData);
+        setScormBundle(formattedData);
+      });
     }
   }, [data, isUserOnline]);
 
@@ -368,8 +391,8 @@ const ScormSummary = ({
             </View>
           </ScrollView>
         </View>
-        {!data.timeOpen &&
-          (!data.attemptsMax || data.attemptsMax >= data.totalAttempt) &&
+        {!timeOpen &&
+          (!maxAttempts || maxAttempts >= totalAttempt) &&
           (actionPrimary || actionSecondary) && (
             <AttemptController
               primary={

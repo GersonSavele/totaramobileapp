@@ -35,6 +35,7 @@ import {
 } from "./StorageHelper";
 import { scormLessonStatus, SECONDS_FORMAT } from "@totara/lib/constants";
 import moment from "moment";
+import { scormBundlesQuery } from "../api";
 
 const getOfflineScormPackageName = (scormId: string) =>
   `OfflineSCORM_${scormId}`;
@@ -147,7 +148,10 @@ const calculatedAttemptsGrade = (
   }
 };
 
-const syncOfflineScormBundle = (scormId: string, data: any): Promise<void> => {
+const syncOfflineScormBundleOld = (
+  scormId: string,
+  data: any
+): Promise<void> => {
   return getScormPackageData(scormId).then((storedData) => {
     let newData = {
       ...data,
@@ -170,6 +174,34 @@ const syncOfflineScormBundle = (scormId: string, data: any): Promise<void> => {
     }
   });
 };
+
+const syncOfflineScormBundle = (scormId: string, data: any, client: any) => {
+  let cacheData = undefined;
+  try {
+    cacheData = client.readQuery({ query: scormBundlesQuery });
+  } catch (e) {
+    console.log("e");
+  }
+  let newData = {
+    [scormId]: {
+      ...data,
+      lastsynced: parseInt(moment().format(SECONDS_FORMAT))
+    }
+  };
+  if (cacheData) {
+    newData = { ...cacheData, ...newData };
+  }
+  if (newData && newData.scormPackage && newData.scormPackage.path) {
+    return client.writeQuery({
+      query: scormBundlesQuery,
+      data: {
+        scormBundles: newData
+      }
+    });
+  }
+  return undefined;
+};
+// const writeScormBundlesToCache = (scormBundlesData: any, client: any) => {};
 
 const getOfflineScormCommits = () => {
   return getAllCommits().then((storedData) => {

@@ -37,6 +37,7 @@ import {
   removeScormPackageData,
   getScormData
 } from "@totara/activities/scorm/offline/StorageHelper";
+import { scormBundlesQuery } from "@totara/activities/scorm/api";
 
 /**
  * this formats the attempts of the SCORM bundle
@@ -69,6 +70,79 @@ const formatAttempts = (data: any) => {
  */
 const updateScormBundleWithOfflineAttempts = (
   scormId: string,
+  scorm: Scorm,
+  client: any
+) => {
+  // retrieve from the resource manager that comes from the downloads
+  return RetrieveStorageDataById(scormId)
+    .then((storedResourceData) => {
+      if (!storedResourceData) {
+        // remove from the SCORM package data from the AsyncStorage
+        return removeScormPackageData(scormId).then(() => undefined);
+      } else {
+        return Promise.resolve(storedResourceData.unzipPath);
+      }
+    })
+    .then((packageName) => {
+      let cacheData = undefined;
+      try {
+        cacheData = client.readQuery({ query: scormBundlesQuery });
+      } catch (e) {
+        console.log("e");
+      }
+      let newData = undefined;
+      if (packageName) {
+        const resourcePackageName = getOfflineScormPackageName(scormId);
+        newData = {
+          [scormId]: {
+            scormPackage: { path: resourcePackageName },
+            lastsynced: parseInt(moment().format(SECONDS_FORMAT))
+          }
+        };
+        if (cacheData && cacheData[scormId]) {
+          const newScormData = { ...cacheData[scormId], ...newData[scormId] };
+          newData = { ...cacheData, [scormId]: newScormData };
+          return client.writeQuery({
+            query: scormBundlesQuery,
+            data: {
+              scormBundles: newData
+            }
+          });
+        }
+      } else {
+        newData = cacheData;
+        if (
+          cacheData &&
+          cacheData[scormId] &&
+          cacheData[scormId].scormPackage
+        ) {
+          delete newData[scormId].scormPackage;
+          if (
+            newData &&
+            newData[scormId].lastsynced &&
+            Object.keys(newData[scormId]).length === 1
+          ) {
+            delete newData[scormId];
+          }
+          if (!(newData && Object.keys(newData))) {
+            newData = undefined;
+          }
+          return client.writeQuery({
+            query: scormBundlesQuery,
+            data: {
+              scormBundles: newData
+            }
+          });
+        }
+      }
+      return (
+        newData && newData[scormId] && { scorm: scorm, ...newData[scormId] }
+      );
+    });
+};
+
+const updateScormBundleWithOfflineAttemptsOld = (
+  scormId: string,
   scorm: Scorm
 ) => {
   // retrieve from the resource manager that comes from the downloads
@@ -99,20 +173,25 @@ const updateScormBundleWithOfflineAttempts = (
               () => {
                 return {
                   bundle: { ...storedBundle, ...dataScormPackage },
-                  cmis: cmis
+                  cmis: cmis,
+                  packageName
                 };
               }
             );
           } else {
-            return { bundle: storedBundle, cmis: cmis };
+            return {
+              bundle: storedBundle,
+              cmis: cmis,
+              packageName: packageName
+            };
           }
         }
       );
     })
-    .then(({ bundle, cmis }) => {
+    .then(({ bundle, cmis, packageName }) => {
       let formattedData = { scorm: scorm, ...bundle } as ScormBundle;
       if (formattedData && formattedData.scorm) {
-        if (!formattedData.scormPackage) {
+        if (!formattedData.scormPackage && packageName) {
           const resourcePackageName = getOfflineScormPackageName(scormId);
           formattedData = {
             ...formattedData!,
@@ -288,9 +367,10 @@ const getDataForScormSummary = (
 };
 
 type OnTapProps = {
-  callback: (scormId: string, data: any) => Promise<void>;
+  callback: (scormId: string, data: any, client: any) => Promise<void>;
   downloadManager: ResourceManager;
   scormBundle: ScormBundle | undefined;
+  client: any;
   apiKey?: string;
 };
 
@@ -298,7 +378,8 @@ const onTapDownloadResource = ({
   callback,
   downloadManager,
   scormBundle,
-  apiKey
+  apiKey,
+  client
 }: OnTapProps) => () => {
   if (!downloadManager) return;
   if (scormBundle) {
@@ -323,7 +404,7 @@ const onTapDownloadResource = ({
         lastsynced: scormBundle.lastsynced
       } as ScormBundle;
 
-      callback(_scormId, _offlineScormData);
+      callback(_scormId, _offlineScormData, client);
     } else {
       Log.debug("Cannot find api key");
     }

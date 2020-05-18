@@ -21,6 +21,9 @@
 
 import AsyncStorage from "@react-native-community/async-storage";
 import { get } from "lodash";
+import { scormBundlesQuery } from "../api/";
+import { useApolloClient } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 
 const ScormDataPre = "@TOTARAMOBILE_SCORM";
 const KeyScormPackageData = `${ScormDataPre}_API_DATA`;
@@ -32,7 +35,7 @@ const setScormPackageData = (scormId: string, data: any) => {
   return AsyncStorage.getItem(KeyScormPackageData).then((storedData) => {
     let scormData = {
       lastsynced: data.lastsynced,
-      scormPackage: data.scormPackage,
+      scormPackage: data.scormPackage
     };
     let newData = { [scormId]: scormData };
     if (storedData && JSON.parse(storedData)) {
@@ -89,7 +92,7 @@ const getScormData = (scormId: string) => {
     ([dataScormPackage, dataCMIs]) => {
       let storedScormData = {
         bundle: undefined,
-        cmis: undefined,
+        cmis: undefined
       };
       if (
         dataScormPackage.length === 2 &&
@@ -116,21 +119,21 @@ const saveScormActivityData = (data: any) => {
   return AsyncStorage.multiGet([
     KeyScormCMIData,
     KeyScormCommitData,
-    KeyScormActivityData,
+    KeyScormActivityData
   ])
     .then(([storageCMIData, storageCommitData, storageActivity]) => {
       let scormCMIData = {
-        [data.scormid]: { [data.attempt]: { [data.scoid]: data.cmi } },
+        [data.scormid]: { [data.attempt]: { [data.scoid]: data.cmi } }
       };
       let scormCommitData = {
-        [data.scormid]: { [data.attempt]: { [data.scoid]: [data.commit] } },
+        [data.scormid]: { [data.attempt]: { [data.scoid]: [data.commit] } }
       };
       const activityInfo = {
         attempt: parseInt(data.attempt),
-        scoid: data.scoid,
+        scoid: data.scoid
       };
       let scormActivityData = {
-        [data.scormid]: { last: activityInfo, start: activityInfo },
+        [data.scormid]: { last: activityInfo, start: activityInfo }
       };
 
       if (
@@ -154,11 +157,11 @@ const saveScormActivityData = (data: any) => {
           existingCMIData[data.scormid][data.attempt][data.scoid] = data.cmi;
         } else if (existingCMIData[data.scormid]) {
           existingCMIData[data.scormid][data.attempt] = {
-            [data.scoid]: data.cmi,
+            [data.scoid]: data.cmi
           };
         } else {
           existingCMIData[data.scormid] = {
-            [data.attempt]: { [data.scoid]: data.cmi },
+            [data.attempt]: { [data.scoid]: data.cmi }
           };
         }
         scormCMIData = existingCMIData;
@@ -184,15 +187,15 @@ const saveScormActivityData = (data: any) => {
           existingCommitData[data.scormid][data.attempt]
         ) {
           existingCommitData[data.scormid][data.attempt][data.scoid] = [
-            data.commit,
+            data.commit
           ];
         } else if (existingCommitData[data.scormid]) {
           existingCommitData[data.scormid][data.attempt] = {
-            [data.scoid]: [data.commit],
+            [data.scoid]: [data.commit]
           };
         } else {
           existingCommitData[data.scormid] = {
-            [data.attempt]: { [data.scoid]: [data.commit] },
+            [data.attempt]: { [data.scoid]: [data.commit] }
           };
         }
         scormCommitData = existingCommitData;
@@ -231,15 +234,32 @@ const saveScormActivityData = (data: any) => {
       return [
         JSON.stringify(scormCMIData),
         JSON.stringify(scormCommitData),
-        JSON.stringify(scormActivityData),
+        JSON.stringify(scormActivityData)
       ];
     })
     .then(([formattedCMIData, formattedCommitData, formattedScormActivity]) => {
-      return AsyncStorage.multiSet([
-        [KeyScormCMIData, formattedCMIData],
-        [KeyScormCommitData, formattedCommitData],
-        [KeyScormActivityData, formattedScormActivity],
-      ]);
+      const query = gql`
+        query get_scorm_bundle {
+          scormBundles @client
+        }
+      `;
+      // const cacheData = client.readQuery({ scormBundlesQuery });
+      // console.log("cacheData: ", cacheData);
+
+      // Write back to the to-do list and include the new item
+      const client = useApolloClient();
+      client.writeQuery({
+        query,
+        data: {
+          scormBundles: [formattedCMIData]
+        }
+      });
+
+      // return AsyncStorage.multiSet([
+      //   [KeyScormCMIData, formattedCMIData],
+      //   [KeyScormCommitData, formattedCommitData],
+      //   [KeyScormActivityData, formattedScormActivity]
+      // ]);
     });
 };
 
@@ -400,5 +420,5 @@ export {
   getAllCommits,
   clearCommit,
   getLastAttemptScore,
-  removeScormPackageData,
+  removeScormPackageData
 };
