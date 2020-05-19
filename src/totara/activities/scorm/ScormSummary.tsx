@@ -72,7 +72,6 @@ import { scormSummaryStyles } from "@totara/theme/scorm";
 import {
   scormActivityType,
   scormSummarySection,
-  DATE_FORMAT,
   DATE_FORMAT_FULL,
   SECONDS_FORMAT
 } from "@totara/lib/constants";
@@ -159,7 +158,6 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
     calculatedGrade,
     actionPrimary,
     actionSecondary,
-    lastsynced,
     timeOpen,
     maxAttempts,
     attempts
@@ -197,17 +195,6 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
       action: onResourceTap
     });
   };
-
-  //=========================
-
-  // let cacheData = undefined;
-  // try {
-  //   cacheData = client.readQuery({ query: scormActivitiesRecordsQuery });
-  // } catch (e) {
-  //   console.log("cacheData error: ", e);
-  // }
-  // console.log("cacheData: ", cacheData);
-  //=======================
 
   const onDownloadFileUpdated: ResourceObserver = (resourceFile) => {
     const resoureId = resourceFile.id;
@@ -305,18 +292,15 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
     return <LoadingError onRefreshTap={refetch} />;
   }
 
-  const offlineMessage =
-    (lastsynced &&
-      `${translate("scorm.last_synced")}: ${lastsynced.toNow(true)} ${translate(
-        "scorm.ago"
-      )} (${lastsynced.format(DATE_FORMAT)})`) ||
-    (!isUserOnline && translate("general.no_internet")) ||
-    undefined;
   return (
     <>
       <View style={scormSummaryStyles.expanded}>
-        {shouldShowAction && offlineMessage && (
-          <MessageBar mode={"info"} text={offlineMessage} icon={"bolt"} />
+        {!isUserOnline && (
+          <MessageBar
+            mode={"info"}
+            text={translate("general.no_internet")}
+            icon={"bolt"}
+          />
         )}
         {maxAttempts && maxAttempts <= totalAttempt && (
           <MessageBar
