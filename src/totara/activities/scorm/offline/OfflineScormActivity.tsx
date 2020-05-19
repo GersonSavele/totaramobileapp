@@ -155,6 +155,8 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
       messageData.tmsevent === "SCORMCOMMIT" &&
       messageData.result
     ) {
+      //TODO: here we could save the commits AND merge the attempts in the cache? so we don't need to call updateScormBundleWithOfflineAttempts in ScormSummary?
+
       // saveScormActivityData(messageData.result).then(() => {});
       // const scormCMIData = {
       //   [messageData.result.scormid]: {

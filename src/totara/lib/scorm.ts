@@ -353,6 +353,7 @@ const onTapNewAttempt = ({
 }: OnTapAttemptProps) => () => {
   if (scormBundle && scormBundle.scorm) {
     if (!isUserOnline) {
+      // newAttempts is a counter. Could be renamed to appear like that?
       let newAttempt =
         scormBundle.scorm && scormBundle.scorm.attemptsCurrent
           ? scormBundle.scorm.attemptsCurrent
@@ -361,11 +362,13 @@ const onTapNewAttempt = ({
         newAttempt = newAttempt + scormBundle.offlineActivity.attempts.length;
       }
       newAttempt = newAttempt + 1;
+      // this is setting the state of the parent component with those 3 parameters
       callback(scormActivityType.offline, scormBundle, {
         attempt: newAttempt
       });
     } else {
       if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
+        // this is setting the state of the parent component with those 3 parameters
         callback(scormActivityType.online, scormBundle, {
           url: scormBundle.scorm.launchUrl
         });

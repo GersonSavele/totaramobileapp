@@ -128,6 +128,7 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
 const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
   const apolloClient = useApolloClient();
   const { isConnected, isInternetReachable } = useNetInfo();
+  // TODO: this could be clearer
   const isUserOnline = isConnected && isInternetReachable ? true : false;
 
   const { loading, error, data, refetch, networkStatus } = useQuery(
