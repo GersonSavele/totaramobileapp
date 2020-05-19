@@ -22,20 +22,15 @@ import {
   initializeScormWebplayer,
   unzipScormPackageToServer,
   isScormPlayerInitialized,
-  offlineScormServerRoot,
+  offlineScormServerRoot
 } from "./SCORMFileHandler";
-import {
-  saveScormActivityData,
-  getScormAttemptData,
-  getLastAttemptScore,
-  removeScormPackageData,
-} from "./StorageHelper";
+import { getScormAttemptData, getLastAttemptScore } from "./StorageHelper";
 import AttemptSynchronizer from "./AttemptSynchronizer";
 import OfflineSCORMFeedback from "./OfflineSCORMFeedback";
 import {
   calculatedAttemptsGrade,
   syncOfflineScormBundle,
-  getOfflineScormPackageName,
+  getOfflineScormPackageName
 } from "./offlineScormController";
 
 export {
@@ -45,13 +40,11 @@ export {
   unzipScormPackageToServer,
   isScormPlayerInitialized,
   offlineScormServerRoot,
-  saveScormActivityData,
   getScormAttemptData,
   getLastAttemptScore,
-  removeScormPackageData,
   AttemptSynchronizer,
   OfflineSCORMFeedback,
   calculatedAttemptsGrade,
   syncOfflineScormBundle,
-  getOfflineScormPackageName,
+  getOfflineScormPackageName
 };

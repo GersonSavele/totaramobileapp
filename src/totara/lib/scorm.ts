@@ -33,11 +33,9 @@ import { offlineScormServerRoot } from "@totara/activities/scorm/offline";
 import { showMessage } from "./tools";
 import { scormZipPackagePath } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
-import {
-  removeScormPackageData,
-  getScormData
-} from "@totara/activities/scorm/offline/StorageHelper";
+import { getScormData } from "@totara/activities/scorm/offline/StorageHelper";
 import { scormBundlesQuery } from "@totara/activities/scorm/api";
+import { useApolloClient } from "@apollo/react-hooks";
 
 /**
  * this formats the attempts of the SCORM bundle
@@ -78,71 +76,43 @@ const updateScormBundleWithOfflineAttempts = (
     .then((storedResourceData) => {
       if (!storedResourceData) {
         // remove from the SCORM package data from the AsyncStorage
-        return removeScormPackageData(scormId).then(() => undefined);
+        return removeScormPackageData(scormId, client).then(() => undefined);
       } else {
         return Promise.resolve(storedResourceData.unzipPath);
       }
     })
     .then((packageName) => {
-      // starting cache data with the very first scorm data
-      let cacheData = { [scormId]: scorm };
+      let newData = { scorm: scorm };
       try {
-        // using cache in case we have cached scorms
-        cacheData = client.readQuery({ query: scormBundlesQuery });
+        const { scormBundles } = client.readQuery({ query: scormBundlesQuery });
+        if (packageName) {
+          if (scormBundles && scormBundles[scormId]) {
+            const cachedScormData = scormBundles[scormId];
+            newData = { ...newData, ...cachedScormData };
+            if (!cachedScormData.scormPackage) {
+              const resourcePackageName = getOfflineScormPackageName(scormId);
+              const scormPackageData = {
+                scormPackage: { path: resourcePackageName },
+                lastsynced: parseInt(moment().format(SECONDS_FORMAT))
+              };
+              syncOfflineScormBundle(scormId, scormPackageData, client).then(
+                () => {
+                  return {
+                    ...newData,
+                    ...scormPackageData
+                  };
+                }
+              );
+            }
+          }
+        }
+        return newData;
       } catch (e) {
-        console.log("e");
+        return { scorm: scorm };
       }
-      // resulting data
-      let newData: { [x: string]: any } | undefined = { ...cacheData };
-      if (packageName) {
-        const resourcePackageName = getOfflineScormPackageName(scormId);
-        newData = {
-          [scormId]: {
-            scormPackage: { path: resourcePackageName },
-            lastsynced: parseInt(moment().format(SECONDS_FORMAT))
-          }
-        };
-        if (cacheData && cacheData[scormId]) {
-          const newScormData = { ...cacheData[scormId], ...newData[scormId] };
-          newData = { ...cacheData, [scormId]: newScormData };
-          return client.writeQuery({
-            query: scormBundlesQuery,
-            data: {
-              scormBundles: newData
-            }
-          });
-        }
-      } else {
-        if (
-          cacheData &&
-          cacheData[scormId] &&
-          cacheData[scormId].scormPackage
-        ) {
-          delete newData[scormId].scormPackage;
-          if (
-            newData &&
-            newData[scormId].lastsynced &&
-            Object.keys(newData[scormId]).length === 1
-          ) {
-            delete newData[scormId];
-          }
-          if (!(newData && Object.keys(newData))) {
-            newData = undefined;
-          }
-          return client.writeQuery({
-            query: scormBundlesQuery,
-            data: {
-              scormBundles: newData
-            }
-          });
-        }
-      }
-      return (
-        newData && newData[scormId] && { scorm: scorm, ...newData[scormId] }
-      );
     });
 };
-
+/* --- Need to remove reference only----------
 const updateScormBundleWithOfflineAttemptsOld = (
   scormId: string,
   scorm: Scorm
@@ -219,6 +189,7 @@ const updateScormBundleWithOfflineAttemptsOld = (
       return formattedData;
     });
 };
+*/
 
 const getOfflineAttemptsReport = (
   cmiList: any,
@@ -236,47 +207,6 @@ const getOfflineAttemptsReport = (
   }
   return scoresData;
 };
-
-// old code for our reference:
-/**
- * @param id
- * @param isUserOnline
- * @returns {Scorm} scorm
- */
-const shouldScormSync = (id: string, isUserOnline: boolean) => (
-  storedData: ScormBundle
-) => {
-  let scormBundleData = storedData as ScormBundle;
-  if (isUserOnline) {
-    scormBundleData.lastsynced = parseInt(moment().format(SECONDS_FORMAT));
-    return syncOfflineScormBundle(id, {
-      lastsynced: scormBundleData.lastsynced
-    }).then(() => {
-      return scormBundleData;
-    });
-  }
-  return scormBundleData;
-};
-
-/**
- *
- *  @param {boolean} isUserOnline - if network status is online
- */
-// old code
-// const formatScormData = (
-//   id: string,
-//   isUserOnline: boolean,
-//   scormData?: any
-// ) => {
-//   if (scormData) {
-//     let newScormData = { ...scormData };
-
-//     return getOfflineScormBundle(id, newScormData).then(
-//       shouldScormSync(id, isUserOnline)
-//     );
-//   }
-//   return Promise.reject("invalid scorm data");
-// };
 
 const getDataForScormSummary = (
   isUserOnline: boolean,
@@ -496,14 +426,91 @@ const onTapViewAllAttempts = ({
   }
 };
 
+const removeScormPackageData = (scormId: string, client: any) => {
+  try {
+    const { scormBundles } = client.readQuery({ query: scormBundlesQuery });
+    let newData = { ...scormBundles };
+    if (newData && newData[scormId] && newData[scormId].scormPackage) {
+      delete newData[scormId].scormPackage;
+      if (
+        newData &&
+        newData[scormId].lastsynced &&
+        Object.keys(newData[scormId]).length === 1
+      ) {
+        delete newData[scormId];
+      }
+      if (!(newData && Object.keys(newData))) {
+        newData = undefined;
+      }
+      return client.writeQuery({
+        query: scormBundlesQuery,
+        data: {
+          scormBundles: newData
+        }
+      });
+    }
+  } catch (e) {
+    console.log("There is no cached data");
+    return;
+  }
+};
+
+const saveScormActivityData = (data: any, client: any) => {
+  const scormId = data.scormid;
+  const attempt = data.attempt;
+  const scoId = data.scoid;
+  const newAttemptData: any = { cmi: { [attempt]: { [scoId]: data.cmi } } };
+  let newData: any = { ...newAttemptData };
+  try {
+    const { scormBundles } = client.readQuery({ query: scormBundlesQuery });
+    newData = { ...scormBundles };
+    if (newData && newData[scormId] && newData[scormId].cmi) {
+      if (
+        newData[scormId].cmi[attempt] &&
+        newData[scormId].cmi[attempt][scoId]
+      ) {
+        newData[scormId].cmi[attempt][scoId] = data.cmi;
+      } else if (scormBundles[scormId].cmi[attempt]) {
+        const tempData = {
+          ...scormBundles[scormId].cmi[attempt],
+          [scoId]: data.cmi
+        };
+        newData[scormId].cmi[attempt] = tempData;
+      } else {
+        const tempData = {
+          ...scormBundles[scormId].cmi,
+          [attempt]: { [scoId]: data.cmi }
+        };
+        newData[scormId].cmi = tempData;
+      }
+    } else {
+      const tempData = {
+        ...scormBundles[scormId],
+        ...newAttemptData
+      };
+      newData[scormId] = tempData;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  console.log("newdata: ", newData);
+  return client.writeQuery({
+    query: scormBundlesQuery,
+    data: {
+      scormBundles: newData
+    }
+  });
+};
+
 export {
   updateScormBundleWithOfflineAttempts,
   formatAttempts,
-  // formatScormData,
-  shouldScormSync,
   getDataForScormSummary,
   onTapDownloadResource,
   onTapNewAttempt,
   onTapContinueLastAttempt,
-  onTapViewAllAttempts
+  onTapViewAllAttempts,
+  removeScormPackageData,
+  saveScormActivityData
 };

@@ -20,7 +20,6 @@
  */
 
 import React, { useEffect, useState, useContext } from "react";
-import { useNetInfo } from "@react-native-community/netinfo";
 
 import { Activity, ActivityType } from "@totara/types";
 import ScormSummary from "./ScormSummary";

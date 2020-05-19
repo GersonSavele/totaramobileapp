@@ -28,13 +28,18 @@ import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORM
 import {
   initializeScormWebplayer,
   isScormPlayerInitialized,
-  offlineScormServerRoot,
+  offlineScormServerRoot
 } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline";
 import { ScormBundle, Package, Sco } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
-import { saveScormActivityData, getScormAttemptData } from "./StorageHelper";
+import { getScormAttemptData } from "./StorageHelper";
 import { translate } from "i18n-js";
+import { useApolloClient } from "@apollo/react-hooks";
+
+import { scormBundlesQuery } from "../api";
+import { gql } from "apollo-boost";
+import { saveScormActivityData } from "@totara/lib/scorm";
 
 type Props = {
   attempt: number;
@@ -120,7 +125,7 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
     }
     server.current = new StaticServer(0, path, {
       keepAlive: true,
-      localOnly: true,
+      localOnly: true
     });
     return server.current.start();
   };
@@ -142,13 +147,36 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
     });
   };
 
+  const client = useApolloClient();
+
   const onPlayerMessageHandler = (messageData: any) => {
     if (
       messageData.tmsevent &&
       messageData.tmsevent === "SCORMCOMMIT" &&
       messageData.result
     ) {
-      saveScormActivityData(messageData.result).then(() => {});
+      // saveScormActivityData(messageData.result).then(() => {});
+      // const scormCMIData = {
+      //   [messageData.result.scormid]: {
+      //     [messageData.result.attempt]: {
+      //       [messageData.result.scoid]: messageData.result.cmi
+      //     }
+      //   }
+      // };
+      // console.log("scormCMIData: ", scormCMIData);
+
+      // const query = gql`
+      //   query get_scorm_bundle {
+      //     scormBundles @client
+      //   }
+      // `;
+      // client.writeQuery({
+      //   query: scormBundlesQuery,
+      //   data: {
+      //     scormBundles: { "13": { attempts: { "1": { "scoid-1": "data" } } } }
+      //   }
+      // });
+      saveScormActivityData(messageData.result, client);
     }
   };
 
@@ -221,7 +249,7 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
       attempt: attempt,
       autocommit: _autocommit,
       masteryoverride: _masteryoverride,
-      hidetoc: _hidetoc,
+      hidetoc: _hidetoc
     };
   };
 

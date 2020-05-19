@@ -21,7 +21,6 @@
 
 import AsyncStorage from "@react-native-community/async-storage";
 import { get } from "lodash";
-import { scormBundlesQuery } from "../api/";
 import { useApolloClient } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
@@ -58,6 +57,7 @@ const getScormPackageData = (scormId: string) => {
   });
 };
 
+/* ----- need to remove reference only -----------
 const removeScormPackageData = (scormId: string) => {
   return AsyncStorage.getItem(KeyScormPackageData)
     .then((storageData) => {
@@ -86,6 +86,7 @@ const removeScormPackageData = (scormId: string) => {
       }
     });
 };
+*/
 
 const getScormData = (scormId: string) => {
   return AsyncStorage.multiGet([KeyScormPackageData, KeyScormCMIData]).then(
@@ -115,6 +116,7 @@ const getScormData = (scormId: string) => {
   );
 };
 
+/* --------- Need to remove ----------------
 const saveScormActivityData = (data: any) => {
   return AsyncStorage.multiGet([
     KeyScormCMIData,
@@ -238,30 +240,14 @@ const saveScormActivityData = (data: any) => {
       ];
     })
     .then(([formattedCMIData, formattedCommitData, formattedScormActivity]) => {
-      const query = gql`
-        query get_scorm_bundle {
-          scormBundles @client
-        }
-      `;
-      // const cacheData = client.readQuery({ scormBundlesQuery });
-      // console.log("cacheData: ", cacheData);
-
-      // Write back to the to-do list and include the new item
-      const client = useApolloClient();
-      client.writeQuery({
-        query,
-        data: {
-          scormBundles: [formattedCMIData]
-        }
-      });
-
-      // return AsyncStorage.multiSet([
-      //   [KeyScormCMIData, formattedCMIData],
-      //   [KeyScormCommitData, formattedCommitData],
-      //   [KeyScormActivityData, formattedScormActivity]
-      // ]);
+      return AsyncStorage.multiSet([
+        [KeyScormCMIData, formattedCMIData],
+        [KeyScormCommitData, formattedCommitData],
+        [KeyScormActivityData, formattedScormActivity]
+      ]);
     });
 };
+ */
 
 const getScormAttemptData = async (scormId: string, attempt: number) => {
   return AsyncStorage.getItem(KeyScormCMIData).then((data) => {
@@ -415,10 +401,8 @@ export {
   getScormPackageData,
   setScormPackageData,
   getScormData,
-  saveScormActivityData,
   getScormAttemptData,
   getAllCommits,
   clearCommit,
-  getLastAttemptScore,
-  removeScormPackageData
+  getLastAttemptScore
 };

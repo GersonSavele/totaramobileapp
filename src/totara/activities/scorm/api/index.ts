@@ -27,7 +27,7 @@ export type Response = {
   scorm: ScormActivity;
 };
 
-export const scormQuery = gql`
+const scormQuery = gql`
   query totara_mobile_scorm($scormid: core_id!) {
     scorm: mod_scorm_scorm(scormid: $scormid) {
       id
@@ -93,8 +93,10 @@ export const scormQuery = gql`
   }
 `;
 
-export const scormBundlesQuery = gql`
+const scormBundlesQuery = gql`
   query get_scorm_bundle {
     scormBundles @client
   }
 `;
+
+export { scormQuery, scormBundlesQuery };

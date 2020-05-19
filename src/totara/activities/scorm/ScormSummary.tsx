@@ -45,8 +45,7 @@ import { gutter, ThemeContext } from "@totara/theme";
 import {
   offlineScormServerRoot,
   syncOfflineScormBundle,
-  getOfflineScormPackageName,
-  removeScormPackageData
+  getOfflineScormPackageName
 } from "./offline";
 import ResourceManager, {
   ResourceObserver
@@ -66,7 +65,8 @@ import {
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
   formatAttempts,
-  updateScormBundleWithOfflineAttempts
+  updateScormBundleWithOfflineAttempts,
+  removeScormPackageData
 } from "@totara/lib/scorm";
 import { getOfflineScormBundle } from "@totara/activities/scorm/offline/offlineScormController";
 import { scormSummaryStyles } from "@totara/theme/scorm";
@@ -74,13 +74,15 @@ import {
   scormActivityType,
   scormSummarySection,
   DATE_FORMAT,
-  DATE_FORMAT_FULL
+  DATE_FORMAT_FULL,
+  SECONDS_FORMAT
 } from "@totara/lib/constants";
 import { useQuery, useApolloClient } from "@apollo/react-hooks";
 import { scormQuery, scormBundlesQuery } from "./api";
 import LoadingError from "@totara/components/LoadingError";
 import { NetworkStatus, gql, ApolloClient } from "apollo-boost";
 import { useNetInfo } from "@react-native-community/netinfo";
+import moment from "moment";
 
 type SummaryProps = {
   id: string;
@@ -127,7 +129,7 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
 const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
   const apolloClient = useApolloClient();
   const { isConnected, isInternetReachable } = useNetInfo();
-  const isUserOnline = (isConnected && isInternetReachable && true) || false;
+  const isUserOnline = false; //(isConnected && isInternetReachable && true) || false;
 
   const { loading, error, data, refetch, networkStatus } = useQuery(
     scormQuery,
@@ -222,7 +224,8 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
             const _offlineScormData = {
               scormPackage: {
                 path: offlineSCORMPackageName
-              }
+              },
+              lastsynced: parseInt(moment().format(SECONDS_FORMAT))
             } as ScormBundle;
 
             //this updates the SCORM file unzipPath in the resource manager
@@ -240,7 +243,7 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
           break;
         }
         case ResourceState.Deleted: {
-          removeScormPackageData(resoureId).then(() => {
+          removeScormPackageData(resoureId, apolloClient).then(() => {
             setResource(undefined);
           });
           break;

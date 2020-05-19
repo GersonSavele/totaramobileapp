@@ -148,6 +148,7 @@ const calculatedAttemptsGrade = (
   }
 };
 
+/* --------- Need to remove -------------------
 const syncOfflineScormBundleOld = (
   scormId: string,
   data: any
@@ -174,32 +175,28 @@ const syncOfflineScormBundleOld = (
     }
   });
 };
+*/
 
 const syncOfflineScormBundle = (scormId: string, data: any, client: any) => {
-  let cacheData = undefined;
+  let newData = { [scormId]: data };
   try {
-    cacheData = client.readQuery({ query: scormBundlesQuery });
+    const { scormBundles } = client.readQuery({ query: scormBundlesQuery });
+    if (scormBundles && scormBundles[scormId]) {
+      const scormData = {
+        [scormId]: { ...scormBundles[scormId], ...newData[scormId] }
+      };
+      newData = { ...scormBundles, ...scormData };
+    }
   } catch (e) {
     console.log("e");
   }
-  let newData = {
-    [scormId]: {
-      ...data,
-      lastsynced: parseInt(moment().format(SECONDS_FORMAT))
+
+  return client.writeQuery({
+    query: scormBundlesQuery,
+    data: {
+      scormBundles: newData
     }
-  };
-  if (cacheData) {
-    newData = { ...cacheData, ...newData };
-  }
-  if (newData && newData.scormPackage && newData.scormPackage.path) {
-    return client.writeQuery({
-      query: scormBundlesQuery,
-      data: {
-        scormBundles: newData
-      }
-    });
-  }
-  return undefined;
+  });
 };
 // const writeScormBundlesToCache = (scormBundlesData: any, client: any) => {};
 
