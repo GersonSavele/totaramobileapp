@@ -36,6 +36,7 @@ import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageMan
 import { getScormData } from "@totara/activities/scorm/offline/StorageHelper";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 import { useApolloClient } from "@apollo/react-hooks";
+import { set, setWith, get } from "lodash";
 
 /**
  * this formats the attempts of the SCORM bundle
@@ -462,50 +463,36 @@ const saveScormActivityData = (data: any, client: any) => {
   const scormId = data.scormid;
   const attempt = data.attempt;
   const scoId = data.scoid;
-  const newAttemptData: any = { cmi: { [attempt]: { [scoId]: data.cmi } } };
-  let newData: any = { ...newAttemptData };
+  const cmiData = data.cmi;
+  const commitData = data.commit;
+
   try {
     const { scormBundles } = client.readQuery({
       query: scormActivitiesRecordsQuery
     });
-    newData = { ...scormBundles };
-    if (newData && newData[scormId] && newData[scormId].cmi) {
-      if (
-        newData[scormId].cmi[attempt] &&
-        newData[scormId].cmi[attempt][scoId]
-      ) {
-        newData[scormId].cmi[attempt][scoId] = data.cmi;
-      } else if (scormBundles[scormId].cmi[attempt]) {
-        const tempData = {
-          ...scormBundles[scormId].cmi[attempt],
-          [scoId]: data.cmi
-        };
-        newData[scormId].cmi[attempt] = tempData;
-      } else {
-        const tempData = {
-          ...scormBundles[scormId].cmi,
-          [attempt]: { [scoId]: data.cmi }
-        };
-        newData[scormId].cmi = tempData;
+    let newData = { ...scormBundles };
+    setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
+    const newCommitsData = get(
+      newData,
+      `[${scormId}].commits[${attempt}][${scoId}]`,
+      []
+    );
+    newCommitsData.push(commitData);
+    setWith(
+      newData,
+      `[${scormId}].commits[${attempt}][${scoId}]`,
+      newCommitsData,
+      Object
+    );
+    return client.writeQuery({
+      query: scormActivitiesRecordsQuery,
+      data: {
+        scormBundles: newData
       }
-    } else {
-      const tempData = {
-        ...scormBundles[scormId],
-        ...newAttemptData
-      };
-      newData[scormId] = tempData;
-    }
+    });
   } catch (e) {
-    console.log(e);
+    Log.error("Something wrong cannot find offline data.", e);
   }
-
-  console.log("newdata: ", newData);
-  return client.writeQuery({
-    query: scormActivitiesRecordsQuery,
-    data: {
-      scormBundles: newData
-    }
-  });
 };
 
 export {
