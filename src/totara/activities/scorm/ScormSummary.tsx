@@ -68,7 +68,6 @@ import {
   updateScormBundleWithOfflineAttempts,
   removeScormPackageData
 } from "@totara/lib/scorm";
-import { getOfflineScormBundle } from "@totara/activities/scorm/offline/offlineScormController";
 import { scormSummaryStyles } from "@totara/theme/scorm";
 import {
   scormActivityType,
@@ -78,9 +77,9 @@ import {
   SECONDS_FORMAT
 } from "@totara/lib/constants";
 import { useQuery, useApolloClient } from "@apollo/react-hooks";
-import { scormQuery, scormBundlesQuery } from "./api";
+import { scormQuery } from "./api";
 import LoadingError from "@totara/components/LoadingError";
-import { NetworkStatus, gql, ApolloClient } from "apollo-boost";
+import { NetworkStatus } from "apollo-boost";
 import { useNetInfo } from "@react-native-community/netinfo";
 import moment from "moment";
 
@@ -129,7 +128,7 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
 const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
   const apolloClient = useApolloClient();
   const { isConnected, isInternetReachable } = useNetInfo();
-  const isUserOnline = false; //(isConnected && isInternetReachable && true) || false;
+  const isUserOnline = (isConnected && isInternetReachable && true) || false;
 
   const { loading, error, data, refetch, networkStatus } = useQuery(
     scormQuery,
