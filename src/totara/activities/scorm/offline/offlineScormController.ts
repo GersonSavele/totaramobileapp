@@ -35,7 +35,7 @@ import {
 } from "./StorageHelper";
 import { scormLessonStatus, SECONDS_FORMAT } from "@totara/lib/constants";
 import moment from "moment";
-import { scormBundlesQuery } from "../api";
+import { scormActivitiesRecordsQuery } from "../api";
 
 const getOfflineScormPackageName = (scormId: string) =>
   `OfflineSCORM_${scormId}`;
@@ -180,7 +180,9 @@ const syncOfflineScormBundleOld = (
 const syncOfflineScormBundle = (scormId: string, data: any, client: any) => {
   let newData = { [scormId]: data };
   try {
-    const { scormBundles } = client.readQuery({ query: scormBundlesQuery });
+    const { scormBundles } = client.readQuery({
+      query: scormActivitiesRecordsQuery
+    });
     if (scormBundles && scormBundles[scormId]) {
       const scormData = {
         [scormId]: { ...scormBundles[scormId], ...newData[scormId] }
@@ -190,13 +192,13 @@ const syncOfflineScormBundle = (scormId: string, data: any, client: any) => {
   } catch (e) {
     console.log("e");
   }
-
-  return client.writeQuery({
-    query: scormBundlesQuery,
+  client.writeQuery({
+    query: scormActivitiesRecordsQuery,
     data: {
       scormBundles: newData
     }
   });
+  return newData[scormId];
 };
 // const writeScormBundlesToCache = (scormBundlesData: any, client: any) => {};
 

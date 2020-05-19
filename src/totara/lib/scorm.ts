@@ -34,7 +34,7 @@ import { showMessage } from "./tools";
 import { scormZipPackagePath } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
 import { getScormData } from "@totara/activities/scorm/offline/StorageHelper";
-import { scormBundlesQuery } from "@totara/activities/scorm/api";
+import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 import { useApolloClient } from "@apollo/react-hooks";
 
 /**
@@ -76,40 +76,37 @@ const updateScormBundleWithOfflineAttempts = (
     .then((storedResourceData) => {
       if (!storedResourceData) {
         // remove from the SCORM package data from the AsyncStorage
-        return removeScormPackageData(scormId, client).then(() => undefined);
+        return removeScormPackageData(scormId, client);
       } else {
         return Promise.resolve(storedResourceData.unzipPath);
       }
     })
     .then((packageName) => {
-      let newData = { scorm: scorm };
+      let newData: any = { scorm: scorm };
       try {
-        const { scormBundles } = client.readQuery({ query: scormBundlesQuery });
-        if (packageName) {
-          if (scormBundles && scormBundles[scormId]) {
-            const cachedScormData = scormBundles[scormId];
-            newData = { ...newData, ...cachedScormData };
-            if (!cachedScormData.scormPackage) {
-              const resourcePackageName = getOfflineScormPackageName(scormId);
-              const scormPackageData = {
-                scormPackage: { path: resourcePackageName },
-                lastsynced: parseInt(moment().format(SECONDS_FORMAT))
-              };
-              syncOfflineScormBundle(scormId, scormPackageData, client).then(
-                () => {
-                  return {
-                    ...newData,
-                    ...scormPackageData
-                  };
-                }
-              );
-            }
-          }
+        const { scormBundles } = client.readQuery({
+          query: scormActivitiesRecordsQuery
+        });
+        if (scormBundles && scormBundles[scormId]) {
+          newData = { ...newData, ...scormBundles[scormId] };
         }
-        return newData;
       } catch (e) {
-        return { scorm: scorm };
+        // return { scorm: scorm };
       }
+      if (packageName && !newData && !newData.scormPackage) {
+        const resourcePackageName = getOfflineScormPackageName(scormId);
+        let newScormData = (newData[scormId] && newData[scormId]) || {};
+        newScormData = {
+          ...newScormData,
+          scormPackage: { path: resourcePackageName },
+          lastsynced: parseInt(moment().format(SECONDS_FORMAT))
+        };
+        newData = { ...newData, ...newScormData };
+        // syncOfflineScormBundle(scormId, newScormData, client).then(() => {
+        return syncOfflineScormBundle(scormId, newScormData, client);
+        // });
+      }
+      return newData;
     });
 };
 /* --- Need to remove reference only----------
@@ -428,7 +425,9 @@ const onTapViewAllAttempts = ({
 
 const removeScormPackageData = (scormId: string, client: any) => {
   try {
-    const { scormBundles } = client.readQuery({ query: scormBundlesQuery });
+    const { scormBundles } = client.readQuery({
+      query: scormActivitiesRecordsQuery
+    });
     let newData = { ...scormBundles };
     if (newData && newData[scormId] && newData[scormId].scormPackage) {
       delete newData[scormId].scormPackage;
@@ -442,16 +441,17 @@ const removeScormPackageData = (scormId: string, client: any) => {
       if (!(newData && Object.keys(newData))) {
         newData = undefined;
       }
-      return client.writeQuery({
-        query: scormBundlesQuery,
+      client.writeQuery({
+        query: scormActivitiesRecordsQuery,
         data: {
           scormBundles: newData
         }
       });
+      return undefined;
     }
   } catch (e) {
     console.log("There is no cached data");
-    return;
+    return undefined;
   }
 };
 
@@ -462,7 +462,9 @@ const saveScormActivityData = (data: any, client: any) => {
   const newAttemptData: any = { cmi: { [attempt]: { [scoId]: data.cmi } } };
   let newData: any = { ...newAttemptData };
   try {
-    const { scormBundles } = client.readQuery({ query: scormBundlesQuery });
+    const { scormBundles } = client.readQuery({
+      query: scormActivitiesRecordsQuery
+    });
     newData = { ...scormBundles };
     if (newData && newData[scormId] && newData[scormId].cmi) {
       if (
@@ -496,7 +498,7 @@ const saveScormActivityData = (data: any, client: any) => {
 
   console.log("newdata: ", newData);
   return client.writeQuery({
-    query: scormBundlesQuery,
+    query: scormActivitiesRecordsQuery,
     data: {
       scormBundles: newData
     }

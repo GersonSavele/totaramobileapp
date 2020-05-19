@@ -93,10 +93,10 @@ const scormQuery = gql`
   }
 `;
 
-const scormBundlesQuery = gql`
+const scormActivitiesRecordsQuery = gql`
   query get_scorm_bundle {
     scormBundles @client
   }
 `;
 
-export { scormQuery, scormBundlesQuery };
+export { scormQuery, scormActivitiesRecordsQuery };

@@ -128,7 +128,7 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
 const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
   const apolloClient = useApolloClient();
   const { isConnected, isInternetReachable } = useNetInfo();
-  const isUserOnline = (isConnected && isInternetReachable && true) || false;
+  const isUserOnline = isConnected && isInternetReachable ? true : false;
 
   const { loading, error, data, refetch, networkStatus } = useQuery(
     scormQuery,
@@ -201,7 +201,7 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
 
   // let cacheData = undefined;
   // try {
-  //   cacheData = client.readQuery({ query: scormBundlesQuery });
+  //   cacheData = client.readQuery({ query: scormActivitiesRecordsQuery });
   // } catch (e) {
   //   console.log("cacheData error: ", e);
   // }
@@ -218,9 +218,9 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
       switch (resourceFile.state) {
         case ResourceState.Completed: {
           const offlineSCORMPackageName = getOfflineScormPackageName(resoureId);
-          const _unzipPath = `${offlineScormServerRoot}/${offlineSCORMPackageName}`;
-          if (resourceFile.unzipPath === _unzipPath) {
-            const _offlineScormData = {
+          const unzipPath = `${offlineScormServerRoot}/${offlineSCORMPackageName}`;
+          if (resourceFile.unzipPath === unzipPath) {
+            const scormPackageData = {
               scormPackage: {
                 path: offlineSCORMPackageName
               },
@@ -231,20 +231,19 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
             // This update the relative path as well
             // updates the LastSync
             // use client.writeQuery()
-            syncOfflineScormBundle(
+            const resultSync = syncOfflineScormBundle(
               resoureId,
-              _offlineScormData,
+              scormPackageData,
               apolloClient
-            ).then(() => {
+            );
+            if (resultSync.scormPackage && resultSync.scormPackage.path) {
               setResource(resourceFile);
-            });
+            }
           }
           break;
         }
         case ResourceState.Deleted: {
-          removeScormPackageData(resoureId, apolloClient).then(() => {
-            setResource(undefined);
-          });
+          setResource(removeScormPackageData(resoureId, apolloClient));
           break;
         }
         case ResourceState.Downloading: {
@@ -269,7 +268,6 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
         formatAttempts(data.scorm),
         apolloClient
       ).then((formattedData) => {
-        console.log("formattedData: ", formattedData);
         setScormBundle(formattedData);
       });
     }
@@ -358,7 +356,10 @@ const ScormSummary = ({ id, setActionWithData }: SummaryProps) => {
               <GridLabelValue
                 theme={theme}
                 textId={"scorm.summary.grade.method"}
-                value={translate(`scorm.grading_method.${attemptGrade}`)}
+                value={
+                  attemptGrade &&
+                  translate(`scorm.grading_method.${attemptGrade}`)
+                }
               />
               <TouchableOpacity
                 onPress={onTapViewAllAttempts({

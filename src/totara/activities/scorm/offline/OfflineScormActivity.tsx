@@ -37,7 +37,7 @@ import { getScormAttemptData } from "./StorageHelper";
 import { translate } from "i18n-js";
 import { useApolloClient } from "@apollo/react-hooks";
 
-import { scormBundlesQuery } from "../api";
+import { scormActivitiesRecordsQuery } from "../api";
 import { gql } from "apollo-boost";
 import { saveScormActivityData } from "@totara/lib/scorm";
 
@@ -171,7 +171,7 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
       //   }
       // `;
       // client.writeQuery({
-      //   query: scormBundlesQuery,
+      //   query: scormActivitiesRecordsQuery,
       //   data: {
       //     scormBundles: { "13": { attempts: { "1": { "scoid-1": "data" } } } }
       //   }
