@@ -29,11 +29,17 @@ import { OfflineScormActivity } from "./offline";
 import { ActivitySheetContext } from "../ActivitySheet";
 import OnlineSCORMActivity from "./online/OnlineSCORMActivity";
 import { scormActivityType } from "@totara/lib/constants";
+import { View } from "react-native";
+import { baseSpace, ThemeContext } from "@totara/theme";
+import ResourceDownloader from "@totara/components/ResourceDownloader";
+import { TopHeader } from "@totara/components";
 
 type SCORMActivityProps = {
   id: string;
-  activity?: Activity;
+  activity: Activity;
   mode?: scormActivityType;
+  onClose(): void;
+  resource: any;
 };
 
 type scormModeDataProps = {
@@ -46,10 +52,13 @@ const ScormActivity = ({
   id,
   activity,
   mode = scormActivityType.summary,
+  onClose,
+  resource
 }: SCORMActivityProps) => {
+  const [theme] = useContext(ThemeContext);
   const activitySheet = useContext(ActivitySheetContext);
   const [scormModeData, setScormModeData] = useState<scormModeDataProps>({
-    mode: mode,
+    mode: mode
   });
   const onSetActionWithData = (
     action: scormActivityType,
@@ -67,8 +76,8 @@ const ScormActivity = ({
       activitySheet.setFeedback({
         activity: activity as ActivityType,
         data: {
-          isOnline: scormModeData.mode === scormActivityType.online,
-        },
+          isOnline: scormModeData.mode === scormActivityType.online
+        }
       });
       activitySheet.setActivityResource(undefined);
     } else {
@@ -76,24 +85,54 @@ const ScormActivity = ({
     }
   }, [scormModeData.mode]);
 
-  switch (scormModeData.mode) {
-    case scormActivityType.offline:
-      return (
-        <OfflineScormActivity
-          scormBundle={scormModeData && scormModeData.bundle}
-          attempt={scormModeData.data.attempt}
-          scoid={scormModeData.data.scoid}
-        />
-      );
-    case scormActivityType.online:
-      return (
-        <OnlineSCORMActivity
-          uri={scormModeData && scormModeData.data && scormModeData.data.url}
-        />
-      );
-    case scormActivityType.summary:
-      return <ScormSummary id={id} setActionWithData={onSetActionWithData} />;
-  }
+  const renderBody = () => {
+    switch (scormModeData.mode) {
+      case scormActivityType.offline:
+        return (
+          <OfflineScormActivity
+            scormBundle={scormModeData && scormModeData.bundle}
+            attempt={scormModeData.data.attempt}
+            scoid={scormModeData.data.scoid}
+          />
+        );
+      case scormActivityType.online:
+        return (
+          <OnlineSCORMActivity
+            uri={scormModeData && scormModeData.data && scormModeData.data.url}
+          />
+        );
+      case scormActivityType.summary:
+        return <ScormSummary id={id} setActionWithData={onSetActionWithData} />;
+    }
+  };
+
+  return (
+    <View style={theme.viewContainer}>
+      <TopHeader
+        iconSize={theme.textH2.fontSize}
+        color={theme.colorSecondary1}
+        title={activity.name}
+        titleTextStyle={theme.textH4}
+        infoTextStyle={{
+          ...theme.textSmall,
+          color: theme.textColorSubdued
+        }}
+        onClose={onClose}>
+        {resource && (
+          <ResourceDownloader
+            mode={resource && resource.data && resource.data.state}
+            progress={
+              (resource && resource.data && resource.data.percentCompleted) || 0
+            }
+            size={theme.textH2.fontSize}
+            onPress={resource && resource.action}
+            style={{ padding: baseSpace }}
+          />
+        )}
+      </TopHeader>
+      {renderBody()}
+    </View>
+  );
 };
 
 export default ScormActivity;

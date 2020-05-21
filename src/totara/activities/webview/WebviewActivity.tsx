@@ -24,16 +24,22 @@ import { StyleSheet, View, SafeAreaView } from "react-native";
 
 import { Activity } from "@totara/types";
 import { AuthenticatedWebView } from "@totara/auth";
-import { TouchableIcon } from "@totara/components";
+import { TopHeader, TouchableIcon } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
 /**
  * WebviewActivity opens an activity with the given url
  */
-const WebviewActivity = ({activity}: Props) => {
+
+type WebviewActivityProps = {
+  activity: Activity;
+  onClose(): void;
+};
+
+const WebviewActivity = ({ activity, onClose }: WebviewActivityProps) => {
   const refWebview = useRef<WebView>(null);
-  const [ theme ] = useContext(ThemeContext);
+  const [theme] = useContext(ThemeContext);
   const [canWebGoBackward, setCanWebGoBackward] = useState(false);
   const [canWebGoForward, setCanWebGoForward] = useState(false);
 
@@ -43,27 +49,45 @@ const WebviewActivity = ({activity}: Props) => {
   };
 
   return (
-  <View style={theme.viewContainer}>
-    <View style={{flex: 1}}>
-      <AuthenticatedWebView uri={activity.viewurl!} ref={refWebview} onNavigationStateChange={onNavigationStateChange}/>
-    </View>
-    <View style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
-      <View style={styles.barContent}>
-        <TouchableIcon disabled={!canWebGoBackward} icon={"chevron-left"} onPress={() => {
-          refWebview.current && refWebview.current!.goBack();
-        }} color={theme.navigationHeaderTintColor} size={theme.textH3.fontSize} />
-        <TouchableIcon disabled={!canWebGoForward} icon={"chevron-right"} onPress={() => {
-          refWebview.current && refWebview.current!.goForward();
-        }} color={theme.navigationHeaderTintColor} size={theme.textH3.fontSize} />
+    <View style={theme.viewContainer}>
+      <TopHeader
+        iconSize={theme.textH2.fontSize}
+        color={theme.colorSecondary1}
+        onClose={onClose}
+      />
+      <View style={{ flex: 1 }}>
+        <AuthenticatedWebView
+          uri={activity.viewurl!}
+          ref={refWebview}
+          onNavigationStateChange={onNavigationStateChange}
+        />
       </View>
+      <View style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
+        <View style={styles.barContent}>
+          <TouchableIcon
+            disabled={!canWebGoBackward}
+            icon={"chevron-left"}
+            onPress={() => {
+              refWebview.current && refWebview.current!.goBack();
+            }}
+            color={theme.navigationHeaderTintColor}
+            size={theme.textH3.fontSize}
+          />
+          <TouchableIcon
+            disabled={!canWebGoForward}
+            icon={"chevron-right"}
+            onPress={() => {
+              refWebview.current && refWebview.current!.goForward();
+            }}
+            color={theme.navigationHeaderTintColor}
+            size={theme.textH3.fontSize}
+          />
+        </View>
+      </View>
+      <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
     </View>
-    <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
-  </View>)
+  );
 };
-
-type Props = {
-  activity: Activity
-}
 
 const styles = StyleSheet.create({
   footer: {
@@ -76,6 +100,5 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start"
   }
 });
-
 
 export { WebviewActivity };

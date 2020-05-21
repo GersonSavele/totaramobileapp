@@ -19,15 +19,12 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React, { useContext } from "react";
-import { View, Modal } from "react-native";
+import React from "react";
+import { Modal } from "react-native";
 
 import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
 import ScormActivity from "./scorm/ScormActivity";
-import ResourceDownloader from "@totara/components/ResourceDownloader";
-import { ThemeContext, baseSpace } from "@totara/theme";
-import { TopHeader } from "@totara/components";
 import { scormActivityType } from "@totara/lib/constants";
 
 type ActivityFeedbackProps = {
@@ -64,39 +61,22 @@ const ActivitySheetContext = React.createContext<contextData>({
   setCurrentActivity: () => {},
   setFeedback: () => {},
   setOnClose: () => {},
-  setActivityResource: () => {},
+  setActivityResource: () => {}
 });
 
 const ActivitySheet = ({ currentActivity, onClose, resource }: Props) => {
-  const [theme] = useContext(ThemeContext);
-
   return (
     <Modal
       animationType="slide"
       visible={currentActivity != undefined}
       onRequestClose={onClose}>
-      <TopHeader
-        iconSize={theme.textH2.fontSize}
-        color={theme.colorSecondary1}
-        title={currentActivity.name}
-        titleTextStyle={theme.textH4}
-        infoTextStyle={{ ...theme.textSmall, color: theme.textColorSubdued }}
-        onClose={onClose}>
-        {resource && (
-          <ResourceDownloader
-            mode={resource && resource.data && resource.data.state}
-            progress={
-              (resource && resource.data && resource.data.percentCompleted) || 0
-            }
-            size={theme.textH2.fontSize}
-            onPress={resource && resource.action}
-            style={{ padding: baseSpace }}
-          />
-        )}
-      </TopHeader>
-      <View style={theme.viewContainer}>
-        {currentActivity && <ActivityWrapper activity={currentActivity} />}
-      </View>
+      {currentActivity && (
+        <ActivityWrapper
+          activity={currentActivity}
+          onClose={onClose}
+          resource={resource}
+        />
+      )}
     </Modal>
   );
 };
@@ -109,7 +89,15 @@ type Props = {
   resource: any;
 };
 
-const ActivityWrapper = ({ activity }: { activity: ActivityType }) => {
+const ActivityWrapper = ({
+  activity,
+  onClose,
+  resource
+}: {
+  activity: ActivityType;
+  onClose;
+  resource;
+}) => {
   switch (activity.modtype) {
     case "scorm":
       return (
@@ -117,10 +105,12 @@ const ActivityWrapper = ({ activity }: { activity: ActivityType }) => {
           id={activity.instanceid.toString()}
           activity={activity}
           mode={scormActivityType.summary}
+          onClose={onClose}
+          resource={resource}
         />
       );
     default:
-      return <WebviewActivity activity={activity} />;
+      return <WebviewActivity activity={activity} onClose={onClose} />;
   }
 };
 

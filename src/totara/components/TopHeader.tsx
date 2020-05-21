@@ -25,8 +25,8 @@ type TopHeaderProps = {
   color: string;
   title?: string;
   info?: string;
-  infoTextStyle: TextStyle;
-  titleTextStyle: TextStyle;
+  infoTextStyle?: TextStyle;
+  titleTextStyle?: TextStyle;
   iconSize?: number;
   children?: Element;
 };
@@ -39,7 +39,7 @@ const TopHeader = ({
   titleTextStyle,
   iconSize = 0,
   color,
-  children,
+  children
 }: TopHeaderProps) => (
   <Header style={{ backgroundColor: color }}>
     <TouchableIcon
@@ -51,14 +51,14 @@ const TopHeader = ({
     <Body
       style={{
         marginRight: children ? 0 : iconSize + baseSpace,
-        alignSelf: "center",
+        alignSelf: "center"
       }}>
       <Title style={[{ alignSelf: "center" }, titleTextStyle]}>{title}</Title>
       {info && (
         <Text
           style={[
             { paddingBottom: baseSpace, textAlign: "center" },
-            infoTextStyle,
+            infoTextStyle
           ]}>
           {info}
         </Text>
