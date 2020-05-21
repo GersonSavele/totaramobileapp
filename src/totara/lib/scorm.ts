@@ -25,7 +25,8 @@ import {
 import {
   SECONDS_FORMAT,
   scormSummarySection,
-  scormActivityType
+  scormActivityType,
+  scormActivityCompletion
 } from "./constants";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { Log } from "@totara/lib";
@@ -352,12 +353,11 @@ const onTapNewAttempt = ({
   callback
 }: OnTapAttemptProps) => () => {
   if (scormBundle && scormBundle.scorm) {
+    const currentAttempt = scormBundle.scorm.attemptsCurrent
+      ? scormBundle.scorm.attemptsCurrent
+      : 0;
     if (!isUserOnline) {
-      // newAttempts is a counter. Could be renamed to appear like that?
-      let newAttempt =
-        scormBundle.scorm && scormBundle.scorm.attemptsCurrent
-          ? scormBundle.scorm.attemptsCurrent
-          : 0;
+      let newAttempt = currentAttempt;
       if (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts) {
         newAttempt = newAttempt + scormBundle.offlineActivity.attempts.length;
       }
@@ -370,7 +370,8 @@ const onTapNewAttempt = ({
       if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
         // this is setting the state of the parent component with those 3 parameters
         callback(scormActivityType.online, scormBundle, {
-          url: scormBundle.scorm.launchUrl
+          url: scormBundle.scorm.launchUrl,
+          attempt: currentAttempt + 1
         });
       } else {
         Log.warn("Cannot find new attempt url.", scormBundle.scorm.launchUrl);
@@ -391,8 +392,12 @@ const onTapContinueLastAttempt = ({
   if (isUserOnline) {
     if (scormBundle) {
       if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
+        const currentAttempt = scormBundle.scorm.attemptsCurrent
+          ? scormBundle.scorm.attemptsCurrent
+          : 0;
         callback(scormActivityType.online, scormBundle, {
-          url: scormBundle.scorm.repeatUrl
+          url: scormBundle.scorm.repeatUrl,
+          attempt: currentAttempt
         });
       } else {
         Log.warn("Cannot find last attempt url.", scormBundle.scorm.repeatUrl);

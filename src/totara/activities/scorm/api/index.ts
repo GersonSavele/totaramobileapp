@@ -21,11 +21,11 @@
 
 import gql from "graphql-tag";
 
-import { ScormActivity } from "@totara/types";
+// import { ScormActivity } from '@totara/types';
 
-export type Response = {
-  scorm: ScormActivity;
-};
+// export type Response = {
+//   scorm: ScormActivity;
+// };
 
 const scormQuery = gql`
   query totara_mobile_scorm($scormid: core_id!) {

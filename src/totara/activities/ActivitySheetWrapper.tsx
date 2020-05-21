@@ -13,13 +13,14 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View } from "react-native";
-import PropTypes from "prop-types";
+import React from 'react';
+import { View, Alert } from 'react-native';
+import PropTypes from 'prop-types';
 
-import { ActivityType } from "@totara/types";
-import { ActivitySheetContext, ActivitySheet } from "./ActivitySheet";
-import ActivityFeedback from "./ActivityFeedback";
+import { ActivityType } from '@totara/types';
+import { ActivitySheetContext, ActivitySheet } from './ActivitySheet';
+import ActivityFeedback from './ActivityFeedback';
+import { translate } from '@totara/locale';
 
 const initialState = {
   currentActivity: undefined,
@@ -62,6 +63,35 @@ class ActivitySheetWrapper extends React.Component {
   }
 
   onClose = () => {
+    if (
+      this.state.currentActivity &&
+      this.state.currentActivity.modtype &&
+      this.state.currentActivity.modtype === 'scorm' &&
+      this.state.feedback
+    ) {
+      Alert.alert(
+        translate('scorm.confirmation.title'),
+        translate('scorm.confirmation.message'),
+        [
+          {
+            text: translate('scorm.confirmation.cancel'),
+            style: 'cancel',
+          },
+          {
+            text: translate('scorm.confirmation.ok'),
+            onPress: () => {
+              this.resetInitialState();
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      this.resetInitialState();
+    }
+  };
+
+  resetInitialState = () => {
     const newState =
       this.state.feedback && this.state.currentActivity
         ? { ...initialState, ...{ feedback: this.state.feedback } }
@@ -69,7 +99,6 @@ class ActivitySheetWrapper extends React.Component {
     this.state.onClose();
     this.setState(newState);
   };
-
   setActivityResource(data: any) {
     this.setState({
       resource: data,

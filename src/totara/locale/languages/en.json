@@ -181,11 +181,12 @@
       "last_attempt": "Last attempt"
     },
     "feedback": {
-      "grade_title": "YOUR LAST ATTEMPT GRADE",
+      "grade_title": "YOUR GRADE",
       "awesome": "Awesome!",
       "sorry": "Sorry!",
-      "back": "Back to course",
-      "attempt_again": "Attempt again"
+      "back": "Go back",
+      "attempt_again": "Attempt again",
+      "action_info": "Would you like to go back to the course or do you want to try again?"
     },
     "attempts": {
       "title": "All attempts grades",
@@ -198,6 +199,12 @@
       "1": "Average attempts",
       "2": "First attempt",
       "3": "Last completed attempt"
+    },
+    "confirmation": {
+      "title": "Are you sure?",
+      "message": "You want to exit the activity.",
+      "ok": "Yes",
+      "cancel": "No"
     }
   },
   "notifications": {

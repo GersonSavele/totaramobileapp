@@ -21,7 +21,7 @@
 import React from "react";
 
 import { ActivityType } from "@totara/types";
-import SCORMFeedback from "./scorm/SCORMFeedback";
+import ScormFeedback from "./scorm/ScormFeedback";
 
 type Props = {
   activity: ActivityType;
@@ -32,7 +32,15 @@ type Props = {
 
 const ActivityFeedback = ({ activity, onClose, onPrimary, data }: Props) => {
   if (activity.modtype === "scorm") {
-    return (<SCORMFeedback activity={activity} onClose={onClose} onPrimary={onPrimary} data={data} /> );
+    return (
+      <ScormFeedback
+        activity={activity}
+        onClose={onClose}
+        onPrimary={onPrimary}
+        isOnline={data && data.isOnline}
+        attempt={data && data.attempt}
+      />
+    );
   }
   return null;
 };

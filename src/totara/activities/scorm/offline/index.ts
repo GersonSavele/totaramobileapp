@@ -26,7 +26,6 @@ import {
 } from "./SCORMFileHandler";
 import { getScormAttemptData, getLastAttemptScore } from "./StorageHelper";
 import AttemptSynchronizer from "./AttemptSynchronizer";
-import OfflineSCORMFeedback from "./OfflineSCORMFeedback";
 import {
   calculatedAttemptsGrade,
   syncOfflineScormBundle,
@@ -43,7 +42,6 @@ export {
   getScormAttemptData,
   getLastAttemptScore,
   AttemptSynchronizer,
-  OfflineSCORMFeedback,
   calculatedAttemptsGrade,
   syncOfflineScormBundle,
   getOfflineScormPackageName
