@@ -201,5 +201,8 @@
    "message": "Please check your network connection\nand try again.",
    "go_back": "Go back",
    "refresh": "Refresh"
+  },
+  "downloads": {
+    "title": "Downloads"
   }
 }

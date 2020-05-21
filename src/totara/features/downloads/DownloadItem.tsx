@@ -1,0 +1,111 @@
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import React, { useContext } from "react";
+import { ThemeContext } from "@totara/theme";
+import ResourceDownloader from "@totara/components/ResourceDownloader";
+import { TouchableIcon } from "@totara/components";
+import { icons, paddings } from "@totara/theme/constants";
+import { Resource } from "@totara/types/Resource";
+import { TotaraTheme } from "@totara/theme/Theme";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+type DownloadItemProps = {
+  item: Resource;
+  selectable: boolean;
+  selected: boolean;
+  onItemPress(item: Resource): void;
+  onItemLongPress(item: Resource): void;
+};
+
+const DownloadItem = ({
+  item,
+  selectable,
+  selected = false,
+  onItemPress,
+  onItemLongPress
+}: DownloadItemProps) => {
+  const [theme] = useContext(ThemeContext);
+
+  const humanReadableSize = (sizeInBytes: number) => {
+    if (!sizeInBytes) return "...";
+
+    return sizeInBytes / 1024 < 1000
+      ? `${Math.round(sizeInBytes / 1024)} Kb`
+      : `${(sizeInBytes / 1024 / 1024).toFixed(2)} Mb`;
+  };
+
+  const humanReadablePercentage = (sizeInBytes, writtenBytes) => {
+    if (!sizeInBytes || !writtenBytes) return 0;
+    return (writtenBytes / sizeInBytes) * 100;
+  };
+
+  return (
+    <TouchableOpacity
+      onPress={() => onItemPress(item)}
+      onLongPress={() => onItemLongPress(item)}>
+      <View key={item.id} style={styles.item}>
+        {selectable && (
+          <View style={styles.itemCircle}>
+            <FontAwesomeIcon
+              size={icons.sizeM}
+              icon={"check-circle"}
+              color={selected ? theme.colorPrimary : TotaraTheme.colorNeutral3}
+            />
+          </View>
+        )}
+        <View style={styles.contentContainer}>
+          <Text style={TotaraTheme.textH4}>{item.name}</Text>
+          <Text
+            style={{ color: TotaraTheme.colorNeutral6 }}>{`${humanReadableSize(
+            item.sizeInBytes
+          )}`}</Text>
+        </View>
+        <View
+          style={{
+            alignItems: "flex-end"
+          }}>
+          <ResourceDownloader
+            size={icons.sizeM}
+            progress={humanReadablePercentage(
+              item.sizeInBytes,
+              item.bytesDownloaded
+            )}
+            resourceState={item.state}
+          />
+        </View>
+        <View
+          style={{
+            justifyContent: "flex-end"
+          }}>
+          <TouchableIcon
+            size={icons.sizeM}
+            icon={"angle-right"}
+            disabled={true}
+          />
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  item: {
+    justifyContent: "center",
+    padding: paddings.paddingM,
+    flexDirection: "row",
+    backgroundColor: TotaraTheme.colorNeutral1
+  },
+  contentContainer: {
+    flex: 1,
+    paddingLeft: paddings.paddingM,
+    flexDirection: "column",
+    justifyContent: "center"
+  },
+  itemCircle: {
+    alignSelf: "center",
+    padding: paddings.marginXL,
+    justifyContent: "center"
+  }
+});
+
+export default DownloadItem;

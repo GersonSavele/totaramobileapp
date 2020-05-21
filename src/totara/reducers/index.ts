@@ -1,9 +1,14 @@
-import notificationReducer from "./notification";
 import { combineReducers } from "redux";
+import notificationReducer from "./notification";
+import resourceReducer from "./resource";
 
 const rootReducer = combineReducers({
   notificationReducer,
+  resourceReducer
 });
 
-// Exports
+export type RootState = ReturnType<typeof rootReducer>;
 export default rootReducer;
+
+// Exports
+// export default rootReducer;

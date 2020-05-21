@@ -1,130 +1,251 @@
-import React, { useContext, useEffect, useState } from "react"
-import ResourceManager, { ResourceObserver } from "@totara/core/ResourceManager/ResourceManager";
-import { ListRenderItemInfo, StyleSheet, Text, TouchableHighlight, View } from "react-native";
-import { gutter, ThemeContext } from "@totara/theme";
-import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
-import { TouchableIcon } from "@totara/components"
-import ResourceDownloader from "@totara/components/ResourceDownloader";
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"
-import {createStackNavigator} from "react-navigation-stack";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Button,
+  FlatList,
+  Image,
+  ImageSourcePropType,
+  ListRenderItemInfo,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
+import { NavigationActions } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import { useDispatch, useSelector } from "react-redux";
+import { NavigationContext } from "react-navigation";
+
+import { ThemeContext } from "@totara/theme";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
+import headerStyles from "@totara/theme/headers";
+import { translate } from "@totara/locale";
+import NetworkStatus from "@totara/components/NetworkStatus";
+import { RootState } from "@totara/reducers";
+import { Resource } from "@totara/types";
+
+import { Images } from "@resources/images";
+import { paddings } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
+import ResourceManager from "@totara/lib/resourceManager";
+import listViewStyles from "@totara/theme/listView";
+import DownloadItem from "./DownloadItem";
+import * as RNFS from "react-native-fs";
 
 const Downloads = () => {
-    const [theme] = useContext(ThemeContext);
+  const [theme] = useContext(ThemeContext);
+  const navigation = useContext(NavigationContext);
 
-    const [downloadManager] = useState<ResourceManager>(ResourceManager.getInstance());
-    const [resources, setResources] = useState<IResource[]>([]);
+  const resourceDispatcher = useDispatch();
+  const resourcesList = useSelector(
+    (state: RootState) => state.resourceReducer.resources
+  );
 
-    const onDownloadFileUpdated : ResourceObserver = (received) => {
-        if(received.state === ResourceState.Deleted){
-            const filter = downloadManager.snapshot.filter(x=>x.id !== received.id);
-            setResources(filter);
-        }
-        else{
-            const _resources = downloadManager.snapshot;
-            const idx = _resources.findIndex(res=>res.id === received.id);
-            _resources[idx] = received;
-            setResources(_resources);
-        }
+  const [selectable, setSelectable] = useState(false);
+  const [selectList, setSelectList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const onCancelTapListener = navigation.addListener(
+      "onCancelTap",
+      onCancelTap
+    );
+    const onDeleteTapListener = navigation.addListener(
+      "onDeleteTap",
+      onDeleteTap
+    );
+    return () => {
+      onCancelTapListener.remove();
+      onDeleteTapListener.remove();
     };
+  });
 
-    useEffect(()=>{
-        downloadManager.attach(onDownloadFileUpdated);
-        setResources(downloadManager.snapshot);
-        return () =>{
-            downloadManager.detach(onDownloadFileUpdated)
-        }
-    }, [downloadManager]);
+  useEffect(() => {
+    headerDispatch(selectable);
+  }, [selectable]);
 
-    const fileSize = (res: IResource) =>{
-        return res.sizeInBytes/1024 < 1000 ? `${Math.round((res.sizeInBytes/1024))} Kb` : `${(res.sizeInBytes/1024/1024).toFixed(2)} Mb`
+  const headerDispatch = (showActions: boolean) => {
+    const setParamsAction = NavigationActions.setParams({
+      params: {
+        showActions: showActions
+      },
+      key: "Downloads"
+    });
+    navigation.dispatch(setParamsAction);
+  };
+
+  //TEST REMOVE IT
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  // todo: remove it once scorm activity refactoring is done
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const downloadTest = () => {
+    const scormID = getRandomInt(1, 100).toString();
+    const resourceUrl =
+      "https://file-examples.com/wp-content/uploads/2017/02/zip_2MB.zip";
+
+    const downloadFolder = `${RNFS.DocumentDirectoryPath}`;
+    const targetZipFile = `${downloadFolder}/${scormID}.zip`;
+    const targetExtractPath = `${downloadFolder}/extracted/${scormID}`;
+
+    ResourceManager.download(
+      "",
+      scormID,
+      scormID,
+      resourceUrl,
+      targetZipFile,
+      targetExtractPath
+    );
+  };
+  //TEST REMOVE IT
+
+  //EVENTS
+  const onItemLongPress = (item: Resource) => {
+    if (!selectable) {
+      setSelectable(true);
     }
+    toggleSelected(item);
+  };
 
-    const onDeleteItemTap = (id: string) =>{
-        ResourceManager.getInstance().delete(id);
-    };
+  const onItemPress = (item: Resource) => {
+    toggleSelected(item);
+  };
 
-    return <SwipeListView
-        data={resources}
-        disableRightSwipe
-        renderItem={ (data: ListRenderItemInfo<IResource>) => (
-            <View key={data.item.id} style={[styles.item, {backgroundColor: theme.colorNeutral1}]}>
-                <View style={{display: 'flex', width: '100%', flexDirection: 'row'}}>
-                    <View style={{display: 'flex', flex: 3, flexDirection: 'column', justifyContent:'center'}}>
-                        <Text>{data.item.name}</Text>
-                        <Text style={{color: theme.colorNeutral5}}>{`${fileSize(data.item)}`}</Text>
-                    </View>
-                    <View style={{display: 'flex', flex: 3, alignItems:'flex-end', justifyContent:'center'}}>
-                        <ResourceDownloader size={25} progress={data.item.percentCompleted ? data.item.percentCompleted! : 0} mode={data.item.state}/>
-                    </View>
-                    <View style={{display: 'flex', flex: 1, justifyContent:'flex-end', alignContent:'center'}}>
-                        <TouchableIcon size={25} icon={"caret-right"} disabled={true} />
-                    </View>
-                </View>
-                <View style={{
-                    backgroundColor: theme.colorNeutral6,
-                    width: '100%',
-                    height: 1
-                }}/>
-            </View>
+  const onCancelTap = () => {
+    unSelectAll();
+    setSelectable(false);
+  };
+
+  const onDeleteTap = () => {
+    ResourceManager.deleteResource(selectList).finally(() => {
+      resourceDispatcher({
+        type: "DELETE_RESOURCE",
+        payload: {
+          ids: selectList
+        }
+      });
+      unSelectAll();
+      setSelectable(false);
+    });
+  };
+  //EVENTS
+
+  //ACTIONS
+  const unSelectAll = () => {
+    setSelectList([]);
+  };
+
+  const toggleSelected = (item: Resource) => {
+    const exists = selectList.some((x) => x === item.id);
+    if (!exists) setSelectList([...selectList, item.id]);
+    else {
+      setSelectList([...selectList.filter((x) => x !== item.id)]);
+    }
+  };
+  //ACTIONS
+
+  const isSelected = (item: Resource) => {
+    return selectList.some((x) => x === item.id);
+  };
+
+  return (
+    <View style={theme.viewContainer}>
+      <View style={headerStyles.navigationHeader}>
+        <Text
+          style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
+          {translate("downloads.title")}
+        </Text>
+      </View>
+      <NetworkStatus />
+      <View>
+        {/*todo: remove it once scorm activity refactoring is done*/}
+        {/*<View style={{ flexDirection: "row", justifyContent: "center" }}>*/}
+        {/*  <Button onPress={downloadTest} title={"ADD"} />*/}
+        {/*</View>*/}
+        {resourcesList.length == 0 ? (
+          <View style={styles.noContent}>
+            <Image source={Images.noDownloads as ImageSourcePropType} />
+            <Text style={[theme.textH2, { fontWeight: "bold" }]}>
+              No downloads yet!
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={resourcesList}
+            keyExtractor={(resourceItem) => resourceItem.id}
+            ItemSeparatorComponent={() => (
+              <View style={listViewStyles.itemSeparator} />
+            )}
+            renderItem={(data: ListRenderItemInfo<Resource>) => (
+              <DownloadItem
+                item={data.item}
+                selected={isSelected(data.item)}
+                selectable={selectable}
+                onItemPress={onItemPress}
+                onItemLongPress={onItemLongPress}
+              />
+            )}
+          />
         )}
-        renderHiddenItem={ (data) => (
-            <View style={[styles.rowBack, {backgroundColor: theme.colorNeutral2}]}>
-                <TouchableHighlight style={styles.backButtonDelete} onPress={()=>onDeleteItemTap(data.item.id)} underlayColor={theme.colorNeutral3}>
-                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                        <View style={[styles.circle, {backgroundColor: theme.colorAlert}]}>
-                            <FontAwesomeIcon size={20} color={theme.colorNeutral2} icon={"trash-alt"} />
-                        </View>
-                        <Text style={{color: theme.colorAlert}}>Remove</Text>
-                    </View>
-                </TouchableHighlight>
-            </View>
-        )}
-        rightOpenValue={-75}
-    />
+      </View>
+    </View>
+  );
 };
 
 const DownloadsStack = createStackNavigator(
-    {
-        Downloads: {
-            screen: Downloads,
-            navigationOptions: {title: "Downloads"}
-        }
-    },
-    {
-        initialRouteName: "Downloads",
-        defaultNavigationOptions: ({ screenProps } : any ) => totaraNavigationOptions({theme: screenProps.theme})
+  {
+    Downloads: {
+      screen: Downloads,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: navigation.getParam("showActions") && (
+          <TouchableOpacity
+            onPress={() => {
+              // @ts-ignore
+              navigation.emit("onCancelTap");
+            }}
+            style={{ paddingLeft: paddings.marginXL }}>
+            <Text style={TotaraTheme.textH3}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerRight: navigation.getParam("showActions") && (
+          <TouchableOpacity
+            onPress={() => {
+              // @ts-ignore
+              navigation.emit("onDeleteTap");
+            }}
+            style={{ paddingRight: paddings.marginXL }}>
+            <Text
+              style={[
+                TotaraTheme.textH3,
+                { color: TotaraTheme.colorDestructive }
+              ]}>
+              Delete
+            </Text>
+          </TouchableOpacity>
+        )
+      })
     }
+  },
+  {
+    initialRouteName: "Downloads",
+    initialRouteKey: "Downloads",
+    defaultNavigationOptions: ({ screenProps }: any) =>
+      totaraNavigationOptions({
+        theme: screenProps.theme
+      })
+  }
 );
 
 const styles = StyleSheet.create({
-    item:{
-        paddingLeft: gutter,
-        paddingTop: gutter
-    },
-    rowBack: {
-        alignItems: 'center',
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    backButtonDelete: {
-        alignItems: 'center',
-        bottom: 0,
-        top: 0,
-        right: 0,
-        width: 75,
-        justifyContent: 'center',
-        position: 'absolute',
-    },
-    circle: {
-        width: 40,
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 50/2
-    }
+  noContent: {
+    height: "100%",
+    justifyContent: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  }
 });
 
 export default DownloadsStack;

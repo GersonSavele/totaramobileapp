@@ -51,6 +51,7 @@ import {
   faBolt,
   faCheckCircle,
   faInfoCircle,
+  faAngleRight
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -90,12 +91,13 @@ const init = () => {
     faBolt,
     faChevronDown,
     faCheckCircle,
-    faInfoCircle
+    faInfoCircle,
+    faAngleRight
   );
 };
 
 const FontAwesome = {
-  init,
+  init
 };
 
 export default FontAwesome;

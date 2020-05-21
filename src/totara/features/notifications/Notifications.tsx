@@ -23,6 +23,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ImageSourcePropType
 } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
@@ -37,12 +38,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { paddings } from "@totara/theme/constants";
 import { NotificationMessage } from "@totara/types";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
+import { RootState } from "@totara/reducers";
 
 const Notifications = ({ navigation }: any) => {
   const [theme] = useContext(ThemeContext);
   const [selectable, setSelectable] = useState(false);
   const notificationList = useSelector(
-    (state) => state.notificationReducer.notifications
+    (state: RootState) => state.notificationReducer.notifications
   );
   const dispatch = useDispatch();
   const [selectedList, setSelectedList] = useState<string[]>([]);
@@ -99,9 +101,9 @@ const Notifications = ({ navigation }: any) => {
             style={{ paddingRight: 16 }}>
             <Text style={theme.textH3}>Cancel</Text>
           </TouchableOpacity>
-        ),
+        )
       },
-      key: "Notification",
+      key: "Notification"
     });
     navigation.dispatch(setParamsAction);
   };
@@ -126,7 +128,7 @@ const Notifications = ({ navigation }: any) => {
       <View
         style={[
           headerStyles.navigationHeader,
-          { backgroundColor: theme.colorSecondary1 },
+          { backgroundColor: theme.colorSecondary1 }
         ]}>
         <Text
           style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
@@ -139,7 +141,9 @@ const Notifications = ({ navigation }: any) => {
           <View>
             {notificationList.length == 0 && (
               <View style={styles.noContent}>
-                <Image source={Images.notificationBell} />
+                <Image
+                  source={Images.notificationBell as ImageSourcePropType}
+                />
                 <Text style={[theme.textH2, { fontWeight: "bold" }]}>
                   No notifications yet!
                 </Text>
@@ -153,9 +157,7 @@ const Notifications = ({ navigation }: any) => {
                   <View style={listViewStyles.itemSeparator} />
                 )}
                 data={notificationList}
-                keyExtractor={(notificationItem) =>
-                  notificationItem.id.toString()
-                }
+                keyExtractor={(notificationItem) => notificationItem.id}
                 renderItem={({ item }) => (
                   <NotificationItem
                     item={item}
@@ -180,15 +182,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-  },
+    alignItems: "center"
+  }
 });
 
 const NotificationsStack = createStackNavigator(
   {
     Notification: {
-      screen: Notifications,
-    },
+      screen: Notifications
+    }
   },
   {
     initialRouteName: "Notification",
@@ -197,8 +199,8 @@ const NotificationsStack = createStackNavigator(
       totaraNavigationOptions({
         theme: screenProps.theme,
         rightAction: navigation.getParam("rightAction"),
-        leftAction: navigation.getParam("leftAction"),
-      }),
+        leftAction: navigation.getParam("leftAction")
+      })
   }
 );
 

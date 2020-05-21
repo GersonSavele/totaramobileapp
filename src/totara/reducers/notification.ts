@@ -18,7 +18,7 @@
 import { NotificationMessage } from "@totara/types";
 
 const initialState = {
-  notifications: [],
+  notifications: [] as NotificationMessage[]
 };
 
 const notificationReducer = (state = initialState, action) => {
@@ -26,7 +26,7 @@ const notificationReducer = (state = initialState, action) => {
     case "ADD_NOTIFICATION": {
       return {
         ...state,
-        notifications: [...state.notifications, action.payload],
+        notifications: [...state.notifications, action.payload]
       };
     }
     case "READ_NOTIFICATION": {
@@ -38,7 +38,7 @@ const notificationReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        notifications: newState,
+        notifications: newState
       };
     }
     case "DELETE_NOTIFICATION": {
@@ -49,7 +49,7 @@ const notificationReducer = (state = initialState, action) => {
       );
       return {
         ...state,
-        notifications: filtered,
+        notifications: filtered
       };
     }
     // Default

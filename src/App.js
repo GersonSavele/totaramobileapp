@@ -35,24 +35,27 @@ import { AdditionalAction } from "@totara/auth/additional-actions";
 import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 import { FeatureNavigator } from "@totara/features";
-import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { config } from "@totara/lib";
 import FontAwesome from "@totara/lib/fontAwesome";
 import NotificationCenter from "@totara/lib/notificationCenter";
+import CoreResourceManager from "@totara/core/ResourceManager/ResourceManager";
+import ResourceManager from "@totara/lib/resourceManager";
 
 Sentry.init({
   dsn: config.sentryUri
 });
 
+FontAwesome.init();
+
 NotificationCenter.handleMessagesInBackground();
 
-FontAwesome.init();
+ResourceManager.resumeDownloads();
 
 const App: () => React$Node = () => {
   useEffect(() => {
-    new ResourceManager().init();
+    new CoreResourceManager().init();
   }, []);
 
   return (

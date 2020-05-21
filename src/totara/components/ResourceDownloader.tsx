@@ -6,7 +6,7 @@ import { ThemeContext, gutter } from "@totara/theme";
 import { ResourceState } from "@totara/core/ResourceManager/Resource";
 
 type ResourceDownloaderProps = {
-  mode?: ResourceState;
+  resourceState?: ResourceState;
   onPress?: () => void;
   progress: number;
   size?: number;
@@ -15,16 +15,16 @@ type ResourceDownloaderProps = {
 
 const DownloadIcon = {
   solid: require("@resources/images/tabbar/downloads_solid.png"),
-  regular: require("@resources/images/tabbar/downloads_regular.png"),
+  regular: require("@resources/images/tabbar/downloads_regular.png")
 };
 
-const RosourceDownloaderComponent = ({
-  mode,
+const ResourceDownloaderComponent = ({
+  resourceState,
   progress,
-  size,
+  size
 }: ResourceDownloaderProps) => {
   const [theme] = useContext(ThemeContext);
-  if (mode === ResourceState.Downloading) {
+  if (resourceState === ResourceState.Downloading) {
     return (
       <Progress.Circle
         progress={progress / 100}
@@ -41,19 +41,20 @@ const RosourceDownloaderComponent = ({
           lineHeight: theme.textSmall.fontSize,
           color: theme.textColorDark,
           fontWeight: "bold",
-          textAlign: "center",
+          textAlign: "center"
         }}
       />
     );
   } else {
     const iconSource =
-      mode === ResourceState.Completed
+      resourceState === ResourceState.Completed
         ? DownloadIcon.solid
         : DownloadIcon.regular;
+
     return (
       <Image
         source={iconSource}
-        style={[{ tintColor: theme.colorLink, height: size }]}
+        style={[{ tintColor: theme.colorLink, height: size, width: size }]}
         resizeMode="contain"
       />
     );
@@ -61,11 +62,11 @@ const RosourceDownloaderComponent = ({
 };
 
 const ResourceDownloader = ({
-  mode,
+  resourceState,
   onPress,
   progress,
   size,
-  style,
+  style
 }: ResourceDownloaderProps) => {
   return (
     <TouchableOpacity
@@ -74,8 +75,8 @@ const ResourceDownloader = ({
       }}
       disabled={!onPress}
       style={[{ padding: gutter, alignSelf: "center" }, style]}>
-      <RosourceDownloaderComponent
-        mode={mode}
+      <ResourceDownloaderComponent
+        resourceState={resourceState}
         size={size}
         progress={progress}
       />

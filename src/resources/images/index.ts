@@ -27,6 +27,7 @@ import selfCompletion from "./self_completion/self_completion.png";
 
 import iconBell from "./tabbar/notificationsRegular.png";
 import iconBellSolid from "./tabbar/notificationsSolid.png";
+import noDownloads from "./downloads/no_downloads.png";
 
 const Images = {
   autoCompleteTick,
@@ -36,7 +37,8 @@ const Images = {
   urlNotValid,
   browserLogin,
   courseComplete,
-  selfCompletion
+  selfCompletion,
+  noDownloads
 };
 
 const Icons = {

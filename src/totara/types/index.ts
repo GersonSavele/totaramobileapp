@@ -29,6 +29,7 @@ import { Theme } from "./Theme";
 import { UserProfile } from "./UserProfile";
 import { Certification } from "./Certification";
 import { NotificationMessage } from "./NotificationMessage";
+import { Resource } from "./Resource";
 
 export {
   LearningItem,
@@ -48,5 +49,6 @@ export {
   CourseSets,
   Certification,
   Criteria,
-  NotificationMessage
+  NotificationMessage,
+  Resource
 };
