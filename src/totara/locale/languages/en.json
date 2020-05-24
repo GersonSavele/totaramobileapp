@@ -6,6 +6,7 @@
     "version": "Version",
     "try_again": "Try again",
     "cancel": "Cancel",
+    "yes": "Yes",
     "error_unknown": "Something went wrong, please try again later.",
     "no_internet": "You are not connected to the internet"
   },
@@ -104,10 +105,15 @@
     "title": "This activity is not available unless"
   },
   "user_profile": {
-    "login_as": "Logged in as",
+    "title": "Profile",
+    "login_as": "Logged in as: {{username}}",
     "manage_section": "Manage",
     "setting_cell": "Settings",
-    "logout": "Logout"
+    "logout": {
+      "button_text":"Logout",
+      "title": "Confirmation",
+      "message": "Are you sure you want to logout?"
+    }
   },
   "course": {
     "course_overview": {

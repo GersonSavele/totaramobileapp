@@ -40,7 +40,7 @@ import { translate } from "@totara/locale";
 import { NetworkStatus as NS } from "apollo-boost";
 import { Container } from "native-base";
 import { fontSizes, margins, paddings } from "@totara/theme/constants";
-import { NetworkStatus } from "@totara/components";
+import { Loading, NetworkStatus } from "@totara/components";
 
 type ProfileViewProps = {
   profile: UserProfile;
@@ -50,7 +50,7 @@ const Profile = () => {
   const { loading, error, data, refetch, networkStatus } = useQuery(
     userOwnProfile
   );
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return <Loading />;
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
     return (
@@ -79,15 +79,15 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
 
   const confirmationLogout = (auth) =>
     Alert.alert(
-      "Confirmation",
-      "Are you sure you want to logout?",
+      translate("user_profile.logout.title"),
+      translate("user_profile.logout.message"),
       [
         {
-          text: "Cancel",
+          text: translate("general.cancel"),
           onPress: () => {},
           style: "cancel"
         },
-        { text: "Yes", onPress: () => auth.logOut() }
+        { text: translate("general.yes"), onPress: () => auth.logOut() }
       ],
       { cancelable: false }
     );
@@ -146,7 +146,7 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
                 fontSize: normalize(12)
               }
             ]}>
-            {translate("user_profile.login_as")}: {profile.username}
+            {translate("user_profile.login_as", { username: profile.username })}
           </Text>
         </View>
       </View>
@@ -200,7 +200,7 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
                         theme.textB2,
                         { margin: 0, fontSize: fontSizes.fontSizeM }
                       ]}>
-                      {translate("user_profile.logout")}
+                      {translate("user_profile.logout.button_text")}
                     </Text>
                   }
                   onPress={() => {

@@ -40,6 +40,7 @@ import Settings from "./settings";
 import Profile from "./profile";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
+import { translate } from "@totara/locale";
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
@@ -158,7 +159,10 @@ const ProfileTab = {
       initialRouteName: "Profile",
       headerLayoutPreset: "center",
       defaultNavigationOptions: ({ screenProps }) =>
-        totaraNavigationOptions({ theme: screenProps.theme, title: "Profile" })
+        totaraNavigationOptions({
+          theme: screenProps.theme,
+          title: translate("user_profile.title")
+        })
     }
   ),
   navigationOptions: {
