@@ -49,14 +49,14 @@ const FeatureNavigator = () => {
       MyLearningTab,
       DownloadsTab,
       notificationTab: NotificationsTab(),
-      ProfileTab,
+      ProfileTab
     },
     {
       initialRouteName: "MyLearningTab",
       labeled: false,
       barStyle: { backgroundColor: theme.colorNeutral1, shadowRadius: 5 },
       activeColor: theme.tabBarActiveTintColor,
-      inactiveColor: theme.tabBarInactiveTintColor,
+      inactiveColor: theme.tabBarInactiveTintColor
     }
   );
 };
@@ -73,8 +73,8 @@ const MyLearningTab = {
             title: navigation.getParam("title"),
             opacity: navigation.getParam(
               "opacity"
-            ) /*rightIcon: faCloudDownloadAlt*/,
-          }), //TODO: MOB-373 hiding it for beta release
+            ) /*rightIcon: faCloudDownloadAlt*/
+          }) //TODO: MOB-373 hiding it for beta release
       },
       CourseDetails: {
         screen: CourseDetails,
@@ -82,8 +82,8 @@ const MyLearningTab = {
           totaraNavigationOptions({
             theme: screenProps!.theme,
             title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity"),
-          }),
+            opacity: navigation.getParam("opacity")
+          })
       },
       ProgramDetails: {
         screen: ProgramDetails,
@@ -99,8 +99,8 @@ const MyLearningTab = {
               />
             ),
             title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity"),
-          }),
+            opacity: navigation.getParam("opacity")
+          })
       },
       CertificationDetails: {
         screen: CertificationDetails,
@@ -116,14 +116,14 @@ const MyLearningTab = {
               />
             ),
             title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity"),
-          }),
-      },
+            opacity: navigation.getParam("opacity")
+          })
+      }
     },
     {
       initialRouteName: "MyLearning",
       defaultNavigationOptions: ({ screenProps }) =>
-        totaraNavigationOptions({ theme: screenProps.theme }),
+        totaraNavigationOptions({ theme: screenProps.theme })
     }
   ),
   navigationOptions: {
@@ -132,8 +132,8 @@ const MyLearningTab = {
         tabIconProps.focused,
         tabIconProps.tintColor,
         tabBarIconImages.current_learning
-      ),
-  },
+      )
+  }
 };
 
 const DownloadsTab = {
@@ -144,20 +144,21 @@ const DownloadsTab = {
         tabIconProps.focused,
         tabIconProps.tintColor,
         tabBarIconImages.downloads
-      ),
-  },
+      )
+  }
 };
 
 const ProfileTab = {
   screen: createStackNavigator(
     {
       Profile: Profile,
-      Settings: Settings,
+      Settings: Settings
     },
     {
       initialRouteName: "Profile",
+      headerLayoutPreset: "center",
       defaultNavigationOptions: ({ screenProps }) =>
-        totaraNavigationOptions({ theme: screenProps.theme }),
+        totaraNavigationOptions({ theme: screenProps.theme, title: "Profile" })
     }
   ),
   navigationOptions: {
@@ -166,8 +167,8 @@ const ProfileTab = {
         tabIconProps.focused,
         tabIconProps.tintColor,
         tabBarIconImages.profile
-      ),
-  },
+      )
+  }
 };
 
 const NotificationsTab = () => {
@@ -183,9 +184,9 @@ const NotificationsTab = () => {
         NotificationBell({
           active: tabIconProps.focused,
           tintColor: tabIconProps.tintColor,
-          counting: 0,
-        }),
-    },
+          counting: 0
+        })
+    }
   };
 };
 
@@ -215,16 +216,16 @@ const tabBarIconImages: {
 } = {
   current_learning: {
     solid: require("@resources/images/tabbar/current_learning_solid.png"),
-    regular: require("@resources/images/tabbar/current_learning_regular.png"),
+    regular: require("@resources/images/tabbar/current_learning_regular.png")
   },
   downloads: {
     solid: require("@resources/images/tabbar/downloads_solid.png"),
-    regular: require("@resources/images/tabbar/downloads_regular.png"),
+    regular: require("@resources/images/tabbar/downloads_regular.png")
   },
   profile: {
     solid: require("@resources/images/tabbar/profile_solid.png"),
-    regular: require("@resources/images/tabbar/profile_regular.png"),
-  },
+    regular: require("@resources/images/tabbar/profile_regular.png")
+  }
 };
 
 export default FeatureNavigator;
