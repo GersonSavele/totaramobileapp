@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 import { gutter } from "./";
 import { margins } from "./constants";
@@ -21,25 +21,88 @@ import { margins } from "./constants";
 const scormSummaryStyles = StyleSheet.create({
   expanded: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: "column"
   },
   sectionBreak: {
     flexDirection: "row",
     paddingTop: margins.marginS,
     paddingBottom: margins.marginS,
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   sectionField: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: margins.marginS,
+    paddingVertical: margins.marginS
   },
   attemptContainer: {
     paddingHorizontal: gutter,
     paddingVertical: margins.marginS,
     flexDirection: "column",
-    alignItems: "stretch",
-  },
+    alignItems: "stretch"
+  }
 });
 
-export { scormSummaryStyles };
+const scormFeedbackStyles = StyleSheet.create({
+  transparentViewStyle: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)"
+  },
+  wrapper: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
+  resultOuterWrapper: {
+    flex: 1,
+    height: Dimensions.get("window").height * 0.7,
+    width: Dimensions.get("window").width * 0.7,
+    borderRadius: 4,
+    marginHorizontal: "8%",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignSelf: "center",
+    overflow: "hidden"
+  },
+  resultInnerWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    alignSelf: "center",
+    width: "100%",
+    overflow: "hidden"
+  },
+  resultContainer: {
+    width: 185,
+    height: 185,
+    borderRadius: 92.5,
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    alignSelf: "center"
+  },
+  resultStatusImage: {
+    alignSelf: "center",
+    height: "50%",
+    width: "50%",
+    resizeMode: "contain"
+  },
+  resultTitle: {
+    textAlign: "center",
+    fontWeight: "600"
+  },
+  score: {
+    textAlign: "center"
+  },
+  actionWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: margins.margin3XL
+  },
+  actionContainer: {
+    alignSelf: "center",
+    justifyContent: "space-between",
+    alignContent: "space-between"
+  }
+});
+export { scormSummaryStyles, scormFeedbackStyles };

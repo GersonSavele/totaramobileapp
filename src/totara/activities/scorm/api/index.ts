@@ -99,4 +99,23 @@ const scormActivitiesRecordsQuery = gql`
   }
 `;
 
-export { scormQuery, scormActivitiesRecordsQuery };
+const scormFeedbackQuery = gql`
+  query totara_mobile_scorm_current_status($scormid: core_id!) {
+    scorm: mod_scorm_current_status(scormid: $scormid) {
+      maxattempt
+      attempts_current
+      completion
+      completionview
+      completionstatusrequired
+      completionscorerequired
+      completionstatusallscos
+      completionstatus
+      gradefinal
+      grademax
+      gradepercentage
+      __typename
+    }
+  }
+`;
+
+export { scormQuery, scormFeedbackQuery, scormActivitiesRecordsQuery };

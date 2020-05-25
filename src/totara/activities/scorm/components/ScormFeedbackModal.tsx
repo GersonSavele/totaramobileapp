@@ -19,21 +19,14 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React, { useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Modal,
-  Image,
-  Dimensions,
-  Platform
-} from "react-native";
+import { View, Text, Modal, Image } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { ThemeContext } from "@totara/theme";
 import { PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { margins } from "@totara/theme/constants";
+import { scormFeedbackStyles } from "@totara/theme/scorm";
 
 type SCORMFeedbackProps = {
   score?: string;
@@ -53,33 +46,33 @@ const ScormFeedbackModal = ({
   const [theme] = useContext(ThemeContext);
   return (
     <Modal animationType="slide" transparent>
-      <View style={stylesScormFeedback.transparentViewStyle}>
+      <View style={scormFeedbackStyles.transparentViewStyle}>
         <SafeAreaView />
-        <View style={stylesScormFeedback.wrapper}>
+        <View style={scormFeedbackStyles.wrapper}>
           <View
             style={{
-              ...stylesScormFeedback.resultOuterWrapper,
+              ...scormFeedbackStyles.resultOuterWrapper,
               backgroundColor: theme.colorNeutral1
             }}>
             <View
               style={{
-                ...stylesScormFeedback.resultInnerWrapper,
+                ...scormFeedbackStyles.resultInnerWrapper,
                 backgroundColor: theme.colorNeutral3,
                 borderBottomStartRadius:
-                  stylesScormFeedback.resultOuterWrapper.width * 2,
+                  scormFeedbackStyles.resultOuterWrapper.width * 2,
                 borderBottomEndRadius:
-                  stylesScormFeedback.resultOuterWrapper.width * 2,
+                  scormFeedbackStyles.resultOuterWrapper.width * 2,
                 transform: [{ scaleX: 2 }]
               }}>
               <View
                 style={{
-                  ...stylesScormFeedback.resultContainer,
+                  ...scormFeedbackStyles.resultContainer,
                   backgroundColor: theme.colorNeutral7,
                   transform: [{ scaleX: 0.5 }]
                 }}>
                 {!method && (
                   <Image
-                    style={stylesScormFeedback.resultStatusImage}
+                    style={scormFeedbackStyles.resultStatusImage}
                     source={require("@resources/images/success_tick/success_tick.png")}
                   />
                 )}
@@ -88,7 +81,7 @@ const ScormFeedbackModal = ({
                     <Text
                       style={{
                         ...theme.textB3,
-                        ...stylesScormFeedback.resultTitle,
+                        ...scormFeedbackStyles.resultTitle,
                         color: theme.textColorLight
                       }}>
                       {translate("scorm.feedback.grade_title")}
@@ -96,7 +89,7 @@ const ScormFeedbackModal = ({
                     <Text
                       style={{
                         ...theme.textH1,
-                        ...stylesScormFeedback.score,
+                        ...scormFeedbackStyles.score,
                         color: theme.textColorLight,
                         marginVertical: margins.marginS
                       }}>
@@ -106,7 +99,7 @@ const ScormFeedbackModal = ({
                 )}
               </View>
             </View>
-            <View style={stylesScormFeedback.actionWrapper}>
+            <View style={scormFeedbackStyles.actionWrapper}>
               <Text
                 style={{
                   ...theme.textH4,
@@ -115,7 +108,7 @@ const ScormFeedbackModal = ({
                 }}>
                 {translate("scorm.feedback.action_info")}
               </Text>
-              <View style={stylesScormFeedback.actionContainer}>
+              <View style={scormFeedbackStyles.actionContainer}>
                 <PrimaryButton
                   onPress={onClose}
                   text={translate("scorm.feedback.back")}
@@ -134,69 +127,5 @@ const ScormFeedbackModal = ({
     </Modal>
   );
 };
-
-const stylesScormFeedback = StyleSheet.create({
-  transparentViewStyle: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)"
-  },
-  wrapper: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around"
-  },
-  resultOuterWrapper: {
-    flex: 1,
-    height: Dimensions.get("window").height * 0.7,
-    width: Dimensions.get("window").width * 0.7,
-    borderRadius: 4,
-    marginHorizontal: "8%",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignSelf: "center",
-    overflow: "hidden"
-  },
-  resultInnerWrapper: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    alignSelf: "center",
-    width: "100%",
-    overflow: "hidden"
-  },
-  resultContainer: {
-    width: 185,
-    height: 185,
-    borderRadius: 92.5,
-    justifyContent: "center",
-    flexDirection: "column",
-    alignItems: "center",
-    alignSelf: "center"
-  },
-  resultStatusImage: {
-    alignSelf: "center",
-    height: "50%",
-    width: "50%",
-    resizeMode: "contain"
-  },
-  resultTitle: {
-    textAlign: "center",
-    fontWeight: "600"
-  },
-  score: {
-    textAlign: "center"
-  },
-  actionWrapper: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: margins.margin3XL
-  },
-  actionContainer: {
-    alignSelf: "center",
-    justifyContent: "space-between",
-    alignContent: "space-between"
-  }
-});
 
 export default ScormFeedbackModal;
