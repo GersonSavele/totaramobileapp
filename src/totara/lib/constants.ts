@@ -77,12 +77,6 @@ enum scormSummarySection {
   attempts
 }
 
-enum connectivity {
-  initial = 0,
-  online,
-  offline
-}
-
 export {
   DEVICE_REGISTRATION,
   WEBVIEW_SECRET,

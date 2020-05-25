@@ -37,8 +37,6 @@ import { getScormAttemptData } from "./StorageHelper";
 import { translate } from "i18n-js";
 import { useApolloClient } from "@apollo/react-hooks";
 
-import { scormActivitiesRecordsQuery } from "../api";
-import { gql } from "apollo-boost";
 import { saveScormActivityData } from "@totara/lib/scorm";
 
 type Props = {

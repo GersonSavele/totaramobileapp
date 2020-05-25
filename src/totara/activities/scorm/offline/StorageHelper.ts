@@ -21,8 +21,6 @@
 
 import AsyncStorage from "@react-native-community/async-storage";
 import { get } from "lodash";
-import { useApolloClient } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 
 const ScormDataPre = "@TOTARAMOBILE_SCORM";
 const KeyScormPackageData = `${ScormDataPre}_API_DATA`;

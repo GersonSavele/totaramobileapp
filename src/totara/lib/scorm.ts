@@ -33,10 +33,8 @@ import { offlineScormServerRoot } from "@totara/activities/scorm/offline";
 import { showMessage } from "./tools";
 import { scormZipPackagePath } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
-import { getScormData } from "@totara/activities/scorm/offline/StorageHelper";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
-import { useApolloClient } from "@apollo/react-hooks";
-import { set, setWith, get } from "lodash";
+import { setWith, get } from "lodash";
 
 /**
  * this formats the attempts of the SCORM bundle
@@ -189,6 +187,7 @@ const updateScormBundleWithOfflineAttemptsOld = (
 };
 */
 
+//TODO - may need to continue work on this
 const getOfflineAttemptsReport = (
   cmiList: any,
   maxgrade: number,

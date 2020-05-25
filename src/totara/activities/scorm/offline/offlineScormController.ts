@@ -21,20 +21,9 @@
 
 import { get, values } from "lodash";
 
-import {
-  Grade,
-  AttemptGrade,
-  ScormActivityResult,
-  ScormBundle
-} from "@totara/types/Scorm";
-import {
-  setScormPackageData,
-  getScormPackageData,
-  getAllCommits,
-  clearCommit
-} from "./StorageHelper";
-import { scormLessonStatus, SECONDS_FORMAT } from "@totara/lib/constants";
-import moment from "moment";
+import { Grade, AttemptGrade, ScormActivityResult } from "@totara/types/Scorm";
+import { getAllCommits, clearCommit } from "./StorageHelper";
+import { scormLessonStatus } from "@totara/lib/constants";
 import { scormActivitiesRecordsQuery } from "../api";
 
 const getOfflineScormPackageName = (scormId: string) =>
@@ -148,35 +137,6 @@ const calculatedAttemptsGrade = (
   }
 };
 
-/* --------- Need to remove -------------------
-const syncOfflineScormBundleOld = (
-  scormId: string,
-  data: any
-): Promise<void> => {
-  return getScormPackageData(scormId).then((storedData) => {
-    let newData = {
-      ...data,
-      lastsynced: parseInt(moment().format(SECONDS_FORMAT))
-    };
-    if (storedData) {
-      newData = {
-        ...storedData,
-        lastsynced: newData.lastsynced
-      } as ScormBundle;
-
-      if (data.scormPackage) {
-        newData.scormPackage = data.scormPackage;
-      }
-      return setScormPackageData(scormId, newData);
-    } else {
-      if (newData && newData.scormPackage && newData.scormPackage.path) {
-        return setScormPackageData(scormId, newData);
-      }
-    }
-  });
-};
-*/
-
 const syncOfflineScormBundle = (scormId: string, data: any, client: any) => {
   let newData = { [scormId]: data };
   try {
@@ -200,7 +160,6 @@ const syncOfflineScormBundle = (scormId: string, data: any, client: any) => {
   });
   return newData[scormId];
 };
-// const writeScormBundlesToCache = (scormBundlesData: any, client: any) => {};
 
 const getOfflineScormCommits = () => {
   return getAllCommits().then((storedData) => {
