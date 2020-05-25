@@ -29,7 +29,6 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./totara/store";
 import { useDispatch } from "react-redux";
 
-import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { AuthProvider } from "@totara/core/AuthProvider";
 import { AuthFlow } from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
@@ -44,7 +43,7 @@ import FontAwesome from "@totara/lib/fontAwesome";
 import NotificationCenter from "@totara/lib/notificationCenter";
 
 Sentry.init({
-  dsn: config.sentryUri,
+  dsn: config.sentryUri
 });
 
 NotificationCenter.handleMessagesInBackground();
@@ -61,13 +60,11 @@ const App: () => React$Node = () => {
       <ThemeProvider>
         <SafeAreaProvider>
           <AuthFlow>
-            <ActivitySheetWrapper>
-              <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                  <AppContainer />
-                </PersistGate>
-              </Provider>
-            </ActivitySheetWrapper>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistor}>
+                <AppContainer />
+              </PersistGate>
+            </Provider>
             <AdditionalAction />
             <AppModal />
             <AttemptSynchronizer />

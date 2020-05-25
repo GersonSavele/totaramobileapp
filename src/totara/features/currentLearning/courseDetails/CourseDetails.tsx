@@ -24,7 +24,7 @@ import { StyleSheet, View } from "react-native";
 import {
   withNavigation,
   NavigationParams,
-  NavigationInjectedProps,
+  NavigationInjectedProps
 } from "react-navigation";
 import { GeneralErrorModal } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
@@ -37,6 +37,7 @@ import { ThemeContext } from "@totara/theme";
 import { HeaderView } from "@totara/components/currentLearning";
 import { CourseCompletionModal } from "@totara/components/currentLearning";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/constants";
+import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 
 type CourseDetailsProps = {
   course: Course;
@@ -47,12 +48,16 @@ type CourseDetailsProps = {
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   const courseId = navigation.getParam("courseId");
   const { loading, error, data, refetch } = useQuery(coreCourse, {
-    variables: { courseid: courseId },
+    variables: { courseid: courseId }
   });
   if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
-    return <CourseDetailsComponent course={data.course} refetch={refetch} />;
+    return (
+      <ActivitySheetWrapper>
+        <CourseDetailsComponent course={data.course} refetch={refetch} />
+      </ActivitySheetWrapper>
+    );
   }
 };
 
@@ -83,7 +88,7 @@ const CourseDetailsComponent = withNavigation(
           <View
             style={[
               styles.activitiesContainer,
-              { backgroundColor: theme.colorNeutral1 },
+              { backgroundColor: theme.colorNeutral1 }
             ]}>
             {!showOverview ? (
               <Activities sections={course.sections} refetch={refetch} />
@@ -108,12 +113,12 @@ const CourseDetailsComponent = withNavigation(
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   activitiesContainer: {
     flex: 3,
-    padding: 0,
-  },
+    padding: 0
+  }
 });
 
 export default CourseDetails;
