@@ -78,9 +78,9 @@ const coreCourse = gql`
 `;
 
 const courseSelfComplete = gql`
-mutation totara_mobile_completion_course_self_complete($courseid: core_id!) {
+  mutation totara_mobile_completion_course_self_complete($courseid: core_id!) {
     core_completion_course_self_complete(courseid: $courseid)
-  }  
+  }
 `;
 
 export { coreCourse, courseSelfComplete };

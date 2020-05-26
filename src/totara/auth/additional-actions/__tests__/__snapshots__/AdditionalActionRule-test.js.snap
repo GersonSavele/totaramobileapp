@@ -2,6 +2,7 @@
 
 exports[`AdditionalActionRule, Apollo MockedProvider should test three state such as loading, final and error  Test result : Set mock-error response and return Error UI 1`] = `
 <Modal
+  animationType="fade"
   hardwareAccelerated={false}
   visible={true}
 >

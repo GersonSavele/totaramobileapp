@@ -125,10 +125,19 @@
     "course_overview_grade": {
       "title": "Your grade overview"
     },
+    "course_overview_mark_as_complete": {
+      "title": "Mark as complete"
+    },
     "course_complete": {
       "title": "Awesome!",
       "description": "You have successfully completed\nthe course.",
       "button_title": "Continue learning"
+    },
+    "course_complete_confirmation": {
+      "title": "Confirm",
+      "description": "Are you sure you want to mark this\ncourse as complete?",
+      "primary_button_title": "Mark as complete",
+      "tertiary_button_title": "cancel"
     },
     "course_criteria": {
       "title": "Course criteria"

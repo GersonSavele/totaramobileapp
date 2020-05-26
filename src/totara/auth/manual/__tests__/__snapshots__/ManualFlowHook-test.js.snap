@@ -2,6 +2,7 @@
 
 exports[`manualFlowReducer should set flowStep to browser login and take screen-shot in Information modal 1`] = `
 <Modal
+  animationType="fade"
   hardwareAccelerated={false}
   visible={true}
 >

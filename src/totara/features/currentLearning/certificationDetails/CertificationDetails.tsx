@@ -28,7 +28,7 @@ import { NavigationParams, NavigationInjectedProps } from "react-navigation";
 import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
 import { CourseList } from "../courseList";
-import OverviewDetails from "../overview/OverviewDetails";
+import OverviewDetails from "../overview/Details";
 import { Certification } from "@totara/types";
 //import { coreCertification } from "./api";
 import { HeaderView } from "@totara/components/currentLearning";

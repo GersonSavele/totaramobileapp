@@ -30,7 +30,7 @@ import { normalize } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
 import { CourseList } from "../courseList";
-import OverviewDetails from "../overview/OverviewDetails";
+import OverviewDetails from "../overview/Details";
 import { Program } from "@totara/types";
 import { HeaderView } from "@totara/components/currentLearning";
 // import { coreProgram } from "./api";

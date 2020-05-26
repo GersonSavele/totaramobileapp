@@ -25,9 +25,4 @@ import HeaderView from "./HeaderView";
 import CriteriaSheet from "./CriteriaSheet";
 import ParallaxScrollView from "./ParallaxScrollView";
 import CourseCompletionModal from "./CourseCompletionModal";
-export {
-  HeaderView,
-  CriteriaSheet,
-  ParallaxScrollView,
-  CourseCompletionModal,
-};
+export { HeaderView, CriteriaSheet, ParallaxScrollView, CourseCompletionModal };

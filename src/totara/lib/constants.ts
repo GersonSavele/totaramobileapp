@@ -84,6 +84,17 @@ enum completionStatus {
   unknown = "unknown"
 }
 
+enum courseCriteria {
+  selfComplete = "Self completion"
+}
+
+enum StatusKey {
+  completeViaRpl = "completeviarpl",
+  complete = "complete",
+  inProgress = "inprogress",
+  notYetStarted = "notyetstarted"
+}
+
 enum scormActivityType {
   summary,
   offline,
@@ -121,5 +132,7 @@ export {
   completionTrack,
   completionStatus,
   learningItemEnum,
-  itemToRouteMap
+  itemToRouteMap,
+  courseCriteria,
+  StatusKey
 };

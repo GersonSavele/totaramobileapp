@@ -31,25 +31,39 @@ type Params = {
   title?: string;
   description?: string;
   imageType: string;
-  children? : ReactNode;
+  children?: ReactNode;
   visible: boolean;
-  transparent? : boolean
+  transparent?: boolean;
 };
 
-const InfoModal = ({ title, description, imageType, children, transparent, ...rest }: Params) => {
-  
+const InfoModal = ({
+  title,
+  description,
+  imageType,
+  children,
+  transparent,
+  ...rest
+}: Params) => {
   const [theme] = useContext(ThemeContext);
-  
+
   return (
-    <Modal {...rest} transparent={transparent}>
+    <Modal {...rest} transparent={transparent} animationType="fade">
       <View style={styles.transparentViewStyle}>
         <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
-          <View style={[styles.containerStyle, { backgroundColor: theme.colorNeutral1 }]}>
+          <View
+            style={[
+              styles.containerStyle,
+              { backgroundColor: theme.colorNeutral1 }
+            ]}>
             <View style={styles.sectionContainer}>
               <ModalImageView imageType={imageType} />
             </View>
             <View style={styles.sectionContainer}>
-              <ModalText text={title} fontSize={theme.textH2.fontSize} fontWeight={theme.textH2.fontWeight} />
+              <ModalText
+                text={title}
+                fontSize={theme.textH2.fontSize}
+                fontWeight={theme.textH2.fontWeight}
+              />
               <ModalText text={description} />
             </View>
             <View style={styles.actionContainer}>{children}</View>
@@ -79,7 +93,7 @@ const styles = StyleSheet.create({
   sectionContainer: {
     marginVertical: resizeByScreenSize(8, 8, 16, 16),
     marginHorizontal: resizeByScreenSize(16, 24, 32, 32),
-    alignItems:"center"
+    alignItems: "center"
   },
   actionContainer: {
     marginVertical: resizeByScreenSize(8, 8, 16, 16),

@@ -20,7 +20,6 @@
 import { LearningItem, Section } from "./LearningItem";
 import { Activity, ActivityType, ScormActivity } from "./Activity";
 import { Course, CourseSets } from "./Course";
-import { StatusKey } from "./Completion";
 import { Criteria } from "./Criteria";
 import { Program } from "./Program";
 import { Status, LearningStatus } from "./LearningStatus";
@@ -49,6 +48,5 @@ export {
   CourseSets,
   Certification,
   Criteria,
-  StatusKey,
   NotificationMessage
 };

@@ -2,6 +2,7 @@
 
 exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Once render, it will return child component 1`] = `
 <Modal
+  animationType="fade"
   hardwareAccelerated={false}
   visible={true}
 >
@@ -221,6 +222,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
 
 exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Render loading state initially and return no component 1`] = `
 <Modal
+  animationType="fade"
   hardwareAccelerated={false}
   visible={true}
 >
@@ -440,6 +442,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
 
 exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Set mock-error response and return Error UI 1`] = `
 <Modal
+  animationType="fade"
   hardwareAccelerated={false}
   visible={true}
 >
@@ -659,6 +662,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
 
 exports[`Testing: Course manual completion Test result : course complete and loading action modal to confirm 1`] = `
 <Modal
+  animationType="fade"
   hardwareAccelerated={false}
   transparent={true}
   visible={true}

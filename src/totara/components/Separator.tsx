@@ -21,7 +21,7 @@ import { ThemeContext } from "@totara/theme";
 import { AppliedTheme } from "@totara/theme/Theme";
 import { margins } from "@totara/theme/constants";
 
-const ListSeparator = () => {
+const Separator = () => {
   const [theme] = useContext(ThemeContext);
   return <View style={activitySeparateView(theme)}></View>;
 };
@@ -29,7 +29,7 @@ const ListSeparator = () => {
 const activitySeparateView = (theme: AppliedTheme) => {
   return {
     ...styles.activityBodySeparator,
-    backgroundColor: theme.colorNeutral8,
+    backgroundColor: theme.colorNeutral8
   };
 };
 
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
   activityBodySeparator: {
     height: 0.5,
     opacity: 0.2,
-    marginHorizontal: margins.marginL,
-  },
+    marginHorizontal: margins.marginL
+  }
 });
 
-export default ListSeparator;
+export default Separator;

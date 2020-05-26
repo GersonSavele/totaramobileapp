@@ -31,13 +31,13 @@ import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
-import { Course, StatusKey } from "@totara/types";
-import OverviewDetails from "../overview/OverviewDetails";
+import { Course } from "@totara/types";
+import OverviewDetails from "../overview/Details";
 import { ThemeContext } from "@totara/theme";
 import { HeaderView } from "@totara/components/currentLearning";
 import { CourseCompletionModal } from "@totara/components/currentLearning";
-import { NAVIGATION_MY_LEARNING } from "@totara/lib/constants";
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
+import { NAVIGATION_MY_LEARNING, StatusKey } from "@totara/lib/constants";
 
 type CourseDetailsProps = {
   course: Course;
@@ -98,6 +98,7 @@ const CourseDetailsComponent = withNavigation(
                 summaryTypeTitle={translate(
                   "course.course_overview.course_summery"
                 )}
+                onclickContinueLearning={onClose}
               />
             )}
           </View>

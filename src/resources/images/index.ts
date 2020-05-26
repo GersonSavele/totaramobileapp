@@ -19,6 +19,11 @@
 import autoCompleteTick from "./auto_complete_tick/auto_complete_tick.png";
 import notificationBell from "./notifications/notificationsBell.png";
 import generalError from "./general_error/general_error.png";
+import completeAction from "./complete_action/complete_action.png";
+import urlNotValid from "./url_not_valid/url_not_valid.png";
+import browserLogin from "./browser_login/browser_login.png";
+import courseComplete from "./course_complete/course_complete.png";
+import selfCompletion from "./self_completion/self_completion.png";
 
 import iconBell from "./tabbar/notificationsRegular.png";
 import iconBellSolid from "./tabbar/notificationsSolid.png";
@@ -27,11 +32,16 @@ const Images = {
   autoCompleteTick,
   notificationBell,
   generalError,
+  completeAction,
+  urlNotValid,
+  browserLogin,
+  courseComplete,
+  selfCompletion
 };
 
 const Icons = {
   iconBell,
-  iconBellSolid,
+  iconBellSolid
 };
 
 export { Images, Icons };

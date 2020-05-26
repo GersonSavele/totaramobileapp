@@ -38,11 +38,11 @@ import {
   unLockActivityTextWrap,
   lockActivityTextWrap,
   activityBodyWrap,
-  styles,
+  styles
 } from "@totara/theme/activities";
 import { ThemeContext } from "@totara/theme";
 import { Section, Activity, ActivityType } from "@totara/types";
-import { ListSeparator } from "@totara/components";
+import { Separator } from "@totara/components";
 import { translate } from "@totara/locale";
 import { completionStatus } from "@totara/lib/constants";
 
@@ -95,8 +95,7 @@ const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
       <TouchableOpacity
         onPress={() => {
           setShow(!show);
-        }}
-      >
+        }}>
         {available === true ? (
           <ExpandableSection show={show} title={title} />
         ) : (
@@ -200,20 +199,17 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
                 onPress={() => {
                   setCurrentActivity(item as ActivityType);
                   setOnClose(refetch!);
-                }}
-              >
+                }}>
                 <View style={styles.activityBodyContainer}>
                   <ContentIconWrapper
                     completion={item.completion}
                     status={item.completionstatus}
                     theme={theme}
-                    available={item.available}
-                  ></ContentIconWrapper>
+                    available={item.available}></ContentIconWrapper>
                   <View style={styles.activityContainer}>
                     <Text
                       numberOfLines={1}
-                      style={unLockActivityTextWrap(theme)}
-                    >
+                      style={unLockActivityTextWrap(theme)}>
                       {item.name.trim()}
                     </Text>
                   </View>
@@ -222,7 +218,7 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
             );
           }}
         </ActivitySheetContext.Consumer>
-        <ListSeparator />
+        <Separator />
       </View>
     </View>
   );
@@ -242,8 +238,7 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
               completion={item.completion}
               status={item.completionstatus}
               theme={theme}
-              available={item.available}
-            ></ContentIconWrapper>
+              available={item.available}></ContentIconWrapper>
             <View style={styles.activityContainer}>
               <Text numberOfLines={1} style={lockActivityTextWrap(theme)}>
                 {item.name}
@@ -259,7 +254,7 @@ const ActivityLock = ({ item, theme }: ActivityProps) => {
             onClose={onClose}
           />
         )}
-        <ListSeparator />
+        <Separator />
       </View>
     </View>
   );
