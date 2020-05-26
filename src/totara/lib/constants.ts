@@ -54,10 +54,7 @@ enum learningItemEnum {
   Certification = "certification"
 }
 
-/**
- * Navigation screen ids, based on how we name the route ids
- * This is based on data from the server side
- */
+// Navigation screen ids, based on how we name the route ids
 const NAVIGATION_COURSE_DETAILS = "CourseDetails";
 const NAVIGATION_COURSE_GROUP_DETAILS = "CourseGroupDetails"; //either LearningItemEnum.Program or LearningItemEnum.Certificate
 
