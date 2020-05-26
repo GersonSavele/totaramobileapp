@@ -186,7 +186,7 @@
       "sorry": "Sorry!",
       "back": "Go back",
       "attempt_again": "Attempt again",
-      "action_info": "Would you like to go back to the course or do you want to try again?"
+      "action_info": "Would you like to go back or do you want to try again?"
     },
     "attempts": {
       "title": "All attempts grades",

@@ -90,8 +90,7 @@ const ScormFeedbackModal = ({
                       style={{
                         ...theme.textH1,
                         ...scormFeedbackStyles.score,
-                        color: theme.textColorLight,
-                        marginVertical: margins.marginS
+                        color: theme.textColorLight
                       }}>
                       {score ? score : ""}
                     </Text>

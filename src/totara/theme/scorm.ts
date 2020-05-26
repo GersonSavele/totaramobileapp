@@ -76,15 +76,15 @@ const scormFeedbackStyles = StyleSheet.create({
     width: 185,
     height: 185,
     borderRadius: 92.5,
-    justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
-    alignSelf: "center"
+    alignSelf: "center",
+    justifyContent: "center"
   },
   resultStatusImage: {
     alignSelf: "center",
-    height: "50%",
-    width: "50%",
+    height: "40%",
+    width: "40%",
     resizeMode: "contain"
   },
   resultTitle: {
