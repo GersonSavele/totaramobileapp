@@ -37,7 +37,7 @@ import { ThemeContext } from "@totara/theme";
 import { HeaderView } from "@totara/components/currentLearning";
 import { CourseCompletionModal } from "@totara/components/currentLearning";
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
-import { NAVIGATION_MY_LEARNING, StatusKey } from "@totara/lib/constants";
+import { StatusKey } from "@totara/lib/constants";
 
 type CourseDetailsProps = {
   course: Course;
@@ -68,7 +68,7 @@ const CourseDetailsComponent = withNavigation(
 
     const onClose = () => {
       setShowCompletionModal(!showCompletionModal);
-      navigation.navigate(NAVIGATION_MY_LEARNING);
+      navigation.goBack();
     };
     const onSwitchTab = () => {
       setShowOverview(!showOverview);

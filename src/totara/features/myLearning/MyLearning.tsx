@@ -18,6 +18,7 @@ import { Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
+import { NavigationEvents } from "react-navigation";
 // @ts-ignore no types
 import LearningItemCarousel from "./LearningItemCarousel";
 import NoCurrentLearning from "./NoCurrentLearning";
@@ -41,6 +42,7 @@ const MyLearning = () => {
     const currentLearning = data.currentLearning;
     return (
       <View style={theme.viewContainer}>
+        <NavigationEvents onWillFocus={pullToRefresh} />
         <View style={viewStyles.headerViewWrap}>
           <Text style={viewStyles.headerViewTitleWrap}>
             {translate("my-learning.action_primary")}
@@ -50,7 +52,7 @@ const MyLearning = () => {
               count:
                 currentLearning && currentLearning.length
                   ? currentLearning.length
-                  : 0,
+                  : 0
             })}
           </Text>
         </View>
