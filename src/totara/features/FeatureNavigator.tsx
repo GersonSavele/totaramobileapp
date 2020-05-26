@@ -22,6 +22,10 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 import { NotificationBell, TouchableIcon } from "@totara/components";
+import {
+  NAVIGATION_COURSE_DETAILS,
+  NAVIGATION_COURSE_GROUP_DETAILS
+} from "@totara/lib/constants";
 import { ThemeContext } from "@totara/theme";
 import { header } from "@totara/theme/constants";
 
@@ -77,7 +81,7 @@ const MyLearningTab = {
             ) /*rightIcon: faCloudDownloadAlt*/
           }) //TODO: MOB-373 hiding it for beta release
       },
-      CourseDetails: {
+      [NAVIGATION_COURSE_DETAILS]: {
         screen: CourseDetails,
         navigationOptions: ({ screenProps, navigation }) =>
           totaraNavigationOptions({
@@ -86,7 +90,7 @@ const MyLearningTab = {
             opacity: navigation.getParam("opacity")
           })
       },
-      ProgramDetails: {
+      [NAVIGATION_COURSE_GROUP_DETAILS]: {
         screen: ProgramDetails,
         navigationOptions: ({ screenProps, navigation }) =>
           totaraNavigationOptions({

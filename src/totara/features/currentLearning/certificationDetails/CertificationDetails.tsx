@@ -43,7 +43,7 @@ type CertificationProps = {
 //To do : - implementing GraphQL query once api's has been done should remove here
 
 // const CertificationDetails = ({ navigation }: NavigationInjectedProps) => {
-//   const programId = navigation.getParam("programId");
+//   const programId = navigation.getParam("targetId");
 //   const { loading, error, data } = useQuery(coreCertification, {
 //     variables: { programId: programId }
 //   });
@@ -67,7 +67,7 @@ const CertificationDetails = ({ navigation }: NavigationInjectedProps) => {
 
 const CertificationDetailsComponent = ({
   navigation,
-  certification,
+  certification
 }: CertificationProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
@@ -82,17 +82,14 @@ const CertificationDetailsComponent = ({
       tabBarRight={translate("certificate-details.courses")}
       onPress={onSwitchTab}
       showOverview={showOverview}
-      badgeTitle="Certificate"
-    >
+      badgeTitle="Certificate">
       <View
-        style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
-      >
+        style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}>
         <View
           style={[
             styles.activitiesContainer,
-            { backgroundColor: theme.colorNeutral1 },
-          ]}
-        >
+            { backgroundColor: theme.colorNeutral1 }
+          ]}>
           {!showOverview ? (
             <CourseList program={certification} navigation={navigation} />
           ) : (
@@ -109,12 +106,12 @@ const CertificationDetailsComponent = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   activitiesContainer: {
     flex: 3,
-    padding: 0,
-  },
+    padding: 0
+  }
 });
 
 export default CertificationDetails;

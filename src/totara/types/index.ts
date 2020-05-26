@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { LearningItem, LearningItemType, Section } from "./LearningItem";
+import { LearningItem, Section } from "./LearningItem";
 import { Activity, ActivityType, ScormActivity } from "./Activity";
 import { Course, CourseSets } from "./Course";
 import { StatusKey } from "./Completion";
@@ -33,7 +33,6 @@ import { NotificationMessage } from "./NotificationMessage";
 
 export {
   LearningItem,
-  LearningItemType,
   ScormActivity,
   Activity,
   ActivityType,

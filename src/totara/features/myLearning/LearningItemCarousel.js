@@ -42,13 +42,8 @@ import {
 
 import { LearningItemCard, AddBadge } from "@totara/components";
 import { resizeByScreenSize, normalize, ThemeContext } from "@totara/theme";
-import { LearningItemType } from "@totara/types";
-import {
-  NAVIGATION_COURSE_DETAILS,
-  NAVIGATION_PROGRAM_DETAILS,
-  NAVIGATION_CERTIFICATE_DETAILS
-} from "@totara/lib/constants";
-import { Log } from "@totara/lib";
+import { navigateTo } from "@totara/lib/navigation";
+import { itemToRouteMap } from "@totara/lib/constants";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning, loading, onRefresh }) => {
@@ -172,7 +167,17 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
     <TouchableOpacity
       style={itemStyle.container}
       key={item.id}
-      onPress={isOnline ? () => navigateTo(navigation, item) : () => {}}
+      onPress={
+        isOnline
+          ? () => {
+              navigateTo({
+                navigate: navigation.navigate,
+                routeId: itemToRouteMap[item.itemtype],
+                props: { targetId: item.id }
+              });
+            }
+          : () => {}
+      }
       activeOpacity={1.0}>
       <View style={itemStyle.content}>
         <LearningItemCard item={item}>
@@ -193,28 +198,6 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
 LearningItemWithSummaryAndNavigation.propTypes = {
   item: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired
-};
-
-let navigateTo = (navigation, item) => {
-  switch (item.itemtype) {
-    case LearningItemType.Course:
-      navigation.navigate(NAVIGATION_COURSE_DETAILS, { courseId: item.id });
-      break;
-    case LearningItemType.Program:
-      navigation.navigate(NAVIGATION_PROGRAM_DETAILS, { programId: item.id });
-      break;
-    case LearningItemType.Certification:
-      navigation.navigate(NAVIGATION_CERTIFICATE_DETAILS, {
-        certificateId: item.id
-      });
-      break;
-    default:
-      Log.error(
-        `Unknown type ${item.type}, unable to native to`,
-        new Error(),
-        item
-      );
-  }
 };
 
 const styles = StyleSheet.create({

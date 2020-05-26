@@ -22,27 +22,21 @@
 import { Activity } from "./Activity";
 
 export interface Section {
-  id: number
-  title: string
-  available: boolean
-  availablereason?: string
-  data? : [Activity]
-}
-
-export enum LearningItemType {
-  Course = "course",
-  Program = "program",
-  Certification = "certification"
+  id: number;
+  title: string;
+  available: boolean;
+  availablereason?: string;
+  data?: [Activity];
 }
 
 export interface LearningItem {
-  id: number
-  itemtype: string
-  shortname: string
-  fullname?: string
-  summary?: string
-  duedateState?: string
-  duedate?: Date
-  progress?: number
-  imageSrc?: string
+  id: number;
+  itemtype: string;
+  shortname: string;
+  fullname?: string;
+  summary?: string;
+  duedateState?: string;
+  duedate?: Date;
+  progress?: number;
+  imageSrc?: string;
 }

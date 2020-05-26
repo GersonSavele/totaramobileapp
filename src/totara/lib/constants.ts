@@ -30,9 +30,6 @@ const SECONDS_FORMAT = "X";
 const PLATFORM_IOS = "ios";
 const PLATFORM_ANDROID = "";
 
-const NAVIGATION_COURSE_DETAILS = "CourseDetails";
-const NAVIGATION_PROGRAM_DETAILS = "ProgramDetails";
-const NAVIGATION_CERTIFICATE_DETAILS = "CertificationDetails";
 const NAVIGATION_SETTING = "Settings";
 const NAVIGATION_MY_LEARNING = "MyLearning";
 
@@ -46,6 +43,29 @@ const DEBUG_MODE = __DEV__;
 const DEV_ORG_URL = "mobile.demo.totara.software";
 const DEV_USERNAME = "kamala";
 const DEV_PASSWORD = "Abcd123$";
+
+/**
+ * Types of learning cards
+ * This is based on data from the server side
+ */
+enum learningItemEnum {
+  Course = "course",
+  Program = "program",
+  Certification = "certification"
+}
+
+/**
+ * Navigation screen ids, based on how we name the route ids
+ * This is based on data from the server side
+ */
+const NAVIGATION_COURSE_DETAILS = "CourseDetails";
+const NAVIGATION_COURSE_GROUP_DETAILS = "CourseGroupDetails"; //either LearningItemEnum.Program or LearningItemEnum.Certificate
+
+const itemToRouteMap = {
+  [learningItemEnum.Course]: NAVIGATION_COURSE_DETAILS,
+  [learningItemEnum.Program]: NAVIGATION_COURSE_GROUP_DETAILS,
+  [learningItemEnum.Certification]: NAVIGATION_COURSE_GROUP_DETAILS
+};
 
 enum scormLessonStatus {
   passed = "passed",
@@ -87,8 +107,7 @@ export {
   PLATFORM_IOS,
   PLATFORM_ANDROID,
   NAVIGATION_COURSE_DETAILS,
-  NAVIGATION_PROGRAM_DETAILS,
-  NAVIGATION_CERTIFICATE_DETAILS,
+  NAVIGATION_COURSE_GROUP_DETAILS,
   NAVIGATION_SETTING,
   NAVIGATION_MY_LEARNING,
   SCREEN_WIDTH_X_LARGE,
@@ -103,5 +122,7 @@ export {
   scormActivityType,
   scormSummarySection,
   completionTrack,
-  completionStatus
+  completionStatus,
+  learningItemEnum,
+  itemToRouteMap
 };

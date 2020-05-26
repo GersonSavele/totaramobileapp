@@ -46,7 +46,7 @@ type CourseDetailsProps = {
 };
 
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
-  const courseId = navigation.getParam("courseId");
+  const courseId = navigation.getParam("targetId");
   const { loading, error, data, refetch } = useQuery(coreCourse, {
     variables: { courseid: courseId }
   });

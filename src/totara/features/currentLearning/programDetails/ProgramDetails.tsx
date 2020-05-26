@@ -22,11 +22,7 @@
  */
 
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Dimensions
-} from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import { NavigationParams, NavigationInjectedProps } from "react-navigation";
 // import { useQuery } from "@apollo/react-hooks";
 
@@ -49,7 +45,7 @@ type ProgramProps = {
 //To do : - implementing GraphQL query once api's has been done should remove here
 
 // const ProgramDetails = ({ navigation }: NavigationInjectedProps) => {
-//   const programId = navigation.getParam("programId");
+//   const programId = navigation.getParam("targetId");
 //   const { loading, error, data } = useQuery(coreProgram, {
 //     variables: { programId: programId }
 //   });
@@ -80,22 +76,19 @@ const ProgramDetailsComponent = ({ navigation, program }: ProgramProps) => {
       tabBarRight={translate("program-details.courses")}
       onPress={onSwitchTab}
       showOverview={showOverview}
-      badgeTitle = "Program"
-    >
+      badgeTitle="Program">
       <View
-        style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}
-      >
+        style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}>
         <View
           style={[
             styles.activitiesContainer,
             { backgroundColor: theme.colorNeutral1 }
-          ]}
-        >
+          ]}>
           {!showOverview ? (
             <CourseList program={program} navigation={navigation} />
           ) : (
             <OverviewDetails
-              learningItem = {program}
+              learningItem={program}
               summaryTypeTitle="Certifications Summary"
             />
           )}
