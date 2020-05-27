@@ -25,8 +25,7 @@ import {
 import {
   SECONDS_FORMAT,
   scormSummarySection,
-  scormActivityType,
-  scormActivityCompletion
+  scormActivityType
 } from "./constants";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { Log } from "@totara/lib";
@@ -108,102 +107,6 @@ const updateScormBundleWithOfflineAttempts = (
       }
       return newData;
     });
-};
-/* --- Need to remove reference only----------
-const updateScormBundleWithOfflineAttemptsOld = (
-  scormId: string,
-  scorm: Scorm
-) => {
-  // retrieve from the resource manager that comes from the downloads
-  return RetrieveStorageDataById(scormId)
-    .then((storedResourceData) => {
-      if (!storedResourceData) {
-        // remove from the SCORM package data from the AsyncStorage
-        return removeScormPackageData(scormId).then(() => undefined);
-      } else {
-        return Promise.resolve(storedResourceData.unzipPath);
-      }
-    })
-    .then((packageName) => {
-      return getScormData(scormId).then(
-        ({ bundle, cmis }: { bundle?: any; cmis?: any }) => {
-          let storedBundle = bundle;
-          if (
-            storedBundle &&
-            !storedBundle.scormPackage &&
-            packageName &&
-            storedBundle.lastsynced
-          ) {
-            const resourcePackageName = getOfflineScormPackageName(scormId);
-            const dataScormPackage = {
-              scormPackage: { path: resourcePackageName }
-            };
-            return syncOfflineScormBundle(scormId, dataScormPackage).then(
-              () => {
-                return {
-                  bundle: { ...storedBundle, ...dataScormPackage },
-                  cmis: cmis,
-                  packageName
-                };
-              }
-            );
-          } else {
-            return {
-              bundle: storedBundle,
-              cmis: cmis,
-              packageName: packageName
-            };
-          }
-        }
-      );
-    })
-    .then(({ bundle, cmis, packageName }) => {
-      let formattedData = { scorm: scorm, ...bundle } as ScormBundle;
-      if (formattedData && formattedData.scorm) {
-        if (!formattedData.scormPackage && packageName) {
-          const resourcePackageName = getOfflineScormPackageName(scormId);
-          formattedData = {
-            ...formattedData!,
-            scormPackage: { path: resourcePackageName }
-          } as ScormBundle;
-        }
-        if (scorm.grademethod && scorm.maxgrade) {
-          if (cmis) {
-            const gradeMethod = scorm.grademethod as Grade;
-            const maxGrade = scorm.maxgrade;
-            const offlineReport = getOfflineAttemptsReport(
-              cmis,
-              maxGrade,
-              gradeMethod
-            );
-            formattedData = {
-              ...formattedData,
-              offlineActivity: { attempts: offlineReport }
-            } as ScormBundle;
-          }
-        }
-      }
-      return formattedData;
-    });
-};
-*/
-
-//TODO - may need to continue work on this
-const getOfflineAttemptsReport = (
-  cmiList: any,
-  maxgrade: number,
-  grademethod: Grade
-) => {
-  let scoresData = [];
-  for (let [attempt, scosData] of Object.entries(cmiList)) {
-    const attemptScore = getGradeForAttempt(scosData, maxgrade, grademethod);
-
-    scoresData.push({
-      attempt: parseInt(attempt),
-      gradereported: attemptScore
-    });
-  }
-  return scoresData;
 };
 
 const getDataForScormSummary = (
