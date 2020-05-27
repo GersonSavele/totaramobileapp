@@ -22,7 +22,13 @@
       "one": "You have {{count}} learning item to complete",
       "other": "You have {{count}} learning items to complete"
     },
-    "no_learning_message": "No current learning"
+    "no_learning_message": "No current learning",
+    "restriction_view":{
+      "title": "Sorry!",
+      "description":"This course is not compatible with the\nmobile app. Would you like to access\nthis course in the browser?",
+      "primary_button_title": "Yes, go to browser",
+      "tertiary_button_title": "Cancel"
+    }
   },
   "program-details": {
     "details": "Details",
