@@ -75,7 +75,12 @@ const ScormActivity = ({
       activitySheet.setFeedback({
         activity: activity as ActivityType,
         data: {
-          isOnline: scormModeData.mode === scormActivityType.online
+          isOnline: scormModeData.mode === scormActivityType.online,
+          completionScoreRequired:
+            scormModeData.bundle.scorm.completionscorerequired,
+
+          gradeMethod: scormModeData.bundle.scorm.grademethod,
+          attempt: scormModeData.data.attempt
         }
       });
       activitySheet.setActivityResource(undefined);

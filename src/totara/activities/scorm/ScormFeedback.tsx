@@ -19,15 +19,12 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/react-hooks";
 
-import { scormFeedbackQuery } from "@totara/activities/scorm/api";
 import { ActivityType } from "@totara/types";
-import { Text, View } from "react-native";
-import { translate } from "@totara/locale";
-import LastScormActivityFeedback from "./LastScormActivityFeedback";
-import { Loading, LoadingError } from "@totara/components";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
+import { getOfflineLastActivityResult } from "@totara/lib/scorm";
+import { Grade } from "@totara/types/Scorm";
 
 type Props = {
   activity: ActivityType;
@@ -35,6 +32,8 @@ type Props = {
   onPrimary: () => void;
   attempt: number;
   isOnline: boolean;
+  gradeMethod: Grade;
+  completionScoreRequired?: number;
 };
 
 const ScormFeedback = ({
@@ -42,46 +41,65 @@ const ScormFeedback = ({
   onClose,
   onPrimary,
   attempt,
-  isOnline
+  isOnline,
+  gradeMethod,
+  completionScoreRequired
 }: Props) => {
+  const apolloClient = useApolloClient();
+
   if (isOnline) {
-    const { loading, error, data, refetch } = useQuery(scormFeedbackQuery, {
-      variables: { scormid: activity.instanceid }
-    });
-    if (loading) {
-      return (
-        <View style={{ position: "absolute", flex: 1 }}>
-          <Loading />
-        </View>
-      );
-    }
-    if (error) {
-      return <LoadingError onRefreshTap={refetch} />;
-    }
-    console.log("(data && data.scorm)", data && data.scorm);
-    if (data && data.scorm) {
+    // TODO - Need to confirm online workflow
+
+    // const { loading, error, data, refetch } = useQuery(scormFeedbackQuery, {
+    //   variables: { scormid: activity.instanceid }
+    // });
+    // if (loading) {
+    //   return (
+    //     <View style={{ position: "absolute", flex: 1 }}>
+    //       <Loading />
+    //     </View>
+    //   );
+    // }
+    // if (error) {
+    //   return <LoadingError onRefreshTap={refetch} />;
+    // }
+    // console.log("(data && data.scorm)", data && data.scorm);
+    // if (data && data.scorm) {
+    //   return (
+    //     <ScormFeedbackModal
+    //       grade={"0"}
+    //       score={"10%"}
+    //       method={"0"}
+    //       onClose={onClose}
+    //       onPrimary={onPrimary}
+    //     />
+    //   );
+    // } else {
+    //   return <LoadingError onRefreshTap={refetch} />;
+    // }
+    return null;
+  } else {
+    const lastActivityResult = getOfflineLastActivityResult(
+      activity.instanceid.toString(),
+      apolloClient
+    );
+
+    if (
+      lastActivityResult &&
+      parseInt(lastActivityResult.attempt) === attempt
+    ) {
       return (
         <ScormFeedbackModal
-          grade={"0"}
-          score={"10%"}
-          method={"0"}
+          gradeMethod={gradeMethod}
+          score={lastActivityResult.gradereported}
+          completionScoreRequired={completionScoreRequired}
           onClose={onClose}
           onPrimary={onPrimary}
         />
       );
     } else {
-      return <LoadingError onRefreshTap={refetch} />;
+      return null;
     }
-  } else {
-    return (
-      <ScormFeedbackModal
-        grade={"0"}
-        score={"10%"}
-        method={"0"}
-        onClose={onClose}
-        onPrimary={onPrimary}
-      />
-    );
   }
 };
 

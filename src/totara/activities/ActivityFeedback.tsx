@@ -39,6 +39,8 @@ const ActivityFeedback = ({ activity, onClose, onPrimary, data }: Props) => {
         onPrimary={onPrimary}
         isOnline={data && data.isOnline}
         attempt={data && data.attempt}
+        gradeMethod={data && data.gradeMethod}
+        completionScoreRequired={data && data.completionScoreRequired}
       />
     );
   }

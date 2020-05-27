@@ -31,7 +31,7 @@ import {
   offlineScormServerRoot
 } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline";
-import { ScormBundle, Package, Sco } from "@totara/types/Scorm";
+import { ScormBundle, Package, Sco, Grade } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { getScormAttemptData } from "./StorageHelper";
 import { translate } from "i18n-js";
@@ -153,30 +153,12 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
       messageData.tmsevent === "SCORMCOMMIT" &&
       messageData.result
     ) {
-      //TODO: here we could save the commits AND merge the attempts in the cache? so we don't need to call updateScormBundleWithOfflineAttempts in ScormSummary?
-
-      // saveScormActivityData(messageData.result).then(() => {});
-      // const scormCMIData = {
-      //   [messageData.result.scormid]: {
-      //     [messageData.result.attempt]: {
-      //       [messageData.result.scoid]: messageData.result.cmi
-      //     }
-      //   }
-      // };
-      // console.log("scormCMIData: ", scormCMIData);
-
-      // const query = gql`
-      //   query get_scorm_bundle {
-      //     scormBundles @client
-      //   }
-      // `;
-      // client.writeQuery({
-      //   query: scormActivitiesRecordsQuery,
-      //   data: {
-      //     scormBundles: { "13": { attempts: { "1": { "scoid-1": "data" } } } }
-      //   }
-      // });
-      saveScormActivityData(messageData.result, client);
+      saveScormActivityData(
+        messageData.result,
+        client,
+        scormBundle.scorm.maxgrade,
+        scormBundle.scorm.grademethod as Grade
+      );
     }
   };
 

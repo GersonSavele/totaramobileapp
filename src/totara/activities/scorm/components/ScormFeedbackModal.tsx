@@ -27,19 +27,20 @@ import { PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { margins } from "@totara/theme/constants";
 import { scormFeedbackStyles } from "@totara/theme/scorm";
+import { Grade } from "@totara/types/Scorm";
 
 type SCORMFeedbackProps = {
   score?: string;
-  grade?: string;
-  method?: string;
+  gradeMethod: Grade;
+  completionScoreRequired?: number;
   onClose: () => void;
   onPrimary: () => void;
 };
 
 const ScormFeedbackModal = ({
   score,
-  grade,
-  method,
+  gradeMethod,
+  completionScoreRequired,
   onClose,
   onPrimary
 }: SCORMFeedbackProps) => {
@@ -70,13 +71,13 @@ const ScormFeedbackModal = ({
                   backgroundColor: theme.colorNeutral7,
                   transform: [{ scaleX: 0.5 }]
                 }}>
-                {!method && (
+                {!completionScoreRequired && (
                   <Image
                     style={scormFeedbackStyles.resultStatusImage}
                     source={require("@resources/images/success_tick/success_tick.png")}
                   />
                 )}
-                {method && (
+                {completionScoreRequired && (
                   <>
                     <Text
                       style={{
@@ -92,7 +93,11 @@ const ScormFeedbackModal = ({
                         ...scormFeedbackStyles.score,
                         color: theme.textColorLight
                       }}>
-                      {score ? score : ""}
+                      {score
+                        ? `${score}${
+                            gradeMethod === Grade.objective ? "" : "%"
+                          }`
+                        : ""}
                     </Text>
                   </>
                 )}
