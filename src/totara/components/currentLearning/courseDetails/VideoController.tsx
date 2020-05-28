@@ -22,7 +22,7 @@
  */
 import React from "react";
 import Video from "react-native-video";
-import { videoControllerStyles } from "@totara/theme/currentLearning";
+import { videoControllerStyles } from "@totara/lib/styles/currentLearning";
 
 type VideoType = {
   url: string;

@@ -17,7 +17,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { normalize } from "@totara/theme";
 import { margins, paddings } from "@totara/theme/constants";
-import { TotaraTheme, AppliedTheme } from "../../theme/Theme";
+import { TotaraTheme, AppliedTheme } from "@totara/theme/Theme";
 
 const gradePrefixText = (theme: AppliedTheme) => {
   return {

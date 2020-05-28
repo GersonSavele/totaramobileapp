@@ -24,7 +24,7 @@ import BottomSheet from "reanimated-bottom-sheet";
 
 import { translate } from "@totara/locale";
 import { Criteria } from "@totara/types";
-import { criteriaSheetStyles } from "@totara/theme/currentLearning";
+import { criteriaSheetStyles } from "@totara/lib/styles/currentLearning";
 
 type Props = {
   criteriaList?: [Criteria];
@@ -52,7 +52,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
           numberOfLines={1}
           style={{
             ...criteriaSheetStyles.nameViewWrap,
-            color: theme.colorNeutral8,
+            color: theme.colorNeutral8
           }}>
           {section.title}
         </Text>
@@ -79,7 +79,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
               numberOfLines={1}
               style={{
                 ...criteriaSheetStyles.criteriaText,
-                color: theme.colorNeutral8,
+                color: theme.colorNeutral8
               }}>
               {/* // item criteria return with URL and should replace the url and tags */}
               {item.criteria!.replace(/(<([^>]+)>)/gi, "")}
@@ -88,7 +88,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
               numberOfLines={1}
               style={{
                 ...criteriaSheetStyles.requirementText,
-                color: theme.colorNeutral8,
+                color: theme.colorNeutral8
               }}>
               {description}
             </Text>
@@ -97,7 +97,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
         <View
           style={{
             ...criteriaSheetStyles.bodySeparator,
-            backgroundColor: theme.colorNeutral8,
+            backgroundColor: theme.colorNeutral8
           }}></View>
       </View>
     );

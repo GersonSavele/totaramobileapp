@@ -24,7 +24,7 @@ import LearningItemCarousel from "./LearningItemCarousel";
 import NoCurrentLearning from "./NoCurrentLearning";
 import query from "./api";
 import { LoadingError, NetworkStatus, Loading } from "@totara/components";
-import { viewStyles } from "@totara/theme/currentLearning";
+import { viewStyles } from "@totara/lib/styles/currentLearning";
 
 const MyLearning = () => {
   const onContentRefreshTap = () => {};

@@ -195,5 +195,11 @@
   },
   "notifications": {
     "action_primary": "Notifications"
+  },
+  "no_internet_alert":{
+   "title": "No Network Connection",
+   "message": "Please check your network connection\nand try again.",
+   "go_back": "Go back",
+   "refresh": "Refresh"
   }
 }

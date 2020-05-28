@@ -21,16 +21,18 @@
  *
  */
 
-import React, { useContext, ReactNode } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, ReactNode, useState, useEffect } from "react";
+import { Text, TouchableOpacity, View, Alert, Modal } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 
 import ParallaxScrollView from "./ParallaxScrollView";
-import { CardElement, ImageElement } from "@totara/components";
+import { CardElement, ImageElement, Loading } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { ThemeContext } from "@totara/theme";
 import { Certification, Program, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
-import { headerViewStyles } from "@totara/theme/currentLearning";
+import { headerViewStyles } from "@totara/lib/styles/currentLearning";
+import { translate } from "@totara/locale";
 
 type HeaderViewProps = {
   details: Certification | Program | Course;
@@ -51,9 +53,37 @@ const HeaderView = ({
   tabBarRight,
   onPress,
   showOverview,
-  badgeTitle,
+  badgeTitle
 }: HeaderViewProps) => {
   const [theme] = useContext(ThemeContext);
+  //To Do: Bug in NetInfo library, useNetInfo - isConnected initial state is false(phone and simulator):
+  //https://github.com/react-native-community/react-native-netinfo/issues/295
+  const [isConnected, setIsConnected] = useState<boolean>(true);
+  const [isRefresh, setIsRefresh] = useState<boolean>(false);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (!state.isConnected || !state.isInternetReachable) {
+        setIsConnected(false);
+      } else {
+        setIsConnected(true);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const getConnectionInfo = () => {
+    const timeValue = setTimeout(() => {
+      NetInfo.fetch().then((state) => {
+        setIsRefresh(false);
+        if (state.isConnected && state.isInternetReachable) {
+          setIsConnected(true);
+        }
+        clearInterval(timeValue);
+      });
+    }, 10000);
+  };
+
   const renderNavigationTitle = () => {
     return (
       <View style={{ backgroundColor: theme.colorNeutral2 }}>
@@ -61,12 +91,12 @@ const HeaderView = ({
           <View
             style={[
               headerViewStyles.LearningTypeLabelWrap,
-              { borderColor: theme.colorNeutral7 },
+              { borderColor: theme.colorNeutral7 }
             ]}>
             <Text
               style={[
                 headerViewStyles.programLabelText,
-                { color: theme.colorNeutral7 },
+                { color: theme.colorNeutral7 }
               ]}>
               {badgeTitle}
             </Text>
@@ -88,8 +118,8 @@ const HeaderView = ({
                       headerViewStyles.tabSelected,
                       {
                         borderBottomColor: theme.colorNeutral7,
-                        borderBottomWidth: 2,
-                      },
+                        borderBottomWidth: 2
+                      }
                     ]
                   : [headerViewStyles.tabSelected]
               }
@@ -100,7 +130,7 @@ const HeaderView = ({
                     ? [theme.textB2, { fontWeight: "400" }]
                     : [
                         theme.textB2,
-                        { color: theme.colorNeutral6, fontWeight: "400" },
+                        { color: theme.colorNeutral6, fontWeight: "400" }
                       ]
                 }>
                 {tabBarLeft}
@@ -113,8 +143,8 @@ const HeaderView = ({
                       headerViewStyles.tabSelected,
                       {
                         borderBottomColor: theme.colorNeutral7,
-                        borderBottomWidth: 2,
-                      },
+                        borderBottomWidth: 2
+                      }
                     ]
                   : [headerViewStyles.tabSelected]
               }
@@ -127,8 +157,8 @@ const HeaderView = ({
                         theme.textB2,
                         {
                           color: theme.colorNeutral6,
-                          fontWeight: "400",
-                        },
+                          fontWeight: "400"
+                        }
                       ]
                 }>
                 {tabBarRight}
@@ -139,12 +169,13 @@ const HeaderView = ({
       </View>
     );
   };
+
   const backgroundViewRender = () => {
     return (
       <View
         style={[
           headerViewStyles.headerContainer,
-          { backgroundColor: theme.colorNeutral2 },
+          { backgroundColor: theme.colorNeutral2 }
         ]}>
         <ImageElement item={details} imageStyle={headerViewStyles.itemImage} />
       </View>
@@ -161,12 +192,12 @@ const HeaderView = ({
         onChangeHeaderVisibility={(value: number) => {
           if (value > 0) {
             navigation!.setParams({
-              opacity: value / 100 > 0.5 ? 1 : value / 100,
+              opacity: value / 100 > 0.5 ? 1 : value / 100
             });
             navigation!.setParams({ title: details.fullname });
           } else if (-value / 100 > 1) {
             navigation!.setParams({
-              opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100,
+              opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100
             });
             navigation!.setParams({ title: details.fullname });
           } else {
@@ -174,6 +205,35 @@ const HeaderView = ({
           }
         }}>
         {children}
+        {!isConnected &&
+          !isRefresh &&
+          Alert.alert(
+            translate("no_internet_alert.title"),
+            translate("no_internet_alert.message"),
+            [
+              {
+                text: translate("no_internet_alert.go_back"),
+                onPress: () => {
+                  navigation.goBack();
+                }
+              },
+              {
+                text: translate("no_internet_alert.refresh"),
+                onPress: () => {
+                  setIsRefresh(true);
+                  getConnectionInfo();
+                }
+              }
+            ],
+            { cancelable: false }
+          )}
+        {isRefresh && (
+          <Modal transparent={true} visible={isRefresh}>
+            <View style={headerViewStyles.modalBackground}>
+              <Loading />
+            </View>
+          </Modal>
+        )}
       </ParallaxScrollView>
     </View>
   );

@@ -34,8 +34,10 @@ import Activities from "./Activities";
 import { Course } from "@totara/types";
 import OverviewDetails from "../overview/Details";
 import { ThemeContext } from "@totara/theme";
-import { HeaderView } from "@totara/components/currentLearning";
-import { CourseCompletionModal } from "@totara/components/currentLearning";
+import {
+  HeaderView,
+  CourseCompletionModal
+} from "@totara/components/currentLearning";
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { StatusKey } from "@totara/lib/constants";
 
