@@ -18,16 +18,16 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React, { useContext } from "react";
+import React from "react";
 import { View, Text, Modal, Image } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { ThemeContext } from "@totara/theme";
 import { PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { margins } from "@totara/theme/constants";
 import { scormFeedbackStyles } from "@totara/theme/scorm";
 import { Grade } from "@totara/types/Scorm";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type SCORMFeedbackProps = {
   score?: string;
@@ -44,33 +44,14 @@ const ScormFeedbackModal = ({
   onClose,
   onPrimary
 }: SCORMFeedbackProps) => {
-  const [theme] = useContext(ThemeContext);
   return (
     <Modal animationType="slide" transparent>
       <View style={scormFeedbackStyles.transparentViewStyle}>
         <SafeAreaView />
         <View style={scormFeedbackStyles.wrapper}>
-          <View
-            style={{
-              ...scormFeedbackStyles.resultOuterWrapper,
-              backgroundColor: theme.colorNeutral1
-            }}>
-            <View
-              style={{
-                ...scormFeedbackStyles.resultInnerWrapper,
-                backgroundColor: theme.colorNeutral3,
-                borderBottomStartRadius:
-                  scormFeedbackStyles.resultOuterWrapper.width * 2,
-                borderBottomEndRadius:
-                  scormFeedbackStyles.resultOuterWrapper.width * 2,
-                transform: [{ scaleX: 2 }]
-              }}>
-              <View
-                style={{
-                  ...scormFeedbackStyles.resultContainer,
-                  backgroundColor: theme.colorNeutral7,
-                  transform: [{ scaleX: 0.5 }]
-                }}>
+          <View style={scormFeedbackStyles.resultOuterWrapper}>
+            <View style={scormFeedbackStyles.resultInnerWrapper}>
+              <View style={scormFeedbackStyles.resultContainer}>
                 {!completionScoreRequired && (
                   <Image
                     style={scormFeedbackStyles.resultStatusImage}
@@ -81,17 +62,15 @@ const ScormFeedbackModal = ({
                   <>
                     <Text
                       style={{
-                        ...theme.textB3,
-                        ...scormFeedbackStyles.resultTitle,
-                        color: theme.textColorLight
+                        ...TotaraTheme.textB3,
+                        ...scormFeedbackStyles.resultTitle
                       }}>
                       {translate("scorm.feedback.grade_title")}
                     </Text>
                     <Text
                       style={{
-                        ...theme.textH1,
-                        ...scormFeedbackStyles.score,
-                        color: theme.textColorLight
+                        ...TotaraTheme.textH1,
+                        ...scormFeedbackStyles.scoreText
                       }}>
                       {score
                         ? `${score}${
@@ -106,7 +85,7 @@ const ScormFeedbackModal = ({
             <View style={scormFeedbackStyles.actionWrapper}>
               <Text
                 style={{
-                  ...theme.textH4,
+                  ...TotaraTheme.textH4,
                   marginBottom: margins.margin2XL,
                   textAlign: "center"
                 }}>

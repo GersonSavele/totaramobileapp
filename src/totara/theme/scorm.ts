@@ -17,6 +17,7 @@ import { StyleSheet, Dimensions } from "react-native";
 
 import { gutter } from "./";
 import { margins } from "./constants";
+import { TotaraTheme } from "./Theme";
 
 const scormSummaryStyles = StyleSheet.create({
   expanded: {
@@ -62,7 +63,8 @@ const scormFeedbackStyles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-around",
     alignSelf: "center",
-    overflow: "hidden"
+    overflow: "hidden",
+    backgroundColor: TotaraTheme.colorNeutral1
   },
   resultInnerWrapper: {
     flex: 1,
@@ -70,7 +72,11 @@ const scormFeedbackStyles = StyleSheet.create({
     alignContent: "center",
     alignSelf: "center",
     width: "100%",
-    overflow: "hidden"
+    overflow: "hidden",
+    backgroundColor: TotaraTheme.colorNeutral3,
+    borderBottomStartRadius: Dimensions.get("window").width * 0.7 * 2,
+    borderBottomEndRadius: Dimensions.get("window").width * 0.7 * 2,
+    transform: [{ scaleX: 2 }]
   },
   resultContainer: {
     width: 185,
@@ -79,7 +85,9 @@ const scormFeedbackStyles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: TotaraTheme.colorNeutral7,
+    transform: [{ scaleX: 0.5 }]
   },
   resultStatusImage: {
     alignSelf: "center",
@@ -89,10 +97,12 @@ const scormFeedbackStyles = StyleSheet.create({
   },
   resultTitle: {
     textAlign: "center",
-    fontWeight: "600"
+    fontWeight: "600",
+    color: TotaraTheme.textColorLight
   },
-  score: {
-    textAlign: "center"
+  scoreText: {
+    textAlign: "center",
+    color: TotaraTheme.textColorLight
   },
   actionWrapper: {
     flex: 1,
