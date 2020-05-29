@@ -26,7 +26,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ViewStyle,
+  ViewStyle
 } from "react-native";
 import React, { useContext } from "react";
 
@@ -41,12 +41,19 @@ interface Props {
   imageStyle?: ImageStyle;
   cardStyle?: ViewStyle;
   children?: JSX.Element;
+  image?: string;
 }
 
-const LearningItemCard = ({ item, imageStyle, cardStyle, children }: Props) => {
+const LearningItemCard = ({
+  item,
+  imageStyle,
+  cardStyle,
+  children,
+  image
+}: Props) => {
   return (
     <View style={{ flex: 1 }}>
-      <ImageElement item={item} imageStyle={imageStyle} />
+      <ImageElement item={item} imageStyle={imageStyle} image={image} />
       <CardElement item={item} cardStyle={cardStyle}>
         {children}
       </CardElement>
@@ -63,8 +70,7 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
         <Text
           numberOfLines={2}
           style={[theme.textH2, styles.itemFullName]}
-          ellipsizeMode="tail"
-        >
+          ellipsizeMode="tail">
           {item.fullname}
         </Text>
       </View>
@@ -73,13 +79,13 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
   );
 };
 
-const ImageElement = ({ item, imageStyle }: Props) => {
+const ImageElement = ({ item, imageStyle, image }: Props) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   const {
-    authContextState: { appState },
+    authContextState: { appState }
   } = useContext(AuthContext);
   const apiKey = appState!.apiKey;
-  const imgSrc = item.imageSrc;
+  const imgSrc = image;
   return (
     <View style={imageStyleSheet}>
       {item.duedate && (
@@ -89,8 +95,8 @@ const ImageElement = ({ item, imageStyle }: Props) => {
         source={{
           uri: imgSrc,
           headers: {
-            [AUTHORIZATION]: `Bearer ${apiKey}`,
-          },
+            [AUTHORIZATION]: `Bearer ${apiKey}`
+          }
         }}
         style={{ flex: 1, width: "100%", height: "100%" }}
       />
@@ -101,15 +107,15 @@ const ImageElement = ({ item, imageStyle }: Props) => {
 const styles = StyleSheet.create({
   itemImage: {
     flex: 1,
-    flexDirection: "column-reverse",
+    flexDirection: "column-reverse"
   },
   itemCard: {
     padding: normalize(16),
     justifyContent: "flex-start",
-    flex: 1,
+    flex: 1
   },
   itemFullName: {
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   disabledOverlay: {
     position: "absolute",
@@ -117,8 +123,8 @@ const styles = StyleSheet.create({
     top: 0,
     opacity: 0.5,
     height: "100%",
-    width: "100%",
-  },
+    width: "100%"
+  }
 });
 
 export { LearningItemCard, CardElement, ImageElement };

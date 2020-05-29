@@ -31,7 +31,7 @@ import {
   CriteriaSheet,
   CourseCompletionModal
 } from "@totara/components/currentLearning";
-import { Course, Program, Certification } from "@totara/types";
+import { Course, CourseGroup } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
 import { courseCriteria } from "@totara/lib/constants";
 import {
@@ -42,7 +42,7 @@ import {
 } from "@totara/lib/styles/overview";
 
 type OverviewProps = {
-  learningItem?: Course | Program | Certification;
+  learningItem?: Course | CourseGroup;
   summaryTypeTitle?: string;
   onclickContinueLearning?: () => void;
 };

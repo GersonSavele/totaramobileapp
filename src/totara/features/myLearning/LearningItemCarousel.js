@@ -180,7 +180,7 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       }
       activeOpacity={1.0}>
       <View style={itemStyle.content}>
-        <LearningItemCard item={item}>
+        <LearningItemCard item={item} image={item.imageSrc}>
           <Text style={[theme.textLabel, itemStyle.type]}>{item.itemtype}</Text>
           {/* // TODO handeling numberOfLines for dynamic height */}
           <Text

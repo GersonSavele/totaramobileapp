@@ -20,24 +20,31 @@
  *
  */
 
-import {Section} from "./LearningItem"
-import { Completion } from "./Completion"
-import { Criteria } from "./Criteria"
+import { Section } from "./LearningItem";
+import { Completion } from "./Completion";
+import { Criteria } from "./Criteria";
+import { learningItemEnum } from "@totara/lib/constants";
+
+export interface CourseContentDetails {
+  course: Course;
+  native: boolean;
+  imageSrc: string;
+}
 
 export interface Course {
-  id: number,
-  fullname: string,
-  shortname: string,
-  lang: string,
-  sections: [Section],
-  criteriaaggregation: string,
-  criteria? : [Criteria],
-  completion: Completion,
-  summary?: string,
-  startdate?: Date
-  enddate?: Date
-  imageSrc?: string,
-  itemtype: "course"
+  id: number;
+  fullname: string;
+  shortname: string;
+  summary?: string;
+  startdate?: Date;
+  enddate?: Date;
+  lang: string;
+  image?: string;
+  itemtype: learningItemEnum.Course;
+  sections: [Section];
+  criteriaaggregation: string;
+  criteria?: [Criteria];
+  completion: Completion;
 }
 
 export interface CourseSets {
@@ -51,4 +58,3 @@ interface NextSet {
   nextID: number;
   operator?: string;
 }
-

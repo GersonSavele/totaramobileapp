@@ -27,11 +27,11 @@ import { onError, ErrorResponse } from "apollo-link-error";
 import {
   InMemoryCache,
   NormalizedCacheObject,
-  defaultDataIdFromObject,
+  defaultDataIdFromObject
 } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import AsyncStorage, {
-  AsyncStorageStatic,
+  AsyncStorageStatic
 } from "@react-native-community/async-storage";
 import { persistCache } from "apollo-cache-persist";
 
@@ -74,15 +74,15 @@ export const registerDevice = (
   return fetchData<ApiKey>(config.deviceRegisterUri(setup.uri), {
     method: "POST",
     body: JSON.stringify({
-      setupsecret: setup.secret,
-    }),
+      setupsecret: setup.secret
+    })
   })
     .then((apiKey) => {
       const siteInfoData = JSON.stringify(setup.siteInfo);
       return Promise.all([
         asyncStorage.setItem("apiKey", apiKey.apikey),
         asyncStorage.setItem("siteInfo", siteInfoData),
-        asyncStorage.setItem("host", setup.uri),
+        asyncStorage.setItem("host", setup.uri)
       ]).then(() => {
         return apiKey;
       });
@@ -91,7 +91,7 @@ export const registerDevice = (
       const appState = {
         apiKey: apiKey.apikey,
         host: setup.uri,
-        siteInfo: setup.siteInfo,
+        siteInfo: setup.siteInfo
       };
       Log.debug("appState done", appState);
       return appState;
@@ -161,7 +161,7 @@ export const bootstrap = (
   const [apiKey, host, siteInfo] = await Promise.all([
     asyncStorage.getItem("apiKey"),
     asyncStorage.getItem("host"),
-    asyncStorage.getItem("siteInfo"),
+    asyncStorage.getItem("siteInfo")
   ]);
 
   if (apiKey !== null && host !== null && siteInfo !== null) {
@@ -169,7 +169,7 @@ export const bootstrap = (
     return {
       apiKey: apiKey,
       host: host,
-      siteInfo: JSON.parse(siteInfo) as SiteInfo,
+      siteInfo: JSON.parse(siteInfo) as SiteInfo
     };
   } else {
     Log.info("bootstrap with clean appState state");
@@ -188,9 +188,9 @@ export const createApolloClient = (
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      [AUTHORIZATION]: `Bearer ${apiKey}`,
+      [AUTHORIZATION]: `Bearer ${apiKey}`
     },
-    http: { includeQuery: !config.mobileApi.persistentQuery },
+    http: { includeQuery: !config.mobileApi.persistentQuery }
   }));
 
   const logoutLink = onError(({ networkError }: ErrorResponse) => {
@@ -213,36 +213,36 @@ export const createApolloClient = (
           } else {
             return !!error;
           }
-        },
-      },
+        }
+      }
     }),
     authLink,
-    httpLink,
+    httpLink
   ]);
 
   const cache = new InMemoryCache({
     dataIdFromObject: (object) => {
       switch (object.__typename) {
-        case "totara_mobile_my_current_learning": {
+        case "totara_mobile_current_learning": {
           const learningItem = (object as unknown) as LearningItem;
           return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
         }
         default:
           return defaultDataIdFromObject(object); // fall back to default for all other types
       }
-    },
+    }
   });
 
   persistCache({
     cache,
     storage: AsyncStorage as PersistentStorage<
       PersistedData<NormalizedCacheObject>
-    >,
+    >
   });
 
   return new ApolloClient({
     link: link,
-    cache,
+    cache
   });
 };
 

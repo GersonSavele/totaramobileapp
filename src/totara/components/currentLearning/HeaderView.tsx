@@ -29,13 +29,13 @@ import ParallaxScrollView from "./ParallaxScrollView";
 import { CardElement, ImageElement, Loading } from "@totara/components";
 import { normalize } from "@totara/theme";
 import { ThemeContext } from "@totara/theme";
-import { Certification, Program, Course } from "@totara/types";
+import { CourseGroup, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
 import { headerViewStyles } from "@totara/lib/styles/currentLearning";
 import { translate } from "@totara/locale";
 
 type HeaderViewProps = {
-  details: Certification | Program | Course;
+  details: CourseGroup | Course;
   navigation: NavigationParams;
   children: ReactNode;
   tabBarLeft: string;
@@ -43,6 +43,7 @@ type HeaderViewProps = {
   onPress: () => void;
   showOverview: boolean;
   badgeTitle: string;
+  image?: string;
 };
 
 const HeaderView = ({
@@ -53,7 +54,8 @@ const HeaderView = ({
   tabBarRight,
   onPress,
   showOverview,
-  badgeTitle
+  badgeTitle,
+  image = ""
 }: HeaderViewProps) => {
   const [theme] = useContext(ThemeContext);
   //To Do: Bug in NetInfo library, useNetInfo - isConnected initial state is false(phone and simulator):
@@ -177,7 +179,11 @@ const HeaderView = ({
           headerViewStyles.headerContainer,
           { backgroundColor: theme.colorNeutral2 }
         ]}>
-        <ImageElement item={details} imageStyle={headerViewStyles.itemImage} />
+        <ImageElement
+          item={details}
+          imageStyle={headerViewStyles.itemImage}
+          image={image}
+        />
       </View>
     );
   };

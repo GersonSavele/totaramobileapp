@@ -31,7 +31,7 @@ let courses = [
                 showdescription: false,
                 description: "General news and announcements",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "8",
@@ -45,7 +45,7 @@ let courses = [
                 showdescription: false,
                 description: "General news and announcements",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "7",
@@ -59,7 +59,7 @@ let courses = [
                 showdescription: false,
                 description: "General news and announcements",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "6",
@@ -73,7 +73,7 @@ let courses = [
                 showdescription: false,
                 description: "",
                 gradefinal: 8,
-                gradepercentage: 8,
+                gradepercentage: 8
               },
               {
                 id: "9",
@@ -87,7 +87,7 @@ let courses = [
                 showdescription: false,
                 description: "",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "10",
@@ -101,7 +101,7 @@ let courses = [
                 showdescription: false,
                 description: "",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "11",
@@ -115,45 +115,45 @@ let courses = [
                 showdescription: false,
                 description: "",
                 gradefinal: null,
-                gradepercentage: 0,
-              },
-            ],
+                gradepercentage: 0
+              }
+            ]
           },
           {
             id: "14",
             title: "Ask us",
             available: true,
             availablereason: "",
-            data: [],
+            data: []
           },
           {
             id: "15",
             title: "Skill up",
             available: true,
             availablereason: "",
-            data: [],
+            data: []
           },
           {
             id: "16",
             title: "Have a go",
             available: true,
             availablereason: "",
-            data: [],
+            data: []
           },
           {
             id: "17",
             title: "Tell us what you think about the new team structure",
             available: true,
             availablereason: "",
-            data: [],
+            data: []
           },
           {
             id: "23",
             title: "Resources",
             available: true,
             availablereason: "",
-            data: [],
-          },
+            data: []
+          }
         ],
         completion: {
           id: 8,
@@ -161,10 +161,10 @@ let courses = [
           progress: 0,
           timecompleted: null,
           gradefinal: 8,
-          grademax: 100,
-        },
-      },
-    },
+          grademax: 100
+        }
+      }
+    }
   },
   {
     data: {
@@ -198,7 +198,7 @@ let courses = [
                 showdescription: false,
                 description: "General news and announcements",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "8",
@@ -212,7 +212,7 @@ let courses = [
                 showdescription: false,
                 description: "General news and announcements",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "7",
@@ -226,7 +226,7 @@ let courses = [
                 showdescription: false,
                 description: "General news and announcements",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "6",
@@ -240,7 +240,7 @@ let courses = [
                 showdescription: false,
                 description: "",
                 gradefinal: 8,
-                gradepercentage: 8,
+                gradepercentage: 8
               },
               {
                 id: "9",
@@ -254,7 +254,7 @@ let courses = [
                 showdescription: false,
                 description: "",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "10",
@@ -268,7 +268,7 @@ let courses = [
                 showdescription: false,
                 description: "",
                 gradefinal: null,
-                gradepercentage: 0,
+                gradepercentage: 0
               },
               {
                 id: "11",
@@ -282,45 +282,45 @@ let courses = [
                 showdescription: false,
                 description: "",
                 gradefinal: null,
-                gradepercentage: 0,
-              },
-            ],
+                gradepercentage: 0
+              }
+            ]
           },
           {
             id: "14",
             title: "Ask us",
             available: true,
             availablereason: "",
-            data: [],
+            data: []
           },
           {
             id: "15",
             title: "Skill up",
             available: true,
             availablereason: "",
-            data: [],
+            data: []
           },
           {
             id: "16",
             title: "Have a go",
             available: true,
             availablereason: "",
-            data: [],
+            data: []
           },
           {
             id: "17",
             title: "Tell us what you think about the new team structure",
             available: true,
             availablereason: "",
-            data: [],
+            data: []
           },
           {
             id: "23",
             title: "Resources",
             available: true,
             availablereason: "",
-            data: [],
-          },
+            data: []
+          }
         ],
         completion: {
           id: 8,
@@ -328,11 +328,11 @@ let courses = [
           progress: 0,
           timecompleted: null,
           gradefinal: 8,
-          grademax: 100,
-        },
-      },
-    },
-  },
+          grademax: 100
+        }
+      }
+    }
+  }
 ];
 
 const certification = {
@@ -345,7 +345,7 @@ const certification = {
   duedate: new Date(2019, 10, 2),
   progress: 10,
   duedateState: "warning",
-  imageSrc:
+  image:
     "https://cdn.auckland.ac.nz/aem/content/auckland/en/_jcr_content/par/responsivegrid_567117200/par1/flexicomponent/image.img.480.low.jpg/1584491866597.jpg",
   courseSets: [
     {
@@ -354,8 +354,8 @@ const certification = {
       courses: courses,
       nextSet: {
         operator: "then",
-        nextID: 11,
-      },
+        nextID: 11
+      }
     },
     {
       id: 11,
@@ -363,14 +363,14 @@ const certification = {
       courses: courses,
       nextSet: {
         operator: "and",
-        nextID: 11,
-      },
+        nextID: 11
+      }
     },
     {
       id: 12,
       label: "Making Reports",
-      courses: courses,
-    },
+      courses: courses
+    }
   ],
   completion: {
     id: 8,
@@ -378,8 +378,8 @@ const certification = {
     progress: 0,
     timecompleted: null,
     gradefinal: 8,
-    grademax: 100,
-  },
+    grademax: 100
+  }
 };
 
 const program = {
@@ -392,7 +392,7 @@ const program = {
   duedate: new Date(2019, 10, 2),
   progress: 10,
   duedateState: "warning",
-  imageSrc:
+  image:
     "https://s18670.pcdn.co/wp-content/uploads/FHI360_financialliteracy-556x312.jpg",
   courseSets: [
     {
@@ -401,8 +401,8 @@ const program = {
       courses: courses,
       nextSet: {
         operator: "then",
-        nextID: 11,
-      },
+        nextID: 11
+      }
     },
     {
       id: 11,
@@ -410,14 +410,14 @@ const program = {
       courses: courses,
       nextSet: {
         operator: "and",
-        nextID: 11,
-      },
+        nextID: 11
+      }
     },
     {
       id: 12,
       label: "Making Reports",
-      courses: courses,
-    },
+      courses: courses
+    }
   ],
   completion: {
     id: 8,
@@ -425,8 +425,8 @@ const program = {
     progress: 0,
     timecompleted: null,
     gradefinal: 8,
-    grademax: 100,
-  },
+    grademax: 100
+  }
 };
 
 const labelText = {
@@ -434,12 +434,12 @@ const labelText = {
   text: "Text : Rey Skywalker",
   marks: [
     {
-      type: "strong",
+      type: "strong"
     },
     {
-      type: "em",
-    },
-  ],
+      type: "em"
+    }
+  ]
 };
 
 const labelParagraph = {
@@ -448,17 +448,17 @@ const labelParagraph = {
     {
       type: "text",
       text:
-        "Paragraph : As learning designers, developers and administrators it can be easy to focus on our primary job; creating great learning content for our learners. But how do you make sure learners find the content that’s right for them? How do you enable them to browse, filter and search for learning?In this course, you’ll look at ways to use the course catalogue to ensure your learners find learning as quickly and easily as possible. Specifically, you’ll explore how to:Set up and populate the tile item and detail 	templatesCreate meaningful filtersMake content easily browsable and 			searchableTo complete the course and achieve your badge, you need to pass the mandatory activities which are marked with a red asterisk*, although we encourage you to explore many more of the activities available in the course. Your badge is valid for Totara Learn version 12.",
+        "Paragraph : As learning designers, developers and administrators it can be easy to focus on our primary job; creating great learning content for our learners. But how do you make sure learners find the content that’s right for them? How do you enable them to browse, filter and search for learning?In this course, you’ll look at ways to use the course catalogue to ensure your learners find learning as quickly and easily as possible. Specifically, you’ll explore how to:Set up and populate the tile item and detail 	templatesCreate meaningful filtersMake content easily browsable and 			searchableTo complete the course and achieve your badge, you need to pass the mandatory activities which are marked with a red asterisk*, although we encourage you to explore many more of the activities available in the course. Your badge is valid for Totara Learn version 12."
     },
     {
       type: "mention",
       attrs: {
         type: "user",
         id: 1,
-        display: "Mention user: Luke Skywalker",
-      },
-    },
-  ],
+        display: "Mention user: Luke Skywalker"
+      }
+    }
+  ]
 };
 
 const labelDoc = {
@@ -484,13 +484,13 @@ const labelDoc = {
                   "Key Points In a business setting most work is \naccomplished by teams of individuals. Because of this, \nit is important for employees to have the skills necessary to work effectively with others. Organizations use many kinds of teams, \nsome of which are permanent and some of which are temporary. Teams are used to accomplish tasks that are too large or complex to be done by an individual or that require a diverse set of skills and expertise. Key Terms team: A group of people working toward a common purpose.",
                 resolution: {
                   width: 1920,
-                  height: 1080,
-                },
-              },
-            },
-          ],
-        },
-      ],
+                  height: 1080
+                }
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       type: "paragraph",
@@ -508,14 +508,14 @@ const labelDoc = {
                 url: "http://example.com",
                 title: "Image title",
                 description:
-                  "Image description: If someone went on your website or profile with their eyes closed, would they still be able to find their way around? As more and more people develop vision impairments, they turn to assistive technology in order to access content- read more about this in my World Sight Day 2017 post here. By adding alt text and image descriptions, barriers are lifted and more people can access your content. Read on to learn more about how to create alt text and image descriptions.",
-              },
-            },
-          ],
-        },
-      ],
-    },
-  ],
+                  "Image description: If someone went on your website or profile with their eyes closed, would they still be able to find their way around? As more and more people develop vision impairments, they turn to assistive technology in order to access content- read more about this in my World Sight Day 2017 post here. By adding alt text and image descriptions, barriers are lifted and more people can access your content. Read on to learn more about how to create alt text and image descriptions."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 };
 
 const labelImage = {
@@ -529,10 +529,10 @@ const labelImage = {
         url: "http://example.com",
         title: "Image title",
         description:
-          "Image description: If someone went on your website or profile with their eyes closed, would they still be able to find their way around? As more and more people develop vision impairments, they turn to assistive technology in order to access content- read more about this in my World Sight Day 2017 post here. By adding alt text and image descriptions, barriers are lifted and more people can access your content. Read on to learn more about how to create alt text and image descriptions.",
-      },
-    },
-  ],
+          "Image description: If someone went on your website or profile with their eyes closed, would they still be able to find their way around? As more and more people develop vision impairments, they turn to assistive technology in order to access content- read more about this in my World Sight Day 2017 post here. By adding alt text and image descriptions, barriers are lifted and more people can access your content. Read on to learn more about how to create alt text and image descriptions."
+      }
+    }
+  ]
 };
 
 const labelVideo = {
@@ -546,10 +546,10 @@ const labelVideo = {
         url: "http://techslides.com/demos/sample-videos/small.mp4",
         title: "Video title",
         description:
-          "Educational videos have become an important part of higher education, providing an important content-delivery tool in many flipped, blended, and online classes. Effective use of video as an educational tool is enhanced when instructors consider three elements: how to manage cognitive load of the video; how to maximize student engagement with the video; and how to promote active learning from the video. This essay reviews literature relevant to each of these principles and suggests practical ways instructors can use these principles when using video as an educational tool.",
-      },
-    },
-  ],
+          "Educational videos have become an important part of higher education, providing an important content-delivery tool in many flipped, blended, and online classes. Effective use of video as an educational tool is enhanced when instructors consider three elements: how to manage cognitive load of the video; how to maximize student engagement with the video; and how to promote active learning from the video. This essay reviews literature relevant to each of these principles and suggests practical ways instructors can use these principles when using video as an educational tool."
+      }
+    }
+  ]
 };
 
 const labelAttachments = {
@@ -565,8 +565,8 @@ const labelAttachments = {
         filesize: 1024,
         filename:
           "https://as1.ftcdn.net/jpg/02/69/96/56/500_F_269965607_ZLym4m6qSSaruqY9u7y3DoW48OJLHzeg.jpg",
-        contextid: 15,
-      },
+        contextid: 15
+      }
     },
     {
       type: "attachment",
@@ -578,8 +578,8 @@ const labelAttachments = {
         filesize: 1024,
         filename:
           "https://media.thetab.com/blogs.dir/10/files/2016/02/10697132_10204427513315419_9126274038909370123_o-1.jpg",
-        contextid: 15,
-      },
+        contextid: 15
+      }
     },
     {
       type: "attachment",
@@ -591,10 +591,10 @@ const labelAttachments = {
         filesize: 1024,
         filename:
           "https://www.ox.ac.uk/sites/files/oxford/styles/ow_medium_feature/public/field/field_image_main/friends_main.jpg?itok=Wmh9VQWO",
-        contextid: 15,
-      },
-    },
-  ],
+        contextid: 15
+      }
+    }
+  ]
 };
 
 const labelBulletList = {
@@ -609,11 +609,11 @@ const labelBulletList = {
             {
               type: "text",
               text:
-                "Properly written job position descriptions are often the only documents that totally define what a role is, what skills are required to perform it, and where the role fits in an organization. This makes it simple to identify candidates that are a good fit for the role and also to hold candidates accountable if they are not performing essential duties that are required in the role.",
-            },
-          ],
-        },
-      ],
+                "Properly written job position descriptions are often the only documents that totally define what a role is, what skills are required to perform it, and where the role fits in an organization. This makes it simple to identify candidates that are a good fit for the role and also to hold candidates accountable if they are not performing essential duties that are required in the role."
+            }
+          ]
+        }
+      ]
     },
     {
       type: "list_item",
@@ -624,11 +624,11 @@ const labelBulletList = {
             {
               type: "text",
               text:
-                "A job specification could be considered a more precise job description that details the exact educational degrees, experience, skills, and requirements for a role. In most cases, these terms are used interchangeably and nearly always describe the same document.",
-            },
-          ],
-        },
-      ],
+                "A job specification could be considered a more precise job description that details the exact educational degrees, experience, skills, and requirements for a role. In most cases, these terms are used interchangeably and nearly always describe the same document."
+            }
+          ]
+        }
+      ]
     },
     {
       type: "list_item",
@@ -639,42 +639,42 @@ const labelBulletList = {
             {
               type: "text",
               text:
-                "Make sure the title of the job position and description match. Do your research. If you're not familiar with the job, talk to someone who is and have them help with the description. Make sure it clearly defines the goals of the position and a timeline for reaching them.",
-            },
-          ],
-        },
-      ],
-    },
-  ],
+                "Make sure the title of the job position and description match. Do your research. If you're not familiar with the job, talk to someone who is and have them help with the description. Make sure it clearly defines the goals of the position and a timeline for reaching them."
+            }
+          ]
+        }
+      ]
+    }
+  ]
 };
 
 const labelEmoji = {
   type: "emoji",
   attrs: {
     id: 11,
-    shortcode: "1F60D",
-  },
+    shortcode: "1F60D"
+  }
 };
 
 const labelHashtag = {
   type: "hashtag",
   attrs: {
     id: 22,
-    text: "HashTag: #####gaming#####",
-  },
+    text: "HashTag: #####gaming#####"
+  }
 };
 
 const labelHeading = {
   type: "heading",
   attrs: {
-    level: 1,
+    level: 1
   },
   content: [
     {
       type: "text",
-      text: "Page Heading is - Hello world",
-    },
-  ],
+      text: "Page Heading is - Hello world"
+    }
+  ]
 };
 
 const labelLinkBlock = {
@@ -686,8 +686,8 @@ const labelLinkBlock = {
       "https://st2.depositphotos.com/3591429/8107/i/950/depositphotos_81074184-stock-photo-group-of-diverse-people-working.jpg",
     title: "LinkBlock : Page title here",
     description:
-      "Key Points In a business setting most work is \naccomplished by teams of individuals. Because of this, \nit is important for employees to have the skills necessary to work effectively with others. Organizations use many kinds of teams, \nsome of which are permanent and some of which are temporary. Teams are used to accomplish tasks that are too large or complex to be done by an individual or that require a diverse set of skills and expertise. Key Terms team: A group of people working toward a common purpose.",
-  },
+      "Key Points In a business setting most work is \naccomplished by teams of individuals. Because of this, \nit is important for employees to have the skills necessary to work effectively with others. Organizations use many kinds of teams, \nsome of which are permanent and some of which are temporary. Teams are used to accomplish tasks that are too large or complex to be done by an individual or that require a diverse set of skills and expertise. Key Terms team: A group of people working toward a common purpose."
+  }
 };
 
 const labelLinkMedia = {
@@ -701,9 +701,9 @@ const labelLinkMedia = {
       "Key Points In a business setting most work is \naccomplished by teams of individuals. Because of this, \nit is important for employees to have the skills necessary to work effectively with others. Organizations use many kinds of teams, \nsome of which are permanent and some of which are temporary. Teams are used to accomplish tasks that are too large or complex to be done by an individual or that require a diverse set of skills and expertise. Key Terms team: A group of people working toward a common purpose.",
     resolution: {
       width: 1920,
-      height: 1080,
-    },
-  },
+      height: 1080
+    }
+  }
 };
 
 const labelMention = {
@@ -711,14 +711,14 @@ const labelMention = {
   attrs: {
     type: "user",
     id: 42,
-    display: "Mention user: Steve Rogers",
-  },
+    display: "Mention user: Steve Rogers"
+  }
 };
 
 const labelOrderedList = {
   type: "ordered_list",
   attrs: {
-    order: 1,
+    order: 1
   },
   content: [
     {
@@ -730,11 +730,11 @@ const labelOrderedList = {
             {
               type: "text",
               text:
-                "Properly written job position descriptions are often the only documents that totally define what a role is, what skills are required to perform it, and where the role fits in an organization. This makes it simple to identify candidates that are a good fit for the role and also to hold candidates accountable if they are not performing essential duties that are required in the role.",
-            },
-          ],
-        },
-      ],
+                "Properly written job position descriptions are often the only documents that totally define what a role is, what skills are required to perform it, and where the role fits in an organization. This makes it simple to identify candidates that are a good fit for the role and also to hold candidates accountable if they are not performing essential duties that are required in the role."
+            }
+          ]
+        }
+      ]
     },
     {
       type: "list_item",
@@ -745,11 +745,11 @@ const labelOrderedList = {
             {
               type: "text",
               text:
-                "A job specification could be considered a more precise job description that details the exact educational degrees, experience, skills, and requirements for a role. In most cases, these terms are used interchangeably and nearly always describe the same document.",
-            },
-          ],
-        },
-      ],
+                "A job specification could be considered a more precise job description that details the exact educational degrees, experience, skills, and requirements for a role. In most cases, these terms are used interchangeably and nearly always describe the same document."
+            }
+          ]
+        }
+      ]
     },
     {
       type: "list_item",
@@ -760,13 +760,13 @@ const labelOrderedList = {
             {
               type: "text",
               text:
-                "Make sure the title of the job position and description match. Do your research. If you're not familiar with the job, talk to someone who is and have them help with the description. Make sure it clearly defines the goals of the position and a timeline for reaching them.",
-            },
-          ],
-        },
-      ],
-    },
-  ],
+                "Make sure the title of the job position and description match. Do your research. If you're not familiar with the job, talk to someone who is and have them help with the description. Make sure it clearly defines the goals of the position and a timeline for reaching them."
+            }
+          ]
+        }
+      ]
+    }
+  ]
 };
 
 export {
@@ -785,5 +785,5 @@ export {
   labelMention,
   labelOrderedList,
   labelText,
-  labelParagraph,
+  labelParagraph
 };

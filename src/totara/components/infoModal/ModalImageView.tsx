@@ -22,7 +22,6 @@
 import React from "react";
 import { Image, StyleSheet, Dimensions } from "react-native";
 import { Images } from "@resources/images";
-import { AnyAction } from "redux";
 
 type Params = {
   imageType: string;

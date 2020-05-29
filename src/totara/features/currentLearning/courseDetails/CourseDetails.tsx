@@ -31,7 +31,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
-import { Course } from "@totara/types";
+import { CourseContentDetails } from "@totara/types";
 import OverviewDetails from "../overview/Details";
 import { ThemeContext } from "@totara/theme";
 import {
@@ -42,7 +42,7 @@ import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { StatusKey } from "@totara/lib/constants";
 
 type CourseDetailsProps = {
-  course: Course;
+  courseDetails: CourseContentDetails;
   refetch: () => {};
   navigation?: NavigationParams;
 };
@@ -57,14 +57,17 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   if (data) {
     return (
       <ActivitySheetWrapper>
-        <CourseDetailsComponent course={data.course} refetch={refetch} />
+        <CourseDetailsComponent
+          courseDetails={data.mobile_course}
+          refetch={refetch}
+        />
       </ActivitySheetWrapper>
     );
   }
 };
 
 const CourseDetailsComponent = withNavigation(
-  ({ navigation = {}, course, refetch }: CourseDetailsProps) => {
+  ({ navigation = {}, courseDetails, refetch }: CourseDetailsProps) => {
     const [showOverview, setShowOverview] = useState(true);
     const [showCompletionModal, setShowCompletionModal] = useState(true);
 
@@ -78,12 +81,13 @@ const CourseDetailsComponent = withNavigation(
     const [theme] = useContext(ThemeContext);
     return (
       <HeaderView
-        details={course}
+        details={courseDetails.course}
         navigation={navigation!}
         tabBarLeft={translate("course.course-details.overview")}
         tabBarRight={translate("course.course-details.activities")}
         onPress={onSwitchTab}
         showOverview={showOverview}
+        image={courseDetails.imageSrc}
         badgeTitle="Course">
         <View
           style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}>
@@ -93,10 +97,13 @@ const CourseDetailsComponent = withNavigation(
               { backgroundColor: theme.colorNeutral1 }
             ]}>
             {!showOverview ? (
-              <Activities sections={course.sections} refetch={refetch} />
+              <Activities
+                sections={courseDetails.course.sections}
+                refetch={refetch}
+              />
             ) : (
               <OverviewDetails
-                learningItem={course}
+                learningItem={courseDetails.course}
                 summaryTypeTitle={translate(
                   "course.course_overview.course_summery"
                 )}
@@ -105,8 +112,8 @@ const CourseDetailsComponent = withNavigation(
             )}
           </View>
         </View>
-        {course.completion &&
-          course.completion.statuskey === StatusKey.complete && (
+        {courseDetails.course.completion &&
+          courseDetails.course.completion.statuskey === StatusKey.complete && (
             <CourseCompletionModal onClose={onClose} />
           )}
       </HeaderView>

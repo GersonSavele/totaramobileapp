@@ -32,11 +32,13 @@ export interface Section {
 export interface LearningItem {
   id: number;
   itemtype: string;
+  itemcomponent: string;
   shortname: string;
   fullname?: string;
   summary?: string;
   duedateState?: string;
+  urlView?: string;
   duedate?: Date;
   progress?: number;
-  imageSrc?: string;
+  native: boolean;
 }

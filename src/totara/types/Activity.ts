@@ -24,7 +24,6 @@ import { completionTrack, completionStatus } from "@totara/lib/constants";
 export interface Activity {
   id: number;
   instanceid: number;
-  modtype: string;
   name: string;
   viewurl?: string;
   completion?: completionTrack;

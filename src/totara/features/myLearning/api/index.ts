@@ -23,19 +23,20 @@
 import gql from "graphql-tag";
 
 const query = gql`
-  query totara_mobile_my_current_learning {
-    currentLearning: totara_core_my_current_learning {
+  query totara_mobile_current_learning {
+    currentLearning: totara_mobile_current_learning {
       id
       itemtype
+      itemcomponent
       shortname
       fullname
-      summary #: description
-      #summaryFormat: description_format
-      duedateState
-      duedate
+      summary: description(format: PLAIN)
       progress
-      # status # missing from real api
-      imageSrc
+      urlView: url_view
+      duedate(format: ISO8601)
+      duedateState: duedate_state
+      native: mobile_coursecompat
+      imageSrc: mobile_image
       __typename
     }
   }

@@ -31,14 +31,14 @@ import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
 import { CourseList } from "../courseList";
 import OverviewDetails from "../overview/Details";
-import { Program } from "@totara/types";
+import { CourseGroup } from "@totara/types";
 import { HeaderView } from "@totara/components/currentLearning";
 // import { coreProgram } from "./api";
 //Import mock data from js file once API has been fixed should remove from here(only for UI testing)
 import { program } from "../mock-data";
 
 type ProgramProps = {
-  program: Program;
+  program: CourseGroup;
   navigation: NavigationParams;
 };
 
