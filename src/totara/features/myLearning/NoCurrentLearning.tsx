@@ -26,7 +26,7 @@ import {
   Image,
   Dimensions,
   Text,
-  Linking,
+  Linking
 } from "react-native";
 
 import { PrimaryButton } from "@totara/components";
@@ -44,7 +44,7 @@ const NoCurrentLearning = () => {
         source={require("@resources/images/no_current_learning/no_current_learning.png")}
       />
       <Text style={[theme.textH2, styles.description]}>
-        {translate("my-learning.no_learning_message")}
+        {translate("current_learning.no_learning_message")}
       </Text>
       <AuthConsumer>
         {(auth) =>
@@ -72,18 +72,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: gutter,
+    padding: gutter
   },
   imageContainer: {
     height: Dimensions.get("window").width * 0.5,
     width: Dimensions.get("window").width * 0.7,
     resizeMode: "contain",
-    paddingBottom: resizeByScreenSize(32, 32, 48, 48),
+    paddingBottom: resizeByScreenSize(32, 32, 48, 48)
   },
   description: {
     alignItems: "flex-start",
-    marginVertical: resizeByScreenSize(32, 32, 48, 48),
-  },
+    marginVertical: resizeByScreenSize(32, 32, 48, 48)
+  }
 });
 
 export default NoCurrentLearning;

@@ -15,7 +15,7 @@
     "courses": "COURSES",
     "overview": "OVERVIEW"
   },
-  "my-learning": {
+  "current_learning":{
     "action_primary": "Current learning",
     "primary_info": {
       "zero": "You have no learning",

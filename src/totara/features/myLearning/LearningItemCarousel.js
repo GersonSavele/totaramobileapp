@@ -44,6 +44,7 @@ import { LearningItemCard, AddBadge } from "@totara/components";
 import { resizeByScreenSize, normalize, ThemeContext } from "@totara/theme";
 import { navigateTo } from "@totara/lib/navigation";
 import { itemToRouteMap } from "@totara/lib/constants";
+import Restriction from "./Restriction";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning, loading, onRefresh }) => {
@@ -127,6 +128,7 @@ const renderItem = (navigation) => {
 const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
   const [theme] = useContext(ThemeContext);
   const { isConnected, isInternetReachable } = useNetInfo();
+  const [showRestriction, setShowRestriction] = useState(false);
   const isOnline = isConnected && isInternetReachable;
   const itemStyle = StyleSheet.create({
     container: {
@@ -163,21 +165,30 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       color: theme.textColorSubdued
     }
   });
+
+  const clickedLearningItem = () => {
+    if (isOnline) {
+      if (item.native) {
+        navigateTo({
+          navigate: navigation.navigate,
+          routeId: itemToRouteMap[item.itemtype],
+          props: { targetId: item.id }
+        });
+      } else {
+        setShowRestriction(true);
+      }
+    }
+  };
+
+  const onClose = () => {
+    setShowRestriction(!showRestriction);
+  };
+
   return (
     <TouchableOpacity
       style={itemStyle.container}
       key={item.id}
-      onPress={
-        isOnline
-          ? () => {
-              navigateTo({
-                navigate: navigation.navigate,
-                routeId: itemToRouteMap[item.itemtype],
-                props: { targetId: item.id }
-              });
-            }
-          : () => {}
-      }
+      onPress={clickedLearningItem}
       activeOpacity={1.0}>
       <View style={itemStyle.content}>
         <LearningItemCard item={item} image={item.imageSrc}>
@@ -191,6 +202,9 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
           </Text>
         </LearningItemCard>
       </View>
+      {showRestriction && (
+        <Restriction onClose={onClose} urlView={item.urlView} />
+      )}
     </TouchableOpacity>
   );
 };

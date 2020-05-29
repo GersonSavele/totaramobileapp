@@ -24,6 +24,7 @@ import urlNotValid from "./url_not_valid/url_not_valid.png";
 import browserLogin from "./browser_login/browser_login.png";
 import courseComplete from "./course_complete/course_complete.png";
 import selfCompletion from "./self_completion/self_completion.png";
+import courseCompatible from "./course_compatible/course_compatible.png";
 
 import iconBell from "./tabbar/notificationsRegular.png";
 import iconBellSolid from "./tabbar/notificationsSolid.png";
@@ -38,7 +39,8 @@ const Images = {
   browserLogin,
   courseComplete,
   selfCompletion,
-  noDownloads
+  noDownloads,
+  courseCompatible
 };
 
 const Icons = {

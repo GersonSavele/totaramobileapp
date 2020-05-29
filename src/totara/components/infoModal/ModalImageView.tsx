@@ -20,7 +20,12 @@
  **/
 
 import React from "react";
-import { Image, StyleSheet, Dimensions } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Dimensions,
+  ImageSourcePropType
+} from "react-native";
 import { Images } from "@resources/images";
 
 type Params = {
@@ -37,51 +42,53 @@ const setImage = ({ imageType }: Params) => {
       return (
         <Image
           style={styles.containerStyle}
-          source={Images.completeAction as any}
+          source={Images.completeAction as ImageSourcePropType}
         />
       );
     case "url_not_valid":
       return (
         <Image
           style={styles.containerStyle}
-          source={Images.urlNotValid as any}
+          source={Images.urlNotValid as ImageSourcePropType}
         />
       );
     case "general_error":
       return (
         <Image
           style={styles.containerStyle}
-          source={Images.generalError as any}
+          source={Images.generalError as ImageSourcePropType}
         />
       );
     case "browser_login":
       return (
         <Image
           style={styles.containerStyle}
-          source={Images.browserLogin as any}
+          source={Images.browserLogin as ImageSourcePropType}
         />
       );
     case "course_complete":
       return (
         <Image
           style={styles.containerStyle}
-          source={Images.courseComplete as any}
+          source={Images.courseComplete as ImageSourcePropType}
         />
       );
     case "self_completion":
       return (
         <Image
           style={styles.containerStyle}
-          source={Images.selfCompletion as any}
+          source={Images.selfCompletion as ImageSourcePropType}
         />
       );
-    default:
+    case "course_compatible":
       return (
         <Image
           style={styles.containerStyle}
-          source={Images.selfCompletion as any}
+          source={Images.courseCompatible as ImageSourcePropType}
         />
       );
+    default:
+      return null;
   }
 };
 

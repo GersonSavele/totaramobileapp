@@ -21,15 +21,16 @@ import { AuthConsumer } from "@totara/core";
 
 type Props = {
   onClose: () => void;
+  urlView: string;
 };
 
-const Restriction = ({ onClose }: Props) => {
+const Restriction = ({ onClose, urlView }: Props) => {
   return (
     <InfoModal
       transparent={true}
-      title={translate("my-learning.restriction_view.title")}
-      description={translate("my-learning.restriction_view.description")}
-      imageType="self_completion"
+      title={translate("current_learning.restriction_view.title")}
+      description={translate("current_learning.restriction_view.description")}
+      imageType="course_compatible"
       visible>
       <AuthConsumer>
         {(auth) =>
@@ -37,10 +38,10 @@ const Restriction = ({ onClose }: Props) => {
           auth.authContextState.appState.host && (
             <PrimaryButton
               onPress={() => {
-                Linking.openURL(auth.authContextState.appState!.host);
+                Linking.openURL(urlView);
               }}
               text={translate(
-                "my-learning.restriction_view.primary_button_title"
+                "current_learning.restriction_view.primary_button_title"
               )}
               icon="external-link-alt"
               style={{ alignSelf: "center" }}
@@ -49,7 +50,9 @@ const Restriction = ({ onClose }: Props) => {
         }
       </AuthConsumer>
       <TertiaryButton
-        text={translate("my-learning.restriction_view.tertiary_button_title")}
+        text={translate(
+          "current_learning.restriction_view.tertiary_button_title"
+        )}
         onPress={onClose}
       />
     </InfoModal>

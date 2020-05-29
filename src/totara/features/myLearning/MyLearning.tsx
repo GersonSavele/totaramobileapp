@@ -45,10 +45,10 @@ const MyLearning = () => {
         <NavigationEvents onWillFocus={pullToRefresh} />
         <View style={viewStyles.headerViewWrap}>
           <Text style={viewStyles.headerViewTitleWrap}>
-            {translate("my-learning.action_primary")}
+            {translate("current_learning.action_primary")}
           </Text>
           <Text style={viewStyles.headerViewSubTitleWrap}>
-            {translate("my-learning.primary_info", {
+            {translate("current_learning.primary_info", {
               count:
                 currentLearning && currentLearning.length
                   ? currentLearning.length
