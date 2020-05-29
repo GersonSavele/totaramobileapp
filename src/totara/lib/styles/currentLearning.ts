@@ -23,7 +23,11 @@ import { TotaraTheme } from "@totara/theme/Theme";
 const criteriaSheetStyles = StyleSheet.create({
   transparentView: {
     flex: 1,
+<<<<<<< HEAD:src/totara/lib/styles/currentLearning.ts
     backgroundColor: "rgba(0, 0, 0, 0.7)",
+=======
+    backgroundColor: TotaraTheme.colorTransparent,
+>>>>>>> MOB-501 scorm: fixed pr comments and moved Confirmation to lib/tools:src/totara/theme/currentLearning.ts
     justifyContent: "flex-end"
   },
   renderOuterViewWrap: {
@@ -184,7 +188,12 @@ const headerViewStyles = StyleSheet.create({
   tabSelected: {
     height: "100%",
     justifyContent: "center",
+<<<<<<< HEAD
     paddingHorizontal: paddings.padding2XL
+=======
+    paddingHorizontal: paddings.margin2XL
+<<<<<<< HEAD:src/totara/lib/styles/currentLearning.ts
+>>>>>>> MOB-501 scorm: fixed pr comments and moved Confirmation to lib/tools
   },
   modalBackground: {
     flex: 1,
@@ -192,6 +201,8 @@ const headerViewStyles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-around",
     backgroundColor: "rgba(0, 0, 0, 0.5)"
+=======
+>>>>>>> MOB-501 scorm: fixed pr comments and moved Confirmation to lib/tools:src/totara/theme/currentLearning.ts
   }
 });
 

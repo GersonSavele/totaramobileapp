@@ -26,6 +26,7 @@ import SafeAreaView from "react-native-safe-area-view";
 import ModalText from "./ModalText";
 import ModalImageView from "./ModalImageView";
 import { resizeByScreenSize, ThemeContext } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type Params = {
   title?: string;
@@ -77,7 +78,7 @@ const InfoModal = ({
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)"
+    backgroundColor: TotaraTheme.colorTransparent
   },
   containerStyle: {
     flex: 1,

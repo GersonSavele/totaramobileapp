@@ -13,14 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from 'react';
-import { View, Alert } from 'react-native';
-import PropTypes from 'prop-types';
+import React from "react";
+import { View, Alert } from "react-native";
+import PropTypes from "prop-types";
 
-import { ActivityType } from '@totara/types';
-import { ActivitySheetContext, ActivitySheet } from './ActivitySheet';
-import ActivityFeedback from './ActivityFeedback';
-import { translate } from '@totara/locale';
+import { ActivityType } from "@totara/types";
+import { ActivitySheetContext, ActivitySheet } from "./ActivitySheet";
+import ActivityFeedback from "./ActivityFeedback";
+import { translate } from "@totara/locale";
+import { showConfirmation } from "@totara/lib/tools";
 
 const initialState = {
   currentActivity: undefined,
@@ -28,9 +29,9 @@ const initialState = {
   show: false,
   feedback: {
     activity: undefined,
-    data: undefined,
+    data: undefined
   },
-  resource: undefined,
+  resource: undefined
 };
 
 type ActivityFeedbackProps = {
@@ -46,19 +47,19 @@ class ActivitySheetWrapper extends React.Component {
   setCurrentActivity(activity: ActivityType) {
     this.setState({
       currentActivity: activity,
-      show: true,
+      show: true
     });
   }
 
   setOnClose(onAfterCloseFunc: () => {}) {
     this.setState({
-      onClose: onAfterCloseFunc,
+      onClose: onAfterCloseFunc
     });
   }
 
   setFeedback(data?: ActivityFeedbackProps) {
     this.setState({
-      feedback: data,
+      feedback: data
     });
   }
 
@@ -66,25 +67,13 @@ class ActivitySheetWrapper extends React.Component {
     if (
       this.state.currentActivity &&
       this.state.currentActivity.modtype &&
-      this.state.currentActivity.modtype === 'scorm' &&
+      this.state.currentActivity.modtype === "scorm" &&
       this.state.feedback
     ) {
-      Alert.alert(
-        translate('scorm.confirmation.title'),
-        translate('scorm.confirmation.message'),
-        [
-          {
-            text: translate('scorm.confirmation.cancel'),
-            style: 'cancel',
-          },
-          {
-            text: translate('scorm.confirmation.ok'),
-            onPress: () => {
-              this.resetInitialState();
-            },
-          },
-        ],
-        { cancelable: false }
+      showConfirmation(
+        translate("scorm.confirmation.title"),
+        translate("scorm.confirmation.message"),
+        this.resetInitialState
       );
     } else {
       this.resetInitialState();
@@ -101,7 +90,7 @@ class ActivitySheetWrapper extends React.Component {
   };
   setActivityResource(data: any) {
     this.setState({
-      resource: data,
+      resource: data
     });
   }
 
@@ -117,7 +106,7 @@ class ActivitySheetWrapper extends React.Component {
               this.setFeedback(data),
             setOnClose: (onCloseCallback: () => {}) =>
               this.setOnClose(onCloseCallback),
-            setActivityResource: (data: any) => this.setActivityResource(data),
+            setActivityResource: (data: any) => this.setActivityResource(data)
           }}>
           {this.props.children}
           {this.state.currentActivity && (

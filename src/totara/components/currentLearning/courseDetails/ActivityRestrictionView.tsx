@@ -28,13 +28,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { Text } from "react-native-animatable";
 import { translate } from "@totara/locale";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type Props = {
-  description: string,
-  onClose: ()=> void
-}
+  description: string;
+  onClose: () => void;
+};
 
-const ActivityRestrictionView = ({description, onClose} : Props) => {
+const ActivityRestrictionView = ({ description, onClose }: Props) => {
   const [theme] = useContext(ThemeContext);
   return (
     <Modal transparent={true}>
@@ -43,17 +44,19 @@ const ActivityRestrictionView = ({description, onClose} : Props) => {
           style={[
             styles.containerStyle,
             { backgroundColor: theme.colorNeutral1 }
-          ]}
-        >
+          ]}>
           <View
-            style={{ marginTop: 8, height: 48, width: 48, alignItems: "center" , justifyContent: "center" }}
-          >
-            <TouchableOpacity
-              style={{ flex: 0.5 }}
-              onPress={onClose}>
+            style={{
+              marginTop: 8,
+              height: 48,
+              width: 48,
+              alignItems: "center",
+              justifyContent: "center"
+            }}>
+            <TouchableOpacity style={{ flex: 0.5 }} onPress={onClose}>
               <FontAwesomeIcon
                 icon="times"
-                size= {20}
+                size={20}
                 color={theme.textColorDisabled}
               />
             </TouchableOpacity>
@@ -74,8 +77,7 @@ const ActivityRestrictionView = ({description, onClose} : Props) => {
                   alignSelf: "center",
                   textAlign: "center",
                   color: theme.colorNeutral6
-                }}
-              >
+                }}>
                 {description}
               </Text>
             </View>
@@ -89,7 +91,7 @@ const ActivityRestrictionView = ({description, onClose} : Props) => {
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: TotaraTheme.colorTransparent,
     justifyContent: "flex-end"
   },
   containerStyle: {

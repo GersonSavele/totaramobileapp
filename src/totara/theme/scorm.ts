@@ -13,10 +13,16 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { gutter } from "./";
-import { margins } from "./constants";
+import {
+  margins,
+  fontWeights,
+  modalSize,
+  resultCircleSize,
+  resultWrapperScaleX
+} from "./constants";
 import { TotaraTheme } from "./Theme";
 
 const scormSummaryStyles = StyleSheet.create({
@@ -46,7 +52,7 @@ const scormSummaryStyles = StyleSheet.create({
 const scormFeedbackStyles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)"
+    backgroundColor: TotaraTheme.colorTransparent
   },
   wrapper: {
     flex: 1,
@@ -55,8 +61,8 @@ const scormFeedbackStyles = StyleSheet.create({
   },
   resultOuterWrapper: {
     flex: 1,
-    height: Dimensions.get("window").height * 0.7,
-    width: Dimensions.get("window").width * 0.7,
+    height: modalSize.height,
+    width: modalSize.width,
     borderRadius: 4,
     marginHorizontal: "8%",
     alignItems: "center",
@@ -74,20 +80,19 @@ const scormFeedbackStyles = StyleSheet.create({
     width: "100%",
     overflow: "hidden",
     backgroundColor: TotaraTheme.colorNeutral3,
-    borderBottomStartRadius: Dimensions.get("window").width * 0.7 * 2,
-    borderBottomEndRadius: Dimensions.get("window").width * 0.7 * 2,
-    transform: [{ scaleX: 2 }]
+    borderBottomStartRadius: modalSize.width * resultWrapperScaleX,
+    borderBottomEndRadius: modalSize.width * resultWrapperScaleX,
+    transform: [{ scaleX: resultWrapperScaleX }]
   },
   resultContainer: {
-    width: 185,
-    height: 185,
-    borderRadius: 92.5,
-    flexDirection: "column",
+    width: resultCircleSize,
+    height: resultCircleSize,
+    borderRadius: resultCircleSize / 2,
     alignItems: "center",
     alignSelf: "center",
     justifyContent: "center",
     backgroundColor: TotaraTheme.colorNeutral7,
-    transform: [{ scaleX: 0.5 }]
+    transform: [{ scaleX: 1 / resultWrapperScaleX }]
   },
   resultStatusImage: {
     alignSelf: "center",
@@ -97,7 +102,7 @@ const scormFeedbackStyles = StyleSheet.create({
   },
   resultTitle: {
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: fontWeights.fontWeightXL,
     color: TotaraTheme.textColorLight
   },
   scoreText: {

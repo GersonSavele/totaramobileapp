@@ -32,20 +32,40 @@ const TotaraTheme: AppliedTheme = {
   viewContainer: { backgroundColor: colorAccent, flex: 1 },
 
   //---- Text styles: customizable by [Developer] ------
-  textH1: { fontSize: normalize(32), lineHeight:  normalize(38), color: textColorDark, fontWeight: "bold" },
-  textH2: { fontSize: normalize(24), lineHeight: normalize(32), color:  textColorDark, fontWeight: "500" },
-  textH3: { fontSize: normalize(20), lineHeight: normalize(28), color: textColorDark, fontWeight: "500" },
-  textH4: { fontSize: normalize(17), lineHeight: normalize(26), color: textColorDark, fontWeight: "500" },
+  textH1: {
+    fontSize: normalize(32),
+    lineHeight: normalize(38),
+    color: textColorDark,
+    fontWeight: "bold"
+  },
+  textH2: {
+    fontSize: normalize(24),
+    lineHeight: normalize(32),
+    color: textColorDark,
+    fontWeight: "500"
+  },
+  textH3: {
+    fontSize: normalize(20),
+    lineHeight: normalize(28),
+    color: textColorDark,
+    fontWeight: "500"
+  },
+  textH4: {
+    fontSize: normalize(17),
+    lineHeight: normalize(26),
+    color: textColorDark,
+    fontWeight: "500"
+  },
 
   textB1: { fontSize: 16, lineHeight: 24, color: textColorDark },
   textB2: { fontSize: 15, lineHeight: 20, color: textColorDark },
   textB3: { fontSize: 14, lineHeight: 18, color: textColorDark },
-  
+
   textSmall: { fontSize: 12, lineHeight: 16, color: textColorDark },
   textLabel: { fontSize: 10, color: textColorDark },
 
   fontSizeButtonTitle: 14,
-  
+
   //---- Theme color: customizable by [User, Developer] ------
   colorPrimary: colorPrimary,
   colorText: "#FFFFFF",
@@ -53,7 +73,7 @@ const TotaraTheme: AppliedTheme = {
   //---- Theme color: customizable by [Developer] ------
   colorAccent: colorAccent,
   colorSecondary1: "#F5F5F5",
-  colorSecondary2: "#FFFFFF", 
+  colorSecondary2: "#FFFFFF",
   colorSecondary3: "#F5F5F5",
   colorSecondary4: "#FFFFFF",
 
@@ -67,7 +87,7 @@ const TotaraTheme: AppliedTheme = {
   colorDestructive: "#FF3B30",
 
   //---- Neutral color: customizable by [Developer] ------
-  colorNeutral1: "#FFFFFF", 
+  colorNeutral1: "#FFFFFF",
   colorNeutral2: "#F5F5F5",
   colorNeutral3: "#E6E6E6",
   colorNeutral4: "#D2D2D2",
@@ -75,6 +95,8 @@ const TotaraTheme: AppliedTheme = {
   colorNeutral6: "#7D7D7D",
   colorNeutral7: "#4A4A4A",
   colorNeutral8: "#000000",
+
+  colorTransparent: "rgba(0, 0, 0, 0.7)",
 
   //---- Text color: customizable by [Developer] ------
   textColorDark: textColorDark,
@@ -104,7 +126,7 @@ export type AppliedTheme = {
 
   textSmall: TextStyle;
   textLabel: TextStyle;
-} & Theme
+} & Theme;
 
 const applyTheme = (theme: Partial<Theme>) => {
   let newTheme = TotaraTheme;
@@ -112,25 +134,34 @@ const applyTheme = (theme: Partial<Theme>) => {
     newTheme.tabBarActiveTintColor = theme.colorPrimary;
   }
   if (theme.colorAccent) {
-    newTheme.viewContainer = {...newTheme.viewContainer, ...{backgroundColor: theme.colorAccent}};
+    newTheme.viewContainer = {
+      ...newTheme.viewContainer,
+      ...{ backgroundColor: theme.colorAccent }
+    };
   }
   if (theme.colorNeutral5) {
     newTheme.tabBarInactiveTintColor = theme.colorNeutral5;
   }
   if (theme.textColorDark) {
-    newTheme.textH1 = {...newTheme.textH1, ...{color: theme.textColorDark}};
-    newTheme.textH2 = {...newTheme.textH2, ...{ color : theme.textColorDark}};
-    newTheme.textH3 = {...newTheme.textH3, ...{color: theme.textColorDark}};
-    newTheme.textH4 = {...newTheme.textH4, ...{color: theme.textColorDark}};
-    
-    newTheme.textB1 = {...newTheme.textB1, ...{color: theme.textColorDark}};
-    newTheme.textB2 = {...newTheme.textB2, ...{color: theme.textColorDark}};
-    newTheme.textB3 = {...newTheme.textB3, ...{color: theme.textColorDark}};
-    
-    newTheme.textSmall = {...newTheme.textSmall, ...{color: theme.textColorDark}};
-    newTheme.textLabel = {...newTheme.textLabel, ...{color: theme.textColorDark}};
+    newTheme.textH1 = { ...newTheme.textH1, ...{ color: theme.textColorDark } };
+    newTheme.textH2 = { ...newTheme.textH2, ...{ color: theme.textColorDark } };
+    newTheme.textH3 = { ...newTheme.textH3, ...{ color: theme.textColorDark } };
+    newTheme.textH4 = { ...newTheme.textH4, ...{ color: theme.textColorDark } };
+
+    newTheme.textB1 = { ...newTheme.textB1, ...{ color: theme.textColorDark } };
+    newTheme.textB2 = { ...newTheme.textB2, ...{ color: theme.textColorDark } };
+    newTheme.textB3 = { ...newTheme.textB3, ...{ color: theme.textColorDark } };
+
+    newTheme.textSmall = {
+      ...newTheme.textSmall,
+      ...{ color: theme.textColorDark }
+    };
+    newTheme.textLabel = {
+      ...newTheme.textLabel,
+      ...{ color: theme.textColorDark }
+    };
   }
   return { ...newTheme, ...theme };
 };
 
-export  { TotaraTheme, applyTheme };
+export { TotaraTheme, applyTheme };

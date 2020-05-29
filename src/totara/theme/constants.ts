@@ -15,6 +15,8 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
+import { Dimensions } from "react-native";
+
 const textAttributes = {
   short_code_prefix: "0x"
 };
@@ -83,6 +85,15 @@ const header = {
     size: 24
   }
 };
+
+const modalSize = {
+  width: Dimensions.get("window").width * 0.7,
+  height: Dimensions.get("window").height * 0.7
+};
+
+const resultCircleSize = 185;
+const resultWrapperScaleX = 2;
+
 export {
   textAttributes,
   margins,
@@ -93,5 +104,8 @@ export {
   borderRadius,
   tabBar,
   header,
-  icons
+  icons,
+  modalSize,
+  resultCircleSize,
+  resultWrapperScaleX
 };

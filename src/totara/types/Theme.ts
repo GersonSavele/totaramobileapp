@@ -50,6 +50,8 @@ export type Theme = {
   colorNeutral7: string;
   colorNeutral8: string;
 
+  colorTransparent: string;
+
   textColorDark: string;
   textColorSecondary: string;
   textColorLight: string;
