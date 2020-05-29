@@ -87,6 +87,9 @@ const scormQuery = gql`
   }
 `;
 
+/**
+ * returns an map object with all scorms
+ */
 const scormActivitiesRecordsQuery = gql`
   query get_scorm_bundle {
     scormBundles @client

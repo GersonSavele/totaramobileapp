@@ -19,25 +19,29 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useEffect, useState, useRef } from "react";
-import { Text } from "react-native";
+import React, { useEffect, useState, useRef, useContext } from "react";
+import { View, Text } from "react-native";
+import { get } from "lodash";
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from "react-native-static-server";
 
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
 import {
   initializeScormWebplayer,
-  isScormPlayerInitialized,
-  offlineScormServerRoot
+  isScormPlayerInitialized
 } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline";
 import { ScormBundle, Package, Sco, Grade } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { getScormAttemptData } from "./StorageHelper";
-import { translate } from "i18n-js";
+import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
 
 import { saveScormActivityData } from "@totara/lib/scorm";
+import { offlineScormServerRoot } from "@totara/lib/constants";
+import { useSelector } from "react-redux";
+import { RootState } from "@totara/reducers";
+import { Resource } from "@totara/types/Resource";
 
 type Props = {
   attempt: number;
@@ -45,17 +49,39 @@ type Props = {
   scoid?: string;
 };
 
-const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
-  if (!scormBundle) {
+const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
+  const { scormBundle, attempt, scoid } = navigation.state.params;
+
+  const idTarget = get(scormBundle, "scorm.id");
+
+  if (!idTarget) {
     return <Text>{translate("general.error_unknown")}</Text>;
   }
 
-  const { scorm, scormPackage } = scormBundle;
-  if (!scorm || !scormPackage) {
+  const resourcesList = useSelector(
+    (state: RootState) => state.resourceReducer.resources
+  );
+
+  const scormResource: Resource = resourcesList.find(
+    (resource) => resource.id === scormBundle.scorm.id
+  );
+
+  if (!scormBundle || !scormResource) {
     return <Text>{translate("general.error_unknown")}</Text>;
   }
+
+  console.warn(scormResource.unzipPath);
+
+  const {
+    scorm,
+    scormPackage = {
+      path: scormResource.unzipPath
+    }
+  } = scormBundle;
+  console.warn(" scoorm: ", scormBundle);
 
   const server = useRef<StaticServer>(null);
+
   const [scormPackageData, setScormPackageData] = useState<Package>(
     scormPackage
   );
@@ -133,13 +159,12 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
   };
 
   const setupOfflineScormPlayer = () => {
-    const _serverPath = offlineScormServerRoot;
     return isScormPlayerInitialized().then((isInit) => {
       if (isInit) {
-        return _serverPath;
+        return offlineScormServerRoot;
       } else {
         return initializeScormWebplayer().then(() => {
-          return _serverPath;
+          return offlineScormServerRoot;
         });
       }
     });
@@ -167,9 +192,7 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
       if (packageData.scos && packageData.defaultSco) {
         return Promise.resolve(packageData);
       } else {
-        return getScormPackageData(
-          `${offlineScormServerRoot}/${packageData.path}`
-        ).then((data) => {
+        return getScormPackageData(`${packageData.path}`).then((data) => {
           const tmpPackageData = { ...packageData, ...data } as Package;
           return tmpPackageData;
         });
@@ -284,15 +307,16 @@ const OfflineScormActivity = ({ scormBundle, attempt, scoid }: Props) => {
 
   return (
     <>
-      {url && (
+      {url && jsCode ? (
         <OfflineSCORMPlayer
           url={url}
           injectScript={jsCode}
           onExitHandler={onExitPlayerHandler}
           onMessageHandler={onPlayerMessageHandler}
         />
+      ) : (
+        <Text>Player loading......</Text>
       )}
-      {!url && <Text>Player loading......</Text>}
     </>
   );
 };

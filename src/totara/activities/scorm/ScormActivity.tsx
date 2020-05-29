@@ -19,128 +19,216 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import {
+  NavigationStackProp,
+  createStackNavigator
+} from "react-navigation-stack";
+import { NavigationActions } from "react-navigation";
+import { useSelector } from "react-redux";
+import { useQuery } from "@apollo/react-hooks";
 
-import { Activity, ActivityType } from "@totara/types";
+import { AppState } from "@totara/types";
 import ScormSummary from "./ScormSummary";
-import { ScormBundle } from "@totara/types/Scorm";
+import { AuthContext } from "@totara/core";
 import { OfflineScormActivity } from "./offline";
-import { ActivitySheetContext } from "../ActivitySheet";
-import OnlineSCORMActivity from "./online/OnlineSCORMActivity";
-import { scormActivityType } from "@totara/lib/constants";
-import { View } from "react-native";
-import { baseSpace, ThemeContext } from "@totara/theme";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
-import { TopHeader } from "@totara/components";
-import { withNavigation } from "react-navigation";
+import { TouchableIcon } from "@totara/components";
+import { ResourceState } from "@totara/types/Resource";
+import { RootState } from "@totara/reducers";
+import { scormQuery } from "./api";
+import { NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants";
 
-type SCORMActivityProps = {
-  navigation: any;
-  id: string;
-  activity: Activity;
-  mode?: scormActivityType;
-  onClose(): void;
-  resource: any;
+import ResourceManager from "@totara/lib/resourceManager";
+import {
+  getOfflinePackageUnzipPath,
+  getTargetZipFile,
+  formatAttempts
+} from "@totara/lib/scorm";
+import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
+import { Resource } from "@totara/types/Resource";
+import ScormAttempts from "./ScormAttempts";
+import Loading from "@totara/components/Loading";
+import { TotaraTheme } from "@totara/theme/Theme";
+import { ScormBundle, ScormActivityParams } from "@totara/types/Scorm";
+import { useNetInfo } from "@react-native-community/netinfo";
+import { translate } from "@totara/locale";
+import { SafeAreaView } from "react-native";
+import { fullFlex } from "@totara/lib/styles/base";
+
+const { download } = ResourceManager;
+
+type ScormActivityProps = {
+  navigation: NavigationStackProp<ScormActivityParams>;
 };
 
-type scormModeDataProps = {
-  mode: scormActivityType;
-  bundle?: ScormBundle;
-  data?: any;
-};
+const ScormActivity = (props: ScormActivityProps) => {
+  const { navigation } = props;
+  const { id, title = "" } = navigation.state.params as ScormActivityParams;
 
-const ScormActivity = ({
-  id,
-  activity,
-  mode = scormActivityType.summary,
-  onClose,
-  resource
-}: SCORMActivityProps) => {
-  const [theme] = useContext(ThemeContext);
-  const activitySheet = useContext(ActivitySheetContext);
-  const [scormModeData, setScormModeData] = useState<scormModeDataProps>({
-    mode: mode
-  });
-  const onSetActionWithData = (
-    action: scormActivityType,
-    bundle?: ScormBundle,
-    data?: any
-  ) => {
-    setScormModeData({ mode: action, bundle: bundle, data: data });
-  };
+  const { loading, error, data, refetch, networkStatus } = useQuery(
+    scormQuery,
+    {
+      variables: { scormid: id },
+      notifyOnNetworkStatusChange: true
+    }
+  );
+
+  const { isInternetReachable } = useNetInfo();
+
+  // FIXME: This is a temporary hack because the server is not returning correct data
+  const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
+
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+
+  const { apiKey } = appState as AppState;
+
+  const resourcesList: Resource[] = useSelector(
+    (state: RootState) => state.resourceReducer.resources
+  );
+
   useEffect(() => {
-    if (
-      activity &&
-      scormModeData.bundle &&
-      (scormModeData.mode === scormActivityType.offline ||
-        scormModeData.mode === scormActivityType.online)
-    ) {
-      //*
-      activitySheet.setFeedback({
-        activity: activity as ActivityType,
-        data: {
-          isOnline: scormModeData.mode === scormActivityType.online,
-          completionScoreRequired:
-            scormModeData.bundle.scorm.completionscorerequired,
+    if (scormBundle) {
+      const targetResource: Resource | undefined = resourcesList.find(
+        (resource) => resource.id === id
+      );
+      const {
+        bytesDownloaded: writtenBytes = 0,
+        sizeInBytes = 1,
+        state = ResourceState.Empty
+      } = targetResource || {};
 
-          gradeMethod: scormModeData.bundle.scorm.grademethod,
-          attempt: scormModeData.data.attempt
-        }
+      const { packageUrl } = scormBundle.scorm;
+
+      headerDispatch({
+        downloadProgress: humanReadablePercentage({
+          writtenBytes,
+          sizeInBytes
+        }),
+        downloadState: state,
+        // if there's no existing scorm resource, a null function will serve disabling the action
+        onDownloadPress: targetResource
+          ? () => null
+          : ({ id, title }) => {
+              if (isInternetReachable) {
+                download(
+                  apiKey,
+                  id,
+                  title,
+                  packageUrl,
+                  getTargetZipFile(id),
+                  getOfflinePackageUnzipPath(id)
+                );
+              } else {
+                showMessage({ text: translate("general.no_internet") });
+              }
+            }
       });
-      activitySheet.setActivityResource(undefined);
-    } else {
-      activitySheet.setFeedback(undefined);
     }
-  }, [scormModeData.mode]);
+  }, [resourcesList, scormBundle]);
 
-  const renderBody = () => {
-    switch (scormModeData.mode) {
-      case scormActivityType.offline:
-        return (
-          <OfflineScormActivity
-            scormBundle={scormModeData && scormModeData.bundle}
-            attempt={scormModeData.data.attempt}
-            scoid={scormModeData.data.scoid}
-          />
-        );
-      case scormActivityType.online:
-        return (
-          <OnlineSCORMActivity
-            uri={scormModeData && scormModeData.data && scormModeData.data.url}
-          />
-        );
-      case scormActivityType.summary:
-        return <ScormSummary id={id} setActionWithData={onSetActionWithData} />;
+  useEffect(() => {
+    if (data) {
+      // FIXME: This is a temporary hack because the server is not returning correct data
+      setScormBundle({
+        ...scormBundle,
+        scorm: formatAttempts(data.scorm)
+        //TODO: remove timestamp if the user is online
+        //lastsynced: 0
+      });
     }
+  }, [data]);
+
+  const headerDispatch = (params) => {
+    const setParamsAction = NavigationActions.setParams({
+      params,
+      key: NAVIGATION_SCORM_STACK_ROOT
+    });
+    navigation.dispatch(setParamsAction);
   };
 
+  if (loading && !(scormBundle && scormBundle.scorm)) {
+    return <Loading />;
+  }
   return (
-    <View style={theme.viewContainer}>
-      <TopHeader
-        iconSize={theme.textH2.fontSize}
-        color={theme.colorSecondary1}
-        title={activity.name}
-        titleTextStyle={theme.textH4}
-        infoTextStyle={{
-          ...theme.textSmall,
-          color: theme.textColorSubdued
-        }}
-        onClose={onClose}>
-        {resource && (
-          <ResourceDownloader
-            mode={resource && resource.data && resource.data.state}
-            progress={
-              (resource && resource.data && resource.data.percentCompleted) || 0
-            }
-            size={theme.textH2.fontSize}
-            onPress={resource && resource.action}
-            style={{ padding: baseSpace }}
-          />
-        )}
-      </TopHeader>
-      {renderBody()}
-    </View>
+    <SafeAreaView style={fullFlex}>
+      <ScormSummary
+        id={id}
+        navigation={navigation}
+        name={title}
+        loading={loading}
+        refetch={refetch}
+        error={error}
+        networkStatus={networkStatus}
+        scormBundle={scormBundle}
+      />
+    </SafeAreaView>
   );
 };
 
-export default withNavigation(ScormActivity);
+const scormStack = createStackNavigator(
+  {
+    ScormActivity: {
+      screen: ScormActivity,
+
+      navigationOptions: ({ navigation }) => {
+        const { title = "" } = navigation.state.params as ScormActivityParams;
+        return {
+          title,
+          headerTitleAlign: "center",
+          headerLeft: (
+            <TouchableIcon
+              icon={"times"}
+              onPress={() => navigation.pop()}
+              size={TotaraTheme.textH3.fontSize}
+            />
+          ),
+          headerRight: headerRight({ navigation })
+        };
+      }
+    },
+    ScormAttemps: {
+      screen: ScormAttempts,
+      navigationOptions: ({ navigation }) => {
+        const { title = "" } = navigation.state.params as ScormActivityParams;
+        return {
+          title
+        };
+      }
+    },
+    OfflineScormActivity: {
+      screen: OfflineScormActivity
+    }
+  },
+  {
+    initialRouteKey: NAVIGATION_SCORM_STACK_ROOT,
+    initialRouteName: "ScormActivity"
+  }
+);
+
+const headerRight = (props) => {
+  const { navigation } = props;
+  const {
+    id,
+    title = "",
+    downloadProgress = 0,
+    downloadState,
+    onDownloadPress
+  } = navigation.state.params as ScormActivityParams;
+
+  if (onDownloadPress) {
+    return (
+      <ResourceDownloader
+        resourceState={downloadState}
+        progress={downloadProgress}
+        size={TotaraTheme.textH3.fontSize}
+        onPress={() => onDownloadPress({ id, title })}
+      />
+    );
+  }
+};
+
+export { scormStack };
+export default ScormActivity;

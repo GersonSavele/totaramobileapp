@@ -1,12 +1,19 @@
 import { Alert } from "react-native";
 import { translate } from "@totara/locale";
 
-const showMessage = (
-  text: string,
-  callback: (value?: string | undefined) => void
-) => {
+type ShowMessageParams = {
+  title?: string;
+  text: string;
+  callback?: (value?: string | undefined) => void;
+};
+
+const showMessage = ({
+  title = "",
+  text,
+  callback = () => null
+}: ShowMessageParams) => {
   Alert.alert(
-    "",
+    title,
     text,
     [{ text: translate("general.ok"), onPress: callback }],
     {
@@ -37,4 +44,9 @@ const showConfirmation = (
   );
 };
 
-export { showMessage, showConfirmation };
+const humanReadablePercentage = ({ writtenBytes, sizeInBytes }) => {
+  if (!writtenBytes || !sizeInBytes) return 0;
+  return (writtenBytes / sizeInBytes) * 100;
+};
+
+export { showMessage, showConfirmation, humanReadablePercentage };

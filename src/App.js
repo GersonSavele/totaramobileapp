@@ -38,14 +38,19 @@ import { FeatureNavigator } from "@totara/features";
 import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { config } from "@totara/lib";
+import { NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants";
 import FontAwesome from "@totara/lib/fontAwesome";
 import NotificationCenter from "@totara/lib/notificationCenter";
 import CoreResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import ResourceManager from "@totara/lib/resourceManager";
+import { createStackNavigator } from "react-navigation-stack";
+import { scormStack } from "@totara/activities/scorm/ScormActivity";
 
-Sentry.init({
-  dsn: config.sentryUri
-});
+if (!__DEV__) {
+  Sentry.init({
+    dsn: config.sentryUri
+  });
+}
 
 FontAwesome.init();
 
@@ -78,6 +83,22 @@ const App: () => React$Node = () => {
   );
 };
 
+const rootStack = () =>
+  createStackNavigator(
+    {
+      FeatureNavigator: {
+        screen: FeatureNavigator()
+      },
+      [NAVIGATION_SCORM_STACK_ROOT]: {
+        screen: scormStack
+      }
+    },
+    {
+      mode: "modal",
+      headerMode: "none"
+    }
+  );
+
 const AppContainer = () => {
   const dispatch = useDispatch();
 
@@ -86,8 +107,7 @@ const AppContainer = () => {
   }, []);
 
   const [theme] = useContext(ThemeContext);
-
-  const AppMainNavigation = createAppContainer(FeatureNavigator());
+  const AppMainNavigation = createAppContainer(rootStack());
 
   return <AppMainNavigation screenProps={{ theme: theme }} />;
 };

@@ -64,6 +64,15 @@ const onDownloadProgress = (
   });
 };
 
+/**
+ *
+ * @param apiKey
+ * @param id
+ * @param name
+ * @param resourceUrl
+ * @param targetPathFile - it is full path of temporary download file
+ * @param targetExtractPath - unzip path location of the file
+ */
 const download = (
   apiKey: string,
   id: string,

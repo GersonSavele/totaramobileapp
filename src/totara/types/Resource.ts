@@ -16,6 +16,7 @@
  */
 
 export enum ResourceState {
+  Empty,
   Added,
   Errored,
   Waiting,

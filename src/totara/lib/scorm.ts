@@ -18,29 +18,43 @@ import { AttemptGrade, Grade, ScormBundle, Scorm } from "@totara/types/Scorm";
 import { translate } from "@totara/locale";
 import {
   calculatedAttemptsGrade,
-  getOfflineScormPackageName,
-  getGradeForAttempt,
-  syncOfflineScormBundle
+  getGradeForAttempt
 } from "@totara/activities/scorm/offline/offlineScormController";
 import {
   SECONDS_FORMAT,
   scormSummarySection,
-  scormActivityType
+  scormActivityType,
+  FILE_EXTENSION
 } from "./constants";
 import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { Log } from "@totara/lib";
-import { offlineScormServerRoot } from "@totara/activities/scorm/offline";
 import { showMessage } from "./tools";
-import { scormZipPackagePath } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 import { setWith, get } from "lodash";
+import {
+  OFFLINE_SCORM_PREFIX,
+  offlineScormServerRoot,
+  scormZipPackagePath
+} from "@totara/lib/constants";
+
+const getOfflineScormPackageName = (scormId: string) =>
+  `${OFFLINE_SCORM_PREFIX}${scormId}`;
+
+const getOfflinePackageUnzipPath = (scormId: string) =>
+  `${offlineScormServerRoot}${getOfflineScormPackageName(scormId)}`;
+
+const getTargetZipFile = (scormId: string) =>
+  `${scormZipPackagePath}${getOfflineScormPackageName(
+    scormId
+  )}${FILE_EXTENSION}`;
 
 /**
  * this formats the attempts of the SCORM bundle
+ * This is a temporary hack because the server is not returning correct data
  * @param {Object} data - scorm data from the Backend
  */
-const formatAttempts = (data: any) => {
+const formatAttempts = (data: any): Scorm => {
   let scormData = { ...data };
   if (scormData) {
     if (scormData.attempts && scormData.attempts.length > 0) {
@@ -77,36 +91,95 @@ const updateScormBundleWithOfflineAttempts = (
         // remove from the SCORM package data from the AsyncStorage
         return removeScormPackageData(scormId, client);
       } else {
+        // This returns the absolute path
         return Promise.resolve(storedResourceData.unzipPath);
       }
     })
-    .then((packageName) => {
-      let newData: any = { scorm: scorm };
-      try {
-        const { scormBundles } = client.readQuery({
-          query: scormActivitiesRecordsQuery
-        });
-        if (scormBundles && scormBundles[scormId]) {
-          newData = { ...newData, ...scormBundles[scormId] };
-        }
-      } catch (e) {
-        // return { scorm: scorm };
+    .then((filePath) => {
+      // check if the scormBundle exists in the cache
+      const scormBundles: { [key: string]: ScormBundle } = retrieveAllData({
+        client
+      });
+      let scormTarget;
+      if (scormBundles && scormBundles[scormId]) {
+        // update the scormBundleTarget with the previous scorm from the array of bundles
+        scormTarget = scormBundles[scormId];
       }
-      if (packageName && !newData && !newData.scormPackage) {
+
+      // filePath is a proof that we downloaded
+      // this runs only in the first time to build the scorm bundle
+      if (filePath && (!scormTarget || !scormTarget.scormPackage)) {
+        // scormPackage has the relative path
         const resourcePackageName = getOfflineScormPackageName(scormId);
-        let newScormData = (newData[scormId] && newData[scormId]) || {};
-        newScormData = {
-          ...newScormData,
+        const newScormData: ScormBundle = {
           scormPackage: { path: resourcePackageName },
           lastsynced: parseInt(moment().format(SECONDS_FORMAT))
         };
-        newData = { ...newData, ...newScormData };
-        // syncOfflineScormBundle(scormId, newScormData, client).then(() => {
-        return syncOfflineScormBundle(scormId, newScormData, client);
-        // });
+        const newScormBundles: { [key: string]: ScormBundle } = {
+          ...scormBundles,
+          [scormId]: newScormData
+        };
+        saveInTheCache({ client, scormBundles: newScormBundles });
+        return newScormData;
       }
-      return newData;
+      return scormTarget;
     });
+};
+
+/**
+ *
+ * @param param0 - Object with the scorm id to fetch the cached activity records
+ * @returns an object: the specific scorm cached data
+ */
+const retrieveAllData = ({ client }): { [key: string]: ScormBundle } => {
+  try {
+    const { scormBundles } = client.readQuery({
+      query: scormActivitiesRecordsQuery
+    });
+    return scormBundles;
+  } catch (e) {
+    Log.debug("empty cache for ActivitiesRecords");
+  }
+  return {};
+};
+
+const syncOfflineScormBundle = (
+  scormId: string,
+  scormBundleTarget: ScormBundle,
+  client: any
+): ScormBundle => {
+  let newData = { [scormId]: scormBundleTarget };
+  const scormBundles: { [key: string]: ScormBundle } = retrieveAllData({
+    client
+  });
+  if (scormBundles && scormBundles[scormId]) {
+    // update the previous array of bundles with the new scormBundleTarget
+    const scormData = {
+      [scormId]: { ...scormBundles[scormId], ...scormBundleTarget }
+    };
+    newData = { ...scormBundles, ...scormData };
+  }
+  saveInTheCache({ client, scormBundles: newData });
+  return newData[scormId];
+};
+
+/**
+ * This saves the map of scorm bundle with the new scormBunble in the cache
+ * @param param0
+ */
+const saveInTheCache = ({
+  client,
+  scormBundles
+}: {
+  client: any;
+  scormBundles: { [key: string]: ScormBundle };
+}) => {
+  client.writeQuery({
+    query: scormActivitiesRecordsQuery,
+    data: {
+      scormBundles
+    }
+  });
 };
 
 const getDataForScormSummary = (
@@ -200,32 +273,29 @@ const getDataForScormSummary = (
 };
 
 type OnTapProps = {
-  callback: (scormId: string, data: any, client: any) => Promise<void>;
-  downloadManager: ResourceManager;
   scormBundle: ScormBundle | undefined;
   client: any;
   apiKey?: string;
 };
 
+const resourceManager = ResourceManager.getInstance();
+
 const onTapDownloadResource = ({
-  callback,
-  downloadManager,
   scormBundle,
   apiKey,
   client
 }: OnTapProps) => () => {
-  if (!downloadManager) return;
+  const callback = syncOfflineScormBundle;
   if (scormBundle) {
     const _url = scormBundle!.scorm.packageUrl!;
     const _name = scormBundle!.scorm.name;
     const _scormId = scormBundle!.scorm.id;
 
-    const offlineSCORMPackageName = getOfflineScormPackageName(_scormId);
-    const _targetZipFile = `${scormZipPackagePath}/${offlineSCORMPackageName}.zip`;
-    const _unzipPath = `${offlineScormServerRoot}/${offlineSCORMPackageName}`;
+    const _targetZipFile = getTargetZipFile(_scormId);
+    const _unzipPath = getOfflinePackageUnzipPath(_scormId);
     const _downloadId = _scormId.toString();
     if (apiKey) {
-      downloadManager.download(
+      resourceManager.download(
         apiKey,
         _downloadId,
         _name,
@@ -278,12 +348,12 @@ const onTapNewAttempt = ({
         });
       } else {
         Log.warn("Cannot find new attempt url.", scormBundle.scorm.launchUrl);
-        showMessage(translate("general.error_unknown"), () => null);
+        showMessage({ text: translate("general.error_unknown") });
       }
     }
   } else {
     Log.warn("Cannot find scorm data.", scormBundle);
-    showMessage(translate("general.error_unknown"), () => null);
+    showMessage({ text: translate("general.error_unknown") });
   }
 };
 
@@ -304,11 +374,11 @@ const onTapContinueLastAttempt = ({
         });
       } else {
         Log.warn("Cannot find last attempt url.", scormBundle.scorm.repeatUrl);
-        showMessage(translate("general.error_unknown"), () => null);
+        showMessage({ text: translate("general.error_unknown") });
       }
     } else {
       Log.warn("Cannot find scorm data.", scormBundle);
-      showMessage(translate("general.error_unknown"), () => null);
+      showMessage({ text: translate("general.error_unknown") });
     }
   }
 };
@@ -330,7 +400,7 @@ const onTapViewAllAttempts = ({
     callback(scormSummarySection.attempts);
   } else {
     Log.warn("Cannot find scorm data", scormBundle);
-    showMessage(translate("general.error_unknown"), () => null);
+    showMessage({ text: translate("general.error_unknown") });
   }
 };
 
@@ -454,6 +524,21 @@ const getOfflineLastActivityResult = (scormId: string, client: any) => {
   }
 };
 
+/**
+ * This is to allow the user to make decision to show the buttons
+ * @param param0
+ */
+const shouldShowAction = ({
+  timeOpen,
+  maxAttempts,
+  totalAttempt,
+  actionPrimary,
+  actionSecondary
+}) =>
+  !timeOpen &&
+  (!maxAttempts || maxAttempts >= totalAttempt) &&
+  (actionPrimary || actionSecondary);
+
 export {
   updateScormBundleWithOfflineAttempts,
   formatAttempts,
@@ -464,5 +549,8 @@ export {
   onTapViewAllAttempts,
   removeScormPackageData,
   saveScormActivityData,
-  getOfflineLastActivityResult
+  getOfflineLastActivityResult,
+  getOfflinePackageUnzipPath,
+  getTargetZipFile,
+  shouldShowAction
 };

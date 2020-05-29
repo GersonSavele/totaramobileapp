@@ -19,33 +19,32 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React  from "react";
+import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { WebView, WebViewMessageEvent } from 'react-native-webview';
+import { WebView, WebViewMessageEvent } from "react-native-webview";
 
 type Props = {
-  url: string,
-  injectScript?: string,
-  onMessageHandler?: ((data: JSON) => void),
-  onExitHandler?: (() => void);
-}
+  url: string;
+  injectScript?: string;
+  onMessageHandler?: (data: JSON) => void;
+  onExitHandler?: () => void;
+};
 
 const OfflineSCORMPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
-  
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const eventdata = JSON.parse(event.nativeEvent.data);
     onMessageHandler && onMessageHandler(eventdata);
   };
 
   return (
-    <View style={styles.playerContainer} >
+    <View style={styles.playerContainer}>
       <WebView
         source={{ uri: url }}
         javaScriptEnabled={true}
         onMessage={didReceiveOnMessage}
         injectedJavaScript={injectScript}
         style={styles.player}
-      /> 
+      />
     </View>
   );
 };
@@ -54,10 +53,10 @@ const styles = StyleSheet.create({
   playerContainer: {
     flexDirection: "row",
     flexGrow: 1,
-    width: Dimensions.get("window").width,
+    width: Dimensions.get("window").width
   },
   player: {
-    width: "100%",
+    width: "100%"
   }
 });
 

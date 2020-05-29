@@ -26,7 +26,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 
 import {
   getOfflineScormCommits,
-  clearSyncedScormCommit,
+  clearSyncedScormCommit
 } from "./offlineScormController";
 import { Log, showMessage } from "@totara/lib";
 import { translate } from "@totara/locale";
@@ -65,7 +65,7 @@ const AttemptSynchronizer = () => {
           })
           .catch((e) => {
             Log.error(translate("general.error"), e);
-            showMessage(translate("general.error_unknown"), () => null);
+            showMessage({ text: translate("general.error_unknown") });
           });
       } else {
         getOfflineScormCommits().then((data) => {
@@ -100,8 +100,8 @@ const AttemptSynchronizer = () => {
     return saveAttempt({
       variables: {
         scormid: scormId,
-        attempts: tracks,
-      },
+        attempts: tracks
+      }
     }).then((value) => {
       if (value) {
         for (let result in value) {

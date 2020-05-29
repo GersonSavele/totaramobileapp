@@ -20,7 +20,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import ActivityRestrictionView from "./ActivityRestrictionView";
 import { AppliedTheme } from "@totara/theme/Theme";
-import { ActivitySheetContext } from "@totara/activities/ActivitySheet";
 import TextTypeLabel from "./TextTypeLabel";
 import ContentIconWrapper from "./ContentIconWrapper";
 import {
@@ -34,10 +33,15 @@ import {
   styles
 } from "@totara/theme/activities";
 import { ThemeContext } from "@totara/theme";
-import { Section, Activity, ActivityType } from "@totara/types";
+import { Section, Activity } from "@totara/types";
 import { Separator } from "@totara/components";
 import { translate } from "@totara/locale";
-import { completionStatus } from "@totara/lib/constants";
+import {
+  completionStatus,
+  NAVIGATION_SCORM_STACK_ROOT
+} from "@totara/lib/constants";
+import { navigateTo } from "@totara/lib/navigation";
+import { NavigationContext } from "react-navigation";
 
 // To Do : refetch props should be removed from going nested component(MOB-381)
 
@@ -176,7 +180,8 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   );
 };
 
-const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
+const ActivityUnLock = ({ item, theme }: ActivityProps) => {
+  const navigation = useContext(NavigationContext);
   return item.modtype == "label" ? (
     <View style={{ backgroundColor: theme.colorSecondary1 }}>
       <TextTypeLabel label={item} theme={theme}></TextTypeLabel>
@@ -184,33 +189,35 @@ const ActivityUnLock = ({ item, theme, refetch }: ActivityProps) => {
   ) : (
     <View style={activityContainerWrap(theme)}>
       <View>
-        <ActivitySheetContext.Consumer>
-          {({ setCurrentActivity, setOnClose }) => {
-            return (
-              <TouchableOpacity
-                style={{ flex: 1 }}
-                onPress={() => {
-                  setCurrentActivity(item as ActivityType);
-                  setOnClose(refetch!);
-                }}>
-                <View style={styles.activityBodyContainer}>
-                  <ContentIconWrapper
-                    completion={item.completion}
-                    status={item.completionstatus}
-                    theme={theme}
-                    available={item.available}></ContentIconWrapper>
-                  <View style={styles.activityContainer}>
-                    <Text
-                      numberOfLines={1}
-                      style={unLockActivityTextWrap(theme)}>
-                      {item.name.trim()}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        </ActivitySheetContext.Consumer>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={() => {
+            switch (item.modtype) {
+              case "scorm": {
+                navigateTo({
+                  navigate: navigation.navigate,
+                  routeId: NAVIGATION_SCORM_STACK_ROOT,
+                  props: {
+                    id: item.instanceid.toString(),
+                    title: item.name
+                  }
+                });
+              }
+            }
+          }}>
+          <View style={styles.activityBodyContainer}>
+            <ContentIconWrapper
+              completion={item.completion}
+              status={item.completionstatus}
+              theme={theme}
+              available={item.available}></ContentIconWrapper>
+            <View style={styles.activityContainer}>
+              <Text numberOfLines={1} style={unLockActivityTextWrap(theme)}>
+                {item.name.trim()}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
         <Separator />
       </View>
     </View>

@@ -26,9 +26,6 @@ import { getAllCommits, clearCommit } from "./StorageHelper";
 import { scormLessonStatus } from "@totara/lib/constants";
 import { scormActivitiesRecordsQuery } from "../api";
 
-const getOfflineScormPackageName = (scormId: string) =>
-  `OfflineSCORM_${scormId}`;
-
 const getGradeForAttempt = (
   attemptCmi: any,
   maxGrade: number,
@@ -137,30 +134,6 @@ const calculatedAttemptsGrade = (
   }
 };
 
-const syncOfflineScormBundle = (scormId: string, data: any, client: any) => {
-  let newData = { [scormId]: data };
-  try {
-    const { scormBundles } = client.readQuery({
-      query: scormActivitiesRecordsQuery
-    });
-    if (scormBundles && scormBundles[scormId]) {
-      const scormData = {
-        [scormId]: { ...scormBundles[scormId], ...newData[scormId] }
-      };
-      newData = { ...scormBundles, ...scormData };
-    }
-  } catch (e) {
-    console.log("e");
-  }
-  client.writeQuery({
-    query: scormActivitiesRecordsQuery,
-    data: {
-      scormBundles: newData
-    }
-  });
-  return newData[scormId];
-};
-
 const getOfflineScormCommits = () => {
   return getAllCommits().then((storedData) => {
     let formattedUnsyncedData = undefined;
@@ -195,10 +168,8 @@ const clearSyncedScormCommit = (scormId: string, attempt: number) => {
 
 export {
   calculatedAttemptsGrade,
-  syncOfflineScormBundle,
   getOfflineScormCommits,
   clearSyncedScormCommit,
   getGradeForAttempt,
-  getAttemptsGrade,
-  getOfflineScormPackageName
+  getAttemptsGrade
 };

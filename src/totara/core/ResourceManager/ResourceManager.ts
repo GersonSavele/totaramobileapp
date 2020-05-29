@@ -119,7 +119,7 @@ class ResourceManager{
             await unlink(toBeUpdated.unzipPath);
         }
         catch(error){
-            showMessage(translate('general.error_unknown'), () => null);
+            showMessage({ text: translate('general.error_unknown') });
             Log.error(error.toString(),error);
         }
 

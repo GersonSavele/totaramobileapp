@@ -7,6 +7,7 @@ import { TouchableIcon } from "@totara/components";
 import { icons, paddings } from "@totara/theme/constants";
 import { Resource, ResourceState } from "@totara/types/Resource";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { humanReadablePercentage } from "@totara/lib/tools";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type DownloadItemProps = {
@@ -34,10 +35,7 @@ const DownloadItem = ({
       : `${(sizeInBytes / 1024 / 1024).toFixed(2)} Mb`;
   };
 
-  const humanReadablePercentage = (sizeInBytes, writtenBytes) => {
-    if (!sizeInBytes || !writtenBytes) return 0;
-    return (writtenBytes / sizeInBytes) * 100;
-  };
+  const { bytesDownloaded: writtenBytes, sizeInBytes } = item;
 
   return (
     <TouchableOpacity
@@ -57,10 +55,10 @@ const DownloadItem = ({
           {item.state !== ResourceState.Completed && (
             <ResourceDownloader
               size={icons.sizeM}
-              progress={humanReadablePercentage(
-                item.sizeInBytes,
-                item.bytesDownloaded
-              )}
+              progress={humanReadablePercentage({
+                writtenBytes,
+                sizeInBytes
+              })}
               resourceState={item.state}
             />
           )}

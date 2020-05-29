@@ -1,21 +1,23 @@
+import { ResourceState } from "./Resource";
+
 export enum Grade {
   objective = "0", //= "Learning objects",
   highest = "1", // = "Highest grade",
   average = "2", // = "Average grade",
-  sum = "3", // = "Sum grade"
+  sum = "3" // = "Sum grade"
 }
 
 export enum AttemptGrade {
   highest = "0", // = "Highest attempt",
   average = "1", // = "Average attempts",
   first = "2", // = "First attempt",
-  last = "3", // = "Last completed attempt"
+  last = "3" // = "Last completed attempt"
 }
 
 export enum Completion {
   none = 0, //"Do not indicate activity completion"
   manual, //"Learners can manually mark the activity as completed"
-  conditional, //"Show activity as complete when conditions are met"
+  conditional //"Show activity as complete when conditions are met"
 }
 
 export type Scorm = {
@@ -59,7 +61,7 @@ export type Scorm = {
 };
 
 export type ScormBundle = {
-  scorm: Scorm;
+  scorm?: Scorm;
   scormPackage?: Package;
   offlineActivity?: {
     last: OfflineActivity;
@@ -77,8 +79,8 @@ export type Sco = {
 
 export type Package = {
   path: string;
-  scos: [Sco];
-  defaultSco: Sco;
+  scos?: [Sco];
+  defaultSco?: Sco;
 };
 
 export type OfflineActivity = {
@@ -90,4 +92,12 @@ export type ScormActivityResult = {
   attempt: number;
   gradereported: number;
   timestarted?: string;
+};
+
+export type ScormActivityParams = {
+  id: string;
+  title?: string;
+  downloadProgress?: number;
+  downloadState?: ResourceState;
+  onDownloadPress?: Function;
 };

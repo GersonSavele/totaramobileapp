@@ -3,7 +3,7 @@ import { Image, TouchableOpacity, ImageStyle } from "react-native";
 import * as Progress from "react-native-progress";
 
 import { ThemeContext, gutter } from "@totara/theme";
-import { ResourceState } from "@totara/core/ResourceManager/Resource";
+import { ResourceState } from "@totara/types/Resource";
 
 type ResourceDownloaderProps = {
   resourceState?: ResourceState;

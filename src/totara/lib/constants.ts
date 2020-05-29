@@ -19,6 +19,9 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
+import * as RNFS from "react-native-fs";
+import { config } from ".";
+
 const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
 const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
 const AUTHORIZATION = "AUTHORIZATION";
@@ -58,18 +61,13 @@ enum learningItemEnum {
 const NAVIGATION_CURRENT_LEARNING = "CurrentLearning";
 const NAVIGATION_COURSE_DETAILS = "CourseDetails";
 const NAVIGATION_COURSE_GROUP_DETAILS = "CourseGroupDetails"; //either LearningItemEnum.Program or LearningItemEnum.Certificate
+const NAVIGATION_SCORM_STACK_ROOT = "ScormActivityStack";
 
 const itemToRouteMap = {
   [learningItemEnum.Course]: NAVIGATION_COURSE_DETAILS,
   [learningItemEnum.Program]: NAVIGATION_COURSE_GROUP_DETAILS,
   [learningItemEnum.Certification]: NAVIGATION_COURSE_GROUP_DETAILS
 };
-
-enum scormLessonStatus {
-  passed = "passed",
-  completed = "completed",
-  failed = "failed"
-}
 
 enum completionTrack {
   trackingManual = "tracking_manual",
@@ -96,6 +94,21 @@ enum StatusKey {
   notYetStarted = "notyetstarted"
 }
 
+/* SCORM related */
+
+const DOWNLOAD_FOLDER = `${RNFS.DocumentDirectoryPath}`;
+
+const FILE_EXTENSION = ".zip";
+const OFFLINE_SCORM_PREFIX = "OfflineSCORM_";
+const scormZipPackagePath = DOWNLOAD_FOLDER;
+const offlineScormServerRoot = `${scormZipPackagePath}/${config.rootOfflineScormPlayer}`;
+
+enum scormLessonStatus {
+  passed = "passed",
+  completed = "completed",
+  failed = "failed"
+}
+
 enum scormActivityType {
   summary,
   offline,
@@ -118,6 +131,7 @@ export {
   NAVIGATION_CURRENT_LEARNING,
   NAVIGATION_COURSE_DETAILS,
   NAVIGATION_COURSE_GROUP_DETAILS,
+  NAVIGATION_SCORM_STACK_ROOT,
   NAVIGATION_SETTING,
   NAVIGATION_MY_LEARNING,
   SCREEN_WIDTH_X_LARGE,
@@ -128,6 +142,8 @@ export {
   DEV_USERNAME,
   DEV_PASSWORD,
   DEBUG_MODE,
+  OFFLINE_SCORM_PREFIX,
+  FILE_EXTENSION,
   scormLessonStatus,
   scormActivityType,
   scormSummarySection,
@@ -136,5 +152,7 @@ export {
   learningItemEnum,
   itemToRouteMap,
   courseCriteria,
-  StatusKey
+  StatusKey,
+  scormZipPackagePath,
+  offlineScormServerRoot
 };

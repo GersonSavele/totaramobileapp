@@ -22,10 +22,7 @@
 import * as RNFS from "react-native-fs";
 import { unzip } from "react-native-zip-archive";
 import { Platform } from "react-native";
-
-import { config } from "@totara/lib";
-const scormZipPackagePath = `${RNFS.DocumentDirectoryPath}`;
-const offlineScormServerRoot = `${RNFS.DocumentDirectoryPath}/${config.rootOfflineScormPlayer}`;
+import { offlineScormServerRoot } from "@totara/lib/constants";
 
 const unzipScormPackageToServer = (
   packageName: string,
@@ -113,7 +110,5 @@ const SCORMPlayerPackagePath =
 export {
   initializeScormWebplayer,
   unzipScormPackageToServer,
-  isScormPlayerInitialized,
-  offlineScormServerRoot,
-  scormZipPackagePath,
+  isScormPlayerInitialized
 };

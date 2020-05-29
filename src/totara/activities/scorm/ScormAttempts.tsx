@@ -26,15 +26,21 @@ import { ThemeContext, gutter, baseSpace } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ScormActivityResult, Grade } from "@totara/types/Scorm";
 import { TopHeader } from "@totara/components";
+import { NavigationStackProp } from "react-navigation-stack";
+import { fullFlex } from "@totara/lib/styles/base";
 
-type Props = {
-  name?: string;
+type AttemptsParams = {
   gradeMethod: Grade;
   attempts: [ScormActivityResult?];
-  onExit: () => void;
 };
 
-const ScormAttempts = ({ name = "", gradeMethod, attempts, onExit }: Props) => {
+type ScormActivityProps = {
+  navigation: NavigationStackProp<AttemptsParams>;
+};
+
+const ScormAttempts = ({ navigation }: ScormActivityProps) => {
+  const { gradeMethod, attempts } = navigation.state.params as AttemptsParams;
+
   const [theme] = useContext(ThemeContext);
 
   const attemptReport = (
@@ -52,44 +58,27 @@ const ScormAttempts = ({ name = "", gradeMethod, attempts, onExit }: Props) => {
   };
 
   return (
-    <>
-      <View style={theme.viewContainer}>
-        <TopHeader
-          iconSize={theme.textH2.fontSize}
-          color={theme.colorSecondary1}
-          title={name}
-          titleTextStyle={theme.textH4}
-          infoTextStyle={{ ...theme.textSmall, color: theme.textColorSubdued }}
-          onClose={onExit}
-        />
-        <Text
-          style={[
-            theme.textH2,
-            { marginVertical: baseSpace, paddingHorizontal: gutter },
-          ]}>
-          {translate("scorm.attempts.title")}
-        </Text>
-        <FlatList
-          style={{ flex: 1 }}
-          data={attempts}
-          renderItem={({ item, index }) => {
-            return attemptReport(
-              item as ScormActivityResult,
-              index,
-              gradeMethod
-            );
-          }}
-          alwaysBounceVertical={false}
-          scrollIndicatorInsets={{ right: 8 }}
-          keyExtractor={(item, index) =>
-            `${(item as ScormActivityResult).attempt}-${index}`
-          }
-        />
-        <SafeAreaView
-          style={{ backgroundColor: theme.viewContainer.backgroundColor }}
-        />
-      </View>
-    </>
+    <SafeAreaView style={fullFlex}>
+      <Text
+        style={[
+          theme.textH2,
+          { marginVertical: baseSpace, paddingHorizontal: gutter }
+        ]}>
+        {translate("scorm.attempts.title")}
+      </Text>
+      <FlatList
+        style={{ flex: 1 }}
+        data={attempts}
+        renderItem={({ item, index }) => {
+          return attemptReport(item as ScormActivityResult, index, gradeMethod);
+        }}
+        alwaysBounceVertical={false}
+        scrollIndicatorInsets={{ right: 8 }}
+        keyExtractor={(item, index) =>
+          `${(item as ScormActivityResult).attempt}-${index}`
+        }
+      />
+    </SafeAreaView>
   );
 };
 
@@ -102,7 +91,7 @@ type AttemptReport = {
 const AttemptReport = ({
   attemptReport,
   attempt,
-  gradeMethod,
+  gradeMethod
 }: AttemptReport) => {
   const [theme] = useContext(ThemeContext);
 
@@ -129,17 +118,17 @@ const attemptResult = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     marginVertical: 8,
-    paddingHorizontal: gutter,
+    paddingHorizontal: gutter
   },
   attempt: {
     flex: 2,
     alignSelf: "center",
-    fontWeight: "normal",
+    fontWeight: "normal"
   },
   result: {
     flex: 1,
-    alignItems: "flex-end",
-  },
+    alignItems: "flex-end"
+  }
 });
 
 export default ScormAttempts;
