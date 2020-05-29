@@ -39,7 +39,7 @@ import {
   CourseCompletionModal
 } from "@totara/components/currentLearning";
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
-import { StatusKey } from "@totara/lib/constants";
+import { StatusKey, learningItemEnum } from "@totara/lib/constants";
 
 type CourseDetailsProps = {
   courseDetails: CourseContentDetails;
@@ -79,6 +79,7 @@ const CourseDetailsComponent = withNavigation(
       setShowOverview(!showOverview);
     };
     const [theme] = useContext(ThemeContext);
+    courseDetails.course.itemtype = learningItemEnum.Course;
     return (
       <HeaderView
         details={courseDetails.course}

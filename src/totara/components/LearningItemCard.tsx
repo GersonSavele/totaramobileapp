@@ -26,15 +26,18 @@ import {
   StyleSheet,
   Text,
   View,
-  ViewStyle
+  ViewStyle,
+  ImageSourcePropType
 } from "react-native";
 import React, { useContext } from "react";
 
 import { LearningItem } from "@totara/types";
 import DueDateState from "./DueDateState";
-import { normalize, ThemeContext } from "@totara/theme";
-import { AUTHORIZATION } from "@totara/lib/constants";
+import { normalize } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
+import { AUTHORIZATION, learningItemEnum } from "@totara/lib/constants";
 import { AuthContext } from "@totara/core";
+import { Images } from "@resources/images";
 
 interface Props {
   item: LearningItem;
@@ -62,14 +65,13 @@ const LearningItemCard = ({
 };
 
 const CardElement = ({ item, cardStyle, children }: Props) => {
-  const [theme] = useContext(ThemeContext);
   const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
   return (
     <View style={cardStyleSheet}>
       <View style={{ flexDirection: "row" }}>
         <Text
           numberOfLines={2}
-          style={[theme.textH2, styles.itemFullName]}
+          style={[TotaraTheme.textH2, styles.itemFullName]}
           ellipsizeMode="tail">
           {item.fullname}
         </Text>
@@ -85,23 +87,58 @@ const ImageElement = ({ item, imageStyle, image }: Props) => {
     authContextState: { appState }
   } = useContext(AuthContext);
   const apiKey = appState!.apiKey;
-  const imgSrc = image;
   return (
-    <View style={imageStyleSheet}>
+    <View
+      style={[imageStyleSheet, { backgroundColor: TotaraTheme.colorNeutral3 }]}>
       {item.duedate && (
         <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />
       )}
-      <Image
-        source={{
-          uri: imgSrc,
-          headers: {
-            [AUTHORIZATION]: `Bearer ${apiKey}`
-          }
-        }}
-        style={{ flex: 1, width: "100%", height: "100%" }}
-      />
+      {image && image.length > 0 ? (
+        <Image
+          source={{
+            uri: image,
+            headers: {
+              [AUTHORIZATION]: `Bearer ${apiKey}`
+            }
+          }}
+          style={styles.imageWrap}
+        />
+      ) : (
+        <DefaultImage item={item} />
+      )}
     </View>
   );
+};
+
+const DefaultImage = ({ item }: { item: LearningItem }) => {
+  switch (item.itemtype) {
+    case learningItemEnum.Course:
+      return (
+        <Image
+          style={styles.imageWrap}
+          source={Images.defaultCourses as ImageSourcePropType}
+          resizeMode="center"
+        />
+      );
+    case learningItemEnum.Program:
+      return (
+        <Image
+          style={styles.imageWrap}
+          source={Images.defaultProgram as ImageSourcePropType}
+          resizeMode="center"
+        />
+      );
+    case learningItemEnum.Certification:
+      return (
+        <Image
+          style={styles.imageWrap}
+          source={Images.defaultCertifications as ImageSourcePropType}
+          resizeMode="center"
+        />
+      );
+    default:
+      return null;
+  }
 };
 
 const styles = StyleSheet.create({
@@ -124,6 +161,11 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     height: "100%",
     width: "100%"
+  },
+  imageWrap: {
+    flex: 1,
+    width: "100%",
+    height: "100%"
   }
 });
 

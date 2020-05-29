@@ -65,25 +65,20 @@ const HeaderView = ({
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
-      if (!state.isConnected || !state.isInternetReachable) {
-        setIsConnected(false);
-      } else {
-        setIsConnected(true);
-      }
+      setIsConnected(
+        (state.isConnected as boolean) && (state.isInternetReachable as boolean)
+      );
     });
     return () => unsubscribe();
   }, []);
 
   const getConnectionInfo = () => {
     const timeValue = setTimeout(() => {
-      NetInfo.fetch().then((state) => {
+      NetInfo.fetch().then(() => {
         setIsRefresh(false);
-        if (state.isConnected && state.isInternetReachable) {
-          setIsConnected(true);
-        }
         clearInterval(timeValue);
       });
-    }, 10000);
+    }, 5000);
   };
 
   const renderNavigationTitle = () => {

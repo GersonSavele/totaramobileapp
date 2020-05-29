@@ -337,7 +337,7 @@ let courses = [
 
 const certification = {
   id: 2,
-  itemtype: "program",
+  itemtype: "certification",
   shortname: "program1",
   fullname: "How to Create Reports",
   summary:

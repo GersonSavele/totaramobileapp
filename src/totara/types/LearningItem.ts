@@ -20,6 +20,7 @@
  */
 
 import { Activity } from "./Activity";
+import { learningItemEnum } from "@totara/lib/constants";
 
 export interface Section {
   id: number;
@@ -31,8 +32,11 @@ export interface Section {
 
 export interface LearningItem {
   id: number;
-  itemtype: string;
   itemcomponent: string;
+  itemtype:
+    | learningItemEnum.Program
+    | learningItemEnum.Course
+    | learningItemEnum.Certification;
   shortname: string;
   fullname?: string;
   summary?: string;
