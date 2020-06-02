@@ -43,60 +43,55 @@ const ScormFeedback = ({
 }: Props) => {
   const apolloClient = useApolloClient();
 
-  if (isOnline) {
-    // TODO - Need to confirm online workflow
+  // if (isOnline) {
+  // const { loading, error, data, refetch } = useQuery(scormFeedbackQuery, {
+  //   variables: { scormid: activity.instanceid }
+  // });
+  // if (loading) {
+  //   return (
+  //     <View style={{ position: "absolute", flex: 1 }}>
+  //       <Loading />
+  //     </View>
+  //   );
+  // }
+  // if (error) {
+  //   return <LoadingError onRefreshTap={refetch} />;
+  // }
+  // console.log("(data && data.scorm)", data && data.scorm);
+  // if (data && data.scorm) {
+  //   return (
+  //     <ScormFeedbackModal
+  //       grade={"0"}
+  //       score={"10%"}
+  //       method={"0"}
+  //       onClose={onClose}
+  //       onPrimary={onPrimary}
+  //     />
+  //   );
+  // } else {
+  //   return <LoadingError onRefreshTap={refetch} />;
+  // }
+  // return null;
+  // } else {
+  const lastActivityResult = getOfflineLastActivityResult(
+    activity.instanceid.toString(),
+    apolloClient
+  );
 
-    // const { loading, error, data, refetch } = useQuery(scormFeedbackQuery, {
-    //   variables: { scormid: activity.instanceid }
-    // });
-    // if (loading) {
-    //   return (
-    //     <View style={{ position: "absolute", flex: 1 }}>
-    //       <Loading />
-    //     </View>
-    //   );
-    // }
-    // if (error) {
-    //   return <LoadingError onRefreshTap={refetch} />;
-    // }
-    // console.log("(data && data.scorm)", data && data.scorm);
-    // if (data && data.scorm) {
-    //   return (
-    //     <ScormFeedbackModal
-    //       grade={"0"}
-    //       score={"10%"}
-    //       method={"0"}
-    //       onClose={onClose}
-    //       onPrimary={onPrimary}
-    //     />
-    //   );
-    // } else {
-    //   return <LoadingError onRefreshTap={refetch} />;
-    // }
-    return null;
-  } else {
-    const lastActivityResult = getOfflineLastActivityResult(
-      activity.instanceid.toString(),
-      apolloClient
+  if (lastActivityResult && parseInt(lastActivityResult.attempt) === attempt) {
+    return (
+      <ScormFeedbackModal
+        gradeMethod={gradeMethod}
+        score={lastActivityResult.gradereported}
+        completionScoreRequired={completionScoreRequired}
+        onClose={onClose}
+        onPrimary={onPrimary}
+      />
     );
-
-    if (
-      lastActivityResult &&
-      parseInt(lastActivityResult.attempt) === attempt
-    ) {
-      return (
-        <ScormFeedbackModal
-          gradeMethod={gradeMethod}
-          score={lastActivityResult.gradereported}
-          completionScoreRequired={completionScoreRequired}
-          onClose={onClose}
-          onPrimary={onPrimary}
-        />
-      );
-    } else {
-      return null;
-    }
+  } else {
+    return null;
   }
+  // }
 };
 
 export default ScormFeedback;

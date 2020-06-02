@@ -32,6 +32,7 @@ import { View } from "react-native";
 import { baseSpace, ThemeContext } from "@totara/theme";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TopHeader } from "@totara/components";
+import { navigateTo } from "@totara/lib/navigation";
 
 type SCORMActivityProps = {
   id: string;
@@ -72,9 +73,23 @@ const ScormActivity = ({
       (scormModeData.mode === scormActivityType.offline ||
         scormModeData.mode === scormActivityType.online)
     ) {
+      /*
       activitySheet.setFeedback({
         activity: activity as ActivityType,
         data: {
+          isOnline: scormModeData.mode === scormActivityType.online,
+          completionScoreRequired:
+            scormModeData.bundle.scorm.completionscorerequired,
+
+          gradeMethod: scormModeData.bundle.scorm.grademethod,
+          attempt: scormModeData.data.attempt
+        }
+      });
+      */
+      navigateTo({
+        navigate: navigation.navigate,
+        routeId: "ScormActivityStack",
+        props: {
           isOnline: scormModeData.mode === scormActivityType.online,
           completionScoreRequired:
             scormModeData.bundle.scorm.completionscorerequired,

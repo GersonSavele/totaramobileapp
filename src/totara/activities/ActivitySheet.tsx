@@ -26,6 +26,7 @@ import { ActivityType } from "@totara/types";
 import { WebviewActivity } from "./webview/WebviewActivity";
 import ScormActivity from "./scorm/ScormActivity";
 import { scormActivityType } from "@totara/lib/constants";
+import { navigateTo } from "@totara/lib/navigation";
 
 type ActivityFeedbackProps = {
   activity?: ActivityType;
