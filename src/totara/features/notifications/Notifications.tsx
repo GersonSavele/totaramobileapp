@@ -15,7 +15,7 @@
  *
  */
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -27,11 +27,10 @@ import {
 } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
-import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import headerStyles from "@totara/theme/headers";
 import listViewStyles from "@totara/theme/listView";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, NavigationContext } from "react-navigation";
 import { Images } from "@resources/images";
 import NetworkStatus from "@totara/components/NetworkStatus";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,23 +38,77 @@ import { paddings } from "@totara/theme/constants";
 import { NotificationMessage } from "@totara/types";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
 import { RootState } from "@totara/reducers";
+import { TotaraTheme } from "@totara/theme/Theme";
 
-const Notifications = ({ navigation }: any) => {
-  const [theme] = useContext(ThemeContext);
-  const [selectable, setSelectable] = useState(false);
+const Notifications = () => {
+  const dispatch = useDispatch();
+  const navigation = useContext(NavigationContext);
   const notificationList = useSelector(
     (state: RootState) => state.notificationReducer.notifications
   );
-  const dispatch = useDispatch();
+
+  const [selectable, setSelectable] = useState(false);
   const [selectedList, setSelectedList] = useState<string[]>([]);
 
-  const onNotificationItemPress = (item: NotificationMessage) => {
-    //open notification view
-    if (selectable) {
-      toggleSelected(item);
-    } else {
-      markNotificationAsRead(item);
+  useEffect(() => {
+    const onCancelTapListener = navigation.addListener(
+      "onCancelTap",
+      onCancelTap
+    );
+    const onDeleteTapListener = navigation.addListener(
+      "onDeleteTap",
+      onDeleteTap
+    );
+    return () => {
+      onCancelTapListener.remove();
+      onDeleteTapListener.remove();
+    };
+  });
+
+  useEffect(() => {
+    headerDispatch(selectable);
+  }, [selectable]);
+
+  const headerDispatch = (showActions: boolean) => {
+    const setParamsAction = NavigationActions.setParams({
+      params: {
+        showActions: showActions
+      },
+      key: "Notification"
+    });
+    navigation.dispatch(setParamsAction);
+  };
+
+  const onCancelTap = () => {
+    unSelectAll();
+    setSelectable(false);
+  };
+
+  const onDeleteTap = () => {
+    if (selectedList.length === 0) return;
+    dispatch({ type: "DELETE_NOTIFICATION", payload: selectedList });
+    setSelectable(false);
+  };
+
+  const unSelectAll = () => {
+    setSelectedList([]);
+  };
+
+  const onItemLongPress = (item: NotificationMessage) => {
+    if (!selectable) {
+      setSelectable(true);
     }
+    toggleSelected(item);
+  };
+
+  const onItemPress = (item: NotificationMessage) => {
+    if (selectable) toggleSelected(item);
+
+    markNotificationAsRead(item);
+  };
+
+  const markNotificationAsRead = (item: NotificationMessage) => {
+    dispatch({ type: "READ_NOTIFICATION", payload: item.id });
   };
 
   const toggleSelected = (item: NotificationMessage) => {
@@ -71,68 +124,19 @@ const Notifications = ({ navigation }: any) => {
     }
   };
 
-  const toggleAllUnselected = () => {
-    setSelectedList([]);
-  };
-
-  const markNotificationAsRead = (item: NotificationMessage) => {
-    dispatch({ type: "READ_NOTIFICATION", payload: item.id });
-  };
-
-  const onNotificationItemLongPress = (item: NotificationMessage) => {
-    setSelectable(true);
-    toggleSelected(item);
-    showActions(true);
-  };
-
-  const showActions = (show: boolean) => {
-    const setParamsAction = NavigationActions.setParams({
-      params: {
-        leftAction: show && (
-          <TouchableOpacity
-            onPress={onDelete}
-            style={{ paddingLeft: paddings.marginXL }}>
-            <Text style={theme.textH3}>Delete</Text>
-          </TouchableOpacity>
-        ),
-        rightAction: show && (
-          <TouchableOpacity
-            onPress={onCancelPress}
-            style={{ paddingRight: 16 }}>
-            <Text style={theme.textH3}>Cancel</Text>
-          </TouchableOpacity>
-        )
-      },
-      key: "Notification"
-    });
-    navigation.dispatch(setParamsAction);
-  };
-
-  const onCancelPress = () => {
-    toggleAllUnselected();
-    setSelectable(false);
-    showActions(false);
-  };
-
-  const onDelete = () => {
-    const selected = selectedList;
-    dispatch({ type: "DELETE_NOTIFICATION", payload: selected });
-  };
-
   const isSelected = (item: NotificationMessage) => {
-    return selectedList.some((selected: string) => selected === item.id);
+    return selectedList.some((x) => x === item.id);
   };
 
   return (
-    <View style={theme.viewContainer}>
-      <View
-        style={[
-          headerStyles.navigationHeader,
-          { backgroundColor: theme.colorSecondary1 }
-        ]}>
+    <View style={TotaraTheme.viewContainer}>
+      <View style={headerStyles.navigationHeader}>
         <Text
-          style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
-          {translate("notifications.action_primary")}
+          style={[
+            TotaraTheme.textH1,
+            { color: TotaraTheme.navigationHeaderTintColor }
+          ]}>
+          {translate("notifications.title")}
         </Text>
       </View>
       <NetworkStatus />
@@ -144,7 +148,7 @@ const Notifications = ({ navigation }: any) => {
                 <Image
                   source={Images.notificationBell as ImageSourcePropType}
                 />
-                <Text style={[theme.textH2, { fontWeight: "bold" }]}>
+                <Text style={[TotaraTheme.textH2, { fontWeight: "bold" }]}>
                   No notifications yet!
                 </Text>
               </View>
@@ -163,8 +167,8 @@ const Notifications = ({ navigation }: any) => {
                     item={item}
                     selectable={selectable}
                     selected={isSelected(item)}
-                    onNotificationItemPress={onNotificationItemPress}
-                    onNotificationItemLongPress={onNotificationItemLongPress}
+                    onNotificationItemPress={onItemPress}
+                    onNotificationItemLongPress={onItemLongPress}
                   />
                 )}
               />
@@ -189,17 +193,43 @@ const styles = StyleSheet.create({
 const NotificationsStack = createStackNavigator(
   {
     Notification: {
-      screen: Notifications
+      screen: Notifications,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: navigation.getParam("showActions") && (
+          <TouchableOpacity
+            onPress={() => {
+              // @ts-ignore
+              navigation.emit("onCancelTap");
+            }}
+            style={{ paddingLeft: paddings.marginXL }}>
+            <Text style={TotaraTheme.textH3}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerRight: navigation.getParam("showActions") && (
+          <TouchableOpacity
+            onPress={() => {
+              // @ts-ignore
+              navigation.emit("onDeleteTap");
+            }}
+            style={{ paddingRight: paddings.marginXL }}>
+            <Text
+              style={[
+                TotaraTheme.textH3,
+                { color: TotaraTheme.colorDestructive }
+              ]}>
+              Delete
+            </Text>
+          </TouchableOpacity>
+        )
+      })
     }
   },
   {
     initialRouteName: "Notification",
     initialRouteKey: "Notification",
-    defaultNavigationOptions: ({ screenProps, navigation }: any) =>
+    defaultNavigationOptions: ({ screenProps }: any) =>
       totaraNavigationOptions({
-        theme: screenProps.theme,
-        rightAction: navigation.getParam("rightAction"),
-        leftAction: navigation.getParam("leftAction")
+        theme: screenProps.theme
       })
   }
 );

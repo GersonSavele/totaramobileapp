@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { icons, paddings } from "@totara/theme/constants";
 import React, { useContext } from "react";
 import { ThemeContext } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type NotificationItemProps = {
   item: NotificationMessage;
@@ -35,10 +36,9 @@ const NotificationItem = ({
   onNotificationItemPress,
   onNotificationItemLongPress,
   selectable,
-  selected,
+  selected
 }: NotificationItemProps) => {
   const [theme] = useContext(ThemeContext);
-
   return (
     <TouchableOpacity
       onPress={() => onNotificationItemPress(item)}
@@ -48,35 +48,35 @@ const NotificationItem = ({
         style={{
           display: "flex",
           flexDirection: "row",
-          backgroundColor: theme.colorNeutral1,
+          backgroundColor: TotaraTheme.colorNeutral1
         }}>
         {selectable && (
           <View style={styles.itemCircle}>
             <FontAwesomeIcon
               size={icons.sizeL}
               icon={"check-circle"}
-              color={selected ? theme.colorPrimary : theme.colorNeutral3}
+              color={selected ? theme.colorPrimary : TotaraTheme.colorNeutral3}
             />
           </View>
         )}
         <View style={{ flex: 2 }}>
           <Text
             style={[
-              theme.textH3,
+              TotaraTheme.textH3,
               {
                 padding: paddings.paddingM,
-                fontWeight: item.read ? "normal" : "bold",
-              },
+                fontWeight: item.read ? "normal" : "bold"
+              }
             ]}>
             {item.title}
           </Text>
           <Text
             style={[
-              theme.textH4,
+              TotaraTheme.textH4,
               {
                 padding: paddings.paddingM,
-                fontWeight: item.read ? "normal" : "bold",
-              },
+                fontWeight: item.read ? "normal" : "bold"
+              }
             ]}>
             {item.body}
           </Text>
@@ -84,13 +84,13 @@ const NotificationItem = ({
         <View
           style={{
             alignItems: "flex-end",
-            justifyContent: "center",
+            justifyContent: "center"
           }}>
           <FontAwesomeIcon
             size={icons.sizeM}
-            color={theme.colorNeutral3}
+            color={TotaraTheme.colorNeutral3}
             style={{ padding: paddings.paddingM }}
-            icon={"caret-right"}
+            icon={"angle-right"}
           />
         </View>
       </View>
@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
   itemCircle: {
     padding: paddings.marginXL,
     display: "flex",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });
 
 export default NotificationItem;

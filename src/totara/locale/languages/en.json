@@ -194,7 +194,7 @@
     }
   },
   "notifications": {
-    "action_primary": "Notifications"
+    "title": "Notifications"
   },
   "no_internet_alert":{
    "title": "No Network Connection",

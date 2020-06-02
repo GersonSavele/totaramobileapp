@@ -45,6 +45,8 @@ import Profile from "./profile";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
 import { translate } from "@totara/locale";
+import { useSelector } from "react-redux";
+import { RootState } from "@totara/reducers";
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
@@ -53,7 +55,7 @@ const FeatureNavigator = () => {
     {
       MyLearningTab,
       DownloadsTab,
-      notificationTab: NotificationsTab(),
+      NotificationsTab,
       ProfileTab
     },
     {
@@ -179,23 +181,29 @@ const ProfileTab = {
   }
 };
 
-const NotificationsTab = () => {
-  // TODO: load counting from redux store. This is not possible yet because this tab needs to have its own context to avoid
-  // const notificationList = useSelector(
-  //   (state) => state.notificationReducer.notifications
-  // );
+const NotificationBellWithCounting = ({ active, tintColor }) => {
+  const notificationList = useSelector(
+    (state: RootState) => state.notificationReducer.notifications
+  );
 
-  return {
-    screen: NotificationsStack,
-    navigationOptions: {
-      tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
-        NotificationBell({
-          active: tabIconProps.focused,
-          tintColor: tabIconProps.tintColor,
-          counting: 0
-        })
+  const count = notificationList.filter((n) => !n.read).length;
+  return (
+    <NotificationBell active={active} tintColor={tintColor} counting={count} />
+  );
+};
+
+const NotificationsTab = {
+  screen: NotificationsStack,
+  navigationOptions: {
+    tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) => {
+      return (
+        <NotificationBellWithCounting
+          active={tabIconProps.focused}
+          tintColor={tabIconProps.tintColor}
+        />
+      );
     }
-  };
+  }
 };
 
 const tabBarIconBuilder = (
