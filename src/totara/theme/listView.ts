@@ -21,19 +21,18 @@
  *
  */
 
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 import { margins, paddings } from "@totara/theme/constants";
 
 const listViewStyles = StyleSheet.create({
-  contentContainerStyle:{
-    padding: paddings.marginXL
+  contentContainerStyle: {
+    paddingLeft: paddings.marginXL
   },
   itemSeparator: {
     margin: margins.marginXS,
-    backgroundColor: '#ddd',
-    height: 1,
-  },
-
-})
+    backgroundColor: "#ddd",
+    height: 1
+  }
+});
 
 export default listViewStyles;

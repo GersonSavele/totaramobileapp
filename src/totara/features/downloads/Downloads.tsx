@@ -93,7 +93,7 @@ const Downloads = () => {
     ResourceManager.download(
       "",
       scormID,
-      scormID,
+      `Resource ${scormID}`,
       resourceUrl,
       targetZipFile,
       targetExtractPath
@@ -152,18 +152,19 @@ const Downloads = () => {
 
   return (
     <View style={theme.viewContainer}>
-      <View style={headerStyles.navigationHeader}>
+      <View style={[headerStyles.navigationHeader, { flexDirection: "row" }]}>
         <Text
           style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
           {translate("downloads.title")}
         </Text>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <Button onPress={downloadTest} title={"ADD"} />
+        </View>
       </View>
       <NetworkStatus />
       <View>
         {/*todo: remove it once scorm activity refactoring is done*/}
-        {/*<View style={{ flexDirection: "row", justifyContent: "center" }}>*/}
-        {/*  <Button onPress={downloadTest} title={"ADD"} />*/}
-        {/*</View>*/}
+
         {resourcesList.length == 0 ? (
           <View style={styles.noContent}>
             <Image source={Images.noDownloads as ImageSourcePropType} />
@@ -173,6 +174,7 @@ const Downloads = () => {
           </View>
         ) : (
           <FlatList
+            contentContainerStyle={listViewStyles.contentContainerStyle}
             data={resourcesList}
             keyExtractor={(resourceItem) => resourceItem.id}
             ItemSeparatorComponent={() => (

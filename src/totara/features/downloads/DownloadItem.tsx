@@ -5,7 +5,7 @@ import { ThemeContext } from "@totara/theme";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
 import { icons, paddings } from "@totara/theme/constants";
-import { Resource } from "@totara/types/Resource";
+import { Resource, ResourceState } from "@totara/types/Resource";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -64,14 +64,16 @@ const DownloadItem = ({
           style={{
             alignItems: "flex-end"
           }}>
-          <ResourceDownloader
-            size={icons.sizeM}
-            progress={humanReadablePercentage(
-              item.sizeInBytes,
-              item.bytesDownloaded
-            )}
-            resourceState={item.state}
-          />
+          {item.state !== ResourceState.Completed && (
+            <ResourceDownloader
+              size={icons.sizeM}
+              progress={humanReadablePercentage(
+                item.sizeInBytes,
+                item.bytesDownloaded
+              )}
+              resourceState={item.state}
+            />
+          )}
         </View>
         <View
           style={{

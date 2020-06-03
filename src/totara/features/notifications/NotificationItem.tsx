@@ -46,7 +46,6 @@ const NotificationItem = ({
       <View
         key={item.id}
         style={{
-          display: "flex",
           flexDirection: "row",
           backgroundColor: TotaraTheme.colorNeutral1
         }}>
@@ -71,13 +70,10 @@ const NotificationItem = ({
             {item.title}
           </Text>
           <Text
-            style={[
-              TotaraTheme.textH4,
-              {
-                padding: paddings.paddingM,
-                fontWeight: item.read ? "normal" : "bold"
-              }
-            ]}>
+            style={{
+              padding: paddings.paddingM,
+              fontWeight: item.read ? "normal" : "bold"
+            }}>
             {item.body}
           </Text>
         </View>

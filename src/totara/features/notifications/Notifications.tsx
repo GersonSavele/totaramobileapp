@@ -141,40 +141,33 @@ const Notifications = () => {
       </View>
       <NetworkStatus />
       <View>
-        <View>
-          <View>
-            {notificationList.length == 0 && (
-              <View style={styles.noContent}>
-                <Image
-                  source={Images.notificationBell as ImageSourcePropType}
-                />
-                <Text style={[TotaraTheme.textH2, { fontWeight: "bold" }]}>
-                  No notifications yet!
-                </Text>
-              </View>
+        {notificationList.length == 0 && (
+          <View style={styles.noContent}>
+            <Image source={Images.notificationBell as ImageSourcePropType} />
+            <Text style={[TotaraTheme.textH2, { fontWeight: "bold" }]}>
+              No notifications yet!
+            </Text>
+          </View>
+        )}
+        {notificationList.length > 0 && (
+          <FlatList<NotificationMessage>
+            contentContainerStyle={listViewStyles.contentContainerStyle}
+            ItemSeparatorComponent={() => (
+              <View style={listViewStyles.itemSeparator} />
             )}
-            {notificationList.length > 0 && (
-              <FlatList<NotificationMessage>
-                style={{ flexGrow: 1 }}
-                contentContainerStyle={listViewStyles.contentContainerStyle}
-                ItemSeparatorComponent={() => (
-                  <View style={listViewStyles.itemSeparator} />
-                )}
-                data={notificationList}
-                keyExtractor={(notificationItem) => notificationItem.id}
-                renderItem={({ item }) => (
-                  <NotificationItem
-                    item={item}
-                    selectable={selectable}
-                    selected={isSelected(item)}
-                    onNotificationItemPress={onItemPress}
-                    onNotificationItemLongPress={onItemLongPress}
-                  />
-                )}
+            data={notificationList}
+            keyExtractor={(notificationItem) => notificationItem.id}
+            renderItem={({ item }) => (
+              <NotificationItem
+                item={item}
+                selectable={selectable}
+                selected={isSelected(item)}
+                onNotificationItemPress={onItemPress}
+                onNotificationItemLongPress={onItemLongPress}
               />
             )}
-          </View>
-        </View>
+          />
+        )}
       </View>
     </View>
   );

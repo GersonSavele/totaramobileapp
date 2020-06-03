@@ -34,7 +34,7 @@ const ResourceDownloaderComponent = ({
         thickness={2}
         borderWidth={0}
         indeterminate={false}
-        formatText={() => ""}
+        formatText={() => progress.toFixed(0)}
         showsText={true}
         textStyle={{
           fontSize: theme.textSmall.fontSize,
@@ -54,7 +54,7 @@ const ResourceDownloaderComponent = ({
     return (
       <Image
         source={iconSource}
-        style={[{ tintColor: theme.colorLink, height: size, width: size }]}
+        style={[{ tintColor: theme.colorPrimary, height: size, width: size }]}
         resizeMode="contain"
       />
     );
