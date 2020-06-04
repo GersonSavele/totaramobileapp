@@ -168,7 +168,7 @@ const Downloads = () => {
           <View style={styles.noContent}>
             <Image source={Images.noDownloads as ImageSourcePropType} />
             <Text style={[theme.textH2, { fontWeight: "bold" }]}>
-              No downloads yet!
+              {translate("downloads.empty")}
             </Text>
           </View>
         ) : (
