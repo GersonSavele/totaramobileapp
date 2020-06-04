@@ -218,7 +218,7 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
 
 const styles = StyleSheet.create({
   headerContent: {
-    padding: paddings.margin2XL,
+    padding: paddings.padding2XL,
     alignItems: "center"
   },
   avatar: {

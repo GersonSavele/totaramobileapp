@@ -16,11 +16,11 @@ Please contact [sales@totaralearning.com] for more information.
 */
 
 const textAttributes = {
-  short_code_prefix: "0x",
+  short_code_prefix: "0x"
 };
 
 const borderRadius = {
-  borderRadiusM: 12,
+  borderRadiusM: 12
 };
 
 const fontWeights = {
@@ -30,7 +30,7 @@ const fontWeights = {
   fontWeightL: "500",
   fontWeightXL: "600",
   fontWeight2XL: "700",
-  fontWeight3XL: "800",
+  fontWeight3XL: "800"
 };
 
 const fontSizes = {
@@ -40,7 +40,7 @@ const fontSizes = {
   fontSizeL: 22,
   fontSizeXL: 32,
   fontSize2XL: 58,
-  fontSize3XL: 68,
+  fontSize3XL: 68
 };
 
 const margins = {
@@ -50,39 +50,39 @@ const margins = {
   marginL: 16,
   marginXL: 24,
   margin2XL: 32,
-  margin3XL: 48,
+  margin3XL: 48
 };
 const paddings = {
   paddingXS: 2,
   paddingS: 4,
   paddingM: 6,
   paddingL: 8,
-  marginXL: 16,
-  margin2XL: 24,
-  margin3XL: 32,
+  paddingXL: 16,
+  padding2XL: 24,
+  padding3XL: 32
 };
 
 const tabBar = {
   icon: {
     width: 24,
-    height: 24,
-  },
+    height: 24
+  }
 };
 
 const icons = {
   sizeS: 16,
   sizeM: 24,
   sizeL: 32
-}
+};
 
 const viewHeight = {
-  activityContainerHeight: 45,
+  activityContainerHeight: 45
 };
 const header = {
-  icon:{
+  icon: {
     size: 24
   }
-}
+};
 export {
   textAttributes,
   margins,

@@ -42,8 +42,8 @@ const labelWrap = (theme: AppliedTheme) => {
 
 const styles = StyleSheet.create({
   scrollViewContainer: {
-    paddingTop: paddings.marginXL,
-    paddingBottom: paddings.marginXL
+    paddingTop: paddings.paddingXL,
+    paddingBottom: paddings.paddingXL
   },
   container: {
     shadowColor: TotaraTheme.colorNeutral8,

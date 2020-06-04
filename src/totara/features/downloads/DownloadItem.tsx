@@ -53,7 +53,7 @@ const DownloadItem = ({
             />
           </View>
         )}
-        <View style={styles.contentContainer}>
+        <View style={{ flex: 1 }}>
           <Text style={TotaraTheme.textH4}>{item.name}</Text>
           <Text
             style={{ color: TotaraTheme.colorNeutral6 }}>{`${humanReadableSize(
@@ -92,20 +92,13 @@ const DownloadItem = ({
 
 const styles = StyleSheet.create({
   item: {
-    justifyContent: "center",
-    padding: paddings.paddingM,
     flexDirection: "row",
+    padding: paddings.paddingM,
     backgroundColor: TotaraTheme.colorNeutral1
-  },
-  contentContainer: {
-    flex: 1,
-    paddingLeft: paddings.paddingM,
-    flexDirection: "column",
-    justifyContent: "center"
   },
   itemCircle: {
     alignSelf: "center",
-    padding: paddings.marginXL,
+    padding: paddings.paddingXL,
     justifyContent: "center"
   }
 });

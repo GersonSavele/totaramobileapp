@@ -8,7 +8,8 @@
     "cancel": "Cancel",
     "yes": "Yes",
     "error_unknown": "Something went wrong, please try again later.",
-    "no_internet": "You are offline"
+    "no_internet": "You are offline",
+    "back": "Back"
   },
   "certificate-details": {
     "courses": "COURSES",

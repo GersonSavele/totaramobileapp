@@ -184,7 +184,7 @@ const headerViewStyles = StyleSheet.create({
   tabSelected: {
     height: "100%",
     justifyContent: "center",
-    paddingHorizontal: paddings.margin2XL
+    paddingHorizontal: paddings.padding2XL
   },
   modalBackground: {
     flex: 1,

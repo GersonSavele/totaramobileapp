@@ -207,7 +207,7 @@ const DownloadsStack = createStackNavigator(
               // @ts-ignore
               navigation.emit("onCancelTap");
             }}
-            style={{ paddingLeft: paddings.marginXL }}>
+            style={{ paddingLeft: paddings.paddingL }}>
             <Text style={TotaraTheme.textH3}>Cancel</Text>
           </TouchableOpacity>
         ),
@@ -217,7 +217,7 @@ const DownloadsStack = createStackNavigator(
               // @ts-ignore
               navigation.emit("onDeleteTap");
             }}
-            style={{ paddingRight: paddings.marginXL }}>
+            style={{ paddingRight: paddings.paddingL }}>
             <Text
               style={[
                 TotaraTheme.textH3,

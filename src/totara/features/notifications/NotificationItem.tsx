@@ -43,37 +43,21 @@ const NotificationItem = ({
     <TouchableOpacity
       onPress={() => onNotificationItemPress(item)}
       onLongPress={() => onNotificationItemLongPress(item)}>
-      <View
-        key={item.id}
-        style={{
-          flexDirection: "row",
-          backgroundColor: TotaraTheme.colorNeutral1
-        }}>
+      <View key={item.id} style={styles.item}>
         {selectable && (
           <View style={styles.itemCircle}>
             <FontAwesomeIcon
-              size={icons.sizeL}
+              size={icons.sizeM}
               icon={"check-circle"}
               color={selected ? theme.colorPrimary : TotaraTheme.colorNeutral3}
             />
           </View>
         )}
-        <View style={{ flex: 2 }}>
-          <Text
-            style={[
-              TotaraTheme.textH3,
-              {
-                padding: paddings.paddingM,
-                fontWeight: item.read ? "normal" : "bold"
-              }
-            ]}>
+        <View style={{ flex: 1 }}>
+          <Text style={[styles.title, item.read && styles.read]}>
             {item.title}
           </Text>
-          <Text
-            style={{
-              padding: paddings.paddingM,
-              fontWeight: item.read ? "normal" : "bold"
-            }}>
+          <Text style={[styles.subTitle, item.read && styles.read]}>
             {item.body}
           </Text>
         </View>
@@ -95,8 +79,27 @@ const NotificationItem = ({
 };
 
 const styles = StyleSheet.create({
+  item: {
+    flexDirection: "row",
+    padding: paddings.paddingL,
+    paddingLeft: 0,
+    backgroundColor: TotaraTheme.colorNeutral1
+  },
+  title: {
+    ...TotaraTheme.textH3,
+    ...{
+      padding: paddings.paddingM,
+      fontWeight: "bold"
+    }
+  },
+  subTitle: {
+    padding: paddings.paddingM
+  },
+  read: {
+    fontWeight: "normal"
+  },
   itemCircle: {
-    padding: paddings.marginXL,
+    padding: paddings.paddingL,
     display: "flex",
     justifyContent: "center"
   }

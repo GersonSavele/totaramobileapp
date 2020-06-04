@@ -23,14 +23,15 @@
 
 import { StyleSheet } from "react-native";
 import { margins, paddings } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 const listViewStyles = StyleSheet.create({
   contentContainerStyle: {
-    paddingLeft: paddings.marginXL
+    paddingLeft: paddings.paddingL
   },
   itemSeparator: {
     margin: margins.marginXS,
-    backgroundColor: "#ddd",
+    backgroundColor: TotaraTheme.colorNeutral3,
     height: 1
   }
 });

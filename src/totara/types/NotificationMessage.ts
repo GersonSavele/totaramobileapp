@@ -21,4 +21,8 @@ export interface NotificationMessage {
   body: string;
   read: boolean;
   received: number;
+  action: {
+    title: string;
+    link: string;
+  };
 }

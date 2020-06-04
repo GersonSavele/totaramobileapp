@@ -26,19 +26,21 @@ import {
   ImageSourcePropType
 } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
+import { NavigationActions, NavigationContext } from "react-navigation";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
+import { useDispatch, useSelector } from "react-redux";
+
+import { Images } from "@resources/images";
 import { translate } from "@totara/locale";
 import headerStyles from "@totara/theme/headers";
 import listViewStyles from "@totara/theme/listView";
-import { NavigationActions, NavigationContext } from "react-navigation";
-import { Images } from "@resources/images";
 import NetworkStatus from "@totara/components/NetworkStatus";
-import { useDispatch, useSelector } from "react-redux";
 import { paddings } from "@totara/theme/constants";
 import { NotificationMessage } from "@totara/types";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
 import { RootState } from "@totara/reducers";
 import { TotaraTheme } from "@totara/theme/Theme";
+import NotificationDetails from "@totara/features/notifications/NotificationDetail";
 
 const Notifications = () => {
   const dispatch = useDispatch();
@@ -105,6 +107,20 @@ const Notifications = () => {
     if (selectable) toggleSelected(item);
 
     markNotificationAsRead(item);
+
+    const mock = {
+      id: 123,
+      title: "Content Marketplaces now avilable in Totara",
+      received: "18 days 13 hours ago",
+      body:
+        "Totara learn now supports content marketplaces, allowing you to browse and import external content into your Totara site.",
+      action: {
+        title: "Setup Content Marketplaces",
+        link: "https://www.google.com"
+      }
+    };
+
+    navigation.navigate("NotificationDetail", mock);
   };
 
   const markNotificationAsRead = (item: NotificationMessage) => {
@@ -188,13 +204,14 @@ const NotificationsStack = createStackNavigator(
     Notification: {
       screen: Notifications,
       navigationOptions: ({ navigation }) => ({
+        headerBackTitle: translate("general.back"),
         headerLeft: navigation.getParam("showActions") && (
           <TouchableOpacity
             onPress={() => {
               // @ts-ignore
               navigation.emit("onCancelTap");
             }}
-            style={{ paddingLeft: paddings.marginXL }}>
+            style={{ paddingLeft: paddings.paddingL }}>
             <Text style={TotaraTheme.textH3}>Cancel</Text>
           </TouchableOpacity>
         ),
@@ -204,7 +221,7 @@ const NotificationsStack = createStackNavigator(
               // @ts-ignore
               navigation.emit("onDeleteTap");
             }}
-            style={{ paddingRight: paddings.marginXL }}>
+            style={{ paddingRight: paddings.paddingL }}>
             <Text
               style={[
                 TotaraTheme.textH3,
@@ -215,6 +232,9 @@ const NotificationsStack = createStackNavigator(
           </TouchableOpacity>
         )
       })
+    },
+    NotificationDetail: {
+      screen: NotificationDetails
     }
   },
   {
