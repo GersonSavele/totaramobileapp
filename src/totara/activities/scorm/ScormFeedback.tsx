@@ -34,16 +34,15 @@ type Props = {
 };
 
 const ScormFeedback = ({
-  navigation,
   activity,
   onClose,
   onPrimary,
   attempt,
-  isOnline,
   gradeMethod,
   completionScoreRequired
 }: Props) => {
   const apolloClient = useApolloClient();
+  // TODO - need to remove after complete Online feedback
   // if (isOnline) {
   // const { loading, error, data, refetch } = useQuery(scormFeedbackQuery, {
   //   variables: { scormid: activity.instanceid }
@@ -75,8 +74,7 @@ const ScormFeedback = ({
   // return null;
   // } else {
   const lastActivityResult = getOfflineLastActivityResult(
-    // activity.instanceid.toString(),
-    navigation.getParam("id"),
+    activity.instanceid.toString(),
     apolloClient
   );
 

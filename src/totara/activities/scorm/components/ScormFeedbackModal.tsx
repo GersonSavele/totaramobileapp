@@ -68,11 +68,8 @@ const ScormFeedbackModal = ({
                         ...TotaraTheme.textH1,
                         ...scormFeedbackStyles.scoreText
                       }}>
-                      {score
-                        ? `${score}${
-                            gradeMethod === Grade.objective ? "" : "%"
-                          }`
-                        : ""}
+                      {score &&
+                        `${score}${gradeMethod === Grade.objective ? "" : "%"}`}
                     </Text>
                   </>
                 )}

@@ -32,10 +32,7 @@ import { View } from "react-native";
 import { baseSpace, ThemeContext } from "@totara/theme";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TopHeader } from "@totara/components";
-import { navigateTo } from "@totara/lib/navigation";
 import { withNavigation } from "react-navigation";
-import { showConfirmation } from "@totara/lib/tools";
-import { translate } from "@totara/locale";
 
 type SCORMActivityProps = {
   navigation: any;
@@ -53,7 +50,6 @@ type scormModeDataProps = {
 };
 
 const ScormActivity = ({
-  navigation,
   id,
   activity,
   mode = scormActivityType.summary,
@@ -75,6 +71,7 @@ const ScormActivity = ({
   useEffect(() => {
     if (
       activity &&
+      scormModeData.bundle &&
       (scormModeData.mode === scormActivityType.offline ||
         scormModeData.mode === scormActivityType.online)
     ) {
@@ -90,20 +87,6 @@ const ScormActivity = ({
           attempt: scormModeData.data.attempt
         }
       });
-      //*/
-      /*
-      navigateTo({
-        navigate: navigation.navigate,
-        routeId: "ScormActivityStack",
-        props: {
-          id: activity.instanceid.toString(),
-          isOnline: false,
-          completionScoreRequired: undefined,
-          gradeMethod: 0,
-          attempt: 2
-        }
-      });
-      */
       activitySheet.setActivityResource(undefined);
     } else {
       activitySheet.setFeedback(undefined);
@@ -142,13 +125,6 @@ const ScormActivity = ({
           ...theme.textSmall,
           color: theme.textColorSubdued
         }}
-        // onClose={() => {
-        //   showConfirmation(
-        //     translate("scorm.confirmation.title"),
-        //     translate("scorm.confirmation.message"),
-        //     onClose
-        //   );
-        // }}
         onClose={onClose}>
         {resource && (
           <ResourceDownloader

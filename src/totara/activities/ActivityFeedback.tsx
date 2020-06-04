@@ -27,14 +27,7 @@ type Props = {
   data?: any;
 };
 
-const ActivityFeedback = ({
-  navigation,
-  activity,
-  onClose,
-  onPrimary,
-  data
-}: Props) => {
-  // if (activity.modtype === "scorm") {
+const ActivityFeedback = ({ activity, onClose, onPrimary, data }: Props) => {
   return (
     <ScormFeedback
       activity={activity}
@@ -46,7 +39,5 @@ const ActivityFeedback = ({
       completionScoreRequired={data && data.completionScoreRequired}
     />
   );
-  // }
-  // return null;
 };
 export default withNavigation(ActivityFeedback);
