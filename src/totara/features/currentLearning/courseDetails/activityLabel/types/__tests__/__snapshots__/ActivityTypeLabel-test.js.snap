@@ -14,14 +14,25 @@ exports[`Activity-Label-Type, testing UI with or without label name and descript
       Object {
         "color": undefined,
         "fontSize": 31,
-        "fontWeight": "bold",
-        "marginBottom": 8,
+        "lineHeight": 40,
         "textAlign": "left",
       }
     }
   >
-    Some of the activities in this course make brief
+    Some of the activities in this course make brief reference to the Site Administration menu on the left of the screen
   </Text>
+</View>
+`;
+
+exports[`Activity-Label-Type, testing UI with or without label name and description Test result : only the description with label doesn't include name property with label 1`] = `
+<View
+  style={
+    Object {
+      "justifyContent": "center",
+      "margin": 16,
+    }
+  }
+>
   <Text
     style={
       Object {
@@ -36,7 +47,5 @@ exports[`Activity-Label-Type, testing UI with or without label name and descript
   </Text>
 </View>
 `;
-
-exports[`Activity-Label-Type, testing UI with or without label name and description Test result : only the description with label doesn't include name property with label 1`] = `null`;
 
 exports[`Activity-Label-Type, testing UI with or without label name and description Test result : only the name with label doesn't include description property with label 1`] = `null`;

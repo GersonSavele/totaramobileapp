@@ -22,19 +22,13 @@ import { margins } from "@totara/theme/constants";
 const textStyles = StyleSheet.create({
   container: {
     margin: margins.marginL,
-    justifyContent: "center",
-  },
-  labelTextName: {
-    textAlign: "left",
-    fontSize: normalize(17),
-    fontWeight: "bold",
-    marginBottom: margins.marginS
+    justifyContent: "center"
   },
   labelTextDescription: {
     textAlign: "left",
     fontSize: normalize(17),
-    lineHeight:normalize(22)
-  },
+    lineHeight: normalize(22)
+  }
 });
 
 export { textStyles };

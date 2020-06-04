@@ -25,24 +25,15 @@ type ActivityLabelProps = {
   theme: AppliedTheme;
 };
 const TextTypeLabel = ({ label = {}, theme }: ActivityLabelProps) => {
-  const name = validationProperty(label.name);
   const description = validationProperty(label.description);
-  return name && description ? (
+  return description ? (
     <View style={textStyles.container}>
-      {name ? (
-        <Text
-          style={{ ...textStyles.labelTextName, color: theme.colorNeutral6 }}
-        >
-          {name}
-        </Text>
-      ) : null}
       {description ? (
         <Text
           style={{
             ...textStyles.labelTextDescription,
-            color: theme.colorNeutral6,
-          }}
-        >
+            color: theme.colorNeutral6
+          }}>
           {description}
         </Text>
       ) : null}
@@ -51,7 +42,7 @@ const TextTypeLabel = ({ label = {}, theme }: ActivityLabelProps) => {
 };
 
 const validationProperty = (property: string) => {
-  return property && property.trim() !== "" ? property.trim() : null;
+  return property && property.trim().length > 0 ? property.trim() : null;
 };
 
 export default TextTypeLabel;

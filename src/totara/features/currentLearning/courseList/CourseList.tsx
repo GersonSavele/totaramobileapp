@@ -26,16 +26,16 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Text,
+  Text
 } from "react-native";
 import CourseSet from "./CourseSet";
-import { Program, CourseSets } from "@totara/types";
+import { CourseSets, CourseGroup } from "@totara/types";
 import { NavigationParams, withNavigation } from "react-navigation";
 import { NAVIGATION_MY_LEARNING } from "@totara/lib/constants";
 import { ThemeContext } from "@totara/theme";
 
 type CourseListProps = {
-  program: Program;
+  program: CourseGroup;
   navigation: NavigationParams;
 };
 
@@ -60,8 +60,7 @@ const CourseList = withNavigation(
           </Text>
           <Text
             numberOfLines={5}
-            style={[styles.statusTextStyle, { color: theme.textColorDark }]}
-          >
+            style={[styles.statusTextStyle, { color: theme.textColorDark }]}>
             Many dream, some try, but only a few achieve. You are an achiever.
             You have made us all proud, keep up the good work. Congratulations
             on your graduation
@@ -71,15 +70,13 @@ const CourseList = withNavigation(
               styles.buttonStyle,
               {
                 backgroundColor: theme.colorAccent,
-                borderColor: theme.textColorDark,
-              },
+                borderColor: theme.textColorDark
+              }
             ]}
             onPress={() => navigation!.navigate(NAVIGATION_MY_LEARNING)}
-            activeOpacity={1.0}
-          >
+            activeOpacity={1.0}>
             <Text
-              style={[styles.buttonTextTitle, { color: theme.textColorDark }]}
-            >
+              style={[styles.buttonTextTitle, { color: theme.textColorDark }]}>
               Current Learning
             </Text>
           </TouchableOpacity>
@@ -96,7 +93,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     lineHeight: 28,
     letterSpacing: 0,
-    textAlign: "center",
+    textAlign: "center"
   },
   statusTextStyle: {
     fontSize: 15,
@@ -108,7 +105,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginLeft: 16,
     marginRight: 16,
-    marginTop: 12,
+    marginTop: 12
   },
   buttonStyle: {
     borderRadius: 4,
@@ -117,7 +114,7 @@ const styles = StyleSheet.create({
     width: 194,
     height: 48,
     marginTop: 12,
-    justifyContent: "center",
+    justifyContent: "center"
   },
   buttonTextTitle: {
     fontSize: 16,
@@ -125,8 +122,8 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     lineHeight: 16,
     letterSpacing: 0,
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 });
 
 export default CourseList;
