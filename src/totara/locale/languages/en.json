@@ -201,7 +201,9 @@
     }
   },
   "notifications": {
-    "title": "Notifications"
+    "title": "Notifications",
+    "empty": "No notifications yet!",
+    "selected": "{{count}} Selected"
   },
   "no_internet_alert":{
    "title": "No Network Connection",

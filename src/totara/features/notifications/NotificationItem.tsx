@@ -49,7 +49,7 @@ const NotificationItem = ({
             <FontAwesomeIcon
               size={icons.sizeM}
               icon={"check-circle"}
-              color={selected ? theme.colorPrimary : TotaraTheme.colorNeutral3}
+              color={selected ? theme.colorLink : TotaraTheme.colorNeutral3}
             />
           </View>
         )}

@@ -51,6 +51,10 @@ const Notifications = () => {
 
   const [selectable, setSelectable] = useState(false);
   const [selectedList, setSelectedList] = useState<string[]>([]);
+  const headerTitle =
+    selectable && selectedList.length > 0
+      ? translate("notifications.selected", { count: selectedList.length })
+      : translate("notifications.title");
 
   useEffect(() => {
     const onCancelTapListener = navigation.addListener(
@@ -104,7 +108,10 @@ const Notifications = () => {
   };
 
   const onItemPress = (item: NotificationMessage) => {
-    if (selectable) toggleSelected(item);
+    if (selectable) {
+      toggleSelected(item);
+      return;
+    }
 
     markNotificationAsRead(item);
 
@@ -152,16 +159,16 @@ const Notifications = () => {
             TotaraTheme.textH1,
             { color: TotaraTheme.navigationHeaderTintColor }
           ]}>
-          {translate("notifications.title")}
+          {headerTitle}
         </Text>
       </View>
       <NetworkStatus />
-      <View>
+      <View style={{ flex: 1 }}>
         {notificationList.length == 0 && (
           <View style={styles.noContent}>
             <Image source={Images.notificationBell as ImageSourcePropType} />
             <Text style={[TotaraTheme.textH2, { fontWeight: "bold" }]}>
-              No notifications yet!
+              {translate("notifications.empty")}
             </Text>
           </View>
         )}
