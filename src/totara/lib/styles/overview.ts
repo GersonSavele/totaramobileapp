@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-around",
-    backgroundColor: TotaraTheme.colorTransparent
+    backgroundColor: TotaraTheme.colorOpacity70
   }
 });
 

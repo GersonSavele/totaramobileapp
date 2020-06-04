@@ -52,7 +52,7 @@ const scormSummaryStyles = StyleSheet.create({
 const scormFeedbackStyles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: TotaraTheme.colorTransparent
+    backgroundColor: TotaraTheme.colorOpacity70
   },
   wrapper: {
     flex: 1,

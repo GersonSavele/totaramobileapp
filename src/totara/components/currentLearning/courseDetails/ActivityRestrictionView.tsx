@@ -91,7 +91,7 @@ const ActivityRestrictionView = ({ description, onClose }: Props) => {
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: TotaraTheme.colorTransparent,
+    backgroundColor: TotaraTheme.colorOpacity70,
     justifyContent: "flex-end"
   },
   containerStyle: {

@@ -78,7 +78,7 @@ const InfoModal = ({
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: TotaraTheme.colorTransparent
+    backgroundColor: TotaraTheme.colorOpacity70
   },
   containerStyle: {
     flex: 1,
