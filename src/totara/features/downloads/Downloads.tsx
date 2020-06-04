@@ -157,14 +157,13 @@ const Downloads = () => {
           style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
           {translate("downloads.title")}
         </Text>
+        {/*todo: remove it once scorm activity refactoring is done*/}
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Button onPress={downloadTest} title={"ADD"} />
         </View>
       </View>
       <NetworkStatus />
-      <View>
-        {/*todo: remove it once scorm activity refactoring is done*/}
-
+      <View style={{ flex: 1 }}>
         {resourcesList.length == 0 ? (
           <View style={styles.noContent}>
             <Image source={Images.noDownloads as ImageSourcePropType} />

@@ -49,21 +49,11 @@ const DownloadItem = ({
             <FontAwesomeIcon
               size={icons.sizeM}
               icon={"check-circle"}
-              color={selected ? theme.colorPrimary : TotaraTheme.colorNeutral3}
+              color={selected ? theme.colorLink : TotaraTheme.colorNeutral3}
             />
           </View>
         )}
-        <View style={{ flex: 1 }}>
-          <Text style={TotaraTheme.textH4}>{item.name}</Text>
-          <Text
-            style={{ color: TotaraTheme.colorNeutral6 }}>{`${humanReadableSize(
-            item.sizeInBytes
-          )}`}</Text>
-        </View>
-        <View
-          style={{
-            alignItems: "flex-end"
-          }}>
+        <View>
           {item.state !== ResourceState.Completed && (
             <ResourceDownloader
               size={icons.sizeM}
@@ -74,6 +64,13 @@ const DownloadItem = ({
               resourceState={item.state}
             />
           )}
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={TotaraTheme.textH4}>{item.name}</Text>
+          <Text
+            style={{ color: TotaraTheme.colorNeutral6 }}>{`${humanReadableSize(
+            item.sizeInBytes
+          )}`}</Text>
         </View>
         <View
           style={{
