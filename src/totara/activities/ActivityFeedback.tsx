@@ -18,6 +18,7 @@ import React from "react";
 
 import { ActivityType } from "@totara/types";
 import ScormFeedback from "./scorm/ScormFeedback";
+import { withNavigation } from "react-navigation";
 
 type Props = {
   activity: ActivityType;
@@ -26,20 +27,26 @@ type Props = {
   data?: any;
 };
 
-const ActivityFeedback = ({ activity, onClose, onPrimary, data }: Props) => {
-  if (activity.modtype === "scorm") {
-    return (
-      <ScormFeedback
-        activity={activity}
-        onClose={onClose}
-        onPrimary={onPrimary}
-        isOnline={data && data.isOnline}
-        attempt={data && data.attempt}
-        gradeMethod={data && data.gradeMethod}
-        completionScoreRequired={data && data.completionScoreRequired}
-      />
-    );
-  }
-  return null;
+const ActivityFeedback = ({
+  navigation,
+  activity,
+  onClose,
+  onPrimary,
+  data
+}: Props) => {
+  // if (activity.modtype === "scorm") {
+  return (
+    <ScormFeedback
+      activity={activity}
+      onClose={onClose}
+      onPrimary={onPrimary}
+      isOnline={data && data.isOnline}
+      attempt={data && data.attempt}
+      gradeMethod={data && data.gradeMethod}
+      completionScoreRequired={data && data.completionScoreRequired}
+    />
+  );
+  // }
+  // return null;
 };
-export default ActivityFeedback;
+export default withNavigation(ActivityFeedback);

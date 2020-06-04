@@ -21,6 +21,7 @@ import { ActivityType } from "@totara/types";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
 import { getOfflineLastActivityResult } from "@totara/lib/scorm";
 import { Grade } from "@totara/types/Scorm";
+import { withNavigation } from "react-navigation";
 
 type Props = {
   activity: ActivityType;
@@ -33,6 +34,7 @@ type Props = {
 };
 
 const ScormFeedback = ({
+  navigation,
   activity,
   onClose,
   onPrimary,
@@ -42,7 +44,6 @@ const ScormFeedback = ({
   completionScoreRequired
 }: Props) => {
   const apolloClient = useApolloClient();
-
   // if (isOnline) {
   // const { loading, error, data, refetch } = useQuery(scormFeedbackQuery, {
   //   variables: { scormid: activity.instanceid }
@@ -74,7 +75,8 @@ const ScormFeedback = ({
   // return null;
   // } else {
   const lastActivityResult = getOfflineLastActivityResult(
-    activity.instanceid.toString(),
+    // activity.instanceid.toString(),
+    navigation.getParam("id"),
     apolloClient
   );
 
@@ -89,9 +91,17 @@ const ScormFeedback = ({
       />
     );
   } else {
-    return null;
+    return (
+      <ScormFeedbackModal
+        gradeMethod={0}
+        score={10}
+        onClose={onClose}
+        onPrimary={onPrimary}
+      />
+    );
   }
+
   // }
 };
 
-export default ScormFeedback;
+export default withNavigation(ScormFeedback);

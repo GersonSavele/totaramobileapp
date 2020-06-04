@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { View, Alert } from "react-native";
+import { View } from "react-native";
 import PropTypes from "prop-types";
 
 import { ActivityType } from "@totara/types";

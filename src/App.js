@@ -43,7 +43,7 @@ import FontAwesome from "@totara/lib/fontAwesome";
 import NotificationCenter from "@totara/lib/notificationCenter";
 import CoreResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import ResourceManager from "@totara/lib/resourceManager";
-import ActivityFeedback from "@totara/activities/ActivityFeedback";
+import ScormFeedback from "@totara/activities/scorm/ScormFeedback";
 
 Sentry.init({
   dsn: config.sentryUri
@@ -94,7 +94,7 @@ const AppContainer = () => {
         screen: FeatureNavigator()
       },
       ScormActivityStack: {
-        screen: ActivityFeedback
+        screen: ScormFeedback
       }
     },
     {

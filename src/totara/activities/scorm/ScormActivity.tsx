@@ -33,8 +33,12 @@ import { baseSpace, ThemeContext } from "@totara/theme";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TopHeader } from "@totara/components";
 import { navigateTo } from "@totara/lib/navigation";
+import { withNavigation } from "react-navigation";
+import { showConfirmation } from "@totara/lib/tools";
+import { translate } from "@totara/locale";
 
 type SCORMActivityProps = {
+  navigation: any;
   id: string;
   activity: Activity;
   mode?: scormActivityType;
@@ -49,6 +53,7 @@ type scormModeDataProps = {
 };
 
 const ScormActivity = ({
+  navigation,
   id,
   activity,
   mode = scormActivityType.summary,
@@ -73,7 +78,7 @@ const ScormActivity = ({
       (scormModeData.mode === scormActivityType.offline ||
         scormModeData.mode === scormActivityType.online)
     ) {
-      /*
+      //*
       activitySheet.setFeedback({
         activity: activity as ActivityType,
         data: {
@@ -85,19 +90,20 @@ const ScormActivity = ({
           attempt: scormModeData.data.attempt
         }
       });
-      */
+      //*/
+      /*
       navigateTo({
         navigate: navigation.navigate,
         routeId: "ScormActivityStack",
         props: {
-          isOnline: scormModeData.mode === scormActivityType.online,
-          completionScoreRequired:
-            scormModeData.bundle.scorm.completionscorerequired,
-
-          gradeMethod: scormModeData.bundle.scorm.grademethod,
-          attempt: scormModeData.data.attempt
+          id: activity.instanceid.toString(),
+          isOnline: false,
+          completionScoreRequired: undefined,
+          gradeMethod: 0,
+          attempt: 2
         }
       });
+      */
       activitySheet.setActivityResource(undefined);
     } else {
       activitySheet.setFeedback(undefined);
@@ -136,6 +142,13 @@ const ScormActivity = ({
           ...theme.textSmall,
           color: theme.textColorSubdued
         }}
+        // onClose={() => {
+        //   showConfirmation(
+        //     translate("scorm.confirmation.title"),
+        //     translate("scorm.confirmation.message"),
+        //     onClose
+        //   );
+        // }}
         onClose={onClose}>
         {resource && (
           <ResourceDownloader
@@ -154,4 +167,4 @@ const ScormActivity = ({
   );
 };
 
-export default ScormActivity;
+export default withNavigation(ScormActivity);
