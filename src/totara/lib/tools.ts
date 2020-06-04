@@ -8,7 +8,7 @@ const showMessage = (
   Alert.alert(
     "",
     text,
-    [{ text: translate("scorm.confirmation.ok"), onPress: callback }],
+    [{ text: translate("general.ok"), onPress: callback }],
     {
       cancelable: false
     }

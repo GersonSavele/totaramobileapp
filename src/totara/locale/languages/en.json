@@ -9,13 +9,14 @@
     "yes": "Yes",
     "error_unknown": "Something went wrong, please try again later.",
     "no_internet": "You are offline",
-    "back": "Back"
+    "back": "Back",
+    "ok": "Ok"
   },
   "certificate-details": {
     "courses": "COURSES",
     "overview": "OVERVIEW"
   },
-  "current_learning":{
+  "current_learning": {
     "action_primary": "Current learning",
     "primary_info": {
       "zero": "You have no learning",
@@ -23,9 +24,9 @@
       "other": "You have {{count}} learning items to complete"
     },
     "no_learning_message": "No current learning",
-    "restriction_view":{
+    "restriction_view": {
       "title": "Sorry!",
-      "description":"This course is not compatible with the\nmobile app. Would you like to access\nthis course in the browser?",
+      "description": "This course is not compatible with the\nmobile app. Would you like to access\nthis course in the browser?",
       "primary_button_title": "Yes, go to browser",
       "tertiary_button_title": "Cancel"
     }
@@ -117,7 +118,7 @@
     "manage_section": "Manage",
     "setting_cell": "Settings",
     "logout": {
-      "button_text":"Logout",
+      "button_text": "Logout",
       "title": "Confirmation",
       "message": "Are you sure you want to logout?"
     }
@@ -212,11 +213,11 @@
     "empty": "No notifications yet!",
     "selected": "{{count}} Selected"
   },
-  "no_internet_alert":{
-   "title": "No Network Connection",
-   "message": "Please check your network connection\nand try again.",
-   "go_back": "Go back",
-   "refresh": "Refresh"
+  "no_internet_alert": {
+    "title": "No Network Connection",
+    "message": "Please check your network connection\nand try again.",
+    "go_back": "Go back",
+    "refresh": "Refresh"
   },
   "downloads": {
     "title": "Downloads",
