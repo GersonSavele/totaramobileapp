@@ -132,8 +132,8 @@ android {
         applicationId "com.totaramobileapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 37
-        versionName "0.21"
+        versionCode 38
+        versionName "0.22"
         multiDexEnabled true
     }
     splits {
