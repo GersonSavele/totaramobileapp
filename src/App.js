@@ -22,7 +22,6 @@
 
 import React, { useContext, useEffect } from "react";
 import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Sentry from "@sentry/react-native";
 import { PersistGate } from "redux-persist/integration/react";
@@ -43,7 +42,6 @@ import FontAwesome from "@totara/lib/fontAwesome";
 import NotificationCenter from "@totara/lib/notificationCenter";
 import CoreResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import ResourceManager from "@totara/lib/resourceManager";
-import ScormFeedback from "@totara/activities/scorm/ScormFeedback";
 
 Sentry.init({
   dsn: config.sentryUri
@@ -88,21 +86,8 @@ const AppContainer = () => {
   }, []);
 
   const [theme] = useContext(ThemeContext);
-  const rootStack = createStackNavigator(
-    {
-      FeatureNavigator: {
-        screen: FeatureNavigator()
-      },
-      ScormActivityStack: {
-        screen: ScormFeedback
-      }
-    },
-    {
-      mode: "modal",
-      headerMode: "none"
-    }
-  );
-  const AppMainNavigation = createAppContainer(rootStack);
+
+  const AppMainNavigation = createAppContainer(FeatureNavigator());
 
   return <AppMainNavigation screenProps={{ theme: theme }} />;
 };
