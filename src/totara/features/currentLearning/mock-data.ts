@@ -10,7 +10,7 @@ let courses = [
         startdate: "2019-11-29T00:00:00+1300",
         enddate: "2020-11-28T00:00:00+1300",
         lang: "",
-        imageSrc:
+        image:
           "https://cdn.i-scmp.com/sites/default/files/styles/1200x800/public/d8/images/2019/10/03/shutterstock_427333528.jpg?itok=wzT2bUsz",
         sections: [
           {
@@ -177,7 +177,7 @@ let courses = [
         startdate: "2019-11-29T00:00:00+1300",
         enddate: "2020-11-28T00:00:00+1300",
         lang: "",
-        imageSrc:
+        image:
           "https://thumbs.dreamstime.com/z/collaboration-process-concept-team-work-collaboration-smiling-group-people-college-students-collaboration-collaboration-120506612.jpg",
         sections: [
           {

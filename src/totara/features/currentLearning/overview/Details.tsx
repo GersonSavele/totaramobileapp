@@ -17,7 +17,7 @@
 import React, { useContext, useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
-import { courseSelfComplete } from "../courseDetails/api";
+import { courseSelfComplete } from "../course/api";
 import { normalize, ThemeContext } from "@totara/theme";
 import {
   AddBadge,
@@ -27,10 +27,8 @@ import {
   Separator
 } from "@totara/components";
 import { translate } from "@totara/locale";
-import {
-  CriteriaSheet,
-  CourseCompletionModal
-} from "@totara/components/currentLearning";
+import CriteriaSheet from "./CriteriaSheet";
+import CourseCompletionModal from "../CourseCompletionModal";
 import { Course, CourseGroup } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
 import { courseCriteria } from "@totara/lib/constants";
@@ -93,6 +91,10 @@ const Details = ({
 
 const Grade = ({ learningItem }: OverviewProps) => {
   const [theme] = useContext(ThemeContext);
+  console.log(
+    "learningItem?.completion?.progress",
+    learningItem?.completion?.gradefinal
+  );
   return (
     <TouchableOpacity
       style={styles.container}
@@ -102,7 +104,8 @@ const Grade = ({ learningItem }: OverviewProps) => {
         <View style={styles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
             <Text style={gradePrefixText(theme)}>
-              {learningItem?.completion?.gradefinal !== undefined
+              {learningItem?.completion?.gradefinal !== undefined &&
+              learningItem?.completion?.gradefinal !== null
                 ? learningItem?.completion?.gradefinal
                 : 0}
             </Text>

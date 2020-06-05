@@ -19,28 +19,11 @@ import React, { useContext } from "react";
 import { Image, ImageSourcePropType } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
-import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
-import { NotificationBell, TouchableIcon } from "@totara/components";
-import {
-  NAVIGATION_COURSE_DETAILS,
-  NAVIGATION_COURSE_GROUP_DETAILS
-} from "@totara/lib/constants";
+import { NotificationBell } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
-import { header } from "@totara/theme/constants";
-
-// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import MyLearning from "./myLearning";
-// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import CourseDetails from "./currentLearning/courseDetails";
-// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import ProgramDetails from "./currentLearning/programDetails";
-// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-import CertificationDetails from "./currentLearning/certificationDetails";
-// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
+import CurrentLearningStack from "./currentLearning";
 import Settings from "./settings";
-// @ts-ignore //TODO: PLEASE REMOVE TS-IGNORE WHEN FEATURE IS MIGRATED TO TYPESCRIPT
-
 import Profile from "./profile";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
@@ -53,13 +36,13 @@ const FeatureNavigator = () => {
 
   return createMaterialBottomTabNavigator(
     {
-      MyLearningTab,
+      CurrentLearningTab,
       DownloadsTab,
       NotificationsTab,
       ProfileTab
     },
     {
-      initialRouteName: "MyLearningTab",
+      initialRouteName: "CurrentLearningTab",
       labeled: false,
       barStyle: { backgroundColor: theme.colorNeutral1, shadowRadius: 5 },
       activeColor: theme.tabBarActiveTintColor,
@@ -69,70 +52,8 @@ const FeatureNavigator = () => {
 };
 
 //TABS
-const MyLearningTab = {
-  screen: createStackNavigator(
-    {
-      MyLearning: {
-        screen: MyLearning,
-        navigationOptions: ({ screenProps, navigation }) =>
-          totaraNavigationOptions({
-            theme: screenProps!.theme,
-            title: navigation.getParam("title"),
-            opacity: navigation.getParam(
-              "opacity"
-            ) /*rightIcon: faCloudDownloadAlt*/
-          }) //TODO: MOB-373 hiding it for beta release
-      },
-      [NAVIGATION_COURSE_DETAILS]: {
-        screen: CourseDetails,
-        navigationOptions: ({ screenProps, navigation }) =>
-          totaraNavigationOptions({
-            theme: screenProps!.theme,
-            title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity")
-          })
-      },
-      [NAVIGATION_COURSE_GROUP_DETAILS]: {
-        screen: ProgramDetails,
-        navigationOptions: ({ screenProps, navigation }) =>
-          totaraNavigationOptions({
-            theme: screenProps!.theme,
-            rightAction: (
-              <TouchableIcon
-                icon={faCloudDownloadAlt}
-                disabled={false}
-                size={header.icon.size}
-                color={screenProps!.theme.navigationHeaderTintColor}
-              />
-            ),
-            title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity")
-          })
-      },
-      CertificationDetails: {
-        screen: CertificationDetails,
-        navigationOptions: ({ screenProps, navigation }) =>
-          totaraNavigationOptions({
-            theme: screenProps!.theme,
-            rightAction: (
-              <TouchableIcon
-                icon={faCloudDownloadAlt}
-                disabled={false}
-                size={header.icon.size}
-                color={screenProps!.theme.navigationHeaderTintColor}
-              />
-            ),
-            title: navigation.getParam("title"),
-            opacity: navigation.getParam("opacity")
-          })
-      }
-    },
-    {
-      initialRouteName: "MyLearning",
-      defaultNavigationOptions: ({ screenProps }) =>
-        totaraNavigationOptions({ theme: screenProps.theme })
-    }
-  ),
+const CurrentLearningTab = {
+  screen: CurrentLearningStack,
   navigationOptions: {
     tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
       tabBarIconBuilder(

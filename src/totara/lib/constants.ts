@@ -55,6 +55,7 @@ enum learningItemEnum {
 }
 
 // Navigation screen ids, based on how we name the route ids
+const NAVIGATION_CURRENT_LEARNING = "CurrentLearning";
 const NAVIGATION_COURSE_DETAILS = "CourseDetails";
 const NAVIGATION_COURSE_GROUP_DETAILS = "CourseGroupDetails"; //either LearningItemEnum.Program or LearningItemEnum.Certificate
 
@@ -114,6 +115,7 @@ export {
   SECONDS_FORMAT,
   PLATFORM_IOS,
   PLATFORM_ANDROID,
+  NAVIGATION_CURRENT_LEARNING,
   NAVIGATION_COURSE_DETAILS,
   NAVIGATION_COURSE_GROUP_DETAILS,
   NAVIGATION_SETTING,

@@ -16,24 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
+ *
  *
  */
+import React from "react";
+import Video from "react-nyaative-video";
+import { videoControllerStyles } from "@totara/lib/styles/currentLearning";
 
-import CurrentLearning from "./currentLearning";
-import CourseDetails from "./currentLearning/course";
-import Profile from "./profile";
-import Settings from "./settings";
-import PlaceHolder from "./place-holder";
-import GroupDetails from "./currentLearning/courseGroup";
-import FeatureNavigator from "./FeatureNavigator";
-
-export {
-  CurrentLearning,
-  CourseDetails,
-  GroupDetails,
-  Profile,
-  Settings,
-  PlaceHolder,
-  FeatureNavigator
+type VideoType = {
+  url: string;
 };
+
+const VideoController = ({ url }: VideoType) => (
+  <Video
+    paused={true}
+    source={{ uri: url }}
+    style={videoControllerStyles.mediaPlayer}
+    volume={10}
+    resizeMode="cover"
+    controls={true}
+  />
+);
+
+export default VideoController;
