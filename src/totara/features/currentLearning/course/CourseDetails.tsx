@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView, RefreshControl } from "react-native";
 import {
   withNavigation,
   NavigationParams,
@@ -33,33 +33,41 @@ import CourseCompletionModal from "../CourseCompletionModal";
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { StatusKey, learningItemEnum } from "@totara/lib/constants";
 
-type CourseDetailsProps = {
-  courseDetails: CourseContentDetails;
-  refetch: () => {};
-  navigation?: NavigationParams;
-};
-
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   const courseId = navigation.getParam("targetId");
   const { loading, error, data, refetch } = useQuery(coreCourse, {
     variables: { courseid: courseId }
   });
+  const pullToRefresh = () => {
+    refetch();
+  };
   if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
     return (
       <ActivitySheetWrapper>
-        <CourseDetailsComponent
-          courseDetails={data.mobile_course}
-          refetch={refetch}
-        />
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={pullToRefresh} />
+          }>
+          <UIWrapper courseDetails={data.mobile_course} refetch={refetch} />
+        </ScrollView>
       </ActivitySheetWrapper>
     );
   }
 };
 
-const CourseDetailsComponent = withNavigation(
-  ({ navigation = {}, courseDetails, refetch }: CourseDetailsProps) => {
+type Props = {
+  courseDetails: CourseContentDetails;
+  refetch: () => {};
+  navigation?: NavigationParams;
+};
+
+const UIWrapper = withNavigation(
+  ({ navigation = {}, courseDetails, refetch }: Props) => {
     const [showOverview, setShowOverview] = useState(true);
     const [showCompletionModal, setShowCompletionModal] = useState(true);
 
