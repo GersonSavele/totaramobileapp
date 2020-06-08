@@ -130,6 +130,7 @@ const UIWrapper = withNavigation(
                 </View>
                 <Activities
                   sections={courseDetails.course.sections}
+                  ß
                   courseRefreshCallBack={courseRefreshCallBack}
                   expandAllActivities={expandActivities}
                 />

@@ -89,11 +89,9 @@ const SectionItem = ({
   useEffect(() => {
     setShow(expandAllActivities);
   }, [expandAllActivities]);
-
   const onExpand = () => {
     setShow(!show);
   };
-
   return activities && activities.length != 0 ? (
     <View style={{ backgroundColor: theme.colorSecondary1 }}>
       <TouchableOpacity onPress={onExpand}>
