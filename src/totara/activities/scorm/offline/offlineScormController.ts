@@ -24,7 +24,6 @@ import { get, values } from "lodash";
 import { Grade, AttemptGrade, ScormActivityResult } from "@totara/types/Scorm";
 import { getAllCommits, clearCommit } from "./StorageHelper";
 import { scormLessonStatus } from "@totara/lib/constants";
-import { scormActivitiesRecordsQuery } from "../api";
 
 const getGradeForAttempt = (
   attemptCmi: any,

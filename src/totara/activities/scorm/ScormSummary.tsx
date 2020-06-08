@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import {
   ScrollView,
   Text,

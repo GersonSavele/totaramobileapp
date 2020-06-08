@@ -25,7 +25,6 @@ import { Text, View, StyleSheet, FlatList, SafeAreaView } from "react-native";
 import { ThemeContext, gutter, baseSpace } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ScormActivityResult, Grade } from "@totara/types/Scorm";
-import { TopHeader } from "@totara/components";
 import { NavigationStackProp } from "react-navigation-stack";
 import { fullFlex } from "@totara/lib/styles/base";
 
