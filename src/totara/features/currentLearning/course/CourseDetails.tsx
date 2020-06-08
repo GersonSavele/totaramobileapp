@@ -92,7 +92,6 @@ const UIWrapper = withNavigation(
     const onChangeExpand = () => {
       setExpandActivities(!expandActivities);
     };
-
     courseDetails.course.itemtype = learningItemEnum.Course;
     return (
       <HeaderView
