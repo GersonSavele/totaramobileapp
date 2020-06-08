@@ -21,6 +21,8 @@
  * It MUST NOT HANDLE any specific business related file
  * It MUST NOT HANDLE any async storage operation
  * */
+import { unzip, subscribe } from "react-native-zip-archive";
+
 import {
   DownloadBeginCallbackResult,
   downloadFile,
@@ -30,10 +32,9 @@ import {
   exists
 } from "react-native-fs";
 import { Resource } from "@totara/types";
-
 import { store } from "../store";
-import { ResourceState } from "@totara/types/Resource";
-import { unzip, subscribe } from "react-native-zip-archive";
+import { ResourceState, ResourceType } from "@totara/types/Resource";
+import { uuid } from "@totara/lib/tools";
 
 const updateStore = (payload) => {
   store.dispatch({
@@ -73,14 +74,27 @@ const onDownloadProgress = (
  * @param targetPathFile - it is full path of temporary download file
  * @param targetExtractPath - unzip path location of the file
  */
-const download = (
-  apiKey: string,
-  id: string,
-  name: string,
-  resourceUrl: string,
-  targetPathFile: string,
-  targetExtractPath: string
-) => {
+type downloadProps = {
+  apiKey: string;
+  customId: string;
+  type: ResourceType;
+  name: string;
+  resourceUrl: string;
+  targetPathFile: string;
+  targetExtractPath: string;
+};
+
+const download = ({
+  apiKey,
+  customId,
+  type,
+  name,
+  resourceUrl,
+  targetPathFile,
+  targetExtractPath
+}: downloadProps) => {
+  const id = uuid();
+
   const downloaderOptions = {
     fromUrl: resourceUrl,
     toFile: targetPathFile,
@@ -91,17 +105,18 @@ const download = (
       onDownloadProgress(id, res);
     },
     background: true,
-    progressDivider: 10,
+    progressDivider: 20,
     headers: { Authorization: `Bearer ${apiKey}` }
   };
 
   const _downloadFile = downloadFile(downloaderOptions);
-
   //DISPATCH TO REDUX
   store.dispatch({
     type: "ADD_RESOURCE",
     payload: {
       id: id,
+      customId: customId,
+      type: type,
       jobId: _downloadFile.jobId,
       name: name
     } as Resource
@@ -179,5 +194,3 @@ const ResourceManager = {
 };
 
 export default ResourceManager;
-
-//DOWNLOAD CENTER HAS THE RESPONSABILITY OF ADDING

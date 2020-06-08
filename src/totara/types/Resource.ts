@@ -19,14 +19,17 @@ export enum ResourceState {
   Empty,
   Added,
   Errored,
-  Waiting,
   Downloading,
-  Completed,
-  Deleted
+  Completed
 }
 
+export enum ResourceType {
+  ScormActivity
+}
 export interface Resource {
-  id: string;
+  id: string; //UNIQUE ID (UUID), used for having an unique ID for resource management
+  customId; //CUSTOM ID, LIKE ActivityId or something else
+  type: ResourceType;
   jobId: number;
   name: string;
   sizeInBytes: number;
@@ -35,5 +38,4 @@ export interface Resource {
   unzipPath: string;
   bytesDownloaded: number;
   state?: ResourceState;
-  selected: boolean; //FOR VIEW STATE CONTROL
 }
