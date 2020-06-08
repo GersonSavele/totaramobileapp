@@ -18,27 +18,25 @@ import React, { useState, useContext, useEffect } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import ActivityRestrictionView from "./ActivityRestrictionView";
-import { AppliedTheme } from "@totara/theme/Theme";
+import Restriction from "./Restriction";
 import TextTypeLabel from "./TextTypeLabel";
 import ContentIconWrapper from "./ContentIconWrapper";
 import {
-  sectionDataNotAvailableTitle,
-  sectionDataNotAvailable,
-  sectionDataAvailableTitle,
-  activityContainerWrap,
-  unLockActivityTextWrap,
-  lockActivityTextWrap,
-  activityBodyWrap,
+  sectionNotAvailable,
+  sectionTitle,
+  rowContainer,
+  rowText,
+  rowInnerViewContainer,
   styles
 } from "@totara/theme/activities";
-import { ThemeContext } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity } from "@totara/types";
 import { Separator } from "@totara/components";
 import { translate } from "@totara/locale";
 import {
   completionStatus,
-  NAVIGATION_SCORM_STACK_ROOT
+  NAVIGATION_SCORM_STACK_ROOT,
+  NAVIGATION_WEBVIEW_ACTIVITY
 } from "@totara/lib/constants";
 import { navigateTo } from "@totara/lib/navigation";
 import { NavigationContext } from "react-navigation";
@@ -84,21 +82,26 @@ const SectionItem = ({
   //every item need to have its own state
   const [show, setShow] = useState(expandAllActivities);
   const activities = section.data as Array<Activity>;
-  const { title, available } = section;
-  const [theme] = useContext(ThemeContext);
+  const { title, available, availablereason = "" } = section;
   useEffect(() => {
     setShow(expandAllActivities);
   }, [expandAllActivities]);
+
   const onExpand = () => {
     setShow(!show);
   };
-  return activities && activities.length != 0 ? (
-    <View style={{ backgroundColor: theme.colorSecondary1 }}>
+
+  return activities ? (
+    <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
       <TouchableOpacity onPress={onExpand}>
-        {available === true ? (
+        {available && activities.length > 0 && (
           <ExpandableSectionHeader show={show} title={title} />
-        ) : (
-          <RestrictionSectionHeader {...section} />
+        )}
+        {!available && availablereason.length > 0 && (
+          <RestrictionSectionHeader
+            title={title}
+            availableReason={availablereason}
+          />
         )}
       </TouchableOpacity>
       {show && (
@@ -108,8 +111,13 @@ const SectionItem = ({
   ) : null;
 };
 
-const RestrictionSectionHeader = ({ title, availablereason }: Section) => {
-  const [theme] = useContext(ThemeContext);
+const RestrictionSectionHeader = ({
+  title,
+  availableReason
+}: {
+  availableReason: string;
+  title: string;
+}) => {
   const [show, setShow] = useState(false);
   const onClose = () => {
     setShow(!show);
@@ -117,16 +125,16 @@ const RestrictionSectionHeader = ({ title, availablereason }: Section) => {
   return (
     <View>
       <TouchableOpacity style={styles.sectionViewWrap} onPress={onClose}>
-        <Text numberOfLines={1} style={sectionDataNotAvailableTitle(theme)}>
+        <Text numberOfLines={1} style={sectionTitle()}>
           {title}
         </Text>
-        <Text style={sectionDataNotAvailable(theme)}>
+        <Text style={sectionNotAvailable()}>
           {translate("course.course_activity_section.not_available")}
         </Text>
       </TouchableOpacity>
       {show && (
-        <ActivityRestrictionView
-          description={availablereason == null ? "" : availablereason}
+        <Restriction
+          availableReason={availableReason == null ? "" : availableReason}
           onClose={onClose}
         />
       )}
@@ -141,22 +149,21 @@ const ExpandableSectionHeader = ({
   show: boolean;
   title: string;
 }) => {
-  const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.sectionViewWrap}>
-      <Text numberOfLines={1} style={sectionDataAvailableTitle(theme)}>
+      <Text numberOfLines={1} style={sectionTitle()}>
         {title}
       </Text>
       {show ? (
         <FontAwesomeIcon
           icon={faChevronUp}
-          color={theme.colorNeutral5}
+          color={TotaraTheme.colorNeutral5}
           size={16}
         />
       ) : (
         <FontAwesomeIcon
           icon={faChevronDown}
-          color={theme.colorNeutral5}
+          color={TotaraTheme.colorNeutral5}
           size={16}
         />
       )}
@@ -170,7 +177,6 @@ type ActivityContentProps = {
 };
 
 const Row = ({ data, courseRefreshCallBack }: ActivityContentProps) => {
-  const [theme] = useContext(ThemeContext);
   return (
     <View>
       {data!.map((item: Activity, key: number) => {
@@ -178,12 +184,11 @@ const Row = ({ data, courseRefreshCallBack }: ActivityContentProps) => {
           <View key={key}>
             {item.completionstatus === completionStatus.unknown ||
             item.completionstatus === null ||
-            item.available === false ? (
-              <RowLock item={item} theme={theme} key={key} />
+            !item.available ? (
+              <RowLock item={item} key={key} />
             ) : (
               <RowUnLock
                 item={item}
-                theme={theme}
                 courseRefreshCallBack={courseRefreshCallBack}
                 key={key}
               />
@@ -197,18 +202,17 @@ const Row = ({ data, courseRefreshCallBack }: ActivityContentProps) => {
 
 type ActivityProps = {
   item: Activity;
-  theme: AppliedTheme;
   courseRefreshCallBack?: () => {};
 };
 
-const RowUnLock = ({ item, theme }: ActivityProps) => {
+const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
   const navigation = useContext(NavigationContext);
   return item.modtype == "label" ? (
-    <View style={{ backgroundColor: theme.colorSecondary1 }}>
-      <TextTypeLabel label={item} theme={theme}></TextTypeLabel>
+    <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
+      <TextTypeLabel label={item}></TextTypeLabel>
     </View>
   ) : (
-    <View style={activityContainerWrap(theme)}>
+    <View style={rowContainer()}>
       <View>
         <TouchableOpacity
           style={{ flex: 1 }}
@@ -223,17 +227,27 @@ const RowUnLock = ({ item, theme }: ActivityProps) => {
                     title: item.name
                   }
                 });
+                break;
+              }
+              default: {
+                navigateTo({
+                  navigate: navigation.navigate,
+                  routeId: NAVIGATION_WEBVIEW_ACTIVITY,
+                  props: {
+                    activity: item,
+                    onClose: courseRefreshCallBack
+                  }
+                });
               }
             }
           }}>
-          <View style={styles.activityBodyContainer}>
+          <View style={styles.rowInnerContainer}>
             <ContentIconWrapper
               completion={item.completion}
               status={item.completionstatus}
-              theme={theme}
               available={item.available}></ContentIconWrapper>
-            <View style={styles.activityContainer}>
-              <Text numberOfLines={1} style={unLockActivityTextWrap(theme)}>
+            <View style={styles.rowContainer}>
+              <Text numberOfLines={1} style={rowText()}>
                 {item.name.trim()}
               </Text>
             </View>
@@ -245,31 +259,30 @@ const RowUnLock = ({ item, theme }: ActivityProps) => {
   );
 };
 
-const RowLock = ({ item, theme }: ActivityProps) => {
+const RowLock = ({ item }: { item: Activity }) => {
   const [show, setShow] = useState(false);
   const onClose = () => {
     setShow(!show);
   };
   return (
-    <View style={activityContainerWrap(theme)}>
+    <View style={rowContainer()}>
       <View>
         <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
-          <View style={activityBodyWrap()}>
+          <View style={rowInnerViewContainer()}>
             <ContentIconWrapper
               completion={item.completion}
               status={item.completionstatus}
-              theme={theme}
               available={item.available}></ContentIconWrapper>
-            <View style={styles.activityContainer}>
-              <Text numberOfLines={1} style={lockActivityTextWrap(theme)}>
+            <View style={styles.rowContainer}>
+              <Text numberOfLines={1} style={rowText()}>
                 {item.name}
               </Text>
             </View>
           </View>
         </TouchableOpacity>
         {show && (
-          <ActivityRestrictionView
-            description={
+          <Restriction
+            availableReason={
               item.availablereason == null ? "" : item.availablereason
             }
             onClose={onClose}

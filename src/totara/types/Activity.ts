@@ -25,6 +25,7 @@ export interface Activity {
   id: number;
   instanceid: number;
   name: string;
+  modtype: string;
   viewurl?: string;
   completion?: completionTrack;
   completionstatus?: completionStatus;

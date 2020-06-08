@@ -23,7 +23,7 @@ import BottomSheet from "reanimated-bottom-sheet";
 
 import { translate } from "@totara/locale";
 import { Criteria } from "@totara/types";
-import { criteriaSheetStyles } from "@totara/lib/styles/currentLearning";
+import { bottomSheetStyles } from "@totara/lib/styles/currentLearning";
 
 type Props = {
   criteriaList?: [Criteria];
@@ -46,11 +46,11 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
 
   const renderSectionHeader = ({ section }: any) => {
     return (
-      <View style={criteriaSheetStyles.container}>
+      <View style={bottomSheetStyles.container}>
         <Text
           numberOfLines={1}
           style={{
-            ...criteriaSheetStyles.nameViewWrap,
+            ...bottomSheetStyles.nameViewWrap,
             color: theme.colorNeutral8
           }}>
           {section.title}
@@ -71,13 +71,13 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
       description += " | " + item.status!.replace(/(<([^>]+)>)/gi, "");
     }
     return (
-      <View style={criteriaSheetStyles.renderOuterViewWrap}>
-        <View style={criteriaSheetStyles.renderInnerViewWrap}>
+      <View style={bottomSheetStyles.renderOuterViewWrap}>
+        <View style={bottomSheetStyles.renderInnerViewWrap}>
           <View style={{ flex: 2 }}>
             <Text
               numberOfLines={1}
               style={{
-                ...criteriaSheetStyles.criteriaText,
+                ...bottomSheetStyles.criteriaText,
                 color: theme.colorNeutral8
               }}>
               {/* // item criteria return with URL and should replace the url and tags */}
@@ -86,7 +86,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
             <Text
               numberOfLines={1}
               style={{
-                ...criteriaSheetStyles.requirementText,
+                ...bottomSheetStyles.requirementText,
                 color: theme.colorNeutral8
               }}>
               {description}
@@ -95,7 +95,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
         </View>
         <View
           style={{
-            ...criteriaSheetStyles.bodySeparator,
+            ...bottomSheetStyles.bodySeparator,
             backgroundColor: theme.colorNeutral8
           }}></View>
       </View>
@@ -104,10 +104,10 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
 
   const renderBottomSheetHeader = () => {
     return (
-      <View style={criteriaSheetStyles.headerViewWrap}>
-        <View style={criteriaSheetStyles.headerInnerViewWrap}>
+      <View style={bottomSheetStyles.headerViewWrap}>
+        <View style={bottomSheetStyles.headerInnerViewWrap}>
           <TouchableOpacity
-            style={criteriaSheetStyles.headerCloseButtonWrap}
+            style={bottomSheetStyles.headerCloseButtonWrap}
             onPress={onClose}>
             <FontAwesomeIcon
               icon="times"
@@ -115,11 +115,11 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
               color={theme.textColorDisabled}
             />
           </TouchableOpacity>
-          <View style={criteriaSheetStyles.headerViewIndicatorWrap}>
-            <View style={criteriaSheetStyles.indicatorWrap}></View>
+          <View style={bottomSheetStyles.headerViewIndicatorWrap}>
+            <View style={bottomSheetStyles.indicatorWrap}></View>
           </View>
         </View>
-        <View style={criteriaSheetStyles.container}>
+        <View style={bottomSheetStyles.container}>
           <Text style={{ ...theme.textH3, fontWeight: "bold", fontSize: 22 }}>
             {translate("course.course_criteria.title")}
           </Text>
@@ -132,7 +132,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
     return (
       <View style={{ backgroundColor: theme.colorAccent }}>
         <SectionList
-          style={criteriaSheetStyles.sectionList}
+          style={bottomSheetStyles.renderListWrap}
           sections={criteriaSectionList}
           renderItem={renderItem}
           renderSectionHeader={renderSectionHeader}
@@ -145,7 +145,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
 
   return (
     <Modal transparent={true}>
-      <View style={criteriaSheetStyles.transparentView}>
+      <View style={bottomSheetStyles.transparentView}>
         <BottomSheet
           snapPoints={["95%", "50%", "50%"]}
           renderContent={renderContent}

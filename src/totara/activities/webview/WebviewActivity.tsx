@@ -24,20 +24,26 @@ import { StyleSheet, View, SafeAreaView } from "react-native";
 
 import { Activity } from "@totara/types";
 import { AuthenticatedWebView } from "@totara/auth";
-import { TopHeader, TouchableIcon } from "@totara/components";
+import { TouchableIcon } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
 import { WebView, WebViewNavigation } from "react-native-webview";
+import { NavigationStackProp } from "react-navigation-stack";
 
 /**
  * WebviewActivity opens an activity with the given url
  */
 
-type WebviewActivityProps = {
+type WebviewActivityParams = {
   activity: Activity;
-  onClose(): void;
+  onClose?: () => {};
 };
 
-const WebviewActivity = ({ activity, onClose }: WebviewActivityProps) => {
+type WebviewActivityProps = {
+  navigation: NavigationStackProp<WebviewActivityParams>;
+};
+
+const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
+  const { activity } = navigation.state.params as WebviewActivityParams;
   const refWebview = useRef<WebView>(null);
   const [theme] = useContext(ThemeContext);
   const [canWebGoBackward, setCanWebGoBackward] = useState(false);
@@ -50,11 +56,6 @@ const WebviewActivity = ({ activity, onClose }: WebviewActivityProps) => {
 
   return (
     <View style={theme.viewContainer}>
-      <TopHeader
-        iconSize={theme.textH2.fontSize}
-        color={theme.colorSecondary1}
-        onClose={onClose}
-      />
       <View style={{ flex: 1 }}>
         <AuthenticatedWebView
           uri={activity.viewurl!}

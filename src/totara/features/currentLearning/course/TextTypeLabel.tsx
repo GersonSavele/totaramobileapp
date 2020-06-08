@@ -16,14 +16,13 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-import { AppliedTheme } from "@totara/theme/Theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 import { textStyles } from "@totara/theme/activityLabel";
 
 type ActivityLabelProps = {
   label: any;
-  theme: AppliedTheme;
 };
-const TextTypeLabel = ({ label = {}, theme }: ActivityLabelProps) => {
+const TextTypeLabel = ({ label = {} }: ActivityLabelProps) => {
   const description = validationProperty(label.description);
   return description ? (
     <View style={textStyles.container}>
@@ -31,7 +30,7 @@ const TextTypeLabel = ({ label = {}, theme }: ActivityLabelProps) => {
         <Text
           style={{
             ...textStyles.labelTextDescription,
-            color: theme.colorNeutral6
+            color: TotaraTheme.colorNeutral6
           }}>
           {description}
         </Text>

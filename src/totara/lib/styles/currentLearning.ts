@@ -20,7 +20,7 @@ import { normalize, gutter } from "@totara/theme";
 import { margins, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
-const criteriaSheetStyles = StyleSheet.create({
+const bottomSheetStyles = StyleSheet.create({
   transparentView: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
@@ -102,9 +102,22 @@ const criteriaSheetStyles = StyleSheet.create({
   titleWrap: {
     margin: margins.marginL
   },
-  sectionList: {
+  renderListWrap: {
+    backgroundColor: TotaraTheme.colorAccent,
     marginBottom: "5%",
     height: "95%"
+  },
+  availableReasonTitleWrap: {
+    fontWeight: "bold",
+    fontSize: 22
+  },
+  availableReasonTextWrap: {
+    fontSize: normalize(17),
+    fontWeight: "normal",
+    alignSelf: "flex-start",
+    color: TotaraTheme.colorNeutral8,
+    backgroundColor: TotaraTheme.colorAccent,
+    marginHorizontal: margins.marginL
   }
 });
 
@@ -253,11 +266,15 @@ const courseStyle = StyleSheet.create({
     fontSize: normalize(17),
     fontWeight: "normal",
     fontStyle: "normal"
+  },
+  scrollView: {
+    flex: 1,
+    backgroundColor: TotaraTheme.colorNeutral2
   }
 });
 
 export {
-  criteriaSheetStyles,
+  bottomSheetStyles,
   parallaxScrollViewStyles,
   headerViewStyles,
   videoControllerStyles,

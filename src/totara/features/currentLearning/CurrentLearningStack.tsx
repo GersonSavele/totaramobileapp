@@ -18,7 +18,8 @@ import { createStackNavigator } from "react-navigation-stack";
 import {
   NAVIGATION_COURSE_DETAILS,
   NAVIGATION_COURSE_GROUP_DETAILS,
-  NAVIGATION_CURRENT_LEARNING
+  NAVIGATION_CURRENT_LEARNING,
+  NAVIGATION_WEBVIEW_ACTIVITY
 } from "@totara/lib/constants";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 import CurrentLearning from "./carouselItems/CurrentLearning";
@@ -27,6 +28,7 @@ import CourseGroupDetails from "./courseGroup/CourseGroupDetails";
 import { header } from "@totara/theme/constants";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import { TouchableIcon } from "@totara/components";
+import { WebviewActivity } from "@totara/activities/webview/WebviewActivity";
 
 const CurrentLearningStack = createStackNavigator(
   {
@@ -64,6 +66,25 @@ const CurrentLearningStack = createStackNavigator(
           title: navigation.getParam("title"),
           opacity: navigation.getParam("opacity")
         })
+    },
+    [NAVIGATION_WEBVIEW_ACTIVITY]: {
+      screen: WebviewActivity,
+      navigationOptions: ({ navigation }) => {
+        const { onClose } = navigation.state.params;
+        return {
+          headerTitleAlign: "center",
+          headerLeft: (
+            <TouchableIcon
+              icon={"times"}
+              onPress={() => {
+                onClose();
+                navigation.pop();
+              }}
+              size={20}
+            />
+          )
+        };
+      }
     }
   },
   {

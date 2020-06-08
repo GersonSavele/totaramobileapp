@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet, Text, View } from "react-native";
 import React, { ReactNode } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { map } from "lodash";
 import { normalize } from "@totara/theme";
 import { AppliedTheme } from "@totara/theme/Theme";

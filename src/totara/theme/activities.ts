@@ -19,66 +19,43 @@ import { StyleSheet } from "react-native";
 import { normalize } from "@totara/theme";
 import {
   margins,
-  paddings,
   viewHeight,
   fontSizes,
-  fontWeights,
-  borderRadius,
+  fontWeights
 } from "@totara/theme/constants";
-import { AppliedTheme } from "@totara/theme/Theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 
-const sectionDataNotAvailableTitle = (theme: AppliedTheme) => {
+const sectionNotAvailable = () => {
   return {
-    ...theme.textH3,
-    ...styles.sectionTitle,
-    color: theme.colorNeutral6,
-    flex: 3,
-  };
-};
-
-const sectionDataNotAvailable = (theme: AppliedTheme) => {
-  return {
-    ...theme.textH3,
     ...styles.notAvailableText,
-    color: theme.colorNeutral6,
-    backgroundColor: theme.colorNeutral2,
-    flex: 1,
+    color: TotaraTheme.colorLink
   };
 };
 
-const sectionDataAvailableTitle = (theme: AppliedTheme) => {
+const sectionTitle = () => {
   return {
-    ...theme.textH3,
-    ...styles.sectionTitle,
+    ...styles.sectionTitle
   };
 };
 
-const activityContainerWrap = (theme: AppliedTheme) => {
+const rowContainer = () => {
   return {
     ...styles.accordionListWrap,
-    backgroundColor: theme.colorAccent,
+    backgroundColor: TotaraTheme.colorAccent
   };
 };
 
-const unLockActivityTextWrap = (theme: AppliedTheme) => {
+const rowText = () => {
   return {
     ...styles.bodyName,
-    color: theme.colorNeutral8,
-    textAlign: "center",
+    color: TotaraTheme.colorNeutral8
   };
 };
 
-const lockActivityTextWrap = (theme: AppliedTheme) => {
+const rowInnerViewContainer = () => {
   return {
-    ...styles.bodyName,
-    color: theme.colorNeutral8,
-  };
-};
-
-const activityBodyWrap = () => {
-  return {
-    ...styles.activityBodyContainer,
-    opacity: 0.25,
+    ...styles.rowInnerContainer,
+    opacity: 0.25
   };
 };
 
@@ -87,58 +64,55 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     fontSize: normalize(fontSizes.fontSizeM),
     fontWeight: fontWeights.fontWeightL,
-    justifyContent: "center",
+    justifyContent: "center"
   },
   bodyType: {
     alignSelf: "flex-start",
     flex: 2,
     fontSize: normalize(fontSizes.fontSizeXS),
-    fontWeight: fontWeights.fontWeightXL,
+    fontWeight: fontWeights.fontWeightXL
   },
   sectionViewWrap: {
     flexDirection: "row",
     justifyContent: "space-between",
     height: normalize(fontSizes.fontSize2XL),
     marginHorizontal: margins.marginL,
-    alignItems: "center",
+    alignItems: "center"
   },
   accordionListWrap: {
-    flexDirection: "column",
+    flexDirection: "column"
   },
-  activityBodyContainer: {
+  rowInnerContainer: {
     height: normalize(fontSizes.fontSize3XL),
     justifyContent: "flex-start",
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-    marginHorizontal: normalize(margins.marginL),
+    marginHorizontal: normalize(margins.marginL)
   },
-  activityContainer: {
+  rowContainer: {
     height: viewHeight.activityContainerHeight,
     justifyContent: "center",
-    marginHorizontal: margins.marginL,
+    marginRight: margins.marginL
   },
   notAvailableText: {
-    fontWeight: fontWeights.fontWeightL,
-    borderRadius: borderRadius.borderRadiusM,
-    margin: margins.marginXS,
-    fontSize: normalize(fontSizes.fontSizeXS),
-    paddingHorizontal: paddings.paddingS,
-    textAlign: "center",
+    fontSize: normalize(fontSizes.fontSizeM),
+    textAlign: "right",
+    margin: margins.marginS,
+    flex: 1
   },
   sectionTitle: {
     fontWeight: fontWeights.fontWeight2XL,
     fontSize: normalize(fontSizes.fontSizeL),
+    flex: 2
   }
 });
 
 export {
   styles,
-  sectionDataNotAvailableTitle,
-  sectionDataNotAvailable,
-  sectionDataAvailableTitle,
-  activityContainerWrap,
-  unLockActivityTextWrap,
-  lockActivityTextWrap,
-  activityBodyWrap,
+  sectionNotAvailable,
+  sectionTitle,
+  rowContainer,
+  rowText,
+  rowInnerViewContainer
 };

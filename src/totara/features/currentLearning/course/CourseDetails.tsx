@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -55,7 +55,7 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
     return (
       <ActivitySheetWrapper>
         <ScrollView
-          style={{ flex: 1 }}
+          style={courseStyle.scrollView}
           contentContainerStyle={{ flex: 1 }}
           showsVerticalScrollIndicator={false}
           refreshControl={
@@ -130,7 +130,6 @@ const UIWrapper = withNavigation(
                 </View>
                 <Activities
                   sections={courseDetails.course.sections}
-                  ß
                   courseRefreshCallBack={courseRefreshCallBack}
                   expandAllActivities={expandActivities}
                 />

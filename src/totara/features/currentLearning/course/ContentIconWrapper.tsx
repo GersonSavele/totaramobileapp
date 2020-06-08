@@ -1,51 +1,52 @@
 /*
-*
-* This file is part of Totara Enterprise.
-*
-* Copyright (C) 2020 onwards Totara Learning Solutions LTD
-*
-* Totara Enterprise is provided only to Totara Learning Solutions
-* LTD’s customers and partners, pursuant to the terms and
-* conditions of a separate agreement with Totara Learning
-* Solutions LTD or its affiliate.
-*
-* If you do not have an agreement with Totara Learning Solutions
-* LTD, you may not access, use, modify, or distribute this software.
-* Please contact [sales@totaralearning.com] for more information.
-*
-*/
+ *
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ *
+ */
 
 import React from "react";
-
-import { AppliedTheme } from "@totara/theme/Theme";
+import { View } from "react-native";
+import { TotaraTheme } from "@totara/theme/Theme";
 import { completionTrack, completionStatus } from "@totara/lib/constants";
 import { ContentIcon } from "@totara/components";
 // @ts-ignore NOTE: tried "@resources/*": ["resources/*"] in tslint file and did not work
 import { Images } from "@resources/images";
+import { margins } from "@totara/theme/constants";
 
 type BuildContentProps = {
   completion?: string;
   status?: string;
   available: boolean;
-  theme: AppliedTheme;
 };
 
 const ContentIconWrapper = ({
   completion,
   status,
-  available,
-  theme,
+  available
 }: BuildContentProps) => {
   if (!available) {
     return (
-      <ContentIcon
-        icon={"lock"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorAccent}
-        iconColor={theme.colorNeutral7}
-        borderColor={theme.colorNeutral7}
-      />
+      <View style={{ marginRight: margins.marginL }}>
+        <ContentIcon
+          icon={"lock"}
+          iconSize={15}
+          size={30}
+          backgroundColor={TotaraTheme.colorAccent}
+          iconColor={TotaraTheme.colorNeutral7}
+          borderColor={TotaraTheme.colorNeutral7}
+        />
+      </View>
     );
   } else if (
     completion === completionTrack.trackingAutomatic &&
@@ -53,40 +54,46 @@ const ContentIconWrapper = ({
       status === completionStatus.complete)
   ) {
     return (
-      <ContentIcon
-        icon={"check"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorSuccess}
-        iconColor={theme.colorAccent}
-        borderColor={theme.colorSuccess}
-      />
+      <View style={{ marginRight: margins.marginL }}>
+        <ContentIcon
+          icon={"check"}
+          iconSize={15}
+          size={30}
+          backgroundColor={TotaraTheme.colorSuccess}
+          iconColor={TotaraTheme.colorAccent}
+          borderColor={TotaraTheme.colorSuccess}
+        />
+      </View>
     );
   } else if (
     completion === completionTrack.trackingAutomatic &&
     status === completionStatus.incomplete
   ) {
     return (
-      <ContentIcon
-        icon={Images.autoCompleteTick}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorAccent}
-        iconColor={theme.colorNeutral6}
-        borderColor={theme.colorNeutral6}
-        fontAwesomeIcon={false}
-      />
+      <View style={{ marginRight: margins.marginL }}>
+        <ContentIcon
+          icon={Images.autoCompleteTick}
+          iconSize={15}
+          size={30}
+          backgroundColor={TotaraTheme.colorAccent}
+          iconColor={TotaraTheme.colorNeutral6}
+          borderColor={TotaraTheme.colorNeutral6}
+          fontAwesomeIcon={false}
+        />
+      </View>
     );
   } else if (status === completionStatus.completeFail) {
     return (
-      <ContentIcon
-        icon={"times"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorAlert}
-        iconColor={theme.colorAccent}
-        borderColor={theme.colorAlert}
-      />
+      <View style={{ marginRight: margins.marginL }}>
+        <ContentIcon
+          icon={"times"}
+          iconSize={15}
+          size={30}
+          backgroundColor={TotaraTheme.colorAlert}
+          iconColor={TotaraTheme.colorAccent}
+          borderColor={TotaraTheme.colorAlert}
+        />
+      </View>
     );
   } else if (
     completion === completionTrack.trackingManual &&
@@ -94,27 +101,31 @@ const ContentIconWrapper = ({
       status === completionStatus.complete)
   ) {
     return (
-      <ContentIcon
-        icon={"check"}
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorSuccess}
-        iconColor={theme.colorAccent}
-        borderColor={theme.colorSuccess}
-      />
+      <View style={{ marginRight: margins.marginL }}>
+        <ContentIcon
+          icon={"check"}
+          iconSize={15}
+          size={30}
+          backgroundColor={TotaraTheme.colorSuccess}
+          iconColor={TotaraTheme.colorAccent}
+          borderColor={TotaraTheme.colorSuccess}
+        />
+      </View>
     );
   } else if (
     completion === completionTrack.trackingManual &&
     status === completionStatus.incomplete
   ) {
     return (
-      <ContentIcon
-        iconSize={15}
-        size={30}
-        backgroundColor={theme.colorAccent}
-        iconColor={theme.colorNeutral6}
-        borderColor={theme.colorNeutral6}
-      />
+      <View style={{ marginRight: margins.marginL }}>
+        <ContentIcon
+          iconSize={15}
+          size={30}
+          backgroundColor={TotaraTheme.colorAccent}
+          iconColor={TotaraTheme.colorNeutral6}
+          borderColor={TotaraTheme.colorNeutral6}
+        />
+      </View>
     );
   } else {
     return null;
