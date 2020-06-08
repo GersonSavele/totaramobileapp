@@ -242,10 +242,25 @@ const viewStyles = StyleSheet.create({
   }
 });
 
+const courseStyle = StyleSheet.create({
+  expandContentWrap: {
+    flexDirection: "row",
+    margin: margins.marginL,
+    justifyContent: "space-between"
+  },
+  expandTextWrap: {
+    color: TotaraTheme.colorNeutral8,
+    fontSize: normalize(17),
+    fontWeight: "normal",
+    fontStyle: "normal"
+  }
+});
+
 export {
   criteriaSheetStyles,
   parallaxScrollViewStyles,
   headerViewStyles,
   videoControllerStyles,
-  viewStyles
+  viewStyles,
+  courseStyle
 };

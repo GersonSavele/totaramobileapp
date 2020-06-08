@@ -14,7 +14,7 @@
  */
 
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -43,68 +43,74 @@ import {
 import { navigateTo } from "@totara/lib/navigation";
 import { NavigationContext } from "react-navigation";
 
-// To Do : refetch props should be removed from going nested component(MOB-381)
-
-type ActivityProps = {
-  item: Activity;
-  theme: AppliedTheme;
-  refetch?: () => {};
-};
-
-type CellExpandUIProps = {
-  show: boolean;
-  title: string;
-};
-
 type ActivityListProps = {
   sections: [Section];
-  refetch: () => {};
+  courseRefreshCallBack: () => {};
+  expandAllActivities: boolean;
 };
 
-type ActivityUIProps = {
-  refetch: () => {};
-  section: Section;
-};
-
-type ActivityListBodyProps = {
-  data?: Array<Activity>;
-  refetch: () => {};
-};
-
-const Activities = ({ sections, refetch }: ActivityListProps) => {
+const Activities = ({
+  sections,
+  courseRefreshCallBack,
+  expandAllActivities
+}: ActivityListProps) => {
   return (
     <FlatList
       data={sections}
       renderItem={({ item }) => {
-        return <ActivityUI section={item} refetch={refetch} />;
+        return (
+          <SectionItem
+            section={item}
+            courseRefreshCallBack={courseRefreshCallBack}
+            expandAllActivities={expandAllActivities}
+          />
+        );
       }}
     />
   );
 };
 
-const ActivityUI = ({ section, refetch }: ActivityUIProps) => {
-  const [show, setShow] = useState(false);
+type SectionItemProps = {
+  courseRefreshCallBack: () => {};
+  section: Section;
+  expandAllActivities: boolean;
+};
+
+const SectionItem = ({
+  section,
+  courseRefreshCallBack,
+  expandAllActivities
+}: SectionItemProps) => {
+  //every item need to have its own state
+  const [show, setShow] = useState(expandAllActivities);
   const activities = section.data as Array<Activity>;
   const { title, available } = section;
   const [theme] = useContext(ThemeContext);
+  useEffect(() => {
+    setShow(expandAllActivities);
+  }, [expandAllActivities]);
+
+  const onExpand = () => {
+    setShow(!show);
+  };
+
   return activities && activities.length != 0 ? (
     <View style={{ backgroundColor: theme.colorSecondary1 }}>
-      <TouchableOpacity
-        onPress={() => {
-          setShow(!show);
-        }}>
+      <TouchableOpacity onPress={onExpand}>
         {available === true ? (
-          <ExpandableSection show={show} title={title} />
+          <ExpandableSectionHeader show={show} title={title} />
         ) : (
-          <RestrictionSection {...section} />
+          <RestrictionSectionHeader {...section} />
         )}
       </TouchableOpacity>
-      {show && <ActivityListBody data={activities} refetch={refetch} />}
+      {show && (
+        <Row data={activities} courseRefreshCallBack={courseRefreshCallBack} />
+      )}
     </View>
   ) : null;
 };
 
-const RestrictionSection = ({ title, availablereason }: Section) => {
+const RestrictionSectionHeader = ({ title, availablereason }: Section) => {
   const [theme] = useContext(ThemeContext);
   const [show, setShow] = useState(false);
   const onClose = () => {
@@ -130,7 +136,13 @@ const RestrictionSection = ({ title, availablereason }: Section) => {
   );
 };
 
-const ExpandableSection = ({ show, title }: CellExpandUIProps) => {
+const ExpandableSectionHeader = ({
+  title,
+  show
+}: {
+  show: boolean;
+  title: string;
+}) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.sectionViewWrap}>
@@ -154,7 +166,12 @@ const ExpandableSection = ({ show, title }: CellExpandUIProps) => {
   );
 };
 
-const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
+type ActivityContentProps = {
+  data?: Array<Activity>;
+  courseRefreshCallBack: () => {};
+};
+
+const Row = ({ data, courseRefreshCallBack }: ActivityContentProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View>
@@ -164,12 +181,12 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
             {item.completionstatus === completionStatus.unknown ||
             item.completionstatus === null ||
             item.available === false ? (
-              <ActivityLock item={item} theme={theme} key={key} />
+              <RowLock item={item} theme={theme} key={key} />
             ) : (
-              <ActivityUnLock
+              <RowUnLock
                 item={item}
                 theme={theme}
-                refetch={refetch}
+                courseRefreshCallBack={courseRefreshCallBack}
                 key={key}
               />
             )}
@@ -180,7 +197,13 @@ const ActivityListBody = ({ data, refetch }: ActivityListBodyProps) => {
   );
 };
 
-const ActivityUnLock = ({ item, theme }: ActivityProps) => {
+type ActivityProps = {
+  item: Activity;
+  theme: AppliedTheme;
+  courseRefreshCallBack?: () => {};
+};
+
+const RowUnLock = ({ item, theme }: ActivityProps) => {
   const navigation = useContext(NavigationContext);
   return item.modtype == "label" ? (
     <View style={{ backgroundColor: theme.colorSecondary1 }}>
@@ -224,7 +247,7 @@ const ActivityUnLock = ({ item, theme }: ActivityProps) => {
   );
 };
 
-const ActivityLock = ({ item, theme }: ActivityProps) => {
+const RowLock = ({ item, theme }: ActivityProps) => {
   const [show, setShow] = useState(false);
   const onClose = () => {
     setShow(!show);

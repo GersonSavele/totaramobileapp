@@ -150,9 +150,10 @@
     "course_criteria": {
       "title": "Course criteria"
     },
-    "course-details": {
+    "course_details": {
       "activities": "ACTIVITIES",
-      "overview": "OVERVIEW"
+      "overview": "OVERVIEW",
+      "expand_or_collapse": "Expand all"
     },
     "course_activity_section": {
       "not_available": "Not available"

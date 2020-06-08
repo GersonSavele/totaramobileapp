@@ -14,7 +14,14 @@
  */
 
 import React, { useState, useContext } from "react";
-import { StyleSheet, View, ScrollView, RefreshControl } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  RefreshControl,
+  Text,
+  Switch
+} from "react-native";
 import {
   withNavigation,
   NavigationParams,
@@ -27,11 +34,12 @@ import { coreCourse } from "./api";
 import Activities from "./Activities";
 import { CourseContentDetails } from "@totara/types";
 import OverviewDetails from "../overview/Details";
-import { ThemeContext } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 import HeaderView from "../HeaderView";
 import CourseCompletionModal from "../CourseCompletionModal";
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
 import { StatusKey, learningItemEnum } from "@totara/lib/constants";
+import { courseStyle } from "@totara/lib/styles/currentLearning";
 
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   const courseId = navigation.getParam("targetId");
@@ -53,7 +61,10 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
           refreshControl={
             <RefreshControl refreshing={loading} onRefresh={pullToRefresh} />
           }>
-          <UIWrapper courseDetails={data.mobile_course} refetch={refetch} />
+          <UIWrapper
+            courseDetails={data.mobile_course}
+            courseRefreshCallBack={refetch}
+          />
         </ScrollView>
       </ActivitySheetWrapper>
     );
@@ -62,15 +73,15 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
 
 type Props = {
   courseDetails: CourseContentDetails;
-  refetch: () => {};
+  courseRefreshCallBack: () => {};
   navigation?: NavigationParams;
 };
 
 const UIWrapper = withNavigation(
-  ({ navigation = {}, courseDetails, refetch }: Props) => {
+  ({ navigation = {}, courseDetails, courseRefreshCallBack }: Props) => {
     const [showOverview, setShowOverview] = useState(true);
     const [showCompletionModal, setShowCompletionModal] = useState(true);
-
+    const [expandActivities, setExpandActivities] = useState(false);
     const onClose = () => {
       setShowCompletionModal(!showCompletionModal);
       navigation.goBack();
@@ -78,30 +89,52 @@ const UIWrapper = withNavigation(
     const onSwitchTab = () => {
       setShowOverview(!showOverview);
     };
-    const [theme] = useContext(ThemeContext);
+    const onChangeExpand = () => {
+      setExpandActivities(!expandActivities);
+    };
+
     courseDetails.course.itemtype = learningItemEnum.Course;
     return (
       <HeaderView
         details={courseDetails.course}
         navigation={navigation!}
-        tabBarLeft={translate("course.course-details.overview")}
-        tabBarRight={translate("course.course-details.activities")}
+        tabBarLeft={translate("course.course_details.overview")}
+        tabBarRight={translate("course.course_details.activities")}
         onPress={onSwitchTab}
         showOverview={showOverview}
         image={courseDetails.imageSrc}
         badgeTitle="Course">
         <View
-          style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}>
+          style={[
+            styles.container,
+            { backgroundColor: TotaraTheme.colorNeutral2 }
+          ]}>
           <View
             style={[
               styles.activitiesContainer,
-              { backgroundColor: theme.colorNeutral1 }
+              { backgroundColor: TotaraTheme.colorNeutral1 }
             ]}>
             {!showOverview ? (
-              <Activities
-                sections={courseDetails.course.sections}
-                refetch={refetch}
-              />
+              <View
+                style={{
+                  backgroundColor: TotaraTheme.colorNeutral2
+                }}>
+                <View style={courseStyle.expandContentWrap}>
+                  <Text style={courseStyle.expandTextWrap}>
+                    {translate("course.course_details.expand_or_collapse")}
+                  </Text>
+                  <Switch
+                    style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
+                    value={expandActivities}
+                    onValueChange={onChangeExpand}
+                  />
+                </View>
+                <Activities
+                  sections={courseDetails.course.sections}
+                  courseRefreshCallBack={courseRefreshCallBack}
+                  expandAllActivities={expandActivities}
+                />
+              </View>
             ) : (
               <OverviewDetails
                 learningItem={courseDetails.course}
