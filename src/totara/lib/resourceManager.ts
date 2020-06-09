@@ -166,7 +166,14 @@ const deleteResource = (ids: string[]) => {
         return unlink(x.unzipPath);
       }
     })
-  );
+  ).then(() => {
+    store.dispatch({
+      type: "DELETE_RESOURCE",
+      payload: {
+        ids: ids
+      }
+    });
+  });
 };
 
 const resumeDownloads = () => {

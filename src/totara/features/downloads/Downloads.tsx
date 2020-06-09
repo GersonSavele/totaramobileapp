@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { NavigationActions, NavigationContext } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { ThemeContext } from "@totara/theme";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
@@ -28,19 +28,22 @@ import ResourceManager from "@totara/lib/resourceManager";
 import listViewStyles from "@totara/theme/listView";
 import DownloadItem from "./DownloadItem";
 import { navigateTo } from "@totara/lib/navigation";
-import { NAVIGATION_SCORM_ROOT } from "@totara/lib/constants"; //TODO: REMOVE IT WHEN scorm is done
+import { NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants";
 
 const Downloads = () => {
   const [theme] = useContext(ThemeContext);
   const navigation = useContext(NavigationContext);
 
-  const resourceDispatcher = useDispatch();
   const resourcesList = useSelector(
     (state: RootState) => state.resourceReducer.resources
   );
 
   const [selectable, setSelectable] = useState(false);
-  const [selectList, setSelectList] = useState<string[]>([]);
+  const [selectedList, setSelectedList] = useState<string[]>([]);
+  const headerTitle =
+    selectable && selectedList.length > 0
+      ? translate("downloads.selected", { count: selectedList.length })
+      : translate("downloads.title");
 
   useEffect(() => {
     const onCancelTapListener = navigation.addListener(
@@ -82,14 +85,16 @@ const Downloads = () => {
   const onItemPress = (item: Resource) => {
     toggleSelected(item);
 
-    navigateTo({
-      navigate: navigation.navigate,
-      routeId: NAVIGATION_SCORM_ROOT,
-      props: {
-        id: item.customId,
-        title: item.name
-      }
-    });
+    if (!selectable) {
+      navigateTo({
+        navigate: navigation.navigate,
+        routeId: NAVIGATION_SCORM_STACK_ROOT,
+        props: {
+          id: item.customId,
+          title: item.name
+        }
+      });
+    }
   };
 
   const onCancelTap = () => {
@@ -98,13 +103,7 @@ const Downloads = () => {
   };
 
   const onDeleteTap = () => {
-    ResourceManager.deleteResource(selectList).finally(() => {
-      resourceDispatcher({
-        type: "DELETE_RESOURCE",
-        payload: {
-          ids: selectList
-        }
-      });
+    ResourceManager.deleteResource(selectedList).finally(() => {
       unSelectAll();
       setSelectable(false);
     });
@@ -113,20 +112,20 @@ const Downloads = () => {
 
   //ACTIONS
   const unSelectAll = () => {
-    setSelectList([]);
+    setSelectedList([]);
   };
 
   const toggleSelected = (item: Resource) => {
-    const exists = selectList.some((x) => x === item.id);
-    if (!exists) setSelectList([...selectList, item.id]);
+    const exists = selectedList.some((x) => x === item.id);
+    if (!exists) setSelectedList([...selectedList, item.id]);
     else {
-      setSelectList([...selectList.filter((x) => x !== item.id)]);
+      setSelectedList([...selectedList.filter((x) => x !== item.id)]);
     }
   };
   //ACTIONS
 
   const isSelected = (item: Resource) => {
-    return selectList.some((x) => x === item.id);
+    return selectedList.some((x) => x === item.id);
   };
 
   return (
@@ -134,7 +133,7 @@ const Downloads = () => {
       <View style={[headerStyles.navigationHeader, { flexDirection: "row" }]}>
         <Text
           style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
-          {translate("downloads.title")}
+          {headerTitle}
         </Text>
       </View>
       <NetworkStatus />
