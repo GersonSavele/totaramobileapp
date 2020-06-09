@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { ThemeContext } from "@totara/theme";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
-import { icons, paddings } from "@totara/theme/constants";
+import { iconSizes, paddings } from "@totara/theme/constants";
 import { Resource, ResourceState } from "@totara/types/Resource";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { humanReadablePercentage } from "@totara/lib/tools";
@@ -45,7 +45,7 @@ const DownloadItem = ({
         {selectable && (
           <View style={styles.itemCircle}>
             <FontAwesomeIcon
-              size={icons.sizeM}
+              size={iconSizes.sizeM}
               icon={"check-circle"}
               color={selected ? theme.colorLink : TotaraTheme.colorNeutral3}
             />
@@ -54,7 +54,7 @@ const DownloadItem = ({
         <View>
           {item.state !== ResourceState.Completed && (
             <ResourceDownloader
-              size={icons.sizeM}
+              size={iconSizes.sizeM}
               progress={humanReadablePercentage({
                 writtenBytes,
                 sizeInBytes
@@ -75,7 +75,7 @@ const DownloadItem = ({
             justifyContent: "flex-end"
           }}>
           <TouchableIcon
-            size={icons.sizeM}
+            size={iconSizes.sizeM}
             icon={"angle-right"}
             disabled={true}
           />

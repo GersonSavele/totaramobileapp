@@ -18,7 +18,7 @@
 import { NotificationMessage } from "@totara/types";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { icons, paddings } from "@totara/theme/constants";
+import { iconSizes, paddings } from "@totara/theme/constants";
 import React, { useContext } from "react";
 import { ThemeContext } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -47,7 +47,7 @@ const NotificationItem = ({
         {selectable && (
           <View style={styles.itemCircle}>
             <FontAwesomeIcon
-              size={icons.sizeM}
+              size={iconSizes.sizeM}
               icon={"check-circle"}
               color={selected ? theme.colorLink : TotaraTheme.colorNeutral3}
             />
@@ -67,7 +67,7 @@ const NotificationItem = ({
             justifyContent: "center"
           }}>
           <FontAwesomeIcon
-            size={icons.sizeM}
+            size={iconSizes.sizeM}
             color={TotaraTheme.colorNeutral3}
             style={{ padding: paddings.paddingM }}
             icon={"angle-right"}

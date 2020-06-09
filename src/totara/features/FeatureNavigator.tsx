@@ -102,7 +102,13 @@ const ProfileTab = {
   }
 };
 
-const NotificationBellWithCounting = ({ active, tintColor }) => {
+const NotificationBellWithCounting = ({
+  active,
+  tintColor
+}: {
+  active: boolean;
+  tintColor: string;
+}) => {
   const notificationList = useSelector(
     (state: RootState) => state.notificationReducer.notifications
   );
@@ -116,6 +122,7 @@ const NotificationBellWithCounting = ({ active, tintColor }) => {
 const NotificationsTab = {
   screen: NotificationsStack,
   navigationOptions: {
+    // eslint-disable-next-line react/display-name
     tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) => {
       return (
         <NotificationBellWithCounting

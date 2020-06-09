@@ -16,7 +16,6 @@
  */
 
 export enum ResourceState {
-  Empty,
   Added,
   Errored,
   Downloading,
@@ -28,7 +27,7 @@ export enum ResourceType {
 }
 export interface Resource {
   id: string; //UNIQUE ID (UUID), used for having an unique ID for resource management
-  customId; //CUSTOM ID, LIKE ActivityId or something else
+  customId: string; //CUSTOM ID, LIKE ActivityId or something else
   type: ResourceType;
   jobId: number;
   name: string;

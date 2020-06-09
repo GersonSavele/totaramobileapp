@@ -71,7 +71,7 @@ const tabBar = {
   }
 };
 
-const icons = {
+const iconSizes = {
   sizeS: 16,
   sizeM: 24,
   sizeL: 32
@@ -104,7 +104,7 @@ export {
   borderRadius,
   tabBar,
   header,
-  icons,
+  iconSizes,
   modalSize,
   resultCircleSize,
   resultWrapperScaleX

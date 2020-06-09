@@ -19,10 +19,10 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
  */
 
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
-  NavigationStackProp,
-  createStackNavigator
+  createStackNavigator,
+  NavigationStackProp
 } from "react-navigation-stack";
 import { NavigationActions } from "react-navigation";
 import { useSelector } from "react-redux";
@@ -34,28 +34,28 @@ import { AuthContext } from "@totara/core";
 import { OfflineScormActivity } from "./offline";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
-import { ResourceState } from "@totara/types/Resource";
+import { Resource, ResourceType } from "@totara/types/Resource";
 import { RootState } from "@totara/reducers";
 import { scormQuery } from "./api";
 import { NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants";
 
-import ResourceManager from "@totara/lib/resourceManager";
 import {
+  formatAttempts,
   getOfflinePackageUnzipPath,
-  getTargetZipFile,
-  formatAttempts
+  getTargetZipFile
 } from "@totara/lib/scorm";
 import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
-import { Resource } from "@totara/types/Resource";
 import ScormAttempts from "./ScormAttempts";
 import Loading from "@totara/components/Loading";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { ScormBundle, ScormActivityParams } from "@totara/types/Scorm";
+import { ScormActivityParams, ScormBundle } from "@totara/types/Scorm";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { translate } from "@totara/locale";
 import { SafeAreaView } from "react-native";
 import { fullFlex } from "@totara/lib/styles/base";
 
+import ResourceManager from "@totara/lib/resourceManager";
+import { iconSizes } from "@totara/theme/constants";
 const { download } = ResourceManager;
 
 type ScormActivityProps = {
@@ -85,49 +85,47 @@ const ScormActivity = (props: ScormActivityProps) => {
 
   const { apiKey } = appState as AppState;
 
-  const resourcesList: Resource[] = useSelector(
+  const resourceList: Resource[] = useSelector(
     (state: RootState) => state.resourceReducer.resources
   );
 
   useEffect(() => {
     if (scormBundle) {
-      const targetResource: Resource | undefined = resourcesList.find(
-        (resource) => resource.id === id
-      );
-      const {
-        bytesDownloaded: writtenBytes = 0,
-        sizeInBytes = 1,
-        state = ResourceState.Empty
-      } = targetResource || {};
+      const resource = resourceList.find((x) => x.customId === id);
+      const resourceState = resource && resource.state;
+      const progress = resource
+        ? humanReadablePercentage({
+            writtenBytes: resource.bytesDownloaded,
+            sizeInBytes: resource.sizeInBytes
+          })
+        : 0;
 
       const { packageUrl } = scormBundle.scorm;
 
       headerDispatch({
-        downloadProgress: humanReadablePercentage({
-          writtenBytes,
-          sizeInBytes
-        }),
-        downloadState: state,
+        downloadProgress: progress,
+        downloadState: resourceState,
         // if there's no existing scorm resource, a null function will serve disabling the action
-        onDownloadPress: targetResource
+        onDownloadPress: resource
           ? () => null
           : ({ id, title }) => {
               if (isInternetReachable) {
-                download(
-                  apiKey,
-                  id,
-                  title,
-                  packageUrl,
-                  getTargetZipFile(id),
-                  getOfflinePackageUnzipPath(id)
-                );
+                download({
+                  apiKey: apiKey,
+                  customId: id,
+                  name: title,
+                  type: ResourceType.ScormActivity,
+                  resourceUrl: packageUrl,
+                  targetPathFile: getTargetZipFile(id),
+                  targetExtractPath: getOfflinePackageUnzipPath(id)
+                });
               } else {
                 showMessage({ text: translate("general.no_internet") });
               }
             }
       });
     }
-  }, [resourcesList, scormBundle]);
+  }, [resourceList, scormBundle]);
 
   useEffect(() => {
     if (data) {
@@ -223,7 +221,7 @@ const headerRight = (props) => {
       <ResourceDownloader
         resourceState={downloadState}
         progress={downloadProgress}
-        size={TotaraTheme.textH3.fontSize}
+        size={iconSizes.sizeM}
         onPress={() => onDownloadPress({ id, title })}
       />
     );

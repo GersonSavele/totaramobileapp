@@ -4,6 +4,7 @@ import * as Progress from "react-native-progress";
 
 import { ThemeContext, gutter } from "@totara/theme";
 import { ResourceState } from "@totara/types/Resource";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type ResourceDownloaderProps = {
   resourceState?: ResourceState;
@@ -46,15 +47,15 @@ const ResourceDownloaderComponent = ({
       />
     );
   } else {
-    const iconSource =
+    const iconColor =
       resourceState === ResourceState.Completed
-        ? DownloadIcon.solid
-        : DownloadIcon.regular;
+        ? TotaraTheme.colorNeutral3
+        : TotaraTheme.colorLink;
 
     return (
       <Image
-        source={iconSource}
-        style={[{ tintColor: theme.colorPrimary, height: size, width: size }]}
+        source={DownloadIcon.solid}
+        style={[{ tintColor: iconColor, height: size, width: size }]}
         resizeMode="contain"
       />
     );

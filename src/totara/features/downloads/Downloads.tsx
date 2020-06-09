@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  Button,
   FlatList,
   Image,
   ImageSourcePropType,
@@ -27,9 +26,9 @@ import { paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import ResourceManager from "@totara/lib/resourceManager";
 import listViewStyles from "@totara/theme/listView";
-import { ResourceType } from "@totara/types/Resource";
 import DownloadItem from "./DownloadItem";
-import * as RNFS from "react-native-fs"; //TODO: REMOVE IT WHEN scorm is done
+import { navigateTo } from "@totara/lib/navigation";
+import { NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants"; //TODO: REMOVE IT WHEN scorm is done
 
 const Downloads = () => {
   const [theme] = useContext(ThemeContext);
@@ -72,36 +71,6 @@ const Downloads = () => {
     navigation.dispatch(setParamsAction);
   };
 
-  //TODO: REMOVE IT WHEN scorm is done
-  const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  //TODO: REMOVE IT WHEN scorm is done
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const downloadTest = () => {
-    const customId = getRandomInt(1, 100).toString();
-    const resourceUrl =
-      "https://file-examples.com/wp-content/uploads/2017/02/zip_2MB.zip";
-
-    const downloadFolder = `${RNFS.DocumentDirectoryPath}`;
-    const targetZipFile = `${downloadFolder}/${customId}.zip`;
-    const targetExtractPath = `${downloadFolder}/extracted/${customId}`;
-
-    ResourceManager.download({
-      apiKey: "<PUT API HERE>",
-      customId: customId,
-      type: ResourceType.ScormActivity,
-      name: `Custom name ${customId}`,
-      resourceUrl: resourceUrl,
-      targetPathFile: targetZipFile,
-      targetExtractPath: targetExtractPath
-    });
-  };
-  //TEST REMOVE IT
-
   //EVENTS
   const onItemLongPress = (item: Resource) => {
     if (!selectable) {
@@ -112,6 +81,15 @@ const Downloads = () => {
 
   const onItemPress = (item: Resource) => {
     toggleSelected(item);
+
+    navigateTo({
+      navigate: navigation.navigate,
+      routeId: NAVIGATION_SCORM_STACK_ROOT,
+      props: {
+        id: item.customId,
+        title: item.name
+      }
+    });
   };
 
   const onCancelTap = () => {
@@ -158,10 +136,6 @@ const Downloads = () => {
           style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
           {translate("downloads.title")}
         </Text>
-        {/*todo: remove it once scorm activity refactoring is done*/}
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Button onPress={downloadTest} title={"ADD"} />
-        </View>
       </View>
       <NetworkStatus />
       <View style={{ flex: 1 }}>
