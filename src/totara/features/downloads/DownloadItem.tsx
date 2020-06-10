@@ -9,6 +9,7 @@ import { Resource, ResourceState } from "@totara/types/Resource";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { humanReadablePercentage } from "@totara/lib/tools";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import listViewStyles from "@totara/theme/listView";
 
 type DownloadItemProps = {
   item: Resource;
@@ -41,7 +42,7 @@ const DownloadItem = ({
     <TouchableOpacity
       onPress={() => onItemPress(item)}
       onLongPress={() => onItemLongPress(item)}>
-      <View key={item.id} style={styles.item}>
+      <View key={item.id} style={listViewStyles.rowItem}>
         {selectable && (
           <View style={styles.itemCircle}>
             <FontAwesomeIcon
@@ -65,7 +66,7 @@ const DownloadItem = ({
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.subtitleSize}>{`${humanReadableSize(
+          <Text style={styles.size}>{`${humanReadableSize(
             item.sizeInBytes
           )}`}</Text>
         </View>
@@ -75,8 +76,8 @@ const DownloadItem = ({
           }}>
           <TouchableIcon
             size={iconSizes.sizeM}
+            color={TotaraTheme.colorNeutral3}
             icon={"angle-right"}
-            disabled={true}
           />
         </View>
       </View>
@@ -85,17 +86,15 @@ const DownloadItem = ({
 };
 
 const styles = StyleSheet.create({
-  item: {
-    flexDirection: "row",
-    padding: paddings.paddingM,
-    backgroundColor: TotaraTheme.colorNeutral1
-  },
   title: {
-    ...TotaraTheme.textH4
+    ...TotaraTheme.textH4,
+    ...{
+      padding: paddings.paddingM
+    }
   },
-  subtitleSize: {
-    ...TotaraTheme.textB2,
-    color: TotaraTheme.colorNeutral6
+  size: {
+    color: TotaraTheme.colorNeutral6,
+    paddingLeft: paddings.paddingM
   },
   itemCircle: {
     alignSelf: "center",

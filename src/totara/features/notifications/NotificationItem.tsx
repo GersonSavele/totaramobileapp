@@ -22,6 +22,7 @@ import { iconSizes, paddings } from "@totara/theme/constants";
 import React, { useContext } from "react";
 import { ThemeContext } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
+import listViewStyles from "@totara/theme/listView";
 
 type NotificationItemProps = {
   item: NotificationMessage;
@@ -43,7 +44,7 @@ const NotificationItem = ({
     <TouchableOpacity
       onPress={() => onNotificationItemPress(item)}
       onLongPress={() => onNotificationItemLongPress(item)}>
-      <View key={item.id} style={styles.item}>
+      <View key={item.id} style={listViewStyles.rowItem}>
         {selectable && (
           <View style={styles.itemCircle}>
             <FontAwesomeIcon
@@ -69,7 +70,6 @@ const NotificationItem = ({
           <FontAwesomeIcon
             size={iconSizes.sizeM}
             color={TotaraTheme.colorNeutral3}
-            style={{ padding: paddings.paddingM }}
             icon={"angle-right"}
           />
         </View>
@@ -79,14 +79,8 @@ const NotificationItem = ({
 };
 
 const styles = StyleSheet.create({
-  item: {
-    flexDirection: "row",
-    padding: paddings.paddingL,
-    paddingLeft: 0,
-    backgroundColor: TotaraTheme.colorNeutral1
-  },
   title: {
-    ...TotaraTheme.textH3,
+    ...TotaraTheme.textH4,
     ...{
       padding: paddings.paddingM,
       fontWeight: "bold"

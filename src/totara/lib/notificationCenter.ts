@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  *
  * This file is part of Totara Enterprise.
@@ -31,21 +32,23 @@ const receivedMessageHandler = (notificationDispatch: any, message: any) => {
     title: messageData.title,
     body: messageData.body,
     read: false,
-    received: moment.utc().valueOf(),
+    action: messageData.action,
+    received: moment.utc().valueOf()
   };
 
   notificationDispatch({
     type: "ADD_NOTIFICATION",
-    payload: notificationMessage,
+    payload: notificationMessage
   });
 };
 
 const handleMessagesInBackground = () => {
   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    Log.info(
-      "Message handled in the BACKGROUND: ",
-      JSON.stringify(remoteMessage)
-    );
+    __DEV__ &&
+      Log.info(
+        "Message handled in the BACKGROUND: ",
+        JSON.stringify(remoteMessage)
+      );
   });
 };
 
@@ -53,21 +56,22 @@ const init = (notificationDispatch) => {
   messaging()
     .getToken()
     .then((token) => {
-      Log.info("FIREBASE TOKEN: ", token);
+      __DEV__ && Log.info("FIREBASE TOKEN: ", token);
       //TODO: sent to backend to link to the user
     });
 
   return messaging().onMessage(async (remoteMessage) => {
-    Log.info(
-      `Message handled in the FOREGROUND: ${JSON.stringify(remoteMessage)}`
-    );
+    __DEV__ &&
+      Log.info(
+        `Message handled in the FOREGROUND: ${JSON.stringify(remoteMessage)}`
+      );
     receivedMessageHandler(notificationDispatch, remoteMessage);
   });
 };
 
 const NotificationCenter = {
   init,
-  handleMessagesInBackground,
+  handleMessagesInBackground
 };
 
 export default NotificationCenter;

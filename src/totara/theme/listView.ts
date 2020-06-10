@@ -29,6 +29,11 @@ const listViewStyles = StyleSheet.create({
   contentContainerStyle: {
     paddingLeft: paddings.paddingL
   },
+  rowItem: {
+    flexDirection: "row",
+    padding: paddings.paddingM,
+    backgroundColor: TotaraTheme.colorNeutral1
+  },
   itemSeparator: {
     margin: margins.marginXS,
     backgroundColor: TotaraTheme.colorNeutral3,

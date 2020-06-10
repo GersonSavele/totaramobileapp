@@ -18,7 +18,13 @@ const persistConfig = {
 // Middleware: Redux Persist Persisted Reducer
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
 // Redux: Store
-const store = createStore(persistedReducer, applyMiddleware(createLogger()));
+
+const createMiddleware = (logger: boolean) => {
+  if (logger) return applyMiddleware(createLogger({ collapsed: true }));
+  else applyMiddleware();
+};
+
+const store = createStore(persistedReducer, createMiddleware(__DEV__));
 // Middleware: Redux Persist Persister
 const persistor = persistStore(store);
 // Exports
