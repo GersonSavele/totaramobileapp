@@ -49,7 +49,10 @@ import {
   shouldShowAction
 } from "@totara/lib/scorm";
 import { navigateTo } from "@totara/lib/navigation";
-import { DATE_FORMAT_FULL } from "@totara/lib/constants";
+import {
+  DATE_FORMAT_FULL,
+  NAVIGATION_OFFLINE_SCORM_ACTIVITY
+} from "@totara/lib/constants";
 import { ScormBundle } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 
@@ -62,6 +65,7 @@ type SummaryProps = {
   networkStatus: any;
   scormBundle: ScormBundle | undefined;
   navigation: any;
+  isDownloaded: boolean;
 };
 
 const gridStyle = (theme: AppliedTheme) => [
@@ -102,7 +106,8 @@ const ScormSummary = ({
   refetch,
   networkStatus,
   scormBundle,
-  navigation
+  navigation,
+  isDownloaded
 }: SummaryProps) => {
   const theme = TotaraTheme;
 
@@ -216,23 +221,24 @@ const ScormSummary = ({
             </View>
           </ScrollView>
         </View>
-        {shouldShowAction(bundleData) && (
+        {shouldShowAction(bundleData) && isDownloaded && (
           <AttemptController
             primary={
               (actionPrimary && {
                 title: translate("scorm.summary.new_attempt"),
                 action: () => {
-                  if (
-                    scormBundle &&
-                    scormBundle.scormPackage &&
-                    scormBundle.scormPackage.path
-                  ) {
+                  if (scormBundle && scormBundle.scorm) {
+                    const attemptNumber =
+                      (scormBundle.scorm &&
+                        scormBundle.scorm.attempts &&
+                        scormBundle.scorm.attempts.length + 1) ||
+                      1;
                     navigateTo({
-                      routeId: "OfflineScormActivity",
+                      routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
                       navigate: navigation.navigate,
                       props: {
-                        scormBundle,
-                        attempt: 0
+                        attempt: attemptNumber,
+                        scorm: scormBundle.scorm
                       }
                     });
                   }
@@ -240,6 +246,8 @@ const ScormSummary = ({
               }) ||
               undefined
             }
+            //TODO - Will be fixed after enable online
+            /*
             secondary={
               (actionSecondary && {
                 title: translate("scorm.summary.last_attempt"),
@@ -249,11 +257,14 @@ const ScormSummary = ({
                   isUserOnline: false,
                   callback: () => {
                     navigateTo({
-                      routeId: "OfflineScormActivity",
+                      routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
                       navigate: navigation.navigate,
                       props: {
                         scormBundle,
-                        attempt: 0
+                        attempt:
+                          scormBundle &&
+                          scormBundle.scorm &&
+                          scormBundle.scorm.attemptsCurrent
                       }
                     });
                   }
@@ -261,6 +272,7 @@ const ScormSummary = ({
               }) ||
               undefined
             }
+            */
           />
         )}
       </View>

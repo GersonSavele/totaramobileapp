@@ -34,7 +34,7 @@ import { AuthContext } from "@totara/core";
 import { OfflineScormActivity } from "./offline";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
-import { Resource, ResourceType } from "@totara/types/Resource";
+import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
 import { RootState } from "@totara/reducers";
 import { scormQuery } from "./api";
 import { NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants";
@@ -78,6 +78,7 @@ const ScormActivity = (props: ScormActivityProps) => {
 
   // FIXME: This is a temporary hack because the server is not returning correct data
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
+  const [resourceState, setResourceState] = useState<ResourceState>();
 
   const {
     authContextState: { appState }
@@ -124,6 +125,7 @@ const ScormActivity = (props: ScormActivityProps) => {
               }
             }
       });
+      setResourceState(resource && resource.state);
     }
   }, [resourceList, scormBundle]);
 
@@ -161,6 +163,8 @@ const ScormActivity = (props: ScormActivityProps) => {
         error={error}
         networkStatus={networkStatus}
         scormBundle={scormBundle}
+        //this is temporary solution:
+        isDownloaded={resourceState === ResourceState.Completed}
       />
     </SafeAreaView>
   );

@@ -63,6 +63,7 @@ const NAVIGATION_COURSE_DETAILS = "CourseDetails";
 const NAVIGATION_COURSE_GROUP_DETAILS = "CourseGroupDetails"; //either LearningItemEnum.Program or LearningItemEnum.Certificate
 const NAVIGATION_SCORM_STACK_ROOT = "ScormActivityStack";
 const NAVIGATION_WEBVIEW_ACTIVITY = "WebviewActivity";
+const NAVIGATION_OFFLINE_SCORM_ACTIVITY = "OfflineScormActivity";
 
 const itemToRouteMap = {
   [learningItemEnum.Course]: NAVIGATION_COURSE_DETAILS,
@@ -136,6 +137,7 @@ export {
   NAVIGATION_WEBVIEW_ACTIVITY,
   NAVIGATION_SETTING,
   NAVIGATION_MY_LEARNING,
+  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
   SCREEN_WIDTH_X_LARGE,
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,

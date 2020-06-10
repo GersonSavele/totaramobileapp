@@ -21,7 +21,6 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { Text } from "react-native";
-import { get } from "lodash";
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from "react-native-static-server";
 
@@ -31,61 +30,52 @@ import {
   isScormPlayerInitialized
 } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline";
-import { ScormBundle, Package, Sco, Grade } from "@totara/types/Scorm";
+import { Package, Sco, Grade, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { getScormAttemptData } from "./StorageHelper";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
 
-import { saveScormActivityData } from "@totara/lib/scorm";
+import {
+  saveScormActivityData,
+  getOfflineScormPackageName
+} from "@totara/lib/scorm";
 import { offlineScormServerRoot } from "@totara/lib/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
-import { Resource } from "@totara/types/Resource";
+import { ResourceType } from "@totara/types/Resource";
 
 type Props = {
   attempt: number;
-  scormBundle?: ScormBundle;
+  scorm?: Scorm;
   scoid?: string;
 };
 
 const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
-  const { scormBundle, attempt, scoid } = navigation.state.params;
-
-  const idTarget = get(scormBundle, "scorm.id");
-
-  if (!idTarget) {
+  const { scorm, attempt, scoid } = navigation.state.params;
+  if (!scorm && !scorm.id) {
     return <Text>{translate("general.error_unknown")}</Text>;
   }
 
   const resourcesList = useSelector(
     (state: RootState) => state.resourceReducer.resources
   );
-
-  const scormResource: Resource = resourcesList.find(
-    (resource) => resource.id === scormBundle.scorm.id
+  const targetResource = resourcesList.find(
+    (resource) =>
+      resource.customId === scorm.id &&
+      resource.type === ResourceType.ScormActivity
   );
 
-  if (!scormBundle || !scormResource) {
+  if (!targetResource) {
     return <Text>{translate("general.error_unknown")}</Text>;
   }
 
-  console.warn(scormResource.unzipPath);
-
-  const {
-    scorm,
-    scormPackage = {
-      path: scormResource.unzipPath
-    }
-  } = scormBundle;
-  console.warn(" scoorm: ", scormBundle);
-
   const server = useRef<StaticServer>(null);
 
-  const [scormPackageData, setScormPackageData] = useState<Package>(
-    scormPackage
-  );
-  const { scos, defaultSco, path } = scormPackageData;
+  const [scormPackageData, setScormPackageData] = useState<Package>({
+    path: targetResource.unzipPath
+  });
+  const { scos, defaultSco } = scormPackageData;
 
   const [url, setUrl] = useState<string>();
   const [jsCode, setJsCode] = useState<string>();
@@ -106,7 +96,7 @@ const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
         Log.debug(e.messageData);
       });
 
-    loadScormPackageData(scormPackage)
+    loadScormPackageData(scormPackageData)
       .then((data) => {
         setScormPackageData(data);
       })
@@ -126,7 +116,7 @@ const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
           scos,
           selectedScoId,
           attempt,
-          path,
+          getOfflineScormPackageName(scorm.id),
           scorm.defaultCMI
         );
         setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
@@ -181,8 +171,8 @@ const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
       saveScormActivityData(
         messageData.result,
         client,
-        scormBundle.scorm.maxgrade,
-        scormBundle.scorm.grademethod as Grade
+        scorm.maxgrade,
+        scorm.grademethod as Grade
       );
     }
   };

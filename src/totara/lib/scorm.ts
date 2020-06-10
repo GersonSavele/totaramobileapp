@@ -42,10 +42,10 @@ const getOfflineScormPackageName = (scormId: string) =>
   `${OFFLINE_SCORM_PREFIX}${scormId}`;
 
 const getOfflinePackageUnzipPath = (scormId: string) =>
-  `${offlineScormServerRoot}${getOfflineScormPackageName(scormId)}`;
+  `${offlineScormServerRoot}/${getOfflineScormPackageName(scormId)}`;
 
 const getTargetZipFile = (scormId: string) =>
-  `${scormZipPackagePath}${getOfflineScormPackageName(
+  `${scormZipPackagePath}/${getOfflineScormPackageName(
     scormId
   )}${FILE_EXTENSION}`;
 
@@ -448,62 +448,59 @@ const saveScormActivityData = (
   const cmiData = data.cmi;
   const commitData = data.commit;
 
+  let newData = {};
   try {
     const { scormBundles } = client.readQuery({
       query: scormActivitiesRecordsQuery
     });
-    let newData = { ...scormBundles };
-    setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
-
-    const reportCmiList = get(newData, `[${scormId}].cmi`);
-    const attemptGrade = getGradeForAttempt(
-      reportCmiList,
-      maxGrade,
-      gradeMethod
-    );
-    const newAttemptGrade = { gradereported: attemptGrade, attempt: attempt };
-
-    const existingOfflineActivityData = get(
-      newData,
-      `[${scormId}].offlineActivity.attempts`,
-      []
-    );
-    if (existingOfflineActivityData && existingOfflineActivityData.length > 0) {
-      if (
-        existingOfflineActivityData[existingOfflineActivityData.length - 1]
-          .attempt === newAttemptGrade.attempt
-      ) {
-        existingOfflineActivityData.pop();
-      }
-    }
-    setWith(
-      newData,
-      `[${scormId}].offlineActivity.attempts`,
-      existingOfflineActivityData.concat([newAttemptGrade]),
-      Object
-    );
-
-    const newCommitsData = get(
-      newData,
-      `[${scormId}].commits[${attempt}][${scoId}]`,
-      []
-    );
-    newCommitsData.push(commitData);
-    setWith(
-      newData,
-      `[${scormId}].commits[${attempt}][${scoId}]`,
-      newCommitsData,
-      Object
-    );
-    return client.writeQuery({
-      query: scormActivitiesRecordsQuery,
-      data: {
-        scormBundles: newData
-      }
-    });
+    newData = { ...scormBundles };
   } catch (e) {
     Log.error("Something wrong cannot find offline data.", e);
   }
+  setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
+
+  const reportCmiList = get(newData, `[${scormId}].cmi`);
+  const attemptGrade = getGradeForAttempt(reportCmiList, maxGrade, gradeMethod);
+  const newAttemptGrade = { gradereported: attemptGrade, attempt: attempt };
+
+  const existingOfflineActivityData = get(
+    newData,
+    `[${scormId}].offlineActivity.attempts`,
+    []
+  );
+  if (existingOfflineActivityData && existingOfflineActivityData.length > 0) {
+    if (
+      existingOfflineActivityData[existingOfflineActivityData.length - 1]
+        .attempt === newAttemptGrade.attempt
+    ) {
+      existingOfflineActivityData.pop();
+    }
+  }
+  setWith(
+    newData,
+    `[${scormId}].offlineActivity.attempts`,
+    existingOfflineActivityData.concat([newAttemptGrade]),
+    Object
+  );
+
+  const newCommitsData = get(
+    newData,
+    `[${scormId}].commits[${attempt}][${scoId}]`,
+    []
+  );
+  newCommitsData.push(commitData);
+  setWith(
+    newData,
+    `[${scormId}].commits[${attempt}][${scoId}]`,
+    newCommitsData,
+    Object
+  );
+  return client.writeQuery({
+    query: scormActivitiesRecordsQuery,
+    data: {
+      scormBundles: newData
+    }
+  });
 };
 const getOfflineLastActivityResult = (scormId: string, client: any) => {
   try {
@@ -552,5 +549,6 @@ export {
   getOfflineLastActivityResult,
   getOfflinePackageUnzipPath,
   getTargetZipFile,
-  shouldShowAction
+  shouldShowAction,
+  getOfflineScormPackageName
 };
