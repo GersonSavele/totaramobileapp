@@ -30,11 +30,7 @@ type BuildContentProps = {
   available: boolean;
 };
 
-const ContentIconWrapper = ({
-  completion,
-  status,
-  available
-}: BuildContentProps) => {
+const RowIcon = ({ completion, status, available }: BuildContentProps) => {
   if (!available) {
     return (
       <View style={{ marginRight: margins.marginL }}>
@@ -132,4 +128,4 @@ const ContentIconWrapper = ({
   }
 };
 
-export default ContentIconWrapper;
+export default RowIcon;

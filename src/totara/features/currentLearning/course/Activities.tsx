@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Restriction from "./Restriction";
 import TextTypeLabel from "./TextTypeLabel";
-import ContentIconWrapper from "./ContentIconWrapper";
+import RowIcon from "./RowIcon";
 import {
   sectionNotAvailable,
   sectionTitle,
@@ -212,47 +212,47 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
       <TextTypeLabel label={item}></TextTypeLabel>
     </View>
   ) : (
-    <View style={rowContainer()}>
-      <View>
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          onPress={() => {
-            switch (item.modtype) {
-              case "scorm": {
-                navigateTo({
-                  navigate: navigation.navigate,
-                  routeId: NAVIGATION_SCORM_STACK_ROOT,
-                  props: {
-                    id: item.instanceid.toString(),
-                    title: item.name
-                  }
-                });
-                break;
-              }
-              default: {
-                navigateTo({
-                  navigate: navigation.navigate,
-                  routeId: NAVIGATION_WEBVIEW_ACTIVITY,
-                  props: {
-                    activity: item,
-                    onClose: courseRefreshCallBack
-                  }
-                });
-              }
-            }
-          }}>
-          <View style={styles.rowInnerContainer}>
-            <ContentIconWrapper
-              completion={item.completion}
-              status={item.completionstatus}
-              available={item.available}></ContentIconWrapper>
-            <View style={styles.rowContainer}>
-              <Text numberOfLines={1} style={rowText()}>
-                {item.name.trim()}
-              </Text>
-            </View>
-          </View>
+    <View style={{ backgroundColor: TotaraTheme.colorAccent }}>
+      <View style={styles.rowInnerContainer}>
+        <TouchableOpacity onPress={() => {}}>
+          <RowIcon
+            completion={item.completion}
+            status={item.completionstatus}
+            available={item.available}
+          />
         </TouchableOpacity>
+        <View style={rowContainer()}>
+          <TouchableOpacity
+            onPress={() => {
+              switch (item.modtype) {
+                case "scorm": {
+                  navigateTo({
+                    navigate: navigation.navigate,
+                    routeId: NAVIGATION_SCORM_STACK_ROOT,
+                    props: {
+                      id: item.instanceid.toString(),
+                      title: item.name
+                    }
+                  });
+                  break;
+                }
+                default: {
+                  navigateTo({
+                    navigate: navigation.navigate,
+                    routeId: NAVIGATION_WEBVIEW_ACTIVITY,
+                    props: {
+                      activity: item,
+                      onClose: courseRefreshCallBack
+                    }
+                  });
+                }
+              }
+            }}>
+            <RowContainer item={item} />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View>
         <Separator />
       </View>
     </View>
@@ -269,15 +269,12 @@ const RowLock = ({ item }: { item: Activity }) => {
       <View>
         <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
           <View style={rowInnerViewContainer()}>
-            <ContentIconWrapper
+            <RowIcon
               completion={item.completion}
               status={item.completionstatus}
-              available={item.available}></ContentIconWrapper>
-            <View style={styles.rowContainer}>
-              <Text numberOfLines={1} style={rowText()}>
-                {item.name}
-              </Text>
-            </View>
+              available={item.available}
+            />
+            <RowContainer item={item} />
           </View>
         </TouchableOpacity>
         {show && (
@@ -290,6 +287,16 @@ const RowLock = ({ item }: { item: Activity }) => {
         )}
         <Separator />
       </View>
+    </View>
+  );
+};
+
+const RowContainer = ({ item }: { item: Activity }) => {
+  return (
+    <View style={styles.rowContainer}>
+      <Text numberOfLines={1} style={rowText()}>
+        {item.name.trim()}
+      </Text>
     </View>
   );
 };

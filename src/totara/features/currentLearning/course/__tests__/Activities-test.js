@@ -17,7 +17,7 @@ Please contact [sales@totaralearning.com] for more information.
 
 import renderer from "react-test-renderer";
 import React from "react";
-import ContentIconWrapper from "../ContentIconWrapper";
+import ContentIconWrapper from "../RowIcon";
 
 const theme = jest.fn();
 
@@ -28,8 +28,7 @@ describe("Activity-Icon, testing UI activity checkbox for self-completion or aut
         theme={theme}
         completion="tracking_none"
         completionStatus="unknown"
-        available={false}
-      ></ContentIconWrapper>
+        available={false}></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
@@ -40,8 +39,7 @@ describe("Activity-Icon, testing UI activity checkbox for self-completion or aut
         theme={theme}
         completion="tracking_none"
         completionStatus="unknown"
-        available={true}
-      ></ContentIconWrapper>
+        available={true}></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
@@ -52,8 +50,7 @@ describe("Activity-Icon, testing UI activity checkbox for self-completion or aut
         theme={theme}
         completion="tracking_automatic"
         completionStatus="complete"
-        available={true}
-      ></ContentIconWrapper>
+        available={true}></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
@@ -64,8 +61,7 @@ describe("Activity-Icon, testing UI activity checkbox for self-completion or aut
         theme={theme}
         completion="tracking_automatic"
         completionStatus="incomplete"
-        available={true}
-      ></ContentIconWrapper>
+        available={true}></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
@@ -76,8 +72,7 @@ describe("Activity-Icon, testing UI activity checkbox for self-completion or aut
         theme={theme}
         completion="tracking_none"
         completionStatus="completeFail"
-        available={true}
-      ></ContentIconWrapper>
+        available={true}></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
@@ -88,8 +83,7 @@ describe("Activity-Icon, testing UI activity checkbox for self-completion or aut
         theme={theme}
         completion="tracking_manual"
         completionStatus="incomplete"
-        available={true}
-      ></ContentIconWrapper>
+        available={true}></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
@@ -100,8 +94,7 @@ describe("Activity-Icon, testing UI activity checkbox for self-completion or aut
         theme={theme}
         completion="tracking_manual"
         completionStatus="complete"
-        available={true}
-      ></ContentIconWrapper>
+        available={true}></ContentIconWrapper>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
@@ -111,8 +104,7 @@ describe("Activity-Icon, testing UI activity checkbox for self-completion or aut
         theme={theme}
         completion="tracking_none"
         completionStatus="unknown"
-        available={true}
-      ></ContentIconWrapper>
+        available={true}></ContentIconWrapper>
     );
     expect(component).toMatchSnapshot();
   });

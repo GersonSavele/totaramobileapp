@@ -12,7 +12,7 @@ exports[`Activity-Label-Type, testing UI with or without label name and descript
   <Text
     style={
       Object {
-        "color": undefined,
+        "color": "#7D7D7D",
         "fontSize": 31,
         "lineHeight": 40,
         "textAlign": "left",
@@ -36,7 +36,7 @@ exports[`Activity-Label-Type, testing UI with or without label name and descript
   <Text
     style={
       Object {
-        "color": undefined,
+        "color": "#7D7D7D",
         "fontSize": 31,
         "lineHeight": 40,
         "textAlign": "left",
