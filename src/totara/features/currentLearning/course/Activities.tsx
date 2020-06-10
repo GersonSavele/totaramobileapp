@@ -17,7 +17,9 @@ import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { useMutation } from "@apollo/react-hooks";
 import Restriction from "./Restriction";
 import TextTypeLabel from "./TextTypeLabel";
 import RowIcon from "./RowIcon";
@@ -31,15 +33,17 @@ import {
 } from "@totara/theme/activities";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity } from "@totara/types";
-import { Separator } from "@totara/components";
+import { Separator, GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
 import {
+  activityModType,
   completionStatus,
+  completionTrack,
   NAVIGATION_SCORM_ROOT,
   NAVIGATION_WEBVIEW_ACTIVITY
 } from "@totara/lib/constants";
 import { navigateTo } from "@totara/lib/navigation";
-import { NavigationContext } from "react-navigation";
+import { activitySelfComplete } from "../course/api";
 
 type ActivityListProps = {
   sections: [Section];
@@ -207,6 +211,10 @@ type ActivityProps = {
 
 const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
   const navigation = useContext(NavigationContext);
+  const [selfComplete, { data, error }] = useMutation(activitySelfComplete);
+  if (data) {
+    courseRefreshCallBack!();
+  }
   return item.modtype == "label" ? (
     <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
       <TextTypeLabel label={item}></TextTypeLabel>
@@ -214,47 +222,67 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
   ) : (
     <View style={{ backgroundColor: TotaraTheme.colorAccent }}>
       <View style={styles.rowInnerContainer}>
-        <TouchableOpacity onPress={() => {}}>
+        {item.completion === completionTrack.trackingManual ? (
+          <TouchableOpacity
+            onPress={() =>
+              selfComplete({
+                variables: {
+                  cmid: item.id,
+                  complete:
+                    item.completionstatus == completionStatus.incomplete
+                      ? true
+                      : false
+                }
+              })
+            }>
+            <RowIcon
+              completion={item.completion}
+              status={item.completionstatus}
+              available={item.available}
+            />
+          </TouchableOpacity>
+        ) : (
           <RowIcon
             completion={item.completion}
             status={item.completionstatus}
             available={item.available}
           />
-        </TouchableOpacity>
-        <View style={rowContainer()}>
-          <TouchableOpacity
-            onPress={() => {
-              switch (item.modtype) {
-                case "scorm": {
-                  navigateTo({
-                    navigate: navigation.navigate,
-                    routeId: NAVIGATION_SCORM_ROOT,
-                    props: {
-                      id: item.instanceid.toString(),
-                      title: item.name
-                    }
-                  });
-                  break;
-                }
-                default: {
-                  navigateTo({
-                    navigate: navigation.navigate,
-                    routeId: NAVIGATION_WEBVIEW_ACTIVITY,
-                    props: {
-                      activity: item,
-                      onClose: courseRefreshCallBack
-                    }
-                  });
-                }
+        )}
+
+        <TouchableOpacity
+          style={rowContainer()}
+          onPress={() => {
+            switch (item.modtype) {
+              case activityModType.scorm: {
+                navigateTo({
+                  navigate: navigation.navigate,
+                  routeId: NAVIGATION_SCORM_ROOT,
+                  props: {
+                    id: item.instanceid.toString(),
+                    title: item.name
+                  }
+                });
+                break;
               }
-            }}>
-            <RowContainer item={item} />
-          </TouchableOpacity>
-        </View>
+              default: {
+                navigateTo({
+                  navigate: navigation.navigate,
+                  routeId: NAVIGATION_WEBVIEW_ACTIVITY,
+                  props: {
+                    activity: item,
+                    onClose: courseRefreshCallBack
+                  }
+                });
+              }
+            }
+          }}>
+          <RowContainer item={item} />
+        </TouchableOpacity>
       </View>
       <View>
         <Separator />
       </View>
+      {error && <GeneralErrorModal siteUrl="" />}
     </View>
   );
 };

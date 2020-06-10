@@ -159,8 +159,9 @@ const headerViewStyles = StyleSheet.create({
     minHeight: normalize(160)
   },
   itemCard: {
-    maxHeight: normalize(80),
-    minHeight: normalize(60)
+    maxHeight: normalize(90),
+    backgroundColor: TotaraTheme.colorNeutral2,
+    paddingBottom: 8
   },
   LearningTypeLabelWrap: {
     borderRadius: 10,

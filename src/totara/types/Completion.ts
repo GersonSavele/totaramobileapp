@@ -15,11 +15,11 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-import { StatusKey } from "@totara/lib/constants";
+import { statusKey } from "@totara/lib/constants";
 
 export interface Completion {
   id: number;
-  statuskey: StatusKey;
+  statuskey: statusKey;
   progress: number;
   timecompleted?: Date;
   grademax: number;

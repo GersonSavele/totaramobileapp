@@ -36,8 +36,8 @@ const RowIcon = ({ completion, status, available }: BuildContentProps) => {
       <View style={{ marginRight: margins.marginL }}>
         <ContentIcon
           icon={"lock"}
-          iconSize={15}
-          size={30}
+          iconSize={12}
+          size={24}
           backgroundColor={TotaraTheme.colorAccent}
           iconColor={TotaraTheme.colorNeutral7}
           borderColor={TotaraTheme.colorNeutral7}
@@ -53,8 +53,8 @@ const RowIcon = ({ completion, status, available }: BuildContentProps) => {
       <View style={{ marginRight: margins.marginL }}>
         <ContentIcon
           icon={"check"}
-          iconSize={15}
-          size={30}
+          iconSize={12}
+          size={24}
           backgroundColor={TotaraTheme.colorSuccess}
           iconColor={TotaraTheme.colorAccent}
           borderColor={TotaraTheme.colorSuccess}
@@ -69,8 +69,8 @@ const RowIcon = ({ completion, status, available }: BuildContentProps) => {
       <View style={{ marginRight: margins.marginL }}>
         <ContentIcon
           icon={Images.autoCompleteTick}
-          iconSize={15}
-          size={30}
+          iconSize={12}
+          size={24}
           backgroundColor={TotaraTheme.colorAccent}
           iconColor={TotaraTheme.colorNeutral6}
           borderColor={TotaraTheme.colorNeutral6}
@@ -83,8 +83,8 @@ const RowIcon = ({ completion, status, available }: BuildContentProps) => {
       <View style={{ marginRight: margins.marginL }}>
         <ContentIcon
           icon={"times"}
-          iconSize={15}
-          size={30}
+          iconSize={12}
+          size={24}
           backgroundColor={TotaraTheme.colorAlert}
           iconColor={TotaraTheme.colorAccent}
           borderColor={TotaraTheme.colorAlert}
@@ -100,8 +100,8 @@ const RowIcon = ({ completion, status, available }: BuildContentProps) => {
       <View style={{ marginRight: margins.marginL }}>
         <ContentIcon
           icon={"check"}
-          iconSize={15}
-          size={30}
+          iconSize={12}
+          size={24}
           backgroundColor={TotaraTheme.colorSuccess}
           iconColor={TotaraTheme.colorAccent}
           borderColor={TotaraTheme.colorSuccess}
@@ -115,8 +115,8 @@ const RowIcon = ({ completion, status, available }: BuildContentProps) => {
     return (
       <View style={{ marginRight: margins.marginL }}>
         <ContentIcon
-          iconSize={15}
-          size={30}
+          iconSize={12}
+          size={24}
           backgroundColor={TotaraTheme.colorAccent}
           iconColor={TotaraTheme.colorNeutral6}
           borderColor={TotaraTheme.colorNeutral6}

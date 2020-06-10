@@ -76,23 +76,21 @@ const HeaderView = ({
 
   const renderNavigationTitle = () => {
     return (
-      <View style={{ backgroundColor: theme.colorNeutral2 }}>
-        <CardElement item={details} cardStyle={headerViewStyles.itemCard}>
-          <View
+      <CardElement item={details} cardStyle={headerViewStyles.itemCard}>
+        <View
+          style={[
+            headerViewStyles.LearningTypeLabelWrap,
+            { borderColor: theme.colorNeutral7 }
+          ]}>
+          <Text
             style={[
-              headerViewStyles.LearningTypeLabelWrap,
-              { borderColor: theme.colorNeutral7 }
+              headerViewStyles.programLabelText,
+              { color: theme.colorNeutral7 }
             ]}>
-            <Text
-              style={[
-                headerViewStyles.programLabelText,
-                { color: theme.colorNeutral7 }
-              ]}>
-              {badgeTitle}
-            </Text>
-          </View>
-        </CardElement>
-      </View>
+            {badgeTitle}
+          </Text>
+        </View>
+      </CardElement>
     );
   };
 

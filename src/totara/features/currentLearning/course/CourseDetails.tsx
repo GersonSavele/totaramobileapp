@@ -38,7 +38,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import HeaderView from "../HeaderView";
 import CourseCompletionModal from "../CourseCompletionModal";
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
-import { StatusKey, learningItemEnum } from "@totara/lib/constants";
+import { statusKey, learningItemEnum } from "@totara/lib/constants";
 import { courseStyle } from "@totara/lib/styles/currentLearning";
 
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
@@ -146,7 +146,7 @@ const UIWrapper = withNavigation(
           </View>
         </View>
         {courseDetails.course.completion &&
-          courseDetails.course.completion.statuskey === StatusKey.complete && (
+          courseDetails.course.completion.statuskey === statusKey.complete && (
             <CourseCompletionModal onClose={onClose} />
           )}
       </HeaderView>

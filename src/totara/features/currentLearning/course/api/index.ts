@@ -86,4 +86,12 @@ const courseSelfComplete = gql`
   }
 `;
 
-export { coreCourse, courseSelfComplete };
+const activitySelfComplete = gql`
+  mutation totara_mobile_completion_activity_self_complete(
+    $cmid: core_id!
+    $complete: Boolean!
+  ) {
+    core_completion_activity_self_complete(cmid: $cmid, complete: $complete)
+  }
+`;
+export { coreCourse, courseSelfComplete, activitySelfComplete };

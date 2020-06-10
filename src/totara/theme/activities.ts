@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   accordionListWrap: {
-    flexDirection: "column"
+    flexDirection: "column",
+    flex: 0.9
   },
   rowInnerContainer: {
     height: normalize(fontSizes.fontSize3XL),
