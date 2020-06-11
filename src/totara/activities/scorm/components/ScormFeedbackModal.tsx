@@ -47,13 +47,13 @@ const ScormFeedbackModal = ({
         <View style={scormFeedbackStyles.resultOuterWrapper}>
           <View style={scormFeedbackStyles.resultInnerWrapper}>
             <View style={scormFeedbackStyles.resultContainer}>
-              {!completionScoreRequired && (
+              {completionScoreRequired === undefined ||
+              completionScoreRequired === null ? (
                 <Image
                   style={scormFeedbackStyles.resultStatusImage}
                   source={require("@resources/images/success_tick/success_tick.png")}
                 />
-              )}
-              {completionScoreRequired && (
+              ) : (
                 <>
                   <Text
                     style={{

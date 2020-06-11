@@ -45,7 +45,9 @@ import { NetworkStatus as ApolloNetworkStatus } from "apollo-boost";
 import {
   getDataForScormSummary,
   onTapViewAllAttempts,
-  shouldShowAction
+  shouldShowAction,
+  setCompletedScormAttempt,
+  getOfflineLastActivityResult
 } from "@totara/lib/scorm";
 import { navigateTo } from "@totara/lib/navigation";
 import {
@@ -54,7 +56,7 @@ import {
   NAVIGATION_SCORM_ATTEMPTS,
   NAVIGATION_SCORM_FEEDBACK
 } from "@totara/lib/constants";
-import { ScormBundle } from "@totara/types/Scorm";
+import { ScormBundle, Grade } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 
@@ -68,6 +70,7 @@ type SummaryProps = {
   scormBundle: ScormBundle | undefined;
   navigation: any;
   isDownloaded: boolean;
+  client: any;
 };
 
 const gridStyle = (theme: AppliedTheme) => [
@@ -109,7 +112,8 @@ const ScormSummary = ({
   networkStatus,
   scormBundle,
   navigation,
-  isDownloaded
+  isDownloaded,
+  client
 }: SummaryProps) => {
   const theme = TotaraTheme;
 
@@ -128,6 +132,48 @@ const ScormSummary = ({
     attempts
   } = bundleData;
 
+  const onExitActivityAttempt = ({
+    id,
+    attempt,
+    gradeMethod = Grade.objective,
+    completionScoreRequired = undefined,
+    client
+  }: {
+    id: string;
+    attempt: number;
+    gradeMethod?: Grade;
+    completionScoreRequired?: number;
+    client: any;
+  }) => {
+    showConfirmation({
+      title: translate("scorm.confirmation.title"),
+      message: translate("scorm.confirmation.message"),
+      callback: () => {
+        // setCompletedScormAttempt(id, attempt, )
+        const existingLastAttempt = getOfflineLastActivityResult(id, client);
+        if (
+          existingLastAttempt &&
+          existingLastAttempt.attempt &&
+          parseInt(existingLastAttempt.attempt) === attempt
+        ) {
+          setCompletedScormAttempt(id, attempt, client);
+          navigateTo({
+            routeId: NAVIGATION_SCORM_FEEDBACK,
+            navigate: navigation.navigate,
+            props: {
+              id,
+              attempt,
+              gradeMethod,
+              completionScoreRequired,
+              score: existingLastAttempt.gradereported
+            }
+          });
+        } else {
+          navigation.pop();
+        }
+      }
+    });
+  };
   if (error) {
     return <LoadingError onRefreshTap={refetch} />;
   }
@@ -244,25 +290,15 @@ const ScormSummary = ({
                         attempt: attemptNumber,
                         scorm: scormBundle.scorm,
                         backIcon: "chevron-left",
-                        backAction: () => {
-                          showConfirmation({
-                            title: translate("scorm.confirmation.title"),
-                            message: translate("scorm.confirmation.message"),
-                            callback: () => {
-                              navigateTo({
-                                routeId: NAVIGATION_SCORM_FEEDBACK,
-                                navigate: navigation.navigate,
-                                props: {
-                                  id: scormBundle.scorm?.id,
-                                  attempt: attemptNumber,
-                                  gradeMethod: scormBundle.scorm?.grademethod,
-                                  completionScoreRequired:
-                                    scormBundle.scorm?.completionscorerequired
-                                }
-                              });
-                            }
-                          });
-                        }
+                        backAction: () =>
+                          onExitActivityAttempt({
+                            id: scormBundle.scorm.id,
+                            attempt: attemptNumber,
+                            gradeMethod: scormBundle.scorm.grademethod,
+                            completionScoreRequired: scormBundle.scorm
+                              .completionscorerequired!,
+                            client
+                          })
                       }
                     });
                   }

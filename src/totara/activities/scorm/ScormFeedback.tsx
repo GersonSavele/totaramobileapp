@@ -33,6 +33,7 @@ type FeedbackParams = {
   isOnline: boolean;
   gradeMethod: Grade;
   completionScoreRequired?: number;
+  score: string;
 };
 
 type FeedbackProps = {
@@ -40,9 +41,14 @@ type FeedbackProps = {
 };
 
 const ScormFeedback = ({ navigation }: FeedbackProps) => {
-  const { id, attempt, gradeMethod, completionScoreRequired } = navigation.state
-    .params as FeedbackParams;
-  const apolloClient = useApolloClient();
+  const {
+    id,
+    attempt,
+    gradeMethod,
+    completionScoreRequired,
+    score
+  } = navigation.state.params as FeedbackParams;
+  // const apolloClient = useApolloClient();
 
   // TODO - need to remove after complete Online feedback
   // if (isOnline) {
@@ -74,31 +80,31 @@ const ScormFeedback = ({ navigation }: FeedbackProps) => {
   //   return <LoadingError onRefreshTap={refetch} />;
   // }
   // return null;
-  // } else {
-  const lastActivityResult = getOfflineLastActivityResult(id, apolloClient);
+  // // } else {
+  // const lastActivityResult = getOfflineLastActivityResult(id, apolloClient);
   const goToSummary = () =>
     navigation.navigate({ routeName: NAVIGATION_SCORM_ROOT });
 
-  if (lastActivityResult && parseInt(lastActivityResult.attempt) === attempt) {
-    return (
-      <ScormFeedbackModal
-        gradeMethod={gradeMethod}
-        score={lastActivityResult.gradereported}
-        completionScoreRequired={completionScoreRequired}
-        onClose={goToSummary}
-        onPrimary={goToSummary}
-      />
-    );
-  } else {
-    return (
-      <ScormFeedbackModal
-        gradeMethod={0}
-        score={10}
-        onClose={goToSummary}
-        onPrimary={goToSummary}
-      />
-    );
-  }
+  // if (lastActivityResult && parseInt(lastActivityResult.attempt) === attempt) {
+  return (
+    <ScormFeedbackModal
+      gradeMethod={gradeMethod}
+      score={score}
+      completionScoreRequired={completionScoreRequired}
+      onClose={goToSummary}
+      onPrimary={goToSummary}
+    />
+  );
+  // } else {
+  //   return (
+  //     <ScormFeedbackModal
+  //       gradeMethod={0}
+  //       score={10}
+  //       onClose={goToSummary}
+  //       onPrimary={goToSummary}
+  //     />
+  //   );
+  // }
 
   // }
 };

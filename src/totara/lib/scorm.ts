@@ -455,7 +455,7 @@ const saveScormActivityData = (
     });
     newData = { ...scormBundles };
   } catch (e) {
-    Log.error("Something wrong cannot find offline data.", e);
+    console.log("There is no any data in cache");
   }
   setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
 
@@ -495,13 +495,51 @@ const saveScormActivityData = (
     newCommitsData,
     Object
   );
-  return client.writeQuery({
-    query: scormActivitiesRecordsQuery,
-    data: {
-      scormBundles: newData
-    }
-  });
+  try {
+    return client.writeQuery({
+      query: scormActivitiesRecordsQuery,
+      data: {
+        scormBundles: newData
+      }
+    });
+  } catch (e) {
+    Log.warn("Cannot write commit data. error(", e, ")");
+  }
 };
+
+const setCompletedScormAttempt = (
+  scormId: string,
+  attempt: number,
+  client: any
+) => {
+  let newData = {};
+  try {
+    const { scormBundles } = client.readQuery({
+      query: scormActivitiesRecordsQuery
+    });
+    newData = { ...scormBundles };
+
+    const newCommitsData = get(newData, `[${scormId}].completed_attempts`, []);
+    if (!newCommitsData.some((x) => x === attempt)) {
+      newCommitsData.push(attempt);
+      setWith(
+        newData,
+        `[${scormId}].completed_attempts`,
+        newCommitsData,
+        Object
+      );
+      return client.writeQuery({
+        query: scormActivitiesRecordsQuery,
+        data: {
+          scormBundles: newData
+        }
+      });
+    }
+  } catch (e) {
+    Log.error("Something wrong cannot find offline data.", e);
+  }
+};
+
 const getOfflineLastActivityResult = (scormId: string, client: any) => {
   try {
     const { scormBundles } = client.readQuery({
@@ -545,10 +583,12 @@ export {
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
   removeScormPackageData,
+  retrieveAllData,
   saveScormActivityData,
   getOfflineLastActivityResult,
   getOfflinePackageUnzipPath,
   getTargetZipFile,
   shouldShowAction,
-  getOfflineScormPackageName
+  getOfflineScormPackageName,
+  setCompletedScormAttempt
 };
