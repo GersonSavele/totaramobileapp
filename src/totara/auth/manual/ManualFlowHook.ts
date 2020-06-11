@@ -20,12 +20,12 @@
  */
 
 import { useEffect, useReducer, useContext } from "react";
-import VersionInfo from "react-native-version-info";
+import DeviceInfo from "react-native-device-info";
 
 import { ThemeContext, applyTheme } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { config, Log } from "@totara/lib";
-import { isValidApiVersion} from "@totara/core/AuthContext";
+import { isValidApiVersion } from "@totara/core/AuthContext";
 import { asyncEffectWrapper } from "@totara/core/AuthRoutines";
 import { SiteInfo } from "@totara/types";
 
@@ -40,7 +40,7 @@ import { AuthFlowChildProps } from "../AuthComponent";
 
 export const useManualFlow = (
   fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>
-) => ({onLoginSuccess, onLoginFailure}: AuthFlowChildProps) => {
+) => ({ onLoginSuccess, onLoginFailure }: AuthFlowChildProps) => {
   const [, setTheme] = useContext(ThemeContext);
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
@@ -63,7 +63,7 @@ export const useManualFlow = (
       siteInfo: manualFlowState.siteInfo
     });
 
-  const version = VersionInfo.appVersion ?  VersionInfo.appVersion : "UnknownVersion";
+  const version = DeviceInfo.getVersion();
   const fetchSiteInfo = () =>
     fetchData<SiteInfo>(config.infoUri(manualFlowState.siteUrl!), {
       method: "POST",
@@ -81,10 +81,10 @@ export const useManualFlow = (
         manualFlowState.siteUrl
           ? true
           : false,
-      siteInfo => {
+      (siteInfo) => {
         dispatch({ type: "siteInfoApiSuccess", payload: siteInfo });
       },
-      error => {
+      (error) => {
         dispatch({ type: "siteInfoApiFailure", payload: error.message });
       }
     ),

@@ -41,6 +41,7 @@ import { NetworkStatus as NS } from "apollo-boost";
 import { Container } from "native-base";
 import { fontSizes, margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatus } from "@totara/components";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type ProfileViewProps = {
   profile: UserProfile;
@@ -151,36 +152,23 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
         </View>
       </View>
 
-      <View style={styles.manageHeader}>
-        <Text
-          style={[
-            [
-              theme.textH2,
-              { fontWeight: "bold", fontSize: fontSizes.fontSizeL }
-            ]
-          ]}>
+      <View style={styles.manageSection}>
+        <Text style={styles.manageTitle}>
           {translate("user_profile.manage_section")}
         </Text>
-      </View>
-      <View
-        style={[
-          styles.itemsContainer,
-          { backgroundColor: theme.colorSecondary1 }
-        ]}>
-        <View style={{ marginTop: 1 }}>
-          <AuthConsumer>
-            {(auth) => (
-              <TouchableOpacity onPress={() => confirmationLogout(auth)}>
-                <Text
-                  style={[
-                    theme.textB2,
-                    { margin: 0, fontSize: fontSizes.fontSizeM }
-                  ]}>
-                  {translate("user_profile.logout.button_text")}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </AuthConsumer>
+        <View style={styles.manageOptions}>
+          <View style={styles.sectionOption}>
+            <AuthConsumer>
+              {(auth) => (
+                <TouchableOpacity onPress={() => confirmationLogout(auth)}>
+                  <Text
+                    style={[theme.textB2, { fontSize: fontSizes.fontSizeM }]}>
+                    {translate("user_profile.logout.button_text")}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </AuthConsumer>
+          </View>
         </View>
       </View>
     </View>
@@ -198,13 +186,17 @@ const styles = StyleSheet.create({
     borderRadius: 65,
     marginBottom: margins.marginS
   },
-  manageHeader: {
-    height: 30,
-    margin: margins.marginL
+  manageSection: {
+    margin: margins.marginM
   },
-  itemsContainer: {
-    marginLeft: margins.marginS,
-    marginRight: margins.marginS
+  manageTitle: {
+    ...TotaraTheme.textH2
+  },
+  manageOptions: {
+    marginTop: margins.marginM
+  },
+  sectionOption: {
+    borderBottomColor: TotaraTheme.colorNeutral2
   }
 });
 

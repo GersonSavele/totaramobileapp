@@ -26,17 +26,19 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
-import VersionInfo from "react-native-version-info";
+import DeviceInfo from "react-native-device-info";
 import { useSiteUrl, Props } from "./SiteUrlHook";
 
 import { InputTextWithInfo, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
 import { constants } from "@totara/lib";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 const { DEV_ORG_URL, DEBUG_MODE } = constants;
 
 const SiteUrl = (props: Props) => {
+  debugger;
   const [theme] = useContext(ThemeContext);
   const [siteUrl, setSiteUrl] = useState(DEBUG_MODE ? DEV_ORG_URL : "");
   const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
@@ -82,7 +84,7 @@ const SiteUrl = (props: Props) => {
               onPress={() => onSubmit(siteUrl)}
               text={translate("general.enter")}
               style={styles.buttonEnter}
-              mode={isSiteUrlSubmitted == true ? "loading" : undefined}
+              mode={isSiteUrlSubmitted ? "loading" : undefined}
             />
           </View>
         </Form>
@@ -90,12 +92,13 @@ const SiteUrl = (props: Props) => {
       <SafeAreaView>
         <Text
           style={[
+            TotaraTheme.textH2,
             styles.version,
             theme.textLabel,
-            { color: theme.textColorDisabled }
+            { color: theme.colorPrimary }
           ]}>
-          {translate("general.version")}: {VersionInfo.appVersion}(
-          {VersionInfo.buildVersion})
+          {translate("general.version")}: {DeviceInfo.getVersion()}(
+          {DeviceInfo.getBuildNumber()})
         </Text>
       </SafeAreaView>
     </Container>

@@ -87,8 +87,7 @@ const ProfileTab = {
       headerLayoutPreset: "center",
       defaultNavigationOptions: ({ screenProps }) =>
         totaraNavigationOptions({
-          theme: screenProps.theme,
-          title: translate("user_profile.title")
+          theme: screenProps.theme
         })
     }
   ),

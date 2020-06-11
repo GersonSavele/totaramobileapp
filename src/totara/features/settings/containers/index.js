@@ -23,7 +23,7 @@
 import React from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import VersionInfo from "react-native-version-info";
+import DeviceInfo from "react-native-device-info";
 
 class Settings extends React.Component {
   static navigationOptions = {
@@ -55,7 +55,7 @@ class Settings extends React.Component {
     {
       key: "4",
       title: "Version",
-      value: VersionInfo.appVersion + "(" + VersionInfo.buildVersion + ")"
+      value: DeviceInfo.getVersion() + "(" + DeviceInfo.getBuildNumber() + ")"
     }
   ];
 

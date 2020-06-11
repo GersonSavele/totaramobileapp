@@ -20,7 +20,7 @@
  */
 import { Linking, Platform } from "react-native";
 
-import VersionInfo from "react-native-version-info";
+import DeviceInfo from "react-native-device-info";
 
 import { SiteInfo } from "@totara/types";
 import { Log, config } from "@totara/lib";
@@ -32,14 +32,13 @@ import { AuthFlowChildProps, AuthComponent } from "../AuthComponent";
  * AppLinkFlow uses deep linking to capture the setup secret from the link
  */
 export default class AppLinkFlow extends AuthComponent {
-
   constructor(props: AuthFlowChildProps) {
     super(props);
   }
-  
+
   async componentDidMount() {
     if (Platform.OS === "android") {
-      Linking.getInitialURL().then(url => {
+      Linking.getInitialURL().then((url) => {
         this.handleAppLink(url);
       });
     } else {
@@ -55,9 +54,14 @@ export default class AppLinkFlow extends AuthComponent {
     Log.info("handleAppLink", encodedUrl);
     if (encodedUrl) {
       const url = decodeURIComponent(encodedUrl);
-      const requestUrl= url.split("?")[0];
-      const requestRegister: string[] = [`${config.appLinkDomain}/register`, `${config.appLinkDomain}/register/`, `${config.deepLinkSchema}/register`, `${config.deepLinkSchema}/register/`];
-      
+      const requestUrl = url.split("?")[0];
+      const requestRegister: string[] = [
+        `${config.appLinkDomain}/register`,
+        `${config.appLinkDomain}/register/`,
+        `${config.deepLinkSchema}/register`,
+        `${config.deepLinkSchema}/register/`
+      ];
+
       if (requestRegister.includes(requestUrl)) {
         try {
           const resultRegistration = this.getDeviceRegisterData(url);
@@ -67,31 +71,31 @@ export default class AppLinkFlow extends AuthComponent {
             config.infoUri(resultRegistration.uri),
             {
               method: "POST",
-              body: JSON.stringify({ version: VersionInfo.appVersion })
+              body: JSON.stringify({ version: DeviceInfo.getVersion() })
             }
           )
-            .then(siteInfo => {
+            .then((siteInfo) => {
               this.props.onLoginSuccess({
                 secret: resultRegistration.secret,
                 uri: resultRegistration.uri,
                 siteInfo: siteInfo
               });
             })
-            .catch(error => this.props.onLoginFailure(error));
+            .catch((error) => this.props.onLoginFailure(error));
         } catch (error) {
           this.props.onLoginFailure(error);
         }
       }
-    } 
+    }
   };
 
   private getValueForUrlQueryParameter = (url: string, key: string) => {
-    key = key.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + key + '=([^&#]*)');
+    key = key.replace(/[[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + key + "=([^&#]*)");
     var results = regex.exec(url);
-    return results === null ? null : results[1].replace(/\+/g, ' ');
+    return results === null ? null : results[1].replace(/\+/g, " ");
   };
-  
+
   private getDeviceRegisterData = (url: string) => {
     const keySecret: string = "setupsecret";
     const keySite: string = "site";
@@ -103,7 +107,8 @@ export default class AppLinkFlow extends AuthComponent {
     } else {
       var errorInfo = "Invalid request.";
       if ((site == "" || site == null) && (secret == null || secret == "")) {
-        errorInfo = "Invalid request, 'site' and 'token' cannot be null or empty.";
+        errorInfo =
+          "Invalid request, 'site' and 'token' cannot be null or empty.";
       } else if (site == "" || site == null) {
         errorInfo = "Invalid request, 'site' cannot be null or empty.";
       } else if (secret == null || secret == "") {
@@ -112,7 +117,7 @@ export default class AppLinkFlow extends AuthComponent {
       throw new Error(errorInfo);
     }
   };
-  
+
   render() {
     return null;
   }
