@@ -23,9 +23,9 @@ import {
   Image,
   ScrollView,
   RefreshControl,
-  Alert
+  Alert,
+  TouchableOpacity
 } from "react-native";
-import { Cell, TableView } from "react-native-tableview-simple";
 import { useQuery } from "@apollo/react-hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -167,50 +167,21 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
           styles.itemsContainer,
           { backgroundColor: theme.colorSecondary1 }
         ]}>
-        <TableView>
-          {/* <Cell // To Do : this ui for future implementation
-            cellContentView={
-              <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
-                Your profile
-              </Text>
-            }
-            onPress={() => Log.debug("Cell is clicked")}
-            accessory="DisclosureIndicator"
-          />
-          <View style={{ height: 1, paddingLeft: 20 }}></View> */}
-          {/* <Cell
-            cellContentView={
-              <Text style={[theme.textB2, { width: wp("100%") - 50 }]}>
-                {translate("user_profile.setting_cell")}
-              </Text>
-            }
-            onPress={() => {
-              navigation.navigate(NAVIGATION_SETTING);
-            }}
-            accessory="DisclosureIndicator"
-          /> */}
-
-          <View style={{ marginTop: 1 }}>
-            <AuthConsumer>
-              {(auth) => (
-                <Cell
-                  cellContentView={
-                    <Text
-                      style={[
-                        theme.textB2,
-                        { margin: 0, fontSize: fontSizes.fontSizeM }
-                      ]}>
-                      {translate("user_profile.logout.button_text")}
-                    </Text>
-                  }
-                  onPress={() => {
-                    confirmationLogout(auth);
-                  }}
-                />
-              )}
-            </AuthConsumer>
-          </View>
-        </TableView>
+        <View style={{ marginTop: 1 }}>
+          <AuthConsumer>
+            {(auth) => (
+              <TouchableOpacity onPress={() => confirmationLogout(auth)}>
+                <Text
+                  style={[
+                    theme.textB2,
+                    { margin: 0, fontSize: fontSizes.fontSizeM }
+                  ]}>
+                  {translate("user_profile.logout.button_text")}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </AuthConsumer>
+        </View>
       </View>
     </View>
   );
