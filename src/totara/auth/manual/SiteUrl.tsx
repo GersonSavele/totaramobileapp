@@ -38,7 +38,6 @@ import { TotaraTheme } from "@totara/theme/Theme";
 const { DEV_ORG_URL, DEBUG_MODE } = constants;
 
 const SiteUrl = (props: Props) => {
-  debugger;
   const [theme] = useContext(ThemeContext);
   const [siteUrl, setSiteUrl] = useState(DEBUG_MODE ? DEV_ORG_URL : "");
   const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);

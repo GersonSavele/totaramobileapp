@@ -27,7 +27,6 @@ import Settings from "./settings";
 import Profile from "./profile";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
-import { translate } from "@totara/locale";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 
