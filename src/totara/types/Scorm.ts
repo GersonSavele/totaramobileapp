@@ -100,4 +100,6 @@ export type ScormActivityParams = {
   downloadProgress?: number;
   downloadState?: ResourceState;
   onDownloadPress?: Function;
+  backIcon?: string;
+  backAction?: () => void;
 };

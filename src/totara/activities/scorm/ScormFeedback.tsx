@@ -22,9 +22,11 @@ import ScormFeedbackModal from "./components/ScormFeedbackModal";
 import { getOfflineLastActivityResult } from "@totara/lib/scorm";
 import { Grade } from "@totara/types/Scorm";
 import { withNavigation } from "react-navigation";
+import { NavigationStackProp } from "react-navigation-stack";
+import { NAVIGATION_SCORM_ROOT } from "@totara/lib/constants";
 
-type Props = {
-  activity: ActivityType;
+type FeedbackParams = {
+  id: string;
   onClose: () => void;
   onPrimary: () => void;
   attempt: number;
@@ -33,15 +35,15 @@ type Props = {
   completionScoreRequired?: number;
 };
 
-const ScormFeedback = ({
-  activity,
-  onClose,
-  onPrimary,
-  attempt,
-  gradeMethod,
-  completionScoreRequired
-}: Props) => {
+type FeedbackProps = {
+  navigation: NavigationStackProp<FeedbackParams>;
+};
+
+const ScormFeedback = ({ navigation }: FeedbackProps) => {
+  const { id, attempt, gradeMethod, completionScoreRequired } = navigation.state
+    .params as FeedbackParams;
   const apolloClient = useApolloClient();
+
   // TODO - need to remove after complete Online feedback
   // if (isOnline) {
   // const { loading, error, data, refetch } = useQuery(scormFeedbackQuery, {
@@ -73,10 +75,9 @@ const ScormFeedback = ({
   // }
   // return null;
   // } else {
-  const lastActivityResult = getOfflineLastActivityResult(
-    activity.instanceid.toString(),
-    apolloClient
-  );
+  const lastActivityResult = getOfflineLastActivityResult(id, apolloClient);
+  const goToSummary = () =>
+    navigation.navigate({ routeName: NAVIGATION_SCORM_ROOT });
 
   if (lastActivityResult && parseInt(lastActivityResult.attempt) === attempt) {
     return (
@@ -84,8 +85,8 @@ const ScormFeedback = ({
         gradeMethod={gradeMethod}
         score={lastActivityResult.gradereported}
         completionScoreRequired={completionScoreRequired}
-        onClose={onClose}
-        onPrimary={onPrimary}
+        onClose={goToSummary}
+        onPrimary={goToSummary}
       />
     );
   } else {
@@ -93,8 +94,8 @@ const ScormFeedback = ({
       <ScormFeedbackModal
         gradeMethod={0}
         score={10}
-        onClose={onClose}
-        onPrimary={onPrimary}
+        onClose={goToSummary}
+        onPrimary={goToSummary}
       />
     );
   }

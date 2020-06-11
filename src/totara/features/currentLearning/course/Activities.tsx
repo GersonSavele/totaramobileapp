@@ -35,7 +35,7 @@ import { Separator } from "@totara/components";
 import { translate } from "@totara/locale";
 import {
   completionStatus,
-  NAVIGATION_SCORM_STACK_ROOT,
+  NAVIGATION_SCORM_ROOT,
   NAVIGATION_WEBVIEW_ACTIVITY
 } from "@totara/lib/constants";
 import { navigateTo } from "@totara/lib/navigation";
@@ -228,7 +228,7 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
                 case "scorm": {
                   navigateTo({
                     navigate: navigation.navigate,
-                    routeId: NAVIGATION_SCORM_STACK_ROOT,
+                    routeId: NAVIGATION_SCORM_ROOT,
                     props: {
                       id: item.instanceid.toString(),
                       title: item.name

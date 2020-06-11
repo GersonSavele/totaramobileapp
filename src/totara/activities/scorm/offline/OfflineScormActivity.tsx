@@ -73,7 +73,7 @@ const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
   const server = useRef<StaticServer>(null);
 
   const [scormPackageData, setScormPackageData] = useState<Package>({
-    path: targetResource.unzipPath
+    path: `${getOfflineScormPackageName(scorm.id)}`
   });
   const { scos, defaultSco } = scormPackageData;
 
@@ -182,7 +182,9 @@ const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
       if (packageData.scos && packageData.defaultSco) {
         return Promise.resolve(packageData);
       } else {
-        return getScormPackageData(`${packageData.path}`).then((data) => {
+        return getScormPackageData(
+          `${offlineScormServerRoot}/${packageData.path}`
+        ).then((data) => {
           const tmpPackageData = { ...packageData, ...data } as Package;
           return tmpPackageData;
         });

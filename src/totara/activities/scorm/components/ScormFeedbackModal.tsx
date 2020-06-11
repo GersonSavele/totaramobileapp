@@ -15,7 +15,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { View, Text, Modal, Image } from "react-native";
+import { View, Text, Image } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { PrimaryButton, TertiaryButton } from "@totara/components";
@@ -41,66 +41,64 @@ const ScormFeedbackModal = ({
   onPrimary
 }: SCORMFeedbackProps) => {
   return (
-    <Modal animationType="slide" transparent>
-      <View style={scormFeedbackStyles.transparentViewStyle}>
-        <SafeAreaView />
-        <View style={scormFeedbackStyles.wrapper}>
-          <View style={scormFeedbackStyles.resultOuterWrapper}>
-            <View style={scormFeedbackStyles.resultInnerWrapper}>
-              <View style={scormFeedbackStyles.resultContainer}>
-                {!completionScoreRequired && (
-                  <Image
-                    style={scormFeedbackStyles.resultStatusImage}
-                    source={require("@resources/images/success_tick/success_tick.png")}
-                  />
-                )}
-                {completionScoreRequired && (
-                  <>
-                    <Text
-                      style={{
-                        ...TotaraTheme.textB3,
-                        ...scormFeedbackStyles.resultTitle
-                      }}>
-                      {translate("scorm.feedback.grade_title")}
-                    </Text>
-                    <Text
-                      style={{
-                        ...TotaraTheme.textH1,
-                        ...scormFeedbackStyles.scoreText
-                      }}>
-                      {score &&
-                        `${score}${gradeMethod === Grade.objective ? "" : "%"}`}
-                    </Text>
-                  </>
-                )}
-              </View>
+    <View style={scormFeedbackStyles.transparentViewStyle}>
+      <SafeAreaView />
+      <View style={scormFeedbackStyles.wrapper}>
+        <View style={scormFeedbackStyles.resultOuterWrapper}>
+          <View style={scormFeedbackStyles.resultInnerWrapper}>
+            <View style={scormFeedbackStyles.resultContainer}>
+              {!completionScoreRequired && (
+                <Image
+                  style={scormFeedbackStyles.resultStatusImage}
+                  source={require("@resources/images/success_tick/success_tick.png")}
+                />
+              )}
+              {completionScoreRequired && (
+                <>
+                  <Text
+                    style={{
+                      ...TotaraTheme.textB3,
+                      ...scormFeedbackStyles.resultTitle
+                    }}>
+                    {translate("scorm.feedback.grade_title")}
+                  </Text>
+                  <Text
+                    style={{
+                      ...TotaraTheme.textH1,
+                      ...scormFeedbackStyles.scoreText
+                    }}>
+                    {score &&
+                      `${score}${gradeMethod === Grade.objective ? "" : "%"}`}
+                  </Text>
+                </>
+              )}
             </View>
-            <View style={scormFeedbackStyles.actionWrapper}>
-              <Text
-                style={{
-                  ...TotaraTheme.textH4,
-                  marginBottom: margins.margin2XL,
-                  textAlign: "center"
-                }}>
-                {translate("scorm.feedback.action_info")}
-              </Text>
-              <View style={scormFeedbackStyles.actionContainer}>
-                <PrimaryButton
-                  onPress={onClose}
-                  text={translate("scorm.feedback.back")}
-                  style={{ marginBottom: margins.marginL }}
-                />
-                <TertiaryButton
-                  onPress={onPrimary}
-                  text={translate("scorm.feedback.attempt_again")}
-                />
-              </View>
+          </View>
+          <View style={scormFeedbackStyles.actionWrapper}>
+            <Text
+              style={{
+                ...TotaraTheme.textH4,
+                marginBottom: margins.margin2XL,
+                textAlign: "center"
+              }}>
+              {translate("scorm.feedback.action_info")}
+            </Text>
+            <View style={scormFeedbackStyles.actionContainer}>
+              <PrimaryButton
+                onPress={onClose}
+                text={translate("scorm.feedback.back")}
+                style={{ marginBottom: margins.marginL }}
+              />
+              <TertiaryButton
+                onPress={onPrimary}
+                text={translate("scorm.feedback.attempt_again")}
+              />
             </View>
           </View>
         </View>
-        <SafeAreaView />
       </View>
-    </Modal>
+      <SafeAreaView />
+    </View>
   );
 };
 

@@ -58,12 +58,18 @@ enum learningItemEnum {
 }
 
 // Navigation screen ids, based on how we name the route ids
+//current learning
 const NAVIGATION_CURRENT_LEARNING = "CurrentLearning";
 const NAVIGATION_COURSE_DETAILS = "CourseDetails";
 const NAVIGATION_COURSE_GROUP_DETAILS = "CourseGroupDetails"; //either LearningItemEnum.Program or LearningItemEnum.Certificate
+
+//scorm routes
 const NAVIGATION_SCORM_STACK_ROOT = "ScormActivityStack";
 const NAVIGATION_WEBVIEW_ACTIVITY = "WebviewActivity";
+const NAVIGATION_SCORM_ROOT = "ScormActivity";
+const NAVIGATION_SCORM_ATTEMPTS = "ScormAttempts";
 const NAVIGATION_OFFLINE_SCORM_ACTIVITY = "OfflineScormActivity";
+const NAVIGATION_SCORM_FEEDBACK = "ScormFeedback";
 
 const itemToRouteMap = {
   [learningItemEnum.Course]: NAVIGATION_COURSE_DETAILS,
@@ -135,8 +141,11 @@ export {
   NAVIGATION_COURSE_GROUP_DETAILS,
   NAVIGATION_SCORM_STACK_ROOT,
   NAVIGATION_WEBVIEW_ACTIVITY,
+  NAVIGATION_SCORM_ROOT,
   NAVIGATION_SETTING,
   NAVIGATION_MY_LEARNING,
+  NAVIGATION_SCORM_ATTEMPTS,
+  NAVIGATION_SCORM_FEEDBACK,
   NAVIGATION_OFFLINE_SCORM_ACTIVITY,
   SCREEN_WIDTH_X_LARGE,
   SCREEN_WIDTH_LARGE,

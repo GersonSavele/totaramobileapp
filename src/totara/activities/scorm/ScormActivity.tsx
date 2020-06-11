@@ -37,7 +37,13 @@ import { TouchableIcon } from "@totara/components";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
 import { RootState } from "@totara/reducers";
 import { scormQuery } from "./api";
-import { NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants";
+import {
+  NAVIGATION_SCORM_ROOT,
+  NAVIGATION_SCORM_STACK_ROOT,
+  NAVIGATION_SCORM_ATTEMPTS,
+  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
+  NAVIGATION_SCORM_FEEDBACK
+} from "@totara/lib/constants";
 
 import {
   formatAttempts,
@@ -56,6 +62,7 @@ import { fullFlex } from "@totara/lib/styles/base";
 
 import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
+import ScormFeedback from "./ScormFeedback";
 const { download } = ResourceManager;
 
 type ScormActivityProps = {
@@ -144,7 +151,7 @@ const ScormActivity = (props: ScormActivityProps) => {
   const headerDispatch = (params) => {
     const setParamsAction = NavigationActions.setParams({
       params,
-      key: NAVIGATION_SCORM_STACK_ROOT
+      key: NAVIGATION_SCORM_ROOT
     });
     navigation.dispatch(setParamsAction);
   };
@@ -170,43 +177,60 @@ const ScormActivity = (props: ScormActivityProps) => {
   );
 };
 
-const scormStack = createStackNavigator(
-  {
-    ScormActivity: {
-      screen: ScormActivity,
+const navigationOptions = ({ navigation }) => {
+  const {
+    title = "",
+    backIcon = "times",
+    backAction = () => navigation.pop()
+  } = navigation.state.params as ScormActivityParams;
+  return {
+    title,
+    headerTitleAlign: "center",
+    headerLeft: (
+      <TouchableIcon
+        icon={backIcon}
+        onPress={backAction}
+        size={TotaraTheme.textH3.fontSize}
+      />
+    ),
+    headerRight: headerRight({ navigation })
+  };
+};
 
-      navigationOptions: ({ navigation }) => {
-        const { title = "" } = navigation.state.params as ScormActivityParams;
-        return {
-          title,
-          headerTitleAlign: "center",
-          headerLeft: (
-            <TouchableIcon
-              icon={"times"}
-              onPress={() => navigation.pop()}
-              size={TotaraTheme.textH3.fontSize}
-            />
-          ),
-          headerRight: headerRight({ navigation })
-        };
-      }
+const innerStack = createStackNavigator(
+  {
+    [NAVIGATION_SCORM_ROOT]: {
+      screen: ScormActivity,
+      navigationOptions
     },
-    ScormAttemps: {
+    [NAVIGATION_SCORM_ATTEMPTS]: {
       screen: ScormAttempts,
-      navigationOptions: ({ navigation }) => {
-        const { title = "" } = navigation.state.params as ScormActivityParams;
-        return {
-          title
-        };
-      }
+      navigationOptions
     },
-    OfflineScormActivity: {
-      screen: OfflineScormActivity
+    [NAVIGATION_OFFLINE_SCORM_ACTIVITY]: {
+      screen: OfflineScormActivity,
+      navigationOptions
     }
   },
   {
-    initialRouteKey: NAVIGATION_SCORM_STACK_ROOT,
-    initialRouteName: "ScormActivity"
+    initialRouteKey: NAVIGATION_SCORM_ROOT,
+    initialRouteName: NAVIGATION_SCORM_ROOT
+  }
+);
+
+const scormStack = createStackNavigator(
+  {
+    [NAVIGATION_SCORM_STACK_ROOT]: {
+      screen: innerStack
+    },
+    [NAVIGATION_SCORM_FEEDBACK]: {
+      screen: ScormFeedback,
+      navigationOptions
+    }
+  },
+  {
+    mode: "modal",
+    headerMode: "none"
   }
 );
 

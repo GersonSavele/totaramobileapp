@@ -45,16 +45,18 @@ import { NetworkStatus as ApolloNetworkStatus } from "apollo-boost";
 import {
   getDataForScormSummary,
   onTapViewAllAttempts,
-  onTapContinueLastAttempt,
   shouldShowAction
 } from "@totara/lib/scorm";
 import { navigateTo } from "@totara/lib/navigation";
 import {
   DATE_FORMAT_FULL,
-  NAVIGATION_OFFLINE_SCORM_ACTIVITY
+  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
+  NAVIGATION_SCORM_ATTEMPTS,
+  NAVIGATION_SCORM_FEEDBACK
 } from "@totara/lib/constants";
 import { ScormBundle } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
+import { showConfirmation } from "@totara/lib/tools";
 
 type SummaryProps = {
   id: string;
@@ -183,12 +185,13 @@ const ScormSummary = ({
                   scormBundle,
                   callback: () => {
                     navigateTo({
-                      routeId: "ScormAttemps",
+                      routeId: NAVIGATION_SCORM_ATTEMPTS,
                       navigate: navigation.navigate,
                       props: {
                         attempts,
                         gradeMethod,
-                        title: name
+                        title: name,
+                        backIcon: "chevron-left"
                       }
                     });
                   }
@@ -237,8 +240,29 @@ const ScormSummary = ({
                       routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
                       navigate: navigation.navigate,
                       props: {
+                        title: name,
                         attempt: attemptNumber,
-                        scorm: scormBundle.scorm
+                        scorm: scormBundle.scorm,
+                        backIcon: "chevron-left",
+                        backAction: () => {
+                          showConfirmation({
+                            title: translate("scorm.confirmation.title"),
+                            message: translate("scorm.confirmation.message"),
+                            callback: () => {
+                              navigateTo({
+                                routeId: NAVIGATION_SCORM_FEEDBACK,
+                                navigate: navigation.navigate,
+                                props: {
+                                  id: scormBundle.scorm?.id,
+                                  attempt: attemptNumber,
+                                  gradeMethod: scormBundle.scorm?.grademethod,
+                                  completionScoreRequired:
+                                    scormBundle.scorm?.completionscorerequired
+                                }
+                              });
+                            }
+                          });
+                        }
                       }
                     });
                   }

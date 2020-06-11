@@ -22,11 +22,15 @@ const showMessage = ({
   );
 };
 
-const showConfirmation = (
-  title: string,
-  message: string,
-  callback: (value?: string | undefined) => void
-) => {
+const showConfirmation = ({
+  title,
+  message,
+  callback
+}: {
+  title: string;
+  message: string;
+  callback: (value?: string | undefined) => void;
+}) => {
   Alert.alert(
     title,
     message,

@@ -28,7 +28,7 @@ import ResourceManager from "@totara/lib/resourceManager";
 import listViewStyles from "@totara/theme/listView";
 import DownloadItem from "./DownloadItem";
 import { navigateTo } from "@totara/lib/navigation";
-import { NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants"; //TODO: REMOVE IT WHEN scorm is done
+import { NAVIGATION_SCORM_ROOT } from "@totara/lib/constants"; //TODO: REMOVE IT WHEN scorm is done
 
 const Downloads = () => {
   const [theme] = useContext(ThemeContext);
@@ -84,7 +84,7 @@ const Downloads = () => {
 
     navigateTo({
       navigate: navigation.navigate,
-      routeId: NAVIGATION_SCORM_STACK_ROOT,
+      routeId: NAVIGATION_SCORM_ROOT,
       props: {
         id: item.customId,
         title: item.name
