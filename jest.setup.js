@@ -42,3 +42,12 @@ jest.mock("react-navigation-stack", () => {
     createStackNavigator: jest.fn()
   };
 });
+
+jest.mock("react-native-device-info", () => {
+  return {
+    getVersion: jest.fn(() => {
+      return "UnknownVersion";
+    }),
+    getBuildNumber: jest.fn()
+  };
+});
