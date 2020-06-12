@@ -20,7 +20,7 @@
  */
 
 import React, { useEffect, useState, useRef } from "react";
-import { Text } from "react-native";
+import { Text, BackHandler } from "react-native";
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from "react-native-static-server";
 
@@ -44,16 +44,23 @@ import { offlineScormServerRoot } from "@totara/lib/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 import { ResourceType } from "@totara/types/Resource";
+import { NavigationStackProp } from "react-navigation-stack";
 
-type Props = {
+type OfflineScormParams = {
   attempt: number;
   scorm?: Scorm;
   scoid?: string;
+  backAction: Function;
 };
 
-const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
-  const { scorm, attempt, scoid } = navigation.state.params;
-  if (!scorm && !scorm.id) {
+type OfflineScormProps = {
+  navigation: NavigationStackProp<OfflineScormParams>;
+};
+
+const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
+  const { scorm, attempt, scoid, backAction } = navigation.state
+    .params as OfflineScormParams;
+  if (!scorm || !scorm.id) {
     return <Text>{translate("general.error_unknown")}</Text>;
   }
 
@@ -103,6 +110,12 @@ const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
       .catch((e) => {
         Log.debug(e.messageData);
       });
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
   }, [scorm.id]);
 
   useEffect(() => {
@@ -124,6 +137,7 @@ const OfflineScormActivity = ({ navigation }: { navigation: any }) => {
     }
   }, [scormPackageData, url]);
 
+  useEffect(() => {}, []);
   const stopServer = () => {
     if (server && server.current) {
       server.current!.stop();

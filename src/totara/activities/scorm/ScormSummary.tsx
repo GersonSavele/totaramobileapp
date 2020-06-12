@@ -151,8 +151,8 @@ const ScormSummary = ({
       title: translate("scorm.confirmation.title"),
       message: translate("scorm.confirmation.message"),
       callback: () => {
-        // setCompletedScormAttempt(id, attempt, )
         const existingLastAttempt = getOfflineLastActivityResult(id, client);
+        navigation.pop();
         if (
           existingLastAttempt &&
           existingLastAttempt.attempt &&
@@ -170,11 +170,11 @@ const ScormSummary = ({
               score: existingLastAttempt.gradereported
             }
           });
-        } else {
-          navigation.pop();
         }
       }
     });
+    // This is the for the BackHandler callback that is calling this function
+    return true;
   };
   if (error) {
     return <LoadingError onRefreshTap={refetch} />;
