@@ -107,6 +107,7 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
 );
 
 const ScormSummary = ({
+  id,
   error,
   refetch,
   networkStatus,
@@ -125,8 +126,9 @@ const ScormSummary = ({
     attemptGrade,
     gradeMethod,
     calculatedGrade,
+    completionScoreRequired,
     actionPrimary,
-    actionSecondary,
+    // actionSecondary, //TODO - will be enable for online
     timeOpen,
     maxAttempts,
     attempts
@@ -277,11 +279,10 @@ const ScormSummary = ({
                 title: translate("scorm.summary.new_attempt"),
                 action: () => {
                   if (scormBundle && scormBundle.scorm) {
-                    const attemptNumber =
-                      (scormBundle.scorm &&
-                        scormBundle.scorm.attempts &&
-                        scormBundle.scorm.attempts.length + 1) ||
-                      1;
+                    navigation.addListener("didFocus", () => {
+                      refetch({ scormid: id });
+                    });
+                    const attemptNumber = totalAttempt + 1;
                     navigateTo({
                       routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
                       navigate: navigation.navigate,
@@ -292,11 +293,10 @@ const ScormSummary = ({
                         backIcon: "chevron-left",
                         backAction: () =>
                           onExitActivityAttempt({
-                            id: scormBundle.scorm.id,
+                            id: id,
                             attempt: attemptNumber,
-                            gradeMethod: scormBundle.scorm.grademethod,
-                            completionScoreRequired: scormBundle.scorm
-                              .completionscorerequired!,
+                            gradeMethod: gradeMethod,
+                            completionScoreRequired: completionScoreRequired,
                             client
                           })
                       }

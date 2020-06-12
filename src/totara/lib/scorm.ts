@@ -198,7 +198,8 @@ const getDataForScormSummary = (
     lastsynced: undefined,
     timeOpen: undefined,
     maxAttempts: undefined,
-    attempts: undefined
+    attempts: undefined,
+    completionScoreRequired: undefined
   };
   if (!scormBundle) {
     return data;
@@ -240,13 +241,18 @@ const getDataForScormSummary = (
       scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT)) &&
       moment.unix(scorm.timeopen)) ||
     undefined;
+  data.maxAttempts =
+    (scorm.attemptsMax !== null && scorm.attemptsMax) || undefined;
 
+  data.completionScoreRequired =
+    (scorm.completionscorerequired !== null && scorm.completionscorerequired) ||
+    undefined;
   data.actionPrimary =
-    (((isUserOnline && scormBundle && scorm && scorm.launchUrl) ||
-      (!isUserOnline &&
-        scorm.offlineAttemptsAllowed &&
-        scormPackage &&
-        scormPackage.path)) &&
+    (scormBundle &&
+      scorm &&
+      (!data.maxAttempts || data.maxAttempts > data.totalAttempt) &&
+      (scorm.launchUrl ||
+        (scormPackage && scormPackage.path && scorm.offlineAttemptsAllowed)) &&
       true) ||
     false;
   data.actionSecondary =
@@ -258,9 +264,6 @@ const getDataForScormSummary = (
       scormBundle.lastsynced &&
       moment.unix(scormBundle.lastsynced)) ||
     undefined;
-
-  data.maxAttempts =
-    (scorm.attemptsMax !== null && scorm.attemptsMax) || undefined;
 
   data.attempts =
     (scorm.attempts &&

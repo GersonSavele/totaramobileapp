@@ -76,7 +76,6 @@ const ScormActivity = (props: ScormActivityProps) => {
   const { navigation } = props;
   const { id, title = "" } = navigation.state.params as ScormActivityParams;
   const apolloClient = useApolloClient();
-
   const { loading, error, data, refetch, networkStatus } = useQuery(
     scormQuery,
     {
@@ -155,7 +154,6 @@ const ScormActivity = (props: ScormActivityProps) => {
         undefined
       );
       // FIXME: This is a temporary hack because the server is not returning correct data
-
       if (offlineAttempts && Object.keys(offlineAttempts).length) {
         mergedData = {
           ...mergedData,

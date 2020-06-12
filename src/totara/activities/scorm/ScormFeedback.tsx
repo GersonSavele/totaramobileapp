@@ -15,11 +15,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { useApolloClient } from "@apollo/react-hooks";
-
-import { ActivityType } from "@totara/types";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
-import { getOfflineLastActivityResult } from "@totara/lib/scorm";
 import { Grade } from "@totara/types/Scorm";
 import { withNavigation } from "react-navigation";
 import { NavigationStackProp } from "react-navigation-stack";
@@ -42,8 +38,9 @@ type FeedbackProps = {
 
 const ScormFeedback = ({ navigation }: FeedbackProps) => {
   const {
-    id,
-    attempt,
+    // TODO -  will remove after online
+    // id,
+    // attempt,
     gradeMethod,
     completionScoreRequired,
     score
