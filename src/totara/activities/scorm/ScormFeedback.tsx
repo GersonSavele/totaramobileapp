@@ -37,8 +37,8 @@ type FeedbackProps = {
 };
 
 const ScormFeedback = ({ navigation }: FeedbackProps) => {
+  // NOTE -  all the commented code is related to online, which will be added in next sprint
   const {
-    // TODO -  will remove after online
     // id,
     // attempt,
     gradeMethod,
