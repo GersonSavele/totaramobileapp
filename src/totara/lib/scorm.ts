@@ -26,10 +26,8 @@ import {
   scormActivityType,
   FILE_EXTENSION
 } from "./constants";
-import ResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import { Log } from "@totara/lib";
 import { showMessage } from "./tools";
-import { RetrieveStorageDataById } from "@totara/core/ResourceManager/StorageManager";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 import { setWith, get } from "lodash";
 import {
@@ -75,58 +73,6 @@ const formatAttempts = (data: any): Scorm => {
 };
 
 /**
- * This function update the scorm bundle with the offline attempts
- * @param {string} id - scorm id
- * @param {Object} data - scorm data
- */
-const updateScormBundleWithOfflineAttempts = (
-  scormId: string,
-  scorm: Scorm,
-  client: any
-) => {
-  // retrieve from the resource manager that comes from the downloads
-  return RetrieveStorageDataById(scormId)
-    .then((storedResourceData) => {
-      if (!storedResourceData) {
-        // remove from the SCORM package data from the AsyncStorage
-        return removeScormPackageData(scormId, client);
-      } else {
-        // This returns the absolute path
-        return Promise.resolve(storedResourceData.unzipPath);
-      }
-    })
-    .then((filePath) => {
-      // check if the scormBundle exists in the cache
-      const scormBundles: { [key: string]: ScormBundle } = retrieveAllData({
-        client
-      });
-      let scormTarget;
-      if (scormBundles && scormBundles[scormId]) {
-        // update the scormBundleTarget with the previous scorm from the array of bundles
-        scormTarget = scormBundles[scormId];
-      }
-
-      // filePath is a proof that we downloaded
-      // this runs only in the first time to build the scorm bundle
-      if (filePath && (!scormTarget || !scormTarget.scormPackage)) {
-        // scormPackage has the relative path
-        const resourcePackageName = getOfflineScormPackageName(scormId);
-        const newScormData: ScormBundle = {
-          scormPackage: { path: resourcePackageName },
-          lastsynced: parseInt(moment().format(SECONDS_FORMAT))
-        };
-        const newScormBundles: { [key: string]: ScormBundle } = {
-          ...scormBundles,
-          [scormId]: newScormData
-        };
-        saveInTheCache({ client, scormBundles: newScormBundles });
-        return newScormData;
-      }
-      return scormTarget;
-    });
-};
-
-/**
  *
  * @param param0 - Object with the scorm id to fetch the cached activity records
  * @returns an object: the specific scorm cached data
@@ -141,45 +87,6 @@ const retrieveAllData = ({ client }): { [key: string]: ScormBundle } => {
     Log.debug("empty cache for ActivitiesRecords");
   }
   return {};
-};
-
-const syncOfflineScormBundle = (
-  scormId: string,
-  scormBundleTarget: ScormBundle,
-  client: any
-): ScormBundle => {
-  let newData = { [scormId]: scormBundleTarget };
-  const scormBundles: { [key: string]: ScormBundle } = retrieveAllData({
-    client
-  });
-  if (scormBundles && scormBundles[scormId]) {
-    // update the previous array of bundles with the new scormBundleTarget
-    const scormData = {
-      [scormId]: { ...scormBundles[scormId], ...scormBundleTarget }
-    };
-    newData = { ...scormBundles, ...scormData };
-  }
-  saveInTheCache({ client, scormBundles: newData });
-  return newData[scormId];
-};
-
-/**
- * This saves the map of scorm bundle with the new scormBunble in the cache
- * @param param0
- */
-const saveInTheCache = ({
-  client,
-  scormBundles
-}: {
-  client: any;
-  scormBundles: { [key: string]: ScormBundle };
-}) => {
-  client.writeQuery({
-    query: scormActivitiesRecordsQuery,
-    data: {
-      scormBundles
-    }
-  });
 };
 
 const getDataForScormSummary = (
@@ -279,42 +186,6 @@ type OnTapProps = {
   scormBundle: ScormBundle | undefined;
   client: any;
   apiKey?: string;
-};
-
-const resourceManager = ResourceManager.getInstance();
-
-const onTapDownloadResource = ({
-  scormBundle,
-  apiKey,
-  client
-}: OnTapProps) => () => {
-  const callback = syncOfflineScormBundle;
-  if (scormBundle) {
-    const _url = scormBundle!.scorm.packageUrl!;
-    const _name = scormBundle!.scorm.name;
-    const _scormId = scormBundle!.scorm.id;
-
-    const _targetZipFile = getTargetZipFile(_scormId);
-    const _unzipPath = getOfflinePackageUnzipPath(_scormId);
-    const _downloadId = _scormId.toString();
-    if (apiKey) {
-      resourceManager.download(
-        apiKey,
-        _downloadId,
-        _name,
-        _url,
-        _targetZipFile,
-        _unzipPath
-      );
-      const _offlineScormData = {
-        lastsynced: scormBundle.lastsynced
-      } as ScormBundle;
-
-      callback(_scormId, _offlineScormData, client);
-    } else {
-      Log.debug("Cannot find api key");
-    }
-  }
 };
 
 type OnTapAttemptProps = {
@@ -578,10 +449,8 @@ const shouldShowAction = ({
   (actionPrimary || actionSecondary);
 
 export {
-  updateScormBundleWithOfflineAttempts,
   formatAttempts,
   getDataForScormSummary,
-  onTapDownloadResource,
   onTapNewAttempt,
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
