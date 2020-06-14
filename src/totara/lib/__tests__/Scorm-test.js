@@ -69,17 +69,17 @@ describe("getDataForScormSummary", () => {
           {
             attempt: 1,
             timestarted: null,
-            gradereported: 0,
-          },
+            gradereported: 0
+          }
         ],
         description: "Title",
         attemptsMax: null,
         attemptsForceNew: false,
         attemptsLockFinal: false,
         autoContinue: false,
-        offlineAttemptsAllowed: true,
+        offlineAttemptsAllowed: true
       },
-      lastsynced: 1588040660,
+      lastsynced: 1588040660
     });
     const expectResultDefault = {
       name: undefined,
@@ -88,12 +88,13 @@ describe("getDataForScormSummary", () => {
       calculatedGrade: undefined,
       actionPrimary: false,
       actionSecondary: false,
-      grademethod: undefined,
+      gradeMethod: undefined,
       attemptGrade: undefined,
       lastsynced: undefined,
-      timeopen: undefined,
+      timeOpen: undefined,
       maxAttempts: undefined,
       attempts: undefined,
+      completionScoreRequired: undefined
     };
     expect(getDataForScormSummary(true, undefined)).toEqual(
       expectResultDefault
@@ -115,9 +116,10 @@ describe("getDataForScormSummary", () => {
         {
           attempt: 1,
           timestarted: null,
-          gradereported: 0,
-        },
+          gradereported: 0
+        }
       ],
+      completionScoreRequired: undefined
     };
     expect(getDataForScormSummary(true, scormBundle)).toEqual(
       expectResultScormBundleOnline
@@ -128,7 +130,7 @@ describe("getDataForScormSummary", () => {
       description: "Title",
       totalAttempt: 1,
       calculatedGrade: "10%",
-      actionPrimary: false,
+      actionPrimary: true,
       actionSecondary: false,
       gradeMethod: Grade.highest,
       attemptGrade: AttemptGrade.highest,
@@ -139,9 +141,10 @@ describe("getDataForScormSummary", () => {
         {
           attempt: 1,
           timestarted: null,
-          gradereported: 0,
-        },
+          gradereported: 0
+        }
       ],
+      completionScoreRequired: undefined
     };
     expect(getDataForScormSummary(false, scormBundle)).toEqual(
       expectResultScormBundleOffline
