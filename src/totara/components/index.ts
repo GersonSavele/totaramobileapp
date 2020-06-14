@@ -26,10 +26,9 @@ import {
   ImageElement
 } from "./LearningItemCard";
 import DueDateState from "./DueDateState";
-import ContentIcon from "./ContentIcon";
+import CircleIcon from "./CircleIcon";
 import { AddBadge, CheckBadge } from "./AddBadge";
 import ProgressCircle from "./ProgressCircle";
-import ActivityLauncher from "./ActivityLauncher";
 import { InfoModal } from "./infoModal";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
@@ -57,9 +56,8 @@ export {
   ImageElement,
   AddBadge,
   DueDateState,
-  ContentIcon,
+  CircleIcon,
   CheckBadge,
-  ActivityLauncher,
   ProgressCircle,
   AppStateListener,
   PrimaryButton,

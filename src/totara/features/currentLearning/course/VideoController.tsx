@@ -22,7 +22,7 @@
  */
 import React from "react";
 import Video from "react-nyaative-video";
-import { videoControllerStyles } from "@totara/lib/styles/currentLearning";
+import { videoControllerStyles } from "../currentLearningStyles";
 
 type VideoType = {
   url: string;

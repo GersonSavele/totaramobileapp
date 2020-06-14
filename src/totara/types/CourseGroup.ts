@@ -20,6 +20,12 @@ import { Completion } from "./Completion";
 import { Criteria } from "./Criteria";
 import { learningItemEnum } from "@totara/lib/constants";
 
+export interface CourseGroupContentDetails {
+  course: CourseGroup;
+  image: string;
+  gradeMax: number;
+  gradeFinal: number;
+}
 export interface CourseGroup {
   id: number;
   itemtype: learningItemEnum.Certification | learningItemEnum.Program;

@@ -67,14 +67,14 @@ const coreCourse = gql`
           statuskey
           progress
           timecompleted(format: ISO8601)
-          gradefinal
-          grademax
           __typename
         }
         __typename
       }
       native: mobile_coursecompat
       imageSrc: mobile_image
+      gradeFinal
+      gradeMax
       __typename
     }
   }

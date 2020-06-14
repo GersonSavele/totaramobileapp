@@ -91,10 +91,9 @@ const styles = StyleSheet.create({
   },
   summaryContainer: {
     marginLeft: margins.marginL,
-    marginRight: margins.marginS
-  },
-  summaryTitleWrap: {
-    marginTop: margins.marginS
+    marginRight: margins.marginS,
+    marginTop: margins.marginS,
+    paddingBottom: paddings.padding3XL
   },
   summaryViewWrap: {
     marginTop: margins.marginL

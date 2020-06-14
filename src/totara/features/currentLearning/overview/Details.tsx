@@ -23,13 +23,14 @@ import {
   AddBadge,
   Loading,
   GeneralErrorModal,
-  ContentIcon,
+  CircleIcon,
   Separator
 } from "@totara/components";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "./CriteriaSheet";
 import CourseCompletionModal from "../CourseCompletionModal";
-import { Course, CourseGroup } from "@totara/types";
+import { CourseContentDetails } from "@totara/types";
+import { CourseGroupContentDetails } from "@totara/types/CourseGroup";
 import SelfCompletion from "./SelfCompletion";
 import { courseCriteria } from "@totara/lib/constants";
 import {
@@ -37,10 +38,10 @@ import {
   gradePrefixText,
   gradeSuffixText,
   labelWrap
-} from "@totara/lib/styles/overview";
+} from "../overviewStyles";
 
 type OverviewProps = {
-  learningItem?: Course | CourseGroup;
+  contentDetails: CourseContentDetails | CourseGroupContentDetails;
   summaryTypeTitle?: string;
   onclickContinueLearning?: () => void;
 };
@@ -51,11 +52,11 @@ type SummaryProps = {
 };
 
 const Details = ({
-  learningItem,
+  contentDetails,
   summaryTypeTitle,
   onclickContinueLearning
 }: OverviewProps) => {
-  const isSelfCompletion = learningItem?.criteria?.some((value) => {
+  const isSelfCompletion = contentDetails?.course.criteria?.some((value) => {
     if (value["criteria"] === courseCriteria.selfComplete) {
       return true;
     }
@@ -68,11 +69,11 @@ const Details = ({
           horizontal={true}
           contentContainerStyle={styles.scrollViewContainer}
           showsHorizontalScrollIndicator={false}>
-          <Progress learningItem={learningItem} />
-          <Grade learningItem={learningItem} />
+          <Progress contentDetails={contentDetails} />
+          <Grade contentDetails={contentDetails} />
           {isSelfCompletion && (
             <Complete
-              learningItem={learningItem}
+              contentDetails={contentDetails}
               onclickContinueLearning={onclickContinueLearning}
             />
           )}
@@ -81,7 +82,7 @@ const Details = ({
       <Separator />
       <View style={{ flex: 4 }}>
         <Summary
-          summary={learningItem?.summary}
+          summary={contentDetails?.course?.summary}
           summaryTypeTitle={summaryTypeTitle}
         />
       </View>
@@ -89,12 +90,8 @@ const Details = ({
   );
 };
 
-const Grade = ({ learningItem }: OverviewProps) => {
+const Grade = ({ contentDetails }: OverviewProps) => {
   const [theme] = useContext(ThemeContext);
-  console.log(
-    "learningItem?.completion?.progress",
-    learningItem?.completion?.gradefinal
-  );
   return (
     <TouchableOpacity
       style={styles.container}
@@ -104,13 +101,13 @@ const Grade = ({ learningItem }: OverviewProps) => {
         <View style={styles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
             <Text style={gradePrefixText(theme)}>
-              {learningItem?.completion?.gradefinal !== undefined &&
-              learningItem?.completion?.gradefinal !== null
-                ? learningItem?.completion?.gradefinal
+              {contentDetails.gradeFinal !== undefined &&
+              contentDetails.gradeFinal !== null
+                ? contentDetails?.gradeFinal
                 : 0}
             </Text>
             <Text style={gradeSuffixText(theme)}>
-              {"/" + learningItem?.completion?.grademax}
+              {"/" + contentDetails.gradeMax}
             </Text>
           </View>
         </View>
@@ -125,7 +122,7 @@ const Grade = ({ learningItem }: OverviewProps) => {
   );
 };
 
-const Progress = ({ learningItem }: OverviewProps) => {
+const Progress = ({ contentDetails }: OverviewProps) => {
   const [theme] = useContext(ThemeContext);
   const [showCriteria, setShowCriteria] = useState(false);
   const onClose = () => {
@@ -140,8 +137,8 @@ const Progress = ({ learningItem }: OverviewProps) => {
         <View style={styles.innerViewWrap}>
           <ProgressCircle
             value={
-              learningItem?.completion?.progress !== undefined
-                ? learningItem?.completion?.progress
+              contentDetails.course.completion?.progress !== undefined
+                ? contentDetails.course.completion?.progress
                 : 0
             }></ProgressCircle>
         </View>
@@ -152,9 +149,9 @@ const Progress = ({ learningItem }: OverviewProps) => {
           </Text>
         </View>
       </View>
-      {showCriteria && learningItem?.criteria !== null && (
+      {showCriteria && contentDetails.course?.criteria !== null && (
         <CriteriaSheet
-          criteriaList={learningItem!.criteria}
+          criteriaList={contentDetails.course!.criteria}
           onClose={onClose}></CriteriaSheet>
       )}
     </TouchableOpacity>
@@ -162,17 +159,19 @@ const Progress = ({ learningItem }: OverviewProps) => {
 };
 
 const Complete = ({
-  learningItem,
+  contentDetails,
   onclickContinueLearning = () => {}
 }: OverviewProps) => {
-  const userCriteriaComplete = learningItem?.criteria?.some((value) => {
-    if (
-      value["complete"] === false &&
-      value["criteria"] === courseCriteria.selfComplete
-    ) {
-      return false;
+  const userCriteriaComplete = contentDetails.course?.criteria?.some(
+    (value) => {
+      if (
+        value["complete"] === false &&
+        value["criteria"] === courseCriteria.selfComplete
+      ) {
+        return false;
+      }
     }
-  });
+  );
 
   const [theme] = useContext(ThemeContext);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -193,7 +192,7 @@ const Complete = ({
 
   const onClickSelfComplete = () => {
     if (!userCriteriaComplete) {
-      selfComplete({ variables: { courseid: learningItem?.id } });
+      selfComplete({ variables: { courseid: contentDetails.course?.id } });
     } else {
       setShowConfirmModal(false);
     }
@@ -206,9 +205,7 @@ const Complete = ({
       onPress={onTapSelfCompleteTab}>
       <View style={styles.contentWrap}>
         <View style={styles.innerViewWrap}>
-          <ContentIcon
-            iconSize={15}
-            size={30}
+          <CircleIcon
             backgroundColor={theme.colorAccent}
             iconColor={theme.colorNeutral6}
             borderColor={theme.colorNeutral6}
@@ -245,12 +242,9 @@ const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.summaryContainer}>
-      <View style={styles.summaryTitleWrap}>
-        <Text numberOfLines={1} style={theme.textH3}>
-          {/* {translate("course_overview.course_summery")} */}
-          {summaryTypeTitle}
-        </Text>
-      </View>
+      <Text numberOfLines={1} style={theme.textH3}>
+        {summaryTypeTitle}
+      </Text>
       <View style={styles.summaryViewWrap}>
         <Text style={[theme.textB3, { color: theme.colorNeutral6 }]}>
           {summary}

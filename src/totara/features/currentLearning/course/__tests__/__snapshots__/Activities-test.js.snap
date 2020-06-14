@@ -16,18 +16,21 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
 >
   <View
     style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#FFFFFF",
-        "borderColor": "#4A4A4A",
-        "borderRadius": 25,
-        "borderStyle": "solid",
-        "borderWidth": 1,
-        "height": 44,
-        "justifyContent": "center",
-        "padding": 0,
-        "width": 44,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "borderRadius": 12,
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderColor": "#4A4A4A",
+        },
+      ]
     }
   >
     <Text>

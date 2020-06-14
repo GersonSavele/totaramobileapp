@@ -33,13 +33,14 @@ import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
 import { CourseContentDetails } from "@totara/types";
+import { statusKey } from "@totara/types/Completion";
 import OverviewDetails from "../overview/Details";
 import { TotaraTheme } from "@totara/theme/Theme";
 import HeaderView from "../HeaderView";
 import CourseCompletionModal from "../CourseCompletionModal";
 import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
-import { statusKey, learningItemEnum } from "@totara/lib/constants";
-import { courseStyle } from "@totara/lib/styles/currentLearning";
+import { learningItemEnum } from "@totara/lib/constants";
+import { courseStyle } from "../currentLearningStyles";
 
 const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   const courseId = navigation.getParam("targetId");
@@ -97,10 +98,10 @@ const UIWrapper = withNavigation(
       <HeaderView
         details={courseDetails.course}
         navigation={navigation!}
-        tabBarLeft={translate("course.course_details.overview")}
-        tabBarRight={translate("course.course_details.activities")}
+        tabBarLeftTitle={translate("course.course_details.overview")}
+        tabBarRightTitle={translate("course.course_details.activities")}
         onPress={onSwitchTab}
-        showOverview={showOverview}
+        overviewIsShown={showOverview}
         image={courseDetails.imageSrc}
         badgeTitle="Course">
         <View
@@ -136,7 +137,7 @@ const UIWrapper = withNavigation(
               </View>
             ) : (
               <OverviewDetails
-                learningItem={courseDetails.course}
+                contentDetails={courseDetails}
                 summaryTypeTitle={translate(
                   "course.course_overview.course_summery"
                 )}

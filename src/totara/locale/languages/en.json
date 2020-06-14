@@ -216,10 +216,9 @@
     "selected": "{{count}} Selected"
   },
   "no_internet_alert": {
-    "title": "No Network Connection",
-    "message": "Please check your network connection\nand try again.",
-    "go_back": "Go back",
-    "refresh": "Refresh"
+    "title": "You are offline",
+    "message": "To continue, you'll need to go\nonline",
+    "go_back": "OK"
   },
   "downloads": {
     "title": "Downloads",

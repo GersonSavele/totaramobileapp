@@ -23,7 +23,7 @@ import BottomSheet from "reanimated-bottom-sheet";
 
 import { translate } from "@totara/locale";
 import { Criteria } from "@totara/types";
-import { bottomSheetStyles } from "@totara/lib/styles/currentLearning";
+import { bottomSheetStyles } from "../currentLearningStyles";
 
 type Props = {
   criteriaList?: [Criteria];

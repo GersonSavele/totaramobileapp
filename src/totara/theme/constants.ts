@@ -22,7 +22,10 @@ const textAttributes = {
 };
 
 const borderRadius = {
-  borderRadiusM: 12
+  borderRadiusXS: 4,
+  borderRadiusS: 8,
+  borderRadiusM: 12,
+  borderRadiusL: 16
 };
 
 const fontWeights = {
@@ -74,11 +77,18 @@ const tabBar = {
 const iconSizes = {
   sizeS: 16,
   sizeM: 24,
-  sizeL: 32
+  sizeL: 32,
+  sizeXL: 48
 };
 
 const viewHeight = {
-  activityContainerHeight: 45
+  activityContainerHeight: 45,
+  learningItemHeaderMinHeight: 260,
+  learningItemHeaderMaxHeight: 280,
+  learningItemImageMaxHeight: 160,
+  learningItemTitleMaxHeight: 85,
+  learningItemTitleMinHeight: 60,
+  activitySectionHeight: 58
 };
 const header = {
   icon: {

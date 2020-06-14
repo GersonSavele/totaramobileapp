@@ -1,29 +1,34 @@
-/*
-
-This file is part of Totara Enterprise.
-*
-Copyright (C) 2020 onwards Totara Learning Solutions LTD
-*
-Totara Enterprise is provided only to Totara Learning Solutions
-LTD’s customers and partners, pursuant to the terms and
-conditions of a separate agreement with Totara Learning
-Solutions LTD or its affiliate.
-*
-If you do not have an agreement with Totara Learning Solutions
-LTD, you may not access, use, modify, or distribute this software.
-Please contact [sales@totaralearning.com] for more information.
-*
-*/
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ *
+ */
 
 import { StyleSheet, Dimensions, ViewStyle } from "react-native";
 import { normalize, gutter } from "@totara/theme";
-import { margins, paddings } from "@totara/theme/constants";
+import {
+  margins,
+  paddings,
+  iconSizes,
+  borderRadius,
+  viewHeight
+} from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 const bottomSheetStyles = StyleSheet.create({
   transparentView: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: TotaraTheme.colorOpacity70,
     justifyContent: "flex-end"
   },
   renderOuterViewWrap: {
@@ -55,14 +60,14 @@ const bottomSheetStyles = StyleSheet.create({
     alignSelf: "flex-end"
   },
   headerViewWrap: {
-    backgroundColor: "#FFFF",
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16
+    backgroundColor: TotaraTheme.colorAccent,
+    borderTopLeftRadius: borderRadius.borderRadiusL,
+    borderTopRightRadius: borderRadius.borderRadiusL
   },
   headerCloseButtonWrap: {
     marginTop: margins.marginS,
-    height: 48,
-    width: 48,
+    height: iconSizes.sizeXL,
+    width: iconSizes.sizeXL,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -81,8 +86,8 @@ const bottomSheetStyles = StyleSheet.create({
     width: "20%",
     height: 5,
     opacity: 0.1,
-    borderRadius: 2.5,
-    backgroundColor: "#000000",
+    borderRadius: borderRadius.borderRadiusXS,
+    backgroundColor: TotaraTheme.colorNeutral8,
     alignSelf: "center"
   },
   nameViewWrap: {
@@ -109,7 +114,11 @@ const bottomSheetStyles = StyleSheet.create({
   },
   availableReasonTitleWrap: {
     fontWeight: "bold",
-    fontSize: 22
+    fontSize: normalize(22)
+  },
+  restrictionViewList: {
+    backgroundColor: TotaraTheme.colorAccent,
+    height: "100%"
   },
   availableReasonTextWrap: {
     fontSize: normalize(17),
@@ -151,36 +160,36 @@ const headerViewStyles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: normalize(280),
-    minHeight: normalize(260)
+    maxHeight: viewHeight.learningItemHeaderMaxHeight,
+    minHeight: viewHeight.learningItemHeaderMinHeight,
+    backgroundColor: TotaraTheme.colorNeutral2
   },
   itemImage: {
-    flex: 2.5,
-    minHeight: normalize(160)
+    minHeight: viewHeight.learningItemImageMaxHeight
   },
   itemCard: {
-    maxHeight: normalize(90),
-    backgroundColor: TotaraTheme.colorNeutral2,
-    paddingBottom: 8
+    maxHeight: viewHeight.learningItemTitleMaxHeight,
+    minHeight: viewHeight.learningItemTitleMinHeight,
+    backgroundColor: TotaraTheme.colorNeutral2
   },
   LearningTypeLabelWrap: {
-    borderRadius: 10,
+    borderRadius: borderRadius.borderRadiusM,
     borderStyle: "solid",
     borderWidth: 1,
     alignSelf: "flex-start",
     alignItems: "center",
-    marginTop: margins.marginS
+    marginTop: margins.marginS,
+    borderColor: TotaraTheme.colorNeutral7
   },
   tabBarContainer: {
     flex: 0.4,
-    maxHeight: 50,
-    minHeight: 48,
+    height: 50,
     marginTop: margins.marginL
   },
   tabNav: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginLeft: normalize(16),
+    marginLeft: margins.marginL,
     width: Dimensions.get("window").width * 0.5,
     alignItems: "center",
     flex: 1
@@ -193,7 +202,8 @@ const headerViewStyles = StyleSheet.create({
     paddingLeft: paddings.paddingL,
     paddingRight: paddings.paddingL,
     paddingTop: paddings.paddingXS,
-    paddingBottom: paddings.paddingXS
+    paddingBottom: paddings.paddingXS,
+    color: TotaraTheme.colorNeutral7
   },
   tabSelected: {
     height: "100%",
@@ -205,7 +215,7 @@ const headerViewStyles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-around",
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    backgroundColor: TotaraTheme.colorOpacity70
   }
 });
 
@@ -216,7 +226,7 @@ const videoControllerStyles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    borderRadius: normalize(12)
+    borderRadius: borderRadius.borderRadiusM
   }
 });
 

@@ -326,18 +326,17 @@ let courses = [
           id: 8,
           statuskey: "notyetstarted",
           progress: 0,
-          timecompleted: null,
-          gradefinal: 8,
-          grademax: 100
+          timecompleted: null
         }
       }
-    }
+    },
+    gradeFinal: 8,
+    gradeMax: 100
   }
 ];
 
-const certification = {
+const groups = {
   id: 2,
-  itemtype: "certification",
   shortname: "program1",
   fullname: "How to Create Reports",
   summary:
@@ -382,51 +381,24 @@ const certification = {
   }
 };
 
-const program = {
+const certification = {
   id: 2,
-  itemtype: "program",
-  shortname: "program1",
-  fullname: "How to Create Reports",
-  summary:
-    "Welcome to this course on reporting in Totara Learn. Do any of these situations sound familiar? The good news is that Totara Learn has a variety of inbuilt reports, and gives you the chance to create your own custom reports, using our report builder. In this course, you’ll explore your options for reporting in Totara Learn",
-  duedate: new Date(2019, 10, 2),
-  progress: 10,
-  duedateState: "warning",
+  itemtype: "certification",
   image:
-    "https://s18670.pcdn.co/wp-content/uploads/FHI360_financialliteracy-556x312.jpg",
-  courseSets: [
-    {
-      id: 10,
-      label: "Getting Started",
-      courses: courses,
-      nextSet: {
-        operator: "then",
-        nextID: 11
-      }
-    },
-    {
-      id: 11,
-      label: "Building Content",
-      courses: courses,
-      nextSet: {
-        operator: "and",
-        nextID: 11
-      }
-    },
-    {
-      id: 12,
-      label: "Making Reports",
-      courses: courses
-    }
-  ],
-  completion: {
-    id: 8,
-    statuskey: "notyetstarted",
-    progress: 0,
-    timecompleted: null,
-    gradefinal: 8,
-    grademax: 100
-  }
+    "https://cdn.auckland.ac.nz/aem/content/auckland/en/_jcr_content/par/responsivegrid_567117200/par1/flexicomponent/image.img.480.low.jpg/1584491866597.jpg",
+  gradeMax: 45,
+  gradeFinal: 68,
+  course: groups
+};
+
+const program = {
+  id: 4,
+  itemtype: "program",
+  image:
+    "https://cdn.auckland.ac.nz/aem/content/auckland/en/_jcr_content/par/responsivegrid_567117200/par1/flexicomponent/image.img.480.low.jpg/1584491866597.jpg",
+  gradeMax: 45,
+  gradeFinal: 68,
+  course: groups
 };
 
 const labelText = {

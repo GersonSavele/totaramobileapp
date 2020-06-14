@@ -15,13 +15,16 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-import { statusKey } from "@totara/lib/constants";
+export enum statusKey {
+  completeViaRpl = "completeviarpl",
+  complete = "complete",
+  inProgress = "inprogress",
+  notYetStarted = "notyetstarted"
+}
 
 export interface Completion {
   id: number;
   statuskey: statusKey;
   progress: number;
   timecompleted?: Date;
-  grademax: number;
-  gradefinal: number;
 }

@@ -17,7 +17,7 @@
 import React, { useState, ReactNode, useContext } from "react";
 import { Animated, Dimensions, View, LayoutChangeEvent } from "react-native";
 import { ThemeContext, normalize } from "@totara/theme";
-import { parallaxScrollViewStyles } from "@totara/lib/styles/currentLearning";
+import { parallaxScrollViewStyles } from "./currentLearningStyles";
 
 type Props = {
   fadeOutForeground?: boolean;

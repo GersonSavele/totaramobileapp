@@ -21,14 +21,14 @@ import { translate } from "@totara/locale";
 import { ThemeContext } from "@totara/theme";
 import CourseList from "./CourseList";
 import OverviewDetails from "../overview/Details";
-import { CourseGroup } from "@totara/types";
+import { CourseGroupContentDetails } from "@totara/types/CourseGroup";
 //import { coreCertification } from "./api";
 import HeaderView from "../HeaderView";
 //Import mock data from js file once API has been fixed should remove from here(only for UI testing)
 import { program, certification } from "../mock-data";
 
 type CourseGroupProps = {
-  courseGroup: CourseGroup;
+  courseGroup: CourseGroupContentDetails;
   navigation: NavigationParams;
   type: string;
 };
@@ -66,20 +66,20 @@ const DetailsUI = ({ navigation, courseGroup, type }: CourseGroupProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <HeaderView
-      details={courseGroup}
+      details={courseGroup.course}
       navigation={navigation}
-      tabBarLeft={
+      tabBarLeftTitle={
         type === "program"
           ? translate("program-details.overview")
           : translate("certificate-details.overview")
       }
-      tabBarRight={
+      tabBarRightTitle={
         type === "program"
           ? translate("program-details.courses")
           : translate("certificate-details.courses")
       }
       onPress={onSwitchTab}
-      showOverview={showOverview}
+      overviewIsShown={showOverview}
       badgeTitle={type === "program" ? "program" : "certification"}
       image={courseGroup.image}>
       <View
@@ -90,10 +90,13 @@ const DetailsUI = ({ navigation, courseGroup, type }: CourseGroupProps) => {
             { backgroundColor: theme.colorNeutral1 }
           ]}>
           {!showOverview ? (
-            <CourseList courseGroup={courseGroup} navigation={navigation} />
+            <CourseList
+              courseGroup={courseGroup.course}
+              navigation={navigation}
+            />
           ) : (
             <OverviewDetails
-              learningItem={courseGroup}
+              contentDetails={courseGroup}
               summaryTypeTitle={
                 type === "program"
                   ? "Program Summary"

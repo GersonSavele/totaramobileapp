@@ -29,6 +29,8 @@ export interface CourseContentDetails {
   course: Course;
   native: boolean;
   imageSrc: string;
+  gradeMax: number;
+  gradeFinal: number;
 }
 
 export interface Course {

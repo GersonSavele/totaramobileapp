@@ -22,15 +22,8 @@ import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
 import Restriction from "./Restriction";
 import TextTypeLabel from "./TextTypeLabel";
-import RowIcon from "./RowIcon";
-import {
-  sectionNotAvailable,
-  sectionTitle,
-  rowContainer,
-  rowText,
-  rowInnerViewContainer,
-  styles
-} from "@totara/theme/activities";
+import CompletionIcon from "./CompletionIcon";
+import styles from "../activitiesStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity } from "@totara/types";
 import { Separator, GeneralErrorModal } from "@totara/components";
@@ -58,6 +51,8 @@ const Activities = ({
 }: ActivityListProps) => {
   return (
     <FlatList
+      nestedScrollEnabled={false}
+      overScrollMode="never"
       data={sections}
       renderItem={({ item }) => {
         return (
@@ -128,11 +123,11 @@ const RestrictionSectionHeader = ({
   };
   return (
     <View>
-      <TouchableOpacity style={styles.sectionViewWrap} onPress={onClose}>
-        <Text numberOfLines={1} style={sectionTitle()}>
+      <TouchableOpacity style={styles.sectionView} onPress={onClose}>
+        <Text numberOfLines={1} style={styles.sectionTitle}>
           {title}
         </Text>
-        <Text style={sectionNotAvailable()}>
+        <Text style={styles.sectionNotAvailable}>
           {translate("course.course_activity_section.not_available")}
         </Text>
       </TouchableOpacity>
@@ -154,8 +149,8 @@ const ExpandableSectionHeader = ({
   title: string;
 }) => {
   return (
-    <View style={styles.sectionViewWrap}>
-      <Text numberOfLines={1} style={sectionTitle()}>
+    <View style={styles.sectionView}>
+      <Text numberOfLines={1} style={styles.sectionTitle}>
         {title}
       </Text>
       {show ? (
@@ -221,7 +216,7 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
     </View>
   ) : (
     <View style={{ backgroundColor: TotaraTheme.colorAccent }}>
-      <View style={styles.rowInnerContainer}>
+      <View style={styles.rowContent}>
         {item.completion === completionTrack.trackingManual ? (
           <TouchableOpacity
             onPress={() =>
@@ -235,22 +230,21 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
                 }
               })
             }>
-            <RowIcon
+            <CompletionIcon
               completion={item.completion}
               status={item.completionstatus}
               available={item.available}
             />
           </TouchableOpacity>
         ) : (
-          <RowIcon
+          <CompletionIcon
             completion={item.completion}
             status={item.completionstatus}
             available={item.available}
           />
         )}
-
         <TouchableOpacity
-          style={rowContainer()}
+          style={styles.rowDidSelectContent}
           onPress={() => {
             switch (item.modtype) {
               case activityModType.scorm: {
@@ -293,11 +287,11 @@ const RowLock = ({ item }: { item: Activity }) => {
     setShow(!show);
   };
   return (
-    <View style={rowContainer()}>
+    <View style={styles.rowDidSelectContent}>
       <View>
         <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
-          <View style={rowInnerViewContainer()}>
-            <RowIcon
+          <View style={[styles.rowContent, { opacity: 0.25 }]}>
+            <CompletionIcon
               completion={item.completion}
               status={item.completionstatus}
               available={item.available}
@@ -321,8 +315,8 @@ const RowLock = ({ item }: { item: Activity }) => {
 
 const RowContainer = ({ item }: { item: Activity }) => {
   return (
-    <View style={styles.rowContainer}>
-      <Text numberOfLines={1} style={rowText()}>
+    <View style={styles.rowTextContainer}>
+      <Text numberOfLines={1} style={styles.rowTitle}>
         {item.name.trim()}
       </Text>
     </View>

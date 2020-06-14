@@ -17,7 +17,7 @@ import React, { useRef, useEffect } from "react";
 import { View, Modal, TouchableOpacity, Text } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import BottomSheet from "reanimated-bottom-sheet";
-import { bottomSheetStyles } from "@totara/lib/styles/currentLearning";
+import { bottomSheetStyles } from "../currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type Props = {
@@ -60,9 +60,9 @@ const Restriction = ({ availableReason = "", onClose }: Props) => {
 
   const renderContent = () => {
     return (
-      <View style={bottomSheetStyles.renderListWrap}>
+      <View style={bottomSheetStyles.restrictionViewList}>
         <Text
-          numberOfLines={5}
+          numberOfLines={1}
           style={bottomSheetStyles.availableReasonTextWrap}>
           {result.length > 1 && result[1]}
         </Text>

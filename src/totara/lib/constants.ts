@@ -99,15 +99,16 @@ enum courseCriteria {
   selfComplete = "Self completion"
 }
 
-enum statusKey {
-  completeViaRpl = "completeviarpl",
-  complete = "complete",
-  inProgress = "inprogress",
-  notYetStarted = "notyetstarted"
-}
-
 enum activityModType {
   scorm = "scorm"
+}
+
+enum completionIconStateKey {
+  notAvailable = "notAvailable",
+  completed = "completed",
+  autoIncomplete = "autoIncomplete",
+  manualIncomplete = "manualIncomplete",
+  completeFail = "completeFail"
 }
 
 /* SCORM related */
@@ -180,8 +181,8 @@ export {
   learningItemEnum,
   itemToRouteMap,
   courseCriteria,
-  statusKey,
   scormZipPackagePath,
   offlineScormServerRoot,
-  activityModType
+  activityModType,
+  completionIconStateKey
 };
