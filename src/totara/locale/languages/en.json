@@ -121,7 +121,8 @@
       "button_text": "Logout",
       "title": "Confirmation",
       "message": "Are you sure you want to logout?"
-    }
+    },
+    "about": "About"
   },
   "course": {
     "course_overview": {

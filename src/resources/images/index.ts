@@ -28,10 +28,11 @@ import courseCompatible from "./course_compatible/course_compatible.png";
 import defaultProgram from "./programs_default/programs_default.png";
 import defaultCourses from "./courses_default/courses_default.png";
 import defaultCertifications from "./certifications_default/certifications_default.png";
+import noDownloads from "./downloads/no_downloads.png";
+import totaraLogo from "./totara_logo/totara_logo.png";
 
 import iconBell from "./tabbar/notificationsRegular.png";
 import iconBellSolid from "./tabbar/notificationsSolid.png";
-import noDownloads from "./downloads/no_downloads.png";
 
 const Images = {
   autoCompleteTick,
@@ -46,7 +47,8 @@ const Images = {
   courseCompatible,
   defaultProgram,
   defaultCourses,
-  defaultCertifications
+  defaultCertifications,
+  totaraLogo
 };
 
 const Icons = {

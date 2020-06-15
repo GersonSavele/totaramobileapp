@@ -17,18 +17,15 @@
 
 import React, { useContext } from "react";
 import { Image, ImageSourcePropType } from "react-native";
-import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
-import totaraNavigationOptions from "@totara/components/NavigationOptions";
+import { useSelector } from "react-redux";
 import { NotificationBell } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
+import { RootState } from "@totara/reducers";
 import CurrentLearningStack from "./currentLearning";
-import Settings from "./settings";
-import Profile from "./profile";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
-import { useSelector } from "react-redux";
-import { RootState } from "@totara/reducers";
+import ProfileStack from "./profile";
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
@@ -76,20 +73,7 @@ const DownloadsTab = {
 };
 
 const ProfileTab = {
-  screen: createStackNavigator(
-    {
-      Profile: Profile,
-      Settings: Settings
-    },
-    {
-      initialRouteName: "Profile",
-      headerLayoutPreset: "center",
-      defaultNavigationOptions: ({ screenProps }) =>
-        totaraNavigationOptions({
-          theme: screenProps.theme
-        })
-    }
-  ),
+  screen: ProfileStack,
   navigationOptions: {
     tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
       tabBarIconBuilder(

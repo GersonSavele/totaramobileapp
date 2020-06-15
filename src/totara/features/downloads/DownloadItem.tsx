@@ -64,9 +64,8 @@ const DownloadItem = ({
           )}
         </View>
         <View style={{ flex: 1 }}>
-          <Text style={TotaraTheme.textH4}>{item.name}</Text>
-          <Text
-            style={{ color: TotaraTheme.colorNeutral6 }}>{`${humanReadableSize(
+          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.subtitleSize}>{`${humanReadableSize(
             item.sizeInBytes
           )}`}</Text>
         </View>
@@ -90,6 +89,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: paddings.paddingM,
     backgroundColor: TotaraTheme.colorNeutral1
+  },
+  title: {
+    ...TotaraTheme.textH4
+  },
+  subtitleSize: {
+    ...TotaraTheme.textB2,
+    color: TotaraTheme.colorNeutral6
   },
   itemCircle: {
     alignSelf: "center",

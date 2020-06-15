@@ -207,10 +207,7 @@ const DownloadsStack = createStackNavigator(
   {
     initialRouteName: "Downloads",
     initialRouteKey: "Downloads",
-    defaultNavigationOptions: ({ screenProps }: any) =>
-      totaraNavigationOptions({
-        theme: screenProps.theme
-      })
+    defaultNavigationOptions: totaraNavigationOptions({})
   }
 );
 

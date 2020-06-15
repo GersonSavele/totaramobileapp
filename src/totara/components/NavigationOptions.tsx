@@ -1,17 +1,14 @@
-import { AppliedTheme } from "@totara/theme/Theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type navigationOptionsProps = {
-  theme: AppliedTheme;
   title?: string;
   backTitle?: string;
-  // rightIcon? : IconDefinition | string,
   opacity?: number;
   rightAction?: JSX.Element;
   leftAction?: JSX.Element;
 };
 
 const TotaraNavigationOptions = ({
-  theme,
   opacity,
   title,
   rightAction,
@@ -20,18 +17,18 @@ const TotaraNavigationOptions = ({
   return {
     headerStyle: {
       borderBottomWidth: 0,
-      backgroundColor: theme.colorSecondary1,
+      backgroundColor: TotaraTheme.colorSecondary1,
       shadowOpacity: 0,
       elevation: 0
     },
     headerTitleStyle: {
-      color: theme.navigationHeaderTintColor,
-      fontSize: theme.textH4.fontSize,
+      color: TotaraTheme.navigationHeaderTintColor,
+      fontSize: TotaraTheme.textH4.fontSize,
       opacity: opacity
     },
     title: title,
     headerBackTitle: null,
-    headerTintColor: theme.navigationHeaderTintColor,
+    headerTintColor: TotaraTheme.navigationHeaderTintColor,
     headerRight: rightAction,
     headerLeft: leftAction
   };

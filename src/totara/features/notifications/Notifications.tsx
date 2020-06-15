@@ -247,10 +247,7 @@ const NotificationsStack = createStackNavigator(
   {
     initialRouteName: "Notification",
     initialRouteKey: "Notification",
-    defaultNavigationOptions: ({ screenProps }: any) =>
-      totaraNavigationOptions({
-        theme: screenProps.theme
-      })
+    defaultNavigationOptions: totaraNavigationOptions({})
   }
 );
 

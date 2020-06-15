@@ -33,15 +33,16 @@ import { AuthConsumer, AuthContext } from "@totara/core";
 import { ThemeContext, normalize } from "@totara/theme";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
-import { AUTHORIZATION } from "@totara/lib/constants";
+import { AUTHORIZATION, NAVIGATION } from "@totara/lib/constants";
 import { userOwnProfile } from "./api";
 
 import { translate } from "@totara/locale";
 import { NetworkStatus as NS } from "apollo-boost";
 import { Container } from "native-base";
-import { fontSizes, margins, paddings } from "@totara/theme/constants";
+import { iconSizes, margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatus } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { NavigationContext } from "react-navigation";
 
 type ProfileViewProps = {
   profile: UserProfile;
@@ -72,6 +73,7 @@ const Profile = () => {
 };
 
 const ProfileView = ({ profile }: ProfileViewProps) => {
+  const navigation = useContext(NavigationContext);
   const [theme] = useContext(ThemeContext);
   const {
     authContextState: { appState }
@@ -92,6 +94,10 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
       ],
       { cancelable: false }
     );
+
+  const goToAbout = () => {
+    navigation.navigate(NAVIGATION.NAVIGATION_ABOUT);
+  };
 
   return (
     <View style={[theme.viewContainer]}>
@@ -157,12 +163,32 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
           {translate("user_profile.manage_section")}
         </Text>
         <View style={styles.manageOptions}>
+          <View style={[styles.sectionOption, { flexDirection: "row" }]}>
+            <TouchableOpacity onPress={goToAbout} style={{ flex: 1 }}>
+              <Text style={TotaraTheme.textB1}>
+                {translate("user_profile.about")}
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                alignSelf: "flex-end",
+                alignContent: "flex-end",
+                justifyContent: "flex-end"
+              }}>
+              <FontAwesomeIcon
+                icon={"angle-right"}
+                size={iconSizes.sizeM}
+                style={{ alignSelf: "center" }}
+                color={TotaraTheme.colorNeutral4}
+              />
+            </View>
+          </View>
+
           <View style={styles.sectionOption}>
             <AuthConsumer>
               {(auth) => (
                 <TouchableOpacity onPress={() => confirmationLogout(auth)}>
-                  <Text
-                    style={[theme.textB2, { fontSize: fontSizes.fontSizeM }]}>
+                  <Text style={TotaraTheme.textB1}>
                     {translate("user_profile.logout.button_text")}
                   </Text>
                 </TouchableOpacity>
@@ -196,7 +222,11 @@ const styles = StyleSheet.create({
     marginTop: margins.marginM
   },
   sectionOption: {
-    borderBottomColor: TotaraTheme.colorNeutral2
+    paddingTop: paddings.paddingXL,
+    paddingBottom: paddings.paddingXL,
+    marginBottom: margins.marginS,
+    borderBottomColor: TotaraTheme.colorNeutral3,
+    borderBottomWidth: 1
   }
 });
 
