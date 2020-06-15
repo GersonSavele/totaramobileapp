@@ -44,12 +44,11 @@ import {
   NAVIGATION_OFFLINE_SCORM_ACTIVITY,
   NAVIGATION_SCORM_FEEDBACK
 } from "@totara/lib/constants";
-
 import {
   formatAttempts,
   getOfflinePackageUnzipPath,
   getTargetZipFile,
-  retrieveAllData
+  getOfflineActivity
 } from "./utils";
 import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
 import ScormAttempts from "./ScormAttempts";
@@ -65,7 +64,7 @@ import { useApolloClient } from "@apollo/react-hooks";
 import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
 import ScormFeedback from "./ScormFeedback";
-import { get } from "lodash";
+
 const { download } = ResourceManager;
 
 type ScormActivityProps = {
@@ -100,6 +99,20 @@ const ScormActivity = (props: ScormActivityProps) => {
     (state: RootState) => state.resourceReducer.resources
   );
 
+  const onRefresh = () => {
+    if (isInternetReachable) {
+      refetch();
+    } else {
+      const offlineAttempts = getOfflineActivity({
+        client: apolloClient,
+        id: id
+      });
+      setScormBundle({
+        ...scormBundle,
+        offlineActivity: offlineAttempts
+      });
+    }
+  };
   useEffect(() => {
     if (
       scormBundle &&
@@ -147,23 +160,14 @@ const ScormActivity = (props: ScormActivityProps) => {
     if (data) {
       let mergedData = { scorm: formatAttempts(data.scorm) };
 
-      const cachedData = retrieveAllData({ client: apolloClient });
-      const offlineAttempts = get(
-        cachedData,
-        `[${id}].offlineActivity`,
-        undefined
-      );
-      // FIXME: This is a temporary hack because the server is not returning correct data
-      if (offlineAttempts && Object.keys(offlineAttempts).length) {
-        mergedData = {
-          ...mergedData,
-          offlineActivity: offlineAttempts
-        };
-      }
-
+      const offlineAttempts = getOfflineActivity({
+        client: apolloClient,
+        id: id
+      });
       setScormBundle({
         ...scormBundle,
-        ...mergedData
+        ...mergedData,
+        offlineActivity: offlineAttempts
         //TODO: remove timestamp if the user is online
         //lastsynced: 0
       });
@@ -192,6 +196,7 @@ const ScormActivity = (props: ScormActivityProps) => {
         error={error}
         networkStatus={networkStatus}
         scormBundle={scormBundle}
+        onRefresh={onRefresh}
         //this is temporary solution:
         isDownloaded={resourceState === ResourceState.Completed}
         client={apolloClient}

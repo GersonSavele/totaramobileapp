@@ -448,6 +448,16 @@ const shouldAllowAttempt = ({
   (!maxAttempts || maxAttempts >= totalAttempt) &&
   (actionPrimary || actionSecondary);
 
+const getOfflineActivity = ({ client, id }: { client: any; id: string }) => {
+  const cachedData = retrieveAllData({ client });
+
+  const offlineAttempts = get(cachedData, `[${id}].offlineActivity`, undefined);
+  if (offlineAttempts && Object.keys(offlineAttempts).length) {
+    return offlineAttempts;
+  }
+  return undefined;
+};
+
 export {
   formatAttempts,
   getDataForScormSummary,
@@ -462,5 +472,6 @@ export {
   getTargetZipFile,
   shouldAllowAttempt,
   getOfflineScormPackageName,
-  setCompletedScormAttempt
+  setCompletedScormAttempt,
+  getOfflineActivity
 };

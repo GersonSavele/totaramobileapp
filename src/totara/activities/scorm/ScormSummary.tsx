@@ -71,6 +71,7 @@ type SummaryProps = {
   navigation: any;
   isDownloaded: boolean;
   client: any;
+  onRefresh: Function;
 };
 
 const gridStyle = (theme: AppliedTheme) => [
@@ -114,7 +115,8 @@ const ScormSummary = ({
   scormBundle,
   navigation,
   isDownloaded,
-  client
+  client,
+  onRefresh
 }: SummaryProps) => {
   const theme = TotaraTheme;
 
@@ -204,7 +206,7 @@ const ScormSummary = ({
             refreshControl={
               <RefreshControl
                 refreshing={networkStatus === ApolloNetworkStatus.refetch}
-                onRefresh={refetch}
+                onRefresh={onRefresh}
               />
             }>
             <View style={{ padding: gutter }}>
@@ -277,9 +279,7 @@ const ScormSummary = ({
             (actionPrimary && {
               title: translate("scorm.summary.new_attempt"),
               action: () => {
-                navigation.addListener("didFocus", () => {
-                  refetch({ scormid: id });
-                });
+                navigation.addListener("didFocus", onRefresh);
                 const attemptNumber = totalAttempt + 1;
                 navigateTo({
                   routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
