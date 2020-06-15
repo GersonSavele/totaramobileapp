@@ -30,7 +30,6 @@ import { useQuery } from "@apollo/react-hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { AuthConsumer, AuthContext } from "@totara/core";
-import { ThemeContext, normalize } from "@totara/theme";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
 import { AUTHORIZATION, NAVIGATION } from "@totara/lib/constants";
@@ -74,7 +73,6 @@ const Profile = () => {
 
 const ProfileView = ({ profile }: ProfileViewProps) => {
   const navigation = useContext(NavigationContext);
-  const [theme] = useContext(ThemeContext);
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
@@ -100,8 +98,8 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
   };
 
   return (
-    <View style={[theme.viewContainer]}>
-      <View style={{ backgroundColor: theme.colorSecondary1 }}>
+    <View style={[TotaraTheme.viewContainer]}>
+      <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
         <View style={styles.headerContent}>
           {profile.profileimage.indexOf("theme/image.php/basis/core/") == -1 ? (
             <Image
@@ -114,45 +112,19 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
               }}
             />
           ) : (
-            <View
-              style={[
-                styles.avatar,
-                {
-                  backgroundColor: theme.colorNeutral3,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }
-              ]}>
+            <View style={styles.avatar}>
               <FontAwesomeIcon
                 icon={"user"}
-                color={theme.colorNeutral4}
+                color={TotaraTheme.colorNeutral4}
                 size={65}
               />
             </View>
           )}
-          <Text
-            style={[
-              theme.textH2,
-              { fontWeight: "bold", fontSize: normalize(22) }
-            ]}>
+          <Text style={styles.userDetails}>
             {profile.firstname} {profile.surname}
           </Text>
-          <Text
-            style={[
-              theme.textB3,
-              { color: theme.textColorSubdued, fontSize: normalize(15) }
-            ]}>
-            {profile.email}
-          </Text>
-          <Text
-            style={[
-              theme.textSmall,
-              {
-                color: theme.textColorSubdued,
-                marginTop: 6,
-                fontSize: normalize(12)
-              }
-            ]}>
+          <Text style={styles.userEmail}>{profile.email}</Text>
+          <Text style={styles.userLoginAs}>
             {translate("user_profile.login_as", { username: profile.username })}
           </Text>
         </View>
@@ -169,19 +141,12 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
                 {translate("user_profile.about")}
               </Text>
             </TouchableOpacity>
-            <View
-              style={{
-                alignSelf: "flex-end",
-                alignContent: "flex-end",
-                justifyContent: "flex-end"
-              }}>
-              <FontAwesomeIcon
-                icon={"angle-right"}
-                size={iconSizes.sizeM}
-                style={{ alignSelf: "center" }}
-                color={TotaraTheme.colorNeutral4}
-              />
-            </View>
+            <FontAwesomeIcon
+              icon={"angle-right"}
+              size={iconSizes.sizeM}
+              style={{ alignSelf: "center" }}
+              color={TotaraTheme.colorNeutral4}
+            />
           </View>
 
           <View style={styles.sectionOption}>
@@ -210,7 +175,25 @@ const styles = StyleSheet.create({
     width: 130,
     height: 130,
     borderRadius: 65,
-    marginBottom: margins.marginS
+    marginBottom: margins.marginS,
+    backgroundColor: TotaraTheme.colorNeutral3,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  userDetails: {
+    ...TotaraTheme.textH2,
+    ...{ fontWeight: "bold" }
+  },
+  userEmail: {
+    ...TotaraTheme.textB3,
+    ...{ color: TotaraTheme.colorNeutral6 }
+  },
+  userLoginAs: {
+    ...TotaraTheme.textSmall,
+    ...{
+      color: TotaraTheme.colorNeutral6,
+      marginTop: 6
+    }
   },
   manageSection: {
     margin: margins.marginM

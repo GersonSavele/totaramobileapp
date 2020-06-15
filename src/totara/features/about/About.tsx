@@ -22,13 +22,12 @@ import { View } from "react-native-animatable";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings } from "@totara/theme/constants";
 import { getBuildNumber, getVersion } from "react-native-device-info";
-import { createStackNavigator } from "react-navigation-stack";
-import { TouchableIcon } from "@totara/components";
 
 const About = () => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer} animation={"slideInUp"}>
+        // @ts-ignore
         <Image source={Images.totaraLogo} style={styles.logo} />
       </View>
       <View style={styles.versionContainer} animation={"slideInUp"} delay={200}>
@@ -66,21 +65,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const AboutStack = createStackNavigator({
-  About: {
-    screen: About,
-    navigationOptions: ({ navigation }) => {
-      return {
-        headerLeft: (
-          <TouchableIcon
-            icon={"times"}
-            onPress={() => navigation.pop()}
-            size={TotaraTheme.textH3.fontSize}
-          />
-        )
-      };
-    }
-  }
-});
-
-export default AboutStack;
+export default About;
