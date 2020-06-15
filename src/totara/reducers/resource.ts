@@ -17,6 +17,11 @@
 
 import { Resource } from "@totara/types";
 import { ResourceState } from "@totara/types/Resource";
+import {
+  ADD_RESOURCE,
+  UPDATE_RESOURCE,
+  DELETE_RESOURCE
+} from "../actions/resource";
 
 const initialState = {
   resources: [] as Resource[]
@@ -24,7 +29,7 @@ const initialState = {
 
 const resourceReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_RESOURCE": {
+    case ADD_RESOURCE: {
       const resourcePayload = action.payload as Resource; //payload: { id: 123, url: etc}
       resourcePayload.state = ResourceState.Added;
 
@@ -39,7 +44,7 @@ const resourceReducer = (state = initialState, action) => {
         resources: [...state.resources, resourcePayload]
       };
     }
-    case "UPDATE_RESOURCE": {
+    case UPDATE_RESOURCE: {
       const payload = action.payload; //payload: { id: 123, url: etc}
 
       const resourcesList: Resource[] = state.resources;
@@ -68,7 +73,7 @@ const resourceReducer = (state = initialState, action) => {
         resources: [...resourcesList]
       };
     }
-    case "DELETE_RESOURCE": {
+    case DELETE_RESOURCE: {
       const { ids } = action.payload;
       const resourcesList: Resource[] = state.resources;
       const filtered = resourcesList.filter(

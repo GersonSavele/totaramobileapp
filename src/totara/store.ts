@@ -24,6 +24,7 @@ const createMiddleware = (logger: boolean) => {
   else applyMiddleware();
 };
 
+// eslint-disable-next-line no-undef
 const store = createStore(persistedReducer, createMiddleware(__DEV__));
 // Middleware: Redux Persist Persister
 const persistor = persistStore(store);

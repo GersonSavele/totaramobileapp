@@ -32,19 +32,17 @@ import {
   exists
 } from "react-native-fs";
 import { Resource } from "@totara/types";
-import { store } from "../store";
 import { ResourceState, ResourceType } from "@totara/types/Resource";
 import { uuid } from "@totara/lib/tools";
-
-const updateStore = (payload) => {
-  store.dispatch({
-    type: "UPDATE_RESOURCE",
-    payload: payload
-  });
-};
+import {
+  addResource,
+  updateResource,
+  deleteResource as storeDeleteResource
+} from "../actions/resource";
+import { store } from "../store";
 
 const onDownloadBegin = (id: string, res: DownloadBeginCallbackResult) => {
-  updateStore({
+  updateResource({
     id: id,
     jobId: res.jobId,
     state: ResourceState.Downloading,
@@ -57,7 +55,7 @@ const onDownloadProgress = (
   id: string,
   res: DownloadProgressCallbackResult
 ) => {
-  updateStore({
+  updateResource({
     id: id,
     jobId: res.jobId,
     state: ResourceState.Downloading,
@@ -111,41 +109,40 @@ const download = ({
 
   const _downloadFile = downloadFile(downloaderOptions);
   //DISPATCH TO REDUX
-  store.dispatch({
-    type: "ADD_RESOURCE",
-    payload: {
-      id: id,
-      customId: customId,
-      type: type,
-      jobId: _downloadFile.jobId,
-      name: name
-    } as Resource
-  });
+  addResource({
+    id: id,
+    customId: customId,
+    type: type,
+    jobId: _downloadFile.jobId,
+    name: name
+  } as Resource);
 
   //download
   _downloadFile.promise
     .then((response) => {
       if (response.statusCode === 200) {
-        updateStore({
+        updateResource({
           id: id,
           state: ResourceState.Completed
         });
 
         subscribe(({ progress, filePath }) => {
           // the filePath is always empty on iOS for zipping.
-          console.log(`progress: ${progress}\nprocessed at: ${filePath}`);
+          // eslint-disable-next-line no-undef
+          if (__DEV__)
+            console.log(`progress: ${progress}\nprocessed at: ${filePath}`);
         });
 
         return unzip(targetPathFile, targetExtractPath);
       } else {
-        updateStore({
+        updateResource({
           id: id,
           state: ResourceState.Errored
         });
       }
     })
     .then((unzipped) => {
-      updateStore({
+      updateResource({
         id: id,
         unzipPath: unzipped
       });
@@ -167,12 +164,7 @@ const deleteResource = (ids: string[]) => {
       }
     })
   ).then(() => {
-    store.dispatch({
-      type: "DELETE_RESOURCE",
-      payload: {
-        ids: ids
-      }
-    });
+    storeDeleteResource(ids);
   });
 };
 
