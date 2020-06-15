@@ -29,7 +29,7 @@ import {
 import { Log } from "@totara/lib";
 import { showMessage } from "@totara/lib/tools";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
-import { setWith, get } from "lodash";
+import { setWith, get, values } from "lodash";
 import {
   OFFLINE_SCORM_PREFIX,
   offlineScormServerRoot,
@@ -398,7 +398,7 @@ const setCompletedScormAttempt = (
       newCommitsData.push(attempt);
       setWith(
         newData,
-        `[${scormId}].completed_attempts`,
+        `completed_attempts.[${scormId}]`,
         newCommitsData,
         Object
       );
@@ -458,6 +458,114 @@ const getOfflineActivity = ({ client, id }: { client: any; id: string }) => {
   return undefined;
 };
 
+const getOfflineScormCommits = ({ client }: { client: any }) => {
+  /*
+  return getAllCommits().then((storedData) => {
+    let formattedUnsyncedData = undefined;
+    if (storedData) {
+      formattedUnsyncedData = [];
+      for (let commitScormId in storedData) {
+        const scormCommits = storedData[commitScormId];
+        const orededAttemptKeys = Object.keys(scormCommits).sort();
+        for (let index = 0; index < orededAttemptKeys.length; index++) {
+          const commitAttempt = orededAttemptKeys[index];
+          if (scormCommits[commitAttempt]) {
+            const commitTracks = values(scormCommits[commitAttempt]).filter(
+              (value) => value
+            );
+            const commit = {
+              scormId: commitScormId,
+              attempt: parseInt(commitAttempt),
+              tracks: commitTracks
+            };
+            formattedUnsyncedData.push(commit);
+          }
+        }
+      }
+    }
+    return formattedUnsyncedData;
+  });
+  */
+  const allOfflineData = retrieveAllData({ client });
+  const completedScormAttempts = get(
+    allOfflineData,
+    `completed_attempts`,
+    undefined
+  );
+  let formattedUnsyncedData = undefined;
+  if (completedScormAttempts) {
+    formattedUnsyncedData = [];
+    const scormIs = Object.keys(completedScormAttempts);
+    for (let keyIndex = 0; keyIndex < scormIs.length; keyIndex++) {
+      const scormId = scormIs[keyIndex];
+      const completedAttempts = completedScormAttempts[scormId];
+      console.log("attempts: ", completedAttempts);
+      for (
+        let indexAttempt = 0;
+        indexAttempt < completedAttempts.length;
+        indexAttempt++
+      ) {
+        const attempt = completedAttempts[indexAttempt];
+
+        const commitScormAttempt = get(
+          allOfflineData,
+          `${[scormId]}.commits.${[attempt]}`,
+          undefined
+        );
+        if (commitScormAttempt) {
+          const commitTracks = values(commitScormAttempt).filter(
+            (value) => value
+          );
+          const commit = {
+            scormId: scormId,
+            attempt: parseInt(attempt),
+            tracks: commitTracks
+          };
+          formattedUnsyncedData.push(commit);
+        }
+      }
+    }
+  }
+  return formattedUnsyncedData;
+};
+
+const clearSyncedScormCommit = ({
+  client,
+  scormId,
+  attempt
+}: {
+  client: any;
+  scormId: string;
+  attempt: number;
+}) => {
+  const allOfflineData = retrieveAllData({ client });
+  const completedScormAttempts = get(
+    allOfflineData,
+    `completed_attempts`,
+    undefined
+  );
+  return clearCommit(scormId, attempt);
+};
+
+/**
+ * This saves the map of scorm bundle with the new scormBunble in the cache
+ * @param param0
+ */
+const saveInTheCache = ({
+  client,
+  scormBundles
+}: {
+  client: any;
+  scormBundles: { [key: string]: ScormBundle };
+}) => {
+  client.writeQuery({
+    query: scormActivitiesRecordsQuery,
+    data: {
+      scormBundles
+    }
+  });
+};
+
 export {
   formatAttempts,
   getDataForScormSummary,
@@ -473,5 +581,6 @@ export {
   shouldAllowAttempt,
   getOfflineScormPackageName,
   setCompletedScormAttempt,
-  getOfflineActivity
+  getOfflineActivity,
+  getOfflineScormCommits
 };

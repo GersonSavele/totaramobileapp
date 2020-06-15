@@ -21,15 +21,16 @@
 
 import { useEffect, useState } from "react";
 import { gql } from "apollo-boost";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
 
 import {
-  getOfflineScormCommits,
+  // getOfflineScormCommits,
   clearSyncedScormCommit
 } from "./offlineScormController";
 import { Log, showMessage } from "@totara/lib";
 import { translate } from "@totara/locale";
+import { getOfflineScormCommits } from "../utils";
 
 const SaveAttemptMutation = gql`
   mutation mod_scorm_save_offline_attempts(
@@ -53,29 +54,47 @@ const AttemptSynchronizer = () => {
   const [unSyncData, setUnsyncData] = useState<[SyncData] | undefined>(
     undefined
   );
+
   const [saveAttempt] = useMutation(SaveAttemptMutation);
   const netInfo = useNetInfo();
+  const client = useApolloClient();
 
   useEffect(() => {
     if (netInfo.type !== "unknown" && netInfo.isInternetReachable) {
       if (unSyncData && unSyncData.length && unSyncData.length > 0) {
-        syncScormRecord(unSyncData[0])
-          .then((updatedUnsyncData) => {
-            setUnsyncData(updatedUnsyncData);
-          })
-          .catch((e) => {
-            Log.error(translate("general.error"), e);
-            showMessage({ text: translate("general.error_unknown") });
-          });
+        // syncScormRecord(unSyncData[0])
+        //   .then((updatedUnsyncData) => {
+        //     setUnsyncData(updatedUnsyncData);
+        //   })
+        //   .catch((e) => {
+        //     Log.error(translate("general.error"), e);
+        //     showMessage({ text: translate("general.error_unknown") });
+        //   });
       } else {
-        getOfflineScormCommits().then((data) => {
-          if (data && data.length > 0) {
-            const syncDataSet = data as [SyncData];
-            setUnsyncData(syncDataSet);
-          }
-        });
+        const syncDataSet = getOfflineScormCommits({ client });
+        setUnsyncData(syncDataSet);
       }
     }
+
+    // if (netInfo.type !== "unknown" && netInfo.isInternetReachable) {
+    //   if (unSyncData && unSyncData.length && unSyncData.length > 0) {
+    //     syncScormRecord(unSyncData[0])
+    //       .then((updatedUnsyncData) => {
+    //         setUnsyncData(updatedUnsyncData);
+    //       })
+    //       .catch((e) => {
+    //         Log.error(translate("general.error"), e);
+    //         showMessage({ text: translate("general.error_unknown") });
+    //       });
+    //   } else {
+    //     getOfflineScormCommits(client).then((data) => {
+    //       if (data && data.length > 0) {
+    //         const syncDataSet = data as [SyncData];
+    //         setUnsyncData(syncDataSet);
+    //       }
+    //     });
+    //   }
+    // }
   }, [unSyncData, netInfo]);
 
   const syncScormRecord = (syncData: SyncData) => {
