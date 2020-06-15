@@ -14,7 +14,7 @@
  */
 import moment from "moment";
 
-import { getDataForScormSummary } from "../scorm";
+import { getDataForScormSummary } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
 
 describe("getDataForScormSummary", () => {
