@@ -192,7 +192,7 @@ const ScormActivity = (props: ScormActivityProps) => {
         navigation={navigation}
         name={title}
         loading={loading}
-        refetch={refetch}
+        refetch={onRefresh}
         error={error}
         networkStatus={networkStatus}
         scormBundle={scormBundle}

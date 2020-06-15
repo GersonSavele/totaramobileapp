@@ -59,12 +59,12 @@ import {
 import { ScormBundle, Grade } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
+import { margins } from "@totara/theme/constants";
 
 type SummaryProps = {
   id: string;
   name: string;
   error: any;
-  refetch: any;
   loading: boolean;
   networkStatus: any;
   scormBundle: ScormBundle | undefined;
@@ -110,7 +110,6 @@ const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
 const ScormSummary = ({
   id,
   error,
-  refetch,
   networkStatus,
   scormBundle,
   navigation,
@@ -129,7 +128,6 @@ const ScormSummary = ({
     gradeMethod,
     calculatedGrade,
     completionScoreRequired,
-    actionPrimary,
     // actionSecondary, //TODO - will be enable for online
     timeOpen,
     maxAttempts,
@@ -179,7 +177,7 @@ const ScormSummary = ({
     return true;
   };
   if (error) {
-    return <LoadingError onRefreshTap={refetch} />;
+    return <LoadingError onRefreshTap={onRefresh} />;
   }
   return (
     <>
@@ -275,34 +273,31 @@ const ScormSummary = ({
         </View>
         <AttemptController
           isDownloaded={shouldAllowAttempt(bundleData) && isDownloaded}
-          primary={
-            (actionPrimary && {
-              title: translate("scorm.summary.new_attempt"),
-              action: () => {
-                navigation.addListener("didFocus", onRefresh);
-                const attemptNumber = totalAttempt + 1;
-                navigateTo({
-                  routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
-                  navigate: navigation.navigate,
-                  props: {
-                    title: name,
-                    attempt: attemptNumber,
-                    scorm: scormBundle && scormBundle.scorm,
-                    backIcon: "chevron-left",
-                    backAction: () =>
-                      onExitActivityAttempt({
-                        id: id,
-                        attempt: attemptNumber,
-                        gradeMethod: gradeMethod,
-                        completionScoreRequired: completionScoreRequired,
-                        client
-                      })
-                  }
-                });
-              }
-            }) ||
-            undefined
-          }
+          primary={{
+            title: translate("scorm.summary.new_attempt"),
+            action: () => {
+              navigation.addListener("didFocus", onRefresh);
+              const attemptNumber = totalAttempt + 1;
+              navigateTo({
+                routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
+                navigate: navigation.navigate,
+                props: {
+                  title: name,
+                  attempt: attemptNumber,
+                  scorm: scormBundle && scormBundle.scorm,
+                  backIcon: "chevron-left",
+                  backAction: () =>
+                    onExitActivityAttempt({
+                      id: id,
+                      attempt: attemptNumber,
+                      gradeMethod: gradeMethod,
+                      completionScoreRequired: completionScoreRequired,
+                      client
+                    })
+                }
+              });
+            }
+          }}
           //TODO - Will be fixed after enable online
           /*
             secondary={
@@ -339,12 +334,12 @@ const ScormSummary = ({
 type PropsAttempt = {
   primary: PropsInfo | undefined;
   secondary: PropsInfo | undefined;
+  isDownloaded: boolean;
 };
 
 type PropsInfo = {
-  title: string;
   action: any;
-  isDownloaded: boolean;
+  title: string;
 };
 
 const AttemptController = ({
@@ -359,7 +354,7 @@ const AttemptController = ({
           <SecondaryButton
             text={secondary.title}
             onPress={secondary.action}
-            style={{ flex: 1, marginRight: primary ? 16 : 0 }}
+            style={{ flex: 1, marginRight: primary ? margins.marginL : 0 }}
           />
         )}
 
@@ -367,7 +362,7 @@ const AttemptController = ({
           text={primary && primary.title}
           onPress={primary && primary.action}
           style={{ flex: 1 }}
-          mode={!primary || (!isDownloaded && "disabled")}
+          mode={(!(primary && isDownloaded) && "disabled") || undefined}
         />
       </View>
     </View>
