@@ -208,7 +208,7 @@ const HeaderView = ({
               {
                 text: translate("no_internet_alert.go_back"),
                 onPress: () => {
-                  navigation.goBack();
+                  navigation.popToTop();
                 }
               },
               {
