@@ -45,9 +45,9 @@ import { NetworkStatus as ApolloNetworkStatus } from "apollo-boost";
 import {
   getDataForScormSummary,
   onTapViewAllAttempts,
-  shouldShowAction,
   setCompletedScormAttempt,
-  getOfflineLastActivityResult
+  getOfflineLastActivityResult,
+  shouldAllowAttempt
 } from "@totara/lib/scorm";
 import { navigateTo } from "@totara/lib/navigation";
 import {
@@ -183,7 +183,6 @@ const ScormSummary = ({
     <>
       <View style={scormSummaryStyles.expanded}>
         <NetworkStatus />
-        {/* TODO: review this */}
         {maxAttempts && maxAttempts <= totalAttempt && (
           <MessageBar
             mode={"alert"}
@@ -272,42 +271,40 @@ const ScormSummary = ({
             </View>
           </ScrollView>
         </View>
-        {shouldShowAction(bundleData) && isDownloaded && (
-          <AttemptController
-            primary={
-              (actionPrimary && {
-                title: translate("scorm.summary.new_attempt"),
-                action: () => {
-                  if (scormBundle && scormBundle.scorm) {
-                    navigation.addListener("didFocus", () => {
-                      refetch({ scormid: id });
-                    });
-                    const attemptNumber = totalAttempt + 1;
-                    navigateTo({
-                      routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
-                      navigate: navigation.navigate,
-                      props: {
-                        title: name,
+        <AttemptController
+          isDownloaded={shouldAllowAttempt(bundleData) && isDownloaded}
+          primary={
+            (actionPrimary && {
+              title: translate("scorm.summary.new_attempt"),
+              action: () => {
+                navigation.addListener("didFocus", () => {
+                  refetch({ scormid: id });
+                });
+                const attemptNumber = totalAttempt + 1;
+                navigateTo({
+                  routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
+                  navigate: navigation.navigate,
+                  props: {
+                    title: name,
+                    attempt: attemptNumber,
+                    scorm: scormBundle && scormBundle.scorm,
+                    backIcon: "chevron-left",
+                    backAction: () =>
+                      onExitActivityAttempt({
+                        id: id,
                         attempt: attemptNumber,
-                        scorm: scormBundle.scorm,
-                        backIcon: "chevron-left",
-                        backAction: () =>
-                          onExitActivityAttempt({
-                            id: id,
-                            attempt: attemptNumber,
-                            gradeMethod: gradeMethod,
-                            completionScoreRequired: completionScoreRequired,
-                            client
-                          })
-                      }
-                    });
+                        gradeMethod: gradeMethod,
+                        completionScoreRequired: completionScoreRequired,
+                        client
+                      })
                   }
-                }
-              }) ||
-              undefined
-            }
-            //TODO - Will be fixed after enable online
-            /*
+                });
+              }
+            }) ||
+            undefined
+          }
+          //TODO - Will be fixed after enable online
+          /*
             secondary={
               (actionSecondary && {
                 title: translate("scorm.summary.last_attempt"),
@@ -333,8 +330,7 @@ const ScormSummary = ({
               undefined
             }
             */
-          />
-        )}
+        />
       </View>
     </>
   );
@@ -348,9 +344,14 @@ type PropsAttempt = {
 type PropsInfo = {
   title: string;
   action: any;
+  isDownloaded: boolean;
 };
 
-const AttemptController = ({ primary, secondary }: PropsAttempt) => {
+const AttemptController = ({
+  primary,
+  secondary,
+  isDownloaded
+}: PropsAttempt) => {
   return (
     <View style={scormSummaryStyles.attemptContainer}>
       <View style={spacedFlexRow}>
@@ -361,13 +362,13 @@ const AttemptController = ({ primary, secondary }: PropsAttempt) => {
             style={{ flex: 1, marginRight: primary ? 16 : 0 }}
           />
         )}
-        {primary && (
-          <PrimaryButton
-            text={primary.title}
-            onPress={primary.action}
-            style={{ flex: 1 }}
-          />
-        )}
+
+        <PrimaryButton
+          text={primary && primary.title}
+          onPress={primary && primary.action}
+          style={{ flex: 1 }}
+          mode={!primary || (!isDownloaded && "disabled")}
+        />
       </View>
     </View>
   );

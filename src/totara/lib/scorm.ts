@@ -437,7 +437,7 @@ const getOfflineLastActivityResult = (scormId: string, client: any) => {
  * This is to allow the user to make decision to show the buttons
  * @param param0
  */
-const shouldShowAction = ({
+const shouldAllowAttempt = ({
   timeOpen,
   maxAttempts,
   totalAttempt,
@@ -460,7 +460,7 @@ export {
   getOfflineLastActivityResult,
   getOfflinePackageUnzipPath,
   getTargetZipFile,
-  shouldShowAction,
+  shouldAllowAttempt,
   getOfflineScormPackageName,
   setCompletedScormAttempt
 };
