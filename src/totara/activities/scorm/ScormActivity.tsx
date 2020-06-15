@@ -50,7 +50,7 @@ import {
   getOfflinePackageUnzipPath,
   getTargetZipFile,
   retrieveAllData
-} from "@totara/lib/scorm";
+} from "./utils";
 import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
 import ScormAttempts from "./ScormAttempts";
 import Loading from "@totara/components/Loading";

@@ -48,7 +48,7 @@ import {
   setCompletedScormAttempt,
   getOfflineLastActivityResult,
   shouldAllowAttempt
-} from "@totara/lib/scorm";
+} from "./utils";
 import { navigateTo } from "@totara/lib/navigation";
 import {
   DATE_FORMAT_FULL,

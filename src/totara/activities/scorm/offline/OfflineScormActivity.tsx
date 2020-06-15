@@ -36,10 +36,7 @@ import { getScormAttemptData } from "./StorageHelper";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
 
-import {
-  saveScormActivityData,
-  getOfflineScormPackageName
-} from "@totara/lib/scorm";
+import { saveScormActivityData, getOfflineScormPackageName } from "../utils";
 import { offlineScormServerRoot } from "@totara/lib/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";

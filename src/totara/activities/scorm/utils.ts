@@ -25,9 +25,9 @@ import {
   scormSummarySection,
   scormActivityType,
   FILE_EXTENSION
-} from "./constants";
+} from "@totara/lib/constants";
 import { Log } from "@totara/lib";
-import { showMessage } from "./tools";
+import { showMessage } from "@totara/lib/tools";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 import { setWith, get } from "lodash";
 import {
