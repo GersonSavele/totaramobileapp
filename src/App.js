@@ -45,9 +45,7 @@ import CoreResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import ResourceManager from "@totara/lib/resourceManager";
 import { createStackNavigator } from "react-navigation-stack";
 import { scormStack } from "@totara/activities/scorm/ScormActivity";
-import About from "@totara/features/about/About";
-import { ScormActivityParams } from "@totara/types/Scorm";
-import AboutStack from "@totara/features/about/About";
+import AboutStack from "@totara/features/about/AboutStack";
 
 if (!__DEV__) {
   Sentry.init({

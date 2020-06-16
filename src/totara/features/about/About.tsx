@@ -27,7 +27,6 @@ const About = () => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer} animation={"slideInUp"}>
-        // @ts-ignore
         <Image source={Images.totaraLogo} style={styles.logo} />
       </View>
       <View style={styles.versionContainer} animation={"slideInUp"} delay={200}>
