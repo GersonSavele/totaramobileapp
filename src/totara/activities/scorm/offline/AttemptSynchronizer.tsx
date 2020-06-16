@@ -24,13 +24,10 @@ import { gql } from "apollo-boost";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
 
-import {
-  // getOfflineScormCommits,
-  clearSyncedScormCommit
-} from "./offlineScormController";
 import { Log, showMessage } from "@totara/lib";
 import { translate } from "@totara/locale";
-import { getOfflineScormCommits } from "../utils";
+import { getOfflineScormCommits, clearSyncedScormCommit } from "../utils";
+import { mutationAttempts } from "../api";
 
 const SaveAttemptMutation = gql`
   mutation mod_scorm_save_offline_attempts(
@@ -39,7 +36,7 @@ const SaveAttemptMutation = gql`
   ) {
     attempts: mod_scorm_save_offline_attempts(
       scormid: $scormid
-      attempts: $attempts
+      tracks: $attempts
     )
   }
 `;
@@ -55,21 +52,23 @@ const AttemptSynchronizer = () => {
     undefined
   );
 
-  const [saveAttempt] = useMutation(SaveAttemptMutation);
+  const [saveAttempt] = useMutation(mutationAttempts);
   const netInfo = useNetInfo();
   const client = useApolloClient();
 
   useEffect(() => {
     if (netInfo.type !== "unknown" && netInfo.isInternetReachable) {
       if (unSyncData && unSyncData.length && unSyncData.length > 0) {
-        // syncScormRecord(unSyncData[0])
-        //   .then((updatedUnsyncData) => {
-        //     setUnsyncData(updatedUnsyncData);
-        //   })
-        //   .catch((e) => {
-        //     Log.error(translate("general.error"), e);
-        //     showMessage({ text: translate("general.error_unknown") });
-        //   });
+        // clearSyncedScormCommit({ client, scormId: "17", attempt: 3 });
+        syncScormRecord(unSyncData[0])
+          .then((updatedUnsyncData) => {
+            showMessage({ text: "Done" });
+            // setUnsyncData(updatedUnsyncData);
+          })
+          .catch((e) => {
+            // Log.error(translate("general.error"), e);
+            showMessage({ text: translate("general.error_unknown") });
+          });
       } else {
         const syncDataSet = getOfflineScormCommits({ client });
         setUnsyncData(syncDataSet);
@@ -98,6 +97,7 @@ const AttemptSynchronizer = () => {
   }, [unSyncData, netInfo]);
 
   const syncScormRecord = (syncData: SyncData) => {
+    console.log("scormid: ", syncData.scormId, "tracks: ", syncData.tracks);
     return syncAttemptForScorm(syncData.scormId, syncData.tracks)
       .then((isSynced) => {
         if (isSynced) {

@@ -29,7 +29,7 @@ import {
 import { Log } from "@totara/lib";
 import { showMessage } from "@totara/lib/tools";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
-import { setWith, get, values } from "lodash";
+import { setWith, get, values, remove, omit } from "lodash";
 import {
   OFFLINE_SCORM_PREFIX,
   offlineScormServerRoot,
@@ -296,11 +296,9 @@ const removeScormPackageData = (scormId: string, client: any) => {
       if (!(newData && Object.keys(newData))) {
         newData = undefined;
       }
-      client.writeQuery({
-        query: scormActivitiesRecordsQuery,
-        data: {
-          scormBundles: newData
-        }
+      saveInTheCache({
+        client,
+        scormBundles: newData
       });
       return undefined;
     }
@@ -357,28 +355,22 @@ const saveScormActivityData = (
     Object
   );
 
-  const newCommitsData = get(
-    newData,
-    `[${scormId}].commits[${attempt}][${scoId}]`,
-    []
-  );
-  newCommitsData.push(commitData);
+  // const newCommitsData = get(
+  //   newData,
+  //   `[${scormId}].commits[${attempt}][${scoId}]`,
+  //   []
+  // );
+  // newCommitsData.push(commitData);
   setWith(
     newData,
     `[${scormId}].commits[${attempt}][${scoId}]`,
-    newCommitsData,
+    commitData,
     Object
   );
-  try {
-    return client.writeQuery({
-      query: scormActivitiesRecordsQuery,
-      data: {
-        scormBundles: newData
-      }
-    });
-  } catch (e) {
-    Log.warn("Cannot write commit data. error(", e, ")");
-  }
+  saveInTheCache({
+    client,
+    scormBundles: newData
+  });
 };
 
 const setCompletedScormAttempt = (
@@ -402,11 +394,9 @@ const setCompletedScormAttempt = (
         newCommitsData,
         Object
       );
-      return client.writeQuery({
-        query: scormActivitiesRecordsQuery,
-        data: {
-          scormBundles: newData
-        }
+      saveInTheCache({
+        client,
+        scormBundles: newData
       });
     }
   } catch (e) {
@@ -499,7 +489,6 @@ const getOfflineScormCommits = ({ client }: { client: any }) => {
     for (let keyIndex = 0; keyIndex < scormIs.length; keyIndex++) {
       const scormId = scormIs[keyIndex];
       const completedAttempts = completedScormAttempts[scormId];
-      console.log("attempts: ", completedAttempts);
       for (
         let indexAttempt = 0;
         indexAttempt < completedAttempts.length;
@@ -539,12 +528,51 @@ const clearSyncedScormCommit = ({
   attempt: number;
 }) => {
   const allOfflineData = retrieveAllData({ client });
-  const completedScormAttempts = get(
-    allOfflineData,
-    `completed_attempts`,
-    undefined
-  );
-  return clearCommit(scormId, attempt);
+
+  if (allOfflineData) {
+    const completedScormAttempts = get(
+      allOfflineData,
+      `completed_attempts.[${scormId}]`,
+      undefined
+    );
+    if (completedScormAttempts) {
+      const newAttempts = remove(
+        completedScormAttempts,
+        (num) => num === attempt
+      );
+      if (newAttempts) {
+        omit(allOfflineData, [`completed_attempts.[${scormId}]`]);
+      } else {
+        setWith(
+          allOfflineData,
+          `completed_attempts.[${scormId}]`,
+          newAttempts,
+          Object
+        );
+      }
+    }
+    omit(allOfflineData, [
+      `[${scormId}].commits[${attempt}]`,
+      `[${scormId}].cmi[${attempt}]`
+    ]);
+    const existingOfflineActivityData = get(
+      allOfflineData,
+      `[${scormId}].offlineActivity.attempts`,
+      []
+    );
+    remove(existingOfflineActivityData, (record) => record.attempt === attempt);
+    setWith(
+      allOfflineData,
+      `[${scormId}].offlineActivity.attempts`,
+      existingOfflineActivityData,
+      Object
+    );
+    saveInTheCache({
+      client,
+      scormBundles: existingOfflineActivityData
+    });
+  }
+  // return clearCommit(scormId, attempt);
 };
 
 /**
@@ -582,5 +610,6 @@ export {
   getOfflineScormPackageName,
   setCompletedScormAttempt,
   getOfflineActivity,
-  getOfflineScormCommits
+  getOfflineScormCommits,
+  clearSyncedScormCommit
 };

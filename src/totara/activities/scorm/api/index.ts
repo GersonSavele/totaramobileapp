@@ -115,4 +115,34 @@ const scormFeedbackQuery = gql`
   }
 `;
 
-export { scormQuery, scormFeedbackQuery, scormActivitiesRecordsQuery };
+const mutationAttempts = gql`
+  mutation mod_scorm_save_offline_attempts(
+    $scormid: core_id!
+    $attempts: [mod_scorm_attempt!]!
+  ) {
+    attempts: mod_scorm_save_offline_attempts(
+      scormid: $scormid
+      attempts: $attempts
+    ) {
+      attempts_accepted
+      maxattempt
+      attempts_current
+      completion
+      completionview
+      completionstatusrequired
+      completionscorerequired
+      completionstatusallscos
+      completionstatus
+      gradefinal
+      grademax
+      gradepercentage
+    }
+  }
+`;
+
+export {
+  scormQuery,
+  scormFeedbackQuery,
+  scormActivitiesRecordsQuery,
+  mutationAttempts
+};
