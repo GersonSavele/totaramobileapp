@@ -24,7 +24,8 @@ import {
   SECONDS_FORMAT,
   scormSummarySection,
   scormActivityType,
-  FILE_EXTENSION
+  FILE_EXTENSION,
+  completionStatus
 } from "@totara/lib/constants";
 import { Log } from "@totara/lib";
 import { showMessage } from "@totara/lib/tools";
@@ -320,57 +321,58 @@ const saveScormActivityData = (
   const cmiData = data.cmi;
   const commitData = data.commit;
 
-  let newData = {};
-  try {
-    const { scormBundles } = client.readQuery({
-      query: scormActivitiesRecordsQuery
-    });
-    newData = { ...scormBundles };
-  } catch (e) {
-    console.log("There is no any data in cache");
-  }
-  setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
-
-  const reportCmiList = get(newData, `[${scormId}].cmi`);
-  const attemptGrade = getGradeForAttempt(reportCmiList, maxGrade, gradeMethod);
-  const newAttemptGrade = { gradereported: attemptGrade, attempt: attempt };
-
-  const existingOfflineActivityData = get(
-    newData,
-    `[${scormId}].offlineActivity.attempts`,
-    []
-  );
-  if (existingOfflineActivityData && existingOfflineActivityData.length > 0) {
-    if (
-      existingOfflineActivityData[existingOfflineActivityData.length - 1]
-        .attempt === newAttemptGrade.attempt
-    ) {
-      existingOfflineActivityData.pop();
+  const status = get(data.cmi, "core.lesson_status", undefined);
+  if (status && status !== completionStatus.incomplete) {
+    let newData = {};
+    try {
+      const { scormBundles } = client.readQuery({
+        query: scormActivitiesRecordsQuery
+      });
+      newData = { ...scormBundles };
+    } catch (e) {
+      console.log("There is no any data in cache");
     }
-  }
-  setWith(
-    newData,
-    `[${scormId}].offlineActivity.attempts`,
-    existingOfflineActivityData.concat([newAttemptGrade]),
-    Object
-  );
+    setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
 
-  // const newCommitsData = get(
-  //   newData,
-  //   `[${scormId}].commits[${attempt}][${scoId}]`,
-  //   []
-  // );
-  // newCommitsData.push(commitData);
-  setWith(
-    newData,
-    `[${scormId}].commits[${attempt}][${scoId}]`,
-    commitData,
-    Object
-  );
-  saveInTheCache({
-    client,
-    scormBundles: newData
-  });
+    const reportCmiList = get(newData, `[${scormId}].cmi`);
+    const attemptGrade = getGradeForAttempt(
+      reportCmiList,
+      maxGrade,
+      gradeMethod
+    );
+    const newAttemptGrade = { gradereported: attemptGrade, attempt: attempt };
+
+    const existingOfflineActivityData = get(
+      newData,
+      `[${scormId}].offlineActivity.attempts`,
+      []
+    );
+    if (existingOfflineActivityData && existingOfflineActivityData.length > 0) {
+      if (
+        existingOfflineActivityData[existingOfflineActivityData.length - 1]
+          .attempt === newAttemptGrade.attempt
+      ) {
+        existingOfflineActivityData.pop();
+      }
+    }
+    setWith(
+      newData,
+      `[${scormId}].offlineActivity.attempts`,
+      existingOfflineActivityData.concat([newAttemptGrade]),
+      Object
+    );
+
+    setWith(
+      newData,
+      `[${scormId}].commits[${attempt}][${scoId}]`,
+      commitData,
+      Object
+    );
+    saveInTheCache({
+      client,
+      scormBundles: newData
+    });
+  }
 };
 
 const setCompletedScormAttempt = (
@@ -449,33 +451,6 @@ const getOfflineActivity = ({ client, id }: { client: any; id: string }) => {
 };
 
 const getOfflineScormCommits = ({ client }: { client: any }) => {
-  /*
-  return getAllCommits().then((storedData) => {
-    let formattedUnsyncedData = undefined;
-    if (storedData) {
-      formattedUnsyncedData = [];
-      for (let commitScormId in storedData) {
-        const scormCommits = storedData[commitScormId];
-        const orededAttemptKeys = Object.keys(scormCommits).sort();
-        for (let index = 0; index < orededAttemptKeys.length; index++) {
-          const commitAttempt = orededAttemptKeys[index];
-          if (scormCommits[commitAttempt]) {
-            const commitTracks = values(scormCommits[commitAttempt]).filter(
-              (value) => value
-            );
-            const commit = {
-              scormId: commitScormId,
-              attempt: parseInt(commitAttempt),
-              tracks: commitTracks
-            };
-            formattedUnsyncedData.push(commit);
-          }
-        }
-      }
-    }
-    return formattedUnsyncedData;
-  });
-  */
   const allOfflineData = retrieveAllData({ client });
   const completedScormAttempts = get(
     allOfflineData,
@@ -498,7 +473,7 @@ const getOfflineScormCommits = ({ client }: { client: any }) => {
 
         const commitScormAttempt = get(
           allOfflineData,
-          `${[scormId]}.commits.${[attempt]}`,
+          `${[scormId]}.commits[${[attempt]}]`,
           undefined
         );
         if (commitScormAttempt) {

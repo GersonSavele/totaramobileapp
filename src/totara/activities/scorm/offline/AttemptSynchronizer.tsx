@@ -20,26 +20,13 @@
  */
 
 import { useEffect, useState } from "react";
-import { gql } from "apollo-boost";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
 
-import { Log, showMessage } from "@totara/lib";
+import { showMessage } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { getOfflineScormCommits, clearSyncedScormCommit } from "../utils";
 import { mutationAttempts } from "../api";
-
-const SaveAttemptMutation = gql`
-  mutation mod_scorm_save_offline_attempts(
-    $scormid: core_id!
-    $attempts: [mod_scorm_attempt!]!
-  ) {
-    attempts: mod_scorm_save_offline_attempts(
-      scormid: $scormid
-      tracks: $attempts
-    )
-  }
-`;
 
 type SyncData = {
   scormId: string;
@@ -59,14 +46,11 @@ const AttemptSynchronizer = () => {
   useEffect(() => {
     if (netInfo.type !== "unknown" && netInfo.isInternetReachable) {
       if (unSyncData && unSyncData.length && unSyncData.length > 0) {
-        // clearSyncedScormCommit({ client, scormId: "17", attempt: 3 });
         syncScormRecord(unSyncData[0])
           .then((updatedUnsyncData) => {
-            showMessage({ text: "Done" });
-            // setUnsyncData(updatedUnsyncData);
+            setUnsyncData(updatedUnsyncData);
           })
           .catch((e) => {
-            // Log.error(translate("general.error"), e);
             showMessage({ text: translate("general.error_unknown") });
           });
       } else {
@@ -74,30 +58,9 @@ const AttemptSynchronizer = () => {
         setUnsyncData(syncDataSet);
       }
     }
-
-    // if (netInfo.type !== "unknown" && netInfo.isInternetReachable) {
-    //   if (unSyncData && unSyncData.length && unSyncData.length > 0) {
-    //     syncScormRecord(unSyncData[0])
-    //       .then((updatedUnsyncData) => {
-    //         setUnsyncData(updatedUnsyncData);
-    //       })
-    //       .catch((e) => {
-    //         Log.error(translate("general.error"), e);
-    //         showMessage({ text: translate("general.error_unknown") });
-    //       });
-    //   } else {
-    //     getOfflineScormCommits(client).then((data) => {
-    //       if (data && data.length > 0) {
-    //         const syncDataSet = data as [SyncData];
-    //         setUnsyncData(syncDataSet);
-    //       }
-    //     });
-    //   }
-    // }
   }, [unSyncData, netInfo]);
 
   const syncScormRecord = (syncData: SyncData) => {
-    console.log("scormid: ", syncData.scormId, "tracks: ", syncData.tracks);
     return syncAttemptForScorm(syncData.scormId, syncData.tracks)
       .then((isSynced) => {
         if (isSynced) {

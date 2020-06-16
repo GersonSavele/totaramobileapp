@@ -136,6 +136,7 @@ const mutationAttempts = gql`
       gradefinal
       grademax
       gradepercentage
+      __typename
     }
   }
 `;
