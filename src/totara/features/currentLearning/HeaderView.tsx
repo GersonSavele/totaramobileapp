@@ -20,6 +20,7 @@ import NetInfo from "@react-native-community/netinfo";
 
 import ParallaxScrollView from "./ParallaxScrollView";
 import { CardElement, ImageElement } from "@totara/components";
+import { showMessage } from "@totara/lib";
 import { normalize } from "@totara/theme";
 import { CourseGroup, Course } from "@totara/types";
 import { NavigationParams } from "react-navigation";
@@ -148,19 +149,13 @@ const HeaderView = ({
         }}>
         {children}
         {!isConnected &&
-          Alert.alert(
-            translate("no_internet_alert.title"),
-            translate("no_internet_alert.message"),
-            [
-              {
-                text: translate("no_internet_alert.go_back"),
-                onPress: () => {
-                  navigation.popToTop();
-                }
-              }
-            ],
-            { cancelable: false }
-          )}
+          showMessage({
+            title: translate("no_internet_alert.title"),
+            text: translate("no_internet_alert.message"),
+            callback: () => {
+              navigation.popToTop();
+            }
+          })}
       </ParallaxScrollView>
     </View>
   );

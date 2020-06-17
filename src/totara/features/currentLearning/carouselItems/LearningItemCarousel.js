@@ -31,6 +31,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import { LearningItemCard, AddBadge } from "@totara/components";
 import { navigateTo } from "@totara/lib/navigation";
 import { itemToRouteMap } from "@totara/lib/constants";
+import { showMessage } from "@totara/lib";
 import Restriction from "./Restriction";
 import {
   borderRadius,
@@ -40,6 +41,7 @@ import {
 } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { translate } from "@totara/locale";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning, loading, onRefresh }) => {
@@ -168,6 +170,11 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       } else {
         setShowRestriction(true);
       }
+    } else {
+      showMessage({
+        title: translate("no_internet_alert.title"),
+        text: translate("no_internet_alert.message")
+      });
     }
   };
 
