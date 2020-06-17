@@ -33,12 +33,7 @@ import { CourseContentDetails } from "@totara/types";
 import { CourseGroupContentDetails } from "@totara/types/CourseGroup";
 import SelfCompletion from "./SelfCompletion";
 import { courseCriteria } from "@totara/lib/constants";
-import {
-  styles,
-  gradePrefixText,
-  gradeSuffixText,
-  labelWrap
-} from "../overviewStyles";
+import { styles, gradePrefixText, labelWrap } from "../overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 
 type OverviewProps = {
@@ -106,9 +101,6 @@ const Grade = ({ contentDetails }: OverviewProps) => {
               contentDetails.gradeFinal !== null
                 ? contentDetails?.gradeFinal
                 : 0}
-            </Text>
-            <Text style={gradeSuffixText(theme)}>
-              {"/" + contentDetails.gradeMax}
             </Text>
           </View>
         </View>

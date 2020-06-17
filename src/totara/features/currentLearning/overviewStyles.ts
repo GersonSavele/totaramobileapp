@@ -26,13 +26,6 @@ const gradePrefixText = (theme: AppliedTheme) => {
   };
 };
 
-const gradeSuffixText = (theme: AppliedTheme) => {
-  return {
-    ...theme.textSmall,
-    ...styles.gradeMaxTextWrap
-  };
-};
-
 const labelWrap = (theme: AppliedTheme) => {
   return {
     ...theme.textRegular,
@@ -111,4 +104,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { styles, gradePrefixText, gradeSuffixText, labelWrap };
+export { styles, gradePrefixText, labelWrap };
