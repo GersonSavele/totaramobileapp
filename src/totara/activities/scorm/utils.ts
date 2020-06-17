@@ -30,7 +30,7 @@ import {
 import { Log } from "@totara/lib";
 import { showMessage } from "@totara/lib/tools";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
-import { setWith, get, values, remove, omit } from "lodash";
+import { setWith, get, values, remove, omit, isEmpty } from "lodash";
 import {
   OFFLINE_SCORM_PREFIX,
   offlineScormServerRoot,
@@ -502,26 +502,23 @@ const clearSyncedScormCommit = ({
   scormId: string;
   attempt: number;
 }) => {
-  const allOfflineData = retrieveAllData({ client });
+  let allOfflineData = retrieveAllData({ client });
 
-  if (allOfflineData) {
+  if (allOfflineData && !isEmpty(allOfflineData)) {
     const completedScormAttempts = get(
       allOfflineData,
       `completed_attempts.[${scormId}]`,
       undefined
     );
     if (completedScormAttempts) {
-      const newAttempts = remove(
-        completedScormAttempts,
-        (num) => num === attempt
-      );
-      if (newAttempts) {
+      remove(completedScormAttempts, (num) => num === attempt);
+      if (completedScormAttempts) {
         omit(allOfflineData, [`completed_attempts.[${scormId}]`]);
       } else {
         setWith(
           allOfflineData,
           `completed_attempts.[${scormId}]`,
-          newAttempts,
+          completedScormAttempts,
           Object
         );
       }
@@ -535,7 +532,8 @@ const clearSyncedScormCommit = ({
       `[${scormId}].offlineActivity.attempts`,
       []
     );
-    remove(existingOfflineActivityData, (record) => record.attempt === attempt);
+    // record.attempt is string and attempt is number, so avoid checking type
+    remove(existingOfflineActivityData, (record) => record.attempt == attempt);
     setWith(
       allOfflineData,
       `[${scormId}].offlineActivity.attempts`,
@@ -547,7 +545,7 @@ const clearSyncedScormCommit = ({
       scormBundles: existingOfflineActivityData
     });
   }
-  // return clearCommit(scormId, attempt);
+  return true;
 };
 
 /**
@@ -561,12 +559,16 @@ const saveInTheCache = ({
   client: any;
   scormBundles: { [key: string]: ScormBundle };
 }) => {
-  client.writeQuery({
-    query: scormActivitiesRecordsQuery,
-    data: {
-      scormBundles
-    }
-  });
+  try {
+    client.writeQuery({
+      query: scormActivitiesRecordsQuery,
+      data: {
+        scormBundles
+      }
+    });
+  } catch (e) {
+    console.warn("Scorm cache data saving error: ", e);
+  }
 };
 
 export {

@@ -51,7 +51,7 @@ const AttemptSynchronizer = () => {
             setUnsyncData(updatedUnsyncData);
           })
           .catch((e) => {
-            showMessage({ text: translate("general.error_unknown") });
+            showMessage({ text: `${translate("general.error_unknown")}` });
           });
       } else {
         const syncDataSet = getOfflineScormCommits({ client });
@@ -64,7 +64,11 @@ const AttemptSynchronizer = () => {
     return syncAttemptForScorm(syncData.scormId, syncData.tracks)
       .then((isSynced) => {
         if (isSynced) {
-          return clearSyncedScormCommit(syncData.scormId, syncData.attempt);
+          return clearSyncedScormCommit({
+            scormId: syncData.scormId,
+            attempt: syncData.attempt,
+            client: client
+          });
         } else {
           throw new Error("Data sync failed.");
         }
