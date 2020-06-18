@@ -46,15 +46,20 @@ import {
   setCompletedScormAttempt,
   getOfflineLastActivityResult
 } from "./storageUtils";
-import { getDataForScormSummary, shouldAllowAttempt } from "./utils";
-import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
-import { DATE_FORMAT_FULL } from "@totara/lib/constants";
+import { getDataForScormSummary } from "./utils";
+import { navigateTo } from "@totara/lib/navigation";
+import { DATE_FORMAT_FULL, NAVIGATION } from "@totara/lib/constants";
 import { ScormBundle, Grade } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
 
-const { OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK } = NAVIGATION;
+const {
+  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
+  NAVIGATION_SCORM_ATTEMPTS,
+  NAVIGATION_SCORM_FEEDBACK,
+  NAVIGATION_ONLINE_SCORM_ACTIVITY
+} = NAVIGATION;
 
 type SummaryProps = {
   id: string;
@@ -119,7 +124,7 @@ const ScormSummary = ({
 }: SummaryProps) => {
   const theme = TotaraTheme;
 
-  const bundleData = getDataForScormSummary(true, scormBundle);
+  const bundleData = getDataForScormSummary(isDownloaded, scormBundle);
   const {
     name,
     description,
@@ -128,6 +133,8 @@ const ScormSummary = ({
     gradeMethod,
     calculatedGrade,
     completionScoreRequired,
+    launchUrl,
+    shouldAllowNewAttempt,
     // actionSecondary, //TODO - will be enable for online
     timeOpen,
     maxAttempts,
@@ -163,7 +170,7 @@ const ScormSummary = ({
         ) {
           setCompletedScormAttempt({ scormId: id, attempt, client });
           navigateTo({
-            routeId: SCORM_FEEDBACK,
+            routeId: NAVIGATION_SCORM_FEEDBACK,
             navigate: navigation.navigate,
             props: {
               id,
@@ -180,7 +187,7 @@ const ScormSummary = ({
     return true;
   };
   if (error) {
-    return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} />;
+    return <LoadingError onRefreshTap={onRefresh} />;
   }
   return (
     <>
@@ -236,7 +243,7 @@ const ScormSummary = ({
               <TouchableOpacity
                 onPress={() =>
                   navigateTo({
-                    routeId: SCORM_ATTEMPTS,
+                    routeId: NAVIGATION_SCORM_ATTEMPTS,
                     navigate: navigation.navigate,
                     props: {
                       attempts,
@@ -275,20 +282,24 @@ const ScormSummary = ({
           </ScrollView>
         </View>
         <AttemptController
-          isDownloaded={shouldAllowAttempt(bundleData) && isDownloaded}
-          primary={{
+          shouldAllowNewAttempt={shouldAllowNewAttempt}
+          newAttempt={{
             title: translate("scorm.summary.new_attempt"),
             action: () => {
               navigation.addListener("didFocus", onRefresh);
               const attemptNumber = totalAttempt + 1;
+              const scormActivityRoute = isDownloaded
+                ? NAVIGATION_OFFLINE_SCORM_ACTIVITY
+                : NAVIGATION_ONLINE_SCORM_ACTIVITY;
               navigateTo({
-                routeId: OFFLINE_SCORM_ACTIVITY,
+                routeId: scormActivityRoute,
                 navigate: navigation.navigate,
                 props: {
                   title: name,
                   attempt: attemptNumber,
                   scorm: scormBundle && scormBundle.scorm,
                   backIcon: "chevron-left",
+                  uri: launchUrl,
                   backAction: () =>
                     onExitActivityAttempt({
                       id: id,
@@ -301,7 +312,7 @@ const ScormSummary = ({
               });
             }
           }}
-          //TODO - Will be fixed after enabling online
+          //TODO - Will be fixed after enable online
           /*
             secondary={
               (actionSecondary && {
@@ -312,7 +323,7 @@ const ScormSummary = ({
                   isUserOnline: false,
                   callback: () => {
                     navigateTo({
-                      routeId: OFFLINE_SCORM_ACTIVITY,
+                      routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
                       navigate: navigation.navigate,
                       props: {
                         scormBundle,
@@ -335,9 +346,9 @@ const ScormSummary = ({
 };
 
 type PropsAttempt = {
-  primary: PropsInfo | undefined;
+  newAttempt: PropsInfo | undefined;
   secondary: PropsInfo | undefined;
-  isDownloaded: boolean;
+  shouldAllowNewAttempt: boolean;
 };
 
 type PropsInfo = {
@@ -346,9 +357,9 @@ type PropsInfo = {
 };
 
 const AttemptController = ({
-  primary,
+  newAttempt,
   secondary,
-  isDownloaded
+  shouldAllowNewAttempt
 }: PropsAttempt) => {
   return (
     <View style={scormSummaryStyles.attemptContainer}>
@@ -357,15 +368,15 @@ const AttemptController = ({
           <SecondaryButton
             text={secondary.title}
             onPress={secondary.action}
-            style={{ flex: 1, marginRight: primary ? margins.marginL : 0 }}
+            style={{ flex: 1, marginRight: newAttempt ? margins.marginL : 0 }}
           />
         )}
 
         <PrimaryButton
-          text={primary && primary.title}
-          onPress={primary && primary.action}
+          text={newAttempt && newAttempt.title}
+          onPress={newAttempt && newAttempt.action}
           style={{ flex: 1 }}
-          mode={(!(primary && isDownloaded) && "disabled") || undefined}
+          mode={(!shouldAllowNewAttempt && "disabled") || undefined}
         />
       </View>
     </View>

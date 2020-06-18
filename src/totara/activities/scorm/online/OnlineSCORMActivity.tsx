@@ -16,28 +16,44 @@ import { SafeAreaView, Text } from "react-native";
 import { AuthenticatedWebView } from "@totara/auth";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
+import { Scorm } from "@totara/types/Scorm";
+import { NavigationStackProp } from "react-navigation-stack";
 
-type OnlineScormActivityProps = {
-  uri?: string
+type OnlineScormParams = {
+  attempt: number;
+  uri: string;
+  scorm?: Scorm;
+  scoid?: string;
+  backAction: Function;
 };
 
-const OnlineSCORMActivity = ({uri}: OnlineScormActivityProps) => {
-  
-  const [ theme ] = useContext(ThemeContext);
+type OnlineScormProps = {
+  navigation: NavigationStackProp<OnlineScormParams>;
+};
 
+const OnlineSCORMActivity = ({ navigation }: OnlineScormProps) => {
+  const { scorm, attempt, scoid, backAction, uri } = navigation.state
+    .params as OnlineScormParams;
+  const [theme] = useContext(ThemeContext);
+  if (!scorm || !scorm.id) {
+    return <Text>{translate("general.error_unknown")}</Text>;
+  }
   if (!uri) {
     return (
-    <SafeAreaView>
-      <Text>{translate("general.error_unknown")}</Text>
-    </SafeAreaView>)
+      <SafeAreaView>
+        <Text>{translate("general.error_unknown")}</Text>
+      </SafeAreaView>
+    );
   } else {
     return (
-    <>
-      <AuthenticatedWebView uri={uri} />
-      <SafeAreaView style={{backgroundColor: theme.viewContainer.backgroundColor}} />
-    </>)
+      <>
+        <AuthenticatedWebView uri={uri} />
+        <SafeAreaView
+          style={{ backgroundColor: theme.viewContainer.backgroundColor }}
+        />
+      </>
+    );
   }
-  
 };
 
 export default OnlineSCORMActivity;

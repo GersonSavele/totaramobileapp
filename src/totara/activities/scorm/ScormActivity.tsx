@@ -39,6 +39,7 @@ import { RootState } from "@totara/reducers";
 import { scormQuery } from "./api";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { getOfflineActivity } from "./storageUtils";
+
 import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
 import ScormAttempts from "./ScormAttempts";
 import Loading from "@totara/components/Loading";
@@ -194,7 +195,7 @@ const ScormActivity = (props: ScormActivityProps) => {
         navigation={navigation}
         name={title}
         loading={loading}
-        refetch={onRefresh}
+        isOnline={isInternetReachable}
         error={error}
         networkStatus={networkStatus}
         scormBundle={scormBundle}
@@ -239,6 +240,10 @@ const innerStack = createStackNavigator(
       navigationOptions
     },
     [OFFLINE_SCORM_ACTIVITY]: {
+      screen: OfflineScormActivity,
+      navigationOptions
+    },
+    [NAVIGATION_ONLINE_SCORM_ACTIVITY]: {
       screen: OfflineScormActivity,
       navigationOptions
     }

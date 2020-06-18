@@ -98,13 +98,15 @@ const getDataForScormSummary = (
     gradeMethod: undefined,
     attemptGrade: undefined,
     calculatedGrade: undefined,
-    actionPrimary: false,
-    actionSecondary: false,
+    // actionPrimary: false,
+    // actionSecondary: false,
     lastsynced: undefined,
     timeOpen: undefined,
     maxAttempts: undefined,
     attempts: undefined,
-    completionScoreRequired: undefined
+    completionScoreRequired: undefined,
+    repeateUrl: undefined,
+    launchUrl: undefined
   };
   if (!scormBundle) {
     return data;
@@ -151,16 +153,18 @@ const getDataForScormSummary = (
   data.completionScoreRequired =
     (scorm.completionscorerequired !== null && scorm.completionscorerequired) ||
     undefined;
-  data.actionPrimary =
-    (scormBundle &&
-      scorm &&
-      (!data.maxAttempts || data.maxAttempts > data.totalAttempt) &&
-      (scorm.launchUrl ||
-        (scormPackage && scormPackage.path && scorm.offlineAttemptsAllowed)) &&
-      true) ||
-    false;
-  data.actionSecondary =
-    (isUserOnline && scormBundle && scorm && scorm.repeatUrl && true) || false;
+  // data.actionPrimary =
+  //   (scormBundle &&
+  //     scorm &&
+  //     (!data.maxAttempts || data.maxAttempts > data.totalAttempt) &&
+  //     (scorm.launchUrl ||
+  //       (scormPackage && scormPackage.path && scorm.offlineAttemptsAllowed)) &&
+  //     true) ||
+  //   false;
+  // data.actionSecondary =
+  //   (isUserOnline && scormBundle && scorm && scorm.repeatUrl && true) || false;
+  data.launchUrl = scorm && scorm.launchUrl;
+  data.repeateUrl = scorm && scorm.repeatUrl;
 
   data.lastsynced =
     (!isUserOnline &&
