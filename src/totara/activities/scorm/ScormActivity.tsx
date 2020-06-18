@@ -218,7 +218,8 @@ const navigationOptions = ({ navigation }) => {
       <TouchableIcon
         icon={backIcon}
         onPress={backAction}
-        size={TotaraTheme.textH3.fontSize}
+        color={TotaraTheme.colorLink}
+        size={TotaraTheme.textHeadline.fontSize}
       />
     ),
     headerRight: headerRight({ navigation })

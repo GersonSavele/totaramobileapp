@@ -33,10 +33,10 @@ const LoadingError = ({ onRefreshTap }: LoadingErrorProps) => {
     <View style={[styles.containerStyle]}>
       <View style={styles.errorContainer}>
         <Image source={Images.generalError} />
-        <Text style={[theme.textH1, { padding: paddings.paddingL }]}>
+        <Text style={[theme.textH2, { padding: paddings.paddingL }]}>
           Ooops!
         </Text>
-        <Text style={[theme.textB1]}>Something went wrong</Text>
+        <Text style={[theme.textRegular]}>Something went wrong</Text>
       </View>
       <View style={styles.actionContainer}>
         <PrimaryButton
@@ -53,16 +53,16 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   errorContainer: {
     padding: paddings.paddingL,
     alignItems: "center",
-    alignContent: "space-between",
+    alignContent: "space-between"
   },
   actionContainer: {
-    padding: paddings.paddingL,
-  },
+    padding: paddings.paddingL
+  }
 });
 
 export default LoadingError;

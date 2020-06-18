@@ -13,7 +13,7 @@ const NotificationDetails = () => {
   return (
     <View style={styles.mainContainer}>
       <View>
-        <Text style={TotaraTheme.textH3}>{title}</Text>
+        <Text style={TotaraTheme.textRegular}>{title}</Text>
         <Text style={{ color: TotaraTheme.colorNeutral6 }}>{received}</Text>
       </View>
       <View style={{ paddingTop: paddings.padding2XL }}>

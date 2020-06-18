@@ -54,7 +54,7 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
 
   return (
     <View style={[styles.container, dueDateModeStyle]}>
-      <Text style={[theme.textB3, { color: theme.textColorLight }]}>
+      <Text style={[theme.textXSmall, { color: theme.textColorLight }]}>
         {dueDateState && dueDateState == DueDateStateStatus.danger
           ? translate("totara-component.overdue_by")
           : translate("totara-component.due_in")}
@@ -63,7 +63,7 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
           {moment(dueDate).toNow(true)}&nbsp;
         </Text>
       </Text>
-      <Text style={[theme.textB3, { color: theme.textColorLight }]}>
+      <Text style={[theme.textXSmall, { color: theme.textColorLight }]}>
         ({moment(dueDate).format(DATE_FORMAT)})
       </Text>
     </View>
@@ -73,7 +73,7 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
 enum DueDateStateStatus {
   warning = "warning",
   danger = "danger",
-  info = "info",
+  info = "info"
 }
 
 const styles = StyleSheet.create({
@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 8,
     flexWrap: "wrap",
-    alignItems: "center",
-  },
+    alignItems: "center"
+  }
 });
 
 export default DueDateState;

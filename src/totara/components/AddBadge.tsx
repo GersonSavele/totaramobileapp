@@ -27,36 +27,57 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { Status } from "@totara/types";
 import ProgressCircle from "./ProgressCircle";
-import {  ThemeContext } from "@totara/theme";
-
+import { ThemeContext } from "@totara/theme";
+import { iconSizes } from "@totara/theme/constants";
 
 type Props = {
-  size: number,
-  offsetSize: number,
-  status?: Status | number
-}
+  size: number;
+  offsetSize: number;
+  status?: Status | number;
+};
 
 type ProgressProps = {
-  size?: number,
-  progress: number
-}
+  size?: number;
+  progress: number;
+};
 type IconBadgeProps = {
-  size: number,
-  color: string
-}
+  size: number;
+  color: string;
+};
 
-const AddBadge = ({status, children, size = 16, offsetSize = 8, ...otherProps}: {status: Status | number, children: JSX.Element, size: number, offsetSize: number}) => {
+const AddBadge = ({
+  status,
+  children,
+  size = iconSizes.sizeS,
+  offsetSize = 8,
+  ...otherProps
+}: {
+  status: Status | number;
+  children?: JSX.Element;
+  size: number;
+  offsetSize?: number;
+}) => {
   return (
     <View>
       {children}
-      <RightBadge status={status} size={size} offsetSize={offsetSize} {...otherProps} />
+      <RightBadge
+        status={status}
+        size={size}
+        offsetSize={offsetSize}
+        {...otherProps}
+      />
     </View>
   );
 };
 
-const RightBadge = ({status, size, offsetSize}: Props) => {
+const RightBadge = ({ status, size, offsetSize }: Props) => {
   const [theme] = useContext(ThemeContext);
-  const getContainerStyle = (size: number, offsetSize: number, backgroundColor: string, borderColor: string ) => {
+  const getContainerStyle = (
+    size: number,
+    offsetSize: number,
+    backgroundColor: string,
+    borderColor: string
+  ) => {
     return StyleSheet.create({
       container: {
         top: -1 * offsetSize,
@@ -75,30 +96,77 @@ const RightBadge = ({status, size, offsetSize}: Props) => {
   };
   switch (status) {
     case Status.done: {
-      const viewStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
-      return <View style={viewStyle.container}><CheckBadge size={size} color={theme.textColorLight}/></View>;
-    } case 100: { 
-      const viewStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
-      return <View style={viewStyle.container}><CheckBadge size={size} color={theme.textColorLight}  /></View>;
-    } case Status.hidden: {
-      const viewStyle = getContainerStyle(size, offsetSize, "#999999", theme.colorNeutral1);
-      return <View style={viewStyle.container}><LockBadge size={size}  color={theme.textColorLight} /></View>
-    } case Status.active: { // drop through default
-       return null;
-    } default: {
+      const viewStyle = getContainerStyle(
+        size,
+        offsetSize,
+        "#69BD45",
+        theme.colorNeutral1
+      );
+      return (
+        <View style={viewStyle.container}>
+          <CheckBadge size={size} color={theme.textColorLight} />
+        </View>
+      );
+    }
+    case 100: {
+      const viewStyle = getContainerStyle(
+        size,
+        offsetSize,
+        "#69BD45",
+        theme.colorNeutral1
+      );
+      return (
+        <View style={viewStyle.container}>
+          <CheckBadge size={size} color={theme.textColorLight} />
+        </View>
+      );
+    }
+    case Status.hidden: {
+      const viewStyle = getContainerStyle(
+        size,
+        offsetSize,
+        "#999999",
+        theme.colorNeutral1
+      );
+      return (
+        <View style={viewStyle.container}>
+          <LockBadge size={size} color={theme.textColorLight} />
+        </View>
+      );
+    }
+    case Status.active: {
+      // drop through default
+      return null;
+    }
+    default: {
       if (typeof status == "number") {
-        const viewStyle = getContainerStyle(size, offsetSize, theme.colorNeutral1, theme.colorNeutral1);
-        return <View style={viewStyle.container}><ProgressBadge size={size} progress={status}/></View>;
-      } 
+        const viewStyle = getContainerStyle(
+          size,
+          offsetSize,
+          theme.colorNeutral1,
+          theme.colorNeutral1
+        );
+        return (
+          <View style={viewStyle.container}>
+            <ProgressBadge size={size} progress={status} />
+          </View>
+        );
+      }
       return null;
     }
   }
-}
+};
 
-const CheckBadge = ({size, color}: IconBadgeProps) =>  <FontAwesomeIcon icon={"check"} color={color} size={size} />
+const CheckBadge = ({ size, color }: IconBadgeProps) => (
+  <FontAwesomeIcon icon={"check"} color={color} size={size} />
+);
 
-const LockBadge = ({size, color}: IconBadgeProps) =>  <FontAwesomeIcon icon={"lock"} color={color} size={size} />
+const LockBadge = ({ size, color }: IconBadgeProps) => (
+  <FontAwesomeIcon icon={"lock"} color={color} size={size} />
+);
 
-const ProgressBadge = ({size, progress}: ProgressProps) =>  <ProgressCircle size={ size ? size * 2 : 32} progress={progress} />
+const ProgressBadge = ({ size, progress }: ProgressProps) => (
+  <ProgressCircle size={size ? size * 2 : 32} progress={progress} />
+);
 
 export { AddBadge, CheckBadge, LockBadge, ProgressBadge };

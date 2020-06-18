@@ -19,14 +19,26 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, {useContext} from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity, Linking } from "react-native";
+import React, { useContext } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  Linking
+} from "react-native";
 import { Form, Input, Container, Content } from "native-base";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { config } from "@totara/lib";
-import { resizeByScreenSize, gutter, ThemeContext} from "@totara/theme";
-import { PrimaryButton, InputTextWithInfo, TouchableIcon, FormError } from "@totara/components";
+import { resizeByScreenSize, gutter, ThemeContext } from "@totara/theme";
+import {
+  PrimaryButton,
+  InputTextWithInfo,
+  TouchableIcon,
+  FormError
+} from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData } from "@totara/core/AuthRoutines";
 
@@ -34,7 +46,6 @@ import { ManualFlowChildProps } from "../ManualFlowChildProps";
 import { useNativeFlow } from "./NativeFlowHook";
 
 const NativeLogin = (props: ManualFlowChildProps) => {
-
   // fetch from global
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
@@ -48,29 +59,55 @@ const NativeLogin = (props: ManualFlowChildProps) => {
     onFocusInput
   } = useNativeFlow(fetchDataWithFetch)(props);
 
-  const [ theme ] = useContext(ThemeContext);
+  const [theme] = useContext(ThemeContext);
 
   return (
     <Container style={[{ flex: 0 }, theme.viewContainer]}>
       <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
         <SafeAreaView />
         <View style={styles.navigation}>
-          <TouchableIcon onPress={onManualFlowCancel} icon={"times"} color={theme.navigationHeaderTintColor}  size={theme.textH3.fontSize} />
+          <TouchableIcon
+            onPress={onManualFlowCancel}
+            icon={"times"}
+            color={theme.navigationHeaderTintColor}
+            size={theme.textH3.fontSize}
+          />
         </View>
       </View>
-      <View style={{position: "relative", zIndex: 2}}>
-        <FormError message={translate("native-login.error_unauthorized")} isShow={nativeLoginState.errorStatusUnauthorized} />
+      <View style={{ position: "relative", zIndex: 2 }}>
+        <FormError
+          message={translate("native-login.error_unauthorized")}
+          isShow={nativeLoginState.errorStatusUnauthorized}
+        />
       </View>
       <Content style={styles.content} enableOnAndroid>
-        <Image source={theme.urlLogo ? { uri: theme.urlLogo } : require("@resources/images/totara_logo/totara_logo.png")} style={styles.totaraLogo} resizeMode={"contain"} />
+        <Image
+          source={
+            theme.urlLogo
+              ? { uri: theme.urlLogo }
+              : require("@resources/images/totara_logo/totara_logo.png")
+          }
+          style={styles.totaraLogo}
+          resizeMode={"contain"}
+        />
         <View style={styles.infoContainer}>
-          <Text style={theme.textH2}>{translate("native-login.header_title")}</Text>
-          <Text style={theme.textH4}>{translate("native-login.login_information")}</Text>
+          <Text style={theme.textH2}>
+            {translate("native-login.header_title")}
+          </Text>
+          <Text style={theme.textH3}>
+            {translate("native-login.login_information")}
+          </Text>
         </View>
         <Form>
           <View style={styles.formInputContainer}>
-            <InputTextWithInfo placeholder={translate("native-login.username_text_placeholder")} message={(nativeLoginState.inputUsernameStatus == "error")? translate("message.enter_valid_username"): undefined}
-              status={nativeLoginState.inputUsernameStatus} >
+            <InputTextWithInfo
+              placeholder={translate("native-login.username_text_placeholder")}
+              message={
+                nativeLoginState.inputUsernameStatus == "error"
+                  ? translate("message.enter_valid_username")
+                  : undefined
+              }
+              status={nativeLoginState.inputUsernameStatus}>
               <Input
                 clearButtonMode="while-editing"
                 autoCapitalize="none"
@@ -82,8 +119,14 @@ const NativeLogin = (props: ManualFlowChildProps) => {
             </InputTextWithInfo>
           </View>
           <View style={styles.formInputContainer}>
-            <InputTextWithInfo placeholder={translate("native-login.password_text_placeholder")}  message={(nativeLoginState.inputPasswordStatus == "error")? translate("message.enter_valid_password"): undefined}
-              status={nativeLoginState.inputPasswordStatus} >
+            <InputTextWithInfo
+              placeholder={translate("native-login.password_text_placeholder")}
+              message={
+                nativeLoginState.inputPasswordStatus == "error"
+                  ? translate("message.enter_valid_password")
+                  : undefined
+              }
+              status={nativeLoginState.inputPasswordStatus}>
               <Input
                 secureTextEntry={true}
                 clearButtonMode="while-editing"
@@ -94,15 +137,24 @@ const NativeLogin = (props: ManualFlowChildProps) => {
               />
             </InputTextWithInfo>
           </View>
-          <View style={[ styles.forgotCredentialContainer, theme.textB1 ]}>
-            <TouchableOpacity onPress={() => { Linking.openURL(config.forgotPasswordUri(props.siteUrl)); }} >
-              <Text style={styles.forgotCredential}>{translate("native-login.forgot_username_password")}</Text>
+          <View style={[styles.forgotCredentialContainer, theme.textRegular]}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(config.forgotPasswordUri(props.siteUrl));
+              }}>
+              <Text style={styles.forgotCredential}>
+                {translate("native-login.forgot_username_password")}
+              </Text>
             </TouchableOpacity>
           </View>
-          <PrimaryButton onPress={onClickEnter} text={translate("general.enter")} mode={nativeLoginState.isRequestingLogin ? "loading": undefined} />
+          <PrimaryButton
+            onPress={onClickEnter}
+            text={translate("general.enter")}
+            mode={nativeLoginState.isRequestingLogin ? "loading" : undefined}
+          />
         </Form>
       </Content>
-    </Container>    
+    </Container>
   );
 };
 
@@ -114,7 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   content: {
-    paddingHorizontal: gutter,
+    paddingHorizontal: gutter
   },
   totaraLogo: {
     height: resizeByScreenSize(72, 72, 88, 88),

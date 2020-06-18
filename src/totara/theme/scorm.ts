@@ -102,7 +102,7 @@ const scormFeedbackStyles = StyleSheet.create({
   },
   resultTitle: {
     textAlign: "center",
-    fontWeight: fontWeights.fontWeightXL,
+    fontWeight: fontWeights.fontWeightSemiBold,
     color: TotaraTheme.textColorLight
   },
   scoreText: {

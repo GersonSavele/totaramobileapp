@@ -23,7 +23,7 @@ const TotaraNavigationOptions = ({
     },
     headerTitleStyle: {
       color: TotaraTheme.navigationHeaderTintColor,
-      fontSize: TotaraTheme.textH4.fontSize,
+      fontSize: TotaraTheme.textRegular.fontSize,
       opacity: opacity
     },
     title: title,

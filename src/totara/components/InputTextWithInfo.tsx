@@ -25,18 +25,17 @@ import { Item, Label } from "native-base";
 import { ThemeContext } from "@totara/theme";
 
 type Props = {
-  children?: Element,
-  placeholder?: string,
-  value?: string,
-  message?: string,
-  onPress?: (() => void),
-  status?: "success" | "focus" | "error",
-  style?: ViewStyle
-}
+  children?: Element;
+  placeholder?: string;
+  value?: string;
+  message?: string;
+  onPress?: () => void;
+  status?: "success" | "focus" | "error";
+  style?: ViewStyle;
+};
 
-const InfoText = ({status, message}: Props) => {
-
-  const [ theme ] = useContext(ThemeContext);
+const InfoText = ({ status, message }: Props) => {
+  const [theme] = useContext(ThemeContext);
   const stylesInfo = StyleSheet.create({
     hide: {
       opacity: 0
@@ -57,36 +56,56 @@ const InfoText = ({status, message}: Props) => {
 
   switch (status) {
     case "success":
-      return <Text style={[theme.textB2, stylesInfo.success]}>{message}</Text>;
+      return (
+        <Text style={[theme.textSmall, stylesInfo.success]}>{message}</Text>
+      );
     case "error":
-      return<Text style={[theme.textB2,  stylesInfo.error]}>{message}</Text>;
+      return <Text style={[theme.textSmall, stylesInfo.error]}>{message}</Text>;
     case "focus":
-        return <Text style={[theme.textB2, stylesInfo.focus]}>{message}</Text>;
+      return <Text style={[theme.textSmall, stylesInfo.focus]}>{message}</Text>;
     default:
-      return <Text style={[theme.textB2, stylesInfo.hide]}>{message}</Text>;
+      return <Text style={[theme.textSmall, stylesInfo.hide]}>{message}</Text>;
   }
 };
 
-const InputTextWithInfo = ({ children, placeholder, message, status, style, ...rest }: Props) => {  
-
-  const [ theme ] = useContext(ThemeContext);
+const InputTextWithInfo = ({
+  children,
+  placeholder,
+  message,
+  status,
+  style,
+  ...rest
+}: Props) => {
+  const [theme] = useContext(ThemeContext);
   const floatingLabelStyles = StyleSheet.create({
     item: {
       marginTop: 0,
-      marginBottom:0,
+      marginBottom: 0,
       marginLeft: 0,
       marginRight: 0,
       paddingLeft: 0,
       paddingRight: 0,
-      borderBottomColor: status === "error" ? theme.colorAlert : theme.textColorSubdued
+      borderBottomColor:
+        status === "error" ? theme.colorAlert : theme.textColorSubdued
     }
   });
 
   return (
-    <View style={{marginBottom: 8}}>
-      <Item floatingLabel {...rest} success={(status === "success")} error={(status === "error")} style={[style, floatingLabelStyles.item]}>
-        <Label style={{fontSize: theme.textH4.fontSize, color: theme.textColorSubdued}}>{placeholder}</Label>
-        { children }        
+    <View style={{ marginBottom: 8 }}>
+      <Item
+        floatingLabel
+        {...rest}
+        success={status === "success"}
+        error={status === "error"}
+        style={[style, floatingLabelStyles.item]}>
+        <Label
+          style={{
+            fontSize: theme.textH3.fontSize,
+            color: theme.textColorSubdued
+          }}>
+          {placeholder}
+        </Label>
+        {children}
       </Item>
       <InfoText status={status} message={message} />
     </View>

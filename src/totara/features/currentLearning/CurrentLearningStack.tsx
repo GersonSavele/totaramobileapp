@@ -34,18 +34,16 @@ const CurrentLearningStack = createStackNavigator(
   {
     [NAVIGATION_CURRENT_LEARNING]: {
       screen: CurrentLearning as any,
-      navigationOptions: ({ screenProps, navigation }: any) =>
+      navigationOptions: ({ navigation }: any) =>
         totaraNavigationOptions({
-          theme: screenProps.theme,
           title: navigation.getParam("title"),
           opacity: navigation.getParam("opacity")
         })
     },
     [NAVIGATION_COURSE_DETAILS]: {
       screen: CourseDetails as any,
-      navigationOptions: ({ screenProps, navigation }: any) =>
+      navigationOptions: ({ navigation }: any) =>
         totaraNavigationOptions({
-          theme: screenProps.theme,
           title: navigation.getParam("title"),
           opacity: navigation.getParam("opacity")
         })
@@ -54,7 +52,6 @@ const CurrentLearningStack = createStackNavigator(
       screen: CourseGroupDetails,
       navigationOptions: ({ screenProps, navigation }: any) =>
         totaraNavigationOptions({
-          theme: screenProps.theme,
           rightAction: (
             <TouchableIcon
               icon={faCloudDownloadAlt}
@@ -89,11 +86,7 @@ const CurrentLearningStack = createStackNavigator(
   },
   {
     initialRouteName: "CurrentLearning",
-    initialRouteKey: "CurrentLearning",
-    defaultNavigationOptions: ({ screenProps }: any) =>
-      totaraNavigationOptions({
-        theme: screenProps.theme
-      })
+    initialRouteKey: "CurrentLearning"
   }
 );
 

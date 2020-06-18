@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   rowTitle: {
     alignSelf: "flex-start",
     fontSize: normalize(fontSizes.fontSizeM),
-    fontWeight: fontWeights.fontWeightL,
+    fontWeight: fontWeights.fontWeightNormal,
     justifyContent: "center",
     color: TotaraTheme.colorNeutral8
   },
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
     color: TotaraTheme.colorLink
   },
   sectionTitle: {
-    fontWeight: fontWeights.fontWeight2XL,
-    fontSize: normalize(fontSizes.fontSizeL),
+    ...TotaraTheme.textHeadline,
+    fontWeight: "bold",
     flex: 2
   },
   labelContainer: {

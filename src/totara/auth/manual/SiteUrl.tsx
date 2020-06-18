@@ -56,7 +56,7 @@ const SiteUrl = (props: Props) => {
               <Text style={theme.textH2}>
                 {translate("manual.site_url_title")}
               </Text>
-              <Text style={theme.textH4}>
+              <Text style={theme.textH3}>
                 {translate("manual.site_url_information")}
               </Text>
             </View>
@@ -93,7 +93,7 @@ const SiteUrl = (props: Props) => {
           style={[
             TotaraTheme.textH2,
             styles.version,
-            theme.textLabel,
+            theme.textXXSmall,
             { color: theme.colorPrimary }
           ]}>
           {translate("general.version")}: {DeviceInfo.getVersion()}(

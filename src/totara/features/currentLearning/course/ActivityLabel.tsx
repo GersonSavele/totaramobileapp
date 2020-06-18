@@ -150,7 +150,7 @@ const VideoTypeLabel = ({ label = {}, theme }: ActivityLabelProps) => {
             numberOfLines={2}
             style={[
               styles.videoTitle,
-              theme.textH4,
+              theme.textH3,
               { color: theme.colorNeutral6 }
             ]}>
             {label.attrs.title}

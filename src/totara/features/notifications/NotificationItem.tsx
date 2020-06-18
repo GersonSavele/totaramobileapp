@@ -80,13 +80,14 @@ const NotificationItem = ({
 
 const styles = StyleSheet.create({
   title: {
-    ...TotaraTheme.textH4,
+    ...TotaraTheme.textRegular,
     ...{
       padding: paddings.paddingM,
       fontWeight: "bold"
     }
   },
   subTitle: {
+    ...TotaraTheme.textSmall,
     padding: paddings.paddingM
   },
   read: {

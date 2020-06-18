@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com
-**/
+ **/
 
 import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
@@ -25,25 +25,41 @@ import { View, Text, StyleSheet } from "react-native";
 import { resizeByScreenSize, ThemeContext } from "@totara/theme";
 
 type TextParam = {
-  text?: string,
-  fontSize?: number, 
-  color?: string,
-  fontWeight?: "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
-}
+  text?: string;
+  fontSize?: number;
+  color?: string;
+  fontWeight?:
+    | "normal"
+    | "bold"
+    | "100"
+    | "200"
+    | "300"
+    | "400"
+    | "500"
+    | "600"
+    | "700"
+    | "800"
+    | "900";
+};
 
-const ModalText = ({text, fontSize, color, fontWeight } : TextParam) => {
-  
-  const [ theme ] = useContext(ThemeContext);
-  return(
-    <View style={styles.containerStyle} >
-      <Text style = {[styles.titleTextStyle,
-       {fontSize : fontSize != undefined? fontSize : theme.textB1.fontSize,
-        color: color != undefined? color : theme.textColorDark, 
-        fontWeight: fontWeight != undefined? fontWeight : "normal",
-       }]}>{text}
+const ModalText = ({ text, fontSize, color, fontWeight }: TextParam) => {
+  const [theme] = useContext(ThemeContext);
+  return (
+    <View style={styles.containerStyle}>
+      <Text
+        style={[
+          styles.titleTextStyle,
+          {
+            fontSize:
+              fontSize != undefined ? fontSize : theme.textRegular.fontSize,
+            color: color != undefined ? color : theme.textColorDark,
+            fontWeight: fontWeight != undefined ? fontWeight : "normal"
+          }
+        ]}>
+        {text}
       </Text>
-    </View>  
-  ) 
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

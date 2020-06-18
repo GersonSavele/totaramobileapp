@@ -102,11 +102,11 @@ const AttemptReport = ({
 
   return (
     <View style={attemptResult.holder} key={"holder"}>
-      <Text style={[theme.textH4, attemptResult.attempt]}>
+      <Text style={[theme.textH3, attemptResult.attempt]}>
         {translate("scorm.attempts.attempt")} {attempt}
       </Text>
       <View style={attemptResult.result}>
-        <Text style={theme.textH4}>{formattedScore}</Text>
+        <Text style={theme.textH3}>{formattedScore}</Text>
       </View>
     </View>
   );

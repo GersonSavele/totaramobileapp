@@ -18,7 +18,7 @@ import React, { useContext, useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
 import { courseSelfComplete } from "../course/api";
-import { normalize, ThemeContext } from "@totara/theme";
+import { ThemeContext } from "@totara/theme";
 import {
   AddBadge,
   Loading,
@@ -39,6 +39,7 @@ import {
   gradeSuffixText,
   labelWrap
 } from "../overviewStyles";
+import { iconSizes } from "@totara/theme/constants";
 
 type OverviewProps = {
   contentDetails: CourseContentDetails | CourseGroupContentDetails;
@@ -242,11 +243,11 @@ const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.summaryContainer}>
-      <Text numberOfLines={1} style={theme.textH3}>
+      <Text numberOfLines={1} style={theme.textHeadline}>
         {summaryTypeTitle}
       </Text>
       <View style={styles.summaryViewWrap}>
-        <Text style={[theme.textB3, { color: theme.colorNeutral6 }]}>
+        <Text style={[theme.textXSmall, { color: theme.colorNeutral6 }]}>
           {summary}
         </Text>
       </View>
@@ -257,7 +258,7 @@ const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {
 const ProgressCircle = ({ value }: { value: number }) => {
   return (
     <View style={styles.badgeContainer}>
-      <AddBadge status={value} size={normalize(24)}></AddBadge>
+      <AddBadge status={value} size={iconSizes.sizeM} />
     </View>
   );
 };

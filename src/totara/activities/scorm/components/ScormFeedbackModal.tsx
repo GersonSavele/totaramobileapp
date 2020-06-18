@@ -57,7 +57,7 @@ const ScormFeedbackModal = ({
                 <>
                   <Text
                     style={{
-                      ...TotaraTheme.textB3,
+                      ...TotaraTheme.textXSmall,
                       ...scormFeedbackStyles.resultTitle
                     }}>
                     {translate("scorm.feedback.grade_title")}
@@ -77,7 +77,7 @@ const ScormFeedbackModal = ({
           <View style={scormFeedbackStyles.actionWrapper}>
             <Text
               style={{
-                ...TotaraTheme.textH4,
+                ...TotaraTheme.textH3,
                 marginBottom: margins.margin2XL,
                 textAlign: "center"
               }}>

@@ -39,6 +39,7 @@ import { resizeByScreenSize, normalize, ThemeContext } from "@totara/theme";
 import { navigateTo } from "@totara/lib/navigation";
 import { itemToRouteMap } from "@totara/lib/constants";
 import Restriction from "./Restriction";
+import { borderRadius } from "@totara/theme/constants";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning, loading, onRefresh }) => {
@@ -135,7 +136,7 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       borderColor: theme.colorNeutral3
     },
     content: {
-      borderRadius: normalize(10),
+      borderRadius: borderRadius.borderRadiusM,
       width: "100%",
       height: "99%",
       overflow: "hidden"
@@ -155,8 +156,7 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       flex: 1,
       alignSelf: "flex-start",
       width: "100%",
-      paddingVertical: 16,
-      color: theme.textColorSubdued
+      paddingVertical: 16
     }
   });
 
@@ -186,10 +186,12 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       activeOpacity={1.0}>
       <View style={itemStyle.content}>
         <LearningItemCard item={item} image={item.imageSrc}>
-          <Text style={[theme.textLabel, itemStyle.type]}>{item.itemtype}</Text>
+          <Text style={[theme.textXXSmall, itemStyle.type]}>
+            {item.itemtype}
+          </Text>
           {/* // TODO handeling numberOfLines for dynamic height */}
           <Text
-            style={[theme.textB2, itemStyle.summary]}
+            style={[theme.textRegular, itemStyle.summary]}
             ellipsizeMode="tail"
             numberOfLines={resizeByScreenSize(3, 6, 6, 8)}>
             {item.summary}

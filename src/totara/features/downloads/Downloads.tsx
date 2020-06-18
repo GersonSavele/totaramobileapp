@@ -131,17 +131,14 @@ const Downloads = () => {
   return (
     <View style={theme.viewContainer}>
       <View style={[headerStyles.navigationHeader, { flexDirection: "row" }]}>
-        <Text
-          style={[theme.textH1, { color: theme.navigationHeaderTintColor }]}>
-          {headerTitle}
-        </Text>
+        <Text style={theme.textH2}>{headerTitle}</Text>
       </View>
       <NetworkStatus />
       <View style={{ flex: 1 }}>
         {resourcesList.length == 0 ? (
           <View style={styles.noContent}>
             <Image source={Images.noDownloads as ImageSourcePropType} />
-            <Text style={[theme.textH2, { fontWeight: "bold" }]}>
+            <Text style={[theme.textHeadline, { fontWeight: "bold" }]}>
               {translate("downloads.empty")}
             </Text>
           </View>

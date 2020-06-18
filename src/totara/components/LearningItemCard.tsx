@@ -33,11 +33,11 @@ import React, { useContext } from "react";
 
 import { LearningItem } from "@totara/types";
 import DueDateState from "./DueDateState";
-import { normalize } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { AUTHORIZATION, learningItemEnum } from "@totara/lib/constants";
 import { AuthContext } from "@totara/core";
 import { Images } from "@resources/images";
+import { paddings } from "@totara/theme/constants";
 
 interface Props {
   item: LearningItem;
@@ -70,8 +70,8 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
     <View style={cardStyleSheet}>
       <View style={{ flexDirection: "row" }}>
         <Text
-          numberOfLines={2}
-          style={[TotaraTheme.textH2, styles.itemFullName]}
+          numberOfLines={1}
+          style={[TotaraTheme.textH3, styles.itemFullName]}
           ellipsizeMode="tail">
           {item.fullname}
         </Text>
@@ -147,12 +147,12 @@ const styles = StyleSheet.create({
     flexDirection: "column-reverse"
   },
   itemCard: {
-    padding: normalize(16),
+    padding: paddings.paddingXL,
     justifyContent: "flex-start",
     flex: 1
   },
   itemFullName: {
-    flexWrap: "wrap"
+    flexWrap: "nowrap"
   },
   disabledOverlay: {
     position: "absolute",

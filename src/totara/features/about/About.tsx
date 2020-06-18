@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     paddingTop: paddings.padding2XL
   },
   version: {
-    ...TotaraTheme.textB1,
+    ...TotaraTheme.textRegular,
     color: TotaraTheme.colorNeutral6,
     alignSelf: "center"
   },

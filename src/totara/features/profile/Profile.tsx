@@ -137,7 +137,7 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
         <View style={styles.manageOptions}>
           <View style={[styles.sectionOption, { flexDirection: "row" }]}>
             <TouchableOpacity onPress={goToAbout} style={{ flex: 1 }}>
-              <Text style={TotaraTheme.textB1}>
+              <Text style={TotaraTheme.textRegular}>
                 {translate("user_profile.about")}
               </Text>
             </TouchableOpacity>
@@ -153,7 +153,7 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
             <AuthConsumer>
               {(auth) => (
                 <TouchableOpacity onPress={() => confirmationLogout(auth)}>
-                  <Text style={TotaraTheme.textB1}>
+                  <Text style={TotaraTheme.textRegular}>
                     {translate("user_profile.logout.button_text")}
                   </Text>
                 </TouchableOpacity>
@@ -181,15 +181,14 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   userDetails: {
-    ...TotaraTheme.textH2,
-    ...{ fontWeight: "bold" }
+    ...TotaraTheme.textHeadline
   },
   userEmail: {
-    ...TotaraTheme.textB3,
+    ...TotaraTheme.textXSmall,
     ...{ color: TotaraTheme.colorNeutral6 }
   },
   userLoginAs: {
-    ...TotaraTheme.textSmall,
+    ...TotaraTheme.textXSmall,
     ...{
       color: TotaraTheme.colorNeutral6,
       marginTop: 6
@@ -199,7 +198,7 @@ const styles = StyleSheet.create({
     margin: margins.marginM
   },
   manageTitle: {
-    ...TotaraTheme.textH2
+    ...TotaraTheme.textHeadline
   },
   manageOptions: {
     marginTop: margins.marginM

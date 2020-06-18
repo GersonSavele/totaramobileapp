@@ -29,13 +29,10 @@ const borderRadius = {
 };
 
 const fontWeights = {
-  fontWeightXS: "200",
-  fontWeightS: "300",
-  fontWeightM: "400",
-  fontWeightL: "500",
-  fontWeightXL: "600",
-  fontWeight2XL: "700",
-  fontWeight3XL: "800"
+  fontWeightRegular: "400",
+  fontWeightNormal: "500",
+  fontWeightSemiBold: "600",
+  fontWeightBold: "700"
 };
 
 const fontSizes = {

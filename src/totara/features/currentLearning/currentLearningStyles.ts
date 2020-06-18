@@ -231,12 +231,11 @@ const videoControllerStyles = StyleSheet.create({
 });
 
 const headerViewTitleWrap = {
-  ...TotaraTheme.textH1,
-  color: TotaraTheme.navigationHeaderTintColor
+  ...TotaraTheme.textH2
 };
 
 const headerViewSubTitleWrap = {
-  ...TotaraTheme.textSmall,
+  ...TotaraTheme.textXSmall,
   color: TotaraTheme.navigationHeaderTintColor
 };
 

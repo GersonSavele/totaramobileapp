@@ -1,28 +1,22 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
- */
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ * */
 
-import { normalize } from "./PlatformUtility";
 import { Theme } from "@totara/types";
 import { TextStyle, ViewStyle } from "react-native";
 
+const colorFont = "#000000";
 const colorPrimary = "#8CA83D";
 const colorAccent = "#FFFFFF";
 const colorNeutral5 = "#C7C7C7";
@@ -33,39 +27,63 @@ const TotaraTheme: AppliedTheme = {
 
   //---- Text styles: customizable by [Developer] ------
   textH1: {
-    fontSize: normalize(32),
-    lineHeight: normalize(38),
-    color: textColorDark,
-    fontWeight: "bold"
+    fontSize: 40,
+    lineHeight: 48,
+    color: colorFont,
+    fontWeight: "400"
   },
   textH2: {
-    fontSize: normalize(24),
-    lineHeight: normalize(32),
-    color: textColorDark,
-    fontWeight: "500"
+    fontSize: 34,
+    lineHeight: 41,
+    color: colorFont,
+    fontWeight: "700"
   },
   textH3: {
-    fontSize: normalize(20),
-    lineHeight: normalize(28),
-    color: textColorDark,
-    fontWeight: "500"
-  },
-  textH4: {
-    fontSize: normalize(17),
-    lineHeight: normalize(26),
-    color: textColorDark,
-    fontWeight: "500"
+    fontSize: 28,
+    lineHeight: 34,
+    color: colorFont,
+    fontWeight: "400"
   },
 
-  textB1: { fontSize: 16, lineHeight: 24, color: textColorDark },
-  textB2: { fontSize: 15, lineHeight: 20, color: textColorDark },
-  textB3: { fontSize: 14, lineHeight: 18, color: textColorDark },
+  textHeadline: {
+    fontSize: 22,
+    lineHeight: 28,
+    color: colorFont,
+    fontWeight: "400"
+  },
 
-  textSmall: { fontSize: 12, lineHeight: 16, color: textColorDark },
-  textLabel: { fontSize: 10, color: textColorDark },
+  textRegular: {
+    fontSize: 17,
+    lineHeight: 22,
+    color: colorFont,
+    fontWeight: "400"
+  },
 
+  textSmall: {
+    fontSize: 15,
+    lineHeight: 20,
+    color: colorFont,
+    fontWeight: "400"
+  },
+
+  textXSmall: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: colorFont,
+    fontWeight: "400"
+  },
+
+  textXXSmall: {
+    fontSize: 11,
+    lineHeight: 13,
+    color: colorFont,
+    fontWeight: "400"
+  },
+
+  //NEEDS BE REMOVED
   fontSizeButtonTitle: 14,
 
+  //NEEDS REVIEW
   //---- Theme color: customizable by [User, Developer] ------
   colorPrimary: colorPrimary,
   colorText: "#FFFFFF",
@@ -118,16 +136,14 @@ export type AppliedTheme = {
   textH1: TextStyle;
   textH2: TextStyle;
   textH3: TextStyle;
-  textH4: TextStyle;
-
-  textB1: TextStyle;
-  textB2: TextStyle;
-  textB3: TextStyle;
-
+  textHeadline: TextStyle;
+  textRegular: TextStyle;
   textSmall: TextStyle;
-  textLabel: TextStyle;
+  textXSmall: TextStyle;
+  textXXSmall: TextStyle;
 } & Theme;
 
+//THIS NEEDS TO BE REVIEWED
 const applyTheme = (theme: Partial<Theme>) => {
   let newTheme = TotaraTheme;
   if (theme.colorPrimary) {
@@ -146,20 +162,6 @@ const applyTheme = (theme: Partial<Theme>) => {
     newTheme.textH1 = { ...newTheme.textH1, ...{ color: theme.textColorDark } };
     newTheme.textH2 = { ...newTheme.textH2, ...{ color: theme.textColorDark } };
     newTheme.textH3 = { ...newTheme.textH3, ...{ color: theme.textColorDark } };
-    newTheme.textH4 = { ...newTheme.textH4, ...{ color: theme.textColorDark } };
-
-    newTheme.textB1 = { ...newTheme.textB1, ...{ color: theme.textColorDark } };
-    newTheme.textB2 = { ...newTheme.textB2, ...{ color: theme.textColorDark } };
-    newTheme.textB3 = { ...newTheme.textB3, ...{ color: theme.textColorDark } };
-
-    newTheme.textSmall = {
-      ...newTheme.textSmall,
-      ...{ color: theme.textColorDark }
-    };
-    newTheme.textLabel = {
-      ...newTheme.textLabel,
-      ...{ color: theme.textColorDark }
-    };
   }
   return { ...newTheme, ...theme };
 };

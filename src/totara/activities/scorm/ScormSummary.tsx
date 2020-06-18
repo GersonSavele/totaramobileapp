@@ -75,7 +75,7 @@ type SummaryProps = {
 };
 
 const gridStyle = (theme: AppliedTheme) => [
-  theme.textB1,
+  theme.textRegular,
   { color: theme.textColorSubdued }
 ];
 
@@ -88,7 +88,7 @@ type GridLabelProps = {
 
 const GridLabelValue = ({ theme, textId, value, children }: GridLabelProps) => (
   <View style={scormSummaryStyles.sectionField}>
-    <Text style={theme.textB1}>{translate(textId)}</Text>
+    <Text style={theme.textRegular}>{translate(textId)}</Text>
     <View style={{ flexDirection: "row" }}>
       <Text style={gridStyle(theme)}>{value}</Text>
       {children}
@@ -102,7 +102,7 @@ type GridTitleProps = {
   style?: TextStyle;
 };
 const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
-  <Text style={[theme.textH2, scormSummaryStyles.sectionBreak, style]}>
+  <Text style={[theme.textHeadline, scormSummaryStyles.sectionBreak, style]}>
     {translate(textId)}
   </Text>
 );
@@ -249,7 +249,7 @@ const ScormSummary = ({
                   value={calculatedGrade}>
                   <FontAwesomeIcon
                     icon="chevron-right"
-                    size={theme.textB1.fontSize}
+                    size={theme.textRegular.fontSize}
                     style={{ alignSelf: "center", marginLeft: 8 }}
                     color={theme.textColorSubdued}
                   />

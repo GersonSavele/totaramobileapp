@@ -154,20 +154,14 @@ const Notifications = () => {
   return (
     <View style={TotaraTheme.viewContainer}>
       <View style={headerStyles.navigationHeader}>
-        <Text
-          style={[
-            TotaraTheme.textH1,
-            { color: TotaraTheme.navigationHeaderTintColor }
-          ]}>
-          {headerTitle}
-        </Text>
+        <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
       </View>
       <NetworkStatus />
       <View style={{ flex: 1 }}>
         {notificationList.length == 0 && (
           <View style={styles.noContent}>
             <Image source={Images.notificationBell as ImageSourcePropType} />
-            <Text style={[TotaraTheme.textH2, { fontWeight: "bold" }]}>
+            <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>
               {translate("notifications.empty")}
             </Text>
           </View>

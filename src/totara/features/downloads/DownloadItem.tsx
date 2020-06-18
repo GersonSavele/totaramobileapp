@@ -87,12 +87,11 @@ const DownloadItem = ({
 
 const styles = StyleSheet.create({
   title: {
-    ...TotaraTheme.textH4,
-    ...{
-      padding: paddings.paddingM
-    }
+    ...TotaraTheme.textRegular,
+    padding: paddings.paddingM
   },
   size: {
+    ...TotaraTheme.textSmall,
     color: TotaraTheme.colorNeutral6,
     paddingLeft: paddings.paddingM
   },

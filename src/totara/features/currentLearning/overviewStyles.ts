@@ -21,21 +21,21 @@ import { TotaraTheme, AppliedTheme } from "@totara/theme/Theme";
 
 const gradePrefixText = (theme: AppliedTheme) => {
   return {
-    ...theme.textH2,
+    ...theme.textHeadline,
     fontWeight: "bold"
   };
 };
 
 const gradeSuffixText = (theme: AppliedTheme) => {
   return {
-    ...theme.textH4,
+    ...theme.textSmall,
     ...styles.gradeMaxTextWrap
   };
 };
 
 const labelWrap = (theme: AppliedTheme) => {
   return {
-    ...theme.textH4,
+    ...theme.textRegular,
     textAlign: "center"
   };
 };

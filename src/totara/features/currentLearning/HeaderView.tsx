@@ -86,6 +86,7 @@ const HeaderView = ({
               onPress={onPress}>
               <Text
                 style={[
+                  styles.tabViewTitle,
                   overviewIsShown && styles.overviewTextTouchableOpacity
                 ]}>
                 {tabBarLeftTitle}
@@ -99,6 +100,7 @@ const HeaderView = ({
               onPress={onPress}>
               <Text
                 style={[
+                  styles.tabViewTitle,
                   !overviewIsShown && { ...styles.overviewTextTouchableOpacity }
                 ]}>
                 {tabBarRightTitle}
@@ -165,9 +167,12 @@ const HeaderView = ({
 };
 
 const styles = StyleSheet.create({
+  tabViewTitle: {
+    color: TotaraTheme.colorNeutral6
+  },
   overviewTextTouchableOpacity: {
-    color: TotaraTheme.colorNeutral6,
-    fontWeight: "400"
+    fontWeight: "bold",
+    color: TotaraTheme.colorNeutral8
   },
   overviewTouchableOpacity: {
     borderBottomColor: TotaraTheme.colorNeutral7,
