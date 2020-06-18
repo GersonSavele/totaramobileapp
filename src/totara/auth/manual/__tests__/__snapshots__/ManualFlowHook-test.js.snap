@@ -85,8 +85,8 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -110,7 +110,7 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]

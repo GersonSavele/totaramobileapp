@@ -85,8 +85,8 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -110,7 +110,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]
@@ -305,8 +305,8 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -330,7 +330,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]
@@ -525,8 +525,8 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -550,7 +550,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]
@@ -746,8 +746,8 @@ exports[`Testing: Course manual completion Test result : course complete and loa
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -771,7 +771,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]

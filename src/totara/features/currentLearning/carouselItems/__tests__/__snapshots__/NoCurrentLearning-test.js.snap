@@ -30,10 +30,10 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
     style={
       Array [
         Object {
-          "color": "#3D444B",
-          "fontSize": 44,
-          "fontWeight": "500",
-          "lineHeight": 58,
+          "color": "#000000",
+          "fontSize": 34,
+          "fontWeight": "700",
+          "lineHeight": 41,
         },
         Object {
           "alignItems": "flex-start",

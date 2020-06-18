@@ -85,8 +85,8 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -110,7 +110,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]
@@ -263,8 +263,8 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -288,7 +288,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]
@@ -441,8 +441,8 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -466,7 +466,7 @@ exports[`AppModal it should not show any modal screens for valid apiVersion or d
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]
@@ -619,8 +619,8 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 44,
-                    "fontWeight": "500",
+                    "fontSize": 34,
+                    "fontWeight": "700",
                   },
                 ]
               }
@@ -644,7 +644,7 @@ exports[`AppModal it should show error modal screens for incompatible version 1`
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 16,
+                    "fontSize": 17,
                     "fontWeight": "normal",
                   },
                 ]
