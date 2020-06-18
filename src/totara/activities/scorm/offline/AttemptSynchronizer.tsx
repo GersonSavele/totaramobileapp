@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
 
-import { showMessage } from "@totara/lib";
+import { showMessage, Log } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { getOfflineScormCommits, clearSyncedScormCommit } from "../utils";
 import { mutationAttempts } from "../api";
@@ -52,6 +52,7 @@ const AttemptSynchronizer = () => {
           })
           .catch((e) => {
             showMessage({ text: `${translate("general.error_unknown")}` });
+            Log.warn(e);
           });
       } else {
         const syncDataSet = getOfflineScormCommits({ client });
