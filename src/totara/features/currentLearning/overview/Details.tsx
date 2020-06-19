@@ -29,8 +29,7 @@ import {
 import { translate } from "@totara/locale";
 import CriteriaSheet from "./CriteriaSheet";
 import CourseCompletionModal from "../CourseCompletionModal";
-import { CourseContentDetails } from "@totara/types";
-import { CourseGroupContentDetails } from "@totara/types/CourseGroup";
+import { Criteria } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
 import { courseCriteria } from "@totara/lib/constants";
 import { styles, gradePrefixText, labelWrap } from "../overviewStyles";
@@ -38,30 +37,29 @@ import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type OverviewProps = {
-  contentDetails: CourseContentDetails | CourseGroupContentDetails;
+  id: number;
+  criteria?: [Criteria];
+  summary?: string;
+  gradeFinal?: number;
+  progress: number;
   summaryTypeTitle?: string;
   onclickContinueLearning?: () => void;
   courseRefreshCallback?: () => {};
 };
 
-type SummaryProps = {
-  summary?: string;
-  summaryTypeTitle?: string;
-};
-
 const Details = ({
-  contentDetails,
+  id,
+  criteria,
+  summary,
+  gradeFinal,
+  progress,
   summaryTypeTitle,
   onclickContinueLearning,
   courseRefreshCallback
 }: OverviewProps) => {
-  const isShowSelfCompletion = contentDetails?.course.criteria?.some(
-    (value) => {
-      if (value["type"] === courseCriteria.selfComplete) {
-        return true;
-      }
-    }
-  );
+  const isSelfCompletion = criteria?.some((value) => {
+    return value["type"] === courseCriteria.selfComplete;
+  });
   return (
     <View>
       <View>
@@ -70,11 +68,12 @@ const Details = ({
           horizontal={true}
           contentContainerStyle={styles.scrollViewContainer}
           showsHorizontalScrollIndicator={false}>
-          <Progress contentDetails={contentDetails} />
-          <Grade contentDetails={contentDetails} />
-          {isShowSelfCompletion && (
+          <Progress progress={progress} criteria={criteria} />
+          {gradeFinal !== undefined && <Grade gradeFinal={gradeFinal} />}
+          {isSelfCompletion && criteria && (
             <Complete
-              contentDetails={contentDetails}
+              id={id}
+              criteria={criteria}
               onclickContinueLearning={onclickContinueLearning}
               courseRefreshCallback={courseRefreshCallback}
             />
@@ -83,16 +82,13 @@ const Details = ({
       </View>
       <Separator />
       <View style={{ flex: 4 }}>
-        <Summary
-          summary={contentDetails?.course?.summary}
-          summaryTypeTitle={summaryTypeTitle}
-        />
+        <Summary summary={summary} summaryTypeTitle={summaryTypeTitle} />
       </View>
     </View>
   );
 };
 
-const Grade = ({ contentDetails }: OverviewProps) => {
+const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
   const [theme] = useContext(ThemeContext);
   return (
     <TouchableOpacity
@@ -103,9 +99,7 @@ const Grade = ({ contentDetails }: OverviewProps) => {
         <View style={styles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
             <Text style={gradePrefixText(theme)}>
-              {contentDetails.gradeFinal.length > 0
-                ? contentDetails?.gradeFinal
-                : 0}
+              {gradeFinal.length > 0 ? gradeFinal : 0}
             </Text>
           </View>
         </View>
@@ -120,7 +114,13 @@ const Grade = ({ contentDetails }: OverviewProps) => {
   );
 };
 
-const Progress = ({ contentDetails }: OverviewProps) => {
+const Progress = ({
+  progress,
+  criteria
+}: {
+  progress: number;
+  criteria?: [Criteria];
+}) => {
   const [theme] = useContext(ThemeContext);
   const [showCriteria, setShowCriteria] = useState(false);
   const onClose = () => {
@@ -133,12 +133,7 @@ const Progress = ({ contentDetails }: OverviewProps) => {
       onPress={() => setShowCriteria(true)}>
       <View style={styles.contentWrap}>
         <View style={styles.innerViewWrap}>
-          <ProgressCircle
-            value={
-              contentDetails.course.completion?.progress !== undefined
-                ? contentDetails.course.completion?.progress
-                : 0
-            }></ProgressCircle>
+          <ProgressCircle value={progress}></ProgressCircle>
         </View>
         <View style={styles.horizontalSeparator} />
         <View style={styles.carouselTextContainer}>
@@ -147,37 +142,41 @@ const Progress = ({ contentDetails }: OverviewProps) => {
           </Text>
         </View>
       </View>
-      {showCriteria && contentDetails.course?.criteria !== null && (
+      {showCriteria && criteria !== null && (
         <CriteriaSheet
-          criteriaList={contentDetails.course!.criteria}
-          onClose={onClose}
-        />
+          criteriaList={criteria}
+          onClose={onClose}></CriteriaSheet>
       )}
     </TouchableOpacity>
   );
 };
 
+type CompletionProps = {
+  id: number;
+  criteria: [Criteria];
+  onclickContinueLearning?: () => void;
+  courseRefreshCallback?: () => {};
+};
+
 const Complete = ({
-  contentDetails,
+  id,
+  criteria,
   onclickContinueLearning = () => {},
   courseRefreshCallback
-}: OverviewProps) => {
-  const isSelfCompleted = contentDetails.course?.criteria?.some((value) => {
+}: CompletionProps) => {
+  const isSelfCompleted = criteria?.some((value) => {
     if (value["type"] === courseCriteria.selfComplete) {
-      if (value["complete"] === true) return true;
-      else return false;
+      return value["complete"] === true;
     }
   });
 
-  const isCourseCompleted = contentDetails.course?.criteria?.every((value) => {
-    if (value["complete"] === true) return true;
-    else return false;
+  const isCourseCompleted = criteria?.every((value) => {
+    return value["complete"] === true;
   });
 
   const refetchCourseQueries = () => {
     courseRefreshCallback!();
   };
-
   const [theme] = useContext(ThemeContext);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   let [selfComplete, { data, loading, error }] = useMutation(
@@ -197,7 +196,7 @@ const Complete = ({
 
   const onClickSelfComplete = () => {
     if (!isSelfCompleted) {
-      selfComplete({ variables: { courseid: contentDetails.course?.id } });
+      selfComplete({ variables: { courseid: id } });
     } else {
       setShowConfirmModal(false);
     }
@@ -253,6 +252,11 @@ const Complete = ({
       )}
     </TouchableOpacity>
   );
+};
+
+type SummaryProps = {
+  summary?: string;
+  summaryTypeTitle?: string;
 };
 
 const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {

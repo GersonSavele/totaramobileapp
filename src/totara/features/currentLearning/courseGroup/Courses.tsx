@@ -32,7 +32,7 @@ type CourseListProps = {
   navigation: NavigationParams;
 };
 
-const CourseList = withNavigation(
+const Courses = withNavigation(
   ({ courseGroup, navigation }: CourseListProps) => {
     const [theme] = useContext(ThemeContext);
     const renderCourseSet = ({ item }: { item: CourseSets }) => (
@@ -119,4 +119,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CourseList;
+export default Courses;

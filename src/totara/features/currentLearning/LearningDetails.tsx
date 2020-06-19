@@ -28,7 +28,7 @@ import { headerViewStyles } from "./currentLearningStyles";
 import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
 
-type HeaderViewProps = {
+type Props = {
   details: CourseGroup | Course;
   navigation: NavigationParams;
   children: ReactNode;
@@ -40,7 +40,7 @@ type HeaderViewProps = {
   image?: string;
 };
 
-const HeaderView = ({
+const LearningDetails = ({
   navigation,
   details,
   children,
@@ -50,7 +50,7 @@ const HeaderView = ({
   overviewIsShown,
   badgeTitle,
   image = ""
-}: HeaderViewProps) => {
+}: Props) => {
   //To Do: Bug in NetInfo library, useNetInfo - isConnected initial state is false(phone and simulator):
   //https://github.com/react-native-community/react-native-netinfo/issues/295
   const [isConnected, setIsConnected] = useState<boolean>(true);
@@ -175,4 +175,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HeaderView;
+export default LearningDetails;
