@@ -79,6 +79,9 @@ const iconSizes = {
   sizeXL: 48
 };
 
+// THESE VALUES WERE GENERATED USING THE FOLLOWING TOOL
+// https://ethercreative.github.io/react-native-shadow-generator/
+// PLEASE DON'T CHANGE IT BEFORE TALKING TO OTHER DEVELOPERS
 const shadow = {
   android: {
     elevation: 6

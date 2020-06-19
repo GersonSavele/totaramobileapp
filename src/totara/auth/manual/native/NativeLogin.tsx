@@ -1,22 +1,16 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
 import React, { useContext } from "react";
@@ -32,7 +26,7 @@ import { Form, Input, Container, Content } from "native-base";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { config } from "@totara/lib";
-import { resizeByScreenSize, gutter, ThemeContext } from "@totara/theme";
+import { gutter, ThemeContext } from "@totara/theme";
 import {
   PrimaryButton,
   InputTextWithInfo,
@@ -44,6 +38,8 @@ import { fetchData } from "@totara/core/AuthRoutines";
 
 import { ManualFlowChildProps } from "../ManualFlowChildProps";
 import { useNativeFlow } from "./NativeFlowHook";
+import { margins } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 const NativeLogin = (props: ManualFlowChildProps) => {
   // fetch from global
@@ -70,7 +66,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
             onPress={onManualFlowCancel}
             icon={"times"}
             color={theme.navigationHeaderTintColor}
-            size={theme.textH3.fontSize}
+            size={theme.textHeadline.fontSize}
           />
         </View>
       </View>
@@ -91,10 +87,10 @@ const NativeLogin = (props: ManualFlowChildProps) => {
           resizeMode={"contain"}
         />
         <View style={styles.infoContainer}>
-          <Text style={theme.textH2}>
+          <Text style={styles.loginTitle}>
             {translate("native-login.header_title")}
           </Text>
-          <Text style={theme.textH3}>
+          <Text style={styles.loginInformation}>
             {translate("native-login.login_information")}
           </Text>
         </View>
@@ -159,6 +155,13 @@ const NativeLogin = (props: ManualFlowChildProps) => {
 };
 
 const styles = StyleSheet.create({
+  loginTitle: {
+    ...TotaraTheme.textH3
+  },
+  loginInformation: {
+    ...TotaraTheme.textRegular,
+    color: TotaraTheme.colorNeutral6
+  },
   navigation: {
     alignItems: "flex-start",
     borderBottomWidth: 0,
@@ -169,18 +172,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: gutter
   },
   totaraLogo: {
-    height: resizeByScreenSize(72, 72, 88, 88),
+    height: 88,
     width: "100%",
-    marginTop: 24
+    marginTop: margins.marginXL
   },
   infoContainer: {
     justifyContent: "space-between",
     textAlignVertical: "center",
-    marginBottom: resizeByScreenSize(32, 32, 32, 32),
-    marginTop: 32
+    marginBottom: margins.margin2XL,
+    marginTop: margins.margin2XL
   },
   formInputContainer: {
-    marginBottom: 8
+    marginBottom: margins.marginS
   },
   inputText: {
     paddingLeft: 0,
@@ -189,10 +192,10 @@ const styles = StyleSheet.create({
   forgotCredentialContainer: {
     justifyContent: "space-around",
     alignItems: "center",
-    marginBottom: 8
+    marginBottom: margins.marginS
   },
   forgotCredential: {
-    padding: 16,
+    padding: margins.marginL,
     textDecorationLine: "underline",
     textAlign: "center"
   }

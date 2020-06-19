@@ -1,39 +1,32 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
+
 import { Container, Content, Form, Input } from "native-base";
 import React, { useContext, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
 import DeviceInfo from "react-native-device-info";
 import { useSiteUrl, Props } from "./SiteUrlHook";
 
 import { InputTextWithInfo, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
+import { gutter, ThemeContext } from "@totara/theme";
 import { constants } from "@totara/lib";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { deviceScreen } from "@totara/lib/tools";
+import { margins } from "@totara/theme/constants";
 
 const { DEV_ORG_URL, DEBUG_MODE } = constants;
 
@@ -53,10 +46,10 @@ const SiteUrl = (props: Props) => {
               resizeMode="contain"
             />
             <View>
-              <Text style={theme.textH2}>
+              <Text style={styles.urlTitle}>
                 {translate("manual.site_url_title")}
               </Text>
-              <Text style={theme.textH3}>
+              <Text style={styles.urlInformation}>
                 {translate("manual.site_url_information")}
               </Text>
             </View>
@@ -94,7 +87,7 @@ const SiteUrl = (props: Props) => {
             TotaraTheme.textH2,
             styles.version,
             theme.textXXSmall,
-            { color: theme.colorPrimary }
+            { color: theme.colorNeutral8 }
           ]}>
           {translate("general.version")}: {DeviceInfo.getVersion()}(
           {DeviceInfo.getBuildNumber()})
@@ -105,31 +98,38 @@ const SiteUrl = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
+  urlTitle: {
+    ...TotaraTheme.textH3
+  },
+  urlInformation: {
+    ...TotaraTheme.textRegular,
+    color: TotaraTheme.colorNeutral6
+  },
   siteUrlContainer: {
     marginHorizontal: gutter
   },
   totaraLogo: {
-    marginTop: 64,
-    width: wp(33),
+    marginTop: margins.margin2XL,
+    width: deviceScreen.width * 0.33,
     alignSelf: "center"
   },
   headerContainer: {
-    height: hp(45),
+    height: deviceScreen.height * 0.45,
     justifyContent: "space-between"
   },
   formContainer: {
-    marginTop: resizeByScreenSize(32, 32, 32, 32)
+    marginTop: margins.margin2XL
   },
   inputText: {
     paddingRight: 0,
     paddingLeft: 0
   },
   buttonEnter: {
-    marginTop: 8
+    marginTop: margins.marginS
   },
   version: {
     textAlign: "center",
-    marginBottom: 8,
+    marginBottom: margins.marginS,
     flexDirection: "column-reverse"
   }
 });

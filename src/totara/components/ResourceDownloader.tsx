@@ -35,8 +35,6 @@ const ResourceDownloaderComponent = ({
         thickness={2}
         borderWidth={0}
         indeterminate={false}
-        formatText={() => progress.toFixed(0)}
-        showsText={true}
         textStyle={{
           fontSize: theme.textSmall.fontSize,
           lineHeight: theme.textSmall.fontSize,

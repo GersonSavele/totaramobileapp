@@ -178,7 +178,7 @@ const DownloadsStack = createStackNavigator(
               navigation.emit("onCancelTap");
             }}
             style={{ paddingLeft: paddings.paddingL }}>
-            <Text style={TotaraTheme.textH3}>Cancel</Text>
+            <Text style={TotaraTheme.textHeadline}>Cancel</Text>
           </TouchableOpacity>
         ),
         headerRight: navigation.getParam("showActions") && (
@@ -190,7 +190,7 @@ const DownloadsStack = createStackNavigator(
             style={{ paddingRight: paddings.paddingL }}>
             <Text
               style={[
-                TotaraTheme.textH3,
+                TotaraTheme.textHeadline,
                 { color: TotaraTheme.colorDestructive }
               ]}>
               Delete
