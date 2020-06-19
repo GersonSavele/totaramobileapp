@@ -33,7 +33,12 @@ import { LearningItemCard, AddBadge } from "@totara/components";
 import { navigateTo } from "@totara/lib/navigation";
 import { itemToRouteMap } from "@totara/lib/constants";
 import Restriction from "./Restriction";
-import { borderRadius, margins, paddings } from "@totara/theme/constants";
+import {
+  borderRadius,
+  margins,
+  paddings,
+  shadow
+} from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { TotaraTheme } from "@totara/theme/Theme";
 
@@ -56,7 +61,7 @@ const LearningItemCarousel = withNavigation(
             paddingHorizontal: 0
           }}
           dotStyle={{
-            width: Dimensions.get("window").width / currentLearning.length,
+            width: deviceScreen.width / currentLearning.length,
             height: 1.5,
             borderRadius: 0,
             marginHorizontal: 0,
@@ -96,14 +101,13 @@ const LearningItemCarousel = withNavigation(
 const renderItem = (navigation) => {
   const LearningItem = ({ item }) => (
     <View style={styles.itemWithBadgeContainer}>
-      <View style={{ zIndex: 1 }}>
+      <View style={styles.badgeContainer}>
         <LearningItemWithSummaryAndNavigation
           item={item}
           navigation={navigation}
         />
       </View>
-
-      <View style={{ zIndex: 2, position: "absolute", right: 0, top: 0 }}>
+      <View style={styles.learningItem}>
         <AddBadge status={item.progress} size={24} />
       </View>
     </View>
@@ -121,14 +125,12 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
   const isOnline = isConnected && isInternetReachable;
   const itemStyle = StyleSheet.create({
     container: {
+      ...shadow.ios,
+      ...shadow.android,
       borderRadius: borderRadius.borderRadiusM,
-      shadowColor: TotaraTheme.colorNeutral8,
-      shadowOpacity: 0.3,
-      shadowRadius: borderRadius.borderRadiusM,
       backgroundColor: TotaraTheme.colorNeutral1,
       borderWidth: 1,
-      borderColor: TotaraTheme.colorNeutral3,
-      elevation: 6
+      borderColor: TotaraTheme.colorNeutral3
     },
     content: {
       borderRadius: borderRadius.borderRadiusM,
@@ -137,7 +139,7 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       overflow: "hidden"
     },
     type: {
-      marginTop: 8,
+      marginTop: margins.marginS,
       alignSelf: "flex-start",
       paddingHorizontal: paddings.paddingL,
       paddingVertical: paddings.paddingXS,
@@ -151,8 +153,8 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       flex: 1,
       alignSelf: "flex-start",
       width: "100%",
-      paddingTop: 8,
-      paddingBottom: 4
+      paddingTop: paddings.paddingL,
+      paddingBottom: paddings.paddingS
     }
   });
 
@@ -206,6 +208,15 @@ LearningItemWithSummaryAndNavigation.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  badgeContainer: {
+    zIndex: 1
+  },
+  learningItem: {
+    zIndex: 2,
+    position: "absolute",
+    right: 0,
+    top: 0
+  },
   itemWithBadgeContainer: {
     marginTop: margins.marginL,
     marginBottom: margins.marginL,

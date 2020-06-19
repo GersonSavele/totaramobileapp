@@ -16,7 +16,12 @@
 
 import { StyleSheet, Dimensions } from "react-native";
 import { normalize } from "@totara/theme";
-import { borderRadius, margins, paddings } from "@totara/theme/constants";
+import {
+  borderRadius,
+  margins,
+  paddings,
+  shadow
+} from "@totara/theme/constants";
 import { TotaraTheme, AppliedTheme } from "@totara/theme/Theme";
 
 const gradePrefixText = (theme: AppliedTheme) => {
@@ -39,20 +44,14 @@ const styles = StyleSheet.create({
     paddingBottom: paddings.paddingXL
   },
   container: {
-    shadowColor: TotaraTheme.colorNeutral8,
+    ...shadow.ios,
+    ...shadow.android,
     backgroundColor: TotaraTheme.colorNeutral1,
     borderColor: TotaraTheme.colorNeutral2,
     borderRadius: borderRadius.borderRadiusM,
-    shadowOpacity: 0.2,
-    shadowRadius: borderRadius.borderRadiusM,
     borderWidth: 0.5,
     marginVertical: margins.marginL,
-    marginHorizontal: margins.marginXS,
-    shadowOffset: {
-      width: 0,
-      height: 10
-    },
-    elevation: 6
+    marginHorizontal: margins.marginXS
   },
   contentWrap: {
     borderRadius: normalize(10),

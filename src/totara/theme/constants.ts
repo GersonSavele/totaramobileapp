@@ -16,6 +16,7 @@ Please contact [sales@totaralearning.com] for more information.
 */
 
 import { Dimensions } from "react-native";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 const textAttributes = {
   short_code_prefix: "0x"
@@ -78,6 +79,21 @@ const iconSizes = {
   sizeXL: 48
 };
 
+const shadow = {
+  android: {
+    elevation: 6
+  },
+  ios: {
+    shadowColor: TotaraTheme.colorNeutral8,
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    shadowOffset: {
+      width: 0,
+      height: 3
+    }
+  }
+};
+
 const viewHeight = {
   activityContainerHeight: 45,
   learningItemHeaderMinHeight: 260,
@@ -114,5 +130,6 @@ export {
   iconSizes,
   modalSize,
   resultCircleSize,
-  resultWrapperScaleX
+  resultWrapperScaleX,
+  shadow
 };
