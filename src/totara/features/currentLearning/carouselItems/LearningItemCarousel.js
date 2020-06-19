@@ -14,7 +14,7 @@
  *
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { useState, useRef } from "react";
 import {
   StyleSheet,
@@ -29,88 +29,83 @@ import { withNavigation } from "react-navigation";
 import { useNetInfo } from "@react-native-community/netinfo";
 import PropTypes from "prop-types";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
-
 import { LearningItemCard, AddBadge } from "@totara/components";
-import { resizeByScreenSize, normalize, ThemeContext } from "@totara/theme";
 import { navigateTo } from "@totara/lib/navigation";
 import { itemToRouteMap } from "@totara/lib/constants";
 import Restriction from "./Restriction";
-import { borderRadius } from "@totara/theme/constants";
+import { borderRadius, margins, paddings } from "@totara/theme/constants";
+import { deviceScreen } from "@totara/lib/tools";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning, loading, onRefresh }) => {
     const [activeSlide, setActiveSlide] = useState(0);
     const sliderRef = useRef(null);
 
-    if (currentLearning) {
-      // used for faster development to navigate at once to first course-details
-      // courseNavigate(currentLearning[0])
-      // return null;
-      const [theme] = useContext(ThemeContext);
+    if (!currentLearning) return;
 
-      return (
-        <View>
-          <Pagination
-            activeDotIndex={activeSlide}
-            dotsLength={currentLearning.length}
-            containerStyle={{
-              borderStyle: "dashed",
-              paddingVertical: 0,
-              marginHorizontal: 0,
-              paddingHorizontal: 0
-            }}
-            dotStyle={{
-              width: Dimensions.get("window").width / currentLearning.length,
-              height: 1.5,
-              borderRadius: 0,
-              marginHorizontal: 0,
-              backgroundColor: theme.colorNeutral6
-            }}
-            dotContainerStyle={{
-              marginHorizontal: 0
-            }}
-            carouselRef={sliderRef.current}
-            tappableDots={sliderRef && !!sliderRef.current}
-            inactiveDotOpacity={0}
-            inactiveDotScale={1}
+    return (
+      <View>
+        <Pagination
+          activeDotIndex={activeSlide}
+          dotsLength={currentLearning.length}
+          containerStyle={{
+            borderStyle: "dashed",
+            paddingVertical: 0,
+            marginHorizontal: 0,
+            paddingHorizontal: 0
+          }}
+          dotStyle={{
+            width: Dimensions.get("window").width / currentLearning.length,
+            height: 1.5,
+            borderRadius: 0,
+            marginHorizontal: 0,
+            backgroundColor: TotaraTheme.colorNeutral6
+          }}
+          dotContainerStyle={{
+            marginHorizontal: 0
+          }}
+          carouselRef={sliderRef.current}
+          tappableDots={sliderRef && !!sliderRef.current}
+          inactiveDotOpacity={0}
+          inactiveDotScale={1}
+        />
+        <ScrollView
+          style={{ height: "100%" }}
+          contentContainerStyle={{ height: "100%" }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+          }>
+          <Carousel
+            ref={sliderRef}
+            data={currentLearning}
+            renderItem={renderItem(navigation)}
+            sliderWidth={deviceScreen.width}
+            itemWidth={deviceScreen.width * 0.8}
+            sliderHeight={deviceScreen.height}
+            inactiveSlideOpacity={0.6}
+            onSnapToItem={(index) => setActiveSlide(index)}
           />
-          <ScrollView
-            style={{ height: "100%" }}
-            contentContainerStyle={{ height: "100%" }}
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-            }>
-            <Carousel
-              ref={sliderRef}
-              data={currentLearning}
-              renderItem={renderItem(navigation)}
-              sliderWidth={wp("100%")}
-              itemWidth={wp("82%")}
-              sliderHeight={hp("100%")}
-              inactiveSlideOpacity={0.6}
-              onSnapToItem={(index) => setActiveSlide(index)}
-            />
-          </ScrollView>
-        </View>
-      );
-    } else return null;
+        </ScrollView>
+      </View>
+    );
   }
 );
 
 const renderItem = (navigation) => {
   const LearningItem = ({ item }) => (
     <View style={styles.itemWithBadgeContainer}>
-      <AddBadge status={item.progress} size={24}>
+      <View style={{ zIndex: 1 }}>
         <LearningItemWithSummaryAndNavigation
           item={item}
           navigation={navigation}
         />
-      </AddBadge>
+      </View>
+
+      <View style={{ zIndex: 2, position: "absolute", right: 0, top: 0 }}>
+        <AddBadge status={item.progress} size={24} />
+      </View>
     </View>
   );
 
@@ -121,19 +116,19 @@ const renderItem = (navigation) => {
 };
 
 const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
-  const [theme] = useContext(ThemeContext);
   const { isConnected, isInternetReachable } = useNetInfo();
   const [showRestriction, setShowRestriction] = useState(false);
   const isOnline = isConnected && isInternetReachable;
   const itemStyle = StyleSheet.create({
     container: {
-      borderRadius: normalize(10),
-      shadowColor: theme.colorNeutral8,
-      shadowOpacity: 0.16,
-      shadowRadius: normalize(13),
-      backgroundColor: theme.colorNeutral1,
+      borderRadius: borderRadius.borderRadiusM,
+      shadowColor: TotaraTheme.colorNeutral8,
+      shadowOpacity: 0.3,
+      shadowRadius: borderRadius.borderRadiusM,
+      backgroundColor: TotaraTheme.colorNeutral1,
       borderWidth: 1,
-      borderColor: theme.colorNeutral3
+      borderColor: TotaraTheme.colorNeutral3,
+      elevation: 6
     },
     content: {
       borderRadius: borderRadius.borderRadiusM,
@@ -144,19 +139,20 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
     type: {
       marginTop: 8,
       alignSelf: "flex-start",
-      paddingHorizontal: 8,
-      paddingVertical: 2,
+      paddingHorizontal: paddings.paddingL,
+      paddingVertical: paddings.paddingXS,
       borderWidth: 1,
-      borderRadius: 4,
-      backgroundColor: theme.colorNeutral1,
-      color: theme.textColorSubdued,
-      borderColor: theme.colorNeutral6
+      borderRadius: borderRadius.borderRadiusS,
+      backgroundColor: TotaraTheme.colorNeutral1,
+      color: TotaraTheme.colorNeutral8,
+      borderColor: TotaraTheme.colorNeutral6
     },
     summary: {
       flex: 1,
       alignSelf: "flex-start",
       width: "100%",
-      paddingVertical: 16
+      paddingTop: 8,
+      paddingBottom: 4
     }
   });
 
@@ -186,14 +182,13 @@ const LearningItemWithSummaryAndNavigation = ({ item, navigation }) => {
       activeOpacity={1.0}>
       <View style={itemStyle.content}>
         <LearningItemCard item={item} image={item.imageSrc}>
-          <Text style={[theme.textXXSmall, itemStyle.type]}>
+          <Text style={[TotaraTheme.textXXSmall, itemStyle.type]}>
             {item.itemtype}
           </Text>
-          {/* // TODO handeling numberOfLines for dynamic height */}
           <Text
-            style={[theme.textRegular, itemStyle.summary]}
+            style={[TotaraTheme.textSmall, itemStyle.summary]}
             ellipsizeMode="tail"
-            numberOfLines={resizeByScreenSize(3, 6, 6, 8)}>
+            numberOfLines={TotaraTheme.textSmall.fontSize / 2}>
             {item.summary}
           </Text>
         </LearningItemCard>
@@ -212,10 +207,10 @@ LearningItemWithSummaryAndNavigation.propTypes = {
 
 const styles = StyleSheet.create({
   itemWithBadgeContainer: {
-    marginTop: hp("2.5%"),
-    marginBottom: hp("3%"),
-    marginLeft: 8,
-    marginRight: 8
+    marginTop: margins.marginL,
+    marginBottom: margins.marginL,
+    marginLeft: margins.marginS,
+    marginRight: margins.marginS
   }
 });
 

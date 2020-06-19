@@ -1,4 +1,4 @@
-import { Alert } from "react-native";
+import { Alert, Dimensions } from "react-native";
 import { translate } from "@totara/locale";
 
 type ShowMessageParams = {
@@ -62,4 +62,16 @@ const uuid = () => {
   });
 };
 
-export { showMessage, showConfirmation, humanReadablePercentage, uuid };
+const deviceScreen = {
+  width: Dimensions.get("screen").width,
+  height: Dimensions.get("screen").height,
+  scale: Dimensions.get("screen").scale
+};
+
+export {
+  showMessage,
+  showConfirmation,
+  humanReadablePercentage,
+  uuid,
+  deviceScreen
+};
