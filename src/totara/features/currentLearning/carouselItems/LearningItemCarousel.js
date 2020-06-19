@@ -21,7 +21,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Dimensions,
   ScrollView,
   RefreshControl
 } from "react-native";
