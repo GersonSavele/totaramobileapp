@@ -10,20 +10,16 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
-import { SafeAreaView, Text } from "react-native";
+import React, { useContext, useEffect } from "react";
+import { SafeAreaView, Text, BackHandler } from "react-native";
 
 import { AuthenticatedWebView } from "@totara/auth";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { Scorm } from "@totara/types/Scorm";
 import { NavigationStackProp } from "react-navigation-stack";
 
 type OnlineScormParams = {
-  attempt: number;
   uri: string;
-  scorm?: Scorm;
-  scoid?: string;
   backAction: Function;
 };
 
@@ -32,12 +28,16 @@ type OnlineScormProps = {
 };
 
 const OnlineSCORMActivity = ({ navigation }: OnlineScormProps) => {
-  const { scorm, attempt, scoid, backAction, uri } = navigation.state
-    .params as OnlineScormParams;
+  const { backAction, uri } = navigation.state.params as OnlineScormParams;
   const [theme] = useContext(ThemeContext);
-  if (!scorm || !scorm.id) {
-    return <Text>{translate("general.error_unknown")}</Text>;
-  }
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, [uri]);
+
   if (!uri) {
     return (
       <SafeAreaView>

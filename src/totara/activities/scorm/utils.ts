@@ -88,7 +88,7 @@ const formatAttempts = (data: any): Scorm => {
 };
 
 const getDataForScormSummary = (
-  isUserOnline: boolean,
+  isDownloaded: boolean,
   scormBundle?: ScormBundle
 ): any => {
   let data: any = {
@@ -98,20 +98,19 @@ const getDataForScormSummary = (
     gradeMethod: undefined,
     attemptGrade: undefined,
     calculatedGrade: undefined,
-    // actionPrimary: false,
-    // actionSecondary: false,
+    shouldAllowNewAttempt: false,
+    launchUrl: undefined,
+    actionSecondary: false,
     lastsynced: undefined,
     timeOpen: undefined,
     maxAttempts: undefined,
     attempts: undefined,
-    completionScoreRequired: undefined,
-    repeateUrl: undefined,
-    launchUrl: undefined
+    completionScoreRequired: undefined
   };
   if (!scormBundle) {
     return data;
   }
-  const { scorm, scormPackage } = scormBundle;
+  const { scorm } = scormBundle;
   if (!scorm) {
     return data;
   }
@@ -153,22 +152,15 @@ const getDataForScormSummary = (
   data.completionScoreRequired =
     (scorm.completionscorerequired !== null && scorm.completionscorerequired) ||
     undefined;
-  // data.actionPrimary =
-  //   (scormBundle &&
-  //     scorm &&
-  //     (!data.maxAttempts || data.maxAttempts > data.totalAttempt) &&
-  //     (scorm.launchUrl ||
-  //       (scormPackage && scormPackage.path && scorm.offlineAttemptsAllowed)) &&
-  //     true) ||
-  //   false;
-  // data.actionSecondary =
-  //   (isUserOnline && scormBundle && scorm && scorm.repeatUrl && true) || false;
   data.launchUrl = scorm && scorm.launchUrl;
-  data.repeateUrl = scorm && scorm.repeatUrl;
+  data.shouldAllowNewAttempt =
+    (shouldAllowAttempt(data) && (scorm.launchUrl || isDownloaded) && true) ||
+    false;
+  data.actionSecondary =
+    (isDownloaded && scormBundle && scorm && scorm.repeatUrl && true) || false;
 
   data.lastsynced =
-    (!isUserOnline &&
-      scormBundle &&
+    (scormBundle &&
       scormBundle.lastsynced &&
       moment.unix(scormBundle.lastsynced)) ||
     undefined;
@@ -295,16 +287,8 @@ const getGradeForAttempt = ({
  * This is to allow the user to make decision to show the buttons
  * @param param0
  */
-const shouldAllowAttempt = ({
-  timeOpen,
-  maxAttempts,
-  totalAttempt,
-  actionPrimary,
-  actionSecondary
-}) =>
-  !timeOpen &&
-  (!maxAttempts || maxAttempts >= totalAttempt) &&
-  (actionPrimary || actionSecondary);
+const shouldAllowAttempt = ({ timeOpen, maxAttempts, totalAttempt = 0 }) =>
+  !timeOpen && (!maxAttempts || maxAttempts > totalAttempt);
 
 const getScormPlayerInitialData = ({
   scormId,
