@@ -53,7 +53,6 @@ const Details = ({
   summaryTypeTitle,
   onclickContinueLearning
 }: OverviewProps) => {
-  console.log("print ----", contentDetails);
   const isShowSelfCompletion = contentDetails?.course.criteria?.some(
     (value) => {
       if (value["type"] === courseCriteria.selfComplete) {
@@ -148,7 +147,8 @@ const Progress = ({ contentDetails }: OverviewProps) => {
       {showCriteria && contentDetails.course?.criteria !== null && (
         <CriteriaSheet
           criteriaList={contentDetails.course!.criteria}
-          onClose={onClose}></CriteriaSheet>
+          onClose={onClose}
+        />
       )}
     </TouchableOpacity>
   );
@@ -159,16 +159,10 @@ const Complete = ({
   onclickContinueLearning = () => {}
 }: OverviewProps) => {
   const isSelfCompleted = contentDetails.course?.criteria?.some((value) => {
-    if (
-      value["complete"] === false &&
-      value["type"] === courseCriteria.selfComplete
-    ) {
+    if (value["type"] === courseCriteria.selfComplete) {
+      if (value["complete"] === true) return true;
+    } else {
       return false;
-    } else if (
-      value["complete"] === true &&
-      value["type"] === courseCriteria.selfComplete
-    ) {
-      return true;
     }
   });
 
@@ -186,9 +180,7 @@ const Complete = ({
     data = undefined;
     loading = false;
     error = undefined;
-    {
-      !isSelfCompleted && setShowConfirmModal(true);
-    }
+    !isSelfCompleted && setShowConfirmModal(true);
   };
 
   const onClickSelfComplete = () => {
