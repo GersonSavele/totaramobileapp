@@ -85,6 +85,7 @@ const UIWrapper = withNavigation(
     const [expandActivities, setExpandActivities] = useState(false);
     const onClose = () => {
       setShowCompletionModal(!showCompletionModal);
+      courseRefreshCallBack();
       navigation.goBack();
     };
     const onSwitchTab = () => {

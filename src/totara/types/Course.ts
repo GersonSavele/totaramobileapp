@@ -30,7 +30,7 @@ export interface CourseContentDetails {
   native: boolean;
   imageSrc: string;
   gradeMax: number;
-  gradeFinal: number;
+  gradeFinal: string;
 }
 
 export interface Course {
@@ -47,16 +47,4 @@ export interface Course {
   criteriaaggregation: string;
   criteria?: [Criteria];
   completion: Completion;
-}
-
-export interface CourseSets {
-  id: number;
-  label: string;
-  courses: [Course];
-  nextSet?: NextSet;
-}
-
-interface NextSet {
-  nextID: number;
-  operator?: string;
 }

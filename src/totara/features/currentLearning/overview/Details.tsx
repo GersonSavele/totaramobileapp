@@ -35,6 +35,7 @@ import SelfCompletion from "./SelfCompletion";
 import { courseCriteria } from "@totara/lib/constants";
 import { styles, gradePrefixText, labelWrap } from "../overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type OverviewProps = {
   contentDetails: CourseContentDetails | CourseGroupContentDetails;
@@ -52,11 +53,14 @@ const Details = ({
   summaryTypeTitle,
   onclickContinueLearning
 }: OverviewProps) => {
-  const isSelfCompletion = contentDetails?.course.criteria?.some((value) => {
-    if (value["criteria"] === courseCriteria.selfComplete) {
-      return true;
+  console.log("print ----", contentDetails);
+  const isShowSelfCompletion = contentDetails?.course.criteria?.some(
+    (value) => {
+      if (value["type"] === courseCriteria.selfComplete) {
+        return true;
+      }
     }
-  });
+  );
   return (
     <View>
       <View>
@@ -67,7 +71,7 @@ const Details = ({
           showsHorizontalScrollIndicator={false}>
           <Progress contentDetails={contentDetails} />
           <Grade contentDetails={contentDetails} />
-          {isSelfCompletion && (
+          {isShowSelfCompletion && (
             <Complete
               contentDetails={contentDetails}
               onclickContinueLearning={onclickContinueLearning}
@@ -97,8 +101,7 @@ const Grade = ({ contentDetails }: OverviewProps) => {
         <View style={styles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
             <Text style={gradePrefixText(theme)}>
-              {contentDetails.gradeFinal !== undefined &&
-              contentDetails.gradeFinal !== null
+              {contentDetails.gradeFinal.length > 0
                 ? contentDetails?.gradeFinal
                 : 0}
             </Text>
@@ -155,16 +158,19 @@ const Complete = ({
   contentDetails,
   onclickContinueLearning = () => {}
 }: OverviewProps) => {
-  const userCriteriaComplete = contentDetails.course?.criteria?.some(
-    (value) => {
-      if (
-        value["complete"] === false &&
-        value["criteria"] === courseCriteria.selfComplete
-      ) {
-        return false;
-      }
+  const isSelfCompleted = contentDetails.course?.criteria?.some((value) => {
+    if (
+      value["complete"] === false &&
+      value["type"] === courseCriteria.selfComplete
+    ) {
+      return false;
+    } else if (
+      value["complete"] === true &&
+      value["type"] === courseCriteria.selfComplete
+    ) {
+      return true;
     }
-  );
+  });
 
   const [theme] = useContext(ThemeContext);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -180,11 +186,13 @@ const Complete = ({
     data = undefined;
     loading = false;
     error = undefined;
-    setShowConfirmModal(true);
+    {
+      !isSelfCompleted && setShowConfirmModal(true);
+    }
   };
 
   const onClickSelfComplete = () => {
-    if (!userCriteriaComplete) {
+    if (!isSelfCompleted) {
       selfComplete({ variables: { courseid: contentDetails.course?.id } });
     } else {
       setShowConfirmModal(false);
@@ -198,11 +206,20 @@ const Complete = ({
       onPress={onTapSelfCompleteTab}>
       <View style={styles.contentWrap}>
         <View style={styles.innerViewWrap}>
-          <CircleIcon
-            backgroundColor={theme.colorAccent}
-            iconColor={theme.colorNeutral6}
-            borderColor={theme.colorNeutral6}
-          />
+          {isSelfCompleted ? (
+            <CircleIcon
+              icon="check"
+              backgroundColor={TotaraTheme.colorSuccess}
+              iconColor={TotaraTheme.colorAccent}
+              borderColor={TotaraTheme.colorSuccess}
+            />
+          ) : (
+            <CircleIcon
+              backgroundColor={TotaraTheme.colorAccent}
+              iconColor={TotaraTheme.colorNeutral6}
+              borderColor={TotaraTheme.colorNeutral6}
+            />
+          )}
         </View>
         <View style={styles.horizontalSeparator} />
         <View style={styles.carouselTextContainer}>
