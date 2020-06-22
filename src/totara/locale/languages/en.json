@@ -12,6 +12,7 @@
     "back": "Back",
     "ok": "Ok"
   },
+
   "site_url": {
     "title": "Get started.",
     "url_information": "Enter your organisation's URL",
@@ -20,11 +21,13 @@
       "enter_valid_url": "Enter a valid site address"
     }
   },
+
   "auth_invalid_site": {
     "title": "Sorry",
     "description": "The URL is not compatible. Please check the URL and try again.",
     "action_primary": "OK"
   },
+
   "native_login": {
     "header_title": "Login",
     "login_information": "Enter your site username and password.",
@@ -37,26 +40,26 @@
       "enter_valid_password": "Enter a valid password"
     }
   },
+
   "browser_login": {
     "title": "Confirm!",
     "description": "You need to login through a mobile browser to authenticate. Would you like us to take you there now?",
     "primary_title": "Yes, go to browser",
     "tertiary_title": "Cancel"
   },
+
   "auth_general_error": {
     "title": "Ooops!",
     "description": "Something went wrong",
     "action_primary": "OK"
   },
+
   "no_internet_alert": {
     "title": "You are offline",
     "message": "To continue, you'll need to go online",
     "go_back": "OK"
   },
-  "certificate_details": {
-    "courses": "COURSES",
-    "overview": "OVERVIEW"
-  },
+
   "current_learning": {
     "action_primary": "Current learning",
     "primary_info": {
@@ -72,13 +75,9 @@
       "tertiary_button_title": "Cancel"
     }
   },
-  "program_details": {
-    "details": "Details",
-    "outline": "Outline",
-    "courses": "COURSES",
-    "overview": "OVERVIEW"
-  },
-  "totara_component": {
+
+  "totara-component": {
+    "section_title_continue_learn": "Continue your learning",
     "due_in": "Due in",
     "extend_date": "Extend Date",
     "overdue_by": "Overdue by"
@@ -105,6 +104,7 @@
   "activity_not_available": {
     "title": "This activity is not available unless"
   },
+
   "course": {
     "course_overview": {
       "course_summery": "Course summary"
@@ -135,12 +135,37 @@
     "course_details": {
       "activities": "ACTIVITIES",
       "overview": "OVERVIEW",
-      "expand_or_collapse": "Expand all"
+      "expand_or_collapse": "Expand all",
+      "badge_title":"course"
     },
     "course_activity_section": {
       "not_available": "Not available"
     }
   },
+
+  "course_group":{
+    "tabs":{
+      "overview": "OVERVIEW",
+      "courses": "COURSES"
+    },
+    "details":{
+     "badge_title_program":"program",
+     "badge_title_certification":"certification"
+    },
+    "overview":{
+      "summary_title_program":"Program Summary",
+      "summary_title_certification":"Certification Summary"
+    },
+    "courses":{
+      "unavailable_sets":"unavailable set",
+      "compete":"Successfully completed!",
+      "current_learning_button_title":"Current Learning"
+    },
+    "course_set":{
+      "criteria":"View criteria"
+    }
+  },
+
   "scorm": {
     "last_synced": "Last synced",
     "ago": "ago",
@@ -190,6 +215,7 @@
       "cancel": "No"
     }
   },
+
   "notifications": {
     "title": "Notifications",
     "empty": "No notifications yet!",
@@ -200,6 +226,7 @@
     "empty": "No downloads yet!",
     "selected": "{{count}} Selected"
   },
+  
   "user_profile": {
     "title": "Profile",
     "login_as": "Logged in as: {{username}}",

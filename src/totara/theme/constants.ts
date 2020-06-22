@@ -105,7 +105,12 @@ const viewHeight = {
   learningItemImageMaxHeight: 160,
   learningItemTitleMaxHeight: 85,
   learningItemTitleMinHeight: 60,
-  activitySectionHeight: 58
+  activitySectionHeight: 58,
+  courseSetItemHeight: 224
+};
+
+const viewWidth = {
+  courseSetItemWidth: 335
 };
 const header = {
   icon: {
@@ -135,5 +140,6 @@ export {
   modalSize,
   resultCircleSize,
   resultWrapperScaleX,
-  shadow
+  shadow,
+  viewWidth
 };

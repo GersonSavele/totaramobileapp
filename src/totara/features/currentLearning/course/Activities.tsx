@@ -50,8 +50,6 @@ const Activities = ({
 }: ActivityListProps) => {
   return (
     <FlatList
-      nestedScrollEnabled={false}
-      overScrollMode="never"
       data={sections}
       renderItem={({ item }) => {
         return (

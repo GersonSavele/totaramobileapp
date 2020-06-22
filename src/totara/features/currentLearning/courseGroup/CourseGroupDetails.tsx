@@ -14,110 +14,83 @@
  */
 
 import React, { useState, useContext } from "react";
-import { StyleSheet, View } from "react-native";
-import { NavigationParams } from "react-navigation";
-// import { useQuery } from "@apollo/react-hooks";
+import { View, ScrollView, RefreshControl } from "react-native";
+import { NavigationContext } from "react-navigation";
+import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
-import { ThemeContext } from "@totara/theme";
-import CourseList from "./CourseList";
+import Courses from "./Courses";
 import OverviewDetails from "../overview/Details";
-import { CourseGroupContentDetails } from "@totara/types/CourseGroup";
-//import { coreCertification } from "./api";
-import HeaderView from "../HeaderView";
-//Import mock data from js file once API has been fixed should remove from here(only for UI testing)
-import { program, certification } from "../mock-data";
+import { CourseGroup } from "@totara/types";
+import { GeneralErrorModal } from "@totara/components";
+import { coreProgram } from "./api";
+import LearningDetails from "../LearningDetails";
+import { details } from "../courseGroupStyle";
 
 type CourseGroupProps = {
-  courseGroup: CourseGroupContentDetails;
-  navigation: NavigationParams;
-  type: string;
+  courseGroup: CourseGroup;
 };
 
-// //To do : - implementing GraphQL query once api's has been done should remove here
+const CourseGroupDetails = () => {
+  const navigation = useContext(NavigationContext);
+  const programId = navigation.getParam("targetId");
+  const { loading, error, data, refetch } = useQuery(coreProgram, {
+    variables: { programid: programId }
+  });
 
-// const Details = ({ navigation }: NavigationInjectedProps) => {
-//   const programId = navigation.getParam("targetId");
-//   const { loading, error, data } = useQuery(coreCertification, {
-//     variables: { programId: programId }
-//   });
-//   if (loading) return null;
-//   if (error) return <GeneralErrorModal siteUrl= "" />;
-//   if (data) {
-//     return (
-//       <DetailsComponent program={data.program} navigation={navigation} />
-//     );
-//   }
-// };
-
-const CourseGroupDetails = ({ navigation, type }: CourseGroupProps) => {
-  return (
-    <DetailsUI
-      courseGroup={type === "program" ? program : certification}
-      navigation={navigation}
-    />
-  );
+  const pullToRefresh = () => {
+    refetch();
+  };
+  console.log("print ------", data);
+  if (loading) return null;
+  if (error) return <GeneralErrorModal siteUrl="" />;
+  if (data) {
+    return (
+      <ScrollView
+        style={details.scrollView}
+        contentContainerStyle={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={pullToRefresh} />
+        }>
+        <UIWrapper courseGroup={data.totara_mobile_program} />
+      </ScrollView>
+    );
+  }
 };
 
-const DetailsUI = ({ navigation, courseGroup, type }: CourseGroupProps) => {
+const UIWrapper = ({ courseGroup }: CourseGroupProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
     setShowOverview(!showOverview);
   };
-  const [theme] = useContext(ThemeContext);
+
   return (
-    <HeaderView
-      details={courseGroup.course}
-      navigation={navigation}
-      tabBarLeftTitle={
-        type === "program"
-          ? translate("program_details.overview")
-          : translate("certificate_details.overview")
-      }
-      tabBarRightTitle={
-        type === "program"
-          ? translate("program_details.courses")
-          : translate("certificate_details.courses")
-      }
+    <LearningDetails
+      details={courseGroup}
+      tabBarLeftTitle={translate("course_group.tabs.overview")}
+      tabBarRightTitle={translate("course_group.tabs.courses")}
       onPress={onSwitchTab}
       overviewIsShown={showOverview}
-      badgeTitle={type === "program" ? "program" : "certification"}
-      image={courseGroup.image}>
-      <View
-        style={[styles.container, { backgroundColor: theme.colorNeutral2 }]}>
-        <View
-          style={[
-            styles.activitiesContainer,
-            { backgroundColor: theme.colorNeutral1 }
-          ]}>
+      badgeTitle={translate("course_group.details.badge_title_program")}
+      image={courseGroup.imageSrc}>
+      <View style={details.container}>
+        <View style={details.activitiesContainer}>
           {!showOverview ? (
-            <CourseList
-              courseGroup={courseGroup.course}
-              navigation={navigation}
-            />
+            <Courses courseGroup={courseGroup} />
           ) : (
             <OverviewDetails
-              contentDetails={courseGroup}
-              summaryTypeTitle={
-                type === "program"
-                  ? "Program Summary"
-                  : "Certifications Summary"
-              }
+              id={courseGroup.id}
+              summary={courseGroup.summary!}
+              progress={courseGroup.completion.progress}
+              summaryTypeTitle={translate(
+                "course_group.overview.summary_title_program"
+              )}
             />
           )}
         </View>
       </View>
-    </HeaderView>
+    </LearningDetails>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  activitiesContainer: {
-    flex: 3,
-    padding: 0
-  }
-});
 
 export default CourseGroupDetails;

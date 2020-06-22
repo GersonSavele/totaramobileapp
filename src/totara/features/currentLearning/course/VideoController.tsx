@@ -21,7 +21,7 @@
  *
  */
 import React from "react";
-import Video from "react-nyaative-video";
+import Video from "react-native-video";
 import { videoControllerStyles } from "../currentLearningStyles";
 
 type VideoType = {

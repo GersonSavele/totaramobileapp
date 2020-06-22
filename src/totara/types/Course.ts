@@ -30,7 +30,7 @@ export interface CourseContentDetails {
   native: boolean;
   imageSrc: string;
   gradeMax: number;
-  gradeFinal: string;
+  gradeFinal: number;
 }
 
 export interface Course {

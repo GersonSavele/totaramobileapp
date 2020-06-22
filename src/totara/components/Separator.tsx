@@ -15,29 +15,21 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-import React, { useContext } from "react";
+import React from "react";
 import { View, StyleSheet } from "react-native";
-import { ThemeContext } from "@totara/theme";
-import { AppliedTheme } from "@totara/theme/Theme";
 import { margins } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 const Separator = () => {
-  const [theme] = useContext(ThemeContext);
-  return <View style={activitySeparateView(theme)}></View>;
-};
-
-const activitySeparateView = (theme: AppliedTheme) => {
-  return {
-    ...styles.activityBodySeparator,
-    backgroundColor: theme.colorNeutral8
-  };
+  return <View style={styles.listSeparator}></View>;
 };
 
 const styles = StyleSheet.create({
-  activityBodySeparator: {
+  listSeparator: {
     height: 0.5,
     opacity: 0.2,
-    marginHorizontal: margins.marginL
+    marginHorizontal: margins.marginL,
+    backgroundColor: TotaraTheme.colorNeutral8
   }
 });
 

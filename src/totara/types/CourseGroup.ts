@@ -15,28 +15,43 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-import { CourseSets } from "./Course";
 import { Completion } from "./Completion";
 import { Criteria } from "./Criteria";
-import { learningItemEnum } from "@totara/lib/constants";
 
-export interface CourseGroupContentDetails {
-  course: CourseGroup;
-  image: string;
-  gradeMax: number;
-  gradeFinal: number;
-}
 export interface CourseGroup {
   id: number;
-  itemtype: learningItemEnum.Certification | learningItemEnum.Program;
-  shortname: string;
   fullname?: string;
-  summary?: string;
-  duedateState?: string;
+  shortname: string;
   duedate?: Date;
-  progress?: number;
+  duedateState?: string;
+  summary?: string;
+  availablefrom: Date;
+  availableuntil?: Date;
+  imageSrc?: string;
   completion: Completion;
-  courseSets: [CourseSets];
-  image?: string;
-  criteria?: [Criteria];
+  currentCourseSets: [CourseSets];
+  countUnavailableSets: number;
+}
+
+export interface CourseSets {
+  id: number;
+  label: string;
+  nextsetoperator: string;
+  completionCriteria: [Criteria];
+  courses: [Courses];
+}
+
+export interface Courses {
+  id: number;
+  itemtype: string;
+  itemcomponent: string;
+  fullname: string;
+  shortname: string;
+  summary?: string;
+  progress: number;
+  urlView: string;
+  duedate?: Date;
+  duedateState: string;
+  native: boolean;
+  imageSrc: string;
 }

@@ -14,23 +14,21 @@
  *
  */
 
-import React, { ReactNode, useState, useEffect } from "react";
-import { Text, TouchableOpacity, View, Alert, StyleSheet } from "react-native";
+import React, { ReactNode, useState, useEffect, useContext } from "react";
+import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
-
+import { NavigationContext } from "react-navigation";
 import ParallaxScrollView from "./ParallaxScrollView";
 import { CardElement, ImageElement } from "@totara/components";
 import { showMessage } from "@totara/lib";
 import { normalize } from "@totara/theme";
 import { CourseGroup, Course } from "@totara/types";
-import { NavigationParams } from "react-navigation";
 import { headerViewStyles } from "./currentLearningStyles";
 import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type Props = {
   details: CourseGroup | Course;
-  navigation: NavigationParams;
   children: ReactNode;
   tabBarLeftTitle: string;
   tabBarRightTitle: string;
@@ -41,7 +39,6 @@ type Props = {
 };
 
 const LearningDetails = ({
-  navigation,
   details,
   children,
   tabBarLeftTitle,
@@ -54,7 +51,7 @@ const LearningDetails = ({
   //To Do: Bug in NetInfo library, useNetInfo - isConnected initial state is false(phone and simulator):
   //https://github.com/react-native-community/react-native-netinfo/issues/295
   const [isConnected, setIsConnected] = useState<boolean>(true);
-
+  const navigation = useContext(NavigationContext);
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       setIsConnected(
@@ -153,7 +150,7 @@ const LearningDetails = ({
             title: translate("no_internet_alert.title"),
             text: translate("no_internet_alert.message"),
             callback: () => {
-              navigation.popToTop();
+              navigation.goBack();
             }
           })}
       </ParallaxScrollView>

@@ -14,204 +14,89 @@
  */
 
 import React, { useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  FlatList
-} from "react-native";
-import { withNavigation, NavigationParams } from "react-navigation";
-import { Course, CourseSets } from "@totara/types";
-import { normalize } from "@totara/theme";
-import { AddBadge, LearningItemCard } from "@totara/components";
-import { ThemeContext } from "@totara/theme";
-import { deviceScreen } from "@totara/lib/tools";
+import { Text, TouchableOpacity, View, FlatList } from "react-native";
+import { NavigationContext } from "react-navigation";
+import { CourseSets } from "@totara/types/CourseGroup";
+import { ImageElement } from "@totara/components";
+import { translate } from "@totara/locale";
+import { NAVIGATION_COURSE_DETAILS } from "@totara/lib/constants";
+import { navigateTo } from "@totara/lib/navigation";
+import { courseSet } from "../courseGroupStyle";
+import { margins } from "@totara/theme/constants";
 
 type CourseSetProps = {
   courseSets: CourseSets;
-  navigation: NavigationParams;
+};
+
+const renderItem = (navigation) => {
+  const LearningItem = ({ item }: any) => (
+    <View style={courseSet.container}>
+      <TouchableOpacity
+        style={courseSet.learningItem}
+        key={item.id}
+        onPress={() =>
+          navigateTo({
+            navigate: navigation.navigate,
+            routeId: NAVIGATION_COURSE_DETAILS,
+            props: { targetId: item.id }
+          })
+        }
+        activeOpacity={1.0}>
+        <View style={courseSet.itemContainer}>
+          <ImageElement
+            item={item}
+            image={item.imageSrc}
+            imageStyle={{ flex: 1 }}
+          />
+          <View style={courseSet.courseDetails}>
+            <Text numberOfLines={1} style={courseSet.courseTitle}>
+              {item.fullname}
+            </Text>
+            <Text numberOfLines={2} style={courseSet.courseSummery}>
+              {item.summary}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return LearningItem;
 };
 
 const CourseSet = ({ courseSets }: CourseSetProps) => {
-  const [theme] = useContext(ThemeContext);
+  const navigation = useContext(NavigationContext);
   return (
-    <View style={styles.courseSet}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          flex: 1
-        }}>
-        <Text style={[styles.courseSetLabel, { color: theme.colorNeutral8 }]}>
-          {courseSets.label}
-        </Text>
+    <View style={{ marginTop: margins.marginXL }}>
+      <View style={courseSet.courseSetHeader}>
+        <Text style={courseSet.title}>{courseSets.label}</Text>
         <TouchableOpacity
-          style={{
-            flex: 0.6,
-            paddingRight: 16,
-            alignItems: "flex-end",
-            justifyContent: "flex-end"
-          }}
+          style={courseSet.criteriaButton}
           onPress={() => {}}
           activeOpacity={1.0}>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: normalize(17),
-              color: theme.colorInfo
-            }}>
-            View criteria
+          <Text style={courseSet.criteriaButtonTitle}>
+            {translate("course_group.course_set.criteria")}
           </Text>
         </TouchableOpacity>
       </View>
       <FlatList
         data={courseSets.courses}
-        renderItem={renderItem}
-        keyExtractor={(item, id) => id.toString()}
+        renderItem={renderItem(navigation)}
+        keyExtractor={(_, id) => id.toString()}
         showsHorizontalScrollIndicator={false}
         horizontal={true}
       />
-      {courseSets.nextSet && courseSets.nextSet.operator ? (
-        <View style={styles.nextSet}>
-          <View
-            style={[styles.separator, { backgroundColor: theme.colorNeutral6 }]}
-          />
-          <Text
-            style={[
-              styles.nextSetText,
-              { color: theme.navigationHeaderTintColor }
-            ]}>
-            {courseSets.nextSet.operator}
+      {courseSets.nextsetoperator && (
+        <View style={courseSet.nextSet}>
+          <View style={courseSet.separator} />
+          <Text style={courseSet.nextSetText}>
+            {courseSets.nextsetoperator}
           </Text>
-          <View
-            style={[styles.separator, { backgroundColor: theme.colorNeutral6 }]}
-          />
+          <View style={courseSet.separator} />
         </View>
-      ) : null}
+      )}
     </View>
   );
 };
 
-// const renderItem = (navigation: NavigationParams) => {
-//   const CourseCard = (renderCourse : any) => {
-//     <View style={styles.itemWithBadgeContainer}>
-//       <AddBadge status={course.completion.progress}>
-//         <CourseWithSummaryAndNavigation item={course} navigation={navigation} />
-//       </AddBadge>
-//     </View>
-//   };
-//   return CourseCard;
-// };
-
-// TO do: We have to remove this any type once API has been done
-const renderItem = (renderCourse: any) => {
-  return (
-    <View style={styles.itemWithBadgeContainer}>
-      <AddBadge status={renderCourse.item.data.course.completion.progress}>
-        <CourseWithSummaryAndNavigation item={renderCourse.item.data.course} />
-      </AddBadge>
-    </View>
-  );
-};
-
-type SummeryAndNavigationProps = {
-  item: Course;
-  navigation?: NavigationParams;
-};
-
-const CourseWithSummaryAndNavigation = ({
-  // navigation,
-  item
-}: SummeryAndNavigationProps) => {
-  // const navigateTo = (item: Course) =>
-  // navigation.navigate(NAVIGATION_COURSE_DETAILS, { courseId: item.id });
-  const [theme] = useContext(ThemeContext);
-  const learningItemStyle = StyleSheet.flatten([
-    styles.learningItem,
-    { shadowColor: theme.colorNeutral8, backgroundColor: theme.colorNeutral1 }
-  ]);
-  const CourseDetails = (
-    <View style={styles.itemContainer}>
-      <LearningItemCard item={item} image={item.image}>
-        <View style={{ flex: 1 }}>
-          <Text
-            numberOfLines={3}
-            style={[styles.itemSummary, { color: theme.colorNeutral7 }]}>
-            {item.summary}
-          </Text>
-        </View>
-      </LearningItemCard>
-    </View>
-  );
-
-  return (
-    <TouchableOpacity
-      style={learningItemStyle}
-      key={item.id}
-      // onPress={() => navigateTo(item)}
-      activeOpacity={1.0}>
-      {CourseDetails}
-    </TouchableOpacity>
-  );
-};
-
-const styles = StyleSheet.create({
-  courseSet: {
-    marginTop: 20
-  },
-  itemWithBadgeContainer: {
-    marginTop: deviceScreen.height * 0.03,
-    marginBottom: deviceScreen.height * 0.04,
-    marginLeft: 16,
-    marginRight: deviceScreen.width * 0.03,
-    width: deviceScreen.width * 0.7,
-    height: normalize(220)
-  },
-  learningItem: {
-    borderRadius: normalize(10),
-    shadowOffset: { width: 0, height: normalize(10) },
-    shadowOpacity: 0.16,
-    shadowRadius: normalize(14)
-  },
-  itemContainer: {
-    borderTopRightRadius: normalize(10),
-    borderTopLeftRadius: normalize(10),
-    overflow: "hidden",
-    width: "100%",
-    height: "100%"
-  },
-  itemSummary: {
-    flex: 10,
-    paddingBottom: 10,
-    paddingTop: 8,
-    fontSize: 15,
-    lineHeight: 15
-  },
-  nextSet: {
-    flex: 0,
-    marginBottom: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent"
-  },
-  separator: {
-    height: 2,
-    flex: 1,
-    marginRight: 16,
-    marginLeft: 16
-  },
-  nextSetText: {
-    textTransform: "uppercase",
-    fontSize: 12,
-    fontWeight: "bold"
-  },
-  courseSetLabel: {
-    fontSize: 22,
-    marginLeft: 16,
-    fontWeight: "bold",
-    flex: 1
-  }
-});
-
-export default withNavigation(CourseSet);
+export default CourseSet;

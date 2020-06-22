@@ -25,8 +25,6 @@ import totaraNavigationOptions from "@totara/components/NavigationOptions";
 import CurrentLearning from "./carouselItems/CurrentLearning";
 import CourseDetails from "./course/CourseDetails";
 import CourseGroupDetails from "./courseGroup/CourseGroupDetails";
-import { header } from "@totara/theme/constants";
-import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import { TouchableIcon } from "@totara/components";
 import { WebviewActivity } from "@totara/activities/webview/WebviewActivity";
 const { NAVIGATION_WEBVIEW_ACTIVITY } = NAVIGATION;
@@ -50,16 +48,8 @@ const CurrentLearningStack = createStackNavigator(
     },
     [NAVIGATION_COURSE_GROUP_DETAILS]: {
       screen: CourseGroupDetails,
-      navigationOptions: ({ screenProps, navigation }: any) =>
+      navigationOptions: ({ navigation }: any) =>
         totaraNavigationOptions({
-          rightAction: (
-            <TouchableIcon
-              icon={faCloudDownloadAlt}
-              disabled={false}
-              size={header.icon.size}
-              color={screenProps.theme.navigationHeaderTintColor}
-            />
-          ),
           title: navigation.getParam("title"),
           opacity: navigation.getParam("opacity")
         })
