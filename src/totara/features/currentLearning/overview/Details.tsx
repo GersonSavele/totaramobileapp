@@ -41,6 +41,7 @@ type OverviewProps = {
   contentDetails: CourseContentDetails | CourseGroupContentDetails;
   summaryTypeTitle?: string;
   onclickContinueLearning?: () => void;
+  courseRefreshCallback?: () => {};
 };
 
 type SummaryProps = {
@@ -51,7 +52,8 @@ type SummaryProps = {
 const Details = ({
   contentDetails,
   summaryTypeTitle,
-  onclickContinueLearning
+  onclickContinueLearning,
+  courseRefreshCallback
 }: OverviewProps) => {
   const isShowSelfCompletion = contentDetails?.course.criteria?.some(
     (value) => {
@@ -74,6 +76,7 @@ const Details = ({
             <Complete
               contentDetails={contentDetails}
               onclickContinueLearning={onclickContinueLearning}
+              courseRefreshCallback={courseRefreshCallback}
             />
           )}
         </ScrollView>
@@ -156,15 +159,24 @@ const Progress = ({ contentDetails }: OverviewProps) => {
 
 const Complete = ({
   contentDetails,
-  onclickContinueLearning = () => {}
+  onclickContinueLearning = () => {},
+  courseRefreshCallback
 }: OverviewProps) => {
   const isSelfCompleted = contentDetails.course?.criteria?.some((value) => {
     if (value["type"] === courseCriteria.selfComplete) {
       if (value["complete"] === true) return true;
-    } else {
-      return false;
+      else return false;
     }
   });
+
+  const isCourseCompleted = contentDetails.course?.criteria?.every((value) => {
+    if (value["complete"] === true) return true;
+    else return false;
+  });
+
+  const refetchCourseQueries = () => {
+    courseRefreshCallback!();
+  };
 
   const [theme] = useContext(ThemeContext);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -235,7 +247,10 @@ const Complete = ({
       )}
 
       {error && <GeneralErrorModal siteUrl="" />}
-      {data && <CourseCompletionModal onClose={onclickContinueLearning} />}
+      {data && refetchCourseQueries()}
+      {isCourseCompleted && (
+        <CourseCompletionModal onClose={onclickContinueLearning} />
+      )}
     </TouchableOpacity>
   );
 };

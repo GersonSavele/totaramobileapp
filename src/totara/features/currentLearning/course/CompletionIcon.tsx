@@ -74,7 +74,7 @@ const CompletionIcon = ({
   let stateKey;
   if (!available) {
     stateKey = completionIconStateKey.notAvailable;
-  } else {
+  } else if (completion !== completionTrack.trackingNone) {
     if (
       status === completionStatus.completePass ||
       status === completionStatus.complete
@@ -90,6 +90,7 @@ const CompletionIcon = ({
     }
   }
   const stateObj = completionStates[stateKey];
+
   return stateObj ? (
     <View style={{ marginRight: margins.marginL }}>
       <CircleIcon

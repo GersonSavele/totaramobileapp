@@ -64,7 +64,7 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
           }>
           <UIWrapper
             courseDetails={data.mobile_course}
-            courseRefreshCallBack={refetch}
+            courseRefreshCallback={refetch}
           />
         </ScrollView>
       </ActivitySheetWrapper>
@@ -74,18 +74,18 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
 
 type Props = {
   courseDetails: CourseContentDetails;
-  courseRefreshCallBack: () => {};
+  courseRefreshCallback: () => {};
   navigation?: NavigationParams;
 };
 
 const UIWrapper = withNavigation(
-  ({ navigation = {}, courseDetails, courseRefreshCallBack }: Props) => {
+  ({ navigation = {}, courseDetails, courseRefreshCallback }: Props) => {
     const [showOverview, setShowOverview] = useState(true);
     const [showCompletionModal, setShowCompletionModal] = useState(true);
     const [expandActivities, setExpandActivities] = useState(false);
     const onClose = () => {
       setShowCompletionModal(!showCompletionModal);
-      courseRefreshCallBack();
+      courseRefreshCallback();
       navigation.goBack();
     };
     const onSwitchTab = () => {
@@ -132,7 +132,7 @@ const UIWrapper = withNavigation(
                 </View>
                 <Activities
                   sections={courseDetails.course.sections}
-                  courseRefreshCallBack={courseRefreshCallBack}
+                  courseRefreshCallBack={courseRefreshCallback}
                   expandAllActivities={expandActivities}
                 />
               </View>
@@ -143,6 +143,7 @@ const UIWrapper = withNavigation(
                   "course.course_overview.course_summery"
                 )}
                 onclickContinueLearning={onClose}
+                courseRefreshCallback={courseRefreshCallback}
               />
             )}
           </View>
