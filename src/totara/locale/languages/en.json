@@ -12,6 +12,52 @@
     "back": "Back",
     "ok": "Ok"
   },
+
+  "site_url": {
+    "title": "Get started.",
+    "url_information": "Enter your organisation's URL",
+    "url_text_placeholder": "Enter URL",
+    "validation": {
+      "enter_valid_url": "Enter a valid site address"
+    }
+  },
+  "auth_invalid_site": {
+    "title": "Sorry",
+    "description": "The URL is not compatible. Please check the URL and try again.",
+    "action_primary": "OK"
+  },
+
+
+  "native_login": {
+    "header_title": "Login",
+    "login_information": "Enter your site username and password.",
+    "username_text_placeholder": "Username",
+    "password_text_placeholder": "Password",
+    "forgot_username_password": "Forgot your username or password?",
+    "error_unauthorized": "Oops! Your username or password is incorrect.",
+    "validation": {
+      "enter_valid_username": "Enter a valid username",
+      "enter_valid_password": "Enter a valid password"
+    }
+  },
+  "browser_login": {
+    "title": "Confirm!",
+    "description": "You need to login through a mobile browser to authenticate. Would you like us to take you there now?",
+    "primary_title": "Yes, go to browser",
+    "tertiary_title": "Cancel"
+  },
+  "auth_general_error": {
+    "title": "Ooops!",
+    "description": "Something went wrong",
+    "action_primary": "OK"
+  },
+
+
+  "no_internet_alert": {
+    "title": "You are offline",
+    "message": "To continue, you'll need to go online",
+    "go_back": "OK"
+  },
   "certificate-details": {
     "courses": "COURSES",
     "overview": "OVERVIEW"
@@ -26,7 +72,7 @@
     "no_learning_message": "No current learning",
     "restriction_view": {
       "title": "Sorry!",
-      "description": "This course is not compatible with the\nmobile app. Would you like to access\nthis course in the browser?",
+      "description": "This course is not compatible with the mobile app. Would you like to access this course in the browser?",
       "primary_button_title": "Yes, go to browser",
       "tertiary_button_title": "Cancel"
     }
@@ -37,58 +83,22 @@
     "courses": "COURSES",
     "overview": "OVERVIEW"
   },
-  "totara-component": {
-    "section_title_continue_learn": "Continue your learning",
+  "totara_component": {
     "due_in": "Due in",
     "extend_date": "Extend Date",
     "overdue_by": "Overdue by"
   },
-  "manual": {
-    "site_url_title": "Get started.",
-    "site_url_information": "Enter your organisation's URL",
-    "site_url_text_placeholder": "Enter url"
-  },
-  "web-login": {
-    "site_url_title": "Get started.",
-    "site_url_information": "Please enter your site url",
-    "site_url_text_placeholder": "Enter site url"
-  },
-  "additional-actions-modal": {
+  "additional_actions_modal": {
     "auth_model_title": "Action required",
-    "auth_model_description": "You are required to visit a browser\nto complete some action(s).",
+    "auth_model_description": "You are required to visit a browser to complete some action(s).",
     "auth_model_go_to_browser": "Go to browser",
     "auth_model_logout": "Logout"
   },
-  "general_error_feedback-modal": {
+  "general_error_feedback_modal": {
     "title": "Ooops!",
     "description": "Something went wrong",
     "action_primary": "Refresh",
     "action_tertiary": "Try in browser"
-  },
-  "message": {
-    "enter_valid_url": "Enter a valid site address",
-    "enter_valid_username": "Enter a valid username",
-    "enter_valid_password": "Enter a valid password"
-  },
-  "native-login": {
-    "header_title": "Login",
-    "login_information": "Enter your site username and password.",
-    "username_text_placeholder": "Username",
-    "password_text_placeholder": "Password",
-    "forgot_username_password": "Forgot your username or password?",
-    "footer_note": "Is this your first time here?",
-    "footer_action": "Create new account",
-    "error_unauthorized": "Oops! Your username or password is incorrect."
-  },
-  "auth_invalid_site": {
-    "title": "Sorry",
-    "description": "The URL is not compatible. Please check the URL and try again.",
-    "action_primary": "OK"
-  },
-  "auth_general_error": {
-    "title": "Ooops!",
-    "description": "Something went wrong",
-    "action_primary": "OK"
   },
   "incompatible_api": {
     "title": "Sorry",
@@ -97,32 +107,8 @@
     "action_tertiary": "Logout",
     "action_tertiary_cancel": "Cancel"
   },
-  "error-not-valid-url": {
-    "title": "Sorry!",
-    "description": "The URL you have entered is not valid.",
-    "primary_title": "Try again",
-    "tertiary_title": "Try in browser"
-  },
-  "browser_login": {
-    "title": "Confirm!",
-    "description": "You need to login through the\nmobile site to authenticate you. Would\nyou like us to take you there now?",
-    "primary_title": "Yes, go to browser",
-    "tertiary_title": "Cancel"
-  },
   "activity_not_available": {
     "title": "This activity is not available unless"
-  },
-  "user_profile": {
-    "title": "Profile",
-    "login_as": "Logged in as: {{username}}",
-    "manage_section": "Manage",
-    "setting_cell": "Settings",
-    "logout": {
-      "button_text": "Logout",
-      "title": "Confirmation",
-      "message": "Are you sure you want to logout?"
-    },
-    "about": "About"
   },
   "course": {
     "course_overview": {
@@ -139,12 +125,12 @@
     },
     "course_complete": {
       "title": "Awesome!",
-      "description": "You have successfully completed\nthe course.",
+      "description": "You have successfully completed the course.",
       "button_title": "Continue learning"
     },
     "course_complete_confirmation": {
       "title": "Confirm",
-      "description": "Are you sure you want to mark this\ncourse as complete?",
+      "description": "Are you sure you want to mark this course as complete?",
       "primary_button_title": "Mark as complete",
       "tertiary_button_title": "cancel"
     },
@@ -210,19 +196,28 @@
       "cancel": "No"
     }
   },
+
+
   "notifications": {
     "title": "Notifications",
     "empty": "No notifications yet!",
     "selected": "{{count}} Selected"
   },
-  "no_internet_alert": {
-    "title": "You are offline",
-    "message": "To continue, you'll need to go\nonline",
-    "go_back": "OK"
-  },
   "downloads": {
     "title": "Downloads",
     "empty": "No downloads yet!",
     "selected": "{{count}} Selected"
+  },
+  "user_profile": {
+    "title": "Profile",
+    "login_as": "Logged in as: {{username}}",
+    "manage_section": "Manage",
+    "setting_cell": "Settings",
+    "logout": {
+      "button_text": "Logout",
+      "title": "Confirmation",
+      "message": "Are you sure you want to logout?"
+    },
+    "about": "About"
   }
 }

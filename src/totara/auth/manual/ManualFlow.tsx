@@ -24,7 +24,11 @@ import React from "react";
 import { View } from "react-native";
 
 import { AuthFlowChildProps } from "../AuthComponent";
-import { AppModal, InfoModal, PrimaryButton } from "@totara/components";
+import {
+  IncompatibleApiModal,
+  InfoModal,
+  PrimaryButton
+} from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData } from "@totara/core/AuthRoutines";
 
@@ -40,7 +44,7 @@ import SiteUrl from "./SiteUrl";
  */
 const ManualFlow = (props: AuthFlowChildProps) => {
   // fetch is available on global scope
-// eslint-disable-next-line no-undef
+  // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
 
   const {
@@ -51,70 +55,74 @@ const ManualFlow = (props: AuthFlowChildProps) => {
     onSetupSecretFailure
   } = useManualFlow(fetchDataWithFetch)(props);
 
-  const StartStep = () =>  <SiteUrl
+  const StartStep = () => (
+    <SiteUrl
       onSiteUrlSuccess={onSiteUrlSuccess}
       siteUrl={manualFlowState.siteUrl}
-      isSiteUrlSubmitted={manualFlowState.isSiteUrlSubmitted}/>;
+      isSiteUrlSubmitted={manualFlowState.isSiteUrlSubmitted}
+    />
+  );
 
   if (manualFlowState.isSiteUrlFailure) {
-    return (
-      <SiteErrorModal onCancel={onManualFlowCancel}/>
-    );
+    return <SiteErrorModal onCancel={onManualFlowCancel} />;
   } else {
     return (
       <View style={{ flex: 1 }}>
-        {(
-          () => { // this a inline switch anonymous component, for now for unknown reasons yet the modal on child
-            // elements fails when the theme is re-applied.  Need to investigate in the future
-            // PREVIOUS VERSION ONLY FAILS ON IOS ON PRODUCTION BUILD, Android and iOS dev build works.
-            switch (manualFlowState.flowStep) {
-              case "native":
-                return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-                  <NativeFlow
-                    siteUrl={manualFlowState.siteUrl}
-                    siteInfo={manualFlowState.siteInfo}
-                    onSetupSecretSuccess={onSetupSecretSuccess}
-                    onManualFlowCancel={onManualFlowCancel}
-                    onSetupSecretFailure={onSetupSecretFailure}
-                  />
-                ) : (
-                  <StartStep />
-                );
-              case "webview":
-                return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
-                  <WebviewFlow
-                    siteUrl={manualFlowState.siteUrl}
-                    siteInfo={manualFlowState.siteInfo}
-                    onSetupSecretSuccess={onSetupSecretSuccess}
-                    onManualFlowCancel={onManualFlowCancel}
-                    onSetupSecretFailure={onSetupSecretFailure}
-                  />
-                ) : (
-                  <StartStep />
-                );
-              case "browser":
-                return manualFlowState.siteUrl ? (
-                  <BrowserLogin
-                    siteUrl={manualFlowState.siteUrl}
-                    onManualFlowCancel={onManualFlowCancel}
-                  />
-                ) : (
-                  <StartStep />
-                );
-              case "incompatible":
-                return <AppModal onCancel={onManualFlowCancel} siteUrl={manualFlowState.siteUrl} />;
-              case "done":
-                return null;
-              case "siteUrl":
-                return <StartStep/>;
-            }
-          })()
-        }
+        {(() => {
+          // this a inline switch anonymous component, for now for unknown reasons yet the modal on child
+          // elements fails when the theme is re-applied.  Need to investigate in the future
+          // PREVIOUS VERSION ONLY FAILS ON IOS ON PRODUCTION BUILD, Android and iOS dev build works.
+          switch (manualFlowState.flowStep) {
+            case "native":
+              return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+                <NativeFlow
+                  siteUrl={manualFlowState.siteUrl}
+                  siteInfo={manualFlowState.siteInfo}
+                  onSetupSecretSuccess={onSetupSecretSuccess}
+                  onManualFlowCancel={onManualFlowCancel}
+                  onSetupSecretFailure={onSetupSecretFailure}
+                />
+              ) : (
+                <StartStep />
+              );
+            case "webview":
+              return manualFlowState.siteUrl && manualFlowState.siteInfo ? (
+                <WebviewFlow
+                  siteUrl={manualFlowState.siteUrl}
+                  siteInfo={manualFlowState.siteInfo}
+                  onSetupSecretSuccess={onSetupSecretSuccess}
+                  onManualFlowCancel={onManualFlowCancel}
+                  onSetupSecretFailure={onSetupSecretFailure}
+                />
+              ) : (
+                <StartStep />
+              );
+            case "browser":
+              return manualFlowState.siteUrl ? (
+                <BrowserLogin
+                  siteUrl={manualFlowState.siteUrl}
+                  onManualFlowCancel={onManualFlowCancel}
+                />
+              ) : (
+                <StartStep />
+              );
+            case "incompatible":
+              return (
+                <IncompatibleApiModal
+                  onCancel={onManualFlowCancel}
+                  siteUrl={manualFlowState.siteUrl}
+                />
+              );
+            case "done":
+              return null;
+            case "siteUrl":
+              return <StartStep />;
+          }
+        })()}
       </View>
     );
   }
 };
-
 
 type PropSiteError = {
   onCancel: () => void;
@@ -125,8 +133,7 @@ const SiteErrorModal = ({ onCancel }: PropSiteError) => (
     title={translate("auth_invalid_site.title")}
     description={translate("auth_invalid_site.description")}
     imageType={"url_not_valid"}
-    visible={true}
-  >
+    visible={true}>
     <PrimaryButton
       text={translate("auth_invalid_site.action_primary")}
       onPress={onCancel}

@@ -19,7 +19,6 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-
 import React from "react";
 
 import { config } from "@totara/lib";
@@ -30,7 +29,7 @@ export const AuthContext = React.createContext<State>({
   authContextState: initialState,
   logOut: () => Promise.resolve(),
   onLoginSuccess: () => Promise.resolve(),
-  onLoginFailure: () => Promise.resolve(),
+  onLoginFailure: () => Promise.resolve()
 });
 
 type State = {
@@ -38,7 +37,7 @@ type State = {
   logOut: (local?: boolean) => Promise<void>;
   onLoginSuccess: (setup: Setup) => Promise<void>;
   onLoginFailure: (error: Error) => Promise<void>;
-}
+};
 
 enum Compatible {
   Api = 1
@@ -57,9 +56,7 @@ export const isCompatible = (version?: string) => {
   if (config.minApiVersion === "disabled") {
     return fullCompatible;
   } else {
-    if (version && config.minApiVersion <= version) 
-      return [Compatible.Api];
-    else 
-    return [];
+    if (version && config.minApiVersion <= version) return [Compatible.Api];
+    else return [];
   }
 };

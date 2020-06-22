@@ -46,17 +46,15 @@ const SiteUrl = (props: Props) => {
               resizeMode="contain"
             />
             <View>
-              <Text style={styles.urlTitle}>
-                {translate("manual.site_url_title")}
-              </Text>
+              <Text style={styles.urlTitle}>{translate("site_url.title")}</Text>
               <Text style={styles.urlInformation}>
-                {translate("manual.site_url_information")}
+                {translate("site_url.url_information")}
               </Text>
             </View>
           </View>
           <View style={styles.formContainer}>
             <InputTextWithInfo
-              placeholder={translate("manual.site_url_text_placeholder")}
+              placeholder={translate("site_url.url_text_placeholder")}
               message={siteUrlState.inputSiteUrlMessage}
               status={siteUrlState.inputSiteUrlStatus}>
               <Input

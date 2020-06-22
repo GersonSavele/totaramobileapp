@@ -21,15 +21,12 @@ import {
   View,
   FlatList
 } from "react-native";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
 import { withNavigation, NavigationParams } from "react-navigation";
 import { Course, CourseSets } from "@totara/types";
 import { normalize } from "@totara/theme";
 import { AddBadge, LearningItemCard } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
+import { deviceScreen } from "@totara/lib/tools";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -164,11 +161,11 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   itemWithBadgeContainer: {
-    marginTop: hp("3%"),
-    marginBottom: hp("4%"),
+    marginTop: deviceScreen.height * 0.03,
+    marginBottom: deviceScreen.height * 0.04,
     marginLeft: 16,
-    marginRight: wp("3%"),
-    width: wp("70"),
+    marginRight: deviceScreen.width * 0.03,
+    width: deviceScreen.width * 0.7,
     height: normalize(220)
   },
   learningItem: {

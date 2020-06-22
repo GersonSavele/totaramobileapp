@@ -22,6 +22,7 @@ import { View } from "react-native-animatable";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings } from "@totara/theme/constants";
 import { getBuildNumber, getVersion } from "react-native-device-info";
+import { translate } from "@totara/locale";
 
 const About = () => {
   return (
@@ -30,7 +31,9 @@ const About = () => {
         <Image source={Images.totaraLogo} style={styles.logo} />
       </View>
       <View style={styles.versionContainer} animation={"slideInUp"} delay={200}>
-        <Text style={styles.version}>{`Version ${getVersion()} `}</Text>
+        <Text style={styles.version}>{`${translate(
+          "general.version"
+        )} ${getVersion()} `}</Text>
         <Text style={styles.build}>{`(${getBuildNumber()})`}</Text>
       </View>
     </View>

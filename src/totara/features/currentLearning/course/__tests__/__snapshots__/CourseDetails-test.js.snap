@@ -91,7 +91,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                 ]
               }
             >
-              translated general_error_feedback-modal.title with undefined
+              translated general_error_feedback_modal.title with undefined
             </Text>
           </View>
           <View
@@ -116,7 +116,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                 ]
               }
             >
-              translated general_error_feedback-modal.description with undefined
+              translated general_error_feedback_modal.description with undefined
             </Text>
           </View>
         </View>
@@ -311,7 +311,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                 ]
               }
             >
-              translated general_error_feedback-modal.title with undefined
+              translated general_error_feedback_modal.title with undefined
             </Text>
           </View>
           <View
@@ -336,7 +336,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                 ]
               }
             >
-              translated general_error_feedback-modal.description with undefined
+              translated general_error_feedback_modal.description with undefined
             </Text>
           </View>
         </View>
@@ -531,7 +531,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                 ]
               }
             >
-              translated general_error_feedback-modal.title with undefined
+              translated general_error_feedback_modal.title with undefined
             </Text>
           </View>
           <View
@@ -556,7 +556,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
                 ]
               }
             >
-              translated general_error_feedback-modal.description with undefined
+              translated general_error_feedback_modal.description with undefined
             </Text>
           </View>
         </View>

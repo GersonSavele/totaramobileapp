@@ -20,7 +20,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   ScrollView,
   RefreshControl,
   Alert,
@@ -32,14 +31,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { AuthConsumer, AuthContext } from "@totara/core";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
-import { AUTHORIZATION, NAVIGATION } from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/constants";
 import { userOwnProfile } from "./api";
 
 import { translate } from "@totara/locale";
 import { NetworkStatus as NS } from "apollo-boost";
 import { Container } from "native-base";
-import { iconSizes, margins, paddings } from "@totara/theme/constants";
-import { Loading, NetworkStatus } from "@totara/components";
+import { margins, paddings } from "@totara/theme/constants";
+import { Loading, NetworkStatus, RemoteImage } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { NavigationContext } from "react-navigation";
 
@@ -97,19 +96,18 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
     navigation.navigate(NAVIGATION.NAVIGATION_ABOUT);
   };
 
+  const useDefaultImage =
+    profile.profileimage.indexOf("theme/image.php/basis/core/") >= 0; //TODO: WEIRD WORKAROUND WE SUPPOSE TO FIX ONE DAY
+
   return (
     <View style={[TotaraTheme.viewContainer]}>
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
         <View style={styles.headerContent}>
-          {profile.profileimage.indexOf("theme/image.php/basis/core/") == -1 ? (
-            <Image
+          {!useDefaultImage ? (
+            <RemoteImage
+              url={profile.profileimage}
+              apiKey={apiKey}
               style={styles.avatar}
-              source={{
-                uri: profile.profileimage,
-                headers: {
-                  [AUTHORIZATION]: `Bearer ${apiKey}`
-                }
-              }}
             />
           ) : (
             <View style={styles.avatar}>
@@ -141,12 +139,6 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
                 {translate("user_profile.about")}
               </Text>
             </TouchableOpacity>
-            <FontAwesomeIcon
-              icon={"angle-right"}
-              size={iconSizes.sizeM}
-              style={{ alignSelf: "center" }}
-              color={TotaraTheme.colorNeutral4}
-            />
           </View>
 
           <View style={styles.sectionOption}>

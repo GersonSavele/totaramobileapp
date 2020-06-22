@@ -72,7 +72,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
       </View>
       <View style={{ position: "relative", zIndex: 2 }}>
         <FormError
-          message={translate("native-login.error_unauthorized")}
+          message={translate("native_login.error_unauthorized")}
           isShow={nativeLoginState.errorStatusUnauthorized}
         />
       </View>
@@ -88,19 +88,19 @@ const NativeLogin = (props: ManualFlowChildProps) => {
         />
         <View style={styles.infoContainer}>
           <Text style={styles.loginTitle}>
-            {translate("native-login.header_title")}
+            {translate("native_login.header_title")}
           </Text>
           <Text style={styles.loginInformation}>
-            {translate("native-login.login_information")}
+            {translate("native_login.login_information")}
           </Text>
         </View>
         <Form>
           <View style={styles.formInputContainer}>
             <InputTextWithInfo
-              placeholder={translate("native-login.username_text_placeholder")}
+              placeholder={translate("native_login.username_text_placeholder")}
               message={
                 nativeLoginState.inputUsernameStatus == "error"
-                  ? translate("message.enter_valid_username")
+                  ? translate("native_login.validation.enter_valid_username")
                   : undefined
               }
               status={nativeLoginState.inputUsernameStatus}>
@@ -116,10 +116,10 @@ const NativeLogin = (props: ManualFlowChildProps) => {
           </View>
           <View style={styles.formInputContainer}>
             <InputTextWithInfo
-              placeholder={translate("native-login.password_text_placeholder")}
+              placeholder={translate("native_login.password_text_placeholder")}
               message={
                 nativeLoginState.inputPasswordStatus == "error"
-                  ? translate("message.enter_valid_password")
+                  ? translate("native_login.validation.enter_valid_password")
                   : undefined
               }
               status={nativeLoginState.inputPasswordStatus}>
@@ -139,7 +139,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
                 Linking.openURL(config.forgotPasswordUri(props.siteUrl));
               }}>
               <Text style={styles.forgotCredential}>
-                {translate("native-login.forgot_username_password")}
+                {translate("native_login.forgot_username_password")}
               </Text>
             </TouchableOpacity>
           </View>

@@ -37,7 +37,7 @@ import GeneralErrorModal from "./GeneralErrorModal";
 import InputTextWithInfo from "./InputTextWithInfo";
 import TertiaryButton from "./TertiaryButton";
 import TouchableIcon from "./TouchableIcon";
-import AppModal from "./AppModal";
+import IncompatibleApiModal from "./IncompatibleApiModal";
 import FormError from "./FormError";
 import MoreText from "./MoreText";
 import LinkText from "./LinkText";
@@ -49,6 +49,7 @@ import Separator from "./Separator";
 import LoadingError from "./LoadingError";
 import NetworkStatus from "./NetworkStatus";
 import Loading from "./Loading";
+import RemoteImage from "./RemoteImage";
 
 export {
   LearningItemCard,
@@ -66,7 +67,7 @@ export {
   InputTextWithInfo,
   TertiaryButton,
   TouchableIcon,
-  AppModal,
+  IncompatibleApiModal,
   FormError,
   SecondaryButton,
   MoreText,
@@ -78,5 +79,6 @@ export {
   Separator,
   Loading,
   LoadingError,
-  NetworkStatus
+  NetworkStatus,
+  RemoteImage
 };

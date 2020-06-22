@@ -23,33 +23,34 @@
 import localConfig from "./config.local";
 import ConsoleLogger from "./logger/ConsoleLogger";
 
-
 const defaultConfig = {
   urlProtocol: "https",
   mobileApi: {
     persistentQuery: true
   },
   userAgent: "TotaraMobileApp",
-  apiUri: (host: string) => (`${host}/totara/mobile/api.php`),
-  infoUri: (host: string) => (`${host}/totara/mobile/site_info.php`),
-  loginUri: (host: string) => (`${host}/login/index.php`),
-  deviceRegisterUri: (host: string) => (`${host}/totara/mobile/device_register.php`),
-  webViewUri: (host: string) => (`${host}/totara/mobile/device_webview.php`),
-  forgotPasswordUri: (host: string) => (`${host}/login/forgot_password.php`),
-  nativeLoginSetupUri: (host: string) => (`${host}/totara/mobile/login_setup.php`),
-  nativeLoginUri: (host: string) => (`${host}/totara/mobile/login.php`),
+  apiUri: (host: string) => `${host}/totara/mobile/api.php`,
+  infoUri: (host: string) => `${host}/totara/mobile/site_info.php`,
+  loginUri: (host: string) => `${host}/login/index.php`,
+  deviceRegisterUri: (host: string) =>
+    `${host}/totara/mobile/device_register.php`,
+  webViewUri: (host: string) => `${host}/totara/mobile/device_webview.php`,
+  forgotPasswordUri: (host: string) => `${host}/login/forgot_password.php`,
+  nativeLoginSetupUri: (host: string) =>
+    `${host}/totara/mobile/login_setup.php`,
+  nativeLoginUri: (host: string) => `${host}/totara/mobile/login.php`,
   appLinkDomain: "https://mobile.totaralearning.com",
   deepLinkSchema: "totara://",
-  minApiVersion: "2019111100", // "disabled"
+  minApiVersion: "2020051700",
   rootOfflineScormPlayer: "html",
-  sentryUri: "https://24dc78cc484a4aabaa3b1f2da277eeb3@o377397.ingest.sentry.io/5199484",
+  sentryUri:
+    "https://24dc78cc484a4aabaa3b1f2da277eeb3@o377397.ingest.sentry.io/5199484"
 };
 
 export const internalConfig = {
   logger: ConsoleLogger
 };
 
-let config = {...defaultConfig, ...localConfig};
+let config = { ...defaultConfig, ...localConfig };
 
 export default config;
-

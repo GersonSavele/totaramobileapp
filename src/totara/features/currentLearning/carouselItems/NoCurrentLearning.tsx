@@ -50,7 +50,7 @@ const NoCurrentLearning = () => {
                 Linking.openURL(auth.authContextState.appState!.host);
               }}
               text={translate(
-                "additional-actions-modal.auth_model_go_to_browser"
+                "additional_actions_modal.auth_model_go_to_browser"
               )}
               icon="external-link-alt"
               style={{ alignSelf: "center" }}

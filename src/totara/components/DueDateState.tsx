@@ -56,8 +56,8 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
     <View style={[styles.container, dueDateModeStyle]}>
       <Text style={[theme.textXSmall, { color: theme.textColorLight }]}>
         {dueDateState && dueDateState == DueDateStateStatus.danger
-          ? translate("totara-component.overdue_by")
-          : translate("totara-component.due_in")}
+          ? translate("totara_component.overdue_by")
+          : translate("totara_component.due_in")}
         &nbsp;
         <Text style={{ fontWeight: "bold" }}>
           {moment(dueDate).toNow(true)}&nbsp;

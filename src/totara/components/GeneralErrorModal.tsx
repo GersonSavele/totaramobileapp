@@ -20,38 +20,50 @@
  **/
 
 import React from "react";
-import {  Linking } from "react-native";
+import { Linking } from "react-native";
 import PrimaryButton from "./PrimaryButton";
 import InfoModal from "./infoModal/InfoModal";
 import TertiaryButton from "./TertiaryButton";
 
 import { translate } from "@totara/locale";
 
-
 class GeneralErrorModal extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
       visible: true
-    }
+    };
   }
   render() {
     return (
-      <InfoModal title={translate("general_error_feedback-modal.title")} description={translate("general_error_feedback-modal.description")} imageType={"general_error"} visible={this.state.visible}>
-        <PrimaryButton text={translate("general_error_feedback-modal.action_primary")} onPress={() => { this.setState({visible: !this.state.visible})}} />
-        <TertiaryButton  text={translate("general_error_feedback-modal.action_tertiary")} onPress={() => { Linking.openURL(this.props.siteUrl)}} />
+      <InfoModal
+        title={translate("general_error_feedback_modal.title")}
+        description={translate("general_error_feedback_modal.description")}
+        imageType={"general_error"}
+        visible={this.state.visible}>
+        <PrimaryButton
+          text={translate("general_error_feedback_modal.action_primary")}
+          onPress={() => {
+            this.setState({ visible: !this.state.visible });
+          }}
+        />
+        <TertiaryButton
+          text={translate("general_error_feedback_modal.action_tertiary")}
+          onPress={() => {
+            Linking.openURL(this.props.siteUrl);
+          }}
+        />
       </InfoModal>
     );
   }
 }
 
 type State = {
-  visible: boolean
-}
+  visible: boolean;
+};
 type Props = {
-  errorType?: "general_error" | ""
-  siteUrl : string
+  errorType?: "general_error" | "";
+  siteUrl: string;
 };
 
 export default GeneralErrorModal;

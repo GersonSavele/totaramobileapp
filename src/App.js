@@ -32,7 +32,6 @@ import { useDispatch } from "react-redux";
 import { AuthProvider } from "@totara/core/AuthProvider";
 import { AuthFlow } from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
-import { AppModal } from "@totara/components";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 import { FeatureNavigator } from "@totara/features";
 import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
@@ -75,7 +74,6 @@ const App: () => React$Node = () => {
               </PersistGate>
             </Provider>
             <AdditionalAction />
-            <AppModal />
             <AttemptSynchronizer />
           </AuthFlow>
         </SafeAreaProvider>

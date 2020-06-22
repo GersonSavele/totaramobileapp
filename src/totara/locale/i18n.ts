@@ -4,16 +4,13 @@ import moment from "moment";
 import "moment/locale/fr";
 import "moment/locale/de";
 
+// @ts-ignore
 import * as en from "@totara/locale/languages/en.json";
-import * as fr from "@totara/locale/languages/fr.json";
-import * as de from "@totara/locale/languages/de.json";
 
-
-
-const translations = { en, fr, de };
+const translations = { en };
 const { languageTag } = RNLocalize.findBestAvailableLanguage(
-  Object.keys(translations),
-) || { languageTag: 'en' };
+  Object.keys(translations)
+) || { languageTag: "en" };
 i18n.defaultLocale = "en";
 i18n.locale = languageTag;
 i18n.fallbacks = true;

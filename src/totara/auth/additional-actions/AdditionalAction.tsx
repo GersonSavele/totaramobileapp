@@ -40,10 +40,10 @@ class AdditionalAction extends React.Component {
 const AdditionalActionModal = () => {
   return (
     <InfoModal
-      title={translate("additional-actions-modal.auth_model_title")}
-      description={translate("additional-actions-modal.auth_model_description")}
+      title={translate("additional_actions_modal.auth_model_title")}
+      description={translate("additional_actions_modal.auth_model_description")}
       imageType="complete_action"
-      visible={true} >
+      visible={true}>
       <ActionButtonPrimary />
       <ActionButtonTertiary />
     </InfoModal>
@@ -53,9 +53,20 @@ const AdditionalActionModal = () => {
 const ActionButtonPrimary = () => {
   return (
     <AuthConsumer>
-      {auth => (
-        auth.authContextState.appState && auth.authContextState.appState.host && <PrimaryButton text={translate("additional-actions-modal.auth_model_go_to_browser")} icon={"external-link-alt"} onPress={() => { Linking.openURL(auth.authContextState.appState!.host); }} />
-      )}
+      {(auth) =>
+        auth.authContextState.appState &&
+        auth.authContextState.appState.host && (
+          <PrimaryButton
+            text={translate(
+              "additional_actions_modal.auth_model_go_to_browser"
+            )}
+            icon={"external-link-alt"}
+            onPress={() => {
+              Linking.openURL(auth.authContextState.appState!.host);
+            }}
+          />
+        )
+      }
     </AuthConsumer>
   );
 };
@@ -63,8 +74,13 @@ const ActionButtonPrimary = () => {
 const ActionButtonTertiary = () => {
   return (
     <AuthConsumer>
-      {auth => (
-        <TertiaryButton text={translate("additional-actions-modal.auth_model_logout")} onPress={() => { auth.logOut(); }} />
+      {(auth) => (
+        <TertiaryButton
+          text={translate("additional_actions_modal.auth_model_logout")}
+          onPress={() => {
+            auth.logOut();
+          }}
+        />
       )}
     </AuthConsumer>
   );

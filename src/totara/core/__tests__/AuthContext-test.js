@@ -22,12 +22,12 @@
 import { isCompatible, isValidApiVersion } from "../AuthContext";
 import { config } from "@totara/lib";
 
-describe("AppModal", () => {
+describe("IncompatibleApiModal", () => {
   it("should returns available features for current older and higher API version", async () => {
     config.minApiVersion = "2019101802";
     const validVersion = isCompatible("2019101802");
     expect(validVersion).toEqual([1]);
-    
+
     const oldVersion = isCompatible("2010101802");
     expect(oldVersion).toEqual([]);
 
@@ -41,7 +41,7 @@ describe("AppModal", () => {
 
   it("should returns true for `disabled` or valid `minApiVersion` ", () => {
     config.minApiVersion = "2019101802";
-  
+
     const validVersion = isValidApiVersion("2019101802");
     expect(validVersion).toBeTruthy();
 
@@ -51,7 +51,6 @@ describe("AppModal", () => {
     config.minApiVersion = "disabled";
     const disabledAppMinVersion = isValidApiVersion("2030101802");
     expect(disabledAppMinVersion).toBeTruthy();
-    
   });
 
   it("should returns false for undefined, null or invalid `minApiVersion` ", () => {

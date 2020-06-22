@@ -32,14 +32,14 @@ type Props = {
 
 const FormError = ({ message, isShow }: Props) => {
   const [theme] = useContext(ThemeContext);
-  const [animationType, setAnimationType ]  = useState();
+  const [animationType, setAnimationType] = useState();
 
-  useEffect(()=> {
-    if (animationType !== undefined ||  isShow) {
+  useEffect(() => {
+    if (animationType !== undefined || isShow) {
       setAnimationType(isShow ? "fadeInDown" : "fadeOutUp");
     }
   }, [isShow]);
-  
+
   const styles = StyleSheet.create({
     container: {
       position: "absolute",
@@ -53,8 +53,13 @@ const FormError = ({ message, isShow }: Props) => {
   });
 
   return (
-    <Animatable.View animation={animationType} style={styles.container}>
-      <Text style={[theme.textSmall, { color: theme.textColorLight }]}>{message}</Text>
+    <Animatable.View
+      animation={animationType}
+      duration={500}
+      style={styles.container}>
+      <Text style={[theme.textSmall, { color: theme.textColorLight }]}>
+        {message}
+      </Text>
     </Animatable.View>
   );
 };

@@ -34,10 +34,11 @@ import React, { useContext } from "react";
 import { LearningItem } from "@totara/types";
 import DueDateState from "./DueDateState";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { AUTHORIZATION, learningItemEnum } from "@totara/lib/constants";
+import { learningItemEnum } from "@totara/lib/constants";
 import { AuthContext } from "@totara/core";
 import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
+import { RemoteImage } from "@totara/components/index";
 
 interface Props {
   item: LearningItem;
@@ -94,15 +95,7 @@ const ImageElement = ({ item, imageStyle, image }: Props) => {
         <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />
       )}
       {image && image.length > 0 ? (
-        <Image
-          source={{
-            uri: image,
-            headers: {
-              [AUTHORIZATION]: `Bearer ${apiKey}`
-            }
-          }}
-          style={styles.imageWrap}
-        />
+        <RemoteImage url={image} apiKey={apiKey} style={styles.imageWrap} />
       ) : (
         <DefaultImage item={item} />
       )}

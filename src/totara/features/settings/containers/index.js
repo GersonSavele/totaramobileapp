@@ -22,8 +22,8 @@
 
 import React from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import DeviceInfo from "react-native-device-info";
+import { deviceScreen } from "@totara/lib/tools";
 
 class Settings extends React.Component {
   static navigationOptions = {
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   dataText: {
-    width: wp("65%"),
+    width: deviceScreen.width * 0.65,
     fontSize: 20,
     padding: 8
   },
   dataValue: {
-    width: wp("35%"),
+    width: deviceScreen.width * 0.35,
     fontSize: 16,
     padding: 8,
     textAlign: "right"
