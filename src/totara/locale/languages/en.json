@@ -12,7 +12,6 @@
     "back": "Back",
     "ok": "Ok"
   },
-
   "site_url": {
     "title": "Get started.",
     "url_information": "Enter your organisation's URL",
@@ -26,8 +25,6 @@
     "description": "The URL is not compatible. Please check the URL and try again.",
     "action_primary": "OK"
   },
-
-
   "native_login": {
     "header_title": "Login",
     "login_information": "Enter your site username and password.",
@@ -58,7 +55,7 @@
     "message": "To continue, you'll need to go online",
     "go_back": "OK"
   },
-  "certificate-details": {
+  "certificate_details": {
     "courses": "COURSES",
     "overview": "OVERVIEW"
   },
@@ -77,7 +74,7 @@
       "tertiary_button_title": "Cancel"
     }
   },
-  "program-details": {
+  "program_details": {
     "details": "Details",
     "outline": "Outline",
     "courses": "COURSES",
@@ -196,8 +193,6 @@
       "cancel": "No"
     }
   },
-
-
   "notifications": {
     "title": "Notifications",
     "empty": "No notifications yet!",

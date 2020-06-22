@@ -70,13 +70,13 @@ const DetailsUI = ({ navigation, courseGroup, type }: CourseGroupProps) => {
       navigation={navigation}
       tabBarLeftTitle={
         type === "program"
-          ? translate("program-details.overview")
-          : translate("certificate-details.overview")
+          ? translate("program_details.overview")
+          : translate("certificate_details.overview")
       }
       tabBarRightTitle={
         type === "program"
-          ? translate("program-details.courses")
-          : translate("certificate-details.courses")
+          ? translate("program_details.courses")
+          : translate("certificate_details.courses")
       }
       onPress={onSwitchTab}
       overviewIsShown={showOverview}
