@@ -101,8 +101,13 @@ type GridTitleProps = {
   textId: string;
   style?: TextStyle;
 };
-const GridTitle = ({ theme, textId, style }: GridTitleProps) => (
-  <Text style={[theme.textHeadline, scormSummaryStyles.sectionBreak, style]}>
+const GridTitle = ({ theme, textId, style = {} }: GridTitleProps) => (
+  <Text
+    style={{
+      ...theme.textHeadline,
+      ...scormSummaryStyles.sectionTitle,
+      ...style
+    }}>
     {translate(textId)}
   </Text>
 );
@@ -215,7 +220,10 @@ const ScormSummary = ({
                     theme={theme}
                     style={{ paddingTop: 0 }}
                   />
-                  <MoreText longText={description} />
+                  <MoreText
+                    longText={description}
+                    style={TotaraTheme.textMedium}
+                  />
                 </>
               )}
               <GridTitle textId={"scorm.summary.grade.title"} theme={theme} />

@@ -20,13 +20,15 @@
  */
 
 import React, { useContext } from "react";
-import { Text, View, StyleSheet, FlatList, SafeAreaView } from "react-native";
+import { Text, View, FlatList, SafeAreaView } from "react-native";
 
-import { ThemeContext, gutter, baseSpace } from "@totara/theme";
+import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { ScormActivityResult, Grade } from "@totara/types/Scorm";
 import { NavigationStackProp } from "react-navigation-stack";
 import { fullFlex } from "@totara/lib/styles/base";
+import { scormAttemptsStyles } from "@totara/theme/scorm";
+import { fontWeights } from "@totara/theme/constants";
 
 type AttemptsParams = {
   gradeMethod: Grade;
@@ -59,10 +61,7 @@ const ScormAttempts = ({ navigation }: ScormActivityProps) => {
   return (
     <SafeAreaView style={fullFlex}>
       <Text
-        style={[
-          theme.textH2,
-          { marginVertical: baseSpace, paddingHorizontal: gutter }
-        ]}>
+        style={{ ...theme.textHeadline, ...scormAttemptsStyles.sectionTitle }}>
         {translate("scorm.attempts.title")}
       </Text>
       <FlatList
@@ -101,33 +100,21 @@ const AttemptReport = ({
       : `${calculatedScore}%`;
 
   return (
-    <View style={attemptResult.holder} key={"holder"}>
-      <Text style={[theme.textH3, attemptResult.attempt]}>
+    <View style={scormAttemptsStyles.holder} key={"holder"}>
+      <Text style={[theme.textRegular, scormAttemptsStyles.attempt]}>
         {translate("scorm.attempts.attempt")} {attempt}
       </Text>
-      <View style={attemptResult.result}>
-        <Text style={theme.textH3}>{formattedScore}</Text>
+      <View style={scormAttemptsStyles.result}>
+        <Text
+          style={{
+            ...theme.textRegular,
+            fontWeight: fontWeights.fontWeightSemiBold
+          }}>
+          {formattedScore}
+        </Text>
       </View>
     </View>
   );
 };
-
-const attemptResult = StyleSheet.create({
-  holder: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    marginVertical: 8,
-    paddingHorizontal: gutter
-  },
-  attempt: {
-    flex: 2,
-    alignSelf: "center",
-    fontWeight: "normal"
-  },
-  result: {
-    flex: 1,
-    alignItems: "flex-end"
-  }
-});
 
 export default ScormAttempts;

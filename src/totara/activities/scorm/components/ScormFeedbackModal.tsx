@@ -77,7 +77,7 @@ const ScormFeedbackModal = ({
           <View style={scormFeedbackStyles.actionWrapper}>
             <Text
               style={{
-                ...TotaraTheme.textH3,
+                ...TotaraTheme.textRegular,
                 marginBottom: margins.margin2XL,
                 textAlign: "center"
               }}>

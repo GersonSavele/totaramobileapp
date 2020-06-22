@@ -21,7 +21,8 @@ import {
   fontWeights,
   modalSize,
   resultCircleSize,
-  resultWrapperScaleX
+  resultWrapperScaleX,
+  paddings
 } from "./constants";
 import { TotaraTheme } from "./Theme";
 
@@ -30,11 +31,12 @@ const scormSummaryStyles = StyleSheet.create({
     flex: 1,
     flexDirection: "column"
   },
-  sectionBreak: {
+  sectionTitle: {
     flexDirection: "row",
     paddingTop: margins.marginS,
     paddingBottom: margins.marginS,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    fontWeight: fontWeights.fontWeightBold
   },
   sectionField: {
     flexDirection: "row",
@@ -46,6 +48,29 @@ const scormSummaryStyles = StyleSheet.create({
     paddingVertical: margins.marginS,
     flexDirection: "column",
     alignItems: "stretch"
+  }
+});
+
+const scormAttemptsStyles = StyleSheet.create({
+  sectionTitle: {
+    marginVertical: margins.marginL,
+    paddingHorizontal: paddings.paddingXL,
+    fontWeight: fontWeights.fontWeightBold
+  },
+  holder: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    marginVertical: margins.marginL,
+    paddingHorizontal: gutter
+  },
+  attempt: {
+    flex: 2,
+    alignSelf: "center",
+    fontWeight: "normal"
+  },
+  result: {
+    flex: 1,
+    alignItems: "flex-end"
   }
 });
 
@@ -120,4 +145,4 @@ const scormFeedbackStyles = StyleSheet.create({
     alignContent: "space-between"
   }
 });
-export { scormSummaryStyles, scormFeedbackStyles };
+export { scormSummaryStyles, scormFeedbackStyles, scormAttemptsStyles };

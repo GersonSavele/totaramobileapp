@@ -52,6 +52,13 @@ const TotaraTheme: AppliedTheme = {
     fontWeight: "400"
   },
 
+  textMedium: {
+    fontSize: 20,
+    lineHeight: 25,
+    color: colorFont,
+    fontWeight: "400"
+  },
+
   textRegular: {
     fontSize: 17,
     lineHeight: 22,
@@ -137,6 +144,7 @@ export type AppliedTheme = {
   textH2: TextStyle;
   textH3: TextStyle;
   textHeadline: TextStyle;
+  textMedium: TextStyle;
   textRegular: TextStyle;
   textSmall: TextStyle;
   textXSmall: TextStyle;
