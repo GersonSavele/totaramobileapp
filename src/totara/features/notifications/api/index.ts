@@ -8,7 +8,7 @@ const parser = (data) => {
       subject: row.subject,
       isRead: row.isread,
       fullMessage: row.fullmessage,
-      timeCreated: row.timeCreated
+      timeCreated: row.timecreated
     } as NotificationMessage;
   });
 };

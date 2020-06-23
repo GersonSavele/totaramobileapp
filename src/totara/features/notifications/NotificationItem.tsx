@@ -18,11 +18,12 @@
 import { NotificationMessage } from "@totara/types";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { iconSizes, paddings } from "@totara/theme/constants";
+import { fontWeights, iconSizes, paddings } from "@totara/theme/constants";
 import React, { useContext } from "react";
 import { ThemeContext } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
+import { timeAgo } from "@totara/lib/tools";
 
 type NotificationItemProps = {
   item: NotificationMessage;
@@ -59,6 +60,7 @@ const NotificationItem = ({
           <Text style={[styles.title, item.isRead && styles.read]}>
             {item.subject}
           </Text>
+          <Text style={styles.timeCreated}>{timeAgo(item.timeCreated)}</Text>
         </View>
         <View
           style={{
@@ -79,13 +81,16 @@ const NotificationItem = ({
 const styles = StyleSheet.create({
   title: {
     ...TotaraTheme.textRegular,
-    ...{
-      padding: paddings.paddingM,
-      fontWeight: "bold"
-    }
+    padding: paddings.paddingM,
+    fontWeight: fontWeights.fontWeightBold
+  },
+  timeCreated: {
+    ...TotaraTheme.textSmall,
+    paddingLeft: paddings.paddingM,
+    color: TotaraTheme.colorNeutral6
   },
   read: {
-    fontWeight: "normal"
+    fontWeight: fontWeights.fontWeightRegular
   },
   itemCircle: {
     padding: paddings.paddingL,

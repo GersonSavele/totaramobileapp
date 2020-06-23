@@ -29,12 +29,12 @@ const borderRadius = {
   borderRadiusL: 16
 };
 
-const fontWeights = {
-  fontWeightRegular: "400",
-  fontWeightNormal: "500",
-  fontWeightSemiBold: "600",
-  fontWeightBold: "700"
-};
+enum fontWeights {
+  fontWeightRegular = "400",
+  fontWeightNormal = "500",
+  fontWeightSemiBold = "600",
+  fontWeightBold = "700"
+}
 
 const fontSizes = {
   fontSizeXS: 11,

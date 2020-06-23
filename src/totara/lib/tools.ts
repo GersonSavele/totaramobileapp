@@ -1,5 +1,6 @@
 import { Alert, Dimensions } from "react-native";
 import { translate } from "@totara/locale";
+import moment, { now } from "moment";
 
 type ShowMessageParams = {
   title?: string;
@@ -62,6 +63,10 @@ const uuid = () => {
   });
 };
 
+const timeAgo = (from: number) => {
+  return moment.unix(from).from(now());
+};
+
 const deviceScreen = {
   width: Dimensions.get("screen").width,
   height: Dimensions.get("screen").height,
@@ -73,5 +78,6 @@ export {
   showConfirmation,
   humanReadablePercentage,
   uuid,
-  deviceScreen
+  deviceScreen,
+  timeAgo
 };

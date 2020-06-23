@@ -2,30 +2,23 @@ import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { NavigationContext } from "react-navigation";
 import { NotificationMessage } from "@totara/types";
-import { paddings } from "@totara/theme/constants";
+import { fontWeights, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { PrimaryButton } from "@totara/components";
+import { timeAgo } from "@totara/lib/tools";
 
 const NotificationDetails = () => {
   const navigation = useContext(NavigationContext);
-  const { title, received, body, action } = navigation.state
+  const { subject, timeCreated, fullMessage } = navigation.state
     .params as NotificationMessage;
+
   return (
     <View style={styles.mainContainer}>
       <View>
-        <Text style={TotaraTheme.textRegular}>{title}</Text>
-        <Text style={{ color: TotaraTheme.colorNeutral6 }}>{received}</Text>
+        <Text style={styles.title}>{subject}</Text>
+        <Text style={styles.timeCreated}>{timeAgo(timeCreated)}</Text>
       </View>
-      <View style={{ paddingTop: paddings.padding2XL }}>
-        <Text>{body}</Text>
-      </View>
-      <View style={{ paddingTop: paddings.padding2XL }}>
-        <PrimaryButton
-          text={action.title}
-          onPress={() => {
-            console.warn(action.link);
-          }}
-        />
+      <View style={styles.content}>
+        <Text>{fullMessage}</Text>
       </View>
     </View>
   );
@@ -34,9 +27,19 @@ const NotificationDetails = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     ...TotaraTheme.viewContainer,
-    ...{
-      padding: paddings.paddingXL
-    }
+    padding: paddings.paddingXL
+  },
+  timeCreated: {
+    ...TotaraTheme.textSmall,
+    color: TotaraTheme.colorNeutral6
+  },
+  title: {
+    ...TotaraTheme.textRegular,
+    fontWeight: fontWeights.fontWeightSemiBold
+  },
+  content: {
+    ...TotaraTheme.textRegular,
+    paddingTop: paddings.padding2XL
   }
 });
 
