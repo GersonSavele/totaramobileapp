@@ -26,24 +26,25 @@ import listViewStyles from "@totara/theme/listView";
 
 type NotificationItemProps = {
   item: NotificationMessage;
-  selectable: boolean;
-  selected: boolean;
+  selectable?: boolean;
+  selected?: boolean;
   onNotificationItemPress(item: NotificationMessage): void;
-  onNotificationItemLongPress(item: NotificationMessage): void;
+  //onNotificationItemLongPress(item: NotificationMessage): void;
 };
 
 const NotificationItem = ({
   item,
   onNotificationItemPress,
-  onNotificationItemLongPress,
-  selectable,
-  selected
+  //onNotificationItemLongPress,
+  selectable = false,
+  selected = false
 }: NotificationItemProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <TouchableOpacity
       onPress={() => onNotificationItemPress(item)}
-      onLongPress={() => onNotificationItemLongPress(item)}>
+      // onLongPress={() => onNotificationItemLongPress(item)}
+    >
       <View key={item.id} style={listViewStyles.rowItem}>
         {selectable && (
           <View style={styles.itemCircle}>
@@ -55,11 +56,8 @@ const NotificationItem = ({
           </View>
         )}
         <View style={{ flex: 1 }}>
-          <Text style={[styles.title, item.read && styles.read]}>
-            {item.title}
-          </Text>
-          <Text style={[styles.subTitle, item.read && styles.read]}>
-            {item.body}
+          <Text style={[styles.title, item.isRead && styles.read]}>
+            {item.subject}
           </Text>
         </View>
         <View
@@ -85,10 +83,6 @@ const styles = StyleSheet.create({
       padding: paddings.paddingM,
       fontWeight: "bold"
     }
-  },
-  subTitle: {
-    ...TotaraTheme.textSmall,
-    padding: paddings.paddingM
   },
   read: {
     fontWeight: "normal"

@@ -17,12 +17,9 @@
 
 export interface NotificationMessage {
   id: string;
-  title: string;
-  body: string;
-  read: boolean;
-  received: number;
-  action: {
-    title: string;
-    link: string;
-  };
+  subject: string;
+  fullMessage: string;
+  fullMessageFormat: string;
+  isRead: boolean;
+  timeCreated: Date;
 }

@@ -15,7 +15,7 @@
  *
  */
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -26,9 +26,8 @@ import {
   ImageSourcePropType
 } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
-import { NavigationActions, NavigationContext } from "react-navigation";
+import { NavigationContext } from "react-navigation";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
-import { useDispatch, useSelector } from "react-redux";
 
 import { Images } from "@resources/images";
 import { translate } from "@totara/locale";
@@ -38,127 +37,37 @@ import NetworkStatus from "@totara/components/NetworkStatus";
 import { paddings } from "@totara/theme/constants";
 import { NotificationMessage } from "@totara/types";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
-import { RootState } from "@totara/reducers";
 import { TotaraTheme } from "@totara/theme/Theme";
 import NotificationDetails from "@totara/features/notifications/NotificationDetail";
+import { useQuery } from "@apollo/react-hooks";
+import { notificationsQuery, parser } from "@totara/features/notifications/api";
+import { NetworkStatus as NS } from "apollo-client/core/networkStatus";
+import { Loading, LoadingError } from "@totara/components";
 
 const Notifications = () => {
-  const dispatch = useDispatch();
   const navigation = useContext(NavigationContext);
-  const notificationList = useSelector(
-    (state: RootState) => state.notificationReducer.notifications
+  const { error, loading, data, refetch, networkStatus } = useQuery(
+    notificationsQuery
   );
 
-  const [selectable, setSelectable] = useState(false);
-  const [selectedList, setSelectedList] = useState<string[]>([]);
-  const headerTitle =
-    selectable && selectedList.length > 0
-      ? translate("notifications.selected", { count: selectedList.length })
-      : translate("notifications.title");
-
-  useEffect(() => {
-    const onCancelTapListener = navigation.addListener(
-      "onCancelTap",
-      onCancelTap
-    );
-    const onDeleteTapListener = navigation.addListener(
-      "onDeleteTap",
-      onDeleteTap
-    );
-    return () => {
-      onCancelTapListener.remove();
-      onDeleteTapListener.remove();
-    };
-  });
-
-  useEffect(() => {
-    headerDispatch(selectable);
-  }, [selectable]);
-
-  const headerDispatch = (showActions: boolean) => {
-    const setParamsAction = NavigationActions.setParams({
-      params: {
-        showActions: showActions
-      },
-      key: "Notification"
-    });
-    navigation.dispatch(setParamsAction);
-  };
-
-  const onCancelTap = () => {
-    unSelectAll();
-    setSelectable(false);
-  };
-
-  const onDeleteTap = () => {
-    if (selectedList.length === 0) return;
-    dispatch({ type: "DELETE_NOTIFICATION", payload: selectedList });
-    setSelectable(false);
-  };
-
-  const unSelectAll = () => {
-    setSelectedList([]);
-  };
-
-  const onItemLongPress = (item: NotificationMessage) => {
-    if (!selectable) {
-      setSelectable(true);
-    }
-    toggleSelected(item);
-  };
-
   const onItemPress = (item: NotificationMessage) => {
-    if (selectable) {
-      toggleSelected(item);
-      return;
-    }
-
-    markNotificationAsRead(item);
-
-    const mock = {
-      id: 123,
-      title: "Content Marketplaces now avilable in Totara",
-      received: "18 days 13 hours ago",
-      body:
-        "Totara learn now supports content marketplaces, allowing you to browse and import external content into your Totara site.",
-      action: {
-        title: "Setup Content Marketplaces",
-        link: "https://www.google.com"
-      }
-    };
-
-    navigation.navigate("NotificationDetail", mock);
+    navigation.navigate("NotificationDetail", item);
   };
 
-  const markNotificationAsRead = (item: NotificationMessage) => {
-    dispatch({ type: "READ_NOTIFICATION", payload: item.id });
-  };
-
-  const toggleSelected = (item: NotificationMessage) => {
-    const add = !selectedList.find((selected: string) => selected === item.id);
-    if (add) {
-      setSelectedList([...selectedList, item.id]);
-    } else {
-      //REMOVE
-      const newSelectedList = selectedList.filter(
-        (selected) => selected !== item.id
-      );
-      setSelectedList(newSelectedList);
-    }
-  };
-
-  const isSelected = (item: NotificationMessage) => {
-    return selectedList.some((x) => x === item.id);
-  };
+  const notificationList = !loading ? parser(data) : [];
 
   return (
     <View style={TotaraTheme.viewContainer}>
       <View style={headerStyles.navigationHeader}>
-        <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
+        <Text style={TotaraTheme.textH2}>
+          {translate("notifications.title")}
+        </Text>
       </View>
       <NetworkStatus />
       <View style={{ flex: 1 }}>
-        {notificationList.length == 0 && (
+        {loading && <Loading />}
+        {error && <LoadingError onRefreshTap={refetch} />}
+        {!loading && !error && notificationList.length == 0 && (
           <View style={styles.noContent}>
             <Image source={Images.notificationBell as ImageSourcePropType} />
             <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>
@@ -166,8 +75,10 @@ const Notifications = () => {
             </Text>
           </View>
         )}
-        {notificationList.length > 0 && (
+        {!loading && !error && notificationList.length > 0 && (
           <FlatList<NotificationMessage>
+            refreshing={networkStatus === NS.refetch}
+            onRefresh={refetch}
             contentContainerStyle={listViewStyles.contentContainerStyle}
             ItemSeparatorComponent={() => (
               <View style={listViewStyles.itemSeparator} />
@@ -176,11 +87,9 @@ const Notifications = () => {
             keyExtractor={(notificationItem) => notificationItem.id}
             renderItem={({ item }) => (
               <NotificationItem
+                selectable={false}
                 item={item}
-                selectable={selectable}
-                selected={isSelected(item)}
                 onNotificationItemPress={onItemPress}
-                onNotificationItemLongPress={onItemLongPress}
               />
             )}
           />
