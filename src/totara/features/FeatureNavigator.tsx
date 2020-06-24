@@ -18,14 +18,15 @@
 import React, { useContext } from "react";
 import { Image, ImageSourcePropType } from "react-native";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
-import { useSelector } from "react-redux";
 import { NotificationBell } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
-import { RootState } from "@totara/reducers";
 import CurrentLearningStack from "./currentLearning";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
 import ProfileStack from "./profile";
+import { useQuery } from "@apollo/react-hooks";
+import { notificationsQuery, parser } from "@totara/features/notifications/api";
+import { NotificationMessage } from "@totara/types";
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
@@ -91,13 +92,20 @@ const NotificationBellWithCounting = ({
   active: boolean;
   tintColor: string;
 }) => {
-  const notificationList = useSelector(
-    (state: RootState) => state.notificationReducer.notifications
-  );
+  const { loading, error, data } = useQuery(notificationsQuery, {
+    fetchPolicy: "cache-only"
+  });
 
-  const count = notificationList.filter((n) => !n.read).length;
+  const notifications =
+    loading || error ? [] : (parser(data) as NotificationMessage[]);
+
+  const unReadCount = notifications.filter((x) => !x.isRead).length;
   return (
-    <NotificationBell active={active} tintColor={tintColor} counting={count} />
+    <NotificationBell
+      active={active}
+      tintColor={tintColor}
+      counting={unReadCount}
+    />
   );
 };
 

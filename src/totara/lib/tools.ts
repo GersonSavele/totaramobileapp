@@ -1,6 +1,6 @@
 import { Alert, Dimensions } from "react-native";
 import { translate } from "@totara/locale";
-import moment, { now } from "moment";
+import moment from "moment";
 
 type ShowMessageParams = {
   title?: string;
@@ -56,15 +56,16 @@ const humanReadablePercentage = ({ writtenBytes, sizeInBytes }) => {
 
 //RFC4122 version 4 compliant
 const uuid = () => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    var r = (Math.random() * 16) | 0,
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    let r = (Math.random() * 16) | 0,
       v = c == "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 };
 
-const timeAgo = (from: number) => {
-  return moment.unix(from).from(now());
+const timeAgo = (fromUnixTime: number) => {
+  moment.relativeTimeThreshold("h", 24);
+  return moment.unix(fromUnixTime).fromNow();
 };
 
 const deviceScreen = {

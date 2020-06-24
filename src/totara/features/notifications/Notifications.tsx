@@ -47,7 +47,10 @@ import { Loading, LoadingError } from "@totara/components";
 const Notifications = () => {
   const navigation = useContext(NavigationContext);
   const { error, loading, data, refetch, networkStatus } = useQuery(
-    notificationsQuery
+    notificationsQuery,
+    {
+      fetchPolicy: "cache-and-network"
+    }
   );
 
   const onItemPress = (item: NotificationMessage) => {
