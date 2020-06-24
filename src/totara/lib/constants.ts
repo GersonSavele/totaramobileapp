@@ -121,6 +121,7 @@ const scormZipPackagePath = DOWNLOAD_FOLDER;
 const offlineScormServerRoot = `${scormZipPackagePath}/${config.rootOfflineScormPlayer}`;
 
 enum scormLessonStatus {
+  incomplete = "incomplete",
   passed = "passed",
   completed = "completed",
   failed = "failed"

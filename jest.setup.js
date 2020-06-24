@@ -51,3 +51,8 @@ jest.mock("react-native-device-info", () => {
     getBuildNumber: jest.fn()
   };
 });
+
+jest.mock("@apollo/react-hooks", () => ({
+  readQuery: jest.fn(),
+  writeQuery: jest.fn()
+}));

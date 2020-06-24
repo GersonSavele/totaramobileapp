@@ -14,18 +14,21 @@
  */
 
 import moment from "moment";
-import { AttemptGrade, Grade, ScormBundle, Scorm } from "@totara/types/Scorm";
-import { translate } from "@totara/locale";
 import {
-  calculatedAttemptsGrade,
-  getGradeForAttempt
-} from "@totara/activities/scorm/offline/offlineScormController";
+  AttemptGrade,
+  Grade,
+  ScormBundle,
+  Scorm,
+  ScormActivityResult,
+  GradeForAttemptProps
+} from "@totara/types/Scorm";
+import { translate } from "@totara/locale";
 import {
   SECONDS_FORMAT,
   scormSummarySection,
   scormActivityType,
   FILE_EXTENSION,
-  completionStatus
+  scormLessonStatus
 } from "@totara/lib/constants";
 import { Log } from "@totara/lib";
 import { showMessage } from "@totara/lib/tools";
@@ -278,43 +281,24 @@ const onTapViewAllAttempts = ({
     showMessage({ text: translate("general.error_unknown") });
   }
 };
-
-const removeScormPackageData = (scormId: string, client: any) => {
-  try {
-    const { scormBundles } = client.readQuery({
-      query: scormActivitiesRecordsQuery
-    });
-    let newData = { ...scormBundles };
-    if (newData && newData[scormId] && newData[scormId].scormPackage) {
-      delete newData[scormId].scormPackage;
-      if (
-        newData &&
-        newData[scormId].lastsynced &&
-        Object.keys(newData[scormId]).length === 1
-      ) {
-        delete newData[scormId];
-      }
-      if (!(newData && Object.keys(newData))) {
-        newData = undefined;
-      }
-      saveInTheCache({
-        client,
-        scormBundles: newData
-      });
-      return undefined;
-    }
-  } catch (e) {
-    console.log("There is no cached data");
-    return undefined;
-  }
+type SaveScormActivityProps = {
+  data: any;
+  client: any;
+  maxGrade: number;
+  gradeMethod: Grade;
+  onGetGradeForAttempt?: (data: GradeForAttemptProps) => number;
+  onRetrieveAllData?: (data: CacheProps) => {};
+  onSaveInTheCache?: (data: CacheProps) => void;
 };
-
-const saveScormActivityData = (
-  data: any,
-  client: any,
-  maxGrade: number,
-  gradeMethod: Grade
-) => {
+const saveScormActivityData = ({
+  data,
+  client,
+  maxGrade,
+  gradeMethod,
+  onGetGradeForAttempt = getGradeForAttempt,
+  onRetrieveAllData = retrieveAllData,
+  onSaveInTheCache = saveInTheCache
+}: SaveScormActivityProps) => {
   const scormId = data.scormid;
   const attempt = data.attempt;
   const scoId = data.scoid;
@@ -322,24 +306,18 @@ const saveScormActivityData = (
   const commitData = data.commit;
 
   const status = get(data.cmi, "core.lesson_status", undefined);
-  if (status && status !== completionStatus.incomplete) {
-    let newData = {};
-    try {
-      const { scormBundles } = client.readQuery({
-        query: scormActivitiesRecordsQuery
-      });
-      newData = { ...scormBundles };
-    } catch (e) {
-      console.log("There is no any data in cache");
-    }
+  if (status && status !== scormLessonStatus.incomplete) {
+    const scormBundles = onRetrieveAllData({ client });
+    let newData = { ...scormBundles };
+
     setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
 
     const reportCmiList = get(newData, `[${scormId}].cmi`);
-    const attemptGrade = getGradeForAttempt(
-      reportCmiList,
+    const attemptGrade = onGetGradeForAttempt({
+      attemptCmi: reportCmiList,
       maxGrade,
       gradeMethod
-    );
+    });
     const newAttemptGrade = { gradereported: attemptGrade, attempt: attempt };
 
     const existingOfflineActivityData = get(
@@ -368,7 +346,7 @@ const saveScormActivityData = (
       commitData,
       Object
     );
-    saveInTheCache({
+    onSaveInTheCache({
       client,
       scormBundles: newData
     });
@@ -380,49 +358,31 @@ const setCompletedScormAttempt = (
   attempt: number,
   client: any
 ) => {
-  let newData = {};
-  try {
-    const { scormBundles } = client.readQuery({
-      query: scormActivitiesRecordsQuery
-    });
-    newData = { ...scormBundles };
+  const scormBundles = retrieveAllData({ client });
+  let newData = { ...scormBundles };
 
-    const newCommitsData = get(newData, `[${scormId}].completed_attempts`, []);
-    if (!newCommitsData.some((x) => x === attempt)) {
-      newCommitsData.push(attempt);
-      setWith(
-        newData,
-        `completed_attempts.[${scormId}]`,
-        newCommitsData,
-        Object
-      );
-      saveInTheCache({
-        client,
-        scormBundles: newData
-      });
-    }
-  } catch (e) {
-    Log.error("Something wrong cannot find offline data.", e);
+  const newCommitsData = get(newData, `[${scormId}].completed_attempts`, []);
+  if (!newCommitsData.some((x) => x === attempt)) {
+    newCommitsData.push(attempt);
+    setWith(newData, `completed_attempts.[${scormId}]`, newCommitsData, Object);
+    saveInTheCache({
+      client,
+      scormBundles: newData
+    });
   }
 };
 
 const getOfflineLastActivityResult = (scormId: string, client: any) => {
-  try {
-    const { scormBundles } = client.readQuery({
-      query: scormActivitiesRecordsQuery
-    });
-    const scormOfflineActivityReport = get(
-      scormBundles,
-      `[${scormId}].offlineActivity.attempts`,
-      undefined
-    );
-    if (scormOfflineActivityReport && scormOfflineActivityReport.length > 0) {
-      return scormOfflineActivityReport[scormOfflineActivityReport.length - 1];
-    }
-    return undefined;
-  } catch (e) {
-    return undefined;
+  const scormBundles = retrieveAllData({ client });
+  const scormOfflineActivityReport = get(
+    scormBundles,
+    `[${scormId}].offlineActivity.attempts`,
+    undefined
+  );
+  if (scormOfflineActivityReport && scormOfflineActivityReport.length > 0) {
+    return scormOfflineActivityReport[scormOfflineActivityReport.length - 1];
   }
+  return undefined;
 };
 
 /**
@@ -548,17 +508,16 @@ const clearSyncedScormCommit = ({
   return true;
 };
 
+type CacheProps = {
+  client: any;
+  scormBundles?: { [key: string]: ScormBundle };
+};
+
 /**
  * This saves the map of scorm bundle with the new scormBunble in the cache
  * @param param0
  */
-const saveInTheCache = ({
-  client,
-  scormBundles
-}: {
-  client: any;
-  scormBundles: { [key: string]: ScormBundle };
-}) => {
+const saveInTheCache = ({ client, scormBundles }: CacheProps) => {
   try {
     client.writeQuery({
       query: scormActivitiesRecordsQuery,
@@ -570,14 +529,119 @@ const saveInTheCache = ({
     console.warn("Scorm cache data saving error: ", e);
   }
 };
+const calculatedAttemptsGrade = (
+  attemptGrade: AttemptGrade,
+  gradeMethod: Grade,
+  maxGrade: number,
+  onlineCalculatedGrade?: string,
+  onlineAttempts: ScormActivityResult[] = [],
+  offlineAttempts: ScormActivityResult[] = []
+) => {
+  if (
+    offlineAttempts &&
+    onlineAttempts &&
+    offlineAttempts.length > 0 &&
+    attemptGrade !== null &&
+    gradeMethod !== null &&
+    maxGrade !== null
+  ) {
+    const allAttempts = [...onlineAttempts, ...offlineAttempts];
+    const caculatedGradeReport = getAttemptsGrade(
+      allAttempts,
+      attemptGrade,
+      maxGrade
+    );
+    return gradeMethod == Grade.objective
+      ? caculatedGradeReport.toString()
+      : `${caculatedGradeReport}%`;
+  } else {
+    return onlineCalculatedGrade;
+  }
+};
 
+const getAttemptsGrade = (
+  attemptsReport: ScormActivityResult[],
+  attemptGrade: AttemptGrade,
+  maxGrade: number
+): number => {
+  if (!attemptsReport || attemptsReport.length === 0) {
+    return 0;
+  }
+  switch (attemptGrade) {
+    case AttemptGrade.highest: {
+      const highestAttempt = attemptsReport.reduce(
+        (result: any, highestResult: any) => {
+          if (result && result.gradereported > highestResult.gradereported) {
+            return result;
+          }
+          return highestResult;
+        },
+        undefined
+      );
+      return get(highestAttempt, "gradereported", 0);
+    }
+    case AttemptGrade.average: {
+      const sumofscores = attemptsReport.reduce(
+        (scores: number, attemptResult: any) =>
+          scores + attemptResult.gradereported,
+        0
+      );
+      const rawSum = sumofscores * (maxGrade / 100);
+      const avgRawSum = Math.round(rawSum / attemptsReport.length);
+      return avgRawSum * (100 / maxGrade);
+    }
+    case AttemptGrade.first:
+      return attemptsReport[0].gradereported;
+    case AttemptGrade.last:
+      return attemptsReport[attemptsReport.length - 1].gradereported;
+  }
+};
+
+const getGradeForAttempt = ({
+  attemptCmi,
+  maxGrade,
+  gradeMethod
+}: GradeForAttemptProps) => {
+  let sumGrade = 0;
+  let highestGrade = 0;
+  let completedScos = 0;
+  let averageGrade = 0;
+  if (Object.keys(attemptCmi) && Object.keys(attemptCmi).length > 0) {
+    const numberOfScors = Object.keys(attemptCmi).length;
+    for (let [, cmi] of Object.entries(attemptCmi)) {
+      // Check whether SCORM-1.2 can be "score.raw" and "core.score.raw"
+      // Versions of scorm have different "score" paths
+      const rawScore = parseInt(
+        get(cmi, "core.score.raw", undefined) || get(cmi, "score.raw", 0)
+      );
+      const lessonStatus = get(cmi, "core.lesson_status", "").toLowerCase();
+      if (
+        lessonStatus === scormLessonStatus.passed ||
+        lessonStatus === scormLessonStatus.completed
+      ) {
+        completedScos = completedScos + 1;
+      }
+      sumGrade = sumGrade + rawScore;
+      if (highestGrade < rawScore) {
+        highestGrade = rawScore;
+      }
+    }
+    averageGrade = sumGrade / numberOfScors;
+  }
+  const getGrades = () => ({
+    [Grade.objective]: completedScos,
+    [Grade.highest]: Math.round(highestGrade * (100 / maxGrade)),
+    [Grade.average]: Math.round(averageGrade * (100 / maxGrade)),
+    [Grade.sum]: Math.round(sumGrade * (100 / maxGrade))
+  });
+  return getGrades()[gradeMethod];
+};
 export {
   formatAttempts,
   getDataForScormSummary,
   onTapNewAttempt,
   onTapContinueLastAttempt,
   onTapViewAllAttempts,
-  removeScormPackageData,
   retrieveAllData,
   saveScormActivityData,
   getOfflineLastActivityResult,
@@ -588,5 +652,8 @@ export {
   setCompletedScormAttempt,
   getOfflineActivity,
   getOfflineScormCommits,
-  clearSyncedScormCommit
+  clearSyncedScormCommit,
+  calculatedAttemptsGrade,
+  getAttemptsGrade,
+  getGradeForAttempt
 };

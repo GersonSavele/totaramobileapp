@@ -179,12 +179,12 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
       messageData.tmsevent === "SCORMCOMMIT" &&
       messageData.result
     ) {
-      saveScormActivityData(
-        messageData.result,
+      saveScormActivityData({
+        data: messageData.result,
         client,
-        scorm.maxgrade,
-        scorm.grademethod as Grade
-      );
+        maxGrade: scorm.maxgrade,
+        gradeMethod: scorm.grademethod as Grade
+      });
     }
   };
 

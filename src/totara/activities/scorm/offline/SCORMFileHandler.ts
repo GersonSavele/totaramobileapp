@@ -24,6 +24,7 @@ import { unzip } from "react-native-zip-archive";
 import { Platform } from "react-native";
 import { offlineScormServerRoot } from "@totara/lib/constants";
 
+/*
 const unzipScormPackageToServer = (
   packageName: string,
   packageSource: string
@@ -37,6 +38,7 @@ const unzipScormPackageToServer = (
     }
   });
 };
+*/
 
 const getPackageContent = () =>
   Platform.OS === "android"
@@ -107,8 +109,4 @@ const isScormPlayerInitialized = () => {
 const SCORMPlayerPackagePath =
   Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
 
-export {
-  initializeScormWebplayer,
-  unzipScormPackageToServer,
-  isScormPlayerInitialized
-};
+export { initializeScormWebplayer, isScormPlayerInitialized };

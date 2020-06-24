@@ -64,7 +64,7 @@ const getGradeForAttempt = (
   });
   return getGrades()[gradeMethod];
 };
-
+/*
 const getAttemptsGrade = (
   attemptsReport: ScormActivityResult[],
   attemptGrade: AttemptGrade,
@@ -132,43 +132,9 @@ const calculatedAttemptsGrade = (
     return onlineCalculatedGrade;
   }
 };
+*/
 
-const getOfflineScormCommits = () => {
-  return getAllCommits().then((storedData) => {
-    let formattedUnsyncedData = undefined;
-    if (storedData) {
-      formattedUnsyncedData = [];
-      for (let commitScormId in storedData) {
-        const scormCommits = storedData[commitScormId];
-        const orededAttemptKeys = Object.keys(scormCommits).sort();
-        for (let index = 0; index < orededAttemptKeys.length; index++) {
-          const commitAttempt = orededAttemptKeys[index];
-          if (scormCommits[commitAttempt]) {
-            const commitTracks = values(scormCommits[commitAttempt]).filter(
-              (value) => value
-            );
-            const commit = {
-              scormId: commitScormId,
-              attempt: parseInt(commitAttempt),
-              tracks: commitTracks
-            };
-            formattedUnsyncedData.push(commit);
-          }
-        }
-      }
-    }
-    return formattedUnsyncedData;
-  });
-};
-
-const clearSyncedScormCommit = (scormId: string, attempt: number) => {
-  return clearCommit(scormId, attempt);
-};
-
-export {
-  calculatedAttemptsGrade,
-  getOfflineScormCommits,
-  clearSyncedScormCommit,
-  getGradeForAttempt,
-  getAttemptsGrade
-};
+export // calculatedAttemptsGrade,
+// getGradeForAttempt
+// getAttemptsGrade
+{};

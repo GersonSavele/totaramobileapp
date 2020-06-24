@@ -42,7 +42,7 @@ const setScormPackageData = (scormId: string, data: any) => {
     return AsyncStorage.setItem(KeyScormPackageData, JSON.stringify(newData));
   });
 };
-
+/* ----- need to remove reference only -----------
 const getScormPackageData = (scormId: string) => {
   return AsyncStorage.getItem(KeyScormPackageData).then((storedData) => {
     if (storedData && JSON.parse(storedData)) {
@@ -55,7 +55,7 @@ const getScormPackageData = (scormId: string) => {
   });
 };
 
-/* ----- need to remove reference only -----------
+
 const removeScormPackageData = (scormId: string) => {
   return AsyncStorage.getItem(KeyScormPackageData)
     .then((storageData) => {
@@ -84,7 +84,7 @@ const removeScormPackageData = (scormId: string) => {
       }
     });
 };
-*/
+
 
 const getScormData = (scormId: string) => {
   return AsyncStorage.multiGet([KeyScormPackageData, KeyScormCMIData]).then(
@@ -396,11 +396,11 @@ const getLastAttemptScore = (scormId: string) => {
 };
 
 export {
-  getScormPackageData,
-  setScormPackageData,
-  getScormData,
+  // getScormPackageData,
+  // setScormPackageData,
+  // getScormData,
   getScormAttemptData,
   getAllCommits,
-  clearCommit,
-  getLastAttemptScore
+  clearCommit
+  // getLastAttemptScore
 };
