@@ -15,16 +15,14 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import ScormFeedbackModal from "./components/ScormFeedbackModal";
-import { Grade } from "@totara/types/Scorm";
 import { withNavigation } from "react-navigation";
 import { NavigationStackProp } from "react-navigation-stack";
+import ScormFeedbackModal from "./components/ScormFeedbackModal";
+import { Grade } from "@totara/types/Scorm";
 import { NAVIGATION_SCORM_ROOT } from "@totara/lib/constants";
 
 type FeedbackParams = {
   id: string;
-  onClose: () => void;
-  onPrimary: () => void;
   attempt: number;
   isOnline: boolean;
   gradeMethod: Grade;
@@ -70,7 +68,6 @@ const ScormFeedback = ({ navigation }: FeedbackProps) => {
   //       score={"10%"}
   //       method={"0"}
   //       onClose={onClose}
-  //       onPrimary={onPrimary}
   //     />
   //   );
   // } else {
@@ -89,7 +86,6 @@ const ScormFeedback = ({ navigation }: FeedbackProps) => {
       score={score}
       completionScoreRequired={completionScoreRequired}
       onClose={goToSummary}
-      onPrimary={goToSummary}
     />
   );
   // } else {
@@ -98,7 +94,6 @@ const ScormFeedback = ({ navigation }: FeedbackProps) => {
   //       gradeMethod={0}
   //       score={10}
   //       onClose={goToSummary}
-  //       onPrimary={goToSummary}
   //     />
   //   );
   // }

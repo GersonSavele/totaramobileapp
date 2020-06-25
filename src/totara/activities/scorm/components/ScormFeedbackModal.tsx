@@ -18,7 +18,7 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { PrimaryButton, TertiaryButton } from "@totara/components";
+import { PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { margins } from "@totara/theme/constants";
 import { scormFeedbackStyles } from "@totara/theme/scorm";
@@ -30,15 +30,13 @@ type SCORMFeedbackProps = {
   gradeMethod: Grade;
   completionScoreRequired?: number;
   onClose: () => void;
-  onPrimary: () => void;
 };
 
 const ScormFeedbackModal = ({
   score,
   gradeMethod,
   completionScoreRequired,
-  onClose,
-  onPrimary
+  onClose
 }: SCORMFeedbackProps) => {
   return (
     <View style={scormFeedbackStyles.transparentViewStyle}>
@@ -88,10 +86,6 @@ const ScormFeedbackModal = ({
                 onPress={onClose}
                 text={translate("scorm.feedback.back")}
                 style={{ marginBottom: margins.marginL }}
-              />
-              <TertiaryButton
-                onPress={onPrimary}
-                text={translate("scorm.feedback.attempt_again")}
               />
             </View>
           </View>

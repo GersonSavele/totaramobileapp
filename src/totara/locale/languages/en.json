@@ -48,8 +48,6 @@
     "description": "Something went wrong",
     "action_primary": "OK"
   },
-
-
   "no_internet_alert": {
     "title": "You are offline",
     "message": "To continue, you'll need to go online",
@@ -171,7 +169,6 @@
       "awesome": "Awesome!",
       "sorry": "Sorry!",
       "back": "Go back",
-      "attempt_again": "Attempt again",
       "action_info": "Would you like to go back or do you want to try again?"
     },
     "attempts": {
