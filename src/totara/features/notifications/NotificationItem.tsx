@@ -29,26 +29,30 @@ type NotificationItemProps = {
   item: NotificationMessage;
   selectable?: boolean;
   selected?: boolean;
-  onNotificationItemPress(item: NotificationMessage): void;
-  //onNotificationItemLongPress(item: NotificationMessage): void;
+  onNotificationItemPress: (item: NotificationMessage) => void;
+  onNotificationItemLongPress?: (item: NotificationMessage) => void;
 };
 
 const NotificationItem = ({
   item,
   onNotificationItemPress,
-  //onNotificationItemLongPress,
-  selectable = false,
+  onNotificationItemLongPress = () => null,
+  selectable = true,
   selected = false
 }: NotificationItemProps) => {
   const [theme] = useContext(ThemeContext);
   return (
     <TouchableOpacity
       onPress={() => onNotificationItemPress(item)}
-      // onLongPress={() => onNotificationItemLongPress(item)}
-    >
+      onLongPress={() => onNotificationItemLongPress(item)}>
       <View key={item.id} style={listViewStyles.rowItem}>
         {selectable && (
-          <View style={styles.itemCircle}>
+          <View
+            testID={"test_checkbox"}
+            style={[
+              styles.itemCircle,
+              { display: !selectable ? "none" : "flex" }
+            ]}>
             <FontAwesomeIcon
               size={iconSizes.sizeM}
               icon={"check-circle"}
@@ -57,10 +61,14 @@ const NotificationItem = ({
           </View>
         )}
         <View style={{ flex: 1 }}>
-          <Text style={[styles.title, item.isRead && styles.read]}>
+          <Text
+            testID={"test_title"}
+            style={[styles.title, item.isRead && styles.read]}>
             {item.subject}
           </Text>
-          <Text style={styles.timeCreated}>{timeAgo(item.timeCreated)}</Text>
+          <Text testID={"test_timeCreated"} style={styles.timeCreated}>
+            {timeAgo(item.timeCreated)}
+          </Text>
         </View>
         <View
           style={{
