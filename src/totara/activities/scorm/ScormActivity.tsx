@@ -105,7 +105,7 @@ const ScormActivity = (props: ScormActivityProps) => {
     } else {
       const offlineAttempts = getOfflineActivity({
         client: apolloClient,
-        id: id
+        scormId: id
       });
       setScormBundle({
         ...scormBundle,
@@ -162,7 +162,7 @@ const ScormActivity = (props: ScormActivityProps) => {
 
       const offlineAttempts = getOfflineActivity({
         client: apolloClient,
-        id: id
+        scormId: id
       });
       setScormBundle({
         ...scormBundle,

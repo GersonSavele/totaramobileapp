@@ -19,13 +19,11 @@ import {
   Grade,
   ScormBundle,
   Scorm,
-  ScormActivityResult,
-  GradeForAttemptProps
+  ScormActivityResult
 } from "@totara/types/Scorm";
 import { translate } from "@totara/locale";
 import {
   SECONDS_FORMAT,
-  scormSummarySection,
   scormActivityType,
   FILE_EXTENSION,
   scormLessonStatus
@@ -186,53 +184,10 @@ const getDataForScormSummary = (
   return data;
 };
 
-type OnTapProps = {
-  scormBundle: ScormBundle | undefined;
-  client: any;
-  apiKey?: string;
-};
-
 type OnTapAttemptProps = {
   callback: (action: scormActivityType, bundle: ScormBundle, data: any) => void;
   scormBundle: ScormBundle | undefined;
   isUserOnline: boolean;
-};
-
-const onTapNewAttempt = ({
-  scormBundle,
-  isUserOnline,
-  callback
-}: OnTapAttemptProps) => () => {
-  if (scormBundle && scormBundle.scorm) {
-    const currentAttempt = scormBundle.scorm.attemptsCurrent
-      ? scormBundle.scorm.attemptsCurrent
-      : 0;
-    if (!isUserOnline) {
-      let newAttempt = currentAttempt;
-      if (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts) {
-        newAttempt = newAttempt + scormBundle.offlineActivity.attempts.length;
-      }
-      newAttempt = newAttempt + 1;
-      // this is setting the state of the parent component with those 3 parameters
-      callback(scormActivityType.offline, scormBundle, {
-        attempt: newAttempt
-      });
-    } else {
-      if (scormBundle.scorm && scormBundle.scorm.launchUrl) {
-        // this is setting the state of the parent component with those 3 parameters
-        callback(scormActivityType.online, scormBundle, {
-          url: scormBundle.scorm.launchUrl,
-          attempt: currentAttempt + 1
-        });
-      } else {
-        Log.warn("Cannot find new attempt url.", scormBundle.scorm.launchUrl);
-        showMessage({ text: translate("general.error_unknown") });
-      }
-    }
-  } else {
-    Log.warn("Cannot find scorm data.", scormBundle);
-    showMessage({ text: translate("general.error_unknown") });
-  }
 };
 
 const onTapContinueLastAttempt = ({
@@ -261,26 +216,6 @@ const onTapContinueLastAttempt = ({
   }
 };
 
-type OnTapViewAttemptsProps = {
-  callback: React.Dispatch<React.SetStateAction<scormSummarySection>>;
-  scormBundle: ScormBundle | undefined;
-};
-const onTapViewAllAttempts = ({
-  scormBundle,
-  callback
-}: OnTapViewAttemptsProps) => () => {
-  if (
-    scormBundle &&
-    scormBundle.scorm &&
-    (scormBundle.scorm.attempts ||
-      (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts))
-  ) {
-    callback(scormSummarySection.attempts);
-  } else {
-    Log.warn("Cannot find scorm data", scormBundle);
-    showMessage({ text: translate("general.error_unknown") });
-  }
-};
 type SaveScormActivityProps = {
   data: any;
   client: any;
@@ -352,28 +287,45 @@ const saveScormActivityData = ({
     });
   }
 };
+type CompletedScormAttemptProps = {
+  scormId: string;
+  attempt: number;
+  client: any;
+  onRetrieveAllData?: (data: CacheProps) => {};
+  onSaveInTheCache?: (data: CacheProps) => void;
+};
 
-const setCompletedScormAttempt = (
-  scormId: string,
-  attempt: number,
-  client: any
-) => {
-  const scormBundles = retrieveAllData({ client });
+const setCompletedScormAttempt = ({
+  scormId,
+  attempt,
+  client,
+  onRetrieveAllData = retrieveAllData,
+  onSaveInTheCache = saveInTheCache
+}: CompletedScormAttemptProps) => {
+  const scormBundles = onRetrieveAllData({ client });
   let newData = { ...scormBundles };
 
-  const newCommitsData = get(newData, `[${scormId}].completed_attempts`, []);
+  const newCommitsData = get(newData, `completed_attempts.[${scormId}]`, []);
   if (!newCommitsData.some((x) => x === attempt)) {
     newCommitsData.push(attempt);
     setWith(newData, `completed_attempts.[${scormId}]`, newCommitsData, Object);
-    saveInTheCache({
+    onSaveInTheCache({
       client,
       scormBundles: newData
     });
   }
 };
-
-const getOfflineLastActivityResult = (scormId: string, client: any) => {
-  const scormBundles = retrieveAllData({ client });
+type OfflineActivityProps = {
+  client: any;
+  scormId: string;
+  onRetrieveAllData?: (data: CacheProps) => {};
+};
+const getOfflineLastActivityResult = ({
+  scormId,
+  client,
+  onRetrieveAllData = retrieveAllData
+}: OfflineActivityProps) => {
+  const scormBundles = onRetrieveAllData({ client });
   const scormOfflineActivityReport = get(
     scormBundles,
     `[${scormId}].offlineActivity.attempts`,
@@ -382,7 +334,23 @@ const getOfflineLastActivityResult = (scormId: string, client: any) => {
   if (scormOfflineActivityReport && scormOfflineActivityReport.length > 0) {
     return scormOfflineActivityReport[scormOfflineActivityReport.length - 1];
   }
-  return undefined;
+};
+
+const getOfflineActivity = ({
+  client,
+  scormId,
+  onRetrieveAllData = retrieveAllData
+}: OfflineActivityProps) => {
+  const cachedData = onRetrieveAllData({ client });
+
+  const offlineAttempts = get(
+    cachedData,
+    `[${scormId}].offlineActivity`,
+    undefined
+  );
+  if (offlineAttempts && Object.keys(offlineAttempts).length) {
+    return offlineAttempts;
+  }
 };
 
 /**
@@ -400,16 +368,6 @@ const shouldAllowAttempt = ({
   (!maxAttempts || maxAttempts >= totalAttempt) &&
   (actionPrimary || actionSecondary);
 
-const getOfflineActivity = ({ client, id }: { client: any; id: string }) => {
-  const cachedData = retrieveAllData({ client });
-
-  const offlineAttempts = get(cachedData, `[${id}].offlineActivity`, undefined);
-  if (offlineAttempts && Object.keys(offlineAttempts).length) {
-    return offlineAttempts;
-  }
-  return undefined;
-};
-
 const getOfflineScormCommits = ({ client }: { client: any }) => {
   const allOfflineData = retrieveAllData({ client });
   const completedScormAttempts = get(
@@ -417,9 +375,9 @@ const getOfflineScormCommits = ({ client }: { client: any }) => {
     `completed_attempts`,
     undefined
   );
-  let formattedUnsyncedData = undefined;
+
+  const formattedUnsyncedData: [any?] = [];
   if (completedScormAttempts) {
-    formattedUnsyncedData = [];
     const scormIs = Object.keys(completedScormAttempts);
     for (let keyIndex = 0; keyIndex < scormIs.length; keyIndex++) {
       const scormId = scormIs[keyIndex];
@@ -449,20 +407,27 @@ const getOfflineScormCommits = ({ client }: { client: any }) => {
         }
       }
     }
+    if (formattedUnsyncedData.length > 0) {
+      return formattedUnsyncedData;
+    }
   }
-  return formattedUnsyncedData;
+  return;
 };
-
-const clearSyncedScormCommit = ({
-  client,
-  scormId,
-  attempt
-}: {
+type CleanSyncScormCommitProps = {
   client: any;
   scormId: string;
   attempt: number;
-}) => {
-  let allOfflineData = retrieveAllData({ client });
+  onRetrieveAllData?: (data: CacheProps) => {};
+  onSaveInTheCache?: (data: CacheProps) => void;
+};
+const clearSyncedScormCommit = ({
+  client,
+  scormId,
+  attempt,
+  onRetrieveAllData = retrieveAllData,
+  onSaveInTheCache = saveInTheCache
+}: CleanSyncScormCommitProps) => {
+  let allOfflineData = onRetrieveAllData({ client });
 
   if (allOfflineData && !isEmpty(allOfflineData)) {
     const completedScormAttempts = get(
@@ -471,9 +436,11 @@ const clearSyncedScormCommit = ({
       undefined
     );
     if (completedScormAttempts) {
-      remove(completedScormAttempts, (num) => num === attempt);
-      if (completedScormAttempts) {
-        omit(allOfflineData, [`completed_attempts.[${scormId}]`]);
+      remove(completedScormAttempts, (num) => num == attempt);
+      if (!completedScormAttempts) {
+        allOfflineData = omit(allOfflineData, [
+          `completed_attempts.[${scormId}]`
+        ]);
       } else {
         setWith(
           allOfflineData,
@@ -483,7 +450,7 @@ const clearSyncedScormCommit = ({
         );
       }
     }
-    omit(allOfflineData, [
+    allOfflineData = omit(allOfflineData, [
       `[${scormId}].commits[${attempt}]`,
       `[${scormId}].cmi[${attempt}]`
     ]);
@@ -500,9 +467,9 @@ const clearSyncedScormCommit = ({
       existingOfflineActivityData,
       Object
     );
-    saveInTheCache({
+    onSaveInTheCache({
       client,
-      scormBundles: existingOfflineActivityData
+      scormBundles: allOfflineData
     });
   }
   return true;
@@ -596,7 +563,11 @@ const getAttemptsGrade = (
       return attemptsReport[attemptsReport.length - 1].gradereported;
   }
 };
-
+type GradeForAttemptProps = {
+  attemptCmi: any;
+  maxGrade: number;
+  gradeMethod: Grade;
+};
 const getGradeForAttempt = ({
   attemptCmi,
   maxGrade,
@@ -636,12 +607,33 @@ const getGradeForAttempt = ({
   });
   return getGrades()[gradeMethod];
 };
+
+type ScormAttemptDataProp = {
+  scormId: string;
+  attempt: number;
+  client: any;
+  onRetrieveAllData?: (data: CacheProps) => {};
+};
+// TODO - Need to review
+
+const getScormAttemptData = ({
+  client,
+  scormId,
+  attempt,
+  onRetrieveAllData = retrieveAllData
+}: ScormAttemptDataProp) => {
+  const cachedData = onRetrieveAllData({ client });
+
+  const attemptCmi = get(cachedData, `[${scormId}].cmi[${attempt}]`, undefined);
+  if (attemptCmi && Object.keys(attemptCmi).length) {
+    return attemptCmi;
+  }
+};
+
 export {
   formatAttempts,
   getDataForScormSummary,
-  onTapNewAttempt,
   onTapContinueLastAttempt,
-  onTapViewAllAttempts,
   retrieveAllData,
   saveScormActivityData,
   getOfflineLastActivityResult,
@@ -655,5 +647,7 @@ export {
   clearSyncedScormCommit,
   calculatedAttemptsGrade,
   getAttemptsGrade,
-  getGradeForAttempt
+  getGradeForAttempt,
+  saveInTheCache,
+  getScormAttemptData
 };

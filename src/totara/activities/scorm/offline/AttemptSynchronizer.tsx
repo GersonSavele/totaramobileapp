@@ -60,7 +60,6 @@ const AttemptSynchronizer = () => {
       }
     }
   }, [unSyncData, netInfo]);
-
   const syncScormRecord = (syncData: SyncData) => {
     return syncAttemptForScorm(syncData.scormId, syncData.tracks)
       .then((isSynced) => {

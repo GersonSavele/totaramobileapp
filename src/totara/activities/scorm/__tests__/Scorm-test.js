@@ -18,13 +18,21 @@ import {
   getDataForScormSummary,
   getAttemptsGrade,
   getGradeForAttempt,
-  calculatedAttemptsGrade
+  calculatedAttemptsGrade,
+  setCompletedScormAttempt,
+  clearSyncedScormCommit,
+  saveInTheCache,
+  retrieveAllData,
+  getOfflineLastActivityResult,
+  getOfflineActivity
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
+import { useApolloClient } from "@apollo/react-hooks";
+import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 
 describe("getDataForScormSummary", () => {
-  it("return correct object for valid `scormBundle` and default values for undefined ", () => {
+  it("return correct object for valid `scormBundle` and default values for undefined .", () => {
     const scormBundle = eval({
       scorm: {
         id: "8",
@@ -159,9 +167,8 @@ describe("getDataForScormSummary", () => {
 });
 
 describe("saveScormActivityData", () => {
-  it("should call `saveInTheCache` for `completed` attempt with new formatted data, if there is no any existing cache", () => {
-    const client = require("@apollo/react-hooks");
-
+  it("should call `saveInTheCache` for `completed` attempt with new formatted data, if there is no any existing cache.", () => {
+    const client = useApolloClient();
     const completedCommitData = {
       scormid: "18",
       attempt: "16",
@@ -314,8 +321,8 @@ describe("saveScormActivityData", () => {
       scormBundles: expectedResult
     });
   });
-  it("should call `saveInTheCache` with updated existing cache for `completed` attempt", () => {
-    const client = require("@apollo/react-hooks");
+  it("should call `saveInTheCache` with updated existing cache for `completed` attempt.", () => {
+    const client = useApolloClient();
 
     const completedCommitData = {
       scormid: "18",
@@ -491,8 +498,8 @@ describe("saveScormActivityData", () => {
       scormBundles: expectedResult
     });
   });
-  it("should NOT proceed saving, if it is incomplete attempt", () => {
-    const client = require("@apollo/react-hooks");
+  it("should NOT proceed saving, if it is incomplete attempt.", () => {
+    const client = useApolloClient();
 
     const inCompleteCommitData = {
       scormid: "18",
@@ -624,7 +631,7 @@ describe("saveScormActivityData", () => {
 });
 
 describe("getGradeForAttempt", () => {
-  it("return correct values for complete `attemptcmi`", () => {
+  it("return correct values for complete `attemptcmi`.", () => {
     const attemptCmi = eval({
       id1: {
         core: {
@@ -651,13 +658,37 @@ describe("getGradeForAttempt", () => {
         }
       }
     });
-    expect(getGradeForAttempt(attemptCmi, 10, Grade.objective)).toEqual(2);
-    expect(getGradeForAttempt(attemptCmi, 10, Grade.highest)).toEqual(80);
-    expect(getGradeForAttempt(attemptCmi, 10, Grade.average)).toEqual(47);
-    expect(getGradeForAttempt(attemptCmi, 10, Grade.sum)).toEqual(140);
+    expect(
+      getGradeForAttempt({
+        attemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.objective
+      })
+    ).toEqual(2);
+    expect(
+      getGradeForAttempt({
+        attemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.highest
+      })
+    ).toEqual(80);
+    expect(
+      getGradeForAttempt({
+        attemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.average
+      })
+    ).toEqual(47);
+    expect(
+      getGradeForAttempt({
+        attemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.sum
+      })
+    ).toEqual(140);
   });
 
-  it("should return correct for `grademethod` [objective] and 0 for [highest/average/sum], if `attemptcmi` has only lesson_status and no score", () => {
+  it("should return correct for `grademethod` [objective] and 0 for [highest/average/sum], if `attemptcmi` has only lesson_status and no score.", () => {
     const blankAttemptCmi = eval({
       id1: {
         core: {
@@ -671,13 +702,37 @@ describe("getGradeForAttempt", () => {
       },
       id3: {}
     });
-    expect(getGradeForAttempt(blankAttemptCmi, 10, Grade.objective)).toEqual(1);
-    expect(getGradeForAttempt(blankAttemptCmi, 10, Grade.highest)).toEqual(0);
-    expect(getGradeForAttempt(blankAttemptCmi, 10, Grade.average)).toEqual(0);
-    expect(getGradeForAttempt(blankAttemptCmi, 10, Grade.sum)).toEqual(0);
+    expect(
+      getGradeForAttempt({
+        attemptCmi: blankAttemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.objective
+      })
+    ).toEqual(1);
+    expect(
+      getGradeForAttempt({
+        attemptCmi: blankAttemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.highest
+      })
+    ).toEqual(0);
+    expect(
+      getGradeForAttempt({
+        attemptCmi: blankAttemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.average
+      })
+    ).toEqual(0);
+    expect(
+      getGradeForAttempt({
+        attemptCmi: blankAttemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.sum
+      })
+    ).toEqual(0);
   });
 
-  it("should return 0 for all the `grademethod`, if there is no any lesson_status or score in `attemptcmi`", () => {
+  it("should return 0 for all the `grademethod`, if there is no any lesson_status or score in `attemptcmi`.", () => {
     const blankAttemptCmi = eval({
       id1: {
         core: {}
@@ -687,15 +742,39 @@ describe("getGradeForAttempt", () => {
       },
       id3: {}
     });
-    expect(getGradeForAttempt(blankAttemptCmi, 10, Grade.objective)).toEqual(0);
-    expect(getGradeForAttempt(blankAttemptCmi, 10, Grade.highest)).toEqual(0);
-    expect(getGradeForAttempt(blankAttemptCmi, 10, Grade.average)).toEqual(0);
-    expect(getGradeForAttempt(blankAttemptCmi, 10, Grade.sum)).toEqual(0);
+    expect(
+      getGradeForAttempt({
+        attemptCmi: blankAttemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.objective
+      })
+    ).toEqual(0);
+    expect(
+      getGradeForAttempt({
+        attemptCmi: blankAttemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.highest
+      })
+    ).toEqual(0);
+    expect(
+      getGradeForAttempt({
+        attemptCmi: blankAttemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.average
+      })
+    ).toEqual(0);
+    expect(
+      getGradeForAttempt({
+        attemptCmi: blankAttemptCmi,
+        maxGrade: 10,
+        gradeMethod: Grade.sum
+      })
+    ).toEqual(0);
   });
 });
 
 describe("getAttemptsGrade", () => {
-  it("return particular value for `attemptGrade` with non-empty `attemptsReport`", () => {
+  it("return particular value for `attemptGrade` with non-empty `attemptsReport`.", () => {
     const attemptsReport = [
       {
         attempt: 1,
@@ -740,7 +819,7 @@ describe("getAttemptsGrade", () => {
 });
 
 describe("calculatedAttemptsGrade", () => {
-  it("return grade with appending `%` for the `gradeMethod` [highest, average, sum] else it should return grade", () => {
+  it("return grade with appending `%` for the `gradeMethod` [highest, average, sum] else it should return grade.", () => {
     const attemptsOnlineReport = [
       {
         attempt: 1,
@@ -894,5 +973,323 @@ describe("calculatedAttemptsGrade", () => {
         null
       )
     ).toEqual("60");
+  });
+});
+
+describe("setCompletedScormAttempt", () => {
+  it("should call `saveInTheCache` with adding attempt to the `completed_attempts`, if there is no any cache for it.", () => {
+    const client = useApolloClient();
+    const retrieveAllDataMock = jest.fn(() => ({}));
+    const saveInTheCacheMock = jest.fn();
+    const attempt = 3;
+    const scormId = "10";
+    const saveResultDataMock = {
+      completed_attempts: {
+        [scormId]: [attempt]
+      }
+    };
+    setCompletedScormAttempt({
+      scormId,
+      attempt,
+      client,
+      onRetrieveAllData: retrieveAllDataMock,
+      onSaveInTheCache: saveInTheCacheMock
+    });
+    expect(saveInTheCacheMock).toBeCalledWith({
+      client,
+      scormBundles: saveResultDataMock
+    });
+  });
+  it("should call `saveInTheCache` for non existing attempt in the `completed_attempt` with adding it of the existing cache.", () => {
+    const client = useApolloClient();
+    const existingCompletedAttempts = [1, 2];
+    const retrieveAllDataMock = jest.fn(() => ({
+      completed_attempts: {
+        [scormId]: existingCompletedAttempts
+      }
+    }));
+    const saveInTheCacheMock = jest.fn();
+    const attempt = 3;
+    const scormId = "10";
+    const saveResultDataMock = {
+      completed_attempts: {
+        [scormId]: existingCompletedAttempts.concat(attempt)
+      }
+    };
+    setCompletedScormAttempt({
+      scormId,
+      attempt,
+      client,
+      onRetrieveAllData: retrieveAllDataMock,
+      onSaveInTheCache: saveInTheCacheMock
+    });
+    expect(saveInTheCacheMock).toBeCalledWith({
+      client,
+      scormBundles: saveResultDataMock
+    });
+  });
+  it("should NOT call `saveInTheCache`, if attempt number already exist in the `completed_attempts` list of the cache.", () => {
+    const client = useApolloClient();
+    const existingCompletedAttempts = [1, 2, 3];
+    const retrieveAllDataMock = jest.fn(() => ({
+      completed_attempts: {
+        [scormId]: existingCompletedAttempts
+      }
+    }));
+    const saveInTheCacheMock = jest.fn();
+    const attempt = 3;
+    const scormId = "10";
+    setCompletedScormAttempt({
+      scormId,
+      attempt,
+      client,
+      onRetrieveAllData: retrieveAllDataMock,
+      onSaveInTheCache: saveInTheCacheMock
+    });
+    expect(saveInTheCacheMock).not.toBeCalled();
+  });
+});
+
+describe("clearSyncedScormCommit", () => {
+  it("should remove all cached data for scormId and attempt, then trigger `saveInTheCache` with updated data.", () => {
+    const client = useApolloClient();
+    const attempt = 3;
+    const nextAttempt = attempt + 1;
+    const scormId = "10";
+    const existingScormBundles = {
+      [scormId]: {
+        commits: {
+          [attempt]: { data: "commit_mock" },
+          [nextAttempt]: { data: "commit_mock" }
+        },
+        cmi: {
+          [attempt]: { data: "cmi_mock" },
+          [nextAttempt]: { data: "commit_mock" }
+        },
+        offlineActivity: {
+          attempts: [{ attempt: attempt }, { attempt: nextAttempt }]
+        }
+      },
+      completed_attempts: {
+        [scormId]: [attempt, nextAttempt]
+      }
+    };
+    const expectingScormBundles = {
+      [scormId]: {
+        commits: {
+          [nextAttempt]: existingScormBundles[scormId].commits[nextAttempt]
+        },
+        cmi: {
+          [nextAttempt]: existingScormBundles[scormId].cmi[nextAttempt]
+        },
+        offlineActivity: {
+          attempts: [{ attempt: nextAttempt }]
+        }
+      },
+      completed_attempts: {
+        [scormId]: [nextAttempt]
+      }
+    };
+    const retrieveAllDataMock = jest.fn(() => existingScormBundles);
+    const saveInTheCacheMock = jest.fn();
+    clearSyncedScormCommit({
+      client,
+      scormId,
+      attempt,
+      onRetrieveAllData: retrieveAllDataMock,
+      onSaveInTheCache: saveInTheCacheMock
+    });
+    expect(saveInTheCacheMock).toBeCalledWith({
+      client,
+      scormBundles: expectingScormBundles
+    });
+  });
+  it("should NOT remove any data if attempt is mismatch, then trigger `saveInTheCache` with updated data.", () => {
+    const client = useApolloClient();
+    const attempt = 3;
+    const nextAttempt = attempt + 1;
+    const scormId = "10";
+    const existingScormBundles = {
+      [scormId]: {
+        commits: {
+          [nextAttempt]: { data: "commit_mock" },
+          [nextAttempt + 1]: { data: "commit_mock" }
+        },
+        cmi: {
+          [nextAttempt]: { data: "cmi_mock" },
+          [nextAttempt + 1]: { data: "commit_mock" }
+        },
+        offlineActivity: {
+          attempts: [{ attempt: nextAttempt }, { attempt: nextAttempt + 1 }]
+        }
+      },
+      completed_attempts: {
+        [scormId]: [nextAttempt, nextAttempt + 1]
+      }
+    };
+
+    const retrieveAllDataMock = jest.fn(() => existingScormBundles);
+    const saveInTheCacheMock = jest.fn();
+    clearSyncedScormCommit({
+      client,
+      scormId,
+      attempt,
+      onRetrieveAllData: retrieveAllDataMock,
+      onSaveInTheCache: saveInTheCacheMock
+    });
+    expect(saveInTheCacheMock).toBeCalledWith({
+      client,
+      scormBundles: existingScormBundles
+    });
+  });
+});
+describe("saveInTheCache", () => {
+  it("should call `writeQuery`for the cache data.", () => {
+    const client = useApolloClient();
+    const blankDataMock = {};
+    saveInTheCache({ client, scormBundles: blankDataMock });
+    expect(client.writeQuery).toBeCalledWith({
+      query: scormActivitiesRecordsQuery,
+      data: {
+        scormBundles: blankDataMock
+      }
+    });
+    const fullDataMock = {
+      "1": {
+        cmi: "data_cmi",
+        commits: "data_commits",
+        offlineActivity: { attemps: [{ attempt: 1, gradereported: 10 }] }
+      },
+      completed_attempts: {
+        "1": [1]
+      }
+    };
+    saveInTheCache({ client, scormBundles: fullDataMock });
+    expect(client.writeQuery).toBeCalledWith({
+      query: scormActivitiesRecordsQuery,
+      data: {
+        scormBundles: fullDataMock
+      }
+    });
+    saveInTheCache({ client, scormBundles: undefined });
+    expect(client.writeQuery).toBeCalledWith({
+      query: scormActivitiesRecordsQuery,
+      data: {
+        scormBundles: undefined
+      }
+    });
+  });
+});
+describe("retrieveAllData", () => {
+  it("should call `readQuery` and return non empty object for existing cache data and empty object for non existing cache.", () => {
+    const existingDataMock = {
+      scormBundles: {
+        data: "mock_data"
+      }
+    };
+    const client = useApolloClient();
+    client.readQuery.mockImplementation(() => {
+      return existingDataMock;
+    });
+
+    const result = retrieveAllData({ client });
+
+    expect(client.readQuery).toBeCalled();
+    expect(client.readQuery).not.toThrowError();
+    expect(result).toMatchObject(existingDataMock.scormBundles);
+
+    client.readQuery.mockImplementation(() => {
+      throw new Error("no cache");
+    });
+    const nonExistingResult = retrieveAllData({ client });
+    expect(client.readQuery).toBeCalled();
+    expect(client.readQuery).toThrowError();
+    expect(nonExistingResult).toMatchObject({});
+  });
+});
+describe("getOfflineLastActivityResult", () => {
+  it("should return last attempt result of the offlineAttempts if exist.", () => {
+    const scormId = 10;
+    const existingAttempts = [
+      { attempt: 1, gradereported: 10 },
+      { attempt: 2, gradereported: 20 },
+      { attempt: 3, gradereported: 30 },
+      { attempt: 4, gradereported: 40 }
+    ];
+    const existingDataMock = {
+      [scormId]: {
+        offlineActivity: {
+          attempts: existingAttempts
+        }
+      }
+    };
+    const retrieveAllDataMock = jest.fn(() => existingDataMock);
+    const client = useApolloClient();
+    const result = getOfflineLastActivityResult({
+      client,
+      scormId,
+      onRetrieveAllData: retrieveAllDataMock
+    });
+    expect(result).toMatchObject({ attempt: 4, gradereported: 40 });
+  });
+  it("should return undefined, if rhere is no any offline attempts.", () => {
+    const scormId = 10;
+
+    const existingDataMock = {
+      [scormId]: {
+        offlineActivity: {}
+      }
+    };
+    const retrieveAllDataMock = jest.fn(() => existingDataMock);
+    const client = useApolloClient();
+    const result = getOfflineLastActivityResult({
+      client,
+      scormId,
+      onRetrieveAllData: retrieveAllDataMock
+    });
+    expect(result).toBeUndefined();
+  });
+});
+describe("getOfflineActivity", () => {
+  it("should return offline activities if exist.", () => {
+    const scormId = 10;
+    const existingAttempts = [
+      { attempt: 1, gradereported: 10 },
+      { attempt: 2, gradereported: 20 },
+      { attempt: 3, gradereported: 30 },
+      { attempt: 4, gradereported: 40 }
+    ];
+    const existingDataMock = {
+      [scormId]: {
+        offlineActivity: {
+          attempts: existingAttempts
+        }
+      }
+    };
+    const retrieveAllDataMock = jest.fn(() => existingDataMock);
+    const client = useApolloClient();
+    const result = getOfflineActivity({
+      client,
+      scormId,
+      onRetrieveAllData: retrieveAllDataMock
+    });
+    expect(result).toMatchObject(existingDataMock[scormId].offlineActivity);
+  });
+  it("should return undefined, if rhere is no any offline activities.", () => {
+    const scormId = 10;
+
+    const existingDataMock = {
+      [scormId]: {
+        offlineActivity: {}
+      }
+    };
+    const retrieveAllDataMock = jest.fn(() => existingDataMock);
+    const client = useApolloClient();
+    const result = getOfflineActivity({
+      client,
+      scormId,
+      onRetrieveAllData: retrieveAllDataMock
+    });
+    expect(result).toBeUndefined();
   });
 });

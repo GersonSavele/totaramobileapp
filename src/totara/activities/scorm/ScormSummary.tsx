@@ -44,7 +44,6 @@ import { scormSummaryStyles } from "@totara/theme/scorm";
 import { NetworkStatus as ApolloNetworkStatus } from "apollo-boost";
 import {
   getDataForScormSummary,
-  onTapViewAllAttempts,
   setCompletedScormAttempt,
   getOfflineLastActivityResult,
   shouldAllowAttempt
@@ -156,14 +155,17 @@ const ScormSummary = ({
       title: translate("scorm.confirmation.title"),
       message: translate("scorm.confirmation.message"),
       callback: () => {
-        const existingLastAttempt = getOfflineLastActivityResult(id, client);
+        const existingLastAttempt = getOfflineLastActivityResult({
+          scormId: id,
+          client
+        });
         navigation.pop();
         if (
           existingLastAttempt &&
           existingLastAttempt.attempt &&
           parseInt(existingLastAttempt.attempt) === attempt
         ) {
-          setCompletedScormAttempt(id, attempt, client);
+          setCompletedScormAttempt({ scormId: id, attempt, client });
           navigateTo({
             routeId: NAVIGATION_SCORM_FEEDBACK,
             navigate: navigation.navigate,
@@ -236,21 +238,18 @@ const ScormSummary = ({
                 }
               />
               <TouchableOpacity
-                onPress={onTapViewAllAttempts({
-                  scormBundle,
-                  callback: () => {
-                    navigateTo({
-                      routeId: NAVIGATION_SCORM_ATTEMPTS,
-                      navigate: navigation.navigate,
-                      props: {
-                        attempts,
-                        gradeMethod,
-                        title: name,
-                        backIcon: "chevron-left"
-                      }
-                    });
-                  }
-                })}>
+                onPress={() =>
+                  navigateTo({
+                    routeId: NAVIGATION_SCORM_ATTEMPTS,
+                    navigate: navigation.navigate,
+                    props: {
+                      attempts,
+                      gradeMethod,
+                      title: name,
+                      backIcon: "chevron-left"
+                    }
+                  })
+                }>
                 <GridLabelValue
                   theme={theme}
                   textId={"scorm.summary.grade.reported"}

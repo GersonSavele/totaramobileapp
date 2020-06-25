@@ -20,25 +20,8 @@
  */
 
 import * as RNFS from "react-native-fs";
-import { unzip } from "react-native-zip-archive";
 import { Platform } from "react-native";
 import { offlineScormServerRoot } from "@totara/lib/constants";
-
-/*
-const unzipScormPackageToServer = (
-  packageName: string,
-  packageSource: string
-) => {
-  const destinationUnzip = `${offlineScormServerRoot}/${packageName}`;
-  return unzip(packageSource, destinationUnzip).then((resultDestination) => {
-    if (resultDestination) {
-      return packageName;
-    } else {
-      throw new Error("Cannot find unzipped location.");
-    }
-  });
-};
-*/
 
 const getPackageContent = () =>
   Platform.OS === "android"

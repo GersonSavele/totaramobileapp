@@ -22,7 +22,6 @@ import {
   initializeScormWebplayer,
   isScormPlayerInitialized
 } from "./SCORMFileHandler";
-import { getScormAttemptData } from "./StorageHelper";
 import AttemptSynchronizer from "./AttemptSynchronizer";
 
 export {
@@ -30,6 +29,5 @@ export {
   getScormPackageData,
   initializeScormWebplayer,
   isScormPlayerInitialized,
-  getScormAttemptData,
   AttemptSynchronizer
 };

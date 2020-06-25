@@ -53,6 +53,8 @@ jest.mock("react-native-device-info", () => {
 });
 
 jest.mock("@apollo/react-hooks", () => ({
-  readQuery: jest.fn(),
-  writeQuery: jest.fn()
+  useApolloClient: jest.fn(() => ({
+    readQuery: jest.fn(() => {}),
+    writeQuery: jest.fn()
+  }))
 }));

@@ -38,7 +38,7 @@ import OverviewDetails from "../overview/Details";
 import { TotaraTheme } from "@totara/theme/Theme";
 import HeaderView from "../HeaderView";
 import CourseCompletionModal from "../CourseCompletionModal";
-import ActivitySheetWrapper from "@totara/activities/ActivitySheetWrapper";
+
 import { learningItemEnum } from "@totara/lib/constants";
 import { courseStyle } from "../currentLearningStyles";
 
@@ -54,20 +54,18 @@ const CourseDetails = ({ navigation }: NavigationInjectedProps) => {
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
     return (
-      <ActivitySheetWrapper>
-        <ScrollView
-          style={courseStyle.scrollView}
-          contentContainerStyle={{ flex: 1 }}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={pullToRefresh} />
-          }>
-          <UIWrapper
-            courseDetails={data.mobile_course}
-            courseRefreshCallback={refetch}
-          />
-        </ScrollView>
-      </ActivitySheetWrapper>
+      <ScrollView
+        style={courseStyle.scrollView}
+        contentContainerStyle={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={pullToRefresh} />
+        }>
+        <UIWrapper
+          courseDetails={data.mobile_course}
+          courseRefreshCallback={refetch}
+        />
+      </ScrollView>
     );
   }
 };

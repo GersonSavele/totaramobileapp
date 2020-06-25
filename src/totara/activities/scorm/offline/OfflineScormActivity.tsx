@@ -32,11 +32,14 @@ import {
 import { getScormPackageData } from "@totara/activities/scorm/offline";
 import { Package, Sco, Grade, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
-import { getScormAttemptData } from "./StorageHelper";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
 
-import { saveScormActivityData, getOfflineScormPackageName } from "../utils";
+import {
+  saveScormActivityData,
+  getOfflineScormPackageName,
+  getScormAttemptData
+} from "../utils";
 import { offlineScormServerRoot } from "@totara/lib/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
@@ -116,21 +119,27 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   }, [scorm.id]);
 
   useEffect(() => {
-    if (url && scos && (scoid || defaultSco)) {
-      getScormAttemptData(scorm.id, attempt).then((cmiData) => {
-        const selectedScoId = scoid || defaultSco.id!;
-        const lastActivityCmi =
-          cmiData && cmiData[selectedScoId] ? cmiData[selectedScoId] : null;
-        const cmi = getScormPackageCMI(
-          scorm.id,
-          scos,
-          selectedScoId,
-          attempt,
-          getOfflineScormPackageName(scorm.id),
-          scorm.defaultCMI
-        );
-        setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
+    if (url && scos) {
+      // TODO - need to review
+      // getScormAttemptData(scorm.id, attempt).then((cmiData) => {
+      const cmiData = getScormAttemptData({
+        scormId: scorm.id,
+        attempt,
+        client
       });
+      const selectedScoId = scoid || (defaultSco && defaultSco.id!);
+      const lastActivityCmi =
+        cmiData && cmiData[selectedScoId] ? cmiData[selectedScoId] : null;
+      const cmi = getScormPackageCMI(
+        scorm.id,
+        scos,
+        selectedScoId,
+        attempt,
+        getOfflineScormPackageName(scorm.id),
+        scorm.defaultCMI
+      );
+      setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
+      // });
     }
   }, [scormPackageData, url]);
 
