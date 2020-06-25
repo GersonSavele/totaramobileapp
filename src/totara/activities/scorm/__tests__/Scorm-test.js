@@ -13,6 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import moment from "moment";
+import { useApolloClient } from "@apollo/react-hooks";
+
 import {
   saveScormActivityData,
   getDataForScormSummary,
@@ -28,7 +30,6 @@ import {
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
-import { useApolloClient } from "@apollo/react-hooks";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 
 describe("getDataForScormSummary", () => {
