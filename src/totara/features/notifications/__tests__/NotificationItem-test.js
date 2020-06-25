@@ -17,7 +17,7 @@
 
 import React from "react";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import { fontWeights } from "@totara/theme/constants";
 import moment from "moment";
 
