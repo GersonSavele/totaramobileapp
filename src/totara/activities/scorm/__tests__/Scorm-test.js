@@ -26,7 +26,8 @@ import {
   saveInTheCache,
   retrieveAllData,
   getOfflineLastActivityResult,
-  getOfflineActivity
+  getOfflineActivity,
+  getScormAttemptData
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
@@ -1289,6 +1290,57 @@ describe("getOfflineActivity", () => {
     const result = getOfflineActivity({
       client,
       scormId,
+      onRetrieveAllData: retrieveAllDataMock
+    });
+    expect(result).toBeUndefined();
+  });
+});
+describe("getScormAttemptData", () => {
+  it("should return cmi data for scormId and attempt, if records exist.", () => {
+    const scormId = 10;
+    const attempt = 2;
+    const existingCmis = {
+      [attempt - 1]: {
+        data: `mock_data_${attempt - 1}`
+      },
+      [attempt]: {
+        data: "mock_data"
+      },
+      [attempt + 1]: {
+        data: `mock_data_${attempt + 1}`
+      }
+    };
+    const existingDataMock = {
+      [scormId]: {
+        cmi: existingCmis
+      }
+    };
+    const retrieveAllDataMock = jest.fn(() => existingDataMock);
+    const client = useApolloClient();
+    const result = getScormAttemptData({
+      client,
+      scormId,
+      attempt,
+      onRetrieveAllData: retrieveAllDataMock
+    });
+    expect(result).toMatchObject(existingDataMock[scormId].cmi[attempt]);
+  });
+  it("should return undefined, if rhere is no any offline attempts for the scormId.", () => {
+    const scormId = 10;
+    const attempt = 2;
+
+    const existingDataMock = {
+      [scormId]: {
+        offlineActivity: {},
+        cmi: {}
+      }
+    };
+    const retrieveAllDataMock = jest.fn(() => existingDataMock);
+    const client = useApolloClient();
+    const result = getScormAttemptData({
+      client,
+      scormId,
+      attempt,
       onRetrieveAllData: retrieveAllDataMock
     });
     expect(result).toBeUndefined();
