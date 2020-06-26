@@ -19,7 +19,7 @@ import {
   NAVIGATION_COURSE_DETAILS,
   NAVIGATION_COURSE_GROUP_DETAILS,
   NAVIGATION_CURRENT_LEARNING,
-  NAVIGATION_WEBVIEW_ACTIVITY
+  NAVIGATION
 } from "@totara/lib/constants";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 import CurrentLearning from "./carouselItems/CurrentLearning";
@@ -29,7 +29,7 @@ import { header } from "@totara/theme/constants";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons";
 import { TouchableIcon } from "@totara/components";
 import { WebviewActivity } from "@totara/activities/webview/WebviewActivity";
-
+const { NAVIGATION_WEBVIEW_ACTIVITY } = NAVIGATION;
 const CurrentLearningStack = createStackNavigator(
   {
     [NAVIGATION_CURRENT_LEARNING]: {

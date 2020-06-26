@@ -32,12 +32,11 @@ import {
   activityModType,
   completionStatus,
   completionTrack,
-  NAVIGATION_SCORM_ROOT,
-  NAVIGATION_WEBVIEW_ACTIVITY
+  NAVIGATION
 } from "@totara/lib/constants";
 import { navigateTo } from "@totara/lib/navigation";
 import { activitySelfComplete } from "../course/api";
-
+const { NAVIGATION_SCORM_ROOT, NAVIGATION_WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivityListProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};

@@ -49,16 +49,17 @@ import {
   shouldAllowAttempt
 } from "./utils";
 import { navigateTo } from "@totara/lib/navigation";
-import {
-  DATE_FORMAT_FULL,
-  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
-  NAVIGATION_SCORM_ATTEMPTS,
-  NAVIGATION_SCORM_FEEDBACK
-} from "@totara/lib/constants";
+import { DATE_FORMAT_FULL, NAVIGATION } from "@totara/lib/constants";
 import { ScormBundle, Grade } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
+
+const {
+  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
+  NAVIGATION_SCORM_ATTEMPTS,
+  NAVIGATION_SCORM_FEEDBACK
+} = NAVIGATION;
 
 type SummaryProps = {
   id: string;

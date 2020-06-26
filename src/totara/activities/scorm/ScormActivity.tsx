@@ -37,13 +37,7 @@ import { TouchableIcon } from "@totara/components";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
 import { RootState } from "@totara/reducers";
 import { scormQuery } from "./api";
-import {
-  NAVIGATION_SCORM_ROOT,
-  NAVIGATION_SCORM_STACK_ROOT,
-  NAVIGATION_SCORM_ATTEMPTS,
-  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
-  NAVIGATION_SCORM_FEEDBACK
-} from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/constants";
 import {
   formatAttempts,
   getOfflinePackageUnzipPath,
@@ -66,6 +60,14 @@ import { iconSizes } from "@totara/theme/constants";
 import ScormFeedback from "./ScormFeedback";
 
 const { download } = ResourceManager;
+
+const {
+  NAVIGATION_SCORM_ROOT,
+  NAVIGATION_SCORM_STACK_ROOT,
+  NAVIGATION_SCORM_ATTEMPTS,
+  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
+  NAVIGATION_SCORM_FEEDBACK
+} = NAVIGATION;
 
 type ScormActivityProps = {
   navigation: NavigationStackProp<ScormActivityParams>;

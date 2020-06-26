@@ -28,7 +28,8 @@ import ResourceManager from "@totara/lib/resourceManager";
 import listViewStyles from "@totara/theme/listView";
 import DownloadItem from "./DownloadItem";
 import { navigateTo } from "@totara/lib/navigation";
-import { NAVIGATION_SCORM_ROOT } from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/constants";
+const { NAVIGATION_SCORM_ROOT } = NAVIGATION;
 
 const Downloads = () => {
   const [theme] = useContext(ThemeContext);

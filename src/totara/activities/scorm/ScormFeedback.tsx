@@ -19,8 +19,9 @@ import { withNavigation } from "react-navigation";
 import { NavigationStackProp } from "react-navigation-stack";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
 import { Grade } from "@totara/types/Scorm";
-import { NAVIGATION_SCORM_ROOT } from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/constants";
 
+const { NAVIGATION_SCORM_ROOT } = NAVIGATION;
 type FeedbackParams = {
   id: string;
   attempt: number;
