@@ -30,6 +30,7 @@ import {
   AdditionalActionRule,
   AdditionalActionRuleCondition
 } from "../AdditionalActionRule";
+import { act } from "@testing-library/react-native";
 
 const response = {
   me: {
@@ -96,7 +97,10 @@ describe("AdditionalActionRule, Apollo MockedProvider should test three state su
         </AdditionalActionRule>
       </MockedProvider>
     );
-    await wait(0); // wait for response
+
+    await act(async () => {
+      await wait(0);
+    });
     const tree = component.root.props.children.props.children.props.children;
     expect(tree).toContain("Modal Details");
   });
@@ -107,7 +111,9 @@ describe("AdditionalActionRule, Apollo MockedProvider should test three state su
         <AdditionalActionRule />
       </MockedProvider>
     );
-    await wait(0); // wait for response
+    await act(async () => {
+      await wait(0);
+    });
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -115,52 +121,132 @@ describe("AdditionalActionRule, Apollo MockedProvider should test three state su
 
 describe("AdditionalActionRuleCondition, Passing different bool params which relate policyAgreement,userConsent,userFields and get a bool value", () => {
   it("It should return true for any of passing booleans are true, and return false for all the passing values are false", () => {
-    let actualResultSingle = AdditionalActionRuleCondition(true, false, false, false);
+    let actualResultSingle = AdditionalActionRuleCondition(
+      true,
+      false,
+      false,
+      false
+    );
     expect(actualResultSingle).toBe(true);
 
-    actualResultSingle = AdditionalActionRuleCondition(false, true, false, false);
+    actualResultSingle = AdditionalActionRuleCondition(
+      false,
+      true,
+      false,
+      false
+    );
     expect(actualResultSingle).toBe(true);
 
-    actualResultSingle = AdditionalActionRuleCondition(false, false, true, false);
+    actualResultSingle = AdditionalActionRuleCondition(
+      false,
+      false,
+      true,
+      false
+    );
     expect(actualResultSingle).toBe(true);
 
-    actualResultSingle = AdditionalActionRuleCondition(false, false, false, true);
+    actualResultSingle = AdditionalActionRuleCondition(
+      false,
+      false,
+      false,
+      true
+    );
     expect(actualResultSingle).toBe(true);
 
-    let actualResultDouble = AdditionalActionRuleCondition(true, true, false, false);
+    let actualResultDouble = AdditionalActionRuleCondition(
+      true,
+      true,
+      false,
+      false
+    );
     expect(actualResultDouble).toBe(true);
 
-    actualResultDouble = AdditionalActionRuleCondition(true, false, true, false);
+    actualResultDouble = AdditionalActionRuleCondition(
+      true,
+      false,
+      true,
+      false
+    );
     expect(actualResultDouble).toBe(true);
 
-    actualResultDouble = AdditionalActionRuleCondition(true, false, false, true);
+    actualResultDouble = AdditionalActionRuleCondition(
+      true,
+      false,
+      false,
+      true
+    );
     expect(actualResultDouble).toBe(true);
 
-    actualResultDouble = AdditionalActionRuleCondition(false, true, true, false);
+    actualResultDouble = AdditionalActionRuleCondition(
+      false,
+      true,
+      true,
+      false
+    );
     expect(actualResultDouble).toBe(true);
 
-    actualResultDouble = AdditionalActionRuleCondition(false, true, false, true);
+    actualResultDouble = AdditionalActionRuleCondition(
+      false,
+      true,
+      false,
+      true
+    );
     expect(actualResultDouble).toBe(true);
 
-    actualResultDouble = AdditionalActionRuleCondition(false, false, true, true);
+    actualResultDouble = AdditionalActionRuleCondition(
+      false,
+      false,
+      true,
+      true
+    );
     expect(actualResultDouble).toBe(true);
 
-    let actualResultThribble = AdditionalActionRuleCondition(true, true, true, false);
+    let actualResultThribble = AdditionalActionRuleCondition(
+      true,
+      true,
+      true,
+      false
+    );
     expect(actualResultThribble).toBe(true);
 
-    actualResultThribble = AdditionalActionRuleCondition(true, true, false, true);
+    actualResultThribble = AdditionalActionRuleCondition(
+      true,
+      true,
+      false,
+      true
+    );
     expect(actualResultThribble).toBe(true);
 
-    actualResultThribble = AdditionalActionRuleCondition(true, false, true, true);
+    actualResultThribble = AdditionalActionRuleCondition(
+      true,
+      false,
+      true,
+      true
+    );
     expect(actualResultThribble).toBe(true);
 
-    actualResultThribble = AdditionalActionRuleCondition(false, true, true, true);
+    actualResultThribble = AdditionalActionRuleCondition(
+      false,
+      true,
+      true,
+      true
+    );
     expect(actualResultThribble).toBe(true);
 
-    const actualResultAll = AdditionalActionRuleCondition(true, true, true, true);
+    const actualResultAll = AdditionalActionRuleCondition(
+      true,
+      true,
+      true,
+      true
+    );
     expect(actualResultAll).toBe(true);
 
-    const actualResultNone = AdditionalActionRuleCondition(false, false, false, false);
+    const actualResultNone = AdditionalActionRuleCondition(
+      false,
+      false,
+      false,
+      false
+    );
     expect(actualResultNone).toBe(false);
   });
 });

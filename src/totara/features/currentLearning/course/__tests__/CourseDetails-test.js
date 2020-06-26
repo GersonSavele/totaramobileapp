@@ -23,6 +23,7 @@ import wait from "waait";
 import { coreCourse } from "../api";
 import CourseDetails from "../CourseDetails";
 import CourseCompletionModal from "../../CourseCompletionModal";
+import { act } from "@testing-library/react-native";
 const response = {
   course: course
 };
@@ -136,7 +137,9 @@ describe("Testing: Apollo MockedProvider should test three state such as loading
         </MockedProvider>
       );
     });
-    await wait(0); // wait for response
+    await act(async () => {
+      await wait(0);
+    });
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });

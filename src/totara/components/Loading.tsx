@@ -1,4 +1,5 @@
 /**
+ *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,20 +13,21 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import React, { useContext } from "react";
+
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Spinner } from "native-base";
+import { TotaraTheme } from "@totara/theme/Theme";
 
-import { ThemeContext } from "@totara/theme";
+type LoadingProps = {
+  testID?: string;
+};
 
-const Loading = () => {
-  const [theme] = useContext(ThemeContext);
-
+const Loading = ({ testID }: LoadingProps) => {
   return (
-    <View style={loadingViewSyles.container}>
-      <Spinner color={theme.textColorDark} />
+    <View style={loadingViewSyles.container} testID={testID}>
+      <Spinner color={TotaraTheme.textColorDark} />
     </View>
   );
 };
@@ -35,8 +37,8 @@ const loadingViewSyles = StyleSheet.create({
     flex: 1,
     alignSelf: "center",
     flexDirection: "column",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });
 
 export default Loading;

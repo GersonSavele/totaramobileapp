@@ -22,9 +22,7 @@ import { initialState, useAuth } from "../AuthHook";
 import { renderHook, act } from "@testing-library/react-hooks";
 
 describe("useAuthContext", () => {
-
   it("should cleanup device during logout", async () => {
-
     const mockBootstrap = jest.fn();
     const mockRegisterDevice = jest.fn();
     const mockDeviceCleanup = jest.fn(() => Promise.resolve(true));
@@ -38,7 +36,14 @@ describe("useAuthContext", () => {
       authStep: "registered"
     };
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook(
+      (props) =>
+        useAuth(
+          mockBootstrap,
+          mockRegisterDevice,
+          mockDeviceCleanup,
+          mockCreateApolloClient
+        )(props),
       { initialProps: { initialState: state } }
     );
 
@@ -46,7 +51,9 @@ describe("useAuthContext", () => {
       result.current.logOut();
     });
 
-    await mockDeviceCleanup;
+    await act(async () => {
+      await mockDeviceCleanup;
+    });
     act(async () => waitForNextUpdate());
 
     expect(result.current.authContextState.appState).toBeFalsy();
@@ -76,7 +83,6 @@ describe("useAuthContext", () => {
 
     const mockBootstrap = jest.fn();
     const mockRegisterDevice = jest.fn((ss) => {
-
       expect(ss).toMatchObject(setup);
 
       return Promise.resolve({
@@ -85,7 +91,7 @@ describe("useAuthContext", () => {
         siteInfo: {
           version: "2019101802"
         }
-      })
+      });
     });
     const mockDeviceCleanup = jest.fn(() => Promise.resolve(true));
     const mockCreateApolloClient = jest.fn();
@@ -98,7 +104,14 @@ describe("useAuthContext", () => {
       authStep: "bootstrapDone"
     };
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook(
+      (props) =>
+        useAuth(
+          mockBootstrap,
+          mockRegisterDevice,
+          mockDeviceCleanup,
+          mockCreateApolloClient
+        )(props),
       { initialProps: { initialState: state } }
     );
 
@@ -106,24 +119,31 @@ describe("useAuthContext", () => {
       result.current.onLoginSuccess(setup);
     });
 
-    await mockDeviceCleanup; 
+    await mockDeviceCleanup;
     await act(async () => waitForNextUpdate());
 
-    expect(result.current.authContextState.appState).toMatchObject(expectedAppState);
+    expect(result.current.authContextState.appState).toMatchObject(
+      expectedAppState
+    );
     expect(result.current.authContextState.isAuthenticated).toBeTruthy();
     expect(result.current.authContextState.isLoading).toBeFalsy();
     expect(result.current.authContextState.authStep).toBe("setupDone");
-
   });
 
   it("should bootstrap when it starts with nothing stored", async () => {
-
     const mockBootstrap = jest.fn(() => Promise.resolve(undefined));
     const mockRegisterDevice = jest.fn();
     const mockDeviceCleanup = jest.fn();
     const mockCreateApolloClient = jest.fn();
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook(
+      (props) =>
+        useAuth(
+          mockBootstrap,
+          mockRegisterDevice,
+          mockDeviceCleanup,
+          mockCreateApolloClient
+        )(props),
       { initialProps: { initialState: initialState } }
     );
 
@@ -134,29 +154,37 @@ describe("useAuthContext", () => {
   });
 
   it("should bootstrap when it starts loading with stored apiKey", async () => {
-
-    const mockBootstrap = jest.fn(() => Promise.resolve({
-      apiKey: "apikey",
-      host: "http://totarasite.com",
-      siteInfo: {
-        version: "2019101802"
-      }
-    }));
+    const mockBootstrap = jest.fn(() =>
+      Promise.resolve({
+        apiKey: "apikey",
+        host: "http://totarasite.com",
+        siteInfo: {
+          version: "2019101802"
+        }
+      })
+    );
     const mockRegisterDevice = jest.fn();
     const mockDeviceCleanup = jest.fn();
     const mockCreateApolloClient = jest.fn();
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook(
+      (props) =>
+        useAuth(
+          mockBootstrap,
+          mockRegisterDevice,
+          mockDeviceCleanup,
+          mockCreateApolloClient
+        )(props),
       { initialProps: { initialState: initialState } }
     );
 
     await mockBootstrap;
+
     await act(async () => waitForNextUpdate());
 
     expect(result.current.authContextState.appState.apiKey).toBe("apikey");
     expect(mockCreateApolloClient).toBeCalledTimes(1);
   });
-
 
   it("should get and store the api key when setup secret is initialized", async () => {
     const setup = {
@@ -169,7 +197,6 @@ describe("useAuthContext", () => {
 
     const mockBootstrap = jest.fn();
     const mockRegisterDevice = jest.fn((ss) => {
-
       expect(ss).toMatchObject(setup);
 
       return Promise.resolve({
@@ -178,7 +205,7 @@ describe("useAuthContext", () => {
         siteInfo: {
           version: "2019101802"
         }
-      })
+      });
     });
     const mockDeviceCleanup = jest.fn();
     const mockCreateApolloClient = jest.fn();
@@ -191,7 +218,14 @@ describe("useAuthContext", () => {
       authStep: "setupSecretInit"
     };
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook(
+      (props) =>
+        useAuth(
+          mockBootstrap,
+          mockRegisterDevice,
+          mockDeviceCleanup,
+          mockCreateApolloClient
+        )(props),
       { initialProps: { initialState: state } }
     );
 
@@ -217,10 +251,9 @@ describe("useAuthContext", () => {
 
     const mockBootstrap = jest.fn();
     const mockRegisterDevice = jest.fn((ss) => {
-
       expect(ss).toMatchObject(setup);
 
-      return Promise.reject(new Error("server error"))
+      return Promise.reject(new Error("server error"));
     });
     const mockDeviceCleanup = jest.fn(() => Promise.resolve(true));
     const mockCreateApolloClient = jest.fn();
@@ -233,7 +266,14 @@ describe("useAuthContext", () => {
       authStep: "bootstrapDone"
     };
 
-    const { result, waitForNextUpdate } = renderHook((props) => useAuth(mockBootstrap, mockRegisterDevice, mockDeviceCleanup, mockCreateApolloClient)(props),
+    const { result, waitForNextUpdate } = renderHook(
+      (props) =>
+        useAuth(
+          mockBootstrap,
+          mockRegisterDevice,
+          mockDeviceCleanup,
+          mockCreateApolloClient
+        )(props),
       { initialProps: { initialState: state } }
     );
 
@@ -247,8 +287,5 @@ describe("useAuthContext", () => {
     expect(result.current.authContextState.isAuthenticated).toBeFalsy();
     expect(result.current.authContextState.isLoading).toBeFalsy();
     expect(result.current.authContextState.authStep).toBe("authError");
-
   });
-
-
 });

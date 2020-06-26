@@ -19,20 +19,20 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { Text, TextStyle, StyleSheet, View } from "react-native";
-
-import { ThemeContext } from "@totara/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { margins, paddings } from "@totara/theme/constants";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type MessageBarProps = {
   text: string;
   icon?: IconProp;
   mode?: "info" | "alert";
   style?: TextStyle;
+  testID?: string;
 };
 
 const MessageBar = ({
@@ -40,23 +40,23 @@ const MessageBar = ({
   icon = faInfoCircle,
   mode = "info",
   style,
+  testID
 }: MessageBarProps) => {
-  const [theme] = useContext(ThemeContext);
-  let backgroundStyle = { backgroundColor: theme.colorInfo };
+  let backgroundStyle = { backgroundColor: TotaraTheme.colorInfo };
   let textStyle = [
-    theme.textSmall,
+    TotaraTheme.textSmall,
     styles.content,
-    { color: theme.colorNeutral1 },
+    { color: TotaraTheme.colorNeutral1 }
   ];
   if (style) {
     textStyle.push(style);
   }
   if (mode === "alert") {
-    backgroundStyle.backgroundColor = theme.colorAlert;
+    backgroundStyle.backgroundColor = TotaraTheme.colorAlert;
   }
 
   return (
-    <View style={[styles.container, backgroundStyle]}>
+    <View style={[styles.container, backgroundStyle]} testID={testID}>
       {icon && (
         <FontAwesomeIcon
           icon={icon}
@@ -72,12 +72,12 @@ const MessageBar = ({
 const styles = StyleSheet.create({
   container: {
     padding: paddings.paddingM,
-    flexDirection: "row",
+    flexDirection: "row"
   },
   content: {
     marginRight: margins.marginS,
-    alignSelf: "center",
-  },
+    alignSelf: "center"
+  }
 });
 
 export default MessageBar;

@@ -9,9 +9,10 @@ const NetworkStatus = () => {
   const messageNotConnected = "You are not connected to the internet";
   const messageConnecting = "Connecting...";
   return (
-    <View>
+    <View testID={"test_container"}>
       {(!isConnected || (isConnected && !isInternetReachable)) && (
         <MessageBar
+          testID={"test_messageBar"}
           text={!isConnected ? messageNotConnected : messageConnecting}
           icon={faBolt}
         />

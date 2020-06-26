@@ -1,3 +1,13 @@
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
+
+global.console = {
+  log: jest.fn(),
+  error: console.error,
+  warn: jest.fn(),
+  info: jest.fn(),
+  debug: jest.fn()
+};
+
 jest.mock("@react-native-community/cookies", () => {
   return {
     addEventListener: jest.fn(),
@@ -59,3 +69,5 @@ jest.mock("@apollo/react-hooks", () => ({
     writeQuery: jest.fn()
   }))
 }));
+
+jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo);

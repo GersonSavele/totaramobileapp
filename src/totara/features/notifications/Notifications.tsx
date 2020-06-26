@@ -15,37 +15,35 @@
  *
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   Image,
   FlatList,
-  TouchableOpacity,
   ImageSourcePropType
 } from "react-native";
-import { createStackNavigator } from "react-navigation-stack";
-import { NavigationContext } from "react-navigation";
-import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
 import { Images } from "@resources/images";
 import { translate } from "@totara/locale";
 import headerStyles from "@totara/theme/headers";
 import listViewStyles from "@totara/theme/listView";
 import NetworkStatus from "@totara/components/NetworkStatus";
-import { paddings } from "@totara/theme/constants";
 import { NotificationMessage } from "@totara/types";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
 import { TotaraTheme } from "@totara/theme/Theme";
-import NotificationDetails from "@totara/features/notifications/NotificationDetail";
 import { useQuery } from "@apollo/react-hooks";
 import { notificationsQuery, parser } from "@totara/features/notifications/api";
 import { NetworkStatus as NS } from "apollo-client/core/networkStatus";
 import { Loading, LoadingError } from "@totara/components";
+import { NavigationStackProp } from "react-navigation-stack";
 
-const Notifications = () => {
-  const navigation = useContext(NavigationContext);
+type NotificationsProps = {
+  navigation: NavigationStackProp<NotificationMessage>;
+};
+
+const Notifications = ({ navigation }: NotificationsProps) => {
   const { error, loading, data, refetch, networkStatus } = useQuery(
     notificationsQuery,
     {
@@ -57,7 +55,7 @@ const Notifications = () => {
     navigation.navigate("NotificationDetail", item);
   };
 
-  const notificationList = !loading ? parser(data) : [];
+  const notificationList = !loading && !error ? parser(data) : [];
 
   return (
     <View style={TotaraTheme.viewContainer}>
@@ -68,10 +66,14 @@ const Notifications = () => {
       </View>
       <NetworkStatus />
       <View style={{ flex: 1 }}>
-        {loading && <Loading />}
-        {error && <LoadingError onRefreshTap={refetch} />}
+        {loading && <Loading testID={"test_loading"} />}
+        {error && (
+          <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} />
+        )}
         {!loading && !error && notificationList.length == 0 && (
-          <View style={styles.noContent}>
+          <View
+            style={styles.noContent}
+            testID={"test_notificationsEmptyContainer"}>
             <Image source={Images.notificationBell as ImageSourcePropType} />
             <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>
               {translate("notifications.empty")}
@@ -80,6 +82,7 @@ const Notifications = () => {
         )}
         {!loading && !error && notificationList.length > 0 && (
           <FlatList<NotificationMessage>
+            testID={"test_notificationsList"}
             refreshing={networkStatus === NS.refetch}
             onRefresh={refetch}
             contentContainerStyle={listViewStyles.contentContainerStyle}
@@ -112,49 +115,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const NotificationsStack = createStackNavigator(
-  {
-    Notification: {
-      screen: Notifications,
-      navigationOptions: ({ navigation }) => ({
-        headerBackTitle: translate("general.back"),
-        headerLeft: navigation.getParam("showActions") && (
-          <TouchableOpacity
-            onPress={() => {
-              // @ts-ignore
-              navigation.emit("onCancelTap");
-            }}
-            style={{ paddingLeft: paddings.paddingL }}>
-            <Text style={TotaraTheme.textHeadline}>Cancel</Text>
-          </TouchableOpacity>
-        ),
-        headerRight: navigation.getParam("showActions") && (
-          <TouchableOpacity
-            onPress={() => {
-              // @ts-ignore
-              navigation.emit("onDeleteTap");
-            }}
-            style={{ paddingRight: paddings.paddingL }}>
-            <Text
-              style={[
-                TotaraTheme.textHeadline,
-                { color: TotaraTheme.colorDestructive }
-              ]}>
-              Delete
-            </Text>
-          </TouchableOpacity>
-        )
-      })
-    },
-    NotificationDetail: {
-      screen: NotificationDetails
-    }
-  },
-  {
-    initialRouteName: "Notification",
-    initialRouteKey: "Notification",
-    defaultNavigationOptions: totaraNavigationOptions({})
-  }
-);
-
-export default NotificationsStack;
+export default Notifications;

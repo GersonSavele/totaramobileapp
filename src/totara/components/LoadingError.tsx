@@ -15,28 +15,28 @@
  *
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { Image, StyleSheet, View, Text } from "react-native";
 import { PrimaryButton } from "@totara/components/index";
 import { Images } from "@resources/images";
-import { ThemeContext } from "@totara/theme";
 import { paddings } from "@totara/theme/constants";
 import { translate } from "@totara/locale";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type LoadingErrorProps = {
   onRefreshTap(): void;
+  testID?: string;
 };
 
-const LoadingError = ({ onRefreshTap }: LoadingErrorProps) => {
-  const [theme] = useContext(ThemeContext);
+const LoadingError = ({ onRefreshTap, testID }: LoadingErrorProps) => {
   return (
-    <View style={[styles.containerStyle]}>
+    <View style={[styles.containerStyle]} testID={testID}>
       <View style={styles.errorContainer}>
         <Image source={Images.generalError} />
-        <Text style={[theme.textH2, { padding: paddings.paddingL }]}>
+        <Text style={[TotaraTheme.textH2, { padding: paddings.paddingL }]}>
           Ooops!
         </Text>
-        <Text style={[theme.textRegular]}>Something went wrong</Text>
+        <Text style={[TotaraTheme.textRegular]}>Something went wrong</Text>
       </View>
       <View style={styles.actionContainer}>
         <PrimaryButton
