@@ -29,6 +29,116 @@ import { Grade } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 
+const commitData = (completeValue = scormLessonStatus.completed) => ({
+  scormid: "18",
+  attempt: "16",
+  scoid: "item_1",
+  commit: {
+    timestarted: 1592950901,
+    tracks: [
+      {
+        identifier: "item_1",
+        element: "cmi.core.lesson_status",
+        value: completeValue,
+        timemodified: 1592950921
+      },
+      {
+        identifier: "item_1",
+        element: "cmi.suspend_data",
+        value:
+          '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
+        timemodified: 1592950921
+      },
+      {
+        identifier: "item_1",
+        element: "cmi.interactions_0.id",
+        value: "5cd58e9cd35dedaa11771534",
+        timemodified: 1592950921
+      },
+      {
+        identifier: "item_1",
+        element: "cmi.interactions_0.type",
+        value: "matching",
+        timemodified: 1592950921
+      },
+      {
+        identifier: "item_1",
+        element: "cmi.interactions_0.student_response",
+        value: "1.2,2.1,3.1,4.1",
+        timemodified: 1592950921
+      },
+      {
+        identifier: "item_1",
+        element: "cmi.interactions_0.result",
+        value: "correct",
+        timemodified: 1592950921
+      },
+      {
+        identifier: "item_1",
+        element: "cmi.interactions_0.time",
+        value: "10:22:01",
+        timemodified: 1592950921
+      }
+    ]
+  },
+  cmi: {
+    core: {
+      score: { _children: "raw,min,max", raw: "", max: "", min: "" },
+      _children:
+        "student_id,student_name,lesson_location,credit,lesson_status,entry,score,total_time,lesson_mode,exit,session_time",
+      student_id: "kamala",
+      student_name: "Tennakoon, Kamala",
+      lesson_location: "",
+      credit: "credit",
+      lesson_status: completeValue,
+      entry: "ab-initio",
+      total_time: "00:00:00",
+      lesson_mode: "normal",
+      exit: "",
+      session_time: "00:00:00"
+    },
+    objectives: { _children: "id,score,status", _count: "0" },
+    student_data: {
+      _children: "mastery_score,max_time_allowed,time_limit_action",
+      mastery_score: "",
+      max_time_allowed: "",
+      time_limit_action: ""
+    },
+    student_preference: {
+      _children: "audio,language,speed,text",
+      audio: "0",
+      language: "",
+      speed: "0",
+      text: "0"
+    },
+    interactions: {
+      _children:
+        "id,objectives,time,type,correct_responses,weighting,student_response,result,latency",
+      _count: 1
+    },
+    evaluation: {
+      comments: { _count: "0", _children: "content,location,time" }
+    },
+    _children:
+      "core,suspend_data,launch_data,comments,objectives,student_data,student_preference,interactions",
+    _version: "3.4",
+    suspend_data:
+      '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
+    launch_data: "",
+    comments: "",
+    comments_from_lms: "",
+    interactions_0: {
+      objectives: { _count: 0 },
+      correct_responses: { _count: 0 },
+      id: "5cd58e9cd35dedaa11771534",
+      type: "matching",
+      student_response: "1.2,2.1,3.1,4.1",
+      result: "correct",
+      time: "10:22:01"
+    }
+  }
+});
+
 describe("retrieveAllData", () => {
   it("should call `readQuery` and return non empty object for existing cache data and empty object for non existing cache.", () => {
     const existingDataMock = {
@@ -98,144 +208,38 @@ describe("saveInTheCache", () => {
 describe("saveScormActivityData", () => {
   it("should call `saveInTheCache` for `completed` attempt with new formatted data, if there is no any existing cache.", () => {
     const client = useApolloClient();
-    const completedCommitData = {
-      scormid: "18",
-      attempt: "16",
-      scoid: "item_1",
-      commit: {
-        timestarted: 1592950901,
-        tracks: [
-          {
-            identifier: "item_1",
-            element: "cmi.core.lesson_status",
-            value: scormLessonStatus.completed,
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.suspend_data",
-            value:
-              '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.id",
-            value: "5cd58e9cd35dedaa11771534",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.type",
-            value: "matching",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.student_response",
-            value: "1.2,2.1,3.1,4.1",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.result",
-            value: "correct",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.time",
-            value: "10:22:01",
-            timemodified: 1592950921
-          }
-        ]
-      },
-      cmi: {
-        core: {
-          score: { _children: "raw,min,max", raw: "", max: "", min: "" },
-          _children:
-            "student_id,student_name,lesson_location,credit,lesson_status,entry,score,total_time,lesson_mode,exit,session_time",
-          student_id: "kamala",
-          student_name: "Tennakoon, Kamala",
-          lesson_location: "",
-          credit: "credit",
-          lesson_status: scormLessonStatus.completed,
-          entry: "ab-initio",
-          total_time: "00:00:00",
-          lesson_mode: "normal",
-          exit: "",
-          session_time: "00:00:00"
-        },
-        objectives: { _children: "id,score,status", _count: "0" },
-        student_data: {
-          _children: "mastery_score,max_time_allowed,time_limit_action",
-          mastery_score: "",
-          max_time_allowed: "",
-          time_limit_action: ""
-        },
-        student_preference: {
-          _children: "audio,language,speed,text",
-          audio: "0",
-          language: "",
-          speed: "0",
-          text: "0"
-        },
-        interactions: {
-          _children:
-            "id,objectives,time,type,correct_responses,weighting,student_response,result,latency",
-          _count: 1
-        },
-        evaluation: {
-          comments: { _count: "0", _children: "content,location,time" }
-        },
-        _children:
-          "core,suspend_data,launch_data,comments,objectives,student_data,student_preference,interactions",
-        _version: "3.4",
-        suspend_data:
-          '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
-        launch_data: "",
-        comments: "",
-        comments_from_lms: "",
-        interactions_0: {
-          objectives: { _count: 0 },
-          correct_responses: { _count: 0 },
-          id: "5cd58e9cd35dedaa11771534",
-          type: "matching",
-          student_response: "1.2,2.1,3.1,4.1",
-          result: "correct",
-          time: "10:22:01"
-        }
-      }
-    };
+
     const mockAttemptGrade = 10;
     const retrieveAllDataMock = jest.fn(() => ({}));
     const getGradeForAttemptMock = jest.fn(() => mockAttemptGrade);
     const saveInTheCacheMock = jest.fn();
 
+    const { attempt, scoid, cmi, commit } = commitData();
+
     const expectedResult = {
       "18": {
         cmi: {
-          [completedCommitData.attempt]: {
-            [completedCommitData.scoid]: completedCommitData.cmi
+          [attempt]: {
+            [scoid]: cmi
+          }
+        },
+        commits: {
+          [attempt]: {
+            [scoid]: commit
           }
         },
         offlineActivity: {
           attempts: [
             {
-              attempt: completedCommitData.attempt,
+              attempt,
               gradereported: mockAttemptGrade
             }
           ]
-        },
-        commits: {
-          [completedCommitData.attempt]: {
-            [completedCommitData.scoid]: completedCommitData.commit
-          }
         }
       }
     };
     saveScormActivityData({
-      data: completedCommitData,
+      data: commitData(),
       client,
       maxGrade: null,
       gradeMethod: Grade.highest,
@@ -253,120 +257,18 @@ describe("saveScormActivityData", () => {
   it("should call `saveInTheCache` with updated existing cache for `completed` attempt.", () => {
     const client = useApolloClient();
 
-    const completedCommitData = {
-      scormid: "18",
-      attempt: "16",
-      scoid: "item_1",
-      commit: {
-        timestarted: 1592950901,
-        tracks: [
-          {
-            identifier: "item_1",
-            element: "cmi.core.lesson_status",
-            value: scormLessonStatus.completed,
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.suspend_data",
-            value:
-              '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.id",
-            value: "5cd58e9cd35dedaa11771534",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.type",
-            value: "matching",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.student_response",
-            value: "1.2,2.1,3.1,4.1",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.result",
-            value: "correct",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.time",
-            value: "10:22:01",
-            timemodified: 1592950921
-          }
-        ]
-      },
-      cmi: {
-        core: {
-          score: { _children: "raw,min,max", raw: "", max: "", min: "" },
-          _children:
-            "student_id,student_name,lesson_location,credit,lesson_status,entry,score,total_time,lesson_mode,exit,session_time",
-          student_id: "kamala",
-          student_name: "Tennakoon, Kamala",
-          lesson_location: "",
-          credit: "credit",
-          lesson_status: scormLessonStatus.completed,
-          entry: "ab-initio",
-          total_time: "00:00:00",
-          lesson_mode: "normal",
-          exit: "",
-          session_time: "00:00:00"
-        },
-        objectives: { _children: "id,score,status", _count: "0" },
-        student_data: {
-          _children: "mastery_score,max_time_allowed,time_limit_action",
-          mastery_score: "",
-          max_time_allowed: "",
-          time_limit_action: ""
-        },
-        student_preference: {
-          _children: "audio,language,speed,text",
-          audio: "0",
-          language: "",
-          speed: "0",
-          text: "0"
-        },
-        interactions: {
-          _children:
-            "id,objectives,time,type,correct_responses,weighting,student_response,result,latency",
-          _count: 1
-        },
-        evaluation: {
-          comments: { _count: "0", _children: "content,location,time" }
-        },
-        _children:
-          "core,suspend_data,launch_data,comments,objectives,student_data,student_preference,interactions",
-        _version: "3.4",
-        suspend_data:
-          '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
-        launch_data: "",
-        comments: "",
-        comments_from_lms: "",
-        interactions_0: {
-          objectives: { _count: 0 },
-          correct_responses: { _count: 0 },
-          id: "5cd58e9cd35dedaa11771534",
-          type: "matching",
-          student_response: "1.2,2.1,3.1,4.1",
-          result: "correct",
-          time: "10:22:01"
-        }
-      }
-    };
+    const { scormid, attempt, scoid, cmi, commit } = commitData();
+
     const retrieveDataResultMock = {
       "18": {
         cmi: {
-          [completedCommitData.attempt]: {
-            [completedCommitData.scoid]: completedCommitData.cmi
+          [attempt]: {
+            [scoid]: cmi
+          }
+        },
+        commits: {
+          [attempt]: {
+            [scoid]: commit
           }
         },
         offlineActivity: {
@@ -376,11 +278,6 @@ describe("saveScormActivityData", () => {
               gradereported: "0"
             }
           ]
-        },
-        commits: {
-          [completedCommitData.attempt]: {
-            [completedCommitData.scoid]: completedCommitData.commit
-          }
         }
       }
     };
@@ -389,30 +286,30 @@ describe("saveScormActivityData", () => {
     const getGradeForAttemptMock = jest.fn(() => mockAttemptGrade);
     const saveInTheCacheMock = jest.fn();
     const newAttempts = retrieveDataResultMock[
-      completedCommitData.scormid
+      scormid
     ].offlineActivity.attempts.concat({
-      attempt: completedCommitData.attempt,
+      attempt,
       gradereported: mockAttemptGrade
     });
     const expectedResult = {
       "18": {
         cmi: {
-          [completedCommitData.attempt]: {
-            [completedCommitData.scoid]: completedCommitData.cmi
+          [attempt]: {
+            [scoid]: cmi
+          }
+        },
+        commits: {
+          [attempt]: {
+            [scoid]: commit
           }
         },
         offlineActivity: {
           attempts: newAttempts
-        },
-        commits: {
-          [completedCommitData.attempt]: {
-            [completedCommitData.scoid]: completedCommitData.commit
-          }
         }
       }
     };
     saveScormActivityData({
-      data: completedCommitData,
+      data: commitData(),
       client,
       maxGrade: null,
       gradeMethod: Grade.highest,
@@ -430,122 +327,13 @@ describe("saveScormActivityData", () => {
   it("should NOT proceed saving, if it is incomplete attempt.", () => {
     const client = useApolloClient();
 
-    const inCompleteCommitData = {
-      scormid: "18",
-      attempt: "16",
-      scoid: "item_1",
-      commit: {
-        timestarted: 1592950901,
-        tracks: [
-          {
-            identifier: "item_1",
-            element: "cmi.core.lesson_status",
-            value: scormLessonStatus.incomplete,
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.suspend_data",
-            value:
-              '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.id",
-            value: "5cd58e9cd35dedaa11771534",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.type",
-            value: "matching",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.student_response",
-            value: "1.2,2.1,3.1,4.1",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.result",
-            value: "correct",
-            timemodified: 1592950921
-          },
-          {
-            identifier: "item_1",
-            element: "cmi.interactions_0.time",
-            value: "10:22:01",
-            timemodified: 1592950921
-          }
-        ]
-      },
-      cmi: {
-        core: {
-          score: { _children: "raw,min,max", raw: "", max: "", min: "" },
-          _children:
-            "student_id,student_name,lesson_location,credit,lesson_status,entry,score,total_time,lesson_mode,exit,session_time",
-          student_id: "kamala",
-          student_name: "Tennakoon, Kamala",
-          lesson_location: "",
-          credit: "credit",
-          lesson_status: scormLessonStatus.incomplete,
-          entry: "ab-initio",
-          total_time: "00:00:00",
-          lesson_mode: "normal",
-          exit: "",
-          session_time: "00:00:00"
-        },
-        objectives: { _children: "id,score,status", _count: "0" },
-        student_data: {
-          _children: "mastery_score,max_time_allowed,time_limit_action",
-          mastery_score: "",
-          max_time_allowed: "",
-          time_limit_action: ""
-        },
-        student_preference: {
-          _children: "audio,language,speed,text",
-          audio: "0",
-          language: "",
-          speed: "0",
-          text: "0"
-        },
-        interactions: {
-          _children:
-            "id,objectives,time,type,correct_responses,weighting,student_response,result,latency",
-          _count: 1
-        },
-        evaluation: {
-          comments: { _count: "0", _children: "content,location,time" }
-        },
-        _children:
-          "core,suspend_data,launch_data,comments,objectives,student_data,student_preference,interactions",
-        _version: "3.4",
-        suspend_data:
-          '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
-        launch_data: "",
-        comments: "",
-        comments_from_lms: "",
-        interactions_0: {
-          objectives: { _count: 0 },
-          correct_responses: { _count: 0 },
-          id: "5cd58e9cd35dedaa11771534",
-          type: "matching",
-          student_response: "1.2,2.1,3.1,4.1",
-          result: "correct",
-          time: "10:22:01"
-        }
-      }
-    };
     const mockAttemptGrade = 10;
     const retrieveAllDataMock = jest.fn(() => ({}));
     const getGradeForAttemptMock = jest.fn(() => mockAttemptGrade);
     const saveInTheCacheMock = jest.fn();
 
     saveScormActivityData({
-      data: inCompleteCommitData,
+      data: commitData(scormLessonStatus.incomplete),
       client,
       maxGrade: null,
       gradeMethod: Grade.highest,
