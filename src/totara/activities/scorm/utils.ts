@@ -11,31 +11,27 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
+ *
+ * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
+import { get } from "lodash";
 
-import moment from "moment";
 import {
   AttemptGrade,
   Grade,
+  ScormActivityResult,
   ScormBundle,
   Scorm,
-  ScormActivityResult
+  GradeForAttemptProps
 } from "@totara/types/Scorm";
-import { translate } from "@totara/locale";
-import {
-  SECONDS_FORMAT,
-  scormActivityType,
-  FILE_EXTENSION,
-  scormLessonStatus
-} from "@totara/lib/constants";
-import { Log } from "@totara/lib";
-import { showMessage } from "@totara/lib/tools";
-import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
-import { setWith, get, values, remove, omit, isEmpty } from "lodash";
+import moment from "moment";
 import {
   OFFLINE_SCORM_PREFIX,
   offlineScormServerRoot,
-  scormZipPackagePath
+  scormZipPackagePath,
+  scormLessonStatus,
+  FILE_EXTENSION,
+  SECONDS_FORMAT
 } from "@totara/lib/constants";
 
 const getOfflineScormPackageName = (scormId: string) =>
@@ -72,23 +68,6 @@ const formatAttempts = (data: any): Scorm => {
     }
   }
   return scormData;
-};
-
-/**
- *
- * @param param0 - Object with the scorm id to fetch the cached activity records
- * @returns an object: the specific scorm cached data
- */
-const retrieveAllData = ({ client }): { [key: string]: ScormBundle } => {
-  try {
-    const { scormBundles } = client.readQuery({
-      query: scormActivitiesRecordsQuery
-    });
-    return scormBundles;
-  } catch (e) {
-    Log.debug("empty cache for ActivitiesRecords");
-  }
-  return {};
 };
 
 const getDataForScormSummary = (
@@ -184,318 +163,6 @@ const getDataForScormSummary = (
   return data;
 };
 
-type OnTapAttemptProps = {
-  callback: (action: scormActivityType, bundle: ScormBundle, data: any) => void;
-  scormBundle: ScormBundle | undefined;
-  isUserOnline: boolean;
-};
-
-const onTapContinueLastAttempt = ({
-  scormBundle,
-  isUserOnline,
-  callback
-}: OnTapAttemptProps) => () => {
-  if (isUserOnline) {
-    if (scormBundle) {
-      if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
-        const currentAttempt = scormBundle.scorm.attemptsCurrent
-          ? scormBundle.scorm.attemptsCurrent
-          : 0;
-        callback(scormActivityType.online, scormBundle, {
-          url: scormBundle.scorm.repeatUrl,
-          attempt: currentAttempt
-        });
-      } else {
-        Log.warn("Cannot find last attempt url.", scormBundle.scorm.repeatUrl);
-        showMessage({ text: translate("general.error_unknown") });
-      }
-    } else {
-      Log.warn("Cannot find scorm data.", scormBundle);
-      showMessage({ text: translate("general.error_unknown") });
-    }
-  }
-};
-
-type SaveScormActivityProps = {
-  data: any;
-  client: any;
-  maxGrade: number;
-  gradeMethod: Grade;
-  onGetGradeForAttempt?: (data: GradeForAttemptProps) => number;
-  onRetrieveAllData?: (data: CacheProps) => {};
-  onSaveInTheCache?: (data: CacheProps) => void;
-};
-const saveScormActivityData = ({
-  data,
-  client,
-  maxGrade,
-  gradeMethod,
-  onGetGradeForAttempt = getGradeForAttempt,
-  onRetrieveAllData = retrieveAllData,
-  onSaveInTheCache = saveInTheCache
-}: SaveScormActivityProps) => {
-  const scormId = data.scormid;
-  const attempt = data.attempt;
-  const scoId = data.scoid;
-  const cmiData = data.cmi;
-  const commitData = data.commit;
-
-  const status = get(data.cmi, "core.lesson_status", undefined);
-  if (status && status !== scormLessonStatus.incomplete) {
-    const scormBundles = onRetrieveAllData({ client });
-    let newData = { ...scormBundles };
-
-    setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
-
-    const reportCmiList = get(newData, `[${scormId}].cmi`);
-    const attemptGrade = onGetGradeForAttempt({
-      attemptCmi: reportCmiList,
-      maxGrade,
-      gradeMethod
-    });
-    const newAttemptGrade = { gradereported: attemptGrade, attempt: attempt };
-
-    const existingOfflineActivityData = get(
-      newData,
-      `[${scormId}].offlineActivity.attempts`,
-      []
-    );
-    if (existingOfflineActivityData && existingOfflineActivityData.length > 0) {
-      if (
-        existingOfflineActivityData[existingOfflineActivityData.length - 1]
-          .attempt === newAttemptGrade.attempt
-      ) {
-        existingOfflineActivityData.pop();
-      }
-    }
-    setWith(
-      newData,
-      `[${scormId}].offlineActivity.attempts`,
-      existingOfflineActivityData.concat([newAttemptGrade]),
-      Object
-    );
-
-    setWith(
-      newData,
-      `[${scormId}].commits[${attempt}][${scoId}]`,
-      commitData,
-      Object
-    );
-    onSaveInTheCache({
-      client,
-      scormBundles: newData
-    });
-  }
-};
-type CompletedScormAttemptProps = {
-  scormId: string;
-  attempt: number;
-  client: any;
-  onRetrieveAllData?: (data: CacheProps) => {};
-  onSaveInTheCache?: (data: CacheProps) => void;
-};
-
-const setCompletedScormAttempt = ({
-  scormId,
-  attempt,
-  client,
-  onRetrieveAllData = retrieveAllData,
-  onSaveInTheCache = saveInTheCache
-}: CompletedScormAttemptProps) => {
-  const scormBundles = onRetrieveAllData({ client });
-  let newData = { ...scormBundles };
-
-  const newCommitsData = get(newData, `completed_attempts.[${scormId}]`, []);
-  if (!newCommitsData.some((x) => x === attempt)) {
-    newCommitsData.push(attempt);
-    setWith(newData, `completed_attempts.[${scormId}]`, newCommitsData, Object);
-    onSaveInTheCache({
-      client,
-      scormBundles: newData
-    });
-  }
-};
-type OfflineActivityProps = {
-  client: any;
-  scormId: string;
-  onRetrieveAllData?: (data: CacheProps) => {};
-};
-const getOfflineLastActivityResult = ({
-  scormId,
-  client,
-  onRetrieveAllData = retrieveAllData
-}: OfflineActivityProps) => {
-  const scormBundles = onRetrieveAllData({ client });
-  const scormOfflineActivityReport = get(
-    scormBundles,
-    `[${scormId}].offlineActivity.attempts`,
-    undefined
-  );
-  if (scormOfflineActivityReport && scormOfflineActivityReport.length > 0) {
-    return scormOfflineActivityReport[scormOfflineActivityReport.length - 1];
-  }
-};
-
-const getOfflineActivity = ({
-  client,
-  scormId,
-  onRetrieveAllData = retrieveAllData
-}: OfflineActivityProps) => {
-  const cachedData = onRetrieveAllData({ client });
-
-  const offlineAttempts = get(
-    cachedData,
-    `[${scormId}].offlineActivity`,
-    undefined
-  );
-  if (offlineAttempts && Object.keys(offlineAttempts).length) {
-    return offlineAttempts;
-  }
-};
-
-/**
- * This is to allow the user to make decision to show the buttons
- * @param param0
- */
-const shouldAllowAttempt = ({
-  timeOpen,
-  maxAttempts,
-  totalAttempt,
-  actionPrimary,
-  actionSecondary
-}) =>
-  !timeOpen &&
-  (!maxAttempts || maxAttempts >= totalAttempt) &&
-  (actionPrimary || actionSecondary);
-
-const getOfflineScormCommits = ({ client }: { client: any }) => {
-  const allOfflineData = retrieveAllData({ client });
-  const completedScormAttempts = get(
-    allOfflineData,
-    `completed_attempts`,
-    undefined
-  );
-
-  const formattedUnsyncedData: [any?] = [];
-  if (completedScormAttempts) {
-    const scormIs = Object.keys(completedScormAttempts);
-    for (let keyIndex = 0; keyIndex < scormIs.length; keyIndex++) {
-      const scormId = scormIs[keyIndex];
-      const completedAttempts = completedScormAttempts[scormId];
-      for (
-        let indexAttempt = 0;
-        indexAttempt < completedAttempts.length;
-        indexAttempt++
-      ) {
-        const attempt = completedAttempts[indexAttempt];
-
-        const commitScormAttempt = get(
-          allOfflineData,
-          `${[scormId]}.commits[${[attempt]}]`,
-          undefined
-        );
-        if (commitScormAttempt) {
-          const commitTracks = values(commitScormAttempt).filter(
-            (value) => value
-          );
-          const commit = {
-            scormId: scormId,
-            attempt: parseInt(attempt),
-            tracks: commitTracks
-          };
-          formattedUnsyncedData.push(commit);
-        }
-      }
-    }
-    if (formattedUnsyncedData.length > 0) {
-      return formattedUnsyncedData;
-    }
-  }
-  return;
-};
-type CleanSyncScormCommitProps = {
-  client: any;
-  scormId: string;
-  attempt: number;
-  onRetrieveAllData?: (data: CacheProps) => {};
-  onSaveInTheCache?: (data: CacheProps) => void;
-};
-const clearSyncedScormCommit = ({
-  client,
-  scormId,
-  attempt,
-  onRetrieveAllData = retrieveAllData,
-  onSaveInTheCache = saveInTheCache
-}: CleanSyncScormCommitProps) => {
-  let allOfflineData = onRetrieveAllData({ client });
-
-  if (allOfflineData && !isEmpty(allOfflineData)) {
-    const completedScormAttempts = get(
-      allOfflineData,
-      `completed_attempts.[${scormId}]`,
-      undefined
-    );
-    if (completedScormAttempts) {
-      remove(completedScormAttempts, (num) => num == attempt);
-      if (!completedScormAttempts) {
-        allOfflineData = omit(allOfflineData, [
-          `completed_attempts.[${scormId}]`
-        ]);
-      } else {
-        setWith(
-          allOfflineData,
-          `completed_attempts.[${scormId}]`,
-          completedScormAttempts,
-          Object
-        );
-      }
-    }
-    allOfflineData = omit(allOfflineData, [
-      `[${scormId}].commits[${attempt}]`,
-      `[${scormId}].cmi[${attempt}]`
-    ]);
-    const existingOfflineActivityData = get(
-      allOfflineData,
-      `[${scormId}].offlineActivity.attempts`,
-      []
-    );
-    // record.attempt is string and attempt is number, so avoid checking type
-    remove(existingOfflineActivityData, (record) => record.attempt == attempt);
-    setWith(
-      allOfflineData,
-      `[${scormId}].offlineActivity.attempts`,
-      existingOfflineActivityData,
-      Object
-    );
-    onSaveInTheCache({
-      client,
-      scormBundles: allOfflineData
-    });
-  }
-  return true;
-};
-
-type CacheProps = {
-  client: any;
-  scormBundles?: { [key: string]: ScormBundle };
-};
-
-/**
- * This saves the map of scorm bundle with the new scormBunble in the cache
- * @param param0
- */
-const saveInTheCache = ({ client, scormBundles }: CacheProps) => {
-  try {
-    client.writeQuery({
-      query: scormActivitiesRecordsQuery,
-      data: {
-        scormBundles
-      }
-    });
-  } catch (e) {
-    console.warn("Scorm cache data saving error: ", e);
-  }
-};
 const calculatedAttemptsGrade = (
   attemptGrade: AttemptGrade,
   gradeMethod: Grade,
@@ -563,11 +230,7 @@ const getAttemptsGrade = (
       return attemptsReport[attemptsReport.length - 1].gradereported;
   }
 };
-type GradeForAttemptProps = {
-  attemptCmi: any;
-  maxGrade: number;
-  gradeMethod: Grade;
-};
+
 const getGradeForAttempt = ({
   attemptCmi,
   maxGrade,
@@ -608,46 +271,29 @@ const getGradeForAttempt = ({
   return getGrades()[gradeMethod];
 };
 
-type ScormAttemptDataProp = {
-  scormId: string;
-  attempt: number;
-  client: any;
-  onRetrieveAllData?: (data: CacheProps) => {};
-};
-// TODO - Need to review
-
-const getScormAttemptData = ({
-  client,
-  scormId,
-  attempt,
-  onRetrieveAllData = retrieveAllData
-}: ScormAttemptDataProp) => {
-  const cachedData = onRetrieveAllData({ client });
-
-  const attemptCmi = get(cachedData, `[${scormId}].cmi[${attempt}]`, undefined);
-  if (attemptCmi && Object.keys(attemptCmi).length) {
-    return attemptCmi;
-  }
-};
+/**
+ * This is to allow the user to make decision to show the buttons
+ * @param param0
+ */
+const shouldAllowAttempt = ({
+  timeOpen,
+  maxAttempts,
+  totalAttempt,
+  actionPrimary,
+  actionSecondary
+}) =>
+  !timeOpen &&
+  (!maxAttempts || maxAttempts >= totalAttempt) &&
+  (actionPrimary || actionSecondary);
 
 export {
-  formatAttempts,
-  getDataForScormSummary,
-  onTapContinueLastAttempt,
-  retrieveAllData,
-  saveScormActivityData,
-  getOfflineLastActivityResult,
   getOfflinePackageUnzipPath,
   getTargetZipFile,
-  shouldAllowAttempt,
   getOfflineScormPackageName,
-  setCompletedScormAttempt,
-  getOfflineActivity,
-  getOfflineScormCommits,
-  clearSyncedScormCommit,
+  formatAttempts,
+  getDataForScormSummary,
   calculatedAttemptsGrade,
   getAttemptsGrade,
   getGradeForAttempt,
-  saveInTheCache,
-  getScormAttemptData
+  shouldAllowAttempt
 };

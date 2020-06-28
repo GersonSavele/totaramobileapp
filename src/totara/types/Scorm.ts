@@ -103,3 +103,9 @@ export type ScormActivityParams = {
   backIcon?: string;
   backAction?: () => void;
 };
+
+export type GradeForAttemptProps = {
+  attemptCmi: any;
+  maxGrade: number;
+  gradeMethod: Grade;
+};

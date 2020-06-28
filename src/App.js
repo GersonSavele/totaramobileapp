@@ -40,7 +40,6 @@ import { config } from "@totara/lib";
 import { NAVIGATION, NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants";
 import FontAwesome from "@totara/lib/fontAwesome";
 import NotificationCenter from "@totara/lib/notificationCenter";
-import CoreResourceManager from "@totara/core/ResourceManager/ResourceManager";
 import ResourceManager from "@totara/lib/resourceManager";
 import { createStackNavigator } from "react-navigation-stack";
 import { scormStack } from "@totara/activities/scorm/ScormActivity";
@@ -59,10 +58,6 @@ NotificationCenter.handleMessagesInBackground();
 ResourceManager.resumeDownloads();
 
 const App: () => React$Node = () => {
-  useEffect(() => {
-    new CoreResourceManager().init();
-  }, []);
-
   return (
     <AuthProvider asyncStorage={AsyncStorage}>
       <ThemeProvider>

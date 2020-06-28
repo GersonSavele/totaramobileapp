@@ -25,7 +25,10 @@ import { useNetInfo } from "@react-native-community/netinfo";
 
 import { showMessage, Log } from "@totara/lib";
 import { translate } from "@totara/locale";
-import { getOfflineScormCommits, clearSyncedScormCommit } from "../utils";
+import {
+  getOfflineScormCommits,
+  clearSyncedScormCommit
+} from "../storageUtils";
 import { mutationAttempts } from "../api";
 
 type SyncData = {

@@ -38,12 +38,7 @@ import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
 import { RootState } from "@totara/reducers";
 import { scormQuery } from "./api";
 import { NAVIGATION } from "@totara/lib/constants";
-import {
-  formatAttempts,
-  getOfflinePackageUnzipPath,
-  getTargetZipFile,
-  getOfflineActivity
-} from "./utils";
+import { getOfflineActivity } from "./storageUtils";
 import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
 import ScormAttempts from "./ScormAttempts";
 import Loading from "@totara/components/Loading";
@@ -58,6 +53,11 @@ import { useApolloClient } from "@apollo/react-hooks";
 import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
 import ScormFeedback from "./ScormFeedback";
+import {
+  getTargetZipFile,
+  getOfflinePackageUnzipPath,
+  formatAttempts
+} from "./utils";
 
 const { download } = ResourceManager;
 

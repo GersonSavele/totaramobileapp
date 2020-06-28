@@ -35,16 +35,13 @@ import { Log } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
 
-import {
-  saveScormActivityData,
-  getOfflineScormPackageName,
-  getScormAttemptData
-} from "../utils";
+import { saveScormActivityData, getScormAttemptData } from "../storageUtils";
 import { offlineScormServerRoot } from "@totara/lib/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 import { ResourceType } from "@totara/types/Resource";
 import { NavigationStackProp } from "react-navigation-stack";
+import { getOfflineScormPackageName } from "../utils";
 
 type OfflineScormParams = {
   attempt: number;

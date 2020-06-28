@@ -43,11 +43,10 @@ import { AppliedTheme, TotaraTheme } from "@totara/theme/Theme";
 import { scormSummaryStyles } from "@totara/theme/scorm";
 import { NetworkStatus as ApolloNetworkStatus } from "apollo-boost";
 import {
-  getDataForScormSummary,
   setCompletedScormAttempt,
-  getOfflineLastActivityResult,
-  shouldAllowAttempt
-} from "./utils";
+  getOfflineLastActivityResult
+} from "./storageUtils";
+import { getDataForScormSummary, shouldAllowAttempt } from "./utils";
 import { navigateTo } from "@totara/lib/navigation";
 import { DATE_FORMAT_FULL, NAVIGATION } from "@totara/lib/constants";
 import { ScormBundle, Grade } from "@totara/types/Scorm";
