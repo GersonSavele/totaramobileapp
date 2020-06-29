@@ -333,6 +333,53 @@ const getScormPlayerInitialData = ({
   } as ScormPlayerProps;
 };
 
+const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
+  const _entrysrc = "'" + scormData.entrysrc + "'";
+  const _def = "'" + JSON.stringify(scormData.def) + "'";
+  const _cmiobj = "'" + JSON.stringify(scormData.obj) + "'";
+  const _cmiint = "'" + JSON.stringify(scormData.int) + "'";
+  const _scormdebugging = "'" + scormData.scormdebugging + "'";
+  const _scormauto = "'" + scormData.scormauto + "'";
+  const _scormid = "'" + scormData.scormid + "'";
+  const _scoid = "'" + scormData.scoid + "'";
+  const _attempt = "'" + scormData.attempt + "'";
+  const _autocommit = scormData.autocommit;
+  const _masteryoverride = scormData.masteryoverride;
+  const _hidetoc = "'" + scormData.hidetoc + "'";
+
+  return (
+    "{onInjectScormData(" +
+    _entrysrc +
+    ", " +
+    _def +
+    ", " +
+    _cmiobj +
+    ", " +
+    _cmiint +
+    ", " +
+    _scormdebugging +
+    ", " +
+    _scormauto +
+    ", " +
+    _scormid +
+    ", " +
+    _scoid +
+    ", " +
+    _attempt +
+    ", " +
+    _autocommit +
+    ", " +
+    _masteryoverride +
+    ", " +
+    _hidetoc +
+    ", " +
+    "'" +
+    JSON.stringify(cmi) +
+    "'" +
+    ")}"
+  );
+};
+
 export {
   getOfflinePackageUnzipPath,
   getTargetZipFile,
@@ -343,5 +390,6 @@ export {
   getAttemptsGrade,
   getGradeForAttempt,
   shouldAllowAttempt,
-  getScormPlayerInitialData
+  getScormPlayerInitialData,
+  scormDataIntoJsInitCode
 };
