@@ -15,7 +15,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-export default {
+jest.mock("react-native-fs", () => ({
   mkdir: jest.fn(),
   moveFile: jest.fn(),
   copyFile: jest.fn(),
@@ -56,5 +56,5 @@ export default {
   ExternalStorageDirectoryPath: jest.fn(),
   TemporaryDirectoryPath: jest.fn(),
   LibraryDirectoryPath: jest.fn(),
-  PicturesDirectoryPath: jest.fn(),
-};
+  PicturesDirectoryPath: jest.fn()
+}));

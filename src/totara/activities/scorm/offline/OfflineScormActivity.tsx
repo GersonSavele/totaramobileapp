@@ -25,10 +25,6 @@ import { Text, BackHandler } from "react-native";
 import StaticServer from "react-native-static-server";
 
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
-import {
-  initializeScormWebplayer,
-  isScormPlayerInitialized
-} from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline";
 import { Package, Grade, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
@@ -44,7 +40,8 @@ import { NavigationStackProp } from "react-navigation-stack";
 import {
   getOfflineScormPackageName,
   getScormPlayerInitialData,
-  scormDataIntoJsInitCode
+  scormDataIntoJsInitCode,
+  setupOfflineScormPlayer
 } from "../utils";
 
 type OfflineScormParams = {
@@ -58,6 +55,8 @@ type OfflineScormProps = {
   navigation: NavigationStackProp<OfflineScormParams>;
 };
 
+const getResources = (state: RootState) => state.resourceReducer.resources;
+
 const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   const { scorm, attempt, scoid, backAction } = navigation.state
     .params as OfflineScormParams;
@@ -69,17 +68,18 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
     );
   }
 
-  const resourcesList = useSelector(
-    (state: RootState) => state.resourceReducer.resources
-  );
+  const resourcesList = useSelector(getResources);
   const targetResource = resourcesList.find(
     (resource) =>
       resource.customId === scorm.id &&
       resource.type === ResourceType.ScormActivity
   );
-
   if (!targetResource) {
-    return <Text>{translate("general.error_unknown")}</Text>;
+    return (
+      <Text testID={"test_non_exist_resource"}>
+        {translate("general.error_unknown")}
+      </Text>
+    );
   }
 
   const server = useRef<StaticServer>(null);
@@ -175,18 +175,6 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
     stopServer();
   };
 
-  const setupOfflineScormPlayer = () => {
-    return isScormPlayerInitialized().then((isInit) => {
-      if (isInit) {
-        return offlineScormServerRoot;
-      } else {
-        return initializeScormWebplayer().then(() => {
-          return offlineScormServerRoot;
-        });
-      }
-    });
-  };
-
   const client = useApolloClient();
 
   const onPlayerMessageHandler = (messageData: any) => {
@@ -231,7 +219,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
           onMessageHandler={onPlayerMessageHandler}
         />
       ) : (
-        <Text>Player loading......</Text>
+        <Text testID={"text_player_loading"}>Player loading......</Text>
       )}
     </>
   );

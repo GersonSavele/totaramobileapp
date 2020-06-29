@@ -79,11 +79,6 @@ export type Package = {
   defaultSco?: Sco;
 };
 
-export type OfflineActivity = {
-  attempt: number;
-  scoid: string;
-};
-
 export type Attempt = {
   attempt: number;
   gradereported: number;

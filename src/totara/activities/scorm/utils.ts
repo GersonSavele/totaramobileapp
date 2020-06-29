@@ -35,6 +35,10 @@ import {
   FILE_EXTENSION,
   SECONDS_FORMAT
 } from "@totara/lib/constants";
+import {
+  initializeScormWebplayer,
+  isScormPlayerInitialized
+} from "@totara/activities/scorm/offline/SCORMFileHandler";
 
 type GetPlayerInitialDataProps = {
   scormId: string;
@@ -379,6 +383,18 @@ const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
   );
 };
 
+const setupOfflineScormPlayer = () => {
+  return isScormPlayerInitialized().then((isInit) => {
+    if (isInit) {
+      return offlineScormServerRoot;
+    } else {
+      return initializeScormWebplayer().then(() => {
+        return offlineScormServerRoot;
+      });
+    }
+  });
+};
+
 export {
   getOfflinePackageUnzipPath,
   getTargetZipFile,
@@ -390,5 +406,6 @@ export {
   getGradeForAttempt,
   shouldAllowAttempt,
   getScormPlayerInitialData,
-  scormDataIntoJsInitCode
+  scormDataIntoJsInitCode,
+  setupOfflineScormPlayer
 };
