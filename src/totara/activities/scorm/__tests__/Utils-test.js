@@ -96,7 +96,6 @@ describe("getDataForScormSummary", () => {
       description: undefined,
       totalAttempt: 0,
       calculatedGrade: undefined,
-      actionPrimary: false,
       actionSecondary: false,
       gradeMethod: undefined,
       attemptGrade: undefined,
@@ -104,7 +103,9 @@ describe("getDataForScormSummary", () => {
       timeOpen: undefined,
       maxAttempts: undefined,
       attempts: undefined,
-      completionScoreRequired: undefined
+      completionScoreRequired: undefined,
+      shouldAllowNewAttempt: false,
+      launchUrl: undefined
     };
     expect(getDataForScormSummary(true, undefined)).toEqual(
       expectResultDefault
@@ -115,32 +116,6 @@ describe("getDataForScormSummary", () => {
       description: "Title",
       totalAttempt: 1,
       calculatedGrade: "10%",
-      actionPrimary: true,
-      actionSecondary: false,
-      gradeMethod: Grade.highest,
-      attemptGrade: AttemptGrade.highest,
-      lastsynced: undefined,
-      timeOpen: undefined,
-      maxAttempts: undefined,
-      attempts: [
-        {
-          attempt: 1,
-          timestarted: null,
-          gradereported: 0
-        }
-      ],
-      completionScoreRequired: undefined
-    };
-    expect(getDataForScormSummary(true, scormBundle)).toEqual(
-      expectResultScormBundleOnline
-    );
-
-    const expectResultScormBundleOffline = {
-      name: "Creating a dynamic audience",
-      description: "Title",
-      totalAttempt: 1,
-      calculatedGrade: "10%",
-      actionPrimary: true,
       actionSecondary: false,
       gradeMethod: Grade.highest,
       attemptGrade: AttemptGrade.highest,
@@ -154,7 +129,35 @@ describe("getDataForScormSummary", () => {
           gradereported: 0
         }
       ],
-      completionScoreRequired: undefined
+      completionScoreRequired: undefined,
+      shouldAllowNewAttempt: true,
+      launchUrl: scormBundle.scorm.launchUrl
+    };
+    expect(getDataForScormSummary(true, scormBundle)).toEqual(
+      expectResultScormBundleOnline
+    );
+
+    const expectResultScormBundleOffline = {
+      name: "Creating a dynamic audience",
+      description: "Title",
+      totalAttempt: 1,
+      calculatedGrade: "10%",
+      actionSecondary: false,
+      gradeMethod: Grade.highest,
+      attemptGrade: AttemptGrade.highest,
+      lastsynced: moment.unix(scormBundle.lastsynced),
+      timeOpen: undefined,
+      maxAttempts: undefined,
+      attempts: [
+        {
+          attempt: 1,
+          timestarted: null,
+          gradereported: 0
+        }
+      ],
+      completionScoreRequired: undefined,
+      shouldAllowNewAttempt: true,
+      launchUrl: scormBundle.scorm.launchUrl
     };
     expect(getDataForScormSummary(false, scormBundle)).toEqual(
       expectResultScormBundleOffline
