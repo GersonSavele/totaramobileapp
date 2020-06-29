@@ -22,7 +22,9 @@ import {
   ScormActivityResult,
   ScormBundle,
   Scorm,
-  GradeForAttemptProps
+  GradeForAttemptProps,
+  ScormPlayerProps,
+  Sco
 } from "@totara/types/Scorm";
 import moment from "moment";
 import {
@@ -33,6 +35,15 @@ import {
   FILE_EXTENSION,
   SECONDS_FORMAT
 } from "@totara/lib/constants";
+
+type GetPlayerInitialDataProps = {
+  scormId: string;
+  scos: [Sco];
+  scoId: string;
+  attempt: number;
+  packageLocation: string;
+  playerInitalData: any;
+};
 
 const getOfflineScormPackageName = (scormId: string) =>
   `${OFFLINE_SCORM_PREFIX}${scormId}`;
@@ -286,6 +297,42 @@ const shouldAllowAttempt = ({
   (!maxAttempts || maxAttempts >= totalAttempt) &&
   (actionPrimary || actionSecondary);
 
+const getScormPlayerInitialData = ({
+  scormId,
+  scos,
+  scoId,
+  attempt,
+  packageLocation,
+  playerInitalData
+}: GetPlayerInitialDataProps) => {
+  const { defaults, interactions, objectives } = playerInitalData;
+  const selectedSCO: Sco | undefined = scos.find((sco) => sco.id === scoId);
+
+  const _entrysrc = `${packageLocation}/${selectedSCO!.launchSrc}`;
+  const _scormdebugging = false;
+  const _scormauto = 0;
+  const _scormid = scormId;
+  const _scoid = selectedSCO!.id;
+  const _autocommit = false;
+  const _masteryoverride = true;
+  const _hidetoc = 1;
+
+  return {
+    entrysrc: _entrysrc,
+    def: { ...defaults },
+    obj: { ...objectives },
+    int: { ...interactions },
+    scormdebugging: _scormdebugging,
+    scormauto: _scormauto,
+    scormid: _scormid,
+    scoid: _scoid,
+    attempt: attempt,
+    autocommit: _autocommit,
+    masteryoverride: _masteryoverride,
+    hidetoc: _hidetoc
+  } as ScormPlayerProps;
+};
+
 export {
   getOfflinePackageUnzipPath,
   getTargetZipFile,
@@ -295,5 +342,6 @@ export {
   calculatedAttemptsGrade,
   getAttemptsGrade,
   getGradeForAttempt,
-  shouldAllowAttempt
+  shouldAllowAttempt,
+  getScormPlayerInitialData
 };

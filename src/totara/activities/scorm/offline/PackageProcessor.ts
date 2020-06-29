@@ -35,6 +35,12 @@ const getScormPackageData = (packagPath: string) => {
   });
 };
 
+/**
+ * Based on the schema of SCORM 1.2 menifest file, it can be found here
+ * https://scorm.com/wp-content/assets/SchemaDefinitionFiles/SCORM%201.2%20Schema%20Definition/imsmanifest.xml
+ *
+ * @param manifestDom
+ */
 const getScosDataForPackage = (manifestDom: any) => {
   const resultOrganisations = xpath.evaluate(
     "//*[local-name(.)='organizations']/*[local-name()='organization']/@identifier",
@@ -43,7 +49,6 @@ const getScosDataForPackage = (manifestDom: any) => {
     xpath.XPathResult.ANY_TYPE, // resultType
     null // result
   );
-
   let organizationNode = resultOrganisations.iterateNext();
   let scos = [];
   while (organizationNode) {
@@ -63,7 +68,7 @@ const getScosDataForPackage = (manifestDom: any) => {
       const sco: Sco = {
         id: itemNode.nodeValue,
         organizationId: organizationNode.nodeValue,
-        launchSrc: valLaunchUrl,
+        launchSrc: valLaunchUrl
       };
       scos.push(sco);
       itemNode = itemResult.iterateNext();
@@ -118,7 +123,7 @@ const getInitialScormLoadData = (manifestDom: any) => {
   return {
     id: defaultScoId,
     organizationId: defaultOrgizationId,
-    launchSrc: defaultLaunchSrc,
+    launchSrc: defaultLaunchSrc
   };
 };
 

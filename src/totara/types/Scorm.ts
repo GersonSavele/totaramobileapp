@@ -109,3 +109,18 @@ export type GradeForAttemptProps = {
   maxGrade: number;
   gradeMethod: Grade;
 };
+
+export type ScormPlayerProps = {
+  entrysrc: string;
+  def: any;
+  obj: any;
+  int: any;
+  scormdebugging: boolean;
+  scormauto: number;
+  scormid: string;
+  scoid: string;
+  attempt: number;
+  autocommit: boolean;
+  masteryoverride: boolean;
+  hidetoc: number;
+};

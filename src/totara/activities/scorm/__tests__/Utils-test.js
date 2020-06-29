@@ -19,7 +19,8 @@ import {
   getDataForScormSummary,
   calculatedAttemptsGrade,
   getAttemptsGrade,
-  getGradeForAttempt
+  getGradeForAttempt,
+  getScormPlayerInitialData
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
@@ -499,5 +500,53 @@ describe("calculatedAttemptsGrade", () => {
         null
       )
     ).toEqual("60");
+  });
+});
+
+describe("getScormPlayerInitialData", () => {
+  it("should return initialize data for scomr player", () => {
+    const scormId = "1";
+    const attempt = 1;
+    const scoId = "sco-1";
+    const scos = [
+      { id: "sco-1", organizationId: "org-1", launchSrc: "sco-1/index.html" },
+      { id: "sco-2", organizationId: "org-1", launchSrc: "sco-2/index.html" }
+    ];
+    const packageLocation = "path/packagName";
+    const playerInitalData = {
+      defaults: {
+        "sco-1": "initial default data 1",
+        "sco-2": "initial default data 2"
+      },
+      objectives: {
+        "sco-1": "initial objective data 1",
+        "sco-2": "initial objective data 2"
+      },
+      interactions: {
+        "sco-1": "initial interaction data 1",
+        "sco-2": "initial interaction data 2"
+      }
+    };
+    const result = getScormPlayerInitialData({
+      scormId,
+      scos,
+      scoId,
+      attempt,
+      packageLocation,
+      playerInitalData
+    });
+
+    expect(result.entrysrc).toBe(packageLocation + "/sco-1/index.html");
+    expect(result.def).toMatchObject(playerInitalData.defaults);
+    expect(result.obj).toMatchObject(playerInitalData.objectives);
+    expect(result.int).toMatchObject(playerInitalData.interactions);
+    expect(result.scormdebugging).toBeFalsy();
+    expect(result.scormauto).toBe(0);
+    expect(result.scormid).toBe(scormId);
+    expect(result.scoid).toBe(scoId);
+    expect(result.attempt).toBe(attempt);
+    expect(result.autocommit).toBeFalsy();
+    expect(result.masteryoverride).toBeTruthy();
+    expect(result.hidetoc).toBe(1);
   });
 });

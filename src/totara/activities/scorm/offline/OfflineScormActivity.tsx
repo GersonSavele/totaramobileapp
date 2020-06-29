@@ -41,7 +41,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 import { ResourceType } from "@totara/types/Resource";
 import { NavigationStackProp } from "react-navigation-stack";
-import { getOfflineScormPackageName } from "../utils";
+import {
+  getOfflineScormPackageName,
+  getScormPlayerInitialData
+} from "../utils";
 
 type OfflineScormParams = {
   attempt: number;
@@ -117,8 +120,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
 
   useEffect(() => {
     if (url && scos) {
-      // TODO - need to review
-      // getScormAttemptData(scorm.id, attempt).then((cmiData) => {
+      const { id, defaultCMI } = scorm;
       const cmiData = getScormAttemptData({
         scormId: scorm.id,
         attempt,
@@ -127,16 +129,19 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
       const selectedScoId = scoid || (defaultSco && defaultSco.id!);
       const lastActivityCmi =
         cmiData && cmiData[selectedScoId] ? cmiData[selectedScoId] : null;
-      const cmi = getScormPackageCMI(
-        scorm.id,
+      const cmi = getScormPlayerInitialData({
+        scormId: id,
         scos,
-        selectedScoId,
+        scoId: selectedScoId,
         attempt,
-        getOfflineScormPackageName(scorm.id),
-        scorm.defaultCMI
-      );
+        packageLocation: getOfflineScormPackageName(scorm.id),
+        playerInitalData: {
+          defaults: JSON.parse(defaultCMI.defaults),
+          interactions: JSON.parse(defaultCMI.interactions),
+          objectives: JSON.parse(defaultCMI.objectives)
+        }
+      });
       setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
-      // });
     }
   }, [scormPackageData, url]);
 
@@ -209,62 +214,6 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
     } else {
       return Promise.reject("Cannot find offline package data");
     }
-  };
-
-  const getScormPackageCMI = (
-    scormId: string,
-    scos: [Sco],
-    scoId: string,
-    attempt: number,
-    packageLocation: string,
-    defaultCMI: any
-  ) => {
-    let selectedSCO: Sco | null = null;
-    let _defaultsCmi: any = {};
-    let _interactionsCmi: any = {};
-    let _objectivesCmi: any = {};
-    const defaultsData = JSON.parse(defaultCMI.defaults);
-    const interactionsData = JSON.parse(defaultCMI.interactions);
-    const objectivesData = JSON.parse(defaultCMI.objectives);
-
-    if (scos) {
-      for (let index = 0; index < scos.length; index++) {
-        const tmpSCO = scos[index];
-        if (scoId && tmpSCO.id === scoId) {
-          selectedSCO = tmpSCO;
-        }
-
-        const tmpScoId: string = tmpSCO.id!;
-
-        _defaultsCmi[tmpScoId] = defaultsData[tmpScoId];
-        _interactionsCmi[tmpScoId] = interactionsData[tmpScoId];
-        _objectivesCmi[tmpScoId] = objectivesData[tmpScoId];
-      }
-    }
-
-    const _entrysrc = `${packageLocation}/${selectedSCO!.launchSrc}`;
-    const _scormdebugging = false;
-    const _scormauto = 0;
-    const _scormid = scormId;
-    const _scoid = selectedSCO!.id;
-    const _autocommit = false;
-    const _masteryoverride = true;
-    const _hidetoc = 1;
-
-    return {
-      entrysrc: _entrysrc,
-      def: _defaultsCmi,
-      obj: _objectivesCmi,
-      int: _interactionsCmi,
-      scormdebugging: _scormdebugging,
-      scormauto: _scormauto,
-      scormid: _scormid,
-      scoid: _scoid,
-      attempt: attempt,
-      autocommit: _autocommit,
-      masteryoverride: _masteryoverride,
-      hidetoc: _hidetoc
-    };
   };
 
   const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
