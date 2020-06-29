@@ -16,7 +16,6 @@ Please contact [sales@totaralearning.com] for more information.
 */
 
 import { Completion } from "./Completion";
-import { Criteria } from "./Criteria";
 
 export interface CourseGroup {
   id: number;
@@ -37,7 +36,7 @@ export interface CourseSets {
   id: number;
   label: string;
   nextsetoperator: string;
-  completionCriteria: [Criteria];
+  completionCriteria: string;
   courses: [Courses];
 }
 

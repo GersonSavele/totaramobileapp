@@ -22,7 +22,7 @@ import {
   completionTrack,
   completionStatus,
   completionIconStateKey
-} from "@totara/lib/constants";
+} from "../constants";
 import { CircleIcon } from "@totara/components";
 import { Images } from "@resources/images";
 import { margins } from "@totara/theme/constants";

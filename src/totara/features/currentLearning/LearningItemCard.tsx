@@ -29,16 +29,14 @@ import {
   ViewStyle,
   ImageSourcePropType
 } from "react-native";
-import React, { useContext } from "react";
-
+import React from "react";
 import { LearningItem } from "@totara/types";
-import DueDateState from "./DueDateState";
+import DueDateState from "../../components/DueDateState";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { learningItemEnum } from "@totara/lib/constants";
-import { AuthContext } from "@totara/core";
+import { learningItemEnum } from "./constants";
 import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
-import { RemoteImage } from "@totara/components/index";
+import { ImageWrapper } from "@totara/components/index";
 
 interface Props {
   item: LearningItem;
@@ -84,10 +82,6 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
 
 const ImageElement = ({ item, imageStyle, image }: Props) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-  const apiKey = appState!.apiKey;
   return (
     <View
       style={[imageStyleSheet, { backgroundColor: TotaraTheme.colorNeutral3 }]}>
@@ -95,7 +89,7 @@ const ImageElement = ({ item, imageStyle, image }: Props) => {
         <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />
       )}
       {image && image.length > 0 ? (
-        <RemoteImage url={image} apiKey={apiKey} style={styles.imageWrap} />
+        <ImageWrapper url={image} style={styles.imageWrap} />
       ) : (
         <DefaultImage item={item} />
       )}

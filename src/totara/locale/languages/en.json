@@ -76,7 +76,7 @@
     }
   },
 
-  "totara-component": {
+  "totara_component": {
     "section_title_continue_learn": "Continue your learning",
     "due_in": "Due in",
     "extend_date": "Extend Date",
@@ -238,5 +238,9 @@
       "message": "Are you sure you want to logout?"
     },
     "about": "About"
+  },
+
+  "navigation_stack":{
+    "view_criteria":"View criteria"
   }
 }

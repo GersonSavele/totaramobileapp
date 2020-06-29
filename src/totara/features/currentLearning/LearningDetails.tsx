@@ -19,16 +19,15 @@ import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { NavigationContext } from "react-navigation";
 import ParallaxScrollView from "./ParallaxScrollView";
-import { CardElement, ImageElement } from "@totara/components";
+import { CardElement, ImageElement } from "./LearningItemCard";
 import { showMessage } from "@totara/lib";
-import { normalize } from "@totara/theme";
-import { CourseGroup, Course } from "@totara/types";
 import { headerViewStyles } from "./currentLearningStyles";
 import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { fontWeights } from "@totara/theme/constants";
 
 type Props = {
-  details: CourseGroup | Course;
+  details: any;
   children: ReactNode;
   tabBarLeftTitle: string;
   tabBarRightTitle: string;
@@ -125,7 +124,7 @@ const LearningDetails = ({
   return (
     <View style={headerViewStyles.container}>
       <ParallaxScrollView
-        parallaxHeaderHeight={normalize(260)}
+        parallaxHeaderHeight={260}
         renderBackground={backgroundViewRender}
         tabBar={renderNavigationTab}
         titleBar={renderNavigationTitle}
@@ -163,8 +162,8 @@ const styles = StyleSheet.create({
     color: TotaraTheme.colorNeutral6
   },
   overviewTextTouchableOpacity: {
-    fontWeight: "bold",
-    color: TotaraTheme.colorNeutral8
+    ...TotaraTheme.textRegular,
+    fontWeight: fontWeights.fontWeightBold
   },
   overviewTouchableOpacity: {
     borderBottomColor: TotaraTheme.colorNeutral7,

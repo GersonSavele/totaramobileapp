@@ -33,9 +33,6 @@ const SECONDS_FORMAT = "X";
 const PLATFORM_IOS = "ios";
 const PLATFORM_ANDROID = "";
 
-const NAVIGATION_SETTING = "Settings";
-const NAVIGATION_MY_LEARNING = "MyLearning";
-
 const SCREEN_WIDTH_X_LARGE = "xlarge";
 const SCREEN_WIDTH_LARGE = "large";
 const SCREEN_WIDTH_MEDIUM = "medium";
@@ -46,70 +43,6 @@ const DEBUG_MODE = __DEV__;
 const DEV_ORG_URL = "mobile.demo.totara.software";
 const DEV_USERNAME = "kamala";
 const DEV_PASSWORD = "Abcd123$";
-
-/**
- * Types of learning cards
- * This is based on data from the server side
- */
-enum learningItemEnum {
-  Course = "course",
-  Program = "program",
-  Certification = "certification"
-}
-
-// Navigation screen ids, based on how we name the route ids
-//current learning
-const NAVIGATION_CURRENT_LEARNING = "CurrentLearning";
-const NAVIGATION_COURSE_DETAILS = "CourseDetails";
-const NAVIGATION_COURSE_GROUP_DETAILS = "CourseGroupDetails"; //either LearningItemEnum.Program or LearningItemEnum.Certificate
-
-//scorm routes
-const NAVIGATION_SCORM_STACK_ROOT = "ScormActivityStack";
-const NAVIGATION_WEBVIEW_ACTIVITY = "WebviewActivity";
-const NAVIGATION_SCORM_ROOT = "ScormActivity";
-const NAVIGATION_SCORM_ATTEMPTS = "ScormAttempts";
-const NAVIGATION_OFFLINE_SCORM_ACTIVITY = "OfflineScormActivity";
-const NAVIGATION_SCORM_FEEDBACK = "ScormFeedback";
-
-const NAVIGATION_PROFILE = "Profile";
-const NAVIGATION_ABOUT = "About";
-const NAVIGATION_SETTINGS = "Settings";
-
-const itemToRouteMap = {
-  [learningItemEnum.Course]: NAVIGATION_COURSE_DETAILS,
-  [learningItemEnum.Program]: NAVIGATION_COURSE_GROUP_DETAILS,
-  [learningItemEnum.Certification]: NAVIGATION_COURSE_GROUP_DETAILS
-};
-
-enum completionTrack {
-  trackingManual = "tracking_manual",
-  trackingNone = "tracking_none",
-  trackingAutomatic = "tracking_automatic"
-}
-
-enum completionStatus {
-  incomplete = "incomplete",
-  complete = "complete",
-  completePass = "complete_pass",
-  completeFail = "complete_fail",
-  unknown = "unknown"
-}
-
-enum courseCriteria {
-  selfComplete = "Self completion"
-}
-
-enum activityModType {
-  scorm = "scorm"
-}
-
-enum completionIconStateKey {
-  notAvailable = "notAvailable",
-  completed = "completed",
-  autoIncomplete = "autoIncomplete",
-  manualIncomplete = "manualIncomplete",
-  completeFail = "completeFail"
-}
 
 /* SCORM related */
 
@@ -127,18 +60,6 @@ enum scormLessonStatus {
   failed = "failed"
 }
 
-const NAVIGATION = {
-  NAVIGATION_PROFILE,
-  NAVIGATION_ABOUT,
-  NAVIGATION_SETTINGS,
-  NAVIGATION_SCORM_STACK_ROOT,
-  NAVIGATION_SCORM_ROOT,
-  NAVIGATION_SCORM_ATTEMPTS,
-  NAVIGATION_SCORM_FEEDBACK,
-  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
-  NAVIGATION_WEBVIEW_ACTIVITY
-};
-
 export {
   DEVICE_REGISTRATION,
   WEBVIEW_SECRET,
@@ -148,12 +69,6 @@ export {
   SECONDS_FORMAT,
   PLATFORM_IOS,
   PLATFORM_ANDROID,
-  NAVIGATION_CURRENT_LEARNING,
-  NAVIGATION_COURSE_DETAILS,
-  NAVIGATION_COURSE_GROUP_DETAILS,
-  NAVIGATION_SETTING,
-  NAVIGATION_MY_LEARNING,
-  NAVIGATION,
   SCREEN_WIDTH_X_LARGE,
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,
@@ -165,13 +80,6 @@ export {
   OFFLINE_SCORM_PREFIX,
   FILE_EXTENSION,
   scormLessonStatus,
-  completionTrack,
-  completionStatus,
-  learningItemEnum,
-  itemToRouteMap,
-  courseCriteria,
   scormZipPackagePath,
-  offlineScormServerRoot,
-  activityModType,
-  completionIconStateKey
+  offlineScormServerRoot
 };

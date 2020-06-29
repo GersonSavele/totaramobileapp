@@ -15,22 +15,28 @@
  */
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
-import {
-  NAVIGATION_COURSE_DETAILS,
-  NAVIGATION_COURSE_GROUP_DETAILS,
-  NAVIGATION_CURRENT_LEARNING,
-  NAVIGATION
-} from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/navigation";
+import { Text, TouchableOpacity } from "react-native";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
-import CurrentLearning from "./carouselItems/CurrentLearning";
+import CurrentLearning from "./learningItems/CurrentLearning";
 import CourseDetails from "./course/CourseDetails";
-import CourseGroupDetails from "./courseGroup/CourseGroupDetails";
+import { CourseGroupDetails, CourseList } from "./courseGroup";
 import { TouchableIcon } from "@totara/components";
 import { WebviewActivity } from "@totara/activities/webview/WebviewActivity";
-const { NAVIGATION_WEBVIEW_ACTIVITY } = NAVIGATION;
+const {
+  WEBVIEW_ACTIVITY,
+  CURRENT_LEARNING,
+  COURSE_DETAILS,
+  COURSE_GROUP_DETAILS,
+  COURSE_LIST
+} = NAVIGATION;
+import { paddings } from "@totara/theme/constants";
+import { courseSet } from "./courseGroupStyle";
+import { translate } from "@totara/locale";
+
 const CurrentLearningStack = createStackNavigator(
   {
-    [NAVIGATION_CURRENT_LEARNING]: {
+    [CURRENT_LEARNING]: {
       screen: CurrentLearning as any,
       navigationOptions: ({ navigation }: any) =>
         totaraNavigationOptions({
@@ -38,7 +44,7 @@ const CurrentLearningStack = createStackNavigator(
           opacity: navigation.getParam("opacity")
         })
     },
-    [NAVIGATION_COURSE_DETAILS]: {
+    [COURSE_DETAILS]: {
       screen: CourseDetails as any,
       navigationOptions: ({ navigation }: any) =>
         totaraNavigationOptions({
@@ -46,15 +52,35 @@ const CurrentLearningStack = createStackNavigator(
           opacity: navigation.getParam("opacity")
         })
     },
-    [NAVIGATION_COURSE_GROUP_DETAILS]: {
-      screen: CourseGroupDetails,
+    [COURSE_GROUP_DETAILS]: {
+      screen: CourseGroupDetails as any,
       navigationOptions: ({ navigation }: any) =>
         totaraNavigationOptions({
           title: navigation.getParam("title"),
           opacity: navigation.getParam("opacity")
         })
     },
-    [NAVIGATION_WEBVIEW_ACTIVITY]: {
+    [COURSE_LIST]: {
+      screen: CourseList as any,
+      navigationOptions: ({ navigation }: any) =>
+        totaraNavigationOptions({
+          title: navigation.getParam("title"),
+          opacity: navigation.getParam("opacity"),
+          rightAction: (
+            <TouchableOpacity
+              onPress={() => {
+                // @ts-ignore
+                navigation.emit("viewCriteriaTap");
+              }}
+              style={{ paddingHorizontal: paddings.paddingL }}>
+              <Text style={courseSet.criteriaButtonTitle}>
+                {translate("navigation_stack.view_criteria")}
+              </Text>
+            </TouchableOpacity>
+          )
+        })
+    },
+    [WEBVIEW_ACTIVITY]: {
       screen: WebviewActivity,
       navigationOptions: ({ navigation }) => {
         const { onClose } = navigation.state.params;

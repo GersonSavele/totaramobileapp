@@ -7,7 +7,7 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
       "alignItems": "center",
       "flex": 1,
       "justifyContent": "center",
-      "padding": 24,
+      "padding": 8,
     }
   }
 >
@@ -20,7 +20,7 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
     style={
       Object {
         "height": 375,
-        "paddingBottom": 48,
+        "paddingBottom": 16,
         "resizeMode": "contain",
         "width": 525,
       }
@@ -28,18 +28,14 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
   />
   <Text
     style={
-      Array [
-        Object {
-          "color": "#000000",
-          "fontSize": 34,
-          "fontWeight": "700",
-          "lineHeight": 41,
-        },
-        Object {
-          "alignItems": "flex-start",
-          "marginVertical": 48,
-        },
-      ]
+      Object {
+        "alignItems": "flex-start",
+        "color": "#000000",
+        "fontSize": 20,
+        "fontWeight": "400",
+        "lineHeight": 25,
+        "marginVertical": 16,
+      }
     }
   >
     translated current_learning.no_learning_message with undefined

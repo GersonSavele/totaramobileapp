@@ -28,8 +28,8 @@ import ResourceManager from "@totara/lib/resourceManager";
 import listViewStyles from "@totara/theme/listView";
 import DownloadItem from "./DownloadItem";
 import { navigateTo } from "@totara/lib/navigation";
-import { NAVIGATION } from "@totara/lib/constants";
-const { NAVIGATION_SCORM_ROOT } = NAVIGATION;
+import { NAVIGATION } from "@totara/lib/navigation";
+const { SCORM_ROOT } = NAVIGATION;
 
 const Downloads = () => {
   const [theme] = useContext(ThemeContext);
@@ -89,7 +89,7 @@ const Downloads = () => {
     if (!selectable) {
       navigateTo({
         navigate: navigation.navigate,
-        routeId: NAVIGATION_SCORM_ROOT,
+        routeId: SCORM_ROOT,
         props: {
           id: item.customId,
           title: item.name

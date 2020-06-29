@@ -20,11 +20,6 @@
  *
  */
 
-import {
-  LearningItemCard,
-  CardElement,
-  ImageElement
-} from "./LearningItemCard";
 import DueDateState from "./DueDateState";
 import CircleIcon from "./CircleIcon";
 import { AddBadge, CheckBadge } from "./AddBadge";
@@ -49,12 +44,9 @@ import Separator from "./Separator";
 import LoadingError from "./LoadingError";
 import NetworkStatus from "./NetworkStatus";
 import Loading from "./Loading";
-import RemoteImage from "./RemoteImage";
+import ImageWrapper from "./ImageWrapper";
 
 export {
-  LearningItemCard,
-  CardElement,
-  ImageElement,
   AddBadge,
   DueDateState,
   CircleIcon,
@@ -80,5 +72,5 @@ export {
   Loading,
   LoadingError,
   NetworkStatus,
-  RemoteImage
+  ImageWrapper
 };

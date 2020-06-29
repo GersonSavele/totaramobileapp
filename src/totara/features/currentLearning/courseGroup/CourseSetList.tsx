@@ -13,84 +13,81 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { NavigationContext } from "react-navigation";
 import { CourseSets } from "@totara/types/CourseGroup";
-import { ImageElement } from "@totara/components";
 import { translate } from "@totara/locale";
-import { NAVIGATION_COURSE_DETAILS } from "@totara/lib/constants";
+import { courseSet, horizontalList } from "../courseGroupStyle";
+import Restriction from "../Restriction";
+import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
-import { courseSet } from "../courseGroupStyle";
-import { margins, paddings } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-
-const renderItem = (navigation) => {
-  const LearningItems = ({ item }: any) => (
-    <View style={courseSet.container}>
-      <View style={courseSet.learningItem}>
-        <View style={courseSet.itemContainer}>
-          <View
-            style={{
-              backgroundColor: TotaraTheme.colorNeutral2,
-              height: 54,
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}>
-            <Text
-              style={{
-                ...TotaraTheme.textHeadline,
-                marginLeft: 16,
-                alignSelf: "flex-end",
-                marginBottom: 4
-              }}>
-              {item.label}
-            </Text>
-            <TouchableOpacity
-              style={courseSet.criteriaButton}
-              onPress={() => {}}
-              activeOpacity={1.0}>
-              <Text
-                style={{
-                  ...TotaraTheme.textMedium,
-                  marginRight: 16,
-                  alignSelf: "flex-end",
-                  marginBottom: 4
-                }}>
-                {translate("course_group.course_set.criteria")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </View>
-  );
-
-  return LearningItems;
-};
-
-// const Row = ()=>{
-//   return(
-//     // <View style = {{}}>
-//     //   <ImageElement
-//     // </View>
-//   )
-// }
+import LearningItemRow from "./LearningItemRow";
 
 const CourseSetList = ({ courseSetList }: { courseSetList: [CourseSets] }) => {
+  const [show, setShow] = useState(false);
+  const onClose = () => {
+    setShow(!show);
+  };
+
   const navigation = useContext(NavigationContext);
   const [, ...list] = courseSetList;
-  console.log("print ----", list);
+
+  const renderItems = (navigation) => {
+    const LearningItems = ({ item }: any) => (
+      <View style={courseSet.container}>
+        <TouchableOpacity
+          style={horizontalList.listWrapper}
+          key={item.id}
+          onPress={() =>
+            navigateTo({
+              navigate: navigation.navigate,
+              routeId: NAVIGATION.COURSE_LIST,
+              props: { coursesList: item }
+            })
+          }
+          activeOpacity={1.0}>
+          <View style={courseSet.itemContainer}>
+            <View style={courseSet.headerBar}>
+              <Text style={courseSet.headerTitle}>{item.label}</Text>
+              <TouchableOpacity
+                style={courseSet.criteria}
+                onPress={onClose}
+                activeOpacity={1.0}>
+                <Text style={courseSet.criteriaButtonTitle}>
+                  {translate("course_group.course_set.criteria")}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              {item.courses.length > 0 && (
+                <LearningItemRow
+                  course={item.courses[0]}
+                  navigation={navigation}
+                />
+              )}
+              {item.courses.length > 1 && (
+                <LearningItemRow
+                  course={item.courses[1]}
+                  navigation={navigation}
+                />
+              )}
+            </View>
+          </View>
+        </TouchableOpacity>
+        {show && (
+          <Restriction title={item.completionCriteria} onClose={onClose} />
+        )}
+      </View>
+    );
+    return LearningItems;
+  };
+
   return (
-    <View
-      style={{
-        marginVertical: margins.marginL,
-        backgroundColor: TotaraTheme.colorNeutral2
-      }}>
-      <View style={{ height: 60 }}></View>
+    <View style={horizontalList.container}>
       <FlatList
         data={list}
-        renderItem={renderItem(navigation)}
+        renderItem={renderItems(navigation)}
         keyExtractor={(_, id) => id.toString()}
         showsHorizontalScrollIndicator={false}
         horizontal={true}

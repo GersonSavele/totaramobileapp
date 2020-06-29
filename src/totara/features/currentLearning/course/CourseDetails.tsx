@@ -22,7 +22,7 @@ import {
   Text,
   Switch
 } from "react-native";
-import { NavigationContext } from "react-navigation";
+import { NavigationContext, NavigationParams } from "react-navigation";
 import { GeneralErrorModal } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
@@ -34,11 +34,10 @@ import OverviewDetails from "../overview/Details";
 import { TotaraTheme } from "@totara/theme/Theme";
 import LearningDetails from "../LearningDetails";
 import CourseCompletionModal from "../CourseCompletionModal";
-import { learningItemEnum } from "@totara/lib/constants";
+import { learningItemEnum } from "../constants";
 import { courseStyle } from "../currentLearningStyles";
 
-const CourseDetails = () => {
-  const navigation = useContext(NavigationContext);
+const CourseDetails = ({ navigation }: NavigationParams) => {
   const courseId = navigation.getParam("targetId");
   const { loading, error, data, refetch } = useQuery(coreCourse, {
     variables: { courseid: courseId }
@@ -49,7 +48,6 @@ const CourseDetails = () => {
   if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
-    console.log("pritn ccc");
     return (
       <ScrollView
         style={courseStyle.scrollView}

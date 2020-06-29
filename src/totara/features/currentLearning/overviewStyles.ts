@@ -15,25 +15,25 @@
  */
 
 import { StyleSheet, Dimensions } from "react-native";
-import { normalize } from "@totara/theme";
 import {
   borderRadius,
   margins,
   paddings,
-  shadow
+  shadow,
+  fontWeights
 } from "@totara/theme/constants";
-import { TotaraTheme, AppliedTheme } from "@totara/theme/Theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 
-const gradePrefixText = (theme: AppliedTheme) => {
+const gradePrefixText = () => {
   return {
-    ...theme.textHeadline,
-    fontWeight: "bold"
+    ...TotaraTheme.textHeadline,
+    fontWeight: fontWeights.fontWeightBold
   };
 };
 
-const labelWrap = (theme: AppliedTheme) => {
+const labelWrap = () => {
   return {
-    ...theme.textRegular,
+    ...TotaraTheme.textRegular,
     textAlign: "center"
   };
 };
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     marginHorizontal: margins.marginXS
   },
   contentWrap: {
-    borderRadius: normalize(10),
+    borderRadius: borderRadius.borderRadiusM,
     overflow: "hidden",
     flexDirection: "row",
     justifyContent: "center",
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     maxWidth: Dimensions.get("window").width * 0.6
   },
   gradeMaxTextWrap: {
-    fontWeight: "normal",
+    fontWeight: fontWeights.fontWeightNormal,
     alignSelf: "flex-end"
   },
   horizontalSeparator: {

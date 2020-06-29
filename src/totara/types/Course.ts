@@ -23,7 +23,7 @@
 import { Section } from "./LearningItem";
 import { Completion } from "./Completion";
 import { Criteria } from "./Criteria";
-import { learningItemEnum } from "@totara/lib/constants";
+import { learningItemEnum } from "@totara/features/currentLearning/constants";
 
 export interface CourseContentDetails {
   course: Course;

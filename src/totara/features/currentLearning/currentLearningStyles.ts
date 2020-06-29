@@ -15,13 +15,13 @@
  */
 
 import { StyleSheet, Dimensions, ViewStyle } from "react-native";
-import { normalize, gutter } from "@totara/theme";
+import { gutter } from "@totara/theme";
 import {
   margins,
   paddings,
   iconSizes,
   borderRadius,
-  viewHeight
+  fontWeights
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
@@ -41,21 +41,18 @@ const bottomSheetStyles = StyleSheet.create({
     flex: 1
   },
   criteriaText: {
-    fontSize: normalize(17),
-    fontWeight: "normal",
+    ...TotaraTheme.textRegular,
     alignSelf: "flex-start"
   },
   requirementText: {
     marginTop: margins.marginS,
     marginBottom: margins.marginL,
-    fontSize: normalize(15),
-    fontWeight: "normal",
+    ...TotaraTheme.textSmall,
     opacity: 0.48,
     alignSelf: "flex-start"
   },
   statusText: {
-    fontSize: normalize(11),
-    fontWeight: "normal",
+    ...TotaraTheme.textXXSmall,
     opacity: 0.48,
     alignSelf: "flex-end"
   },
@@ -92,8 +89,7 @@ const bottomSheetStyles = StyleSheet.create({
   },
   nameViewWrap: {
     alignSelf: "flex-start",
-    fontSize: normalize(17),
-    fontWeight: "600",
+    ...TotaraTheme.textRegular,
     justifyContent: "center"
   },
   bodySeparator: {
@@ -113,16 +109,15 @@ const bottomSheetStyles = StyleSheet.create({
     height: "95%"
   },
   availableReasonTitleWrap: {
-    fontWeight: "bold",
-    fontSize: normalize(22)
+    ...TotaraTheme.textHeadline,
+    fontWeight: fontWeights.fontWeightBold
   },
   restrictionViewList: {
     backgroundColor: TotaraTheme.colorAccent,
     height: "100%"
   },
   availableReasonTextWrap: {
-    fontSize: normalize(17),
-    fontWeight: "normal",
+    ...TotaraTheme.textRegular,
     alignSelf: "flex-start",
     color: TotaraTheme.colorNeutral8,
     backgroundColor: TotaraTheme.colorAccent,
@@ -160,16 +155,16 @@ const headerViewStyles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: viewHeight.learningItemHeaderMaxHeight,
-    minHeight: viewHeight.learningItemHeaderMinHeight,
+    maxHeight: 280,
+    minHeight: 260,
     backgroundColor: TotaraTheme.colorNeutral2
   },
   itemImage: {
-    minHeight: viewHeight.learningItemImageMaxHeight
+    minHeight: 160
   },
   itemCard: {
-    maxHeight: viewHeight.learningItemTitleMaxHeight,
-    minHeight: viewHeight.learningItemTitleMinHeight,
+    maxHeight: 85,
+    minHeight: 60,
     backgroundColor: TotaraTheme.colorNeutral2
   },
   LearningTypeLabelWrap: {
@@ -195,9 +190,7 @@ const headerViewStyles = StyleSheet.create({
     flex: 1
   },
   programLabelText: {
-    fontSize: normalize(11),
-    fontWeight: "500",
-    fontStyle: "normal",
+    ...TotaraTheme.textXXSmall,
     textAlign: "center",
     paddingLeft: paddings.paddingL,
     paddingRight: paddings.paddingL,
@@ -272,10 +265,7 @@ const courseStyle = StyleSheet.create({
     justifyContent: "space-between"
   },
   expandTextWrap: {
-    color: TotaraTheme.colorNeutral8,
-    fontSize: normalize(17),
-    fontWeight: "normal",
-    fontStyle: "normal"
+    ...TotaraTheme.textMedium
   },
   scrollView: {
     flex: 1,

@@ -28,17 +28,17 @@ import {
 import { useQuery } from "@apollo/react-hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { AuthConsumer, AuthContext } from "@totara/core";
+import { AuthConsumer } from "@totara/core";
 import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
-import { NAVIGATION } from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/navigation";
 import { userOwnProfile } from "./api";
 
 import { translate } from "@totara/locale";
 import { NetworkStatus as NS } from "apollo-boost";
 import { Container } from "native-base";
 import { margins, paddings } from "@totara/theme/constants";
-import { Loading, NetworkStatus, RemoteImage } from "@totara/components";
+import { Loading, NetworkStatus, ImageWrapper } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { NavigationContext } from "react-navigation";
 
@@ -72,10 +72,6 @@ const Profile = () => {
 
 const ProfileView = ({ profile }: ProfileViewProps) => {
   const navigation = useContext(NavigationContext);
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-  const apiKey = appState!.apiKey;
 
   const confirmationLogout = (auth) =>
     Alert.alert(
@@ -93,7 +89,7 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
     );
 
   const goToAbout = () => {
-    navigation.navigate(NAVIGATION.NAVIGATION_ABOUT);
+    navigation.navigate(NAVIGATION.ABOUT);
   };
 
   const useDefaultImage =
@@ -104,11 +100,7 @@ const ProfileView = ({ profile }: ProfileViewProps) => {
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
         <View style={styles.headerContent}>
           {!useDefaultImage ? (
-            <RemoteImage
-              url={profile.profileimage}
-              apiKey={apiKey}
-              style={styles.avatar}
-            />
+            <ImageWrapper url={profile.profileimage} style={styles.avatar} />
           ) : (
             <View style={styles.avatar}>
               <FontAwesomeIcon

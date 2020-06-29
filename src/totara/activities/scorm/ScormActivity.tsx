@@ -37,7 +37,7 @@ import { TouchableIcon } from "@totara/components";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
 import { RootState } from "@totara/reducers";
 import { scormQuery } from "./api";
-import { NAVIGATION } from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/navigation";
 import { getOfflineActivity } from "./storageUtils";
 import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
 import ScormAttempts from "./ScormAttempts";
@@ -62,11 +62,11 @@ import {
 const { download } = ResourceManager;
 
 const {
-  NAVIGATION_SCORM_ROOT,
-  NAVIGATION_SCORM_STACK_ROOT,
-  NAVIGATION_SCORM_ATTEMPTS,
-  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
-  NAVIGATION_SCORM_FEEDBACK
+  SCORM_ROOT,
+  SCORM_STACK_ROOT,
+  SCORM_ATTEMPTS,
+  OFFLINE_SCORM_ACTIVITY,
+  SCORM_FEEDBACK
 } = NAVIGATION;
 
 type ScormActivityProps = {
@@ -179,7 +179,7 @@ const ScormActivity = (props: ScormActivityProps) => {
   const headerDispatch = (params) => {
     const setParamsAction = NavigationActions.setParams({
       params,
-      key: NAVIGATION_SCORM_ROOT
+      key: SCORM_ROOT
     });
     navigation.dispatch(setParamsAction);
   };
@@ -230,31 +230,31 @@ const navigationOptions = ({ navigation }) => {
 
 const innerStack = createStackNavigator(
   {
-    [NAVIGATION_SCORM_ROOT]: {
+    [SCORM_ROOT]: {
       screen: ScormActivity,
       navigationOptions
     },
-    [NAVIGATION_SCORM_ATTEMPTS]: {
+    [SCORM_ATTEMPTS]: {
       screen: ScormAttempts,
       navigationOptions
     },
-    [NAVIGATION_OFFLINE_SCORM_ACTIVITY]: {
+    [OFFLINE_SCORM_ACTIVITY]: {
       screen: OfflineScormActivity,
       navigationOptions
     }
   },
   {
-    initialRouteKey: NAVIGATION_SCORM_ROOT,
-    initialRouteName: NAVIGATION_SCORM_ROOT
+    initialRouteKey: SCORM_ROOT,
+    initialRouteName: SCORM_ROOT
   }
 );
 
 const scormStack = createStackNavigator(
   {
-    [NAVIGATION_SCORM_STACK_ROOT]: {
+    [SCORM_STACK_ROOT]: {
       screen: innerStack
     },
-    [NAVIGATION_SCORM_FEEDBACK]: {
+    [SCORM_FEEDBACK]: {
       screen: ScormFeedback,
       navigationOptions
     }

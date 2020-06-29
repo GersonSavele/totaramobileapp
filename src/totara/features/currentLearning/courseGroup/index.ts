@@ -13,4 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-export { default } from "./CourseGroupDetails";
+import CourseGroupDetails from "./CourseGroupDetails";
+import CourseList from "./CourseList";
+
+export { CourseGroupDetails, CourseList };

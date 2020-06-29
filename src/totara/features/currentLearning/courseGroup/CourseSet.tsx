@@ -13,16 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { NavigationContext } from "react-navigation";
 import { CourseSets } from "@totara/types/CourseGroup";
-import { ImageElement } from "@totara/components";
+import { ImageElement } from "../LearningItemCard";
 import { translate } from "@totara/locale";
-import { NAVIGATION_COURSE_DETAILS } from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import { courseSet } from "../courseGroupStyle";
 import { margins } from "@totara/theme/constants";
+import Restriction from "../Restriction";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -37,7 +38,7 @@ const renderItem = (navigation) => {
         onPress={() =>
           navigateTo({
             navigate: navigation.navigate,
-            routeId: NAVIGATION_COURSE_DETAILS,
+            routeId: NAVIGATION.COURSE_DETAILS,
             props: { targetId: item.id }
           })
         }
@@ -66,13 +67,17 @@ const renderItem = (navigation) => {
 
 const CourseSet = ({ courseSets }: CourseSetProps) => {
   const navigation = useContext(NavigationContext);
+  const [show, setShow] = useState(false);
+  const onClose = () => {
+    setShow(!show);
+  };
   return (
     <View style={{ marginTop: margins.marginXL }}>
       <View style={courseSet.courseSetHeader}>
         <Text style={courseSet.title}>{courseSets.label}</Text>
         <TouchableOpacity
           style={courseSet.criteriaButton}
-          onPress={() => {}}
+          onPress={onClose}
           activeOpacity={1.0}>
           <Text style={courseSet.criteriaButtonTitle}>
             {translate("course_group.course_set.criteria")}
@@ -94,6 +99,9 @@ const CourseSet = ({ courseSets }: CourseSetProps) => {
           </Text>
           <View style={courseSet.separator} />
         </View>
+      )}
+      {show && (
+        <Restriction title={courseSets.completionCriteria} onClose={onClose} />
       )}
     </View>
   );

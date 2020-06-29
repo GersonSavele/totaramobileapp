@@ -37,13 +37,15 @@ import { FeatureNavigator } from "@totara/features";
 import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { config } from "@totara/lib";
-import { NAVIGATION, NAVIGATION_SCORM_STACK_ROOT } from "@totara/lib/constants";
+import { NAVIGATION } from "@totara/lib/navigation";
 import FontAwesome from "@totara/lib/fontAwesome";
 import NotificationCenter from "@totara/lib/notificationCenter";
 import ResourceManager from "@totara/lib/resourceManager";
 import { createStackNavigator } from "react-navigation-stack";
 import { scormStack } from "@totara/activities/scorm/ScormActivity";
 import AboutStack from "@totara/features/about/AboutStack";
+
+const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
 
 if (!__DEV__) {
   Sentry.init({
@@ -83,10 +85,10 @@ const rootStack = () =>
       FeatureNavigator: {
         screen: FeatureNavigator()
       },
-      [NAVIGATION_SCORM_STACK_ROOT]: {
+      [SCORM_STACK_ROOT]: {
         screen: scormStack
       },
-      [NAVIGATION.NAVIGATION_ABOUT]: {
+      [ABOUT]: {
         screen: AboutStack
       }
     },

@@ -15,27 +15,19 @@
  */
 
 import { StyleSheet } from "react-native";
-import { normalize } from "@totara/theme";
-import {
-  margins,
-  viewHeight,
-  fontSizes,
-  fontWeights
-} from "@totara/theme/constants";
+import { margins, fontWeights } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 const styles = StyleSheet.create({
   rowTitle: {
-    alignSelf: "flex-start",
-    fontSize: normalize(fontSizes.fontSizeM),
-    fontWeight: fontWeights.fontWeightNormal,
+    ...TotaraTheme.textRegular,
     justifyContent: "center",
-    color: TotaraTheme.colorNeutral8
+    alignSelf: "flex-start"
   },
   sectionView: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: viewHeight.activitySectionHeight,
+    height: 58,
     marginHorizontal: margins.marginL,
     alignItems: "center"
   },
@@ -45,28 +37,28 @@ const styles = StyleSheet.create({
     flex: 1
   },
   rowContent: {
-    height: normalize(fontSizes.fontSize3XL),
+    height: 68,
     justifyContent: "flex-start",
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-    marginHorizontal: normalize(margins.marginL)
+    marginHorizontal: margins.marginL
   },
   rowTextContainer: {
-    height: viewHeight.activityContainerHeight,
+    height: 45,
     justifyContent: "center",
     marginRight: margins.marginL
   },
   sectionNotAvailable: {
-    fontSize: normalize(fontSizes.fontSizeM),
-    textAlign: "right",
-    margin: margins.marginS,
+    ...TotaraTheme.textRegular,
+    color: TotaraTheme.colorLink,
     flex: 1,
-    color: TotaraTheme.colorLink
+    textAlign: "right",
+    margin: margins.marginS
   },
   sectionTitle: {
     ...TotaraTheme.textHeadline,
-    fontWeight: "bold",
+    fontWeight: fontWeights.fontWeightBold,
     flex: 2
   },
   labelContainer: {
@@ -75,7 +67,7 @@ const styles = StyleSheet.create({
   },
   labelTextDescription: {
     textAlign: "left",
-    fontSize: normalize(17)
+    ...TotaraTheme.textRegular
   }
 });
 

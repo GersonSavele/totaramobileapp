@@ -14,7 +14,7 @@
  *
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
@@ -25,20 +25,19 @@ import {
 } from "react-native";
 
 import { PrimaryButton } from "@totara/components";
-import { gutter, resizeByScreenSize, ThemeContext } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/core";
+import { margins, paddings } from "@totara/theme/constants";
 
 const NoCurrentLearning = () => {
-  const [theme] = useContext(ThemeContext);
-
   return (
     <View style={styles.containerStyle}>
       <Image
         style={styles.imageContainer}
         source={require("@resources/images/no_current_learning/no_current_learning.png")}
       />
-      <Text style={[theme.textH2, styles.description]}>
+      <Text style={styles.description}>
         {translate("current_learning.no_learning_message")}
       </Text>
       <AuthConsumer>
@@ -67,17 +66,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: gutter
+    padding: paddings.paddingL
   },
   imageContainer: {
     height: Dimensions.get("window").width * 0.5,
     width: Dimensions.get("window").width * 0.7,
     resizeMode: "contain",
-    paddingBottom: resizeByScreenSize(32, 32, 48, 48)
+    paddingBottom: margins.marginL
   },
   description: {
     alignItems: "flex-start",
-    marginVertical: resizeByScreenSize(32, 32, 48, 48)
+    marginVertical: margins.marginL,
+    ...TotaraTheme.textMedium
   }
 });
 

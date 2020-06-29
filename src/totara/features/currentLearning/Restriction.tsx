@@ -17,21 +17,20 @@ import React, { useRef, useEffect } from "react";
 import { View, Modal, TouchableOpacity, Text } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import BottomSheet from "reanimated-bottom-sheet";
-import { bottomSheetStyles } from "../currentLearningStyles";
+import { bottomSheetStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type Props = {
-  availableReason?: string;
+  title?: string;
   onClose: () => void;
 };
 
-const Restriction = ({ availableReason = "", onClose }: Props) => {
+const Restriction = ({ title = "", onClose }: Props) => {
   const bottomDrawerRef = useRef<any>(null);
 
   useEffect(() => {
     bottomDrawerRef.current.snapTo(0);
   }, [bottomDrawerRef]);
-  var result = availableReason.split(":");
   const renderBottomSheetHeader = () => {
     return (
       <View style={bottomSheetStyles.headerViewWrap}>
@@ -49,11 +48,6 @@ const Restriction = ({ availableReason = "", onClose }: Props) => {
             <View style={bottomSheetStyles.indicatorWrap}></View>
           </View>
         </View>
-        <View style={bottomSheetStyles.container}>
-          <Text style={bottomSheetStyles.availableReasonTitleWrap}>
-            {result.length > 0 && result[0]}
-          </Text>
-        </View>
       </View>
     );
   };
@@ -62,9 +56,9 @@ const Restriction = ({ availableReason = "", onClose }: Props) => {
     return (
       <View style={bottomSheetStyles.restrictionViewList}>
         <Text
-          numberOfLines={1}
+          numberOfLines={3}
           style={bottomSheetStyles.availableReasonTextWrap}>
-          {result.length > 1 && result[1]}
+          {title}
         </Text>
       </View>
     );

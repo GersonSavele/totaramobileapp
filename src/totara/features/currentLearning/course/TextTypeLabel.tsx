@@ -15,8 +15,6 @@
 
 import React from "react";
 import { Text, View } from "react-native";
-
-import { TotaraTheme } from "@totara/theme/Theme";
 import styles from "../activitiesStyles";
 
 type ActivityLabelProps = {
@@ -29,8 +27,7 @@ const TextTypeLabel = ({ label = {} }: ActivityLabelProps) => {
       {description ? (
         <Text
           style={{
-            ...styles.labelTextDescription,
-            color: TotaraTheme.colorNeutral6
+            ...styles.labelTextDescription
           }}>
           {description}
         </Text>

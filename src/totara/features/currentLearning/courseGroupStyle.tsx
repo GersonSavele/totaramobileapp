@@ -21,8 +21,7 @@ import {
   paddings,
   borderRadius,
   fontWeights,
-  viewHeight,
-  viewWidth
+  row
 } from "@totara/theme/constants";
 
 const details = StyleSheet.create({
@@ -54,6 +53,7 @@ const courses = StyleSheet.create({
     borderColor: TotaraTheme.textColorDark
   },
   buttonTextTitle: {
+    ...TotaraTheme.textRegular,
     textAlign: "center",
     fontWeight: fontWeights.fontWeightBold,
     paddingHorizontal: paddings.padding3XL,
@@ -101,12 +101,11 @@ const courseSet = StyleSheet.create({
   },
   container: {
     margin: margins.marginL,
-    width: viewWidth.courseSetItemWidth,
-    height: viewHeight.courseSetItemHeight
+    width: 335,
+    height: 224
   },
   learningItem: {
     borderRadius: borderRadius.borderRadiusM,
-
     shadowOpacity: 0.1,
     shadowRadius: borderRadius.borderRadiusM,
     shadowColor: TotaraTheme.colorNeutral8,
@@ -149,7 +148,69 @@ const courseSet = StyleSheet.create({
   courseDetails: {
     flex: 1,
     marginHorizontal: margins.marginL
+  },
+
+  headerBar: {
+    backgroundColor: TotaraTheme.colorNeutral2,
+    height: 54,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end"
+  },
+  headerTitle: {
+    ...TotaraTheme.textRegular,
+    marginLeft: margins.marginL,
+    marginBottom: margins.marginS,
+    fontWeight: fontWeights.fontWeightSemiBold
+  },
+  criteria: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    marginRight: margins.marginL,
+    marginBottom: margins.marginS
   }
 });
 
-export { details, courses, courseSet };
+const rowItem = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    marginHorizontal: margins.marginL,
+    marginTop: margins.marginL,
+    paddingEnd: paddings.paddingXL,
+    alignItems: "center"
+  },
+  imageWrapper: {
+    height: row.icon.size,
+    width: row.icon.size,
+    borderRadius: borderRadius.borderRadiusS
+  },
+  detailsWrapper: {
+    marginHorizontal: margins.marginL,
+    marginVertical: margins.marginS,
+    alignContent: "center"
+  },
+  courseName: {
+    ...TotaraTheme.textRegular,
+    fontWeight: fontWeights.fontWeightSemiBold
+  },
+  courseSummary: {
+    ...TotaraTheme.textSmall,
+    fontWeight: fontWeights.fontWeightNormal,
+    opacity: 0.48
+  }
+});
+
+const horizontalList = StyleSheet.create({
+  container: {
+    marginVertical: margins.marginL,
+    backgroundColor: TotaraTheme.colorNeutral2,
+    paddingTop: paddings.padding2XL
+  },
+  listWrapper: {
+    borderRadius: borderRadius.borderRadiusM,
+    shadowOpacity: 0.075,
+    backgroundColor: TotaraTheme.colorNeutral1
+  }
+});
+
+export { details, courses, courseSet, rowItem, horizontalList };

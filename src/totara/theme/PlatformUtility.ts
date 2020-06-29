@@ -19,22 +19,15 @@
  * $author
  */
 
-import { Dimensions, PixelRatio } from "react-native";
+import { Dimensions } from "react-native";
 import {
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,
   SCREEN_WIDTH_SMALL,
-  SCREEN_WIDTH_X_LARGE,
+  SCREEN_WIDTH_X_LARGE
 } from "@totara/lib/constants";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-
-const scale = SCREEN_WIDTH / 414;
-
-export function normalize(size: number) {
-  const newSize = size * scale;
-  return Math.round(PixelRatio.roundToNearestPixel(newSize));
-}
 
 export const deviceSize = () => {
   if (SCREEN_WIDTH > 414) {

@@ -31,7 +31,7 @@ import CriteriaSheet from "./CriteriaSheet";
 import CourseCompletionModal from "../CourseCompletionModal";
 import { Criteria } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
-import { courseCriteria } from "@totara/lib/constants";
+import { courseCriteria } from "../constants";
 import { styles, gradePrefixText, labelWrap } from "../overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -89,7 +89,6 @@ const Details = ({
 };
 
 const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
-  const [theme] = useContext(ThemeContext);
   return (
     <TouchableOpacity
       style={styles.container}
@@ -98,14 +97,14 @@ const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
       <View style={styles.contentWrap}>
         <View style={styles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={gradePrefixText(theme)}>
+            <Text style={gradePrefixText()}>
               {gradeFinal.length > 0 ? gradeFinal : 0}
             </Text>
           </View>
         </View>
         <View style={styles.horizontalSeparator} />
         <View style={styles.carouselTextContainer}>
-          <Text numberOfLines={1} style={labelWrap(theme)}>
+          <Text numberOfLines={1} style={labelWrap()}>
             {translate("course.course_overview_grade.title")}
           </Text>
         </View>

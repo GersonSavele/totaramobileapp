@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { View, ScrollView, RefreshControl } from "react-native";
-import { NavigationContext } from "react-navigation";
+import { NavigationParams } from "react-navigation";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import Courses from "./Courses";
@@ -30,8 +30,7 @@ type CourseGroupProps = {
   courseGroup: CourseGroup;
 };
 
-const CourseGroupDetails = () => {
-  const navigation = useContext(NavigationContext);
+const CourseGroupDetails = ({ navigation }: NavigationParams) => {
   const programId = navigation.getParam("targetId");
   const { loading, error, data, refetch } = useQuery(coreProgram, {
     variables: { programid: programId }
@@ -40,7 +39,7 @@ const CourseGroupDetails = () => {
   const pullToRefresh = () => {
     refetch();
   };
-  console.log("print ------", data);
+
   if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {

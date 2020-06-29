@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
-import Restriction from "./Restriction";
+import Restriction from "../Restriction";
 import TextTypeLabel from "./TextTypeLabel";
 import CompletionIcon from "./CompletionIcon";
 import styles from "../activitiesStyles";
@@ -31,12 +31,11 @@ import { translate } from "@totara/locale";
 import {
   activityModType,
   completionStatus,
-  completionTrack,
-  NAVIGATION
-} from "@totara/lib/constants";
-import { navigateTo } from "@totara/lib/navigation";
+  completionTrack
+} from "../constants";
+import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete } from "../course/api";
-const { NAVIGATION_SCORM_ROOT, NAVIGATION_WEBVIEW_ACTIVITY } = NAVIGATION;
+const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivityListProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
@@ -130,7 +129,7 @@ const RestrictionSectionHeader = ({
       </TouchableOpacity>
       {show && (
         <Restriction
-          availableReason={availableReason == null ? "" : availableReason}
+          title={availableReason == null ? "" : availableReason}
           onClose={onClose}
         />
       )}
@@ -247,7 +246,7 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
               case activityModType.scorm: {
                 navigateTo({
                   navigate: navigation.navigate,
-                  routeId: NAVIGATION_SCORM_ROOT,
+                  routeId: SCORM_ROOT,
                   props: {
                     id: item.instanceid.toString(),
                     title: item.name
@@ -258,7 +257,7 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
               default: {
                 navigateTo({
                   navigate: navigation.navigate,
-                  routeId: NAVIGATION_WEBVIEW_ACTIVITY,
+                  routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
                     onClose: courseRefreshCallBack
@@ -298,9 +297,7 @@ const RowLock = ({ item }: { item: Activity }) => {
         </TouchableOpacity>
         {show && (
           <Restriction
-            availableReason={
-              item.availablereason == null ? "" : item.availablereason
-            }
+            title={item.availablereason == null ? "" : item.availablereason}
             onClose={onClose}
           />
         )}

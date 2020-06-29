@@ -14,9 +14,9 @@
  *
  */
 
-import React, { useState, ReactNode, useContext } from "react";
+import React, { useState, ReactNode } from "react";
 import { Animated, Dimensions, View, LayoutChangeEvent } from "react-native";
-import { ThemeContext, normalize } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 import { parallaxScrollViewStyles } from "./currentLearningStyles";
 
 type Props = {
@@ -52,7 +52,6 @@ const ParallaxScrollView = ({
 }: Props) => {
   const [viewHeight, setViewHeight] = useState(window.height);
   const [viewWidth, setViewWidth] = useState(window.width);
-  const [theme] = useContext(ThemeContext);
 
   const updateViewDimensions = (e: LayoutChangeEvent) => {
     const {
@@ -66,13 +65,13 @@ const ParallaxScrollView = ({
     }
   };
 
-  const onScroll = (e: LayoutChangeEvent) => {
-    const y = e.nativeEvent.contentOffset.y - (p + normalize(40));
+  const onScroll = (e: any) => {
+    const y = e.nativeEvent.contentOffset.y - (p + 40);
     onChangeHeaderVisibility(y);
   };
 
   const p = parallaxHeaderHeight;
-  const containerStyles = [{ backgroundColor: theme.colorAccent }];
+  const containerStyles = [{ backgroundColor: TotaraTheme.colorAccent }];
   return (
     // Background image scrolling...
     <View
@@ -82,26 +81,26 @@ const ParallaxScrollView = ({
         style={[
           parallaxScrollViewStyles.backgroundImage,
           {
-            backgroundColor: theme.colorAccent,
+            backgroundColor: TotaraTheme.colorAccent,
             height: parallaxHeaderHeight,
             width: viewWidth,
             opacity: interpolate(scrollY, {
               inputRange: [0, p * (1 / 2), p * (3 / 4), p],
-              outputRange: [1, 0.9, 0.9, 0.7],
+              outputRange: [1, 0.9, 0.9, 0.9],
               extrapolate: "clamp"
             }),
             transform: [
               {
                 translateY: interpolate(scrollY, {
                   inputRange: [0, p],
-                  outputRange: [0, -(p / 5)],
+                  outputRange: [0, 0],
                   extrapolateLeft: "clamp"
                 })
               },
               {
                 scale: interpolate(scrollY, {
                   inputRange: [-viewHeight, 1],
-                  outputRange: [4, 1],
+                  outputRange: [5, 1],
                   extrapolate: "clamp"
                 })
               }

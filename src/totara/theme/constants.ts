@@ -98,23 +98,15 @@ const shadow = {
   }
 };
 
-const viewHeight = {
-  activityContainerHeight: 45,
-  learningItemHeaderMinHeight: 260,
-  learningItemHeaderMaxHeight: 280,
-  learningItemImageMaxHeight: 160,
-  learningItemTitleMaxHeight: 85,
-  learningItemTitleMinHeight: 60,
-  activitySectionHeight: 58,
-  courseSetItemHeight: 224
-};
-
-const viewWidth = {
-  courseSetItemWidth: 335
-};
 const header = {
   icon: {
     size: 24
+  }
+};
+
+const row = {
+  icon: {
+    size: 40
   }
 };
 
@@ -130,7 +122,6 @@ export {
   textAttributes,
   margins,
   paddings,
-  viewHeight,
   fontSizes,
   fontWeights,
   borderRadius,
@@ -141,5 +132,5 @@ export {
   resultCircleSize,
   resultWrapperScaleX,
   shadow,
-  viewWidth
+  row
 };

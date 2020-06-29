@@ -28,9 +28,8 @@ import { withNavigation } from "react-navigation";
 import { useNetInfo } from "@react-native-community/netinfo";
 import PropTypes from "prop-types";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { LearningItemCard, AddBadge } from "@totara/components";
-import { navigateTo } from "@totara/lib/navigation";
-import { itemToRouteMap } from "@totara/lib/constants";
+import { AddBadge } from "@totara/components";
+import { navigateTo, itemToRouteMap } from "@totara/lib/navigation";
 import { showMessage } from "@totara/lib";
 import Restriction from "./Restriction";
 import {
@@ -42,6 +41,7 @@ import {
 import { deviceScreen } from "@totara/lib/tools";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { translate } from "@totara/locale";
+import { LearningItemCard } from "../LearningItemCard";
 
 const LearningItemCarousel = withNavigation(
   ({ navigation, currentLearning, loading, onRefresh }) => {
