@@ -30,7 +30,7 @@ import {
   isScormPlayerInitialized
 } from "@totara/activities/scorm/offline/SCORMFileHandler";
 import { getScormPackageData } from "@totara/activities/scorm/offline";
-import { Package, Sco, Grade, Scorm } from "@totara/types/Scorm";
+import { Package, Grade, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
@@ -62,7 +62,11 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   const { scorm, attempt, scoid, backAction } = navigation.state
     .params as OfflineScormParams;
   if (!scorm || !scorm.id) {
-    return <Text>{translate("general.error_unknown")}</Text>;
+    return (
+      <Text testID={"test_invalid_scorm"}>
+        {translate("general.error_unknown")}
+      </Text>
+    );
   }
 
   const resourcesList = useSelector(

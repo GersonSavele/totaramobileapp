@@ -140,7 +140,7 @@ const saveScormActivityData = ({
 
     const existingOfflineActivityData = get(
       newData,
-      `[${scormId}].offlineActivity.attempts`,
+      `[${scormId}].offlineAttempts`,
       []
     );
     if (existingOfflineActivityData && existingOfflineActivityData.length > 0) {
@@ -153,7 +153,7 @@ const saveScormActivityData = ({
     }
     setWith(
       newData,
-      `[${scormId}].offlineActivity.attempts`,
+      `[${scormId}].offlineAttempts`,
       existingOfflineActivityData.concat([newAttemptGrade]),
       Object
     );
@@ -200,7 +200,7 @@ const getOfflineLastActivityResult = ({
   const scormBundles = onRetrieveAllData({ client });
   const scormOfflineActivityReport = get(
     scormBundles,
-    `[${scormId}].offlineActivity.attempts`,
+    `[${scormId}].offlineAttempts`,
     undefined
   );
   if (scormOfflineActivityReport && scormOfflineActivityReport.length > 0) {
@@ -217,7 +217,7 @@ const getOfflineActivity = ({
 
   const offlineAttempts = get(
     cachedData,
-    `[${scormId}].offlineActivity`,
+    `[${scormId}].offlineAttempts`,
     undefined
   );
   if (offlineAttempts && Object.keys(offlineAttempts).length) {
@@ -310,14 +310,14 @@ const clearSyncedScormCommit = ({
     ]);
     const existingOfflineActivityData = get(
       allOfflineData,
-      `[${scormId}].offlineActivity.attempts`,
+      `[${scormId}].offlineAttempts`,
       []
     );
     // record.attempt is string and attempt is number, so avoid checking type
     remove(existingOfflineActivityData, (record) => record.attempt == attempt);
     setWith(
       allOfflineData,
-      `[${scormId}].offlineActivity.attempts`,
+      `[${scormId}].offlineAttempts`,
       existingOfflineActivityData,
       Object
     );

@@ -19,7 +19,7 @@ import { get } from "lodash";
 import {
   AttemptGrade,
   Grade,
-  ScormActivityResult,
+  Attempt,
   ScormBundle,
   Scorm,
   GradeForAttemptProps,
@@ -113,16 +113,15 @@ const getDataForScormSummary = (
       ? scorm.description
       : undefined;
   data.totalAttempt = scorm.attemptsCurrent ? scorm.attemptsCurrent : 0;
-  if (scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts) {
-    data.totalAttempt =
-      data.totalAttempt + scormBundle!.offlineActivity.attempts.length;
+  if (scormBundle!.offlineAttempts && scormBundle!.offlineAttempts) {
+    data.totalAttempt = data.totalAttempt + scormBundle!.offlineAttempts.length;
   }
 
   data.attemptGrade = scorm.whatgrade as AttemptGrade;
   data.gradeMethod = scorm.grademethod as Grade;
   const offlineAttempts =
-    scormBundle!.offlineActivity && scormBundle!.offlineActivity.attempts
-      ? scormBundle!.offlineActivity.attempts
+    scormBundle!.offlineAttempts && scormBundle!.offlineAttempts
+      ? scormBundle!.offlineAttempts
       : undefined;
 
   data.calculatedGrade = calculatedAttemptsGrade(
@@ -166,11 +165,11 @@ const getDataForScormSummary = (
 
   data.attempts =
     (scorm.attempts &&
-      scormBundle.offlineActivity &&
-      scormBundle.offlineActivity.attempts &&
-      scorm.attempts.concat(scormBundle.offlineActivity.attempts)) ||
+      scormBundle.offlineAttempts &&
+      scormBundle.offlineAttempts &&
+      scorm.attempts.concat(scormBundle.offlineAttempts)) ||
     scorm.attempts ||
-    (scormBundle.offlineActivity && scormBundle.offlineActivity.attempts);
+    (scormBundle.offlineAttempts && scormBundle.offlineAttempts);
   return data;
 };
 
@@ -179,8 +178,8 @@ const calculatedAttemptsGrade = (
   gradeMethod: Grade,
   maxGrade: number,
   onlineCalculatedGrade?: string,
-  onlineAttempts: ScormActivityResult[] = [],
-  offlineAttempts: ScormActivityResult[] = []
+  onlineAttempts: Attempt[] = [],
+  offlineAttempts: Attempt[] = []
 ) => {
   if (
     offlineAttempts &&
@@ -205,7 +204,7 @@ const calculatedAttemptsGrade = (
 };
 
 const getAttemptsGrade = (
-  attemptsReport: ScormActivityResult[],
+  attemptsReport: Attempt[],
   attemptGrade: AttemptGrade,
   maxGrade: number
 ): number => {

@@ -111,7 +111,7 @@ const ScormActivity = (props: ScormActivityProps) => {
       });
       setScormBundle({
         ...scormBundle,
-        offlineActivity: offlineAttempts
+        offlineAttempts: offlineAttempts
       });
     }
   };
@@ -169,7 +169,7 @@ const ScormActivity = (props: ScormActivityProps) => {
       setScormBundle({
         ...scormBundle,
         ...mergedData,
-        offlineActivity: offlineAttempts
+        offlineAttempts: offlineAttempts
         //TODO: remove timestamp if the user is online
         //lastsynced: 0
       });

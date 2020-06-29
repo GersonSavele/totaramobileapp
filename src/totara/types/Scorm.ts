@@ -38,7 +38,7 @@ export type Scorm = {
   offlinePackageUrl?: string;
   offlinePackageContentHash?: string;
 
-  attempts: [ScormActivityResult];
+  attempts: [Attempt];
   timeopen: number;
   timeclose: number;
 
@@ -63,11 +63,7 @@ export type Scorm = {
 export type ScormBundle = {
   scorm?: Scorm;
   scormPackage?: Package;
-  offlineActivity?: {
-    last: OfflineActivity;
-    start: OfflineActivity;
-    attempts?: [ScormActivityResult];
-  };
+  offlineAttempts?: [Attempt];
   lastsynced: number;
 };
 
@@ -88,7 +84,7 @@ export type OfflineActivity = {
   scoid: string;
 };
 
-export type ScormActivityResult = {
+export type Attempt = {
   attempt: number;
   gradereported: number;
   timestarted?: string;

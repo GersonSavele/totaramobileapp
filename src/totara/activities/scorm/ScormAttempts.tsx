@@ -24,7 +24,7 @@ import { Text, View, FlatList, SafeAreaView } from "react-native";
 
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { ScormActivityResult, Grade } from "@totara/types/Scorm";
+import { Attempt, Grade } from "@totara/types/Scorm";
 import { NavigationStackProp } from "react-navigation-stack";
 import { fullFlex } from "@totara/lib/styles/base";
 import { scormAttemptsStyles } from "@totara/theme/scorm";
@@ -32,7 +32,7 @@ import { fontWeights } from "@totara/theme/constants";
 
 type AttemptsParams = {
   gradeMethod: Grade;
-  attempts: [ScormActivityResult?];
+  attempts: [Attempt?];
 };
 
 type ScormActivityProps = {
@@ -45,7 +45,7 @@ const ScormAttempts = ({ navigation }: ScormActivityProps) => {
   const [theme] = useContext(ThemeContext);
 
   const attemptReport = (
-    attemptReport: ScormActivityResult,
+    attemptReport: Attempt,
     index: number,
     gradeMethod: Grade
   ) => {
@@ -68,20 +68,18 @@ const ScormAttempts = ({ navigation }: ScormActivityProps) => {
         style={{ flex: 1 }}
         data={attempts}
         renderItem={({ item, index }) => {
-          return attemptReport(item as ScormActivityResult, index, gradeMethod);
+          return attemptReport(item as Attempt, index, gradeMethod);
         }}
         alwaysBounceVertical={false}
         scrollIndicatorInsets={{ right: 8 }}
-        keyExtractor={(item, index) =>
-          `${(item as ScormActivityResult).attempt}-${index}`
-        }
+        keyExtractor={(item, index) => `${(item as Attempt).attempt}-${index}`}
       />
     </SafeAreaView>
   );
 };
 
 type AttemptReport = {
-  attemptReport: ScormActivityResult;
+  attemptReport: Attempt;
   attempt: number;
   gradeMethod: Grade;
 };

@@ -182,7 +182,7 @@ describe("saveInTheCache", () => {
       "1": {
         cmi: "data_cmi",
         commits: "data_commits",
-        offlineActivity: { attemps: [{ attempt: 1, gradereported: 10 }] }
+        offlineAttempts: [{ attempt: 1, gradereported: 10 }]
       },
       completed_attempts: {
         "1": [1]
@@ -228,14 +228,12 @@ describe("saveScormActivityData", () => {
             [scoid]: commit
           }
         },
-        offlineActivity: {
-          attempts: [
-            {
-              attempt,
-              gradereported: mockAttemptGrade
-            }
-          ]
-        }
+        offlineAttempts: [
+          {
+            attempt,
+            gradereported: mockAttemptGrade
+          }
+        ]
       }
     };
     saveScormActivityData({
@@ -271,23 +269,19 @@ describe("saveScormActivityData", () => {
             [scoid]: commit
           }
         },
-        offlineActivity: {
-          attempts: [
-            {
-              attempt: 9,
-              gradereported: "0"
-            }
-          ]
-        }
+        offlineAttempts: [
+          {
+            attempt: 9,
+            gradereported: "0"
+          }
+        ]
       }
     };
     const mockAttemptGrade = 10;
     const retrieveAllDataMock = jest.fn(() => retrieveDataResultMock);
     const getGradeForAttemptMock = jest.fn(() => mockAttemptGrade);
     const saveInTheCacheMock = jest.fn();
-    const newAttempts = retrieveDataResultMock[
-      scormid
-    ].offlineActivity.attempts.concat({
+    const newAttempts = retrieveDataResultMock[scormid].offlineAttempts.concat({
       attempt,
       gradereported: mockAttemptGrade
     });
@@ -303,9 +297,7 @@ describe("saveScormActivityData", () => {
             [scoid]: commit
           }
         },
-        offlineActivity: {
-          attempts: newAttempts
-        }
+        offlineAttempts: newAttempts
       }
     };
     saveScormActivityData({
@@ -432,9 +424,7 @@ describe("getOfflineLastActivityResult", () => {
     ];
     const existingDataMock = {
       [scormId]: {
-        offlineActivity: {
-          attempts: existingAttempts
-        }
+        offlineAttempts: existingAttempts
       }
     };
     const retrieveAllDataMock = jest.fn(() => existingDataMock);
@@ -451,7 +441,7 @@ describe("getOfflineLastActivityResult", () => {
 
     const existingDataMock = {
       [scormId]: {
-        offlineActivity: {}
+        offlineAttempts: []
       }
     };
     const retrieveAllDataMock = jest.fn(() => existingDataMock);
@@ -476,9 +466,7 @@ describe("getOfflineActivity", () => {
     ];
     const existingDataMock = {
       [scormId]: {
-        offlineActivity: {
-          attempts: existingAttempts
-        }
+        offlineAttempts: existingAttempts
       }
     };
     const retrieveAllDataMock = jest.fn(() => existingDataMock);
@@ -488,14 +476,14 @@ describe("getOfflineActivity", () => {
       scormId,
       onRetrieveAllData: retrieveAllDataMock
     });
-    expect(result).toMatchObject(existingDataMock[scormId].offlineActivity);
+    expect(result).toMatchObject(existingDataMock[scormId].offlineAttempts);
   });
   it("should return undefined, if rhere is no any offline activities.", () => {
     const scormId = 10;
 
     const existingDataMock = {
       [scormId]: {
-        offlineActivity: {}
+        offlineAttempts: []
       }
     };
     const retrieveAllDataMock = jest.fn(() => existingDataMock);
@@ -620,9 +608,7 @@ describe("clearSyncedScormCommit", () => {
           [attempt]: { data: "cmi_mock" },
           [nextAttempt]: { data: "commit_mock" }
         },
-        offlineActivity: {
-          attempts: [{ attempt: attempt }, { attempt: nextAttempt }]
-        }
+        offlineAttempts: [{ attempt: attempt }, { attempt: nextAttempt }]
       },
       completed_attempts: {
         [scormId]: [attempt, nextAttempt]
@@ -636,9 +622,7 @@ describe("clearSyncedScormCommit", () => {
         cmi: {
           [nextAttempt]: existingScormBundles[scormId].cmi[nextAttempt]
         },
-        offlineActivity: {
-          attempts: [{ attempt: nextAttempt }]
-        }
+        offlineAttempts: [{ attempt: nextAttempt }]
       },
       completed_attempts: {
         [scormId]: [nextAttempt]
@@ -673,9 +657,10 @@ describe("clearSyncedScormCommit", () => {
           [nextAttempt]: { data: "cmi_mock" },
           [nextAttempt + 1]: { data: "commit_mock" }
         },
-        offlineActivity: {
-          attempts: [{ attempt: nextAttempt }, { attempt: nextAttempt + 1 }]
-        }
+        offlineAttempts: [
+          { attempt: nextAttempt },
+          { attempt: nextAttempt + 1 }
+        ]
       },
       completed_attempts: {
         [scormId]: [nextAttempt, nextAttempt + 1]
@@ -734,7 +719,7 @@ describe("getScormAttemptData", () => {
 
     const existingDataMock = {
       [scormId]: {
-        offlineActivity: {},
+        offlineAttempts: [],
         cmi: {}
       }
     };
