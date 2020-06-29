@@ -261,7 +261,7 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-cookies (2.0.9):
     - React
-  - react-native-netinfo (5.8.0):
+  - react-native-netinfo (5.9.4):
     - React
   - react-native-safe-area-context (0.7.3):
     - React
@@ -546,7 +546,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-cookies: bc1f91a504ee091f1998a1b6c7ff4b7a9ed5b80e
-  react-native-netinfo: 6458a467af4b3b7b0b87a179776ba6ba469e4f22
+  react-native-netinfo: eed0fb1d6a9424e98ce686f92aad62ff427d4bc9
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-static-server: af5ae03c8114e5756e27c7ae32a116002f23be02
