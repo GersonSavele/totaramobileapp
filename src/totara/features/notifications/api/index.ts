@@ -2,6 +2,7 @@ import { gql } from "apollo-boost";
 import { NotificationMessage } from "@totara/types";
 
 const parser = (data) => {
+  if (!data) return [];
   return data.message_popup_messages.map((row) => {
     return {
       id: row.id,
