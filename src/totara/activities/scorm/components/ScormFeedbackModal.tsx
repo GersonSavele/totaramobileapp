@@ -73,18 +73,10 @@ const ScormFeedbackModal = ({
             </View>
           </View>
           <View style={scormFeedbackStyles.actionWrapper}>
-            <Text
-              style={{
-                ...TotaraTheme.textRegular,
-                marginBottom: margins.margin2XL,
-                textAlign: "center"
-              }}>
-              {translate("scorm.feedback.action_info")}
-            </Text>
             <View style={scormFeedbackStyles.actionContainer}>
               <PrimaryButton
                 onPress={onClose}
-                text={translate("scorm.feedback.back")}
+                text={translate("general.ok")}
                 style={{ marginBottom: margins.marginL }}
               />
             </View>
