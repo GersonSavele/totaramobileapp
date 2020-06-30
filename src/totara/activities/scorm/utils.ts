@@ -24,7 +24,8 @@ import {
   Scorm,
   GradeForAttemptProps,
   ScormPlayerProps,
-  Sco
+  Sco,
+  Package
 } from "@totara/types/Scorm";
 import moment from "moment";
 import {
@@ -39,6 +40,7 @@ import {
   initializeScormWebplayer,
   isScormPlayerInitialized
 } from "@totara/activities/scorm/offline/SCORMFileHandler";
+import { getScormPackageData } from "./offline/PackageProcessor";
 
 type GetPlayerInitialDataProps = {
   scormId: string;
@@ -395,6 +397,23 @@ const setupOfflineScormPlayer = () => {
   });
 };
 
+const loadScormPackageData = (packageData?: Package) => {
+  if (packageData && packageData.path) {
+    if (packageData.scos && packageData.defaultSco) {
+      return Promise.resolve(packageData);
+    } else {
+      return getScormPackageData(
+        `${offlineScormServerRoot}/${packageData.path}`
+      ).then((data) => {
+        const tmpPackageData = { ...packageData, ...data } as Package;
+        return tmpPackageData;
+      });
+    }
+  } else {
+    return Promise.reject("Cannot find offline package data");
+  }
+};
+
 export {
   getOfflinePackageUnzipPath,
   getTargetZipFile,
@@ -407,5 +426,6 @@ export {
   shouldAllowAttempt,
   getScormPlayerInitialData,
   scormDataIntoJsInitCode,
-  setupOfflineScormPlayer
+  setupOfflineScormPlayer,
+  loadScormPackageData
 };

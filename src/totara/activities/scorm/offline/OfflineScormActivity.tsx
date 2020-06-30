@@ -25,14 +25,12 @@ import { Text, BackHandler } from "react-native";
 import StaticServer from "react-native-static-server";
 
 import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
-import { getScormPackageData } from "@totara/activities/scorm/offline";
 import { Package, Grade, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
 
 import { saveScormActivityData, getScormAttemptData } from "../storageUtils";
-import { offlineScormServerRoot } from "@totara/lib/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 import { ResourceType } from "@totara/types/Resource";
@@ -41,14 +39,15 @@ import {
   getOfflineScormPackageName,
   getScormPlayerInitialData,
   scormDataIntoJsInitCode,
-  setupOfflineScormPlayer
+  setupOfflineScormPlayer,
+  loadScormPackageData
 } from "../utils";
 
 type OfflineScormParams = {
   attempt: number;
   scorm?: Scorm;
   scoid?: string;
-  backAction: Function;
+  backAction: () => void;
 };
 
 type OfflineScormProps = {
@@ -189,23 +188,6 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
         maxGrade: scorm.maxgrade,
         gradeMethod: scorm.grademethod as Grade
       });
-    }
-  };
-
-  const loadScormPackageData = (packageData?: Package) => {
-    if (packageData && packageData.path) {
-      if (packageData.scos && packageData.defaultSco) {
-        return Promise.resolve(packageData);
-      } else {
-        return getScormPackageData(
-          `${offlineScormServerRoot}/${packageData.path}`
-        ).then((data) => {
-          const tmpPackageData = { ...packageData, ...data } as Package;
-          return tmpPackageData;
-        });
-      }
-    } else {
-      return Promise.reject("Cannot find offline package data");
     }
   };
 
