@@ -15,7 +15,6 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { withNavigation } from "react-navigation";
 import { NavigationStackProp } from "react-navigation-stack";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
 import { Grade } from "@totara/types/Scorm";
@@ -101,4 +100,4 @@ const ScormFeedback = ({ navigation }: FeedbackProps) => {
   // }
 };
 
-export default withNavigation(ScormFeedback);
+export default ScormFeedback;
