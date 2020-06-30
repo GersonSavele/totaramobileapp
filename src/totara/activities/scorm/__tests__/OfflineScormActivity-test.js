@@ -26,18 +26,6 @@ const mockScormActivityNavigation = {
   scoid: "1",
   backAction: jest.fn()
 };
-// const mockResourcesList = [
-//   {
-//     customId: "10",
-//     id: "6ceb3d9c-ce44-4897-b19b-ca06490752d9",
-//     jobId: 1,
-//     name: "Do not touch",
-//     sizeInBytes: 833403,
-//     state: 3,
-//     type: 0,
-//     unzipPath: "/path"
-//   }
-// ];
 
 describe("OfflineScormActivity", () => {
   it("Should render TEXT general error for non existing scorm or scorm.id", async () => {
@@ -75,40 +63,5 @@ describe("OfflineScormActivity", () => {
     const { getByTestId } = render(tree);
     const labelTitleNo = getByTestId("test_non_exist_resource");
     expect(labelTitleNo.children[0]).toBe(translate("general.error_unknown"));
-  });
-  it("Should render expect UI for loading .", async () => {
-    //TODO
-    /*
-    const itemToBeTested = {
-      ...mockScormActivityNavigation,
-      scorm: { id: "10" }
-    };
-
-    const navigation = {
-      state: {
-        params: {
-          ...itemToBeTested
-        }
-      }
-    };
-    const spy = jest.spyOn(redux, "useSelector");
-    spy.mockReturnValue(mockResourcesList);
-
-    // const spy = jest.spyOn(redux, "setupOfflineScormPlayer");
-    // spy.mockReturnValue(undefined);
-
-    jest.mock("../utils", () => ({
-      ...jest.requireActual("../utils"),
-      setupOfflineScormPlayer: () => Promise.resolve(undefined)
-    }));
-    // jest.mock("../utils", () => ({
-    //   setupOfflineScormPlayer: jest.fn()
-    // }));
-
-    const tree = <OfflineScormActivity navigation={navigation} />;
-    const { getByTestId } = render(tree);
-    const labelTitleNo = getByTestId("text_player_loading");
-    expect(labelTitleNo.children[0]).toBe("");
-    */
   });
 });

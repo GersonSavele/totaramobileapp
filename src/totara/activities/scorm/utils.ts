@@ -385,8 +385,10 @@ const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
   );
 };
 
-const setupOfflineScormPlayer = () => {
-  return isScormPlayerInitialized().then((isInit) => {
+const setupOfflineScormPlayer = (
+  onScormPlayerInitialized = isScormPlayerInitialized
+) => {
+  return onScormPlayerInitialized().then((isInit) => {
     if (isInit) {
       return offlineScormServerRoot;
     } else {

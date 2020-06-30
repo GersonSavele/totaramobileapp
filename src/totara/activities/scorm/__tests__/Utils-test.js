@@ -20,7 +20,8 @@ import {
   calculatedAttemptsGrade,
   getAttemptsGrade,
   getGradeForAttempt,
-  getScormPlayerInitialData
+  getScormPlayerInitialData,
+  setupOfflineScormPlayer
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
@@ -549,5 +550,17 @@ describe("getScormPlayerInitialData", () => {
     expect(result.autocommit).toBeFalsy();
     expect(result.masteryoverride).toBeTruthy();
     expect(result.hidetoc).toBe(1);
+  });
+});
+
+describe("setupOfflineScormPlayer", () => {
+  it("should set up the offline scorm player and return the root path", () => {
+    //TODO: retest this
+    const initializedMock = jest.fn(() => {
+      return Promise.resolve(true);
+    });
+    setupOfflineScormPlayer(initializedMock).then((result) => {
+      expect(result).toBeTruthy();
+    });
   });
 });
