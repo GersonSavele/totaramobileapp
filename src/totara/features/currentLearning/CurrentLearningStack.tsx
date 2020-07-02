@@ -31,7 +31,7 @@ const {
   COURSE_LIST
 } = NAVIGATION;
 import { paddings } from "@totara/theme/constants";
-import { courseSet } from "./courseGroupStyle";
+import { courseSet } from "./courseGroupStyles";
 import { translate } from "@totara/locale";
 
 const CurrentLearningStack = createStackNavigator(

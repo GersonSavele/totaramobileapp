@@ -21,7 +21,7 @@ import { CourseGroup } from "@totara/types";
 import { NavigationContext } from "react-navigation";
 import { statusKey } from "@totara/types/Completion";
 import { translate } from "@totara/locale";
-import { courses } from "../courseGroupStyle";
+import { courses } from "../courseGroupStyles";
 
 const Courses = ({ courseGroup }: { courseGroup: CourseGroup }) => {
   return (

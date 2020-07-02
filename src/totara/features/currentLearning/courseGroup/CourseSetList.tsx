@@ -18,7 +18,7 @@ import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { NavigationContext } from "react-navigation";
 import { CourseSets } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
-import { courseSet, horizontalList } from "../courseGroupStyle";
+import { courseSet, horizontalList } from "../courseGroupStyles";
 import Restriction from "../Restriction";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";

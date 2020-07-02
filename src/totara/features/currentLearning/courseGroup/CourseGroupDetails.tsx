@@ -24,7 +24,7 @@ import { CourseGroup } from "@totara/types";
 import { GeneralErrorModal } from "@totara/components";
 import { coreProgram } from "./api";
 import LearningDetails from "../LearningDetails";
-import { details } from "../courseGroupStyle";
+import { details } from "../courseGroupStyles";
 
 type CourseGroupProps = {
   courseGroup: CourseGroup;

@@ -21,7 +21,7 @@ import { ImageElement } from "../LearningItemCard";
 import { translate } from "@totara/locale";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
-import { courseSet } from "../courseGroupStyle";
+import { courseSet } from "../courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import Restriction from "../Restriction";
 

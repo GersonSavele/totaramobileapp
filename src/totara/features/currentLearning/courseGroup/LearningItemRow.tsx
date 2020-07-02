@@ -24,7 +24,7 @@ import {
 import { ImageWrapper, Separator } from "@totara/components";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
-import { rowItem } from "../courseGroupStyle";
+import { rowItem } from "../courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import { Images } from "@resources/images";
 
