@@ -10,7 +10,8 @@
     "error_unknown": "Something went wrong, please try again later.",
     "no_internet": "You are offline",
     "back": "Back",
-    "ok": "Ok"
+    "ok": "Ok",
+    "delete": "Delete"
   },
 
   "site_url": {
@@ -219,7 +220,8 @@
   "notifications": {
     "title": "Notifications",
     "empty": "No notifications yet!",
-    "selected": "{{count}} Selected"
+    "selected": "{{count}} Selected",
+    "mark_as_read": "Mark as read"
   },
   "downloads": {
     "title": "Downloads",

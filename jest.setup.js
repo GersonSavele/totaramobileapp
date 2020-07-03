@@ -71,3 +71,31 @@ jest.mock("@apollo/react-hooks", () => ({
 }));
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo);
+
+jest.mock("react-navigation", () => {
+  return {
+    withNavigation: jest.fn(),
+    createAppContainer: jest
+      .fn()
+      // eslint-disable-next-line no-unused-vars
+      .mockReturnValue(function NavigationContainer(props) {
+        return null;
+      }),
+    createDrawerNavigator: jest.fn(),
+    createMaterialTopTabNavigator: jest.fn(),
+    createStackNavigator: jest.fn(),
+    StackActions: {
+      push: jest
+        .fn()
+        .mockImplementation((x) => ({ ...x, type: "Navigation/PUSH" })),
+      replace: jest
+        .fn()
+        .mockImplementation((x) => ({ ...x, type: "Navigation/REPLACE" })),
+      reset: jest.fn()
+    },
+    NavigationActions: {
+      setParams: jest.fn(),
+      navigate: jest.fn().mockImplementation((x) => x)
+    }
+  };
+});

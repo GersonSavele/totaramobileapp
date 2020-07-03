@@ -33,27 +33,32 @@ const NotificationsStack = createStackNavigator(
         headerBackTitle: translate("general.back"),
         headerLeft: navigation.getParam("showActions") && (
           <TouchableOpacity
+            testID={"test_cancel"}
             onPress={() => {
               // @ts-ignore
               navigation.emit("onCancelTap");
             }}
             style={{ paddingLeft: paddings.paddingL }}>
-            <Text style={TotaraTheme.textHeadline}>Cancel</Text>
+            <Text style={TotaraTheme.textMedium}>
+              {" "}
+              {translate("general.cancel")}
+            </Text>
           </TouchableOpacity>
         ),
         headerRight: navigation.getParam("showActions") && (
           <TouchableOpacity
+            testID={"test_markAsRead"}
             onPress={() => {
               // @ts-ignore
-              navigation.emit("onDeleteTap");
+              navigation.emit("onMarkAsRead");
             }}
             style={{ paddingRight: paddings.paddingL }}>
             <Text
               style={[
-                TotaraTheme.textHeadline,
-                { color: TotaraTheme.colorDestructive }
+                TotaraTheme.textMedium,
+                { color: TotaraTheme.colorLink }
               ]}>
-              Delete
+              {translate("notifications.mark_as_read")}
             </Text>
           </TouchableOpacity>
         )

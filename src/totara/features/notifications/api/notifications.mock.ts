@@ -33,6 +33,38 @@ const notificationsMock = [
   }
 ];
 
+const notificationsMockUnRead = [
+  {
+    request: {
+      query: notificationsQuery
+    },
+    result: {
+      data: {
+        message_popup_messages: [
+          {
+            id: "1",
+            subject: "Notification item",
+            fullmessage: "Full message example",
+            fullmessageformat: "PLAIN",
+            isread: false,
+            timecreated: 111,
+            __typename: "message_popup_messages"
+          },
+          {
+            id: "2",
+            subject: "Notification item 2",
+            fullmessage: "Full message example 2",
+            fullmessageformat: "PLAIN",
+            isread: false,
+            timecreated: 222,
+            __typename: "message_popup_messages"
+          }
+        ]
+      }
+    }
+  }
+];
+
 const notificationsMockEmpty = [
   {
     request: {
@@ -57,4 +89,9 @@ const notificationsMockError = [
   }
 ];
 
-export { notificationsMock, notificationsMockEmpty, notificationsMockError };
+export {
+  notificationsMock,
+  notificationsMockEmpty,
+  notificationsMockError,
+  notificationsMockUnRead
+};

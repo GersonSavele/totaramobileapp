@@ -26,6 +26,7 @@ import listViewStyles from "@totara/theme/listView";
 import { timeAgo } from "@totara/lib/tools";
 
 type NotificationItemProps = {
+  testID?: string;
   item: NotificationMessage;
   selectable?: boolean;
   selected?: boolean;
@@ -34,6 +35,7 @@ type NotificationItemProps = {
 };
 
 const NotificationItem = ({
+  testID,
   item,
   onNotificationItemPress,
   onNotificationItemLongPress = () => null,
@@ -43,6 +45,7 @@ const NotificationItem = ({
   const [theme] = useContext(ThemeContext);
   return (
     <TouchableOpacity
+      testID={testID}
       onPress={() => onNotificationItemPress(item)}
       onLongPress={() => onNotificationItemLongPress(item)}>
       <View key={item.id} style={listViewStyles.rowItem}>

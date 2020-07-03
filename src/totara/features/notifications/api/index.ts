@@ -28,4 +28,15 @@ const notificationsQuery = gql`
   }
 `;
 
-export { notificationsQuery, parser };
+const notificationQueryMarkRead = gql`
+  mutation totara_mobile_mark_messages_read(
+    $input: message_popup_mark_messages_read_input!
+  ) {
+    message_popup_mark_messages_read(input: $input) {
+      read_message_ids
+      __typename
+    }
+  }
+`;
+
+export { notificationsQuery, notificationQueryMarkRead, parser };
