@@ -21,13 +21,19 @@ import {
   paddings,
   iconSizes,
   borderRadius,
-  fontWeights
+  fontWeights,
+  shadow
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 
 const { marginL, marginS, margin2XL } = margins;
-const { borderRadiusL, borderRadiusXS, borderRadiusM } = borderRadius;
+const {
+  borderRadiusL,
+  borderRadiusXS,
+  borderRadiusM,
+  borderRadiusS
+} = borderRadius;
 const {
   colorOpacity70,
   textRegular,
@@ -42,8 +48,12 @@ const {
   textHeadline,
   textMedium,
   colorSecondary1,
-  navigationHeaderTintColor
+  navigationHeaderTintColor,
+  colorNeutral1,
+  colorNeutral3,
+  colorNeutral6
 } = TotaraTheme;
+const { paddingXS, paddingL } = paddings;
 
 const bottomSheetStyles = StyleSheet.create({
   transparentView: {
@@ -62,14 +72,16 @@ const bottomSheetStyles = StyleSheet.create({
   },
   criteriaText: {
     ...textRegular,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
+    color: TotaraTheme.colorNeutral8
   },
   requirementText: {
     marginTop: marginS,
     marginBottom: marginL,
     ...textSmall,
     opacity: 0.48,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
+    color: TotaraTheme.colorNeutral8
   },
   statusText: {
     ...textXXSmall,
@@ -110,7 +122,8 @@ const bottomSheetStyles = StyleSheet.create({
   nameViewWrap: {
     alignSelf: "flex-start",
     ...textRegular,
-    justifyContent: "center"
+    justifyContent: "center",
+    color: TotaraTheme.colorNeutral8
   },
   bodySeparator: {
     height: 0.5,
@@ -142,6 +155,10 @@ const bottomSheetStyles = StyleSheet.create({
     color: colorNeutral8,
     backgroundColor: colorAccent,
     marginHorizontal: marginL
+  },
+  criteriaTitle: {
+    ...textRegular,
+    fontWeight: fontWeights.fontWeightBold
   }
 });
 
@@ -183,8 +200,8 @@ const headerViewStyles = StyleSheet.create({
     minHeight: 160
   },
   itemCard: {
-    maxHeight: 85,
-    minHeight: 60,
+    maxHeight: 100,
+    minHeight: 80,
     backgroundColor: colorNeutral2
   },
   LearningTypeLabelWrap: {
@@ -289,11 +306,71 @@ const courseStyle = StyleSheet.create({
   }
 });
 
+const carouselItemStyles = StyleSheet.create({
+  container: {
+    ...shadow.ios,
+    ...shadow.android,
+    borderRadius: borderRadiusM,
+    backgroundColor: colorNeutral1,
+    borderWidth: 1,
+    borderColor: colorNeutral3
+  },
+  content: {
+    borderRadius: borderRadiusM,
+    width: "100%",
+    height: "99%",
+    overflow: "hidden"
+  },
+  type: {
+    marginTop: marginS,
+    alignSelf: "flex-start",
+    paddingHorizontal: paddingL,
+    paddingVertical: paddingXS,
+    borderWidth: 1,
+    borderRadius: borderRadiusS,
+    backgroundColor: colorNeutral1,
+    color: colorNeutral8,
+    borderColor: colorNeutral6,
+    ...TotaraTheme.textXXSmall
+  },
+  summary: {
+    flex: 1,
+    alignSelf: "flex-start",
+    width: "100%",
+    paddingVertical: paddingL,
+    ...TotaraTheme.textSmall
+  },
+  badgeContainer: {
+    zIndex: 1
+  },
+  learningItem: {
+    zIndex: 2,
+    position: "absolute",
+    right: 0,
+    top: 0
+  },
+  itemWithBadgeContainer: {
+    marginVertical: marginL,
+    marginHorizontal: marginS
+  },
+  pagination: {
+    borderStyle: "dashed",
+    paddingVertical: 0,
+    paddingHorizontal: 0
+  },
+  dot: {
+    height: 1.5,
+    marginHorizontal: 0,
+    backgroundColor: colorNeutral6
+  }
+});
+
 export {
   bottomSheetStyles,
   parallaxScrollViewStyles,
   headerViewStyles,
   videoControllerStyles,
   viewStyles,
-  courseStyle
+  courseStyle,
+  carouselItemStyles
 };

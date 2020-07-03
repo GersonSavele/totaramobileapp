@@ -15,20 +15,13 @@
  */
 
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  Dimensions,
-  Text,
-  Linking
-} from "react-native";
+import { View, StyleSheet, Image, Text, Linking } from "react-native";
 
 import { PrimaryButton } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/core";
-import { margins, paddings } from "@totara/theme/constants";
+import { margins, paddings, modalSize } from "@totara/theme/constants";
 
 const NoCurrentLearning = () => {
   return (
@@ -69,8 +62,8 @@ const styles = StyleSheet.create({
     padding: paddings.paddingL
   },
   imageContainer: {
-    height: Dimensions.get("window").width * 0.5,
-    width: Dimensions.get("window").width * 0.7,
+    height: modalSize.height,
+    width: modalSize.width,
     resizeMode: "contain",
     paddingBottom: margins.marginL
   },

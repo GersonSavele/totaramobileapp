@@ -35,7 +35,7 @@ import DueDateState from "../../components/DueDateState";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { learningItemEnum } from "./constants";
 import { Images } from "@resources/images";
-import { paddings } from "@totara/theme/constants";
+import { paddings, fontWeights, fontSizes } from "@totara/theme/constants";
 import { ImageWrapper } from "@totara/components/index";
 
 interface Props {
@@ -68,12 +68,7 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
   return (
     <View style={cardStyleSheet}>
       <View style={{ flexDirection: "row" }}>
-        <Text
-          numberOfLines={1}
-          style={[TotaraTheme.textH3, styles.itemFullName]}
-          ellipsizeMode="tail">
-          {item.fullname}
-        </Text>
+        <Text style={styles.itemFullName}>{item.fullname}</Text>
       </View>
       {children}
     </View>
@@ -139,7 +134,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   itemFullName: {
-    flexWrap: "nowrap"
+    flexWrap: "wrap",
+    paddingTop: paddings.paddingS,
+    ...TotaraTheme.textHeadline,
+    fontWeight: fontWeights.fontWeightSemiBold,
+    fontSize: fontSizes.fontSizeL
   },
   disabledOverlay: {
     position: "absolute",

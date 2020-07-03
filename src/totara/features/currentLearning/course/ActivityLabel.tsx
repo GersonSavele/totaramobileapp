@@ -27,6 +27,8 @@ import {
 } from "@totara/theme/constants";
 import TextTypeLabel from "./activityLabel";
 
+const { marginL, marginS, marginXS, marginM, margin2XL } = margins;
+
 type ActivityLabelProps = {
   label: any;
 };
@@ -237,12 +239,12 @@ const RulerTypeLabel = ({ label = {} }: LabelConfigProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: margins.marginL,
-    marginVertical: margins.marginXS,
+    marginHorizontal: marginL,
+    marginVertical: marginXS,
     justifyContent: "center"
   },
   labelWrap: {
-    marginVertical: margins.marginXS,
+    marginVertical: marginXS,
     justifyContent: "center"
   },
   labelText: {
@@ -255,7 +257,7 @@ const styles = StyleSheet.create({
   videoTitle: {
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightBold,
-    marginBottom: margins.margin2XL
+    marginBottom: margin2XL
   },
   videoContainer: {
     height: 200,
@@ -264,21 +266,21 @@ const styles = StyleSheet.create({
   },
   videoDescription: {
     ...TotaraTheme.textRegular,
-    marginTop: margins.margin2XL
+    marginTop: margin2XL
   },
   listContainer: {
     flexDirection: "row",
-    marginRight: margins.marginM,
+    marginRight: marginM,
     justifyContent: "flex-start"
   },
   orderNumberListText: {
-    marginRight: margins.marginM,
-    marginVertical: margins.marginM,
+    marginRight: marginM,
+    marginVertical: marginM,
     ...TotaraTheme.textRegular
   },
   textWrapViewContainer: {
     justifyContent: "center",
-    marginBottom: margins.margin2XL
+    marginBottom: margin2XL
   },
   imageContainer: {
     height: 200,
@@ -289,8 +291,8 @@ const styles = StyleSheet.create({
   },
   bulletList: {
     color: TotaraTheme.colorNeutral6,
-    marginRight: margins.marginM,
-    marginTop: margins.marginS
+    marginRight: marginM,
+    marginTop: marginS
   }
 });
 

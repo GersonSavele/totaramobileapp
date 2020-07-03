@@ -14,11 +14,10 @@
  *
  */
 
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
 import { courseSelfComplete } from "../course/api";
-import { ThemeContext } from "@totara/theme";
 import {
   AddBadge,
   Loading,
@@ -32,7 +31,7 @@ import CourseCompletionModal from "../CourseCompletionModal";
 import { Criteria } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
 import { courseCriteria } from "../constants";
-import { styles, gradePrefixText, labelWrap } from "../overviewStyles";
+import { styles } from "../overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
@@ -97,14 +96,14 @@ const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
       <View style={styles.contentWrap}>
         <View style={styles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={gradePrefixText()}>
+            <Text style={styles.gradePrefixText}>
               {gradeFinal.length > 0 ? gradeFinal : 0}
             </Text>
           </View>
         </View>
         <View style={styles.horizontalSeparator} />
         <View style={styles.carouselTextContainer}>
-          <Text numberOfLines={1} style={labelWrap()}>
+          <Text numberOfLines={1} style={styles.labelWrap}>
             {translate("course.course_overview_grade.title")}
           </Text>
         </View>
@@ -120,7 +119,6 @@ const Progress = ({
   progress: number;
   criteria?: [Criteria];
 }) => {
-  const [theme] = useContext(ThemeContext);
   const [showCriteria, setShowCriteria] = useState(false);
   const onClose = () => {
     setShowCriteria(!showCriteria);
@@ -136,7 +134,7 @@ const Progress = ({
         </View>
         <View style={styles.horizontalSeparator} />
         <View style={styles.carouselTextContainer}>
-          <Text numberOfLines={1} style={labelWrap(theme)}>
+          <Text numberOfLines={1} style={styles.labelWrap}>
             {translate("course.course_overview_progress.title")}
           </Text>
         </View>
@@ -176,7 +174,6 @@ const Complete = ({
   const refetchCourseQueries = () => {
     courseRefreshCallback!();
   };
-  const [theme] = useContext(ThemeContext);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   let [selfComplete, { data, loading, error }] = useMutation(
     courseSelfComplete
@@ -225,7 +222,7 @@ const Complete = ({
         </View>
         <View style={styles.horizontalSeparator} />
         <View style={styles.carouselTextContainer}>
-          <Text numberOfLines={1} style={labelWrap(theme)}>
+          <Text numberOfLines={1} style={styles.labelWrap}>
             {translate("course.course_overview_mark_as_complete.title")}
           </Text>
         </View>
@@ -259,14 +256,17 @@ type SummaryProps = {
 };
 
 const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {
-  const [theme] = useContext(ThemeContext);
   return (
     <View style={styles.summaryContainer}>
-      <Text numberOfLines={1} style={theme.textHeadline}>
+      <Text numberOfLines={1} style={TotaraTheme.textHeadline}>
         {summaryTypeTitle}
       </Text>
       <View style={styles.summaryViewWrap}>
-        <Text style={[theme.textXSmall, { color: theme.colorNeutral6 }]}>
+        <Text
+          style={[
+            TotaraTheme.textXSmall,
+            { color: TotaraTheme.colorNeutral6 }
+          ]}>
           {summary}
         </Text>
       </View>

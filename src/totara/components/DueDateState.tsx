@@ -21,11 +21,11 @@
 
 import { StyleSheet, Text, View } from "react-native";
 import moment from "moment";
-import React, { useContext } from "react";
+import React from "react";
 
 import { translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/constants";
-import { ThemeContext } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 /**
  * Component to render dueDate and change style depending on the dueDateState
@@ -37,24 +37,23 @@ type Props = {
 };
 
 const getDueDateModeStyle = (dueDateState?: string) => {
-  const [theme] = useContext(ThemeContext);
   switch (dueDateState) {
     case DueDateStateStatus.danger:
-      return { backgroundColor: theme.colorAlert };
+      return { backgroundColor: TotaraTheme.colorAlert };
     case DueDateStateStatus.warning:
-      return { backgroundColor: theme.colorWarning };
+      return { backgroundColor: TotaraTheme.colorWarning };
     default:
-      return { backgroundColor: theme.colorInfo };
+      return { backgroundColor: TotaraTheme.colorInfo };
   }
 };
 
 const DueDateState = ({ dueDate, dueDateState }: Props) => {
   const dueDateModeStyle = getDueDateModeStyle(dueDateState);
-  const [theme] = useContext(ThemeContext);
 
   return (
     <View style={[styles.container, dueDateModeStyle]}>
-      <Text style={[theme.textXSmall, { color: theme.textColorLight }]}>
+      <Text
+        style={[TotaraTheme.textXSmall, { color: TotaraTheme.textColorLight }]}>
         {dueDateState && dueDateState == DueDateStateStatus.danger
           ? translate("totara_component.overdue_by")
           : translate("totara_component.due_in")}
@@ -63,7 +62,8 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
           {moment(dueDate).toNow(true)}&nbsp;
         </Text>
       </Text>
-      <Text style={[theme.textXSmall, { color: theme.textColorLight }]}>
+      <Text
+        style={[TotaraTheme.textXSmall, { color: TotaraTheme.textColorLight }]}>
         ({moment(dueDate).format(DATE_FORMAT)})
       </Text>
     </View>

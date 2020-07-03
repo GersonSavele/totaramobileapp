@@ -27,6 +27,14 @@ import { CircleIcon } from "@totara/components";
 import { Images } from "@resources/images";
 import { margins } from "@totara/theme/constants";
 
+const {
+  colorAccent,
+  colorNeutral7,
+  colorSuccess,
+  colorNeutral6,
+  colorAlert
+} = TotaraTheme;
+
 type BuildContentProps = {
   completion?: string;
   status?: string;
@@ -36,33 +44,33 @@ type BuildContentProps = {
 const completionStates = {
   notAvailable: {
     icon: "lock",
-    backgroundColor: TotaraTheme.colorAccent,
-    iconColor: TotaraTheme.colorNeutral7,
-    borderColor: TotaraTheme.colorNeutral7
+    backgroundColor: colorAccent,
+    iconColor: colorNeutral7,
+    borderColor: colorNeutral7
   },
   completed: {
     icon: "check",
-    backgroundColor: TotaraTheme.colorSuccess,
-    iconColor: TotaraTheme.colorAccent,
-    borderColor: TotaraTheme.colorSuccess
+    backgroundColor: colorSuccess,
+    iconColor: colorAccent,
+    borderColor: colorSuccess
   },
   autoIncomplete: {
     icon: Images.autoCompleteTick,
-    backgroundColor: TotaraTheme.colorAccent,
-    iconColor: TotaraTheme.colorNeutral6,
-    borderColor: TotaraTheme.colorNeutral6,
+    backgroundColor: colorAccent,
+    iconColor: colorNeutral6,
+    borderColor: colorNeutral6,
     fontAwesomeIcon: false
   },
   completeFail: {
     icon: "times",
-    backgroundColor: TotaraTheme.colorAlert,
-    iconColor: TotaraTheme.colorAccent,
-    borderColor: TotaraTheme.colorAlert
+    backgroundColor: colorAlert,
+    iconColor: colorAccent,
+    borderColor: colorAlert
   },
   manualIncomplete: {
-    backgroundColor: TotaraTheme.colorAccent,
-    iconColor: TotaraTheme.colorNeutral6,
-    borderColor: TotaraTheme.colorNeutral6
+    backgroundColor: colorAccent,
+    iconColor: colorNeutral6,
+    borderColor: colorNeutral6
   }
 };
 

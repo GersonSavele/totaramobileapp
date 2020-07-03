@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   overviewTextTouchableOpacity: {
     ...TotaraTheme.textRegular,
-    fontWeight: fontWeights.fontWeightBold
+    fontWeight: fontWeights.fontWeightSemiBold
   },
   overviewTouchableOpacity: {
     borderBottomColor: TotaraTheme.colorNeutral7,

@@ -19,7 +19,7 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
     }
     style={
       Object {
-        "height": 375,
+        "height": 933.8,
         "paddingBottom": 16,
         "resizeMode": "contain",
         "width": 525,

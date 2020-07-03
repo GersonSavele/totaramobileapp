@@ -14,11 +14,11 @@
  *
  */
 
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { View, Modal, TouchableOpacity, SectionList, Text } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import _ from "lodash";
-import { ThemeContext } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 import BottomSheet from "reanimated-bottom-sheet";
 
 import { translate } from "@totara/locale";
@@ -31,7 +31,6 @@ type Props = {
 };
 
 const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
-  const [theme] = useContext(ThemeContext);
   const criteriaSectionList: any = [];
   const bottomDrawerRef = useRef<any>(null);
 
@@ -47,12 +46,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
   const renderSectionHeader = ({ section }: any) => {
     return (
       <View style={bottomSheetStyles.container}>
-        <Text
-          numberOfLines={1}
-          style={{
-            ...bottomSheetStyles.nameViewWrap,
-            color: theme.colorNeutral8
-          }}>
+        <Text numberOfLines={1} style={bottomSheetStyles.nameViewWrap}>
           {section.title}
         </Text>
       </View>
@@ -74,21 +68,11 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
       <View style={bottomSheetStyles.renderOuterViewWrap}>
         <View style={bottomSheetStyles.renderInnerViewWrap}>
           <View style={{ flex: 2 }}>
-            <Text
-              numberOfLines={1}
-              style={{
-                ...bottomSheetStyles.criteriaText,
-                color: theme.colorNeutral8
-              }}>
+            <Text numberOfLines={1} style={bottomSheetStyles.criteriaText}>
               {/* // item criteria return with URL and should replace the url and tags */}
               {item.criteria!.replace(/(<([^>]+)>)/gi, "")}
             </Text>
-            <Text
-              numberOfLines={1}
-              style={{
-                ...bottomSheetStyles.requirementText,
-                color: theme.colorNeutral8
-              }}>
+            <Text numberOfLines={1} style={bottomSheetStyles.requirementText}>
               {description}
             </Text>
           </View>
@@ -96,7 +80,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
         <View
           style={{
             ...bottomSheetStyles.bodySeparator,
-            backgroundColor: theme.colorNeutral8
+            backgroundColor: TotaraTheme.colorNeutral8
           }}></View>
       </View>
     );
@@ -112,7 +96,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
             <FontAwesomeIcon
               icon="times"
               size={20}
-              color={theme.textColorDisabled}
+              color={TotaraTheme.textColorDisabled}
             />
           </TouchableOpacity>
           <View style={bottomSheetStyles.headerViewIndicatorWrap}>
@@ -120,7 +104,8 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
           </View>
         </View>
         <View style={bottomSheetStyles.container}>
-          <Text style={{ ...theme.textH3, fontWeight: "bold", fontSize: 22 }}>
+          <Text
+            style={{ ...TotaraTheme.textH3, fontWeight: "bold", fontSize: 22 }}>
             {translate("course.course_criteria.title")}
           </Text>
         </View>
@@ -130,7 +115,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
 
   const renderContent = () => {
     return (
-      <View style={{ backgroundColor: theme.colorAccent }}>
+      <View style={{ backgroundColor: TotaraTheme.colorAccent }}>
         <SectionList
           style={bottomSheetStyles.renderListWrap}
           sections={criteriaSectionList}

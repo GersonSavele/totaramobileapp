@@ -24,20 +24,6 @@ import {
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
-const gradePrefixText = () => {
-  return {
-    ...TotaraTheme.textHeadline,
-    fontWeight: fontWeights.fontWeightBold
-  };
-};
-
-const labelWrap = () => {
-  return {
-    ...TotaraTheme.textRegular,
-    textAlign: "center"
-  };
-};
-
 const styles = StyleSheet.create({
   scrollViewContainer: {
     paddingTop: paddings.paddingXL,
@@ -101,7 +87,15 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-around",
     backgroundColor: TotaraTheme.colorOpacity70
+  },
+  gradePrefixText: {
+    ...TotaraTheme.textHeadline,
+    fontWeight: fontWeights.fontWeightBold
+  },
+  labelWrap: {
+    ...TotaraTheme.textRegular,
+    textAlign: "center"
   }
 });
 
-export { styles, gradePrefixText, labelWrap };
+export { styles };
