@@ -180,7 +180,7 @@ const ScormSummary = ({
     return true;
   };
   if (error) {
-    return <LoadingError onRefreshTap={onRefresh} testID={"summary_loading"} />;
+    return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} />;
   }
   return (
     <>
