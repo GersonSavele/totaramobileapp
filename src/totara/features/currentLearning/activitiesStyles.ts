@@ -19,21 +19,24 @@ import { margins, fontWeights } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 
+const { marginL } = margins;
+const { textRegular, colorAccent, textHeadline, colorLink } = TotaraTheme;
+
 const styles = StyleSheet.create({
   rowTitle: {
-    ...TotaraTheme.textRegular,
+    ...textRegular,
     justifyContent: "center",
     alignSelf: "flex-start"
   },
   sectionView: {
     ...spacedFlexRow,
     height: 58,
-    marginHorizontal: margins.marginL,
+    marginHorizontal: marginL,
     alignItems: "center"
   },
   rowDidSelectContent: {
     flexDirection: "column",
-    backgroundColor: TotaraTheme.colorAccent,
+    backgroundColor: colorAccent,
     flex: 1
   },
   rowContent: {
@@ -42,22 +45,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-    marginHorizontal: margins.marginL
+    marginHorizontal: marginL
   },
   rowTextContainer: {
     height: 45,
     justifyContent: "center",
-    marginRight: margins.marginL
+    marginRight: marginL
   },
   sectionNotAvailable: {
-    ...TotaraTheme.textRegular,
-    color: TotaraTheme.colorLink,
+    ...textRegular,
+    color: colorLink,
     flex: 1,
     textAlign: "right",
     margin: margins.marginS
   },
   sectionTitle: {
-    ...TotaraTheme.textHeadline,
+    ...textHeadline,
     fontWeight: fontWeights.fontWeightBold,
     flex: 2
   },
@@ -67,7 +70,7 @@ const styles = StyleSheet.create({
   },
   labelTextDescription: {
     textAlign: "left",
-    ...TotaraTheme.textRegular
+    ...textRegular
   }
 });
 

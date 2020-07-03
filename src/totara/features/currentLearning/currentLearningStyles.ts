@@ -26,15 +26,34 @@ import {
 import { TotaraTheme } from "@totara/theme/Theme";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 
+const { marginL, marginS, margin2XL } = margins;
+const { borderRadiusL, borderRadiusXS, borderRadiusM } = borderRadius;
+const {
+  colorOpacity70,
+  textRegular,
+  textH2,
+  textSmall,
+  textXSmall,
+  textXXSmall,
+  colorAccent,
+  colorNeutral2,
+  colorNeutral7,
+  colorNeutral8,
+  textHeadline,
+  textMedium,
+  colorSecondary1,
+  navigationHeaderTintColor
+} = TotaraTheme;
+
 const bottomSheetStyles = StyleSheet.create({
   transparentView: {
     flex: 1,
-    backgroundColor: TotaraTheme.colorOpacity70,
+    backgroundColor: colorOpacity70,
     justifyContent: "flex-end"
   },
   renderOuterViewWrap: {
-    marginHorizontal: margins.marginL,
-    marginVertical: margins.marginS
+    marginHorizontal: marginL,
+    marginVertical: marginS
   },
   renderInnerViewWrap: {
     flexDirection: "row",
@@ -42,28 +61,28 @@ const bottomSheetStyles = StyleSheet.create({
     flex: 1
   },
   criteriaText: {
-    ...TotaraTheme.textRegular,
+    ...textRegular,
     alignSelf: "flex-start"
   },
   requirementText: {
-    marginTop: margins.marginS,
-    marginBottom: margins.marginL,
-    ...TotaraTheme.textSmall,
+    marginTop: marginS,
+    marginBottom: marginL,
+    ...textSmall,
     opacity: 0.48,
     alignSelf: "flex-start"
   },
   statusText: {
-    ...TotaraTheme.textXXSmall,
+    ...textXXSmall,
     opacity: 0.48,
     alignSelf: "flex-end"
   },
   headerViewWrap: {
-    backgroundColor: TotaraTheme.colorAccent,
-    borderTopLeftRadius: borderRadius.borderRadiusL,
-    borderTopRightRadius: borderRadius.borderRadiusL
+    backgroundColor: colorAccent,
+    borderTopLeftRadius: borderRadiusL,
+    borderTopRightRadius: borderRadiusL
   },
   headerCloseButtonWrap: {
-    marginTop: margins.marginS,
+    marginTop: marginS,
     height: iconSizes.sizeXL,
     width: iconSizes.sizeXL,
     alignItems: "center",
@@ -77,20 +96,20 @@ const bottomSheetStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: margins.margin2XL,
-    marginTop: margins.marginS
+    marginRight: margin2XL,
+    marginTop: marginS
   },
   indicatorWrap: {
     width: "20%",
     height: 5,
     opacity: 0.1,
-    borderRadius: borderRadius.borderRadiusXS,
-    backgroundColor: TotaraTheme.colorNeutral8,
+    borderRadius: borderRadiusXS,
+    backgroundColor: colorNeutral8,
     alignSelf: "center"
   },
   nameViewWrap: {
     alignSelf: "flex-start",
-    ...TotaraTheme.textRegular,
+    ...textRegular,
     justifyContent: "center"
   },
   bodySeparator: {
@@ -99,30 +118,30 @@ const bottomSheetStyles = StyleSheet.create({
   },
   container: {
     alignItems: "flex-start",
-    margin: margins.marginL
+    margin: marginL
   },
   titleWrap: {
-    margin: margins.marginL
+    margin: marginL
   },
   renderListWrap: {
-    backgroundColor: TotaraTheme.colorAccent,
+    backgroundColor: colorAccent,
     marginBottom: "5%",
     height: "95%"
   },
   availableReasonTitleWrap: {
-    ...TotaraTheme.textHeadline,
+    ...textHeadline,
     fontWeight: fontWeights.fontWeightBold
   },
   restrictionViewList: {
-    backgroundColor: TotaraTheme.colorAccent,
+    backgroundColor: colorAccent,
     height: "100%"
   },
   availableReasonTextWrap: {
-    ...TotaraTheme.textRegular,
+    ...textRegular,
     alignSelf: "flex-start",
-    color: TotaraTheme.colorNeutral8,
-    backgroundColor: TotaraTheme.colorAccent,
-    marginHorizontal: margins.marginL
+    color: colorNeutral8,
+    backgroundColor: colorAccent,
+    marginHorizontal: marginL
   }
 });
 
@@ -158,7 +177,7 @@ const headerViewStyles = StyleSheet.create({
     flex: 1,
     maxHeight: 280,
     minHeight: 260,
-    backgroundColor: TotaraTheme.colorNeutral2
+    backgroundColor: colorNeutral2
   },
   itemImage: {
     minHeight: 160
@@ -166,37 +185,37 @@ const headerViewStyles = StyleSheet.create({
   itemCard: {
     maxHeight: 85,
     minHeight: 60,
-    backgroundColor: TotaraTheme.colorNeutral2
+    backgroundColor: colorNeutral2
   },
   LearningTypeLabelWrap: {
-    borderRadius: borderRadius.borderRadiusM,
+    borderRadius: borderRadiusM,
     borderStyle: "solid",
     borderWidth: 1,
     alignSelf: "flex-start",
     alignItems: "center",
-    marginTop: margins.marginS,
-    borderColor: TotaraTheme.colorNeutral7
+    marginTop: marginS,
+    borderColor: colorNeutral7
   },
   tabBarContainer: {
     flex: 0.4,
     height: 50,
-    marginTop: margins.marginL
+    marginTop: marginL
   },
   tabNav: {
     ...spacedFlexRow,
-    marginLeft: margins.marginL,
+    marginLeft: marginL,
     width: Dimensions.get("window").width * 0.5,
     alignItems: "center",
     flex: 1
   },
   programLabelText: {
-    ...TotaraTheme.textXXSmall,
+    ...textXXSmall,
     textAlign: "center",
     paddingLeft: paddings.paddingL,
     paddingRight: paddings.paddingL,
     paddingTop: paddings.paddingXS,
     paddingBottom: paddings.paddingXS,
-    color: TotaraTheme.colorNeutral7
+    color: colorNeutral7
   },
   tabSelected: {
     height: "100%",
@@ -208,7 +227,7 @@ const headerViewStyles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-around",
-    backgroundColor: TotaraTheme.colorOpacity70
+    backgroundColor: colorOpacity70
   }
 });
 
@@ -219,17 +238,17 @@ const videoControllerStyles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    borderRadius: borderRadius.borderRadiusM
+    borderRadius: borderRadiusM
   }
 });
 
 const headerViewTitleWrap = {
-  ...TotaraTheme.textH2
+  ...textH2
 };
 
 const headerViewSubTitleWrap = {
-  ...TotaraTheme.textXSmall,
-  color: TotaraTheme.navigationHeaderTintColor
+  ...textXSmall,
+  color: navigationHeaderTintColor
 };
 
 const viewHeader: ViewStyle = {
@@ -251,22 +270,22 @@ const viewStyles = StyleSheet.create({
   headerViewSubTitleWrap,
   headerViewWrap: {
     ...viewHeader,
-    color: TotaraTheme.colorSecondary1,
-    backgroundColor: TotaraTheme.colorNeutral2
+    color: colorSecondary1,
+    backgroundColor: colorNeutral2
   }
 });
 
 const courseStyle = StyleSheet.create({
   expandContentWrap: {
     ...spacedFlexRow,
-    margin: margins.marginL
+    margin: marginL
   },
   expandTextWrap: {
-    ...TotaraTheme.textMedium
+    ...textMedium
   },
   scrollView: {
     flex: 1,
-    backgroundColor: TotaraTheme.colorNeutral2
+    backgroundColor: colorNeutral2
   }
 });
 
