@@ -180,7 +180,7 @@ const ScormSummary = ({
     return true;
   };
   if (error) {
-    return <LoadingError onRefreshTap={onRefresh} />;
+    return <LoadingError onRefreshTap={onRefresh} testID={"summary_loading"} />;
   }
   return (
     <>
@@ -301,7 +301,7 @@ const ScormSummary = ({
               });
             }
           }}
-          //TODO - Will be fixed after enable online
+          //TODO - Will be fixed after enabling online
           /*
             secondary={
               (actionSecondary && {
