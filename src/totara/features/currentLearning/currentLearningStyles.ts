@@ -24,6 +24,7 @@ import {
   fontWeights
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { spacedFlexRow } from "@totara/lib/styles/base";
 
 const bottomSheetStyles = StyleSheet.create({
   transparentView: {
@@ -182,8 +183,7 @@ const headerViewStyles = StyleSheet.create({
     marginTop: margins.marginL
   },
   tabNav: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    ...spacedFlexRow,
     marginLeft: margins.marginL,
     width: Dimensions.get("window").width * 0.5,
     alignItems: "center",
@@ -233,8 +233,6 @@ const headerViewSubTitleWrap = {
 };
 
 const viewHeader: ViewStyle = {
-  flexDirection: "column",
-  justifyContent: "space-between",
   paddingHorizontal: gutter,
   paddingVertical: paddings.paddingL
 };
@@ -260,9 +258,8 @@ const viewStyles = StyleSheet.create({
 
 const courseStyle = StyleSheet.create({
   expandContentWrap: {
-    flexDirection: "row",
-    margin: margins.marginL,
-    justifyContent: "space-between"
+    ...spacedFlexRow,
+    margin: margins.marginL
   },
   expandTextWrap: {
     ...TotaraTheme.textMedium

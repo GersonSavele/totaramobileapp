@@ -17,6 +17,7 @@
 import { StyleSheet } from "react-native";
 import { margins, fontWeights } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { spacedFlexRow } from "@totara/lib/styles/base";
 
 const styles = StyleSheet.create({
   rowTitle: {
@@ -25,8 +26,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start"
   },
   sectionView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    ...spacedFlexRow,
     height: 58,
     marginHorizontal: margins.marginL,
     alignItems: "center"

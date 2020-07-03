@@ -23,6 +23,7 @@ import {
   fontWeights,
   row
 } from "@totara/theme/constants";
+import { spacedFlexRow } from "@totara/lib/styles/base";
 
 const details = StyleSheet.create({
   container: {
@@ -82,8 +83,7 @@ const courses = StyleSheet.create({
 
 const courseSet = StyleSheet.create({
   courseSetHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    ...spacedFlexRow,
     flex: 1,
     marginHorizontal: margins.marginL
   },
@@ -153,8 +153,7 @@ const courseSet = StyleSheet.create({
   headerBar: {
     backgroundColor: TotaraTheme.colorNeutral2,
     height: 54,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    ...spacedFlexRow,
     alignItems: "flex-end"
   },
   headerTitle: {
