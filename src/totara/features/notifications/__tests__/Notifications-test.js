@@ -7,7 +7,6 @@ import {
   act,
   fireEvent,
   getAllByTestId,
-  rerender,
   getByTestId
 } from "@testing-library/react-native";
 import wait from "waait";
