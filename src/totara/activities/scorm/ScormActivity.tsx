@@ -68,6 +68,7 @@ const {
   SCORM_STACK_ROOT,
   SCORM_ATTEMPTS,
   OFFLINE_SCORM_ACTIVITY,
+  ONLINE_SCORM_ACTIVITY,
   SCORM_FEEDBACK
 } = NAVIGATION;
 
@@ -243,7 +244,7 @@ const innerStack = createStackNavigator(
       screen: OfflineScormActivity,
       navigationOptions
     },
-    [NAVIGATION_ONLINE_SCORM_ACTIVITY]: {
+    [ONLINE_SCORM_ACTIVITY]: {
       screen: OnlineSCORMActivity,
       navigationOptions
     }

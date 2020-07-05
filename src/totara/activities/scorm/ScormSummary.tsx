@@ -47,18 +47,18 @@ import {
   getOfflineLastActivityResult
 } from "./storageUtils";
 import { getDataForScormSummary } from "./utils";
-import { navigateTo } from "@totara/lib/navigation";
-import { DATE_FORMAT_FULL, NAVIGATION } from "@totara/lib/constants";
+import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
+import { DATE_FORMAT_FULL } from "@totara/lib/constants";
 import { ScormBundle, Grade } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
 
 const {
-  NAVIGATION_OFFLINE_SCORM_ACTIVITY,
-  NAVIGATION_SCORM_ATTEMPTS,
-  NAVIGATION_SCORM_FEEDBACK,
-  NAVIGATION_ONLINE_SCORM_ACTIVITY
+  OFFLINE_SCORM_ACTIVITY,
+  SCORM_ATTEMPTS,
+  SCORM_FEEDBACK,
+  ONLINE_SCORM_ACTIVITY
 } = NAVIGATION;
 
 type SummaryProps = {
@@ -170,7 +170,7 @@ const ScormSummary = ({
         ) {
           setCompletedScormAttempt({ scormId: id, attempt, client });
           navigateTo({
-            routeId: NAVIGATION_SCORM_FEEDBACK,
+            routeId: SCORM_FEEDBACK,
             navigate: navigation.navigate,
             props: {
               id,
@@ -187,7 +187,7 @@ const ScormSummary = ({
     return true;
   };
   if (error) {
-    return <LoadingError onRefreshTap={onRefresh} />;
+    return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} />;
   }
   return (
     <>
@@ -243,7 +243,7 @@ const ScormSummary = ({
               <TouchableOpacity
                 onPress={() =>
                   navigateTo({
-                    routeId: NAVIGATION_SCORM_ATTEMPTS,
+                    routeId: SCORM_ATTEMPTS,
                     navigate: navigation.navigate,
                     props: {
                       attempts,
@@ -289,8 +289,8 @@ const ScormSummary = ({
               navigation.addListener("didFocus", onRefresh);
               const attemptNumber = totalAttempt + 1;
               const scormActivityRoute = isDownloaded
-                ? NAVIGATION_OFFLINE_SCORM_ACTIVITY
-                : NAVIGATION_ONLINE_SCORM_ACTIVITY;
+                ? OFFLINE_SCORM_ACTIVITY
+                : ONLINE_SCORM_ACTIVITY;
               navigateTo({
                 routeId: scormActivityRoute,
                 navigate: navigation.navigate,
@@ -323,7 +323,7 @@ const ScormSummary = ({
                   isUserOnline: false,
                   callback: () => {
                     navigateTo({
-                      routeId: NAVIGATION_OFFLINE_SCORM_ACTIVITY,
+                      routeId: OFFLINE_SCORM_ACTIVITY,
                       navigate: navigation.navigate,
                       props: {
                         scormBundle,
