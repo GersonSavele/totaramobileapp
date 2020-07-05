@@ -27,22 +27,20 @@ import { LoadingError, NetworkStatus, Loading } from "@totara/components";
 import { viewStyles } from "../currentLearningStyles";
 
 const CurrentLearning = () => {
-  const onContentRefreshTap = () => {};
-
   const { loading, error, data, refetch } = useQuery(query);
   const [theme] = useContext(ThemeContext);
-  const pullToRefresh = () => {
+  const onContentRefresh = () => {
     refetch();
   };
   if (loading) return <Loading />;
   if (error) {
-    return <LoadingError onRefreshTap={onContentRefreshTap} />;
+    return <LoadingError onRefreshTap={onContentRefresh} />;
   }
   if (data) {
     const currentLearning = data.currentLearning;
     return (
       <View style={theme.viewContainer}>
-        <NavigationEvents onWillFocus={pullToRefresh} />
+        <NavigationEvents onWillFocus={onContentRefresh} />
         <View style={viewStyles.headerViewWrap}>
           <Text style={viewStyles.headerViewTitleWrap}>
             {translate("current_learning.action_primary")}
@@ -63,7 +61,7 @@ const CurrentLearning = () => {
             <LearningItemCarousel
               currentLearning={currentLearning}
               loading={loading}
-              onRefresh={pullToRefresh}
+              onRefresh={onContentRefresh}
             />
           ) : (
             <NoCurrentLearning />
