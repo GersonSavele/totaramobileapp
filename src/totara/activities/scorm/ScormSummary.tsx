@@ -135,7 +135,8 @@ const ScormSummary = ({
     completionScoreRequired,
     launchUrl,
     shouldAllowNewAttempt,
-    // actionSecondary, //TODO - will be enable for online
+    repeatUrl,
+    shouldAllowLastAttempt,
     timeOpen,
     maxAttempts,
     attempts
@@ -312,33 +313,33 @@ const ScormSummary = ({
               });
             }
           }}
-          //TODO - Will be fixed after enable online
-          /*
-            secondary={
-              (actionSecondary && {
-                title: translate("scorm.summary.last_attempt"),
-                action: onTapContinueLastAttempt({
-                  scormBundle,
-                  // TODO: change the way online works
-                  isUserOnline: false,
-                  callback: () => {
-                    navigateTo({
-                      routeId: OFFLINE_SCORM_ACTIVITY,
-                      navigate: navigation.navigate,
-                      props: {
-                        scormBundle,
-                        attempt:
-                          scormBundle &&
-                          scormBundle.scorm &&
-                          scormBundle.scorm.attemptsCurrent
-                      }
-                    });
-                  }
-                })
-              }) ||
-              undefined
+          lastAttempt={{
+            title: translate("scorm.summary.last_attempt"),
+            action: () => {
+              navigation.addListener("didFocus", onRefresh);
+              const attemptNumber = totalAttempt;
+              navigateTo({
+                routeId: ONLINE_SCORM_ACTIVITY,
+                navigate: navigation.navigate,
+                props: {
+                  title: name,
+                  attempt: attemptNumber,
+                  scorm: scormBundle && scormBundle.scorm,
+                  backIcon: "chevron-left",
+                  uri: repeatUrl,
+                  backAction: () =>
+                    onExitActivityAttempt({
+                      id: id,
+                      attempt: attemptNumber,
+                      gradeMethod: gradeMethod,
+                      completionScoreRequired: completionScoreRequired,
+                      client
+                    })
+                }
+              });
             }
-            */
+          }}
+          shouldAllowLastAttempt={shouldAllowLastAttempt}
         />
       </View>
     </>
@@ -347,8 +348,9 @@ const ScormSummary = ({
 
 type PropsAttempt = {
   newAttempt: PropsInfo | undefined;
-  secondary: PropsInfo | undefined;
+  lastAttempt: PropsInfo | undefined;
   shouldAllowNewAttempt: boolean;
+  shouldAllowLastAttempt: boolean;
 };
 
 type PropsInfo = {
@@ -358,16 +360,17 @@ type PropsInfo = {
 
 const AttemptController = ({
   newAttempt,
-  secondary,
-  shouldAllowNewAttempt
+  lastAttempt,
+  shouldAllowNewAttempt,
+  shouldAllowLastAttempt
 }: PropsAttempt) => {
   return (
     <View style={scormSummaryStyles.attemptContainer}>
       <View style={spacedFlexRow}>
-        {secondary && (
+        {lastAttempt && shouldAllowLastAttempt && (
           <SecondaryButton
-            text={secondary.title}
-            onPress={secondary.action}
+            text={lastAttempt.title}
+            onPress={lastAttempt.action}
             style={{ flex: 1, marginRight: newAttempt ? margins.marginL : 0 }}
           />
         )}

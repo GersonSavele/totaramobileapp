@@ -100,7 +100,7 @@ const getDataForScormSummary = (
     calculatedGrade: undefined,
     shouldAllowNewAttempt: false,
     launchUrl: undefined,
-    actionSecondary: false,
+    shouldAllowLastAttempt: false,
     lastsynced: undefined,
     timeOpen: undefined,
     maxAttempts: undefined,
@@ -153,11 +153,17 @@ const getDataForScormSummary = (
     (scorm.completionscorerequired !== null && scorm.completionscorerequired) ||
     undefined;
   data.launchUrl = scorm && scorm.launchUrl;
+
   data.shouldAllowNewAttempt =
-    (shouldAllowAttempt(data) && (scorm.launchUrl || isDownloaded) && true) ||
+    (shouldAllowAttempt(data) &&
+      ((scorm.launchUrl && scorm.launchUrl !== "") || isDownloaded) &&
+      true) ||
     false;
-  data.actionSecondary =
-    (isDownloaded && scormBundle && scorm && scorm.repeatUrl && true) || false;
+
+  data.repeatUrl =
+    scorm && scorm.repeatUrl && scorm.repeatUrl !== "" && scorm.repeatUrl;
+  data.shouldAllowLastAttempt =
+    (!isDownloaded && data.totalAttempt > 0 && data.repeatUrl && true) || false;
 
   data.lastsynced =
     (scormBundle &&

@@ -65,7 +65,8 @@ const scormBundle = eval({
       "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/396/mod_scorm/package/0/Creating%20a%20dynamic%20audience.zip?forcedownload=1",
     launchUrl:
       "https://mobile.demo.totara.software/mod/scorm/player.php?mode=normal&newattempt=on&cm=122&scoid=0",
-    repeatUrl: "",
+    repeatUrl:
+      "https://mobile.demo.totara.software/mod/scorm/player.php?mode=normal&newattempt=on&cm=122&scoid=0",
     attemptsCurrent: 1,
     calculatedGrade: "10%",
     offlinePackageUrl:
@@ -96,7 +97,7 @@ describe("getDataForScormSummary", () => {
       description: undefined,
       totalAttempt: 0,
       calculatedGrade: undefined,
-      actionSecondary: false,
+      shouldAllowLastAttempt: false,
       gradeMethod: undefined,
       attemptGrade: undefined,
       lastsynced: undefined,
@@ -105,7 +106,8 @@ describe("getDataForScormSummary", () => {
       attempts: undefined,
       completionScoreRequired: undefined,
       shouldAllowNewAttempt: false,
-      launchUrl: undefined
+      launchUrl: undefined,
+      repeatUrl: undefined
     };
     expect(getDataForScormSummary(true, undefined)).toEqual(
       expectResultDefault
@@ -116,7 +118,7 @@ describe("getDataForScormSummary", () => {
       description: "Title",
       totalAttempt: 1,
       calculatedGrade: "10%",
-      actionSecondary: false,
+      shouldAllowLastAttempt: false,
       gradeMethod: Grade.highest,
       attemptGrade: AttemptGrade.highest,
       lastsynced: moment.unix(scormBundle.lastsynced),
@@ -131,7 +133,8 @@ describe("getDataForScormSummary", () => {
       ],
       completionScoreRequired: undefined,
       shouldAllowNewAttempt: true,
-      launchUrl: scormBundle.scorm.launchUrl
+      launchUrl: scormBundle.scorm.launchUrl,
+      repeatUrl: scormBundle.scorm.repeatUrl
     };
     expect(getDataForScormSummary(true, scormBundle)).toEqual(
       expectResultScormBundleOnline
@@ -142,7 +145,7 @@ describe("getDataForScormSummary", () => {
       description: "Title",
       totalAttempt: 1,
       calculatedGrade: "10%",
-      actionSecondary: false,
+      shouldAllowLastAttempt: true,
       gradeMethod: Grade.highest,
       attemptGrade: AttemptGrade.highest,
       lastsynced: moment.unix(scormBundle.lastsynced),
@@ -157,7 +160,8 @@ describe("getDataForScormSummary", () => {
       ],
       completionScoreRequired: undefined,
       shouldAllowNewAttempt: true,
-      launchUrl: scormBundle.scorm.launchUrl
+      launchUrl: scormBundle.scorm.launchUrl,
+      repeatUrl: scormBundle.scorm.repeatUrl
     };
     expect(getDataForScormSummary(false, scormBundle)).toEqual(
       expectResultScormBundleOffline
