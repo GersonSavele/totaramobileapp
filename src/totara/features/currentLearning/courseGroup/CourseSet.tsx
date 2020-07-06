@@ -23,7 +23,7 @@ import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import { courseSet } from "../courseGroupStyles";
 import { margins } from "@totara/theme/constants";
-import Restriction from "../Restriction";
+import CriteriaSheet from "../CriteriaSheet";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -101,7 +101,10 @@ const CourseSet = ({ courseSets }: CourseSetProps) => {
         </View>
       )}
       {show && (
-        <Restriction title={courseSets.completionCriteria} onClose={onClose} />
+        <CriteriaSheet
+          criteriaList={courseSets.completionCriteria}
+          onClose={onClose}
+        />
       )}
     </View>
   );

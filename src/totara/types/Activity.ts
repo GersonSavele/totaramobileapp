@@ -33,7 +33,7 @@ export interface Activity {
   completion?: completionTrack;
   completionstatus?: completionStatus;
   available: boolean;
-  availablereason?: string;
+  availablereason?: [string];
 }
 
 export interface ScormActivity extends Activity {

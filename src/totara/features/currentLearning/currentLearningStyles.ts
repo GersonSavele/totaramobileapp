@@ -145,7 +145,7 @@ const bottomSheetStyles = StyleSheet.create({
     ...textHeadline,
     fontWeight: fontWeights.fontWeightBold
   },
-  restrictionViewList: {
+  listContent: {
     backgroundColor: colorAccent,
     height: "100%"
   },
@@ -154,11 +154,16 @@ const bottomSheetStyles = StyleSheet.create({
     alignSelf: "flex-start",
     color: colorNeutral8,
     backgroundColor: colorAccent,
-    marginHorizontal: marginL
+    margin: marginL
   },
   criteriaTitle: {
     ...textRegular,
     fontWeight: fontWeights.fontWeightBold
+  },
+  listHeader: {
+    ...textHeadline,
+    fontWeight: fontWeights.fontWeightBold,
+    margin: marginL
   }
 });
 

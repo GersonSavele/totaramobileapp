@@ -36,7 +36,7 @@ export interface CourseSets {
   id: number;
   label: string;
   nextsetoperator: string;
-  completionCriteria: string;
+  completionCriteria: [string];
   courses: [Courses];
 }
 

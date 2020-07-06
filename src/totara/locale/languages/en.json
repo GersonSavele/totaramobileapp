@@ -131,7 +131,8 @@
       "tertiary_button_title": "cancel"
     },
     "course_criteria": {
-      "title": "Course criteria"
+      "title": "Course criteria",
+      "bottom_sheet_header":"This activity is not available unless"
     },
     "course_details": {
       "activities": "ACTIVITIES",

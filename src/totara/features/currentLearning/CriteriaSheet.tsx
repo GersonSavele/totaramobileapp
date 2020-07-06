@@ -14,20 +14,31 @@
  */
 
 import React, { useRef, useEffect } from "react";
-import { View, Modal, TouchableOpacity, Text } from "react-native";
+import { View, Modal, TouchableOpacity, Text, FlatList } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import BottomSheet from "reanimated-bottom-sheet";
 import { bottomSheetStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { Separator } from "@totara/components";
+import { iconSizes } from "@totara/theme/constants";
 
 type Props = {
-  title?: string;
+  title: string;
+  criteriaList?: [string];
   onClose: () => void;
 };
 
-const Restriction = ({ title = "", onClose }: Props) => {
-  const bottomDrawerRef = useRef<any>(null);
+const ListItem = ({ criteria }: { criteria: string }) => (
+  <View>
+    <Text numberOfLines={3} style={bottomSheetStyles.availableReasonTextWrap}>
+      {criteria}
+    </Text>
+    <Separator />
+  </View>
+);
 
+const CriteriaSheet = ({ title = "", criteriaList = [""], onClose }: Props) => {
+  const bottomDrawerRef = useRef<any>(null);
   useEffect(() => {
     bottomDrawerRef.current.snapTo(0);
   }, [bottomDrawerRef]);
@@ -40,7 +51,7 @@ const Restriction = ({ title = "", onClose }: Props) => {
             onPress={onClose}>
             <FontAwesomeIcon
               icon="times"
-              size={20}
+              size={iconSizes.sizeM}
               color={TotaraTheme.textColorDisabled}
             />
           </TouchableOpacity>
@@ -54,12 +65,13 @@ const Restriction = ({ title = "", onClose }: Props) => {
 
   const renderContent = () => {
     return (
-      <View style={bottomSheetStyles.restrictionViewList}>
-        <Text
-          numberOfLines={3}
-          style={bottomSheetStyles.availableReasonTextWrap}>
-          {title}
-        </Text>
+      <View style={bottomSheetStyles.listContent}>
+        <Text style={bottomSheetStyles.listHeader}>{title}</Text>
+        <FlatList
+          data={criteriaList}
+          renderItem={({ item }) => <ListItem criteria={item} />}
+          keyExtractor={(_, index) => index.toString()}
+        />
       </View>
     );
   };
@@ -69,7 +81,7 @@ const Restriction = ({ title = "", onClose }: Props) => {
       <View style={bottomSheetStyles.transparentView}>
         <View style={{ flex: 0.5 }}>
           <BottomSheet
-            snapPoints={["50%", "30%", "30%"]}
+            snapPoints={["70%", "50%", "50%"]}
             renderContent={renderContent}
             renderHeader={renderBottomSheetHeader}
             ref={bottomDrawerRef}
@@ -82,4 +94,4 @@ const Restriction = ({ title = "", onClose }: Props) => {
   );
 };
 
-export default Restriction;
+export default CriteriaSheet;

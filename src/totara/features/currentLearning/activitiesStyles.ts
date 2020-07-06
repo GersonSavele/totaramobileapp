@@ -23,7 +23,7 @@ const { marginL } = margins;
 const { textRegular, colorAccent, textHeadline, colorLink } = TotaraTheme;
 
 const styles = StyleSheet.create({
-  rowTitle: {
+  itemTitle: {
     ...textRegular,
     justifyContent: "center",
     alignSelf: "flex-start"
@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
     marginHorizontal: marginL,
     alignItems: "center"
   },
-  rowDidSelectContent: {
+  itemTouchableContent: {
     flexDirection: "column",
     backgroundColor: colorAccent,
     flex: 1
   },
-  rowContent: {
+  itemContentWrapper: {
     height: 68,
     justifyContent: "flex-start",
     flexDirection: "row",
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: marginL
   },
-  rowTextContainer: {
+  itemTextContainer: {
     height: 45,
     justifyContent: "center",
     marginRight: marginL
@@ -71,6 +71,11 @@ const styles = StyleSheet.create({
   labelTextDescription: {
     textAlign: "left",
     ...textRegular
+  },
+  listItemLockContainer: {
+    flex: 1,
+    backgroundColor: colorAccent,
+    paddingRight: 32
   }
 });
 

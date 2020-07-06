@@ -17,7 +17,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { NavigationContext } from "react-navigation";
 import LearningItemRow from "./LearningItemRow";
-import Restriction from "../Restriction";
+import CriteriaSheet from "../CriteriaSheet";
 
 const renderItems = (navigation) => {
   const LearningItems = ({ item }: any) => (
@@ -62,7 +62,10 @@ const CourseList = () => {
         showsHorizontalScrollIndicator={false}
       />
       {show && (
-        <Restriction title={courseList.completionCriteria} onClose={onClose} />
+        <CriteriaSheet
+          criteriaList={courseList.completionCriteria}
+          onClose={onClose}
+        />
       )}
     </View>
   );

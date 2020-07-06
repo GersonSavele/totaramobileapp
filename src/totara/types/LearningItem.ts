@@ -20,13 +20,13 @@
  */
 
 import { Activity } from "./Activity";
-import { learningItemEnum } from "@totara/lib/constants";
+import { learningItemEnum } from "@totara/features/currentLearning/constants";
 
 export interface Section {
   id: number;
   title: string;
   available: boolean;
-  availablereason?: string;
+  availablereason?: [string];
   data?: [Activity];
 }
 

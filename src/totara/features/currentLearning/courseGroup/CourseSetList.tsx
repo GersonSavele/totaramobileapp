@@ -19,7 +19,7 @@ import { NavigationContext } from "react-navigation";
 import { CourseSets } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
 import { courseSet, horizontalList } from "../courseGroupStyles";
-import Restriction from "../Restriction";
+import CriteriaSheet from "../CriteriaSheet";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import LearningItemRow from "./LearningItemRow";
@@ -76,7 +76,10 @@ const CourseSetList = ({ courseSetList }: { courseSetList: [CourseSets] }) => {
           </View>
         </TouchableOpacity>
         {show && (
-          <Restriction title={item.completionCriteria} onClose={onClose} />
+          <CriteriaSheet
+            criteriaList={item.completionCriteria}
+            onClose={onClose}
+          />
         )}
       </View>
     );

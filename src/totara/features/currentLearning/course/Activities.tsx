@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
-import Restriction from "../Restriction";
+import CriteriaSheet from "../CriteriaSheet";
 import TextTypeLabel from "./TextTypeLabel";
 import CompletionIcon from "./CompletionIcon";
 import styles from "../activitiesStyles";
@@ -36,7 +36,7 @@ import {
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete } from "../course/api";
 const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
-type ActivityListProps = {
+type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
   expandAllActivities: boolean;
@@ -46,7 +46,7 @@ const Activities = ({
   sections,
   courseRefreshCallBack,
   expandAllActivities
-}: ActivityListProps) => {
+}: ActivitiesProps) => {
   return (
     <FlatList
       data={sections}
@@ -77,7 +77,7 @@ const SectionItem = ({
   //every item need to have its own state
   const [show, setShow] = useState(expandAllActivities);
   const activities = section.data as Array<Activity>;
-  const { title, available, availablereason = "" } = section;
+  const { title, available, availablereason } = section;
   useEffect(() => {
     setShow(expandAllActivities);
   }, [expandAllActivities]);
@@ -92,7 +92,7 @@ const SectionItem = ({
         {available && activities.length > 0 && (
           <ExpandableSectionHeader show={show} title={title} />
         )}
-        {!available && availablereason.length > 0 && (
+        {!available && availablereason && availablereason.length > 0 && (
           <RestrictionSectionHeader
             title={title}
             availableReason={availablereason}
@@ -100,7 +100,10 @@ const SectionItem = ({
         )}
       </TouchableOpacity>
       {show && (
-        <Row data={activities} courseRefreshCallBack={courseRefreshCallBack} />
+        <ActivityList
+          data={activities}
+          courseRefreshCallBack={courseRefreshCallBack}
+        />
       )}
     </View>
   ) : null;
@@ -110,7 +113,7 @@ const RestrictionSectionHeader = ({
   title,
   availableReason
 }: {
-  availableReason: string;
+  availableReason: [string];
   title: string;
 }) => {
   const [show, setShow] = useState(false);
@@ -128,8 +131,9 @@ const RestrictionSectionHeader = ({
         </Text>
       </TouchableOpacity>
       {show && (
-        <Restriction
-          title={availableReason == null ? "" : availableReason}
+        <CriteriaSheet
+          title={translate("course.course_criteria.bottom_sheet_header")}
+          criteriaList={availableReason}
           onClose={onClose}
         />
       )}
@@ -166,12 +170,12 @@ const ExpandableSectionHeader = ({
   );
 };
 
-type ActivityContentProps = {
+type ActivityListProps = {
   data?: Array<Activity>;
   courseRefreshCallBack: () => {};
 };
 
-const Row = ({ data, courseRefreshCallBack }: ActivityContentProps) => {
+const ActivityList = ({ data, courseRefreshCallBack }: ActivityListProps) => {
   return (
     <View>
       {data!.map((item: Activity, key: number) => {
@@ -180,9 +184,9 @@ const Row = ({ data, courseRefreshCallBack }: ActivityContentProps) => {
             {item.completionstatus === completionStatus.unknown ||
             item.completionstatus === null ||
             !item.available ? (
-              <RowLock item={item} key={key} />
+              <ListItemLock item={item} key={key} />
             ) : (
-              <RowUnLock
+              <ListItemUnlock
                 item={item}
                 courseRefreshCallBack={courseRefreshCallBack}
                 key={key}
@@ -195,12 +199,13 @@ const Row = ({ data, courseRefreshCallBack }: ActivityContentProps) => {
   );
 };
 
-type ActivityProps = {
+const ListItemUnlock = ({
+  item,
+  courseRefreshCallBack
+}: {
   item: Activity;
   courseRefreshCallBack?: () => {};
-};
-
-const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
+}) => {
   const navigation = useContext(NavigationContext);
   const [selfComplete, { data, error }] = useMutation(activitySelfComplete);
   if (data) {
@@ -212,7 +217,7 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
     </View>
   ) : (
     <View style={{ backgroundColor: TotaraTheme.colorAccent }}>
-      <View style={styles.rowContent}>
+      <View style={styles.itemContentWrapper}>
         {item.completion === completionTrack.trackingManual ? (
           <TouchableOpacity
             onPress={() =>
@@ -240,7 +245,7 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
           />
         )}
         <TouchableOpacity
-          style={styles.rowDidSelectContent}
+          style={styles.itemTouchableContent}
           onPress={() => {
             switch (item.modtype) {
               case activityModType.scorm: {
@@ -277,16 +282,16 @@ const RowUnLock = ({ item, courseRefreshCallBack }: ActivityProps) => {
   );
 };
 
-const RowLock = ({ item }: { item: Activity }) => {
+const ListItemLock = ({ item }: { item: Activity }) => {
   const [show, setShow] = useState(false);
   const onClose = () => {
     setShow(!show);
   };
   return (
-    <View style={styles.rowDidSelectContent}>
-      <View>
-        <TouchableOpacity style={{ flex: 1 }} onPress={onClose}>
-          <View style={[styles.rowContent, { opacity: 0.25 }]}>
+    <View>
+      <View style={styles.listItemLockContainer}>
+        <TouchableOpacity style={styles.itemTouchableContent} onPress={onClose}>
+          <View style={[styles.itemContentWrapper, { opacity: 0.25 }]}>
             <CompletionIcon
               completion={item.completion}
               status={item.completionstatus}
@@ -296,21 +301,22 @@ const RowLock = ({ item }: { item: Activity }) => {
           </View>
         </TouchableOpacity>
         {show && (
-          <Restriction
-            title={item.availablereason == null ? "" : item.availablereason}
+          <CriteriaSheet
+            title={translate("course.course_criteria.bottom_sheet_header")}
+            criteriaList={item.availablereason}
             onClose={onClose}
           />
         )}
-        <Separator />
       </View>
+      <Separator />
     </View>
   );
 };
 
 const RowContainer = ({ item }: { item: Activity }) => {
   return (
-    <View style={styles.rowTextContainer}>
-      <Text numberOfLines={1} style={styles.rowTitle}>
+    <View style={styles.itemTextContainer}>
+      <Text numberOfLines={1} style={styles.itemTitle}>
         {item.name.trim()}
       </Text>
     </View>
