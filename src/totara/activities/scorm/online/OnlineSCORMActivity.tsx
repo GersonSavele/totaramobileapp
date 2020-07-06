@@ -10,17 +10,16 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext, useEffect } from "react";
-import { SafeAreaView, Text, BackHandler } from "react-native";
+import React, { useEffect } from "react";
+import { Text, BackHandler } from "react-native";
 
 import { AuthenticatedWebView } from "@totara/auth";
-import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { NavigationStackProp } from "react-navigation-stack";
 
 type OnlineScormParams = {
   uri: string;
-  backAction: Function;
+  backAction: () => void;
 };
 
 type OnlineScormProps = {
@@ -29,7 +28,6 @@ type OnlineScormProps = {
 
 const OnlineSCORMActivity = ({ navigation }: OnlineScormProps) => {
   const { backAction, uri } = navigation.state.params as OnlineScormParams;
-  const [theme] = useContext(ThemeContext);
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -38,22 +36,8 @@ const OnlineSCORMActivity = ({ navigation }: OnlineScormProps) => {
     return () => backHandler.remove();
   }, [uri]);
 
-  if (!uri) {
-    return (
-      <SafeAreaView>
-        <Text>{translate("general.error_unknown")}</Text>
-      </SafeAreaView>
-    );
-  } else {
-    return (
-      <>
-        <AuthenticatedWebView uri={uri} />
-        <SafeAreaView
-          style={{ backgroundColor: theme.viewContainer.backgroundColor }}
-        />
-      </>
-    );
-  }
+  if (!uri) return <Text>{translate("general.error_unknown")}</Text>;
+  return <AuthenticatedWebView uri={uri} />;
 };
 
 export default OnlineSCORMActivity;
