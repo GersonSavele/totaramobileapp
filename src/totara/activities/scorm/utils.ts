@@ -14,7 +14,7 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 
 import {
   AttemptGrade,
@@ -152,18 +152,14 @@ const getDataForScormSummary = (
   data.completionScoreRequired =
     (scorm.completionscorerequired !== null && scorm.completionscorerequired) ||
     undefined;
+
   data.launchUrl = scorm && scorm.launchUrl;
-
   data.shouldAllowNewAttempt =
-    (shouldAllowAttempt(data) &&
-      ((scorm.launchUrl && scorm.launchUrl !== "") || isDownloaded) &&
-      true) ||
-    false;
+    shouldAllowAttempt(data) && (!isEmpty(data.launchUrl) || isDownloaded);
 
-  data.repeatUrl =
-    scorm && scorm.repeatUrl && scorm.repeatUrl !== "" && scorm.repeatUrl;
+  data.repeatUrl = scorm && scorm.repeatUrl;
   data.shouldAllowLastAttempt =
-    (!isDownloaded && data.totalAttempt > 0 && data.repeatUrl && true) || false;
+    !isDownloaded && !isEmpty(data.repeatUrl) && data.totalAttempt > 0;
 
   data.lastsynced =
     (scormBundle &&

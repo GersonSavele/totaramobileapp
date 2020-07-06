@@ -61,16 +61,12 @@ const scormBundle = eval({
     completionstatusrequired: 4,
     completionscorerequired: null,
     completionstatusallscos: false,
-    packageUrl:
-      "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/396/mod_scorm/package/0/Creating%20a%20dynamic%20audience.zip?forcedownload=1",
-    launchUrl:
-      "https://mobile.demo.totara.software/mod/scorm/player.php?mode=normal&newattempt=on&cm=122&scoid=0",
-    repeatUrl:
-      "https://mobile.demo.totara.software/mod/scorm/player.php?mode=normal&newattempt=on&cm=122&scoid=0",
+    packageUrl: "https://path.to.package.url",
+    launchUrl: "https://path.to.launch.url",
+    repeatUrl: "https://path.to.repeat.url",
     attemptsCurrent: 1,
     calculatedGrade: "10%",
-    offlinePackageUrl:
-      "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/396/mod_scorm/package/12/Creating%20a%20dynamic%20audience.zip",
+    offlinePackageUrl: "https://path.to.package.url",
     offlinePackageContentHash: "e99447a9fa5447cdcfffb2bdefdefbc15bdd0821",
     offlinePackageScoIdentifiers: ["Software_Simulation_SCO"],
     attempts: [
@@ -91,23 +87,11 @@ const scormBundle = eval({
 });
 
 describe("getDataForScormSummary", () => {
-  it("return correct object for valid `scormBundle` and default values for undefined .", () => {
+  it("return correct object for valid `scormBundle` and default values for undefined on offline mode.", () => {
     const expectResultDefault = {
-      name: undefined,
-      description: undefined,
       totalAttempt: 0,
-      calculatedGrade: undefined,
       shouldAllowLastAttempt: false,
-      gradeMethod: undefined,
-      attemptGrade: undefined,
-      lastsynced: undefined,
-      timeOpen: undefined,
-      maxAttempts: undefined,
-      attempts: undefined,
-      completionScoreRequired: undefined,
-      shouldAllowNewAttempt: false,
-      launchUrl: undefined,
-      repeatUrl: undefined
+      shouldAllowNewAttempt: false
     };
     expect(getDataForScormSummary(true, undefined)).toEqual(
       expectResultDefault
@@ -122,8 +106,6 @@ describe("getDataForScormSummary", () => {
       gradeMethod: Grade.highest,
       attemptGrade: AttemptGrade.highest,
       lastsynced: moment.unix(scormBundle.lastsynced),
-      timeOpen: undefined,
-      maxAttempts: undefined,
       attempts: [
         {
           attempt: 1,
@@ -131,7 +113,6 @@ describe("getDataForScormSummary", () => {
           gradereported: 0
         }
       ],
-      completionScoreRequired: undefined,
       shouldAllowNewAttempt: true,
       launchUrl: scormBundle.scorm.launchUrl,
       repeatUrl: scormBundle.scorm.repeatUrl
@@ -139,7 +120,8 @@ describe("getDataForScormSummary", () => {
     expect(getDataForScormSummary(true, scormBundle)).toEqual(
       expectResultScormBundleOnline
     );
-
+  });
+  it("return correct object for valid `scormBundle` for online mode", () => {
     const expectResultScormBundleOffline = {
       name: "Creating a dynamic audience",
       description: "Title",
@@ -149,8 +131,6 @@ describe("getDataForScormSummary", () => {
       gradeMethod: Grade.highest,
       attemptGrade: AttemptGrade.highest,
       lastsynced: moment.unix(scormBundle.lastsynced),
-      timeOpen: undefined,
-      maxAttempts: undefined,
       attempts: [
         {
           attempt: 1,
@@ -158,7 +138,6 @@ describe("getDataForScormSummary", () => {
           gradereported: 0
         }
       ],
-      completionScoreRequired: undefined,
       shouldAllowNewAttempt: true,
       launchUrl: scormBundle.scorm.launchUrl,
       repeatUrl: scormBundle.scorm.repeatUrl
