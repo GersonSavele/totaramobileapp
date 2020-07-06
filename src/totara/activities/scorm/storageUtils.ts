@@ -28,8 +28,8 @@ type CacheProps = {
 
 type CompletedScormAttemptProps = {
   scormId: string;
-  attempt: number;
   client: any;
+  attempt?: number;
   onRetrieveAllData?: (data: CacheProps) => {};
   onSaveInTheCache?: (data: CacheProps) => void;
 };

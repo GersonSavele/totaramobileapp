@@ -71,7 +71,7 @@ type SummaryProps = {
   navigation: any;
   isDownloaded: boolean;
   client: any;
-  onRefresh: Function;
+  onRefresh: () => void;
 };
 
 const gridStyle = (theme: AppliedTheme) => [
