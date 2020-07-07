@@ -130,7 +130,7 @@ const saveScormActivityData = ({
 
     setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
 
-    const reportCmiList = get(newData, `[${scormId}].cmi`);
+    const reportCmiList = get(newData, `[${scormId}].cmi[${attempt}]`);
     const attemptGrade = onGetGradeForAttempt({
       attemptCmi: reportCmiList,
       maxGrade,

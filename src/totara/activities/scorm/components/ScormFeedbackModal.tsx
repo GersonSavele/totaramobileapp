@@ -33,7 +33,7 @@ type SCORMFeedbackProps = {
 };
 
 const ScormFeedbackModal = ({
-  score = 0,
+  score,
   gradeMethod,
   completionScoreRequired,
   onClose
