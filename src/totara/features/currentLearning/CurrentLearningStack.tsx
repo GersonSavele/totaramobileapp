@@ -74,7 +74,7 @@ const CurrentLearningStack = createStackNavigator(
               }}
               style={{ paddingHorizontal: paddings.paddingL }}>
               <Text style={courseSet.criteriaButtonTitle}>
-                {translate("navigation_stack.view_criteria")}
+                {translate("course_group.criteria.view_criteria")}
               </Text>
             </TouchableOpacity>
           )

@@ -110,13 +110,13 @@
     "course_overview": {
       "course_summery": "Course summary"
     },
-    "course_overview_progress": {
-      "title": "Your course progress"
+    "progress": {
+      "title": "Your progress"
     },
-    "course_overview_grade": {
-      "title": "Your grade overview"
+    "grade": {
+      "title": "Your grade"
     },
-    "course_overview_mark_as_complete": {
+    "mark_as_complete": {
       "title": "Mark as complete"
     },
     "course_complete": {
@@ -163,8 +163,9 @@
       "compete":"Successfully completed!",
       "current_learning_button_title":"Current Learning"
     },
-    "course_set":{
-      "criteria":"View criteria"
+    "criteria":{
+      "view_criteria":"View criteria",
+      "bottom_sheet_header":"This course is not available unless"
     }
   },
 
@@ -241,9 +242,5 @@
       "message": "Are you sure you want to logout?"
     },
     "about": "About"
-  },
-
-  "navigation_stack":{
-    "view_criteria":"View criteria"
   }
 }

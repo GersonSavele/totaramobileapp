@@ -61,7 +61,6 @@ const renderItem = (navigation) => {
       </TouchableOpacity>
     </View>
   );
-
   return LearningItem;
 };
 
@@ -80,7 +79,7 @@ const CourseSet = ({ courseSets }: CourseSetProps) => {
           onPress={onClose}
           activeOpacity={1.0}>
           <Text style={courseSet.criteriaButtonTitle}>
-            {translate("course_group.course_set.criteria")}
+            {translate("course_group.criteria.view_criteria")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -102,6 +101,7 @@ const CourseSet = ({ courseSets }: CourseSetProps) => {
       )}
       {show && (
         <CriteriaSheet
+          title={translate("course_group.criteria.bottom_sheet_header")}
           criteriaList={courseSets.completionCriteria}
           onClose={onClose}
         />

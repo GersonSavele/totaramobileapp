@@ -41,12 +41,13 @@ type OverviewProps = {
   summary?: string;
   gradeFinal?: number;
   progress: number;
+  isCourseSet: boolean;
   summaryTypeTitle?: string;
   onclickContinueLearning?: () => void;
   courseRefreshCallback?: () => {};
 };
 
-const Details = ({
+const OverviewDetails = ({
   id,
   criteria,
   summary,
@@ -54,7 +55,8 @@ const Details = ({
   progress,
   summaryTypeTitle,
   onclickContinueLearning,
-  courseRefreshCallback
+  courseRefreshCallback,
+  isCourseSet
 }: OverviewProps) => {
   const isSelfCompletion = criteria?.some((value) => {
     return value["type"] === courseCriteria.selfComplete;
@@ -67,7 +69,11 @@ const Details = ({
           horizontal={true}
           contentContainerStyle={overviewStyles.scrollViewContainer}
           showsHorizontalScrollIndicator={false}>
-          <Progress progress={progress} criteria={criteria} />
+          <Progress
+            progress={progress}
+            criteria={criteria}
+            isCourseSet={isCourseSet}
+          />
           {gradeFinal !== undefined && <Grade gradeFinal={gradeFinal} />}
           {isSelfCompletion && criteria && (
             <Complete
@@ -104,7 +110,7 @@ const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
         <View style={overviewStyles.horizontalSeparator} />
         <View style={overviewStyles.carouselTextContainer}>
           <Text numberOfLines={1} style={overviewStyles.labelWrap}>
-            {translate("course.course_overview_grade.title")}
+            {translate("course.grade.title")}
           </Text>
         </View>
       </View>
@@ -112,13 +118,13 @@ const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
   );
 };
 
-const Progress = ({
-  progress,
-  criteria
-}: {
+type ProgressProps = {
   progress: number;
   criteria?: [Criteria];
-}) => {
+  isCourseSet: boolean;
+};
+
+const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
   const [showCriteria, setShowCriteria] = useState(false);
   const onClose = () => {
     setShowCriteria(!showCriteria);
@@ -127,6 +133,7 @@ const Progress = ({
     <TouchableOpacity
       style={overviewStyles.container}
       activeOpacity={1.0}
+      disabled={isCourseSet}
       onPress={() => setShowCriteria(true)}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
@@ -135,7 +142,7 @@ const Progress = ({
         <View style={overviewStyles.horizontalSeparator} />
         <View style={overviewStyles.carouselTextContainer}>
           <Text numberOfLines={1} style={overviewStyles.labelWrap}>
-            {translate("course.course_overview_progress.title")}
+            {translate("course.progress.title")}
           </Text>
         </View>
       </View>
@@ -223,7 +230,7 @@ const Complete = ({
         <View style={overviewStyles.horizontalSeparator} />
         <View style={overviewStyles.carouselTextContainer}>
           <Text numberOfLines={1} style={overviewStyles.labelWrap}>
-            {translate("course.course_overview_mark_as_complete.title")}
+            {translate("course.mark_as_complete.title")}
           </Text>
         </View>
       </View>
@@ -262,13 +269,7 @@ const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {
         {summaryTypeTitle}
       </Text>
       <View style={overviewStyles.summaryViewWrap}>
-        <Text
-          style={[
-            TotaraTheme.textXSmall,
-            { color: TotaraTheme.colorNeutral6 }
-          ]}>
-          {summary}
-        </Text>
+        <Text style={overviewStyles.summaryText}>{summary}</Text>
       </View>
     </View>
   );
@@ -282,4 +283,4 @@ const ProgressCircle = ({ value }: { value: number }) => {
   );
 };
 
-export default Details;
+export default OverviewDetails;

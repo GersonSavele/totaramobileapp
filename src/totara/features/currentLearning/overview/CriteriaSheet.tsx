@@ -23,7 +23,7 @@ import BottomSheet from "reanimated-bottom-sheet";
 
 import { translate } from "@totara/locale";
 import { Criteria } from "@totara/types";
-import { bottomSheetStyles } from "../currentLearningStyles";
+import criteriaSheetStyle from "./criteriaSheetStyle";
 
 type Props = {
   criteriaList?: [Criteria];
@@ -45,8 +45,8 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
 
   const renderSectionHeader = ({ section }: any) => {
     return (
-      <View style={bottomSheetStyles.container}>
-        <Text numberOfLines={1} style={bottomSheetStyles.nameViewWrap}>
+      <View style={criteriaSheetStyle.container}>
+        <Text numberOfLines={1} style={criteriaSheetStyle.nameViewWrap}>
           {section.title}
         </Text>
       </View>
@@ -65,33 +65,29 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
       description += " | " + item.status!.replace(/(<([^>]+)>)/gi, "");
     }
     return (
-      <View style={bottomSheetStyles.renderOuterViewWrap}>
-        <View style={bottomSheetStyles.renderInnerViewWrap}>
+      <View style={criteriaSheetStyle.renderOuterViewWrap}>
+        <View style={criteriaSheetStyle.renderInnerViewWrap}>
           <View style={{ flex: 2 }}>
-            <Text numberOfLines={1} style={bottomSheetStyles.criteriaText}>
+            <Text numberOfLines={1} style={criteriaSheetStyle.criteriaText}>
               {/* // item criteria return with URL and should replace the url and tags */}
               {item.criteria!.replace(/(<([^>]+)>)/gi, "")}
             </Text>
-            <Text numberOfLines={1} style={bottomSheetStyles.requirementText}>
+            <Text numberOfLines={1} style={criteriaSheetStyle.requirementText}>
               {description}
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            ...bottomSheetStyles.bodySeparator,
-            backgroundColor: TotaraTheme.colorNeutral8
-          }}></View>
+        <View style={criteriaSheetStyle.bodySeparator}></View>
       </View>
     );
   };
 
   const renderBottomSheetHeader = () => {
     return (
-      <View style={bottomSheetStyles.headerViewWrap}>
-        <View style={bottomSheetStyles.headerInnerViewWrap}>
+      <View style={criteriaSheetStyle.headerViewWrap}>
+        <View style={criteriaSheetStyle.headerInnerViewWrap}>
           <TouchableOpacity
-            style={bottomSheetStyles.headerCloseButtonWrap}
+            style={criteriaSheetStyle.headerCloseButtonWrap}
             onPress={onClose}>
             <FontAwesomeIcon
               icon="times"
@@ -99,11 +95,11 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
               color={TotaraTheme.textColorDisabled}
             />
           </TouchableOpacity>
-          <View style={bottomSheetStyles.headerViewIndicatorWrap}>
-            <View style={bottomSheetStyles.indicatorWrap}></View>
+          <View style={criteriaSheetStyle.headerViewIndicatorWrap}>
+            <View style={criteriaSheetStyle.indicatorWrap}></View>
           </View>
         </View>
-        <View style={bottomSheetStyles.container}>
+        <View style={criteriaSheetStyle.container}>
           <Text
             style={{ ...TotaraTheme.textH3, fontWeight: "bold", fontSize: 22 }}>
             {translate("course.course_criteria.title")}
@@ -117,7 +113,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
     return (
       <View style={{ backgroundColor: TotaraTheme.colorAccent }}>
         <SectionList
-          style={bottomSheetStyles.renderListWrap}
+          style={criteriaSheetStyle.renderListWrap}
           sections={criteriaSectionList}
           renderItem={renderItem}
           renderSectionHeader={renderSectionHeader}
@@ -130,7 +126,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
 
   return (
     <Modal transparent={true}>
-      <View style={bottomSheetStyles.transparentView}>
+      <View style={criteriaSheetStyle.transparentView}>
         <BottomSheet
           snapPoints={["95%", "50%", "50%"]}
           renderContent={renderContent}

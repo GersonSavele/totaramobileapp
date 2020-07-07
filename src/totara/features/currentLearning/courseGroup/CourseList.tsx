@@ -16,12 +16,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { NavigationContext } from "react-navigation";
-import LearningItemRow from "./LearningItemRow";
+import Course from "./Course";
+import { translate } from "@totara/locale";
 import CriteriaSheet from "../CriteriaSheet";
 
 const renderItems = (navigation) => {
   const LearningItems = ({ item }: any) => (
-    <LearningItemRow course={item} navigation={navigation} />
+    <Course course={item} navigation={navigation} />
   );
   return LearningItems;
 };
@@ -63,6 +64,7 @@ const CourseList = () => {
       />
       {show && (
         <CriteriaSheet
+          title={translate("course_group.criteria.bottom_sheet_header")}
           criteriaList={courseList.completionCriteria}
           onClose={onClose}
         />

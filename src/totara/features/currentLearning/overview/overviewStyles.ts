@@ -26,8 +26,8 @@ import { TotaraTheme } from "@totara/theme/Theme";
 
 const overviewStyles = StyleSheet.create({
   scrollViewContainer: {
-    paddingTop: paddings.paddingXL,
-    paddingBottom: paddings.paddingXL
+    paddingVertical: paddings.paddingXL,
+    paddingHorizontal: paddings.paddingL
   },
   container: {
     ...shadow.ios,
@@ -76,6 +76,9 @@ const overviewStyles = StyleSheet.create({
   },
   summaryViewWrap: {
     marginTop: margins.marginL
+  },
+  summaryText: {
+    ...TotaraTheme.textSmall
   },
   badgeContainer: {
     marginLeft: margins.margin2XL,

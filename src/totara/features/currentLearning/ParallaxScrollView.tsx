@@ -106,12 +106,12 @@ const ParallaxScrollView = ({
                 translateY: interpolate(scrollY, {
                   inputRange: [0, parallaxHeaderHeight],
                   outputRange: [0, 0],
-                  extrapolateLeft: "clamp"
+                  extrapolate: "clamp"
                 })
               },
               {
                 scale: interpolate(scrollY, {
-                  inputRange: [-viewHeight, 1],
+                  inputRange: [-viewHeight, 0],
                   outputRange: [5, 1],
                   extrapolate: "clamp"
                 })
@@ -121,11 +121,10 @@ const ParallaxScrollView = ({
         ]}>
         <View>{renderBackground()}</View>
       </Animated.View>
-
       {React.cloneElement(
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
-          nestedScrollEnabled={false}
+          onMomentumScrollEnd={onScrollForHeaderVisibility}
           refreshControl={
             <RefreshControl refreshing={false} onRefresh={onPullToRefresh} />
           }
@@ -137,10 +136,7 @@ const ParallaxScrollView = ({
           onScroll: Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
             {
-              useNativeDriver: true,
-              listener: (event: any) => {
-                onScrollForHeaderVisibility(event);
-              }
+              useNativeDriver: true
             }
           )
         },

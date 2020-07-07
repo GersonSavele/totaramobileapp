@@ -33,7 +33,7 @@ import { iconSizes } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
 import { LearningItemCard } from "../components/LearningItemCard";
-import { carouselItemStyles } from "../currentLearningStyles";
+import carouselItemStyles from "./carouselItemStyles";
 
 type LearningItemProps = {
   currentLearning?: any;

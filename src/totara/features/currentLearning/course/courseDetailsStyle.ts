@@ -11,37 +11,25 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
+ *
  */
-
-import React from "react";
 import { StyleSheet } from "react-native";
-import Video from "react-native-video";
+import { spacedFlexRow } from "@totara/lib/styles/base";
+import { TotaraTheme } from "@totara/theme/Theme";
+import { margins } from "@totara/theme/constants";
 
-import { borderRadius } from "@totara/theme/constants";
-type VideoType = {
-  url: string;
-};
-
-const VideoController = ({ url }: VideoType) => (
-  <Video
-    paused={true}
-    source={{ uri: url }}
-    style={styles.mediaPlayer}
-    volume={10}
-    resizeMode="cover"
-    controls={true}
-  />
-);
-
-const styles = StyleSheet.create({
-  mediaPlayer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    borderRadius: borderRadius.borderRadiusM
+const courseDetailsStyle = StyleSheet.create({
+  expandContentWrap: {
+    margin: margins.marginL,
+    ...spacedFlexRow
+  },
+  expandTextWrap: {
+    ...TotaraTheme.textMedium
+  },
+  scrollView: {
+    flex: 1,
+    backgroundColor: TotaraTheme.colorNeutral2
   }
 });
 
-export default VideoController;
+export default courseDetailsStyle;

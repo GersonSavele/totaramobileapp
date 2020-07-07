@@ -15,42 +15,38 @@
 
 import React, { useState, useContext } from "react";
 import { StyleSheet, View, Text, Switch } from "react-native";
-import { NavigationContext } from "react-navigation";
-import { GeneralErrorModal } from "@totara/components";
+import { NavigationContext, NavigationParams } from "react-navigation";
+import { Loading, LoadingError } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
 import { CourseContentDetails } from "@totara/types";
 import { statusKey } from "@totara/types/Completion";
-import OverviewDetails from "../overview/Details";
+import OverviewDetails from "../overview/OverviewDetails";
 import { TotaraTheme } from "@totara/theme/Theme";
 import LearningDetails from "../LearningDetails";
 import CourseCompletionModal from "../CourseCompletionModal";
 import { learningItemEnum } from "../constants";
-import { courseStyle } from "../currentLearningStyles";
-import { NavigationStackProp } from "react-navigation-stack";
+import courseDetailsStyle from "./courseDetailsStyle";
 
-type CourseDetailsProps = {
-  navigation: NavigationStackProp;
-};
-
-const CourseDetails = ({ navigation }: CourseDetailsProps) => {
+const CourseDetails = ({ navigation }: NavigationParams) => {
   const courseId = navigation.getParam("targetId");
   const { loading, error, data, refetch } = useQuery(coreCourse, {
     variables: { courseid: courseId }
   });
 
-  const pullToRefresh = async () => {
-    await refetch();
+  const onContentRefresh = () => {
+    refetch();
   };
 
-  if (loading) return null;
-  if (error) return <GeneralErrorModal siteUrl="" />;
+  if (loading) return <Loading />;
+  if (error) return <LoadingError onRefreshTap={onContentRefresh} />;
+
   if (data) {
     return (
       <CourseDetailsContent
-        pullToRefresh={pullToRefresh}
+        pullToRefresh={onContentRefresh}
         courseDetails={data.mobile_course}
         courseRefreshCallback={refetch}
       />
@@ -110,8 +106,8 @@ const CourseDetailsContent = ({
               style={{
                 backgroundColor: TotaraTheme.colorNeutral2
               }}>
-              <View style={courseStyle.expandContentWrap}>
-                <Text style={courseStyle.expandTextWrap}>
+              <View style={courseDetailsStyle.expandContentWrap}>
+                <Text style={courseDetailsStyle.expandTextWrap}>
                   {translate("course.course_details.expand_or_collapse")}
                 </Text>
                 <Switch
@@ -128,6 +124,7 @@ const CourseDetailsContent = ({
             </View>
           ) : (
             <OverviewDetails
+              isCourseSet={false}
               id={courseDetails.course.id}
               criteria={courseDetails.course.criteria}
               summary={courseDetails.course.summary}

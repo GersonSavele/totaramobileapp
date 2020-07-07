@@ -24,7 +24,7 @@ import LearningItemCarousel from "./learningItems/LearningItemCarousel";
 import NoCurrentLearning from "./learningItems/NoCurrentLearning";
 import query from "./api";
 import { LoadingError, NetworkStatus, Loading } from "@totara/components";
-import { viewStyles } from "./currentLearningStyles";
+import { currentLearningStyles } from "./currentLearningStyles";
 
 const CurrentLearning = () => {
   const { loading, error, data, refetch } = useQuery(query);
@@ -41,11 +41,11 @@ const CurrentLearning = () => {
     return (
       <View style={theme.viewContainer}>
         <NavigationEvents onWillFocus={onContentRefresh} />
-        <View style={viewStyles.headerViewWrap}>
-          <Text style={viewStyles.headerViewTitleWrap}>
+        <View style={currentLearningStyles.headerViewWrap}>
+          <Text style={currentLearningStyles.headerViewTitleWrap}>
             {translate("current_learning.action_primary")}
           </Text>
-          <Text style={viewStyles.headerViewSubTitleWrap}>
+          <Text style={currentLearningStyles.headerViewSubTitleWrap}>
             {translate("current_learning.primary_info", {
               count:
                 currentLearning && currentLearning.length
@@ -55,7 +55,7 @@ const CurrentLearning = () => {
           </Text>
         </View>
 
-        <View style={viewStyles.contentWrap}>
+        <View style={currentLearningStyles.contentWrap}>
           <NetworkStatus />
           {currentLearning && currentLearning.length > 0 ? (
             <LearningItemCarousel

@@ -28,7 +28,7 @@ import { rowItem } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import { Images } from "@resources/images";
 
-const LearningItemRow = ({ course, navigation }: any) => {
+const Course = ({ course, navigation }: any) => {
   return (
     <TouchableOpacity
       key={course.id}
@@ -65,4 +65,4 @@ const LearningItemRow = ({ course, navigation }: any) => {
   );
 };
 
-export default LearningItemRow;
+export default Course;

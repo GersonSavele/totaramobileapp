@@ -22,15 +22,20 @@ import { NavigationContext } from "react-navigation";
 import { statusKey } from "@totara/types/Completion";
 import { translate } from "@totara/locale";
 import { courses } from "./courseGroupStyles";
+import { CourseSets } from "@totara/types/CourseGroup";
 
 const Courses = ({ courseGroup }: { courseGroup: CourseGroup }) => {
   return (
     <View>
-      <CourseSet courseSets={courseGroup.currentCourseSets[0]} />
+      {courseGroup.currentCourseSets.map((item: [CourseSets], key: number) => {
+        return (
+          <View key={key}>
+            {item.length == 1 && <CourseSet courseSets={item[0]} />}
+            {item.length > 1 && <CourseSetList courseSetList={item} />}
+          </View>
+        );
+      })}
       {courseGroup.completion.statuskey === statusKey.complete && <Completed />}
-      {courseGroup.currentCourseSets.length > 1 && (
-        <CourseSetList courseSetList={courseGroup.currentCourseSets} />
-      )}
       {courseGroup.countUnavailableSets > 0 && (
         <View style={courses.unavailableSetWrap}>
           <Text style={courses.unavailableText}>

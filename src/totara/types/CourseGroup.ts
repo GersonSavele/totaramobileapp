@@ -28,7 +28,7 @@ export interface CourseGroup {
   availableuntil?: Date;
   imageSrc?: string;
   completion: Completion;
-  currentCourseSets: [CourseSets];
+  currentCourseSets: [[CourseSets]];
   countUnavailableSets: number;
 }
 

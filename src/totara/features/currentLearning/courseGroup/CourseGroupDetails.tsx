@@ -19,9 +19,9 @@ import { NavigationParams } from "react-navigation";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import Courses from "./Courses";
-import OverviewDetails from "../overview/Details";
+import OverviewDetails from "../overview/OverviewDetails";
 import { CourseGroup } from "@totara/types";
-import { GeneralErrorModal } from "@totara/components";
+import { LoadingError, Loading } from "@totara/components";
 import { coreProgram } from "./api";
 import LearningDetails from "../LearningDetails";
 import { details } from "./courseGroupStyles";
@@ -31,32 +31,32 @@ const CourseGroupDetails = ({ navigation }: NavigationParams) => {
   const { loading, error, data, refetch } = useQuery(coreProgram, {
     variables: { programid: programId }
   });
-
-  const pullToRefresh = async () => {
-    await refetch();
+  const onContentRefresh = () => {
+    refetch();
   };
 
-  if (loading) return null;
-  if (error) return <GeneralErrorModal siteUrl="" />;
+  if (loading) return <Loading />;
+  if (error) return <LoadingError onRefreshTap={onContentRefresh} />;
+
   if (data) {
     return (
       <CourseGroupDetailsContent
-        onPullToRefresh={pullToRefresh}
         courseGroup={data.totara_mobile_program}
+        onContentRefresh={onContentRefresh}
       />
     );
   }
 };
 
-type CourseGroupProps = {
+type CCourseGroupDetailsContentProps = {
   courseGroup: CourseGroup;
-  onPullToRefresh: () => void;
+  onContentRefresh: () => void;
 };
 
 const CourseGroupDetailsContent = ({
   courseGroup,
-  onPullToRefresh
-}: CourseGroupProps) => {
+  onContentRefresh
+}: CCourseGroupDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
     setShowOverview(!showOverview);
@@ -64,14 +64,14 @@ const CourseGroupDetailsContent = ({
 
   return (
     <LearningDetails
-      onPullToRefresh={onPullToRefresh}
       details={courseGroup}
       tabBarLeftTitle={translate("course_group.tabs.overview")}
       tabBarRightTitle={translate("course_group.tabs.courses")}
       onPress={onSwitchTab}
       overviewIsShown={showOverview}
       badgeTitle={translate("course_group.details.badge_title_program")}
-      image={courseGroup.imageSrc}>
+      image={courseGroup.imageSrc}
+      onPullToRefresh={onContentRefresh}>
       <View style={details.container}>
         <View style={details.activitiesContainer}>
           {!showOverview ? (
@@ -81,6 +81,7 @@ const CourseGroupDetailsContent = ({
               id={courseGroup.id}
               summary={courseGroup.summary!}
               progress={courseGroup.completion.progress}
+              isCourseSet={true}
               summaryTypeTitle={translate(
                 "course_group.overview.summary_title_program"
               )}

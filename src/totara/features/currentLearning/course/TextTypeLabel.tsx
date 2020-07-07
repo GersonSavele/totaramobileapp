@@ -24,20 +24,20 @@ const TextTypeLabel = ({ label = {} }: ActivityLabelProps) => {
   const description = validationProperty(label.description);
   return description ? (
     <View style={activitiesStyles.labelContainer}>
-      {description ? (
+      {description && (
         <Text
           style={{
             ...activitiesStyles.labelTextDescription
           }}>
           {description}
         </Text>
-      ) : null}
+      )}
     </View>
   ) : null;
 };
 
 const validationProperty = (property: string) => {
-  return property && property.trim().length > 0 ? property.trim() : null;
+  return property && property.trim().length > 0 && property.trim();
 };
 
 export default TextTypeLabel;

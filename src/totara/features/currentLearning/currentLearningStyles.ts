@@ -15,157 +15,34 @@
  */
 
 import { StyleSheet, Dimensions, ViewStyle } from "react-native";
-import { gutter } from "@totara/theme";
 import {
   margins,
   paddings,
-  iconSizes,
   borderRadius,
   fontWeights,
-  shadow
+  iconSizes
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { spacedFlexRow } from "@totara/lib/styles/base";
-
 const { marginL, marginS, margin2XL } = margins;
-const {
-  borderRadiusL,
-  borderRadiusXS,
-  borderRadiusM,
-  borderRadiusS
-} = borderRadius;
+const { borderRadiusL, borderRadiusXS } = borderRadius;
 const {
   colorOpacity70,
-  textRegular,
   textH2,
-  textSmall,
   textXSmall,
   textXXSmall,
-  colorAccent,
   colorNeutral2,
   colorNeutral7,
-  colorNeutral8,
-  textHeadline,
-  textMedium,
   colorSecondary1,
   navigationHeaderTintColor,
-  colorNeutral1,
-  colorNeutral3,
-  colorNeutral6
+  textRegular,
+  colorAccent,
+  colorNeutral8,
+  textHeadline
 } = TotaraTheme;
-const { paddingXS, paddingL } = paddings;
 
-const bottomSheetStyles = StyleSheet.create({
-  transparentView: {
-    flex: 1,
-    backgroundColor: colorOpacity70,
-    justifyContent: "flex-end"
-  },
-  renderOuterViewWrap: {
-    marginHorizontal: marginL,
-    marginVertical: marginS
-  },
-  renderInnerViewWrap: {
-    flexDirection: "row",
-    justifyContent: "center",
-    flex: 1
-  },
-  criteriaText: {
-    ...textRegular,
-    alignSelf: "flex-start",
-    color: TotaraTheme.colorNeutral8
-  },
-  requirementText: {
-    marginTop: marginS,
-    marginBottom: marginL,
-    ...textSmall,
-    opacity: 0.48,
-    alignSelf: "flex-start",
-    color: TotaraTheme.colorNeutral8
-  },
-  statusText: {
-    ...textXXSmall,
-    opacity: 0.48,
-    alignSelf: "flex-end"
-  },
-  headerViewWrap: {
-    backgroundColor: colorAccent,
-    borderTopLeftRadius: borderRadiusL,
-    borderTopRightRadius: borderRadiusL
-  },
-  headerCloseButtonWrap: {
-    marginTop: marginS,
-    height: iconSizes.sizeXL,
-    width: iconSizes.sizeXL,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  headerInnerViewWrap: {
-    flexDirection: "row",
-    flex: 1
-  },
-  headerViewIndicatorWrap: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: margin2XL,
-    marginTop: marginS
-  },
-  indicatorWrap: {
-    width: "20%",
-    height: 5,
-    opacity: 0.1,
-    borderRadius: borderRadiusXS,
-    backgroundColor: colorNeutral8,
-    alignSelf: "center"
-  },
-  nameViewWrap: {
-    alignSelf: "flex-start",
-    ...textRegular,
-    justifyContent: "center",
-    color: TotaraTheme.colorNeutral8
-  },
-  bodySeparator: {
-    height: 0.5,
-    opacity: 0.2
-  },
-  container: {
-    alignItems: "flex-start",
-    margin: marginL
-  },
-  titleWrap: {
-    margin: marginL
-  },
-  renderListWrap: {
-    backgroundColor: colorAccent,
-    marginBottom: "5%",
-    height: "95%"
-  },
-  availableReasonTitleWrap: {
-    ...textHeadline,
-    fontWeight: fontWeights.fontWeightBold
-  },
-  listContent: {
-    backgroundColor: colorAccent,
-    height: "100%"
-  },
-  availableReasonTextWrap: {
-    ...textRegular,
-    alignSelf: "flex-start",
-    color: colorNeutral8,
-    backgroundColor: colorAccent,
-    margin: marginL
-  },
-  criteriaTitle: {
-    ...textRegular,
-    fontWeight: fontWeights.fontWeightBold
-  },
-  listHeader: {
-    ...textHeadline,
-    fontWeight: fontWeights.fontWeightBold,
-    margin: marginL
-  }
-});
+const viewHeader: ViewStyle = {
+  padding: paddings.paddingL
+};
 
 const learningDetailsStyles = StyleSheet.create({
   container: {
@@ -187,7 +64,7 @@ const learningDetailsStyles = StyleSheet.create({
     backgroundColor: colorNeutral2
   },
   LearningTypeLabelWrap: {
-    borderRadius: borderRadiusM,
+    borderRadius: borderRadius.borderRadiusM,
     borderStyle: "solid",
     borderWidth: 1,
     alignSelf: "flex-start",
@@ -231,32 +108,7 @@ const learningDetailsStyles = StyleSheet.create({
   }
 });
 
-const videoControllerStyles = StyleSheet.create({
-  mediaPlayer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    borderRadius: borderRadiusM
-  }
-});
-
-const headerViewTitleWrap = {
-  ...textH2
-};
-
-const headerViewSubTitleWrap = {
-  ...textXSmall,
-  color: navigationHeaderTintColor
-};
-
-const viewHeader: ViewStyle = {
-  paddingHorizontal: gutter,
-  paddingVertical: paddings.paddingL
-};
-
-const viewStyles = StyleSheet.create({
+const currentLearningStyles = StyleSheet.create({
   viewHeader,
   spinnerContainer: {
     flex: 1,
@@ -266,8 +118,13 @@ const viewStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent"
   },
-  headerViewTitleWrap,
-  headerViewSubTitleWrap,
+  headerViewTitleWrap: {
+    ...textH2
+  },
+  headerViewSubTitleWrap: {
+    ...textXSmall,
+    color: navigationHeaderTintColor
+  },
   headerViewWrap: {
     ...viewHeader,
     color: colorSecondary1,
@@ -275,84 +132,59 @@ const viewStyles = StyleSheet.create({
   }
 });
 
-const courseStyle = StyleSheet.create({
-  expandContentWrap: {
-    ...spacedFlexRow,
+const criteriaSheetStyle = StyleSheet.create({
+  transparentView: {
+    flex: 1,
+    backgroundColor: colorOpacity70,
+    justifyContent: "flex-end"
+  },
+  headerInnerViewWrap: {
+    flexDirection: "row",
+    flex: 1
+  },
+  listHeader: {
+    ...textHeadline,
+    fontWeight: fontWeights.fontWeightBold,
     margin: marginL
   },
-  expandTextWrap: {
-    ...textMedium
+  listContent: {
+    backgroundColor: colorAccent,
+    height: "100%"
   },
-  scrollView: {
-    flex: 1,
-    backgroundColor: colorNeutral2
-  }
-});
-
-const carouselItemStyles = StyleSheet.create({
-  container: {
-    ...shadow.ios,
-    ...shadow.android,
-    borderRadius: borderRadiusM,
-    backgroundColor: colorNeutral1,
-    borderWidth: 1,
-    borderColor: colorNeutral3
+  indicatorWrap: {
+    width: "20%",
+    height: 5,
+    opacity: 0.1,
+    borderRadius: borderRadiusXS,
+    backgroundColor: colorNeutral8,
+    alignSelf: "center"
   },
-  content: {
-    borderRadius: borderRadiusM,
-    width: "100%",
-    height: "99%",
-    overflow: "hidden"
-  },
-  type: {
+  headerCloseButtonWrap: {
     marginTop: marginS,
-    alignSelf: "flex-start",
-    paddingHorizontal: paddingL,
-    paddingVertical: paddingXS,
-    borderWidth: 1,
-    borderRadius: borderRadiusS,
-    backgroundColor: colorNeutral1,
-    color: colorNeutral8,
-    borderColor: colorNeutral6,
-    ...TotaraTheme.textXXSmall
+    height: iconSizes.sizeXL,
+    width: iconSizes.sizeXL,
+    alignItems: "center",
+    justifyContent: "center"
   },
-  summary: {
+  headerViewIndicatorWrap: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: margin2XL,
+    marginTop: marginS
+  },
+  headerViewWrap: {
+    backgroundColor: colorAccent,
+    borderTopLeftRadius: borderRadiusL,
+    borderTopRightRadius: borderRadiusL
+  },
+  availableReasonTextWrap: {
+    ...textRegular,
     alignSelf: "flex-start",
-    width: "100%",
-    paddingVertical: paddingL,
-    ...TotaraTheme.textSmall
-  },
-  badgeContainer: {
-    zIndex: 1
-  },
-  learningItem: {
-    zIndex: 2,
-    position: "absolute",
-    right: 0,
-    top: 0
-  },
-  itemWithBadgeContainer: {
-    marginVertical: marginL,
-    marginHorizontal: marginS
-  },
-  pagination: {
-    borderStyle: "dashed",
-    paddingVertical: 0,
-    paddingHorizontal: 0
-  },
-  dot: {
-    height: 1.5,
-    marginHorizontal: 0,
-    backgroundColor: colorNeutral6
+    color: colorNeutral8,
+    backgroundColor: colorAccent,
+    margin: marginL
   }
 });
 
-export {
-  bottomSheetStyles,
-  learningDetailsStyles,
-  videoControllerStyles,
-  viewStyles,
-  courseStyle,
-  carouselItemStyles
-};
+export { learningDetailsStyles, currentLearningStyles, criteriaSheetStyle };

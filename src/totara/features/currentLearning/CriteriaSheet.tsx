@@ -17,7 +17,7 @@ import React, { useRef, useEffect } from "react";
 import { View, Modal, TouchableOpacity, Text, FlatList } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import BottomSheet from "reanimated-bottom-sheet";
-import { bottomSheetStyles } from "./currentLearningStyles";
+import { criteriaSheetStyle } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Separator } from "@totara/components";
 import { iconSizes } from "@totara/theme/constants";
@@ -30,7 +30,7 @@ type Props = {
 
 const ListItem = ({ criteria }: { criteria: string }) => (
   <View>
-    <Text numberOfLines={3} style={bottomSheetStyles.availableReasonTextWrap}>
+    <Text numberOfLines={3} style={criteriaSheetStyle.availableReasonTextWrap}>
       {criteria}
     </Text>
     <Separator />
@@ -44,10 +44,10 @@ const CriteriaSheet = ({ title = "", criteriaList = [""], onClose }: Props) => {
   }, [bottomDrawerRef]);
   const renderBottomSheetHeader = () => {
     return (
-      <View style={bottomSheetStyles.headerViewWrap}>
-        <View style={bottomSheetStyles.headerInnerViewWrap}>
+      <View style={criteriaSheetStyle.headerViewWrap}>
+        <View style={criteriaSheetStyle.headerInnerViewWrap}>
           <TouchableOpacity
-            style={bottomSheetStyles.headerCloseButtonWrap}
+            style={criteriaSheetStyle.headerCloseButtonWrap}
             onPress={onClose}>
             <FontAwesomeIcon
               icon="times"
@@ -55,8 +55,8 @@ const CriteriaSheet = ({ title = "", criteriaList = [""], onClose }: Props) => {
               color={TotaraTheme.textColorDisabled}
             />
           </TouchableOpacity>
-          <View style={bottomSheetStyles.headerViewIndicatorWrap}>
-            <View style={bottomSheetStyles.indicatorWrap}></View>
+          <View style={criteriaSheetStyle.headerViewIndicatorWrap}>
+            <View style={criteriaSheetStyle.indicatorWrap}></View>
           </View>
         </View>
       </View>
@@ -65,8 +65,8 @@ const CriteriaSheet = ({ title = "", criteriaList = [""], onClose }: Props) => {
 
   const renderContent = () => {
     return (
-      <View style={bottomSheetStyles.listContent}>
-        <Text style={bottomSheetStyles.listHeader}>{title}</Text>
+      <View style={criteriaSheetStyle.listContent}>
+        <Text style={criteriaSheetStyle.listHeader}>{title}</Text>
         <FlatList
           data={criteriaList}
           renderItem={({ item }) => <ListItem criteria={item} />}
@@ -78,7 +78,7 @@ const CriteriaSheet = ({ title = "", criteriaList = [""], onClose }: Props) => {
 
   return (
     <Modal transparent={true}>
-      <View style={bottomSheetStyles.transparentView}>
+      <View style={criteriaSheetStyle.transparentView}>
         <View style={{ flex: 0.5 }}>
           <BottomSheet
             snapPoints={["70%", "50%", "50%"]}

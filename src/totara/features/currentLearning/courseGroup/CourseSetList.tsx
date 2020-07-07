@@ -22,7 +22,7 @@ import { courseSet, horizontalList } from "./courseGroupStyles";
 import CriteriaSheet from "../CriteriaSheet";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
-import LearningItemRow from "./LearningItemRow";
+import Course from "./Course";
 
 const CourseSetList = ({ courseSetList }: { courseSetList: [CourseSets] }) => {
   const [show, setShow] = useState(false);
@@ -31,8 +31,6 @@ const CourseSetList = ({ courseSetList }: { courseSetList: [CourseSets] }) => {
   };
 
   const navigation = useContext(NavigationContext);
-  const [, ...list] = courseSetList;
-
   const renderItems = (navigation) => {
     const LearningItems = ({ item }: any) => (
       <View style={courseSet.container}>
@@ -55,28 +53,23 @@ const CourseSetList = ({ courseSetList }: { courseSetList: [CourseSets] }) => {
                 onPress={onClose}
                 activeOpacity={1.0}>
                 <Text style={courseSet.criteriaButtonTitle}>
-                  {translate("course_group.course_set.criteria")}
+                  {translate("course_group.criteria.view_criteria")}
                 </Text>
               </TouchableOpacity>
             </View>
             <View>
               {item.courses.length > 0 && (
-                <LearningItemRow
-                  course={item.courses[0]}
-                  navigation={navigation}
-                />
+                <Course course={item.courses[0]} navigation={navigation} />
               )}
               {item.courses.length > 1 && (
-                <LearningItemRow
-                  course={item.courses[1]}
-                  navigation={navigation}
-                />
+                <Course course={item.courses[1]} navigation={navigation} />
               )}
             </View>
           </View>
         </TouchableOpacity>
         {show && (
           <CriteriaSheet
+            title={translate("course_group.criteria.bottom_sheet_header")}
             criteriaList={item.completionCriteria}
             onClose={onClose}
           />
@@ -89,7 +82,7 @@ const CourseSetList = ({ courseSetList }: { courseSetList: [CourseSets] }) => {
   return (
     <View style={horizontalList.container}>
       <FlatList
-        data={list}
+        data={courseSetList}
         renderItem={renderItems(navigation)}
         keyExtractor={(_, id) => id.toString()}
         showsHorizontalScrollIndicator={false}

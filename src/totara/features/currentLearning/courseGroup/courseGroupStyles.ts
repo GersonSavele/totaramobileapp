@@ -60,7 +60,7 @@ const courses = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusS,
     marginHorizontal: margins.marginL,
     backgroundColor: TotaraTheme.colorNeutral2,
-    marginBottom: margins.marginXL
+    marginVertical: margins.marginXL
   },
   unavailableText: {
     ...TotaraTheme.textRegular,
@@ -197,7 +197,6 @@ const rowItem = StyleSheet.create({
 
 const horizontalList = StyleSheet.create({
   container: {
-    marginVertical: margins.marginL,
     backgroundColor: TotaraTheme.colorNeutral2,
     paddingTop: paddings.padding2XL
   },
