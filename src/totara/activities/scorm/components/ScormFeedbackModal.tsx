@@ -26,14 +26,14 @@ import { Grade } from "@totara/types/Scorm";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type SCORMFeedbackProps = {
-  score?: string;
+  score: string;
   gradeMethod: Grade;
   completionScoreRequired?: number;
   onClose: () => void;
 };
 
 const ScormFeedbackModal = ({
-  score,
+  score = 0,
   gradeMethod,
   completionScoreRequired,
   onClose
@@ -48,6 +48,7 @@ const ScormFeedbackModal = ({
               {completionScoreRequired === undefined ||
               completionScoreRequired === null ? (
                 <Image
+                  testID={"scorm_feedback_completed_image"}
                   style={scormFeedbackStyles.resultStatusImage}
                   source={require("@resources/images/success_tick/success_tick.png")}
                 />
@@ -61,12 +62,12 @@ const ScormFeedbackModal = ({
                     {translate("scorm.feedback.grade_title")}
                   </Text>
                   <Text
+                    testID={"scorm_feedback_score_value"}
                     style={{
                       ...TotaraTheme.textH1,
                       ...scormFeedbackStyles.scoreText
                     }}>
-                    {score &&
-                      `${score}${gradeMethod === Grade.objective ? "" : "%"}`}
+                    {`${score}${gradeMethod === Grade.objective ? "" : "%"}`}
                   </Text>
                 </>
               )}
