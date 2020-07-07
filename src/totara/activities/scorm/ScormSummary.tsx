@@ -139,7 +139,8 @@ const ScormSummary = ({
     shouldAllowLastAttempt,
     timeOpen,
     maxAttempts,
-    attempts
+    attempts,
+    offlinePackageScoIdentifiers
   } = bundleData;
 
   const onExitActivityAttempt = ({
@@ -169,7 +170,12 @@ const ScormSummary = ({
           existingLastAttempt.attempt &&
           parseInt(existingLastAttempt.attempt) === attempt
         ) {
-          setCompletedScormAttempt({ scormId: id, attempt, client });
+          setCompletedScormAttempt({
+            scormId: id,
+            attempt,
+            offlinePackageScoIdentifiers,
+            client
+          });
           navigateTo({
             routeId: SCORM_FEEDBACK,
             navigate: navigation.navigate,

@@ -340,21 +340,35 @@ describe("saveScormActivityData", () => {
 });
 
 describe("setCompletedScormAttempt", () => {
+  const client = useApolloClient();
+  const attempt = 3;
+  const scormId = "10";
+  const offlinePackageScoIdentifiers = ["sco1", "sco2"];
+  const retrieveResultDataMock = {
+    [scormId]: {
+      cmi: {
+        [attempt]: {
+          sco1: { data: "mock data" },
+          sco2: { data: "mock data" }
+        }
+      }
+    }
+  };
+
+  const saveInTheCacheMock = jest.fn();
   it("should call `saveInTheCache` with adding attempt to the `completed_attempts`, if there is no any cache for it.", () => {
-    const client = useApolloClient();
-    const retrieveAllDataMock = jest.fn(() => ({}));
-    const saveInTheCacheMock = jest.fn();
-    const attempt = 3;
-    const scormId = "10";
+    const retrieveAllDataMock = jest.fn(() => retrieveResultDataMock);
     const saveResultDataMock = {
       completed_attempts: {
         [scormId]: [attempt]
-      }
+      },
+      ...retrieveResultDataMock
     };
     setCompletedScormAttempt({
       scormId,
       attempt,
       client,
+      offlinePackageScoIdentifiers,
       onRetrieveAllData: retrieveAllDataMock,
       onSaveInTheCache: saveInTheCacheMock
     });
@@ -364,20 +378,19 @@ describe("setCompletedScormAttempt", () => {
     });
   });
   it("should call `saveInTheCache` for non existing attempt in the `completed_attempt` with adding it of the existing cache.", () => {
-    const client = useApolloClient();
     const existingCompletedAttempts = [1, 2];
     const retrieveAllDataMock = jest.fn(() => ({
       completed_attempts: {
         [scormId]: existingCompletedAttempts
-      }
+      },
+      ...retrieveResultDataMock
     }));
-    const saveInTheCacheMock = jest.fn();
-    const attempt = 3;
-    const scormId = "10";
+
     const saveResultDataMock = {
       completed_attempts: {
         [scormId]: existingCompletedAttempts.concat(attempt)
-      }
+      },
+      ...retrieveResultDataMock
     };
     setCompletedScormAttempt({
       scormId,

@@ -105,7 +105,8 @@ const getDataForScormSummary = (
     timeOpen: undefined,
     maxAttempts: undefined,
     attempts: undefined,
-    completionScoreRequired: undefined
+    completionScoreRequired: undefined,
+    offlinePackageScoIdentifiers: undefined
   };
   if (!scormBundle) {
     return data;
@@ -174,6 +175,9 @@ const getDataForScormSummary = (
       scorm.attempts.concat(scormBundle.offlineAttempts)) ||
     scorm.attempts ||
     (scormBundle.offlineAttempts && scormBundle.offlineAttempts);
+
+  data.offlinePackageScoIdentifiers =
+    scorm && scorm.offlinePackageScoIdentifiers;
   return data;
 };
 

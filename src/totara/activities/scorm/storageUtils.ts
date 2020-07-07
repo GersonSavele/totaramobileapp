@@ -17,7 +17,15 @@ import { Grade, ScormBundle, GradeForAttemptProps } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
 import { Log } from "@totara/lib";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
-import { setWith, get, values, remove, omit, isEmpty } from "lodash";
+import {
+  setWith,
+  get,
+  values,
+  remove,
+  omit,
+  isEmpty,
+  difference
+} from "lodash";
 
 import { getGradeForAttempt } from "./utils";
 
@@ -30,6 +38,7 @@ type CompletedScormAttemptProps = {
   scormId: string;
   client: any;
   attempt?: number;
+  offlinePackageScoIdentifiers?: [string];
   onRetrieveAllData?: (data: CacheProps) => {};
   onSaveInTheCache?: (data: CacheProps) => void;
 };
@@ -174,6 +183,7 @@ const saveScormActivityData = ({
 const setCompletedScormAttempt = ({
   scormId,
   attempt,
+  offlinePackageScoIdentifiers,
   client,
   onRetrieveAllData = retrieveAllData,
   onSaveInTheCache = saveInTheCache
@@ -182,13 +192,30 @@ const setCompletedScormAttempt = ({
   let newData = { ...scormBundles };
 
   const newCommitsData = get(newData, `completed_attempts.[${scormId}]`, []);
-  if (!newCommitsData.some((x) => x === attempt)) {
-    newCommitsData.push(attempt);
-    setWith(newData, `completed_attempts.[${scormId}]`, newCommitsData, Object);
-    onSaveInTheCache({
-      client,
-      scormBundles: newData
-    });
+  const newDataCmi = get(newData, `[${scormId}].cmi[${attempt}]`, undefined);
+  if (newDataCmi) {
+    const savedCmiScos = Object.keys(newDataCmi);
+    const nonExistingScos = difference(
+      offlinePackageScoIdentifiers,
+      savedCmiScos
+    );
+    if (nonExistingScos && nonExistingScos.length > 0) {
+      clearSyncedScormCommit({ client, scormId, attempt });
+    } else {
+      if (!newCommitsData.some((x) => x === attempt)) {
+        newCommitsData.push(attempt);
+        setWith(
+          newData,
+          `completed_attempts.[${scormId}]`,
+          newCommitsData,
+          Object
+        );
+        onSaveInTheCache({
+          client,
+          scormBundles: newData
+        });
+      }
+    }
   }
 };
 

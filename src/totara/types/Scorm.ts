@@ -34,6 +34,7 @@ export type Scorm = {
   calculatedGrade: string;
 
   offlineAttemptsAllowed: boolean;
+  offlinePackageScoIdentifiers: [string];
   packageUrl?: string;
   offlinePackageUrl?: string;
   offlinePackageContentHash?: string;

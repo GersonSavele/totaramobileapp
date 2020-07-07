@@ -38,7 +38,8 @@ const defaultData = {
     }
   ],
   launchUrl: "https://path.to.launch.url",
-  repeatUrl: "https://path.to.repeat.url"
+  repeatUrl: "https://path.to.repeat.url",
+  offlinePackageScoIdentifiers: ["Software_Simulation_SCO"]
 };
 
 //this fields are from API response
@@ -80,7 +81,6 @@ const scormBundle = eval({
     attemptsCurrent: 1,
     offlinePackageUrl: "https://path.to.package.url",
     offlinePackageContentHash: "e99447a9fa5447cdcfffb2bdefdefbc15bdd0821",
-    offlinePackageScoIdentifiers: ["Software_Simulation_SCO"],
     attemptsMax: null,
     attemptsForceNew: false,
     attemptsLockFinal: false,
