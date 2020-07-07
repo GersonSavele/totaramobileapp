@@ -16,19 +16,20 @@
  */
 
 import { createStackNavigator } from "react-navigation-stack";
-import { NAVIGATION } from "@totara/lib/navigation";
 import Profile from "@totara/features/profile/Profile";
-import { TotaraNavigationOptions } from "@totara/components";
-import { NavigationRouteConfig } from "react-navigation";
+import { NAVIGATION } from "@totara/lib/navigation";
+import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
 const ProfileStack = createStackNavigator(
   {
-    [NAVIGATION.PROFILE]: Profile as NavigationRouteConfig<any, any>
+    [NAVIGATION.PROFILE]: {
+      screen: Profile
+    }
   },
   {
     mode: "modal",
     initialRouteName: NAVIGATION.PROFILE,
-    defaultNavigationOptions: TotaraNavigationOptions({})
+    defaultNavigationOptions: totaraNavigationOptions({})
   }
 );
 
