@@ -14,7 +14,6 @@
  */
 
 import { Grade, ScormBundle, GradeForAttemptProps } from "@totara/types/Scorm";
-import { scormLessonStatus } from "@totara/lib/constants";
 import { Log } from "@totara/lib";
 import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
 import {
@@ -42,14 +41,13 @@ type CompletedScormAttemptProps = {
   onRetrieveAllData?: (data: CacheProps) => {};
   onSaveInTheCache?: (data: CacheProps) => void;
 };
-type SaveScormActivityProps = {
+
+type SetScormActivityProps = {
+  scormBundles?: { [key: string]: ScormBundle };
   data: any;
-  client: any;
   maxGrade: number;
   gradeMethod: Grade;
   onGetGradeForAttempt?: (data: GradeForAttemptProps) => number;
-  onRetrieveAllData?: (data: CacheProps) => {};
-  onSaveInTheCache?: (data: CacheProps) => void;
 };
 /**
  *
@@ -83,101 +81,59 @@ const saveInTheCache = ({ client, scormBundles }: CacheProps) => {
     console.warn("Scorm cache data saving error: ", e);
   }
 };
-/* 
-// TODO - removed after Last attempt implementation 
-type OnTapAttemptProps = {
-  callback: (action: number, bundle: ScormBundle, data: any) => void;
-  scormBundle: ScormBundle | undefined;
-  isUserOnline: boolean;
-};
 
-const onTapContinueLastAttempt = ({
-  scormBundle,
-  isUserOnline,
-  callback
-}: OnTapAttemptProps) => () => {
-  if (isUserOnline) {
-    if (scormBundle) {
-      if (scormBundle.scorm && scormBundle.scorm.repeatUrl) {
-        const currentAttempt = scormBundle.scorm.attemptsCurrent
-          ? scormBundle.scorm.attemptsCurrent
-          : 0;
-        callback(scormActivityType.online, scormBundle, {
-          url: scormBundle.scorm.repeatUrl,
-          attempt: currentAttempt
-        });
-      } else {
-        Log.warn("Cannot find last attempt url.", scormBundle.scorm.repeatUrl);
-        showMessage({ text: translate("general.error_unknown") });
-      }
-    } else {
-      Log.warn("Cannot find scorm data.", scormBundle);
-      showMessage({ text: translate("general.error_unknown") });
-    }
-  }
-};
-*/
-const saveScormActivityData = ({
+const setScormActivityData = ({
+  scormBundles,
   data,
-  client,
   maxGrade,
   gradeMethod,
-  onGetGradeForAttempt = getGradeForAttempt,
-  onRetrieveAllData = retrieveAllData,
-  onSaveInTheCache = saveInTheCache
-}: SaveScormActivityProps) => {
+  onGetGradeForAttempt = getGradeForAttempt
+}: SetScormActivityProps) => {
   const scormId = data.scormid;
   const attempt = data.attempt;
   const scoId = data.scoid;
   const cmiData = data.cmi;
   const commitData = data.commit;
 
-  const status = get(data.cmi, "core.lesson_status", undefined);
-  if (status && status !== scormLessonStatus.incomplete) {
-    const scormBundles = onRetrieveAllData({ client });
-    let newData = { ...scormBundles };
+  let newData = { ...scormBundles };
 
-    setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
+  setWith(newData, `[${scormId}].cmi[${attempt}][${scoId}]`, cmiData, Object);
 
-    const reportCmiList = get(newData, `[${scormId}].cmi[${attempt}]`);
-    const attemptGrade = onGetGradeForAttempt({
-      attemptCmi: reportCmiList,
-      maxGrade,
-      gradeMethod
-    });
-    const newAttemptGrade = { gradereported: attemptGrade, attempt: attempt };
+  const reportCmiList = get(newData, `[${scormId}].cmi[${attempt}]`);
+  const attemptGrade = onGetGradeForAttempt({
+    attemptCmi: reportCmiList,
+    maxGrade,
+    gradeMethod
+  });
+  const newAttemptGrade = { gradereported: attemptGrade, attempt: attempt };
 
-    const existingOfflineActivityData = get(
-      newData,
-      `[${scormId}].offlineAttempts`,
-      []
-    );
-    if (existingOfflineActivityData && existingOfflineActivityData.length > 0) {
-      if (
-        existingOfflineActivityData[existingOfflineActivityData.length - 1]
-          .attempt === newAttemptGrade.attempt
-      ) {
-        existingOfflineActivityData.pop();
-      }
+  const existingOfflineActivityData = get(
+    newData,
+    `[${scormId}].offlineAttempts`,
+    []
+  );
+  if (existingOfflineActivityData && existingOfflineActivityData.length > 0) {
+    if (
+      existingOfflineActivityData[existingOfflineActivityData.length - 1]
+        .attempt === newAttemptGrade.attempt
+    ) {
+      existingOfflineActivityData.pop();
     }
-    setWith(
-      newData,
-      `[${scormId}].offlineAttempts`,
-      existingOfflineActivityData.concat([newAttemptGrade]),
-      Object
-    );
-
-    setWith(
-      newData,
-      `[${scormId}].commits[${attempt}][${scoId}]`,
-      commitData,
-      Object
-    );
-    onSaveInTheCache({
-      client,
-      scormBundles: newData
-    });
   }
+  setWith(
+    newData,
+    `[${scormId}].offlineAttempts`,
+    existingOfflineActivityData.concat([newAttemptGrade]),
+    Object
+  );
+
+  setWith(
+    newData,
+    `[${scormId}].commits[${attempt}][${scoId}]`,
+    commitData,
+    Object
+  );
+  return newData;
 };
 
 const setCompletedScormAttempt = ({
@@ -373,7 +329,7 @@ const getScormAttemptData = ({
 export {
   retrieveAllData,
   saveInTheCache,
-  saveScormActivityData,
+  setScormActivityData,
   setCompletedScormAttempt,
   getOfflineLastActivityResult,
   getOfflineActivity,

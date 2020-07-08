@@ -29,8 +29,14 @@ import { Package, Grade, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
+import { get } from "lodash";
 
-import { saveScormActivityData, getScormAttemptData } from "../storageUtils";
+import {
+  setScormActivityData,
+  getScormAttemptData,
+  retrieveAllData,
+  saveInTheCache
+} from "../storageUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 import { ResourceType } from "@totara/types/Resource";
@@ -42,6 +48,7 @@ import {
   setupOfflineScormPlayer,
   loadScormPackageData
 } from "../utils";
+import { scormLessonStatus } from "@totara/lib/constants";
 
 type OfflineScormParams = {
   attempt: number;
@@ -177,17 +184,22 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   const client = useApolloClient();
 
   const onPlayerMessageHandler = (messageData: any) => {
-    if (
-      messageData.tmsevent &&
-      messageData.tmsevent === "SCORMCOMMIT" &&
-      messageData.result
-    ) {
-      saveScormActivityData({
-        data: messageData.result,
-        client,
-        maxGrade: scorm.maxgrade,
-        gradeMethod: scorm.grademethod as Grade
-      });
+    const { tmsevent, result } = messageData;
+    if (tmsevent && tmsevent === "SCORMCOMMIT" && result) {
+      const status = get(result, "cmi.core.lesson_status", undefined);
+      if (status && status !== scormLessonStatus.incomplete) {
+        const scormBundles = retrieveAllData({ client });
+        const newData = setScormActivityData({
+          scormBundles,
+          data: result,
+          maxGrade: scorm.maxgrade,
+          gradeMethod: scorm.grademethod as Grade
+        });
+        saveInTheCache({
+          client,
+          scormBundles: newData
+        });
+      }
     }
   };
 
