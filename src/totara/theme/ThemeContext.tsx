@@ -23,6 +23,9 @@ import React, {
 
 import { AppliedTheme, TotaraTheme, applyTheme } from "./Theme";
 import { AuthContext } from "@totara/core";
+// @ts-ignore
+// import * as pt from "@totara/locale/languages/pt.json";
+// import { addLocale, changeLocale } from "@totara/locale";
 
 type Props = {
   children: ReactNode;
@@ -40,6 +43,10 @@ const ThemeProvider = ({ children }: Props) => {
     appState && appState.siteInfo && appState.siteInfo.theme
       ? applyTheme(appState.siteInfo.theme)
       : TotaraTheme;
+
+  // debugger;
+  // addLocale("pt", pt);
+  // changeLocale("en");
 
   return (
     <ThemeContext.Provider value={useState(customerTheme)}>
