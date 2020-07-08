@@ -1,42 +1,56 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
-import React, { ReactNode, useState, Dispatch, SetStateAction, useContext } from "react";
+
+import React, {
+  ReactNode,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useContext
+} from "react";
 
 import { AppliedTheme, TotaraTheme, applyTheme } from "./Theme";
 import { AuthContext } from "@totara/core";
+// @ts-ignore
+// import * as pt from "@totara/locale/languages/pt.json";
+// import { addLocale, changeLocale } from "@totara/locale";
 
 type Props = {
   children: ReactNode;
 };
 
-const ThemeContext = React.createContext<[AppliedTheme, Dispatch<SetStateAction<AppliedTheme>>]>([TotaraTheme, () => {}]);
+const ThemeContext = React.createContext<
+  [AppliedTheme, Dispatch<SetStateAction<AppliedTheme>>]
+>([TotaraTheme, () => {}]);
 
-const ThemeProvider = ( { children }: Props) => {
+const ThemeProvider = ({ children }: Props) => {
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+  const customerTheme =
+    appState && appState.siteInfo && appState.siteInfo.theme
+      ? applyTheme(appState.siteInfo.theme)
+      : TotaraTheme;
 
-  const { authContextState: {appState} } = useContext(AuthContext);
-  const customerTheme = (appState && appState.siteInfo && appState.siteInfo.theme) ? applyTheme(appState.siteInfo.theme) : TotaraTheme;
+  // debugger;
+  // addLocale("pt", pt);
+  // changeLocale("en");
 
   return (
-    <ThemeContext.Provider value={ useState(customerTheme) }>
-      { children }
+    <ThemeContext.Provider value={useState(customerTheme)}>
+      {children}
     </ThemeContext.Provider>
   );
 };

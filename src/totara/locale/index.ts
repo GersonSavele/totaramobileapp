@@ -1,4 +1,3 @@
-
 /**
  * This file is part of Totara Mobile
  *
@@ -24,6 +23,15 @@
 import i18n from "./i18n";
 import { Scope, TranslateOptions } from "i18n-js";
 
-const translate = (scope: Scope, options?: TranslateOptions) => (i18n.t(scope, options));
+const translate = (scope: Scope, options?: TranslateOptions) =>
+  i18n.t(scope, options);
 
-export {translate};
+const addLocale = (locale: string, json: any) => {
+  i18n.translations[locale] = json;
+};
+
+const changeLocale = (locale: string) => {
+  i18n.locale = locale;
+};
+
+export { translate, addLocale, changeLocale };
