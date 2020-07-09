@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Container, Content, Form, Input } from "native-base";
-import React, { useContext, useState } from "react";
+import { Content, Form, Input } from "native-base";
+import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import DeviceInfo from "react-native-device-info";
@@ -22,37 +22,34 @@ import { useSiteUrl, Props } from "./SiteUrlHook";
 
 import { InputTextWithInfo, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { gutter, ThemeContext } from "@totara/theme";
 import { constants } from "@totara/lib";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { margins, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
-import { margins } from "@totara/theme/constants";
 
 const { DEV_ORG_URL, DEBUG_MODE } = constants;
 
 const SiteUrl = (props: Props) => {
-  const [theme] = useContext(ThemeContext);
   const [siteUrl, setSiteUrl] = useState(DEBUG_MODE ? DEV_ORG_URL : "");
   const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
 
   return (
-    <Container style={[theme.viewContainer, { flex: 0 }]}>
-      <Content enableOnAndroid>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Content enableOnAndroid contentContainerStyle={styles.mainContent}>
         <Form style={styles.siteUrlContainer}>
-          <View style={styles.headerContainer}>
+          <View style={styles.logoContainer}>
             <Image
               source={require("@resources/images/totara_logo/totara_logo.png")}
-              style={styles.totaraLogo}
-              resizeMode="contain"
+              style={styles.logo}
             />
+          </View>
+          <View style={styles.formContainer}>
             <View>
               <Text style={styles.urlTitle}>{translate("site_url.title")}</Text>
               <Text style={styles.urlInformation}>
                 {translate("site_url.url_information")}
               </Text>
             </View>
-          </View>
-          <View style={styles.formContainer}>
             <InputTextWithInfo
               placeholder={translate("site_url.url_text_placeholder")}
               message={siteUrlState.inputSiteUrlMessage}
@@ -79,23 +76,51 @@ const SiteUrl = (props: Props) => {
           </View>
         </Form>
       </Content>
-      <SafeAreaView>
-        <Text
-          style={[
-            TotaraTheme.textH2,
-            styles.version,
-            theme.textXXSmall,
-            { color: theme.colorNeutral8 }
-          ]}>
-          {translate("general.version")}: {DeviceInfo.getVersion()}(
-          {DeviceInfo.getBuildNumber()})
-        </Text>
-      </SafeAreaView>
-    </Container>
+
+      <Text style={styles.version}>
+        {translate("general.version")}: {DeviceInfo.getVersion()}(
+        {DeviceInfo.getBuildNumber()})
+      </Text>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContent: {
+    flex: 1
+  },
+  siteUrlContainer: {
+    flex: 1,
+    justifyContent: "space-between"
+  },
+
+  logoContainer: {
+    height: "40%",
+    flexDirection: "column",
+    justifyContent: "center",
+    flex: 1
+  },
+  logo: {
+    width: deviceScreen.width * 0.5,
+    /**To make sure width work properly, aspectRatio needs to be set.
+     * However, totara.logo has not a good aspectRatio (0.7083333333), I decided to infer the totara.logo aspectRatio using width/height */
+    aspectRatio: 120 / 85,
+    alignSelf: "center"
+  },
+
+  formContainer: {
+    height: "60%",
+    paddingHorizontal: paddings.paddingXL
+  },
+
+  version: {
+    ...TotaraTheme.textXSmall,
+    color: TotaraTheme.colorNeutral6,
+    textAlign: "center",
+    marginBottom: margins.marginS,
+    flexDirection: "column-reverse"
+  },
+
   urlTitle: {
     ...TotaraTheme.textH3
   },
@@ -103,32 +128,12 @@ const styles = StyleSheet.create({
     ...TotaraTheme.textRegular,
     color: TotaraTheme.colorNeutral6
   },
-  siteUrlContainer: {
-    marginHorizontal: gutter
-  },
-  totaraLogo: {
-    marginTop: margins.margin2XL,
-    width: deviceScreen.width * 0.33,
-    alignSelf: "center"
-  },
-  headerContainer: {
-    height: deviceScreen.height * 0.45,
-    justifyContent: "space-between"
-  },
-  formContainer: {
-    marginTop: margins.margin2XL
-  },
   inputText: {
     paddingRight: 0,
     paddingLeft: 0
   },
   buttonEnter: {
     marginTop: margins.marginS
-  },
-  version: {
-    textAlign: "center",
-    marginBottom: margins.marginS,
-    flexDirection: "column-reverse"
   }
 });
 
