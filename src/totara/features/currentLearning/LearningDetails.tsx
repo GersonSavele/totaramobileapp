@@ -19,9 +19,9 @@ import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { NavigationContext } from "react-navigation";
 import ParallaxScrollView from "./ParallaxScrollView";
-import { CardElement, ImageElement } from "./LearningItemCard";
+import { CardElement, ImageElement } from "./components/LearningItemCard";
 import { showMessage } from "@totara/lib";
-import { headerViewStyles } from "./currentLearningStyles";
+import { learningDetailsStyles } from "./currentLearningStyles";
 import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { fontWeights } from "@totara/theme/constants";
@@ -35,6 +35,7 @@ type Props = {
   overviewIsShown: boolean;
   badgeTitle: string;
   image?: string;
+  onPullToRefresh: () => void;
 };
 
 const LearningDetails = ({
@@ -45,7 +46,8 @@ const LearningDetails = ({
   onPress,
   overviewIsShown,
   badgeTitle,
-  image = ""
+  image = "",
+  onPullToRefresh
 }: Props) => {
   //To Do: Bug in NetInfo library, useNetInfo - isConnected initial state is false(phone and simulator):
   //https://github.com/react-native-community/react-native-netinfo/issues/295
@@ -60,11 +62,13 @@ const LearningDetails = ({
     return () => unsubscribe();
   }, []);
 
-  const renderNavigationTitle = () => {
+  const renderHeaderTitle = () => {
     return (
-      <CardElement item={details} cardStyle={headerViewStyles.itemCard}>
-        <View style={headerViewStyles.LearningTypeLabelWrap}>
-          <Text style={headerViewStyles.programLabelText}>{badgeTitle}</Text>
+      <CardElement item={details} cardStyle={learningDetailsStyles.itemCard}>
+        <View style={learningDetailsStyles.LearningTypeLabelWrap}>
+          <Text style={learningDetailsStyles.programLabelText}>
+            {badgeTitle}
+          </Text>
         </View>
       </CardElement>
     );
@@ -73,11 +77,11 @@ const LearningDetails = ({
   const renderNavigationTab = () => {
     return (
       <View style={[{ backgroundColor: TotaraTheme.colorNeutral2 }]}>
-        <View style={[headerViewStyles.tabBarContainer]}>
-          <View style={headerViewStyles.tabNav}>
+        <View style={[learningDetailsStyles.tabBarContainer]}>
+          <View style={learningDetailsStyles.tabNav}>
             <TouchableOpacity
               style={[
-                headerViewStyles.tabSelected,
+                learningDetailsStyles.tabSelected,
                 overviewIsShown && { ...styles.overviewTouchableOpacity }
               ]}
               onPress={onPress}>
@@ -91,7 +95,7 @@ const LearningDetails = ({
             </TouchableOpacity>
             <TouchableOpacity
               style={[
-                headerViewStyles.tabSelected,
+                learningDetailsStyles.tabSelected,
                 !overviewIsShown && { ...styles.overviewTouchableOpacity }
               ]}
               onPress={onPress}>
@@ -109,12 +113,12 @@ const LearningDetails = ({
     );
   };
 
-  const backgroundViewRender = () => {
+  const renderHeaderBackground = () => {
     return (
-      <View style={headerViewStyles.headerContainer}>
+      <View style={learningDetailsStyles.headerContainer}>
         <ImageElement
           item={details}
-          imageStyle={headerViewStyles.itemImage}
+          imageStyle={learningDetailsStyles.itemImage}
           image={image}
         />
       </View>
@@ -122,25 +126,21 @@ const LearningDetails = ({
   };
 
   return (
-    <View style={headerViewStyles.container}>
+    <View style={learningDetailsStyles.container}>
       <ParallaxScrollView
+        onPullToRefresh={onPullToRefresh}
         parallaxHeaderHeight={260}
-        renderBackground={backgroundViewRender}
+        renderBackground={renderHeaderBackground}
+        titleBar={renderHeaderTitle}
         tabBar={renderNavigationTab}
-        titleBar={renderNavigationTitle}
-        onChangeHeaderVisibility={(value: number) => {
-          if (value > 0) {
-            navigation!.setParams({
-              opacity: value / 100 > 0.5 ? 1 : value / 100
-            });
-            navigation!.setParams({ title: details.fullname });
-          } else if (-value / 100 > 1) {
-            navigation!.setParams({
-              opacity: (100 + value) / 100 > 0.5 ? 1 : (100 + value) / 100
-            });
-            navigation!.setParams({ title: details.fullname });
-          } else {
-            navigation!.setParams({ title: "" });
+        onChangeHeaderVisibility={(headerValue: number) => {
+          navigation!.setParams({ title: details.fullname });
+
+          const expectedOpacity = headerValue > 0 ? 1 : 0;
+          const currentOpacity = navigation!.getParam("opacity");
+
+          if (expectedOpacity !== currentOpacity) {
+            navigation!.setParams({ opacity: expectedOpacity });
           }
         }}>
         {children}

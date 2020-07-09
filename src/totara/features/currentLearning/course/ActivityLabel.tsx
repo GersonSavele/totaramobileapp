@@ -78,9 +78,9 @@ const LabelConfiguration = ({
 }: LabelConfigProps) => {
   switch (label.type) {
     case "attachment":
-      return <AttachmentTypeLabel label={label}></AttachmentTypeLabel>;
+      return <AttachmentTypeLabel label={label} />;
     case "text":
-      return <TextTypeLabel label={label}></TextTypeLabel>;
+      return <TextTypeLabel label={label} />;
     case "paragraph":
       return <View>{children}</View>;
     case "doc":
@@ -88,9 +88,9 @@ const LabelConfiguration = ({
     case "video":
     case "link_block":
     case "link_media":
-      return <VideoTypeLabel label={label}></VideoTypeLabel>;
+      return <VideoTypeLabel label={label} />;
     case "image": {
-      return <ImageTypeLabel image={label.attrs.image}></ImageTypeLabel>;
+      return <ImageTypeLabel image={label.attrs.image} />;
     }
     case "bullet_list": {
       return <BulletListTypeLabel>{children}</BulletListTypeLabel>;
@@ -106,22 +106,22 @@ const LabelConfiguration = ({
       );
     }
     case "emoji": {
-      return <EmojiTypeLabel label={label}></EmojiTypeLabel>;
+      return <EmojiTypeLabel label={label} />;
     }
     case "hashtag": {
-      return <HashingTypeLabel label={label}></HashingTypeLabel>;
+      return <HashingTypeLabel label={label} />;
     }
     case "mention": {
-      return <MentionTypeLabel label={label}></MentionTypeLabel>;
+      return <MentionTypeLabel label={label} />;
     }
     case "ruler": {
-      return <RulerTypeLabel label={label}></RulerTypeLabel>;
+      return <RulerTypeLabel label={label} />;
     }
     case "heading": {
       return <HeadingTypeLabel>{children}</HeadingTypeLabel>;
     }
     case "audio": {
-      return <AudioTypeLabel label={label}></AudioTypeLabel>;
+      return <AudioTypeLabel label={label} />;
     }
     default:
       return null;
@@ -131,7 +131,7 @@ const LabelConfiguration = ({
 const AttachmentTypeLabel = ({ label = {} }: ActivityLabelProps) => {
   return (
     <View style={{ marginBottom: margins.marginM }}>
-      <ImageTypeLabel image={label.attrs.filename}></ImageTypeLabel>
+      <ImageTypeLabel image={label.attrs.filename} />
     </View>
   );
 };
@@ -163,7 +163,8 @@ const ImageTypeLabel = ({ image }: ImageLabelType) => {
         style={styles.imageContainer}
         source={{
           uri: image
-        }}></Image>
+        }}
+      />
     </View>
   );
 };

@@ -24,7 +24,7 @@ import {
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
-const styles = StyleSheet.create({
+const overviewStyles = StyleSheet.create({
   scrollViewContainer: {
     paddingTop: paddings.paddingXL,
     paddingBottom: paddings.paddingXL
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { styles };
+export { overviewStyles };

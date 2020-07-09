@@ -31,12 +31,12 @@ import {
 } from "react-native";
 import React from "react";
 import { LearningItem } from "@totara/types";
-import DueDateState from "../../components/DueDateState";
+import DueDateState from "../../../components/DueDateState";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { learningItemEnum } from "./constants";
+import { learningItemEnum } from "../constants";
 import { Images } from "@resources/images";
 import { paddings, fontWeights, fontSizes } from "@totara/theme/constants";
-import { ImageWrapper } from "@totara/components/index";
+import { ImageWrapper } from "@totara/components";
 
 interface Props {
   item: LearningItem;

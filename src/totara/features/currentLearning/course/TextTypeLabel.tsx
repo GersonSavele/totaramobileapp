@@ -15,7 +15,7 @@
 
 import React from "react";
 import { Text, View } from "react-native";
-import styles from "../activitiesStyles";
+import activitiesStyles from "./activitiesStyles";
 
 type ActivityLabelProps = {
   label: any;
@@ -23,11 +23,11 @@ type ActivityLabelProps = {
 const TextTypeLabel = ({ label = {} }: ActivityLabelProps) => {
   const description = validationProperty(label.description);
   return description ? (
-    <View style={styles.labelContainer}>
+    <View style={activitiesStyles.labelContainer}>
       {description ? (
         <Text
           style={{
-            ...styles.labelTextDescription
+            ...activitiesStyles.labelTextDescription
           }}>
           {description}
         </Text>

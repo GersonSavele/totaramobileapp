@@ -22,7 +22,7 @@ import { spacedFlexRow } from "@totara/lib/styles/base";
 const { marginL } = margins;
 const { textRegular, colorAccent, textHeadline, colorLink } = TotaraTheme;
 
-const styles = StyleSheet.create({
+const activitiesStyles = StyleSheet.create({
   itemTitle: {
     ...textRegular,
     justifyContent: "center",
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default styles;
+export default activitiesStyles;

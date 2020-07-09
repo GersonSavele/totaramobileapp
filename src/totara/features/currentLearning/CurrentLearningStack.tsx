@@ -18,7 +18,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { Text, TouchableOpacity } from "react-native";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
-import CurrentLearning from "./learningItems/CurrentLearning";
+import CurrentLearning from "./CurrentLearning";
 import CourseDetails from "./course/CourseDetails";
 import { CourseGroupDetails, CourseList } from "./courseGroup";
 import { TouchableIcon } from "@totara/components";
@@ -31,7 +31,7 @@ const {
   COURSE_LIST
 } = NAVIGATION;
 import { paddings } from "@totara/theme/constants";
-import { courseSet } from "./courseGroupStyles";
+import { courseSet } from "./courseGroup/courseGroupStyles";
 import { translate } from "@totara/locale";
 
 const CurrentLearningStack = createStackNavigator(
@@ -40,8 +40,8 @@ const CurrentLearningStack = createStackNavigator(
       screen: CurrentLearning as any,
       navigationOptions: ({ navigation }: any) =>
         totaraNavigationOptions({
-          title: navigation.getParam("title"),
-          opacity: navigation.getParam("opacity")
+          // title: navigation.getParam("title"),
+          opacity: navigation.getParam("opacity") || 0.0
         })
     },
     [COURSE_DETAILS]: {

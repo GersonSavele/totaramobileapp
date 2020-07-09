@@ -20,11 +20,11 @@ import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { NavigationEvents } from "react-navigation";
 // @ts-ignore no types
-import LearningItemCarousel from "./LearningItemCarousel";
-import NoCurrentLearning from "./NoCurrentLearning";
+import LearningItemCarousel from "./learningItems/LearningItemCarousel";
+import NoCurrentLearning from "./learningItems/NoCurrentLearning";
 import query from "./api";
 import { LoadingError, NetworkStatus, Loading } from "@totara/components";
-import { viewStyles } from "../currentLearningStyles";
+import { viewStyles } from "./currentLearningStyles";
 
 const CurrentLearning = () => {
   const { loading, error, data, refetch } = useQuery(query);

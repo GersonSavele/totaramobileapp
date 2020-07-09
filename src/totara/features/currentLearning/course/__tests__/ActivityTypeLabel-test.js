@@ -23,24 +23,24 @@ const theme = jest.fn();
 
 const mockEmptyLabel = {
   name: undefined,
-  description: undefined,
+  description: undefined
 };
 
 const mockLabelWithName = {
   name: "Some of the activities in this course make brief",
-  description: undefined,
+  description: undefined
 };
 
 const mockLabelWithDescription = {
   name: undefined,
   description:
-    "Some of the activities in this course make brief reference to the Site Administration menu on the left of the screen",
+    "Some of the activities in this course make brief reference to the Site Administration menu on the left of the screen"
 };
 
 const mockLabelWithNameAndDescription = {
   name: "Some of the activities in this course make brief",
   description:
-    "Some of the activities in this course make brief reference to the Site Administration menu on the left of the screen",
+    "Some of the activities in this course make brief reference to the Site Administration menu on the left of the screen"
 };
 
 describe("Activity-Label-Type, testing UI with or without label name and description", () => {
@@ -48,8 +48,7 @@ describe("Activity-Label-Type, testing UI with or without label name and descrip
     const component = renderer.create(
       <TextTypeLabel
         theme={theme}
-        label={mockLabelWithNameAndDescription}
-      ></TextTypeLabel>
+        label={mockLabelWithNameAndDescription}></TextTypeLabel>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
@@ -65,8 +64,7 @@ describe("Activity-Label-Type, testing UI with or without label name and descrip
     const component = renderer.create(
       <TextTypeLabel
         theme={theme}
-        label={mockLabelWithDescription}
-      ></TextTypeLabel>
+        label={mockLabelWithDescription}></TextTypeLabel>
     );
     expect(component.toJSON()).toMatchSnapshot();
   });

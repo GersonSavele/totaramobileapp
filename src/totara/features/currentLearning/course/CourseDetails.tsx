@@ -14,15 +14,8 @@
  */
 
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  RefreshControl,
-  Text,
-  Switch
-} from "react-native";
-import { NavigationContext, NavigationParams } from "react-navigation";
+import { StyleSheet, View, Text, Switch } from "react-native";
+import { NavigationContext } from "react-navigation";
 import { GeneralErrorModal } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
@@ -36,42 +29,46 @@ import LearningDetails from "../LearningDetails";
 import CourseCompletionModal from "../CourseCompletionModal";
 import { learningItemEnum } from "../constants";
 import { courseStyle } from "../currentLearningStyles";
+import { NavigationStackProp } from "react-navigation-stack";
 
-const CourseDetails = ({ navigation }: NavigationParams) => {
+type CourseDetailsProps = {
+  navigation: NavigationStackProp;
+};
+
+const CourseDetails = ({ navigation }: CourseDetailsProps) => {
   const courseId = navigation.getParam("targetId");
   const { loading, error, data, refetch } = useQuery(coreCourse, {
     variables: { courseid: courseId }
   });
-  const pullToRefresh = () => {
-    refetch();
+
+  const pullToRefresh = async () => {
+    await refetch();
   };
+
   if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
     return (
-      <ScrollView
-        style={courseStyle.scrollView}
-        contentContainerStyle={{ flex: 1 }}
-        showsVerticalScrollIndicator={false}
-        scrollsToTop={true}
-        refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={pullToRefresh} />
-        }>
-        <UIWrapper
-          courseDetails={data.mobile_course}
-          courseRefreshCallback={refetch}
-        />
-      </ScrollView>
+      <CourseDetailsContent
+        pullToRefresh={pullToRefresh}
+        courseDetails={data.mobile_course}
+        courseRefreshCallback={refetch}
+      />
     );
   }
 };
 
-type Props = {
+type CourseDetailsContentProps = {
   courseDetails: CourseContentDetails;
   courseRefreshCallback: () => {};
+  pullToRefresh: () => void;
 };
 
-const UIWrapper = ({ courseDetails, courseRefreshCallback }: Props) => {
+const CourseDetailsContent = ({
+  courseDetails,
+  courseRefreshCallback,
+  pullToRefresh
+}: CourseDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const [showCompletionModal, setShowCompletionModal] = useState(true);
   const [expandActivities, setExpandActivities] = useState(false);
@@ -90,6 +87,7 @@ const UIWrapper = ({ courseDetails, courseRefreshCallback }: Props) => {
   courseDetails.course.itemtype = learningItemEnum.Course;
   return (
     <LearningDetails
+      onPullToRefresh={pullToRefresh}
       details={courseDetails.course}
       tabBarLeftTitle={translate("course.course_details.overview")}
       tabBarRightTitle={translate("course.course_details.activities")}

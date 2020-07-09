@@ -33,10 +33,6 @@ const details = StyleSheet.create({
   activitiesContainer: {
     flex: 3,
     backgroundColor: TotaraTheme.colorNeutral1
-  },
-  scrollView: {
-    flex: 1,
-    backgroundColor: TotaraTheme.colorNeutral2
   }
 });
 

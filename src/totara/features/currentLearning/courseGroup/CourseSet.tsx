@@ -17,11 +17,11 @@ import React, { useContext, useState } from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { NavigationContext } from "react-navigation";
 import { CourseSets } from "@totara/types/CourseGroup";
-import { ImageElement } from "../LearningItemCard";
+import { ImageElement } from "../components/LearningItemCard";
 import { translate } from "@totara/locale";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
-import { courseSet } from "../courseGroupStyles";
+import { courseSet } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import CriteriaSheet from "../CriteriaSheet";
 

@@ -31,7 +31,7 @@ import CourseCompletionModal from "../CourseCompletionModal";
 import { Criteria } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
 import { courseCriteria } from "../constants";
-import { styles } from "../overviewStyles";
+import { overviewStyles } from "./overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
@@ -65,7 +65,7 @@ const Details = ({
         <ScrollView
           style={{ flexGrow: 1 }}
           horizontal={true}
-          contentContainerStyle={styles.scrollViewContainer}
+          contentContainerStyle={overviewStyles.scrollViewContainer}
           showsHorizontalScrollIndicator={false}>
           <Progress progress={progress} criteria={criteria} />
           {gradeFinal !== undefined && <Grade gradeFinal={gradeFinal} />}
@@ -90,20 +90,20 @@ const Details = ({
 const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={overviewStyles.container}
       activeOpacity={1.0}
       onPress={() => {}}>
-      <View style={styles.contentWrap}>
-        <View style={styles.innerViewWrap}>
+      <View style={overviewStyles.contentWrap}>
+        <View style={overviewStyles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.gradePrefixText}>
+            <Text style={overviewStyles.gradePrefixText}>
               {gradeFinal.length > 0 ? gradeFinal : 0}
             </Text>
           </View>
         </View>
-        <View style={styles.horizontalSeparator} />
-        <View style={styles.carouselTextContainer}>
-          <Text numberOfLines={1} style={styles.labelWrap}>
+        <View style={overviewStyles.horizontalSeparator} />
+        <View style={overviewStyles.carouselTextContainer}>
+          <Text numberOfLines={1} style={overviewStyles.labelWrap}>
             {translate("course.course_overview_grade.title")}
           </Text>
         </View>
@@ -125,16 +125,16 @@ const Progress = ({
   };
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={overviewStyles.container}
       activeOpacity={1.0}
       onPress={() => setShowCriteria(true)}>
-      <View style={styles.contentWrap}>
-        <View style={styles.innerViewWrap}>
+      <View style={overviewStyles.contentWrap}>
+        <View style={overviewStyles.innerViewWrap}>
           <ProgressCircle value={progress}></ProgressCircle>
         </View>
-        <View style={styles.horizontalSeparator} />
-        <View style={styles.carouselTextContainer}>
-          <Text numberOfLines={1} style={styles.labelWrap}>
+        <View style={overviewStyles.horizontalSeparator} />
+        <View style={overviewStyles.carouselTextContainer}>
+          <Text numberOfLines={1} style={overviewStyles.labelWrap}>
             {translate("course.course_overview_progress.title")}
           </Text>
         </View>
@@ -200,11 +200,11 @@ const Complete = ({
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={overviewStyles.container}
       activeOpacity={1.0}
       onPress={onTapSelfCompleteTab}>
-      <View style={styles.contentWrap}>
-        <View style={styles.innerViewWrap}>
+      <View style={overviewStyles.contentWrap}>
+        <View style={overviewStyles.innerViewWrap}>
           {isSelfCompleted ? (
             <CircleIcon
               icon="check"
@@ -220,9 +220,9 @@ const Complete = ({
             />
           )}
         </View>
-        <View style={styles.horizontalSeparator} />
-        <View style={styles.carouselTextContainer}>
-          <Text numberOfLines={1} style={styles.labelWrap}>
+        <View style={overviewStyles.horizontalSeparator} />
+        <View style={overviewStyles.carouselTextContainer}>
+          <Text numberOfLines={1} style={overviewStyles.labelWrap}>
             {translate("course.course_overview_mark_as_complete.title")}
           </Text>
         </View>
@@ -233,7 +233,7 @@ const Complete = ({
           onClose={onClose}>
           {loading && (
             <Modal transparent={true} visible={loading}>
-              <View style={styles.modalBackground}>
+              <View style={overviewStyles.modalBackground}>
                 <Loading />
               </View>
             </Modal>
@@ -257,11 +257,11 @@ type SummaryProps = {
 
 const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {
   return (
-    <View style={styles.summaryContainer}>
+    <View style={overviewStyles.summaryContainer}>
       <Text numberOfLines={1} style={TotaraTheme.textHeadline}>
         {summaryTypeTitle}
       </Text>
-      <View style={styles.summaryViewWrap}>
+      <View style={overviewStyles.summaryViewWrap}>
         <Text
           style={[
             TotaraTheme.textXSmall,
@@ -276,7 +276,7 @@ const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {
 
 const ProgressCircle = ({ value }: { value: number }) => {
   return (
-    <View style={styles.badgeContainer}>
+    <View style={overviewStyles.badgeContainer}>
       <AddBadge status={value} size={iconSizes.sizeM} />
     </View>
   );

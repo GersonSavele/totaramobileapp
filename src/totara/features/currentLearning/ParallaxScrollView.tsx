@@ -15,11 +15,17 @@
  */
 
 import React, { useState, ReactNode } from "react";
-import { Animated, Dimensions, View, LayoutChangeEvent } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  View,
+  LayoutChangeEvent,
+  RefreshControl,
+  StyleSheet
+} from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { parallaxScrollViewStyles } from "./currentLearningStyles";
 
-type Props = {
+type ParallaxScrollViewProps = {
   fadeOutForeground?: boolean;
   fadeOutBackground?: boolean;
   onChangeHeaderVisibility: (value: number) => void;
@@ -29,6 +35,7 @@ type Props = {
   tabBar: () => {};
   renderContentBackground?: () => {};
   children?: ReactNode;
+  onPullToRefresh: () => void;
 };
 const interpolate = (
   value: Animated.Value,
@@ -48,8 +55,9 @@ const ParallaxScrollView = ({
   parallaxHeaderHeight,
   renderBackground,
   titleBar,
-  tabBar
-}: Props) => {
+  tabBar,
+  onPullToRefresh
+}: ParallaxScrollViewProps) => {
   const [viewHeight, setViewHeight] = useState(window.height);
   const [viewWidth, setViewWidth] = useState(window.width);
 
@@ -65,15 +73,14 @@ const ParallaxScrollView = ({
     }
   };
 
-  const onScroll = (e: any) => {
-    const y = e.nativeEvent.contentOffset.y - (p + 40);
+  const onScrollForHeaderVisibility = (e: any) => {
+    const y = e.nativeEvent.contentOffset.y - (parallaxHeaderHeight + 45);
     onChangeHeaderVisibility(y);
   };
 
-  const p = parallaxHeaderHeight;
   const containerStyles = [{ backgroundColor: TotaraTheme.colorAccent }];
+
   return (
-    // Background image scrolling...
     <View
       style={[parallaxScrollViewStyles.container]}
       onLayout={(e) => updateViewDimensions(e)}>
@@ -85,14 +92,19 @@ const ParallaxScrollView = ({
             height: parallaxHeaderHeight,
             width: viewWidth,
             opacity: interpolate(scrollY, {
-              inputRange: [0, p * (1 / 2), p * (3 / 4), p],
+              inputRange: [
+                0,
+                parallaxHeaderHeight * (1 / 2),
+                parallaxHeaderHeight * (3 / 4),
+                parallaxHeaderHeight
+              ],
               outputRange: [1, 0.9, 0.9, 0.9],
               extrapolate: "clamp"
             }),
             transform: [
               {
                 translateY: interpolate(scrollY, {
-                  inputRange: [0, p],
+                  inputRange: [0, parallaxHeaderHeight],
                   outputRange: [0, 0],
                   extrapolateLeft: "clamp"
                 })
@@ -109,12 +121,14 @@ const ParallaxScrollView = ({
         ]}>
         <View>{renderBackground()}</View>
       </Animated.View>
+
       {React.cloneElement(
         <Animated.ScrollView
-          onScrollEndDrag={onScroll}
-          onMomentumScrollEnd={onScroll}
           showsVerticalScrollIndicator={false}
-          bounces={false}
+          nestedScrollEnabled={false}
+          refreshControl={
+            <RefreshControl refreshing={false} onRefresh={onPullToRefresh} />
+          }
         />,
         {
           style: [parallaxScrollViewStyles.scrollView],
@@ -122,7 +136,12 @@ const ParallaxScrollView = ({
           stickyHeaderIndices: [2],
           onScroll: Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
+            {
+              useNativeDriver: true,
+              listener: (event: any) => {
+                onScrollForHeaderVisibility(event);
+              }
+            }
           )
         },
         <View style={parallaxScrollViewStyles.parallaxHeaderContainer}>
@@ -133,14 +152,19 @@ const ParallaxScrollView = ({
                 height: parallaxHeaderHeight,
                 opacity: fadeOutForeground
                   ? interpolate(scrollY, {
-                      inputRange: [0, p * (1 / 2), p * (3 / 4), p],
+                      inputRange: [
+                        0,
+                        parallaxHeaderHeight * (1 / 2),
+                        parallaxHeaderHeight * (3 / 4),
+                        parallaxHeaderHeight
+                      ],
                       outputRange: [1, 0.3, 0.1, 0],
                       extrapolate: "clamp"
                     })
                   : 1
               }
             ]}>
-            <View style={{ height: parallaxHeaderHeight }}></View>
+            <View style={{ height: parallaxHeaderHeight }} />
           </Animated.View>
         </View>,
         <View style={[containerStyles]}>{titleBar()}</View>,
@@ -151,5 +175,29 @@ const ParallaxScrollView = ({
     </View>
   );
 };
+
+const parallaxScrollViewStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "transparent"
+  },
+  parallaxHeaderContainer: {
+    backgroundColor: "transparent",
+    overflow: "hidden"
+  },
+  parallaxHeader: {
+    backgroundColor: "transparent",
+    overflow: "hidden"
+  },
+  backgroundImage: {
+    position: "absolute",
+    backgroundColor: "transparent",
+    overflow: "hidden",
+    top: 0
+  },
+  scrollView: {
+    backgroundColor: "transparent"
+  }
+});
 
 export default ParallaxScrollView;

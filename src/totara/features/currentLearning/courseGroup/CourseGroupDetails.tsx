@@ -14,7 +14,7 @@
  */
 
 import React, { useState } from "react";
-import { View, ScrollView, RefreshControl } from "react-native";
+import { View } from "react-native";
 import { NavigationParams } from "react-navigation";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
@@ -24,11 +24,7 @@ import { CourseGroup } from "@totara/types";
 import { GeneralErrorModal } from "@totara/components";
 import { coreProgram } from "./api";
 import LearningDetails from "../LearningDetails";
-import { details } from "../courseGroupStyles";
-
-type CourseGroupProps = {
-  courseGroup: CourseGroup;
-};
+import { details } from "./courseGroupStyles";
 
 const CourseGroupDetails = ({ navigation }: NavigationParams) => {
   const programId = navigation.getParam("targetId");
@@ -36,28 +32,31 @@ const CourseGroupDetails = ({ navigation }: NavigationParams) => {
     variables: { programid: programId }
   });
 
-  const pullToRefresh = () => {
-    refetch();
+  const pullToRefresh = async () => {
+    await refetch();
   };
 
   if (loading) return null;
   if (error) return <GeneralErrorModal siteUrl="" />;
   if (data) {
     return (
-      <ScrollView
-        style={details.scrollView}
-        contentContainerStyle={{ flex: 1 }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={pullToRefresh} />
-        }>
-        <UIWrapper courseGroup={data.totara_mobile_program} />
-      </ScrollView>
+      <CourseGroupDetailsContent
+        onPullToRefresh={pullToRefresh}
+        courseGroup={data.totara_mobile_program}
+      />
     );
   }
 };
 
-const UIWrapper = ({ courseGroup }: CourseGroupProps) => {
+type CourseGroupProps = {
+  courseGroup: CourseGroup;
+  onPullToRefresh: () => void;
+};
+
+const CourseGroupDetailsContent = ({
+  courseGroup,
+  onPullToRefresh
+}: CourseGroupProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
     setShowOverview(!showOverview);
@@ -65,6 +64,7 @@ const UIWrapper = ({ courseGroup }: CourseGroupProps) => {
 
   return (
     <LearningDetails
+      onPullToRefresh={onPullToRefresh}
       details={courseGroup}
       tabBarLeftTitle={translate("course_group.tabs.overview")}
       tabBarRightTitle={translate("course_group.tabs.courses")}

@@ -167,33 +167,10 @@ const bottomSheetStyles = StyleSheet.create({
   }
 });
 
-const parallaxScrollViewStyles = StyleSheet.create({
+const learningDetailsStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent"
-  },
-  parallaxHeaderContainer: {
-    backgroundColor: "transparent",
-    overflow: "hidden"
-  },
-  parallaxHeader: {
-    backgroundColor: "transparent",
-    overflow: "hidden"
-  },
-  backgroundImage: {
-    position: "absolute",
-    backgroundColor: "transparent",
-    overflow: "hidden",
-    top: 0
-  },
-  scrollView: {
-    backgroundColor: "transparent"
-  }
-});
-
-const headerViewStyles = StyleSheet.create({
-  container: {
-    flex: 1
+    backgroundColor: TotaraTheme.colorNeutral2
   },
   headerContainer: {
     flex: 1,
@@ -224,7 +201,8 @@ const headerViewStyles = StyleSheet.create({
     marginTop: marginL
   },
   tabNav: {
-    ...spacedFlexRow,
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginLeft: marginL,
     width: Dimensions.get("window").width * 0.5,
     alignItems: "center",
@@ -372,8 +350,7 @@ const carouselItemStyles = StyleSheet.create({
 
 export {
   bottomSheetStyles,
-  parallaxScrollViewStyles,
-  headerViewStyles,
+  learningDetailsStyles,
   videoControllerStyles,
   viewStyles,
   courseStyle,

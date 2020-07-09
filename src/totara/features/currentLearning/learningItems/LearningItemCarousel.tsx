@@ -32,7 +32,7 @@ import Restriction from "./Restriction";
 import { iconSizes } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
-import { LearningItemCard } from "../LearningItemCard";
+import { LearningItemCard } from "../components/LearningItemCard";
 import { carouselItemStyles } from "../currentLearningStyles";
 
 type LearningItemProps = {

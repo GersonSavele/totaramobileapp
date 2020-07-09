@@ -23,7 +23,7 @@ import { useMutation } from "@apollo/react-hooks";
 import CriteriaSheet from "../CriteriaSheet";
 import TextTypeLabel from "./TextTypeLabel";
 import CompletionIcon from "./CompletionIcon";
-import styles from "../activitiesStyles";
+import activitiesStyles from "./activitiesStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity } from "@totara/types";
 import { Separator, GeneralErrorModal } from "@totara/components";
@@ -122,11 +122,11 @@ const RestrictionSectionHeader = ({
   };
   return (
     <View>
-      <TouchableOpacity style={styles.sectionView} onPress={onClose}>
-        <Text numberOfLines={1} style={styles.sectionTitle}>
+      <TouchableOpacity style={activitiesStyles.sectionView} onPress={onClose}>
+        <Text numberOfLines={1} style={activitiesStyles.sectionTitle}>
           {title}
         </Text>
-        <Text style={styles.sectionNotAvailable}>
+        <Text style={activitiesStyles.sectionNotAvailable}>
           {translate("course.course_activity_section.not_available")}
         </Text>
       </TouchableOpacity>
@@ -149,8 +149,8 @@ const ExpandableSectionHeader = ({
   title: string;
 }) => {
   return (
-    <View style={styles.sectionView}>
-      <Text numberOfLines={1} style={styles.sectionTitle}>
+    <View style={activitiesStyles.sectionView}>
+      <Text numberOfLines={1} style={activitiesStyles.sectionTitle}>
         {title}
       </Text>
       {show ? (
@@ -217,7 +217,7 @@ const ListItemUnlock = ({
     </View>
   ) : (
     <View style={{ backgroundColor: TotaraTheme.colorAccent }}>
-      <View style={styles.itemContentWrapper}>
+      <View style={activitiesStyles.itemContentWrapper}>
         {item.completion === completionTrack.trackingManual ? (
           <TouchableOpacity
             onPress={() =>
@@ -245,7 +245,7 @@ const ListItemUnlock = ({
           />
         )}
         <TouchableOpacity
-          style={styles.itemTouchableContent}
+          style={activitiesStyles.itemTouchableContent}
           onPress={() => {
             switch (item.modtype) {
               case activityModType.scorm: {
@@ -289,9 +289,12 @@ const ListItemLock = ({ item }: { item: Activity }) => {
   };
   return (
     <View>
-      <View style={styles.listItemLockContainer}>
-        <TouchableOpacity style={styles.itemTouchableContent} onPress={onClose}>
-          <View style={[styles.itemContentWrapper, { opacity: 0.25 }]}>
+      <View style={activitiesStyles.listItemLockContainer}>
+        <TouchableOpacity
+          style={activitiesStyles.itemTouchableContent}
+          onPress={onClose}>
+          <View
+            style={[activitiesStyles.itemContentWrapper, { opacity: 0.25 }]}>
             <CompletionIcon
               completion={item.completion}
               status={item.completionstatus}
@@ -315,8 +318,8 @@ const ListItemLock = ({ item }: { item: Activity }) => {
 
 const RowContainer = ({ item }: { item: Activity }) => {
   return (
-    <View style={styles.itemTextContainer}>
-      <Text numberOfLines={1} style={styles.itemTitle}>
+    <View style={activitiesStyles.itemTextContainer}>
+      <Text numberOfLines={1} style={activitiesStyles.itemTitle}>
         {item.name.trim()}
       </Text>
     </View>
