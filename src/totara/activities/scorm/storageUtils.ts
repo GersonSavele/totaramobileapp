@@ -34,6 +34,7 @@ type CacheProps = {
 };
 
 type CompletedScormAttemptProps = {
+  scormBundles?: { [key: string]: ScormBundle };
   scormId: string;
   client: any;
   attempt?: number;
@@ -49,6 +50,14 @@ type SetScormActivityProps = {
   gradeMethod: Grade;
   onGetGradeForAttempt?: (data: GradeForAttemptProps) => number;
 };
+
+type ScormCommitProps = {
+  scormBundles?: { [key: string]: ScormBundle };
+  scormId: string;
+  attempt: number;
+  offlinePackageScoIdentifiers?: [string];
+};
+
 /**
  *
  * @param param0 - Object with the scorm id to fetch the cached activity records
@@ -140,11 +149,8 @@ const setCompletedScormAttempt = ({
   scormId,
   attempt,
   offlinePackageScoIdentifiers,
-  client,
-  onRetrieveAllData = retrieveAllData,
-  onSaveInTheCache = saveInTheCache
-}: CompletedScormAttemptProps) => {
-  const scormBundles = onRetrieveAllData({ client });
+  scormBundles
+}: ScormCommitProps) => {
   let newData = { ...scormBundles };
 
   const newCommitsData = get(newData, `completed_attempts.[${scormId}]`, []);
@@ -156,7 +162,7 @@ const setCompletedScormAttempt = ({
       savedCmiScos
     );
     if (nonExistingScos && nonExistingScos.length > 0) {
-      clearSyncedScormCommit({ client, scormId, attempt });
+      newData = setCleanScormCommit({ scormBundles, scormId, attempt });
     } else {
       if (!newCommitsData.some((x) => x === attempt)) {
         newCommitsData.push(attempt);
@@ -166,13 +172,10 @@ const setCompletedScormAttempt = ({
           newCommitsData,
           Object
         );
-        onSaveInTheCache({
-          client,
-          scormBundles: newData
-        });
       }
     }
   }
+  return newData;
 };
 
 const getOfflineLastActivityResult = ({
@@ -257,59 +260,52 @@ const getOfflineScormCommits = ({
   return;
 };
 
-const clearSyncedScormCommit = ({
-  client,
+const setCleanScormCommit = ({
+  scormBundles,
   scormId,
-  attempt,
-  onRetrieveAllData = retrieveAllData,
-  onSaveInTheCache = saveInTheCache
-}: CompletedScormAttemptProps) => {
-  let allOfflineData = onRetrieveAllData({ client });
+  attempt
+}: ScormCommitProps) => {
+  if (scormBundles && !isEmpty(scormBundles)) {
+    let newData = { ...scormBundles };
 
-  if (allOfflineData && !isEmpty(allOfflineData)) {
     const completedScormAttempts = get(
-      allOfflineData,
+      newData,
       `completed_attempts.[${scormId}]`,
       undefined
     );
     if (completedScormAttempts) {
       remove(completedScormAttempts, (num) => num == attempt);
       if (!completedScormAttempts) {
-        allOfflineData = omit(allOfflineData, [
-          `completed_attempts.[${scormId}]`
-        ]);
+        newData = omit(newData, [`completed_attempts.[${scormId}]`]);
       } else {
         setWith(
-          allOfflineData,
+          newData,
           `completed_attempts.[${scormId}]`,
           completedScormAttempts,
           Object
         );
       }
     }
-    allOfflineData = omit(allOfflineData, [
+    newData = omit(newData, [
       `[${scormId}].commits[${attempt}]`,
       `[${scormId}].cmi[${attempt}]`
     ]);
     const existingOfflineActivityData = get(
-      allOfflineData,
+      newData,
       `[${scormId}].offlineAttempts`,
       []
     );
     // record.attempt is string and attempt is number, so avoid checking type
     remove(existingOfflineActivityData, (record) => record.attempt == attempt);
     setWith(
-      allOfflineData,
+      newData,
       `[${scormId}].offlineAttempts`,
       existingOfflineActivityData,
       Object
     );
-    onSaveInTheCache({
-      client,
-      scormBundles: allOfflineData
-    });
+    return newData;
   }
-  return true;
+  return {};
 };
 
 const getScormAttemptData = ({
@@ -334,6 +330,6 @@ export {
   getOfflineLastActivityResult,
   getOfflineActivity,
   getOfflineScormCommits,
-  clearSyncedScormCommit,
+  setCleanScormCommit,
   getScormAttemptData
 };

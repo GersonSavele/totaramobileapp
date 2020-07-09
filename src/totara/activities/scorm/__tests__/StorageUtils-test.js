@@ -17,7 +17,7 @@ import { useApolloClient } from "@apollo/react-hooks";
 import {
   setScormActivityData,
   setCompletedScormAttempt,
-  clearSyncedScormCommit,
+  setCleanScormCommit,
   saveInTheCache,
   retrieveAllData,
   getOfflineLastActivityResult,
@@ -296,11 +296,10 @@ describe("setScormActivityData", () => {
 });
 
 describe("setCompletedScormAttempt", () => {
-  const client = useApolloClient();
   const attempt = 3;
   const scormId = "10";
   const offlinePackageScoIdentifiers = ["sco1", "sco2"];
-  const retrieveResultDataMock = {
+  const cacheDataMock = {
     [scormId]: {
       cmi: {
         [attempt]: {
@@ -311,74 +310,59 @@ describe("setCompletedScormAttempt", () => {
     }
   };
 
-  const saveInTheCacheMock = jest.fn();
-  it("should call `saveInTheCache` with adding attempt to the `completed_attempts`, if there is no any cache for it.", () => {
-    const retrieveAllDataMock = jest.fn(() => retrieveResultDataMock);
-    const saveResultDataMock = {
+  it("should return new cache data set with adding attempt to the `completed_attempts`, if there is no any cache for it.", () => {
+    const expectedResultData = {
       completed_attempts: {
         [scormId]: [attempt]
       },
-      ...retrieveResultDataMock
+      ...cacheDataMock
     };
-    setCompletedScormAttempt({
+    const recievedResult = setCompletedScormAttempt({
       scormId,
       attempt,
-      client,
-      offlinePackageScoIdentifiers,
-      onRetrieveAllData: retrieveAllDataMock,
-      onSaveInTheCache: saveInTheCacheMock
+      scormBundles: cacheDataMock,
+      offlinePackageScoIdentifiers
     });
-    expect(saveInTheCacheMock).toBeCalledWith({
-      client,
-      scormBundles: saveResultDataMock
-    });
+    expect(recievedResult).toMatchObject(expectedResultData);
   });
-  it("should call `saveInTheCache` for non existing attempt in the `completed_attempt` with adding it of the existing cache.", () => {
+
+  it("should return updated cache data set for non existing attempt in the `completed_attempt` with adding it of the existing cache.", () => {
     const existingCompletedAttempts = [1, 2];
-    const retrieveAllDataMock = jest.fn(() => ({
+
+    const cacheWithCompletedAttemptsMock = {
       completed_attempts: {
         [scormId]: existingCompletedAttempts
       },
-      ...retrieveResultDataMock
-    }));
-
-    const saveResultDataMock = {
+      ...cacheDataMock
+    };
+    const expectedResultData = {
       completed_attempts: {
         [scormId]: existingCompletedAttempts.concat(attempt)
       },
-      ...retrieveResultDataMock
+      ...cacheWithCompletedAttemptsMock
     };
-    setCompletedScormAttempt({
+    const recievedResult = setCompletedScormAttempt({
       scormId,
       attempt,
-      client,
-      onRetrieveAllData: retrieveAllDataMock,
-      onSaveInTheCache: saveInTheCacheMock
+      scormBundles: cacheWithCompletedAttemptsMock
     });
-    expect(saveInTheCacheMock).toBeCalledWith({
-      client,
-      scormBundles: saveResultDataMock
-    });
+    expect(recievedResult).toMatchObject(expectedResultData);
   });
-  it("should NOT call `saveInTheCache`, if attempt number already exist in the `completed_attempts` list of the cache.", () => {
-    const client = useApolloClient();
+
+  it("should return same data set, if attempt number already exist in the `completed_attempts` list of the cache.", () => {
     const existingCompletedAttempts = [1, 2, 3];
-    const retrieveAllDataMock = jest.fn(() => ({
+    const cacheWithCompletedAttemptsMock = {
       completed_attempts: {
         [scormId]: existingCompletedAttempts
-      }
-    }));
-    const saveInTheCacheMock = jest.fn();
-    const attempt = 3;
-    const scormId = "10";
-    setCompletedScormAttempt({
+      },
+      ...cacheDataMock
+    };
+    const recievedResult = setCompletedScormAttempt({
       scormId,
       attempt,
-      client,
-      onRetrieveAllData: retrieveAllDataMock,
-      onSaveInTheCache: saveInTheCacheMock
+      scormBundles: cacheWithCompletedAttemptsMock
     });
-    expect(saveInTheCacheMock).not.toBeCalled();
+    expect(recievedResult).toMatchObject(cacheWithCompletedAttemptsMock);
   });
 });
 
@@ -561,94 +545,58 @@ describe("getOfflineScormCommits", () => {
     expect(result).toBeUndefined();
   });
 });
-describe("clearSyncedScormCommit", () => {
-  it("should remove all cached data for scormId and attempt, then trigger `saveInTheCache` with updated data.", () => {
-    const client = useApolloClient();
-    const attempt = 3;
-    const nextAttempt = attempt + 1;
-    const scormId = "10";
-    const existingScormBundles = {
-      [scormId]: {
-        commits: {
-          [attempt]: { data: "commit_mock" },
-          [nextAttempt]: { data: "commit_mock" }
-        },
-        cmi: {
-          [attempt]: { data: "cmi_mock" },
-          [nextAttempt]: { data: "commit_mock" }
-        },
-        offlineAttempts: [{ attempt: attempt }, { attempt: nextAttempt }]
+describe("setCleanScormCommit", () => {
+  const firstAttempt = 3;
+  const secondAttempt = 4;
+
+  const scormId = "10";
+  const existingScormBundles = {
+    [scormId]: {
+      commits: {
+        [firstAttempt]: { data: "commit_mock" },
+        [secondAttempt]: { data: "commit_mock" }
       },
-      completed_attempts: {
-        [scormId]: [attempt, nextAttempt]
-      }
-    };
+      cmi: {
+        [firstAttempt]: { data: "cmi_mock" },
+        [secondAttempt]: { data: "commit_mock" }
+      },
+      offlineAttempts: [{ attempt: firstAttempt }, { attempt: secondAttempt }]
+    },
+    completed_attempts: {
+      [scormId]: [firstAttempt, secondAttempt]
+    }
+  };
+  it("should remove all cached data for scormId and attempt, then returns updated data.", () => {
+    const attempt = firstAttempt;
     const expectingScormBundles = {
       [scormId]: {
         commits: {
-          [nextAttempt]: existingScormBundles[scormId].commits[nextAttempt]
+          [secondAttempt]: existingScormBundles[scormId].commits[secondAttempt]
         },
         cmi: {
-          [nextAttempt]: existingScormBundles[scormId].cmi[nextAttempt]
+          [secondAttempt]: existingScormBundles[scormId].cmi[secondAttempt]
         },
-        offlineAttempts: [{ attempt: nextAttempt }]
+        offlineAttempts: [{ attempt: secondAttempt }]
       },
       completed_attempts: {
-        [scormId]: [nextAttempt]
+        [scormId]: [secondAttempt]
       }
     };
-    const retrieveAllDataMock = jest.fn(() => existingScormBundles);
-    const saveInTheCacheMock = jest.fn();
-    clearSyncedScormCommit({
-      client,
+    const recievedResult = setCleanScormCommit({
+      scormBundles: existingScormBundles,
       scormId,
-      attempt,
-      onRetrieveAllData: retrieveAllDataMock,
-      onSaveInTheCache: saveInTheCacheMock
+      attempt
     });
-    expect(saveInTheCacheMock).toBeCalledWith({
-      client,
-      scormBundles: expectingScormBundles
-    });
+    expect(recievedResult).toMatchObject(expectingScormBundles);
   });
-  it("should NOT remove any data if attempt is mismatch, then trigger `saveInTheCache` with updated data.", () => {
-    const client = useApolloClient();
-    const attempt = 3;
-    const nextAttempt = attempt + 1;
-    const scormId = "10";
-    const existingScormBundles = {
-      [scormId]: {
-        commits: {
-          [nextAttempt]: { data: "commit_mock" },
-          [nextAttempt + 1]: { data: "commit_mock" }
-        },
-        cmi: {
-          [nextAttempt]: { data: "cmi_mock" },
-          [nextAttempt + 1]: { data: "commit_mock" }
-        },
-        offlineAttempts: [
-          { attempt: nextAttempt },
-          { attempt: nextAttempt + 1 }
-        ]
-      },
-      completed_attempts: {
-        [scormId]: [nextAttempt, nextAttempt + 1]
-      }
-    };
-
-    const retrieveAllDataMock = jest.fn(() => existingScormBundles);
-    const saveInTheCacheMock = jest.fn();
-    clearSyncedScormCommit({
-      client,
+  it("should NOT remove any data if attempt is mismatch and return same data.", () => {
+    const attempt = 5;
+    const recievedResult = setCleanScormCommit({
+      scormBundles: existingScormBundles,
       scormId,
-      attempt,
-      onRetrieveAllData: retrieveAllDataMock,
-      onSaveInTheCache: saveInTheCacheMock
+      attempt
     });
-    expect(saveInTheCacheMock).toBeCalledWith({
-      client,
-      scormBundles: existingScormBundles
-    });
+    expect(recievedResult).toMatchObject(existingScormBundles);
   });
 });
 

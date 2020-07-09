@@ -27,7 +27,9 @@ import { showMessage, Log } from "@totara/lib";
 import { translate } from "@totara/locale";
 import {
   getOfflineScormCommits,
-  clearSyncedScormCommit
+  setCleanScormCommit,
+  retrieveAllData,
+  saveInTheCache
 } from "../storageUtils";
 import { mutationAttempts } from "../api";
 
@@ -67,11 +69,13 @@ const AttemptSynchronizer = () => {
     return syncAttemptForScorm(syncData.scormId, syncData.tracks)
       .then((isSynced) => {
         if (isSynced) {
-          return clearSyncedScormCommit({
+          const scormBundles = retrieveAllData({ client });
+          const newData = setCleanScormCommit({
+            scormBundles,
             scormId: syncData.scormId,
-            attempt: syncData.attempt,
-            client: client
+            attempt: syncData.attempt
           });
+          return saveInTheCache({ client, scormBundles: newData });
         } else {
           throw new Error("Data sync failed.");
         }

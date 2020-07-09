@@ -44,7 +44,9 @@ import { scormSummaryStyles } from "@totara/theme/scorm";
 import { NetworkStatus as ApolloNetworkStatus } from "apollo-boost";
 import {
   setCompletedScormAttempt,
-  getOfflineLastActivityResult
+  getOfflineLastActivityResult,
+  retrieveAllData,
+  saveInTheCache
 } from "./storageUtils";
 import { getDataForScormSummary } from "./utils";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
@@ -170,12 +172,14 @@ const ScormSummary = ({
           existingLastAttempt.attempt &&
           parseInt(existingLastAttempt.attempt) === attempt
         ) {
-          setCompletedScormAttempt({
+          const scormBundles = retrieveAllData({ client });
+          const newData = setCompletedScormAttempt({
             scormId: id,
             attempt,
             offlinePackageScoIdentifiers,
-            client
+            scormBundles
           });
+          saveInTheCache({ client, scormBundles: newData });
           navigateTo({
             routeId: SCORM_FEEDBACK,
             navigate: navigation.navigate,
