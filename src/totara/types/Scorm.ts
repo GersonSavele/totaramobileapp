@@ -54,11 +54,7 @@ export type Scorm = {
   completionstatusrequired: [string];
   completionstatusallscos: boolean;
   completionexpected: number;
-  defaultCMI: {
-    defaults: any;
-    objectives: any;
-    interactions: any;
-  };
+  newAttemptDefaults: string;
 };
 
 export type ScormBundle = {

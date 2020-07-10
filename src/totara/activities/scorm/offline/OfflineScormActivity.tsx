@@ -131,7 +131,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
 
   useEffect(() => {
     if (url && scos) {
-      const { id, defaultCMI } = scorm;
+      const { id, newAttemptDefaults } = scorm;
       const cmiData = getScormAttemptData({
         scormId: scorm.id,
         attempt,
@@ -147,9 +147,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
         attempt,
         packageLocation: getOfflineScormPackageName(scorm.id),
         playerInitalData: {
-          defaults: JSON.parse(defaultCMI.defaults),
-          interactions: JSON.parse(defaultCMI.interactions),
-          objectives: JSON.parse(defaultCMI.objectives)
+          defaults: JSON.parse(newAttemptDefaults)
         }
       });
       setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));

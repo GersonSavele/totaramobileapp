@@ -69,9 +69,6 @@ const scormQuery = gql`
         attempt
         timestarted
         gradereported
-        defaults
-        objectives
-        interactions
       }
       # Deprecated properties
       type: scormtype

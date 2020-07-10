@@ -33,13 +33,14 @@ const defaultData = {
   attempts: [
     {
       attempt: 1,
-      timestarted: null,
+      timestarted: 1588040660,
       gradereported: 0
     }
   ],
   launchUrl: "https://path.to.launch.url",
   repeatUrl: "https://path.to.repeat.url",
-  offlinePackageScoIdentifiers: ["Software_Simulation_SCO"]
+  offlinePackageScoIdentifiers: ["Software_Simulation_SCO"],
+  newAttemptDefaults: "default_data"
 };
 
 //this fields are from API response

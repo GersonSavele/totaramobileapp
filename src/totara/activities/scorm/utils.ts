@@ -21,7 +21,6 @@ import {
   Grade,
   Attempt,
   ScormBundle,
-  Scorm,
   GradeForAttemptProps,
   ScormPlayerProps,
   Sco,
@@ -62,31 +61,6 @@ const getTargetZipFile = (scormId: string) =>
     scormId
   )}${FILE_EXTENSION}`;
 
-/**
- * this formats the attempts of the SCORM bundle
- * This is a temporary hack because the server is not returning correct data
- * @param {Object} data - scorm data from the Backend
- */
-const formatAttempts = (data: any): Scorm => {
-  let scormData = { ...data };
-  if (scormData) {
-    if (scormData.attempts && scormData.attempts.length > 0) {
-      let scormAttempts = scormData.attempts;
-      const defaultCMI = scormData.attempts[scormData.attempts.length - 1];
-      if (!defaultCMI.timestarted) {
-        // remove the last scorm attempt from the original scorm data(from the backend)
-        scormAttempts = scormAttempts.slice(0, -1);
-      }
-      scormData = {
-        ...scormData,
-        attempts: scormAttempts,
-        defaultCMI: defaultCMI
-      };
-    }
-  }
-  return scormData;
-};
-
 const getDataForScormSummary = (
   isDownloaded: boolean,
   scormBundle?: ScormBundle
@@ -106,7 +80,8 @@ const getDataForScormSummary = (
     maxAttempts: undefined,
     attempts: undefined,
     completionScoreRequired: undefined,
-    offlinePackageScoIdentifiers: undefined
+    offlinePackageScoIdentifiers: undefined,
+    newAttemptDefaults: undefined
   };
   if (!scormBundle) {
     return data;
@@ -178,6 +153,8 @@ const getDataForScormSummary = (
 
   data.offlinePackageScoIdentifiers =
     scorm && scorm.offlinePackageScoIdentifiers;
+
+  data.newAttemptDefaults = scorm && scorm.newAttemptDefaults;
   return data;
 };
 
@@ -414,7 +391,6 @@ export {
   getOfflinePackageUnzipPath,
   getTargetZipFile,
   getOfflineScormPackageName,
-  formatAttempts,
   getDataForScormSummary,
   calculatedAttemptsGrade,
   getAttemptsGrade,

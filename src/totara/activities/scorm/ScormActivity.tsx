@@ -55,11 +55,7 @@ import { useApolloClient } from "@apollo/react-hooks";
 import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
 import ScormFeedback from "./ScormFeedback";
-import {
-  getTargetZipFile,
-  getOfflinePackageUnzipPath,
-  formatAttempts
-} from "./utils";
+import { getTargetZipFile, getOfflinePackageUnzipPath } from "./utils";
 
 const { download } = ResourceManager;
 
@@ -163,7 +159,7 @@ const ScormActivity = (props: ScormActivityProps) => {
 
   useEffect(() => {
     if (data) {
-      let mergedData = { scorm: formatAttempts(data.scorm) };
+      let mergedData = { ...data };
 
       const offlineAttempts = getOfflineActivity({
         client: apolloClient,
