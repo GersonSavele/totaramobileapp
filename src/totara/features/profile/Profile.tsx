@@ -40,18 +40,18 @@ import { Container } from "native-base";
 import { margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatus, ImageWrapper } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { NavigationContext } from "react-navigation";
+import { NavigationStackProp } from "react-navigation-stack";
 
-type ProfileViewProps = {
-  profile: UserProfile;
+type ProfileProps = {
+  navigation: NavigationStackProp;
 };
 
-const Profile = () => {
+const Profile = ({ navigation }: ProfileProps) => {
   const { loading, error, data, refetch, networkStatus } = useQuery(
     userOwnProfile
   );
   if (loading) return <Loading />;
-  if (error) return <GeneralErrorModal siteUrl="" />;
+  if (error) return <GeneralErrorModal />;
   if (data) {
     return (
       <Container>
@@ -63,16 +63,19 @@ const Profile = () => {
               onRefresh={refetch}
             />
           }>
-          <ProfileView profile={data.profile} />
+          <ProfileContent profile={data.profile} navigation={navigation} />
         </ScrollView>
       </Container>
     );
   }
 };
 
-const ProfileView = ({ profile }: ProfileViewProps) => {
-  const navigation = useContext(NavigationContext);
+type ProfileContentProps = {
+  navigation: NavigationStackProp;
+  profile: UserProfile;
+};
 
+const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
   const confirmationLogout = (auth) =>
     Alert.alert(
       translate("user_profile.logout.title"),
@@ -175,7 +178,7 @@ const styles = StyleSheet.create({
     ...TotaraTheme.textXSmall,
     ...{
       color: TotaraTheme.colorNeutral6,
-      marginTop: 6
+      marginTop: margins.marginXS
     }
   },
   manageSection: {

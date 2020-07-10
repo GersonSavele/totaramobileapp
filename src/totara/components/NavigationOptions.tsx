@@ -1,4 +1,5 @@
 import { TotaraTheme } from "@totara/theme/Theme";
+import { NavigationStackOptions } from "react-navigation-stack";
 
 type navigationOptionsProps = {
   title?: string;
@@ -14,7 +15,7 @@ const TotaraNavigationOptions = ({
   rightAction,
   leftAction
 }: navigationOptionsProps) => {
-  return {
+  const options = {
     headerStyle: {
       borderBottomWidth: 0,
       backgroundColor: TotaraTheme.colorSecondary1,
@@ -32,6 +33,7 @@ const TotaraNavigationOptions = ({
     headerRight: rightAction,
     headerLeft: leftAction
   };
+  return options as NavigationStackOptions;
 };
 
 export default TotaraNavigationOptions;

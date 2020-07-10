@@ -29,7 +29,7 @@ const NotificationsStack = createStackNavigator(
   {
     Notification: {
       screen: Notifications,
-      navigationOptions: ({ navigation }) => ({
+      navigationOptions: ({ navigation }): any => ({
         headerBackTitle: translate("general.back"),
         headerLeft: navigation.getParam("showActions") && (
           <TouchableOpacity
@@ -71,7 +71,7 @@ const NotificationsStack = createStackNavigator(
   {
     initialRouteName: "Notification",
     initialRouteKey: "Notification",
-    defaultNavigationOptions: totaraNavigationOptions({})
+    defaultNavigationOptions: totaraNavigationOptions({}) as any
   }
 );
 
