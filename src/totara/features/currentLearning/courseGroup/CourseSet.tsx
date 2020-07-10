@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import { NavigationContext } from "react-navigation";
+import { NavigationStackProp } from "react-navigation-stack";
 import { CourseSets } from "@totara/types/CourseGroup";
 import { ImageElement } from "../components/LearningItemCard";
 import { translate } from "@totara/locale";
@@ -24,24 +24,34 @@ import { navigateTo } from "@totara/lib/navigation";
 import { courseSet } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import CriteriaSheet from "../CriteriaSheet";
+import NativeAccessRestriction from "../NativeAccessRestriction";
 
 type CourseSetProps = {
   courseSets: CourseSets;
+  navigation: NavigationStackProp;
 };
 
-const renderItem = (navigation) => {
-  const LearningItem = ({ item }: any) => (
+const LearningItems = ({ item, navigation }: any) => {
+  const [showRestriction, setShowRestriction] = useState(false);
+  const onCloseRestriction = () => {
+    setShowRestriction(!showRestriction);
+  };
+  return (
     <View style={courseSet.container}>
       <TouchableOpacity
         style={courseSet.learningItem}
         key={item.id}
-        onPress={() =>
-          navigateTo({
-            navigate: navigation.navigate,
-            routeId: NAVIGATION.COURSE_DETAILS,
-            props: { targetId: item.id }
-          })
-        }
+        onPress={() => {
+          if (item.native) {
+            navigateTo({
+              navigate: navigation.navigate,
+              routeId: NAVIGATION.COURSE_DETAILS,
+              props: { targetId: item.id }
+            });
+          } else {
+            setShowRestriction(true);
+          }
+        }}
         activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
           <ImageElement
@@ -58,25 +68,34 @@ const renderItem = (navigation) => {
             </Text>
           </View>
         </View>
+        {showRestriction && (
+          <NativeAccessRestriction
+            onClose={onCloseRestriction}
+            urlView={item.urlView}
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
-  return LearningItem;
 };
 
-const CourseSet = ({ courseSets }: CourseSetProps) => {
-  const navigation = useContext(NavigationContext);
+const CourseSet = ({ courseSets, navigation }: CourseSetProps) => {
   const [show, setShow] = useState(false);
-  const onClose = () => {
+  const onCloseBottomSheet = () => {
     setShow(!show);
   };
+
+  const renderItem = ({ item }: any) => {
+    return <LearningItems navigation={navigation} item={item} />;
+  };
+
   return (
     <View style={{ marginTop: margins.marginXL }}>
       <View style={courseSet.courseSetHeader}>
         <Text style={courseSet.title}>{courseSets.label}</Text>
         <TouchableOpacity
           style={courseSet.criteriaButton}
-          onPress={onClose}
+          onPress={onCloseBottomSheet}
           activeOpacity={1.0}>
           <Text style={courseSet.criteriaButtonTitle}>
             {translate("course_group.criteria.view_criteria")}
@@ -85,7 +104,7 @@ const CourseSet = ({ courseSets }: CourseSetProps) => {
       </View>
       <FlatList
         data={courseSets.courses}
-        renderItem={renderItem(navigation)}
+        renderItem={renderItem}
         keyExtractor={(_, id) => id.toString()}
         showsHorizontalScrollIndicator={false}
         horizontal={true}
@@ -103,7 +122,7 @@ const CourseSet = ({ courseSets }: CourseSetProps) => {
         <CriteriaSheet
           title={translate("course_group.criteria.bottom_sheet_header")}
           criteriaList={courseSets.completionCriteria}
-          onClose={onClose}
+          onClose={onCloseBottomSheet}
         />
       )}
     </View>

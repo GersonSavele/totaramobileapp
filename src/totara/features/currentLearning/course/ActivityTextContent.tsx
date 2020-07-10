@@ -18,26 +18,19 @@ import { Text, View } from "react-native";
 import activitiesStyles from "./activitiesStyles";
 
 type ActivityLabelProps = {
-  label: any;
+  label: string;
 };
-const TextTypeLabel = ({ label = {} }: ActivityLabelProps) => {
-  const description = validationProperty(label.description);
-  return description ? (
+const ActivityTextContent = ({ label }: ActivityLabelProps) => {
+  const text = validationProperty(label);
+  return text ? (
     <View style={activitiesStyles.labelContainer}>
-      {description && (
-        <Text
-          style={{
-            ...activitiesStyles.labelTextDescription
-          }}>
-          {description}
-        </Text>
-      )}
+      <Text style={activitiesStyles.labelTextDescription}>{text}</Text>
     </View>
   ) : null;
 };
 
-const validationProperty = (property: string) => {
-  return property && property.trim().length > 0 && property.trim();
+const validationProperty = (label: string) => {
+  return label && label.trim().length > 0 && label.trim();
 };
 
-export default TextTypeLabel;
+export default ActivityTextContent;

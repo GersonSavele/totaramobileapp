@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
-import { NavigationContext } from "react-navigation";
+import { NavigationStackProp } from "react-navigation-stack";
 import Course from "./Course";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "../CriteriaSheet";
@@ -27,8 +27,11 @@ const renderItems = (navigation) => {
   return LearningItems;
 };
 
-const CourseList = () => {
-  const navigation = useContext(NavigationContext);
+type CourseListProps = {
+  navigation: NavigationStackProp;
+};
+
+const CourseList = ({ navigation }: CourseListProps) => {
   const courseList = navigation.getParam("coursesList");
   const [show, setShow] = useState(false);
 

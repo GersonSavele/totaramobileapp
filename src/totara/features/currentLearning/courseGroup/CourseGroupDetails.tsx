@@ -15,7 +15,7 @@
 
 import React, { useState } from "react";
 import { View } from "react-native";
-import { NavigationParams } from "react-navigation";
+import { NavigationStackProp } from "react-navigation-stack";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import Courses from "./Courses";
@@ -26,7 +26,11 @@ import { coreProgram } from "./api";
 import LearningDetails from "../LearningDetails";
 import { details } from "./courseGroupStyles";
 
-const CourseGroupDetails = ({ navigation }: NavigationParams) => {
+type CourseGroupProps = {
+  navigation: NavigationStackProp;
+};
+
+const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
   const programId = navigation.getParam("targetId");
   const { loading, error, data, refetch } = useQuery(coreProgram, {
     variables: { programid: programId }
@@ -43,20 +47,23 @@ const CourseGroupDetails = ({ navigation }: NavigationParams) => {
       <CourseGroupDetailsContent
         courseGroup={data.totara_mobile_program}
         onContentRefresh={onContentRefresh}
+        navigation={navigation}
       />
     );
   }
 };
 
-type CCourseGroupDetailsContentProps = {
+type CourseGroupDetailsContentProps = {
   courseGroup: CourseGroup;
   onContentRefresh: () => void;
+  navigation: NavigationStackProp;
 };
 
 const CourseGroupDetailsContent = ({
   courseGroup,
-  onContentRefresh
-}: CCourseGroupDetailsContentProps) => {
+  onContentRefresh,
+  navigation
+}: CourseGroupDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
     setShowOverview(!showOverview);
@@ -75,7 +82,7 @@ const CourseGroupDetailsContent = ({
       <View style={details.container}>
         <View style={details.activitiesContainer}>
           {!showOverview ? (
-            <Courses courseGroup={courseGroup} />
+            <Courses courseGroup={courseGroup} navigation={navigation} />
           ) : (
             <OverviewDetails
               id={courseGroup.id}

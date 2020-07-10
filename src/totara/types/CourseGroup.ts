@@ -24,6 +24,7 @@ export interface CourseGroup {
   duedate?: Date;
   duedateState?: string;
   summary?: string;
+  endnote?: string;
   availablefrom: Date;
   availableuntil?: Date;
   imageSrc?: string;

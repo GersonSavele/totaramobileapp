@@ -21,7 +21,7 @@ import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
 import CriteriaSheet from "../CriteriaSheet";
-import TextTypeLabel from "./TextTypeLabel";
+import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -75,9 +75,10 @@ const SectionItem = ({
   expandAllActivities
 }: SectionItemProps) => {
   //every item need to have its own state
+
   const [show, setShow] = useState(expandAllActivities);
   const activities = section.data as Array<Activity>;
-  const { title, available, availablereason } = section;
+  const { title, available, availablereason, summary } = section;
   useEffect(() => {
     setShow(expandAllActivities);
   }, [expandAllActivities]);
@@ -86,27 +87,30 @@ const SectionItem = ({
     setShow(!show);
   };
 
-  return activities ? (
-    <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
-      <TouchableOpacity onPress={onExpand}>
-        {available && activities.length > 0 && (
-          <ExpandableSectionHeader show={show} title={title} />
-        )}
-        {!available && availablereason && availablereason.length > 0 && (
-          <RestrictionSectionHeader
-            title={title}
-            availableReason={availablereason}
+  return (
+    activities && (
+      <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
+        <TouchableOpacity onPress={onExpand}>
+          {available && activities.length > 0 && (
+            <ExpandableSectionHeader show={show} title={title} />
+          )}
+          {!available && availablereason && availablereason.length > 0 && (
+            <RestrictionSectionHeader
+              title={title}
+              availableReason={availablereason}
+            />
+          )}
+        </TouchableOpacity>
+        {show && (
+          <ActivityList
+            data={activities}
+            courseRefreshCallBack={courseRefreshCallBack}
+            sectionSummary={summary}
           />
         )}
-      </TouchableOpacity>
-      {show && (
-        <ActivityList
-          data={activities}
-          courseRefreshCallBack={courseRefreshCallBack}
-        />
-      )}
-    </View>
-  ) : null;
+      </View>
+    )
+  );
 };
 
 const RestrictionSectionHeader = ({
@@ -141,31 +145,35 @@ const RestrictionSectionHeader = ({
   );
 };
 
+type ExpandableSectionHeaderProps = {
+  show: boolean;
+  title: string;
+};
+
 const ExpandableSectionHeader = ({
   title,
   show
-}: {
-  show: boolean;
-  title: string;
-}) => {
+}: ExpandableSectionHeaderProps) => {
   return (
-    <View style={activitiesStyles.sectionView}>
-      <Text numberOfLines={1} style={activitiesStyles.sectionTitle}>
-        {title}
-      </Text>
-      {show ? (
-        <FontAwesomeIcon
-          icon={faChevronUp}
-          color={TotaraTheme.colorNeutral5}
-          size={16}
-        />
-      ) : (
-        <FontAwesomeIcon
-          icon={faChevronDown}
-          color={TotaraTheme.colorNeutral5}
-          size={16}
-        />
-      )}
+    <View>
+      <View style={activitiesStyles.sectionView}>
+        <Text numberOfLines={1} style={activitiesStyles.sectionTitle}>
+          {title}
+        </Text>
+        {show ? (
+          <FontAwesomeIcon
+            icon={faChevronUp}
+            color={TotaraTheme.colorNeutral5}
+            size={16}
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon={faChevronDown}
+            color={TotaraTheme.colorNeutral5}
+            size={16}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -173,11 +181,19 @@ const ExpandableSectionHeader = ({
 type ActivityListProps = {
   data?: Array<Activity>;
   courseRefreshCallBack: () => {};
+  sectionSummary: string;
 };
 
-const ActivityList = ({ data, courseRefreshCallBack }: ActivityListProps) => {
+const ActivityList = ({
+  data,
+  courseRefreshCallBack,
+  sectionSummary
+}: ActivityListProps) => {
   return (
     <View>
+      <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
+        <ActivityTextContent label={sectionSummary}></ActivityTextContent>
+      </View>
       {data!.map((item: Activity, key: number) => {
         return (
           <View key={key}>
@@ -213,7 +229,7 @@ const ListItemUnlock = ({
   }
   return item.modtype == "label" ? (
     <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
-      <TextTypeLabel label={item}></TextTypeLabel>
+      <ActivityTextContent label={item.description}></ActivityTextContent>
     </View>
   ) : (
     <View style={{ backgroundColor: TotaraTheme.colorAccent }}>

@@ -24,7 +24,7 @@ type Props = {
   urlView: string;
 };
 
-const Restriction = ({ onClose, urlView }: Props) => {
+const NativeAccessRestriction = ({ onClose, urlView }: Props) => {
   return (
     <InfoModal
       transparent={true}
@@ -59,4 +59,4 @@ const Restriction = ({ onClose, urlView }: Props) => {
   );
 };
 
-export default Restriction;
+export default NativeAccessRestriction;

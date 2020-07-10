@@ -28,7 +28,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import { AddBadge } from "@totara/components";
 import { navigateTo, itemToRouteMap } from "@totara/lib/navigation";
 import { showMessage } from "@totara/lib";
-import Restriction from "./Restriction";
+import NativeAccessRestriction from "../NativeAccessRestriction";
 import { iconSizes } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
@@ -49,6 +49,10 @@ const LearningItemCarousel = ({
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   const navigation = useContext(NavigationContext);
+
+  const renderItem = ({ item }: any) => {
+    return <LearningItems navigation={navigation} item={item} />;
+  };
   return (
     <View>
       <Pagination
@@ -77,7 +81,7 @@ const LearningItemCarousel = ({
         <Carousel
           ref={sliderRef}
           data={currentLearning}
-          renderItem={renderItem(navigation)}
+          renderItem={renderItem}
           sliderWidth={deviceScreen.width}
           itemWidth={deviceScreen.width * 0.8}
           sliderHeight={deviceScreen.height}
@@ -89,22 +93,19 @@ const LearningItemCarousel = ({
   );
 };
 
-const renderItem = (navigation) => {
-  const LearningItem = ({ item }: any) => (
-    <View style={carouselItemStyles.itemWithBadgeContainer}>
-      <View style={carouselItemStyles.badgeContainer}>
-        <LearningItemWithSummaryAndNavigation
-          item={item}
-          navigation={navigation}
-        />
-      </View>
-      <View style={carouselItemStyles.learningItem}>
-        <AddBadge status={item.progress} size={iconSizes.sizeM} />
-      </View>
+const LearningItems = ({ item, navigation }: any) => (
+  <View style={carouselItemStyles.itemWithBadgeContainer}>
+    <View style={carouselItemStyles.badgeContainer}>
+      <LearningItemWithSummaryAndNavigation
+        item={item}
+        navigation={navigation}
+      />
     </View>
-  );
-  return LearningItem;
-};
+    <View style={carouselItemStyles.learningItem}>
+      <AddBadge status={item.progress} size={iconSizes.sizeM} />
+    </View>
+  </View>
+);
 
 const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
   const navigation = useContext(NavigationContext);
@@ -151,7 +152,7 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
         </LearningItemCard>
       </View>
       {showRestriction && (
-        <Restriction onClose={onClose} urlView={item.urlView} />
+        <NativeAccessRestriction onClose={onClose} urlView={item.urlView} />
       )}
     </TouchableOpacity>
   );

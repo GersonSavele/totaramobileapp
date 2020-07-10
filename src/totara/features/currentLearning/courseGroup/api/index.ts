@@ -24,6 +24,7 @@ const coreProgram = gql`
       duedate(format: ISO8601)
       duedateState: duedate_state(format: PLAIN)
       summary(format: PLAIN)
+      endnote(format: PLAIN)
       availablefrom(format: ISO8601)
       availableuntil(format: ISO8601)
       imageSrc: mobile_image
@@ -46,7 +47,6 @@ const coreProgram = gql`
           shortname
           fullname
           summary: description(format: PLAIN)
-          summaryFormat: description_format
           progress
           urlView: url_view
           duedate(format: ISO8601)

@@ -13,29 +13,40 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
+import { NavigationStackProp } from "react-navigation-stack";
 import CourseSet from "./CourseSet";
 import CourseSetList from "./CourseSetList";
 import { CourseGroup } from "@totara/types";
-import { NavigationContext } from "react-navigation";
 import { statusKey } from "@totara/types/Completion";
 import { translate } from "@totara/locale";
 import { courses } from "./courseGroupStyles";
 import { CourseSets } from "@totara/types/CourseGroup";
 
-const Courses = ({ courseGroup }: { courseGroup: CourseGroup }) => {
+type CoursesProps = {
+  courseGroup: CourseGroup;
+  navigation: NavigationStackProp;
+};
+
+const Courses = ({ courseGroup, navigation }: CoursesProps) => {
   return (
     <View>
       {courseGroup.currentCourseSets.map((item: [CourseSets], key: number) => {
         return (
           <View key={key}>
-            {item.length == 1 && <CourseSet courseSets={item[0]} />}
-            {item.length > 1 && <CourseSetList courseSetList={item} />}
+            {item.length == 1 && (
+              <CourseSet courseSets={item[0]} navigation={navigation} />
+            )}
+            {item.length > 1 && (
+              <CourseSetList courseSetList={item} navigation={navigation} />
+            )}
           </View>
         );
       })}
-      {courseGroup.completion.statuskey === statusKey.complete && <Completed />}
+      {courseGroup.completion.statuskey === statusKey.complete && (
+        <Completed endnote={courseGroup.endnote} navigation={navigation} />
+      )}
       {courseGroup.countUnavailableSets > 0 && (
         <View style={courses.unavailableSetWrap}>
           <Text style={courses.unavailableText}>
@@ -48,18 +59,19 @@ const Courses = ({ courseGroup }: { courseGroup: CourseGroup }) => {
   );
 };
 
-const Completed = () => {
-  const navigation = useContext(NavigationContext);
+type CompletedProps = {
+  endnote?: string;
+  navigation: NavigationStackProp;
+};
+
+const Completed = ({ endnote, navigation }: CompletedProps) => {
   return (
     <View style={courses.bottomView}>
       <Text style={courses.completedText}>
         {translate("course_group.courses.compete")}
       </Text>
       <Text numberOfLines={5} style={courses.endNoteText}>
-        {/* TO do: this text should remove when we have got end note from graphQL query */}
-        Many dream, some try, but only a few achieve. You are an achiever. You
-        have made us all proud, keep up the good work. Congratulations on your
-        graduation
+        {endnote}
       </Text>
       <TouchableOpacity
         style={courses.button}

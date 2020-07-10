@@ -65,7 +65,8 @@ const activitiesStyles = StyleSheet.create({
     flex: 2
   },
   labelContainer: {
-    margin: margins.marginL,
+    marginHorizontal: margins.marginL,
+    marginVertical: margins.marginM,
     justifyContent: "center"
   },
   labelTextDescription: {

@@ -27,6 +27,7 @@ export interface Section {
   title: string;
   available: boolean;
   availablereason?: [string];
+  summary: string;
   data?: [Activity];
 }
 
