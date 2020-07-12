@@ -27,18 +27,20 @@ import {
 } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-
 import { AuthConsumer } from "@totara/core";
-import GeneralErrorModal from "@totara/components/GeneralErrorModal";
 import { UserProfile } from "@totara/types";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { userOwnProfile } from "./api";
 
 import { translate } from "@totara/locale";
 import { NetworkStatus as NS } from "apollo-boost";
-import { Container } from "native-base";
 import { margins, paddings } from "@totara/theme/constants";
-import { Loading, NetworkStatus, ImageWrapper } from "@totara/components";
+import {
+  Loading,
+  NetworkStatus,
+  ImageWrapper,
+  LoadingError
+} from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { NavigationStackProp } from "react-navigation-stack";
 
@@ -50,24 +52,32 @@ const Profile = ({ navigation }: ProfileProps) => {
   const { loading, error, data, refetch, networkStatus } = useQuery(
     userOwnProfile
   );
-  if (loading) return <Loading />;
-  if (error) return <GeneralErrorModal />;
-  if (data) {
+  if (loading) return <Loading testID={"test_ProfileLoading"} />;
+  if (error)
     return (
-      <Container>
-        <NetworkStatus />
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={networkStatus === NS.refetch}
-              onRefresh={refetch}
-            />
-          }>
-          <ProfileContent profile={data.profile} navigation={navigation} />
-        </ScrollView>
-      </Container>
+      <LoadingError
+        onRefreshTap={refetch}
+        testID={"test_ProfileLoadingError"}
+      />
     );
-  }
+
+  return (
+    <View>
+      <NetworkStatus />
+      <ScrollView
+        style={{ backgroundColor: TotaraTheme.colorNeutral2 }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            tintColor={TotaraTheme.colorNeutral8}
+            refreshing={networkStatus === NS.refetch}
+            onRefresh={refetch}
+          />
+        }>
+        <ProfileContent profile={data.profile} navigation={navigation} />
+      </ScrollView>
+    </View>
+  );
 };
 
 type ProfileContentProps = {
@@ -99,7 +109,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
     profile.profileimage.indexOf("theme/image.php/basis/core/") >= 0; //TODO: WEIRD WORKAROUND WE SUPPOSE TO FIX ONE DAY
 
   return (
-    <View style={[TotaraTheme.viewContainer]}>
+    <View style={[TotaraTheme.viewContainer]} testID={"test_ProfileContainer"}>
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
         <View style={styles.headerContent}>
           {!useDefaultImage ? (
@@ -113,23 +123,28 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
               />
             </View>
           )}
-          <Text style={styles.userDetails}>
-            {profile.firstname} {profile.surname}
+          <Text style={styles.userDetails} testID={"test_ProfileUserDetails"}>
+            {`${profile.firstname} ${profile.surname}`}
           </Text>
-          <Text style={styles.userEmail}>{profile.email}</Text>
-          <Text style={styles.userLoginAs}>
+          <Text style={styles.userEmail} testID={"test_ProfileUserEmail"}>
+            {profile.email}
+          </Text>
+          <Text style={styles.userLoginAs} testID={"test_ProfileUserLogin"}>
             {translate("user_profile.login_as", { username: profile.username })}
           </Text>
         </View>
       </View>
 
-      <View style={styles.manageSection}>
+      <View style={[styles.manageSection, { flex: 2 }]}>
         <Text style={styles.manageTitle}>
           {translate("user_profile.manage_section")}
         </Text>
         <View style={styles.manageOptions}>
-          <View style={[styles.sectionOption, { flexDirection: "row" }]}>
-            <TouchableOpacity onPress={goToAbout} style={{ flex: 1 }}>
+          <View style={styles.sectionOption}>
+            <TouchableOpacity
+              testID={"test_ProfileAboutButton"}
+              onPress={goToAbout}
+              style={{ flex: 1 }}>
               <Text style={TotaraTheme.textRegular}>
                 {translate("user_profile.about")}
               </Text>
@@ -139,7 +154,9 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
           <View style={styles.sectionOption}>
             <AuthConsumer>
               {(auth) => (
-                <TouchableOpacity onPress={() => confirmationLogout(auth)}>
+                <TouchableOpacity
+                  testID={"test_ProfileLogoutButton"}
+                  onPress={() => confirmationLogout(auth)}>
                   <Text style={TotaraTheme.textRegular}>
                     {translate("user_profile.logout.button_text")}
                   </Text>
@@ -182,7 +199,8 @@ const styles = StyleSheet.create({
     }
   },
   manageSection: {
-    margin: margins.marginM
+    flex: 1,
+    padding: paddings.paddingXL
   },
   manageTitle: {
     ...TotaraTheme.textHeadline

@@ -188,7 +188,7 @@ const DownloadsStack = createStackNavigator(
           <TouchableOpacity
             onPress={() => {
               // @ts-ignore
-              navigation.emit("onReadTap");
+              navigation.emit("onDeleteTap");
             }}
             style={{ paddingRight: paddings.paddingL }}>
             <Text
