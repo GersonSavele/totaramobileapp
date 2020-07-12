@@ -21,21 +21,24 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import React from "react";
 import About from "@totara/features/about/About";
 
-const AboutStack = createStackNavigator({
-  About: {
-    screen: About,
-    navigationOptions: ({ navigation }) => {
-      return {
-        headerLeft: (
-          <TouchableIcon
-            icon={"times"}
-            onPress={() => navigation.pop()}
-            size={TotaraTheme.textH3.fontSize}
-          />
-        )
-      };
+const AboutStack = createStackNavigator(
+  {
+    About: {
+      screen: About,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerLeft: (
+            <TouchableIcon
+              icon={"times"}
+              onPress={() => navigation.pop()}
+              size={TotaraTheme.textH3.fontSize}
+            />
+          )
+        };
+      }
     }
-  }
-});
+  },
+  { initialRouteName: "About" }
+);
 
 export default AboutStack;

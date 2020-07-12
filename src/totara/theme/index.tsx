@@ -17,25 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-import { resizeByScreenSize, normalize } from "./PlatformUtility";
+import { resizeByScreenSize } from "./PlatformUtility";
 import { applyTheme } from "./Theme";
-import { ThemeContext, ThemeProvider, ThemeConsumer} from "./ThemeContext"
+import { ThemeContext, ThemeProvider, ThemeConsumer } from "./ThemeContext";
 
 const gutter = resizeByScreenSize(8, 16, 16, 24);
-const tbPadding = resizeByScreenSize(8, 16, 24, 32);
-const lrPadding = resizeByScreenSize(10, 12, 16, 20);
 const baseSpace = 8;
 
 export {
   resizeByScreenSize,
-  normalize,
   gutter,
-  tbPadding,
-  lrPadding,
   applyTheme,
   ThemeContext,
-  ThemeProvider, 
+  ThemeProvider,
   ThemeConsumer,
   baseSpace
 };
