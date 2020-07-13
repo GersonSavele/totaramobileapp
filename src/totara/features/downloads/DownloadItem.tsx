@@ -1,6 +1,23 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+/**
+ *
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ *
+ */
 
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useContext } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ThemeContext } from "@totara/theme";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
@@ -8,7 +25,7 @@ import { iconSizes, paddings } from "@totara/theme/constants";
 import { Resource, ResourceState } from "@totara/types/Resource";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { humanReadablePercentage } from "@totara/lib/tools";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
 import listViewStyles from "@totara/theme/listView";
 
 type DownloadItemProps = {
@@ -17,6 +34,7 @@ type DownloadItemProps = {
   selected: boolean;
   onItemPress(item: Resource): void;
   onItemLongPress(item: Resource): void;
+  testID?: string;
 };
 
 const DownloadItem = ({
@@ -24,7 +42,8 @@ const DownloadItem = ({
   selectable,
   selected = false,
   onItemPress,
-  onItemLongPress
+  onItemLongPress,
+  testID
 }: DownloadItemProps) => {
   const [theme] = useContext(ThemeContext);
 
@@ -40,7 +59,7 @@ const DownloadItem = ({
 
   return (
     <TouchableOpacity
-      testID={"test_DownloadItem"}
+      testID={testID}
       onPress={() => onItemPress(item)}
       onLongPress={() => onItemLongPress(item)}>
       <View

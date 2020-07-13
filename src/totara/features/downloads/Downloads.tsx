@@ -1,4 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+/**
+ *
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ *
+ */
+
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -6,15 +23,10 @@ import {
   ListRenderItemInfo,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from "react-native";
-import { NavigationActions, NavigationContext } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import { NavigationActions } from "react-navigation";
 import { useSelector } from "react-redux";
-
-import { ThemeContext } from "@totara/theme";
-import totaraNavigationOptions from "@totara/components/NavigationOptions";
 import headerStyles from "@totara/theme/headers";
 import { translate } from "@totara/locale";
 import NetworkStatus from "@totara/components/NetworkStatus";
@@ -22,19 +34,19 @@ import { RootState } from "@totara/reducers";
 import { Resource } from "@totara/types";
 
 import { Images } from "@resources/images";
-import { paddings } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
 import ResourceManager from "@totara/lib/resourceManager";
 import listViewStyles from "@totara/theme/listView";
+import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
+import { TotaraTheme } from "@totara/theme/Theme";
 import DownloadItem from "./DownloadItem";
-import { navigateTo } from "@totara/lib/navigation";
-import { NAVIGATION } from "@totara/lib/navigation";
+import { NavigationStackProp } from "react-navigation-stack";
 const { SCORM_ROOT } = NAVIGATION;
 
-const Downloads = () => {
-  const [theme] = useContext(ThemeContext);
-  const navigation = useContext(NavigationContext);
+type DownloadsProps = {
+  navigation: NavigationStackProp;
+};
 
+const Downloads = ({ navigation }: DownloadsProps) => {
   const resourcesList = useSelector(
     (state: RootState) => state.resourceReducer.resources
   );
@@ -130,16 +142,16 @@ const Downloads = () => {
   };
 
   return (
-    <View style={theme.viewContainer}>
+    <View style={TotaraTheme.viewContainer}>
       <View style={[headerStyles.navigationHeader, { flexDirection: "row" }]}>
-        <Text style={theme.textH2}>{headerTitle}</Text>
+        <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
       </View>
       <NetworkStatus />
       <View style={{ flex: 1 }}>
         {resourcesList.length == 0 ? (
-          <View style={styles.noContent}>
+          <View style={styles.noContent} testID={"test_DownloadsEmptyState"}>
             <Image source={Images.noDownloads as ImageSourcePropType} />
-            <Text style={[theme.textHeadline, { fontWeight: "bold" }]}>
+            <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>
               {translate("downloads.empty")}
             </Text>
           </View>
@@ -153,6 +165,7 @@ const Downloads = () => {
             )}
             renderItem={(data: ListRenderItemInfo<Resource>) => (
               <DownloadItem
+                testID={"test_DownloadsItem"}
                 item={data.item}
                 selected={isSelected(data.item)}
                 selectable={selectable}
@@ -167,49 +180,6 @@ const Downloads = () => {
   );
 };
 
-const DownloadsStack = createStackNavigator(
-  {
-    Downloads: {
-      screen: Downloads,
-      navigationOptions: ({ navigation }) => ({
-        headerLeft: navigation.getParam("showActions") && (
-          <TouchableOpacity
-            onPress={() => {
-              // @ts-ignore
-              navigation.emit("onCancelTap");
-            }}
-            style={{ paddingLeft: paddings.paddingL }}>
-            <Text style={TotaraTheme.textMedium}>
-              {translate("general.cancel")}
-            </Text>
-          </TouchableOpacity>
-        ),
-        headerRight: navigation.getParam("showActions") && (
-          <TouchableOpacity
-            onPress={() => {
-              // @ts-ignore
-              navigation.emit("onDeleteTap");
-            }}
-            style={{ paddingRight: paddings.paddingL }}>
-            <Text
-              style={[
-                TotaraTheme.textMedium,
-                { color: TotaraTheme.colorDestructive }
-              ]}>
-              {translate("general.delete")}
-            </Text>
-          </TouchableOpacity>
-        )
-      })
-    }
-  },
-  {
-    initialRouteName: "Downloads",
-    initialRouteKey: "Downloads",
-    defaultNavigationOptions: totaraNavigationOptions({})
-  }
-);
-
 const styles = StyleSheet.create({
   noContent: {
     height: "100%",
@@ -220,4 +190,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DownloadsStack;
+export default Downloads;

@@ -1,16 +1,9 @@
-import { act, cleanup, fireEvent, render } from "@testing-library/react-native";
+import { act, cleanup, render } from "@testing-library/react-native";
 import React from "react";
 import AboutStack from "@totara/features/about/AboutStack";
 import wait from "waait";
 import About from "@totara/features/about/About";
 import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
-
-const navigationMock = {
-  navigation: {
-    navigate: jest.fn()
-  }
-};
 
 const renderWithNavigation = () => {
   const App = createAppContainer(AboutStack);

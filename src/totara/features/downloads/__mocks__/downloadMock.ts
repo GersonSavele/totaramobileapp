@@ -8,10 +8,22 @@ const downloadItemMockAdded = {
 };
 
 const downloadItemMockAddedWithKilo = {
-  id: "1",
+  id: "2",
   name: "Resource 10KB",
   state: ResourceState.Added,
   sizeInBytes: 1024 * 10 //10KB
 };
 
-export { downloadItemMockAdded, downloadItemMockAddedWithKilo };
+const downloadsOneItemMock = [downloadItemMockAdded];
+
+const downloadsTwoItemsMock = [
+  downloadItemMockAdded,
+  downloadItemMockAddedWithKilo
+];
+
+export {
+  downloadItemMockAdded,
+  downloadItemMockAddedWithKilo,
+  downloadsOneItemMock,
+  downloadsTwoItemsMock
+};

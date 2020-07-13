@@ -67,7 +67,11 @@ describe("DownloadItem", () => {
 
     const onItemPressCallback = jest.fn();
     const { getByTestId } = render(
-      <DownloadItem item={item} onItemPress={onItemPressCallback} />
+      <DownloadItem
+        item={item}
+        onItemPress={onItemPressCallback}
+        testID={"test_DownloadItem"}
+      />
     );
 
     fireEvent.press(getByTestId("test_DownloadItem"));
@@ -82,7 +86,11 @@ describe("DownloadItem", () => {
 
     const onItemLongPressCallback = jest.fn();
     const { getByTestId } = render(
-      <DownloadItem item={item} onItemLongPress={onItemLongPressCallback} />
+      <DownloadItem
+        item={item}
+        onItemLongPress={onItemLongPressCallback}
+        testID={"test_DownloadItem"}
+      />
     );
 
     fireEvent.longPress(getByTestId("test_DownloadItem"));
