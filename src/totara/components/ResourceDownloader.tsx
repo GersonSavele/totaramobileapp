@@ -12,6 +12,7 @@ type ResourceDownloaderProps = {
   progress: number;
   size?: number;
   style?: ImageStyle;
+  testID?: string;
 };
 
 const DownloadIcon = {
@@ -22,12 +23,14 @@ const DownloadIcon = {
 const ResourceDownloaderComponent = ({
   resourceState,
   progress,
-  size
+  size,
+  testID
 }: ResourceDownloaderProps) => {
   const [theme] = useContext(ThemeContext);
   if (resourceState === ResourceState.Downloading) {
     return (
       <Progress.Circle
+        testID={testID}
         progress={progress / 100}
         size={size}
         unfilledColor={theme.colorNeutral4}
@@ -52,6 +55,7 @@ const ResourceDownloaderComponent = ({
 
     return (
       <Image
+        testID={testID}
         source={DownloadIcon.solid}
         style={[{ tintColor: iconColor, height: size, width: size }]}
         resizeMode="contain"
@@ -65,10 +69,12 @@ const ResourceDownloader = ({
   onPress,
   progress,
   size,
-  style
+  style,
+  testID
 }: ResourceDownloaderProps) => {
   return (
     <TouchableOpacity
+      testID={testID}
       onPress={() => {
         onPress && onPress();
       }}

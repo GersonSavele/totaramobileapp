@@ -32,19 +32,25 @@ const DownloadItem = ({
     if (!sizeInBytes) return "...";
 
     return sizeInBytes / 1024 < 1000
-      ? `${Math.round(sizeInBytes / 1024)} Kb`
-      : `${(sizeInBytes / 1024 / 1024).toFixed(2)} Mb`;
+      ? `${Math.round(sizeInBytes / 1024)}KB`
+      : `${(sizeInBytes / 1024 / 1024).toFixed(2)}MB`;
   };
 
   const { bytesDownloaded: writtenBytes, sizeInBytes } = item;
 
   return (
     <TouchableOpacity
+      testID={"test_DownloadItem"}
       onPress={() => onItemPress(item)}
       onLongPress={() => onItemLongPress(item)}>
-      <View key={item.id} style={listViewStyles.rowItem}>
+      <View
+        key={item.id}
+        style={listViewStyles.rowItem}
+        testID={"test_DownloadItemItemID"}>
         {selectable && (
-          <View style={styles.itemCircle}>
+          <View
+            style={styles.itemCircle}
+            testID={"test_DownloadItemSelectIcon"}>
             <FontAwesomeIcon
               size={iconSizes.sizeM}
               icon={"check-circle"}
@@ -55,6 +61,7 @@ const DownloadItem = ({
         <View>
           {item.state !== ResourceState.Completed && (
             <ResourceDownloader
+              testID={"test_DownloadItemResourceDownloader"}
               size={iconSizes.sizeM}
               progress={humanReadablePercentage({
                 writtenBytes,
@@ -65,8 +72,12 @@ const DownloadItem = ({
           )}
         </View>
         <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.size}>{`${humanReadableSize(
+          <Text style={styles.title} testID={"test_DownloadItemName"}>
+            {`${item.name}`}
+          </Text>
+          <Text
+            style={styles.size}
+            testID={"test_DownloadItemSize"}>{`${humanReadableSize(
             item.sizeInBytes
           )}`}</Text>
         </View>
