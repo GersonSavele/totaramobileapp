@@ -95,7 +95,7 @@ const scormActivitiesRecordsQuery = gql`
 
 const scormFeedbackQuery = gql`
   query totara_mobile_scorm_current_status($scormid: core_id!) {
-    scorm: mod_scorm_current_status(scormid: $scormid) {
+    status: mod_scorm_current_status(scormid: $scormid) {
       maxattempt
       attempts_current
       completion

@@ -19,7 +19,7 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   Text,
@@ -28,6 +28,7 @@ import {
   TouchableOpacity,
   RefreshControl
 } from "react-native";
+import { get } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   MessageBar,
@@ -35,7 +36,8 @@ import {
   LoadingError,
   MoreText,
   PrimaryButton,
-  SecondaryButton
+  SecondaryButton,
+  Loading
 } from "@totara/components";
 import { gutter } from "@totara/theme";
 import { translate } from "@totara/locale";
@@ -55,6 +57,7 @@ import { ScormBundle, Grade } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
+import { config } from "@totara/lib";
 
 const {
   OFFLINE_SCORM_ACTIVITY,
@@ -74,6 +77,8 @@ type SummaryProps = {
   isDownloaded: boolean;
   client: any;
   onRefresh: () => void;
+  apiKey: string;
+  host: string;
 };
 
 const gridStyle = (theme: AppliedTheme) => [
@@ -113,7 +118,6 @@ const GridTitle = ({ theme, textId, style = {} }: GridTitleProps) => (
     {translate(textId)}
   </Text>
 );
-
 const ScormSummary = ({
   id,
   error,
@@ -122,11 +126,14 @@ const ScormSummary = ({
   navigation,
   isDownloaded,
   client,
-  onRefresh
+  onRefresh,
+  apiKey,
+  host
 }: SummaryProps) => {
   const theme = TotaraTheme;
 
   const bundleData = getDataForScormSummary(isDownloaded, scormBundle);
+  const [isLoadingCurretStatus, setIsLoadingCurretStatus] = useState(false);
   const {
     name,
     description,
@@ -145,18 +152,50 @@ const ScormSummary = ({
     offlinePackageScoIdentifiers
   } = bundleData;
 
+  const getLastAttemptResultForOnline = ({
+    scormId,
+    apiKey,
+    host
+  }: {
+    scormId: string;
+    apiKey: string;
+    host: string;
+  }): Promise<Response> => {
+    // fetch from global
+    // eslint-disable-next-line no-undef
+    return fetch(config.apiUri(host), {
+      method: "POST",
+      body: JSON.stringify({
+        operationName: "totara_mobile_scorm_current_status",
+        variables: { scormid: scormId }
+      }),
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${apiKey}`
+      }
+    }).then((data) => {
+      return data.json();
+    });
+  };
+
   const onExitActivityAttempt = ({
     id,
     attempt,
     gradeMethod = Grade.objective,
-    completionScoreRequired = undefined,
-    client
+    apiKey,
+    completionScoreRequired,
+    client,
+    host,
+    setIsLoadingCurretStatus
   }: {
     id: string;
     attempt: number;
     gradeMethod?: Grade;
     completionScoreRequired?: number;
     client: any;
+    apiKey?: string;
+    host?: string;
+    setIsLoadingCurretStatus?: Function;
   }) => {
     showConfirmation({
       title: translate("scorm.confirmation.title"),
@@ -166,37 +205,75 @@ const ScormSummary = ({
           scormId: id,
           client
         });
+
         navigation.pop();
-        if (
-          existingLastAttempt &&
-          existingLastAttempt.attempt &&
-          parseInt(existingLastAttempt.attempt) === attempt
-        ) {
-          const scormBundles = retrieveAllData({ client });
-          const newData = setCompletedScormAttempt({
-            scormId: id,
-            attempt,
-            offlinePackageScoIdentifiers,
-            scormBundles
-          });
-          saveInTheCache({ client, scormBundles: newData });
-          navigateTo({
-            routeId: SCORM_FEEDBACK,
-            navigate: navigation.navigate,
-            props: {
-              id,
+        if (isDownloaded) {
+          if (
+            existingLastAttempt &&
+            existingLastAttempt.attempt &&
+            parseInt(existingLastAttempt.attempt) === attempt
+          ) {
+            const scormBundles = retrieveAllData({ client });
+            const newData = setCompletedScormAttempt({
+              scormId: id,
               attempt,
-              gradeMethod,
-              completionScoreRequired,
-              score: existingLastAttempt.gradereported
-            }
-          });
+              offlinePackageScoIdentifiers,
+              scormBundles
+            });
+            saveInTheCache({ client, scormBundles: newData });
+            navigateTo({
+              routeId: SCORM_FEEDBACK,
+              navigate: navigation.navigate,
+              props: {
+                id,
+                attempt,
+                gradeMethod,
+                completionScoreRequired,
+                score: existingLastAttempt.gradereported
+              }
+            });
+          }
+        } else {
+          if (apiKey && host) {
+            setIsLoadingCurretStatus && setIsLoadingCurretStatus(true);
+            getLastAttemptResultForOnline({
+              scormId: id,
+              apiKey,
+              host
+            })
+              .then((response) => {
+                const status = get(response, "data.status");
+                if (status) {
+                  const { attemptsCurrent, gradefinal } = status;
+                  if (attempt == attemptsCurrent) {
+                    navigateTo({
+                      routeId: SCORM_FEEDBACK,
+                      navigate: navigation.navigate,
+                      props: {
+                        id,
+                        attempt,
+                        gradeMethod,
+                        completionScoreRequired,
+                        score: gradefinal
+                      }
+                    });
+                  }
+                }
+              })
+              .catch((e) => console.log("Error: ", e))
+              .finally(() => {
+                setIsLoadingCurretStatus && setIsLoadingCurretStatus(false);
+              });
+          }
         }
       }
     });
     // This is the for the BackHandler callback that is calling this function
     return true;
   };
+  if (isLoadingCurretStatus) {
+    return <Loading />;
+  }
   if (error) {
     return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} />;
   }
@@ -317,7 +394,10 @@ const ScormSummary = ({
                       attempt: attemptNumber,
                       gradeMethod: gradeMethod,
                       completionScoreRequired: completionScoreRequired,
-                      client
+                      client,
+                      apiKey,
+                      host,
+                      setIsLoadingCurretStatus
                     })
                 }
               });

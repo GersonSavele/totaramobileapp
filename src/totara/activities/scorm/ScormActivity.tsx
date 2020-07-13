@@ -94,7 +94,7 @@ const ScormActivity = (props: ScormActivityProps) => {
     authContextState: { appState }
   } = useContext(AuthContext);
 
-  const { apiKey } = appState as AppState;
+  const { apiKey, host } = appState as AppState;
 
   const resourceList: Resource[] = useSelector(
     (state: RootState) => state.resourceReducer.resources
@@ -197,9 +197,10 @@ const ScormActivity = (props: ScormActivityProps) => {
         networkStatus={networkStatus}
         scormBundle={scormBundle}
         onRefresh={onRefresh}
-        //this is temporary solution:
         isDownloaded={resourceState === ResourceState.Completed}
         client={apolloClient}
+        apiKey={apiKey}
+        host={host}
       />
     </SafeAreaView>
   );
