@@ -20,6 +20,7 @@
  */
 
 import gql from "graphql-tag";
+import { config } from "@totara/lib";
 
 const scormQuery = gql`
   query totara_mobile_scorm($scormid: core_id!) {
@@ -138,9 +139,40 @@ const mutationAttempts = gql`
   }
 `;
 
+const fetchLastAttemptResult = ({
+  scormId,
+  apiKey,
+  host
+}: {
+  scormId: string;
+  apiKey: string;
+  host: string;
+}): Promise<Response> => {
+  // fetch from global
+  // eslint-disable-next-line no-undef
+  return fetch(config.apiUri(host), {
+    method: "POST",
+    body: JSON.stringify({
+      operationName: "totara_mobile_scorm_current_status",
+      variables: { scormid: scormId }
+    }),
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${apiKey}`
+    }
+  }).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw new Error(response.status.toString());
+    }
+  });
+};
+
 export {
   scormQuery,
   scormFeedbackQuery,
   scormActivitiesRecordsQuery,
-  mutationAttempts
+  mutationAttempts,
+  fetchLastAttemptResult
 };

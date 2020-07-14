@@ -57,7 +57,7 @@ import { ScormBundle, Grade } from "@totara/types/Scorm";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
-import { config } from "@totara/lib";
+import { fetchLastAttemptResult } from "./api";
 
 const {
   OFFLINE_SCORM_ACTIVITY,
@@ -152,32 +152,6 @@ const ScormSummary = ({
     offlinePackageScoIdentifiers
   } = bundleData;
 
-  const getLastAttemptResultForOnline = ({
-    scormId,
-    apiKey,
-    host
-  }: {
-    scormId: string;
-    apiKey: string;
-    host: string;
-  }): Promise<Response> => {
-    // fetch from global
-    // eslint-disable-next-line no-undef
-    return fetch(config.apiUri(host), {
-      method: "POST",
-      body: JSON.stringify({
-        operationName: "totara_mobile_scorm_current_status",
-        variables: { scormid: scormId }
-      }),
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${apiKey}`
-      }
-    }).then((data) => {
-      return data.json();
-    });
-  };
-
   const onExitActivityAttempt = ({
     id,
     attempt,
@@ -236,7 +210,7 @@ const ScormSummary = ({
         } else {
           if (apiKey && host) {
             setIsLoadingCurretStatus && setIsLoadingCurretStatus(true);
-            getLastAttemptResultForOnline({
+            fetchLastAttemptResult({
               scormId: id,
               apiKey,
               host
