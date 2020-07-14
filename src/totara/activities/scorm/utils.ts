@@ -82,8 +82,8 @@ const getDataForScormSummary = (
   }
 
   //TODO: rename - use alias - when backend finishes TL-26268
-  data.attemptGrade = scorm.grademethod;
-  data.gradeMethod = scorm.whatgrade;
+  data.gradeMethod = scorm.grademethod;
+  data.attemptGrade = scorm.whatgrade;
 
   data.calculatedGrade = calculatedAttemptsGrade(
     data.attemptGrade,

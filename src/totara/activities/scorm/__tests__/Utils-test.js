@@ -22,9 +22,11 @@ import {
   getScormPlayerInitialData,
   setupOfflineScormPlayer
 } from "../utils";
+import { omit } from "lodash";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
 
+//This is a mock. These fields are from API response
 const defaultData = {
   name: "Creating a dynamic audience",
   description: "Title",
@@ -40,8 +42,8 @@ const defaultData = {
   repeatUrl: "https://path.to.repeat.url",
   offlinePackageScoIdentifiers: ["Software_Simulation_SCO"],
   newAttemptDefaults: "default_data",
-  gradeMethod: Grade.highest,
-  attemptGrade: AttemptGrade.highest
+  grademethod: Grade.highest,
+  whatgrade: AttemptGrade.highest
 };
 
 //This is a mock. These fields are from API response
@@ -103,11 +105,14 @@ describe("getDataForScormSummary", () => {
       expectedDataForUndefined
     );
 
+    //TODO: rename - fix when backend finishes TL-26268
     const expectResultScormBundle = {
-      ...defaultData,
+      ...omit(defaultData, ["grademethod", "whatgrade"]),
       totalAttempt: 1,
       shouldAllowLastAttempt: false,
-      shouldAllowNewAttempt: true
+      shouldAllowNewAttempt: true,
+      gradeMethod: "1",
+      attemptGrade: "0"
     };
     expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(
       expectResultScormBundle
@@ -121,13 +126,16 @@ describe("getDataForScormSummary", () => {
       gradereported: 0,
       timestarted: 1584040660
     };
+    //TODO: rename - fix when backend finishes TL-26268
     const expectResultScormBundle = {
-      ...defaultData,
+      ...omit(defaultData, ["grademethod", "whatgrade"]),
       totalAttempt: 2,
       shouldAllowLastAttempt: false,
       shouldAllowNewAttempt: true,
       calculatedGrade: "0%",
-      attempts: [...defaultData.attempts, previousOfflineAttempt]
+      attempts: [...defaultData.attempts, previousOfflineAttempt],
+      gradeMethod: "1",
+      attemptGrade: "0"
     };
     expect(
       getDataForScormSummary(isDownloaded, {
@@ -145,10 +153,12 @@ describe("getDataForScormSummary", () => {
     );
 
     const expectResultScormBundle = {
-      ...defaultData,
+      ...omit(defaultData, ["grademethod", "whatgrade"]),
       totalAttempt: 1,
       shouldAllowLastAttempt: true,
-      shouldAllowNewAttempt: true
+      shouldAllowNewAttempt: true,
+      gradeMethod: "1",
+      attemptGrade: "0"
     };
     expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(
       expectResultScormBundle
@@ -158,10 +168,12 @@ describe("getDataForScormSummary", () => {
   it(" should return zero total attempts because attempts current in `scormBundle` is undefined", () => {
     const isDownloaded = false;
     const expectResultScormBundle = {
-      ...defaultData,
+      ...omit(defaultData, ["grademethod", "whatgrade"]),
       totalAttempt: 0,
       shouldAllowLastAttempt: false,
-      shouldAllowNewAttempt: true
+      shouldAllowNewAttempt: true,
+      gradeMethod: "1",
+      attemptGrade: "0"
     };
     expect(
       getDataForScormSummary(isDownloaded, {
