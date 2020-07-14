@@ -24,6 +24,7 @@ import { margins } from "@totara/theme/constants";
 import { scormFeedbackStyles } from "@totara/theme/scorm";
 import { Grade } from "@totara/types/Scorm";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { NavigationStackProp } from "react-navigation-stack";
 
 type SCORMFeedbackProps = {
   score: string;
@@ -31,13 +32,12 @@ type SCORMFeedbackProps = {
   completionScoreRequired?: number;
   onClose: () => void;
 };
-
-const ScormFeedbackModal = ({
-  score,
-  gradeMethod,
-  completionScoreRequired,
-  onClose
-}: SCORMFeedbackProps) => {
+type FeedbackProps = {
+  navigation: NavigationStackProp<SCORMFeedbackProps>;
+};
+const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
+  const { gradeMethod, completionScoreRequired, score, onClose } = navigation
+    .state.params as SCORMFeedbackProps;
   return (
     <View style={scormFeedbackStyles.transparentViewStyle}>
       <SafeAreaView />

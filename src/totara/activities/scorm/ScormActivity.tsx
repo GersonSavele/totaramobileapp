@@ -54,8 +54,8 @@ import { useApolloClient } from "@apollo/react-hooks";
 
 import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
-import ScormFeedback from "./ScormFeedback";
 import { getTargetZipFile, getOfflinePackageUnzipPath } from "./utils";
+import ScormFeedbackModal from "./components/ScormFeedbackModal";
 
 const { download } = ResourceManager;
 
@@ -258,7 +258,7 @@ const scormStack = createStackNavigator(
       screen: innerStack
     },
     [SCORM_FEEDBACK]: {
-      screen: ScormFeedback,
+      screen: ScormFeedbackModal,
       navigationOptions
     }
   },

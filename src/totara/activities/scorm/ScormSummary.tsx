@@ -60,6 +60,7 @@ import { margins } from "@totara/theme/constants";
 import { fetchLastAttemptResult } from "./api";
 
 const {
+  SCORM_ROOT,
   OFFLINE_SCORM_ACTIVITY,
   SCORM_ATTEMPTS,
   SCORM_FEEDBACK,
@@ -151,6 +152,27 @@ const ScormSummary = ({
     attempts,
     offlinePackageScoIdentifiers
   } = bundleData;
+  const showScormFeedback = ({
+    gradeMethod,
+    score,
+    completionScoreRequired
+  }: {
+    gradeMethod: Grade;
+    score: number;
+    completionScoreRequired?: number;
+  }) => {
+    const goToSummary = () => navigation.navigate({ routeName: SCORM_ROOT });
+    navigateTo({
+      routeId: SCORM_FEEDBACK,
+      navigate: navigation.navigate,
+      props: {
+        gradeMethod,
+        completionScoreRequired,
+        score,
+        onClose: goToSummary
+      }
+    });
+  };
 
   const onExitActivityAttempt = ({
     id,
@@ -195,16 +217,10 @@ const ScormSummary = ({
               scormBundles
             });
             saveInTheCache({ client, scormBundles: newData });
-            navigateTo({
-              routeId: SCORM_FEEDBACK,
-              navigate: navigation.navigate,
-              props: {
-                id,
-                attempt,
-                gradeMethod,
-                completionScoreRequired,
-                score: existingLastAttempt.gradereported
-              }
+            showScormFeedback({
+              gradeMethod,
+              completionScoreRequired,
+              score: existingLastAttempt.gradereported
             });
           }
         } else {
@@ -220,16 +236,10 @@ const ScormSummary = ({
                 if (status) {
                   const { attemptsCurrent, gradefinal } = status;
                   if (attempt == attemptsCurrent) {
-                    navigateTo({
-                      routeId: SCORM_FEEDBACK,
-                      navigate: navigation.navigate,
-                      props: {
-                        id,
-                        attempt,
-                        gradeMethod,
-                        completionScoreRequired,
-                        score: gradefinal
-                      }
+                    showScormFeedback({
+                      gradeMethod,
+                      completionScoreRequired,
+                      score: gradefinal
                     });
                   }
                 }
