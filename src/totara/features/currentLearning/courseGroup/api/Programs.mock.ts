@@ -20,7 +20,8 @@ import { coreProgram } from "./index";
 const programMock = [
   {
     request: {
-      query: coreProgram
+      query: coreProgram,
+      variables: { programid: 5 }
     },
     result: {
       data: {
@@ -38,8 +39,7 @@ const programMock = [
             "Many dream, some try, but only a few achieve. You are an achiever. You have made us all proud, keep up the good work. Congratulations on your graduation",
           availablefrom: "2020-06-18T00:00:00+0100",
           availableuntil: "2022-06-18T23:59:59+0100",
-          imageSrc:
-            "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/676/totara_program/images/5/1469021840643_1.jpg",
+          imageSrc: "TESTINGMOCK",
           completion: {
             id: "24",
             statuskey: "incomplete",
@@ -72,8 +72,7 @@ const programMock = [
                     duedate: null,
                     duedateState: null,
                     native: false,
-                    imageSrc:
-                      "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/358/course/images/1593998840/image",
+                    imageSrc: "TESTINGMOCK",
                     __typename: "totara_mobile_learning_item"
                   },
                   {
@@ -123,8 +122,7 @@ const programMock = [
                     duedate: null,
                     duedateState: null,
                     native: true,
-                    imageSrc:
-                      "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/304/course/images/1593998840/image",
+                    imageSrc: "TESTINGMOCK",
                     __typename: "totara_mobile_learning_item"
                   }
                 ],
@@ -172,7 +170,7 @@ const programMock = [
                     duedate: null,
                     duedateState: null,
                     native: true,
-                    imageSrc: "",
+                    imageSrc: "TESTINGMOCK",
                     __typename: "totara_mobile_learning_item"
                   },
                   {
@@ -190,8 +188,7 @@ const programMock = [
                     duedate: null,
                     duedateState: null,
                     native: false,
-                    imageSrc:
-                      "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/801/course/images/1594013370/image",
+                    imageSrc: "TESTINGMOCK",
                     __typename: "totara_mobile_learning_item"
                   }
                 ],
@@ -210,7 +207,8 @@ const programMock = [
 const programMockEmpty = [
   {
     request: {
-      query: coreProgram
+      query: coreProgram,
+      variables: { programid: 5 }
     },
     result: {
       data: {
@@ -223,7 +221,8 @@ const programMockEmpty = [
 const programMockError = [
   {
     request: {
-      query: coreProgram
+      query: coreProgram,
+      variables: { programid: 5 }
     },
     result: {
       errors: [new GraphQLError("Error!")]
