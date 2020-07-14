@@ -25,7 +25,7 @@ export type Scorm = {
   courseid: string;
   name: string;
   description: string;
-  attemptsMax: number;
+  maxAttempts: number;
   attemptsCurrent: number;
   attemptsForceNew: boolean;
   attemptsLockFinal: boolean;
@@ -40,17 +40,17 @@ export type Scorm = {
   offlinePackageContentHash?: string;
 
   attempts: [Attempt];
-  timeopen: number;
+  timeOpen: number;
   timeclose: number;
 
-  grademethod: string;
+  gradeMethod: string;
   maxgrade: number;
 
-  whatgrade: string;
+  attemptGrade: string;
   completion: number;
   completionview: boolean;
   completionusegrade: boolean;
-  completionscorerequired: number;
+  completionScoreRequired: number;
   completionstatusrequired: [string];
   completionstatusallscos: boolean;
   completionexpected: number;

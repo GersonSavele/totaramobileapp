@@ -33,8 +33,8 @@ const scormQuery = gql`
       intro(format: PLAIN)
       version
       maxgrade
-      grademethod
-      whatgrade
+      grademethod: gradeMethod
+      whatgrade: attemptGrade
       maxattempt
       forcecompleted
       forcenewattempt
@@ -48,7 +48,7 @@ const scormQuery = gql`
       auto
       width
       height
-      timeopen
+      timeopen: timeOpen
       timeclose
       displayactivityname
       autocommit
@@ -56,7 +56,7 @@ const scormQuery = gql`
       completion
       completionview
       completionstatusrequired
-      completionscorerequired
+      completionscorerequired: completionScoreRequired
       completionstatusallscos
       packageUrl: package_url
       launchUrl: launch_url
@@ -74,12 +74,12 @@ const scormQuery = gql`
       # Deprecated properties
       type: scormtype
       description: intro(format: PLAIN)
-      attemptsMax: maxattempt
-      attemptsCurrent: attempts_current
+      maxattempt: maxAttempts
       attemptsForceNew: forcenewattempt
       attemptsLockFinal: lastattemptlock
       autoContinue: auto
       offlineAttemptsAllowed: allowmobileoffline
+      newAttemptDefaults
       __typename
     }
   }

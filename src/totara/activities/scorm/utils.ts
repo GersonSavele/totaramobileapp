@@ -63,49 +63,26 @@ const getTargetZipFile = (scormId: string) =>
 
 const getDataForScormSummary = (
   isDownloaded: boolean,
-  scormBundle?: ScormBundle
+  scormBundle: ScormBundle | undefined
 ): any => {
   let data: any = {
-    name: undefined,
-    description: undefined,
     totalAttempt: 0,
-    gradeMethod: undefined,
-    attemptGrade: undefined,
-    calculatedGrade: undefined,
     shouldAllowNewAttempt: false,
-    launchUrl: undefined,
-    shouldAllowLastAttempt: false,
-    lastsynced: undefined,
-    timeOpen: undefined,
-    maxAttempts: undefined,
-    attempts: undefined,
-    completionScoreRequired: undefined,
-    offlinePackageScoIdentifiers: undefined,
-    newAttemptDefaults: undefined
+    shouldAllowLastAttempt: false
   };
-  if (!scormBundle) {
-    return data;
-  }
-  const { scorm } = scormBundle;
-  if (!scorm) {
+  const { scorm } = scormBundle || {};
+  if (!scormBundle || !scorm) {
     return data;
   }
   data.name = scorm.name;
-  data.description =
-    scorm.description && scorm.description !== null
-      ? scorm.description
-      : undefined;
-  data.totalAttempt = scorm.attemptsCurrent ? scorm.attemptsCurrent : 0;
-  if (scormBundle!.offlineAttempts && scormBundle!.offlineAttempts) {
+  data.description = scorm.description;
+  data.totalAttempt = scorm.attemptsCurrent || 0;
+  if (scormBundle.offlineAttempts) {
     data.totalAttempt = data.totalAttempt + scormBundle!.offlineAttempts.length;
   }
 
-  data.attemptGrade = scorm.whatgrade as AttemptGrade;
-  data.gradeMethod = scorm.grademethod as Grade;
-  const offlineAttempts =
-    scormBundle!.offlineAttempts && scormBundle!.offlineAttempts
-      ? scormBundle!.offlineAttempts
-      : undefined;
+  data.attemptGrade = scorm.attemptGrade;
+  data.gradeMethod = scorm.gradeMethod;
 
   data.calculatedGrade = calculatedAttemptsGrade(
     data.attemptGrade,
@@ -113,20 +90,20 @@ const getDataForScormSummary = (
     scorm.maxgrade,
     scorm.calculatedGrade,
     scorm.attempts,
-    offlineAttempts
+    scormBundle.offlineAttempts
   );
   data.timeOpen =
     (scormBundle &&
       scorm &&
-      scorm.timeopen &&
-      scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT)) &&
-      moment.unix(scorm.timeopen)) ||
+      scorm.timeOpen &&
+      scorm.timeOpen > parseInt(moment().format(SECONDS_FORMAT)) &&
+      moment.unix(scorm.timeOpen)) ||
     undefined;
   data.maxAttempts =
-    (scorm.attemptsMax !== null && scorm.attemptsMax) || undefined;
+    (scorm.maxAttempts !== null && scorm.maxAttempts) || undefined;
 
   data.completionScoreRequired =
-    (scorm.completionscorerequired !== null && scorm.completionscorerequired) ||
+    (scorm.completionScoreRequired !== null && scorm.completionScoreRequired) ||
     undefined;
 
   data.launchUrl = scorm && scorm.launchUrl;
@@ -136,12 +113,6 @@ const getDataForScormSummary = (
   data.repeatUrl = scorm && scorm.repeatUrl;
   data.shouldAllowLastAttempt =
     !isDownloaded && !isEmpty(data.repeatUrl) && data.totalAttempt > 0;
-
-  data.lastsynced =
-    (scormBundle &&
-      scormBundle.lastsynced &&
-      moment.unix(scormBundle.lastsynced)) ||
-    undefined;
 
   data.attempts =
     (scorm.attempts &&

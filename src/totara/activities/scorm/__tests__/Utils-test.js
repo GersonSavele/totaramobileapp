@@ -14,7 +14,6 @@
  *
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
-import moment from "moment";
 import {
   getDataForScormSummary,
   calculatedAttemptsGrade,
@@ -40,21 +39,21 @@ const defaultData = {
   launchUrl: "https://path.to.launch.url",
   repeatUrl: "https://path.to.repeat.url",
   offlinePackageScoIdentifiers: ["Software_Simulation_SCO"],
-  newAttemptDefaults: "default_data"
+  newAttemptDefaults: "default_data",
+  gradeMethod: Grade.highest,
+  attemptGrade: AttemptGrade.highest
 };
 
-//this fields are from API response
-const scormBundle = eval({
+//This is a mock. These fields are from API response
+const scormBundle = {
   scorm: {
     id: "8",
     courseid: "30",
-    grademethod: Grade.highest,
     scormtype: "local",
     reference: "Creating a dynamic audience.zip",
     intro: "",
     version: "SCORM_1.2",
     maxgrade: 100,
-    whatgrade: AttemptGrade.highest,
     maxattempt: null,
     forcecompleted: false,
     forcenewattempt: false,
@@ -68,7 +67,7 @@ const scormBundle = eval({
     auto: false,
     width: 100,
     height: 500,
-    timeopen: null,
+    timeOpen: null,
     timeclose: null,
     displayactivityname: true,
     autocommit: false,
@@ -76,21 +75,20 @@ const scormBundle = eval({
     completion: 2,
     completionview: false,
     completionstatusrequired: 4,
-    completionscorerequired: null,
+    completionScoreRequired: null,
     completionstatusallscos: false,
     packageUrl: "https://path.to.package.url",
     attemptsCurrent: 1,
     offlinePackageUrl: "https://path.to.package.url",
     offlinePackageContentHash: "e99447a9fa5447cdcfffb2bdefdefbc15bdd0821",
-    attemptsMax: null,
+    maxAttempts: null,
     attemptsForceNew: false,
     attemptsLockFinal: false,
     autoContinue: false,
     offlineAttemptsAllowed: true,
     ...defaultData
-  },
-  lastsynced: 1588040660
-});
+  }
+};
 
 describe("getDataForScormSummary", () => {
   const expectedDataForUndefined = {
@@ -98,42 +96,84 @@ describe("getDataForScormSummary", () => {
     shouldAllowLastAttempt: false,
     shouldAllowNewAttempt: false
   };
-  it("return correct object for valid `scormBundle` and default values for undefined on offline mode.", () => {
-    expect(getDataForScormSummary(true, undefined)).toEqual(
+  //For Offline
+  it("returns correct object for valid `scormBundle` and default values for undefined on offline mode.", () => {
+    const isDownloaded = true;
+    expect(getDataForScormSummary(isDownloaded, undefined)).toEqual(
       expectedDataForUndefined
     );
 
-    const expectResultScormBundleOffline = {
+    const expectResultScormBundle = {
       ...defaultData,
       totalAttempt: 1,
       shouldAllowLastAttempt: false,
-      gradeMethod: Grade.highest,
-      attemptGrade: AttemptGrade.highest,
-      lastsynced: moment.unix(scormBundle.lastsynced),
       shouldAllowNewAttempt: true
     };
-    expect(getDataForScormSummary(true, scormBundle)).toEqual(
-      expectResultScormBundleOffline
+    expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(
+      expectResultScormBundle
     );
   });
 
-  it("return correct object for valid `scormBundle` for online mode", () => {
-    expect(getDataForScormSummary(false, undefined)).toEqual(
+  it("returns incremented total attempts because there are a initial number of attempts done when offline", () => {
+    const isDownloaded = true;
+    const previousOfflineAttempt = {
+      attempt: 2,
+      gradereported: 0,
+      timestarted: 1584040660
+    };
+    const expectResultScormBundle = {
+      ...defaultData,
+      totalAttempt: 2,
+      shouldAllowLastAttempt: false,
+      shouldAllowNewAttempt: true,
+      calculatedGrade: "0%",
+      attempts: [...defaultData.attempts, previousOfflineAttempt]
+    };
+    expect(
+      getDataForScormSummary(isDownloaded, {
+        ...scormBundle,
+        offlineAttempts: [previousOfflineAttempt]
+      })
+    ).toEqual(expectResultScormBundle);
+  });
+
+  //For Online
+  it("returns correct object for valid `scormBundle` for online mode", () => {
+    const isDownloaded = false;
+    expect(getDataForScormSummary(isDownloaded, undefined)).toEqual(
       expectedDataForUndefined
     );
 
-    const expectResultScormBundleOnline = {
+    const expectResultScormBundle = {
       ...defaultData,
       totalAttempt: 1,
       shouldAllowLastAttempt: true,
-      gradeMethod: Grade.highest,
-      attemptGrade: AttemptGrade.highest,
-      lastsynced: moment.unix(scormBundle.lastsynced),
       shouldAllowNewAttempt: true
     };
-    expect(getDataForScormSummary(false, scormBundle)).toEqual(
-      expectResultScormBundleOnline
+    expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(
+      expectResultScormBundle
     );
+  });
+
+  it(" should return zero total attempts because attempts current in `scormBundle` is undefined", () => {
+    const isDownloaded = false;
+    const expectResultScormBundle = {
+      ...defaultData,
+      totalAttempt: 0,
+      shouldAllowLastAttempt: false,
+      shouldAllowNewAttempt: true
+    };
+    expect(
+      getDataForScormSummary(isDownloaded, {
+        scorm: { ...scormBundle.scorm, attemptsCurrent: undefined }
+      })
+    ).toEqual(expectResultScormBundle);
+
+    expect(
+      getDataForScormSummary(isDownloaded, {
+        scorm: { ...scormBundle.scorm, attemptsCurrent: null }
+      })
+    ).toEqual(expectResultScormBundle);
   });
 });
 
