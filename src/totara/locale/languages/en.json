@@ -20,15 +20,13 @@
     "url_text_placeholder": "Enter URL",
     "validation": {
       "enter_valid_url": "Enter a valid site address"
+    },
+    "auth_invalid_site": {
+      "title": "Sorry",
+      "description": "The URL is not compatible. Please check the URL and try again.",
+      "action_primary": "OK"
     }
   },
-
-  "auth_invalid_site": {
-    "title": "Sorry",
-    "description": "The URL is not compatible. Please check the URL and try again.",
-    "action_primary": "OK"
-  },
-
   "native_login": {
     "header_title": "Login",
     "login_information": "Enter your site username and password.",
@@ -39,27 +37,25 @@
     "validation": {
       "enter_valid_username": "Enter a valid username",
       "enter_valid_password": "Enter a valid password"
+    },
+    "auth_general_error": {
+      "title": "Ooops!",
+      "description": "Something went wrong",
+      "action_primary": "OK"
     }
   },
-
-  "browser_login": {
-    "title": "Confirm!",
-    "description": "You need to login through a mobile browser to authenticate. Would you like us to take you there now?",
-    "primary_title": "Yes, go to browser",
-    "tertiary_title": "Cancel"
-  },
-
-  "auth_general_error": {
-    "title": "Ooops!",
-    "description": "Something went wrong",
-    "action_primary": "OK"
-  },
-
   "no_internet_alert": {
     "title": "You are offline",
     "message": "To continue, you'll need to go online",
     "go_back": "OK"
   },
+  "browser_login": {
+    "title": "Authenticate",
+    "description": "You need to login through a mobile browser to authenticate. Would you like us to take you there now?",
+    "primary_title": "Yes, go to browser",
+    "tertiary_title": "Cancel"
+  },
+
 
   "current_learning": {
     "action_primary": "Current learning",

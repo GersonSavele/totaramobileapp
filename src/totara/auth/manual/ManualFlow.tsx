@@ -130,12 +130,12 @@ type PropSiteError = {
 
 const SiteErrorModal = ({ onCancel }: PropSiteError) => (
   <InfoModal
-    title={translate("auth_invalid_site.title")}
-    description={translate("auth_invalid_site.description")}
+    title={translate("site_url.auth_invalid_site.title")}
+    description={translate("site_url.auth_invalid_site.description")}
     imageType={"url_not_valid"}
     visible={true}>
     <PrimaryButton
-      text={translate("auth_invalid_site.action_primary")}
+      text={translate("site_url.auth_invalid_site.action_primary")}
       onPress={onCancel}
     />
   </InfoModal>

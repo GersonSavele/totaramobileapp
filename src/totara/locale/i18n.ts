@@ -16,17 +16,13 @@
 import i18n from "i18n-js";
 import * as RNLocalize from "react-native-localize";
 import moment from "moment";
-import "moment/locale/fr";
-import "moment/locale/de";
+import { en, pt } from "@totara/locale/languages";
 
-// @ts-ignore
-import * as en from "@totara/locale/languages/en.json";
-
-const translations = { en };
+const translations = { en, pt };
 const { languageTag } = RNLocalize.findBestAvailableLanguage(
   Object.keys(translations)
 ) || { languageTag: "en" };
-i18n.defaultLocale = "en";
+i18n.defaultLocale = languageTag;
 i18n.locale = languageTag;
 i18n.fallbacks = true;
 i18n.translations = translations;
