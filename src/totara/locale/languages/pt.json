@@ -1,248 +1,59 @@
 {
   "general": {
-    "loading": "Loading...",
-    "error": "Error :",
-    "enter": "Enter",
-    "version": "Version",
-    "try_again": "Try again",
-    "cancel": "Cancel",
-    "yes": "Yes",
-    "error_unknown": "Something went wrong, please try again later.",
-    "no_internet": "You are offline",
-    "back": "Back",
+    "loading": "Carrengado...",
+    "error": "Erro",
+    "enter": "Entrar",
+    "version": "Versão",
+    "try_again": "Tentar novamente",
+    "cancel": "Cancelar",
+    "yes": "Sim",
+    "error_unknown": "Algo de errado aconteceu. Tente novamente mais tarde.",
+    "no_internet": "Você está offline",
+    "back": "Voltar",
     "ok": "Ok",
-    "delete": "Delete"
+    "delete": "Apagar"
   },
 
   "site_url": {
-    "title": "Get started.",
-    "url_information": "Enter your organisation's URL",
-    "url_text_placeholder": "Enter URL",
+    "title": "Bora lá.",
+    "url_information": "Entre com a URL da organização",
+    "url_text_placeholder": "Entrar URL",
     "validation": {
-      "enter_valid_url": "Enter a valid site address"
+      "enter_valid_url": "Entre com uma URL válida."
+    },
+    "auth_invalid_site": {
+      "title": "Ops",
+      "description": "A URL não é compatível. Por favor, verifique a URL novamente.",
+      "action_primary": "OK"
     }
-  },
-
-  "auth_invalid_site": {
-    "title": "Sorry",
-    "description": "The URL is not compatible. Please check the URL and try again.",
-    "action_primary": "OK"
   },
 
   "native_login": {
     "header_title": "Login",
-    "login_information": "Enter your site username and password.",
-    "username_text_placeholder": "Username",
-    "password_text_placeholder": "Password",
-    "forgot_username_password": "Forgot your username or password?",
-    "error_unauthorized": "Oops! Your username or password is incorrect.",
+    "login_information": "Entre com seu usuário e senha.",
+    "username_text_placeholder": "Usuário",
+    "password_text_placeholder": "Senha",
+    "forgot_username_password": "Esqueceu usuário ou senha?",
+    "error_unauthorized": "Oops! Seu usuário ou senha está incorreto.",
     "validation": {
-      "enter_valid_username": "Enter a valid username",
-      "enter_valid_password": "Enter a valid password"
+      "enter_valid_username": "Entre com um usuário válido",
+      "enter_valid_password": "Entre com uma senha válida"
+    },
+    "auth_general_error": {
+      "title": "Ooops!",
+      "description": "Alguma coisa deu errada!",
+      "action_primary": "OK"
     }
   },
-
-  "browser_login": {
-    "title": "Confirm!",
-    "description": "You need to login through a mobile browser to authenticate. Would you like us to take you there now?",
-    "primary_title": "Yes, go to browser",
-    "tertiary_title": "Cancel"
-  },
-
-  "auth_general_error": {
-    "title": "Ooops!",
-    "description": "Something went wrong",
-    "action_primary": "OK"
-  },
-
   "no_internet_alert": {
-    "title": "You are offline",
-    "message": "To continue, you'll need to go online",
+    "title": "Você está offline",
+    "message": "Para continuar, você deve estar online.",
     "go_back": "OK"
   },
-
-  "current_learning": {
-    "action_primary": "Teste em portugues",
-    "primary_info": {
-      "zero": "You have no learning",
-      "one": "You have {{count}} learning item to complete",
-      "other": "You have {{count}} learning items to complete"
-    },
-    "no_learning_message": "No current learning",
-    "restriction_view": {
-      "title": "Sorry!",
-      "description": "This course is not compatible with the mobile app. Would you like to access this course in the browser?",
-      "primary_button_title": "Yes, go to browser",
-      "tertiary_button_title": "Cancel"
-    }
-  },
-
-  "totara_component": {
-    "section_title_continue_learn": "Continue your learning",
-    "due_in": "Due in",
-    "extend_date": "Extend Date",
-    "overdue_by": "Overdue by"
-  },
-  "additional_actions_modal": {
-    "auth_model_title": "Action required",
-    "auth_model_description": "You are required to visit a browser to complete some action(s).",
-    "auth_model_go_to_browser": "Go to browser",
-    "auth_model_logout": "Logout"
-  },
-  "general_error_feedback_modal": {
-    "title": "Ooops!",
-    "description": "Something went wrong",
-    "action_primary": "Refresh",
-    "action_tertiary": "Try in browser"
-  },
-  "incompatible_api": {
-    "title": "Sorry",
-    "description": "The URL is not compatible with the mobile app. Would you like to try in browser?",
-    "action_primary": "Yes, try in browser",
-    "action_tertiary": "Logout",
-    "action_tertiary_cancel": "Cancel"
-  },
-  "activity_not_available": {
-    "title": "This activity is not available unless"
-  },
-
-  "course": {
-    "course_overview": {
-      "course_summery": "Course summary"
-    },
-    "course_overview_progress": {
-      "title": "Your course progress"
-    },
-    "course_overview_grade": {
-      "title": "Your grade overview"
-    },
-    "course_overview_mark_as_complete": {
-      "title": "Mark as complete"
-    },
-    "course_complete": {
-      "title": "Awesome!",
-      "description": "You have successfully completed the course.",
-      "button_title": "Continue learning"
-    },
-    "course_complete_confirmation": {
-      "title": "Confirm",
-      "description": "Are you sure you want to mark this course as complete?",
-      "primary_button_title": "Mark as complete",
-      "tertiary_button_title": "cancel"
-    },
-    "course_criteria": {
-      "title": "Course criteria"
-    },
-    "course_details": {
-      "activities": "ACTIVITIES",
-      "overview": "OVERVIEW",
-      "expand_or_collapse": "Expand all",
-      "badge_title":"course"
-    },
-    "course_activity_section": {
-      "not_available": "Not available"
-    }
-  },
-
-  "course_group":{
-    "tabs":{
-      "overview": "OVERVIEW",
-      "courses": "COURSES"
-    },
-    "details":{
-     "badge_title_program":"program",
-     "badge_title_certification":"certification"
-    },
-    "overview":{
-      "summary_title_program":"Program Summary",
-      "summary_title_certification":"Certification Summary"
-    },
-    "courses":{
-      "unavailable_sets":"unavailable set",
-      "compete":"Successfully completed!",
-      "current_learning_button_title":"Current Learning"
-    },
-    "course_set":{
-      "criteria":"View criteria"
-    }
-  },
-
-  "scorm": {
-    "last_synced": "Last synced",
-    "ago": "ago",
-    "info_completed_attempts": "You have reached the maximum number of attempts",
-    "info_upcoming_activity": "Sorry, this activity is not available until",
-    "summary": {
-      "summary": "Summary",
-      "grade": {
-        "title": "Grade details",
-        "view_all": "View all",
-        "method": "Grading method",
-        "reported": "Grade reported",
-        "in_attempt": "In attempt"
-      },
-      "attempt": {
-        "title": "Attempt details",
-        "total_attempts": "Total attempts allowed",
-        "completed_attempts": "Total attempts done",
-        "unlimited": "Unlimited"
-      },
-      "new_attempt": "New attempt",
-      "last_attempt": "Last attempt"
-    },
-    "feedback": {
-      "grade_title": "YOUR GRADE",
-      "awesome": "Awesome!",
-      "sorry": "Sorry!",
-      "back": "Go back",
-      "action_info": "Would you like to go back or do you want to try again?"
-    },
-    "attempts": {
-      "title": "All attempts grades",
-      "attempt": "Attempt",
-      "failed": "Failed",
-      "passed": "Passed"
-    },
-    "grading_method": {
-      "0": "Highest attempt",
-      "1": "Average attempts",
-      "2": "First attempt",
-      "3": "Last completed attempt"
-    },
-    "confirmation": {
-      "title": "Are you sure?",
-      "message": "You want to exit the activity.",
-      "ok": "Yes",
-      "cancel": "No"
-    }
-  },
-
-  "notifications": {
-    "title": "Notifications",
-    "empty": "No notifications yet!",
-    "selected": "{{count}} Selected",
-    "mark_as_read": "Mark as read"
-  },
-  "downloads": {
-    "title": "Downloads",
-    "empty": "No downloads yet!",
-    "selected": "{{count}} Selected"
-  },
-  
-  "user_profile": {
-    "title": "Profile",
-    "login_as": "Logged in as: {{username}}",
-    "manage_section": "Manage",
-    "setting_cell": "Settings",
-    "logout": {
-      "button_text": "Logout",
-      "title": "Confirmation",
-      "message": "Are you sure you want to logout?"
-    },
-    "about": "About"
-  },
-
-  "navigation_stack":{
-    "view_criteria":"View criteria"
+  "browser_login": {
+    "title": "Autenticação",
+    "description": "You need to login through a mobile browser to authenticate. Would you like us to take you there now?",
+    "primary_title": "Sim, usar o browser",
+    "tertiary_title": "Cancelar"
   }
 }
