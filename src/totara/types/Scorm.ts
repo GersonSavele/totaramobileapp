@@ -25,7 +25,6 @@ export type Scorm = {
   courseid: string;
   name: string;
   description: string;
-  maxAttempts: number;
   attemptsCurrent: number;
   attemptsForceNew: boolean;
   attemptsLockFinal: boolean;
@@ -40,21 +39,27 @@ export type Scorm = {
   offlinePackageContentHash?: string;
 
   attempts: [Attempt];
-  timeOpen: number;
   timeclose: number;
 
-  gradeMethod: string;
   maxgrade: number;
 
-  attemptGrade: string;
   completion: number;
   completionview: boolean;
   completionusegrade: boolean;
-  completionScoreRequired: number;
   completionstatusrequired: [string];
   completionstatusallscos: boolean;
   completionexpected: number;
   newAttemptDefaults: string;
+
+  //TODO: rename when backend finishes TL-26268
+  grademethod: string; //grademethod
+  whatgrade: string; //attemptGrade
+  // timeOpen: number;
+  timeopen: number;
+  // completionScoreRequired: number;
+  completionscorerequired: number;
+  // maxAttempts: number;
+  attemptsMax: number;
 };
 
 export type ScormBundle = {

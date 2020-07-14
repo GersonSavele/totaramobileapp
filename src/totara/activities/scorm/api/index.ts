@@ -22,6 +22,7 @@
 import gql from "graphql-tag";
 import { config } from "@totara/lib";
 
+//TODO: rename - use alias - when backend finishes TL-26268
 const scormQuery = gql`
   query totara_mobile_scorm($scormid: core_id!) {
     scorm: mod_scorm_scorm(scormid: $scormid) {
@@ -33,8 +34,6 @@ const scormQuery = gql`
       intro(format: PLAIN)
       version
       maxgrade
-      grademethod: gradeMethod
-      whatgrade: attemptGrade
       maxattempt
       forcecompleted
       forcenewattempt
@@ -48,7 +47,6 @@ const scormQuery = gql`
       auto
       width
       height
-      timeopen: timeOpen
       timeclose
       displayactivityname
       autocommit
@@ -56,7 +54,6 @@ const scormQuery = gql`
       completion
       completionview
       completionstatusrequired
-      completionscorerequired: completionScoreRequired
       completionstatusallscos
       packageUrl: package_url
       launchUrl: launch_url
@@ -74,12 +71,16 @@ const scormQuery = gql`
       # Deprecated properties
       type: scormtype
       description: intro(format: PLAIN)
-      maxattempt: maxAttempts
       attemptsForceNew: forcenewattempt
       attemptsLockFinal: lastattemptlock
       autoContinue: auto
       offlineAttemptsAllowed: allowmobileoffline
       newAttemptDefaults
+      whatgrade
+      grademethod
+      timeopen
+      completionscorerequired
+      attemptsMax
       __typename
     }
   }

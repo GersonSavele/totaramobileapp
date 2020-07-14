@@ -81,8 +81,9 @@ const getDataForScormSummary = (
     data.totalAttempt = data.totalAttempt + scormBundle!.offlineAttempts.length;
   }
 
-  data.attemptGrade = scorm.attemptGrade;
-  data.gradeMethod = scorm.gradeMethod;
+  //TODO: rename - use alias - when backend finishes TL-26268
+  data.attemptGrade = scorm.grademethod;
+  data.gradeMethod = scorm.whatgrade;
 
   data.calculatedGrade = calculatedAttemptsGrade(
     data.attemptGrade,
@@ -95,15 +96,15 @@ const getDataForScormSummary = (
   data.timeOpen =
     (scormBundle &&
       scorm &&
-      scorm.timeOpen &&
-      scorm.timeOpen > parseInt(moment().format(SECONDS_FORMAT)) &&
-      moment.unix(scorm.timeOpen)) ||
+      scorm.timeopen &&
+      scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT)) &&
+      moment.unix(scorm.timeopen)) ||
     undefined;
   data.maxAttempts =
-    (scorm.maxAttempts !== null && scorm.maxAttempts) || undefined;
+    (scorm.attemptsMax !== null && scorm.attemptsMax) || undefined;
 
   data.completionScoreRequired =
-    (scorm.completionScoreRequired !== null && scorm.completionScoreRequired) ||
+    (scorm.completionscorerequired !== null && scorm.completionscorerequired) ||
     undefined;
 
   data.launchUrl = scorm && scorm.launchUrl;
