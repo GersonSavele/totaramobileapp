@@ -28,7 +28,7 @@ import {
   TouchableOpacity,
   RefreshControl
 } from "react-native";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   MessageBar,
@@ -290,7 +290,7 @@ const ScormSummary = ({
               />
             }>
             <View style={{ padding: gutter }}>
-              {description && (
+              {!isEmpty(description) && (
                 <>
                   <GridTitle
                     textId={"scorm.summary.summary"}
