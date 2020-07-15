@@ -69,7 +69,7 @@ const siteUrlReducer = (state: State, action: Action): State => {
         return {
           ...state,
           inputSiteUrlStatus: "error",
-          inputSiteUrlMessage: translate("message.enter_valid_url")
+          inputSiteUrlMessage: translate("site_url.validation.enter_valid_url")
         };
       }
     }
