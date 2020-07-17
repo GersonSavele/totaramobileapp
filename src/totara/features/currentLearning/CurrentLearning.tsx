@@ -14,12 +14,11 @@
  */
 
 import React, { useContext } from "react";
-import { Text, View } from "react-native";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { NavigationEvents } from "react-navigation";
-// @ts-ignore no types
 import LearningItemCarousel from "./learningItems/LearningItemCarousel";
 import NoCurrentLearning from "./learningItems/NoCurrentLearning";
 import query from "./api";
@@ -39,7 +38,7 @@ const CurrentLearning = () => {
   if (data) {
     const currentLearning = data.currentLearning;
     return (
-      <View style={theme.viewContainer}>
+      <View style={[theme.viewContainer, { flex: 1 }]}>
         <NavigationEvents onWillFocus={onContentRefresh} />
         <View style={currentLearningStyles.headerViewWrap}>
           <Text style={currentLearningStyles.headerViewTitleWrap}>
@@ -55,7 +54,7 @@ const CurrentLearning = () => {
           </Text>
         </View>
 
-        <View style={currentLearningStyles.contentWrap}>
+        <View style={[currentLearningStyles.contentWrap]}>
           <NetworkStatus />
           {currentLearning && currentLearning.length > 0 ? (
             <LearningItemCarousel
@@ -64,7 +63,25 @@ const CurrentLearning = () => {
               onRefresh={onContentRefresh}
             />
           ) : (
-            <NoCurrentLearning />
+            <View
+              style={{
+                flex: 1
+              }}>
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={loading}
+                    onRefresh={onContentRefresh}
+                  />
+                }
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  justifyContent: "center"
+                }}>
+                <NoCurrentLearning testID={"test_NoCurrentLearning"} />
+              </ScrollView>
+            </View>
           )}
         </View>
       </View>

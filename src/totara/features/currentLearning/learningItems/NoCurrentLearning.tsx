@@ -15,62 +15,67 @@
  */
 
 import React from "react";
-import { View, StyleSheet, Image, Text, Linking } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  Linking,
+  ImageSourcePropType
+} from "react-native";
 
 import { PrimaryButton } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/core";
-import { margins, paddings, modalSize } from "@totara/theme/constants";
+import { Images } from "@resources/images";
+import { paddings } from "@totara/theme/constants";
 
-const NoCurrentLearning = () => {
+type NoCurrentLearningProps = {
+  testID?: string;
+};
+
+const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
   return (
-    <View style={styles.containerStyle}>
-      <Image
-        style={styles.imageContainer}
-        source={require("@resources/images/no_current_learning/no_current_learning.png")}
-      />
-      <Text style={styles.description}>
+    <View style={styles.containerStyle} testID={testID}>
+      <Image source={Images.noCurrentLearning as ImageSourcePropType} />
+      <Text style={styles.noCurrentLearningDescription}>
         {translate("current_learning.no_learning_message")}
       </Text>
-      <AuthConsumer>
-        {(auth) =>
-          auth.authContextState.appState &&
-          auth.authContextState.appState.host && (
-            <PrimaryButton
-              onPress={() => {
-                Linking.openURL(auth.authContextState.appState!.host);
-              }}
-              text={translate(
-                "additional_actions_modal.auth_model_go_to_browser"
-              )}
-              icon="external-link-alt"
-              style={{ alignSelf: "center" }}
-            />
-          )
-        }
-      </AuthConsumer>
+      <View style={styles.goToBrowserAction}>
+        <AuthConsumer>
+          {(auth) =>
+            auth.authContextState.appState &&
+            auth.authContextState.appState.host && (
+              <PrimaryButton
+                onPress={() => {
+                  Linking.openURL(auth.authContextState.appState!.host);
+                }}
+                text={translate(
+                  "additional_actions_modal.auth_model_go_to_browser"
+                )}
+                icon="external-link-alt"
+                style={{ alignSelf: "center" }}
+              />
+            )
+          }
+        </AuthConsumer>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   containerStyle: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: paddings.paddingL
+    alignItems: "center"
   },
-  imageContainer: {
-    height: modalSize.height,
-    width: modalSize.width,
-    resizeMode: "contain",
-    paddingBottom: margins.marginL
+  noCurrentLearningDescription: {
+    ...TotaraTheme.textHeadline,
+    fontWeight: "bold",
+    paddingTop: paddings.padding3XL
   },
-  description: {
-    alignItems: "flex-start",
-    marginVertical: margins.marginL,
-    ...TotaraTheme.textMedium
+  goToBrowserAction: {
+    paddingTop: paddings.padding3XL
   }
 });
 

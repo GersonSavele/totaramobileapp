@@ -22,7 +22,9 @@ import {
   StyleSheet,
   Image,
   FlatList,
-  ImageSourcePropType
+  ImageSourcePropType,
+  ScrollView,
+  RefreshControl
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { NetworkStatus as NS } from "apollo-client/core/networkStatus";
@@ -168,14 +170,25 @@ const Notifications = ({ navigation }: NotificationsProps) => {
           <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} />
         )}
         {!loading && !error && notificationList.length == 0 && (
-          <View
-            style={styles.noContent}
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: "center"
+            }}
+            refreshControl={
+              <RefreshControl
+                refreshing={networkStatus === NS.refetch}
+                onRefresh={refetch}
+              />
+            }
             testID={"test_notificationsEmptyContainer"}>
-            <Image source={Images.notificationBell as ImageSourcePropType} />
-            <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>
-              {translate("notifications.empty")}
-            </Text>
-          </View>
+            <View style={styles.noContent}>
+              <Image source={Images.notificationBell as ImageSourcePropType} />
+              <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>
+                {translate("notifications.empty")}
+              </Text>
+            </View>
+          </ScrollView>
         )}
         {!loading && !error && notificationList.length > 0 && (
           <FlatList<NotificationMessage>

@@ -1,9 +1,4 @@
-import {
-  act,
-  findByTestId,
-  fireEvent,
-  render
-} from "@testing-library/react-native";
+import { act, fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import DownloadsStack from "@totara/features/downloads";
 import { createAppContainer } from "react-navigation";

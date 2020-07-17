@@ -88,12 +88,12 @@ const shadow = {
     elevation: 6
   },
   ios: {
-    shadowColor: TotaraTheme.colorNeutral8,
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
+    shadowColor: TotaraTheme.colorNeutral7,
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
     shadowOffset: {
       width: 0,
-      height: 3
+      height: 14
     }
   }
 };

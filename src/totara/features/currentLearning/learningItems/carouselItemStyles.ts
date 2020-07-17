@@ -21,7 +21,7 @@ import {
   shadow
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-const { marginL, marginS } = margins;
+const { marginS, marginXL, marginXS } = margins;
 const { borderRadiusM, borderRadiusS } = borderRadius;
 const {
   colorNeutral8,
@@ -75,8 +75,8 @@ const carouselItemStyles = StyleSheet.create({
     top: 0
   },
   itemWithBadgeContainer: {
-    marginVertical: marginL,
-    marginHorizontal: marginS
+    marginVertical: marginXL,
+    marginHorizontal: marginXS
   },
   pagination: {
     borderStyle: "dashed",

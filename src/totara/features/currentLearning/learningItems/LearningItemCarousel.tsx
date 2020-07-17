@@ -29,7 +29,7 @@ import { AddBadge } from "@totara/components";
 import { navigateTo, itemToRouteMap } from "@totara/lib/navigation";
 import { showMessage } from "@totara/lib";
 import NativeAccessRestriction from "../NativeAccessRestriction";
-import { iconSizes } from "@totara/theme/constants";
+import { iconSizes, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
 import { LearningItemCard } from "../components/LearningItemCard";
@@ -79,11 +79,12 @@ const LearningItemCarousel = ({
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }>
         <Carousel
+          inactiveSlideScale={1}
           ref={sliderRef}
           data={currentLearning}
           renderItem={renderItem}
           sliderWidth={deviceScreen.width}
-          itemWidth={deviceScreen.width * 0.8}
+          itemWidth={deviceScreen.width - paddings.padding2XL * 2}
           sliderHeight={deviceScreen.height}
           inactiveSlideOpacity={0.6}
           onSnapToItem={(index) => setActiveSlide(index)}
