@@ -29,18 +29,24 @@ import { rowItem } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import { Images } from "@resources/images";
 
-const Course = ({ course, navigation }: any) => {
+type CourseProps = {
+  course: any;
+  navigate: any;
+  testID?: string;
+};
+
+const Course = ({ course, navigate, testID }: CourseProps) => {
   const [showRestriction, setShowRestriction] = useState(false);
   const onClose = () => {
     setShowRestriction(!showRestriction);
   };
   return (
     <TouchableOpacity
-      key={course.id}
+      testID={testID}
       onPress={() => {
         if (course.native) {
           navigateTo({
-            navigate: navigation.navigate,
+            navigate: navigate,
             routeId: NAVIGATION.COURSE_DETAILS,
             props: { targetId: course.id }
           });
@@ -50,19 +56,26 @@ const Course = ({ course, navigation }: any) => {
       }}
       activeOpacity={1.0}>
       <View style={rowItem.container}>
-        {course.imageSrc.length > 0 ? (
+        {course.imageSrc && course.imageSrc.length > 0 ? (
           <ImageWrapper url={course.imageSrc} style={rowItem.imageWrapper} />
         ) : (
           <Image
             style={rowItem.imageWrapper}
             source={Images.defaultCourses as ImageSourcePropType}
+            testID={"test_default_image"}
           />
         )}
         <View style={rowItem.detailsWrapper}>
-          <Text style={rowItem.courseName} numberOfLines={1}>
+          <Text
+            style={rowItem.courseName}
+            numberOfLines={1}
+            testID={"test_course_full_name"}>
             {course.fullname}
           </Text>
-          <Text style={rowItem.courseSummary} numberOfLines={1}>
+          <Text
+            style={rowItem.courseSummary}
+            numberOfLines={1}
+            testID={"test_course_summary"}>
             {course.summary}
           </Text>
         </View>

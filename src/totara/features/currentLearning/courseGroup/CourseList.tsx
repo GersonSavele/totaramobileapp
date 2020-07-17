@@ -20,11 +20,14 @@ import Course from "./Course";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "../CriteriaSheet";
 
-const renderItems = (navigation) => {
-  const LearningItems = ({ item }: any) => (
-    <Course course={item} navigation={navigation} />
+const LearningItems = ({ item, navigation }: any) => {
+  return (
+    <Course
+      course={item}
+      navigate={navigation.navigate}
+      testID={"test_course"}
+    />
   );
-  return LearningItems;
 };
 
 type CourseListProps = {
@@ -32,11 +35,11 @@ type CourseListProps = {
 };
 
 const CourseList = ({ navigation }: CourseListProps) => {
-  const courseList = navigation.getParam("coursesList");
+  const courseList = navigation.state.params!.coursesList;
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    navigation.setParams({ title: courseList.label });
+    navigation.state.params!.title = courseList.label;
   }, [courseList.label]);
 
   useEffect(() => {
@@ -56,12 +59,16 @@ const CourseList = ({ navigation }: CourseListProps) => {
     setShow(!show);
   };
 
+  const renderItems = ({ item }: any) => {
+    return <LearningItems navigation={navigation} item={item} />;
+  };
+
   return (
-    <View>
+    <View testID={"test_course_list"}>
       <FlatList
         style={{ height: "100%" }}
         data={courseList.courses}
-        renderItem={renderItems(navigation)}
+        renderItem={renderItems}
         keyExtractor={(_, id) => id.toString()}
         showsHorizontalScrollIndicator={false}
       />
@@ -76,4 +83,5 @@ const CourseList = ({ navigation }: CourseListProps) => {
   );
 };
 
+export { LearningItems };
 export default CourseList;

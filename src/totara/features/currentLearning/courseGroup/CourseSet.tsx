@@ -29,6 +29,7 @@ import NativeAccessRestriction from "../NativeAccessRestriction";
 type CourseSetProps = {
   courseSets: CourseSets;
   navigation: NavigationStackProp;
+  testID: string;
 };
 
 const LearningItems = ({ item, navigation }: any) => {
@@ -79,7 +80,7 @@ const LearningItems = ({ item, navigation }: any) => {
   );
 };
 
-const CourseSet = ({ courseSets, navigation }: CourseSetProps) => {
+const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
   const [show, setShow] = useState(false);
   const onCloseBottomSheet = () => {
     setShow(!show);
@@ -90,7 +91,7 @@ const CourseSet = ({ courseSets, navigation }: CourseSetProps) => {
   };
 
   return (
-    <View style={{ marginTop: margins.marginXL }}>
+    <View style={{ marginTop: margins.marginXL }} testID={testID}>
       <View style={courseSet.courseSetHeader}>
         <Text style={courseSet.title}>{courseSets.label}</Text>
         <TouchableOpacity

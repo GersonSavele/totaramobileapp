@@ -36,20 +36,36 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
         return (
           <View key={key}>
             {item.length == 1 && (
-              <CourseSet courseSets={item[0]} navigation={navigation} />
+              <CourseSet
+                courseSets={item[0]}
+                navigation={navigation}
+                testID={"test_course_set"}
+              />
             )}
             {item.length > 1 && (
-              <CourseSetList courseSetList={item} navigation={navigation} />
+              <CourseSetList
+                courseSetList={item}
+                navigate={navigation.navigate}
+                testID={"test_course_set_list"}
+              />
             )}
           </View>
         );
       })}
       {courseGroup.completion.statuskey === statusKey.complete && (
-        <Completed endnote={courseGroup.endnote} navigation={navigation} />
+        <Completed
+          endnote={courseGroup.endnote}
+          navigation={navigation}
+          testID={"test_program_completed"}
+        />
       )}
       {courseGroup.countUnavailableSets > 0 && (
-        <View style={courses.unavailableSetWrap}>
-          <Text style={courses.unavailableText}>
+        <View
+          style={courses.unavailableSetWrap}
+          testID={"test_unavailable_set"}>
+          <Text
+            style={courses.unavailableText}
+            testID={"test_unavailable_set_title"}>
             {courseGroup.countUnavailableSets}{" "}
             {translate("course_group.courses.unavailable_sets")}
           </Text>
@@ -62,19 +78,24 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
 type CompletedProps = {
   endnote?: string;
   navigation: NavigationStackProp;
+  testID: string;
 };
 
-const Completed = ({ endnote, navigation }: CompletedProps) => {
+const Completed = ({ endnote, navigation, testID }: CompletedProps) => {
   return (
-    <View style={courses.bottomView}>
+    <View style={courses.bottomView} testID={testID}>
       <Text style={courses.completedText}>
         {translate("course_group.courses.compete")}
       </Text>
-      <Text numberOfLines={5} style={courses.endNoteText}>
+      <Text
+        numberOfLines={5}
+        style={courses.endNoteText}
+        testID={"test_endnote"}>
         {endnote}
       </Text>
       <TouchableOpacity
         style={courses.button}
+        testID={"test_go_back_button"}
         onPress={() => navigation.goBack()}
         activeOpacity={1.0}>
         <Text style={courses.buttonTextTitle}>

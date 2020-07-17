@@ -31,7 +31,7 @@ type CourseGroupProps = {
 };
 
 const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
-  const programId = navigation.getParam("targetId");
+  const programId = navigation.state.params!.targetId;
   const { loading, error, data, refetch } = useQuery(coreProgram, {
     variables: { programid: programId }
   });
@@ -39,8 +39,11 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
     refetch();
   };
 
-  if (loading) return <Loading />;
-  if (error) return <LoadingError onRefreshTap={onContentRefresh} />;
+  if (loading) return <Loading testID={"test_loading"} />;
+  if (error)
+    return (
+      <LoadingError onRefreshTap={onContentRefresh} testID={"test_error"} />
+    );
 
   if (data) {
     return (
@@ -48,6 +51,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
         courseGroup={data.totara_mobile_program}
         onContentRefresh={onContentRefresh}
         navigation={navigation}
+        testID={"test_data"}
       />
     );
   }
@@ -57,12 +61,14 @@ type CourseGroupDetailsContentProps = {
   courseGroup: CourseGroup;
   onContentRefresh: () => void;
   navigation: NavigationStackProp;
+  testID?: string;
 };
 
 const CourseGroupDetailsContent = ({
   courseGroup,
   onContentRefresh,
-  navigation
+  navigation,
+  testID
 }: CourseGroupDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
@@ -70,33 +76,36 @@ const CourseGroupDetailsContent = ({
   };
 
   return (
-    <LearningDetails
-      details={courseGroup}
-      tabBarLeftTitle={translate("course_group.tabs.overview")}
-      tabBarRightTitle={translate("course_group.tabs.courses")}
-      onPress={onSwitchTab}
-      overviewIsShown={showOverview}
-      badgeTitle={translate("course_group.details.badge_title_program")}
-      image={courseGroup.imageSrc}
-      onPullToRefresh={onContentRefresh}>
-      <View style={details.container}>
-        <View style={details.activitiesContainer}>
-          {!showOverview ? (
-            <Courses courseGroup={courseGroup} navigation={navigation} />
-          ) : (
-            <OverviewDetails
-              id={courseGroup.id}
-              summary={courseGroup.summary!}
-              progress={courseGroup.completion.progress}
-              isCourseSet={true}
-              summaryTypeTitle={translate(
-                "course_group.overview.summary_title_program"
-              )}
-            />
-          )}
+    <View testID={testID} style={{ flex: 1 }}>
+      <LearningDetails
+        details={courseGroup}
+        tabBarLeftTitle={translate("course_group.tabs.overview")}
+        tabBarRightTitle={translate("course_group.tabs.courses")}
+        onPress={onSwitchTab}
+        overviewIsShown={showOverview}
+        badgeTitle={translate("course_group.details.badge_title_program")}
+        image={courseGroup.imageSrc}
+        onPullToRefresh={onContentRefresh}
+        navigation={navigation}>
+        <View style={details.container}>
+          <View style={details.activitiesContainer}>
+            {!showOverview ? (
+              <Courses courseGroup={courseGroup} navigation={navigation} />
+            ) : (
+              <OverviewDetails
+                id={courseGroup.id}
+                summary={courseGroup.summary!}
+                progress={courseGroup.completion.progress}
+                isCourseSet={true}
+                summaryTypeTitle={translate(
+                  "course_group.overview.summary_title_program"
+                )}
+              />
+            )}
+          </View>
         </View>
-      </View>
-    </LearningDetails>
+      </LearningDetails>
+    </View>
   );
 };
 

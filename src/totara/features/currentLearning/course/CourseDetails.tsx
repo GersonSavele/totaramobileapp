@@ -13,9 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, Switch } from "react-native";
-import { NavigationContext, NavigationParams } from "react-navigation";
+import { NavigationParams } from "react-navigation";
+import { NavigationStackProp } from "react-navigation-stack";
 import { Loading, LoadingError } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
@@ -49,6 +50,7 @@ const CourseDetails = ({ navigation }: NavigationParams) => {
         pullToRefresh={onContentRefresh}
         courseDetails={data.mobile_course}
         courseRefreshCallback={refetch}
+        navigation={navigation}
       />
     );
   }
@@ -58,17 +60,18 @@ type CourseDetailsContentProps = {
   courseDetails: CourseContentDetails;
   courseRefreshCallback: () => {};
   pullToRefresh: () => void;
+  navigation: NavigationStackProp;
 };
 
 const CourseDetailsContent = ({
   courseDetails,
   courseRefreshCallback,
-  pullToRefresh
+  pullToRefresh,
+  navigation
 }: CourseDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const [showCompletionModal, setShowCompletionModal] = useState(true);
   const [expandActivities, setExpandActivities] = useState(false);
-  const navigation = useContext(NavigationContext);
   const onClose = () => {
     setShowCompletionModal(!showCompletionModal);
     courseRefreshCallback();
@@ -90,7 +93,8 @@ const CourseDetailsContent = ({
       onPress={onSwitchTab}
       overviewIsShown={showOverview}
       image={courseDetails.imageSrc}
-      badgeTitle={translate("course.course_details.badge_title")}>
+      badgeTitle={translate("course.course_details.badge_title")}
+      navigation={navigation}>
       <View
         style={[
           styles.container,

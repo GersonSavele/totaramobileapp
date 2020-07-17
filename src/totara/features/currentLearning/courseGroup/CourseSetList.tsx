@@ -15,7 +15,6 @@
 
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import { NavigationStackProp } from "react-navigation-stack";
 import { CourseSets } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
 import { courseSet, horizontalList } from "./courseGroupStyles";
@@ -26,23 +25,22 @@ import Course from "./Course";
 
 type CourseSetListProps = {
   courseSetList: [CourseSets];
-  navigation: NavigationStackProp;
+  navigate: any;
+  testID: string;
 };
 
-const LearningItems = ({ item, navigation }: any) => {
+const LearningItems = ({ item, navigate }: any) => {
   const [show, setShow] = useState(false);
   const onClose = () => {
     setShow(!show);
   };
-
   return (
-    <View style={courseSet.container}>
+    <View style={courseSet.container} testID={"test_learning_items"}>
       <TouchableOpacity
         style={horizontalList.listWrapper}
-        key={item.id}
         onPress={() =>
           navigateTo({
-            navigate: navigation.navigate,
+            navigate: navigate,
             routeId: NAVIGATION.COURSE_LIST,
             props: { coursesList: item }
           })
@@ -50,10 +48,13 @@ const LearningItems = ({ item, navigation }: any) => {
         activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
           <View style={courseSet.headerBar}>
-            <Text style={courseSet.headerTitle}>{item.label}</Text>
+            <Text style={courseSet.headerTitle} testID={"test_header_title"}>
+              {item.label}
+            </Text>
             <TouchableOpacity
               style={courseSet.criteria}
               onPress={onClose}
+              testID={"test_view_criteria_clicked"}
               activeOpacity={1.0}>
               <Text style={courseSet.criteriaButtonTitle}>
                 {translate("course_group.criteria.view_criteria")}
@@ -61,11 +62,11 @@ const LearningItems = ({ item, navigation }: any) => {
             </TouchableOpacity>
           </View>
           <View>
-            {item.courses.length > 0 && (
-              <Course course={item.courses[0]} navigation={navigation} />
+            {item.courses && item.courses.length > 0 && (
+              <Course course={item.courses[0]} navigate={navigate} />
             )}
-            {item.courses.length > 1 && (
-              <Course course={item.courses[1]} navigation={navigation} />
+            {item.courses && item.courses.length > 1 && (
+              <Course course={item.courses[1]} navigation={navigate} />
             )}
           </View>
         </View>
@@ -81,13 +82,17 @@ const LearningItems = ({ item, navigation }: any) => {
   );
 };
 
-const CourseSetList = ({ courseSetList, navigation }: CourseSetListProps) => {
+const CourseSetList = ({
+  courseSetList,
+  navigate,
+  testID
+}: CourseSetListProps) => {
   const renderItems = ({ item }: any) => {
-    return <LearningItems navigation={navigation} item={item} />;
+    return <LearningItems navigate={navigate} item={item} />;
   };
 
   return (
-    <View style={horizontalList.container}>
+    <View style={horizontalList.container} testID={testID}>
       <FlatList
         data={courseSetList}
         renderItem={renderItems}
@@ -98,5 +103,5 @@ const CourseSetList = ({ courseSetList, navigation }: CourseSetListProps) => {
     </View>
   );
 };
-
+export { LearningItems };
 export default CourseSetList;
