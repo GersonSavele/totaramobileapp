@@ -26,7 +26,7 @@ type OnlineScormProps = {
   navigation: NavigationStackProp<OnlineScormParams>;
 };
 
-const OnlineSCORMActivity = ({ navigation }: OnlineScormProps) => {
+const OnlineScormActivity = ({ navigation }: OnlineScormProps) => {
   const { backAction, uri } = navigation.state.params as OnlineScormParams;
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -40,4 +40,4 @@ const OnlineSCORMActivity = ({ navigation }: OnlineScormProps) => {
   return <AuthenticatedWebView uri={uri} />;
 };
 
-export default OnlineSCORMActivity;
+export default OnlineScormActivity;

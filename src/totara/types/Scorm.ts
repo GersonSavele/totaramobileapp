@@ -66,7 +66,7 @@ export type ScormBundle = {
   scorm?: Scorm;
   scormPackage?: Package;
   offlineAttempts?: [Attempt];
-  lastsynced: number;
+  // lastsynced: number;
 };
 
 export type Sco = {

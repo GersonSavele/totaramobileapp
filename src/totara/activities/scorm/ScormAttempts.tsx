@@ -29,6 +29,7 @@ import { NavigationStackProp } from "react-navigation-stack";
 import { fullFlex } from "@totara/lib/styles/base";
 import { scormAttemptsStyles } from "@totara/theme/scorm";
 import { fontWeights } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type AttemptsParams = {
   gradeMethod: Grade;
@@ -41,8 +42,6 @@ type ScormActivityProps = {
 
 const ScormAttempts = ({ navigation }: ScormActivityProps) => {
   const { gradeMethod, attempts } = navigation.state.params as AttemptsParams;
-
-  const [theme] = useContext(ThemeContext);
 
   const attemptReport = (
     attemptReport: Attempt,
@@ -61,7 +60,10 @@ const ScormAttempts = ({ navigation }: ScormActivityProps) => {
   return (
     <SafeAreaView style={fullFlex}>
       <Text
-        style={{ ...theme.textHeadline, ...scormAttemptsStyles.sectionTitle }}>
+        style={{
+          ...TotaraTheme.textHeadline,
+          ...scormAttemptsStyles.sectionTitle
+        }}>
         {translate("scorm.attempts.title")}
       </Text>
       <FlatList
@@ -73,6 +75,7 @@ const ScormAttempts = ({ navigation }: ScormActivityProps) => {
         alwaysBounceVertical={false}
         scrollIndicatorInsets={{ right: 8 }}
         keyExtractor={(item, index) => `${(item as Attempt).attempt}-${index}`}
+        testID={"attempts_list"}
       />
     </SafeAreaView>
   );
@@ -98,7 +101,7 @@ const AttemptReport = ({
       : `${calculatedScore}%`;
 
   return (
-    <View style={scormAttemptsStyles.holder} key={"holder"}>
+    <View style={scormAttemptsStyles.holder} testID={"attempt_item"}>
       <Text style={[theme.textRegular, scormAttemptsStyles.attempt]}>
         {translate("scorm.attempts.attempt")} {attempt}
       </Text>

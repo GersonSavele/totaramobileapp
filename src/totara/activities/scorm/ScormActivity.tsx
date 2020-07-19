@@ -32,7 +32,7 @@ import { AppState } from "@totara/types";
 import ScormSummary from "./ScormSummary";
 import { AuthContext } from "@totara/core";
 import { OfflineScormActivity } from "./offline";
-import OnlineSCORMActivity from "./online/OnlineSCORMActivity";
+import OnlineScormActivity from "./online/OnlineScormActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
@@ -184,10 +184,10 @@ const ScormActivity = (props: ScormActivityProps) => {
   };
 
   if (loading && !(scormBundle && scormBundle.scorm)) {
-    return <Loading />;
+    return <Loading testID={"scorm_loading"} />;
   }
   return (
-    <SafeAreaView style={fullFlex}>
+    <SafeAreaView style={fullFlex} testID={"scorm_summary"}>
       <ScormSummary
         id={id}
         navigation={navigation}
@@ -242,7 +242,7 @@ const innerStack = createStackNavigator(
       navigationOptions
     },
     [ONLINE_SCORM_ACTIVITY]: {
-      screen: OnlineSCORMActivity,
+      screen: OnlineScormActivity,
       navigationOptions
     }
   },
