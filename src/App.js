@@ -37,6 +37,7 @@ import ResourceManager from "@totara/lib/resourceManager";
 import { createStackNavigator } from "react-navigation-stack";
 import { scormStack } from "@totara/activities/scorm/ScormActivity";
 import AboutStack from "@totara/features/about/AboutStack";
+import { LocaleResolver } from "@totara/locale/LocaleResolver";
 
 const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
 
@@ -56,17 +57,19 @@ const App: () => React$Node = () => {
   return (
     <AuthProvider asyncStorage={AsyncStorage}>
       <SafeAreaProvider>
-        <ThemeProvider>
-          <AuthFlow>
-            <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <AppContainer />
-              </PersistGate>
-            </Provider>
-            <AdditionalAction />
-            <AttemptSynchronizer />
-          </AuthFlow>
-        </ThemeProvider>
+        <AuthFlow>
+          <ThemeProvider>
+            <LocaleResolver>
+              <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                  <AppContainer />
+                </PersistGate>
+                <AdditionalAction />
+                <AttemptSynchronizer />
+              </Provider>
+            </LocaleResolver>
+          </ThemeProvider>
+        </AuthFlow>
       </SafeAreaProvider>
     </AuthProvider>
   );

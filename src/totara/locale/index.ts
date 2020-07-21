@@ -34,4 +34,12 @@ const changeLocale = (locale: string) => {
   i18n.locale = locale;
 };
 
-export { translate, addLocale, changeLocale };
+const getLocale = () => {
+  return i18n.locale;
+};
+
+const getTranslations = () => {
+  return i18n.translations;
+};
+
+export { translate, addLocale, changeLocale, getLocale, getTranslations };
