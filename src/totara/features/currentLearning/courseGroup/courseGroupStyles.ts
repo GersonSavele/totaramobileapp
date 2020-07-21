@@ -75,6 +75,23 @@ const courses = StyleSheet.create({
   endNoteText: {
     ...TotaraTheme.textSmall,
     marginVertical: margins.marginL
+  },
+  nextSet: {
+    marginVertical: margins.marginL,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "transparent"
+  },
+  separator: {
+    height: 2,
+    flex: 1,
+    marginHorizontal: margins.marginL,
+    backgroundColor: TotaraTheme.colorNeutral6
+  },
+  nextSetText: {
+    ...TotaraTheme.textXSmall,
+    textTransform: "uppercase",
+    fontWeight: fontWeights.fontWeightBold
   }
 });
 
@@ -120,23 +137,6 @@ const courseSet = StyleSheet.create({
     marginVertical: margins.marginS,
     ...TotaraTheme.textSmall,
     fontWeight: fontWeights.fontWeightNormal
-  },
-  nextSet: {
-    marginVertical: margins.marginL,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent"
-  },
-  separator: {
-    height: 2,
-    flex: 1,
-    marginHorizontal: margins.marginL,
-    backgroundColor: TotaraTheme.colorNeutral6
-  },
-  nextSetText: {
-    ...TotaraTheme.textXSmall,
-    textTransform: "uppercase",
-    fontWeight: fontWeights.fontWeightBold
   },
   courseTitle: {
     ...TotaraTheme.textRegular,

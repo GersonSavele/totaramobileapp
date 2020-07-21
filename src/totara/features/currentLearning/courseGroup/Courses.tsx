@@ -48,6 +48,15 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
                 testID={"test_course_set_list"}
               />
             )}
+            {item[item.length - 1].nextsetoperator && (
+              <View style={courses.nextSet}>
+                <View style={courses.separator} />
+                <Text style={courses.nextSetText}>
+                  {item[item.length - 1].nextsetoperator}
+                </Text>
+                <View style={courses.separator} />
+              </View>
+            )}
           </View>
         );
       })}

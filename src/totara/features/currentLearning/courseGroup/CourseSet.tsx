@@ -110,15 +110,6 @@ const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
         showsHorizontalScrollIndicator={false}
         horizontal={true}
       />
-      {courseSets.nextsetoperator && (
-        <View style={courseSet.nextSet}>
-          <View style={courseSet.separator} />
-          <Text style={courseSet.nextSetText}>
-            {courseSets.nextsetoperator}
-          </Text>
-          <View style={courseSet.separator} />
-        </View>
-      )}
       {show && (
         <CriteriaSheet
           title={translate("course_group.criteria.bottom_sheet_header")}
