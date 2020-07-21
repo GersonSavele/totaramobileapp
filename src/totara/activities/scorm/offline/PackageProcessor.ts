@@ -20,6 +20,7 @@
  */
 
 import * as RNFS from "react-native-fs";
+import { isEmpty } from "lodash";
 const xpath = require("xpath");
 const dom = require("xmldom").DOMParser;
 
@@ -28,10 +29,13 @@ import { Sco, Package } from "@totara/types/Scorm";
 const getScormPackageData = (packagPath: string) => {
   const manifestFilePath = `${packagPath}/imsmanifest.xml`;
   return RNFS.readFile(manifestFilePath).then((xmlcontent) => {
-    const xmlData = new dom().parseFromString(xmlcontent);
-    const scosList = getScosDataForPackage(xmlData);
-    const defaultSco = getInitialScormLoadData(xmlData);
-    return { scos: scosList, defaultSco: defaultSco } as Package;
+    if (!isEmpty(xmlcontent)) {
+      const xmlData = new dom().parseFromString(xmlcontent);
+      const scosList = getScosDataForPackage(xmlData);
+      const defaultSco = getInitialScormLoadData(xmlData);
+      if (!isEmpty(scosList))
+        return { scos: scosList, defaultSco: defaultSco } as Package;
+    }
   });
 };
 
@@ -43,37 +47,39 @@ const getScormPackageData = (packagPath: string) => {
  */
 const getScosDataForPackage = (manifestDom: any) => {
   const resultOrganisations = xpath.evaluate(
-    "//*[local-name(.)='organizations']/*[local-name()='organization']/@identifier",
+    // "//*[local-name(.)='organizations']/*[local-name()='organization']",
+    "//*[local-name(.)='organizations']/*[local-name()='organization']",
     manifestDom, // contextNode
     null, // namespaceResolver
     xpath.XPathResult.ANY_TYPE, // resultType
     null // result
   );
-  let organizationNode = resultOrganisations.iterateNext();
-  let scos = [];
-  while (organizationNode) {
+  let organizationNode;
+  let scos: [Sco?] = [];
+  while ((organizationNode = resultOrganisations.iterateNext())) {
+    const organizationId = organizationNode.getAttribute("identifier");
     const itemResult = xpath.evaluate(
-      "//*[local-name(.)='item']/@identifier",
+      ".//*[local-name(.)='item']/@identifier",
       organizationNode,
       null,
       xpath.XPathResult.ANY_TYPE,
       null
     );
-    let itemNode = itemResult.iterateNext();
-    while (itemNode) {
+    let itemNode;
+    while ((itemNode = itemResult.iterateNext())) {
+      const itemId = itemNode.nodeValue;
       const valLaunchUrl = getDefaultScoLaunchUrl(
         manifestDom,
         itemNode.nodeValue
       );
+
       const sco: Sco = {
-        id: itemNode.nodeValue,
-        organizationId: organizationNode.nodeValue,
+        id: itemId,
+        organizationId: organizationId,
         launchSrc: valLaunchUrl
       };
       scos.push(sco);
-      itemNode = itemResult.iterateNext();
     }
-    organizationNode = resultOrganisations.iterateNext();
   }
   return scos;
 };
@@ -83,8 +89,8 @@ const getInitialScormLoadData = (manifestDom: any) => {
     "//*[local-name(.)='organizations']/*[local-name(.)='organization']/@identifier",
     manifestDom
   );
-  let defaultOrgizationId: string | null = null;
-  if (defaultOrgizationsNode && defaultOrgizationsNode.length > 0) {
+  let defaultOrgizationId: string | undefined;
+  if (!isEmpty(defaultOrgizationsNode)) {
     if (defaultOrgizationsNode.length === 1) {
       defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
     } else {
@@ -92,7 +98,7 @@ const getInitialScormLoadData = (manifestDom: any) => {
         "//*[local-name(.)='organizations']/@default",
         manifestDom
       );
-      if (defaultOrgNode.length === 1 && defaultOrgNode[0].nodeValue) {
+      if (!isEmpty(defaultOrgNode) && !isEmpty(defaultOrgNode[0].nodeValue)) {
         const tempDefaultOrg = defaultOrgNode[0].nodeValue;
         for (let i = 0; i < defaultOrgizationsNode.length; i++) {
           if (defaultOrgizationsNode[i].nodeValue === tempDefaultOrg) {
@@ -106,9 +112,9 @@ const getInitialScormLoadData = (manifestDom: any) => {
       }
     }
   }
-  let defaultScoId: string | null = null;
-  let defaultLaunchSrc: string | null = null;
-  if (defaultOrgizationId !== null) {
+  let defaultScoId: string | undefined;
+  let defaultLaunchSrc: string | undefined;
+  if (!isEmpty(defaultOrgizationId)) {
     const firstScoOnDefaultOrgNode = xpath.select(
       "//*[local-name(.)='organizations']/*[local-name(.)='organization' and @identifier='" +
         defaultOrgizationId +
@@ -149,7 +155,6 @@ const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string) => {
       return `${resourceNode[0].getAttribute("href")}${queryString}`;
     }
   }
-  return null;
 };
 
 export { getScormPackageData };
