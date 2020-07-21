@@ -145,4 +145,12 @@ const scormFeedbackStyles = StyleSheet.create({
     alignContent: "space-between"
   }
 });
-export { scormSummaryStyles, scormFeedbackStyles, scormAttemptsStyles };
+const onlineScormActivityStyles = StyleSheet.create({
+  playerContainer: { width: "100%", height: "100%" }
+});
+export {
+  scormSummaryStyles,
+  scormFeedbackStyles,
+  scormAttemptsStyles,
+  onlineScormActivityStyles
+};

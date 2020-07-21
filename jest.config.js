@@ -1,30 +1,27 @@
-const { defaults: tsjPreset } = require('ts-jest/presets');
+const { defaults: tsjPreset } = require("ts-jest/presets");
 
 module.exports = {
   ...tsjPreset,
-  preset: 'react-native',
+  preset: "react-native",
   transform: {
     ...tsjPreset.transform,
-    '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
+    "\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
   },
   globals: {
-    'ts-jest': {
+    "ts-jest": {
       babelConfig: true,
       diagnostics: {
         warnOnly: true
       }
     }
   },
-  cacheDirectory: '.jest/cache',
+  cacheDirectory: ".jest/cache",
   moduleNameMapper: {
     "@totara/(.*)": "<rootDir>/src/totara/$1",
     "@resources/(.*)": "<rootDir>/src/resources/$1"
   },
   testPathIgnorePatterns: ["e2e"],
-  setupFiles: [
-    "<rootDir>/jest.setup.js"
-  ],
-  collectCoverageFrom: [
-    "src/totara/**/*.{js,jsx,ts,tsx}"
-  ]
+  setupFiles: ["<rootDir>/jest.setup.js"],
+  collectCoverageFrom: ["src/totara/**/*.{js,jsx,ts,tsx}"],
+  setupFilesAfterEnv: ["<rootDir>setup-tests.js"]
 };

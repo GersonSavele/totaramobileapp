@@ -11,11 +11,12 @@
  */
 
 import React, { useEffect } from "react";
-import { Text, BackHandler } from "react-native";
+import { Text, BackHandler, View } from "react-native";
 
 import { AuthenticatedWebView } from "@totara/auth";
 import { translate } from "@totara/locale";
 import { NavigationStackProp } from "react-navigation-stack";
+import { onlineScormActivityStyles } from "@totara/theme/scorm";
 
 type OnlineScormParams = {
   uri: string;
@@ -36,8 +37,19 @@ const OnlineScormActivity = ({ navigation }: OnlineScormProps) => {
     return () => backHandler.remove();
   }, [uri]);
 
-  if (!uri) return <Text>{translate("general.error_unknown")}</Text>;
-  return <AuthenticatedWebView uri={uri} />;
+  if (!uri)
+    return (
+      <Text testID={"scorm_online_error"}>
+        {translate("general.error_unknown")}
+      </Text>
+    );
+  return (
+    <View
+      style={onlineScormActivityStyles.playerContainer}
+      testID={"scorm_online_player"}>
+      <AuthenticatedWebView uri={uri} />
+    </View>
+  );
 };
 
 export default OnlineScormActivity;
