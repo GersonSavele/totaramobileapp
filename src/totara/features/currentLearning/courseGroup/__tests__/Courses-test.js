@@ -15,7 +15,7 @@
 
 import React from "react";
 import { render, fireEvent, act } from "@testing-library/react-native";
-import { courseSetMock, courseSetListMock } from "../api/Programs.mock";
+import { courseSetMock, courseSetListMock } from "../api/courseGroup.mock";
 import Courses from "../Courses";
 import wait from "waait";
 

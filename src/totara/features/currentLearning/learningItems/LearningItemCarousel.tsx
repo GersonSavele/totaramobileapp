@@ -119,7 +119,7 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
         navigateTo({
           navigate: navigation.navigate,
           routeId: itemToRouteMap[item.itemtype],
-          props: { targetId: item.id }
+          props: { targetId: item.id, courseGroupType: item.itemtype }
         });
       } else {
         setShowRestriction(true);

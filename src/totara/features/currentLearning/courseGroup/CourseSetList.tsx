@@ -66,7 +66,7 @@ const LearningItems = ({ item, navigate }: any) => {
               <Course course={item.courses[0]} navigate={navigate} />
             )}
             {item.courses && item.courses.length > 1 && (
-              <Course course={item.courses[1]} navigation={navigate} />
+              <Course course={item.courses[1]} navigate={navigate} />
             )}
           </View>
         </View>

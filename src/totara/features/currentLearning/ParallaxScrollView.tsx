@@ -17,14 +17,13 @@
 import React, { useState, ReactNode } from "react";
 import {
   Animated,
-  Dimensions,
   View,
   LayoutChangeEvent,
   RefreshControl,
   StyleSheet
 } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-
+import { deviceScreen } from "@totara/lib/tools";
 type ParallaxScrollViewProps = {
   fadeOutForeground?: boolean;
   fadeOutBackground?: boolean;
@@ -45,7 +44,6 @@ const interpolate = (
   return x;
 };
 
-const window = Dimensions.get("window");
 const scrollY = new Animated.Value(0);
 
 const ParallaxScrollView = ({
@@ -58,8 +56,8 @@ const ParallaxScrollView = ({
   tabBar,
   onPullToRefresh
 }: ParallaxScrollViewProps) => {
-  const [viewHeight, setViewHeight] = useState(window.height);
-  const [viewWidth, setViewWidth] = useState(window.width);
+  const [viewHeight, setViewHeight] = useState(deviceScreen.height);
+  const [viewWidth, setViewWidth] = useState(deviceScreen.width);
 
   const updateViewDimensions = (e: LayoutChangeEvent) => {
     const {

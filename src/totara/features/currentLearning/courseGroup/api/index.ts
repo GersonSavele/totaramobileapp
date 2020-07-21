@@ -64,35 +64,51 @@ const coreProgram = gql`
 `;
 
 const coreCertification = gql`
-  query certification($id: ID!) {
-    certification(id: $id) {
+  query totara_mobile_certification($certificationid: core_id!) {
+    totara_mobile_certification(certificationid: $certificationid) {
       id
-      itemtype
-      shortname
       fullname
-      summary
-      duedateState
-      duedate
-      progress
-      imageSrc
-      courseSet {
+      shortname
+      duedate(format: ISO8601)
+      duedateState: duedate_state(format: PLAIN)
+      summary(format: PLAIN)
+      summaryformat
+      endnote(format: PLAIN)
+      availablefrom(format: ISO8601)
+      availableuntil(format: ISO8601)
+      imageSrc: mobile_image
+      completion {
+        id
+        statuskey
+        renewalstatuskey
+        progress
+        __typename
+      }
+      currentCourseSets: current_coursesets {
         id
         label
+        nextsetoperator
+        completionCriteria: criteria
+        statuskey
         courses {
           id
           itemtype
+          itemcomponent
           shortname
           fullname
-          summary
+          summary: description(format: PLAIN)
           progress
-          status
-          imageSrc
+          urlView: url_view
+          duedate(format: ISO8601)
+          duedateState: duedate_state
+          native: mobile_coursecompat
+          imageSrc: mobile_image
+          __typename
         }
-        nextSet {
-          nextID
-          operator
-        }
+        __typename
       }
+      countUnavailableSets: count_unavailablesets
+      __typename
     }
   }
 `;

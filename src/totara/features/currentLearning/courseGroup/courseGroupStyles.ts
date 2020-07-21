@@ -23,6 +23,7 @@ import {
   fontWeights,
   row
 } from "@totara/theme/constants";
+import { deviceScreen } from "@totara/lib/tools";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 
 const details = StyleSheet.create({
@@ -97,8 +98,9 @@ const courseSet = StyleSheet.create({
   },
   container: {
     margin: margins.marginL,
-    width: 335,
-    height: 224
+    width: deviceScreen.width * 0.8,
+    height: deviceScreen.height * 0.3,
+    minHeight: 225
   },
   learningItem: {
     borderRadius: borderRadius.borderRadiusM,

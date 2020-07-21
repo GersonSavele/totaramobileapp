@@ -20,15 +20,26 @@ import wait from "waait";
 
 import {
   programMock,
-  programMockEmpty,
-  programMockError
-} from "../api/Programs.mock";
+  certificationMock,
+  mockEmpty,
+  mockError
+} from "../api/courseGroup.mock";
 import CourseGroupDetails from "../CourseGroupDetails";
 
-const navigation = {
+const navigationProgram = {
   state: {
     params: {
-      targetId: 5
+      targetId: 5,
+      courseGroupType: "program"
+    }
+  }
+};
+
+const navigationCert = {
+  state: {
+    params: {
+      targetId: 5,
+      courseGroupType: "certification"
     }
   }
 };
@@ -37,8 +48,8 @@ describe("Program graphQL", () => {
   afterEach(cleanup);
   test("Should render loading", async () => {
     const tree = (
-      <MockedProvider mocks={programMockEmpty}>
-        <CourseGroupDetails navigation={navigation} />
+      <MockedProvider mocks={mockEmpty}>
+        <CourseGroupDetails navigation={navigationProgram} />
       </MockedProvider>
     );
 
@@ -49,8 +60,8 @@ describe("Program graphQL", () => {
 
   test("Should render error", async () => {
     const tree = (
-      <MockedProvider mocks={programMockError}>
-        <CourseGroupDetails navigation={navigation} />
+      <MockedProvider mocks={mockError}>
+        <CourseGroupDetails navigation={navigationProgram} />
       </MockedProvider>
     );
 
@@ -65,7 +76,23 @@ describe("Program graphQL", () => {
   test("Should render program", async () => {
     const tree = (
       <MockedProvider mocks={programMock}>
-        <CourseGroupDetails navigation={navigation} />
+        <CourseGroupDetails navigation={navigationProgram} />
+      </MockedProvider>
+    );
+
+    const { getByTestId } = render(tree);
+    await act(async () => {
+      await wait(0);
+    });
+
+    const programDetailsContainer = getByTestId("test_data");
+    expect(programDetailsContainer).toBeTruthy();
+  });
+
+  test("Should render certificate", async () => {
+    const tree = (
+      <MockedProvider mocks={certificationMock}>
+        <CourseGroupDetails navigation={navigationCert} />
       </MockedProvider>
     );
 

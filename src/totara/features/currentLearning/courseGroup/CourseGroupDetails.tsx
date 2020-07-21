@@ -22,7 +22,7 @@ import Courses from "./Courses";
 import OverviewDetails from "../overview/OverviewDetails";
 import { CourseGroup } from "@totara/types";
 import { LoadingError, Loading } from "@totara/components";
-import { coreProgram } from "./api";
+import { coreProgram, coreCertification } from "./api";
 import LearningDetails from "../LearningDetails";
 import { details } from "./courseGroupStyles";
 
@@ -30,11 +30,33 @@ type CourseGroupProps = {
   navigation: NavigationStackProp;
 };
 
+const courseGroupTypeMap = {
+  program: {
+    query: coreProgram,
+    idField: "programid",
+    queryAlias: "totara_mobile_program",
+    badgeTitle: translate("course_group.details.badge_title_program")
+  },
+  certification: {
+    query: coreCertification,
+    idField: "certificationid",
+    queryAlias: "totara_mobile_certification",
+    badgeTitle: translate("course_group.details.badge_title_certification")
+  }
+};
+
+type ParamsType = {
+  targetId: string;
+  courseGroupType: string;
+};
+
 const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
-  const programId = navigation.state.params!.targetId;
-  const { loading, error, data, refetch } = useQuery(coreProgram, {
-    variables: { programid: programId }
+  const { targetId, courseGroupType } = navigation.state.params as ParamsType;
+  const typeMap = courseGroupTypeMap[courseGroupType];
+  const { loading, error, data, refetch } = useQuery(typeMap.query, {
+    variables: { [typeMap.idField]: targetId }
   });
+
   const onContentRefresh = () => {
     refetch();
   };
@@ -46,12 +68,15 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
     );
 
   if (data) {
+    const courseGroup = data[typeMap.queryAlias] as CourseGroup;
+    courseGroup.itemtype = courseGroupType;
     return (
       <CourseGroupDetailsContent
-        courseGroup={data.totara_mobile_program}
+        courseGroup={courseGroup}
         onContentRefresh={onContentRefresh}
         navigation={navigation}
         testID={"test_data"}
+        badgeTitle={typeMap.badgeTitle}
       />
     );
   }
@@ -62,13 +87,15 @@ type CourseGroupDetailsContentProps = {
   onContentRefresh: () => void;
   navigation: NavigationStackProp;
   testID?: string;
+  badgeTitle: string;
 };
 
 const CourseGroupDetailsContent = ({
   courseGroup,
   onContentRefresh,
   navigation,
-  testID
+  testID,
+  badgeTitle
 }: CourseGroupDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
@@ -83,7 +110,7 @@ const CourseGroupDetailsContent = ({
         tabBarRightTitle={translate("course_group.tabs.courses")}
         onPress={onSwitchTab}
         overviewIsShown={showOverview}
-        badgeTitle={translate("course_group.details.badge_title_program")}
+        badgeTitle={badgeTitle}
         image={courseGroup.imageSrc}
         onPullToRefresh={onContentRefresh}
         navigation={navigation}>

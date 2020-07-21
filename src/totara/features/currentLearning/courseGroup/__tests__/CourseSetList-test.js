@@ -15,7 +15,7 @@
 
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { courseSetListMock } from "../api/Programs.mock";
+import { courseSetListMock } from "../api/courseGroup.mock";
 import { LearningItems } from "../CourseSetList";
 
 const navigate = jest.fn();

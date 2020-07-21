@@ -23,6 +23,7 @@ import {
   iconSizes
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { deviceScreen } from "@totara/lib/tools";
 const { marginL, marginS, margin2XL } = margins;
 const { borderRadiusL, borderRadiusXS } = borderRadius;
 const {
@@ -51,16 +52,11 @@ const learningDetailsStyles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    maxHeight: 280,
-    minHeight: 260,
+    minHeight: deviceScreen.height * 0.3,
+
     backgroundColor: colorNeutral2
   },
-  itemImage: {
-    minHeight: 160
-  },
   itemCard: {
-    maxHeight: 100,
-    minHeight: 80,
     backgroundColor: colorNeutral2
   },
   LearningTypeLabelWrap: {
@@ -74,8 +70,7 @@ const learningDetailsStyles = StyleSheet.create({
   },
   tabBarContainer: {
     flex: 0.4,
-    height: 50,
-    marginTop: marginL
+    height: 50
   },
   tabNav: {
     flexDirection: "row",

@@ -18,8 +18,7 @@ import { View, TouchableOpacity, Text } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import CourseSet from "./CourseSet";
 import CourseSetList from "./CourseSetList";
-import { CourseGroup } from "@totara/types";
-import { statusKey } from "@totara/types/Completion";
+import { CourseGroup, statusKey } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
 import { courses } from "./courseGroupStyles";
 import { CourseSets } from "@totara/types/CourseGroup";
@@ -52,7 +51,7 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
           </View>
         );
       })}
-      {courseGroup.completion.statuskey === statusKey.complete && (
+      {courseGroup.completion.statuskey === statusKey.completed && (
         <Completed
           endnote={courseGroup.endnote}
           navigation={navigation}

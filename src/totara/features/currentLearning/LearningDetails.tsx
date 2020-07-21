@@ -14,7 +14,7 @@
  *
  */
 
-import React, { ReactNode, useState, useEffect, useContext } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { NavigationStackProp } from "react-navigation-stack";
@@ -25,6 +25,7 @@ import { learningDetailsStyles } from "./currentLearningStyles";
 import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { fontWeights } from "@totara/theme/constants";
+import { deviceScreen } from "@totara/lib/tools";
 
 type Props = {
   details: any;
@@ -116,11 +117,7 @@ const LearningDetails = ({
   const renderHeaderBackground = () => {
     return (
       <View style={learningDetailsStyles.headerContainer}>
-        <ImageElement
-          item={details}
-          imageStyle={learningDetailsStyles.itemImage}
-          image={image}
-        />
+        <ImageElement item={details} image={image} />
       </View>
     );
   };
@@ -129,7 +126,7 @@ const LearningDetails = ({
     <View style={learningDetailsStyles.container}>
       <ParallaxScrollView
         onPullToRefresh={onPullToRefresh}
-        parallaxHeaderHeight={260}
+        parallaxHeaderHeight={deviceScreen.height * 0.3}
         renderBackground={renderHeaderBackground}
         titleBar={renderHeaderTitle}
         tabBar={renderNavigationTab}

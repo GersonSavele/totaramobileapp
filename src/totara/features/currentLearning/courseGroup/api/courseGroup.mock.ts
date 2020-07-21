@@ -15,7 +15,7 @@
  */
 
 import { GraphQLError } from "graphql";
-import { coreProgram } from "./index";
+import { coreProgram, coreCertification } from "./index";
 
 const course = {
   id: "44",
@@ -92,6 +92,32 @@ const currentCourseSet = [
   }
 ];
 
+const courseDetails = {
+  id: "5",
+  idnumber: "",
+  fullname: "Software Development",
+  shortname: "Mobile",
+  duedate: "2020-07-03T00:00:00+0100",
+  duedateState: "danger",
+  summary:
+    "Swift Programming Training Overview Accelebrate's Swift training course provides a comprehensive introduction to version 5 of the Swift programming language. Location and Pricing Accelebrate courses are taught as private, customized training for groups of 3 or more at your site. In addition, we offer live, private online training for teams who may be in multiple locations or wish to save on travel costs. To receive a customized proposal and price quote for private on-site or online training, please contact us. In addition, some courses are available as live, online classes for individuals. See a schedule of online courses. Swift Programming Training Objectives Understand the purpose and benefits of Swift Gain experience using Swift’s data types and standard library Learn the proper use of optionals Implement a variety of user-defined types in Swift Learn about error handling and techniques in Swift Understand how to write Swift code that can interoperate with existing code written in C and Objective-C",
+  summaryformat: "HTML",
+  endnote:
+    "Many dream, some try, but only a few achieve. You are an achiever. You have made us all proud, keep up the good work. Congratulations on your graduation",
+  availablefrom: "2020-06-18T00:00:00+0100",
+  availableuntil: "2022-06-18T23:59:59+0100",
+  imageSrc: null,
+  completion: {
+    id: "24",
+    statuskey: "incomplete",
+    progress: 4,
+    renewalstatuskey: "notdue",
+    __typename: "totara_program_completion"
+  },
+  currentCourseSets: [currentCourseSet, currentCourseSets],
+  countUnavailableSets: 3
+};
+
 const programMock = [
   {
     request: {
@@ -101,28 +127,7 @@ const programMock = [
     result: {
       data: {
         totara_mobile_program: {
-          id: "5",
-          idnumber: "",
-          fullname: "Software Development",
-          shortname: "Mobile",
-          duedate: "2020-07-03T00:00:00+0100",
-          duedateState: "danger",
-          summary:
-            "Swift Programming Training Overview Accelebrate's Swift training course provides a comprehensive introduction to version 5 of the Swift programming language. Location and Pricing Accelebrate courses are taught as private, customized training for groups of 3 or more at your site. In addition, we offer live, private online training for teams who may be in multiple locations or wish to save on travel costs. To receive a customized proposal and price quote for private on-site or online training, please contact us. In addition, some courses are available as live, online classes for individuals. See a schedule of online courses. Swift Programming Training Objectives Understand the purpose and benefits of Swift Gain experience using Swift’s data types and standard library Learn the proper use of optionals Implement a variety of user-defined types in Swift Learn about error handling and techniques in Swift Understand how to write Swift code that can interoperate with existing code written in C and Objective-C",
-          summaryformat: "HTML",
-          endnote:
-            "Many dream, some try, but only a few achieve. You are an achiever. You have made us all proud, keep up the good work. Congratulations on your graduation",
-          availablefrom: "2020-06-18T00:00:00+0100",
-          availableuntil: "2022-06-18T23:59:59+0100",
-          imageSrc: null,
-          completion: {
-            id: "24",
-            statuskey: "incomplete",
-            progress: 4,
-            __typename: "totara_program_completion"
-          },
-          currentCourseSets: [currentCourseSet, currentCourseSets],
-          countUnavailableSets: 3,
+          ...courseDetails,
           __typename: "totara_mobile_program"
         }
       }
@@ -130,7 +135,24 @@ const programMock = [
   }
 ];
 
-const programMockEmpty = [
+const certificationMock = [
+  {
+    request: {
+      query: coreCertification,
+      variables: { certificationid: 5 }
+    },
+    result: {
+      data: {
+        totara_mobile_certification: {
+          ...courseDetails,
+          __typename: "totara_mobile_certification"
+        }
+      }
+    }
+  }
+];
+
+const mockEmpty = [
   {
     request: {
       query: coreProgram,
@@ -144,7 +166,7 @@ const programMockEmpty = [
   }
 ];
 
-const programMockError = [
+const mockError = [
   {
     request: {
       query: coreProgram,
@@ -160,7 +182,7 @@ const courseSetMock = {
   endnote:
     "Many dream, some try, but only a few achieve. You have made us all proud, keep up the good work.",
   completion: {
-    statuskey: "complete",
+    statuskey: "completed",
     __typename: "totara_program_completion"
   },
   currentCourseSets: [currentCourseSet],
@@ -182,8 +204,9 @@ const courseSetListMock = {
 
 export {
   programMock,
-  programMockEmpty,
-  programMockError,
+  certificationMock,
+  mockEmpty,
+  mockError,
   courseSetMock,
   courseSetListMock,
   course

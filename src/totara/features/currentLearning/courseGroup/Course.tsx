@@ -28,9 +28,10 @@ import { navigateTo } from "@totara/lib/navigation";
 import { rowItem } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import { Images } from "@resources/images";
+import { Course as CourseType } from "@totara/types/CourseGroup";
 
 type CourseProps = {
-  course: any;
+  course: CourseType;
   navigate: any;
   testID?: string;
 };

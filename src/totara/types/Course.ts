@@ -23,7 +23,6 @@
 import { Section } from "./LearningItem";
 import { Completion } from "./Completion";
 import { Criteria } from "./Criteria";
-import { learningItemEnum } from "@totara/features/currentLearning/constants";
 
 export interface CourseContentDetails {
   course: Course;
@@ -42,7 +41,7 @@ export interface Course {
   enddate?: Date;
   lang: string;
   image?: string;
-  itemtype: learningItemEnum.Course;
+  itemtype: string;
   sections: [Section];
   criteriaaggregation: string;
   criteria?: [Criteria];

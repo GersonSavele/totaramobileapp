@@ -15,7 +15,7 @@
 
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { courseSetMock, course } from "../api/Programs.mock";
+import { courseSetMock, course } from "../api/courseGroup.mock";
 import CourseList, { LearningItems } from "../CourseList";
 
 const navigation = {
