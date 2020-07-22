@@ -17,7 +17,7 @@
 
 import * as RNFS from "react-native-fs";
 
-import { getScormPackageData } from "../offline/PackageProcessor";
+import { getScormPackageData } from "../offline/packageProcessor";
 
 const packagePath = "/packagePath";
 const firstOrg = {

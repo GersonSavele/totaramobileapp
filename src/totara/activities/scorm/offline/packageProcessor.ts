@@ -72,13 +72,14 @@ const getScosDataForPackage = (manifestDom: any) => {
         manifestDom,
         itemNode.nodeValue
       );
-
-      const sco: Sco = {
-        id: itemId,
-        organizationId: organizationId,
-        launchSrc: valLaunchUrl
-      };
-      scos.push(sco);
+      if (itemId && valLaunchUrl && organizationId) {
+        const sco: Sco = {
+          id: itemId,
+          organizationId: organizationId,
+          launchSrc: valLaunchUrl
+        };
+        scos.push(sco);
+      }
     }
   }
   return scos;

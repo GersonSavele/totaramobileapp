@@ -24,7 +24,7 @@ import { Text, BackHandler } from "react-native";
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from "react-native-static-server";
 
-import OfflineSCORMPlayer from "@totara/activities/scorm/components/OfflineSCORMPlayer";
+import OfflineScormPlayer from "@totara/activities/scorm/components/OfflineScormPlayer";
 import { Package, Grade, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { translate } from "@totara/locale";
@@ -138,8 +138,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
         client
       });
       const selectedScoId = scoid || (defaultSco && defaultSco.id!);
-      const lastActivityCmi =
-        cmiData && cmiData[selectedScoId] ? cmiData[selectedScoId] : null;
+      const lastActivityCmi = (cmiData && cmiData[selectedScoId]) || undefined;
       const cmi = getScormPlayerInitialData({
         scormId: id,
         scos,
@@ -204,7 +203,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   return (
     <>
       {url && jsCode ? (
-        <OfflineSCORMPlayer
+        <OfflineScormPlayer
           url={url}
           injectScript={jsCode}
           onExitHandler={onExitPlayerHandler}

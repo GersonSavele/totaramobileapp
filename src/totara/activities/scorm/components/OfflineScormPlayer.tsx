@@ -30,7 +30,7 @@ type Props = {
   onExitHandler?: () => void;
 };
 
-const OfflineSCORMPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
+const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const eventdata = JSON.parse(event.nativeEvent.data);
     onMessageHandler && onMessageHandler(eventdata);
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default OfflineSCORMPlayer;
+export default OfflineScormPlayer;

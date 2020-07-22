@@ -31,7 +31,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { AppState } from "@totara/types";
 import ScormSummary from "./ScormSummary";
 import { AuthContext } from "@totara/core";
-import { OfflineScormActivity } from "./offline";
+import OfflineScormActivity from "./offline/OfflineScormActivity";
 import OnlineScormActivity from "./online/OnlineScormActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
@@ -118,7 +118,8 @@ const ScormActivity = (props: ScormActivityProps) => {
     if (
       scormBundle &&
       scormBundle.scorm &&
-      scormBundle.scorm.offlineAttemptsAllowed
+      scormBundle.scorm.offlineAttemptsAllowed &&
+      scormBundle.scorm.packageUrl
     ) {
       const resource = resourceList.find((x) => x.customId === id);
       const resourceState = resource && resource.state;

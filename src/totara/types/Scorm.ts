@@ -70,9 +70,9 @@ export type ScormBundle = {
 };
 
 export type Sco = {
-  id?: string;
-  organizationId?: string;
-  launchSrc?: string;
+  id: string;
+  organizationId: string;
+  launchSrc: string;
 };
 
 export type Package = {

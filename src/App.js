@@ -27,7 +27,7 @@ import { AuthFlow } from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 import { FeatureNavigator } from "@totara/features";
-import { AttemptSynchronizer } from "@totara/activities/scorm/offline";
+import AttemptSynchronizer from "@totara/activities/scorm/offline/AttemptSynchronizer";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { config } from "@totara/lib";
 import { NAVIGATION } from "@totara/lib/navigation";

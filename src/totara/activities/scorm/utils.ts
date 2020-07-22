@@ -38,8 +38,8 @@ import {
 import {
   initializeScormWebplayer,
   isScormPlayerInitialized
-} from "@totara/activities/scorm/offline/SCORMFileHandler";
-import { getScormPackageData } from "./offline/PackageProcessor";
+} from "./offline/fileHandler";
+import { getScormPackageData } from "./offline/packageProcessor";
 
 type GetPlayerInitialDataProps = {
   scormId: string;
