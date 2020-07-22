@@ -37,7 +37,7 @@ const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
   };
 
   return (
-    <View style={styles.playerContainer}>
+    <View style={styles.playerContainer} testID={"scorm_offline_player"}>
       <WebView
         source={{ uri: url }}
         javaScriptEnabled={true}

@@ -40,7 +40,7 @@ const getScormPackageData = (packagPath: string) => {
 };
 
 /**
- * Based on the schema of SCORM 1.2 menifest file, it can be found here
+ * Based on the schema of SCORM 1.2 manifest file, it can be found here
  * https://scorm.com/wp-content/assets/SchemaDefinitionFiles/SCORM%201.2%20Schema%20Definition/imsmanifest.xml
  *
  * @param manifestDom

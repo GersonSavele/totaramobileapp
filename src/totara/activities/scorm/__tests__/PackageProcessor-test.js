@@ -88,7 +88,7 @@ const expectedData = ({ nextOrg = undefined }) => {
 const imsManifestPath = packagePath + "/imsmanifest.xml";
 
 describe("getScormPackageData", () => {
-  it("should return correct object for valid menifest xml content", async () => {
+  it("should return correct object for valid manifest xml content", async () => {
     const configInput = {
       nextOrg: secondOrg,
       defatultOrgId: firstOrg.organizationId
@@ -101,7 +101,7 @@ describe("getScormPackageData", () => {
     expect(result).toMatchObject(expectedData(configInput));
   });
 
-  it("should not return any data for invalid menifest xml content", async () => {
+  it("should not return any data for invalid manifest xml content", async () => {
     RNFS.readFile.mockImplementation(() => {
       return Promise.resolve("");
     });
@@ -129,7 +129,7 @@ describe("getScormPackageData", () => {
     }
   });
 
-  it("should return correct object for valid menifest xml content without default organization", async () => {
+  it("should return correct object for valid manifest xml content without default organization", async () => {
     const configInput = {
       nextOrg: secondOrg
     };
@@ -141,7 +141,7 @@ describe("getScormPackageData", () => {
     expect(result).toMatchObject(expectedData(configInput));
   });
 
-  it("should return single sco for valid menifest xml content with one orgainzation in the organizations without default organization", async () => {
+  it("should return single sco for valid manifest xml content with one orgainzation in the organizations without default organization", async () => {
     const configInput = {};
     RNFS.readFile.mockImplementation(() => {
       return Promise.resolve(xmlData(configInput));
