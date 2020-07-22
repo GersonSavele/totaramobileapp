@@ -25,6 +25,7 @@ import { courseSet } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import CriteriaSheet from "../CriteriaSheet";
 import NativeAccessRestriction from "../NativeAccessRestriction";
+import { learningItemEnum } from "../constants";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -58,6 +59,7 @@ const LearningItems = ({ item, navigation }: any) => {
           <ImageElement
             item={item}
             image={item.imageSrc}
+            itemType={learningItemEnum.Course}
             imageStyle={{ flex: 1 }}
           />
           <View style={courseSet.courseDetails}>

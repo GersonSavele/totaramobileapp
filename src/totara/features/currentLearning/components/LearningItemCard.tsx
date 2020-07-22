@@ -37,6 +37,7 @@ interface Props {
   cardStyle?: ViewStyle;
   children?: JSX.Element;
   image?: string;
+  itemType?: string;
 }
 
 const LearningItemCard = ({
@@ -48,7 +49,12 @@ const LearningItemCard = ({
 }: Props) => {
   return (
     <View style={{ flex: 1 }}>
-      <ImageElement item={item} imageStyle={imageStyle} image={image} />
+      <ImageElement
+        item={item}
+        imageStyle={imageStyle}
+        image={image}
+        itemType={item.itemtype}
+      />
       <CardElement item={item} cardStyle={cardStyle}>
         {children}
       </CardElement>
@@ -68,7 +74,7 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
   );
 };
 
-const ImageElement = ({ item, imageStyle, image }: Props) => {
+const ImageElement = ({ item, imageStyle, image, itemType = "" }: Props) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   return (
     <View
@@ -79,14 +85,14 @@ const ImageElement = ({ item, imageStyle, image }: Props) => {
       {image && image.length > 0 ? (
         <ImageWrapper url={image} style={styles.imageWrap} />
       ) : (
-        <DefaultImage item={item} />
+        <DefaultImage itemType={itemType} />
       )}
     </View>
   );
 };
 
-const DefaultImage = ({ item }: { item: LearningItem }) => {
-  switch (item.itemtype) {
+const DefaultImage = ({ itemType }: { itemType: string }) => {
+  switch (itemType) {
     case learningItemEnum.Course:
       return (
         <Image

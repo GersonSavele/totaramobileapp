@@ -23,7 +23,7 @@ import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
 import { CourseContentDetails } from "@totara/types";
-import { statusKey } from "@totara/types/Completion";
+import { StatusKey } from "@totara/types/Completion";
 import OverviewDetails from "../overview/OverviewDetails";
 import { TotaraTheme } from "@totara/theme/Theme";
 import LearningDetails from "../LearningDetails";
@@ -83,11 +83,11 @@ const CourseDetailsContent = ({
   const onChangeExpand = () => {
     setExpandActivities(!expandActivities);
   };
-  courseDetails.course.itemtype = learningItemEnum.Course;
   return (
     <LearningDetails
       onPullToRefresh={pullToRefresh}
-      details={courseDetails.course}
+      item={courseDetails.course}
+      itemType={learningItemEnum.Course}
       tabBarLeftTitle={translate("course.course_details.overview")}
       tabBarRightTitle={translate("course.course_details.activities")}
       onPress={onSwitchTab}
@@ -108,7 +108,7 @@ const CourseDetailsContent = ({
           {!showOverview ? (
             <View
               style={{
-                backgroundColor: TotaraTheme.colorNeutral2
+                backgroundColor: TotaraTheme.colorAccent
               }}>
               <View style={courseDetailsStyle.expandContentWrap}>
                 <Text style={courseDetailsStyle.expandTextWrap}>
@@ -144,7 +144,7 @@ const CourseDetailsContent = ({
         </View>
       </View>
       {courseDetails.course.completion &&
-        courseDetails.course.completion.statuskey === statusKey.complete && (
+        courseDetails.course.completion.statuskey === StatusKey.complete && (
           <CourseCompletionModal onClose={onClose} />
         )}
     </LearningDetails>

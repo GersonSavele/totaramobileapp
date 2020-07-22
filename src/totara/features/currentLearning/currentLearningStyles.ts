@@ -24,6 +24,7 @@ import {
 } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { deviceScreen } from "@totara/lib/tools";
+import { viewHeight } from "./constants";
 const { marginL, marginS, margin2XL } = margins;
 const { borderRadiusL, borderRadiusXS } = borderRadius;
 const {
@@ -50,9 +51,9 @@ const learningDetailsStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: TotaraTheme.colorNeutral2
   },
-  headerContainer: {
+  imageView: {
     flex: 1,
-    minHeight: deviceScreen.height * 0.3,
+    minHeight: viewHeight.LearningItemCard,
 
     backgroundColor: colorNeutral2
   },

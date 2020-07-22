@@ -5,7 +5,6 @@ exports[`Activity-Label-Type, testing UI with or without label Test result : lab
   style={
     Object {
       "justifyContent": "center",
-      "marginHorizontal": 16,
       "marginVertical": 12,
     }
   }

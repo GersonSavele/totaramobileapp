@@ -15,16 +15,16 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
-export enum statusKey {
-  completeViaRpl = "completeviarpl",
-  complete = "complete",
-  inProgress = "inprogress",
-  notYetStarted = "notyetstarted"
+export enum StatusKey {
+  completeViaRpl, // "completeviarpl",
+  complete,
+  inProgress, // "inprogress",
+  notYetStarted // "notyetstarted"
 }
 
 export interface Completion {
   id: number;
-  statuskey: statusKey;
+  statuskey: StatusKey;
   progress: number;
   timecompleted?: Date;
 }

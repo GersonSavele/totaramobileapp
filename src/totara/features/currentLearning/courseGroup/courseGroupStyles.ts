@@ -21,10 +21,12 @@ import {
   paddings,
   borderRadius,
   fontWeights,
-  row
+  row,
+  shadow
 } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { spacedFlexRow } from "@totara/lib/styles/base";
+import { viewHeight } from "../constants";
 
 const details = StyleSheet.create({
   container: {
@@ -116,10 +118,12 @@ const courseSet = StyleSheet.create({
   container: {
     margin: margins.marginL,
     width: deviceScreen.width * 0.8,
-    height: deviceScreen.height * 0.3,
+    height: viewHeight.LearningItemCard,
     minHeight: 225
   },
   learningItem: {
+    ...shadow.ios,
+    ...shadow.android,
     borderRadius: borderRadius.borderRadiusM,
     shadowOpacity: 0.1,
     shadowRadius: borderRadius.borderRadiusM,
@@ -203,8 +207,9 @@ const horizontalList = StyleSheet.create({
     paddingTop: paddings.padding2XL
   },
   listWrapper: {
+    ...shadow.android,
     borderRadius: borderRadius.borderRadiusM,
-    shadowOpacity: 0.075,
+    shadowOpacity: 0.1,
     backgroundColor: TotaraTheme.colorNeutral1
   }
 });

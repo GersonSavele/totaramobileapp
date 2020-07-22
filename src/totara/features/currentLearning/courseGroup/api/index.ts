@@ -30,16 +30,15 @@ const coreProgram = gql`
       imageSrc: mobile_image
       completion {
         id
-        statuskey
+        statusKey: statuskey
         progress
         __typename
       }
       currentCourseSets: current_coursesets {
         id
         label
-        nextsetoperator
+        nextSetOperator: nextsetoperator
         completionCriteria: criteria
-        statuskey
         courses {
           id
           itemtype
@@ -79,17 +78,16 @@ const coreCertification = gql`
       imageSrc: mobile_image
       completion {
         id
-        statuskey
-        renewalstatuskey
+        statusKey: statuskey
+        renewalStatusKey: renewalstatuskey
         progress
         __typename
       }
       currentCourseSets: current_coursesets {
         id
         label
-        nextsetoperator
+        nextSetOperator: nextsetoperator
         completionCriteria: criteria
-        statuskey
         courses {
           id
           itemtype

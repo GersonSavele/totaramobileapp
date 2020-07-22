@@ -15,6 +15,9 @@ Please contact [sales@totaralearning.com] for more information.
 *
 */
 
+import { LearningItem } from "./LearningItem";
+import { string } from "prop-types";
+
 export interface CourseGroup {
   id: number;
   fullname?: string;
@@ -35,43 +38,27 @@ export interface CourseGroup {
 export interface CourseSets {
   id: number;
   label: string;
-  nextsetoperator: string;
+  nextSetOperator: string;
   completionCriteria: [string];
-  courses: [Course];
+  courses: [LearningItem];
 }
 
-export interface Course {
-  id: number;
-  itemtype: string;
-  itemcomponent: string;
-  fullname: string;
-  shortname: string;
-  summary?: string;
-  progress: number;
-  urlView: string;
-  duedate?: Date;
-  duedateState: string;
-  native: boolean;
-  imageSrc: string;
-}
-
-export enum statusKey {
+export enum StatusKey {
   assigned = "assigned",
   completed = "completed",
   inProgress = "inprogress",
   expired = "expired"
 }
 
-export enum renewalStatusKey {
-  notdue = "notdue",
-  dueforrenewal = "dueforrenewal",
+export enum RenewalStatusKey {
+  notDue = "notdue",
+  dueForRenewal = "dueforrenewal",
   expired = "expired"
 }
 
 export interface Completion {
   id: number;
-  statuskey: statusKey;
+  statusKey: StatusKey;
   progress: number;
-  timecompleted?: Date;
-  renewalstatuskey?: renewalStatusKey;
+  renewalStatusKey?: RenewalStatusKey;
 }

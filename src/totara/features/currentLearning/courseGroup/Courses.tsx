@@ -18,7 +18,7 @@ import { View, TouchableOpacity, Text } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import CourseSet from "./CourseSet";
 import CourseSetList from "./CourseSetList";
-import { CourseGroup, statusKey } from "@totara/types/CourseGroup";
+import { CourseGroup, StatusKey } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
 import { courses } from "./courseGroupStyles";
 import { CourseSets } from "@totara/types/CourseGroup";
@@ -48,11 +48,11 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
                 testID={"test_course_set_list"}
               />
             )}
-            {item[item.length - 1].nextsetoperator && (
+            {item[item.length - 1] && item[item.length - 1].nextSetOperator && (
               <View style={courses.nextSet}>
                 <View style={courses.separator} />
                 <Text style={courses.nextSetText}>
-                  {item[item.length - 1].nextsetoperator}
+                  {item[item.length - 1].nextSetOperator}
                 </Text>
                 <View style={courses.separator} />
               </View>
@@ -60,7 +60,7 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
           </View>
         );
       })}
-      {courseGroup.completion.statuskey === statusKey.completed && (
+      {courseGroup.completion.statusKey === StatusKey.completed && (
         <Completed
           endnote={courseGroup.endnote}
           navigation={navigation}

@@ -191,7 +191,7 @@ const ActivityList = ({
 }: ActivityListProps) => {
   return (
     <View>
-      <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
+      <View style={activitiesStyles.activityList}>
         <ActivityTextContent label={sectionSummary}></ActivityTextContent>
       </View>
       {data!.map((item: Activity, key: number) => {
@@ -227,26 +227,26 @@ const ListItemUnlock = ({
   if (data) {
     courseRefreshCallBack!();
   }
-  return item.modtype == "label" ? (
-    <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
-      <ActivityTextContent label={item.description}></ActivityTextContent>
-    </View>
-  ) : (
-    <View style={{ backgroundColor: TotaraTheme.colorAccent }}>
+  const isLabel = item.modtype === activityModType.label;
+
+  const onClickSelfComplete = () => {
+    selfComplete({
+      variables: {
+        cmid: item.id,
+        complete: item.completionstatus === completionStatus.incomplete
+      }
+    });
+  };
+  return (
+    <View
+      style={{
+        backgroundColor: !isLabel
+          ? TotaraTheme.colorAccent
+          : TotaraTheme.colorSecondary1
+      }}>
       <View style={activitiesStyles.itemContentWrapper}>
         {item.completion === completionTrack.trackingManual ? (
-          <TouchableOpacity
-            onPress={() =>
-              selfComplete({
-                variables: {
-                  cmid: item.id,
-                  complete:
-                    item.completionstatus == completionStatus.incomplete
-                      ? true
-                      : false
-                }
-              })
-            }>
+          <TouchableOpacity onPress={onClickSelfComplete}>
             <CompletionIcon
               completion={item.completion}
               status={item.completionstatus}
@@ -275,6 +275,9 @@ const ListItemUnlock = ({
                 });
                 break;
               }
+              case activityModType.label: {
+                break;
+              }
               default: {
                 navigateTo({
                   navigate: navigation.navigate,
@@ -287,12 +290,14 @@ const ListItemUnlock = ({
               }
             }
           }}>
-          <RowContainer item={item} />
+          {!isLabel ? (
+            <ListItem item={item} />
+          ) : (
+            <ActivityTextContent label={item.description} />
+          )}
         </TouchableOpacity>
       </View>
-      <View>
-        <Separator />
-      </View>
+      <View>{!isLabel && <Separator />}</View>
       {error && <GeneralErrorModal siteUrl="" />}
     </View>
   );
@@ -316,7 +321,7 @@ const ListItemLock = ({ item }: { item: Activity }) => {
               status={item.completionstatus}
               available={item.available}
             />
-            <RowContainer item={item} />
+            <ListItem item={item} />
           </View>
         </TouchableOpacity>
         {show && (
@@ -332,7 +337,7 @@ const ListItemLock = ({ item }: { item: Activity }) => {
   );
 };
 
-const RowContainer = ({ item }: { item: Activity }) => {
+const ListItem = ({ item }: { item: Activity }) => {
   return (
     <View style={activitiesStyles.itemTextContainer}>
       <Text numberOfLines={1} style={activitiesStyles.itemTitle}>

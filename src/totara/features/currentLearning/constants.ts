@@ -13,6 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  *
  */
+import { deviceScreen } from "@totara/lib/tools";
 
 enum learningItemEnum {
   Course = "course",
@@ -39,7 +40,8 @@ enum courseCriteria {
 }
 
 enum activityModType {
-  scorm = "scorm"
+  scorm = "scorm",
+  label = "label"
 }
 
 enum completionIconStateKey {
@@ -50,11 +52,16 @@ enum completionIconStateKey {
   completeFail = "completeFail"
 }
 
+enum viewHeight {
+  LearningItemCard = deviceScreen.height * 0.3
+}
+
 export {
   learningItemEnum,
   completionTrack,
   completionStatus,
   courseCriteria,
   completionIconStateKey,
-  activityModType
+  activityModType,
+  viewHeight
 };

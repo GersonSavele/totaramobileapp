@@ -25,10 +25,12 @@ import { learningDetailsStyles } from "./currentLearningStyles";
 import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { fontWeights } from "@totara/theme/constants";
-import { deviceScreen } from "@totara/lib/tools";
+import { viewHeight } from "./constants";
+import { CourseGroup, Course, LearningItem } from "@totara/types";
 
-type Props = {
-  details: any;
+type LearningDetailsProps = {
+  item: Course | CourseGroup | LearningItem;
+  itemType: string;
   children: ReactNode;
   tabBarLeftTitle: string;
   tabBarRightTitle: string;
@@ -40,8 +42,77 @@ type Props = {
   navigation: NavigationStackProp;
 };
 
+type TitleBarProps = {
+  item: LearningItem;
+  badgeTitle: string;
+};
+
+const TitleBar = ({ item, badgeTitle }: TitleBarProps) => {
+  return (
+    <CardElement
+      item={item as LearningItem}
+      cardStyle={learningDetailsStyles.itemCard}>
+      <View style={learningDetailsStyles.LearningTypeLabelWrap}>
+        <Text style={learningDetailsStyles.programLabelText}>{badgeTitle}</Text>
+      </View>
+    </CardElement>
+  );
+};
+
+type TabBarProps = {
+  onPress: () => void;
+  overviewIsShown: boolean;
+  tabBarLeftTitle: string;
+  tabBarRightTitle: string;
+};
+
+const TabBar = ({
+  onPress,
+  overviewIsShown,
+  tabBarLeftTitle,
+  tabBarRightTitle
+}: TabBarProps) => {
+  return (
+    <View style={[{ backgroundColor: TotaraTheme.colorNeutral2 }]}>
+      <View style={[learningDetailsStyles.tabBarContainer]}>
+        <View style={learningDetailsStyles.tabNav}>
+          <TouchableOpacity
+            style={[
+              learningDetailsStyles.tabSelected,
+              overviewIsShown && { ...styles.overviewTouchableOpacity }
+            ]}
+            onPress={onPress}>
+            <Text
+              style={[
+                styles.tabViewTitle,
+                overviewIsShown && styles.overviewTextTouchableOpacity
+              ]}>
+              {tabBarLeftTitle}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              learningDetailsStyles.tabSelected,
+              !overviewIsShown && { ...styles.overviewTouchableOpacity }
+            ]}
+            onPress={onPress}>
+            <Text
+              style={[
+                styles.tabViewTitle,
+                !overviewIsShown && { ...styles.overviewTextTouchableOpacity }
+              ]}>
+              {tabBarRightTitle}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
+
 const LearningDetails = ({
-  details,
+  item,
+  itemType,
   children,
   tabBarLeftTitle,
   tabBarRightTitle,
@@ -51,7 +122,7 @@ const LearningDetails = ({
   image,
   onPullToRefresh,
   navigation
-}: Props) => {
+}: LearningDetailsProps) => {
   //To Do: Bug in NetInfo library, useNetInfo - isConnected initial state is false(phone and simulator):
   //https://github.com/react-native-community/react-native-netinfo/issues/295
   const [isConnected, setIsConnected] = useState<boolean>(true);
@@ -63,79 +134,40 @@ const LearningDetails = ({
     });
   }, []);
 
-  const renderHeaderTitle = () => {
-    return (
-      <CardElement item={details} cardStyle={learningDetailsStyles.itemCard}>
-        <View style={learningDetailsStyles.LearningTypeLabelWrap}>
-          <Text style={learningDetailsStyles.programLabelText}>
-            {badgeTitle}
-          </Text>
-        </View>
-      </CardElement>
-    );
-  };
+  const renderTitleBar = () => (
+    <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />
+  );
 
-  const renderNavigationTab = () => {
-    return (
-      <View style={[{ backgroundColor: TotaraTheme.colorNeutral2 }]}>
-        <View style={[learningDetailsStyles.tabBarContainer]}>
-          <View style={learningDetailsStyles.tabNav}>
-            <TouchableOpacity
-              style={[
-                learningDetailsStyles.tabSelected,
-                overviewIsShown && { ...styles.overviewTouchableOpacity }
-              ]}
-              onPress={onPress}>
-              <Text
-                style={[
-                  styles.tabViewTitle,
-                  overviewIsShown && styles.overviewTextTouchableOpacity
-                ]}>
-                {tabBarLeftTitle}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                learningDetailsStyles.tabSelected,
-                !overviewIsShown && { ...styles.overviewTouchableOpacity }
-              ]}
-              onPress={onPress}>
-              <Text
-                style={[
-                  styles.tabViewTitle,
-                  !overviewIsShown && { ...styles.overviewTextTouchableOpacity }
-                ]}>
-                {tabBarRightTitle}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  };
+  const renderTabBar = () => (
+    <TabBar
+      onPress={onPress}
+      overviewIsShown={overviewIsShown}
+      tabBarLeftTitle={tabBarLeftTitle}
+      tabBarRightTitle={tabBarRightTitle}
+    />
+  );
 
-  const renderHeaderBackground = () => {
-    return (
-      <View style={learningDetailsStyles.headerContainer}>
-        <ImageElement item={details} image={image} />
-      </View>
-    );
-  };
+  const renderImage = () => (
+    <ImageElement
+      item={item as LearningItem}
+      image={image}
+      itemType={itemType}
+      imageStyle={learningDetailsStyles.imageView}
+    />
+  );
 
   return (
     <View style={learningDetailsStyles.container}>
       <ParallaxScrollView
         onPullToRefresh={onPullToRefresh}
-        parallaxHeaderHeight={deviceScreen.height * 0.3}
-        renderBackground={renderHeaderBackground}
-        titleBar={renderHeaderTitle}
-        tabBar={renderNavigationTab}
+        parallaxHeaderHeight={viewHeight.LearningItemCard}
+        renderBackground={renderImage}
+        titleBar={renderTitleBar}
+        tabBar={renderTabBar}
         onChangeHeaderVisibility={(headerValue: number) => {
-          navigation!.setParams({ title: details.fullname });
-
+          navigation!.setParams({ title: item.fullname });
           const expectedOpacity = headerValue > 0 ? 1 : 0;
           const currentOpacity = navigation!.getParam("opacity");
-
           if (expectedOpacity !== currentOpacity) {
             navigation!.setParams({ opacity: expectedOpacity });
           }

@@ -59,20 +59,18 @@ const currentCourseSets = [
   {
     id: "10",
     label: "Course Set A",
-    nextsetoperator: "AND",
+    nextSetOperator: "AND",
     completionCriteria: [
       "All courses in this set must be completed (unless this is an optional set)."
     ],
-    statuskey: "incomplete",
     courses: [course],
     __typename: "totara_mobile_program_courseset"
   },
   {
     id: "22",
     label: "Node Js",
-    nextsetoperator: "THEN",
+    nextSetOperator: "THEN",
     completionCriteria: ["Any one course in this set must be completed."],
-    statuskey: "incomplete",
     courses: [coursesList],
     __typename: "totara_mobile_program_courseset"
   }
@@ -82,11 +80,10 @@ const currentCourseSet = [
   {
     id: "10",
     label: "Course Set A",
-    nextsetoperator: "OR",
+    nextSetOperator: "OR",
     completionCriteria: [
       "All courses in this set must be completed (unless this is an optional set)."
     ],
-    statuskey: "incomplete",
     courses: [course],
     __typename: "totara_mobile_program_courseset"
   }
@@ -109,9 +106,9 @@ const courseDetails = {
   imageSrc: null,
   completion: {
     id: "24",
-    statuskey: "incomplete",
+    statusKey: "incomplete",
     progress: 4,
-    renewalstatuskey: "notdue",
+    renewalStatusKey: "notdue",
     __typename: "totara_program_completion"
   },
   currentCourseSets: [currentCourseSet, currentCourseSets],
@@ -182,7 +179,7 @@ const courseSetMock = {
   endnote:
     "Many dream, some try, but only a few achieve. You have made us all proud, keep up the good work.",
   completion: {
-    statuskey: "completed",
+    statusKey: "completed",
     __typename: "totara_program_completion"
   },
   currentCourseSets: [currentCourseSet],
@@ -194,7 +191,7 @@ const courseSetListMock = {
   endnote:
     "Many dream, some try, but only a few achieve. You are an achiever. You have made us all proud, keep up the good work.",
   completion: {
-    statuskey: "incomplete",
+    statusKey: "incomplete",
     __typename: "totara_program_completion"
   },
   currentCourseSets: [currentCourseSets],

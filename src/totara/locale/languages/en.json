@@ -134,7 +134,7 @@
       "activities": "ACTIVITIES",
       "overview": "OVERVIEW",
       "expand_or_collapse": "Expand all",
-      "badge_title":"course"
+      "badge_title":"Course"
     },
     "course_activity_section": {
       "not_available": "Not available"
@@ -147,8 +147,8 @@
       "courses": "COURSES"
     },
     "details":{
-     "badge_title_program":"program",
-     "badge_title_certification":"certification"
+     "badge_title_program":"Program",
+     "badge_title_certification":"Certification"
     },
     "overview":{
       "summary_title_program":"Program Summary",

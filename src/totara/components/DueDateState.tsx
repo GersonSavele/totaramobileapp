@@ -22,7 +22,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import moment from "moment";
 import React from "react";
-
+import { paddings } from "@totara/theme/constants";
 import { translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -79,7 +79,7 @@ enum DueDateStateStatus {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    padding: 8,
+    padding: paddings.paddingL,
     flexWrap: "wrap",
     alignItems: "center"
   }

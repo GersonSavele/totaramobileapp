@@ -15,12 +15,18 @@
  */
 
 import { StyleSheet } from "react-native";
-import { margins, fontWeights } from "@totara/theme/constants";
+import { margins, fontWeights, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 
-const { marginL } = margins;
-const { textRegular, colorAccent, textHeadline, colorLink } = TotaraTheme;
+const { marginL, marginM } = margins;
+const {
+  textRegular,
+  colorAccent,
+  colorLink,
+  textMedium,
+  colorSecondary1
+} = TotaraTheme;
 
 const activitiesStyles = StyleSheet.create({
   itemTitle: {
@@ -36,7 +42,6 @@ const activitiesStyles = StyleSheet.create({
   },
   itemTouchableContent: {
     flexDirection: "column",
-    backgroundColor: colorAccent,
     flex: 1
   },
   itemContentWrapper: {
@@ -60,13 +65,12 @@ const activitiesStyles = StyleSheet.create({
     margin: margins.marginS
   },
   sectionTitle: {
-    ...textHeadline,
-    fontWeight: fontWeights.fontWeightBold,
+    ...textMedium,
+    fontWeight: fontWeights.fontWeightSemiBold,
     flex: 2
   },
   labelContainer: {
-    marginHorizontal: margins.marginL,
-    marginVertical: margins.marginM,
+    marginVertical: marginM,
     justifyContent: "center"
   },
   labelTextDescription: {
@@ -76,7 +80,11 @@ const activitiesStyles = StyleSheet.create({
   listItemLockContainer: {
     flex: 1,
     backgroundColor: colorAccent,
-    paddingRight: 32
+    paddingRight: paddings.padding3XL
+  },
+  activityList: {
+    backgroundColor: colorSecondary1,
+    marginStart: marginL
   }
 });
 

@@ -69,7 +69,6 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
 
   if (data) {
     const courseGroup = data[typeMap.queryAlias] as CourseGroup;
-    courseGroup.itemtype = courseGroupType;
     return (
       <CourseGroupDetailsContent
         courseGroup={courseGroup}
@@ -77,6 +76,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
         navigation={navigation}
         testID={"test_data"}
         badgeTitle={typeMap.badgeTitle}
+        itemType={courseGroupType}
       />
     );
   }
@@ -88,6 +88,7 @@ type CourseGroupDetailsContentProps = {
   navigation: NavigationStackProp;
   testID?: string;
   badgeTitle: string;
+  itemType: string;
 };
 
 const CourseGroupDetailsContent = ({
@@ -95,7 +96,8 @@ const CourseGroupDetailsContent = ({
   onContentRefresh,
   navigation,
   testID,
-  badgeTitle
+  badgeTitle,
+  itemType
 }: CourseGroupDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
@@ -105,7 +107,8 @@ const CourseGroupDetailsContent = ({
   return (
     <View testID={testID} style={{ flex: 1 }}>
       <LearningDetails
-        details={courseGroup}
+        item={courseGroup}
+        itemType={itemType}
         tabBarLeftTitle={translate("course_group.tabs.overview")}
         tabBarRightTitle={translate("course_group.tabs.courses")}
         onPress={onSwitchTab}
