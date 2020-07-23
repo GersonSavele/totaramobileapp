@@ -17,6 +17,7 @@ import { AuthenticatedWebView } from "@totara/auth";
 import { translate } from "@totara/locale";
 import { NavigationStackProp } from "react-navigation-stack";
 import { onlineScormActivityStyles } from "@totara/theme/scorm";
+import { TEST_ID } from "../constants";
 
 type OnlineScormParams = {
   uri: string;
@@ -26,6 +27,8 @@ type OnlineScormParams = {
 type OnlineScormProps = {
   navigation: NavigationStackProp<OnlineScormParams>;
 };
+
+const { INVALID_URL, ONLINE_PLAYER } = TEST_ID;
 
 const OnlineScormActivity = ({ navigation }: OnlineScormProps) => {
   const { backAction, uri } = navigation.state.params as OnlineScormParams;
@@ -39,14 +42,12 @@ const OnlineScormActivity = ({ navigation }: OnlineScormProps) => {
 
   if (!uri)
     return (
-      <Text testID={"scorm_online_error"}>
-        {translate("general.error_unknown")}
-      </Text>
+      <Text testID={INVALID_URL}>{translate("general.error_unknown")}</Text>
     );
   return (
     <View
       style={onlineScormActivityStyles.playerContainer}
-      testID={"scorm_online_player"}>
+      testID={ONLINE_PLAYER}>
       <AuthenticatedWebView uri={uri} />
     </View>
   );

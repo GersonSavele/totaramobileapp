@@ -49,6 +49,7 @@ import {
   loadScormPackageData
 } from "../utils";
 import { scormLessonStatus } from "@totara/lib/constants";
+import { TEST_ID } from "../constants";
 
 type OfflineScormParams = {
   attempt: number;
@@ -60,7 +61,7 @@ type OfflineScormParams = {
 type OfflineScormProps = {
   navigation: NavigationStackProp<OfflineScormParams>;
 };
-
+const { NONE_EXIST_RESOURCE, INVALID_SCORM } = TEST_ID;
 const getResources = (state: RootState) => state.resourceReducer.resources;
 
 const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
@@ -68,9 +69,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
     .params as OfflineScormParams;
   if (!scorm || !scorm.id) {
     return (
-      <Text testID={"test_invalid_scorm"}>
-        {translate("general.error_unknown")}
-      </Text>
+      <Text testID={INVALID_SCORM}>{translate("general.error_unknown")}</Text>
     );
   }
 
@@ -82,7 +81,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   );
   if (!targetResource) {
     return (
-      <Text testID={"test_non_exist_resource"}>
+      <Text testID={NONE_EXIST_RESOURCE}>
         {translate("general.error_unknown")}
       </Text>
     );
@@ -138,7 +137,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
         client
       });
       const selectedScoId = scoid || (defaultSco && defaultSco.id!);
-      const lastActivityCmi = (cmiData && cmiData[selectedScoId]) || undefined;
+      const lastActivityCmi = (cmiData && cmiData[selectedScoId]) || null;
       const cmi = getScormPlayerInitialData({
         scormId: id,
         scos,
@@ -210,7 +209,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
           onMessageHandler={onPlayerMessageHandler}
         />
       ) : (
-        <Text testID={"text_player_loading"}>Player loading......</Text>
+        <Text>{translate("general.loading")}</Text>
       )}
     </>
   );

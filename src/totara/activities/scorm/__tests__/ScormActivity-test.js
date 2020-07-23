@@ -25,7 +25,9 @@ import { downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/down
 import ScormActivity from "../ScormActivity";
 import { scormSuccessMock } from "../api/scorm.mock";
 import { AuthContext } from "@totara/core";
+import { TEST_ID } from "../constants";
 
+const { SUMMARY, LOADING } = TEST_ID;
 describe("ScormActivity", () => {
   const authContextState = {
     appState: {
@@ -73,13 +75,13 @@ describe("ScormActivity", () => {
     );
     const { getByTestId } = render(tree);
 
-    const viewLoading = getByTestId("scorm_loading");
+    const viewLoading = getByTestId(LOADING);
     expect(viewLoading).toBeTruthy();
 
     await act(async () => {
       await wait(0);
     });
-    const view = getByTestId("scorm_summary");
+    const view = getByTestId(SUMMARY);
     expect(view).toBeTruthy();
     done();
   });

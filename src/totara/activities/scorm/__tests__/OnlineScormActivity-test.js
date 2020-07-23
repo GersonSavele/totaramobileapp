@@ -18,6 +18,9 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import OnlineScormActivity from "../online/OnlineScormActivity";
+import { TEST_ID } from "../constants";
+
+const { INVALID_URL, ONLINE_PLAYER } = TEST_ID;
 
 const mockBackHandler = jest.fn(() => null);
 const onlineNavigation = (url) => ({
@@ -41,7 +44,7 @@ describe("OnlineScormActivity", () => {
       />
     );
     expect(
-      wrapper.findWhere((node) => node.prop("testID") === "scorm_online_player")
+      wrapper.findWhere((node) => node.prop("testID") === ONLINE_PLAYER)
     ).toExist();
   });
   it("Should render error text component for empty url", () => {
@@ -51,7 +54,7 @@ describe("OnlineScormActivity", () => {
       />
     );
     expect(
-      wrapper.findWhere((node) => node.prop("testID") === "scorm_online_error")
+      wrapper.findWhere((node) => node.prop("testID") === INVALID_URL)
     ).toExist();
   });
 });

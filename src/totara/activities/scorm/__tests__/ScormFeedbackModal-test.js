@@ -2,6 +2,9 @@ import React from "react";
 import ScormFeedbackModal from "../components/ScormFeedbackModal";
 import { render } from "@testing-library/react-native";
 import { Grade } from "@totara/types/Scorm";
+import { TEST_ID } from "../constants";
+
+const { FEEDBACK_COMPLETION_IMAGE, FEEDBACK_SCORE } = TEST_ID;
 
 describe("ScormFeedbackModal", () => {
   it("Should render the feedback with the tick image because the score is not required", async () => {
@@ -18,7 +21,7 @@ describe("ScormFeedbackModal", () => {
       <ScormFeedbackModal navigation={navigation} />
     );
 
-    const view = getByTestId("scorm_feedback_completed_image");
+    const view = getByTestId(FEEDBACK_COMPLETION_IMAGE);
     expect(view).toBeTruthy();
   });
 
@@ -37,7 +40,7 @@ describe("ScormFeedbackModal", () => {
       <ScormFeedbackModal navigation={navigation} />
     );
 
-    const view = getByTestId("scorm_feedback_score_value");
+    const view = getByTestId(FEEDBACK_SCORE);
     expect(view.children[0]).toBe(`${navigation.state.params.score}%`);
   });
 
@@ -56,7 +59,7 @@ describe("ScormFeedbackModal", () => {
       <ScormFeedbackModal navigation={navigation} />
     );
 
-    const view = getByTestId("scorm_feedback_score_value");
+    const view = getByTestId(FEEDBACK_SCORE);
     expect(view.children[0]).toBe(navigation.state.params.score.toString());
   });
 });

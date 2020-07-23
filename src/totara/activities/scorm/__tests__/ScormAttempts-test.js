@@ -20,6 +20,9 @@ import { render } from "@testing-library/react-native";
 
 import ScormAttempts from "../ScormAttempts";
 import { Grade } from "@totara/types/Scorm";
+import { TEST_ID } from "../constants";
+
+const { ATTEMPTS_LIST, ATTEMPT_ITEM } = TEST_ID;
 
 const attemptNavigation = (attempts) => ({
   state: {
@@ -55,24 +58,24 @@ describe("ScormAttempts", () => {
     const { getByTestId, getAllByTestId } = render(
       <ScormAttempts navigation={attemptNavigation(existingAttempts)} />
     );
-    const viewListAttempts = getByTestId("attempts_list");
-    const viewAttemptItems = getAllByTestId("attempt_item");
+    const viewListAttempts = getByTestId(ATTEMPTS_LIST);
+    const viewAttemptItems = getAllByTestId(ATTEMPT_ITEM);
     expect(viewListAttempts).toBeTruthy();
     expect(viewAttemptItems.length).toBe(2);
   });
   it("Should render empty attempts result list for empty/undefined or null attempts", async () => {
     let tree = render(<ScormAttempts navigation={attemptNavigation([])} />);
-    let viewListAttempts = tree.getByTestId("attempts_list");
+    let viewListAttempts = tree.getByTestId(ATTEMPTS_LIST);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();
 
     tree = render(<ScormAttempts navigation={attemptNavigation()} />);
-    viewListAttempts = tree.getByTestId("attempts_list");
+    viewListAttempts = tree.getByTestId(ATTEMPTS_LIST);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();
 
     tree = render(<ScormAttempts navigation={attemptNavigation(null)} />);
-    viewListAttempts = tree.getByTestId("attempts_list");
+    viewListAttempts = tree.getByTestId(ATTEMPTS_LIST);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();
   });

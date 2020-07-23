@@ -25,6 +25,7 @@ import { scormFeedbackStyles } from "@totara/theme/scorm";
 import { Grade } from "@totara/types/Scorm";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { NavigationStackProp } from "react-navigation-stack";
+import { TEST_ID } from "../constants";
 
 type SCORMFeedbackProps = {
   score: string;
@@ -35,6 +36,9 @@ type SCORMFeedbackProps = {
 type FeedbackProps = {
   navigation: NavigationStackProp<SCORMFeedbackProps>;
 };
+
+const { FEEDBACK_COMPLETION_IMAGE, FEEDBACK_SCORE } = TEST_ID;
+
 const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
   const { gradeMethod, completionScoreRequired, score, onClose } = navigation
     .state.params as SCORMFeedbackProps;
@@ -48,7 +52,7 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
               {completionScoreRequired === undefined ||
               completionScoreRequired === null ? (
                 <Image
-                  testID={"scorm_feedback_completed_image"}
+                  testID={FEEDBACK_COMPLETION_IMAGE}
                   style={scormFeedbackStyles.resultStatusImage}
                   source={require("@resources/images/success_tick/success_tick.png")}
                 />
@@ -62,7 +66,7 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
                     {translate("scorm.feedback.grade_title")}
                   </Text>
                   <Text
-                    testID={"scorm_feedback_score_value"}
+                    testID={FEEDBACK_SCORE}
                     style={{
                       ...TotaraTheme.textH1,
                       ...scormFeedbackStyles.scoreText

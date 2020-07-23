@@ -30,6 +30,7 @@ import { fullFlex } from "@totara/lib/styles/base";
 import { scormAttemptsStyles } from "@totara/theme/scorm";
 import { fontWeights } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { TEST_ID } from "./constants";
 
 type AttemptsParams = {
   gradeMethod: Grade;
@@ -39,6 +40,8 @@ type AttemptsParams = {
 type ScormActivityProps = {
   navigation: NavigationStackProp<AttemptsParams>;
 };
+
+const { ATTEMPTS_LIST, ATTEMPT_ITEM } = TEST_ID;
 
 const ScormAttempts = ({ navigation }: ScormActivityProps) => {
   const { gradeMethod, attempts } = navigation.state.params as AttemptsParams;
@@ -75,7 +78,7 @@ const ScormAttempts = ({ navigation }: ScormActivityProps) => {
         alwaysBounceVertical={false}
         scrollIndicatorInsets={{ right: 8 }}
         keyExtractor={(item, index) => `${(item as Attempt).attempt}-${index}`}
-        testID={"attempts_list"}
+        testID={ATTEMPTS_LIST}
       />
     </SafeAreaView>
   );
@@ -101,7 +104,7 @@ const AttemptReport = ({
       : `${calculatedScore}%`;
 
   return (
-    <View style={scormAttemptsStyles.holder} testID={"attempt_item"}>
+    <View style={scormAttemptsStyles.holder} testID={ATTEMPT_ITEM}>
       <Text style={[theme.textRegular, scormAttemptsStyles.attempt]}>
         {translate("scorm.attempts.attempt")} {attempt}
       </Text>

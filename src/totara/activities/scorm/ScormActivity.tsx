@@ -56,6 +56,7 @@ import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
 import { getTargetZipFile, getOfflinePackageUnzipPath } from "./utils";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
+import { TEST_ID } from "./constants";
 
 const { download } = ResourceManager;
 
@@ -71,6 +72,8 @@ const {
 type ScormActivityProps = {
   navigation: NavigationStackProp<ScormActivityParams>;
 };
+
+const { SUMMARY, LOADING } = TEST_ID;
 
 const ScormActivity = (props: ScormActivityProps) => {
   const { navigation } = props;
@@ -170,8 +173,6 @@ const ScormActivity = (props: ScormActivityProps) => {
         ...scormBundle,
         ...mergedData,
         offlineAttempts: offlineAttempts
-        //TODO: remove timestamp if the user is online
-        //lastsynced: 0
       });
     }
   }, [data]);
@@ -185,10 +186,10 @@ const ScormActivity = (props: ScormActivityProps) => {
   };
 
   if (loading && !(scormBundle && scormBundle.scorm)) {
-    return <Loading testID={"scorm_loading"} />;
+    return <Loading testID={LOADING} />;
   }
   return (
-    <SafeAreaView style={fullFlex} testID={"scorm_summary"}>
+    <SafeAreaView style={fullFlex} testID={SUMMARY}>
       <ScormSummary
         id={id}
         navigation={navigation}

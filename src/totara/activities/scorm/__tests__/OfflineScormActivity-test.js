@@ -17,15 +17,19 @@
 
 import React from "react";
 import * as redux from "react-redux";
-import OfflineScormActivity from "../offline/OfflineScormActivity";
 import { render } from "@testing-library/react-native";
 import { translate } from "@totara/locale";
+
+import OfflineScormActivity from "../offline/OfflineScormActivity";
+import { TEST_ID } from "../constants";
 
 const mockScormActivityNavigation = {
   attempt: 1,
   scoid: "1",
   backAction: jest.fn()
 };
+
+const { NONE_EXIST_RESOURCE, INVALID_SCORM } = TEST_ID;
 
 describe("OfflineScormActivity", () => {
   it("Should render TEXT general error for non existing scorm or scorm.id", async () => {
@@ -39,7 +43,7 @@ describe("OfflineScormActivity", () => {
     };
     const tree = <OfflineScormActivity navigation={navigation} />;
     const { getByTestId } = render(tree);
-    const labelTitle = getByTestId("test_invalid_scorm");
+    const labelTitle = getByTestId(INVALID_SCORM);
     expect(labelTitle.children[0]).toBe(translate("general.error_unknown"));
   });
 
@@ -61,7 +65,7 @@ describe("OfflineScormActivity", () => {
 
     const tree = <OfflineScormActivity navigation={navigation} />;
     const { getByTestId } = render(tree);
-    const labelTitleNo = getByTestId("test_non_exist_resource");
+    const labelTitleNo = getByTestId(NONE_EXIST_RESOURCE);
     expect(labelTitleNo.children[0]).toBe(translate("general.error_unknown"));
   });
 });
