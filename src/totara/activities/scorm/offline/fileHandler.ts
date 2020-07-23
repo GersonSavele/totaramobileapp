@@ -25,14 +25,14 @@ import { offlineScormServerRoot } from "@totara/lib/constants";
 
 const getPackageContent = () =>
   Platform.OS === "android"
-    ? RNFS.readDirAssets(SCORMPlayerPackagePath)
-    : RNFS.readDir(SCORMPlayerPackagePath);
+    ? RNFS.readDirAssets(getScormPlayerPackagePath())
+    : RNFS.readDir(getScormPlayerPackagePath());
 
 const initializeScormWebplayer = () => {
   return RNFS.mkdir(offlineScormServerRoot).then(() => {
     return getPackageContent().then((result) => {
       if (result && result.length) {
-        let promisesToCopyFiles = [];
+        let promisesToCopyFiles: [Promise<void>?] = [];
         for (let i = 0; i < result.length; i++) {
           const itemPathFrom = result[i].path;
           const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
@@ -55,7 +55,7 @@ const initializeScormWebplayer = () => {
       } else {
         throw new Error(
           "Cannot find any content in the location (" +
-            SCORMPlayerPackagePath +
+            getScormPlayerPackagePath() +
             ")"
         );
       }
@@ -66,22 +66,18 @@ const initializeScormWebplayer = () => {
 const isScormPlayerInitialized = () => {
   return getPackageContent().then((result) => {
     if (result && result.length) {
-      let promisesToExistFiles = [];
+      const promisesToExistFiles = <Promise<Boolean>[]>[];
       for (let i = 0; i < result.length; i++) {
         const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
         promisesToExistFiles.push(RNFS.exists(itemPathTo));
       }
       return Promise.all(promisesToExistFiles).then((resultExistsFiles) => {
-        if (resultExistsFiles && resultExistsFiles.length) {
-          for (let index = 0; index < resultExistsFiles.length; index++) {
-            if (!resultExistsFiles[index]) {
-              return false;
-            }
+        for (let index = 0; index < resultExistsFiles.length; index++) {
+          if (!resultExistsFiles[index]) {
+            return false;
           }
-          return true;
-        } else {
-          throw new Error("No files found.");
         }
+        return true;
       });
     } else {
       throw new Error("No package content found.");
@@ -89,7 +85,7 @@ const isScormPlayerInitialized = () => {
   });
 };
 
-const SCORMPlayerPackagePath =
-  Platform.OS === "android" ? "html" : RNFS.MainBundlePath + "/html";
+const getScormPlayerPackagePath = () =>
+  Platform.OS === "android" ? `html` : `${RNFS.MainBundlePath}/html`;
 
 export { initializeScormWebplayer, isScormPlayerInitialized };
