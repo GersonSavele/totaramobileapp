@@ -19,6 +19,9 @@ import { borderRadius, margins, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { ProgressCircle } from "@totara/components";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
+import moment from "moment";
+import { DATE_FORMAT } from "@totara/lib/constants";
+import { translate } from "@totara/locale";
 
 type CurrentLearningListViewProps = {
   currentLearning?: any;
@@ -27,8 +30,30 @@ type CurrentLearningListViewProps = {
 };
 
 const ListViewItem = (item) => {
-  console.log(item);
-  const { shortname, progress, itemtype } = item;
+  const { shortname, progress, itemtype, duedate, duedateState } = item;
+
+  const DueDateWidget = (dueDate, dueDateState) => {
+    if (!dueDate) return <View testID={"test_noDueDate"} />;
+
+    console.log(dueDateState);
+    const color =
+      dueDateState === "danger"
+        ? TotaraTheme.colorAlert
+        : dueDateState === "warning"
+        ? TotaraTheme.colorWarning
+        : TotaraTheme.colorInfo;
+    const text =
+      dueDateState === "danger" ? translate("current_learning.overdue_by") : translate("current_learning.due_in");
+
+    return (
+      <View>
+        <Text testID={"test_dueDate"} style={{ ...currentLearningListViewStyles.dueDate, color: color }}>
+          {`${text} ${moment(dueDate).toNow(true)}`}
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <View style={currentLearningListViewStyles.itemContainer}>
       <View style={currentLearningListViewStyles.itemImage} />
@@ -36,7 +61,7 @@ const ListViewItem = (item) => {
         <Text style={currentLearningListViewStyles.itemTitle}>{shortname}</Text>
         <View style={currentLearningListViewStyles.itemSubLine}>
           <Text style={currentLearningListViewStyles.itemLearningTypeLabel}>{capitalizeFirstLetter(itemtype)}</Text>
-          <Text>Overdue by 1 week</Text>
+          {DueDateWidget(duedate, duedateState)}
         </View>
       </View>
       <View style={currentLearningListViewStyles.itemProgress}>
@@ -101,6 +126,9 @@ const currentLearningListViewStyles = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusM,
     color: TotaraTheme.colorNeutral7,
     borderColor: TotaraTheme.colorNeutral6
+  },
+  dueDate: {
+    marginLeft: margins.marginS
   }
 });
 
