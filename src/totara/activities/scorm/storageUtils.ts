@@ -58,6 +58,10 @@ type ScormCommitProps = {
   offlinePackageScoIdentifiers?: [string];
 };
 
+type CachedCommitsProps = {
+  client: any;
+  onRetrieveAllData?: (data: CacheProps) => {};
+};
 /**
  *
  * @param param0 - Object with the scorm id to fetch the cached activity records
@@ -214,7 +218,7 @@ const getOfflineActivity = ({
 const getOfflineScormCommits = ({
   client,
   onRetrieveAllData = retrieveAllData
-}: CompletedScormAttemptProps) => {
+}: CachedCommitsProps) => {
   const allOfflineData = onRetrieveAllData({ client });
   const completedScormAttempts = get(
     allOfflineData,
@@ -222,8 +226,8 @@ const getOfflineScormCommits = ({
     undefined
   );
 
-  const formattedUnsyncedData: [any?] = [];
   if (completedScormAttempts) {
+    const formattedUnsyncedData = <any[]>[];
     const scormIs = Object.keys(completedScormAttempts);
     for (let keyIndex = 0; keyIndex < scormIs.length; keyIndex++) {
       const scormId = scormIs[keyIndex];

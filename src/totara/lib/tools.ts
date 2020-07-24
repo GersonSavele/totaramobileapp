@@ -37,11 +37,11 @@ const showConfirmation = ({
     message,
     [
       {
-        text: translate("scorm.confirmation.cancel"),
+        text: translate("general.cancel"),
         style: "cancel"
       },
       {
-        text: translate("scorm.confirmation.ok"),
+        text: translate("general.ok"),
         onPress: callback
       }
     ],

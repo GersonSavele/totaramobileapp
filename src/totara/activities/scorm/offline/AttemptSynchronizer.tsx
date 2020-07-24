@@ -39,75 +39,129 @@ type SyncData = {
   tracks: [any];
 };
 
+type PropsSyncAttempts = {
+  type?: string;
+  isInternetReachable?: boolean | null;
+  unSyncData?: [SyncData];
+  client: any;
+  saveAttempt: Function;
+  setUnsyncData: Function;
+};
+
+type PropsSyncScormAttempt = {
+  syncData: SyncData;
+  client: any;
+  unSyncData: [SyncData];
+  saveAttempt: Function;
+};
+
+type PropsSyncSeverScormAttempt = {
+  scormId: string;
+  tracks: [any];
+  saveAttempt: Function;
+};
+
+const syncScormAttempt = ({
+  syncData,
+  unSyncData,
+  client,
+  saveAttempt
+}: PropsSyncScormAttempt) =>
+  syncServerWithScormAttempt({ ...syncData, saveAttempt })
+    .then((isSynced) => {
+      if (isSynced) {
+        const scormBundles = retrieveAllData({ client });
+        const newData = setCleanScormCommit({
+          scormBundles,
+          scormId: syncData.scormId,
+          attempt: syncData.attempt
+        });
+        return saveInTheCache({ client, scormBundles: newData });
+      } else {
+        throw new Error("Data sync failed.");
+      }
+    })
+    .then(() => {
+      let newUnsyncData = [...unSyncData];
+      if (newUnsyncData) {
+        newUnsyncData.shift();
+      }
+      return newUnsyncData;
+    });
+
+const syncServerWithScormAttempt = ({
+  scormId,
+  tracks,
+  saveAttempt
+}: PropsSyncSeverScormAttempt) =>
+  saveAttempt({
+    variables: {
+      scormid: scormId,
+      attempts: tracks
+    }
+  }).then((value) => {
+    if (value) {
+      for (let result in value) {
+        if (!result) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+const netInfoEffectHandler = ({
+  type,
+  isInternetReachable,
+  unSyncData,
+  client,
+  saveAttempt,
+  setUnsyncData
+}: PropsSyncAttempts) => {
+  if (type && type !== "unknown" && isInternetReachable) {
+    if (unSyncData && unSyncData.length && unSyncData.length > 0) {
+      syncScormAttempt({
+        syncData: unSyncData[0],
+        client,
+        unSyncData,
+        saveAttempt
+      })
+        .then((updatedUnsyncData) => {
+          setUnsyncData(updatedUnsyncData);
+        })
+        .catch((e) => {
+          showMessage({ text: `${translate("general.error_unknown")}` });
+          Log.warn(e);
+        });
+    } else {
+      const syncDataSet = getOfflineScormCommits({ client });
+      setUnsyncData(syncDataSet as [SyncData]);
+    }
+  }
+};
+
 const AttemptSynchronizer = () => {
-  const [unSyncData, setUnsyncData] = useState<[SyncData] | undefined>(
-    undefined
-  );
+  const [unSyncData, setUnsyncData] = useState<[SyncData]>();
 
   const [saveAttempt] = useMutation(mutationAttempts);
   const netInfo = useNetInfo();
   const client = useApolloClient();
 
-  useEffect(() => {
-    if (netInfo.type !== "unknown" && netInfo.isInternetReachable) {
-      if (unSyncData && unSyncData.length && unSyncData.length > 0) {
-        syncScormRecord(unSyncData[0])
-          .then((updatedUnsyncData) => {
-            setUnsyncData(updatedUnsyncData);
-          })
-          .catch((e) => {
-            showMessage({ text: `${translate("general.error_unknown")}` });
-            Log.warn(e);
-          });
-      } else {
-        const syncDataSet = getOfflineScormCommits({ client });
-        setUnsyncData(syncDataSet);
-      }
-    }
-  }, [unSyncData, netInfo]);
-  const syncScormRecord = (syncData: SyncData) => {
-    return syncAttemptForScorm(syncData.scormId, syncData.tracks)
-      .then((isSynced) => {
-        if (isSynced) {
-          const scormBundles = retrieveAllData({ client });
-          const newData = setCleanScormCommit({
-            scormBundles,
-            scormId: syncData.scormId,
-            attempt: syncData.attempt
-          });
-          return saveInTheCache({ client, scormBundles: newData });
-        } else {
-          throw new Error("Data sync failed.");
-        }
-      })
-      .then(() => {
-        let newUnsyncData = unSyncData;
-        if (newUnsyncData) {
-          newUnsyncData.shift();
-        }
-        return newUnsyncData;
-      });
-  };
-
-  const syncAttemptForScorm = (scormId: string, tracks: [any]) => {
-    return saveAttempt({
-      variables: {
-        scormid: scormId,
-        attempts: tracks
-      }
-    }).then((value) => {
-      if (value) {
-        for (let result in value) {
-          if (!result) {
-            return false;
-          }
-        }
-        return true;
-      } else {
-        return false;
-      }
-    });
-  };
+  const { type, isInternetReachable } = netInfo;
+  useEffect(
+    () =>
+      netInfoEffectHandler({
+        type,
+        isInternetReachable,
+        unSyncData,
+        client,
+        saveAttempt,
+        setUnsyncData
+      }),
+    [unSyncData, netInfo]
+  );
 
   return null;
 };
