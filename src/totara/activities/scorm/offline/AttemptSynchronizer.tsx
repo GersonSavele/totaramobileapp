@@ -39,7 +39,7 @@ type SyncData = {
   tracks: [any];
 };
 
-type PropsSyncAttempts = {
+type NetInfoEffectProps = {
   type?: string;
   isInternetReachable?: boolean | null;
   unSyncData?: [SyncData];
@@ -48,7 +48,7 @@ type PropsSyncAttempts = {
   setUnsyncData: Function;
 };
 
-type PropsSyncScormAttempt = {
+type SyncScormAttemptProps = {
   syncData: SyncData;
   client: any;
   unSyncData: [SyncData];
@@ -66,7 +66,7 @@ const syncScormAttempt = ({
   unSyncData,
   client,
   saveAttempt
-}: PropsSyncScormAttempt) =>
+}: SyncScormAttemptProps) =>
   syncServerWithScormAttempt({ ...syncData, saveAttempt })
     .then((isSynced) => {
       if (isSynced) {
@@ -112,16 +112,17 @@ const syncServerWithScormAttempt = ({
     }
   });
 
-const netInfoEffectHandler = ({
+const netInfoEffect = ({
   type,
   isInternetReachable,
   unSyncData,
   client,
   saveAttempt,
   setUnsyncData
-}: PropsSyncAttempts) => {
+}: NetInfoEffectProps) => () => {
   if (type && type !== "unknown" && isInternetReachable) {
     if (unSyncData && unSyncData.length && unSyncData.length > 0) {
+      // Send the attempt through the API and remove the attempt from the cache
       syncScormAttempt({
         syncData: unSyncData[0],
         client,
@@ -129,6 +130,7 @@ const netInfoEffectHandler = ({
         saveAttempt
       })
         .then((updatedUnsyncData) => {
+          // remove the same attempt from the react state
           setUnsyncData(updatedUnsyncData);
         })
         .catch((e) => {
@@ -137,6 +139,7 @@ const netInfoEffectHandler = ({
         });
     } else {
       const syncDataSet = getOfflineScormCommits({ client });
+      // update the attempt from the react state
       setUnsyncData(syncDataSet as [SyncData]);
     }
   }
@@ -151,15 +154,14 @@ const AttemptSynchronizer = () => {
 
   const { type, isInternetReachable } = netInfo;
   useEffect(
-    () =>
-      netInfoEffectHandler({
-        type,
-        isInternetReachable,
-        unSyncData,
-        client,
-        saveAttempt,
-        setUnsyncData
-      }),
+    netInfoEffect({
+      type,
+      isInternetReachable,
+      unSyncData,
+      client,
+      saveAttempt,
+      setUnsyncData
+    }),
     [unSyncData, netInfo]
   );
 
