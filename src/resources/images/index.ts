@@ -32,9 +32,6 @@ import noDownloads from "./downloads/no_downloads.png";
 import totaraLogo from "./totara_logo/totara_logo.png";
 import noCurrentLearning from "./no_current_learning/no_current_learning.png";
 
-import iconBell from "./tabbar/notificationsRegular.png";
-import iconBellSolid from "./tabbar/notificationsSolid.png";
-
 const Images = {
   autoCompleteTick,
   notificationBell,
@@ -53,9 +50,4 @@ const Images = {
   noCurrentLearning
 };
 
-const Icons = {
-  iconBell,
-  iconBellSolid
-};
-
-export { Images, Icons };
+export { Images };

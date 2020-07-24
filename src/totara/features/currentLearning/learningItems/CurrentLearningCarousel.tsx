@@ -15,13 +15,7 @@
  */
 
 import React, { useState, useRef, useContext } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  RefreshControl
-} from "react-native";
+import { Text, TouchableOpacity, View, ScrollView, RefreshControl } from "react-native";
 import { NavigationContext } from "react-navigation";
 import { useNetInfo } from "@react-native-community/netinfo";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -35,17 +29,13 @@ import { translate } from "@totara/locale";
 import { LearningItemCard } from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
 
-type LearningItemProps = {
+type CurrentLearningCarouselProps = {
   currentLearning?: any;
   loading: boolean;
   onRefresh: () => void;
 };
 
-const LearningItemCarousel = ({
-  currentLearning,
-  loading,
-  onRefresh
-}: LearningItemProps) => {
+const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: CurrentLearningCarouselProps) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   const navigation = useContext(NavigationContext);
@@ -59,10 +49,7 @@ const LearningItemCarousel = ({
         activeDotIndex={activeSlide}
         dotsLength={currentLearning.length}
         containerStyle={carouselItemStyles.pagination}
-        dotStyle={[
-          carouselItemStyles.dot,
-          { width: deviceScreen.width / currentLearning.length }
-        ]}
+        dotStyle={[carouselItemStyles.dot, { width: deviceScreen.width / currentLearning.length }]}
         dotContainerStyle={{
           marginHorizontal: 0
         }}
@@ -75,9 +62,7 @@ const LearningItemCarousel = ({
         style={{ height: "100%" }}
         contentContainerStyle={{ height: "100%" }}
         showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-        }>
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
         <Carousel
           inactiveSlideScale={1}
           ref={sliderRef}
@@ -97,10 +82,7 @@ const LearningItemCarousel = ({
 const LearningItems = ({ item, navigation }: any) => (
   <View style={carouselItemStyles.itemWithBadgeContainer}>
     <View style={carouselItemStyles.badgeContainer}>
-      <LearningItemWithSummaryAndNavigation
-        item={item}
-        navigation={navigation}
-      />
+      <LearningItemWithSummaryAndNavigation item={item} navigation={navigation} />
     </View>
     <View style={carouselItemStyles.learningItem}>
       <AddBadge status={item.progress} size={iconSizes.sizeM} />
@@ -155,11 +137,9 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
           </View>
         </LearningItemCard>
       </View>
-      {showRestriction && (
-        <NativeAccessRestriction onClose={onClose} urlView={item.urlView} />
-      )}
+      {showRestriction && <NativeAccessRestriction onClose={onClose} urlView={item.urlView} />}
     </TouchableOpacity>
   );
 };
 
-export default LearningItemCarousel;
+export default CurrentLearningCarousel;

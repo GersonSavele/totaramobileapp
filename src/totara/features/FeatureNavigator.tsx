@@ -53,11 +53,7 @@ const CurrentLearningTab = {
   screen: CurrentLearningStack,
   navigationOptions: {
     tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
-      tabBarIconBuilder(
-        tabIconProps.focused,
-        tabIconProps.tintColor,
-        tabBarIconImages.current_learning
-      )
+      tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.current_learning)
   }
 };
 
@@ -65,11 +61,7 @@ const DownloadsTab = {
   screen: DownloadsStack,
   navigationOptions: {
     tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
-      tabBarIconBuilder(
-        tabIconProps.focused,
-        tabIconProps.tintColor,
-        tabBarIconImages.downloads
-      )
+      tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.downloads)
   }
 };
 
@@ -77,36 +69,19 @@ const ProfileTab = {
   screen: ProfileStack,
   navigationOptions: {
     tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) =>
-      tabBarIconBuilder(
-        tabIconProps.focused,
-        tabIconProps.tintColor,
-        tabBarIconImages.profile
-      )
+      tabBarIconBuilder(tabIconProps.focused, tabIconProps.tintColor, tabBarIconImages.profile)
   }
 };
 
-const NotificationBellWithCounting = ({
-  active,
-  tintColor
-}: {
-  active: boolean;
-  tintColor: string;
-}) => {
+const NotificationBellWithCounting = ({ active, tintColor }: { active: boolean; tintColor: string }) => {
   const { loading, error, data } = useQuery(notificationsQuery, {
     fetchPolicy: "cache-only"
   });
 
-  const notifications =
-    loading || error ? [] : (parser(data) as NotificationMessage[]);
+  const notifications = loading || error ? [] : (parser(data) as NotificationMessage[]);
 
   const unReadCount = notifications.filter((x) => !x.isRead).length;
-  return (
-    <NotificationBell
-      active={active}
-      tintColor={tintColor}
-      counting={unReadCount}
-    />
-  );
+  return <NotificationBell active={active} tintColor={tintColor} counting={unReadCount} />;
 };
 
 const NotificationsTab = {
@@ -114,21 +89,12 @@ const NotificationsTab = {
   navigationOptions: {
     // eslint-disable-next-line react/display-name
     tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) => {
-      return (
-        <NotificationBellWithCounting
-          active={tabIconProps.focused}
-          tintColor={tabIconProps.tintColor}
-        />
-      );
+      return <NotificationBellWithCounting active={tabIconProps.focused} tintColor={tabIconProps.tintColor} />;
     }
   }
 };
 
-const tabBarIconBuilder = (
-  focused: boolean,
-  color: string,
-  imageSet: iconImageProps
-) => {
+const tabBarIconBuilder = (focused: boolean, color: string, imageSet: iconImageProps) => {
   return (
     <Image
       source={focused ? imageSet.solid : imageSet.regular}
@@ -149,16 +115,16 @@ const tabBarIconImages: {
   profile: iconImageProps;
 } = {
   current_learning: {
-    solid: require("@resources/images/tabbar/current_learning_solid.png"),
-    regular: require("@resources/images/tabbar/current_learning_regular.png")
+    solid: require("@resources/icons/tabbar/current_learning_solid.png"),
+    regular: require("@resources/icons/tabbar/current_learning_regular.png")
   },
   downloads: {
-    solid: require("@resources/images/tabbar/downloads_solid.png"),
-    regular: require("@resources/images/tabbar/downloads_regular.png")
+    solid: require("@resources/icons/tabbar/downloads_solid.png"),
+    regular: require("@resources/icons/tabbar/downloads_regular.png")
   },
   profile: {
-    solid: require("@resources/images/tabbar/profile_solid.png"),
-    regular: require("@resources/images/tabbar/profile_regular.png")
+    solid: require("@resources/icons/tabbar/profile_solid.png"),
+    regular: require("@resources/icons/tabbar/profile_regular.png")
   }
 };
 

@@ -14,21 +14,11 @@
  *
  */
 import { StyleSheet } from "react-native";
-import {
-  margins,
-  paddings,
-  borderRadius,
-  shadow
-} from "@totara/theme/constants";
+import { margins, paddings, borderRadius, shadow } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 const { marginS, marginXL, marginXS } = margins;
-const { borderRadiusM, borderRadiusS } = borderRadius;
-const {
-  colorNeutral8,
-  colorNeutral1,
-  colorNeutral3,
-  colorNeutral6
-} = TotaraTheme;
+const { borderRadiusM } = borderRadius;
+const { colorNeutral8, colorNeutral1, colorNeutral3, colorNeutral6 } = TotaraTheme;
 const { paddingXS, paddingL } = paddings;
 
 const carouselItemStyles = StyleSheet.create({
@@ -52,7 +42,7 @@ const carouselItemStyles = StyleSheet.create({
     paddingHorizontal: paddingL,
     paddingVertical: paddingXS,
     borderWidth: 1,
-    borderRadius: borderRadiusS,
+    borderRadius: borderRadiusM,
     backgroundColor: colorNeutral1,
     color: colorNeutral8,
     borderColor: colorNeutral6,

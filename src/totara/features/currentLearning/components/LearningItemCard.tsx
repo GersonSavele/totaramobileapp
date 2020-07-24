@@ -13,18 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import {
-  Image,
-  ImageStyle,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-  ImageSourcePropType
-} from "react-native";
+import { Image, ImageStyle, StyleSheet, Text, View, ViewStyle, ImageSourcePropType } from "react-native";
 import React from "react";
 import { LearningItem } from "@totara/types";
-import DueDateState from "../../../components/DueDateState";
+import DueDateState from "./DueDateState";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { learningItemEnum } from "../constants";
 import { Images } from "@resources/images";
@@ -40,14 +32,7 @@ interface Props {
   itemType?: string;
 }
 
-const LearningItemCard = ({
-  item,
-  imageStyle,
-  cardStyle,
-  children,
-  image,
-  itemType
-}: Props) => {
+const LearningItemCard = ({ item, imageStyle, cardStyle, children, image }: Props) => {
   return (
     <View style={{ flex: 1 }}>
       <ImageElement
@@ -78,16 +63,9 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
 const ImageElement = ({ item, imageStyle, image, itemType }: Props) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   return (
-    <View
-      style={[imageStyleSheet, { backgroundColor: TotaraTheme.colorNeutral3 }]}>
-      {item.duedate && (
-        <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />
-      )}
-      {image && image.length > 0 ? (
-        <ImageWrapper url={image} style={styles.imageWrap} />
-      ) : (
-        <DefaultImage itemType={itemType} />
-      )}
+    <View style={[imageStyleSheet, { backgroundColor: TotaraTheme.colorNeutral3 }]}>
+      {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
+      {image && image.length > 0 ? <ImageWrapper url={image} style={styles.imageWrap} /> : <DefaultImage item={item} />}
     </View>
   );
 };
@@ -96,19 +74,11 @@ const DefaultImage = ({ itemType }: { itemType: string }) => {
   switch (itemType) {
     case learningItemEnum.Course:
       return (
-        <Image
-          style={styles.imageWrap}
-          source={Images.defaultCourses as ImageSourcePropType}
-          resizeMode="contain"
-        />
+        <Image style={styles.imageWrap} source={Images.defaultCourses as ImageSourcePropType} resizeMode="contain" />
       );
     case learningItemEnum.Program:
       return (
-        <Image
-          style={styles.imageWrap}
-          source={Images.defaultProgram as ImageSourcePropType}
-          resizeMode="contain"
-        />
+        <Image style={styles.imageWrap} source={Images.defaultProgram as ImageSourcePropType} resizeMode="contain" />
       );
     case learningItemEnum.Certification:
       return (

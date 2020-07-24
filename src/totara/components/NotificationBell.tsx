@@ -1,7 +1,22 @@
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
+
 import React from "react";
 import { Image, View, Text, StyleSheet } from "react-native";
 import { fontSizes, paddings, tabBar } from "@totara/theme/constants";
-import { Icons } from "@resources/images";
+import { Icons } from "@resources/icons";
 
 type notificationBellProps = {
   active: boolean;
@@ -9,11 +24,7 @@ type notificationBellProps = {
   counting: number;
 };
 
-const NotificationBell = ({
-  active,
-  tintColor,
-  counting,
-}: notificationBellProps) => {
+const NotificationBell = ({ active, tintColor, counting }: notificationBellProps) => {
   return (
     <View style={styles.container}>
       <View>
@@ -38,17 +49,17 @@ const NotificationBell = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: 36,
+    width: 36
   },
   icon: {
     width: tabBar.icon.width,
-    height: tabBar.icon.height,
+    height: tabBar.icon.height
   },
   counting: {
     width: "100%",
     position: "absolute",
     alignItems: "flex-end",
-    justifyContent: "flex-end",
+    justifyContent: "flex-end"
   },
   countingCircle: {
     paddingLeft: paddings.paddingM,
@@ -57,12 +68,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 16 / 2,
-    flex: 1,
+    flex: 1
   },
   countingNumber: {
     color: "white",
-    fontSize: fontSizes.fontSizeXS,
-  },
+    fontSize: fontSizes.fontSizeXS
+  }
 });
 
 export default NotificationBell;

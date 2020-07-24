@@ -13,21 +13,32 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { NavigationEvents } from "react-navigation";
-import LearningItemCarousel from "./learningItems/LearningItemCarousel";
+import CurrentLearningCarousel from "./learningItems/CurrentLearningCarousel";
+import CurrentLearningListView from "./learningItems/CurrentLearningListView";
 import NoCurrentLearning from "./learningItems/NoCurrentLearning";
 import query from "./api";
 import { LoadingError, NetworkStatus, Loading } from "@totara/components";
 import { currentLearningStyles } from "./currentLearningStyles";
+import { paddings } from "@totara/theme/constants";
+import { Switch, SwitchOption } from "@totara/components/Switch";
+import { Icons } from "@resources/icons";
+
+enum ListingOrientation {
+  Carousel,
+  ListView
+}
 
 const CurrentLearning = () => {
   const { loading, error, data, refetch } = useQuery(query);
   const [theme] = useContext(ThemeContext);
+  const [listingOrientation, setListingOrientation] = useState<ListingOrientation>(ListingOrientation.Carousel);
+
   const onContentRefresh = () => {
     refetch();
   };
@@ -35,21 +46,50 @@ const CurrentLearning = () => {
   if (error) {
     return <LoadingError onRefreshTap={onContentRefresh} />;
   }
+
+  const toggleListingOrientation = () => {
+    if (listingOrientation === ListingOrientation.Carousel) {
+      setListingOrientation(ListingOrientation.ListView);
+    } else setListingOrientation(ListingOrientation.Carousel);
+  };
+
   if (data) {
     const currentLearning = data.currentLearning;
     return (
       <View style={[theme.viewContainer, { flex: 1 }]}>
         <NavigationEvents onWillFocus={onContentRefresh} />
         <View style={currentLearningStyles.headerViewWrap}>
-          <Text style={currentLearningStyles.headerViewTitleWrap}>
-            {translate("current_learning.action_primary")}
-          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
+            <Text style={currentLearningStyles.headerViewTitleWrap}>
+              {translate("current_learning.action_primary")}
+            </Text>
+            <View
+              style={{
+                alignSelf: "flex-end",
+                paddingRight: paddings.paddingXL
+              }}>
+              <Switch>
+                <SwitchOption
+                  icon={Icons.iconCarousel}
+                  selected={listingOrientation === ListingOrientation.Carousel}
+                  onPress={toggleListingOrientation}
+                />
+                <SwitchOption
+                  icon={Icons.iconList}
+                  selected={listingOrientation === ListingOrientation.ListView}
+                  onPress={toggleListingOrientation}
+                />
+              </Switch>
+            </View>
+          </View>
           <Text style={currentLearningStyles.headerViewSubTitleWrap}>
             {translate("current_learning.primary_info", {
-              count:
-                currentLearning && currentLearning.length
-                  ? currentLearning.length
-                  : 0
+              count: currentLearning && currentLearning.length ? currentLearning.length : 0
             })}
           </Text>
         </View>
@@ -57,23 +97,26 @@ const CurrentLearning = () => {
         <View style={[currentLearningStyles.contentWrap]}>
           <NetworkStatus />
           {currentLearning && currentLearning.length > 0 ? (
-            <LearningItemCarousel
-              currentLearning={currentLearning}
-              loading={loading}
-              onRefresh={onContentRefresh}
-            />
+            listingOrientation === ListingOrientation.Carousel ? (
+              <CurrentLearningCarousel
+                currentLearning={currentLearning}
+                loading={loading}
+                onRefresh={onContentRefresh}
+              />
+            ) : (
+              <CurrentLearningListView
+                currentLearning={currentLearning}
+                loading={loading}
+                onRefresh={onContentRefresh}
+              />
+            )
           ) : (
             <View
               style={{
                 flex: 1
               }}>
               <ScrollView
-                refreshControl={
-                  <RefreshControl
-                    refreshing={loading}
-                    onRefresh={onContentRefresh}
-                  />
-                }
+                refreshControl={<RefreshControl refreshing={loading} onRefresh={onContentRefresh} />}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   flexGrow: 1,

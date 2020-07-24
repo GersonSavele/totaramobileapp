@@ -20,7 +20,7 @@
  *
  */
 
-import DueDateState from "./DueDateState";
+import DueDateState from "../features/currentLearning/components/DueDateState";
 import CircleIcon from "./CircleIcon";
 import { AddBadge, CheckBadge } from "./AddBadge";
 import ProgressCircle from "./ProgressCircle";

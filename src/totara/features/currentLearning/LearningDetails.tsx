@@ -128,12 +128,11 @@ const LearningDetails = ({
   const [isConnected, setIsConnected] = useState<boolean>(true);
   useEffect(() => {
     return NetInfo.addEventListener((state) => {
-      setIsConnected(
-        (state.isConnected as boolean) && (state.isInternetReachable as boolean)
-      );
+      setIsConnected((state.isConnected as boolean) && (state.isInternetReachable as boolean));
     });
   }, []);
 
+<<<<<<< HEAD
   const renderTitleBar = () => (
     <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />
   );
@@ -155,6 +154,50 @@ const LearningDetails = ({
       imageStyle={learningDetailsStyles.imageView}
     />
   );
+=======
+  const renderHeaderTitle = () => {
+    return (
+      <CardElement item={details} cardStyle={learningDetailsStyles.itemCard}>
+        <View style={learningDetailsStyles.LearningTypeLabelWrap}>
+          <Text style={learningDetailsStyles.programLabelText}>{badgeTitle}</Text>
+        </View>
+      </CardElement>
+    );
+  };
+
+  const renderNavigationTab = () => {
+    return (
+      <View style={[{ backgroundColor: TotaraTheme.colorNeutral2 }]}>
+        <View style={[learningDetailsStyles.tabBarContainer]}>
+          <View style={learningDetailsStyles.tabNav}>
+            <TouchableOpacity
+              style={[learningDetailsStyles.tabSelected, overviewIsShown && { ...styles.overviewTouchableOpacity }]}
+              onPress={onPress}>
+              <Text style={[styles.tabViewTitle, overviewIsShown && styles.overviewTextTouchableOpacity]}>
+                {tabBarLeftTitle}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[learningDetailsStyles.tabSelected, !overviewIsShown && { ...styles.overviewTouchableOpacity }]}
+              onPress={onPress}>
+              <Text style={[styles.tabViewTitle, !overviewIsShown && { ...styles.overviewTextTouchableOpacity }]}>
+                {tabBarRightTitle}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const renderHeaderBackground = () => {
+    return (
+      <View style={learningDetailsStyles.headerContainer}>
+        <ImageElement item={details} imageStyle={learningDetailsStyles.itemImage} image={image} />
+      </View>
+    );
+  };
+>>>>>>> MOB-650: Partial work
 
   return (
     <View style={learningDetailsStyles.container}>

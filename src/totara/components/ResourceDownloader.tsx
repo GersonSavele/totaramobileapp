@@ -1,3 +1,18 @@
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
+
 import React, { useContext } from "react";
 import { Image, TouchableOpacity, ImageStyle } from "react-native";
 import * as Progress from "react-native-progress";
@@ -16,16 +31,11 @@ type ResourceDownloaderProps = {
 };
 
 const DownloadIcon = {
-  solid: require("@resources/images/tabbar/downloads_solid.png"),
-  regular: require("@resources/images/tabbar/downloads_regular.png")
+  solid: require("@resources/icons/tabbar/downloads_solid.png"),
+  regular: require("@resources/icons/tabbar/downloads_regular.png")
 };
 
-const ResourceDownloaderComponent = ({
-  resourceState,
-  progress,
-  size,
-  testID
-}: ResourceDownloaderProps) => {
+const ResourceDownloaderComponent = ({ resourceState, progress, size, testID }: ResourceDownloaderProps) => {
   const [theme] = useContext(ThemeContext);
   if (resourceState === ResourceState.Downloading) {
     return (
@@ -48,10 +58,7 @@ const ResourceDownloaderComponent = ({
       />
     );
   } else {
-    const iconColor =
-      resourceState === ResourceState.Completed
-        ? TotaraTheme.colorNeutral3
-        : TotaraTheme.colorLink;
+    const iconColor = resourceState === ResourceState.Completed ? TotaraTheme.colorNeutral3 : TotaraTheme.colorLink;
 
     return (
       <Image
@@ -64,14 +71,7 @@ const ResourceDownloaderComponent = ({
   }
 };
 
-const ResourceDownloader = ({
-  resourceState,
-  onPress,
-  progress,
-  size,
-  style,
-  testID
-}: ResourceDownloaderProps) => {
+const ResourceDownloader = ({ resourceState, onPress, progress, size, style, testID }: ResourceDownloaderProps) => {
   return (
     <TouchableOpacity
       testID={testID}
@@ -80,11 +80,7 @@ const ResourceDownloader = ({
       }}
       disabled={!onPress}
       style={[{ padding: gutter, alignSelf: "center" }, style]}>
-      <ResourceDownloaderComponent
-        resourceState={resourceState}
-        size={size}
-        progress={progress}
-      />
+      <ResourceDownloaderComponent resourceState={resourceState} size={size} progress={progress} />
     </TouchableOpacity>
   );
 };

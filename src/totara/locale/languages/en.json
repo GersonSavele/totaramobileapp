@@ -70,15 +70,13 @@
       "description": "This course is not compatible with the mobile app. Would you like to access this course in the browser?",
       "primary_button_title": "Yes, go to browser",
       "tertiary_button_title": "Cancel"
-    }
-  },
-
-  "totara_component": {
+    },
     "section_title_continue_learn": "Continue your learning",
     "due_in": "Due in",
     "extend_date": "Extend Date",
     "overdue_by": "Overdue by"
   },
+
   "additional_actions_modal": {
     "auth_model_title": "Action required",
     "auth_model_description": "You are required to visit a browser to complete some action(s).",
