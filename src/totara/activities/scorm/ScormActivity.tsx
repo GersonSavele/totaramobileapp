@@ -31,8 +31,8 @@ import { useQuery } from "@apollo/react-hooks";
 import { AppState } from "@totara/types";
 import ScormSummary from "./ScormSummary";
 import { AuthContext } from "@totara/core";
-import OfflineScormActivity from "./offline/OfflineScormActivity";
-import OnlineScormActivity from "./online/OnlineScormActivity";
+import OfflineScormActivity from "./OfflineScormActivity";
+import OnlineScormActivity from "./OnlineScormActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
@@ -74,6 +74,14 @@ type ScormActivityProps = {
 };
 
 const { SUMMARY, LOADING } = TEST_ID;
+
+const headerDispatch = (params, dispatch) => {
+  const setParamsAction = NavigationActions.setParams({
+    params,
+    key: SCORM_ROOT
+  });
+  dispatch(setParamsAction);
+};
 
 const ScormActivity = (props: ScormActivityProps) => {
   const { navigation } = props;
@@ -119,13 +127,11 @@ const ScormActivity = (props: ScormActivityProps) => {
   };
   useEffect(() => {
     if (
-      scormBundle &&
-      scormBundle.scorm &&
-      scormBundle.scorm.offlineAttemptsAllowed &&
-      scormBundle.scorm.packageUrl
+      scormBundle?.scorm?.offlineAttemptsAllowed &&
+      scormBundle?.scorm?.packageUrl
     ) {
       const resource = resourceList.find((x) => x.customId === id);
-      const resourceState = resource && resource.state;
+      const resourceState = resource?.state;
       const progress = resource
         ? humanReadablePercentage({
             writtenBytes: resource.bytesDownloaded,
@@ -135,28 +141,31 @@ const ScormActivity = (props: ScormActivityProps) => {
 
       const { packageUrl } = scormBundle.scorm;
 
-      headerDispatch({
-        downloadProgress: progress,
-        downloadState: resourceState,
-        // if there's no existing scorm resource, a null function will serve disabling the action
-        onDownloadPress: resource
-          ? () => null
-          : ({ id, title }) => {
-              if (isInternetReachable) {
-                download({
-                  apiKey: apiKey,
-                  customId: id,
-                  name: title,
-                  type: ResourceType.ScormActivity,
-                  resourceUrl: packageUrl,
-                  targetPathFile: getTargetZipFile(id),
-                  targetExtractPath: getOfflinePackageUnzipPath(id)
-                });
-              } else {
-                showMessage({ text: translate("general.no_internet") });
+      headerDispatch(
+        {
+          downloadProgress: progress,
+          downloadState: resourceState,
+          // if there's no existing scorm resource, a null function will serve disabling the action
+          onDownloadPress: resource
+            ? () => null
+            : ({ id, title }) => {
+                if (isInternetReachable) {
+                  download({
+                    apiKey: apiKey,
+                    customId: id,
+                    name: title,
+                    type: ResourceType.ScormActivity,
+                    resourceUrl: packageUrl,
+                    targetPathFile: getTargetZipFile(id),
+                    targetExtractPath: getOfflinePackageUnzipPath(id)
+                  });
+                } else {
+                  showMessage({ text: translate("general.no_internet") });
+                }
               }
-            }
-      });
+        },
+        navigation.dispatch
+      );
       setResourceState(resource && resource.state);
     }
   }, [resourceList, scormBundle]);
@@ -176,14 +185,6 @@ const ScormActivity = (props: ScormActivityProps) => {
       });
     }
   }, [data]);
-
-  const headerDispatch = (params) => {
-    const setParamsAction = NavigationActions.setParams({
-      params,
-      key: SCORM_ROOT
-    });
-    navigation.dispatch(setParamsAction);
-  };
 
   if (loading && !(scormBundle && scormBundle.scorm)) {
     return <Loading testID={LOADING} />;

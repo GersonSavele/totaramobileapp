@@ -17,8 +17,8 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import OfflineScormPlayer from "../components/OfflineScormPlayer";
-import { TEST_ID } from "../constants";
+import OfflineScormPlayer from "../OfflineScormPlayer";
+import { TEST_ID } from "../../constants";
 
 const { OFFLINE_PLAYER } = TEST_ID;
 

@@ -1,8 +1,8 @@
 import React from "react";
-import ScormFeedbackModal from "../components/ScormFeedbackModal";
+import ScormFeedbackModal from "../ScormFeedbackModal";
 import { render } from "@testing-library/react-native";
 import { Grade } from "@totara/types/Scorm";
-import { TEST_ID } from "../constants";
+import { TEST_ID } from "../../constants";
 
 const { FEEDBACK_COMPLETION_IMAGE, FEEDBACK_SCORE } = TEST_ID;
 

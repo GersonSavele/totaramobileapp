@@ -17,7 +17,7 @@ import { AuthenticatedWebView } from "@totara/auth";
 import { translate } from "@totara/locale";
 import { NavigationStackProp } from "react-navigation-stack";
 import { onlineScormActivityStyles } from "@totara/theme/scorm";
-import { TEST_ID } from "../constants";
+import { TEST_ID } from "./constants";
 
 type OnlineScormParams = {
   uri: string;

@@ -30,8 +30,8 @@ import {
   setCleanScormCommit,
   retrieveAllData,
   saveInTheCache
-} from "../storageUtils";
-import { mutationAttempts } from "../api";
+} from "./storageUtils";
+import { mutationAttempts } from "./api";
 
 type SyncData = {
   scormId: string;

@@ -17,7 +17,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import OnlineScormActivity from "../online/OnlineScormActivity";
+import OnlineScormActivity from "../OnlineScormActivity";
 import { TEST_ID } from "../constants";
 
 const { INVALID_URL, ONLINE_PLAYER } = TEST_ID;

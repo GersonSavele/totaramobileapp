@@ -36,7 +36,7 @@ import {
   getScormAttemptData,
   retrieveAllData,
   saveInTheCache
-} from "../storageUtils";
+} from "./storageUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 import { ResourceType } from "@totara/types/Resource";
@@ -47,9 +47,9 @@ import {
   scormDataIntoJsInitCode,
   setupOfflineScormPlayer,
   loadScormPackageData
-} from "../utils";
+} from "./utils";
 import { scormLessonStatus } from "@totara/lib/constants";
-import { TEST_ID } from "../constants";
+import { TEST_ID } from "./constants";
 
 type OfflineScormParams = {
   attempt: number;

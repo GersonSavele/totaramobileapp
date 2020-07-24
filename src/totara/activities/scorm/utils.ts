@@ -15,6 +15,9 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import { get, isEmpty } from "lodash";
+import * as RNFS from "react-native-fs";
+import { Platform } from "react-native";
+import moment from "moment";
 
 import {
   AttemptGrade,
@@ -26,7 +29,6 @@ import {
   Sco,
   Package
 } from "@totara/types/Scorm";
-import moment from "moment";
 import {
   OFFLINE_SCORM_PREFIX,
   offlineScormServerRoot,
@@ -35,11 +37,6 @@ import {
   FILE_EXTENSION,
   SECONDS_FORMAT
 } from "@totara/lib/constants";
-import {
-  initializeScormWebplayer,
-  isScormPlayerInitialized
-} from "./offline/fileHandler";
-import { getScormPackageData } from "./offline/packageProcessor";
 
 type GetPlayerInitialDataProps = {
   scormId: string;
@@ -49,6 +46,8 @@ type GetPlayerInitialDataProps = {
   packageLocation: string;
   playerInitalData: any;
 };
+const xpath = require("xpath");
+const dom = require("xmldom").DOMParser;
 
 const getOfflineScormPackageName = (scormId: string) =>
   `${OFFLINE_SCORM_PREFIX}${scormId}`;
@@ -328,6 +327,7 @@ const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
   );
 };
 
+//scorm player package handling
 const setupOfflineScormPlayer = (
   onScormPlayerInitialized = isScormPlayerInitialized
 ) => {
@@ -359,6 +359,205 @@ const loadScormPackageData = (packageData?: Package) => {
   }
 };
 
+const getPackageContent = () =>
+  Platform.OS === "android"
+    ? RNFS.readDirAssets(getScormPlayerPackagePath())
+    : RNFS.readDir(getScormPlayerPackagePath());
+
+const initializeScormWebplayer = () => {
+  return RNFS.mkdir(offlineScormServerRoot).then(() => {
+    return getPackageContent().then((result) => {
+      if (result && result.length) {
+        let promisesToCopyFiles: [Promise<void>?] = [];
+        for (let i = 0; i < result.length; i++) {
+          const itemPathFrom = result[i].path;
+          const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
+          const copyAssetsToPlayer = () =>
+            Platform.OS === "android"
+              ? RNFS.copyFileAssets(itemPathFrom, itemPathTo)
+              : RNFS.copyFile(itemPathFrom, itemPathTo);
+          const promiseCopyItem = RNFS.exists(itemPathTo).then((isExist) => {
+            if (!isExist) {
+              return copyAssetsToPlayer();
+            } else {
+              return RNFS.unlink(itemPathTo).then(() => {
+                return copyAssetsToPlayer();
+              });
+            }
+          });
+          promisesToCopyFiles.push(promiseCopyItem);
+        }
+        return Promise.all(promisesToCopyFiles);
+      } else {
+        throw new Error(
+          "Cannot find any content in the location (" +
+            getScormPlayerPackagePath() +
+            ")"
+        );
+      }
+    });
+  });
+};
+
+const isScormPlayerInitialized = () => {
+  return getPackageContent().then((result) => {
+    if (result && result.length) {
+      const promisesToExistFiles = <Promise<Boolean>[]>[];
+      for (let i = 0; i < result.length; i++) {
+        const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
+        promisesToExistFiles.push(RNFS.exists(itemPathTo));
+      }
+      return Promise.all(promisesToExistFiles).then((resultExistsFiles) => {
+        for (let index = 0; index < resultExistsFiles.length; index++) {
+          if (!resultExistsFiles[index]) {
+            return false;
+          }
+        }
+        return true;
+      });
+    } else {
+      throw new Error("No package content found.");
+    }
+  });
+};
+
+const getScormPlayerPackagePath = () =>
+  Platform.OS === "android" ? `html` : `${RNFS.MainBundlePath}/html`;
+
+// downloaded scorm activity package processing
+
+const getScormPackageData = (packagPath: string) => {
+  const manifestFilePath = `${packagPath}/imsmanifest.xml`;
+  return RNFS.readFile(manifestFilePath).then((xmlcontent) => {
+    if (!isEmpty(xmlcontent)) {
+      const xmlData = new dom().parseFromString(xmlcontent);
+      const scosList = getScosDataForPackage(xmlData);
+      const defaultSco = getInitialScormLoadData(xmlData);
+      if (!isEmpty(scosList))
+        return { scos: scosList, defaultSco: defaultSco } as Package;
+    }
+  });
+};
+
+/**
+ * Based on the schema of SCORM 1.2 manifest file, it can be found here
+ * https://scorm.com/wp-content/assets/SchemaDefinitionFiles/SCORM%201.2%20Schema%20Definition/imsmanifest.xml
+ *
+ * @param manifestDom
+ */
+const getScosDataForPackage = (manifestDom: any) => {
+  const resultOrganisations = xpath.evaluate(
+    // "//*[local-name(.)='organizations']/*[local-name()='organization']",
+    "//*[local-name(.)='organizations']/*[local-name()='organization']",
+    manifestDom, // contextNode
+    null, // namespaceResolver
+    xpath.XPathResult.ANY_TYPE, // resultType
+    null // result
+  );
+  let organizationNode;
+  let scos: [Sco?] = [];
+  while ((organizationNode = resultOrganisations.iterateNext())) {
+    const organizationId = organizationNode.getAttribute("identifier");
+    const itemResult = xpath.evaluate(
+      ".//*[local-name(.)='item']/@identifier",
+      organizationNode,
+      null,
+      xpath.XPathResult.ANY_TYPE,
+      null
+    );
+    let itemNode;
+    while ((itemNode = itemResult.iterateNext())) {
+      const itemId = itemNode.nodeValue;
+      const valLaunchUrl = getDefaultScoLaunchUrl(
+        manifestDom,
+        itemNode.nodeValue
+      );
+      if (itemId && valLaunchUrl && organizationId) {
+        const sco: Sco = {
+          id: itemId,
+          organizationId: organizationId,
+          launchSrc: valLaunchUrl
+        };
+        scos.push(sco);
+      }
+    }
+  }
+  return scos;
+};
+
+const getInitialScormLoadData = (manifestDom: any) => {
+  const defaultOrgizationsNode = xpath.select(
+    "//*[local-name(.)='organizations']/*[local-name(.)='organization']/@identifier",
+    manifestDom
+  );
+  let defaultOrgizationId: string | undefined;
+  if (!isEmpty(defaultOrgizationsNode)) {
+    if (defaultOrgizationsNode.length === 1) {
+      defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
+    } else {
+      const defaultOrgNode = xpath.select(
+        "//*[local-name(.)='organizations']/@default",
+        manifestDom
+      );
+      if (!isEmpty(defaultOrgNode) && !isEmpty(defaultOrgNode[0].nodeValue)) {
+        const tempDefaultOrg = defaultOrgNode[0].nodeValue;
+        for (let i = 0; i < defaultOrgizationsNode.length; i++) {
+          if (defaultOrgizationsNode[i].nodeValue === tempDefaultOrg) {
+            defaultOrgizationId = tempDefaultOrg;
+            break;
+          }
+        }
+      }
+      if (!defaultOrgizationId) {
+        defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
+      }
+    }
+  }
+  let defaultScoId: string | undefined;
+  let defaultLaunchSrc: string | undefined;
+  if (!isEmpty(defaultOrgizationId)) {
+    const firstScoOnDefaultOrgNode = xpath.select(
+      "//*[local-name(.)='organizations']/*[local-name(.)='organization' and @identifier='" +
+        defaultOrgizationId +
+        "']/*[local-name(.)='item'][1]",
+      manifestDom
+    );
+    if (firstScoOnDefaultOrgNode && firstScoOnDefaultOrgNode.length === 1) {
+      defaultScoId = firstScoOnDefaultOrgNode[0].getAttribute("identifier");
+      defaultLaunchSrc = getDefaultScoLaunchUrl(manifestDom, defaultScoId!);
+    }
+  }
+  return {
+    id: defaultScoId,
+    organizationId: defaultOrgizationId,
+    launchSrc: defaultLaunchSrc
+  };
+};
+
+const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string) => {
+  const scoNode = xpath.select(
+    "//*[local-name(.)='item' and @identifier ='" + scoId + "']",
+    manifestDom
+  );
+  if (scoNode.length === 1) {
+    const resouceId = scoNode[0].getAttribute("identifierref");
+    const queryString = scoNode[0].getAttribute("parameters");
+    const resourceNode = xpath.select(
+      "//*[local-name(.)='resources']/*[local-name(.)='resource' and @identifier ='" +
+        resouceId +
+        "']",
+      manifestDom
+    );
+    if (
+      resourceNode &&
+      resourceNode.length === 1 &&
+      resourceNode[0].getAttribute("href")
+    ) {
+      return `${resourceNode[0].getAttribute("href")}${queryString}`;
+    }
+  }
+};
+
 export {
   getOfflinePackageUnzipPath,
   getTargetZipFile,
@@ -371,5 +570,8 @@ export {
   getScormPlayerInitialData,
   scormDataIntoJsInitCode,
   setupOfflineScormPlayer,
-  loadScormPackageData
+  loadScormPackageData,
+  initializeScormWebplayer,
+  isScormPlayerInitialized,
+  getScormPackageData
 };

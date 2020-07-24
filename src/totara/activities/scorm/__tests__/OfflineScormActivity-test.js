@@ -20,7 +20,7 @@ import * as redux from "react-redux";
 import { render } from "@testing-library/react-native";
 import { translate } from "@totara/locale";
 
-import OfflineScormActivity from "../offline/OfflineScormActivity";
+import OfflineScormActivity from "../OfflineScormActivity";
 import { TEST_ID } from "../constants";
 
 const mockScormActivityNavigation = {
