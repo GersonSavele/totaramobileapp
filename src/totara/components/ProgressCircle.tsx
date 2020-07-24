@@ -1,53 +1,60 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Jun Yamog <jun.yamog@totaralearning.com
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
 import React, { useContext } from "react";
 import * as Progress from "react-native-progress";
-
 import { ThemeContext } from "@totara/theme";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type ProgressCircleParam = {
-  progress?: number,
-  indeterminate?: boolean,
-  size: number,
-  progressColor?: string,
-  color?: string,
-  unfilledColor?: string
-}
+  progress?: number;
+  indeterminate?: boolean;
+  size: number;
+  progressColor?: string;
+  color?: string;
+  unfilledColor?: string;
+  testID?: string;
+};
 
-const ProgressCircle = ({size, progress= 0, progressColor, color, unfilledColor, indeterminate= false}: ProgressCircleParam) => {
-
-  const [theme] = useContext(ThemeContext);
-
+const ProgressCircle = ({
+  size,
+  progress = 0,
+  progressColor,
+  color,
+  unfilledColor,
+  indeterminate = false,
+  testID
+}: ProgressCircleParam) => {
   return (
-  <Progress.Circle progress={progress/100}
-  size={size}
-  unfilledColor={(unfilledColor? unfilledColor : theme.colorNeutral4)}
-  color={(progressColor? progressColor : theme.colorInfo)}
-  thickness={3}
-  borderWidth={0}
-  indeterminate={indeterminate}
-  formatText={() =>  progress+"%"}
-  showsText={true}
-  textStyle={{fontSize: theme.textSmall.fontSize, color: (color ? color: theme.textColorDark), fontWeight: "bold"}}/>
+    <Progress.Circle
+      testID={testID}
+      progress={progress / 100}
+      size={size}
+      unfilledColor={unfilledColor ? unfilledColor : TotaraTheme.colorNeutral4}
+      color={progressColor ? progressColor : TotaraTheme.colorInfo}
+      thickness={3}
+      borderWidth={0}
+      indeterminate={indeterminate}
+      formatText={() => progress + "%"}
+      showsText={true}
+      textStyle={{
+        fontSize: TotaraTheme.textSmall.fontSize,
+        color: color ? color : TotaraTheme.textColorDark,
+        fontWeight: "bold"
+      }}
+    />
   );
 };
 

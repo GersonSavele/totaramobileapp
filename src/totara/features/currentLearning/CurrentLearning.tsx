@@ -28,13 +28,18 @@ import { currentLearningStyles } from "./currentLearningStyles";
 import { paddings } from "@totara/theme/constants";
 import { Switch, SwitchOption } from "@totara/components/Switch";
 import { Icons } from "@resources/icons";
+import { NavigationStackProp } from "react-navigation-stack";
 
 enum ListingOrientation {
   Carousel,
   ListView
 }
 
-const CurrentLearning = () => {
+type CurrentLearningProps = {
+  navigation: NavigationStackProp;
+};
+
+const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
   const { loading, error, data, refetch } = useQuery(query);
   const [theme] = useContext(ThemeContext);
   const [listingOrientation, setListingOrientation] = useState<ListingOrientation>(ListingOrientation.Carousel);
@@ -108,6 +113,7 @@ const CurrentLearning = () => {
                 currentLearning={currentLearning}
                 loading={loading}
                 onRefresh={onContentRefresh}
+                navigation={navigation}
               />
             )
           ) : (

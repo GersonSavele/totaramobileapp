@@ -62,10 +62,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
   };
 
   if (loading) return <Loading testID={"test_loading"} />;
-  if (error)
-    return (
-      <LoadingError onRefreshTap={onContentRefresh} testID={"test_error"} />
-    );
+  if (error) return <LoadingError onRefreshTap={onContentRefresh} testID={"test_error"} />;
 
   if (data) {
     const courseGroup = data[typeMap.queryAlias] as CourseGroup;
@@ -127,9 +124,7 @@ const CourseGroupDetailsContent = ({
                 summary={courseGroup.summary!}
                 progress={courseGroup.completion.progress}
                 isCourseSet={true}
-                summaryTypeTitle={translate(
-                  "course_group.overview.summary_title_program"
-                )}
+                summaryTypeTitle={translate("course_group.overview.summary_title_program")}
               />
             )}
           </View>

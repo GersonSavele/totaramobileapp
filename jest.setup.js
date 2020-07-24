@@ -1,4 +1,6 @@
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
+import React from "react";
+import View from "react-native";
 
 global.console = {
   log: jest.fn(),
@@ -93,12 +95,8 @@ jest.mock("react-navigation", () => {
     createMaterialTopTabNavigator: jest.fn(),
     createStackNavigator: jest.fn(),
     StackActions: {
-      push: jest
-        .fn()
-        .mockImplementation((x) => ({ ...x, type: "Navigation/PUSH" })),
-      replace: jest
-        .fn()
-        .mockImplementation((x) => ({ ...x, type: "Navigation/REPLACE" })),
+      push: jest.fn().mockImplementation((x) => ({ ...x, type: "Navigation/PUSH" })),
+      replace: jest.fn().mockImplementation((x) => ({ ...x, type: "Navigation/REPLACE" })),
       reset: jest.fn()
     },
     NavigationActions: {

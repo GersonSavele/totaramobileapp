@@ -60,13 +60,12 @@ const learningDetailsStyles = StyleSheet.create({
   itemCard: {
     backgroundColor: colorNeutral2
   },
-  LearningTypeLabelWrap: {
+  learningTypeLabelWrap: {
     borderRadius: borderRadius.borderRadiusM,
     borderStyle: "solid",
     borderWidth: 1,
     alignSelf: "flex-start",
     alignItems: "center",
-    marginTop: marginS,
     borderColor: colorNeutral7
   },
   tabBarContainer: {

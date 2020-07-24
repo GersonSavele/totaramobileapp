@@ -1,18 +1,15 @@
-import { act, fireEvent, render } from "@testing-library/react-native";
+import { act, cleanup, fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import DownloadsStack from "@totara/features/downloads";
 import { createAppContainer } from "react-navigation";
 import Downloads from "@totara/features/downloads/Downloads";
 import * as ReactRedux from "react-redux";
-import {
-  downloadsOneItemMock,
-  downloadsTwoItemsMock
-} from "@totara/features/downloads/__mocks__/downloadMock";
+import { downloadsOneItemMock, downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/downloadMock";
 import wait from "waait";
 
-jest.mock("react-redux", () => ({
-  useSelector: jest.fn()
-}));
+// jest.mock("react-redux", () => ({
+//   useSelector: jest.fn()
+// }));
 
 const renderWithAppContainer = () => {
   const App = createAppContainer(DownloadsStack);
@@ -34,12 +31,8 @@ const navigationMock = {
 };
 
 describe("Downloads", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  afterAll(() => {
-    jest.restoreAllMocks();
+  afterEach(async () => {
+    cleanup();
   });
 
   it("Should render DownloadsStack", () => {
@@ -52,9 +45,7 @@ describe("Downloads", () => {
       return [];
     });
 
-    const { getByTestId } = render(
-      <Downloads navigation={navigationMock.navigation} />
-    );
+    const { getByTestId } = render(<Downloads navigation={navigationMock.navigation} />);
 
     const test_DownloadsEmptyState = getByTestId("test_DownloadsEmptyState");
     expect(test_DownloadsEmptyState).toBeTruthy();
@@ -65,9 +56,7 @@ describe("Downloads", () => {
       return downloadsTwoItemsMock;
     });
 
-    const { getAllByTestId } = render(
-      <Downloads navigation={navigationMock.navigation} />
-    );
+    const { getAllByTestId } = render(<Downloads navigation={navigationMock.navigation} />);
 
     const testItems = getAllByTestId("test_DownloadsItem");
     expect(testItems.length).toBe(2);

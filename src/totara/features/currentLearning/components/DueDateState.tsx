@@ -20,7 +20,6 @@ import { paddings } from "@totara/theme/constants";
 import { translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings } from "@totara/theme/constants";
 
 /**
  * Component to render dueDate and change style depending on the dueDateState

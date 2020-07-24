@@ -49,10 +49,8 @@ type TitleBarProps = {
 
 const TitleBar = ({ item, badgeTitle }: TitleBarProps) => {
   return (
-    <CardElement
-      item={item as LearningItem}
-      cardStyle={learningDetailsStyles.itemCard}>
-      <View style={learningDetailsStyles.LearningTypeLabelWrap}>
+    <CardElement item={item as LearningItem} cardStyle={learningDetailsStyles.itemCard}>
+      <View style={learningDetailsStyles.learningTypeLabelWrap}>
         <Text style={learningDetailsStyles.programLabelText}>{badgeTitle}</Text>
       </View>
     </CardElement>
@@ -66,41 +64,22 @@ type TabBarProps = {
   tabBarRightTitle: string;
 };
 
-const TabBar = ({
-  onPress,
-  overviewIsShown,
-  tabBarLeftTitle,
-  tabBarRightTitle
-}: TabBarProps) => {
+const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }: TabBarProps) => {
   return (
     <View style={[{ backgroundColor: TotaraTheme.colorNeutral2 }]}>
       <View style={[learningDetailsStyles.tabBarContainer]}>
         <View style={learningDetailsStyles.tabNav}>
           <TouchableOpacity
-            style={[
-              learningDetailsStyles.tabSelected,
-              overviewIsShown && { ...styles.overviewTouchableOpacity }
-            ]}
+            style={[learningDetailsStyles.tabSelected, overviewIsShown && { ...styles.overviewTouchableOpacity }]}
             onPress={onPress}>
-            <Text
-              style={[
-                styles.tabViewTitle,
-                overviewIsShown && styles.overviewTextTouchableOpacity
-              ]}>
+            <Text style={[styles.tabViewTitle, overviewIsShown && styles.overviewTextTouchableOpacity]}>
               {tabBarLeftTitle}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[
-              learningDetailsStyles.tabSelected,
-              !overviewIsShown && { ...styles.overviewTouchableOpacity }
-            ]}
+            style={[learningDetailsStyles.tabSelected, !overviewIsShown && { ...styles.overviewTouchableOpacity }]}
             onPress={onPress}>
-            <Text
-              style={[
-                styles.tabViewTitle,
-                !overviewIsShown && { ...styles.overviewTextTouchableOpacity }
-              ]}>
+            <Text style={[styles.tabViewTitle, !overviewIsShown && { ...styles.overviewTextTouchableOpacity }]}>
               {tabBarRightTitle}
             </Text>
           </TouchableOpacity>
@@ -132,10 +111,7 @@ const LearningDetails = ({
     });
   }, []);
 
-<<<<<<< HEAD
-  const renderTitleBar = () => (
-    <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />
-  );
+  const renderTitleBar = () => <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />;
 
   const renderTabBar = () => (
     <TabBar
@@ -154,50 +130,6 @@ const LearningDetails = ({
       imageStyle={learningDetailsStyles.imageView}
     />
   );
-=======
-  const renderHeaderTitle = () => {
-    return (
-      <CardElement item={details} cardStyle={learningDetailsStyles.itemCard}>
-        <View style={learningDetailsStyles.LearningTypeLabelWrap}>
-          <Text style={learningDetailsStyles.programLabelText}>{badgeTitle}</Text>
-        </View>
-      </CardElement>
-    );
-  };
-
-  const renderNavigationTab = () => {
-    return (
-      <View style={[{ backgroundColor: TotaraTheme.colorNeutral2 }]}>
-        <View style={[learningDetailsStyles.tabBarContainer]}>
-          <View style={learningDetailsStyles.tabNav}>
-            <TouchableOpacity
-              style={[learningDetailsStyles.tabSelected, overviewIsShown && { ...styles.overviewTouchableOpacity }]}
-              onPress={onPress}>
-              <Text style={[styles.tabViewTitle, overviewIsShown && styles.overviewTextTouchableOpacity]}>
-                {tabBarLeftTitle}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[learningDetailsStyles.tabSelected, !overviewIsShown && { ...styles.overviewTouchableOpacity }]}
-              onPress={onPress}>
-              <Text style={[styles.tabViewTitle, !overviewIsShown && { ...styles.overviewTextTouchableOpacity }]}>
-                {tabBarRightTitle}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
-  const renderHeaderBackground = () => {
-    return (
-      <View style={learningDetailsStyles.headerContainer}>
-        <ImageElement item={details} imageStyle={learningDetailsStyles.itemImage} image={image} />
-      </View>
-    );
-  };
->>>>>>> MOB-650: Partial work
 
   return (
     <View style={learningDetailsStyles.container}>
