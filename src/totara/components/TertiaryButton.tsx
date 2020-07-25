@@ -29,14 +29,7 @@ type Props = {
   testID?: string;
 };
 
-const TertiaryButton = ({
-  children,
-  text,
-  style,
-  onPress,
-  testID,
-  ...rest
-}: Props) => {
+const TertiaryButton = ({ text, style, onPress, testID, ...rest }: Props) => {
   const [theme] = useContext(ThemeContext);
 
   return (
@@ -48,7 +41,7 @@ const TertiaryButton = ({
       onPress={onPress}
       style={[styles.button, style]}
       {...rest}>
-      {text ? (
+      {text && (
         <Text
           style={{
             color: theme.textColorDark,
@@ -56,8 +49,6 @@ const TertiaryButton = ({
           }}>
           {text}
         </Text>
-      ) : (
-        children
       )}
     </Button>
   );
