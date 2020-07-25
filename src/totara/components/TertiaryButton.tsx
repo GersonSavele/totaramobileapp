@@ -29,7 +29,13 @@ type Props = {
   testID?: string;
 };
 
-const TertiaryButton = ({ text, style, onPress, testID, ...rest }: Props) => {
+const TertiaryButton = ({
+  text = "",
+  style,
+  onPress,
+  testID,
+  ...rest
+}: Props) => {
   const [theme] = useContext(ThemeContext);
 
   return (
@@ -41,15 +47,13 @@ const TertiaryButton = ({ text, style, onPress, testID, ...rest }: Props) => {
       onPress={onPress}
       style={[styles.button, style]}
       {...rest}>
-      {text && (
-        <Text
-          style={{
-            color: theme.textColorDark,
-            fontSize: theme.fontSizeButtonTitle
-          }}>
-          {text}
-        </Text>
-      )}
+      <Text
+        style={{
+          color: theme.textColorDark,
+          fontSize: theme.fontSizeButtonTitle
+        }}>
+        {text}
+      </Text>
     </Button>
   );
 };
