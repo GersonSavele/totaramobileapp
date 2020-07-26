@@ -41,7 +41,7 @@ type ScormActivityProps = {
   navigation: NavigationStackProp<AttemptsParams>;
 };
 
-const { ATTEMPTS_LIST, ATTEMPT_ITEM } = SCORM_TEST_IDS;
+const { ATTEMPTS_LIST_ID, ATTEMPT_ITEM_ID } = SCORM_TEST_IDS;
 
 const ScormAttempts = ({ navigation }: ScormActivityProps) => {
   const { gradeMethod, attempts } = navigation.state.params as AttemptsParams;
@@ -78,7 +78,7 @@ const ScormAttempts = ({ navigation }: ScormActivityProps) => {
         alwaysBounceVertical={false}
         scrollIndicatorInsets={{ right: 8 }}
         keyExtractor={(item, index) => `${(item as Attempt).attempt}-${index}`}
-        testID={ATTEMPTS_LIST}
+        testID={ATTEMPTS_LIST_ID}
       />
     </SafeAreaView>
   );
@@ -104,7 +104,7 @@ const AttemptReport = ({
       : `${calculatedScore}%`;
 
   return (
-    <View style={scormAttemptsStyles.holder} testID={ATTEMPT_ITEM}>
+    <View style={scormAttemptsStyles.holder} testID={ATTEMPT_ITEM_ID}>
       <Text style={[theme.textRegular, scormAttemptsStyles.attempt]}>
         {translate("scorm.attempts.attempt")} {attempt}
       </Text>

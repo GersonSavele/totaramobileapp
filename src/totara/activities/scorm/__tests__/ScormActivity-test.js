@@ -27,7 +27,7 @@ import { scormSuccessMock } from "../api/scorm.mock";
 import { AuthContext } from "@totara/core";
 import { SCORM_TEST_IDS } from "../constants";
 
-const { SUMMARY, LOADING_ID } = SCORM_TEST_IDS;
+const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
 describe("ScormActivity", () => {
   const authContextState = {
     appState: {
@@ -81,7 +81,7 @@ describe("ScormActivity", () => {
     await act(async () => {
       await wait(0);
     });
-    const view = getByTestId(SUMMARY);
+    const view = getByTestId(SUMMARY_ID);
     expect(view).toBeTruthy();
     done();
   });

@@ -29,7 +29,7 @@ const mockScormActivityNavigation = {
   backAction: jest.fn()
 };
 
-const { NONE_EXIST_RESOURCE, INVALID_SCORM } = SCORM_TEST_IDS;
+const { NONE_EXIST_RESOURCE_ID, INVALID_SCORM_ID } = SCORM_TEST_IDS;
 
 describe("OfflineScormActivity", () => {
   it("Should render TEXT general error for non existing scorm or scorm.id", async () => {
@@ -43,7 +43,7 @@ describe("OfflineScormActivity", () => {
     };
     const tree = <OfflineScormActivity navigation={navigation} />;
     const { getByTestId } = render(tree);
-    const labelTitle = getByTestId(INVALID_SCORM);
+    const labelTitle = getByTestId(INVALID_SCORM_ID);
     expect(labelTitle.children[0]).toBe(translate("general.error_unknown"));
   });
 
@@ -65,7 +65,7 @@ describe("OfflineScormActivity", () => {
 
     const tree = <OfflineScormActivity navigation={navigation} />;
     const { getByTestId } = render(tree);
-    const labelTitleNo = getByTestId(NONE_EXIST_RESOURCE);
+    const labelTitleNo = getByTestId(NONE_EXIST_RESOURCE_ID);
     expect(labelTitleNo.children[0]).toBe(translate("general.error_unknown"));
   });
 });

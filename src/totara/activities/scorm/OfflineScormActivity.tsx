@@ -61,7 +61,7 @@ type OfflineScormParams = {
 type OfflineScormProps = {
   navigation: NavigationStackProp<OfflineScormParams>;
 };
-const { NONE_EXIST_RESOURCE, INVALID_SCORM } = SCORM_TEST_IDS;
+const { NONE_EXIST_RESOURCE_ID, INVALID_SCORM_ID } = SCORM_TEST_IDS;
 const getResources = (state: RootState) => state.resourceReducer.resources;
 
 const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
@@ -69,7 +69,9 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
     .params as OfflineScormParams;
   if (!scorm || !scorm.id) {
     return (
-      <Text testID={INVALID_SCORM}>{translate("general.error_unknown")}</Text>
+      <Text testID={INVALID_SCORM_ID}>
+        {translate("general.error_unknown")}
+      </Text>
     );
   }
 
@@ -81,7 +83,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   );
   if (!targetResource) {
     return (
-      <Text testID={NONE_EXIST_RESOURCE}>
+      <Text testID={NONE_EXIST_RESOURCE_ID}>
         {translate("general.error_unknown")}
       </Text>
     );

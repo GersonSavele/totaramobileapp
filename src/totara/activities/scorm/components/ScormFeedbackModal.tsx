@@ -37,7 +37,7 @@ type FeedbackProps = {
   navigation: NavigationStackProp<SCORMFeedbackProps>;
 };
 
-const { FEEDBACK_COMPLETION_IMAGE, FEEDBACK_SCORE } = SCORM_TEST_IDS;
+const { FEEDBACK_COMPLETION_IMAGE_ID, FEEDBACK_SCORE_ID } = SCORM_TEST_IDS;
 
 const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
   const { gradeMethod, completionScoreRequired, score, onClose } = navigation
@@ -52,7 +52,7 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
               {completionScoreRequired === undefined ||
               completionScoreRequired === null ? (
                 <Image
-                  testID={FEEDBACK_COMPLETION_IMAGE}
+                  testID={FEEDBACK_COMPLETION_IMAGE_ID}
                   style={scormFeedbackStyles.resultStatusImage}
                   source={require("@resources/images/success_tick/success_tick.png")}
                 />
@@ -66,7 +66,7 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
                     {translate("scorm.feedback.grade_title")}
                   </Text>
                   <Text
-                    testID={FEEDBACK_SCORE}
+                    testID={FEEDBACK_SCORE_ID}
                     style={{
                       ...TotaraTheme.textH1,
                       ...scormFeedbackStyles.scoreText

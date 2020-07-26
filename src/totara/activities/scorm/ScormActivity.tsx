@@ -73,7 +73,7 @@ type ScormActivityProps = {
   navigation: NavigationStackProp<ScormActivityParams>;
 };
 
-const { SUMMARY, LOADING_ID } = SCORM_TEST_IDS;
+const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
 
 const headerDispatch = (params, dispatch) => {
   const setParamsAction = NavigationActions.setParams({
@@ -190,7 +190,7 @@ const ScormActivity = (props: ScormActivityProps) => {
     return <Loading testID={LOADING_ID} />;
   }
   return (
-    <SafeAreaView style={fullFlex} testID={SUMMARY}>
+    <SafeAreaView style={fullFlex} testID={SUMMARY_ID}>
       <ScormSummary
         id={id}
         navigation={navigation}

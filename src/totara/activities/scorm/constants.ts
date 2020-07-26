@@ -17,16 +17,16 @@
 
 const SCORM_TEST_IDS = {
   LOADING_ID: "loading",
-  SUMMARY: "summary",
-  ATTEMPTS_LIST: "attempts_list",
-  ATTEMPT_ITEM: "attempt_item",
-  NONE_EXIST_RESOURCE: "no_resource",
-  INVALID_SCORM: "invalid_scorm",
-  OFFLINE_PLAYER: "offline_player",
-  FEEDBACK_COMPLETION_IMAGE: "feedback_completed_image",
-  FEEDBACK_SCORE: "feedback_score",
-  INVALID_URL: "invalid_url",
-  ONLINE_PLAYER: "online_player"
+  SUMMARY_ID: "summary",
+  ATTEMPTS_LIST_ID: "attempts_list",
+  ATTEMPT_ITEM_ID: "attempt_item",
+  NONE_EXIST_RESOURCE_ID: "no_resource",
+  INVALID_SCORM_ID: "invalid_scorm",
+  OFFLINE_PLAYER_ID: "offline_player",
+  FEEDBACK_COMPLETION_IMAGE_ID: "feedback_completed_image",
+  FEEDBACK_SCORE_ID: "feedback_score",
+  INVALID_URL_ID: "invalid_url",
+  ONLINE_PLAYER_ID: "online_player"
 };
 
 export { SCORM_TEST_IDS };

@@ -28,7 +28,7 @@ type OnlineScormProps = {
   navigation: NavigationStackProp<OnlineScormParams>;
 };
 
-const { INVALID_URL, ONLINE_PLAYER } = SCORM_TEST_IDS;
+const { INVALID_URL_ID, ONLINE_PLAYER_ID } = SCORM_TEST_IDS;
 
 const OnlineScormActivity = ({ navigation }: OnlineScormProps) => {
   const { backAction, uri } = navigation.state.params as OnlineScormParams;
@@ -42,12 +42,12 @@ const OnlineScormActivity = ({ navigation }: OnlineScormProps) => {
 
   if (!uri)
     return (
-      <Text testID={INVALID_URL}>{translate("general.error_unknown")}</Text>
+      <Text testID={INVALID_URL_ID}>{translate("general.error_unknown")}</Text>
     );
   return (
     <View
       style={onlineScormActivityStyles.playerContainer}
-      testID={ONLINE_PLAYER}>
+      testID={ONLINE_PLAYER_ID}>
       <AuthenticatedWebView uri={uri} />
     </View>
   );

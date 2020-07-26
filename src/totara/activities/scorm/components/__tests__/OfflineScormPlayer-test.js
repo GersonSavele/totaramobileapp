@@ -20,7 +20,7 @@ import { shallow } from "enzyme";
 import OfflineScormPlayer from "../OfflineScormPlayer";
 import { SCORM_TEST_IDS } from "../../constants";
 
-const { OFFLINE_PLAYER } = SCORM_TEST_IDS;
+const { OFFLINE_PLAYER_ID } = SCORM_TEST_IDS;
 
 const mockExitHandler = jest.fn(() => null);
 const mockMessageHandler = jest.fn(() => null);
@@ -45,7 +45,7 @@ describe("OfflineScormPlayer", () => {
       />
     );
     expect(
-      wrapper.findWhere((node) => node.prop("testID") === OFFLINE_PLAYER)
+      wrapper.findWhere((node) => node.prop("testID") === OFFLINE_PLAYER_ID)
     ).toExist();
   });
 });

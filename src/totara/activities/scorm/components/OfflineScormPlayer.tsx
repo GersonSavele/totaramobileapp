@@ -32,7 +32,7 @@ type Props = {
   onExitHandler?: () => void;
 };
 
-const { OFFLINE_PLAYER } = SCORM_TEST_IDS;
+const { OFFLINE_PLAYER_ID } = SCORM_TEST_IDS;
 
 const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
@@ -41,7 +41,7 @@ const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
   };
 
   return (
-    <View style={styles.playerContainer} testID={OFFLINE_PLAYER}>
+    <View style={styles.playerContainer} testID={OFFLINE_PLAYER_ID}>
       <WebView
         source={{ uri: url }}
         javaScriptEnabled={true}
