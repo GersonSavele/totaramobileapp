@@ -66,6 +66,7 @@ type CachedCommitsProps = {
  *
  * @param param0 - Object with the scorm id to fetch the cached activity records
  * @returns an object: the specific scorm cached data
+ * NOTE: `client` is needed because this readQuery function needs the state of the client object to work properly.
  */
 const retrieveAllData = ({ client }): { [key: string]: ScormBundle } => {
   try {
@@ -81,6 +82,7 @@ const retrieveAllData = ({ client }): { [key: string]: ScormBundle } => {
 /**
  * This saves the map of scorm bundle with the new scormBunble in the cache
  * @param param0
+ * NOTE: `client` is needed because this writeQuery function needs the state of the client object to work properly.
  */
 const saveInTheCache = ({ client, scormBundles }: CacheProps) => {
   try {
