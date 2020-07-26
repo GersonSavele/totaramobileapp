@@ -15,8 +15,8 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-const TEST_ID = {
-  LOADING: "loading",
+const SCORM_TEST_IDS = {
+  LOADING_ID: "loading",
   SUMMARY: "summary",
   ATTEMPTS_LIST: "attempts_list",
   ATTEMPT_ITEM: "attempt_item",
@@ -29,4 +29,4 @@ const TEST_ID = {
   ONLINE_PLAYER: "online_player"
 };
 
-export { TEST_ID };
+export { SCORM_TEST_IDS };

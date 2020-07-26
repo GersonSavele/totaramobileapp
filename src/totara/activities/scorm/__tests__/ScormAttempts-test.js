@@ -20,9 +20,9 @@ import { render } from "@testing-library/react-native";
 
 import ScormAttempts from "../ScormAttempts";
 import { Grade } from "@totara/types/Scorm";
-import { TEST_ID } from "../constants";
+import { SCORM_TEST_IDS } from "../constants";
 
-const { ATTEMPTS_LIST, ATTEMPT_ITEM } = TEST_ID;
+const { ATTEMPTS_LIST, ATTEMPT_ITEM } = SCORM_TEST_IDS;
 
 const attemptNavigation = (attempts) => ({
   state: {

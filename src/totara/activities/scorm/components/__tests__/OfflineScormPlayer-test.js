@@ -18,9 +18,9 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import OfflineScormPlayer from "../OfflineScormPlayer";
-import { TEST_ID } from "../../constants";
+import { SCORM_TEST_IDS } from "../../constants";
 
-const { OFFLINE_PLAYER } = TEST_ID;
+const { OFFLINE_PLAYER } = SCORM_TEST_IDS;
 
 const mockExitHandler = jest.fn(() => null);
 const mockMessageHandler = jest.fn(() => null);

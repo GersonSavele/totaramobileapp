@@ -23,7 +23,7 @@ import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 
-import { TEST_ID } from "../constants";
+import { SCORM_TEST_IDS } from "../constants";
 
 type Props = {
   url: string;
@@ -32,7 +32,7 @@ type Props = {
   onExitHandler?: () => void;
 };
 
-const { OFFLINE_PLAYER } = TEST_ID;
+const { OFFLINE_PLAYER } = SCORM_TEST_IDS;
 
 const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {

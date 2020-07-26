@@ -49,7 +49,7 @@ import {
   loadScormPackageData
 } from "./utils";
 import { scormLessonStatus } from "@totara/lib/constants";
-import { TEST_ID } from "./constants";
+import { SCORM_TEST_IDS } from "./constants";
 
 type OfflineScormParams = {
   attempt: number;
@@ -61,7 +61,7 @@ type OfflineScormParams = {
 type OfflineScormProps = {
   navigation: NavigationStackProp<OfflineScormParams>;
 };
-const { NONE_EXIST_RESOURCE, INVALID_SCORM } = TEST_ID;
+const { NONE_EXIST_RESOURCE, INVALID_SCORM } = SCORM_TEST_IDS;
 const getResources = (state: RootState) => state.resourceReducer.resources;
 
 const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {

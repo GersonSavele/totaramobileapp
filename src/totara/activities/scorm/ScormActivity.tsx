@@ -56,7 +56,7 @@ import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
 import { getTargetZipFile, getOfflinePackageUnzipPath } from "./utils";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
-import { TEST_ID } from "./constants";
+import { SCORM_TEST_IDS } from "./constants";
 
 const { download } = ResourceManager;
 
@@ -73,7 +73,7 @@ type ScormActivityProps = {
   navigation: NavigationStackProp<ScormActivityParams>;
 };
 
-const { SUMMARY, LOADING } = TEST_ID;
+const { SUMMARY, LOADING_ID } = SCORM_TEST_IDS;
 
 const headerDispatch = (params, dispatch) => {
   const setParamsAction = NavigationActions.setParams({
@@ -187,7 +187,7 @@ const ScormActivity = (props: ScormActivityProps) => {
   }, [data]);
 
   if (loading && !(scormBundle && scormBundle.scorm)) {
-    return <Loading testID={LOADING} />;
+    return <Loading testID={LOADING_ID} />;
   }
   return (
     <SafeAreaView style={fullFlex} testID={SUMMARY}>

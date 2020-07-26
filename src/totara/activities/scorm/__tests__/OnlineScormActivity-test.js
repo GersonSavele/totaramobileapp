@@ -18,9 +18,9 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import OnlineScormActivity from "../OnlineScormActivity";
-import { TEST_ID } from "../constants";
+import { SCORM_TEST_IDS } from "../constants";
 
-const { INVALID_URL, ONLINE_PLAYER } = TEST_ID;
+const { INVALID_URL, ONLINE_PLAYER } = SCORM_TEST_IDS;
 
 const mockBackHandler = jest.fn(() => null);
 const onlineNavigation = (url) => ({

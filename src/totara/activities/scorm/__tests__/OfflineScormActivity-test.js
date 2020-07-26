@@ -21,7 +21,7 @@ import { render } from "@testing-library/react-native";
 import { translate } from "@totara/locale";
 
 import OfflineScormActivity from "../OfflineScormActivity";
-import { TEST_ID } from "../constants";
+import { SCORM_TEST_IDS } from "../constants";
 
 const mockScormActivityNavigation = {
   attempt: 1,
@@ -29,7 +29,7 @@ const mockScormActivityNavigation = {
   backAction: jest.fn()
 };
 
-const { NONE_EXIST_RESOURCE, INVALID_SCORM } = TEST_ID;
+const { NONE_EXIST_RESOURCE, INVALID_SCORM } = SCORM_TEST_IDS;
 
 describe("OfflineScormActivity", () => {
   it("Should render TEXT general error for non existing scorm or scorm.id", async () => {
