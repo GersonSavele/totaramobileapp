@@ -117,7 +117,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
       scos,
       scorm,
       attempt,
-      readQuery: client.readQuery,
+      client,
       scoid,
       defaultSco,
       setJsCode
@@ -150,7 +150,7 @@ const packageEffect = ({
   scos,
   scorm,
   attempt,
-  readQuery,
+  client,
   scoid,
   defaultSco,
   setJsCode
@@ -160,7 +160,7 @@ const packageEffect = ({
     const cmiData = getScormAttemptData({
       scormId: scorm.id,
       attempt,
-      readQuery
+      client
     });
     const selectedScoId = scoid || (defaultSco && defaultSco.id!);
     const lastActivityCmi = (cmiData && cmiData[selectedScoId]) || null;

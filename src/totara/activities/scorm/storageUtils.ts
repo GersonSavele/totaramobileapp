@@ -313,12 +313,12 @@ const setCleanScormCommit = ({
 };
 
 const getScormAttemptData = ({
-  readQuery,
+  client,
   scormId,
   attempt,
   onRetrieveAllData = retrieveAllData
 }: CompletedScormAttemptProps) => {
-  const cachedData = onRetrieveAllData({ readQuery });
+  const cachedData = onRetrieveAllData({ client });
 
   const attemptCmi = get(cachedData, `[${scormId}].cmi[${attempt}]`, undefined);
   if (attemptCmi && Object.keys(attemptCmi).length) {
