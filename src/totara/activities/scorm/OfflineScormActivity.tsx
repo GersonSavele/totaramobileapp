@@ -136,7 +136,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
       const cmiData = getScormAttemptData({
         scormId: scorm.id,
         attempt,
-        client
+        readQuery: client.readQuery
       });
       const selectedScoId = scoid || (defaultSco && defaultSco.id!);
       const lastActivityCmi = (cmiData && cmiData[selectedScoId]) || null;
@@ -154,7 +154,6 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
     }
   }, [scormPackageData, url]);
 
-  useEffect(() => {}, []);
   const stopServer = () => {
     if (server && server.current) {
       server.current!.stop();
@@ -175,31 +174,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
     return server.current.start();
   };
 
-  const onExitPlayerHandler = () => {
-    stopServer();
-  };
-
   const client = useApolloClient();
-
-  const onPlayerMessageHandler = (messageData: any) => {
-    const { tmsevent, result } = messageData;
-    if (tmsevent && tmsevent === "SCORMCOMMIT" && result) {
-      const status = get(result, "cmi.core.lesson_status", undefined);
-      if (status && status !== scormLessonStatus.incomplete) {
-        const scormBundles = retrieveAllData({ client });
-        const newData = setScormActivityData({
-          scormBundles,
-          data: result,
-          maxGrade: scorm.maxgrade,
-          gradeMethod: scorm.grademethod as Grade
-        });
-        saveInTheCache({
-          client,
-          scormBundles: newData
-        });
-      }
-    }
-  };
 
   return (
     <>
@@ -207,14 +182,40 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
         <OfflineScormPlayer
           url={url}
           injectScript={jsCode}
-          onExitHandler={onExitPlayerHandler}
-          onMessageHandler={onPlayerMessageHandler}
+          onExitHandler={stopServer}
+          onMessageHandler={onPlayerMessageHandler({
+            client,
+            maxGrade: scorm.maxgrade,
+            gradeMethod: scorm.grademethod
+          })}
         />
       ) : (
         <Text>{translate("general.loading")}</Text>
       )}
     </>
   );
+};
+
+const onPlayerMessageHandler = ({ client, maxGrade, gradeMethod }) => (
+  messageData: any
+) => {
+  const { tmsevent, result } = messageData;
+  if (tmsevent && tmsevent === "SCORMCOMMIT" && result) {
+    const status = get(result, "cmi.core.lesson_status", undefined);
+    if (status && status !== scormLessonStatus.incomplete) {
+      const scormBundles = retrieveAllData({ client });
+      const newData = setScormActivityData({
+        scormBundles,
+        data: result,
+        maxGrade,
+        gradeMethod
+      });
+      saveInTheCache({
+        client,
+        scormBundles: newData
+      });
+    }
+  }
 };
 
 export default OfflineScormActivity;

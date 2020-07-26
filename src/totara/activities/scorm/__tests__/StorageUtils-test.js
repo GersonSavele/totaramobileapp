@@ -623,7 +623,7 @@ describe("getScormAttemptData", () => {
     const retrieveAllDataMock = jest.fn(() => existingDataMock);
     const client = useApolloClient();
     const result = getScormAttemptData({
-      client,
+      readQuery: client.readQuery,
       scormId,
       attempt,
       onRetrieveAllData: retrieveAllDataMock
