@@ -45,7 +45,7 @@ import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
 import ScormAttempts from "./ScormAttempts";
 import Loading from "@totara/components/Loading";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { ScormActivityParams, ScormBundle } from "@totara/types/Scorm";
+import { ScormActivityParams, ScormBundle, Scorm } from "@totara/types/Scorm";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { translate } from "@totara/locale";
 import { SafeAreaView } from "react-native";
@@ -73,6 +73,24 @@ type ScormActivityProps = {
   navigation: NavigationStackProp<ScormActivityParams>;
 };
 
+type ApiDataEffectProps = {
+  data?: any;
+  client: any;
+  id: string;
+  scormBundle?: ScormBundle;
+  setScormBundle: Function;
+};
+
+type ResourceListEffectProps = {
+  scorm?: Scorm;
+  resourceList: Resource[];
+  id: string;
+  apiKey: string;
+  isInternetReachable?: boolean | null;
+  navigation: any;
+  setResourceState: Function;
+};
+
 const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
 
 const headerDispatch = (params, dispatch) => {
@@ -81,6 +99,104 @@ const headerDispatch = (params, dispatch) => {
     key: SCORM_ROOT
   });
   dispatch(setParamsAction);
+};
+
+const apiDataEffect = ({
+  data,
+  client,
+  id,
+  scormBundle,
+  setScormBundle
+}: ApiDataEffectProps) => () => {
+  if (data) {
+    let mergedData = { ...data };
+
+    const offlineAttempts = getOfflineActivity({
+      client,
+      scormId: id
+    });
+    setScormBundle({
+      ...scormBundle,
+      ...mergedData,
+      offlineAttempts: offlineAttempts
+    });
+  }
+};
+
+const onRefresh = ({
+  isInternetReachable,
+  refetch,
+  client,
+  id,
+  scormBundle,
+  setScormBundle
+}: ApiDataEffectProps & {
+  isInternetReachable?: null | boolean;
+  refetch: Function;
+}) => () => {
+  if (isInternetReachable) {
+    refetch();
+  } else {
+    const offlineAttempts = getOfflineActivity({
+      client,
+      scormId: id
+    });
+    setScormBundle({
+      ...scormBundle,
+      offlineAttempts: offlineAttempts
+    });
+  }
+};
+
+const resourceListEffect = ({
+  scorm,
+  resourceList,
+  id,
+  apiKey,
+  isInternetReachable,
+  navigation,
+  setResourceState
+}: ResourceListEffectProps) => () => {
+  if (scorm?.offlineAttemptsAllowed && scorm?.packageUrl) {
+    const resource = resourceList.find((x) => x.customId === id);
+
+    const resourceState = resource?.state;
+    const progress = resource
+      ? humanReadablePercentage({
+          writtenBytes: resource.bytesDownloaded,
+          sizeInBytes: resource.sizeInBytes
+        })
+      : 0;
+
+    const { packageUrl } = scorm;
+
+    headerDispatch(
+      {
+        downloadProgress: progress,
+        downloadState: resourceState,
+        // if there's no existing scorm resource, a null function will serve disabling the action
+        onDownloadPress: resource
+          ? () => null
+          : ({ id, title }) => {
+              if (isInternetReachable) {
+                download({
+                  apiKey: apiKey,
+                  customId: id,
+                  name: title,
+                  type: ResourceType.ScormActivity,
+                  resourceUrl: packageUrl,
+                  targetPathFile: getTargetZipFile(id),
+                  targetExtractPath: getOfflinePackageUnzipPath(id)
+                });
+              } else {
+                showMessage({ text: translate("general.no_internet") });
+              }
+            }
+      },
+      navigation.dispatch
+    );
+    setResourceState((resource && resource.state) || undefined);
+  }
 };
 
 const ScormActivity = (props: ScormActivityProps) => {
@@ -111,80 +227,29 @@ const ScormActivity = (props: ScormActivityProps) => {
     (state: RootState) => state.resourceReducer.resources
   );
 
-  const onRefresh = () => {
-    if (isInternetReachable) {
-      refetch();
-    } else {
-      const offlineAttempts = getOfflineActivity({
-        client: apolloClient,
-        scormId: id
-      });
-      setScormBundle({
-        ...scormBundle,
-        offlineAttempts: offlineAttempts
-      });
-    }
-  };
-  useEffect(() => {
-    if (
-      scormBundle?.scorm?.offlineAttemptsAllowed &&
-      scormBundle?.scorm?.packageUrl
-    ) {
-      const resource = resourceList.find((x) => x.customId === id);
-      const resourceState = resource?.state;
-      const progress = resource
-        ? humanReadablePercentage({
-            writtenBytes: resource.bytesDownloaded,
-            sizeInBytes: resource.sizeInBytes
-          })
-        : 0;
+  useEffect(
+    resourceListEffect({
+      scorm: scormBundle?.scorm,
+      id,
+      apiKey,
+      isInternetReachable,
+      navigation,
+      resourceList,
+      setResourceState
+    }),
+    [resourceList, scormBundle]
+  );
 
-      const { packageUrl } = scormBundle.scorm;
-
-      headerDispatch(
-        {
-          downloadProgress: progress,
-          downloadState: resourceState,
-          // if there's no existing scorm resource, a null function will serve disabling the action
-          onDownloadPress: resource
-            ? () => null
-            : ({ id, title }) => {
-                if (isInternetReachable) {
-                  download({
-                    apiKey: apiKey,
-                    customId: id,
-                    name: title,
-                    type: ResourceType.ScormActivity,
-                    resourceUrl: packageUrl,
-                    targetPathFile: getTargetZipFile(id),
-                    targetExtractPath: getOfflinePackageUnzipPath(id)
-                  });
-                } else {
-                  showMessage({ text: translate("general.no_internet") });
-                }
-              }
-        },
-        navigation.dispatch
-      );
-      setResourceState(resource && resource.state);
-    }
-  }, [resourceList, scormBundle]);
-
-  useEffect(() => {
-    if (data) {
-      let mergedData = { ...data };
-
-      const offlineAttempts = getOfflineActivity({
-        client: apolloClient,
-        scormId: id
-      });
-      setScormBundle({
-        ...scormBundle,
-        ...mergedData,
-        offlineAttempts: offlineAttempts
-      });
-    }
-  }, [data]);
+  useEffect(
+    apiDataEffect({
+      data,
+      client: apolloClient,
+      id,
+      scormBundle,
+      setScormBundle
+    }),
+    [data]
+  );
 
   if (loading && !(scormBundle && scormBundle.scorm)) {
     return <Loading testID={LOADING_ID} />;
@@ -199,7 +264,14 @@ const ScormActivity = (props: ScormActivityProps) => {
         error={error}
         networkStatus={networkStatus}
         scormBundle={scormBundle}
-        onRefresh={onRefresh}
+        onRefresh={onRefresh({
+          isInternetReachable,
+          refetch,
+          client: apolloClient,
+          scormBundle,
+          setScormBundle,
+          id
+        })}
         isDownloaded={resourceState === ResourceState.Completed}
         client={apolloClient}
         apiKey={apiKey}
@@ -293,5 +365,12 @@ const headerRight = (props) => {
   }
 };
 
-export { scormStack };
+export {
+  scormStack,
+  headerDispatch,
+  apiDataEffect,
+  onRefresh,
+  navigationOptions,
+  resourceListEffect
+};
 export default ScormActivity;
