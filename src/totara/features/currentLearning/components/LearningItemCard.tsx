@@ -37,7 +37,6 @@ interface Props {
   cardStyle?: ViewStyle;
   children?: JSX.Element;
   image?: string;
-  itemType?: string;
 }
 
 const LearningItemCard = ({
@@ -49,12 +48,7 @@ const LearningItemCard = ({
 }: Props) => {
   return (
     <View style={{ flex: 1 }}>
-      <ImageElement
-        item={item}
-        imageStyle={imageStyle}
-        image={image}
-        itemType={item.itemtype}
-      />
+      <ImageElement item={item} imageStyle={imageStyle} image={image} />
       <CardElement item={item} cardStyle={cardStyle}>
         {children}
       </CardElement>
@@ -74,7 +68,7 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
   );
 };
 
-const ImageElement = ({ item, imageStyle, image, itemType = "" }: Props) => {
+const ImageElement = ({ item, imageStyle, image }: Props) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   return (
     <View
@@ -85,7 +79,7 @@ const ImageElement = ({ item, imageStyle, image, itemType = "" }: Props) => {
       {image && image.length > 0 ? (
         <ImageWrapper url={image} style={styles.imageWrap} />
       ) : (
-        <DefaultImage itemType={itemType} />
+        <DefaultImage itemType={item.itemtype} />
       )}
     </View>
   );

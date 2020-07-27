@@ -290,10 +290,10 @@ const ListItemUnlock = ({
               }
             }
           }}>
-          {!isLabel ? (
-            <ListItem item={item} />
+          {isLabel ? (
+            <ActivityTextContent label={item.description || ""} />
           ) : (
-            <ActivityTextContent label={item.description} />
+            <ListItem item={item} />
           )}
         </TouchableOpacity>
       </View>
