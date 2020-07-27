@@ -35,13 +35,13 @@ const courseGroupTypeMap = {
     query: coreProgram,
     idField: "programid",
     queryAlias: "totara_mobile_program",
-    badgeTitle: translate("course_group.details.badge_title_program")
+    badgeTitlePath: "course_group.details.badge_title_program"
   },
   certification: {
     query: coreCertification,
     idField: "certificationid",
     queryAlias: "totara_mobile_certification",
-    badgeTitle: translate("course_group.details.badge_title_certification")
+    badgeTitlePath: "course_group.details.badge_title_certification"
   }
 };
 
@@ -75,7 +75,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
         onContentRefresh={onContentRefresh}
         navigation={navigation}
         testID={"test_data"}
-        badgeTitle={typeMap.badgeTitle}
+        badgeTitlePath={typeMap.badgeTitlePath}
         itemType={courseGroupType}
       />
     );
@@ -87,7 +87,7 @@ type CourseGroupDetailsContentProps = {
   onContentRefresh: () => void;
   navigation: NavigationStackProp;
   testID?: string;
-  badgeTitle: string;
+  badgeTitlePath: string;
   itemType: string;
 };
 
@@ -96,7 +96,7 @@ const CourseGroupDetailsContent = ({
   onContentRefresh,
   navigation,
   testID,
-  badgeTitle,
+  badgeTitlePath,
   itemType
 }: CourseGroupDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
@@ -113,7 +113,7 @@ const CourseGroupDetailsContent = ({
         tabBarRightTitle={translate("course_group.tabs.courses")}
         onPress={onSwitchTab}
         overviewIsShown={showOverview}
-        badgeTitle={badgeTitle}
+        badgeTitle={translate(badgeTitlePath)}
         image={courseGroup.imageSrc}
         onPullToRefresh={onContentRefresh}
         navigation={navigation}>
