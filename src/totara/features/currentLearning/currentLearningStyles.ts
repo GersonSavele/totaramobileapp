@@ -14,7 +14,7 @@
  *
  */
 
-import { StyleSheet, Dimensions, ViewStyle } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 import {
   margins,
   paddings,
@@ -77,7 +77,7 @@ const learningDetailsStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginLeft: marginL,
-    width: Dimensions.get("window").width * 0.5,
+    width: deviceScreen.width * 0.5,
     alignItems: "center",
     flex: 1
   },

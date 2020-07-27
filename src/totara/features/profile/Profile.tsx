@@ -15,7 +15,7 @@
  *
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -26,12 +26,13 @@ import {
   TouchableOpacity
 } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
+import { ThemeContext } from "@totara/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { AuthConsumer } from "@totara/core";
 import { UserProfile } from "@totara/types";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { userOwnProfile } from "./api";
-
+import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
 import { NetworkStatus as NS } from "apollo-boost";
 import { margins, paddings } from "@totara/theme/constants";
@@ -52,6 +53,7 @@ const Profile = ({ navigation }: ProfileProps) => {
   const { loading, error, data, refetch, networkStatus } = useQuery(
     userOwnProfile
   );
+
   if (loading) return <Loading testID={"test_ProfileLoading"} />;
   if (error)
     return (
@@ -86,6 +88,7 @@ type ProfileContentProps = {
 };
 
 const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
+  const [theme] = useContext(ThemeContext);
   const confirmationLogout = (auth) =>
     Alert.alert(
       translate("user_profile.logout.title"),
@@ -110,8 +113,12 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
 
   return (
     <View style={[TotaraTheme.viewContainer]} testID={"test_ProfileContainer"}>
-      <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
-        <View style={styles.headerContent}>
+      <View style={styles.headerContent}>
+        <View
+          style={{
+            ...styles.avatarContainer,
+            borderColor: theme.colorPrimary
+          }}>
           {!useDefaultImage ? (
             <ImageWrapper url={profile.profileimage} style={styles.avatar} />
           ) : (
@@ -123,23 +130,20 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
               />
             </View>
           )}
-          <Text style={styles.userDetails} testID={"test_ProfileUserDetails"}>
-            {`${profile.firstname} ${profile.surname}`}
-          </Text>
-          <Text style={styles.userEmail} testID={"test_ProfileUserEmail"}>
-            {profile.email}
-          </Text>
-          <Text style={styles.userLoginAs} testID={"test_ProfileUserLogin"}>
-            {translate("user_profile.login_as", { username: profile.username })}
-          </Text>
         </View>
+        <Text style={styles.userDetails} testID={"test_ProfileUserDetails"}>
+          {`${profile.firstname} ${profile.surname}`}
+        </Text>
+        <Text style={styles.userEmail} testID={"test_ProfileUserEmail"}>
+          {profile.email}
+        </Text>
+        <Text style={styles.userLoginAs} testID={"test_ProfileUserLogin"}>
+          {translate("user_profile.login_as", { username: profile.username })}
+        </Text>
       </View>
 
-      <View style={[styles.manageSection, { flex: 2 }]}>
-        <Text style={styles.manageTitle}>
-          {translate("user_profile.manage_section")}
-        </Text>
-        <View style={styles.manageOptions}>
+      <View style={[styles.manageSection, { flex: 1 }]}>
+        <View>
           <View style={styles.sectionOption}>
             <TouchableOpacity
               testID={"test_ProfileAboutButton"}
@@ -150,7 +154,6 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
               </Text>
             </TouchableOpacity>
           </View>
-
           <View style={styles.sectionOption}>
             <AuthConsumer>
               {(auth) => (
@@ -173,18 +176,29 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
 const styles = StyleSheet.create({
   headerContent: {
     padding: paddings.padding2XL,
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: TotaraTheme.colorSecondary1,
+    borderBottomColor: TotaraTheme.colorNeutral3,
+    borderBottomWidth: 1
+  },
+  avatarContainer: {
+    width: deviceScreen.width / 3,
+    height: deviceScreen.width / 3,
+    borderRadius: deviceScreen.width / 6,
+    borderWidth: 2,
+    alignItems: "center",
+    justifyContent: "center"
   },
   avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
-    marginBottom: margins.marginS,
+    width: deviceScreen.width / 3 - 16,
+    height: deviceScreen.width / 3 - 16,
+    borderRadius: deviceScreen.width / 6,
     backgroundColor: TotaraTheme.colorNeutral3,
     alignItems: "center",
     justifyContent: "center"
   },
   userDetails: {
+    marginTop: margins.marginS,
     ...TotaraTheme.textHeadline
   },
   userEmail: {
@@ -202,14 +216,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: paddings.paddingXL
   },
-  manageTitle: {
-    ...TotaraTheme.textHeadline
-  },
-  manageOptions: {
-    marginTop: margins.marginM
-  },
   sectionOption: {
-    paddingTop: paddings.paddingXL,
+    paddingTop: paddings.paddingS,
     paddingBottom: paddings.paddingXL,
     marginBottom: margins.marginS,
     borderBottomColor: TotaraTheme.colorNeutral3,
