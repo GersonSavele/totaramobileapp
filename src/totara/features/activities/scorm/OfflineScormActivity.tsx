@@ -24,8 +24,8 @@ import { Text, BackHandler } from "react-native";
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
 import StaticServer from "react-native-static-server";
 
-import OfflineScormPlayer from "@totara/activities/scorm/components/OfflineScormPlayer";
-import { Package, Grade, Scorm } from "@totara/types/Scorm";
+import OfflineScormPlayer from "./components/OfflineScormPlayer";
+import { Package, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";

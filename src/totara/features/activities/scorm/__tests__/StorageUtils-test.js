@@ -27,7 +27,7 @@ import {
 } from "../storageUtils";
 import { Grade } from "@totara/types/Scorm";
 import { scormLessonStatus } from "@totara/lib/constants";
-import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
+import { scormActivitiesRecordsQuery } from "../api";
 
 const commitData = (completeValue = scormLessonStatus.completed) => ({
   scormid: "18",

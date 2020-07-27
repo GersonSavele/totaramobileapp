@@ -15,7 +15,7 @@
 
 import { Grade, ScormBundle, GradeForAttemptProps } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
-import { scormActivitiesRecordsQuery } from "@totara/activities/scorm/api";
+import { scormActivitiesRecordsQuery } from "@totara/features/activities/scorm/api";
 import {
   setWith,
   get,

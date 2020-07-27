@@ -35,7 +35,7 @@ import FontAwesome from "@totara/lib/fontAwesome";
 import NotificationCenter from "@totara/lib/notificationCenter";
 import ResourceManager from "@totara/lib/resourceManager";
 import { createStackNavigator } from "react-navigation-stack";
-import { scormStack } from "@totara/activities/scorm/ScormActivity";
+import { scormStack } from "@totara/features/activities/scorm/ScormActivity";
 import AboutStack from "@totara/features/about/AboutStack";
 import { LocaleResolver } from "@totara/locale/LocaleResolver";
 
