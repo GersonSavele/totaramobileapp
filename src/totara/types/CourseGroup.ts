@@ -16,7 +16,6 @@ Please contact [sales@totaralearning.com] for more information.
 */
 
 import { LearningItem } from "./LearningItem";
-import { string } from "prop-types";
 
 export interface CourseGroup {
   id: number;
@@ -32,13 +31,12 @@ export interface CourseGroup {
   completion: Completion;
   currentCourseSets: [[CourseSets]];
   countUnavailableSets: number;
-  itemtype: string;
 }
 
 export interface CourseSets {
   id: number;
   label: string;
-  nextSetOperator: string;
+  nextsetoperator: string;
   completionCriteria: [string];
   courses: [LearningItem];
 }
@@ -58,7 +56,7 @@ export enum RenewalStatusKey {
 
 export interface Completion {
   id: number;
-  statusKey: StatusKey;
+  statuskey: StatusKey;
   progress: number;
-  renewalStatusKey?: RenewalStatusKey;
+  renewalstatuskey?: RenewalStatusKey;
 }

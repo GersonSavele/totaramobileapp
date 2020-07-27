@@ -48,11 +48,11 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
                 testID={"test_course_set_list"}
               />
             )}
-            {item[item.length - 1] && item[item.length - 1].nextSetOperator && (
+            {item[item.length - 1] && item[item.length - 1].nextsetoperator && (
               <View style={courses.nextSet}>
                 <View style={courses.separator} />
                 <Text style={courses.nextSetText}>
-                  {item[item.length - 1].nextSetOperator}
+                  {item[item.length - 1].nextsetoperator}
                 </Text>
                 <View style={courses.separator} />
               </View>
@@ -60,7 +60,7 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
           </View>
         );
       })}
-      {courseGroup.completion.statusKey === StatusKey.completed && (
+      {courseGroup.completion.statuskey === StatusKey.completed && (
         <Completed
           endnote={courseGroup.endnote}
           navigation={navigation}

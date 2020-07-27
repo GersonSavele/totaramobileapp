@@ -59,7 +59,7 @@ const currentCourseSets = [
   {
     id: "10",
     label: "Course Set A",
-    nextSetOperator: "AND",
+    nextsetoperator: "AND",
     completionCriteria: [
       "All courses in this set must be completed (unless this is an optional set)."
     ],
@@ -69,7 +69,7 @@ const currentCourseSets = [
   {
     id: "22",
     label: "Node Js",
-    nextSetOperator: "THEN",
+    nextsetoperator: "THEN",
     completionCriteria: ["Any one course in this set must be completed."],
     courses: [coursesList],
     __typename: "totara_mobile_program_courseset"
@@ -80,7 +80,7 @@ const currentCourseSet = [
   {
     id: "10",
     label: "Course Set A",
-    nextSetOperator: "OR",
+    nextsetoperator: "OR",
     completionCriteria: [
       "All courses in this set must be completed (unless this is an optional set)."
     ],
@@ -106,9 +106,9 @@ const courseDetails = {
   imageSrc: null,
   completion: {
     id: "24",
-    statusKey: "incomplete",
+    statuskey: "incomplete",
     progress: 4,
-    renewalStatusKey: "notdue",
+    renewalstatuskey: "notdue",
     __typename: "totara_program_completion"
   },
   currentCourseSets: [currentCourseSet, currentCourseSets],
@@ -179,7 +179,7 @@ const courseSetMock = {
   endnote:
     "Many dream, some try, but only a few achieve. You have made us all proud, keep up the good work.",
   completion: {
-    statusKey: "completed",
+    statuskey: "completed",
     __typename: "totara_program_completion"
   },
   currentCourseSets: [currentCourseSet],

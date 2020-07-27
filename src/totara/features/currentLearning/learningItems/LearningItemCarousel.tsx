@@ -143,7 +143,10 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
       onPress={clickedLearningItem}
       activeOpacity={1.0}>
       <View style={carouselItemStyles.content}>
-        <LearningItemCard item={item} image={item.imageSrc}>
+        <LearningItemCard
+          item={item}
+          image={item.imageSrc}
+          itemType={item.itemtype}>
           <View style={{ flexGrow: 1 }}>
             <Text style={carouselItemStyles.type}>{item.itemtype}</Text>
             <Text style={carouselItemStyles.summary} ellipsizeMode="tail">
