@@ -29,7 +29,7 @@ import { Package, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 
 import {
   setScormActivityData,
@@ -187,7 +187,7 @@ const loadedScormEffect = ({
 }) => () => {
   setupOfflineScormPlayer()
     .then((offlineServerPath) => {
-      if (offlineServerPath && offlineServerPath !== "") {
+      if (!isEmpty(offlineServerPath)) {
         return startServer(offlineServerPath, server);
       } else {
         throw new Error("Cannot fine offline server details.");
@@ -239,22 +239,26 @@ const onPlayerMessageHandler = ({ client, maxGrade, gradeMethod }) => (
   messageData: any
 ) => {
   const { tmsevent, result } = messageData;
-  if (tmsevent && tmsevent === "SCORMCOMMIT" && result) {
-    const status = get(result, "cmi.core.lesson_status", undefined);
-    if (status && status !== scormLessonStatus.incomplete) {
-      const scormBundles = retrieveAllData({ client });
-      const newData = setScormActivityData({
-        scormBundles,
-        data: result,
-        maxGrade,
-        gradeMethod
-      });
-      saveInTheCache({
-        client,
-        scormBundles: newData
-      });
-    }
+  const status = get(result, "cmi.core.lesson_status", undefined);
+  if (
+    tmsevent &&
+    tmsevent === "SCORMCOMMIT" &&
+    status &&
+    status !== scormLessonStatus.incomplete
+  ) {
+    const scormBundles = retrieveAllData({ client });
+    const newData = setScormActivityData({
+      scormBundles,
+      data: result,
+      maxGrade,
+      gradeMethod
+    });
+    saveInTheCache({
+      client,
+      scormBundles: newData
+    });
   }
 };
 
+export { packageEffect, loadedScormEffect, stopServer, onPlayerMessageHandler };
 export default OfflineScormActivity;
