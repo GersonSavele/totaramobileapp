@@ -93,11 +93,6 @@ const criteriaSheetStyle = StyleSheet.create({
     justifyContent: "center",
     color: TotaraTheme.colorNeutral8
   },
-  bodySeparator: {
-    height: 0.5,
-    opacity: 0.2,
-    backgroundColor: TotaraTheme.colorNeutral8
-  },
   container: {
     alignItems: "flex-start",
     margin: marginL

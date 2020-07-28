@@ -17,7 +17,7 @@ Please contact [sales@totaralearning.com] for more information.
 
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { margins } from "@totara/theme/constants";
+import { margins, opacities } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 const Separator = () => {
@@ -27,7 +27,7 @@ const Separator = () => {
 const styles = StyleSheet.create({
   listSeparator: {
     height: 0.5,
-    opacity: 0.2,
+    opacity: opacities.opacityS,
     marginHorizontal: margins.marginL,
     backgroundColor: TotaraTheme.colorNeutral8
   }

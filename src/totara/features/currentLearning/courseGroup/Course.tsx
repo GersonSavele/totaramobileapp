@@ -21,17 +21,18 @@ import {
   Image,
   ImageSourcePropType
 } from "react-native";
-import { ImageWrapper, Separator } from "@totara/components";
+import { ImageWrapper } from "@totara/components";
 import { NAVIGATION } from "@totara/lib/navigation";
 import NativeAccessRestriction from "../NativeAccessRestriction";
 import { navigateTo } from "@totara/lib/navigation";
 import { rowItem } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import { Images } from "@resources/images";
-import { Course as CourseType } from "@totara/types/CourseGroup";
+import { LearningItem } from "@totara/types";
+import listViewStyles from "@totara/theme/listView";
 
 type CourseProps = {
-  course: CourseType;
+  course: LearningItem;
   navigate: any;
   testID?: string;
 };
@@ -81,11 +82,14 @@ const Course = ({ course, navigate, testID }: CourseProps) => {
           </Text>
         </View>
       </View>
-      <View style={{ marginLeft: margins.margin3XL }}>
-        <Separator />
-      </View>
+      <View
+        style={{
+          ...listViewStyles.thinSeparator,
+          marginLeft: margins.margin3XL
+        }}
+      />
       {showRestriction && (
-        <NativeAccessRestriction onClose={onClose} urlView={course.urlView} />
+        <NativeAccessRestriction onClose={onClose} urlView={course.urlView!} />
       )}
     </TouchableOpacity>
   );

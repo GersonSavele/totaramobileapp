@@ -22,6 +22,7 @@ import { CourseGroup, StatusKey } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
 import { courses } from "./courseGroupStyles";
 import { CourseSets } from "@totara/types/CourseGroup";
+import listViewStyles from "@totara/theme/listView";
 
 type CoursesProps = {
   courseGroup: CourseGroup;
@@ -50,11 +51,11 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
             )}
             {item[item.length - 1] && item[item.length - 1].nextsetoperator && (
               <View style={courses.nextSet}>
-                <View style={courses.separator} />
+                <View style={{ ...listViewStyles.thickSeparator, flex: 1 }} />
                 <Text style={courses.nextSetText}>
                   {item[item.length - 1].nextsetoperator}
                 </Text>
-                <View style={courses.separator} />
+                <View style={{ ...listViewStyles.thickSeparator, flex: 1 }} />
               </View>
             )}
           </View>

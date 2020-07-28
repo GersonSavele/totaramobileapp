@@ -22,7 +22,8 @@ import {
   borderRadius,
   fontWeights,
   row,
-  shadow
+  shadow,
+  opacities
 } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { spacedFlexRow } from "@totara/lib/styles/base";
@@ -82,13 +83,8 @@ const courses = StyleSheet.create({
     marginVertical: margins.marginL,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "transparent"
-  },
-  separator: {
-    height: 2,
-    flex: 1,
-    marginHorizontal: margins.marginL,
-    backgroundColor: TotaraTheme.colorNeutral6
+    backgroundColor: "transparent",
+    justifyContent: "space-between"
   },
   nextSetText: {
     ...TotaraTheme.textXSmall,
@@ -125,7 +121,7 @@ const courseSet = StyleSheet.create({
     ...shadow.ios,
     ...shadow.android,
     borderRadius: borderRadius.borderRadiusM,
-    shadowOpacity: 0.1,
+    shadowOpacity: opacities.opacityS,
     shadowRadius: borderRadius.borderRadiusM,
     shadowColor: TotaraTheme.colorNeutral8,
     backgroundColor: TotaraTheme.colorNeutral1
@@ -177,8 +173,7 @@ const rowItem = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: margins.marginL,
     marginTop: margins.marginL,
-    paddingEnd: paddings.paddingXL,
-    alignItems: "center"
+    paddingEnd: paddings.paddingXL
   },
   imageWrapper: {
     height: row.icon.size,
@@ -187,8 +182,7 @@ const rowItem = StyleSheet.create({
   },
   detailsWrapper: {
     marginHorizontal: margins.marginL,
-    marginVertical: margins.marginS,
-    alignContent: "center"
+    justifyContent: "center"
   },
   courseName: {
     ...TotaraTheme.textRegular,
@@ -197,7 +191,7 @@ const rowItem = StyleSheet.create({
   courseSummary: {
     ...TotaraTheme.textSmall,
     fontWeight: fontWeights.fontWeightNormal,
-    opacity: 0.48
+    opacity: opacities.opacityM
   }
 });
 
@@ -209,7 +203,7 @@ const horizontalList = StyleSheet.create({
   listWrapper: {
     ...shadow.android,
     borderRadius: borderRadius.borderRadiusM,
-    shadowOpacity: 0.1,
+    shadowOpacity: opacities.opacityS,
     backgroundColor: TotaraTheme.colorNeutral1
   }
 });

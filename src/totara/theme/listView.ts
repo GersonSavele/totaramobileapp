@@ -22,8 +22,20 @@
  */
 
 import { StyleSheet } from "react-native";
-import { margins, paddings } from "@totara/theme/constants";
+import { margins, paddings, opacities } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+
+const separator = {
+  opacity: opacities.opacityS,
+  marginHorizontal: margins.marginL,
+  backgroundColor: TotaraTheme.colorNeutral8
+};
+
+const regularSeparator = {
+  margin: margins.marginXS,
+  backgroundColor: TotaraTheme.colorNeutral3,
+  height: 1
+};
 
 const listViewStyles = StyleSheet.create({
   contentContainerStyle: {
@@ -34,10 +46,14 @@ const listViewStyles = StyleSheet.create({
     padding: paddings.paddingM,
     backgroundColor: TotaraTheme.colorNeutral1
   },
-  itemSeparator: {
-    margin: margins.marginXS,
-    backgroundColor: TotaraTheme.colorNeutral3,
-    height: 1
+  itemSeparator: regularSeparator,
+  thinSeparator: {
+    ...separator,
+    height: 0.5
+  },
+  thickSeparator: {
+    ...separator,
+    height: 2
   }
 });
 

@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import _ from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import BottomSheet from "reanimated-bottom-sheet";
-
+import { Separator } from "@totara/components";
 import { translate } from "@totara/locale";
 import { Criteria } from "@totara/types";
 import criteriaSheetStyle from "./criteriaSheetStyle";
@@ -77,7 +77,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
             </Text>
           </View>
         </View>
-        <View style={criteriaSheetStyle.bodySeparator}></View>
+        <Separator />
       </View>
     );
   };

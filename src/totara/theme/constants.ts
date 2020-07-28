@@ -83,13 +83,18 @@ const iconSizes = {
 // https://ethercreative.github.io/react-native-shadow-generator/
 // PLEASE DON'T CHANGE IT BEFORE TALKING TO OTHER DEVELOPERS
 
+const opacities = {
+  opacityS: 0.2,
+  opacityM: 0.5
+};
+
 const shadow = {
   android: {
     elevation: 6
   },
   ios: {
     shadowColor: TotaraTheme.colorNeutral7,
-    shadowOpacity: 0.2,
+    shadowOpacity: opacities.opacityS,
     shadowRadius: 16,
     shadowOffset: {
       width: 0,
@@ -132,5 +137,6 @@ export {
   resultCircleSize,
   resultWrapperScaleX,
   shadow,
-  row
+  row,
+  opacities
 };
