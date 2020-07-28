@@ -22,6 +22,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
+import { isEmpty, get } from "lodash";
 
 import { showMessage, Log } from "@totara/lib";
 import { translate } from "@totara/locale";
@@ -46,6 +47,7 @@ type NetInfoEffectProps = {
   client: any;
   saveAttempt: Function;
   setUnsyncData: Function;
+  onSyncScormAttempt?: Function;
 };
 
 type SyncScormAttemptProps = {
@@ -99,17 +101,18 @@ const syncServerWithScormAttempt = ({
       scormid: scormId,
       attempts: tracks
     }
-  }).then((value) => {
-    if (value) {
-      for (let result in value) {
-        if (!result) {
-          return false;
-        }
+  }).then((responce) => {
+    if (!isEmpty(responce)) {
+      const attemptsAccepted = get(
+        responce,
+        "data.attempts.attempts_accepted",
+        undefined
+      );
+      if (!isEmpty(attemptsAccepted)) {
+        return !attemptsAccepted.includes(false);
       }
-      return true;
-    } else {
-      return false;
     }
+    return false;
   });
 
 const netInfoEffect = ({
@@ -118,15 +121,16 @@ const netInfoEffect = ({
   unSyncData,
   client,
   saveAttempt,
-  setUnsyncData
+  setUnsyncData,
+  onSyncScormAttempt = syncScormAttempt
 }: NetInfoEffectProps) => () => {
   if (type && type !== "unknown" && isInternetReachable) {
-    if (unSyncData && unSyncData.length && unSyncData.length > 0) {
+    if (!isEmpty(unSyncData)) {
       // Send the attempt through the API and remove the attempt from the cache
-      syncScormAttempt({
-        syncData: unSyncData[0],
+      onSyncScormAttempt({
+        syncData: unSyncData![0],
         client,
-        unSyncData,
+        unSyncData: unSyncData!,
         saveAttempt
       })
         .then((updatedUnsyncData) => {
@@ -168,4 +172,5 @@ const AttemptSynchronizer = () => {
   return null;
 };
 
+export { netInfoEffect, syncScormAttempt, syncServerWithScormAttempt };
 export default AttemptSynchronizer;
