@@ -329,25 +329,29 @@ const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
 
 //scorm player package handling
 const setupOfflineScormPlayer = (
-  onScormPlayerInitialized = isScormPlayerInitialized
+  onScormPlayerInitialized = isScormPlayerInitialized,
+  onInitializeScormWebplayer = initializeScormWebplayer
 ) => {
   return onScormPlayerInitialized().then((isInit) => {
     if (isInit) {
       return offlineScormServerRoot;
     } else {
-      return initializeScormWebplayer().then(() => {
+      return onInitializeScormWebplayer().then(() => {
         return offlineScormServerRoot;
       });
     }
   });
 };
 
-const loadScormPackageData = (packageData?: Package) => {
-  if (packageData && packageData.path) {
+const loadScormPackageData = (
+  packageData?: Package,
+  onGetScormPackageData = getScormPackageData
+) => {
+  if (packageData && !isEmpty(packageData.path)) {
     if (packageData.scos && packageData.defaultSco) {
       return Promise.resolve(packageData);
     } else {
-      return getScormPackageData(
+      return onGetScormPackageData(
         `${offlineScormServerRoot}/${packageData.path}`
       ).then((data) => {
         const tmpPackageData = { ...packageData, ...data } as Package;

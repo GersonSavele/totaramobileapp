@@ -27,10 +27,14 @@ import {
   setupOfflineScormPlayer,
   initializeScormWebplayer,
   isScormPlayerInitialized,
-  getScormPackageData
+  getScormPackageData,
+  loadScormPackageData
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
-import { scormLessonStatus } from "@totara/lib/constants";
+import {
+  scormLessonStatus,
+  offlineScormServerRoot
+} from "@totara/lib/constants";
 describe("scorm utilities", () => {
   //This is a mock. These fields are from API response
   const defaultData = {
@@ -594,14 +598,88 @@ describe("scorm utilities", () => {
   });
 
   describe("setupOfflineScormPlayer", () => {
-    it("should set up the offline scorm player and return the root path", () => {
-      //TODO: retest this
-      const initializedMock = jest.fn(() => {
-        return Promise.resolve(true);
-      });
-      setupOfflineScormPlayer(initializedMock).then((result) => {
-        expect(result).toBeTruthy();
-      });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it("should return server root path", async () => {
+      const isScormPlayerInitializedMock = jest.fn(() => Promise.resolve(true));
+      const onInitializeScormWebplayerMock = jest.fn(() =>
+        Promise.resolve(true)
+      );
+      const result = await setupOfflineScormPlayer(
+        isScormPlayerInitializedMock,
+        onInitializeScormWebplayerMock
+      );
+      expect(result).toStrictEqual(offlineScormServerRoot);
+    });
+
+    it("should return server root path, scorm player is initialized", async () => {
+      const isScormPlayerInitializedMock = jest.fn(() =>
+        Promise.resolve(false)
+      );
+      const onInitializeScormWebplayerMock = jest.fn(() =>
+        Promise.resolve(true)
+      );
+      const result = await setupOfflineScormPlayer(
+        isScormPlayerInitializedMock,
+        onInitializeScormWebplayerMock
+      );
+      expect(result).toStrictEqual(offlineScormServerRoot);
+    });
+  });
+
+  describe("loadScormPackageData", () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it("should return package data, if data is already exists", async () => {
+      const packageDataMock = {
+        path: "path",
+        scos: ["sco one", "sco two"],
+        defaultSco: "sco_i"
+      };
+      const result = await loadScormPackageData(packageDataMock);
+      expect(result).toMatchObject(packageDataMock);
+    });
+
+    it("should get package data using getScormPackageData and return package data, if package path is not available", async () => {
+      const packageDataMock = {
+        path: "path",
+        scos: ["sco one", "sco two"]
+      };
+      const getScormPackageDataMock = jest.fn(() =>
+        Promise.resolve(packageDataMock)
+      );
+      const result = await loadScormPackageData(
+        packageDataMock,
+        getScormPackageDataMock
+      );
+      expect(result).toMatchObject(packageDataMock);
+    });
+
+    it("should throw error, if package path is empty", async () => {
+      let packageDataMock = { path: undefined };
+      try {
+        await loadScormPackageData(packageDataMock);
+      } catch (e) {
+        expect(e).toBe("Cannot find offline package data");
+      }
+
+      packageDataMock = undefined;
+      try {
+        await loadScormPackageData(packageDataMock);
+      } catch (e) {
+        expect(e).toBe("Cannot find offline package data");
+      }
+
+      packageDataMock = { path: "" };
+      try {
+        await loadScormPackageData(packageDataMock);
+      } catch (e) {
+        expect(e).toBe("Cannot find offline package data");
+      }
     });
   });
 });
