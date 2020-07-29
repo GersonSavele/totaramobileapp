@@ -1,10 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 
-import ScormSummary, {
-  showScormFeedback,
-  onExitActivityAttempt
-} from "../ScormSummary";
+import ScormSummary, { showScormFeedback, onExitActivityAttempt } from "../ScormSummary";
 import { Grade } from "@totara/types/Scorm";
 import { useApolloClient } from "@apollo/react-hooks";
 import * as storageUtils from "../storageUtils";
@@ -23,9 +20,7 @@ describe("ScormSummary", () => {
   });
 
   it("Should render the summary view if it is not loading or error", async () => {
-    const { getByTestId } = render(
-      <ScormSummary scormBundle={{ scorm: "scorm data" }} />
-    );
+    const { getByTestId } = render(<ScormSummary scormBundle={{ scorm: "scorm data" }} />);
 
     const summaryContainerView = getByTestId("scorm_summary_container");
     expect(summaryContainerView.children[0]).toBeTruthy();
@@ -58,13 +53,9 @@ describe("showScormFeedback", () => {
 });
 
 describe("onExitActivityAttempt", () => {
-  jest
-    .spyOn(storageUtils, "retrieveAllData")
-    .mockReturnValue({ data: "mock data retrieveAllData" });
+  jest.spyOn(storageUtils, "retrieveAllData").mockReturnValue({ data: "mock data retrieveAllData" });
 
-  jest
-    .spyOn(storageUtils, "setCompletedScormAttempt")
-    .mockReturnValue({ data: "mock data setCompletedScormAttempt" });
+  jest.spyOn(storageUtils, "setCompletedScormAttempt").mockReturnValue({ data: "mock data setCompletedScormAttempt" });
 
   const saveInTheCacheMock = jest.fn();
   storageUtils.saveInTheCache = saveInTheCacheMock;

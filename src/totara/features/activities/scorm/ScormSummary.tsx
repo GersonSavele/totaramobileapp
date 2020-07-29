@@ -20,14 +20,7 @@
  */
 
 import React, { useState } from "react";
-import {
-  ScrollView,
-  Text,
-  View,
-  TextStyle,
-  TouchableOpacity,
-  RefreshControl
-} from "react-native";
+import { ScrollView, Text, View, TextStyle, TouchableOpacity, RefreshControl } from "react-native";
 import { get, isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -59,13 +52,7 @@ import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
 import { fetchLastAttemptResult } from "./api";
 
-const {
-  SCORM_ROOT,
-  OFFLINE_SCORM_ACTIVITY,
-  SCORM_ATTEMPTS,
-  SCORM_FEEDBACK,
-  ONLINE_SCORM_ACTIVITY
-} = NAVIGATION;
+const { SCORM_ROOT, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, ONLINE_SCORM_ACTIVITY } = NAVIGATION;
 
 type SummaryProps = {
   id: string;
@@ -82,10 +69,7 @@ type SummaryProps = {
   host: string;
 };
 
-const gridStyle = (theme: AppliedTheme) => [
-  theme.textRegular,
-  { color: theme.textColorSubdued }
-];
+const gridStyle = (theme: AppliedTheme) => [theme.textRegular, { color: theme.textColorSubdued }];
 
 type GridLabelProps = {
   theme: AppliedTheme;
@@ -187,11 +171,7 @@ const onExitActivityAttempt = ({
 
       navigation.pop();
       if (isDownloaded) {
-        if (
-          existingLastAttempt &&
-          existingLastAttempt.attempt &&
-          parseInt(existingLastAttempt.attempt) === attempt
-        ) {
+        if (existingLastAttempt && existingLastAttempt.attempt && parseInt(existingLastAttempt.attempt) === attempt) {
           const scormBundles = retrieveAllData({ client });
           const newData = setCompletedScormAttempt({
             scormId: id,
@@ -277,7 +257,6 @@ const ScormSummary = ({
     attempts,
     offlinePackageScoIdentifiers
   } = bundleData;
-
   if (isLoadingCurretStatus) {
     return <Loading testID={"summary_loading"} />;
   }
@@ -286,56 +265,35 @@ const ScormSummary = ({
   }
   return (
     <>
-      <View
-        style={scormSummaryStyles.expanded}
-        testID={"scorm_summary_container"}>
+      <View style={scormSummaryStyles.expanded} testID={"scorm_summary_container"}>
         <NetworkStatus />
         {maxAttempts && maxAttempts <= totalAttempt && (
-          <MessageBar
-            mode={"alert"}
-            text={translate("scorm.info_completed_attempts")}
-            icon={"exclamation-circle"}
-          />
+          <MessageBar mode={"alert"} text={translate("scorm.info_completed_attempts")} icon={"exclamation-circle"} />
         )}
         {timeOpen && (
           <MessageBar
             mode={"alert"}
-            text={`${translate(
-              "scorm.info_upcoming_activity"
-            )} ${timeOpen.format(DATE_FORMAT_FULL)}`}
+            text={`${translate("scorm.info_upcoming_activity")} ${timeOpen.format(DATE_FORMAT_FULL)}`}
             icon={"exclamation-circle"}
           />
         )}
         <View style={{ flex: 1 }}>
           <ScrollView
             refreshControl={
-              <RefreshControl
-                refreshing={networkStatus === ApolloNetworkStatus.refetch}
-                onRefresh={onRefresh}
-              />
+              <RefreshControl refreshing={networkStatus === ApolloNetworkStatus.refetch} onRefresh={onRefresh} />
             }>
             <View style={{ padding: gutter }}>
               {!isEmpty(description) && (
                 <>
-                  <GridTitle
-                    textId={"scorm.summary.summary"}
-                    theme={theme}
-                    style={{ paddingTop: 0 }}
-                  />
-                  <MoreText
-                    longText={description}
-                    style={TotaraTheme.textMedium}
-                  />
+                  <GridTitle textId={"scorm.summary.summary"} theme={theme} style={{ paddingTop: 0 }} />
+                  <MoreText longText={description} style={TotaraTheme.textMedium} />
                 </>
               )}
               <GridTitle textId={"scorm.summary.grade.title"} theme={theme} />
               <GridLabelValue
                 theme={theme}
                 textId={"scorm.summary.grade.method"}
-                value={
-                  attemptGrade &&
-                  translate(`scorm.grading_method.${attemptGrade}`)
-                }
+                value={attemptGrade && translate(`scorm.grading_method.${attemptGrade}`)}
               />
               <TouchableOpacity
                 onPress={() =>
@@ -350,10 +308,7 @@ const ScormSummary = ({
                     }
                   })
                 }>
-                <GridLabelValue
-                  theme={theme}
-                  textId={"scorm.summary.grade.reported"}
-                  value={calculatedGrade}>
+                <GridLabelValue theme={theme} textId={"scorm.summary.grade.reported"} value={calculatedGrade}>
                   <FontAwesomeIcon
                     icon="chevron-right"
                     size={theme.textRegular.fontSize}
@@ -366,15 +321,9 @@ const ScormSummary = ({
               <GridLabelValue
                 theme={theme}
                 textId={"scorm.summary.attempt.total_attempts"}
-                value={
-                  maxAttempts || translate("scorm.summary.attempt.unlimited")
-                }
+                value={maxAttempts || translate("scorm.summary.attempt.unlimited")}
               />
-              <GridLabelValue
-                theme={theme}
-                textId={"scorm.summary.attempt.completed_attempts"}
-                value={totalAttempt}
-              />
+              <GridLabelValue theme={theme} textId={"scorm.summary.attempt.completed_attempts"} value={totalAttempt} />
             </View>
           </ScrollView>
         </View>
@@ -385,9 +334,7 @@ const ScormSummary = ({
             action: () => {
               navigation.addListener("didFocus", onRefresh);
               const attemptNumber = totalAttempt + 1;
-              const scormActivityRoute = isDownloaded
-                ? OFFLINE_SCORM_ACTIVITY
-                : ONLINE_SCORM_ACTIVITY;
+              const scormActivityRoute = isDownloaded ? OFFLINE_SCORM_ACTIVITY : ONLINE_SCORM_ACTIVITY;
               navigateTo({
                 routeId: scormActivityRoute,
                 navigate: navigation.navigate,
