@@ -63,6 +63,8 @@ const coreCourse = gql`
           completiondate(format: ISO8601)
           __typename
         }
+        showGrades: showgrades
+        completionEnabled: completionenabled
         completion {
           id
           statuskey
@@ -88,10 +90,7 @@ const courseSelfComplete = gql`
 `;
 
 const activitySelfComplete = gql`
-  mutation totara_mobile_completion_activity_self_complete(
-    $cmid: core_id!
-    $complete: Boolean!
-  ) {
+  mutation totara_mobile_completion_activity_self_complete($cmid: core_id!, $complete: Boolean!) {
     core_completion_activity_self_complete(cmid: $cmid, complete: $complete)
   }
 `;

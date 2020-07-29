@@ -15,18 +15,12 @@
  */
 
 import { StyleSheet, Dimensions } from "react-native";
-import {
-  borderRadius,
-  margins,
-  paddings,
-  shadow,
-  fontWeights
-} from "@totara/theme/constants";
+import { borderRadius, margins, paddings, shadow, fontWeights } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 const overviewStyles = StyleSheet.create({
   scrollViewContainer: {
-    paddingVertical: paddings.paddingXL,
+    paddingTop: paddings.paddingXL,
     paddingHorizontal: paddings.paddingL
   },
   container: {
@@ -71,7 +65,7 @@ const overviewStyles = StyleSheet.create({
   summaryContainer: {
     marginLeft: margins.marginL,
     marginRight: margins.marginS,
-    marginTop: margins.marginS,
+    marginTop: margins.marginXL,
     paddingBottom: paddings.padding3XL
   },
   summaryViewWrap: {

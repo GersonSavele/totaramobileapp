@@ -18,13 +18,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
 import { courseSelfComplete } from "../course/api";
-import {
-  AddBadge,
-  Loading,
-  GeneralErrorModal,
-  CircleIcon,
-  Separator
-} from "@totara/components";
+import { AddBadge, Loading, GeneralErrorModal, CircleIcon, Separator } from "@totara/components";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "./CriteriaSheet";
 import CourseCompletionModal from "../CourseCompletionModal";
@@ -34,6 +28,7 @@ import { courseCriteria } from "../constants";
 import { overviewStyles } from "./overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+import listViewStyles from "@totara/theme/listView";
 
 type OverviewProps = {
   id: number;
@@ -42,6 +37,8 @@ type OverviewProps = {
   gradeFinal?: number;
   progress: number;
   isCourseSet: boolean;
+  showGrades?: boolean;
+  showProgress?: boolean;
   summaryTypeTitle?: string;
   onclickContinueLearning?: () => void;
   courseRefreshCallback?: () => {};
@@ -51,41 +48,42 @@ const OverviewDetails = ({
   id,
   criteria,
   summary,
-  gradeFinal,
+  gradeFinal = 0,
   progress,
   summaryTypeTitle,
   onclickContinueLearning,
   courseRefreshCallback,
-  isCourseSet
+  isCourseSet,
+  showGrades,
+  showProgress = true
 }: OverviewProps) => {
   const isSelfCompletion = criteria?.some((value) => {
     return value["type"] === courseCriteria.selfComplete;
   });
+  const showTabs = isSelfCompletion || showProgress || showGrades;
   return (
     <View>
-      <View>
-        <ScrollView
-          style={{ flexGrow: 1 }}
-          horizontal={true}
-          contentContainerStyle={overviewStyles.scrollViewContainer}
-          showsHorizontalScrollIndicator={false}>
-          <Progress
-            progress={progress}
-            criteria={criteria}
-            isCourseSet={isCourseSet}
-          />
-          {gradeFinal !== undefined && <Grade gradeFinal={gradeFinal} />}
-          {isSelfCompletion && criteria && (
-            <Complete
-              id={id}
-              criteria={criteria}
-              onclickContinueLearning={onclickContinueLearning}
-              courseRefreshCallback={courseRefreshCallback}
-            />
-          )}
-        </ScrollView>
-      </View>
-      <Separator />
+      {showTabs && (
+        <View>
+          <ScrollView
+            style={{ flexGrow: 1 }}
+            horizontal={true}
+            contentContainerStyle={overviewStyles.scrollViewContainer}
+            showsHorizontalScrollIndicator={false}>
+            {showProgress && <Progress progress={progress} criteria={criteria} isCourseSet={isCourseSet} />}
+            {showGrades && <Grade gradeFinal={gradeFinal} />}
+            {isSelfCompletion && criteria && (
+              <Complete
+                id={id}
+                criteria={criteria}
+                onclickContinueLearning={onclickContinueLearning}
+                courseRefreshCallback={courseRefreshCallback}
+              />
+            )}
+          </ScrollView>
+          <View style={listViewStyles.thinSeparator} />
+        </View>
+      )}
       <View style={{ flex: 4 }}>
         <Summary summary={summary} summaryTypeTitle={summaryTypeTitle} />
       </View>
@@ -95,16 +93,11 @@ const OverviewDetails = ({
 
 const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
   return (
-    <TouchableOpacity
-      style={overviewStyles.container}
-      activeOpacity={1.0}
-      onPress={() => {}}>
+    <TouchableOpacity style={overviewStyles.container} activeOpacity={1.0} onPress={() => {}}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={overviewStyles.gradePrefixText}>
-              {gradeFinal.length > 0 ? gradeFinal : 0}
-            </Text>
+            <Text style={overviewStyles.gradePrefixText}>{gradeFinal.length > 0 ? gradeFinal : 0}</Text>
           </View>
         </View>
         <View style={overviewStyles.horizontalSeparator} />
@@ -146,11 +139,7 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
           </Text>
         </View>
       </View>
-      {showCriteria && criteria !== null && (
-        <CriteriaSheet
-          criteriaList={criteria}
-          onClose={onClose}></CriteriaSheet>
-      )}
+      {showCriteria && criteria !== null && <CriteriaSheet criteriaList={criteria} onClose={onClose}></CriteriaSheet>}
     </TouchableOpacity>
   );
 };
@@ -162,12 +151,7 @@ type CompletionProps = {
   courseRefreshCallback?: () => {};
 };
 
-const Complete = ({
-  id,
-  criteria,
-  onclickContinueLearning = () => {},
-  courseRefreshCallback
-}: CompletionProps) => {
+const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefreshCallback }: CompletionProps) => {
   const isSelfCompleted = criteria?.some((value) => {
     if (value["type"] === courseCriteria.selfComplete) {
       return value["complete"] === true;
@@ -182,9 +166,7 @@ const Complete = ({
     courseRefreshCallback!();
   };
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  let [selfComplete, { data, loading, error }] = useMutation(
-    courseSelfComplete
-  );
+  let [selfComplete, { data, loading, error }] = useMutation(courseSelfComplete);
 
   const onClose = () => {
     setShowConfirmModal(!showConfirmModal);
@@ -206,10 +188,7 @@ const Complete = ({
   };
 
   return (
-    <TouchableOpacity
-      style={overviewStyles.container}
-      activeOpacity={1.0}
-      onPress={onTapSelfCompleteTab}>
+    <TouchableOpacity style={overviewStyles.container} activeOpacity={1.0} onPress={onTapSelfCompleteTab}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
           {isSelfCompleted ? (
@@ -235,9 +214,7 @@ const Complete = ({
         </View>
       </View>
       {showConfirmModal && data == undefined && error == undefined && (
-        <SelfCompletion
-          onClickAsComplete={onClickSelfComplete}
-          onClose={onClose}>
+        <SelfCompletion onClickAsComplete={onClickSelfComplete} onClose={onClose}>
           {loading && (
             <Modal transparent={true} visible={loading}>
               <View style={overviewStyles.modalBackground}>
@@ -250,9 +227,7 @@ const Complete = ({
 
       {error && <GeneralErrorModal siteUrl="" />}
       {data && refetchCourseQueries()}
-      {isCourseCompleted && (
-        <CourseCompletionModal onClose={onclickContinueLearning} />
-      )}
+      {isCourseCompleted && <CourseCompletionModal onClose={onclickContinueLearning} />}
     </TouchableOpacity>
   );
 };

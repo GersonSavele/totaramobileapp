@@ -95,16 +95,8 @@ const CourseDetailsContent = ({
       image={courseDetails.imageSrc}
       badgeTitle={translate("course.course_details.badge_title")}
       navigation={navigation}>
-      <View
-        style={[
-          styles.container,
-          { backgroundColor: TotaraTheme.colorNeutral2 }
-        ]}>
-        <View
-          style={[
-            styles.activitiesContainer,
-            { backgroundColor: TotaraTheme.colorNeutral1 }
-          ]}>
+      <View style={[styles.container, { backgroundColor: TotaraTheme.colorNeutral2 }]}>
+        <View style={[styles.activitiesContainer, { backgroundColor: TotaraTheme.colorNeutral1 }]}>
           {!showOverview ? (
             <View
               style={{
@@ -134,19 +126,18 @@ const CourseDetailsContent = ({
               summary={courseDetails.course.summary}
               gradeFinal={courseDetails.gradeFinal}
               progress={courseDetails.course.completion.progress}
-              summaryTypeTitle={translate(
-                "course.course_overview.course_summery"
-              )}
+              summaryTypeTitle={translate("course.course_overview.course_summery")}
               onclickContinueLearning={onClose}
               courseRefreshCallback={courseRefreshCallback}
+              showGrades={courseDetails.course.showGrades}
+              showProgress={courseDetails.course.completionEnabled}
             />
           )}
         </View>
       </View>
-      {courseDetails.course.completion &&
-        courseDetails.course.completion.statuskey === StatusKey.complete && (
-          <CourseCompletionModal onClose={onClose} />
-        )}
+      {courseDetails.course.completion && courseDetails.course.completion.statuskey === StatusKey.complete && (
+        <CourseCompletionModal onClose={onClose} />
+      )}
     </LearningDetails>
   );
 };

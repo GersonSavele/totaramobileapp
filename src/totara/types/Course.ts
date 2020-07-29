@@ -35,5 +35,7 @@ export interface Course extends LearningItem {
   sections: [Section];
   criteriaAggregation: string;
   criteria?: [Criteria];
+  showGrades: boolean;
+  completionEnabled: boolean;
   completion: Completion;
 }
