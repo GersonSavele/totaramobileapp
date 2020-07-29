@@ -109,6 +109,22 @@ type GridTitleProps = {
   textId: string;
   style?: TextStyle;
 };
+
+type OnExitAcitivityAttemptProps = {
+  id: string;
+  attempt: number;
+  gradeMethod?: Grade;
+  completionScoreRequired?: number;
+  client: any;
+  apiKey?: string;
+  host?: string;
+  setIsLoadingCurretStatus?: Function;
+  navigation: any;
+  isDownloaded: boolean;
+  offlinePackageScoIdentifiers?: [string];
+  navigateTo: Function;
+};
+
 const GridTitle = ({ theme, textId, style = {} }: GridTitleProps) => (
   <Text
     style={{
@@ -119,6 +135,114 @@ const GridTitle = ({ theme, textId, style = {} }: GridTitleProps) => (
     {translate(textId)}
   </Text>
 );
+
+const showScormFeedback = ({
+  gradeMethod,
+  score,
+  completionScoreRequired,
+  navigate,
+  navigateTo
+}: {
+  gradeMethod: Grade;
+  score: number;
+  completionScoreRequired?: number;
+  navigate: Function;
+  navigateTo: Function;
+}) => {
+  const goToSummary = () => navigate({ routeName: SCORM_ROOT });
+  navigateTo({
+    routeId: SCORM_FEEDBACK,
+    navigate: navigate,
+    props: {
+      gradeMethod,
+      completionScoreRequired,
+      score,
+      onClose: goToSummary
+    }
+  });
+};
+
+const onExitActivityAttempt = ({
+  id,
+  attempt,
+  gradeMethod = Grade.objective,
+  apiKey,
+  completionScoreRequired,
+  client,
+  host,
+  setIsLoadingCurretStatus,
+  navigation,
+  isDownloaded,
+  offlinePackageScoIdentifiers,
+  navigateTo
+}: OnExitAcitivityAttemptProps) => {
+  showConfirmation({
+    title: translate("scorm.confirmation.title"),
+    message: translate("scorm.confirmation.message"),
+    callback: () => {
+      const existingLastAttempt = getOfflineLastActivityResult({
+        scormId: id,
+        client
+      });
+
+      navigation.pop();
+      if (isDownloaded) {
+        if (
+          existingLastAttempt &&
+          existingLastAttempt.attempt &&
+          parseInt(existingLastAttempt.attempt) === attempt
+        ) {
+          const scormBundles = retrieveAllData({ client });
+          const newData = setCompletedScormAttempt({
+            scormId: id,
+            attempt,
+            offlinePackageScoIdentifiers,
+            scormBundles
+          });
+          saveInTheCache({ client, scormBundles: newData });
+          showScormFeedback({
+            gradeMethod,
+            completionScoreRequired,
+            score: existingLastAttempt.gradereported,
+            navigate: navigation.navigate,
+            navigateTo
+          });
+        }
+      } else {
+        if (apiKey && host) {
+          setIsLoadingCurretStatus && setIsLoadingCurretStatus(true);
+          fetchLastAttemptResult({
+            scormId: id,
+            apiKey,
+            host
+          })
+            .then((response) => {
+              const status = get(response, "data.status");
+              if (status) {
+                const { attemptsCurrent, gradefinal } = status;
+                if (attempt == attemptsCurrent) {
+                  showScormFeedback({
+                    gradeMethod,
+                    completionScoreRequired,
+                    score: gradefinal,
+                    navigate: navigation.navigate,
+                    navigateTo
+                  });
+                }
+              }
+            })
+            .catch((e) => console.log("Error: ", e))
+            .finally(() => {
+              setIsLoadingCurretStatus && setIsLoadingCurretStatus(false);
+            });
+        }
+      }
+    }
+  });
+  // This is the for the BackHandler callback that is calling this function
+  return true;
+};
+
 const ScormSummary = ({
   id,
   error,
@@ -129,12 +253,13 @@ const ScormSummary = ({
   client,
   onRefresh,
   apiKey,
-  host
+  host,
+  loading
 }: SummaryProps) => {
   const theme = TotaraTheme;
 
   const bundleData = getDataForScormSummary(isDownloaded, scormBundle);
-  const [isLoadingCurretStatus, setIsLoadingCurretStatus] = useState(false);
+  const [isLoadingCurretStatus, setIsLoadingCurretStatus] = useState(loading);
   const {
     name,
     description,
@@ -152,118 +277,18 @@ const ScormSummary = ({
     attempts,
     offlinePackageScoIdentifiers
   } = bundleData;
-  const showScormFeedback = ({
-    gradeMethod,
-    score,
-    completionScoreRequired
-  }: {
-    gradeMethod: Grade;
-    score: number;
-    completionScoreRequired?: number;
-  }) => {
-    const goToSummary = () => navigation.navigate({ routeName: SCORM_ROOT });
-    navigateTo({
-      routeId: SCORM_FEEDBACK,
-      navigate: navigation.navigate,
-      props: {
-        gradeMethod,
-        completionScoreRequired,
-        score,
-        onClose: goToSummary
-      }
-    });
-  };
 
-  const onExitActivityAttempt = ({
-    id,
-    attempt,
-    gradeMethod = Grade.objective,
-    apiKey,
-    completionScoreRequired,
-    client,
-    host,
-    setIsLoadingCurretStatus
-  }: {
-    id: string;
-    attempt: number;
-    gradeMethod?: Grade;
-    completionScoreRequired?: number;
-    client: any;
-    apiKey?: string;
-    host?: string;
-    setIsLoadingCurretStatus?: Function;
-  }) => {
-    showConfirmation({
-      title: translate("scorm.confirmation.title"),
-      message: translate("scorm.confirmation.message"),
-      callback: () => {
-        const existingLastAttempt = getOfflineLastActivityResult({
-          scormId: id,
-          client
-        });
-
-        navigation.pop();
-        if (isDownloaded) {
-          if (
-            existingLastAttempt &&
-            existingLastAttempt.attempt &&
-            parseInt(existingLastAttempt.attempt) === attempt
-          ) {
-            const scormBundles = retrieveAllData({ client });
-            const newData = setCompletedScormAttempt({
-              scormId: id,
-              attempt,
-              offlinePackageScoIdentifiers,
-              scormBundles
-            });
-            saveInTheCache({ client, scormBundles: newData });
-            showScormFeedback({
-              gradeMethod,
-              completionScoreRequired,
-              score: existingLastAttempt.gradereported
-            });
-          }
-        } else {
-          if (apiKey && host) {
-            setIsLoadingCurretStatus && setIsLoadingCurretStatus(true);
-            fetchLastAttemptResult({
-              scormId: id,
-              apiKey,
-              host
-            })
-              .then((response) => {
-                const status = get(response, "data.status");
-                if (status) {
-                  const { attemptsCurrent, gradefinal } = status;
-                  if (attempt == attemptsCurrent) {
-                    showScormFeedback({
-                      gradeMethod,
-                      completionScoreRequired,
-                      score: gradefinal
-                    });
-                  }
-                }
-              })
-              .catch((e) => console.log("Error: ", e))
-              .finally(() => {
-                setIsLoadingCurretStatus && setIsLoadingCurretStatus(false);
-              });
-          }
-        }
-      }
-    });
-    // This is the for the BackHandler callback that is calling this function
-    return true;
-  };
   if (isLoadingCurretStatus) {
-    return <Loading />;
+    return <Loading testID={"summary_loading"} />;
   }
   if (error) {
     return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} />;
   }
   return (
     <>
-      <View style={scormSummaryStyles.expanded}>
+      <View
+        style={scormSummaryStyles.expanded}
+        testID={"scorm_summary_container"}>
         <NetworkStatus />
         {maxAttempts && maxAttempts <= totalAttempt && (
           <MessageBar
@@ -381,7 +406,11 @@ const ScormSummary = ({
                       client,
                       apiKey,
                       host,
-                      setIsLoadingCurretStatus
+                      setIsLoadingCurretStatus,
+                      navigation,
+                      isDownloaded,
+                      offlinePackageScoIdentifiers,
+                      navigateTo
                     })
                 }
               });
@@ -407,7 +436,11 @@ const ScormSummary = ({
                       attempt: attemptNumber,
                       gradeMethod: gradeMethod,
                       completionScoreRequired: completionScoreRequired,
-                      client
+                      client,
+                      navigation,
+                      isDownloaded,
+                      offlinePackageScoIdentifiers,
+                      navigateTo
                     })
                 }
               });
@@ -460,4 +493,5 @@ const AttemptController = ({
   );
 };
 
+export { showScormFeedback, onExitActivityAttempt };
 export default ScormSummary;
