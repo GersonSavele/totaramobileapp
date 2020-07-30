@@ -16,7 +16,8 @@
 import React, { useContext } from "react";
 import { AuthContext } from "@totara/core";
 import { AUTHORIZATION } from "@totara/lib/constants";
-import { Image, ImageStyle, StyleProp } from "react-native";
+import { ImageStyle, StyleProp } from "react-native";
+import FastImage from "react-native-fast-image";
 
 type ImageWrapperType = {
   url: string;
@@ -30,10 +31,11 @@ const ImageWrapper = ({ url, style }: ImageWrapperType) => {
   const apiKey = appState!.apiKey;
 
   return (
-    <Image
+    <FastImage
       style={style}
       source={{
         uri: url,
+        priority: FastImage.priority.normal,
         headers: {
           [AUTHORIZATION]: `Bearer ${apiKey}`
         }

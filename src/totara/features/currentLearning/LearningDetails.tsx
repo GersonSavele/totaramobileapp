@@ -14,15 +14,12 @@
  *
  */
 
-import React, { ReactNode, useState, useEffect } from "react";
+import React, { ReactNode } from "react";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
-import NetInfo from "@react-native-community/netinfo";
 import { NavigationStackProp } from "react-navigation-stack";
 import ParallaxScrollView from "./ParallaxScrollView";
 import { CardElement, ImageElement } from "./components/LearningItemCard";
-import { showMessage } from "@totara/lib";
 import { learningDetailsStyles } from "./currentLearningStyles";
-import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { fontWeights } from "@totara/theme/constants";
 import { viewHeight } from "./constants";
@@ -102,17 +99,7 @@ const LearningDetails = ({
   onPullToRefresh,
   navigation
 }: LearningDetailsProps) => {
-  //To Do: Bug in NetInfo library, useNetInfo - isConnected initial state is false(phone and simulator):
-  //https://github.com/react-native-community/react-native-netinfo/issues/295
-  const [isConnected, setIsConnected] = useState<boolean>(true);
-  useEffect(() => {
-    return NetInfo.addEventListener((state) => {
-      setIsConnected((state.isConnected as boolean) && (state.isInternetReachable as boolean));
-    });
-  }, []);
-
   const renderTitleBar = () => <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />;
-
   const renderTabBar = () => (
     <TabBar
       onPress={onPress}

@@ -17,15 +17,12 @@
 import React, { useState, useRef, useContext } from "react";
 import { Text, TouchableOpacity, View, ScrollView, RefreshControl } from "react-native";
 import { NavigationContext } from "react-navigation";
-import { useNetInfo } from "@react-native-community/netinfo";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { AddBadge } from "@totara/components";
 import { navigateTo, itemToRouteMap } from "@totara/lib/navigation";
-import { showMessage } from "@totara/lib";
 import NativeAccessRestriction from "../NativeAccessRestriction";
 import { iconSizes, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
-import { translate } from "@totara/locale";
 import { LearningItemCard } from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
 
@@ -92,7 +89,6 @@ const LearningItems = ({ item, navigation }: any) => (
 
 const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
   const navigation = useContext(NavigationContext);
-  const { isConnected, isInternetReachable } = useNetInfo();
   const [showRestriction, setShowRestriction] = useState(false);
   const clickedLearningItem = () => {
     if (item.native) {
