@@ -94,7 +94,9 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
           </View>
         </View>
         <View style={currentLearningListViewStyles.itemProgress}>
-          <ProgressCircle size={50} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
+          {progress !== null && (
+            <ProgressCircle size={50} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
+          )}
         </View>
       </View>
       {showRestriction && <NativeAccessRestriction onClose={onClose} urlView={item.urlView} />}

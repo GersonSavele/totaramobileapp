@@ -148,14 +148,6 @@ const LearningDetails = ({
           }
         }}>
         {children}
-        {!isConnected &&
-          showMessage({
-            title: translate("no_internet_alert.title"),
-            text: translate("no_internet_alert.message"),
-            callback: () => {
-              navigation.goBack();
-            }
-          })}
       </ParallaxScrollView>
     </View>
   );

@@ -94,23 +94,15 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
   const navigation = useContext(NavigationContext);
   const { isConnected, isInternetReachable } = useNetInfo();
   const [showRestriction, setShowRestriction] = useState(false);
-  const isOnline = isConnected && isInternetReachable;
   const clickedLearningItem = () => {
-    if (isOnline) {
-      if (item.native) {
-        navigateTo({
-          navigate: navigation.navigate,
-          routeId: itemToRouteMap[item.itemtype],
-          props: { targetId: item.id, courseGroupType: item.itemtype }
-        });
-      } else {
-        setShowRestriction(true);
-      }
-    } else {
-      showMessage({
-        title: translate("no_internet_alert.title"),
-        text: translate("no_internet_alert.message")
+    if (item.native) {
+      navigateTo({
+        navigate: navigation.navigate,
+        routeId: itemToRouteMap[item.itemtype],
+        props: { targetId: item.id, courseGroupType: item.itemtype }
       });
+    } else {
+      setShowRestriction(true);
     }
   };
 
