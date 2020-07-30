@@ -13,9 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import * as Progress from "react-native-progress";
-import { ThemeContext } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type ProgressCircleParam = {

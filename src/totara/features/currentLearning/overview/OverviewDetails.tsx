@@ -18,7 +18,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
 import { courseSelfComplete } from "../course/api";
-import { AddBadge, Loading, GeneralErrorModal, CircleIcon, Separator } from "@totara/components";
+import { AddBadge, Loading, GeneralErrorModal, CircleIcon } from "@totara/components";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "./CriteriaSheet";
 import CourseCompletionModal from "../CourseCompletionModal";
