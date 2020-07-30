@@ -56,27 +56,17 @@ const LearningItems = ({ item, navigation }: any) => {
         }}
         activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
-          <ImageElement
-            item={item}
-            image={item.imageSrc}
-            itemType={learningItemEnum.Course}
-            imageStyle={{ flex: 1 }}
-          />
+          <ImageElement item={item} image={item.imageSrc} itemType={learningItemEnum.Course} imageStyle={{ flex: 1 }} />
           <View style={courseSet.courseDetails}>
             <Text numberOfLines={1} style={courseSet.courseTitle}>
               {item.fullname}
             </Text>
-            <Text numberOfLines={2} style={courseSet.courseSummery}>
+            <Text numberOfLines={2} style={courseSet.courseSummary}>
               {item.summary}
             </Text>
           </View>
         </View>
-        {showRestriction && (
-          <NativeAccessRestriction
-            onClose={onCloseRestriction}
-            urlView={item.urlView}
-          />
-        )}
+        {showRestriction && <NativeAccessRestriction onClose={onCloseRestriction} urlView={item.urlView} />}
       </TouchableOpacity>
     </View>
   );
@@ -96,13 +86,8 @@ const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
     <View style={{ marginTop: margins.marginXL }} testID={testID}>
       <View style={courseSet.courseSetHeader}>
         <Text style={courseSet.title}>{courseSets.label}</Text>
-        <TouchableOpacity
-          style={courseSet.criteriaButton}
-          onPress={onCloseBottomSheet}
-          activeOpacity={1.0}>
-          <Text style={courseSet.criteriaButtonTitle}>
-            {translate("course_group.criteria.view_criteria")}
-          </Text>
+        <TouchableOpacity style={courseSet.criteriaButton} onPress={onCloseBottomSheet} activeOpacity={1.0}>
+          <Text style={courseSet.criteriaButtonTitle}>{translate("course_group.criteria.view_criteria")}</Text>
         </TouchableOpacity>
       </View>
       <FlatList

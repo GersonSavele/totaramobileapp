@@ -16,15 +16,7 @@
 
 import { StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import {
-  margins,
-  paddings,
-  borderRadius,
-  fontWeights,
-  row,
-  shadow,
-  opacities
-} from "@totara/theme/constants";
+import { margins, paddings, borderRadius, fontWeights, row, shadow, opacities } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { viewHeight } from "../constants";
@@ -133,7 +125,7 @@ const courseSet = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
-  courseSummery: {
+  courseSummary: {
     marginVertical: margins.marginS,
     ...TotaraTheme.textSmall,
     fontWeight: fontWeights.fontWeightNormal
