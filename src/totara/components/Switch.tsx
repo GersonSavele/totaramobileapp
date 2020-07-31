@@ -26,10 +26,10 @@ type SwitchOptionProps = {
 
 const SwitchOption = ({ icon, selected, onPress }: SwitchOptionProps) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={[switchStyles.optionWidget, selected && switchStyles.optionWidgetSelected]}>
-        <Image source={icon} style={{ tintColor: selected ? "black" : "white" }} />
-      </View>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[switchStyles.optionWidget, selected && switchStyles.optionWidgetSelected]}>
+      <Image source={icon} style={[switchStyles.optionImage, selected && { tintColor: "black" }]} />
     </TouchableOpacity>
   );
 };
@@ -53,6 +53,9 @@ const switchStyles = StyleSheet.create({
     borderRadius: iconSizes.sizeL / 2,
     alignItems: "center",
     justifyContent: "center"
+  },
+  optionImage: {
+    tintColor: "white"
   },
   optionWidgetSelected: {
     backgroundColor: "white"

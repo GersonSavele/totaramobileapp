@@ -17,6 +17,7 @@ import React from "react";
 import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
+import listViewStyles from "@totara/theme/listView";
 
 type CurrentLearningListViewProps = {
   navigation: NavigationStackProp;
@@ -33,6 +34,7 @@ const CurrentLearningListView = ({ currentLearning, loading, onRefresh, navigati
   return (
     <View style={currentLearningListViewStyles.container}>
       <FlatList
+        ItemSeparatorComponent={() => <View style={listViewStyles.itemSeparator} />}
         testID={"test_currentLearningListView"}
         data={currentLearning}
         renderItem={renderItem}

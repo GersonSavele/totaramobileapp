@@ -83,7 +83,10 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
           )}
         </View>
         <View style={currentLearningListViewStyles.item}>
-          <Text style={currentLearningListViewStyles.itemTitle} testID={"test_CurrentLearningItem_Title"}>
+          <Text
+            style={currentLearningListViewStyles.itemTitle}
+            testID={"test_CurrentLearningItem_Title"}
+            numberOfLines={2}>
             {shortname}
           </Text>
           <View style={currentLearningListViewStyles.itemSubLine}>
@@ -95,7 +98,7 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
         </View>
         <View style={currentLearningListViewStyles.itemProgress}>
           {progress !== null && (
-            <ProgressCircle size={50} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
+            <ProgressCircle size={40} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
           )}
         </View>
       </View>
@@ -111,6 +114,7 @@ const currentLearningListViewStyles = StyleSheet.create({
     flexDirection: "row"
   },
   itemImage: {
+    alignSelf: "center",
     height: 80,
     aspectRatio: 4 / 3,
     borderRadius: borderRadius.borderRadiusM,
@@ -118,8 +122,8 @@ const currentLearningListViewStyles = StyleSheet.create({
   },
   item: {
     flex: 1,
+    justifyContent: "center",
     padding: paddings.paddingL,
-    justifyContent: "space-between",
     flexDirection: "column"
   },
   itemTitle: { ...TotaraTheme.textRegular },
@@ -129,7 +133,8 @@ const currentLearningListViewStyles = StyleSheet.create({
     alignItems: "flex-end"
   },
   itemProgress: {
-    alignSelf: "center"
+    alignSelf: "center",
+    alignContent: "center"
   },
   imageWrap: {
     flex: 1,
