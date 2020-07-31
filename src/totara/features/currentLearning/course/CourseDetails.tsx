@@ -130,7 +130,7 @@ const CourseDetailsContent = ({
               onclickContinueLearning={onClose}
               courseRefreshCallback={courseRefreshCallback}
               showGrades={courseDetails.course.showGrades}
-              showProgress={courseDetails.course.completionEnabled}
+              completionEnabled={courseDetails.course.completionEnabled}
             />
           )}
         </View>

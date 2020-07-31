@@ -38,7 +38,7 @@ type OverviewProps = {
   progress: number;
   isCourseSet: boolean;
   showGrades?: boolean;
-  showProgress?: boolean;
+  completionEnabled?: boolean;
   summaryTypeTitle?: string;
   onclickContinueLearning?: () => void;
   courseRefreshCallback?: () => {};
@@ -55,12 +55,16 @@ const OverviewDetails = ({
   courseRefreshCallback,
   isCourseSet,
   showGrades,
-  showProgress = true
+  completionEnabled = true
 }: OverviewProps) => {
-  const isSelfCompletion = criteria?.some((value) => {
-    return value["type"] === courseCriteria.selfComplete;
-  });
-  const showTabs = isSelfCompletion || showProgress || showGrades;
+  const isSelfCompletion =
+    completionEnabled &&
+    criteria &&
+    criteria?.some((value) => {
+      return value["type"] === courseCriteria.selfComplete;
+    });
+
+  const showTabs = isSelfCompletion || completionEnabled || showGrades;
   return (
     <View>
       {showTabs && (
@@ -70,12 +74,12 @@ const OverviewDetails = ({
             horizontal={true}
             contentContainerStyle={overviewStyles.scrollViewContainer}
             showsHorizontalScrollIndicator={false}>
-            {showProgress && <Progress progress={progress} criteria={criteria} isCourseSet={isCourseSet} />}
+            {completionEnabled && <Progress progress={progress} criteria={criteria} isCourseSet={isCourseSet} />}
             {showGrades && <Grade gradeFinal={gradeFinal} />}
-            {isSelfCompletion && criteria && (
+            {isSelfCompletion && (
               <Complete
                 id={id}
-                criteria={criteria}
+                criteria={criteria!}
                 onclickContinueLearning={onclickContinueLearning}
                 courseRefreshCallback={courseRefreshCallback}
               />
