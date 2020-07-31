@@ -48,7 +48,7 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
     refetch();
   };
   if (loading) return <Loading />;
-  if (error) {
+  if (!data && error) {
     return <LoadingError onRefreshTap={onContentRefresh} />;
   }
 

@@ -23,16 +23,11 @@ import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { RetryLink } from "apollo-link-retry";
 import { HttpLink } from "apollo-link-http";
+import ApolloLinkTimeout from "apollo-link-timeout";
 import { onError, ErrorResponse } from "apollo-link-error";
-import {
-  InMemoryCache,
-  NormalizedCacheObject,
-  defaultDataIdFromObject
-} from "apollo-cache-inmemory";
+import { InMemoryCache, NormalizedCacheObject, defaultDataIdFromObject } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
-import AsyncStorage, {
-  AsyncStorageStatic
-} from "@react-native-community/async-storage";
+import AsyncStorage, { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { persistCache } from "apollo-cache-persist";
 
 import { config, Log } from "@totara/lib";
@@ -122,10 +117,7 @@ export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
       return delete_device;
     })
     .catch((error) => {
-      Log.warn(
-        "remote clean up had issues, but continue to do local clean up",
-        error
-      );
+      Log.warn("remote clean up had issues, but continue to do local clean up", error);
     });
 
   const localCleanUp = asyncStorage
@@ -135,15 +127,9 @@ export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
     })
     .catch((error) => {
       if (error.message.startsWith("Failed to delete storage directory")) {
-        Log.warn(
-          "Fail to clear Async storage, this expected if user is sign out ",
-          error
-        );
+        Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
       } else {
-        Log.warn(
-          "Error cleaning up device, but we still continue to logout the user",
-          error
-        );
+        Log.warn("Error cleaning up device, but we still continue to logout the user", error);
       }
     });
 
@@ -155,9 +141,7 @@ export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
  *
  * @param asyncStorage device storage
  */
-export const bootstrap = (
-  asyncStorage: AsyncStorageStatic
-) => async (): Promise<AppState | undefined> => {
+export const bootstrap = (asyncStorage: AsyncStorageStatic) => async (): Promise<AppState | undefined> => {
   const [apiKey, host, siteInfo] = await Promise.all([
     asyncStorage.getItem("apiKey"),
     asyncStorage.getItem("host"),
@@ -201,12 +185,12 @@ export const createApolloClient = (
   });
 
   const httpLink = new HttpLink({ uri: config.apiUri(host) });
-
+  const timeOutLinkWithHttpLink = new ApolloLinkTimeout(10 * 1000).concat(httpLink);
   const link = ApolloLink.from([
     logoutLink,
     new RetryLink({
       attempts: {
-        max: 10,
+        max: 2,
         retryIf: (error) => {
           if (error.statusCode && error.statusCode === 401) {
             return false; // do not retry on 401 errors, fail fast
@@ -217,7 +201,7 @@ export const createApolloClient = (
       }
     }),
     authLink,
-    httpLink
+    timeOutLinkWithHttpLink
   ]);
 
   const cache = new InMemoryCache({
@@ -235,9 +219,7 @@ export const createApolloClient = (
 
   persistCache({
     cache,
-    storage: AsyncStorage as PersistentStorage<
-      PersistedData<NormalizedCacheObject>
-    >
+    storage: AsyncStorage as PersistentStorage<PersistedData<NormalizedCacheObject>>
   });
 
   return new ApolloClient({
@@ -265,9 +247,10 @@ export const createApolloClient = (
  *   }
  *
  */
-export const fetchData = (
-  fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) => async <T>(input: RequestInfo, init?: RequestInit): Promise<T> => {
+export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>) => async <T>(
+  input: RequestInfo,
+  init?: RequestInit
+): Promise<T> => {
   return fetch(input, init)
     .then((response) => {
       if (response.status === 200) {

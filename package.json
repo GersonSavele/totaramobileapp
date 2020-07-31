@@ -43,6 +43,7 @@
     "apollo-link-context": "^1.0.19",
     "apollo-link-logger": "^1.2.3",
     "apollo-link-retry": "^2.2.15",
+    "apollo-link-timeout": "^1.4.1",
     "graphql": "^15.0.0",
     "i18n-js": "^3.3.0",
     "jest-enzyme": "^7.1.2",

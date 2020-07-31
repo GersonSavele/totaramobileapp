@@ -42,7 +42,7 @@ const CourseDetails = ({ navigation }: NavigationParams) => {
   };
 
   if (loading) return <Loading />;
-  if (error) return <LoadingError onRefreshTap={onContentRefresh} />;
+  if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} />;
 
   if (data) {
     return (
