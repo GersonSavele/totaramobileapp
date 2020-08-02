@@ -1,10 +1,12 @@
 import React from "react";
-import ScormFeedbackModal from "../ScormFeedbackModal";
 import { render } from "@testing-library/react-native";
+
+import ScormFeedbackModal from "../ScormFeedbackModal";
 import { Grade } from "@totara/types/Scorm";
 import { SCORM_TEST_IDS } from "../../constants";
+import { translate } from "@totara/locale";
 
-const { FEEDBACK_COMPLETION_IMAGE_ID, FEEDBACK_SCORE_ID } = SCORM_TEST_IDS;
+const { ATTEMPT_FEEDBACK } = SCORM_TEST_IDS;
 
 describe("ScormFeedbackModal", () => {
   it("Should render the feedback with the tick image because the score is not required", async () => {
@@ -17,12 +19,11 @@ describe("ScormFeedbackModal", () => {
         }
       }
     };
-    const { getByTestId } = render(
-      <ScormFeedbackModal navigation={navigation} />
-    );
-
-    const view = getByTestId(FEEDBACK_COMPLETION_IMAGE_ID);
+    const { getByTestId } = render(<ScormFeedbackModal navigation={navigation} />);
+    const view = getByTestId(ATTEMPT_FEEDBACK);
     expect(view).toBeTruthy();
+    const receivedScoreText = view.props.children.props.title;
+    expect(receivedScoreText).toBeUndefined();
   });
 
   it("Should render the feedback with the marks with percentage because the score is required and grade method is not learning objective", async () => {
@@ -36,12 +37,11 @@ describe("ScormFeedbackModal", () => {
         }
       }
     };
-    const { getByTestId } = render(
-      <ScormFeedbackModal navigation={navigation} />
-    );
-
-    const view = getByTestId(FEEDBACK_SCORE_ID);
-    expect(view.children[0]).toBe(`${navigation.state.params.score}%`);
+    const { getByTestId } = render(<ScormFeedbackModal navigation={navigation} />);
+    const view = getByTestId(ATTEMPT_FEEDBACK);
+    const receivedScoreText = view.props.children.props.title;
+    const expectedScoreText = `${translate("scorm.feedback.grade_title")} 10%`;
+    expect(receivedScoreText).toBe(expectedScoreText);
   });
 
   it("Should render the feedback with the marks without percentage because the score is required and grade method is learning objective", async () => {
@@ -55,11 +55,10 @@ describe("ScormFeedbackModal", () => {
         }
       }
     };
-    const { getByTestId } = render(
-      <ScormFeedbackModal navigation={navigation} />
-    );
-
-    const view = getByTestId(FEEDBACK_SCORE_ID);
-    expect(view.children[0]).toBe(navigation.state.params.score.toString());
+    const { getByTestId } = render(<ScormFeedbackModal navigation={navigation} />);
+    const view = getByTestId(ATTEMPT_FEEDBACK);
+    const receivedScoreText = view.props.children.props.title;
+    const expectedScoreText = `${translate("scorm.feedback.grade_title")} 10`;
+    expect(receivedScoreText).toBe(expectedScoreText);
   });
 });

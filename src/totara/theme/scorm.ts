@@ -16,15 +16,7 @@
 import { StyleSheet } from "react-native";
 
 import { gutter } from "./";
-import {
-  margins,
-  fontWeights,
-  modalSize,
-  resultCircleSize,
-  resultWrapperScaleX,
-  paddings
-} from "./constants";
-import { TotaraTheme } from "./Theme";
+import { margins, fontWeights, paddings } from "./constants";
 
 const scormSummaryStyles = StyleSheet.create({
   expanded: {
@@ -74,83 +66,8 @@ const scormAttemptsStyles = StyleSheet.create({
   }
 });
 
-const scormFeedbackStyles = StyleSheet.create({
-  transparentViewStyle: {
-    flex: 1,
-    backgroundColor: TotaraTheme.colorOpacity70
-  },
-  wrapper: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around"
-  },
-  resultOuterWrapper: {
-    flex: 1,
-    height: modalSize.height,
-    width: modalSize.width,
-    borderRadius: 4,
-    marginHorizontal: "8%",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignSelf: "center",
-    overflow: "hidden",
-    backgroundColor: TotaraTheme.colorNeutral1
-  },
-  resultInnerWrapper: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    alignSelf: "center",
-    width: "100%",
-    overflow: "hidden",
-    backgroundColor: TotaraTheme.colorNeutral3,
-    borderBottomStartRadius: modalSize.width * resultWrapperScaleX,
-    borderBottomEndRadius: modalSize.width * resultWrapperScaleX,
-    transform: [{ scaleX: resultWrapperScaleX }]
-  },
-  resultContainer: {
-    width: resultCircleSize,
-    height: resultCircleSize,
-    borderRadius: resultCircleSize / 2,
-    alignItems: "center",
-    alignSelf: "center",
-    justifyContent: "center",
-    backgroundColor: TotaraTheme.colorNeutral7,
-    transform: [{ scaleX: 1 / resultWrapperScaleX }]
-  },
-  resultStatusImage: {
-    alignSelf: "center",
-    height: "40%",
-    width: "40%",
-    resizeMode: "contain"
-  },
-  resultTitle: {
-    textAlign: "center",
-    fontWeight: fontWeights.fontWeightSemiBold,
-    color: TotaraTheme.textColorLight
-  },
-  scoreText: {
-    textAlign: "center",
-    color: TotaraTheme.textColorLight
-  },
-  actionWrapper: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: margins.margin3XL
-  },
-  actionContainer: {
-    alignSelf: "center",
-    justifyContent: "space-between",
-    alignContent: "space-between"
-  }
-});
 const onlineScormActivityStyles = StyleSheet.create({
   playerContainer: { width: "100%", height: "100%" }
 });
-export {
-  scormSummaryStyles,
-  scormFeedbackStyles,
-  scormAttemptsStyles,
-  onlineScormActivityStyles
-};
+
+export { scormSummaryStyles, scormAttemptsStyles, onlineScormActivityStyles };

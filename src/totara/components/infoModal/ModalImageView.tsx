@@ -20,12 +20,7 @@
  **/
 
 import React from "react";
-import {
-  Image,
-  StyleSheet,
-  Dimensions,
-  ImageSourcePropType
-} from "react-native";
+import { Image, StyleSheet, Dimensions, ImageSourcePropType } from "react-native";
 import { Images } from "@resources/images";
 
 type Params = {
@@ -39,54 +34,21 @@ const ModalImageView = ({ imageType }: Params) => {
 const setImage = ({ imageType }: Params) => {
   switch (imageType) {
     case "complete_action":
-      return (
-        <Image
-          style={styles.containerStyle}
-          source={Images.completeAction as ImageSourcePropType}
-        />
-      );
+      return <Image style={styles.containerStyle} source={Images.completeAction as ImageSourcePropType} />;
     case "url_not_valid":
-      return (
-        <Image
-          style={styles.containerStyle}
-          source={Images.urlNotValid as ImageSourcePropType}
-        />
-      );
+      return <Image style={styles.containerStyle} source={Images.urlNotValid as ImageSourcePropType} />;
     case "general_error":
-      return (
-        <Image
-          style={styles.containerStyle}
-          source={Images.generalError as ImageSourcePropType}
-        />
-      );
+      return <Image style={styles.containerStyle} source={Images.generalError as ImageSourcePropType} />;
     case "browser_login":
-      return (
-        <Image
-          style={styles.containerStyle}
-          source={Images.browserLogin as ImageSourcePropType}
-        />
-      );
+      return <Image style={styles.containerStyle} source={Images.browserLogin as ImageSourcePropType} />;
     case "course_complete":
-      return (
-        <Image
-          style={styles.containerStyle}
-          source={Images.courseComplete as ImageSourcePropType}
-        />
-      );
+      return <Image style={styles.containerStyle} source={Images.courseComplete as ImageSourcePropType} />;
     case "self_completion":
-      return (
-        <Image
-          style={styles.containerStyle}
-          source={Images.selfCompletion as ImageSourcePropType}
-        />
-      );
+      return <Image style={styles.containerStyle} source={Images.selfCompletion as ImageSourcePropType} />;
     case "course_compatible":
-      return (
-        <Image
-          style={styles.containerStyle}
-          source={Images.courseCompatible as ImageSourcePropType}
-        />
-      );
+      return <Image style={styles.containerStyle} source={Images.courseCompatible as ImageSourcePropType} />;
+    case "attempt_complete":
+      return <Image style={styles.containerStyle} source={Images.attemptComplete as ImageSourcePropType} />;
     default:
       return null;
   }

@@ -15,80 +15,46 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { View, Text, Image } from "react-native";
-import SafeAreaView from "react-native-safe-area-view";
-
-import { PrimaryButton } from "@totara/components";
-import { translate } from "@totara/locale";
-import { margins } from "@totara/theme/constants";
-import { scormFeedbackStyles } from "@totara/theme/scorm";
-import { Grade } from "@totara/types/Scorm";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { View } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
+
+import { PrimaryButton, InfoContent } from "@totara/components";
+import { translate } from "@totara/locale";
+import { Grade } from "@totara/types/Scorm";
 import { SCORM_TEST_IDS } from "../constants";
 
-type SCORMFeedbackProps = {
+type ScormFeedbackProps = {
   score: string;
   gradeMethod: Grade;
   completionScoreRequired?: number;
   onClose: () => void;
 };
 type FeedbackProps = {
-  navigation: NavigationStackProp<SCORMFeedbackProps>;
+  navigation: NavigationStackProp<ScormFeedbackProps>;
 };
 
-const { FEEDBACK_COMPLETION_IMAGE_ID, FEEDBACK_SCORE_ID } = SCORM_TEST_IDS;
+const { ATTEMPT_FEEDBACK } = SCORM_TEST_IDS;
 
 const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
-  const { gradeMethod, completionScoreRequired, score, onClose } = navigation
-    .state.params as SCORMFeedbackProps;
+  const { gradeMethod, completionScoreRequired, score, onClose } = navigation.state.params as ScormFeedbackProps;
+
+  const isWithGrade = completionScoreRequired !== undefined && completionScoreRequired !== null;
+  const scoreText =
+    (isWithGrade &&
+      `${translate("scorm.feedback.grade_title")} ${score}${(gradeMethod !== Grade.objective && `%`) || ""}`) ||
+    undefined;
+
   return (
-    <View style={scormFeedbackStyles.transparentViewStyle}>
-      <SafeAreaView />
-      <View style={scormFeedbackStyles.wrapper}>
-        <View style={scormFeedbackStyles.resultOuterWrapper}>
-          <View style={scormFeedbackStyles.resultInnerWrapper}>
-            <View style={scormFeedbackStyles.resultContainer}>
-              {completionScoreRequired === undefined ||
-              completionScoreRequired === null ? (
-                <Image
-                  testID={FEEDBACK_COMPLETION_IMAGE_ID}
-                  style={scormFeedbackStyles.resultStatusImage}
-                  source={require("@resources/images/success_tick/success_tick.png")}
-                />
-              ) : (
-                <>
-                  <Text
-                    style={{
-                      ...TotaraTheme.textXSmall,
-                      ...scormFeedbackStyles.resultTitle
-                    }}>
-                    {translate("scorm.feedback.grade_title")}
-                  </Text>
-                  <Text
-                    testID={FEEDBACK_SCORE_ID}
-                    style={{
-                      ...TotaraTheme.textH1,
-                      ...scormFeedbackStyles.scoreText
-                    }}>
-                    {`${score}${gradeMethod === Grade.objective ? "" : "%"}`}
-                  </Text>
-                </>
-              )}
-            </View>
-          </View>
-          <View style={scormFeedbackStyles.actionWrapper}>
-            <View style={scormFeedbackStyles.actionContainer}>
-              <PrimaryButton
-                onPress={onClose}
-                text={translate("general.ok")}
-                style={{ marginBottom: margins.marginL }}
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-      <SafeAreaView />
+    <View style={{ flex: 1 }} testID={ATTEMPT_FEEDBACK}>
+      <InfoContent
+        title={scoreText}
+        description={
+          (isWithGrade && translate("scorm.feedback.completed_attempt_with_grade")) ||
+          translate("scorm.feedback.completed_attempt")
+        }
+        imageType={"attempt_complete"}>
+        <PrimaryButton text={translate("general.continue_learning")} onPress={onClose} />
+      </InfoContent>
     </View>
   );
 };

@@ -19,12 +19,8 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  */
 
-import InfoModal from "./InfoModal";
+import InfoModal, { InfoContent } from "./InfoModal";
 import ModalText from "./ModalText";
 import ModalImageView from "./ModalImageView";
 
-export {
-  InfoModal,
-  ModalText,
-  ModalImageView
-}
+export { InfoModal, ModalText, ModalImageView, InfoContent };

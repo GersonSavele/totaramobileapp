@@ -11,9 +11,9 @@
     "no_internet": "You are offline",
     "back": "Back",
     "ok": "Ok",
-    "delete": "Delete"
+    "delete": "Delete",
+    "continue_learning": "Continue learning"
   },
-
   "site_url": {
     "title": "Get started.",
     "url_information": "Enter your organisation's URL",
@@ -55,8 +55,6 @@
     "primary_title": "Yes, go to browser",
     "tertiary_title": "Cancel"
   },
-
-
   "current_learning": {
     "action_primary": "Current learning",
     "primary_info": {
@@ -76,7 +74,6 @@
     "extend_date": "Extend Date",
     "overdue_by": "Overdue by"
   },
-
   "additional_actions_modal": {
     "auth_model_title": "Action required",
     "auth_model_description": "You are required to visit a browser to complete some action(s).",
@@ -99,7 +96,6 @@
   "activity_not_available": {
     "title": "This activity is not available unless"
   },
-
   "course": {
     "course_overview": {
       "course_summary": "Course summary"
@@ -116,7 +112,6 @@
     "course_complete": {
       "title": "Awesome!",
       "description": "You have successfully completed the course.",
-      "button_title": "Continue learning"
     },
     "course_complete_confirmation": {
       "title": "Confirm",
@@ -126,43 +121,41 @@
     },
     "course_criteria": {
       "title": "Course criteria",
-      "bottom_sheet_header":"This activity is not available unless"
+      "bottom_sheet_header": "This activity is not available unless"
     },
     "course_details": {
       "activities": "ACTIVITIES",
       "overview": "OVERVIEW",
       "expand_or_collapse": "Expand all",
-      "badge_title":"Course"
+      "badge_title": "Course"
     },
     "course_activity_section": {
       "not_available": "Not available"
     }
   },
-
-  "course_group":{
-    "tabs":{
+  "course_group": {
+    "tabs": {
       "overview": "OVERVIEW",
       "courses": "COURSES"
     },
-    "details":{
-     "badge_title_program":"Program",
-     "badge_title_certification":"Certification"
+    "details": {
+      "badge_title_program": "Program",
+      "badge_title_certification": "Certification"
     },
-    "overview":{
-      "summary_title_program":"Program Summary",
-      "summary_title_certification":"Certification Summary"
+    "overview": {
+      "summary_title_program": "Program Summary",
+      "summary_title_certification": "Certification Summary"
     },
-    "courses":{
-      "unavailable_sets":"unavailable set",
-      "compete":"Successfully completed!",
-      "current_learning_button_title":"Current Learning"
+    "courses": {
+      "unavailable_sets": "unavailable set",
+      "compete": "Successfully completed!",
+      "current_learning_button_title": "Current Learning"
     },
-    "criteria":{
-      "view_criteria":"View criteria",
-      "bottom_sheet_header":"This course is not available unless"
+    "criteria": {
+      "view_criteria": "View criteria",
+      "bottom_sheet_header": "This course is not available unless"
     }
   },
-
   "scorm": {
     "last_synced": "Last synced",
     "ago": "ago",
@@ -187,11 +180,10 @@
       "last_attempt": "Last attempt"
     },
     "feedback": {
-      "grade_title": "YOUR GRADE",
-      "awesome": "Awesome!",
-      "sorry": "Sorry!",
-      "back": "Go back",
-      "action_info": "Would you like to go back or do you want to try again?"
+      "grade_title": "Grade",
+      "action_info": "Would you like to go back or do you want to try again?",
+      "completed_attempt": "You have completed an attempt",
+      "completed_attempt_with_grade": "You have completed an attempt with a grade"
     },
     "attempts": {
       "title": "All attempts grades",
@@ -212,7 +204,6 @@
       "cancel": "No"
     }
   },
-
   "notifications": {
     "title": "Notifications",
     "empty": "No notifications yet!",
@@ -224,7 +215,6 @@
     "empty": "No downloads yet!",
     "selected": "{{count}} Selected"
   },
-  
   "user_profile": {
     "title": "Profile",
     "login_as": "Logged in as: {{username}}",

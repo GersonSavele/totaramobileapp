@@ -23,8 +23,7 @@ const SCORM_TEST_IDS = {
   NONE_EXIST_RESOURCE_ID: "no_resource",
   INVALID_SCORM_ID: "invalid_scorm",
   OFFLINE_PLAYER_ID: "offline_player",
-  FEEDBACK_COMPLETION_IMAGE_ID: "feedback_completed_image",
-  FEEDBACK_SCORE_ID: "feedback_score",
+  ATTEMPT_FEEDBACK: "attempt_feedback",
   INVALID_URL_ID: "invalid_url",
   ONLINE_PLAYER_ID: "online_player"
 };

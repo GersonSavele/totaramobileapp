@@ -19,14 +19,21 @@
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
  **/
 
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import { View, StyleSheet, Modal } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
 import ModalText from "./ModalText";
 import ModalImageView from "./ModalImageView";
-import { resizeByScreenSize, ThemeContext } from "@totara/theme";
+import { resizeByScreenSize } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
+
+type InfoContentParams = {
+  title?: string;
+  description?: string;
+  imageType: string;
+  children?: ReactNode;
+};
 
 type Params = {
   title?: string;
@@ -37,40 +44,31 @@ type Params = {
   transparent?: boolean;
 };
 
-const InfoModal = ({
-  title,
-  description,
-  imageType,
-  children,
-  transparent,
-  ...rest
-}: Params) => {
-  const [theme] = useContext(ThemeContext);
+const InfoContent = ({ title, description, imageType, children }: InfoContentParams) => {
+  return (
+    <View style={styles.transparentViewStyle}>
+      <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
+        <View style={[styles.containerStyle, { backgroundColor: TotaraTheme.colorNeutral1 }]}>
+          <View style={styles.sectionContainer}>
+            <ModalImageView imageType={imageType} />
+          </View>
+          <View style={styles.sectionContainer}>
+            <ModalText text={title} fontSize={TotaraTheme.textH2.fontSize} fontWeight={TotaraTheme.textH2.fontWeight} />
+            <ModalText text={description} />
+          </View>
+          <View style={styles.actionContainer}>{children}</View>
+        </View>
+      </SafeAreaView>
+    </View>
+  );
+};
 
+const InfoModal = ({ title, description, imageType, children, transparent, ...rest }: Params) => {
   return (
     <Modal {...rest} transparent={transparent} animationType="fade">
-      <View style={styles.transparentViewStyle}>
-        <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
-          <View
-            style={[
-              styles.containerStyle,
-              { backgroundColor: theme.colorNeutral1 }
-            ]}>
-            <View style={styles.sectionContainer}>
-              <ModalImageView imageType={imageType} />
-            </View>
-            <View style={styles.sectionContainer}>
-              <ModalText
-                text={title}
-                fontSize={theme.textH2.fontSize}
-                fontWeight={theme.textH2.fontWeight}
-              />
-              <ModalText text={description} />
-            </View>
-            <View style={styles.actionContainer}>{children}</View>
-          </View>
-        </SafeAreaView>
-      </View>
+      <InfoContent title={title} description={description} imageType={imageType}>
+        {children}
+      </InfoContent>
     </Modal>
   );
 };
@@ -102,5 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   }
 });
+
+export { InfoContent };
 
 export default InfoModal;
