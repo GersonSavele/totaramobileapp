@@ -9,8 +9,10 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
   <View
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
+        "flexDirection": "row",
       }
     }
   >
@@ -20,14 +22,12 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           Array [
             Object {
               "alignItems": "center",
+              "alignSelf": "center",
               "borderRadius": 4,
               "flex": 1,
-              "flexDirection": "column",
               "justifyContent": "center",
-              "marginHorizontal": 20,
-              "marginLeft": "5%",
-              "marginRight": "5%",
-              "marginVertical": 32,
+              "marginHorizontal": 24,
+              "marginVertical": 48,
             },
             Object {
               "backgroundColor": "#FFFFFF",
@@ -39,7 +39,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
@@ -53,7 +53,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             style={
               Object {
                 "alignItems": "center",
-                "height": 375,
                 "resizeMode": "contain",
                 "width": 525,
               }
@@ -64,61 +63,39 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
         >
-          <View
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 32,
+                "fontWeight": "700",
+                "lineHeight": 41,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 32,
-                    "fontWeight": "700",
-                  },
-                ]
-              }
-            >
-              translated incompatible_api.title with undefined
-            </Text>
-          </View>
-          <View
+            translated incompatible_api.title with undefined
+          </Text>
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 17,
+                "fontWeight": "400",
+                "lineHeight": 22,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 17,
-                    "fontWeight": "normal",
-                  },
-                ]
-              }
-            >
-              translated incompatible_api.description with undefined
-            </Text>
-          </View>
+            translated incompatible_api.description with undefined
+          </Text>
         </View>
         <View
           style={
@@ -187,8 +164,10 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
   <View
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
+        "flexDirection": "row",
       }
     }
   >
@@ -198,14 +177,12 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           Array [
             Object {
               "alignItems": "center",
+              "alignSelf": "center",
               "borderRadius": 4,
               "flex": 1,
-              "flexDirection": "column",
               "justifyContent": "center",
-              "marginHorizontal": 20,
-              "marginLeft": "5%",
-              "marginRight": "5%",
-              "marginVertical": 32,
+              "marginHorizontal": 24,
+              "marginVertical": 48,
             },
             Object {
               "backgroundColor": "#FFFFFF",
@@ -217,7 +194,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
@@ -231,7 +208,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             style={
               Object {
                 "alignItems": "center",
-                "height": 375,
                 "resizeMode": "contain",
                 "width": 525,
               }
@@ -242,61 +218,39 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
         >
-          <View
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 32,
+                "fontWeight": "700",
+                "lineHeight": 41,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 32,
-                    "fontWeight": "700",
-                  },
-                ]
-              }
-            >
-              translated incompatible_api.title with undefined
-            </Text>
-          </View>
-          <View
+            translated incompatible_api.title with undefined
+          </Text>
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 17,
+                "fontWeight": "400",
+                "lineHeight": 22,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 17,
-                    "fontWeight": "normal",
-                  },
-                ]
-              }
-            >
-              translated incompatible_api.description with undefined
-            </Text>
-          </View>
+            translated incompatible_api.description with undefined
+          </Text>
         </View>
         <View
           style={
@@ -365,8 +319,10 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
   <View
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
+        "flexDirection": "row",
       }
     }
   >
@@ -376,14 +332,12 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           Array [
             Object {
               "alignItems": "center",
+              "alignSelf": "center",
               "borderRadius": 4,
               "flex": 1,
-              "flexDirection": "column",
               "justifyContent": "center",
-              "marginHorizontal": 20,
-              "marginLeft": "5%",
-              "marginRight": "5%",
-              "marginVertical": 32,
+              "marginHorizontal": 24,
+              "marginVertical": 48,
             },
             Object {
               "backgroundColor": "#FFFFFF",
@@ -395,7 +349,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
@@ -409,7 +363,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             style={
               Object {
                 "alignItems": "center",
-                "height": 375,
                 "resizeMode": "contain",
                 "width": 525,
               }
@@ -420,61 +373,39 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
         >
-          <View
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 32,
+                "fontWeight": "700",
+                "lineHeight": 41,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 32,
-                    "fontWeight": "700",
-                  },
-                ]
-              }
-            >
-              translated incompatible_api.title with undefined
-            </Text>
-          </View>
-          <View
+            translated incompatible_api.title with undefined
+          </Text>
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 17,
+                "fontWeight": "400",
+                "lineHeight": 22,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 17,
-                    "fontWeight": "normal",
-                  },
-                ]
-              }
-            >
-              translated incompatible_api.description with undefined
-            </Text>
-          </View>
+            translated incompatible_api.description with undefined
+          </Text>
         </View>
         <View
           style={
@@ -543,8 +474,10 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
   <View
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
+        "flexDirection": "row",
       }
     }
   >
@@ -554,14 +487,12 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
           Array [
             Object {
               "alignItems": "center",
+              "alignSelf": "center",
               "borderRadius": 4,
               "flex": 1,
-              "flexDirection": "column",
               "justifyContent": "center",
-              "marginHorizontal": 20,
-              "marginLeft": "5%",
-              "marginRight": "5%",
-              "marginVertical": 32,
+              "marginHorizontal": 24,
+              "marginVertical": 48,
             },
             Object {
               "backgroundColor": "#FFFFFF",
@@ -573,7 +504,7 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
@@ -587,7 +518,6 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
             style={
               Object {
                 "alignItems": "center",
-                "height": 375,
                 "resizeMode": "contain",
                 "width": 525,
               }
@@ -598,61 +528,39 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
         >
-          <View
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 32,
+                "fontWeight": "700",
+                "lineHeight": 41,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 32,
-                    "fontWeight": "700",
-                  },
-                ]
-              }
-            >
-              translated incompatible_api.title with undefined
-            </Text>
-          </View>
-          <View
+            translated incompatible_api.title with undefined
+          </Text>
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 17,
+                "fontWeight": "400",
+                "lineHeight": 22,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 17,
-                    "fontWeight": "normal",
-                  },
-                ]
-              }
-            >
-              translated incompatible_api.description with undefined
-            </Text>
-          </View>
+            translated incompatible_api.description with undefined
+          </Text>
         </View>
         <View
           style={

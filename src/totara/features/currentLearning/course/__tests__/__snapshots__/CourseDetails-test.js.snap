@@ -352,8 +352,10 @@ exports[`Testing: Course manual completion Test result : course complete and loa
   <View
     style={
       Object {
+        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
+        "flexDirection": "row",
       }
     }
   >
@@ -363,14 +365,12 @@ exports[`Testing: Course manual completion Test result : course complete and loa
           Array [
             Object {
               "alignItems": "center",
+              "alignSelf": "center",
               "borderRadius": 4,
               "flex": 1,
-              "flexDirection": "column",
               "justifyContent": "center",
-              "marginHorizontal": 20,
-              "marginLeft": "5%",
-              "marginRight": "5%",
-              "marginVertical": 32,
+              "marginHorizontal": 24,
+              "marginVertical": 48,
             },
             Object {
               "backgroundColor": "#FFFFFF",
@@ -382,7 +382,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
@@ -396,7 +396,6 @@ exports[`Testing: Course manual completion Test result : course complete and loa
             style={
               Object {
                 "alignItems": "center",
-                "height": 375,
                 "resizeMode": "contain",
                 "width": 525,
               }
@@ -407,61 +406,39 @@ exports[`Testing: Course manual completion Test result : course complete and loa
           style={
             Object {
               "alignItems": "center",
-              "marginHorizontal": 32,
+              "marginHorizontal": 24,
               "marginVertical": 16,
             }
           }
         >
-          <View
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 34,
+                "fontWeight": "700",
+                "lineHeight": 41,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 32,
-                    "fontWeight": "700",
-                  },
-                ]
-              }
-            >
-              translated course.course_complete.title with undefined
-            </Text>
-          </View>
-          <View
+            translated course.course_complete.title with undefined
+          </Text>
+          <Text
             style={
               Object {
-                "alignItems": "flex-start",
+                "color": "#3D444B",
+                "fontSize": 17,
+                "fontWeight": "400",
+                "lineHeight": 22,
                 "paddingBottom": 16,
+                "textAlign": "center",
               }
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "color": "#3D444B",
-                    "fontSize": 17,
-                    "fontWeight": "normal",
-                  },
-                ]
-              }
-            >
-              translated course.course_complete.description with undefined
-            </Text>
-          </View>
+            translated course.course_complete.description with undefined
+          </Text>
         </View>
         <View
           style={

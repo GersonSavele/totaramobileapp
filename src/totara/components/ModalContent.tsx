@@ -15,12 +15,12 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React, { ReactNode } from "react";
-import { View, StyleSheet, Text, Image, Dimensions, ImageSourcePropType } from "react-native";
+import { View, StyleSheet, Text, Image, ImageSourcePropType } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { resizeByScreenSize } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Images } from "@resources/images";
+import { margins, modalSize, paddings } from "@totara/theme/constants";
 
 type InfoContentParams = {
   title?: string;
@@ -76,39 +76,38 @@ const ModalContent = ({ title, description, imageType, children }: InfoContentPa
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: TotaraTheme.colorOpacity70
+    backgroundColor: TotaraTheme.colorOpacity70,
+    flexDirection: "row",
+    alignItems: "center"
   },
   containerStyle: {
     flex: 1,
     borderRadius: 4,
-    marginHorizontal: resizeByScreenSize(16, 16, 20, 20),
-    marginVertical: resizeByScreenSize(32, 32, 32, 32),
-    flexDirection: "column",
-    marginLeft: "5%",
-    marginRight: "5%",
+    marginHorizontal: margins.marginXL,
+    marginVertical: margins.margin3XL,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignSelf: "center"
   },
   sectionContainer: {
-    marginVertical: resizeByScreenSize(8, 8, 16, 16),
-    marginHorizontal: resizeByScreenSize(16, 24, 32, 32),
+    marginVertical: margins.marginL,
+    marginHorizontal: margins.marginXL,
     alignItems: "center"
   },
   actionContainer: {
-    marginVertical: resizeByScreenSize(8, 8, 16, 16),
+    marginVertical: margins.marginL,
     minHeight: 104,
     justifyContent: "space-between"
   },
   infoImage: {
     alignItems: "center",
-    height: Dimensions.get("window").width * 0.5,
-    width: Dimensions.get("window").width * 0.7,
+    width: modalSize.width,
     resizeMode: "contain"
   },
   infoText: {
     color: TotaraTheme.textColorDark,
     textAlign: "center",
-    paddingBottom: resizeByScreenSize(8, 8, 16, 16)
+    paddingBottom: paddings.paddingXL
   }
 });
 export default ModalContent;
