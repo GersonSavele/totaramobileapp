@@ -40,18 +40,18 @@ const {
   attemptComplete
 } = Images;
 
-const ModalContent = ({ title, description, imageType, children }: InfoContentParams) => {
-  const getImageByType = () => ({
-    complete_action: completeAction,
-    url_not_valid: urlNotValid,
-    general_error: generalError,
-    browser_login: browserLogin,
-    course_complete: courseComplete,
-    self_completion: selfCompletion,
-    course_compatible: courseCompatible,
-    attempt_complete: attemptComplete
-  });
+const getImageByType = () => ({
+  complete_action: completeAction,
+  url_not_valid: urlNotValid,
+  general_error: generalError,
+  browser_login: browserLogin,
+  course_complete: courseComplete,
+  self_completion: selfCompletion,
+  course_compatible: courseCompatible,
+  attempt_complete: attemptComplete
+});
 
+const ModalContent = ({ title, description, imageType, children }: InfoContentParams) => {
   const modalImage = getImageByType()[imageType];
 
   return (

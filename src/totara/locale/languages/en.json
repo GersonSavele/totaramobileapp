@@ -11,8 +11,7 @@
     "no_internet": "You are offline",
     "back": "Back",
     "ok": "Ok",
-    "delete": "Delete",
-    "continue_learning": "Continue learning"
+    "delete": "Delete"
   },
   "site_url": {
     "title": "Get started.",
@@ -112,6 +111,7 @@
     "course_complete": {
       "title": "Awesome!",
       "description": "You have successfully completed the course.",
+      "button_title": "Continue learning"
     },
     "course_complete_confirmation": {
       "title": "Confirm",
@@ -181,7 +181,6 @@
     },
     "feedback": {
       "grade_title": "Grade",
-      "action_info": "Would you like to go back or do you want to try again?",
       "completed_attempt": "You have completed an attempt",
       "completed_attempt_with_grade": "You have completed an attempt with a grade"
     },
