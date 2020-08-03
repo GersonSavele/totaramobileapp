@@ -17,10 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Tharaka Dushmantha <tharaka.dushmantha@totaralearning.com>
- */
+ **/
 
-import InfoModal, { InfoContent } from "./InfoModal";
-import ModalText from "./ModalText";
-import ModalImageView from "./ModalImageView";
+import React, { ReactNode } from "react";
+import { Modal } from "react-native";
 
-export { InfoModal, ModalText, ModalImageView, InfoContent };
+import ModalContent from "./ModalContent";
+
+type Params = {
+  title?: string;
+  description?: string;
+  imageType: string;
+  children?: ReactNode;
+  visible: boolean;
+  transparent?: boolean;
+};
+
+const InfoModal = ({ title, description, imageType, children, transparent, ...rest }: Params) => {
+  return (
+    <Modal {...rest} transparent={transparent} animationType="fade">
+      <ModalContent title={title} description={description} imageType={imageType}>
+        {children}
+      </ModalContent>
+    </Modal>
+  );
+};
+
+export default InfoModal;

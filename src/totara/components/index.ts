@@ -24,7 +24,7 @@ import DueDateState from "../features/currentLearning/components/DueDateState";
 import CircleIcon from "./CircleIcon";
 import { AddBadge, CheckBadge } from "./AddBadge";
 import ProgressCircle from "./ProgressCircle";
-import { InfoModal, InfoContent } from "./infoModal";
+import InfoModal from "./InfoModal";
 import AppStateListener from "./AppStateListener";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
@@ -45,6 +45,7 @@ import LoadingError from "./LoadingError";
 import NetworkStatus from "./NetworkStatus";
 import Loading from "./Loading";
 import ImageWrapper from "./ImageWrapper";
+import ModalContent from "./ModalContent";
 
 export {
   AddBadge,
@@ -73,5 +74,5 @@ export {
   LoadingError,
   NetworkStatus,
   ImageWrapper,
-  InfoContent
+  ModalContent
 };

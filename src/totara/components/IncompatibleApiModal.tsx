@@ -24,7 +24,7 @@ import React, { useContext } from "react";
 import { translate } from "@totara/locale";
 import { AuthContext } from "@totara/core";
 import { isValidApiVersion } from "@totara/core/AuthContext"; // TODO for clean up
-import { InfoModal } from "./infoModal";
+import InfoModal from "./InfoModal";
 import PrimaryButton from "./PrimaryButton";
 import { config } from "@totara/lib";
 import { Linking } from "react-native";

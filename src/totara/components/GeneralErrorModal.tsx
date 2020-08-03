@@ -18,7 +18,7 @@
 import React, { useState } from "react";
 import { Linking } from "react-native";
 import PrimaryButton from "./PrimaryButton";
-import InfoModal from "./infoModal/InfoModal";
+import InfoModal from "./InfoModal";
 import TertiaryButton from "./TertiaryButton";
 
 import { translate } from "@totara/locale";

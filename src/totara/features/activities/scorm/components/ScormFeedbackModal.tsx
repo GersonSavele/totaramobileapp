@@ -18,7 +18,7 @@ import React from "react";
 import { View } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 
-import { PrimaryButton, InfoContent } from "@totara/components";
+import { PrimaryButton, ModalContent } from "@totara/components";
 import { translate } from "@totara/locale";
 import { Grade } from "@totara/types/Scorm";
 import { SCORM_TEST_IDS } from "../constants";
@@ -46,7 +46,7 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
 
   return (
     <View style={{ flex: 1 }} testID={ATTEMPT_FEEDBACK}>
-      <InfoContent
+      <ModalContent
         title={scoreText}
         description={
           (isWithGrade && translate("scorm.feedback.completed_attempt_with_grade")) ||
@@ -54,7 +54,7 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
         }
         imageType={"attempt_complete"}>
         <PrimaryButton text={translate("general.continue_learning")} onPress={onClose} />
-      </InfoContent>
+      </ModalContent>
     </View>
   );
 };
