@@ -21,14 +21,10 @@
  */
 
 import React from "react";
-import { View } from "react-native";
+import { View, ImageSourcePropType } from "react-native";
 
 import { AuthFlowChildProps } from "../AuthComponent";
-import {
-  IncompatibleApiModal,
-  InfoModal,
-  PrimaryButton
-} from "@totara/components";
+import { IncompatibleApiModal, InfoModal, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData } from "@totara/core/AuthRoutines";
 
@@ -37,6 +33,7 @@ import NativeFlow from "./native";
 import BrowserLogin from "./browser";
 import { useManualFlow } from "./ManualFlowHook";
 import SiteUrl from "./SiteUrl";
+import { Images } from "@resources/images";
 
 /**
  * ManualFlow starts with a StartStep, then depending what configured on the server
@@ -132,7 +129,7 @@ const SiteErrorModal = ({ onCancel }: PropSiteError) => (
   <InfoModal
     title={translate("site_url.auth_invalid_site.title")}
     description={translate("site_url.auth_invalid_site.description")}
-    imageType={"url_not_valid"}
+    imageSource={Images.urlNotValid as ImageSourcePropType}
     visible={true}>
     <PrimaryButton
       text={translate("site_url.auth_invalid_site.action_primary")}

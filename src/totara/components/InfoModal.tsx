@@ -20,23 +20,23 @@
  **/
 
 import React, { ReactNode } from "react";
-import { Modal } from "react-native";
+import { Modal, ImageSourcePropType } from "react-native";
 
 import ModalContent from "./ModalContent";
 
 type Params = {
   title?: string;
   description?: string;
-  imageType: string;
+  imageSource: ImageSourcePropType;
   children?: ReactNode;
   visible: boolean;
   transparent?: boolean;
 };
 
-const InfoModal = ({ title, description, imageType, children, transparent, ...rest }: Params) => {
+const InfoModal = ({ title, description, imageSource, children, transparent, ...rest }: Params) => {
   return (
     <Modal {...rest} transparent={transparent} animationType="fade">
-      <ModalContent title={title} description={description} imageType={imageType}>
+      <ModalContent title={title} description={description} imageSource={imageSource}>
         {children}
       </ModalContent>
     </Modal>

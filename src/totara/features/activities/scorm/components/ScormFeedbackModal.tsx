@@ -15,13 +15,14 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 import React from "react";
-import { View } from "react-native";
+import { View, ImageSourcePropType } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 
 import { PrimaryButton, ModalContent } from "@totara/components";
 import { translate } from "@totara/locale";
 import { Grade } from "@totara/types/Scorm";
 import { SCORM_TEST_IDS } from "../constants";
+import { Images } from "@resources/images";
 
 type ScormFeedbackProps = {
   score: string;
@@ -52,7 +53,7 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
           (isWithGrade && translate("scorm.feedback.completed_attempt_with_grade")) ||
           translate("scorm.feedback.completed_attempt")
         }
-        imageType={"attempt_complete"}>
+        imageSource={Images.attemptComplete as ImageSourcePropType}>
         <PrimaryButton text={translate("course.course_complete.button_title")} onPress={onClose} />
       </ModalContent>
     </View>

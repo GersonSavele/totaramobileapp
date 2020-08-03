@@ -19,47 +19,22 @@ import { View, StyleSheet, Text, Image, ImageSourcePropType } from "react-native
 import SafeAreaView from "react-native-safe-area-view";
 
 import { TotaraTheme } from "@totara/theme/Theme";
-import { Images } from "@resources/images";
 import { margins, modalSize, paddings } from "@totara/theme/constants";
 
 type InfoContentParams = {
   title?: string;
   description?: string;
-  imageType: string;
+  imageSource: ImageSourcePropType;
   children?: ReactNode;
 };
 
-const {
-  completeAction,
-  urlNotValid,
-  generalError,
-  browserLogin,
-  courseComplete,
-  selfCompletion,
-  courseCompatible,
-  attemptComplete
-} = Images;
-
-const getImageByType = () => ({
-  complete_action: completeAction,
-  url_not_valid: urlNotValid,
-  general_error: generalError,
-  browser_login: browserLogin,
-  course_complete: courseComplete,
-  self_completion: selfCompletion,
-  course_compatible: courseCompatible,
-  attempt_complete: attemptComplete
-});
-
-const ModalContent = ({ title, description, imageType, children }: InfoContentParams) => {
-  const modalImage = getImageByType()[imageType];
-
+const ModalContent = ({ title, description, children, imageSource }: InfoContentParams) => {
   return (
     <View style={styles.transparentViewStyle}>
       <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
         <View style={[styles.containerStyle, { backgroundColor: TotaraTheme.colorNeutral1 }]}>
           <View style={styles.sectionContainer}>
-            {modalImage && <Image style={styles.infoImage} source={modalImage as ImageSourcePropType} />}
+            {imageSource && <Image style={styles.infoImage} source={imageSource} />}
           </View>
           <View style={styles.sectionContainer}>
             {(title && <Text style={{ ...TotaraTheme.textH2, ...styles.infoText }}>{title}</Text>) || null}

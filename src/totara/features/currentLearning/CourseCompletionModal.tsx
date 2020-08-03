@@ -17,6 +17,8 @@
 import React from "react";
 import { translate } from "@totara/locale";
 import { PrimaryButton, InfoModal } from "@totara/components";
+import { Images } from "@resources/images";
+import { ImageSourcePropType } from "react-native";
 
 type CourseCompletionProps = {
   onClose: () => void;
@@ -28,7 +30,7 @@ const CourseCompletionModal = ({ onClose }: CourseCompletionProps) => {
       transparent={true}
       title={translate("course.course_complete.title")}
       description={translate("course.course_complete.description")}
-      imageType="course_complete"
+      imageSource={Images.courseComplete as ImageSourcePropType}
       visible>
       <PrimaryButton
         text={translate("course.course_complete.button_title")}

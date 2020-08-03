@@ -20,12 +20,13 @@
  **/
 
 import React from "react";
-import { Linking } from "react-native";
+import { Linking, ImageSourcePropType } from "react-native";
 
 import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { AuthConsumer } from "@totara/core";
 import { AdditionalActionRule } from "./AdditionalActionRule";
+import { Images } from "@resources/images";
 
 class AdditionalAction extends React.Component {
   render() {
@@ -42,7 +43,7 @@ const AdditionalActionModal = () => {
     <InfoModal
       title={translate("additional_actions_modal.auth_model_title")}
       description={translate("additional_actions_modal.auth_model_description")}
-      imageType="complete_action"
+      imageSource={Images.completeAction as ImageSourcePropType}
       visible={true}>
       <ActionButtonPrimary />
       <ActionButtonTertiary />

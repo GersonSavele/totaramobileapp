@@ -27,8 +27,9 @@ import { isValidApiVersion } from "@totara/core/AuthContext"; // TODO for clean 
 import InfoModal from "./InfoModal";
 import PrimaryButton from "./PrimaryButton";
 import { config } from "@totara/lib";
-import { Linking } from "react-native";
+import { Linking, ImageSourcePropType } from "react-native";
 import TertiaryButton from "./TertiaryButton";
+import { Images } from "@resources/images";
 
 type Props = {
   onCancel?: () => void;
@@ -49,7 +50,7 @@ const IncompatibleApiModal = ({ onCancel, siteUrl }: Props) => {
       <InfoModal
         title={translate("incompatible_api.title")}
         description={translate("incompatible_api.description")}
-        imageType={"url_not_valid"}
+        imageSource={Images.urlNotValid as ImageSourcePropType}
         visible={isShowIncompatibleApi}>
         {site && (
           <PrimaryButton

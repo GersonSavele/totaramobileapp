@@ -27,6 +27,8 @@ import { AuthContext, AuthContextState } from "@totara/core";
 
 import ManualFlow from "./manual/ManualFlow";
 import AppLinkFlow from "./app-link/AppLinkFlow";
+import { Images } from "@resources/images";
+import { ImageSourcePropType } from "react-native";
 
 /**
  * Returns the UI component depending on the authContextState.authStep value
@@ -74,16 +76,12 @@ const AuthErrorModal = ({ action }: PropAuthError) => (
   <InfoModal
     title={translate("auth_general_error.title")}
     description={translate("auth_general_error.description")}
-    imageType={"general_error"}
-    visible={true}
-  >
-    <PrimaryButton
-      text={translate("auth_general_error.action_primary")}
-      onPress={() => action()}
-    />
+    imageSource={Images.generalError as ImageSourcePropType}
+    visible={true}>
+    <PrimaryButton text={translate("auth_general_error.action_primary")} onPress={() => action()} />
   </InfoModal>
 );
 
 type Props = {
-  children: ReactNode
-}
+  children: ReactNode;
+};

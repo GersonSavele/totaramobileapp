@@ -16,12 +16,13 @@
  */
 
 import React, { useState } from "react";
-import { Linking } from "react-native";
+import { Linking, ImageSourcePropType } from "react-native";
 import PrimaryButton from "./PrimaryButton";
 import InfoModal from "./InfoModal";
 import TertiaryButton from "./TertiaryButton";
 
 import { translate } from "@totara/locale";
+import { Images } from "@resources/images";
 
 type GeneralErrorModalProps = {
   primaryActionCustomText?: string;
@@ -36,7 +37,7 @@ const GeneralErrorModal = ({ siteUrl, onPrimaryActionTap, primaryActionCustomTex
     <InfoModal
       title={translate("general_error_feedback_modal.title")}
       description={translate("general_error_feedback_modal.description")}
-      imageType={"general_error"}
+      imageSource={Images.generalError as ImageSourcePropType}
       visible={visible}>
       <PrimaryButton
         testID={"test_generalErrorDismiss"}

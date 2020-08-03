@@ -20,11 +20,12 @@
  */
 
 import React from "react";
-import { Linking } from "react-native";
+import { Linking, ImageSourcePropType } from "react-native";
 
 import { PrimaryButton, TertiaryButton, InfoModal } from "@totara/components";
 import { translate } from "@totara/locale";
 import { ManualFlowChildProps } from "../ManualFlowChildProps";
+import { Images } from "@resources/images";
 
 const BrowserLogin = ({
   onManualFlowCancel,
@@ -34,9 +35,8 @@ const BrowserLogin = ({
     <InfoModal
       title={translate("browser_login.title")}
       description={translate("browser_login.description")}
-      imageType={"browser_login"}
-      visible={true}
-    >
+      imageSource={Images.browserLogin as ImageSourcePropType}
+      visible={true}>
       <PrimaryButton
         text={translate("browser_login.primary_title")}
         onPress={() => {

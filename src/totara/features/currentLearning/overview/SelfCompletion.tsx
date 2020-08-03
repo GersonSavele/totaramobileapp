@@ -17,6 +17,8 @@
 import React, { ReactNode } from "react";
 import { translate } from "@totara/locale";
 import { PrimaryButton, InfoModal, TertiaryButton } from "@totara/components";
+import { Images } from "@resources/images";
+import { ImageSourcePropType } from "react-native";
 
 type Props = {
   onClose: () => void;
@@ -30,7 +32,7 @@ const SelfCompletion = ({ onClose, onClickAsComplete, children }: Props) => {
       transparent={true}
       title={translate("course.course_complete_confirmation.title")}
       description={translate("course.course_complete_confirmation.description")}
-      imageType="self_completion"
+      imageSource={Images.selfCompletion as ImageSourcePropType}
       visible>
       <PrimaryButton
         text={translate(
