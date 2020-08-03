@@ -24,7 +24,7 @@ import { ImageWrapper, ProgressCircle } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
-import { borderRadius, margins, paddings } from "@totara/theme/constants";
+import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/constants";
 
 type ListViewItemProps = {
   item: any;
@@ -98,7 +98,7 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
         </View>
         <View style={currentLearningListViewStyles.itemProgress}>
           {progress !== null && (
-            <ProgressCircle size={40} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
+            <ProgressCircle size={iconSizes.sizeXL} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
           )}
         </View>
       </View>

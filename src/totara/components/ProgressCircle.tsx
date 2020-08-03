@@ -49,7 +49,8 @@ const ProgressCircle = ({
       formatText={() => progress + "%"}
       showsText={true}
       textStyle={{
-        fontSize: TotaraTheme.textSmall.fontSize,
+        fontSize: TotaraTheme.textXSmall.fontSize,
+        textAlign: "center",
         color: color ? color : TotaraTheme.textColorDark,
         fontWeight: "bold"
       }}

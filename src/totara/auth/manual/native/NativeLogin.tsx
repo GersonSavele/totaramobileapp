@@ -14,25 +14,13 @@
  */
 
 import React, { useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  Linking
-} from "react-native";
+import { StyleSheet, View, Image, Text, TouchableOpacity, Linking } from "react-native";
 import { Form, Input, Container, Content } from "native-base";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { config } from "@totara/lib";
 import { gutter, ThemeContext } from "@totara/theme";
-import {
-  PrimaryButton,
-  InputTextWithInfo,
-  TouchableIcon,
-  FormError
-} from "@totara/components";
+import { PrimaryButton, InputTextWithInfo, TouchableIcon, FormError } from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData } from "@totara/core/AuthRoutines";
 
@@ -78,24 +66,16 @@ const NativeLogin = (props: ManualFlowChildProps) => {
       </View>
       <Content style={styles.content} enableOnAndroid>
         <Image
-          source={
-            theme.urlLogo
-              ? { uri: theme.urlLogo }
-              : require("@resources/images/totara_logo/totara_logo.png")
-          }
+          source={theme.urlLogo ? { uri: theme.urlLogo } : require("@resources/images/totara_logo/totara_logo.png")}
           style={styles.totaraLogo}
           resizeMode={"contain"}
         />
         <View style={styles.infoContainer}>
-          <Text style={styles.loginTitle}>
-            {translate("native_login.header_title")}
-          </Text>
-          <Text style={styles.loginInformation}>
-            {translate("native_login.login_information")}
-          </Text>
+          <Text style={styles.loginTitle}>{translate("native_login.header_title")}</Text>
+          <Text style={styles.loginInformation}>{translate("native_login.login_information")}</Text>
         </View>
         <Form>
-          <View style={styles.formInputContainer}>
+          <View>
             <InputTextWithInfo
               placeholder={translate("native_login.username_text_placeholder")}
               message={
@@ -114,7 +94,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
               />
             </InputTextWithInfo>
           </View>
-          <View style={styles.formInputContainer}>
+          <View>
             <InputTextWithInfo
               placeholder={translate("native_login.password_text_placeholder")}
               message={
@@ -138,9 +118,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
               onPress={() => {
                 Linking.openURL(config.forgotPasswordUri(props.siteUrl));
               }}>
-              <Text style={styles.forgotCredential}>
-                {translate("native_login.forgot_username_password")}
-              </Text>
+              <Text style={styles.forgotCredential}>{translate("native_login.forgot_username_password")}</Text>
             </TouchableOpacity>
           </View>
           <PrimaryButton
@@ -179,11 +157,8 @@ const styles = StyleSheet.create({
   infoContainer: {
     justifyContent: "space-between",
     textAlignVertical: "center",
-    marginBottom: margins.margin2XL,
+    marginBottom: margins.marginM,
     marginTop: margins.margin2XL
-  },
-  formInputContainer: {
-    marginBottom: margins.marginS
   },
   inputText: {
     paddingLeft: 0,

@@ -85,7 +85,7 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 34,
+                    "fontSize": 32,
                     "fontWeight": "700",
                   },
                 ]

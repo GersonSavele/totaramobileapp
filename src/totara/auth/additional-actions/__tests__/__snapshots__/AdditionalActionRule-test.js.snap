@@ -85,7 +85,7 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 34,
+                    "fontSize": 32,
                     "fontWeight": "700",
                   },
                 ]

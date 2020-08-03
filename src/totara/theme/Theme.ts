@@ -33,7 +33,7 @@ const TotaraTheme: AppliedTheme = {
     fontWeight: "400"
   },
   textH2: {
-    fontSize: 34,
+    fontSize: 32,
     lineHeight: 41,
     color: colorFont,
     fontWeight: "700"

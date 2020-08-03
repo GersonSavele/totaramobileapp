@@ -66,7 +66,7 @@ const switchStyles = StyleSheet.create({
   container: {
     flexDirection: "row",
     padding: paddings.paddingXS,
-    borderRadius: iconSizes.sizeL,
+    borderRadius: iconSizes.sizeL / 2,
     backgroundColor: TotaraTheme.colorNeutral4
   }
 });

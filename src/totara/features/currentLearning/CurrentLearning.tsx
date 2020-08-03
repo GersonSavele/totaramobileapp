@@ -76,7 +76,7 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
             <View
               style={{
                 alignSelf: "flex-end",
-                paddingRight: paddings.paddingXL
+                paddingRight: paddings.paddingS
               }}>
               <Switch>
                 <SwitchOption

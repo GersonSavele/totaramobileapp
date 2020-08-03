@@ -15,13 +15,7 @@
  */
 
 import { StyleSheet, ViewStyle } from "react-native";
-import {
-  margins,
-  paddings,
-  borderRadius,
-  fontWeights,
-  iconSizes
-} from "@totara/theme/constants";
+import { margins, paddings, borderRadius, fontWeights, iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { deviceScreen } from "@totara/lib/tools";
 import { viewHeight } from "./constants";
@@ -49,7 +43,7 @@ const viewHeader: ViewStyle = {
 const learningDetailsStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: TotaraTheme.colorNeutral2
+    backgroundColor: TotaraTheme.colorNeutral1
   },
   imageView: {
     flex: 1,

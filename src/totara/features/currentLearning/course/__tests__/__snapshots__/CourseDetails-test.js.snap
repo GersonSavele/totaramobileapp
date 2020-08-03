@@ -34,7 +34,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         Array [
           Object {
             "color": "#000000",
-            "fontSize": 34,
+            "fontSize": 32,
             "fontWeight": "700",
             "lineHeight": 41,
           },
@@ -148,7 +148,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         Array [
           Object {
             "color": "#000000",
-            "fontSize": 34,
+            "fontSize": 32,
             "fontWeight": "700",
             "lineHeight": 41,
           },
@@ -262,7 +262,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         Array [
           Object {
             "color": "#000000",
-            "fontSize": 34,
+            "fontSize": 32,
             "fontWeight": "700",
             "lineHeight": 41,
           },
@@ -428,7 +428,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 34,
+                    "fontSize": 32,
                     "fontWeight": "700",
                   },
                 ]

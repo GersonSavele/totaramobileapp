@@ -85,7 +85,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 34,
+                    "fontSize": 32,
                     "fontWeight": "700",
                   },
                 ]
@@ -263,7 +263,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 34,
+                    "fontSize": 32,
                     "fontWeight": "700",
                   },
                 ]
@@ -441,7 +441,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 34,
+                    "fontSize": 32,
                     "fontWeight": "700",
                   },
                 ]
@@ -619,7 +619,7 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
                   },
                   Object {
                     "color": "#3D444B",
-                    "fontSize": 34,
+                    "fontSize": 32,
                     "fontWeight": "700",
                   },
                 ]
