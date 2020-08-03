@@ -22,7 +22,7 @@ export interface Section {
   id: number;
   title: string;
   available: boolean;
-  availableReason?: [string];
+  availablereason?: [string];
   summary: string;
   data?: [Activity];
 }
@@ -30,10 +30,7 @@ export interface Section {
 export interface LearningItem {
   id: number;
   itemComponent: string;
-  itemtype:
-    | learningItemEnum.Program
-    | learningItemEnum.Course
-    | learningItemEnum.Certification;
+  itemtype: learningItemEnum.Program | learningItemEnum.Course | learningItemEnum.Certification;
   shortname: string;
   fullname?: string;
   summary?: string;

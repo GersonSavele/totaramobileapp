@@ -19,8 +19,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import BottomSheet from "reanimated-bottom-sheet";
 import { criteriaSheetStyle } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { Separator } from "@totara/components";
 import { iconSizes } from "@totara/theme/constants";
+import listViewStyles from "@totara/theme/listView";
 
 type Props = {
   title: string;
@@ -33,7 +33,7 @@ const ListItem = ({ criteria }: { criteria: string }) => (
     <Text numberOfLines={3} style={criteriaSheetStyle.availableReasonTextWrap}>
       {criteria}
     </Text>
-    <Separator />
+    <View style={listViewStyles.thinSeparator} />
   </View>
 );
 
@@ -46,14 +46,8 @@ const CriteriaSheet = ({ title = "", criteriaList = [""], onClose }: Props) => {
     return (
       <View style={criteriaSheetStyle.headerViewWrap}>
         <View style={criteriaSheetStyle.headerInnerViewWrap}>
-          <TouchableOpacity
-            style={criteriaSheetStyle.headerCloseButtonWrap}
-            onPress={onClose}>
-            <FontAwesomeIcon
-              icon="times"
-              size={iconSizes.sizeM}
-              color={TotaraTheme.textColorDisabled}
-            />
+          <TouchableOpacity style={criteriaSheetStyle.headerCloseButtonWrap} onPress={onClose}>
+            <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.textColorDisabled} />
           </TouchableOpacity>
           <View style={criteriaSheetStyle.headerViewIndicatorWrap}>
             <View style={criteriaSheetStyle.indicatorWrap}></View>

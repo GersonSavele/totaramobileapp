@@ -20,13 +20,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 
 const { marginL, marginS, margin2XL } = margins;
 const { borderRadiusL, borderRadiusXS } = borderRadius;
-const {
-  colorOpacity70,
-  textRegular,
-  textSmall,
-  colorAccent,
-  colorNeutral8
-} = TotaraTheme;
+const { colorOpacity70, textRegular, textSmall, colorAccent, colorNeutral8 } = TotaraTheme;
 
 const criteriaSheetStyle = StyleSheet.create({
   transparentView: {
@@ -35,13 +29,13 @@ const criteriaSheetStyle = StyleSheet.create({
     justifyContent: "flex-end"
   },
   renderOuterViewWrap: {
-    marginHorizontal: marginL,
     marginVertical: marginS
   },
   renderInnerViewWrap: {
     flexDirection: "row",
     justifyContent: "center",
-    flex: 1
+    flex: 1,
+    marginHorizontal: marginL
   },
   criteriaText: {
     ...textRegular,

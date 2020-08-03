@@ -20,10 +20,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import _ from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import BottomSheet from "reanimated-bottom-sheet";
-import { Separator } from "@totara/components";
+import listViewStyles from "@totara/theme/listView";
 import { translate } from "@totara/locale";
 import { Criteria } from "@totara/types";
 import criteriaSheetStyle from "./criteriaSheetStyle";
+import { iconSizes } from "@totara/theme/constants";
 
 type Props = {
   criteriaList?: [Criteria];
@@ -58,10 +59,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
     {
       /* // requirement and status return with URL and should replace the url and tags */
     }
-    if (
-      item.status!.replace(/(<([^>]+)>)/gi, "") !== undefined &&
-      item.status!.replace(/(<([^>]+)>)/gi, "") !== ""
-    ) {
+    if (item.status!.replace(/(<([^>]+)>)/gi, "") !== undefined && item.status!.replace(/(<([^>]+)>)/gi, "") !== "") {
       description += " | " + item.status!.replace(/(<([^>]+)>)/gi, "");
     }
     return (
@@ -77,7 +75,7 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
             </Text>
           </View>
         </View>
-        <Separator />
+        <View style={listViewStyles.thinSeparator} />
       </View>
     );
   };
@@ -86,22 +84,15 @@ const CriteriaSheet = ({ criteriaList, onClose }: Props) => {
     return (
       <View style={criteriaSheetStyle.headerViewWrap}>
         <View style={criteriaSheetStyle.headerInnerViewWrap}>
-          <TouchableOpacity
-            style={criteriaSheetStyle.headerCloseButtonWrap}
-            onPress={onClose}>
-            <FontAwesomeIcon
-              icon="times"
-              size={20}
-              color={TotaraTheme.textColorDisabled}
-            />
+          <TouchableOpacity style={criteriaSheetStyle.headerCloseButtonWrap} onPress={onClose}>
+            <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.textColorDisabled} />
           </TouchableOpacity>
           <View style={criteriaSheetStyle.headerViewIndicatorWrap}>
             <View style={criteriaSheetStyle.indicatorWrap}></View>
           </View>
         </View>
         <View style={criteriaSheetStyle.container}>
-          <Text
-            style={{ ...TotaraTheme.textH3, fontWeight: "bold", fontSize: 22 }}>
+          <Text style={{ ...TotaraTheme.textHeadline, fontWeight: "bold" }}>
             {translate("course.course_criteria.title")}
           </Text>
         </View>

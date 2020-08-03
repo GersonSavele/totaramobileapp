@@ -143,7 +143,9 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
           </Text>
         </View>
       </View>
-      {showCriteria && criteria !== null && <CriteriaSheet criteriaList={criteria} onClose={onClose} />}
+      {showCriteria && criteria !== null && criteria!.length > 0 && (
+        <CriteriaSheet criteriaList={criteria} onClose={onClose} />
+      )}
     </TouchableOpacity>
   );
 };

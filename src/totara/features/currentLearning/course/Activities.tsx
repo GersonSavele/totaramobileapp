@@ -26,11 +26,13 @@ import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity } from "@totara/types";
-import { Separator, GeneralErrorModal } from "@totara/components";
+import { GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
 import { activityModType, completionStatus, completionTrack } from "../constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete } from "../course/api";
+import listViewStyles from "@totara/theme/listView";
+
 const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
@@ -241,7 +243,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack }: { item: Activity; cours
           {isLabel ? <ActivityTextContent label={item.description!} /> : <ListItem item={item} />}
         </TouchableOpacity>
       </View>
-      <View>{!isLabel && <Separator />}</View>
+      {!isLabel && <View style={listViewStyles.thinSeparator} />}
       {errorSelfComplete && <GeneralErrorModal primaryActionCustomText={translate("general.ok")} />}
     </View>
   );
@@ -269,7 +271,7 @@ const ListItemLock = ({ item }: { item: Activity }) => {
           />
         )}
       </View>
-      <Separator />
+      <View style={listViewStyles.thinSeparator} />
     </View>
   );
 };

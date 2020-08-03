@@ -40,7 +40,6 @@ import MessageBar from "./MessageBar";
 import TopHeader from "./TopHeader";
 import TotaraNavigationOptions from "./NavigationOptions";
 import NotificationBell from "./NotificationBell";
-import Separator from "./Separator";
 import LoadingError from "./LoadingError";
 import NetworkStatus from "./NetworkStatus";
 import Loading from "./Loading";
@@ -69,7 +68,6 @@ export {
   TopHeader,
   TotaraNavigationOptions,
   NotificationBell,
-  Separator,
   Loading,
   LoadingError,
   NetworkStatus,
