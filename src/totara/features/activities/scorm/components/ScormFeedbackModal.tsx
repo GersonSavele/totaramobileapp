@@ -40,19 +40,18 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
   const { gradeMethod, completionScoreRequired, score, onClose } = navigation.state.params as ScormFeedbackProps;
 
   const isWithGrade = completionScoreRequired !== undefined && completionScoreRequired !== null;
-  const scoreText =
-    (isWithGrade &&
-      `${translate("scorm.feedback.grade_title")} ${score}${(gradeMethod !== Grade.objective && `%`) || ""}`) ||
-    undefined;
+
+  const scoreText = isWithGrade
+    ? translate("scorm.feedback.grade_title", { score: `${score}${gradeMethod !== Grade.objective ? "%" : ""}` })
+    : "";
 
   return (
     <View style={{ flex: 1 }} testID={ATTEMPT_FEEDBACK}>
       <ModalContent
         title={scoreText}
-        description={
-          (isWithGrade && translate("scorm.feedback.completed_attempt_with_grade")) ||
-          translate("scorm.feedback.completed_attempt")
-        }
+        description={translate(
+          isWithGrade ? "scorm.feedback.completed_attempt_with_grade" : "scorm.feedback.completed_attempt"
+        )}
         imageSource={Images.attemptComplete as ImageSourcePropType}>
         <PrimaryButton text={translate("course.course_complete.button_title")} onPress={onClose} />
       </ModalContent>

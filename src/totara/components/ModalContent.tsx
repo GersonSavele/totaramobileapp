@@ -21,14 +21,14 @@ import SafeAreaView from "react-native-safe-area-view";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { margins, modalSize, paddings } from "@totara/theme/constants";
 
-type InfoContentParams = {
+type ModalContentProps = {
   title?: string;
   description?: string;
   imageSource: ImageSourcePropType;
   children?: ReactNode;
 };
 
-const ModalContent = ({ title, description, children, imageSource }: InfoContentParams) => {
+const ModalContent = ({ title, description, children, imageSource }: ModalContentProps) => {
   return (
     <View style={styles.transparentViewStyle}>
       <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>

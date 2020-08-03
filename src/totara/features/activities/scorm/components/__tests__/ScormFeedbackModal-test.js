@@ -23,7 +23,7 @@ describe("ScormFeedbackModal", () => {
     const view = getByTestId(ATTEMPT_FEEDBACK);
     expect(view).toBeTruthy();
     const receivedScoreText = view.props.children.props.title;
-    expect(receivedScoreText).toBeUndefined();
+    expect(receivedScoreText).toBe("");
   });
 
   it("Should render the feedback with the marks with percentage because the score is required and grade method is not learning objective", async () => {
@@ -40,7 +40,7 @@ describe("ScormFeedbackModal", () => {
     const { getByTestId } = render(<ScormFeedbackModal navigation={navigation} />);
     const view = getByTestId(ATTEMPT_FEEDBACK);
     const receivedScoreText = view.props.children.props.title;
-    const expectedScoreText = `${translate("scorm.feedback.grade_title")} 10%`;
+    const expectedScoreText = translate("scorm.feedback.grade_title", { score: "10%" });
     expect(receivedScoreText).toBe(expectedScoreText);
   });
 
@@ -58,7 +58,7 @@ describe("ScormFeedbackModal", () => {
     const { getByTestId } = render(<ScormFeedbackModal navigation={navigation} />);
     const view = getByTestId(ATTEMPT_FEEDBACK);
     const receivedScoreText = view.props.children.props.title;
-    const expectedScoreText = `${translate("scorm.feedback.grade_title")} 10`;
+    const expectedScoreText = translate("scorm.feedback.grade_title", { score: "10" });
     expect(receivedScoreText).toBe(expectedScoreText);
   });
 });

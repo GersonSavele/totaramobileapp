@@ -180,7 +180,7 @@
       "last_attempt": "Last attempt"
     },
     "feedback": {
-      "grade_title": "Grade",
+      "grade_title": "Grade {{score}}",
       "completed_attempt": "You have completed an attempt",
       "completed_attempt_with_grade": "You have completed an attempt with a grade"
     },

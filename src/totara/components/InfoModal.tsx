@@ -24,7 +24,7 @@ import { Modal, ImageSourcePropType } from "react-native";
 
 import ModalContent from "./ModalContent";
 
-type Params = {
+type InfoModalProps = {
   title?: string;
   description?: string;
   imageSource: ImageSourcePropType;
@@ -33,7 +33,7 @@ type Params = {
   transparent?: boolean;
 };
 
-const InfoModal = ({ title, description, imageSource, children, transparent, ...rest }: Params) => {
+const InfoModal = ({ title, description, imageSource, children, transparent, ...rest }: InfoModalProps) => {
   return (
     <Modal {...rest} transparent={transparent} animationType="fade">
       <ModalContent title={title} description={description} imageSource={imageSource}>
