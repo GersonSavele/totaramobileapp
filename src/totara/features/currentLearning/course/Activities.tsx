@@ -28,11 +28,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity } from "@totara/types";
 import { Separator, GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
-import {
-  activityModType,
-  completionStatus,
-  completionTrack
-} from "../constants";
+import { activityModType, completionStatus, completionTrack } from "../constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete } from "../course/api";
 const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
@@ -42,11 +38,7 @@ type ActivitiesProps = {
   expandAllActivities: boolean;
 };
 
-const Activities = ({
-  sections,
-  courseRefreshCallBack,
-  expandAllActivities
-}: ActivitiesProps) => {
+const Activities = ({ sections, courseRefreshCallBack, expandAllActivities }: ActivitiesProps) => {
   return (
     <FlatList
       data={sections}
@@ -69,11 +61,7 @@ type SectionItemProps = {
   expandAllActivities: boolean;
 };
 
-const SectionItem = ({
-  section,
-  courseRefreshCallBack,
-  expandAllActivities
-}: SectionItemProps) => {
+const SectionItem = ({ section, courseRefreshCallBack, expandAllActivities }: SectionItemProps) => {
   //every item need to have its own state
 
   const [show, setShow] = useState(expandAllActivities);
@@ -91,35 +79,20 @@ const SectionItem = ({
     activities && (
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
         <TouchableOpacity onPress={onExpand}>
-          {available && activities.length > 0 && (
-            <ExpandableSectionHeader show={show} title={title} />
-          )}
+          {available && activities.length > 0 && <ExpandableSectionHeader show={show} title={title} />}
           {!available && availablereason && availablereason.length > 0 && (
-            <RestrictionSectionHeader
-              title={title}
-              availableReason={availablereason}
-            />
+            <RestrictionSectionHeader title={title} availableReason={availablereason} />
           )}
         </TouchableOpacity>
         {show && (
-          <ActivityList
-            data={activities}
-            courseRefreshCallBack={courseRefreshCallBack}
-            sectionSummary={summary}
-          />
+          <ActivityList data={activities} courseRefreshCallBack={courseRefreshCallBack} sectionSummary={summary} />
         )}
       </View>
     )
   );
 };
 
-const RestrictionSectionHeader = ({
-  title,
-  availableReason
-}: {
-  availableReason: [string];
-  title: string;
-}) => {
+const RestrictionSectionHeader = ({ title, availableReason }: { availableReason: [string]; title: string }) => {
   const [show, setShow] = useState(false);
   const onClose = () => {
     setShow(!show);
@@ -150,10 +123,7 @@ type ExpandableSectionHeaderProps = {
   title: string;
 };
 
-const ExpandableSectionHeader = ({
-  title,
-  show
-}: ExpandableSectionHeaderProps) => {
+const ExpandableSectionHeader = ({ title, show }: ExpandableSectionHeaderProps) => {
   return (
     <View>
       <View style={activitiesStyles.sectionView}>
@@ -161,17 +131,9 @@ const ExpandableSectionHeader = ({
           {title}
         </Text>
         {show ? (
-          <FontAwesomeIcon
-            icon={faChevronUp}
-            color={TotaraTheme.colorNeutral5}
-            size={16}
-          />
+          <FontAwesomeIcon icon={faChevronUp} color={TotaraTheme.colorNeutral5} size={16} />
         ) : (
-          <FontAwesomeIcon
-            icon={faChevronDown}
-            color={TotaraTheme.colorNeutral5}
-            size={16}
-          />
+          <FontAwesomeIcon icon={faChevronDown} color={TotaraTheme.colorNeutral5} size={16} />
         )}
       </View>
     </View>
@@ -184,29 +146,19 @@ type ActivityListProps = {
   sectionSummary: string;
 };
 
-const ActivityList = ({
-  data,
-  courseRefreshCallBack,
-  sectionSummary
-}: ActivityListProps) => {
+const ActivityList = ({ data, courseRefreshCallBack, sectionSummary }: ActivityListProps) => {
   return (
     <View>
       <View style={activitiesStyles.activityList}>
-        <ActivityTextContent label={sectionSummary}></ActivityTextContent>
+        <ActivityTextContent label={sectionSummary} />
       </View>
       {data!.map((item: Activity, key: number) => {
         return (
           <View key={key}>
-            {item.completionstatus === completionStatus.unknown ||
-            item.completionstatus === null ||
-            !item.available ? (
+            {item.completionstatus === completionStatus.unknown || item.completionstatus === null || !item.available ? (
               <ListItemLock item={item} key={key} />
             ) : (
-              <ListItemUnlock
-                item={item}
-                courseRefreshCallBack={courseRefreshCallBack}
-                key={key}
-              />
+              <ListItemUnlock item={item} courseRefreshCallBack={courseRefreshCallBack} key={key} />
             )}
           </View>
         );
@@ -215,15 +167,11 @@ const ActivityList = ({
   );
 };
 
-const ListItemUnlock = ({
-  item,
-  courseRefreshCallBack
-}: {
-  item: Activity;
-  courseRefreshCallBack?: () => {};
-}) => {
+const ListItemUnlock = ({ item, courseRefreshCallBack }: { item: Activity; courseRefreshCallBack?: () => {} }) => {
   const navigation = useContext(NavigationContext);
-  const [selfComplete, { data, error }] = useMutation(activitySelfComplete);
+  const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] = useMutation(
+    activitySelfComplete
+  );
   if (data) {
     courseRefreshCallBack!();
   }
@@ -240,14 +188,13 @@ const ListItemUnlock = ({
   return (
     <View
       style={{
-        backgroundColor: !isLabel
-          ? TotaraTheme.colorAccent
-          : TotaraTheme.colorSecondary1
+        backgroundColor: !isLabel ? TotaraTheme.colorAccent : TotaraTheme.colorSecondary1
       }}>
       <View style={activitiesStyles.itemContentWrapper}>
         {item.completion === completionTrack.trackingManual ? (
           <TouchableOpacity onPress={onClickSelfComplete}>
             <CompletionIcon
+              loading={loadingSelfComplete}
               completion={item.completion}
               status={item.completionstatus}
               available={item.available}
@@ -255,6 +202,7 @@ const ListItemUnlock = ({
           </TouchableOpacity>
         ) : (
           <CompletionIcon
+            loading={loadingSelfComplete}
             completion={item.completion}
             status={item.completionstatus}
             available={item.available}
@@ -290,15 +238,11 @@ const ListItemUnlock = ({
               }
             }
           }}>
-          {isLabel ? (
-            <ActivityTextContent label={item.description || ""} />
-          ) : (
-            <ListItem item={item} />
-          )}
+          {isLabel ? <ActivityTextContent label={item.description || ""} /> : <ListItem item={item} />}
         </TouchableOpacity>
       </View>
       <View>{!isLabel && <Separator />}</View>
-      {error && <GeneralErrorModal siteUrl="" />}
+      {errorSelfComplete && <GeneralErrorModal primaryActionCustomText={translate("general.ok")} />}
     </View>
   );
 };
@@ -311,16 +255,9 @@ const ListItemLock = ({ item }: { item: Activity }) => {
   return (
     <View>
       <View style={activitiesStyles.listItemLockContainer}>
-        <TouchableOpacity
-          style={activitiesStyles.itemTouchableContent}
-          onPress={onClose}>
-          <View
-            style={[activitiesStyles.itemContentWrapper, { opacity: 0.25 }]}>
-            <CompletionIcon
-              completion={item.completion}
-              status={item.completionstatus}
-              available={item.available}
-            />
+        <TouchableOpacity style={activitiesStyles.itemTouchableContent} onPress={onClose}>
+          <View style={[activitiesStyles.itemContentWrapper, { opacity: 0.25 }]}>
+            <CompletionIcon completion={item.completion} status={item.completionstatus} available={item.available} />
             <ListItem item={item} />
           </View>
         </TouchableOpacity>

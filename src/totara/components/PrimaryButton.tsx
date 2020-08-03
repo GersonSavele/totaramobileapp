@@ -22,6 +22,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { gutter, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { borderRadius, paddings } from "@totara/theme/constants";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type PrimaryButtonProps = {
   children?: Element;
@@ -61,27 +62,11 @@ const ButtonIndicator = ({ mode, icon, color, size }: IndicatorProps) => {
     case "loading":
       return <Spinner size="small" color={color} style={styleIndicator} />;
     default:
-      return icon ? (
-        <FontAwesomeIcon
-          icon={icon}
-          size={size}
-          color={color}
-          style={styleIndicator}
-        />
-      ) : null;
+      return icon ? <FontAwesomeIcon icon={icon as IconProp} size={size} color={color} style={styleIndicator} /> : null;
   }
 };
 
-const PrimaryButton = ({
-  children,
-  text,
-  icon,
-  style,
-  onPress,
-  mode,
-  testID,
-  ...rest
-}: PrimaryButtonProps) => {
+const PrimaryButton = ({ children, text, icon, style, onPress, mode, testID, ...rest }: PrimaryButtonProps) => {
   const [theme] = useContext(ThemeContext);
 
   const buttonStyle = StyleSheet.create({
@@ -108,17 +93,8 @@ const PrimaryButton = ({
       {...rest}
       style={[buttonStyle.container, style]}
       disabled={mode == "loading" || mode == "disabled"}>
-      {text ? (
-        <ButtonTitle mode={mode} text={text} style={buttonStyle.title} />
-      ) : (
-        { children }
-      )}
-      <ButtonIndicator
-        mode={mode}
-        icon={icon}
-        color={theme.colorText}
-        size={theme.fontSizeButtonTitle}
-      />
+      {text ? <ButtonTitle mode={mode} text={text} style={buttonStyle.title} /> : { children }}
+      <ButtonIndicator mode={mode} icon={icon} color={theme.colorText} size={theme.fontSizeButtonTitle} />
     </Button>
   );
 };

@@ -16,15 +16,7 @@
  */
 
 import React, { useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  RefreshControl,
-  Alert,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView, RefreshControl, Alert, TouchableOpacity } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { ThemeContext } from "@totara/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -36,12 +28,7 @@ import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
 import { NetworkStatus as NS } from "apollo-boost";
 import { margins, paddings } from "@totara/theme/constants";
-import {
-  Loading,
-  NetworkStatus,
-  ImageWrapper,
-  LoadingError
-} from "@totara/components";
+import { Loading, NetworkStatus, ImageWrapper, LoadingError } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { NavigationStackProp } from "react-navigation-stack";
 
@@ -50,18 +37,10 @@ type ProfileProps = {
 };
 
 const Profile = ({ navigation }: ProfileProps) => {
-  const { loading, error, data, refetch, networkStatus } = useQuery(
-    userOwnProfile
-  );
+  const { loading, error, data, refetch, networkStatus } = useQuery(userOwnProfile);
 
   if (loading) return <Loading testID={"test_ProfileLoading"} />;
-  if (error)
-    return (
-      <LoadingError
-        onRefreshTap={refetch}
-        testID={"test_ProfileLoadingError"}
-      />
-    );
+  if (error) return <LoadingError onRefreshTap={refetch} testID={"test_ProfileLoadingError"} />;
 
   return (
     <View>
@@ -108,8 +87,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
     navigation.navigate(NAVIGATION.ABOUT);
   };
 
-  const useDefaultImage =
-    profile.profileimage.indexOf("theme/image.php/basis/core/") >= 0; //TODO: WEIRD WORKAROUND WE SUPPOSE TO FIX ONE DAY
+  const useDefaultImage = profile.profileimage.indexOf("theme/image.php/") >= 0; //TODO: WEIRD WORKAROUND WE SUPPOSE TO FIX ONE DAY
 
   return (
     <View style={[TotaraTheme.viewContainer]} testID={"test_ProfileContainer"}>
@@ -123,11 +101,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
             <ImageWrapper url={profile.profileimage} style={styles.avatar} />
           ) : (
             <View style={styles.avatar}>
-              <FontAwesomeIcon
-                icon={"user"}
-                color={TotaraTheme.colorNeutral4}
-                size={65}
-              />
+              <FontAwesomeIcon icon={"user"} color={TotaraTheme.colorNeutral4} size={65} />
             </View>
           )}
         </View>
@@ -145,24 +119,15 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
       <View style={[styles.manageSection, { flex: 1 }]}>
         <View>
           <View style={styles.sectionOption}>
-            <TouchableOpacity
-              testID={"test_ProfileAboutButton"}
-              onPress={goToAbout}
-              style={{ flex: 1 }}>
-              <Text style={TotaraTheme.textRegular}>
-                {translate("user_profile.about")}
-              </Text>
+            <TouchableOpacity testID={"test_ProfileAboutButton"} onPress={goToAbout} style={{ flex: 1 }}>
+              <Text style={TotaraTheme.textRegular}>{translate("user_profile.about")}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.sectionOption}>
             <AuthConsumer>
               {(auth) => (
-                <TouchableOpacity
-                  testID={"test_ProfileLogoutButton"}
-                  onPress={() => confirmationLogout(auth)}>
-                  <Text style={TotaraTheme.textRegular}>
-                    {translate("user_profile.logout.button_text")}
-                  </Text>
+                <TouchableOpacity testID={"test_ProfileLogoutButton"} onPress={() => confirmationLogout(auth)}>
+                  <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>
                 </TouchableOpacity>
               )}
             </AuthConsumer>

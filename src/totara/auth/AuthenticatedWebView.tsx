@@ -30,6 +30,7 @@ import CookieManager from "@react-native-community/cookies";
 import { config, Log } from "@totara/lib";
 import { AuthConsumer } from "@totara/core";
 import { WEBVIEW_SECRET } from "@totara/lib/constants";
+import { Loading, LoadingError } from "@totara/components";
 
 const createWebview = gql`
   mutation totara_mobile_create_webview($url: String!) {
@@ -58,13 +59,17 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     super(props);
 
     this.state = {
+      error: undefined,
+      isLoading: true,
       isAuthenticated: false,
-      webviewSecret: undefined,
+      webviewSecret: undefined
     };
   }
 
   async componentDidMount() {
     const { createWebview, uri } = this.props;
+
+    this.setState({ ...this.state, error: undefined, isLoading: true });
 
     const createWebViewPromise = createWebview({ variables: { url: uri } })
       .then((response) => {
@@ -72,17 +77,21 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
         if (response.data) {
           this.setState({
+            isLoading: false,
             webviewSecret: response.data.create_webview,
-            isAuthenticated: true,
+            isAuthenticated: true
           });
         } else {
           throw new Error("data missing on response");
         }
       })
-      .catch((error) => Log.error("unable to create webview", error));
+      .catch((error) => {
+        Log.warn(error);
+        this.setState({ ...this.state, error: error, isLoading: false });
+      });
 
     const clearCookiesPromise = CookieManager.clearAll(true).catch((error) =>
-      Log.error("unable to clearcookies", error)
+      Log.warn("unable to clearcookies", error)
     );
 
     return Promise.all([createWebViewPromise, clearCookiesPromise]);
@@ -93,12 +102,23 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     if (this.state.webviewSecret) {
       return deleteWebview({ variables: { secret: this.state.webviewSecret } })
         .then((data) => Log.debug("deleted webview", data))
-        .catch((error) => Log.error("unable to create webview", error));
+        .catch((error) => Log.warn("unable to create webview", error));
     }
   }
 
   render() {
     const { innerRef } = this.props;
+
+    if (this.state.isLoading) return <Loading />;
+
+    if (this.state.error)
+      return (
+        <LoadingError
+          onRefreshTap={async () => {
+            await this.componentDidMount();
+          }}
+        />
+      );
 
     return (
       <AuthConsumer>
@@ -107,7 +127,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
             <WebView
               source={{
                 uri: config.webViewUri(auth.authContextState.appState.host),
-                headers: { [WEBVIEW_SECRET]: this.state.webviewSecret },
+                headers: { [WEBVIEW_SECRET]: this.state.webviewSecret }
               }}
               userAgent={config.userAgent}
               style={{ flex: 1 }}
@@ -143,23 +163,21 @@ type OuterProps = {
 };
 
 type State = {
+  error?: Error;
+  isLoading: boolean;
   isAuthenticated: boolean;
   webviewSecret?: string;
 };
 
-const AuthenticatedWebViewGraphQL = compose<
-  Props,
-  { innerRef: React.Ref<WebView> }
->(
+const AuthenticatedWebViewGraphQL = compose<Props, { innerRef: React.Ref<WebView> }>(
   graphql(createWebview, { name: "createWebview" }),
   graphql(deleteWebview, { name: "deleteWebview" })
 )(AuthenticatedWebViewComponent);
 
-const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>(
-  (props, ref) => <AuthenticatedWebViewGraphQL innerRef={ref} {...props} />
-);
+const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>((props, ref) => (
+  <AuthenticatedWebViewGraphQL innerRef={ref} {...props} />
+));
 
-AuthenticatedWebViewComponentForwardRef.displayName =
-  "AuthenticatedWebViewComponentWrap";
+AuthenticatedWebViewComponentForwardRef.displayName = "AuthenticatedWebViewComponentWrap";
 
 export { AuthenticatedWebViewComponentForwardRef as AuthenticatedWebView };

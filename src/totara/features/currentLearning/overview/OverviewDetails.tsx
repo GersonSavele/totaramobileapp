@@ -134,7 +134,7 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
       onPress={() => setShowCriteria(true)}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
-          <ProgressCircle value={progress}></ProgressCircle>
+          <ProgressCircle value={progress} />
         </View>
         <View style={overviewStyles.horizontalSeparator} />
         <View style={overviewStyles.carouselTextContainer}>
@@ -143,7 +143,7 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
           </Text>
         </View>
       </View>
-      {showCriteria && criteria !== null && <CriteriaSheet criteriaList={criteria} onClose={onClose}></CriteriaSheet>}
+      {showCriteria && criteria !== null && <CriteriaSheet criteriaList={criteria} onClose={onClose} />}
     </TouchableOpacity>
   );
 };
@@ -229,7 +229,7 @@ const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefr
         </SelfCompletion>
       )}
 
-      {error && <GeneralErrorModal siteUrl="" />}
+      {error && <GeneralErrorModal />}
       {data && refetchCourseQueries()}
       {isCourseCompleted && <CourseCompletionModal onClose={onclickContinueLearning} />}
     </TouchableOpacity>

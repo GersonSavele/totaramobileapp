@@ -18,27 +18,19 @@
 import React from "react";
 import { View } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import {
-  completionTrack,
-  completionStatus,
-  completionIconStateKey
-} from "../constants";
+import { completionTrack, completionStatus, completionIconStateKey } from "../constants";
 import { CircleIcon } from "@totara/components";
 import { Images } from "@resources/images";
-import { margins } from "@totara/theme/constants";
+import { iconSizes, margins } from "@totara/theme/constants";
+import { Spinner } from "native-base";
 
-const {
-  colorAccent,
-  colorNeutral7,
-  colorSuccess,
-  colorNeutral6,
-  colorAlert
-} = TotaraTheme;
+const { colorAccent, colorNeutral7, colorSuccess, colorNeutral6, colorAlert } = TotaraTheme;
 
 type BuildContentProps = {
   completion?: string;
   status?: string;
   available: boolean;
+  loading?: boolean;
 };
 
 const completionStates = {
@@ -74,19 +66,12 @@ const completionStates = {
   }
 };
 
-const CompletionIcon = ({
-  completion,
-  status,
-  available
-}: BuildContentProps) => {
+const CompletionIcon = ({ completion, status, available, loading }: BuildContentProps) => {
   let stateKey;
   if (!available) {
     stateKey = completionIconStateKey.notAvailable;
   } else if (completion !== completionTrack.trackingNone) {
-    if (
-      status === completionStatus.completePass ||
-      status === completionStatus.complete
-    ) {
+    if (status === completionStatus.completePass || status === completionStatus.complete) {
       stateKey = completionIconStateKey.completed;
     } else if (status === completionStatus.incomplete) {
       stateKey =
@@ -101,13 +86,17 @@ const CompletionIcon = ({
 
   return stateObj ? (
     <View style={{ marginRight: margins.marginL }}>
-      <CircleIcon
-        icon={stateObj.icon}
-        backgroundColor={stateObj.backgroundColor}
-        iconColor={stateObj.iconColor}
-        borderColor={stateObj.borderColor}
-        fontAwesomeIcon={stateObj.fontAwesomeIcon}
-      />
+      {loading ? (
+        <Spinner size={iconSizes.sizeM} />
+      ) : (
+        <CircleIcon
+          icon={stateObj.icon}
+          backgroundColor={stateObj.backgroundColor}
+          iconColor={stateObj.iconColor}
+          borderColor={stateObj.borderColor}
+          fontAwesomeIcon={stateObj.fontAwesomeIcon}
+        />
+      )}
     </View>
   ) : null;
 };

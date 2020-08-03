@@ -24,10 +24,12 @@ import TertiaryButton from "./TertiaryButton";
 import { translate } from "@totara/locale";
 
 type GeneralErrorModalProps = {
+  primaryActionCustomText?: string;
+  onPrimaryActionTap?: () => void;
   siteUrl?: string;
 };
 
-const GeneralErrorModal = ({ siteUrl }: GeneralErrorModalProps) => {
+const GeneralErrorModal = ({ siteUrl, onPrimaryActionTap, primaryActionCustomText }: GeneralErrorModalProps) => {
   const [visible, setVisible] = useState(true);
 
   return (
@@ -38,9 +40,12 @@ const GeneralErrorModal = ({ siteUrl }: GeneralErrorModalProps) => {
       visible={visible}>
       <PrimaryButton
         testID={"test_generalErrorDismiss"}
-        text={translate("general_error_feedback_modal.action_primary")}
+        text={primaryActionCustomText ?? translate("general_error_feedback_modal.action_primary")}
         onPress={() => {
           setVisible(!visible);
+          if (onPrimaryActionTap) {
+            onPrimaryActionTap();
+          }
         }}
       />
       {siteUrl && siteUrl.length > 0 && (
