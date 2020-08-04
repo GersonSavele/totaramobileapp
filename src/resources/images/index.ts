@@ -15,9 +15,8 @@
  *
  */
 
-// TODO: separate icons from images
 import autoCompleteTick from "./auto_complete_tick/auto_complete_tick.png";
-import notificationBell from "./notifications/notificationsBell.png";
+import noNotifications from "./notifications/no_notifications.png";
 import generalError from "./general_error/general_error.png";
 import completeAction from "./complete_action/complete_action.png";
 import urlNotValid from "./url_not_valid/url_not_valid.png";
@@ -35,7 +34,7 @@ import attemptComplete from "./attempt_complete/attempt_complete.png";
 
 const Images = {
   autoCompleteTick,
-  notificationBell,
+  noNotifications,
   generalError,
   completeAction,
   urlNotValid,

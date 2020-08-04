@@ -16,16 +16,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  ImageSourcePropType,
-  ScrollView,
-  RefreshControl
-} from "react-native";
+import { View, Text, StyleSheet, Image, FlatList, ImageSourcePropType, ScrollView, RefreshControl } from "react-native";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { NetworkStatus as NS } from "apollo-client/core/networkStatus";
 import { NavigationStackProp } from "react-navigation-stack";
@@ -39,11 +30,7 @@ import { NotificationMessage } from "@totara/types";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Loading, LoadingError } from "@totara/components";
-import {
-  notificationQueryMarkRead,
-  notificationsQuery,
-  parser
-} from "@totara/features/notifications/api";
+import { notificationQueryMarkRead, notificationsQuery, parser } from "@totara/features/notifications/api";
 import { NavigationActions } from "react-navigation";
 
 type NotificationsProps = {
@@ -51,12 +38,9 @@ type NotificationsProps = {
 };
 
 const Notifications = ({ navigation }: NotificationsProps) => {
-  const { error, loading, data, refetch, networkStatus } = useQuery(
-    notificationsQuery
-  );
+  const { error, loading, data, refetch, networkStatus } = useQuery(notificationsQuery);
   const [mutationMarkAsRead] = useMutation(notificationQueryMarkRead);
-  const notificationList =
-    !loading && !error ? parser(data) : ([] as NotificationMessage[]);
+  const notificationList = !loading && !error ? parser(data) : ([] as NotificationMessage[]);
   const [selectedList, setSelectedList] = useState<string[]>([]);
   const [selectable, setSelectable] = useState(false);
   const headerTitle =
@@ -70,14 +54,8 @@ const Notifications = ({ navigation }: NotificationsProps) => {
   }, [selectable]);
 
   useEffect(() => {
-    const onCancelTapListener = navigation.addListener(
-      "onCancelTap",
-      onCancelTap
-    );
-    const onMarkAsRead = navigation.addListener(
-      "onMarkAsRead",
-      markAsReadAllSelected
-    );
+    const onCancelTapListener = navigation.addListener("onCancelTap", onCancelTap);
+    const onMarkAsRead = navigation.addListener("onMarkAsRead", markAsReadAllSelected);
     return () => {
       onCancelTapListener.remove();
       onMarkAsRead.remove();
@@ -166,27 +144,18 @@ const Notifications = ({ navigation }: NotificationsProps) => {
       <NetworkStatus />
       <View style={{ flex: 1 }}>
         {loading && <Loading testID={"test_loading"} />}
-        {error && (
-          <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} />
-        )}
+        {error && <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} />}
         {!loading && !error && notificationList.length == 0 && (
           <ScrollView
             contentContainerStyle={{
               flexGrow: 1,
               justifyContent: "center"
             }}
-            refreshControl={
-              <RefreshControl
-                refreshing={networkStatus === NS.refetch}
-                onRefresh={refetch}
-              />
-            }
+            refreshControl={<RefreshControl refreshing={networkStatus === NS.refetch} onRefresh={refetch} />}
             testID={"test_notificationsEmptyContainer"}>
             <View style={styles.noContent}>
-              <Image source={Images.notificationBell as ImageSourcePropType} />
-              <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>
-                {translate("notifications.empty")}
-              </Text>
+              <Image source={Images.noNotifications as ImageSourcePropType} />
+              <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>{translate("notifications.empty")}</Text>
             </View>
           </ScrollView>
         )}
@@ -196,9 +165,7 @@ const Notifications = ({ navigation }: NotificationsProps) => {
             refreshing={networkStatus === NS.refetch}
             onRefresh={refetch}
             contentContainerStyle={listViewStyles.contentContainerStyle}
-            ItemSeparatorComponent={() => (
-              <View style={listViewStyles.itemSeparator} />
-            )}
+            ItemSeparatorComponent={() => <View style={listViewStyles.itemSeparator} />}
             data={notificationList}
             keyExtractor={(notificationItem) => notificationItem.id}
             renderItem={({ item }) => (
