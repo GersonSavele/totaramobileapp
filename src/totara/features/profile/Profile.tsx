@@ -46,7 +46,7 @@ const Profile = ({ navigation }: ProfileProps) => {
     <View>
       <NetworkStatus />
       <ScrollView
-        style={{ backgroundColor: TotaraTheme.colorNeutral2 }}
+        style={{ backgroundColor: TotaraTheme.colorAccent }}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -116,22 +116,20 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
         </Text>
       </View>
 
-      <View style={[styles.manageSection, { flex: 1 }]}>
-        <View>
-          <View style={styles.sectionOption}>
-            <TouchableOpacity testID={"test_ProfileAboutButton"} onPress={goToAbout} style={{ flex: 1 }}>
-              <Text style={TotaraTheme.textRegular}>{translate("user_profile.about")}</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.sectionOption}>
-            <AuthConsumer>
-              {(auth) => (
-                <TouchableOpacity testID={"test_ProfileLogoutButton"} onPress={() => confirmationLogout(auth)}>
-                  <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>
-                </TouchableOpacity>
-              )}
-            </AuthConsumer>
-          </View>
+      <View style={styles.section}>
+        <View style={styles.sectionOption}>
+          <TouchableOpacity testID={"test_ProfileAboutButton"} onPress={goToAbout} style={{ flex: 1 }}>
+            <Text style={TotaraTheme.textRegular}>{translate("user_profile.about")}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.sectionOption}>
+          <AuthConsumer>
+            {(auth) => (
+              <TouchableOpacity testID={"test_ProfileLogoutButton"} onPress={() => confirmationLogout(auth)}>
+                <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>
+              </TouchableOpacity>
+            )}
+          </AuthConsumer>
         </View>
       </View>
     </View>
@@ -177,8 +175,8 @@ const styles = StyleSheet.create({
       marginTop: margins.marginXS
     }
   },
-  manageSection: {
-    flex: 1,
+  section: {
+    minHeight: deviceScreen.height / 2,
     padding: paddings.paddingXL
   },
   sectionOption: {

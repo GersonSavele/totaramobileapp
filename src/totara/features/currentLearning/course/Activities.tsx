@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
-import CriteriaSheet from "../CriteriaSheet";
+import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
@@ -178,7 +178,6 @@ const ListItemUnlock = ({ item, courseRefreshCallBack }: { item: Activity; cours
     courseRefreshCallBack!();
   }
   const isLabel = item.modtype === activityModType.label;
-
   const onClickSelfComplete = () => {
     selfComplete({
       variables: {

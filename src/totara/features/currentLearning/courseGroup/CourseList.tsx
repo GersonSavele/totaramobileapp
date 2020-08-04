@@ -18,16 +18,10 @@ import { FlatList, View } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import Course from "./Course";
 import { translate } from "@totara/locale";
-import CriteriaSheet from "../CriteriaSheet";
+import CriteriaSheet from "../components/CriteriaSheet";
 
 const LearningItems = ({ item, navigation }: any) => {
-  return (
-    <Course
-      course={item}
-      navigate={navigation.navigate}
-      testID={"test_course"}
-    />
-  );
+  return <Course course={item} navigate={navigation.navigate} testID={"test_course"} />;
 };
 
 type CourseListProps = {
@@ -43,12 +37,9 @@ const CourseList = ({ navigation }: CourseListProps) => {
   }, [courseList.label]);
 
   useEffect(() => {
-    const onViewCriteriaTapListener = navigation.addListener(
-      "viewCriteriaTap",
-      () => {
-        setShow(true);
-      }
-    );
+    const onViewCriteriaTapListener = navigation.addListener("viewCriteriaTap", () => {
+      setShow(true);
+    });
 
     return () => {
       onViewCriteriaTapListener.remove();

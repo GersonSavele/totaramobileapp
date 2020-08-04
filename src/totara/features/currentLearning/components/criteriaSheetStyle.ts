@@ -15,12 +15,12 @@
  */
 
 import { StyleSheet } from "react-native";
-import { margins, iconSizes, borderRadius } from "@totara/theme/constants";
+import { margins, iconSizes, borderRadius, fontWeights } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 const { marginL, marginS, margin2XL } = margins;
 const { borderRadiusL, borderRadiusXS } = borderRadius;
-const { colorOpacity70, textRegular, textSmall, colorAccent, colorNeutral8 } = TotaraTheme;
+const { colorOpacity70, textRegular, textSmall, colorAccent, colorNeutral8, textHeadline } = TotaraTheme;
 
 const criteriaSheetStyle = StyleSheet.create({
   transparentView: {
@@ -95,6 +95,22 @@ const criteriaSheetStyle = StyleSheet.create({
     backgroundColor: colorAccent,
     marginBottom: "5%",
     height: "95%"
+  },
+  listHeader: {
+    ...textHeadline,
+    fontWeight: fontWeights.fontWeightBold,
+    margin: marginL
+  },
+  listContent: {
+    backgroundColor: colorAccent,
+    height: "100%"
+  },
+  availableReasonTextWrap: {
+    ...textRegular,
+    alignSelf: "flex-start",
+    color: colorNeutral8,
+    backgroundColor: colorAccent,
+    margin: marginL
   }
 });
 

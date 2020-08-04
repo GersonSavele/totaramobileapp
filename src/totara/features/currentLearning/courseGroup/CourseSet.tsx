@@ -23,7 +23,7 @@ import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import { courseSet } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
-import CriteriaSheet from "../CriteriaSheet";
+import CriteriaSheet from "../components/CriteriaSheet";
 import NativeAccessRestriction from "../NativeAccessRestriction";
 import { learningItemEnum } from "../constants";
 

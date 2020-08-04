@@ -20,7 +20,7 @@ import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
 import { courseSelfComplete } from "../course/api";
 import { AddBadge, Loading, GeneralErrorModal, CircleIcon } from "@totara/components";
 import { translate } from "@totara/locale";
-import CriteriaSheet from "./CriteriaSheet";
+import CriteriaSheet from "../components/CriteriaSheet";
 import CourseCompletionModal from "../CourseCompletionModal";
 import { Criteria } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
@@ -144,7 +144,12 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
         </View>
       </View>
       {showCriteria && criteria !== null && criteria!.length > 0 && (
-        <CriteriaSheet criteriaList={criteria} onClose={onClose} />
+        <CriteriaSheet
+          criteriaList={criteria}
+          onClose={onClose}
+          isOverview={true}
+          title={translate("course.course_criteria.title")}
+        />
       )}
     </TouchableOpacity>
   );

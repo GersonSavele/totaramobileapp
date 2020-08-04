@@ -18,7 +18,7 @@ import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { CourseSets } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
 import { courseSet, horizontalList } from "./courseGroupStyles";
-import CriteriaSheet from "../CriteriaSheet";
+import CriteriaSheet from "../components/CriteriaSheet";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import Course from "./Course";
@@ -56,18 +56,12 @@ const LearningItems = ({ item, navigate }: any) => {
               onPress={onClose}
               testID={"test_view_criteria_clicked"}
               activeOpacity={1.0}>
-              <Text style={courseSet.criteriaButtonTitle}>
-                {translate("course_group.criteria.view_criteria")}
-              </Text>
+              <Text style={courseSet.criteriaButtonTitle}>{translate("course_group.criteria.view_criteria")}</Text>
             </TouchableOpacity>
           </View>
           <View>
-            {item.courses && item.courses.length > 0 && (
-              <Course course={item.courses[0]} navigate={navigate} />
-            )}
-            {item.courses && item.courses.length > 1 && (
-              <Course course={item.courses[1]} navigate={navigate} />
-            )}
+            {item.courses && item.courses.length > 0 && <Course course={item.courses[0]} navigate={navigate} />}
+            {item.courses && item.courses.length > 1 && <Course course={item.courses[1]} navigate={navigate} />}
           </View>
         </View>
       </TouchableOpacity>
@@ -82,11 +76,7 @@ const LearningItems = ({ item, navigate }: any) => {
   );
 };
 
-const CourseSetList = ({
-  courseSetList,
-  navigate,
-  testID
-}: CourseSetListProps) => {
+const CourseSetList = ({ courseSetList, navigate, testID }: CourseSetListProps) => {
   const renderItems = ({ item }: any) => {
     return <LearningItems navigate={navigate} item={item} />;
   };
