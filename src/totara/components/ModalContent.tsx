@@ -19,7 +19,7 @@ import { View, StyleSheet, Text, Image, ImageSourcePropType } from "react-native
 import SafeAreaView from "react-native-safe-area-view";
 
 import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, modalSize, paddings } from "@totara/theme/constants";
+import { margins, modalSize, paddings, borderRadius } from "@totara/theme/constants";
 
 type ModalContentProps = {
   title?: string;
@@ -31,19 +31,26 @@ type ModalContentProps = {
 const ModalContent = ({ title, description, children, imageSource }: ModalContentProps) => {
   return (
     <View style={styles.transparentViewStyle}>
-      <SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: "always" }}>
-        <View style={[styles.containerStyle, { backgroundColor: TotaraTheme.colorNeutral1 }]}>
-          <View style={styles.sectionContainer}>
-            {imageSource && <Image style={styles.infoImage} source={imageSource} />}
-          </View>
-          <View style={styles.sectionContainer}>
-            {(title && <Text style={{ ...TotaraTheme.textH2, ...styles.infoText }}>{title}</Text>) || null}
-            {(description && <Text style={{ ...TotaraTheme.textRegular, ...styles.infoText }}>{description}</Text>) ||
-              null}
-          </View>
-          <View style={styles.actionContainer}>{children}</View>
+      <View style={styles.containerStyle}>
+        <View style={styles.sectionContainer}>
+          {imageSource && <Image style={styles.infoImage} source={imageSource} />}
         </View>
-      </SafeAreaView>
+        <View style={styles.sectionContainer}>
+          {(title && (
+            <Text style={{ ...TotaraTheme.textH2, ...styles.infoText }} numberOfLines={2} ellipsizeMode="tail">
+              {title}
+            </Text>
+          )) ||
+            null}
+          {(description && (
+            <Text style={{ ...TotaraTheme.textRegular, ...styles.infoText }} numberOfLines={3} ellipsizeMode="tail">
+              {description}
+            </Text>
+          )) ||
+            null}
+        </View>
+        <View style={styles.actionContainer}>{children}</View>
+      </View>
     </View>
   );
 };
@@ -52,17 +59,14 @@ const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
     backgroundColor: TotaraTheme.colorOpacity70,
-    flexDirection: "row",
-    alignItems: "center"
+    justifyContent: "center"
   },
   containerStyle: {
-    flex: 1,
-    borderRadius: 4,
+    borderRadius: borderRadius.borderRadiusXS,
     marginHorizontal: margins.marginXL,
-    marginVertical: margins.margin3XL,
-    alignItems: "center",
+    height: "70%",
     justifyContent: "center",
-    alignSelf: "center"
+    backgroundColor: TotaraTheme.colorNeutral1
   },
   sectionContainer: {
     marginVertical: margins.marginL,
@@ -72,7 +76,8 @@ const styles = StyleSheet.create({
   actionContainer: {
     marginVertical: margins.marginL,
     minHeight: 104,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignSelf: "center"
   },
   infoImage: {
     alignItems: "center",
@@ -85,4 +90,5 @@ const styles = StyleSheet.create({
     paddingBottom: paddings.paddingXL
   }
 });
+
 export default ModalContent;

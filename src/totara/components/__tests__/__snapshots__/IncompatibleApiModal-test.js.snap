@@ -9,144 +9,139 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
   <View
     style={
       Object {
-        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
-        "flexDirection": "row",
+        "justifyContent": "center",
       }
     }
   >
-    <View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 4,
+          "height": "70%",
+          "justifyContent": "center",
+          "marginHorizontal": 24,
+        }
+      }
+    >
       <View
         style={
-          Array [
+          Object {
+            "alignItems": "center",
+            "marginHorizontal": 24,
+            "marginVertical": 16,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
+            }
+          }
+          style={
             Object {
               "alignItems": "center",
-              "alignSelf": "center",
-              "borderRadius": 4,
-              "flex": 1,
-              "justifyContent": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 48,
-            },
+              "resizeMode": "contain",
+              "width": 525,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "marginHorizontal": 24,
+            "marginVertical": 16,
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={2}
+          style={
             Object {
-              "backgroundColor": "#FFFFFF",
-            },
-          ]
+              "color": "#3D444B",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "lineHeight": 41,
+              "paddingBottom": 16,
+              "textAlign": "center",
+            }
+          }
+        >
+          translated incompatible_api.title with undefined
+        </Text>
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={3}
+          style={
+            Object {
+              "color": "#3D444B",
+              "fontSize": 17,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "paddingBottom": 16,
+              "textAlign": "center",
+            }
+          }
+        >
+          translated incompatible_api.description with undefined
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "alignSelf": "center",
+            "justifyContent": "space-between",
+            "marginVertical": 16,
+            "minHeight": 104,
+          }
         }
       >
         <View
+          accessibilityRole="button"
+          accessibilityStates={Array []}
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "alignItems": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 16,
-            }
-          }
-        >
-          <Image
-            source={
-              Object {
-                "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
-              }
-            }
-            style={
-              Object {
-                "alignItems": "center",
-                "resizeMode": "contain",
-                "width": 525,
-              }
-            }
-          />
-        </View>
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 16,
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "#3D444B",
-                "fontSize": 32,
-                "fontWeight": "700",
-                "lineHeight": 41,
-                "paddingBottom": 16,
-                "textAlign": "center",
-              }
-            }
-          >
-            translated incompatible_api.title with undefined
-          </Text>
-          <Text
-            style={
-              Object {
-                "color": "#3D444B",
-                "fontSize": 17,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "paddingBottom": 16,
-                "textAlign": "center",
-              }
-            }
-          >
-            translated incompatible_api.description with undefined
-          </Text>
-        </View>
-        <View
-          style={
-            Object {
-              "justifyContent": "space-between",
-              "marginVertical": 16,
-              "minHeight": 104,
+              "opacity": 1,
             }
           }
         >
           <View
-            accessibilityRole="button"
-            accessibilityStates={Array []}
-            accessible={true}
-            focusable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
             style={
-              Object {
-                "opacity": 1,
-              }
+              Array [
+                Object {},
+              ]
             }
           >
-            <View
+            <Text
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "color": "#007AFF",
+                    "fontSize": 18,
+                    "padding": 8,
+                    "textAlign": "center",
+                  },
                 ]
               }
             >
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#007AFF",
-                      "fontSize": 18,
-                      "padding": 8,
-                      "textAlign": "center",
-                    },
-                  ]
-                }
-              >
-                this is a mock button
-              </Text>
-            </View>
+              this is a mock button
+            </Text>
           </View>
         </View>
       </View>
@@ -164,144 +159,139 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
   <View
     style={
       Object {
-        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
-        "flexDirection": "row",
+        "justifyContent": "center",
       }
     }
   >
-    <View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 4,
+          "height": "70%",
+          "justifyContent": "center",
+          "marginHorizontal": 24,
+        }
+      }
+    >
       <View
         style={
-          Array [
+          Object {
+            "alignItems": "center",
+            "marginHorizontal": 24,
+            "marginVertical": 16,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
+            }
+          }
+          style={
             Object {
               "alignItems": "center",
-              "alignSelf": "center",
-              "borderRadius": 4,
-              "flex": 1,
-              "justifyContent": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 48,
-            },
+              "resizeMode": "contain",
+              "width": 525,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "marginHorizontal": 24,
+            "marginVertical": 16,
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={2}
+          style={
             Object {
-              "backgroundColor": "#FFFFFF",
-            },
-          ]
+              "color": "#3D444B",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "lineHeight": 41,
+              "paddingBottom": 16,
+              "textAlign": "center",
+            }
+          }
+        >
+          translated incompatible_api.title with undefined
+        </Text>
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={3}
+          style={
+            Object {
+              "color": "#3D444B",
+              "fontSize": 17,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "paddingBottom": 16,
+              "textAlign": "center",
+            }
+          }
+        >
+          translated incompatible_api.description with undefined
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "alignSelf": "center",
+            "justifyContent": "space-between",
+            "marginVertical": 16,
+            "minHeight": 104,
+          }
         }
       >
         <View
+          accessibilityRole="button"
+          accessibilityStates={Array []}
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "alignItems": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 16,
-            }
-          }
-        >
-          <Image
-            source={
-              Object {
-                "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
-              }
-            }
-            style={
-              Object {
-                "alignItems": "center",
-                "resizeMode": "contain",
-                "width": 525,
-              }
-            }
-          />
-        </View>
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 16,
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "#3D444B",
-                "fontSize": 32,
-                "fontWeight": "700",
-                "lineHeight": 41,
-                "paddingBottom": 16,
-                "textAlign": "center",
-              }
-            }
-          >
-            translated incompatible_api.title with undefined
-          </Text>
-          <Text
-            style={
-              Object {
-                "color": "#3D444B",
-                "fontSize": 17,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "paddingBottom": 16,
-                "textAlign": "center",
-              }
-            }
-          >
-            translated incompatible_api.description with undefined
-          </Text>
-        </View>
-        <View
-          style={
-            Object {
-              "justifyContent": "space-between",
-              "marginVertical": 16,
-              "minHeight": 104,
+              "opacity": 1,
             }
           }
         >
           <View
-            accessibilityRole="button"
-            accessibilityStates={Array []}
-            accessible={true}
-            focusable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
             style={
-              Object {
-                "opacity": 1,
-              }
+              Array [
+                Object {},
+              ]
             }
           >
-            <View
+            <Text
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "color": "#007AFF",
+                    "fontSize": 18,
+                    "padding": 8,
+                    "textAlign": "center",
+                  },
                 ]
               }
             >
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#007AFF",
-                      "fontSize": 18,
-                      "padding": 8,
-                      "textAlign": "center",
-                    },
-                  ]
-                }
-              >
-                this is a mock button
-              </Text>
-            </View>
+              this is a mock button
+            </Text>
           </View>
         </View>
       </View>
@@ -319,144 +309,139 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
   <View
     style={
       Object {
-        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
-        "flexDirection": "row",
+        "justifyContent": "center",
       }
     }
   >
-    <View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 4,
+          "height": "70%",
+          "justifyContent": "center",
+          "marginHorizontal": 24,
+        }
+      }
+    >
       <View
         style={
-          Array [
+          Object {
+            "alignItems": "center",
+            "marginHorizontal": 24,
+            "marginVertical": 16,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
+            }
+          }
+          style={
             Object {
               "alignItems": "center",
-              "alignSelf": "center",
-              "borderRadius": 4,
-              "flex": 1,
-              "justifyContent": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 48,
-            },
+              "resizeMode": "contain",
+              "width": 525,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "marginHorizontal": 24,
+            "marginVertical": 16,
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={2}
+          style={
             Object {
-              "backgroundColor": "#FFFFFF",
-            },
-          ]
+              "color": "#3D444B",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "lineHeight": 41,
+              "paddingBottom": 16,
+              "textAlign": "center",
+            }
+          }
+        >
+          translated incompatible_api.title with undefined
+        </Text>
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={3}
+          style={
+            Object {
+              "color": "#3D444B",
+              "fontSize": 17,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "paddingBottom": 16,
+              "textAlign": "center",
+            }
+          }
+        >
+          translated incompatible_api.description with undefined
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "alignSelf": "center",
+            "justifyContent": "space-between",
+            "marginVertical": 16,
+            "minHeight": 104,
+          }
         }
       >
         <View
+          accessibilityRole="button"
+          accessibilityStates={Array []}
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "alignItems": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 16,
-            }
-          }
-        >
-          <Image
-            source={
-              Object {
-                "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
-              }
-            }
-            style={
-              Object {
-                "alignItems": "center",
-                "resizeMode": "contain",
-                "width": 525,
-              }
-            }
-          />
-        </View>
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 16,
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "#3D444B",
-                "fontSize": 32,
-                "fontWeight": "700",
-                "lineHeight": 41,
-                "paddingBottom": 16,
-                "textAlign": "center",
-              }
-            }
-          >
-            translated incompatible_api.title with undefined
-          </Text>
-          <Text
-            style={
-              Object {
-                "color": "#3D444B",
-                "fontSize": 17,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "paddingBottom": 16,
-                "textAlign": "center",
-              }
-            }
-          >
-            translated incompatible_api.description with undefined
-          </Text>
-        </View>
-        <View
-          style={
-            Object {
-              "justifyContent": "space-between",
-              "marginVertical": 16,
-              "minHeight": 104,
+              "opacity": 1,
             }
           }
         >
           <View
-            accessibilityRole="button"
-            accessibilityStates={Array []}
-            accessible={true}
-            focusable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
             style={
-              Object {
-                "opacity": 1,
-              }
+              Array [
+                Object {},
+              ]
             }
           >
-            <View
+            <Text
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "color": "#007AFF",
+                    "fontSize": 18,
+                    "padding": 8,
+                    "textAlign": "center",
+                  },
                 ]
               }
             >
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#007AFF",
-                      "fontSize": 18,
-                      "padding": 8,
-                      "textAlign": "center",
-                    },
-                  ]
-                }
-              >
-                this is a mock button
-              </Text>
-            </View>
+              this is a mock button
+            </Text>
           </View>
         </View>
       </View>
@@ -474,144 +459,139 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
   <View
     style={
       Object {
-        "alignItems": "center",
         "backgroundColor": "rgba(0, 0, 0, 0.7)",
         "flex": 1,
-        "flexDirection": "row",
+        "justifyContent": "center",
       }
     }
   >
-    <View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 4,
+          "height": "70%",
+          "justifyContent": "center",
+          "marginHorizontal": 24,
+        }
+      }
+    >
       <View
         style={
-          Array [
+          Object {
+            "alignItems": "center",
+            "marginHorizontal": 24,
+            "marginVertical": 16,
+          }
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
+            }
+          }
+          style={
             Object {
               "alignItems": "center",
-              "alignSelf": "center",
-              "borderRadius": 4,
-              "flex": 1,
-              "justifyContent": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 48,
-            },
+              "resizeMode": "contain",
+              "width": 525,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "marginHorizontal": 24,
+            "marginVertical": 16,
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={2}
+          style={
             Object {
-              "backgroundColor": "#FFFFFF",
-            },
-          ]
+              "color": "#3D444B",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "lineHeight": 41,
+              "paddingBottom": 16,
+              "textAlign": "center",
+            }
+          }
+        >
+          translated incompatible_api.title with undefined
+        </Text>
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={3}
+          style={
+            Object {
+              "color": "#3D444B",
+              "fontSize": 17,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "paddingBottom": 16,
+              "textAlign": "center",
+            }
+          }
+        >
+          translated incompatible_api.description with undefined
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "alignSelf": "center",
+            "justifyContent": "space-between",
+            "marginVertical": 16,
+            "minHeight": 104,
+          }
         }
       >
         <View
+          accessibilityRole="button"
+          accessibilityStates={Array []}
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "alignItems": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 16,
-            }
-          }
-        >
-          <Image
-            source={
-              Object {
-                "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
-              }
-            }
-            style={
-              Object {
-                "alignItems": "center",
-                "resizeMode": "contain",
-                "width": 525,
-              }
-            }
-          />
-        </View>
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "marginHorizontal": 24,
-              "marginVertical": 16,
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "#3D444B",
-                "fontSize": 32,
-                "fontWeight": "700",
-                "lineHeight": 41,
-                "paddingBottom": 16,
-                "textAlign": "center",
-              }
-            }
-          >
-            translated incompatible_api.title with undefined
-          </Text>
-          <Text
-            style={
-              Object {
-                "color": "#3D444B",
-                "fontSize": 17,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "paddingBottom": 16,
-                "textAlign": "center",
-              }
-            }
-          >
-            translated incompatible_api.description with undefined
-          </Text>
-        </View>
-        <View
-          style={
-            Object {
-              "justifyContent": "space-between",
-              "marginVertical": 16,
-              "minHeight": 104,
+              "opacity": 1,
             }
           }
         >
           <View
-            accessibilityRole="button"
-            accessibilityStates={Array []}
-            accessible={true}
-            focusable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
             style={
-              Object {
-                "opacity": 1,
-              }
+              Array [
+                Object {},
+              ]
             }
           >
-            <View
+            <Text
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "color": "#007AFF",
+                    "fontSize": 18,
+                    "padding": 8,
+                    "textAlign": "center",
+                  },
                 ]
               }
             >
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#007AFF",
-                      "fontSize": 18,
-                      "padding": 8,
-                      "textAlign": "center",
-                    },
-                  ]
-                }
-              >
-                this is a mock button
-              </Text>
-            </View>
+              this is a mock button
+            </Text>
           </View>
         </View>
       </View>
