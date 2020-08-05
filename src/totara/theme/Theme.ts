@@ -121,6 +121,7 @@ const TotaraTheme: AppliedTheme = {
   colorNeutral7: "#4A4A4A",
   colorNeutral8: "#000000",
 
+  colorOpacity30: "rgba(0, 0, 0, 0.3)",
   colorOpacity70: "rgba(0, 0, 0, 0.7)",
 
   //---- Text color: customizable by [Developer] ------

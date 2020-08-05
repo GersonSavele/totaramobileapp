@@ -27,15 +27,11 @@ type CourseCompletionProps = {
 const CourseCompletionModal = ({ onClose }: CourseCompletionProps) => {
   return (
     <InfoModal
-      transparent={true}
       title={translate("course.course_complete.title")}
       description={translate("course.course_complete.description")}
       imageSource={Images.courseComplete as ImageSourcePropType}
       visible>
-      <PrimaryButton
-        text={translate("course.course_complete.button_title")}
-        onPress={onClose}
-      />
+      <PrimaryButton text={translate("course.course_complete.button_title")} onPress={onClose} />
     </InfoModal>
   );
 };

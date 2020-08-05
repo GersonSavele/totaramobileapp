@@ -43,7 +43,7 @@ const AdditionalActionModal = () => {
     <InfoModal
       title={translate("additional_actions_modal.auth_model_title")}
       description={translate("additional_actions_modal.auth_model_description")}
-      imageSource={Images.completeAction as ImageSourcePropType}
+      imageSource={Images.actionRequired as ImageSourcePropType}
       visible={true}>
       <ActionButtonPrimary />
       <ActionButtonTertiary />
@@ -58,9 +58,7 @@ const ActionButtonPrimary = () => {
         auth.authContextState.appState &&
         auth.authContextState.appState.host && (
           <PrimaryButton
-            text={translate(
-              "additional_actions_modal.auth_model_go_to_browser"
-            )}
+            text={translate("additional_actions_modal.auth_model_go_to_browser")}
             icon={"external-link-alt"}
             onPress={() => {
               Linking.openURL(auth.authContextState.appState!.host);

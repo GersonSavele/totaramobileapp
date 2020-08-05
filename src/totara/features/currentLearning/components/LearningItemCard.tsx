@@ -21,7 +21,6 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings, fontWeights, fontSizes } from "@totara/theme/constants";
 import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
-import { deviceScreen } from "@totara/lib/tools";
 
 interface Props {
   item: LearningItem;
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   imageWrap: {
-    width: deviceScreen.width / 2
+    flex: 1
   }
 });
 

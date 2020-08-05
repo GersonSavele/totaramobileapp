@@ -11,13 +11,10 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
- */
+ * */
+
 import React, { ReactNode } from "react";
 import { View, StyleSheet, Text, Image, ImageSourcePropType } from "react-native";
-import SafeAreaView from "react-native-safe-area-view";
-
 import { TotaraTheme } from "@totara/theme/Theme";
 import { margins, modalSize, paddings, borderRadius } from "@totara/theme/constants";
 
@@ -58,7 +55,6 @@ const ModalContent = ({ title, description, children, imageSource }: ModalConten
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    backgroundColor: TotaraTheme.colorOpacity70,
     justifyContent: "center"
   },
   containerStyle: {

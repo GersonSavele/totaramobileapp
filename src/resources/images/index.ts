@@ -18,7 +18,7 @@
 import autoCompleteTick from "./auto_complete_tick/auto_complete_tick.png";
 import noNotifications from "./notifications/no_notifications.png";
 import generalError from "./general_error/general_error.png";
-import completeAction from "./complete_action/complete_action.png";
+import actionRequired from "./action_required/action_required.png";
 import urlNotValid from "./url_not_valid/url_not_valid.png";
 import browserLogin from "./browser_login/browser_login.png";
 import courseComplete from "./course_complete/course_complete.png";
@@ -36,7 +36,7 @@ const Images = {
   autoCompleteTick,
   noNotifications,
   generalError,
-  completeAction,
+  actionRequired,
   urlNotValid,
   browserLogin,
   courseComplete,

@@ -28,7 +28,6 @@ type Props = {
 const NativeAccessRestriction = ({ onClose, urlView }: Props) => {
   return (
     <InfoModal
-      transparent={true}
       title={translate("current_learning.restriction_view.title")}
       description={translate("current_learning.restriction_view.description")}
       imageSource={Images.courseCompatible as ImageSourcePropType}
@@ -41,21 +40,14 @@ const NativeAccessRestriction = ({ onClose, urlView }: Props) => {
               onPress={() => {
                 Linking.openURL(urlView);
               }}
-              text={translate(
-                "current_learning.restriction_view.primary_button_title"
-              )}
+              text={translate("current_learning.restriction_view.primary_button_title")}
               icon="external-link-alt"
               style={{ alignSelf: "center" }}
             />
           )
         }
       </AuthConsumer>
-      <TertiaryButton
-        text={translate(
-          "current_learning.restriction_view.tertiary_button_title"
-        )}
-        onPress={onClose}
-      />
+      <TertiaryButton text={translate("current_learning.restriction_view.tertiary_button_title")} onPress={onClose} />
     </InfoModal>
   );
 };

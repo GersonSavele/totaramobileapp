@@ -3,6 +3,7 @@ import { learningItemEnum } from "@totara/features/currentLearning/constants";
 import { Images } from "@resources/images";
 import React from "react";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { margins } from "@totara/theme/constants";
 
 type DefaultImageProps = {
   itemType: learningItemEnum;
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     flex: 1,
+    margin: margins.marginM,
     alignSelf: "center",
     resizeMode: "contain"
   }
