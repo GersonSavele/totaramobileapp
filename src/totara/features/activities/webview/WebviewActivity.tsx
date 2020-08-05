@@ -60,7 +60,7 @@ const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
   }, [uri]);
 
   return (
-    <View style={TotaraTheme.viewContainer}>
+    <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
       <View style={{ flex: 1 }}>
         <AuthenticatedWebView
           uri={uri || activity.viewurl!}
@@ -69,8 +69,7 @@ const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
         />
       </View>
       <WebviewToolbar refWebview={refWebview} navState={navState} />
-      <SafeAreaView style={{ backgroundColor: TotaraTheme.colorSecondary1 }} />
-    </View>
+    </SafeAreaView>
   );
 };
 

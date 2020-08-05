@@ -19,11 +19,13 @@
  * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
-import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
-import { WebView, WebViewMessageEvent } from "react-native-webview";
+import React, { useState, useRef } from "react";
+import { Dimensions, StyleSheet, View, SafeAreaView } from "react-native";
+import { WebView, WebViewMessageEvent, WebViewNavigation } from "react-native-webview";
 
 import { SCORM_TEST_IDS } from "../constants";
+import WebviewToolbar from "../../components/WebviewToolbar";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type Props = {
   url: string;
@@ -35,29 +37,38 @@ type Props = {
 const { OFFLINE_PLAYER_ID } = SCORM_TEST_IDS;
 
 const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
+  const refWebview = useRef<WebView>(null);
+  const [navState, setNavState] = useState<WebViewNavigation>();
+
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const eventdata = JSON.parse(event.nativeEvent.data);
     onMessageHandler && onMessageHandler(eventdata);
   };
 
+  const onNavigationStateChange = (navState: WebViewNavigation) => {
+    setNavState(navState);
+  };
   return (
-    <View style={styles.playerContainer} testID={OFFLINE_PLAYER_ID}>
+    <SafeAreaView style={styles.playerContainer} testID={OFFLINE_PLAYER_ID}>
       <WebView
         source={{ uri: url }}
         javaScriptEnabled={true}
         onMessage={didReceiveOnMessage}
         injectedJavaScript={injectScript}
         style={styles.player}
+        ref={refWebview}
+        onNavigationStateChange={onNavigationStateChange}
       />
-    </View>
+      <WebviewToolbar refWebview={refWebview} navState={navState} />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   playerContainer: {
-    flexDirection: "row",
     flexGrow: 1,
-    width: Dimensions.get("window").width
+    width: "100%",
+    backgroundColor: TotaraTheme.colorSecondary1
   },
   player: {
     width: "100%"
