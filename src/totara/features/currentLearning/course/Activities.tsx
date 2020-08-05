@@ -38,9 +38,10 @@ type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
   expandAllActivities: boolean;
+  completionEnabled: boolean;
 };
 
-const Activities = ({ sections, courseRefreshCallBack, expandAllActivities }: ActivitiesProps) => {
+const Activities = ({ sections, courseRefreshCallBack, expandAllActivities, completionEnabled }: ActivitiesProps) => {
   return (
     <FlatList
       data={sections}
@@ -50,6 +51,7 @@ const Activities = ({ sections, courseRefreshCallBack, expandAllActivities }: Ac
             section={item}
             courseRefreshCallBack={courseRefreshCallBack}
             expandAllActivities={expandAllActivities}
+            completionEnabled={completionEnabled}
           />
         );
       }}
@@ -61,9 +63,10 @@ type SectionItemProps = {
   courseRefreshCallBack: () => {};
   section: Section;
   expandAllActivities: boolean;
+  completionEnabled: boolean;
 };
 
-const SectionItem = ({ section, courseRefreshCallBack, expandAllActivities }: SectionItemProps) => {
+const SectionItem = ({ section, courseRefreshCallBack, expandAllActivities, completionEnabled }: SectionItemProps) => {
   //every item need to have its own state
 
   const [show, setShow] = useState(expandAllActivities);
@@ -87,7 +90,12 @@ const SectionItem = ({ section, courseRefreshCallBack, expandAllActivities }: Se
           )}
         </TouchableOpacity>
         {show && (
-          <ActivityList data={activities} courseRefreshCallBack={courseRefreshCallBack} sectionSummary={summary} />
+          <ActivityList
+            data={activities}
+            courseRefreshCallBack={courseRefreshCallBack}
+            sectionSummary={summary}
+            completionEnabled={completionEnabled}
+          />
         )}
       </View>
     )
@@ -146,9 +154,10 @@ type ActivityListProps = {
   data?: Array<Activity>;
   courseRefreshCallBack: () => {};
   sectionSummary: string;
+  completionEnabled: boolean;
 };
 
-const ActivityList = ({ data, courseRefreshCallBack, sectionSummary }: ActivityListProps) => {
+const ActivityList = ({ data, courseRefreshCallBack, sectionSummary, completionEnabled }: ActivityListProps) => {
   return (
     <View>
       <View style={activitiesStyles.activityList}>
@@ -160,7 +169,12 @@ const ActivityList = ({ data, courseRefreshCallBack, sectionSummary }: ActivityL
             {item.completionstatus === completionStatus.unknown || item.completionstatus === null || !item.available ? (
               <ListItemLock item={item} key={key} />
             ) : (
-              <ListItemUnlock item={item} courseRefreshCallBack={courseRefreshCallBack} key={key} />
+              <ListItemUnlock
+                item={item}
+                courseRefreshCallBack={courseRefreshCallBack}
+                key={key}
+                completionEnabled={completionEnabled}
+              />
             )}
           </View>
         );
@@ -169,7 +183,13 @@ const ActivityList = ({ data, courseRefreshCallBack, sectionSummary }: ActivityL
   );
 };
 
-const ListItemUnlock = ({ item, courseRefreshCallBack }: { item: Activity; courseRefreshCallBack?: () => {} }) => {
+type ListUnLockProps = {
+  item: Activity;
+  courseRefreshCallBack?: () => {};
+  completionEnabled: boolean;
+};
+
+const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
   const navigation = useContext(NavigationContext);
   const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] = useMutation(
     activitySelfComplete
@@ -192,22 +212,26 @@ const ListItemUnlock = ({ item, courseRefreshCallBack }: { item: Activity; cours
         backgroundColor: !isLabel ? TotaraTheme.colorAccent : TotaraTheme.colorSecondary1
       }}>
       <View style={activitiesStyles.itemContentWrapper}>
-        {item.completion === completionTrack.trackingManual ? (
-          <TouchableOpacity onPress={onClickSelfComplete}>
-            <CompletionIcon
-              loading={loadingSelfComplete}
-              completion={item.completion}
-              status={item.completionstatus}
-              available={item.available}
-            />
-          </TouchableOpacity>
-        ) : (
-          <CompletionIcon
-            loading={loadingSelfComplete}
-            completion={item.completion}
-            status={item.completionstatus}
-            available={item.available}
-          />
+        {completionEnabled && (
+          <View>
+            {item.completion === completionTrack.trackingManual ? (
+              <TouchableOpacity onPress={onClickSelfComplete}>
+                <CompletionIcon
+                  loading={loadingSelfComplete}
+                  completion={item.completion}
+                  status={item.completionstatus}
+                  available={item.available}
+                />
+              </TouchableOpacity>
+            ) : (
+              <CompletionIcon
+                loading={loadingSelfComplete}
+                completion={item.completion}
+                status={item.completionstatus}
+                available={item.available}
+              />
+            )}
+          </View>
         )}
         <TouchableOpacity
           style={activitiesStyles.itemTouchableContent}

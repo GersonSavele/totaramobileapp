@@ -116,6 +116,7 @@ const CourseDetailsContent = ({
                 sections={courseDetails.course.sections}
                 courseRefreshCallBack={courseRefreshCallback}
                 expandAllActivities={expandActivities}
+                completionEnabled={courseDetails.course.completionEnabled}
               />
             </View>
           ) : (
