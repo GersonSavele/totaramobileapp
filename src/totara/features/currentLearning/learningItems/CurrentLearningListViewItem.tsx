@@ -137,8 +137,7 @@ const currentLearningListViewStyles = StyleSheet.create({
     alignContent: "center"
   },
   imageWrap: {
-    flex: 1,
-    aspectRatio: 4 / 3,
+    margin: margins.marginM,
     borderRadius: borderRadius.borderRadiusM
   },
   itemLearningTypeLabel: {

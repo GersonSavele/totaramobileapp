@@ -21,6 +21,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings, fontWeights, fontSizes } from "@totara/theme/constants";
 import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
+import { deviceScreen } from "@totara/lib/tools";
 
 interface Props {
   item: LearningItem;
@@ -57,7 +58,7 @@ const CardElement = ({ item, cardStyle, children }: Props) => {
 const ImageElement = ({ item, imageStyle, image, itemType }: Props) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   return (
-    <View style={[imageStyleSheet, { backgroundColor: TotaraTheme.colorNeutral3 }]}>
+    <View style={[imageStyleSheet]}>
       {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
       {image && image.length > 0 ? (
         <ImageWrapper url={image} style={styles.imageWrap} />
@@ -94,9 +95,7 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   imageWrap: {
-    flex: 1,
-    width: "100%",
-    height: "100%"
+    width: deviceScreen.width / 2
   }
 });
 
