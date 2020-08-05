@@ -52,7 +52,7 @@ import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
 import { fetchLastAttemptResult } from "./api";
 
-const { SCORM_ROOT, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, ONLINE_SCORM_ACTIVITY } = NAVIGATION;
+const { SCORM_ROOT, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, WEBVIEW_ACTIVITY } = NAVIGATION;
 
 type SummaryProps = {
   id: string;
@@ -334,7 +334,7 @@ const ScormSummary = ({
             action: () => {
               navigation.addListener("didFocus", onRefresh);
               const attemptNumber = totalAttempt + 1;
-              const scormActivityRoute = isDownloaded ? OFFLINE_SCORM_ACTIVITY : ONLINE_SCORM_ACTIVITY;
+              const scormActivityRoute = isDownloaded ? OFFLINE_SCORM_ACTIVITY : WEBVIEW_ACTIVITY;
               navigateTo({
                 routeId: scormActivityRoute,
                 navigate: navigation.navigate,
@@ -369,7 +369,7 @@ const ScormSummary = ({
               navigation.addListener("didFocus", onRefresh);
               const attemptNumber = totalAttempt;
               navigateTo({
-                routeId: ONLINE_SCORM_ACTIVITY,
+                routeId: WEBVIEW_ACTIVITY,
                 navigate: navigation.navigate,
                 props: {
                   title: name,

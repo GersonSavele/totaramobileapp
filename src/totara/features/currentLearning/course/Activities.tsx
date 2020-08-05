@@ -232,7 +232,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack }: { item: Activity; cours
                   routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
-                    onClose: courseRefreshCallBack
+                    backAction: courseRefreshCallBack
                   }
                 });
               }

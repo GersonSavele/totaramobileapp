@@ -19,15 +19,15 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com
  */
 
-import React, { useContext, useRef, useState } from "react";
-import { StyleSheet, View, SafeAreaView } from "react-native";
+import React, { useRef, useState, useEffect } from "react";
+import { View, SafeAreaView, BackHandler } from "react-native";
 
 import { Activity } from "@totara/types";
 import { AuthenticatedWebView } from "@totara/auth";
-import { TouchableIcon } from "@totara/components";
-import { ThemeContext } from "@totara/theme";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import { NavigationStackProp } from "react-navigation-stack";
+import WebviewToolbar from "../components/WebviewToolbar";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 /**
  * WebviewActivity opens an activity with the given url
@@ -35,7 +35,8 @@ import { NavigationStackProp } from "react-navigation-stack";
 
 type WebviewActivityParams = {
   activity: Activity;
-  onClose?: () => {};
+  uri: string;
+  backAction: () => void;
 };
 
 type WebviewActivityProps = {
@@ -43,63 +44,34 @@ type WebviewActivityProps = {
 };
 
 const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
-  const { activity } = navigation.state.params as WebviewActivityParams;
+  const { uri, backAction, activity } = navigation.state.params as WebviewActivityParams;
   const refWebview = useRef<WebView>(null);
-  const [theme] = useContext(ThemeContext);
-  const [canWebGoBackward, setCanWebGoBackward] = useState(false);
-  const [canWebGoForward, setCanWebGoForward] = useState(false);
+  const [navState, setNavState] = useState<WebViewNavigation>();
 
   const onNavigationStateChange = (navState: WebViewNavigation) => {
-    setCanWebGoBackward(navState.canGoBack);
-    setCanWebGoForward(navState.canGoForward);
+    setNavState(navState);
   };
 
+  useEffect(() => {
+    if (uri) {
+      const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+      return () => backHandler.remove();
+    }
+  }, [uri]);
+
   return (
-    <View style={theme.viewContainer}>
+    <View style={TotaraTheme.viewContainer}>
       <View style={{ flex: 1 }}>
         <AuthenticatedWebView
-          uri={activity.viewurl!}
+          uri={uri || activity.viewurl!}
           ref={refWebview}
           onNavigationStateChange={onNavigationStateChange}
         />
       </View>
-      <View style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
-        <View style={styles.barContent}>
-          <TouchableIcon
-            disabled={!canWebGoBackward}
-            icon={"chevron-left"}
-            onPress={() => {
-              refWebview.current && refWebview.current!.goBack();
-            }}
-            color={theme.navigationHeaderTintColor}
-            size={theme.textH3.fontSize}
-          />
-          <TouchableIcon
-            disabled={!canWebGoForward}
-            icon={"chevron-right"}
-            onPress={() => {
-              refWebview.current && refWebview.current!.goForward();
-            }}
-            color={theme.navigationHeaderTintColor}
-            size={theme.textH3.fontSize}
-          />
-        </View>
-      </View>
-      <SafeAreaView style={{ backgroundColor: theme.colorSecondary1 }} />
+      <WebviewToolbar refWebview={refWebview} navState={navState} />
+      <SafeAreaView style={{ backgroundColor: TotaraTheme.colorSecondary1 }} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  footer: {
-    flexDirection: "row",
-    borderTopWidth: 0,
-    justifyContent: "space-between"
-  },
-  barContent: {
-    flexDirection: "row",
-    alignSelf: "flex-start"
-  }
-});
 
 export { WebviewActivity };

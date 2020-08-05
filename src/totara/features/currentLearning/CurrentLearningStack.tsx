@@ -23,13 +23,7 @@ import CourseDetails from "./course/CourseDetails";
 import { CourseGroupDetails, CourseList } from "./courseGroup";
 import { TouchableIcon } from "@totara/components";
 import { WebviewActivity } from "@totara/activities/webview/WebviewActivity";
-const {
-  WEBVIEW_ACTIVITY,
-  CURRENT_LEARNING,
-  COURSE_DETAILS,
-  COURSE_GROUP_DETAILS,
-  COURSE_LIST
-} = NAVIGATION;
+const { WEBVIEW_ACTIVITY, CURRENT_LEARNING, COURSE_DETAILS, COURSE_GROUP_DETAILS, COURSE_LIST } = NAVIGATION;
 import { paddings } from "@totara/theme/constants";
 import { courseSet } from "./courseGroup/courseGroupStyles";
 import { translate } from "@totara/locale";
@@ -73,9 +67,7 @@ const CurrentLearningStack = createStackNavigator(
                 navigation.emit("viewCriteriaTap");
               }}
               style={{ paddingHorizontal: paddings.paddingL }}>
-              <Text style={courseSet.criteriaButtonTitle}>
-                {translate("course_group.criteria.view_criteria")}
-              </Text>
+              <Text style={courseSet.criteriaButtonTitle}>{translate("course_group.criteria.view_criteria")}</Text>
             </TouchableOpacity>
           )
         })
@@ -83,14 +75,14 @@ const CurrentLearningStack = createStackNavigator(
     [WEBVIEW_ACTIVITY]: {
       screen: WebviewActivity,
       navigationOptions: ({ navigation }) => {
-        const { onClose } = navigation.state.params;
+        const { backAction } = navigation.state.params;
         return {
           headerTitleAlign: "center",
           headerLeft: (
             <TouchableIcon
               icon={"times"}
               onPress={() => {
-                onClose();
+                backAction();
                 navigation.pop();
               }}
               size={20}

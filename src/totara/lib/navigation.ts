@@ -36,7 +36,6 @@ const WEBVIEW_ACTIVITY = "WebviewActivity";
 const SCORM_ROOT = "ScormActivity";
 const SCORM_ATTEMPTS = "ScormAttempts";
 const OFFLINE_SCORM_ACTIVITY = "OfflineScormActivity";
-const ONLINE_SCORM_ACTIVITY = "OnlineScormActivity";
 const SCORM_FEEDBACK = "ScormFeedback";
 
 const PROFILE = "Profile";
@@ -58,7 +57,6 @@ const NAVIGATION = {
   SCORM_ATTEMPTS,
   SCORM_FEEDBACK,
   OFFLINE_SCORM_ACTIVITY,
-  ONLINE_SCORM_ACTIVITY,
   WEBVIEW_ACTIVITY,
   CURRENT_LEARNING,
   COURSE_LIST,

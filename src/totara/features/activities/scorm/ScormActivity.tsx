@@ -20,10 +20,7 @@
  */
 
 import React, { useContext, useEffect, useState } from "react";
-import {
-  createStackNavigator,
-  NavigationStackProp
-} from "react-navigation-stack";
+import { createStackNavigator, NavigationStackProp } from "react-navigation-stack";
 import { NavigationActions } from "react-navigation";
 import { useSelector } from "react-redux";
 import { useQuery } from "@apollo/react-hooks";
@@ -32,7 +29,6 @@ import { AppState } from "@totara/types";
 import ScormSummary from "./ScormSummary";
 import { AuthContext } from "@totara/core";
 import OfflineScormActivity from "./OfflineScormActivity";
-import OnlineScormActivity from "./OnlineScormActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
@@ -57,6 +53,7 @@ import { iconSizes } from "@totara/theme/constants";
 import { getTargetZipFile, getOfflinePackageUnzipPath } from "./utils";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
 import { SCORM_TEST_IDS } from "./constants";
+import { WebviewActivity } from "../webview/WebviewActivity";
 
 const { download } = ResourceManager;
 
@@ -65,7 +62,7 @@ const {
   SCORM_STACK_ROOT,
   SCORM_ATTEMPTS,
   OFFLINE_SCORM_ACTIVITY,
-  ONLINE_SCORM_ACTIVITY,
+  WEBVIEW_ACTIVITY,
   SCORM_FEEDBACK
 } = NAVIGATION;
 
@@ -316,8 +313,8 @@ const innerStack = createStackNavigator(
       screen: OfflineScormActivity,
       navigationOptions
     },
-    [ONLINE_SCORM_ACTIVITY]: {
-      screen: OnlineScormActivity,
+    [WEBVIEW_ACTIVITY]: {
+      screen: WebviewActivity,
       navigationOptions
     }
   },
