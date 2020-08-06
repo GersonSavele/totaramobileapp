@@ -33,24 +33,21 @@ type Props = {
 };
 
 const ListItem = ({ item, isOverview }: any) => {
-  let description = isOverview && item.requirement!.replace(/(<([^>]+)>)/gi, "");
-  {
-    /* // requirement and status return with URL and should replace the url and tags */
-  }
-  if (
-    isOverview &&
-    item.status!.replace(/(<([^>]+)>)/gi, "") !== undefined &&
-    item.status!.replace(/(<([^>]+)>)/gi, "") !== ""
-  ) {
-    description += " | " + item.status!.replace(/(<([^>]+)>)/gi, "");
-  }
+  // requirement and status return with URL and should replace the url and tags.
+  const REGEX = /(<([^>]+)>)/gi;
+  let description = isOverview && item.requirement!.replace(REGEX, "");
+  isOverview &&
+    item.status!.replace(REGEX, "") !== undefined &&
+    item.status!.replace(REGEX, "").length > 0 &&
+    (description += " | " + item.status!.replace(REGEX, ""));
+
   return isOverview ? (
     <View style={criteriaSheetStyle.renderOuterViewWrap}>
       <View style={criteriaSheetStyle.renderInnerViewWrap}>
         <View style={{ flex: 2 }}>
           <Text numberOfLines={1} style={criteriaSheetStyle.criteriaText}>
             {/* // item criteria return with URL and should replace the url and tags */}
-            {item.criteria!.replace(/(<([^>]+)>)/gi, "")}
+            {item.criteria!.replace(REGEX, "")}
           </Text>
           <Text numberOfLines={1} style={criteriaSheetStyle.requirementText}>
             {description}
