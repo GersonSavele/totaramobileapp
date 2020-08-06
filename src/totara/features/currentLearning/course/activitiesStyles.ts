@@ -20,13 +20,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 
 const { marginL, marginM } = margins;
-const {
-  textRegular,
-  colorAccent,
-  colorLink,
-  textMedium,
-  colorSecondary1
-} = TotaraTheme;
+const { textRegular, colorAccent, colorLink, textMedium, colorSecondary1 } = TotaraTheme;
 
 const activitiesStyles = StyleSheet.create({
   itemTitle: {
@@ -45,7 +39,7 @@ const activitiesStyles = StyleSheet.create({
     flex: 1
   },
   itemContentWrapper: {
-    height: 68,
+    minHeight: 68,
     justifyContent: "flex-start",
     flexDirection: "row",
     alignItems: "center",

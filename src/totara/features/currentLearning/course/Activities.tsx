@@ -66,7 +66,7 @@ const SectionItem = ({ section, courseRefreshCallBack, expandAllActivities }: Se
 
   const [show, setShow] = useState(expandAllActivities);
   const activities = section.data as Array<Activity>;
-  const { title, available, availablereason, summary } = section;
+  const { title, available, availableReason, summary } = section;
   useEffect(() => {
     setShow(expandAllActivities);
   }, [expandAllActivities]);
@@ -80,8 +80,8 @@ const SectionItem = ({ section, courseRefreshCallBack, expandAllActivities }: Se
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
         <TouchableOpacity onPress={onExpand}>
           {available && activities.length > 0 && <ExpandableSectionHeader show={show} title={title} />}
-          {!available && availablereason && availablereason.length > 0 && (
-            <RestrictionSectionHeader title={title} availableReason={availablereason} />
+          {!available && availableReason && availableReason.length > 0 && (
+            <RestrictionSectionHeader title={title} availableReason={availableReason} />
           )}
         </TouchableOpacity>
         {show && (
@@ -238,7 +238,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack }: { item: Activity; cours
               }
             }
           }}>
-          {isLabel ? <ActivityTextContent label={item.description || ""} /> : <ListItem item={item} />}
+          {isLabel ? <ActivityTextContent label={item.description!} /> : <ListItem item={item} />}
         </TouchableOpacity>
       </View>
       <View>{!isLabel && <Separator />}</View>
