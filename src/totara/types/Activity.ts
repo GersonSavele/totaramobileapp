@@ -19,10 +19,7 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-import {
-  completionTrack,
-  completionStatus
-} from "@totara/features/currentLearning/constants";
+import { completionTrack, completionStatus } from "@totara/features/currentLearning/constants";
 
 export interface Activity {
   id: number;
@@ -65,9 +62,4 @@ export interface AssignmentActivity extends Activity {
   modtype: "assign";
 }
 
-export type ActivityType =
-  | ScormActivity
-  | SeminarActivity
-  | ForumsActivity
-  | QuizActivity
-  | AssignmentActivity;
+export type ActivityType = ScormActivity | SeminarActivity | ForumsActivity | QuizActivity | AssignmentActivity;

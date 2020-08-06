@@ -68,7 +68,6 @@ type SectionItemProps = {
 
 const SectionItem = ({ section, courseRefreshCallBack, expandAllActivities, completionEnabled }: SectionItemProps) => {
   //every item need to have its own state
-
   const [show, setShow] = useState(expandAllActivities);
   const activities = section.data as Array<Activity>;
   const { title, available, availableReason, summary } = section;

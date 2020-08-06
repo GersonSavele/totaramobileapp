@@ -22,7 +22,7 @@ export interface Section {
   id: number;
   title: string;
   available: boolean;
-  availablereason?: [string];
+  availableReason?: [string];
   summary: string;
   data?: [Activity];
 }
