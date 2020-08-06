@@ -4,186 +4,196 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
+  onDismiss={[Function]}
+  transparent={true}
   visible={true}
 >
   <View
     style={
       Object {
-        "backgroundColor": "rgba(0, 0, 0, 0.7)",
+        "backgroundColor": "rgba(0, 0, 0, 0.3)",
         "flex": 1,
-        "justifyContent": "center",
       }
     }
   >
     <View
       style={
         Object {
-          "backgroundColor": "#FFFFFF",
-          "borderRadius": 4,
-          "height": "70%",
+          "flex": 1,
           "justifyContent": "center",
-          "marginHorizontal": 24,
         }
       }
     >
       <View
         style={
           Object {
-            "alignItems": "center",
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 4,
+            "height": "70%",
+            "justifyContent": "center",
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
-        <Image
-          source={
-            Object {
-              "testUri": "../../../src/resources/images/browser_login/browser_login.png",
-            }
-          }
+        <View
           style={
             Object {
               "alignItems": "center",
-              "resizeMode": "contain",
-              "width": 525,
-            }
-          }
-        />
-      </View>
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "marginHorizontal": 24,
-            "marginVertical": 16,
-          }
-        }
-      >
-        <Text
-          ellipsizeMode="tail"
-          numberOfLines={2}
-          style={
-            Object {
-              "color": "#3D444B",
-              "fontSize": 32,
-              "fontWeight": "700",
-              "lineHeight": 41,
-              "paddingBottom": 16,
-              "textAlign": "center",
+              "marginHorizontal": 24,
+              "marginVertical": 16,
             }
           }
         >
-          translated browser_login.title with undefined
-        </Text>
-        <Text
-          ellipsizeMode="tail"
-          numberOfLines={3}
-          style={
-            Object {
-              "color": "#3D444B",
-              "fontSize": 17,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "paddingBottom": 16,
-              "textAlign": "center",
-            }
-          }
-        >
-          translated browser_login.description with undefined
-        </Text>
-      </View>
-      <View
-        style={
-          Object {
-            "alignSelf": "center",
-            "justifyContent": "space-between",
-            "marginVertical": 16,
-            "minHeight": 104,
-          }
-        }
-      >
-        <View
-          accessibilityRole="button"
-          accessibilityStates={Array []}
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {},
-              ]
-            }
-          >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "color": "#007AFF",
-                    "fontSize": 18,
-                    "padding": 8,
-                    "textAlign": "center",
-                  },
-                ]
+          <Image
+            source={
+              Object {
+                "testUri": "../../../src/resources/images/browser_login/browser_login.png",
               }
-            >
-              this is a mock button
-            </Text>
-          </View>
+            }
+            style={
+              Object {
+                "alignItems": "center",
+                "resizeMode": "contain",
+                "width": 525,
+              }
+            }
+          />
         </View>
         <View
-          accessibilityRole="button"
-          accessibilityStates={Array []}
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "opacity": 1,
+              "alignItems": "center",
+              "marginHorizontal": 24,
+              "marginVertical": 16,
+            }
+          }
+        >
+          <Text
+            ellipsizeMode="tail"
+            numberOfLines={2}
+            style={
+              Object {
+                "color": "#3D444B",
+                "fontSize": 32,
+                "fontWeight": "700",
+                "lineHeight": 41,
+                "paddingBottom": 16,
+                "textAlign": "center",
+              }
+            }
+          >
+            translated browser_login.title with undefined
+          </Text>
+          <Text
+            ellipsizeMode="tail"
+            numberOfLines={3}
+            style={
+              Object {
+                "color": "#3D444B",
+                "fontSize": 17,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "paddingBottom": 16,
+                "textAlign": "center",
+              }
+            }
+          >
+            translated browser_login.description with undefined
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignSelf": "center",
+              "justifyContent": "space-between",
+              "marginVertical": 16,
+              "minHeight": 104,
             }
           }
         >
           <View
+            accessibilityRole="button"
+            accessibilityStates={Array []}
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
-              Array [
-                Object {},
-              ]
+              Object {
+                "opacity": 1,
+              }
             }
           >
-            <Text
+            <View
               style={
                 Array [
-                  Object {
-                    "color": "#007AFF",
-                    "fontSize": 18,
-                    "padding": 8,
-                    "textAlign": "center",
-                  },
+                  Object {},
                 ]
               }
             >
-              this is a mock button
-            </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#007AFF",
+                      "fontSize": 18,
+                      "padding": 8,
+                      "textAlign": "center",
+                    },
+                  ]
+                }
+              >
+                this is a mock button
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityRole="button"
+            accessibilityStates={Array []}
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#007AFF",
+                      "fontSize": 18,
+                      "padding": 8,
+                      "textAlign": "center",
+                    },
+                  ]
+                }
+              >
+                this is a mock button
+              </Text>
+            </View>
           </View>
         </View>
       </View>
