@@ -17,7 +17,7 @@
 import React, { useRef, useEffect } from "react";
 import { View, Modal, TouchableOpacity, SectionList, Text, FlatList } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import _ from "lodash";
+import { groupBy } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import BottomSheet from "reanimated-bottom-sheet";
 import listViewStyles from "@totara/theme/listView";
@@ -82,24 +82,25 @@ type ContentProps = {
 };
 
 const BottomSheetContent = ({ criteriaList, isOverview }: ContentProps) => {
-  const criteriaSectionList: any = [];
-  const groupedCriteriaList = _.groupBy(criteriaList, "type");
-  Object.entries(groupedCriteriaList).map(([key, value]) => {
-    criteriaSectionList.push({ title: key, data: value });
-  });
-
-  return isOverview ? (
-    <View style={criteriaSheetStyle.listContent}>
-      <SectionList
-        style={criteriaSheetStyle.renderListWrap}
-        sections={criteriaSectionList}
-        renderItem={({ item }) => <ListItem item={item} isOverview={isOverview} />}
-        renderSectionHeader={({ section }) => <SectionHeader title={section.title} />}
-        stickySectionHeadersEnabled={false}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-  ) : (
+  if (isOverview) {
+    const groupedCriteriaList = groupBy(criteriaList, "type");
+    const criteriaSectionList = Object.entries(groupedCriteriaList).map(([key, value]) => {
+      return { title: key, data: value };
+    });
+    return (
+      <View style={criteriaSheetStyle.listContent}>
+        <SectionList
+          style={criteriaSheetStyle.renderListWrap}
+          sections={criteriaSectionList as []}
+          renderItem={({ item }) => <ListItem item={item} isOverview={isOverview} />}
+          renderSectionHeader={({ section }) => <SectionHeader title={section.title} />}
+          stickySectionHeadersEnabled={false}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    );
+  }
+  return (
     <View style={criteriaSheetStyle.listContent}>
       <FlatList
         data={criteriaList as [string]}
