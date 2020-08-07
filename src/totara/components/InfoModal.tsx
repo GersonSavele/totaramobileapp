@@ -30,11 +30,9 @@ type InfoModalProps = {
 const InfoModal = ({ title, description, imageSource, children, visible = true, ...rest }: InfoModalProps) => {
   return (
     <Modal {...rest} transparent={true} animationType="fade" onDismiss={() => null} visible={visible}>
-      <View style={{ flex: 1, backgroundColor: TotaraTheme.colorOpacity30 }}>
-        <ModalContent title={title} description={description} imageSource={imageSource}>
-          {children}
-        </ModalContent>
-      </View>
+      <ModalContent title={title} description={description} imageSource={imageSource}>
+        {children}
+      </ModalContent>
     </Modal>
   );
 };

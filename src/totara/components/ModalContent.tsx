@@ -55,7 +55,8 @@ const ModalContent = ({ title, description, children, imageSource }: ModalConten
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: TotaraTheme.colorOpacity30
   },
   containerStyle: {
     borderRadius: borderRadius.borderRadiusXS,
