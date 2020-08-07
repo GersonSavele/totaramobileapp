@@ -15,12 +15,11 @@
  */
 
 import { StyleSheet, ViewStyle } from "react-native";
-import { margins, paddings, borderRadius, fontWeights, iconSizes } from "@totara/theme/constants";
+import { margins, paddings, borderRadius } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { deviceScreen } from "@totara/lib/tools";
 import { viewHeight } from "./constants";
-const { marginL, marginS, margin2XL } = margins;
-const { borderRadiusL, borderRadiusXS } = borderRadius;
+const { marginL } = margins;
 const {
   colorOpacity70,
   textH2,
@@ -29,11 +28,7 @@ const {
   colorNeutral2,
   colorNeutral7,
   colorSecondary1,
-  navigationHeaderTintColor,
-  textRegular,
-  colorAccent,
-  colorNeutral8,
-  textHeadline
+  navigationHeaderTintColor
 } = TotaraTheme;
 
 const viewHeader: ViewStyle = {
