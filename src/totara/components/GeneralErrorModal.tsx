@@ -25,20 +25,30 @@ import { translate } from "@totara/locale";
 import { Images } from "@resources/images";
 
 type GeneralErrorModalProps = {
+  customTitle?: string;
+  customDescription?: string;
   primaryActionCustomText?: string;
   onPrimaryActionTap?: () => void;
   siteUrl?: string;
+  visible?: boolean;
 };
 
-const GeneralErrorModal = ({ siteUrl, onPrimaryActionTap, primaryActionCustomText }: GeneralErrorModalProps) => {
-  const [visible, setVisible] = useState(true);
+const GeneralErrorModal = ({
+  siteUrl,
+  onPrimaryActionTap,
+  primaryActionCustomText,
+  customDescription,
+  customTitle,
+  visible = false
+}: GeneralErrorModalProps) => {
+  const [_visible, setVisible] = useState(visible);
 
   return (
     <InfoModal
-      title={translate("general_error_feedback_modal.title")}
-      description={translate("general_error_feedback_modal.description")}
+      title={customTitle ?? translate("general_error_feedback_modal.title")}
+      description={customDescription ?? translate("general_error_feedback_modal.description")}
       imageSource={Images.generalError as ImageSourcePropType}
-      visible={visible}>
+      visible={_visible}>
       <PrimaryButton
         testID={"test_generalErrorDismiss"}
         text={primaryActionCustomText ?? translate("general_error_feedback_modal.action_primary")}

@@ -37,18 +37,17 @@ import { ImageSourcePropType } from "react-native";
  *
  * @param children - when authenticated it would mount the children
  */
-export const AuthFlow = ({children}: Props) => {
-
+export const AuthFlow = ({ children }: Props) => {
   const { authContextState, logOut, onLoginSuccess, onLoginFailure } = useContext(AuthContext);
 
   // TODO MOB-307 improve and make this testable, logic is getting more complicated
   const showUIFor = (authStep: AuthContextState["authStep"]) => {
     switch (authStep) {
       case "authError":
-        return <AuthErrorModal action={() => logOut(true)}/>;
+        return <AuthErrorModal action={() => logOut(true)} />;
       case "setupDone":
       case "bootstrapDone":
-        return <ManualFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure}/>;
+        return <ManualFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure} />;
       case "setupSecretInit":
       case "loading":
         return null; // it's in the middle of transitioning don't return any element
@@ -57,28 +56,28 @@ export const AuthFlow = ({children}: Props) => {
 
   return (
     <React.Fragment>
-      {
-        authContextState.isLoading
-        ? <AppLinkFlow onLoginFailure={onLoginFailure} onLoginSuccess={onLoginSuccess}/>
-        : authContextState.isAuthenticated
-          ? children
-          : showUIFor(authContextState.authStep)
-      }
+      {authContextState.isLoading ? (
+        <AppLinkFlow onLoginFailure={onLoginFailure} onLoginSuccess={onLoginSuccess} />
+      ) : authContextState.isAuthenticated ? (
+        children
+      ) : (
+        showUIFor(authContextState.authStep)
+      )}
     </React.Fragment>
   );
 };
 
 type PropAuthError = {
-  action: () => void
+  action: () => void;
 };
 
 const AuthErrorModal = ({ action }: PropAuthError) => (
   <InfoModal
-    title={translate("auth_general_error.title")}
-    description={translate("auth_general_error.description")}
+    title={translate("native_login.auth_general_error.title")}
+    description={translate("native_login.auth_general_error.description")}
     imageSource={Images.generalError as ImageSourcePropType}
     visible={true}>
-    <PrimaryButton text={translate("auth_general_error.action_primary")} onPress={() => action()} />
+    <PrimaryButton text={translate("native_login.auth_general_error.action_primary")} onPress={() => action()} />
   </InfoModal>
 );
 

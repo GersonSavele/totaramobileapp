@@ -1,22 +1,16 @@
-/*
- * This file is part of Totara Mobile
+/**
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Jun Yamog <jun.yamog@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
 import { ApolloClient } from "apollo-client";
@@ -36,6 +30,7 @@ import { LearningItem, AppState, SiteInfo } from "@totara/types";
 import { Setup } from "./AuthHook";
 import { ServerError } from "apollo-link-http-common";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
+import { NetworkFailedError } from "@totara/types/Error";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -251,69 +246,41 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
   input: RequestInfo,
   init?: RequestInit
 ): Promise<T> => {
-  return fetch(input, init)
+  const fetchPromise = fetch(input, init)
     .then((response) => {
       if (response.status === 200) {
         return response.json();
       } else {
         Log.warn("fetch error response", response);
-        throw new Error(response.status.toString());
+        return Promise.reject(response);
       }
+    })
+    .catch((error) => {
+      if (error?.message === "Network request failed") {
+        return Promise.reject(new NetworkFailedError());
+      }
+      return Promise.reject(error);
     })
     .then((json) => {
       Log.debug("json response", json);
       if (json.data) return (json.data as unknown) as T;
-      else throw new Error("json expected to have data attribute");
+      else return Promise.reject("json expected to have data attribute");
     });
-};
 
-/**
- * When using async operation with React.useEffect use this wrapper
- * For now async operation is not officially supported in useEffect.
- * see more details here: https://github.com/facebook/react/issues/14326
- *
- * This currently codifies this pattern: https://www.robinwieruch.de/react-hooks-fetch-data
- *
- * @param asyncOperation - a function that returns a promise that will be executed as the effect
- * @param useEffectIfTrue - condition to check before executing the asyncOperation
- * @param dispatchOnSuccess - when the promise is resolve and effect hasn't been cancelled this function is called with
- * value resolved
- * @param dispatchOnFailure - when promise is rejected calls this function with error
- *
- * @example
- *
- * useEffect(
- *   asyncEffectWrapper(
- *      ...
- *   ), [deps]);
- */
-export const asyncEffectWrapper = <T>(
-  asyncOperation: () => Promise<T>,
-  useEffectIfTrue: () => boolean,
-  dispatchOnSuccess: (t: T) => void,
-  dispatchOnFailure: (error: Error) => void
-): React.EffectCallback => {
-  return () => {
-    let didCancel = false;
-
-    if (useEffectIfTrue()) {
-      asyncOperation()
-        .then((data) => {
-          if (!didCancel && data) {
-            Log.debug("Not cancelled and successfully got data: ", data);
-            dispatchOnSuccess(data);
-          } else {
-            Log.warn("Cancelled and ignoring data: ", data);
-          }
-        })
-        .catch((error) => {
-          Log.debug("Error on asyncOperation with error: ", error);
-          dispatchOnFailure(error);
-        });
-    }
-
-    return () => {
-      didCancel = true; // need to create a lock for async stuff
-    };
-  };
+  //TIMEOUT OF 10 SECS (10*1000)
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error("promise timeout"));
+    }, 10 * 1000);
+    fetchPromise.then(
+      (res) => {
+        clearTimeout(timeoutId);
+        resolve(res);
+      },
+      (err) => {
+        clearTimeout(timeoutId);
+        reject(err);
+      }
+    );
+  });
 };

@@ -6,7 +6,7 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
   hardwareAccelerated={false}
   onDismiss={[Function]}
   transparent={true}
-  visible={true}
+  visible={false}
 >
   <View
     style={

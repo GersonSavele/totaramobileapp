@@ -1,23 +1,18 @@
-/*
- * This file is part of Totara Mobile
+/**
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Jun Yamog <jun.yamog@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
+
 import { useEffect, useReducer, useRef } from "react";
 import { ApolloClient } from "apollo-client";
 import { gql } from "apollo-boost";
@@ -56,10 +51,7 @@ export const useAuth = (
     logOut: (localOnly: boolean) => Promise<void>
   ) => ApolloClient<NormalizedCacheObject>
 ) => ({ initialState }: Props) => {
-  const [authContextState, dispatch] = useReducer(
-    authContextReducer,
-    initialState
-  );
+  const [authContextState, dispatch] = useReducer(authContextReducer, initialState);
 
   // instance of apollo client this is valid as per faq
   // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-instance-variables
@@ -79,13 +71,11 @@ export const useAuth = (
     const mutationPromise = () =>
       apolloClient.current && !localOnly
         ? apolloClient.current.mutate({
-            mutation: deleteDevice,
+            mutation: deleteDevice
           })
         : Promise.resolve({ data: { delete_device: true } });
 
-    return deviceCleanup(mutationPromise).then(() =>
-      dispatch({ type: "deRegister" })
-    );
+    return deviceCleanup(mutationPromise).then(() => dispatch({ type: "deRegister" }));
   };
 
   // create or stop apolloClient depending on the state and if existing apolloClient has been appState
@@ -130,9 +120,9 @@ export const useAuth = (
    * @param error
    */
   const onLoginFailure = async (error: Error) => {
-    Log.error("login failure, bringing back to initial loading state", error);
+    //Log.error("login failure, bringing back to initial loading state", error);
 
-    dispatch({ type: "authError" });
+    dispatch({ type: "authError", payload: error });
   };
 
   /**
@@ -176,14 +166,11 @@ export const useAuth = (
     onLoginSuccess,
     onLoginFailure,
     logOut,
-    apolloClient: apolloClient.current,
+    apolloClient: apolloClient.current
   };
 };
 
-const authContextReducer = (
-  state: AuthContextState,
-  action: Action
-): AuthContextState => {
+const authContextReducer = (state: AuthContextState, action: Action): AuthContextState => {
   Log.debug("authContextReducer: state", state, "action", action);
   switch (action.type) {
     case "register": {
@@ -191,7 +178,7 @@ const authContextReducer = (
         return {
           ...state,
           setup: action.payload,
-          authStep: "setupSecretInit",
+          authStep: "setupSecretInit"
         };
       else throw new Error(`unexpected payload in action ${action}`);
     }
@@ -202,7 +189,7 @@ const authContextReducer = (
           ...state,
           appState: action.payload,
           isAuthenticated: true,
-          authStep: "setupDone",
+          authStep: "setupDone"
         };
       else throw new Error(`unexpected payload in action ${action}`);
     }
@@ -214,14 +201,14 @@ const authContextReducer = (
           appState: action.payload,
           isAuthenticated: true,
           isLoading: false,
-          authStep: "bootstrapDone",
+          authStep: "bootstrapDone"
         };
       else
         return {
           ...state,
           isAuthenticated: false,
           isLoading: false,
-          authStep: "bootstrapDone",
+          authStep: "bootstrapDone"
         };
     }
 
@@ -231,7 +218,7 @@ const authContextReducer = (
         appState: undefined,
         isAuthenticated: false,
         isLoading: false,
-        authStep: "bootstrapDone",
+        authStep: "bootstrapDone"
       };
 
     case "authError":
@@ -241,7 +228,7 @@ const authContextReducer = (
         appState: undefined,
         isAuthenticated: false,
         isLoading: false,
-        authStep: "authError",
+        authStep: "authError"
       };
 
     case "reload":
@@ -250,14 +237,8 @@ const authContextReducer = (
 };
 
 type Action = {
-  type:
-    | "register"
-    | "registered"
-    | "bootstrap"
-    | "deRegister"
-    | "reload"
-    | "authError";
-  payload?: AppState | Setup;
+  type: "register" | "registered" | "bootstrap" | "deRegister" | "reload" | "authError";
+  payload?: AppState | Setup | Error;
 };
 
 export const deleteDevice = gql`
@@ -275,12 +256,7 @@ export type AuthContextState = {
   isAuthenticated: boolean;
   appState?: AppState;
   setup?: Setup;
-  authStep:
-    | "loading"
-    | "bootstrapDone"
-    | "setupSecretInit"
-    | "setupDone"
-    | "authError";
+  authStep: "loading" | "bootstrapDone" | "setupSecretInit" | "setupDone" | "authError";
 };
 
 export const initialState: AuthContextState = {
@@ -288,7 +264,7 @@ export const initialState: AuthContextState = {
   setup: undefined,
   isLoading: true,
   isAuthenticated: false,
-  authStep: "loading",
+  authStep: "loading"
 };
 
 export interface Setup {

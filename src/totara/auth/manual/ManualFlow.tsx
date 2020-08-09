@@ -14,7 +14,7 @@
  * */
 
 import React from "react";
-import { View, ImageSourcePropType } from "react-native";
+import { ImageSourcePropType, View } from "react-native";
 
 import { AuthFlowChildProps } from "../AuthComponent";
 import { IncompatibleApiModal, InfoModal, PrimaryButton } from "@totara/components";
@@ -27,6 +27,7 @@ import BrowserLogin from "./browser";
 import { useManualFlow } from "./ManualFlowHook";
 import SiteUrl from "./SiteUrl";
 import { Images } from "@resources/images";
+import { NetworkError, NetworkFailedError } from "@totara/types/Error";
 
 /**
  * ManualFlow starts with a StartStep, then depending what configured on the server
@@ -98,23 +99,43 @@ const ManualFlow = (props: AuthFlowChildProps) => {
             return <StartStep />;
         }
       })()}
-      {manualFlowState.isSiteUrlFailure && <SiteErrorModal onCancel={onManualFlowCancel} />}
+      {manualFlowState.siteUrlFailure && (
+        <SiteErrorModal onCancel={onManualFlowCancel} siteUrlFailure={manualFlowState.siteUrlFailure} />
+      )}
     </View>
   );
 };
 
 type PropSiteError = {
   onCancel: () => void;
+  siteUrlFailure: NetworkError | NetworkFailedError;
 };
 
-const SiteErrorModal = ({ onCancel }: PropSiteError) => (
-  <InfoModal
-    visible={true}
-    title={translate("site_url.auth_invalid_site.title")}
-    description={translate("site_url.auth_invalid_site.description")}
-    imageSource={Images.urlNotValid as ImageSourcePropType}>
-    <PrimaryButton text={translate("site_url.auth_invalid_site.action_primary")} onPress={onCancel} />
-  </InfoModal>
-);
+const SiteErrorModal = ({ onCancel, siteUrlFailure }: PropSiteError) => {
+  const content =
+    siteUrlFailure instanceof NetworkFailedError
+      ? {
+          title: translate("server_not_reachable.title"),
+          description: translate("server_not_reachable.message"),
+          imageSource: Images.generalError,
+          primaryAction: translate("server_not_reachable.go_back")
+        }
+      : {
+          title: translate("site_url.auth_invalid_site.title"),
+          description: translate("site_url.auth_invalid_site.description"),
+          imageSource: Images.urlNotValid,
+          primaryAction: translate("site_url.auth_invalid_site.action_primary")
+        };
+
+  return (
+    <InfoModal
+      visible={true}
+      title={content.title}
+      description={content.description}
+      imageSource={content.imageSource as ImageSourcePropType}>
+      <PrimaryButton text={content.primaryAction} onPress={onCancel} />
+    </InfoModal>
+  );
+};
 
 export default ManualFlow;

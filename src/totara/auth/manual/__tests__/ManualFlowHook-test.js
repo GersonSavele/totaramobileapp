@@ -19,49 +19,49 @@
  * @author Jun Yamog <jun.yamog@totaralearning.com>
  */
 
-import React from 'react';
+import React from "react";
 import { renderHook, act } from "@testing-library/react-hooks";
 import { useManualFlow, manualFlowReducer } from "../ManualFlowHook";
 import { config } from "@totara/lib";
-import BrowserLogin from '../browser';
-import renderer from 'react-test-renderer';
+import BrowserLogin from "../browser";
+import renderer from "react-test-renderer";
+import { NetworkFailedError } from "@totara/types/Error";
 
 describe("useManualFlow", () => {
   it("should be on step done when url and secret is valid", async () => {
     config.minApiVersion = "2019101802";
     const expectedOptions = {
       method: "POST",
-      body: JSON.stringify({version: "UnknownVersion"})
+      body: JSON.stringify({ version: "UnknownVersion" })
     };
 
-    const mockFetch = jest.fn(()=> {
-        return Promise.resolve({
-          auth: "webview",
-          siteMaintenance: false,
-          theme: {
-            urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
-            colorPrimary: "#CCFFCC"
-          },
-          version: "2019101802"
+    const mockFetch = jest.fn(() => {
+      return Promise.resolve({
+        auth: "webview",
+        siteMaintenance: false,
+        theme: {
+          urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
+          colorPrimary: "#CCFFCC"
+        },
+        version: "2019101802"
       });
     });
 
-    const onLoginSuccess = jest.fn(setupSecret => {
+    const onLoginSuccess = jest.fn((setupSecret) => {
       expect(setupSecret.uri).toBe("https://success.com");
       expect(setupSecret.secret).toBe("theSecret");
     });
 
     const { result, waitForNextUpdate } = renderHook(
-      ({ onLoginSuccess }) =>
-        useManualFlow(mockFetch)({ onLoginSuccess: onLoginSuccess }),
+      ({ onLoginSuccess }) => useManualFlow(mockFetch)({ onLoginSuccess: onLoginSuccess }),
       { initialProps: { onLoginSuccess: onLoginSuccess } }
     );
-    
+
     act(() => {
       result.current.onSiteUrlSuccess("https://success.com");
     });
-    
-    expect(mockFetch).toHaveBeenCalledWith("https://success.com/totara/mobile/site_info.php",expectedOptions);
+
+    expect(mockFetch).toHaveBeenCalledWith("https://success.com/totara/mobile/site_info.php", expectedOptions);
 
     await act(async () => waitForNextUpdate());
 
@@ -87,7 +87,7 @@ describe("useManualFlow", () => {
   it("should be on step fail when url is invalid", async () => {
     const mockOnLoginSuccess = jest.fn();
 
-    const mockFetchError = () => Promise.reject(new Error("server error"));
+    const mockFetchError = () => Promise.reject(new Error("Network failed Error"));
     const { result, waitForNextUpdate } = renderHook(() =>
       useManualFlow(mockFetchError)({ onLoginSuccess: mockOnLoginSuccess })
     );
@@ -98,7 +98,6 @@ describe("useManualFlow", () => {
 
     expect(result.current.manualFlowState).toMatchObject({
       isSiteUrlSubmitted: true,
-      isSiteUrlFailure: false,
       siteUrl: "https://fail.com"
     });
 
@@ -106,7 +105,7 @@ describe("useManualFlow", () => {
 
     expect(result.current.manualFlowState).toMatchObject({
       isSiteUrlSubmitted: false,
-      isSiteUrlFailure: true,
+      siteUrlFailure: new NetworkFailedError(),
       siteUrl: "https://fail.com"
     });
   });
@@ -249,7 +248,7 @@ describe("manualFlowReducer", () => {
     const newState = manualFlowReducer(currentState, action);
     expect(newState.flowStep).toBe("native");
     expect(newState.isSiteUrlSubmitted).toBeFalsy();
-    expect(newState.isSiteUrlFailure).toBe(true);
+    expect(newState.siteUrlFailure).toBeDefined();
   });
 
   it("should set flowStep to browser login and take screen-shot in Information modal", () => {
@@ -275,9 +274,7 @@ describe("manualFlowReducer", () => {
 
     expect(newState.flowStep).toBe("browser");
     expect(newState.siteInfo).toMatchObject(testSiteInfo);
-    const tree = renderer
-      .create(<BrowserLogin siteUrl={"siteUrl"} onManualFlowCancel={jest.fn()} />)
-      .toJSON();
+    const tree = renderer.create(<BrowserLogin siteUrl={"siteUrl"} onManualFlowCancel={jest.fn()} />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

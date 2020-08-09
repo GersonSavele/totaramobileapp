@@ -32,8 +32,8 @@ describe("useNativeLogin", () => {
     initialProps: {
       siteUrl: "http://mobiledemo.wlg.totaralms.com",
       onSetupSecretSuccess: { onSetupSecretSuccess },
-      onManualFlowCancel: { onManualFlowCancel: onManualFlowCancel },
-    },
+      onManualFlowCancel: { onManualFlowCancel: onManualFlowCancel }
+    }
   });
   it("both empty 'username' and 'password'", () => {
     act(() => {
@@ -79,11 +79,11 @@ describe("useNativeLogin", () => {
       if (input === "https://site.com/totara/mobile/login_setup.php") {
         expect(init).toMatchObject({
           method: "GET",
-          headers: { [DEVICE_REGISTRATION]: config.userAgent },
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
 
         return Promise.resolve({
-          loginsecret: "loginSecret",
+          loginsecret: "loginSecret"
         });
       } else if (input === "https://site.com/totara/mobile/login.php") {
         expect(init).toMatchObject({
@@ -91,28 +91,25 @@ describe("useNativeLogin", () => {
           body: JSON.stringify({
             loginsecret: "loginSecret",
             username: "username",
-            password: "password",
+            password: "password"
           }),
-          headers: { [DEVICE_REGISTRATION]: config.userAgent },
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
 
         return Promise.resolve({
-          setupsecret: "setupSecret",
+          setupsecret: "setupSecret"
         });
       } else {
         throw new Error("should not execute, test failed", input);
       }
     });
 
-    const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeFlow(mockFetchData)(props),
-      {
-        initialProps: {
-          siteUrl: "https://site.com",
-          onSetupSecretSuccess: onSetupSecretSuccess,
-        },
+    const { result, waitForNextUpdate } = renderHook((props) => useNativeFlow(mockFetchData)(props), {
+      initialProps: {
+        siteUrl: "https://site.com",
+        onSetupSecretSuccess: onSetupSecretSuccess
       }
-    );
+    });
 
     act(() => {
       result.current.inputUsernameWithShowError("username");
@@ -127,7 +124,7 @@ describe("useNativeLogin", () => {
       inputUsername: "username",
       inputPassword: "password",
       isRequestingLogin: true,
-      errorStatusUnauthorized: false,
+      errorStatusUnauthorized: false
     });
 
     expect(onSetupSecretSuccess).toBeCalledTimes(1);
@@ -141,10 +138,10 @@ describe("useNativeLogin", () => {
       if (input === "https://site.com/totara/mobile/login_setup.php") {
         expect(init).toMatchObject({
           method: "GET",
-          headers: { [DEVICE_REGISTRATION]: config.userAgent },
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
         return Promise.resolve({
-          loginsecret: "loginSecret",
+          loginsecret: "loginSecret"
         });
       } else if (input === "https://site.com/totara/mobile/login.php") {
         expect(init).toMatchObject({
@@ -152,24 +149,21 @@ describe("useNativeLogin", () => {
           body: JSON.stringify({
             loginsecret: "loginSecret",
             username: "username",
-            password: "password",
+            password: "password"
           }),
-          headers: { [DEVICE_REGISTRATION]: config.userAgent },
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
-        return Promise.reject(new Error("401"));
+        return Promise.reject({ status: 401 });
       } else {
         throw new Error("should not execute, test failed", input);
       }
     });
 
-    const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeFlow(mockFetchData)(props),
-      {
-        initialProps: {
-          siteUrl: "https://site.com",
-        },
+    const { result, waitForNextUpdate } = renderHook((props) => useNativeFlow(mockFetchData)(props), {
+      initialProps: {
+        siteUrl: "https://site.com"
       }
-    );
+    });
 
     act(() => {
       result.current.inputUsernameWithShowError("username");
@@ -180,7 +174,7 @@ describe("useNativeLogin", () => {
 
     expect(result.current.nativeLoginState).toMatchObject({
       isRequestingLogin: false,
-      errorStatusUnauthorized: true,
+      errorStatusUnauthorized: true
     });
   });
 
@@ -191,22 +185,19 @@ describe("useNativeLogin", () => {
       if (input === "https://site.com/totara/mobile/login_setup.php") {
         expect(init).toMatchObject({
           method: "GET",
-          headers: { [DEVICE_REGISTRATION]: config.userAgent },
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
-        return Promise.reject(new Error("401"));
+        return Promise.reject({ status: 401 });
       } else {
         throw new Error("should not execute, test failed", input);
       }
     });
 
-    const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeFlow(mockFetchData)(props),
-      {
-        initialProps: {
-          siteUrl: "https://site.com",
-        },
+    const { result, waitForNextUpdate } = renderHook((props) => useNativeFlow(mockFetchData)(props), {
+      initialProps: {
+        siteUrl: "https://site.com"
       }
-    );
+    });
 
     act(() => {
       result.current.inputUsernameWithShowError("username");
@@ -217,24 +208,24 @@ describe("useNativeLogin", () => {
 
     expect(result.current.nativeLoginState).toMatchObject({
       isRequestingLogin: false,
-      errorStatusUnauthorized: true,
+      errorStatusUnauthorized: true
     });
   });
 
   it("should throw an error for all the unhandled errors while fetching setupSecret for a valid username and password ", async () => {
-    expect.assertions(6);
+    expect.assertions(5);
     const onSetupSecretFailure = jest.fn((error) => {
-      expect(error.message).toBe("400");
+      expect(error.status).toBe(400);
     });
 
     const mockFetchData = jest.fn((input, init) => {
       if (input === "https://site.com/totara/mobile/login_setup.php") {
         expect(init).toMatchObject({
           method: "GET",
-          headers: { [DEVICE_REGISTRATION]: config.userAgent },
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
         return Promise.resolve({
-          loginsecret: "loginSecret",
+          loginsecret: "loginSecret"
         });
       } else if (input === "https://site.com/totara/mobile/login.php") {
         expect(init).toMatchObject({
@@ -242,25 +233,22 @@ describe("useNativeLogin", () => {
           body: JSON.stringify({
             loginsecret: "loginSecret",
             username: "username",
-            password: "password",
+            password: "password"
           }),
-          headers: { [DEVICE_REGISTRATION]: config.userAgent },
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
-        return Promise.reject(new Error("400"));
+        return Promise.reject(new Error({ status: 400 }));
       } else {
         throw new Error("should not execute, test failed", input);
       }
     });
 
-    const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeFlow(mockFetchData)(props),
-      {
-        initialProps: {
-          siteUrl: "https://site.com",
-          onSetupSecretFailure: onSetupSecretFailure,
-        },
+    const { result, waitForNextUpdate } = renderHook((props) => useNativeFlow(mockFetchData)(props), {
+      initialProps: {
+        siteUrl: "https://site.com",
+        onSetupSecretFailure: onSetupSecretFailure
       }
-    );
+    });
 
     act(() => {
       result.current.inputUsernameWithShowError("username");
@@ -269,40 +257,34 @@ describe("useNativeLogin", () => {
     });
     await act(async () => waitForNextUpdate());
 
-    expect(result.current.nativeLoginState).toMatchObject({
-      unhandleLoginError: new Error("400"),
-    });
     expect(onSetupSecretFailure).toBeCalledTimes(1);
-    expect(onSetupSecretFailure).toHaveBeenCalledWith(new Error("400"));
+    expect(onSetupSecretFailure).toHaveBeenCalledWith(new Error({ status: 400 }));
   });
 
   it("should throw an error for all the unhandled errors while fetching loginSecret for a valid username and password ", async () => {
-    expect.assertions(5);
+    expect.assertions(4);
     const onSetupSecretFailure = jest.fn((error) => {
-      expect(error.message).toBe("400");
+      expect(error.status).toBe(400);
     });
 
     const mockFetchData = jest.fn((input, init) => {
       if (input === "https://site.com/totara/mobile/login_setup.php") {
         expect(init).toMatchObject({
           method: "GET",
-          headers: { [DEVICE_REGISTRATION]: config.userAgent },
+          headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
-        return Promise.reject(new Error("400"));
+        return Promise.reject(new Error({ status: 400 }));
       } else {
         throw new Error("should not execute, test failed", input);
       }
     });
 
-    const { result, waitForNextUpdate } = renderHook(
-      (props) => useNativeFlow(mockFetchData)(props),
-      {
-        initialProps: {
-          siteUrl: "https://site.com",
-          onSetupSecretFailure: onSetupSecretFailure,
-        },
+    const { result, waitForNextUpdate } = renderHook((props) => useNativeFlow(mockFetchData)(props), {
+      initialProps: {
+        siteUrl: "https://site.com",
+        onSetupSecretFailure: onSetupSecretFailure
       }
-    );
+    });
 
     act(() => {
       result.current.inputUsernameWithShowError("username");
@@ -311,11 +293,8 @@ describe("useNativeLogin", () => {
     });
     await act(async () => waitForNextUpdate());
 
-    expect(result.current.nativeLoginState).toMatchObject({
-      unhandleLoginError: new Error("400"),
-    });
     expect(onSetupSecretFailure).toBeCalledTimes(1);
-    expect(onSetupSecretFailure).toHaveBeenCalledWith(new Error("400"));
+    expect(onSetupSecretFailure).toHaveBeenCalledWith(new Error({ status: 400 }));
   });
 });
 
@@ -323,7 +302,7 @@ describe("Native login reducer", () => {
   it("it should set setupSecret status to payload", () => {
     const action = {
       type: "setupsecret",
-      payload: "test-setupSecret",
+      payload: "test-setupSecret"
     };
     const newState = nativeReducer({}, action);
     expect(newState.setupSecret).toEqual("test-setupSecret");
@@ -332,7 +311,7 @@ describe("Native login reducer", () => {
   it("it should set username status to payload", () => {
     const action = {
       type: "setusername",
-      payload: "test-setusername",
+      payload: "test-setusername"
     };
     const newState = nativeReducer({}, action);
     expect(newState.inputUsername).toEqual("test-setusername");
@@ -341,7 +320,7 @@ describe("Native login reducer", () => {
   it("it should set password status to payload", () => {
     const action = {
       type: "setpassword",
-      payload: "test-setpassword",
+      payload: "test-setpassword"
     };
     const newState = nativeReducer({}, action);
     expect(newState.inputPassword).toEqual("test-setpassword");
@@ -350,11 +329,11 @@ describe("Native login reducer", () => {
   it("it should be error status unauthorized where there is login failure", () => {
     const state = {
       isRequestingLogin: true,
-      errorStatusUnauthorized: false,
+      errorStatusUnauthorized: false
     };
     const action = {
       type: "loginfailed",
-      payload: undefined,
+      payload: undefined
     };
     const newState = nativeReducer(state, action);
 
@@ -364,11 +343,11 @@ describe("Native login reducer", () => {
 
   it("it should remove error status unauthorized where the form is reset", () => {
     const state = {
-      errorStatusUnauthorized: true,
+      errorStatusUnauthorized: true
     };
     const action = {
       type: "resetform",
-      payload: undefined,
+      payload: undefined
     };
     const newState = nativeReducer(state, action);
 
@@ -378,11 +357,11 @@ describe("Native login reducer", () => {
   it("should handle clickenter with-out username and password", () => {
     const state = {
       inputUsername: undefined,
-      inputPassword: undefined,
+      inputPassword: undefined
     };
     const action = {
       type: "submit",
-      payload: undefined,
+      payload: undefined
     };
     const newState = nativeReducer(state, action);
 
@@ -392,11 +371,11 @@ describe("Native login reducer", () => {
   it("should handle clickenter with invalid username and valid password", () => {
     const state = {
       inputUsername: undefined,
-      inputPassword: "password",
+      inputPassword: "password"
     };
     const action = {
       type: "submit",
-      payload: undefined,
+      payload: undefined
     };
     const newState = nativeReducer(state, action);
     expect(newState.inputUsernameStatus).toEqual("error");
@@ -405,11 +384,11 @@ describe("Native login reducer", () => {
   it("should handle clickenter with valid username and invalid password", () => {
     const state = {
       inputUsername: "username",
-      inputPassword: undefined,
+      inputPassword: undefined
     };
     const action = {
       type: "submit",
-      payload: undefined,
+      payload: undefined
     };
     const newState = nativeReducer(state, action);
     expect(newState.inputUsernameStatus).toEqual(undefined);

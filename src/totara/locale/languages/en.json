@@ -48,6 +48,11 @@
     "message": "To continue, you'll need to go online",
     "go_back": "OK"
   },
+  "server_not_reachable": {
+    "title": "Ooops!",
+    "message": "The server is not reachable. Please check your network connection and try again.",
+    "go_back": "OK"
+  },
   "browser_login": {
     "title": "Authenticate",
     "description": "You need to login through a mobile browser to authenticate. Would you like us to take you there now?",
