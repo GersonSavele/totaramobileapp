@@ -200,13 +200,11 @@ const ScormActivity = (props: ScormActivityProps) => {
   const { navigation } = props;
   const { id, title = "" } = navigation.state.params as ScormActivityParams;
   const apolloClient = useApolloClient();
-  const { loading, error, data, refetch, networkStatus } = useQuery(
-    scormQuery,
-    {
-      variables: { scormid: id },
-      notifyOnNetworkStatusChange: true
-    }
-  );
+  const { loading, error, data, refetch, networkStatus } = useQuery(scormQuery, {
+    variables: { scormid: id },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "cache-and-network"
+  });
 
   const { isInternetReachable } = useNetInfo();
 

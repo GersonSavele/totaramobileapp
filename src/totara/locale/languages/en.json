@@ -166,6 +166,7 @@
     "ago": "ago",
     "info_completed_attempts": "You have reached the maximum number of attempts",
     "info_upcoming_activity": "Sorry, this activity is not available until",
+    "data_sync_error": "We could not sync your data. We will try again later.",
     "summary": {
       "summary": "Summary",
       "grade": {

@@ -138,7 +138,7 @@ const netInfoEffect = ({
           setUnsyncData(updatedUnsyncData);
         })
         .catch((e) => {
-          showMessage({ text: `${translate("general.error_unknown")}` });
+          showMessage({ text: `${translate("scorm.data_sync_error")}` });
           Log.warn(e);
         });
     } else {
