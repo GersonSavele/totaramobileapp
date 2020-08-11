@@ -14,10 +14,9 @@
  * */
 
 import React, { ReactNode } from "react";
-import { Modal, ImageSourcePropType, View } from "react-native";
+import { Modal, ImageSourcePropType } from "react-native";
 
 import ModalContent from "./ModalContent";
-import { TotaraTheme } from "@totara/theme/Theme";
 
 type InfoModalProps = {
   title?: string;

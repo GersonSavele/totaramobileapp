@@ -20,7 +20,7 @@
  */
 
 import React, { useState, useRef } from "react";
-import { Dimensions, StyleSheet, View, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { WebView, WebViewMessageEvent, WebViewNavigation } from "react-native-webview";
 
 import { SCORM_TEST_IDS } from "../constants";
