@@ -66,7 +66,7 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
           data={currentLearning}
           renderItem={renderItem}
           sliderWidth={deviceScreen.width}
-          itemWidth={deviceScreen.width - paddings.padding2XL * 2}
+          itemWidth={deviceScreen.width - paddings.paddingXL * 2}
           sliderHeight={deviceScreen.height}
           inactiveSlideOpacity={0.6}
           onSnapToItem={(index) => setActiveSlide(index)}
@@ -116,9 +116,11 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
         <LearningItemCard item={item} image={item.imageSrc} itemType={item.itemtype}>
           <View style={{ flexGrow: 1 }}>
             <Text style={carouselItemStyles.type}>{item.itemtype}</Text>
-            <Text style={carouselItemStyles.summary} ellipsizeMode="tail">
-              {item.summary}
-            </Text>
+            <View style={{ flex: 1, paddingVertical: paddings.paddingL }}>
+              <Text style={carouselItemStyles.summary} ellipsizeMode="clip">
+                {item.summary}
+              </Text>
+            </View>
           </View>
         </LearningItemCard>
       </View>

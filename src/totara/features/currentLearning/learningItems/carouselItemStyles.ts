@@ -16,9 +16,9 @@
 import { StyleSheet } from "react-native";
 import { margins, paddings, borderRadius, shadow } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-const { marginS, marginXL, marginXS } = margins;
+const { marginS } = margins;
 const { borderRadiusM } = borderRadius;
-const { colorNeutral8, colorNeutral1, colorNeutral3, colorNeutral6 } = TotaraTheme;
+const { colorNeutral8, colorNeutral1, colorNeutral6 } = TotaraTheme;
 const { paddingXS, paddingL } = paddings;
 
 const carouselItemStyles = StyleSheet.create({
@@ -26,14 +26,12 @@ const carouselItemStyles = StyleSheet.create({
     ...shadow.ios,
     ...shadow.android,
     borderRadius: borderRadiusM,
-    backgroundColor: colorNeutral1,
-    borderWidth: 1,
-    borderColor: colorNeutral3
+    backgroundColor: colorNeutral1
   },
   content: {
     borderRadius: borderRadiusM,
     width: "100%",
-    height: "99%",
+    height: "100%",
     overflow: "hidden"
   },
   type: {
@@ -49,10 +47,8 @@ const carouselItemStyles = StyleSheet.create({
     ...TotaraTheme.textXXSmall
   },
   summary: {
-    flex: 1,
     alignSelf: "flex-start",
     width: "100%",
-    paddingVertical: paddingL,
     ...TotaraTheme.textSmall
   },
   badgeContainer: {
@@ -65,8 +61,9 @@ const carouselItemStyles = StyleSheet.create({
     top: 0
   },
   itemWithBadgeContainer: {
-    marginVertical: marginXL,
-    marginHorizontal: marginXS
+    marginTop: margins.marginXL,
+    marginBottom: margins.marginXL,
+    marginHorizontal: margins.marginS
   },
   pagination: {
     borderStyle: "dashed",
