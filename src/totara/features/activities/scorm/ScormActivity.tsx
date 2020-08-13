@@ -202,8 +202,7 @@ const ScormActivity = (props: ScormActivityProps) => {
   const apolloClient = useApolloClient();
   const { loading, error, data, refetch, networkStatus } = useQuery(scormQuery, {
     variables: { scormid: id },
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: "cache-and-network"
+    notifyOnNetworkStatusChange: true
   });
 
   const { isInternetReachable } = useNetInfo();
