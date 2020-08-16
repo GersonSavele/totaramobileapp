@@ -56,14 +56,9 @@ const getOfflinePackageUnzipPath = (scormId: string) =>
   `${offlineScormServerRoot}/${getOfflineScormPackageName(scormId)}`;
 
 const getTargetZipFile = (scormId: string) =>
-  `${scormZipPackagePath}/${getOfflineScormPackageName(
-    scormId
-  )}${FILE_EXTENSION}`;
+  `${scormZipPackagePath}/${getOfflineScormPackageName(scormId)}${FILE_EXTENSION}`;
 
-const getDataForScormSummary = (
-  isDownloaded: boolean,
-  scormBundle: ScormBundle | undefined
-): any => {
+const getDataForScormSummary = (isDownloaded: boolean, scormBundle: ScormBundle | undefined): any => {
   let data: any = {
     totalAttempt: 0,
     shouldAllowNewAttempt: false,
@@ -83,6 +78,7 @@ const getDataForScormSummary = (
   //TODO: rename - use alias - when backend finishes TL-26268
   data.gradeMethod = scorm.grademethod;
   data.attemptGrade = scorm.whatgrade;
+  data.showGrades = scorm.showGrades;
 
   data.calculatedGrade = calculatedAttemptsGrade(
     data.attemptGrade,
@@ -99,20 +95,15 @@ const getDataForScormSummary = (
       scorm.timeopen > parseInt(moment().format(SECONDS_FORMAT)) &&
       moment.unix(scorm.timeopen)) ||
     undefined;
-  data.maxAttempts =
-    (scorm.attemptsMax !== null && scorm.attemptsMax) || undefined;
+  data.maxAttempts = (scorm.attemptsMax !== null && scorm.attemptsMax) || undefined;
 
-  data.completionScoreRequired =
-    (scorm.completionscorerequired !== null && scorm.completionscorerequired) ||
-    undefined;
+  data.completionScoreRequired = (scorm.completionscorerequired !== null && scorm.completionscorerequired) || undefined;
 
   data.launchUrl = scorm && scorm.launchUrl;
-  data.shouldAllowNewAttempt =
-    shouldAllowAttempt(data) && (!isEmpty(data.launchUrl) || isDownloaded);
+  data.shouldAllowNewAttempt = shouldAllowAttempt(data) && (!isEmpty(data.launchUrl) || isDownloaded);
 
   data.repeatUrl = scorm && scorm.repeatUrl;
-  data.shouldAllowLastAttempt =
-    !isDownloaded && !isEmpty(data.repeatUrl) && data.totalAttempt > 0;
+  data.shouldAllowLastAttempt = !isDownloaded && !isEmpty(data.repeatUrl) && data.totalAttempt > 0;
 
   data.attempts =
     (scorm.attempts &&
@@ -122,8 +113,7 @@ const getDataForScormSummary = (
     scorm.attempts ||
     (scormBundle.offlineAttempts && scormBundle.offlineAttempts);
 
-  data.offlinePackageScoIdentifiers =
-    scorm && scorm.offlinePackageScoIdentifiers;
+  data.offlinePackageScoIdentifiers = scorm && scorm.offlinePackageScoIdentifiers;
 
   data.newAttemptDefaults = scorm && scorm.newAttemptDefaults;
   return data;
@@ -146,44 +136,30 @@ const calculatedAttemptsGrade = (
     maxGrade !== null
   ) {
     const allAttempts = [...onlineAttempts, ...offlineAttempts];
-    const caculatedGradeReport = getAttemptsGrade(
-      allAttempts,
-      attemptGrade,
-      maxGrade
-    );
-    return gradeMethod == Grade.objective
-      ? caculatedGradeReport.toString()
-      : `${caculatedGradeReport}%`;
+    const caculatedGradeReport = getAttemptsGrade(allAttempts, attemptGrade, maxGrade);
+    return gradeMethod == Grade.objective ? caculatedGradeReport.toString() : `${caculatedGradeReport}%`;
   } else {
     return onlineCalculatedGrade;
   }
 };
 
-const getAttemptsGrade = (
-  attemptsReport: Attempt[],
-  attemptGrade: AttemptGrade,
-  maxGrade: number
-): number => {
+const getAttemptsGrade = (attemptsReport: Attempt[], attemptGrade: AttemptGrade, maxGrade: number): number => {
   if (!attemptsReport || attemptsReport.length === 0) {
     return 0;
   }
   switch (attemptGrade) {
     case AttemptGrade.highest: {
-      const highestAttempt = attemptsReport.reduce(
-        (result: any, highestResult: any) => {
-          if (result && result.gradereported > highestResult.gradereported) {
-            return result;
-          }
-          return highestResult;
-        },
-        undefined
-      );
+      const highestAttempt = attemptsReport.reduce((result: any, highestResult: any) => {
+        if (result && result.gradereported > highestResult.gradereported) {
+          return result;
+        }
+        return highestResult;
+      }, undefined);
       return get(highestAttempt, "gradereported", 0);
     }
     case AttemptGrade.average: {
       const sumofscores = attemptsReport.reduce(
-        (scores: number, attemptResult: any) =>
-          scores + attemptResult.gradereported,
+        (scores: number, attemptResult: any) => scores + attemptResult.gradereported,
         0
       );
       const rawSum = sumofscores * (maxGrade / 100);
@@ -197,11 +173,7 @@ const getAttemptsGrade = (
   }
 };
 
-const getGradeForAttempt = ({
-  attemptCmi,
-  maxGrade,
-  gradeMethod
-}: GradeForAttemptProps) => {
+const getGradeForAttempt = ({ attemptCmi, maxGrade, gradeMethod }: GradeForAttemptProps) => {
   let sumGrade = 0;
   let highestGrade = 0;
   let completedScos = 0;
@@ -211,14 +183,9 @@ const getGradeForAttempt = ({
     for (let [, cmi] of Object.entries(attemptCmi)) {
       // Check whether SCORM-1.2 can be "score.raw" and "core.score.raw"
       // Versions of scorm have different "score" paths
-      const rawScore = parseInt(
-        get(cmi, "core.score.raw", undefined) || get(cmi, "score.raw", 0)
-      );
+      const rawScore = parseInt(get(cmi, "core.score.raw", undefined) || get(cmi, "score.raw", 0));
       const lessonStatus = get(cmi, "core.lesson_status", "").toLowerCase();
-      if (
-        lessonStatus === scormLessonStatus.passed ||
-        lessonStatus === scormLessonStatus.completed
-      ) {
+      if (lessonStatus === scormLessonStatus.passed || lessonStatus === scormLessonStatus.completed) {
         completedScos = completedScos + 1;
       }
       sumGrade = sumGrade + rawScore;
@@ -343,17 +310,12 @@ const setupOfflineScormPlayer = (
   });
 };
 
-const loadScormPackageData = (
-  packageData?: Package,
-  onGetScormPackageData = getScormPackageData
-) => {
+const loadScormPackageData = (packageData?: Package, onGetScormPackageData = getScormPackageData) => {
   if (packageData && !isEmpty(packageData.path)) {
     if (packageData.scos && packageData.defaultSco) {
       return Promise.resolve(packageData);
     } else {
-      return onGetScormPackageData(
-        `${offlineScormServerRoot}/${packageData.path}`
-      ).then((data) => {
+      return onGetScormPackageData(`${offlineScormServerRoot}/${packageData.path}`).then((data) => {
         const tmpPackageData = { ...packageData, ...data } as Package;
         return tmpPackageData;
       });
@@ -393,11 +355,7 @@ const initializeScormWebplayer = () => {
         }
         return Promise.all(promisesToCopyFiles);
       } else {
-        throw new Error(
-          "Cannot find any content in the location (" +
-            getScormPlayerPackagePath() +
-            ")"
-        );
+        throw new Error("Cannot find any content in the location (" + getScormPlayerPackagePath() + ")");
       }
     });
   });
@@ -425,8 +383,7 @@ const isScormPlayerInitialized = () => {
   });
 };
 
-const getScormPlayerPackagePath = () =>
-  Platform.OS === "android" ? `html` : `${RNFS.MainBundlePath}/html`;
+const getScormPlayerPackagePath = () => (Platform.OS === "android" ? `html` : `${RNFS.MainBundlePath}/html`);
 
 // downloaded scorm activity package processing
 
@@ -437,8 +394,7 @@ const getScormPackageData = (packagPath: string) => {
       const xmlData = new dom().parseFromString(xmlcontent);
       const scosList = getScosDataForPackage(xmlData);
       const defaultSco = getInitialScormLoadData(xmlData);
-      if (!isEmpty(scosList))
-        return { scos: scosList, defaultSco: defaultSco } as Package;
+      if (!isEmpty(scosList)) return { scos: scosList, defaultSco: defaultSco } as Package;
     }
   });
 };
@@ -472,10 +428,7 @@ const getScosDataForPackage = (manifestDom: any) => {
     let itemNode;
     while ((itemNode = itemResult.iterateNext())) {
       const itemId = itemNode.nodeValue;
-      const valLaunchUrl = getDefaultScoLaunchUrl(
-        manifestDom,
-        itemNode.nodeValue
-      );
+      const valLaunchUrl = getDefaultScoLaunchUrl(manifestDom, itemNode.nodeValue);
       if (itemId && valLaunchUrl && organizationId) {
         const sco: Sco = {
           id: itemId,
@@ -499,10 +452,7 @@ const getInitialScormLoadData = (manifestDom: any) => {
     if (defaultOrgizationsNode.length === 1) {
       defaultOrgizationId = defaultOrgizationsNode[0].nodeValue;
     } else {
-      const defaultOrgNode = xpath.select(
-        "//*[local-name(.)='organizations']/@default",
-        manifestDom
-      );
+      const defaultOrgNode = xpath.select("//*[local-name(.)='organizations']/@default", manifestDom);
       if (!isEmpty(defaultOrgNode) && !isEmpty(defaultOrgNode[0].nodeValue)) {
         const tempDefaultOrg = defaultOrgNode[0].nodeValue;
         for (let i = 0; i < defaultOrgizationsNode.length; i++) {
@@ -539,24 +489,15 @@ const getInitialScormLoadData = (manifestDom: any) => {
 };
 
 const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string) => {
-  const scoNode = xpath.select(
-    "//*[local-name(.)='item' and @identifier ='" + scoId + "']",
-    manifestDom
-  );
+  const scoNode = xpath.select("//*[local-name(.)='item' and @identifier ='" + scoId + "']", manifestDom);
   if (scoNode.length === 1) {
     const resouceId = scoNode[0].getAttribute("identifierref");
     const queryString = scoNode[0].getAttribute("parameters");
     const resourceNode = xpath.select(
-      "//*[local-name(.)='resources']/*[local-name(.)='resource' and @identifier ='" +
-        resouceId +
-        "']",
+      "//*[local-name(.)='resources']/*[local-name(.)='resource' and @identifier ='" + resouceId + "']",
       manifestDom
     );
-    if (
-      resourceNode &&
-      resourceNode.length === 1 &&
-      resourceNode[0].getAttribute("href")
-    ) {
+    if (resourceNode && resourceNode.length === 1 && resourceNode[0].getAttribute("href")) {
       return `${resourceNode[0].getAttribute("href")}${queryString}`;
     }
   }

@@ -27,6 +27,7 @@ import { Images } from "@resources/images";
 type ScormFeedbackProps = {
   score: string;
   gradeMethod: Grade;
+  showGrades: boolean;
   completionScoreRequired?: number;
   onClose: () => void;
 };
@@ -37,9 +38,10 @@ type FeedbackProps = {
 const { ATTEMPT_FEEDBACK } = SCORM_TEST_IDS;
 
 const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
-  const { gradeMethod, completionScoreRequired, score, onClose } = navigation.state.params as ScormFeedbackProps;
+  const { showGrades, gradeMethod, completionScoreRequired, score, onClose } = navigation.state
+    .params as ScormFeedbackProps;
 
-  const isWithGrade = completionScoreRequired !== undefined && completionScoreRequired !== null;
+  const isWithGrade = showGrades && completionScoreRequired !== undefined && completionScoreRequired !== null;
 
   const scoreText = isWithGrade
     ? translate("scorm.feedback.grade_title", { score: `${score}${gradeMethod !== Grade.objective ? "%" : ""}` })

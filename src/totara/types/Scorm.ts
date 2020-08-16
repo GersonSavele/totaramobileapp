@@ -60,6 +60,7 @@ export type Scorm = {
   completionscorerequired: number;
   // maxAttempts: number;
   attemptsMax: number;
+  showGrades: boolean;
 };
 
 export type ScormBundle = {

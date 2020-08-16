@@ -81,6 +81,7 @@ const scormQuery = gql`
       timeopen
       completionscorerequired
       attemptsMax
+      showGrades
       __typename
     }
   }

@@ -15,7 +15,6 @@
 
 import { StyleSheet } from "react-native";
 
-import { gutter } from "./";
 import { margins, fontWeights, paddings } from "./constants";
 
 const scormSummaryStyles = StyleSheet.create({
@@ -25,19 +24,17 @@ const scormSummaryStyles = StyleSheet.create({
   },
   sectionTitle: {
     flexDirection: "row",
-    paddingTop: margins.marginS,
-    paddingBottom: margins.marginS,
+    paddingVertical: paddings.paddingL,
     justifyContent: "space-between",
     fontWeight: fontWeights.fontWeightBold
   },
   sectionField: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: margins.marginS
+    paddingVertical: paddings.paddingL
   },
   attemptContainer: {
-    paddingHorizontal: gutter,
-    paddingVertical: margins.marginS,
+    padding: paddings.paddingL,
     flexDirection: "column",
     alignItems: "stretch"
   }
@@ -53,7 +50,7 @@ const scormAttemptsStyles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     marginVertical: margins.marginL,
-    paddingHorizontal: gutter
+    paddingHorizontal: paddings.paddingL
   },
   attempt: {
     flex: 2,

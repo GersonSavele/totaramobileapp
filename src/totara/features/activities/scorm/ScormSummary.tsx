@@ -23,15 +23,7 @@ import React, { useState } from "react";
 import { ScrollView, Text, View, TextStyle, TouchableOpacity, RefreshControl } from "react-native";
 import { get, isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  MessageBar,
-  NetworkStatus,
-  LoadingError,
-  MoreText,
-  PrimaryButton,
-  SecondaryButton,
-  Loading
-} from "@totara/components";
+import { MessageBar, NetworkStatus, LoadingError, PrimaryButton, SecondaryButton, Loading } from "@totara/components";
 import { gutter } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AppliedTheme, TotaraTheme } from "@totara/theme/Theme";
@@ -98,6 +90,7 @@ type OnExitAcitivityAttemptProps = {
   id: string;
   attempt: number;
   gradeMethod?: Grade;
+  showGrades: boolean;
   completionScoreRequired?: number;
   client: any;
   apiKey?: string;
@@ -128,6 +121,7 @@ const showScormFeedback = ({
   navigateTo
 }: {
   gradeMethod: Grade;
+  showGrades: boolean;
   score: number;
   completionScoreRequired?: number;
   navigate: Function;
@@ -150,6 +144,7 @@ const onExitActivityAttempt = ({
   id,
   attempt,
   gradeMethod = Grade.objective,
+  showGrades,
   apiKey,
   completionScoreRequired,
   client,
@@ -182,6 +177,7 @@ const onExitActivityAttempt = ({
           saveInTheCache({ client, scormBundles: newData });
           showScormFeedback({
             gradeMethod,
+            showGrades,
             completionScoreRequired,
             score: existingLastAttempt.gradereported,
             navigate: navigation.navigate,
@@ -203,6 +199,7 @@ const onExitActivityAttempt = ({
                 if (attempt == attemptsCurrent) {
                   showScormFeedback({
                     gradeMethod,
+                    showGrades,
                     completionScoreRequired,
                     score: gradefinal,
                     navigate: navigation.navigate,
@@ -255,7 +252,8 @@ const ScormSummary = ({
     timeOpen,
     maxAttempts,
     attempts,
-    offlinePackageScoIdentifiers
+    offlinePackageScoIdentifiers,
+    showGrades
   } = bundleData;
   if (isLoadingCurretStatus) {
     return <Loading testID={"summary_loading"} />;
@@ -286,37 +284,41 @@ const ScormSummary = ({
               {!isEmpty(description) && (
                 <>
                   <GridTitle textId={"scorm.summary.summary"} theme={theme} style={{ paddingTop: 0 }} />
-                  <MoreText longText={description} style={TotaraTheme.textMedium} />
+                  <Text style={TotaraTheme.textRegular}>{description}</Text>
                 </>
               )}
-              <GridTitle textId={"scorm.summary.grade.title"} theme={theme} />
-              <GridLabelValue
-                theme={theme}
-                textId={"scorm.summary.grade.method"}
-                value={attemptGrade && translate(`scorm.grading_method.${attemptGrade}`)}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigateTo({
-                    routeId: SCORM_ATTEMPTS,
-                    navigate: navigation.navigate,
-                    props: {
-                      attempts,
-                      gradeMethod,
-                      title: name,
-                      backIcon: "chevron-left"
-                    }
-                  })
-                }>
-                <GridLabelValue theme={theme} textId={"scorm.summary.grade.reported"} value={calculatedGrade}>
-                  <FontAwesomeIcon
-                    icon="chevron-right"
-                    size={theme.textRegular.fontSize}
-                    style={{ alignSelf: "center", marginLeft: 8 }}
-                    color={theme.textColorSubdued}
+              {showGrades && (
+                <>
+                  <GridTitle textId={"scorm.summary.grade.title"} theme={theme} />
+                  <GridLabelValue
+                    theme={theme}
+                    textId={"scorm.summary.grade.method"}
+                    value={attemptGrade && translate(`scorm.grading_method.${attemptGrade}`)}
                   />
-                </GridLabelValue>
-              </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigateTo({
+                        routeId: SCORM_ATTEMPTS,
+                        navigate: navigation.navigate,
+                        props: {
+                          attempts,
+                          gradeMethod,
+                          title: name,
+                          backIcon: "chevron-left"
+                        }
+                      })
+                    }>
+                    <GridLabelValue theme={theme} textId={"scorm.summary.grade.reported"} value={calculatedGrade}>
+                      <FontAwesomeIcon
+                        icon="chevron-right"
+                        size={theme.textRegular.fontSize}
+                        style={{ alignSelf: "center", marginLeft: 8 }}
+                        color={theme.textColorSubdued}
+                      />
+                    </GridLabelValue>
+                  </TouchableOpacity>
+                </>
+              )}
               <GridTitle textId={"scorm.summary.attempt.title"} theme={theme} />
               <GridLabelValue
                 theme={theme}
@@ -349,6 +351,7 @@ const ScormSummary = ({
                       id: id,
                       attempt: attemptNumber,
                       gradeMethod: gradeMethod,
+                      showGrades: showGrades,
                       completionScoreRequired: completionScoreRequired,
                       client,
                       apiKey,

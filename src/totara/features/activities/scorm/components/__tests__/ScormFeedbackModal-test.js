@@ -14,7 +14,26 @@ describe("ScormFeedbackModal", () => {
       state: {
         params: {
           score: 10,
+          showGrades: true,
           gradeMethod: Grade.objective,
+          onClose: () => {}
+        }
+      }
+    };
+    const { getByTestId } = render(<ScormFeedbackModal navigation={navigation} />);
+    const view = getByTestId(ATTEMPT_FEEDBACK);
+    expect(view).toBeTruthy();
+    const receivedScoreText = view.props.children.props.title;
+    expect(receivedScoreText).toBe("");
+  });
+
+  it("Should render the feedback with the tick image because the showGrade is false", async () => {
+    const navigation = {
+      state: {
+        params: {
+          score: 10,
+          showGrades: false,
+          gradeMethod: Grade.highest,
           onClose: () => {}
         }
       }
@@ -31,6 +50,7 @@ describe("ScormFeedbackModal", () => {
       state: {
         params: {
           score: 10,
+          showGrades: true,
           gradeMethod: Grade.highest,
           onClose: () => {},
           completionScoreRequired: 1
@@ -49,6 +69,7 @@ describe("ScormFeedbackModal", () => {
       state: {
         params: {
           score: 10,
+          showGrades: true,
           gradeMethod: Grade.objective,
           onClose: () => {},
           completionScoreRequired: 1
