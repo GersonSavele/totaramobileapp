@@ -26,7 +26,7 @@ describe("CurrentLearningListViewItem", () => {
     expect(courseType.children[0]).toBe("Course");
 
     const title = getByTestId("test_CurrentLearningItem_Title");
-    expect(title.children[0]).toBe("Example course");
+    expect(title.children[0]).toBe("Example course fullname");
 
     const progress = getByTestId("test_CurrentLearningItem_Progress");
     const progressPercentage = progress.children[1].children[0].props.children;

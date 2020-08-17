@@ -34,6 +34,9 @@ const LearningItems = ({ item, navigate }: any) => {
   const onClose = () => {
     setShow(!show);
   };
+
+  const takeFirstTwoCourses = item.courses?.slice(0, 2) || [];
+
   return (
     <View style={courseSet.container} testID={"test_learning_items"}>
       <TouchableOpacity
@@ -60,8 +63,9 @@ const LearningItems = ({ item, navigate }: any) => {
             </TouchableOpacity>
           </View>
           <View>
-            {item.courses && item.courses.length > 0 && <Course course={item.courses[0]} navigate={navigate} />}
-            {item.courses && item.courses.length > 1 && <Course course={item.courses[1]} navigate={navigate} />}
+            {takeFirstTwoCourses.map((course) => {
+              return <Course key={course.id} course={course} navigate={navigate} />;
+            })}
           </View>
         </View>
       </TouchableOpacity>

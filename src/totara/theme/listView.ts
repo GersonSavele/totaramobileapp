@@ -28,7 +28,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 const separator = {
   opacity: opacities.opacityS,
   marginHorizontal: margins.marginL,
-  backgroundColor: TotaraTheme.colorNeutral8
+  backgroundColor: TotaraTheme.colorNeutral6
 };
 
 const regularSeparator = {

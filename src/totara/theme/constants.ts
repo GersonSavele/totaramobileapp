@@ -75,7 +75,8 @@ const iconSizes = {
   sizeS: 16,
   sizeM: 24,
   sizeL: 32,
-  sizeXL: 48
+  sizeXL: 40,
+  sizeXXL: 48
 };
 
 // THESE VALUES WERE GENERATED USING THE FOLLOWING TOOL

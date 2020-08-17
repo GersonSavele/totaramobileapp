@@ -116,8 +116,8 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
         <LearningItemCard item={item} image={item.imageSrc} itemType={item.itemtype}>
           <View style={{ flexGrow: 1 }}>
             <Text style={carouselItemStyles.type}>{item.itemtype}</Text>
-            <View style={{ flex: 1, paddingVertical: paddings.paddingL }}>
-              <Text style={carouselItemStyles.summary} ellipsizeMode="clip">
+            <View style={{ flex: 1, paddingVertical: paddings.paddingM }}>
+              <Text style={carouselItemStyles.summary} numberOfLines={30}>
                 {item.summary}
               </Text>
             </View>

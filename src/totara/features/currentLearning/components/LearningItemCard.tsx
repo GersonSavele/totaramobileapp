@@ -32,24 +32,18 @@ interface Props {
 }
 
 const LearningItemCard = ({ item, imageStyle, cardStyle, children, image, itemType }: Props) => {
+  const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
   return (
     <View style={{ flex: 1 }}>
       <ImageElement item={item} imageStyle={imageStyle} image={image} itemType={itemType} />
-      <CardElement item={item} cardStyle={cardStyle}>
+      <View style={cardStyleSheet}>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.itemFullName} numberOfLines={2}>
+            {item.fullname}
+          </Text>
+        </View>
         {children}
-      </CardElement>
-    </View>
-  );
-};
-
-const CardElement = ({ item, cardStyle, children }: Props) => {
-  const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
-  return (
-    <View style={cardStyleSheet}>
-      <View style={{ flexDirection: "row" }}>
-        <Text style={styles.itemFullName}>{item.fullname}</Text>
       </View>
-      {children}
     </View>
   );
 };
@@ -80,7 +74,6 @@ const styles = StyleSheet.create({
   },
   itemFullName: {
     flexWrap: "wrap",
-    paddingTop: paddings.paddingS,
     ...TotaraTheme.textHeadline,
     fontWeight: fontWeights.fontWeightSemiBold,
     fontSize: fontSizes.fontSizeL
@@ -98,4 +91,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { LearningItemCard, CardElement, ImageElement };
+export { LearningItemCard, ImageElement };

@@ -18,10 +18,10 @@ import React, { ReactNode } from "react";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import ParallaxScrollView from "./ParallaxScrollView";
-import { CardElement, ImageElement } from "./components/LearningItemCard";
+import { ImageElement } from "./components/LearningItemCard";
 import { learningDetailsStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { fontWeights } from "@totara/theme/constants";
+import { fontSizes, fontWeights } from "@totara/theme/constants";
 import { viewHeight } from "./constants";
 import { CourseGroup, Course, LearningItem } from "@totara/types";
 
@@ -46,11 +46,14 @@ type TitleBarProps = {
 
 const TitleBar = ({ item, badgeTitle }: TitleBarProps) => {
   return (
-    <CardElement item={item as LearningItem} cardStyle={learningDetailsStyles.itemCard}>
+    <View style={learningDetailsStyles.itemCard}>
+      <View style={{ flexDirection: "row" }}>
+        <Text style={styles.itemFullName}>{item.fullname}</Text>
+      </View>
       <View style={learningDetailsStyles.learningTypeLabelWrap}>
         <Text style={learningDetailsStyles.programLabelText}>{badgeTitle}</Text>
       </View>
-    </CardElement>
+    </View>
   );
 };
 
@@ -151,7 +154,14 @@ const styles = StyleSheet.create({
   overviewTouchableOpacity: {
     borderBottomColor: TotaraTheme.colorNeutral7,
     borderBottomWidth: 2
-  }
+  },
+  itemFullName: {
+    flexWrap: "wrap",
+    ...TotaraTheme.textHeadline,
+    fontWeight: fontWeights.fontWeightSemiBold,
+    fontSize: fontSizes.fontSizeL
+  },
+  itemCard: {}
 });
 
 export default LearningDetails;

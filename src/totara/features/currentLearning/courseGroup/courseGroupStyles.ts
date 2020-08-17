@@ -118,7 +118,6 @@ const courseSet = StyleSheet.create({
   itemContainer: {
     borderTopRightRadius: borderRadius.borderRadiusM,
     borderTopLeftRadius: borderRadius.borderRadiusM,
-    overflow: "hidden",
     width: "100%",
     height: "100%"
   },
@@ -138,6 +137,8 @@ const courseSet = StyleSheet.create({
   },
 
   headerBar: {
+    borderTopRightRadius: borderRadius.borderRadiusM,
+    borderTopLeftRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2,
     height: 54,
     ...spacedFlexRow,
@@ -160,18 +161,21 @@ const courseSet = StyleSheet.create({
 const rowItem = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginHorizontal: margins.marginL,
-    marginTop: margins.marginL,
-    paddingEnd: paddings.paddingXL
+    padding: paddings.paddingM
   },
   imageWrapper: {
+    backgroundColor: TotaraTheme.colorNeutral2,
+    padding: paddings.paddingM,
+    borderRadius: borderRadius.borderRadiusM
+  },
+  image: {
     height: row.icon.size,
     width: row.icon.size,
-    borderRadius: borderRadius.borderRadiusS
+    aspectRatio: 4 / 3
   },
   detailsWrapper: {
-    marginHorizontal: margins.marginL,
-    justifyContent: "center"
+    flex: 1,
+    padding: paddings.paddingM
   },
   courseName: {
     ...TotaraTheme.textRegular,

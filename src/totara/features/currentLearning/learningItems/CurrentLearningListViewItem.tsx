@@ -33,7 +33,7 @@ type ListViewItemProps = {
 
 const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) => {
   const [showRestriction, setShowRestriction] = useState(false);
-  const { shortname, progress, itemtype, duedate, duedateState, id, native, imageSrc } = item;
+  const { fullname, progress, itemtype, duedate, duedateState, id, native, imageSrc } = item;
 
   const DueDateWidget = (dueDate, dueDateState) => {
     if (!dueDate) return <View testID={"test_noDueDate"} />;
@@ -87,7 +87,7 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
             style={currentLearningListViewStyles.itemTitle}
             testID={"test_CurrentLearningItem_Title"}
             numberOfLines={2}>
-            {shortname}
+            {fullname}
           </Text>
           <View style={currentLearningListViewStyles.itemSubLine}>
             <Text style={currentLearningListViewStyles.itemLearningTypeLabel} testID={"test_CurrentLearningItem_Type"}>
@@ -133,7 +133,7 @@ const currentLearningListViewStyles = StyleSheet.create({
     alignItems: "flex-end"
   },
   itemProgress: {
-    alignSelf: "center",
+    alignSelf: "flex-start",
     alignContent: "center"
   },
   imageWrap: {

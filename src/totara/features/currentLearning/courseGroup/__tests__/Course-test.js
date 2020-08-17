@@ -22,29 +22,14 @@ const navigate = jest.fn();
 
 describe("Course", () => {
   it("Should render when learning item-row show default image", async () => {
-    const { getByTestId } = render(
-      <Course course={course} navigate={navigate} />
-    );
+    const { getByTestId } = render(<Course course={course} navigate={navigate} />);
     const defaultImage = getByTestId("test_default_image");
     expect(defaultImage).toBeTruthy();
   });
 
   it("Should render when learning item-row show full name", async () => {
-    const { getByTestId } = render(
-      <Course course={course} navigate={navigate} />
-    );
+    const { getByTestId } = render(<Course course={course} navigate={navigate} />);
     const fullName = getByTestId("test_course_full_name");
     expect(fullName.children[0]).toBe("Course Completion");
-  });
-
-  it("Should render when learning item-row show course summary", async () => {
-    const { getByTestId } = render(
-      <Course course={course} navigate={navigate} />
-    );
-    const summary = getByTestId("test_course_summary");
-
-    expect(summary.children[0]).toBe(
-      "When my current learning content is complete."
-    );
   });
 });

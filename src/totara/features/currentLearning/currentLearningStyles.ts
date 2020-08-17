@@ -47,9 +47,13 @@ const learningDetailsStyles = StyleSheet.create({
     backgroundColor: colorNeutral2
   },
   itemCard: {
+    padding: paddings.paddingXL,
+    justifyContent: "flex-start",
+    flex: 1,
     backgroundColor: colorNeutral2
   },
   learningTypeLabelWrap: {
+    marginTop: margins.marginXS,
     borderRadius: borderRadius.borderRadiusM,
     borderStyle: "solid",
     borderWidth: 1,
@@ -72,7 +76,7 @@ const learningDetailsStyles = StyleSheet.create({
   programLabelText: {
     ...textXXSmall,
     textAlign: "center",
-    paddingLeft: paddings.paddingL,
+    padding: paddings.paddingL,
     paddingRight: paddings.paddingL,
     paddingTop: paddings.paddingXS,
     paddingBottom: paddings.paddingXS,

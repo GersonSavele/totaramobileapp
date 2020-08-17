@@ -14,13 +14,7 @@
  */
 
 import React, { useState } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  ImageSourcePropType
-} from "react-native";
+import { Text, TouchableOpacity, View, Image, ImageSourcePropType } from "react-native";
 import { ImageWrapper } from "@totara/components";
 import { NAVIGATION } from "@totara/lib/navigation";
 import NativeAccessRestriction from "../NativeAccessRestriction";
@@ -55,42 +49,32 @@ const Course = ({ course, navigate, testID }: CourseProps) => {
         } else {
           setShowRestriction(true);
         }
-      }}
-      activeOpacity={1.0}>
+      }}>
       <View style={rowItem.container}>
-        {course.imageSrc && course.imageSrc.length > 0 ? (
-          <ImageWrapper url={course.imageSrc} style={rowItem.imageWrapper} />
-        ) : (
-          <Image
-            style={rowItem.imageWrapper}
-            source={Images.defaultCourses as ImageSourcePropType}
-            testID={"test_default_image"}
-          />
-        )}
+        <View style={rowItem.imageWrapper}>
+          {course.imageSrc && course.imageSrc.length > 0 ? (
+            <ImageWrapper url={course.imageSrc} style={rowItem.imageWrapper} />
+          ) : (
+            <Image
+              style={rowItem.image}
+              source={Images.defaultCourses as ImageSourcePropType}
+              testID={"test_default_image"}
+            />
+          )}
+        </View>
         <View style={rowItem.detailsWrapper}>
-          <Text
-            style={rowItem.courseName}
-            numberOfLines={1}
-            testID={"test_course_full_name"}>
+          <Text style={rowItem.courseName} numberOfLines={2} testID={"test_course_full_name"}>
             {course.fullname}
-          </Text>
-          <Text
-            style={rowItem.courseSummary}
-            numberOfLines={1}
-            testID={"test_course_summary"}>
-            {course.summary}
           </Text>
         </View>
       </View>
       <View
         style={{
           ...listViewStyles.thinSeparator,
-          marginLeft: margins.margin3XL
+          marginLeft: margins.marginL
         }}
       />
-      {showRestriction && (
-        <NativeAccessRestriction onClose={onClose} urlView={course.urlView!} />
-      )}
+      {showRestriction && <NativeAccessRestriction onClose={onClose} urlView={course.urlView!} />}
     </TouchableOpacity>
   );
 };
