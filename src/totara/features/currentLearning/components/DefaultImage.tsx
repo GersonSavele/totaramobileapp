@@ -19,8 +19,8 @@ const defaultImages = {
 const DefaultImage = ({ itemType, style }: DefaultImageProps) => {
   const defaultImage = defaultImages[itemType];
   return (
-    <View style={styles.imageContainer}>
-      <Image style={[styles.imageWrap, style && style]} source={defaultImage as ImageSourcePropType} />
+    <View style={[styles.imageContainer, style]}>
+      <Image style={[styles.imageWrap, style]} source={defaultImage as ImageSourcePropType} resizeMode={"contain"} />
     </View>
   );
 };
