@@ -20,16 +20,13 @@ import { TotaraTheme } from "@totara/theme/Theme";
 
 const overviewStyles = StyleSheet.create({
   scrollViewContainer: {
-    paddingTop: paddings.paddingXL,
     paddingHorizontal: paddings.paddingL
   },
   container: {
     ...shadow.ios,
     ...shadow.android,
     backgroundColor: TotaraTheme.colorNeutral1,
-    borderColor: TotaraTheme.colorNeutral2,
     borderRadius: borderRadius.borderRadiusM,
-    borderWidth: 0.5,
     marginVertical: margins.marginL,
     marginHorizontal: margins.marginXS
   },

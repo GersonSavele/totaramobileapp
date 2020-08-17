@@ -94,11 +94,7 @@ const shadow = {
   ios: {
     shadowColor: TotaraTheme.colorNeutral7,
     shadowOpacity: opacities.opacityS,
-    shadowRadius: borderRadius.borderRadiusM,
-    shadowOffset: {
-      width: 0,
-      height: 14
-    }
+    shadowRadius: borderRadius.borderRadiusM
   }
 };
 

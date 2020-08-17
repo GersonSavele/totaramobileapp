@@ -113,9 +113,6 @@ const courseSet = StyleSheet.create({
     ...shadow.ios,
     ...shadow.android,
     borderRadius: borderRadius.borderRadiusM,
-    shadowOpacity: opacities.opacityS,
-    shadowRadius: borderRadius.borderRadiusM,
-    shadowColor: TotaraTheme.colorNeutral8,
     backgroundColor: TotaraTheme.colorNeutral1
   },
   itemContainer: {
@@ -193,9 +190,10 @@ const horizontalList = StyleSheet.create({
     paddingTop: paddings.padding2XL
   },
   listWrapper: {
+    ...shadow.ios,
     ...shadow.android,
+    marginBottom: margins.marginM,
     borderRadius: borderRadius.borderRadiusM,
-    shadowOpacity: opacities.opacityS,
     backgroundColor: TotaraTheme.colorNeutral1
   }
 });
