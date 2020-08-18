@@ -62,7 +62,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
   };
 
   if (loading) return <Loading testID={"test_loading"} />;
-  if (error) return <LoadingError onRefreshTap={onContentRefresh} testID={"test_error"} />;
+  if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} testID={"test_error"} />;
 
   if (data) {
     const courseGroup = data[typeMap.queryAlias] as CourseGroup;

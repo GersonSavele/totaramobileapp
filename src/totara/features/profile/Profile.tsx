@@ -40,7 +40,7 @@ const Profile = ({ navigation }: ProfileProps) => {
   const { loading, error, data, refetch, networkStatus } = useQuery(userOwnProfile);
 
   if (loading) return <Loading testID={"test_ProfileLoading"} />;
-  if (error) return <LoadingError onRefreshTap={refetch} testID={"test_ProfileLoadingError"} />;
+  if (!data && error) return <LoadingError onRefreshTap={refetch} testID={"test_ProfileLoadingError"} />;
 
   return (
     <View>

@@ -3,14 +3,12 @@
 exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Once render, it will return child component 1`] = `
 <View
   style={
-    Array [
-      Object {
-        "alignItems": "center",
-        "flexDirection": "column",
-        "height": "100%",
-        "justifyContent": "center",
-      },
-    ]
+    Object {
+      "alignItems": "center",
+      "flexDirection": "column",
+      "height": "100%",
+      "justifyContent": "center",
+    }
   }
 >
   <View
@@ -25,40 +23,36 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     <Image
       source={
         Object {
-          "testUri": "../../../src/resources/images/general_error/general_error.png",
+          "testUri": "../../../src/resources/images/offline/offline.png",
         }
       }
     />
     <Text
       style={
-        Array [
-          Object {
-            "color": "#000000",
-            "fontSize": 32,
-            "fontWeight": "700",
-            "lineHeight": 41,
-          },
-          Object {
-            "padding": 8,
-          },
-        ]
+        Object {
+          "color": "#000000",
+          "fontSize": 32,
+          "fontWeight": "700",
+          "lineHeight": 41,
+          "padding": 8,
+        }
       }
     >
-      Ooops!
+      translated content_error.title with undefined
     </Text>
     <Text
       style={
-        Array [
-          Object {
-            "color": "#000000",
-            "fontSize": 17,
-            "fontWeight": "400",
-            "lineHeight": 22,
-          },
-        ]
+        Object {
+          "color": "#000000",
+          "fontSize": 17,
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "marginHorizontal": 16,
+          "textAlign": "center",
+        }
       }
     >
-      Something went wrong
+      translated content_error.description with undefined
     </Text>
   </View>
   <View
@@ -117,14 +111,12 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
 exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Render loading state initially and return no component 1`] = `
 <View
   style={
-    Array [
-      Object {
-        "alignItems": "center",
-        "flexDirection": "column",
-        "height": "100%",
-        "justifyContent": "center",
-      },
-    ]
+    Object {
+      "alignItems": "center",
+      "flexDirection": "column",
+      "height": "100%",
+      "justifyContent": "center",
+    }
   }
 >
   <View
@@ -139,40 +131,36 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     <Image
       source={
         Object {
-          "testUri": "../../../src/resources/images/general_error/general_error.png",
+          "testUri": "../../../src/resources/images/offline/offline.png",
         }
       }
     />
     <Text
       style={
-        Array [
-          Object {
-            "color": "#000000",
-            "fontSize": 32,
-            "fontWeight": "700",
-            "lineHeight": 41,
-          },
-          Object {
-            "padding": 8,
-          },
-        ]
+        Object {
+          "color": "#000000",
+          "fontSize": 32,
+          "fontWeight": "700",
+          "lineHeight": 41,
+          "padding": 8,
+        }
       }
     >
-      Ooops!
+      translated content_error.title with undefined
     </Text>
     <Text
       style={
-        Array [
-          Object {
-            "color": "#000000",
-            "fontSize": 17,
-            "fontWeight": "400",
-            "lineHeight": 22,
-          },
-        ]
+        Object {
+          "color": "#000000",
+          "fontSize": 17,
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "marginHorizontal": 16,
+          "textAlign": "center",
+        }
       }
     >
-      Something went wrong
+      translated content_error.description with undefined
     </Text>
   </View>
   <View
@@ -231,14 +219,12 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
 exports[`Testing: Apollo MockedProvider should test three state such as loading, final and error Test result : Set mock-error response and return Error UI 1`] = `
 <View
   style={
-    Array [
-      Object {
-        "alignItems": "center",
-        "flexDirection": "column",
-        "height": "100%",
-        "justifyContent": "center",
-      },
-    ]
+    Object {
+      "alignItems": "center",
+      "flexDirection": "column",
+      "height": "100%",
+      "justifyContent": "center",
+    }
   }
 >
   <View
@@ -253,40 +239,36 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     <Image
       source={
         Object {
-          "testUri": "../../../src/resources/images/general_error/general_error.png",
+          "testUri": "../../../src/resources/images/offline/offline.png",
         }
       }
     />
     <Text
       style={
-        Array [
-          Object {
-            "color": "#000000",
-            "fontSize": 32,
-            "fontWeight": "700",
-            "lineHeight": 41,
-          },
-          Object {
-            "padding": 8,
-          },
-        ]
+        Object {
+          "color": "#000000",
+          "fontSize": 32,
+          "fontWeight": "700",
+          "lineHeight": 41,
+          "padding": 8,
+        }
       }
     >
-      Ooops!
+      translated content_error.title with undefined
     </Text>
     <Text
       style={
-        Array [
-          Object {
-            "color": "#000000",
-            "fontSize": 17,
-            "fontWeight": "400",
-            "lineHeight": 22,
-          },
-        ]
+        Object {
+          "color": "#000000",
+          "fontSize": 17,
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "marginHorizontal": 16,
+          "textAlign": "center",
+        }
       }
     >
-      Something went wrong
+      translated content_error.description with undefined
     </Text>
   </View>
   <View

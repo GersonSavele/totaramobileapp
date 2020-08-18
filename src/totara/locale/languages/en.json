@@ -90,6 +90,10 @@
     "action_primary": "Refresh",
     "action_tertiary": "Try in browser"
   },
+  "content_error":{
+    "title": "Content not available",
+    "description": "Please check your connection and try again"
+  },
   "incompatible_api": {
     "title": "Sorry",
     "description": "The URL is not compatible with the mobile app. Would you like to try in browser?",

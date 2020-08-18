@@ -30,19 +30,15 @@ type LoadingErrorProps = {
 
 const LoadingError = ({ onRefreshTap, testID }: LoadingErrorProps) => {
   return (
-    <View style={[styles.containerStyle]} testID={testID}>
+    <View style={styles.containerStyle} testID={testID}>
       <View style={styles.errorContainer}>
-        <Image source={Images.generalError} />
-        <Text style={[TotaraTheme.textH2, { padding: paddings.paddingL }]}>
-          Ooops!
-        </Text>
-        <Text style={[TotaraTheme.textRegular]}>Something went wrong</Text>
+        <Image source={Images.offline} />
+        <Text style={styles.textTitle}>{translate("content_error.title")}</Text>
+        <Text style={styles.testDescription}>{translate("content_error.description")}</Text>
       </View>
+
       <View style={styles.actionContainer}>
-        <PrimaryButton
-          onPress={onRefreshTap}
-          text={translate("general.try_again")}
-        />
+        <PrimaryButton onPress={onRefreshTap} text={translate("general.try_again")} />
       </View>
     </View>
   );
@@ -62,6 +58,15 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     padding: paddings.paddingL
+  },
+  textTitle: {
+    ...TotaraTheme.textH2,
+    padding: paddings.paddingL
+  },
+  testDescription: {
+    ...TotaraTheme.textRegular,
+    marginHorizontal: paddings.paddingXL,
+    textAlign: "center"
   }
 });
 

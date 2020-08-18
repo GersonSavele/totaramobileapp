@@ -31,6 +31,7 @@ import noDownloads from "./downloads/no_downloads.png";
 import totaraLogo from "./totara_logo/totara_logo.png";
 import noCurrentLearning from "./no_current_learning/no_current_learning.png";
 import attemptComplete from "./attempt_complete/attempt_complete.png";
+import offline from "./offline/offline.png";
 
 const Images = {
   autoCompleteTick,
@@ -48,7 +49,8 @@ const Images = {
   defaultCertifications,
   totaraLogo,
   noCurrentLearning,
-  attemptComplete
+  attemptComplete,
+  offline
 };
 
 export { Images };
