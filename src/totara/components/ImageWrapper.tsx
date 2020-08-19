@@ -35,6 +35,7 @@ const ImageWrapper = ({ url, style }: ImageWrapperType) => {
       style={style}
       source={{
         uri: url,
+        cache: "web",
         priority: FastImage.priority.normal,
         headers: {
           [AUTHORIZATION]: `Bearer ${apiKey}`
