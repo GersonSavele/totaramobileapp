@@ -258,7 +258,7 @@ const ScormSummary = ({
   if (isLoadingCurretStatus) {
     return <Loading testID={"summary_loading"} />;
   }
-  if (error) {
+  if (!scormBundle && error) {
     return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} />;
   }
   return (
