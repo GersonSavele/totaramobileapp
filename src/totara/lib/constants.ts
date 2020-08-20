@@ -54,6 +54,12 @@ enum scormLessonStatus {
   failed = "failed"
 }
 
+enum activityModType {
+  scorm = "scorm",
+  label = "label",
+  resource = "resource"
+}
+
 export {
   DEVICE_REGISTRATION,
   WEBVIEW_SECRET,
@@ -75,5 +81,6 @@ export {
   FILE_EXTENSION,
   scormLessonStatus,
   scormZipPackagePath,
-  offlineScormServerRoot
+  offlineScormServerRoot,
+  activityModType
 };

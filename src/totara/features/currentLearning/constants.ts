@@ -39,11 +39,6 @@ enum courseCriteria {
   selfComplete = "Self completion"
 }
 
-enum activityModType {
-  scorm = "scorm",
-  label = "label"
-}
-
 enum completionIconStateKey {
   notAvailable = "notAvailable",
   completed = "completed",
@@ -56,12 +51,4 @@ enum viewHeight {
   LearningItemCard = deviceScreen.height * 0.3
 }
 
-export {
-  learningItemEnum,
-  completionTrack,
-  completionStatus,
-  courseCriteria,
-  completionIconStateKey,
-  activityModType,
-  viewHeight
-};
+export { learningItemEnum, completionTrack, completionStatus, courseCriteria, completionIconStateKey, viewHeight };
