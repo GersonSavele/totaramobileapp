@@ -11,8 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
 import { fetchLastAttemptResult } from "../api";
@@ -63,9 +61,7 @@ describe("fetchLastAttemptResult", () => {
 
   it("Should throw an error, if fetch thorows an error", async (done) => {
     const mockError = "unknown error";
-    global.fetch = jest
-      .fn()
-      .mockImplementation(() => Promise.reject(mockError));
+    global.fetch = jest.fn().mockImplementation(() => Promise.reject(mockError));
     try {
       const result = await fetchLastAttemptResult({ scormId, apiKey, host });
       expect(result).toBeUndefined();

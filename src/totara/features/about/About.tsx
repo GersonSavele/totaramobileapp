@@ -1,5 +1,4 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import React from "react";
@@ -31,9 +29,7 @@ const About = () => {
         <Image source={Images.totaraLogo} style={styles.logo} />
       </View>
       <View style={styles.versionContainer} animation={"slideInUp"} delay={200}>
-        <Text style={styles.version}>{`${translate(
-          "general.version"
-        )} ${getVersion()} `}</Text>
+        <Text style={styles.version}>{`${translate("general.version")} ${getVersion()} `}</Text>
         <Text style={styles.build}>{`(${getBuildNumber()})`}</Text>
       </View>
     </View>

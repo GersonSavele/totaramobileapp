@@ -11,9 +11,8 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
+
 import React from "react";
 import { View, ImageSourcePropType } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";

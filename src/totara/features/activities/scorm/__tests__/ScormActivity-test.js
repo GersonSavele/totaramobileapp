@@ -11,9 +11,8 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
+
 import React from "react";
 import { MockedProvider } from "@apollo/react-testing";
 import * as ReactRedux from "react-redux";
@@ -296,9 +295,7 @@ describe("resourceListEffect", () => {
       setResourceState: setResourceStateMock,
       navigation: { dispatch: dispatchMock }
     })();
-    const selectedResource = resourceListMock.find(
-      (x) => x.customId === idMock
-    );
+    const selectedResource = resourceListMock.find((x) => x.customId === idMock);
     expect(setResourceStateMock).toHaveBeenCalledTimes(1);
     expect(setResourceStateMock).toHaveBeenCalledWith(selectedResource.state);
   });

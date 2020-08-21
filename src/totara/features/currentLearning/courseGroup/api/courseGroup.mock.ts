@@ -11,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import { GraphQLError } from "graphql";
@@ -60,9 +59,7 @@ const currentCourseSets = [
     id: "10",
     label: "Course Set A",
     nextsetoperator: "AND",
-    completionCriteria: [
-      "All courses in this set must be completed (unless this is an optional set)."
-    ],
+    completionCriteria: ["All courses in this set must be completed (unless this is an optional set)."],
     courses: [course],
     __typename: "totara_mobile_program_courseset"
   },
@@ -81,9 +78,7 @@ const currentCourseSet = [
     id: "10",
     label: "Course Set A",
     nextsetoperator: "OR",
-    completionCriteria: [
-      "All courses in this set must be completed (unless this is an optional set)."
-    ],
+    completionCriteria: ["All courses in this set must be completed (unless this is an optional set)."],
     courses: [course],
     __typename: "totara_mobile_program_courseset"
   }
@@ -176,8 +171,7 @@ const mockError = [
 ];
 
 const courseSetMock = {
-  endnote:
-    "Many dream, some try, but only a few achieve. You have made us all proud, keep up the good work.",
+  endnote: "Many dream, some try, but only a few achieve. You have made us all proud, keep up the good work.",
   completion: {
     statuskey: "completed",
     __typename: "totara_program_completion"
@@ -199,12 +193,4 @@ const courseSetListMock = {
   __typename: "totara_mobile_program"
 };
 
-export {
-  programMock,
-  certificationMock,
-  mockEmpty,
-  mockError,
-  courseSetMock,
-  courseSetListMock,
-  course
-};
+export { programMock, certificationMock, mockEmpty, mockError, courseSetMock, courseSetListMock, course };

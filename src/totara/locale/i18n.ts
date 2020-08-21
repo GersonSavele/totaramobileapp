@@ -1,7 +1,7 @@
 /**
  * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2019 onwards Totara Learning Solutions LTD
  *
  * Totara Enterprise is provided only to Totara Learning Solutions
  * LTD’s customers and partners, pursuant to the terms and
@@ -19,9 +19,7 @@ import moment from "moment";
 import { en, pt } from "@totara/locale/languages";
 
 const translations = { en, pt };
-const { languageTag } = RNLocalize.findBestAvailableLanguage(
-  Object.keys(translations)
-) || { languageTag: "en" };
+const { languageTag } = RNLocalize.findBestAvailableLanguage(Object.keys(translations)) || { languageTag: "en" };
 i18n.defaultLocale = languageTag;
 i18n.locale = languageTag;
 i18n.fallbacks = true;

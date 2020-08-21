@@ -1,5 +1,4 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import React, { useContext } from "react";

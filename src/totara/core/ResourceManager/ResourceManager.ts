@@ -1,153 +1,178 @@
-import {DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResult, unlink} from "react-native-fs"
-import {IResource, ResourceState} from "@totara/core/ResourceManager/Resource";
-import {unzip} from "react-native-zip-archive";
-import {DeleteStorage, RetrieveStorage, SaveStorage} from "@totara/core/ResourceManager/StorageManager";
-import {Log, showMessage} from "@totara/lib";
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
+
+import { DownloadBeginCallbackResult, downloadFile, DownloadProgressCallbackResult, unlink } from "react-native-fs";
+import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource";
+import { unzip } from "react-native-zip-archive";
+import { DeleteStorage, RetrieveStorage, SaveStorage } from "@totara/core/ResourceManager/StorageManager";
+import { Log, showMessage } from "@totara/lib";
 import { translate } from "@totara/locale";
 
 export type ResourceObserver = (resourceFile: IResource) => void;
 
-class ResourceManager{
-    private static instance: ResourceManager;
-    private constructor(){}
+class ResourceManager {
+  private static instance: ResourceManager;
+  private constructor() {}
 
-    public static getInstance(): ResourceManager {
-        return ResourceManager.instance;
-    }
+  public static getInstance(): ResourceManager {
+    return ResourceManager.instance;
+  }
 
-    public init = () =>{
-        if(!ResourceManager.instance){
-            ResourceManager.instance = new ResourceManager();
-            RetrieveStorage().then(saved =>{
-                if(!saved){
-                    ResourceManager.instance.files = [];
-                    return;
-                }
-                const parsed = JSON.parse(saved!);
-                ResourceManager.instance.files = Object.values(parsed);
-            });
+  public init = () => {
+    if (!ResourceManager.instance) {
+      ResourceManager.instance = new ResourceManager();
+      RetrieveStorage().then((saved) => {
+        if (!saved) {
+          ResourceManager.instance.files = [];
+          return;
         }
+        const parsed = JSON.parse(saved!);
+        ResourceManager.instance.files = Object.values(parsed);
+      });
     }
+  };
 
-    private observers: ResourceObserver[] = [];
+  private observers: ResourceObserver[] = [];
 
-    public attach(observer: ResourceObserver) : void {
-        this.observers.push(observer);
-    }
+  public attach(observer: ResourceObserver): void {
+    this.observers.push(observer);
+  }
 
-    public detach(observer: ResourceObserver) : void {
-        const observerIndex = this.observers.indexOf(observer);
-        this.observers.splice(observerIndex, 1);
-    }
+  public detach(observer: ResourceObserver): void {
+    const observerIndex = this.observers.indexOf(observer);
+    this.observers.splice(observerIndex, 1);
+  }
 
-    //FILES
-    private files: IResource[] = [];
+  //FILES
+  private files: IResource[] = [];
 
-    get snapshot() : IResource[] {
-        return [...this.files];
-    }
+  get snapshot(): IResource[] {
+    return [...this.files];
+  }
 
-    private downloadBegin = (id: string, res: DownloadBeginCallbackResult) =>{
-        this.update(id, 0, ResourceState.Downloading, res.contentLength);
+  private downloadBegin = (id: string, res: DownloadBeginCallbackResult) => {
+    this.update(id, 0, ResourceState.Downloading, res.contentLength);
+  };
+
+  private downloadProgress = (id: string, res: DownloadProgressCallbackResult) => {
+    const _completed = (res.bytesWritten / res.contentLength) * 100;
+    this.update(id, _completed, ResourceState.Downloading);
+  };
+
+  public download(
+    apiKey: string,
+    id: string,
+    name: string,
+    resourceUrl: string,
+    targetFile: string,
+    targetUnzipPath: string
+  ): void {
+    if (this.files.filter((x) => x.id === id).length > 0) return;
+
+    const newFile = {
+      id: id,
+      name: name,
+      resourceUrl: resourceUrl,
+      unzipPath: targetUnzipPath,
+      percentCompleted: 0,
+      state: ResourceState.Added
+    } as IResource;
+    this.files.push(newFile);
+    // this.notify(newFile);
+
+    const downloaderOptions = {
+      fromUrl: resourceUrl,
+      toFile: targetFile,
+      background: true,
+      begin: (res: DownloadBeginCallbackResult) => {
+        this.downloadBegin(id, res);
+      },
+      progress: (res: DownloadProgressCallbackResult) => {
+        this.downloadProgress(id, res);
+      },
+      progressDivider: 10,
+      headers: { Authorization: `Bearer ${apiKey}` }
     };
 
-    private downloadProgress = (id: string, res: DownloadProgressCallbackResult) =>{
-        const _completed = (res.bytesWritten/res.contentLength)*100;
-        this.update(id, _completed, ResourceState.Downloading);
-    };
-
-    public download(apiKey: string, id: string, name: string, resourceUrl: string, targetFile: string, targetUnzipPath: string) : void{
-        if(this.files.filter(x=>x.id === id).length>0)
-            return;
-
-        const newFile = {
-            id: id,
-            name: name,
-            resourceUrl: resourceUrl,
-            unzipPath: targetUnzipPath,
-            percentCompleted: 0,
-            state : ResourceState.Added} as IResource;
-        this.files.push(newFile);
-        // this.notify(newFile);
-
-        const downloaderOptions = {
-            fromUrl: resourceUrl,
-            toFile: targetFile,
-            background: true,
-            begin: (res: DownloadBeginCallbackResult)=>{
-                this.downloadBegin(id, res)
-            },
-            progress: (res: DownloadProgressCallbackResult)=>{
-                this.downloadProgress(id, res)
-            },
-            progressDivider: 10,
-            headers: { Authorization: `Bearer ${apiKey}`}
-        };
-
-        downloadFile(downloaderOptions).promise.then(response => {
-            if (response.statusCode === 200) {
-                return unzip(targetFile, targetUnzipPath);
-            } else {
-                this.update(id, 0, ResourceState.Errored);
-            }
-        }).then(()=>{
-            //console.log(targetFile);
-            return unlink(targetFile);
-        }).then(()=>{
-            const strObj = this.files.find(f=>f.id === id);
-            SaveStorage(id, strObj!);
-            this.update(id, 100, ResourceState.Completed);
-        })
-    }
-
-    public delete = async(id: string) => {
-        const idx = this.files.findIndex(f=>f.id === id);
-        if(idx<0)
-            return;
-
-        DeleteStorage(id);
-
-        const toBeUpdated =  Object.assign({}, this.files[idx]);
-        const files = [...this.files];
-        files.splice(idx, 1);
-
-        this.files = files;
-
-        toBeUpdated.state = ResourceState.Deleted;
-
-        try {
-            await unlink(toBeUpdated.unzipPath);
+    downloadFile(downloaderOptions)
+      .promise.then((response) => {
+        if (response.statusCode === 200) {
+          return unzip(targetFile, targetUnzipPath);
+        } else {
+          this.update(id, 0, ResourceState.Errored);
         }
-        catch(error){
-            showMessage({ text: translate('general.error_unknown') });
-            Log.error(error.toString(),error);
-        }
+      })
+      .then(() => {
+        //console.log(targetFile);
+        return unlink(targetFile);
+      })
+      .then(() => {
+        const strObj = this.files.find((f) => f.id === id);
+        SaveStorage(id, strObj!);
+        this.update(id, 100, ResourceState.Completed);
+      });
+  }
 
-        this.notify(toBeUpdated);
-    };
+  public delete = async (id: string) => {
+    const idx = this.files.findIndex((f) => f.id === id);
+    if (idx < 0) return;
 
-    public remove(id: string) : void {
-        this.files = this.files.filter(x=>x.id !== id);
+    DeleteStorage(id);
+
+    const toBeUpdated = Object.assign({}, this.files[idx]);
+    const files = [...this.files];
+    files.splice(idx, 1);
+
+    this.files = files;
+
+    toBeUpdated.state = ResourceState.Deleted;
+
+    try {
+      await unlink(toBeUpdated.unzipPath);
+    } catch (error) {
+      showMessage({ text: translate("general.error_unknown") });
+      Log.error(error.toString(), error);
     }
 
-    public update(id: string, percentage: number, state: ResourceState, sizeInBytes?: number){
-        this.files.filter(file=>file.id === id).map(file => {
-            file.percentCompleted = percentage;
-            file.state = state;
+    this.notify(toBeUpdated);
+  };
 
-            if(sizeInBytes) //ONLY FOR DOWNLOAD BEGIN
-                file.sizeInBytes = sizeInBytes!;
+  public remove(id: string): void {
+    this.files = this.files.filter((x) => x.id !== id);
+  }
 
-            return file;
-        });
+  public update(id: string, percentage: number, state: ResourceState, sizeInBytes?: number) {
+    this.files
+      .filter((file) => file.id === id)
+      .map((file) => {
+        file.percentCompleted = percentage;
+        file.state = state;
 
-        this.notify(this.files.filter(x=>x.id === id)[0]);
-    }
+        if (sizeInBytes)
+          //ONLY FOR DOWNLOAD BEGIN
+          file.sizeInBytes = sizeInBytes!;
 
-    public notify(file: IResource){
-        this.observers.forEach(observer => observer(file));
-    }
+        return file;
+      });
+
+    this.notify(this.files.filter((x) => x.id === id)[0]);
+  }
+
+  public notify(file: IResource) {
+    this.observers.forEach((observer) => observer(file));
+  }
 }
-
 
 export default ResourceManager;

@@ -11,17 +11,10 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import React, { useState, ReactNode } from "react";
-import {
-  Animated,
-  View,
-  LayoutChangeEvent,
-  RefreshControl,
-  StyleSheet
-} from "react-native";
+import { Animated, View, LayoutChangeEvent, RefreshControl, StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { deviceScreen } from "@totara/lib/tools";
 type ParallaxScrollViewProps = {
@@ -36,10 +29,7 @@ type ParallaxScrollViewProps = {
   children?: ReactNode;
   onPullToRefresh: () => void;
 };
-const interpolate = (
-  value: Animated.Value,
-  opts: Animated.InterpolationConfigType
-) => {
+const interpolate = (value: Animated.Value, opts: Animated.InterpolationConfigType) => {
   const x = value.interpolate(opts);
   return x;
 };
@@ -79,9 +69,7 @@ const ParallaxScrollView = ({
   const containerStyles = [{ backgroundColor: TotaraTheme.colorAccent }];
 
   return (
-    <View
-      style={[parallaxScrollViewStyles.container]}
-      onLayout={(e) => updateViewDimensions(e)}>
+    <View style={[parallaxScrollViewStyles.container]} onLayout={(e) => updateViewDimensions(e)}>
       <Animated.View
         style={[
           parallaxScrollViewStyles.backgroundImage,
@@ -90,12 +78,7 @@ const ParallaxScrollView = ({
             height: parallaxHeaderHeight,
             width: viewWidth,
             opacity: interpolate(scrollY, {
-              inputRange: [
-                0,
-                parallaxHeaderHeight * (1 / 2),
-                parallaxHeaderHeight * (3 / 4),
-                parallaxHeaderHeight
-              ],
+              inputRange: [0, parallaxHeaderHeight * (1 / 2), parallaxHeaderHeight * (3 / 4), parallaxHeaderHeight],
               outputRange: [1, 0.9, 0.9, 0.9],
               extrapolate: "clamp"
             }),
@@ -123,20 +106,15 @@ const ParallaxScrollView = ({
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           onMomentumScrollEnd={onScrollForHeaderVisibility}
-          refreshControl={
-            <RefreshControl refreshing={false} onRefresh={onPullToRefresh} />
-          }
+          refreshControl={<RefreshControl refreshing={false} onRefresh={onPullToRefresh} />}
         />,
         {
           style: [parallaxScrollViewStyles.scrollView],
           scrollEventThrottle: 10,
           stickyHeaderIndices: [2],
-          onScroll: Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            {
-              useNativeDriver: true
-            }
-          )
+          onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+            useNativeDriver: true
+          })
         },
         <View style={parallaxScrollViewStyles.parallaxHeaderContainer}>
           <Animated.View

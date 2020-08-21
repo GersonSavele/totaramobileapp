@@ -1,5 +1,4 @@
-/*
- *
+/**
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import React from "react";
@@ -31,24 +29,14 @@ type Props = {
   fontAwesomeIcon?: boolean;
 };
 
-const CircleIcon = ({
-  icon,
-  backgroundColor,
-  iconColor,
-  borderColor,
-  fontAwesomeIcon = true
-}: Props) => {
+const CircleIcon = ({ icon, backgroundColor, iconColor, borderColor, fontAwesomeIcon = true }: Props) => {
   return (
     <View
       style={[
         styles.iconCircle,
         {
-          backgroundColor:
-            backgroundColor == null
-              ? TotaraTheme.textColorDark
-              : backgroundColor,
-          borderColor:
-            borderColor == null ? TotaraTheme.textColorDark : borderColor
+          backgroundColor: backgroundColor == null ? TotaraTheme.textColorDark : backgroundColor,
+          borderColor: borderColor == null ? TotaraTheme.textColorDark : borderColor
         }
       ]}>
       {icon &&

@@ -1,22 +1,16 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
 import React, { useEffect, useState, useRef } from "react";
@@ -31,12 +25,7 @@ import { translate } from "@totara/locale";
 import { useApolloClient } from "@apollo/react-hooks";
 import { get, isEmpty } from "lodash";
 
-import {
-  setScormActivityData,
-  getScormAttemptData,
-  retrieveAllData,
-  saveInTheCache
-} from "./storageUtils";
+import { setScormActivityData, getScormAttemptData, retrieveAllData, saveInTheCache } from "./storageUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 import { ResourceType } from "@totara/types/Resource";
@@ -65,28 +54,17 @@ const { NONE_EXIST_RESOURCE_ID, INVALID_SCORM_ID } = SCORM_TEST_IDS;
 const getResources = (state: RootState) => state.resourceReducer.resources;
 
 const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
-  const { scorm, attempt, scoid, backAction } = navigation.state
-    .params as OfflineScormParams;
+  const { scorm, attempt, scoid, backAction } = navigation.state.params as OfflineScormParams;
   if (!scorm || !scorm.id) {
-    return (
-      <Text testID={INVALID_SCORM_ID}>
-        {translate("general.error_unknown")}
-      </Text>
-    );
+    return <Text testID={INVALID_SCORM_ID}>{translate("general.error_unknown")}</Text>;
   }
 
   const resourcesList = useSelector(getResources);
   const targetResource = resourcesList.find(
-    (resource) =>
-      resource.customId === scorm.id &&
-      resource.type === ResourceType.ScormActivity
+    (resource) => resource.customId === scorm.id && resource.type === ResourceType.ScormActivity
   );
   if (!targetResource) {
-    return (
-      <Text testID={NONE_EXIST_RESOURCE_ID}>
-        {translate("general.error_unknown")}
-      </Text>
-    );
+    return <Text testID={NONE_EXIST_RESOURCE_ID}>{translate("general.error_unknown")}</Text>;
   }
 
   const server = useRef<StaticServer>(null);
@@ -145,16 +123,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   );
 };
 
-const packageEffect = ({
-  url,
-  scos,
-  scorm,
-  attempt,
-  client,
-  scoid,
-  defaultSco,
-  setJsCode
-}) => () => {
+const packageEffect = ({ url, scos, scorm, attempt, client, scoid, defaultSco, setJsCode }) => () => {
   if (url && scos) {
     const { id, newAttemptDefaults } = scorm;
     const cmiData = getScormAttemptData({
@@ -178,13 +147,7 @@ const packageEffect = ({
   }
 };
 
-const loadedScormEffect = ({
-  server,
-  setUrl,
-  scormPackageData,
-  setScormPackageData,
-  backAction
-}) => () => {
+const loadedScormEffect = ({ server, setUrl, scormPackageData, setScormPackageData, backAction }) => () => {
   setupOfflineScormPlayer()
     .then((offlineServerPath) => {
       if (!isEmpty(offlineServerPath)) {
@@ -208,10 +171,7 @@ const loadedScormEffect = ({
       Log.debug(e.messageData);
     });
 
-  const backHandler = BackHandler.addEventListener(
-    "hardwareBackPress",
-    backAction
-  );
+  const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
   return () => backHandler.remove();
 };
 
@@ -235,17 +195,10 @@ const startServer = (path: string, server: React.MutableRefObject<any>) => {
   return server.current.start();
 };
 
-const onPlayerMessageHandler = ({ client, maxGrade, gradeMethod }) => (
-  messageData: any
-) => {
+const onPlayerMessageHandler = ({ client, maxGrade, gradeMethod }) => (messageData: any) => {
   const { tmsevent, result } = messageData;
   const status = get(result, "cmi.core.lesson_status", undefined);
-  if (
-    tmsevent &&
-    tmsevent === "SCORMCOMMIT" &&
-    status &&
-    status !== scormLessonStatus.incomplete
-  ) {
+  if (tmsevent && tmsevent === "SCORMCOMMIT" && status && status !== scormLessonStatus.incomplete) {
     const scormBundles = retrieveAllData({ client });
     const newData = setScormActivityData({
       scormBundles,

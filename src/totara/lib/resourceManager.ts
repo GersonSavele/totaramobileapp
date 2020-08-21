@@ -1,5 +1,4 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 /**
@@ -34,11 +32,7 @@ import {
 import { Resource } from "@totara/types";
 import { ResourceState, ResourceType } from "@totara/types/Resource";
 import { uuid } from "@totara/lib/tools";
-import {
-  addResource,
-  updateResource,
-  deleteResource as storeDeleteResource
-} from "../actions/resource";
+import { addResource, updateResource, deleteResource as storeDeleteResource } from "../actions/resource";
 import { store } from "../store";
 
 const onDownloadBegin = (id: string, res: DownloadBeginCallbackResult) => {
@@ -51,10 +45,7 @@ const onDownloadBegin = (id: string, res: DownloadBeginCallbackResult) => {
   });
 };
 
-const onDownloadProgress = (
-  id: string,
-  res: DownloadProgressCallbackResult
-) => {
+const onDownloadProgress = (id: string, res: DownloadProgressCallbackResult) => {
   updateResource({
     id: id,
     jobId: res.jobId,
@@ -82,15 +73,7 @@ type downloadProps = {
   targetExtractPath: string;
 };
 
-const download = ({
-  apiKey,
-  customId,
-  type,
-  name,
-  resourceUrl,
-  targetPathFile,
-  targetExtractPath
-}: downloadProps) => {
+const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, targetExtractPath }: downloadProps) => {
   const id = uuid();
 
   const downloaderOptions = {
@@ -129,8 +112,7 @@ const download = ({
         subscribe(({ progress, filePath }) => {
           // the filePath is always empty on iOS for zipping.
           // eslint-disable-next-line no-undef
-          if (__DEV__)
-            console.log(`progress: ${progress}\nprocessed at: ${filePath}`);
+          if (__DEV__) console.log(`progress: ${progress}\nprocessed at: ${filePath}`);
         });
 
         return unzip(targetPathFile, targetExtractPath);
@@ -170,15 +152,9 @@ const deleteResource = (ids: string[]) => {
 
 const resumeDownloads = () => {
   const resources = store.getState().resourceReducer.resources;
-  const statesForResume = [
-    ResourceState.Added,
-    ResourceState.Errored,
-    ResourceState.Downloading
-  ];
+  const statesForResume = [ResourceState.Added, ResourceState.Errored, ResourceState.Downloading];
   const filteredJobId = resources
-    .filter((resource) =>
-      statesForResume.some((state) => state === resource.state)
-    )
+    .filter((resource) => statesForResume.some((state) => state === resource.state))
     .map((resource) => resource.jobId);
 
   filteredJobId.forEach((id) => {

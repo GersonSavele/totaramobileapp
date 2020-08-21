@@ -11,8 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
 import { scormQuery } from ".";

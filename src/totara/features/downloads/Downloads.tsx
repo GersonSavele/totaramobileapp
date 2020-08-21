@@ -1,5 +1,4 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,19 +11,10 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  Image,
-  ImageSourcePropType,
-  ListRenderItemInfo,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
+import { FlatList, Image, ImageSourcePropType, ListRenderItemInfo, StyleSheet, Text, View } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { useSelector } from "react-redux";
 import headerStyles from "@totara/theme/headers";
@@ -47,9 +37,7 @@ type DownloadsProps = {
 };
 
 const Downloads = ({ navigation }: DownloadsProps) => {
-  const resourcesList = useSelector(
-    (state: RootState) => state.resourceReducer.resources
-  );
+  const resourcesList = useSelector((state: RootState) => state.resourceReducer.resources);
 
   const [selectable, setSelectable] = useState(false);
   const [selectedList, setSelectedList] = useState<string[]>([]);
@@ -59,14 +47,8 @@ const Downloads = ({ navigation }: DownloadsProps) => {
       : translate("downloads.title");
 
   useEffect(() => {
-    const onCancelTapListener = navigation.addListener(
-      "onCancelTap",
-      onCancelTap
-    );
-    const onDeleteTapListener = navigation.addListener(
-      "onDeleteTap",
-      onDeleteTap
-    );
+    const onCancelTapListener = navigation.addListener("onCancelTap", onCancelTap);
+    const onDeleteTapListener = navigation.addListener("onDeleteTap", onDeleteTap);
     return () => {
       onCancelTapListener.remove();
       onDeleteTapListener.remove();
@@ -151,18 +133,14 @@ const Downloads = ({ navigation }: DownloadsProps) => {
         {resourcesList.length == 0 ? (
           <View style={styles.noContent} testID={"test_DownloadsEmptyState"}>
             <Image source={Images.noDownloads as ImageSourcePropType} />
-            <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>
-              {translate("downloads.empty")}
-            </Text>
+            <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>{translate("downloads.empty")}</Text>
           </View>
         ) : (
           <FlatList
             contentContainerStyle={listViewStyles.contentContainerStyle}
             data={resourcesList}
             keyExtractor={(resourceItem) => resourceItem.id}
-            ItemSeparatorComponent={() => (
-              <View style={listViewStyles.itemSeparator} />
-            )}
+            ItemSeparatorComponent={() => <View style={listViewStyles.itemSeparator} />}
             renderItem={(data: ListRenderItemInfo<Resource>) => (
               <DownloadItem
                 testID={"test_DownloadsItem"}

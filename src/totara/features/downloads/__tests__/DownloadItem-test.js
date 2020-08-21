@@ -1,3 +1,18 @@
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
+
 import { act, fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import DownloadItem from "@totara/features/downloads/DownloadItem";
@@ -15,9 +30,7 @@ describe("DownloadItem", () => {
     const { getByTestId } = render(<DownloadItem item={itemMega} />);
 
     const test_DownloadItemItemID = getByTestId("test_DownloadItemItemID");
-    expect(test_DownloadItemItemID.props.testID).toBe(
-      "test_DownloadItemItemID"
-    );
+    expect(test_DownloadItemItemID.props.testID).toBe("test_DownloadItemItemID");
 
     const test_DownloadItemName = getByTestId("test_DownloadItemName");
     expect(test_DownloadItemName.children[0]).toBe(itemMega.name);
@@ -49,9 +62,7 @@ describe("DownloadItem", () => {
 
   it("Should render DownloadItem WITH select option", () => {
     const item = { ...downloadItemMockAdded };
-    const { getByTestId } = render(
-      <DownloadItem item={item} selectable={true} />
-    );
+    const { getByTestId } = render(<DownloadItem item={item} selectable={true} />);
     expect(getByTestId("test_DownloadItemSelectIcon")).toBeTruthy();
   });
 
@@ -67,11 +78,7 @@ describe("DownloadItem", () => {
 
     const onItemPressCallback = jest.fn();
     const { getByTestId } = render(
-      <DownloadItem
-        item={item}
-        onItemPress={onItemPressCallback}
-        testID={"test_DownloadItem"}
-      />
+      <DownloadItem item={item} onItemPress={onItemPressCallback} testID={"test_DownloadItem"} />
     );
 
     fireEvent.press(getByTestId("test_DownloadItem"));
@@ -86,11 +93,7 @@ describe("DownloadItem", () => {
 
     const onItemLongPressCallback = jest.fn();
     const { getByTestId } = render(
-      <DownloadItem
-        item={item}
-        onItemLongPress={onItemLongPressCallback}
-        testID={"test_DownloadItem"}
-      />
+      <DownloadItem item={item} onItemLongPress={onItemLongPressCallback} testID={"test_DownloadItem"} />
     );
 
     fireEvent.longPress(getByTestId("test_DownloadItem"));

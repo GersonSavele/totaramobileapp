@@ -11,18 +11,10 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  Linking,
-  ImageSourcePropType
-} from "react-native";
+import { View, StyleSheet, Image, Text, Linking, ImageSourcePropType } from "react-native";
 
 import { PrimaryButton } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -39,9 +31,7 @@ const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
   return (
     <View style={styles.containerStyle} testID={testID}>
       <Image source={Images.noCurrentLearning as ImageSourcePropType} />
-      <Text style={styles.noCurrentLearningDescription}>
-        {translate("current_learning.no_learning_message")}
-      </Text>
+      <Text style={styles.noCurrentLearningDescription}>{translate("current_learning.no_learning_message")}</Text>
       <View style={styles.goToBrowserAction}>
         <AuthConsumer>
           {(auth) =>
@@ -51,9 +41,7 @@ const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
                 onPress={() => {
                   Linking.openURL(auth.authContextState.appState!.host);
                 }}
-                text={translate(
-                  "additional_actions_modal.auth_model_go_to_browser"
-                )}
+                text={translate("additional_actions_modal.auth_model_go_to_browser")}
                 icon="external-link-alt"
                 style={{ alignSelf: "center" }}
               />

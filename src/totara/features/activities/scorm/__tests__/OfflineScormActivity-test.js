@@ -11,8 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
 import React from "react";
@@ -159,14 +157,9 @@ describe("loadedScormEffect", () => {
   const loadScormPackageDataReturnMock = Promise.resolve({
     data: "mock return loadScormPackageData"
   });
-  const setupOfflineScormPlayerReturnMock = Promise.resolve(
-    "path://scormplayer/root"
-  );
+  const setupOfflineScormPlayerReturnMock = Promise.resolve("path://scormplayer/root");
 
-  const setupOfflineScormPlayerSpy = jest.spyOn(
-    utils,
-    "setupOfflineScormPlayer"
-  );
+  const setupOfflineScormPlayerSpy = jest.spyOn(utils, "setupOfflineScormPlayer");
   setupOfflineScormPlayerSpy.mockReturnValue(setupOfflineScormPlayerReturnMock);
 
   afterEach(() => {
@@ -188,9 +181,7 @@ describe("loadedScormEffect", () => {
 
   it("should not call setScormPackageData, if loadScormPackageData throws error", async () => {
     const loadScormPackageDataSpy = jest.spyOn(utils, "loadScormPackageData");
-    loadScormPackageDataSpy.mockReturnValue(
-      Promise.reject(new Error("load scorm error"))
-    );
+    loadScormPackageDataSpy.mockReturnValue(Promise.reject(new Error("load scorm error")));
 
     await loadedScormEffect({
       server: serverMock,

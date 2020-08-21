@@ -1,22 +1,16 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
 import { useEffect, useState } from "react";
@@ -26,12 +20,7 @@ import { isEmpty, get } from "lodash";
 
 import { showMessage, Log } from "@totara/lib";
 import { translate } from "@totara/locale";
-import {
-  getOfflineScormCommits,
-  setCleanScormCommit,
-  retrieveAllData,
-  saveInTheCache
-} from "./storageUtils";
+import { getOfflineScormCommits, setCleanScormCommit, retrieveAllData, saveInTheCache } from "./storageUtils";
 import { mutationAttempts } from "./api";
 
 type SyncData = {
@@ -63,12 +52,7 @@ type PropsSyncSeverScormAttempt = {
   saveAttempt: Function;
 };
 
-const syncScormAttempt = ({
-  syncData,
-  unSyncData,
-  client,
-  saveAttempt
-}: SyncScormAttemptProps) =>
+const syncScormAttempt = ({ syncData, unSyncData, client, saveAttempt }: SyncScormAttemptProps) =>
   syncServerWithScormAttempt({ ...syncData, saveAttempt })
     .then((isSynced) => {
       if (isSynced) {
@@ -91,11 +75,7 @@ const syncScormAttempt = ({
       return newUnsyncData;
     });
 
-const syncServerWithScormAttempt = ({
-  scormId,
-  tracks,
-  saveAttempt
-}: PropsSyncSeverScormAttempt) =>
+const syncServerWithScormAttempt = ({ scormId, tracks, saveAttempt }: PropsSyncSeverScormAttempt) =>
   saveAttempt({
     variables: {
       scormid: scormId,
@@ -103,11 +83,7 @@ const syncServerWithScormAttempt = ({
     }
   }).then((responce) => {
     if (!isEmpty(responce)) {
-      const attemptsAccepted = get(
-        responce,
-        "data.attempts.attempts_accepted",
-        undefined
-      );
+      const attemptsAccepted = get(responce, "data.attempts.attempts_accepted", undefined);
       if (!isEmpty(attemptsAccepted)) {
         return !attemptsAccepted.includes(false);
       }

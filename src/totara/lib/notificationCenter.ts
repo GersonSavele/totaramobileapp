@@ -1,6 +1,4 @@
-/* eslint-disable no-undef */
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -13,8 +11,9 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
+
+/* eslint-disable no-undef */
 
 import messaging from "@react-native-firebase/messaging";
 import { Log } from "@totara/lib/logger";
@@ -23,9 +22,7 @@ import moment from "moment";
 
 const receivedMessageHandler = (notificationDispatch: any, message: any) => {
   const messageData = message.data;
-  const randomId =
-    new Date().getTime().toString(16) +
-    Math.floor(1e7 * Math.random()).toString(16);
+  const randomId = new Date().getTime().toString(16) + Math.floor(1e7 * Math.random()).toString(16);
 
   const notificationMessage: NotificationMessage = {
     id: randomId,
@@ -44,11 +41,7 @@ const receivedMessageHandler = (notificationDispatch: any, message: any) => {
 
 const handleMessagesInBackground = () => {
   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    __DEV__ &&
-      Log.info(
-        "Message handled in the BACKGROUND: ",
-        JSON.stringify(remoteMessage)
-      );
+    __DEV__ && Log.info("Message handled in the BACKGROUND: ", JSON.stringify(remoteMessage));
   });
 };
 
@@ -61,10 +54,7 @@ const init = (notificationDispatch) => {
     });
 
   return messaging().onMessage(async (remoteMessage) => {
-    __DEV__ &&
-      Log.info(
-        `Message handled in the FOREGROUND: ${JSON.stringify(remoteMessage)}`
-      );
+    __DEV__ && Log.info(`Message handled in the FOREGROUND: ${JSON.stringify(remoteMessage)}`);
     receivedMessageHandler(notificationDispatch, remoteMessage);
   });
 };

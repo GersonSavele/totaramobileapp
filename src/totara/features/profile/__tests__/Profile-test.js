@@ -1,10 +1,22 @@
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
+
 import React from "react";
 import { act, cleanup, fireEvent, render } from "@testing-library/react-native";
 import { MockedProvider } from "@apollo/react-testing";
-import {
-  profileMock,
-  profileMockError
-} from "@totara/features/profile/api/profile.mock";
+import { profileMock, profileMockError } from "@totara/features/profile/api/profile.mock";
 import Profile from "@totara/features/profile/Profile";
 import wait from "waait";
 
@@ -66,9 +78,7 @@ describe("Profile", () => {
     const profile = profileMock[0].result.data.profile;
 
     const test_ProfileUserDetails = getByTestId("test_ProfileUserDetails");
-    expect(test_ProfileUserDetails.children[0]).toBe(
-      `${profile.firstname} ${profile.surname}`
-    );
+    expect(test_ProfileUserDetails.children[0]).toBe(`${profile.firstname} ${profile.surname}`);
 
     const test_ProfileUserEmail = getByTestId("test_ProfileUserEmail");
     expect(test_ProfileUserEmail.children[0]).toBe(profile.email);

@@ -1,23 +1,16 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Jun Yamog <jun.yamog@totaralearning.com>
- *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
 import React, { useRef, useContext } from "react";
@@ -44,7 +37,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
     didReceiveOnMessage,
     canWebGoBackward,
     canWebGoForward,
-    onLogViewNavigate,
+    onLogViewNavigate
   } = useWebviewFlow(props);
 
   const jsCode =
@@ -56,10 +49,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
 
   return (
     <Container style={[theme.viewContainer, { flex: 0 }]}>
-      <Header
-        style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]}
-        iosBarStyle={"default"}
-      >
+      <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
         <TouchableIcon
           icon={"times"}
           onPress={cancelLogin}
@@ -72,13 +62,9 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
             color={theme.navigationHeaderTintColor}
           />
           <Text
-            style={[
-              styles.addressText,
-              { color: theme.navigationHeaderTintColor },
-            ]}
+            style={[styles.addressText, { color: theme.navigationHeaderTintColor }]}
             numberOfLines={1}
-            ellipsizeMode={"tail"}
-          >
+            ellipsizeMode={"tail"}>
             {navEndPoint}
           </Text>
         </View>
@@ -88,7 +74,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
           ref={refLoginWebview}
           source={{
             uri: loginUrl,
-            headers: { [DEVICE_REGISTRATION]: config.userAgent },
+            headers: { [DEVICE_REGISTRATION]: config.userAgent }
           }}
           userAgent={config.userAgent}
           javaScriptEnabled={true}
@@ -97,9 +83,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
           onNavigationStateChange={onLogViewNavigate}
         />
       </Content>
-      <Footer
-        style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}
-      >
+      <Footer style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
         <View style={styles.barContent}>
           <TouchableIcon
             icon={"chevron-left"}
@@ -138,28 +122,28 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
 const styles = StyleSheet.create({
   navigation: {
     flexDirection: "row",
-    borderBottomWidth: 0,
+    borderBottomWidth: 0
   },
   addressContainer: {
     marginHorizontal: 40,
     flexDirection: "row",
     flex: 1,
     alignSelf: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   addressText: {
     marginLeft: 4,
-    flex: 1,
+    flex: 1
   },
   footer: {
     flexDirection: "row",
     borderTopWidth: 0,
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   barContent: {
     flexDirection: "row",
-    alignSelf: "flex-start",
-  },
+    alignSelf: "flex-start"
+  }
 });
 
 export default WebviewLogin;

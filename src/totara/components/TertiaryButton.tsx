@@ -1,8 +1,7 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2019 onwards Totara Learning Solutions LTD
  *
  * Totara Enterprise is provided only to Totara Learning Solutions
  * LTD’s customers and partners, pursuant to the terms and
@@ -12,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import React, { ReactNode, useContext } from "react";
@@ -29,24 +27,11 @@ type Props = {
   testID?: string;
 };
 
-const TertiaryButton = ({
-  text = "",
-  style,
-  onPress,
-  testID,
-  ...rest
-}: Props) => {
+const TertiaryButton = ({ text = "", style, onPress, testID, ...rest }: Props) => {
   const [theme] = useContext(ThemeContext);
 
   return (
-    <Button
-      block
-      rounded
-      transparent
-      testID={testID}
-      onPress={onPress}
-      style={[styles.button, style]}
-      {...rest}>
+    <Button block rounded transparent testID={testID} onPress={onPress} style={[styles.button, style]} {...rest}>
       <Text
         style={{
           color: theme.textColorDark,

@@ -11,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 import { StyleSheet } from "react-native";
 import { margins, paddings, borderRadius, shadow } from "@totara/theme/constants";

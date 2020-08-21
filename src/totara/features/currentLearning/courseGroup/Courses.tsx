@@ -35,26 +35,14 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
       {courseGroup.currentCourseSets.map((item: [CourseSets], key: number) => {
         return (
           <View key={key}>
-            {item.length == 1 && (
-              <CourseSet
-                courseSets={item[0]}
-                navigation={navigation}
-                testID={"test_course_set"}
-              />
-            )}
+            {item.length == 1 && <CourseSet courseSets={item[0]} navigation={navigation} testID={"test_course_set"} />}
             {item.length > 1 && (
-              <CourseSetList
-                courseSetList={item}
-                navigate={navigation.navigate}
-                testID={"test_course_set_list"}
-              />
+              <CourseSetList courseSetList={item} navigate={navigation.navigate} testID={"test_course_set_list"} />
             )}
             {item[item.length - 1] && item[item.length - 1].nextsetoperator && (
               <View style={courses.nextSet}>
                 <View style={{ ...listViewStyles.thickSeparator, flex: 1 }} />
-                <Text style={courses.nextSetText}>
-                  {item[item.length - 1].nextsetoperator}
-                </Text>
+                <Text style={courses.nextSetText}>{item[item.length - 1].nextsetoperator}</Text>
                 <View style={{ ...listViewStyles.thickSeparator, flex: 1 }} />
               </View>
             )}
@@ -62,21 +50,12 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
         );
       })}
       {courseGroup.completion.statuskey === StatusKey.completed && (
-        <Completed
-          endnote={courseGroup.endnote}
-          navigation={navigation}
-          testID={"test_program_completed"}
-        />
+        <Completed endnote={courseGroup.endnote} navigation={navigation} testID={"test_program_completed"} />
       )}
       {courseGroup.countUnavailableSets > 0 && (
-        <View
-          style={courses.unavailableSetWrap}
-          testID={"test_unavailable_set"}>
-          <Text
-            style={courses.unavailableText}
-            testID={"test_unavailable_set_title"}>
-            {courseGroup.countUnavailableSets}{" "}
-            {translate("course_group.courses.unavailable_sets")}
+        <View style={courses.unavailableSetWrap} testID={"test_unavailable_set"}>
+          <Text style={courses.unavailableText} testID={"test_unavailable_set_title"}>
+            {courseGroup.countUnavailableSets} {translate("course_group.courses.unavailable_sets")}
           </Text>
         </View>
       )}
@@ -93,13 +72,8 @@ type CompletedProps = {
 const Completed = ({ endnote, navigation, testID }: CompletedProps) => {
   return (
     <View style={courses.bottomView} testID={testID}>
-      <Text style={courses.completedText}>
-        {translate("course_group.courses.compete")}
-      </Text>
-      <Text
-        numberOfLines={5}
-        style={courses.endNoteText}
-        testID={"test_endnote"}>
+      <Text style={courses.completedText}>{translate("course_group.courses.compete")}</Text>
+      <Text numberOfLines={5} style={courses.endNoteText} testID={"test_endnote"}>
         {endnote}
       </Text>
       <TouchableOpacity
@@ -107,9 +81,7 @@ const Completed = ({ endnote, navigation, testID }: CompletedProps) => {
         testID={"test_go_back_button"}
         onPress={() => navigation.goBack()}
         activeOpacity={1.0}>
-        <Text style={courses.buttonTextTitle}>
-          {translate("course_group.courses.current_learning_button_title")}
-        </Text>
+        <Text style={courses.buttonTextTitle}>{translate("course_group.courses.current_learning_button_title")}</Text>
       </TouchableOpacity>
     </View>
   );

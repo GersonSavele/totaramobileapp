@@ -1,36 +1,27 @@
-/*
- * This file is part of Totara Mobile
+/**
+ * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Jun Yamog <jun.yamog@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Logger } from "./Logger"
+import { Logger } from "./Logger";
 
 /**
  * ConsoleLogger is a basic logger that outputs into JS console
  */
 class ConsoleLogger implements Logger {
+  init() {}
 
-  init() {
-  }
-
-  close() {
-  }
+  close() {}
 
   debug(message: string, ...others: any[]) {
     console.debug("[DEBUG]", message, others);
@@ -44,9 +35,10 @@ class ConsoleLogger implements Logger {
     console.warn("[WARN]", message, others);
   }
 
-  error(message: string, error: Error, ...others: any[]){
+  error(message: string, error: Error, ...others: any[]) {
     // eslint-disable-next-line no-undef
-    if (__DEV__) { // its ok to ignore __DEV__ not defined on TS.  It is defined globally
+    if (__DEV__) {
+      // its ok to ignore __DEV__ not defined on TS.  It is defined globally
       console.error("[ERROR]", message, error, others); // only blow up on development mode
     } else {
       console.log("[ERROR]", message, error, others);
@@ -54,4 +46,4 @@ class ConsoleLogger implements Logger {
   }
 }
 
-export default new ConsoleLogger()
+export default new ConsoleLogger();

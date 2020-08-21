@@ -11,9 +11,8 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
+
 import * as RNFS from "react-native-fs";
 import { Platform } from "react-native";
 import { omit } from "lodash";
@@ -31,10 +30,7 @@ import {
   loadScormPackageData
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
-import {
-  scormLessonStatus,
-  offlineScormServerRoot
-} from "@totara/lib/constants";
+import { scormLessonStatus, offlineScormServerRoot } from "@totara/lib/constants";
 describe("scorm utilities", () => {
   //This is a mock. These fields are from API response
   const defaultData = {
@@ -111,9 +107,7 @@ describe("scorm utilities", () => {
     //For Offline
     it("returns correct object for valid `scormBundle` and default values for undefined on offline mode.", () => {
       const isDownloaded = true;
-      expect(getDataForScormSummary(isDownloaded, undefined)).toEqual(
-        expectedDataForUndefined
-      );
+      expect(getDataForScormSummary(isDownloaded, undefined)).toEqual(expectedDataForUndefined);
 
       //TODO: rename - fix when backend finishes TL-26268
       const expectResultScormBundle = {
@@ -124,9 +118,7 @@ describe("scorm utilities", () => {
         gradeMethod: "1",
         attemptGrade: "0"
       };
-      expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(
-        expectResultScormBundle
-      );
+      expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(expectResultScormBundle);
     });
 
     it("returns incremented total attempts because there are a initial number of attempts done when offline", () => {
@@ -158,9 +150,7 @@ describe("scorm utilities", () => {
     //For Online
     it("returns correct object for valid `scormBundle` for online mode", () => {
       const isDownloaded = false;
-      expect(getDataForScormSummary(isDownloaded, undefined)).toEqual(
-        expectedDataForUndefined
-      );
+      expect(getDataForScormSummary(isDownloaded, undefined)).toEqual(expectedDataForUndefined);
 
       const expectResultScormBundle = {
         ...omit(defaultData, ["grademethod", "whatgrade"]),
@@ -170,9 +160,7 @@ describe("scorm utilities", () => {
         gradeMethod: "1",
         attemptGrade: "0"
       };
-      expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(
-        expectResultScormBundle
-      );
+      expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(expectResultScormBundle);
     });
 
     it(" should return zero total attempts because attempts current in `scormBundle` is undefined", () => {
@@ -219,34 +207,18 @@ describe("scorm utilities", () => {
           gradereported: 50
         }
       ];
-      expect(
-        getAttemptsGrade(attemptsReport, AttemptGrade.highest, 10)
-      ).toEqual(70);
-      expect(
-        getAttemptsGrade(attemptsReport, AttemptGrade.average, 10)
-      ).toEqual(60);
-      expect(getAttemptsGrade(attemptsReport, AttemptGrade.first, 10)).toEqual(
-        60
-      );
-      expect(getAttemptsGrade(attemptsReport, AttemptGrade.last, 10)).toEqual(
-        50
-      );
+      expect(getAttemptsGrade(attemptsReport, AttemptGrade.highest, 10)).toEqual(70);
+      expect(getAttemptsGrade(attemptsReport, AttemptGrade.average, 10)).toEqual(60);
+      expect(getAttemptsGrade(attemptsReport, AttemptGrade.first, 10)).toEqual(60);
+      expect(getAttemptsGrade(attemptsReport, AttemptGrade.last, 10)).toEqual(50);
     });
 
     it("return 0 for all `attemptGrade` with empty attemptsReport", () => {
       const attemptsReport = [];
-      expect(
-        getAttemptsGrade(attemptsReport, AttemptGrade.highest, 10)
-      ).toEqual(0);
-      expect(
-        getAttemptsGrade(attemptsReport, AttemptGrade.average, 10)
-      ).toEqual(0);
-      expect(getAttemptsGrade(attemptsReport, AttemptGrade.first, 10)).toEqual(
-        0
-      );
-      expect(getAttemptsGrade(attemptsReport, AttemptGrade.last, 10)).toEqual(
-        0
-      );
+      expect(getAttemptsGrade(attemptsReport, AttemptGrade.highest, 10)).toEqual(0);
+      expect(getAttemptsGrade(attemptsReport, AttemptGrade.average, 10)).toEqual(0);
+      expect(getAttemptsGrade(attemptsReport, AttemptGrade.first, 10)).toEqual(0);
+      expect(getAttemptsGrade(attemptsReport, AttemptGrade.last, 10)).toEqual(0);
     });
   });
   describe("getGradeForAttempt", () => {
@@ -506,14 +478,7 @@ describe("scorm utilities", () => {
       ).toEqual("60");
 
       expect(
-        calculatedAttemptsGrade(
-          AttemptGrade.last,
-          Grade.sum,
-          100,
-          "40%",
-          attemptsOnlineReport,
-          attemptsOfflineReport
-        )
+        calculatedAttemptsGrade(AttemptGrade.last, Grade.sum, 100, "40%", attemptsOnlineReport, attemptsOfflineReport)
       ).toEqual("50%");
       expect(
         calculatedAttemptsGrade(
@@ -526,26 +491,10 @@ describe("scorm utilities", () => {
         )
       ).toEqual("50");
 
-      expect(
-        calculatedAttemptsGrade(
-          AttemptGrade.average,
-          Grade.objective,
-          100,
-          "60",
-          undefined,
-          undefined
-        )
-      ).toEqual("60");
-      expect(
-        calculatedAttemptsGrade(
-          AttemptGrade.average,
-          Grade.objective,
-          100,
-          "60",
-          null,
-          null
-        )
-      ).toEqual("60");
+      expect(calculatedAttemptsGrade(AttemptGrade.average, Grade.objective, 100, "60", undefined, undefined)).toEqual(
+        "60"
+      );
+      expect(calculatedAttemptsGrade(AttemptGrade.average, Grade.objective, 100, "60", null, null)).toEqual("60");
     });
   });
 
@@ -604,27 +553,15 @@ describe("scorm utilities", () => {
 
     it("should return server root path", async () => {
       const isScormPlayerInitializedMock = jest.fn(() => Promise.resolve(true));
-      const onInitializeScormWebplayerMock = jest.fn(() =>
-        Promise.resolve(true)
-      );
-      const result = await setupOfflineScormPlayer(
-        isScormPlayerInitializedMock,
-        onInitializeScormWebplayerMock
-      );
+      const onInitializeScormWebplayerMock = jest.fn(() => Promise.resolve(true));
+      const result = await setupOfflineScormPlayer(isScormPlayerInitializedMock, onInitializeScormWebplayerMock);
       expect(result).toStrictEqual(offlineScormServerRoot);
     });
 
     it("should return server root path, scorm player is initialized", async () => {
-      const isScormPlayerInitializedMock = jest.fn(() =>
-        Promise.resolve(false)
-      );
-      const onInitializeScormWebplayerMock = jest.fn(() =>
-        Promise.resolve(true)
-      );
-      const result = await setupOfflineScormPlayer(
-        isScormPlayerInitializedMock,
-        onInitializeScormWebplayerMock
-      );
+      const isScormPlayerInitializedMock = jest.fn(() => Promise.resolve(false));
+      const onInitializeScormWebplayerMock = jest.fn(() => Promise.resolve(true));
+      const result = await setupOfflineScormPlayer(isScormPlayerInitializedMock, onInitializeScormWebplayerMock);
       expect(result).toStrictEqual(offlineScormServerRoot);
     });
   });
@@ -649,13 +586,8 @@ describe("scorm utilities", () => {
         path: "path",
         scos: ["sco one", "sco two"]
       };
-      const getScormPackageDataMock = jest.fn(() =>
-        Promise.resolve(packageDataMock)
-      );
-      const result = await loadScormPackageData(
-        packageDataMock,
-        getScormPackageDataMock
-      );
+      const getScormPackageDataMock = jest.fn(() => Promise.resolve(packageDataMock));
+      const result = await loadScormPackageData(packageDataMock, getScormPackageDataMock);
       expect(result).toMatchObject(packageDataMock);
     });
 
@@ -693,14 +625,10 @@ describe("scorm player package handling", () => {
   const errorCoping = "Failed to copy the file";
 
   const mockVoidPromise = (isSuccess, error) =>
-    isSuccess
-      ? jest.fn(() => Promise.resolve())
-      : jest.fn(() => Promise.reject(new Error(error)));
+    isSuccess ? jest.fn(() => Promise.resolve()) : jest.fn(() => Promise.reject(new Error(error)));
 
   const mockReturnPromise = (isSuccess, data, error) =>
-    isSuccess
-      ? jest.fn(() => Promise.resolve(data))
-      : jest.fn(() => Promise.reject(new Error(error)));
+    isSuccess ? jest.fn(() => Promise.resolve(data)) : jest.fn(() => Promise.reject(new Error(error)));
 
   const setupDefaultConfigeMock = ({
     platformOS,
@@ -713,26 +641,14 @@ describe("scorm player package handling", () => {
   }) => {
     Platform.OS = platformOS;
     RNFS.mkdir.mockImplementation(mockVoidPromise(isSuccessMkDir, errorMkDir));
-    RNFS.unlink.mockImplementation(
-      mockVoidPromise(isSuccessUnlink, errorUnlink)
-    );
-    RNFS.exists.mockImplementation(
-      mockReturnPromise(isSuccessExists, false, errorIsExistingFile)
-    );
+    RNFS.unlink.mockImplementation(mockVoidPromise(isSuccessUnlink, errorUnlink));
+    RNFS.exists.mockImplementation(mockReturnPromise(isSuccessExists, false, errorIsExistingFile));
     if (Platform.OS === "android") {
-      RNFS.readDirAssets.mockImplementation(
-        mockReturnPromise(isSuccessReadDir, sourceDirContent, errorReadingDir)
-      );
-      RNFS.copyFileAssets.mockImplementation(
-        mockVoidPromise(isSuccessCopy, errorCoping)
-      );
+      RNFS.readDirAssets.mockImplementation(mockReturnPromise(isSuccessReadDir, sourceDirContent, errorReadingDir));
+      RNFS.copyFileAssets.mockImplementation(mockVoidPromise(isSuccessCopy, errorCoping));
     } else {
-      RNFS.readDir.mockImplementation(
-        mockReturnPromise(isSuccessReadDir, sourceDirContent, errorReadingDir)
-      );
-      RNFS.copyFile.mockImplementation(
-        mockVoidPromise(isSuccessCopy, errorCoping)
-      );
+      RNFS.readDir.mockImplementation(mockReturnPromise(isSuccessReadDir, sourceDirContent, errorReadingDir));
+      RNFS.copyFile.mockImplementation(mockVoidPromise(isSuccessCopy, errorCoping));
     }
   };
 
@@ -826,20 +742,14 @@ describe("scorm player package handling", () => {
       try {
         await initializeScormWebplayer();
       } catch (e) {
-        expect(e.message).toBe(
-          "Cannot find any content in the location (html)"
-        );
+        expect(e.message).toBe("Cannot find any content in the location (html)");
       }
 
       setupDefaultConfigeMock({ platformOS: "ios", sourceDirContent: [] });
       try {
         await initializeScormWebplayer();
       } catch (e) {
-        expect(e.message).toBe(
-          "Cannot find any content in the location (" +
-            RNFS.MainBundlePath +
-            "/html)"
-        );
+        expect(e.message).toBe("Cannot find any content in the location (" + RNFS.MainBundlePath + "/html)");
       }
       // For null directory content
       setupDefaultConfigeMock({
@@ -849,20 +759,14 @@ describe("scorm player package handling", () => {
       try {
         await initializeScormWebplayer();
       } catch (e) {
-        expect(e.message).toBe(
-          "Cannot find any content in the location (html)"
-        );
+        expect(e.message).toBe("Cannot find any content in the location (html)");
       }
 
       setupDefaultConfigeMock({ platformOS: "ios", sourceDirContent: null });
       try {
         await initializeScormWebplayer();
       } catch (e) {
-        expect(e.message).toBe(
-          "Cannot find any content in the location (" +
-            RNFS.MainBundlePath +
-            "/html)"
-        );
+        expect(e.message).toBe("Cannot find any content in the location (" + RNFS.MainBundlePath + "/html)");
       }
     });
 
@@ -980,9 +884,7 @@ describe("downloaded scorm activity package processing", () => {
     
   </organizations>
   <resources>
-    <resource identifier="res1" type="webcontent" href="${
-      firstOrg.launchSrc
-    }" adlcp:scormtype="sco">
+    <resource identifier="res1" type="webcontent" href="${firstOrg.launchSrc}" adlcp:scormtype="sco">
      <file href="${firstOrg.launchSrc}"/>
     </resource>
     ${

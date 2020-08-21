@@ -12,6 +12,7 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
+
 import { useApolloClient } from "@apollo/react-hooks";
 
 import {
@@ -112,15 +113,13 @@ const commitData = (completeValue = scormLessonStatus.completed) => ({
       text: "0"
     },
     interactions: {
-      _children:
-        "id,objectives,time,type,correct_responses,weighting,student_response,result,latency",
+      _children: "id,objectives,time,type,correct_responses,weighting,student_response,result,latency",
       _count: 1
     },
     evaluation: {
       comments: { _count: "0", _children: "content,location,time" }
     },
-    _children:
-      "core,suspend_data,launch_data,comments,objectives,student_data,student_preference,interactions",
+    _children: "core,suspend_data,launch_data,comments,objectives,student_data,student_preference,interactions",
     _version: "3.4",
     suspend_data:
       '{"lang":"en","completion":"-1111111","questions":"","_isCourseComplete":true,"_isAssessmentPassed":false}',
@@ -276,9 +275,7 @@ describe("setScormActivityData", () => {
           },
           ...mockExistingScormBundle[scormId].commits
         },
-        offlineAttempts: mockExistingScormBundle[
-          scormId
-        ].offlineAttempts.concat({
+        offlineAttempts: mockExistingScormBundle[scormId].offlineAttempts.concat({
           attempt: attempt,
           gradereported: mockAttemptGrade
         })
@@ -494,26 +491,17 @@ describe("getOfflineScormCommits", () => {
       {
         scormId: "10",
         attempt: 1,
-        tracks: [
-          { data: "data for attemppt 1 sco 1" },
-          { data: "data for attemppt 1 sco 2" }
-        ]
+        tracks: [{ data: "data for attemppt 1 sco 1" }, { data: "data for attemppt 1 sco 2" }]
       },
       {
         scormId: "10",
         attempt: 2,
-        tracks: [
-          { data: "data for attemppt 2 sco 1" },
-          { data: "data for attemppt 2 sco 2" }
-        ]
+        tracks: [{ data: "data for attemppt 2 sco 1" }, { data: "data for attemppt 2 sco 2" }]
       },
       {
         scormId: "11",
         attempt: 2,
-        tracks: [
-          { data: "data for attemppt 2 sco 1" },
-          { data: "data for attemppt 2 sco 2" }
-        ]
+        tracks: [{ data: "data for attemppt 2 sco 1" }, { data: "data for attemppt 2 sco 2" }]
       }
     ];
 

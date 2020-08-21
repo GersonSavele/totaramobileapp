@@ -1,50 +1,45 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from 'react';
+import React from "react";
 import AppLinkFlow from "../AppLinkFlow";
 import renderer from "react-test-renderer";
-
 
 const mockOnSuccess = jest.fn();
 const mockOnFail = jest.fn();
 
-const appLinkLogin = renderer.create(
-  <AppLinkFlow onLoginSuccess={mockOnSuccess} onLoginFailure={mockOnFail} />
-).getInstance();
+const appLinkLogin = renderer
+  .create(<AppLinkFlow onLoginSuccess={mockOnSuccess} onLoginFailure={mockOnFail} />)
+  .getInstance();
 
 describe("Passing different forms of 'url' and get the value for query string parameters('site' and 'setupsecret')", () => {
   it("valid Url, IP-Address and DeepLink with 'site' and 'setupsecret'", () => {
-    const urlHttps = "https://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
+    const urlHttps =
+      "https://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
     const actualResultSiteHttps = appLinkLogin.getValueForUrlQueryParameter(urlHttps, "site");
     expect(actualResultSiteHttps).toBe("https://mobile.totaralearning.com");
     const actualResultSetupsecretHttps = appLinkLogin.getValueForUrlQueryParameter(urlHttps, "setupsecret");
     expect(actualResultSetupsecretHttps).toBe("cavnakd2143df80800");
 
-    const urlHttp = "http://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
+    const urlHttp =
+      "http://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
     const actualResultSiteHttp = appLinkLogin.getValueForUrlQueryParameter(urlHttp, "site");
     expect(actualResultSiteHttp).toBe("https://mobile.totaralearning.com");
     const actualResultSetupsecretHttp = appLinkLogin.getValueForUrlQueryParameter(urlHttp, "setupsecret");
     expect(actualResultSetupsecretHttp).toBe("cavnakd2143df80800");
-    
+
     const deppLink = "totara://register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
     const actualResultSiteDeepLink = appLinkLogin.getValueForUrlQueryParameter(deppLink, "site");
     expect(actualResultSiteDeepLink).toBe("https://mobile.totaralearning.com");
@@ -68,7 +63,7 @@ describe("Passing different forms of 'url' and get the value for query string pa
     const actualResultSiteHttp = appLinkLogin.getValueForUrlQueryParameter(urlHttp, "site");
     expect(actualResultSiteHttp).toBe("https://mobile.totaralearning.com");
     const actualResultSetupsecretHttp = appLinkLogin.getValueForUrlQueryParameter(urlHttp, "setupsecret");
-    expect(actualResultSetupsecretHttp).toBeNull()
+    expect(actualResultSetupsecretHttp).toBeNull();
 
     const deppLink = "totara://register?site=https://mobile.totaralearning.com";
     const actualResultSiteDeepLink = appLinkLogin.getValueForUrlQueryParameter(deppLink, "site");
@@ -136,7 +131,8 @@ describe("Passing different forms of 'url' and get the value for query string pa
 
 describe("Action for Auth Universal/AppLink and Deeplink event according to different data", () => {
   it("AppLink and DeepLink with all valid data", () => {
-    const url = "https://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
+    const url =
+      "https://mobile.totaralearning.com/register?site=https://mobile.totaralearning.com&setupsecret=cavnakd2143df80800";
     const expectData = {
       secret: "cavnakd2143df80800",
       uri: "https://mobile.totaralearning.com"
@@ -145,7 +141,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
       const result = appLinkLogin.getDeviceRegisterData(url);
       expect(result).not.toThrowError();
       expect(result).toMatchObject(expectData);
-    } catch(e) {
+    } catch (e) {
       expect(e).not.toMatchObject(expectData);
     }
 
@@ -158,7 +154,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
       const resultDeepLink = appLinkLogin.getDeviceRegisterData(urlDeepLink);
       expect(resultDeepLink).not.toThrowError();
       expect(resultDeepLink).toMatchObject(expectDataDeepLink);
-    } catch(e) {
+    } catch (e) {
       expect(e).not.toMatchObject(expectDataDeepLink);
     }
   });
@@ -168,7 +164,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const result = appLinkLogin.getDeviceRegisterData(url);
       expect(result).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectData);
     }
 
@@ -177,7 +173,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const resultDeepLink = appLinkLogin.getDeviceRegisterData(urlDeepLink);
       expect(resultDeepLink).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectDataDeepLink);
     }
   });
@@ -187,7 +183,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const result = appLinkLogin.getDeviceRegisterData(url);
       expect(result).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectData);
     }
 
@@ -196,7 +192,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const resultDeepLink = appLinkLogin.getDeviceRegisterData(urlDeepLink);
       expect(resultDeepLink).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectDataDeepLink);
     }
   });
@@ -206,7 +202,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const result = appLinkLogin.getDeviceRegisterData(url);
       expect(result).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectData);
     }
 
@@ -215,7 +211,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const resultDeepLink = appLinkLogin.getDeviceRegisterData(urlDeepLink);
       expect(resultDeepLink).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectDataDeepLink);
     }
   });
@@ -225,7 +221,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const result = appLinkLogin.getDeviceRegisterData(url);
       expect(result).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectData);
     }
 
@@ -234,7 +230,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const resultDeepLink = appLinkLogin.getDeviceRegisterData(urlDeepLink);
       expect(resultDeepLink).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectDataDeepLink);
     }
   });
@@ -244,7 +240,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const result = appLinkLogin.getDeviceRegisterData(url);
       expect(result).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectData);
     }
 
@@ -253,7 +249,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const resultDeepLink = appLinkLogin.getDeviceRegisterData(urlDeepLink);
       expect(resultDeepLink).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectDataDeepLink);
     }
   });
@@ -263,7 +259,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const result = appLinkLogin.getDeviceRegisterData(url);
       expect(result).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectData);
     }
 
@@ -272,7 +268,7 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     try {
       const resultDeepLink = appLinkLogin.getDeviceRegisterData(urlDeepLink);
       expect(resultDeepLink).toThrowError();
-    } catch(e) {
+    } catch (e) {
       expect(e).toMatchObject(expectDataDeepLink);
     }
   });

@@ -1,31 +1,24 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
-import { Linking, Platform } from "react-native";
 
+import { Linking, Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 
 import { SiteInfo } from "@totara/types";
 import { Log, config } from "@totara/lib";
 import { fetchData } from "@totara/core/AuthRoutines";
-
 import { AuthFlowChildProps, AuthComponent } from "../AuthComponent";
 
 /**
@@ -67,13 +60,10 @@ export default class AppLinkFlow extends AuthComponent {
           const resultRegistration = this.getDeviceRegisterData(url);
           // fetch from global
           // eslint-disable-next-line no-undef
-          await fetchData(fetch)<SiteInfo>(
-            config.infoUri(resultRegistration.uri),
-            {
-              method: "POST",
-              body: JSON.stringify({ version: DeviceInfo.getVersion() })
-            }
-          )
+          await fetchData(fetch)<SiteInfo>(config.infoUri(resultRegistration.uri), {
+            method: "POST",
+            body: JSON.stringify({ version: DeviceInfo.getVersion() })
+          })
             .then((siteInfo) => {
               this.props.onLoginSuccess({
                 secret: resultRegistration.secret,
@@ -107,8 +97,7 @@ export default class AppLinkFlow extends AuthComponent {
     } else {
       var errorInfo = "Invalid request.";
       if ((site == "" || site == null) && (secret == null || secret == "")) {
-        errorInfo =
-          "Invalid request, 'site' and 'token' cannot be null or empty.";
+        errorInfo = "Invalid request, 'site' and 'token' cannot be null or empty.";
       } else if (site == "" || site == null) {
         errorInfo = "Invalid request, 'site' cannot be null or empty.";
       } else if (secret == null || secret == "") {

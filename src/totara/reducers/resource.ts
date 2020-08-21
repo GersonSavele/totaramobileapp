@@ -1,5 +1,4 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,16 +11,11 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import { Resource } from "@totara/types";
 import { ResourceState } from "@totara/types/Resource";
-import {
-  ADD_RESOURCE,
-  UPDATE_RESOURCE,
-  DELETE_RESOURCE
-} from "../actions/resource";
+import { ADD_RESOURCE, UPDATE_RESOURCE, DELETE_RESOURCE } from "../actions/resource";
 
 const initialState = {
   resources: [] as Resource[]
@@ -76,9 +70,7 @@ const resourceReducer = (state = initialState, action) => {
     case DELETE_RESOURCE: {
       const { ids } = action.payload;
       const resourcesList: Resource[] = state.resources;
-      const filtered = resourcesList.filter(
-        (item) => ids.indexOf(item.id) === -1
-      );
+      const filtered = resourcesList.filter((item) => ids.indexOf(item.id) === -1);
 
       return {
         ...state,

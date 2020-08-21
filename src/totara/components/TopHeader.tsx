@@ -12,6 +12,7 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
+
 import React from "react";
 import { Text } from "react-native";
 import { Header, Body, Title } from "native-base";
@@ -42,27 +43,14 @@ const TopHeader = ({
   children
 }: TopHeaderProps) => (
   <Header style={{ backgroundColor: color }}>
-    <TouchableIcon
-      icon={"times"}
-      onPress={onClose}
-      size={iconSize}
-      style={{ padding: baseSpace }}
-    />
+    <TouchableIcon icon={"times"} onPress={onClose} size={iconSize} style={{ padding: baseSpace }} />
     <Body
       style={{
         marginRight: children ? 0 : iconSize + baseSpace,
         alignSelf: "center"
       }}>
       <Title style={[{ alignSelf: "center" }, titleTextStyle]}>{title}</Title>
-      {info && (
-        <Text
-          style={[
-            { paddingBottom: baseSpace, textAlign: "center" },
-            infoTextStyle
-          ]}>
-          {info}
-        </Text>
-      )}
+      {info && <Text style={[{ paddingBottom: baseSpace, textAlign: "center" }, infoTextStyle]}>{info}</Text>}
     </Body>
     {children}
   </Header>

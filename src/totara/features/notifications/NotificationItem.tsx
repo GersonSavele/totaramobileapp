@@ -1,5 +1,4 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import { NotificationMessage } from "@totara/types";
@@ -50,12 +48,7 @@ const NotificationItem = ({
       onLongPress={() => onNotificationItemLongPress(item)}>
       <View key={item.id} style={listViewStyles.rowItem}>
         {selectable && (
-          <View
-            testID={"test_checkbox"}
-            style={[
-              styles.itemCircle,
-              { display: !selectable ? "none" : "flex" }
-            ]}>
+          <View testID={"test_checkbox"} style={[styles.itemCircle, { display: !selectable ? "none" : "flex" }]}>
             <FontAwesomeIcon
               size={iconSizes.sizeM}
               icon={"check-circle"}
@@ -64,9 +57,7 @@ const NotificationItem = ({
           </View>
         )}
         <View style={{ flex: 1 }}>
-          <Text
-            testID={"test_title"}
-            style={[styles.title, item.isRead && styles.read]}>
+          <Text testID={"test_title"} style={[styles.title, item.isRead && styles.read]}>
             {item.subject}
           </Text>
           <Text testID={"test_timeCreated"} style={styles.timeCreated}>
@@ -78,11 +69,7 @@ const NotificationItem = ({
             alignItems: "flex-end",
             justifyContent: "center"
           }}>
-          <FontAwesomeIcon
-            size={iconSizes.sizeM}
-            color={TotaraTheme.colorNeutral3}
-            icon={"angle-right"}
-          />
+          <FontAwesomeIcon size={iconSizes.sizeM} color={TotaraTheme.colorNeutral3} icon={"angle-right"} />
         </View>
       </View>
     </TouchableOpacity>

@@ -1,5 +1,4 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import { createStackNavigator } from "react-navigation-stack";
@@ -36,9 +34,7 @@ const DownloadsStack = createStackNavigator(
               navigation.emit("onCancelTap");
             }}
             style={{ paddingLeft: paddings.paddingL }}>
-            <Text style={TotaraTheme.textMedium}>
-              {translate("general.cancel")}
-            </Text>
+            <Text style={TotaraTheme.textMedium}>{translate("general.cancel")}</Text>
           </TouchableOpacity>
         ),
         headerRight: navigation.getParam("showActions") && (
@@ -48,11 +44,7 @@ const DownloadsStack = createStackNavigator(
               navigation.emit("onDeleteTap");
             }}
             style={{ paddingRight: paddings.paddingL }}>
-            <Text
-              style={[
-                TotaraTheme.textMedium,
-                { color: TotaraTheme.colorDestructive }
-              ]}>
+            <Text style={[TotaraTheme.textMedium, { color: TotaraTheme.colorDestructive }]}>
               {translate("general.delete")}
             </Text>
           </TouchableOpacity>

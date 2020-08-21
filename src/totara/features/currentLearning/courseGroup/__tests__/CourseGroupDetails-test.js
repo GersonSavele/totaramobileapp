@@ -18,12 +18,7 @@ import { MockedProvider } from "@apollo/react-testing";
 import { cleanup, render, act } from "@testing-library/react-native";
 import wait from "waait";
 
-import {
-  programMock,
-  certificationMock,
-  mockEmpty,
-  mockError
-} from "../api/courseGroup.mock";
+import { programMock, certificationMock, mockEmpty, mockError } from "../api/courseGroup.mock";
 import CourseGroupDetails from "../CourseGroupDetails";
 
 const navigationProgram = {

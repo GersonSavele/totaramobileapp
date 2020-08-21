@@ -1,54 +1,44 @@
 /**
- * This file is part of Totara Mobile
+ * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2019 onwards Totara Learning Solutions LTD
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
  */
 
 import { useWebviewFlow } from "../WebviewFlowHook";
 import { renderHook } from "@testing-library/react-hooks";
 import { act } from "react-test-renderer";
 
-jest.mock('react-native-cookies', () => ({
+jest.mock("react-native-cookies", () => ({
   addEventListener: jest.fn(),
   removeEventListener: jest.fn(),
   openURL: jest.fn(),
   canOpenURL: jest.fn(),
   getInitialURL: jest.fn(),
-  get: () => Promise.resolve(null),
+  get: () => Promise.resolve(null)
 }));
 
 describe("WebviewLoginHook", () => {
   it("initial props for the unsecured url(http://)", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewFlow(props), {
+    const { result } = renderHook((props) => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "http://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
         onRecievedSetupSecret: mockOnRecievedSetupSecret
       }
     });
-    expect(result.current.loginUrl).toBe(
-      "http://mobiledemo.wlg.totaralms.com/login/index.php"
-    );
-    expect(result.current.navEndPoint).toBe(
-      "mobiledemo.wlg.totaralms.com/login/index.php"
-    );
+    expect(result.current.loginUrl).toBe("http://mobiledemo.wlg.totaralms.com/login/index.php");
+    expect(result.current.navEndPoint).toBe("mobiledemo.wlg.totaralms.com/login/index.php");
     expect(result.current.navProtocol).toBe("http");
     expect(result.current.canWebGoBackward).toBeFalsy();
     expect(result.current.canWebGoForward).toBeFalsy();
@@ -57,19 +47,15 @@ describe("WebviewLoginHook", () => {
   it("initial props for the secured url(https://)", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewFlow(props), {
+    const { result } = renderHook((props) => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
         onRecievedSetupSecret: mockOnRecievedSetupSecret
       }
     });
-    expect(result.current.loginUrl).toBe(
-      "https://mobiledemo.wlg.totaralms.com/login/index.php"
-    );
-    expect(result.current.navEndPoint).toBe(
-      "mobiledemo.wlg.totaralms.com/login/index.php"
-    );
+    expect(result.current.loginUrl).toBe("https://mobiledemo.wlg.totaralms.com/login/index.php");
+    expect(result.current.navEndPoint).toBe("mobiledemo.wlg.totaralms.com/login/index.php");
     expect(result.current.navProtocol).toBe("https");
     expect(result.current.canWebGoBackward).toBeFalsy();
     expect(result.current.canWebGoForward).toBeFalsy();
@@ -78,7 +64,7 @@ describe("WebviewLoginHook", () => {
   it("Enable go back when navigate to another page in webview", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewFlow(props), {
+    const { result } = renderHook((props) => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -98,15 +84,13 @@ describe("WebviewLoginHook", () => {
 
     expect(result.current.canWebGoBackward).toBeTruthy();
     expect(result.current.canWebGoForward).toBeFalsy();
-    expect(result.current.navEndPoint).toBe(
-      "mobiledemo.wlg.totaralms.com/tapped/firstlink"
-    );
+    expect(result.current.navEndPoint).toBe("mobiledemo.wlg.totaralms.com/tapped/firstlink");
   });
 
   it("Enable go forward when came back from first tapped link in webview", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewFlow(props), {
+    const { result } = renderHook((props) => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com/tapped/firstlink",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -129,7 +113,7 @@ describe("WebviewLoginHook", () => {
   it("Enable go back and forward in webview", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewFlow(props), {
+    const { result } = renderHook((props) => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onCancelWebviewLogin: mockOnCancelWebviewLogin,
@@ -146,14 +130,12 @@ describe("WebviewLoginHook", () => {
     });
     expect(result.current.canWebGoBackward).toBeTruthy();
     expect(result.current.canWebGoForward).toBeTruthy();
-    expect(result.current.navEndPoint).toBe(
-      "mobiledemo.wlg.totaralms.com/mideofdeepedin"
-    );
+    expect(result.current.navEndPoint).toBe("mobiledemo.wlg.totaralms.com/mideofdeepedin");
   });
 
   it("Handling the completion of successful login", () => {
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewFlow(props), {
+    const { result } = renderHook((props) => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onSetupSecretSuccess: mockOnRecievedSetupSecret
@@ -172,7 +154,7 @@ describe("WebviewLoginHook", () => {
 
   it("Handling the completion of login for invalid values", () => {
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewFlow(props), {
+    const { result } = renderHook((props) => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onSetupSecretSuccess: mockOnRecievedSetupSecret
@@ -202,7 +184,7 @@ describe("WebviewLoginHook", () => {
   it("Exit from the webview-login event handling.", () => {
     const mockOnCancelWebviewLogin = jest.fn();
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook(props => useWebviewFlow(props), {
+    const { result } = renderHook((props) => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com",
         onManualFlowCancel: mockOnCancelWebviewLogin,

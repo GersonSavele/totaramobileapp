@@ -36,9 +36,7 @@ describe("Course set list", () => {
   });
 
   it("Should render when there are row items in the table", async () => {
-    const { getByTestId } = render(
-      <LearningItems item={course} navigation={navigation} />
-    );
+    const { getByTestId } = render(<LearningItems item={course} navigation={navigation} />);
     const courseList = getByTestId("test_course");
     expect(courseList).toBeTruthy();
   });

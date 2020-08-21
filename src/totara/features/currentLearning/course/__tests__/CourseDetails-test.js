@@ -1,19 +1,17 @@
-/*
-
-This file is part of Totara Enterprise.
-*
-Copyright (C) 2020 onwards Totara Learning Solutions LTD
-*
-Totara Enterprise is provided only to Totara Learning Solutions
-LTD’s customers and partners, pursuant to the terms and
-conditions of a separate agreement with Totara Learning
-Solutions LTD or its affiliate.
-*
-If you do not have an agreement with Totara Learning Solutions
-LTD, you may not access, use, modify, or distribute this software.
-Please contact [sales@totaralearning.com] for more information.
-*
-*/
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
 
 import { MockedProvider } from "@apollo/react-testing";
 import TestRenderer from "react-test-renderer";
@@ -41,8 +39,7 @@ const course = {
     {
       complete: false,
       completiondate: null,
-      criteria:
-        "<a href=https://mobile.demo.totara.software/mod/scorm/view.php?id=398>Creating a set audience</a>",
+      criteria: "<a href=https://mobile.demo.totara.software/mod/scorm/view.php?id=398>Creating a set audience</a>",
       id: "106",
       requirement: "Achieving grade, Completed",
       status: "Has not achieved grade",
@@ -55,8 +52,7 @@ const course = {
   enddate: null,
   fullname: "(BETA) Audiences in Totara",
   id: "4",
-  imageSrc:
-    "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/688/course/images/1588546858/image",
+  imageSrc: "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/688/course/images/1588546858/image",
   lang: "",
   sections: [
     {
@@ -77,8 +73,7 @@ const course = {
           modtype: "forum",
           name: "Course forum",
           showdescription: false,
-          viewurl:
-            "https://mobile.demo.totara.software/mod/forum/view.php?id=371"
+          viewurl: "https://mobile.demo.totara.software/mod/forum/view.php?id=371"
         }
       ],
       id: "174",
@@ -162,9 +157,7 @@ describe("Testing: Course manual completion", () => {
   it("Test result : course complete and loading action modal to confirm", async () => {
     let component;
     await TestRenderer.act(async () => {
-      component = TestRenderer.create(
-        <CourseCompletionModal onClose={jest.fn()} />
-      );
+      component = TestRenderer.create(<CourseCompletionModal onClose={jest.fn()} />);
     });
     expect(component.toJSON()).toMatchSnapshot();
   });

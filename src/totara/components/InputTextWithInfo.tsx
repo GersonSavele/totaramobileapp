@@ -1,7 +1,7 @@
 /**
  * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2019 onwards Totara Learning Solutions LTD
  *
  * Totara Enterprise is provided only to Totara Learning Solutions
  * LTD’s customers and partners, pursuant to the terms and
@@ -51,9 +51,7 @@ const InfoText = ({ status, message }: Props) => {
 
   switch (status) {
     case "success":
-      return (
-        <Text style={[theme.textSmall, stylesInfo.success]}>{message}</Text>
-      );
+      return <Text style={[theme.textSmall, stylesInfo.success]}>{message}</Text>;
     case "error":
       return <Text style={[theme.textSmall, stylesInfo.error]}>{message}</Text>;
     case "focus":
@@ -63,14 +61,7 @@ const InfoText = ({ status, message }: Props) => {
   }
 };
 
-const InputTextWithInfo = ({
-  children,
-  placeholder,
-  message,
-  status,
-  style,
-  ...rest
-}: Props) => {
+const InputTextWithInfo = ({ children, placeholder, message, status, style, ...rest }: Props) => {
   const [theme] = useContext(ThemeContext);
   const floatingLabelStyles = StyleSheet.create({
     item: {
@@ -80,8 +71,7 @@ const InputTextWithInfo = ({
       marginRight: 0,
       paddingLeft: 0,
       paddingRight: 0,
-      borderBottomColor:
-        status === "error" ? theme.colorAlert : theme.textColorSubdued
+      borderBottomColor: status === "error" ? theme.colorAlert : theme.textColorSubdued
     }
   });
 

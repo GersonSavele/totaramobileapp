@@ -19,12 +19,7 @@ import { map } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import VideoController from "./VideoController";
 import { Image } from "react-native-animatable";
-import {
-  textAttributes,
-  margins,
-  borderRadius,
-  fontWeights
-} from "@totara/theme/constants";
+import { textAttributes, margins, borderRadius, fontWeights } from "@totara/theme/constants";
 import TextTypeLabel from "./activityLabel";
 
 const { marginL, marginS, marginXS, marginM, margin2XL } = margins;
@@ -57,8 +52,7 @@ const itemsExtract = (label: any = {}) => {
     </View>
   ) : (
     map(label.content, (nestedLabel: any = {}, index: number) => {
-      return Array.isArray(nestedLabel.content) &&
-        nestedLabel.content.length ? (
+      return Array.isArray(nestedLabel.content) && nestedLabel.content.length ? (
         <LabelConfiguration key={index} label={label} index={index}>
           {itemsExtract(nestedLabel)}
         </LabelConfiguration>
@@ -71,11 +65,7 @@ const itemsExtract = (label: any = {}) => {
   );
 };
 
-const LabelConfiguration = ({
-  label = {},
-  children,
-  index
-}: LabelConfigProps) => {
+const LabelConfiguration = ({ label = {}, children, index }: LabelConfigProps) => {
   switch (label.type) {
     case "attachment":
       return <AttachmentTypeLabel label={label} />;
@@ -200,9 +190,7 @@ const ListItemTypeLabel = ({ children }: ChildProps) => {
 };
 
 const EmojiTypeLabel = ({ label }: any = {}) => {
-  let emo = String.fromCodePoint(
-    parseInt(textAttributes.short_code_prefix + label.attrs.shortcode)
-  );
+  let emo = String.fromCodePoint(parseInt(textAttributes.short_code_prefix + label.attrs.shortcode));
   return (
     <View style={styles.textWrapViewContainer}>
       <Text style={styles.labelText}>{emo}</Text>

@@ -15,17 +15,9 @@
 
 import React, { useState, useEffect, ReactNode } from "react";
 import { useApolloClient } from "@apollo/react-hooks";
-import {
-  queryLanguageStrings,
-  queryUserLanguagePreference
-} from "@totara/locale/api";
+import { queryLanguageStrings, queryUserLanguagePreference } from "@totara/locale/api";
 import { Loading } from "@totara/components";
-import {
-  addLocale,
-  changeLocale,
-  getLocale,
-  getTranslations
-} from "@totara/locale/index";
+import { addLocale, changeLocale, getLocale, getTranslations } from "@totara/locale/index";
 import { merge } from "lodash";
 
 const LocaleResolver = ({ children }: { children: ReactNode }) => {
@@ -67,8 +59,7 @@ const LocaleResolver = ({ children }: { children: ReactNode }) => {
             const customAppStrings = JSON.parse(result.data.json_string).app;
             const currentAppStrings = getTranslations()[languagePreference];
 
-            if (customAppStrings && currentAppStrings)
-              merge(currentAppStrings, [customAppStrings]);
+            if (customAppStrings && currentAppStrings) merge(currentAppStrings, [customAppStrings]);
 
             if (customAppStrings) {
               addLocale(languagePreference!, currentAppStrings);

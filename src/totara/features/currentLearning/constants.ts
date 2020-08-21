@@ -11,8 +11,8 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
+
 import { deviceScreen } from "@totara/lib/tools";
 
 enum learningItemEnum {

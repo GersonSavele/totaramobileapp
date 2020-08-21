@@ -61,8 +61,8 @@ Run Android app: beta config.
 
 You should set up the following variables:
 
- - `SENTRY_PROJECT_URL`: Client config section: https://docs.sentry.io/clients/react-native/#configure
- - `SENTRY_AUTH_TOKEN`: You can find it [here](https://sentry.io/settings/account/api/auth-tokens/)
+- `SENTRY_PROJECT_URL`: Client config section: https://docs.sentry.io/clients/react-native/#configure
+- `SENTRY_AUTH_TOKEN`: You can find it [here](https://sentry.io/settings/account/api/auth-tokens/)
 
 # Contributing to the repository
 
@@ -103,6 +103,27 @@ Here is a sample of settings.json file you can place in VSCode or your favourite
       "editor.formatOnSave": true
   }
 }
+```
+
+### License
+
+This boilerplate is to be used on every file written by Totara Learning Solutions.
+
+```
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) {{year}} onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
 ```
 
 ### Undefined and Null check

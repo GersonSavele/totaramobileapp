@@ -31,24 +31,18 @@ const navigation = {
 
 describe("Courses", () => {
   it("Should render course set when array return one course set", () => {
-    const { getByTestId } = render(
-      <Courses navigation={navigation} courseGroup={courseSetMock} />
-    );
+    const { getByTestId } = render(<Courses navigation={navigation} courseGroup={courseSetMock} />);
     const courseSet = getByTestId("test_course_set");
     expect(courseSet).toBeTruthy();
   });
 
   it("Should render course set list when array return list of course set", () => {
-    const { getByTestId } = render(
-      <Courses navigation={navigation} courseGroup={courseSetListMock} />
-    );
+    const { getByTestId } = render(<Courses navigation={navigation} courseGroup={courseSetListMock} />);
     const courseSetList = getByTestId("test_course_set_list");
     expect(courseSetList).toBeTruthy();
   });
   it("Should render course when program is completed", async () => {
-    const { getByTestId } = render(
-      <Courses navigation={navigation} courseGroup={courseSetMock} />
-    );
+    const { getByTestId } = render(<Courses navigation={navigation} courseGroup={courseSetMock} />);
     const programCompleted = getByTestId("test_program_completed");
     const endnote = getByTestId("test_endnote");
     const goBackClicked = getByTestId("test_go_back_button");

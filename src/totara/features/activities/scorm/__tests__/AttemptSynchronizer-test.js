@@ -11,27 +11,18 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
 import { useApolloClient } from "@apollo/react-hooks";
 
-import {
-  syncScormAttempt,
-  syncServerWithScormAttempt,
-  netInfoEffect
-} from "../AttemptSynchronizer";
+import { syncScormAttempt, syncServerWithScormAttempt, netInfoEffect } from "../AttemptSynchronizer";
 import * as storageUtils from "../storageUtils";
 
 describe("syncScormAttempt", () => {
   const retrieveAllDataSpy = jest.spyOn(storageUtils, "retrieveAllData");
   retrieveAllDataSpy.mockReturnValue("retrieveAllData data");
 
-  const setCleanScormCommitSpy = jest.spyOn(
-    storageUtils,
-    "setCleanScormCommit"
-  );
+  const setCleanScormCommitSpy = jest.spyOn(storageUtils, "setCleanScormCommit");
   setCleanScormCommitSpy.mockReturnValue("new_data");
 
   const saveInTheCacheSpy = jest.spyOn(storageUtils, "setCleanScormCommit");
@@ -39,11 +30,7 @@ describe("syncScormAttempt", () => {
 
   const client = useApolloClient();
 
-  const unSyncDataMock = [
-    { data: "first data" },
-    { data: "second data" },
-    { data: "third data" }
-  ];
+  const unSyncDataMock = [{ data: "first data" }, { data: "second data" }, { data: "third data" }];
   const syncDataMock = unSyncDataMock[0];
 
   afterEach(() => {
@@ -139,30 +126,20 @@ describe("syncServerWithScormAttempt", () => {
 });
 
 describe("netInfoEffect", () => {
-  const unSyncDataMock = [
-    { data: "first data" },
-    { data: "second data" },
-    { data: "third data" }
-  ];
+  const unSyncDataMock = [{ data: "first data" }, { data: "second data" }, { data: "third data" }];
   const client = useApolloClient();
   const setUnsyncDataMock = jest.fn();
 
   const retrieveAllDataSpy = jest.spyOn(storageUtils, "retrieveAllData");
   retrieveAllDataSpy.mockReturnValue("retrieveAllData data");
 
-  const setCleanScormCommitSpy = jest.spyOn(
-    storageUtils,
-    "setCleanScormCommit"
-  );
+  const setCleanScormCommitSpy = jest.spyOn(storageUtils, "setCleanScormCommit");
   setCleanScormCommitSpy.mockReturnValue("new_data");
 
   const saveInTheCacheSpy = jest.spyOn(storageUtils, "setCleanScormCommit");
   saveInTheCacheSpy.mockReturnValue();
 
-  const getOfflineScormCommitsSpy = jest.spyOn(
-    storageUtils,
-    "getOfflineScormCommits"
-  );
+  const getOfflineScormCommitsSpy = jest.spyOn(storageUtils, "getOfflineScormCommits");
   getOfflineScormCommitsSpy.mockReturnValue(unSyncDataMock);
 
   afterEach(() => {
@@ -178,9 +155,7 @@ describe("netInfoEffect", () => {
     const updatedUnSyncDataMock = [...unSyncDataMock];
     updatedUnSyncDataMock.shift();
 
-    const syncScormAttemptMock = jest.fn(() =>
-      Promise.resolve(updatedUnSyncDataMock)
-    );
+    const syncScormAttemptMock = jest.fn(() => Promise.resolve(updatedUnSyncDataMock));
 
     await netInfoEffect({
       type: "wifi",

@@ -11,8 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
- * @author: Kamala Tennakoon <kamala.tennakoon@totaralearning.com>
  */
 
 import React from "react";
@@ -55,9 +53,7 @@ describe("ScormAttempts", () => {
         gradereported: 1
       }
     ];
-    const { getByTestId, getAllByTestId } = render(
-      <ScormAttempts navigation={attemptNavigation(existingAttempts)} />
-    );
+    const { getByTestId, getAllByTestId } = render(<ScormAttempts navigation={attemptNavigation(existingAttempts)} />);
     const viewListAttempts = getByTestId(ATTEMPTS_LIST_ID);
     const viewAttemptItems = getAllByTestId(ATTEMPT_ITEM_ID);
     expect(viewListAttempts).toBeTruthy();

@@ -1,5 +1,4 @@
 /**
- *
  * This file is part of Totara Enterprise.
  *
  * Copyright (C) 2020 onwards Totara Learning Solutions LTD
@@ -12,7 +11,6 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- *
  */
 
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -58,18 +56,10 @@ const DownloadItem = ({
   const { bytesDownloaded: writtenBytes, sizeInBytes } = item;
 
   return (
-    <TouchableOpacity
-      testID={testID}
-      onPress={() => onItemPress(item)}
-      onLongPress={() => onItemLongPress(item)}>
-      <View
-        key={item.id}
-        style={listViewStyles.rowItem}
-        testID={"test_DownloadItemItemID"}>
+    <TouchableOpacity testID={testID} onPress={() => onItemPress(item)} onLongPress={() => onItemLongPress(item)}>
+      <View key={item.id} style={listViewStyles.rowItem} testID={"test_DownloadItemItemID"}>
         {selectable && (
-          <View
-            style={styles.itemCircle}
-            testID={"test_DownloadItemSelectIcon"}>
+          <View style={styles.itemCircle} testID={"test_DownloadItemSelectIcon"}>
             <FontAwesomeIcon
               size={iconSizes.sizeM}
               icon={"check-circle"}
@@ -94,21 +84,13 @@ const DownloadItem = ({
           <Text style={styles.title} testID={"test_DownloadItemName"}>
             {`${item.name}`}
           </Text>
-          <Text
-            style={styles.size}
-            testID={"test_DownloadItemSize"}>{`${humanReadableSize(
-            item.sizeInBytes
-          )}`}</Text>
+          <Text style={styles.size} testID={"test_DownloadItemSize"}>{`${humanReadableSize(item.sizeInBytes)}`}</Text>
         </View>
         <View
           style={{
             justifyContent: "flex-end"
           }}>
-          <TouchableIcon
-            size={iconSizes.sizeM}
-            color={TotaraTheme.colorNeutral3}
-            icon={"angle-right"}
-          />
+          <TouchableIcon size={iconSizes.sizeM} color={TotaraTheme.colorNeutral3} icon={"angle-right"} />
         </View>
       </View>
     </TouchableOpacity>
