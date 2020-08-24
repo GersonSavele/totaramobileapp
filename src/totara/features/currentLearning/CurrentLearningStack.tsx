@@ -16,7 +16,7 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import { NAVIGATION } from "@totara/lib/navigation";
-import { Text, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 import CurrentLearning from "./CurrentLearning";
 import CourseDetails from "./course/CourseDetails";
@@ -25,8 +25,7 @@ import { TouchableIcon } from "@totara/components";
 import { WebviewActivity } from "@totara/activities/webview/WebviewActivity";
 const { WEBVIEW_ACTIVITY, CURRENT_LEARNING, COURSE_DETAILS, COURSE_GROUP_DETAILS, COURSE_LIST } = NAVIGATION;
 import { paddings } from "@totara/theme/constants";
-import { courseSet } from "./courseGroup/courseGroupStyles";
-import { translate } from "@totara/locale";
+import MoreInfo from "@totara/components/MoreInfo";
 
 const CurrentLearningStack = createStackNavigator(
   {
@@ -61,14 +60,14 @@ const CurrentLearningStack = createStackNavigator(
           title: navigation.getParam("title"),
           opacity: navigation.getParam("opacity"),
           rightAction: (
-            <TouchableOpacity
-              onPress={() => {
-                // @ts-ignore
-                navigation.emit("viewCriteriaTap");
-              }}
-              style={{ paddingHorizontal: paddings.paddingL }}>
-              <Text style={courseSet.criteriaButtonTitle}>{translate("course_group.criteria.view_criteria")}</Text>
-            </TouchableOpacity>
+            <View style={{ paddingRight: paddings.paddingM }}>
+              <MoreInfo
+                onPress={() => {
+                  // @ts-ignore
+                  navigation.emit("viewCriteriaTap");
+                }}
+              />
+            </View>
           )
         })
     },

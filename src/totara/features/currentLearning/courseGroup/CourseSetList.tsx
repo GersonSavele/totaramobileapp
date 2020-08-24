@@ -22,6 +22,7 @@ import CriteriaSheet from "../components/CriteriaSheet";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import Course from "./Course";
+import MoreInfo from "@totara/components/MoreInfo";
 
 type CourseSetListProps = {
   courseSetList: [CourseSets];
@@ -40,7 +41,6 @@ const LearningItems = ({ item, navigate }: any) => {
   return (
     <View style={courseSet.container} testID={"test_learning_items"}>
       <TouchableOpacity
-        style={horizontalList.listWrapper}
         onPress={() =>
           navigateTo({
             navigate: navigate,
@@ -54,13 +54,7 @@ const LearningItems = ({ item, navigate }: any) => {
             <Text style={courseSet.headerTitle} testID={"test_header_title"}>
               {item.label}
             </Text>
-            <TouchableOpacity
-              style={courseSet.criteria}
-              onPress={onClose}
-              testID={"test_view_criteria_clicked"}
-              activeOpacity={1.0}>
-              <Text style={courseSet.criteriaButtonTitle}>{translate("course_group.criteria.view_criteria")}</Text>
-            </TouchableOpacity>
+            <MoreInfo onPress={onClose} testID={"test_view_criteria_clicked"} />
           </View>
           <View>
             {takeFirstTwoCourses.map((course) => {
@@ -97,5 +91,5 @@ const CourseSetList = ({ courseSetList, navigate, testID }: CourseSetListProps) 
     </View>
   );
 };
-export { LearningItems };
+export { LearningItems }; //
 export default CourseSetList;

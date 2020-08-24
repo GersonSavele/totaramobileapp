@@ -17,7 +17,6 @@ import React, { useState } from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import { CourseSets } from "@totara/types/CourseGroup";
-import { ImageElement } from "../components/LearningItemCard";
 import { translate } from "@totara/locale";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
@@ -25,7 +24,9 @@ import { courseSet } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
 import CriteriaSheet from "../components/CriteriaSheet";
 import NativeAccessRestriction from "../NativeAccessRestriction";
-import { learningItemEnum } from "../constants";
+import MoreInfo from "@totara/components/MoreInfo";
+import { ImageWrapper } from "@totara/components";
+import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -33,7 +34,7 @@ type CourseSetProps = {
   testID: string;
 };
 
-const LearningItems = ({ item, navigation }: any) => {
+const CourseSetItem = ({ item, navigation }: any) => {
   const [showRestriction, setShowRestriction] = useState(false);
   const onCloseRestriction = () => {
     setShowRestriction(!showRestriction);
@@ -41,7 +42,6 @@ const LearningItems = ({ item, navigation }: any) => {
   return (
     <View style={courseSet.container}>
       <TouchableOpacity
-        style={courseSet.learningItem}
         key={item.id}
         onPress={() => {
           if (item.native) {
@@ -56,7 +56,13 @@ const LearningItems = ({ item, navigation }: any) => {
         }}
         activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
-          <ImageElement item={item} image={item.imageSrc} itemType={learningItemEnum.Course} imageStyle={{ flex: 1 }} />
+          <View style={{ flex: 1 }}>
+            {item?.imageSrc?.length > 0 ? (
+              <ImageWrapper url={item?.imageSrc} style={courseSet.courseSetItemImage} />
+            ) : (
+              <DefaultImage itemType={item.itemtype} style={courseSet.courseSetItemImage} />
+            )}
+          </View>
           <View style={courseSet.courseDetails}>
             <Text numberOfLines={1} style={courseSet.courseTitle}>
               {item.fullname}
@@ -79,16 +85,14 @@ const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
   };
 
   const renderItem = ({ item }: any) => {
-    return <LearningItems navigation={navigation} item={item} />;
+    return <CourseSetItem navigation={navigation} item={item} />;
   };
 
   return (
     <View style={{ marginTop: margins.marginXL }} testID={testID}>
       <View style={courseSet.courseSetHeader}>
         <Text style={courseSet.title}>{courseSets.label}</Text>
-        <TouchableOpacity style={courseSet.criteriaButton} onPress={onCloseBottomSheet} activeOpacity={1.0}>
-          <Text style={courseSet.criteriaButtonTitle}>{translate("course_group.criteria.view_criteria")}</Text>
-        </TouchableOpacity>
+        <MoreInfo onPress={onCloseBottomSheet} />
       </View>
       <FlatList
         data={courseSets.courses}

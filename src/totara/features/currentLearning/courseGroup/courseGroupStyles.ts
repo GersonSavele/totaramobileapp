@@ -91,33 +91,22 @@ const courseSet = StyleSheet.create({
     flex: 1,
     marginHorizontal: margins.marginL
   },
-  criteriaButton: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end"
-  },
   title: {
     ...TotaraTheme.textHeadline,
     fontWeight: fontWeights.fontWeightBold
   },
-  criteriaButtonTitle: {
-    ...TotaraTheme.textRegular,
-    color: TotaraTheme.colorInfo
-  },
   container: {
-    margin: margins.marginL,
-    width: deviceScreen.width * 0.8,
-    height: viewHeight.LearningItemCard,
-    minHeight: 225
-  },
-  learningItem: {
     ...shadow.ios,
     ...shadow.android,
     borderRadius: borderRadius.borderRadiusM,
+    margin: margins.marginL,
+    width: deviceScreen.width * 0.8,
+    height: viewHeight.LearningItemCard,
+    minHeight: 225,
     backgroundColor: TotaraTheme.colorNeutral1
   },
   itemContainer: {
-    borderTopRightRadius: borderRadius.borderRadiusM,
-    borderTopLeftRadius: borderRadius.borderRadiusM,
+    borderRadius: borderRadius.borderRadiusM,
     width: "100%",
     height: "100%"
   },
@@ -135,33 +124,32 @@ const courseSet = StyleSheet.create({
     flex: 1,
     marginHorizontal: margins.marginL
   },
+  courseSetItemImage: {
+    borderTopRightRadius: borderRadius.borderRadiusM,
+    borderTopLeftRadius: borderRadius.borderRadiusM
+  },
 
   headerBar: {
     borderTopRightRadius: borderRadius.borderRadiusM,
     borderTopLeftRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2,
     height: 54,
-    ...spacedFlexRow,
-    alignItems: "flex-end"
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    padding: paddings.paddingL
   },
   headerTitle: {
     ...TotaraTheme.textRegular,
-    marginLeft: margins.marginL,
-    marginBottom: margins.marginS,
     fontWeight: fontWeights.fontWeightSemiBold
-  },
-  criteria: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginRight: margins.marginL,
-    marginBottom: margins.marginS
   }
 });
 
 const rowItem = StyleSheet.create({
   container: {
     flexDirection: "row",
-    padding: paddings.paddingM
+    padding: paddings.paddingM,
+    borderRadius: borderRadius.borderRadiusM
   },
   imageWrapper: {
     backgroundColor: TotaraTheme.colorNeutral2,
@@ -191,7 +179,8 @@ const rowItem = StyleSheet.create({
 const horizontalList = StyleSheet.create({
   container: {
     backgroundColor: TotaraTheme.colorNeutral2,
-    paddingTop: paddings.padding2XL
+    paddingTop: paddings.paddingXL,
+    paddingBottom: paddings.paddingXL
   },
   listWrapper: {
     ...shadow.ios,

@@ -72,6 +72,7 @@ const tabBar = {
 };
 
 const iconSizes = {
+  sizeXS: 8,
   sizeS: 16,
   sizeM: 24,
   sizeL: 32,

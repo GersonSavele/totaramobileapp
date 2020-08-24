@@ -18,7 +18,7 @@ import React from "react";
 import { LearningItem } from "@totara/types";
 import DueDateState from "./DueDateState";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings, fontWeights, fontSizes } from "@totara/theme/constants";
+import { paddings, fontWeights, fontSizes, borderRadius } from "@totara/theme/constants";
 import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 
@@ -54,9 +54,9 @@ const ImageElement = ({ item, imageStyle, image, itemType }: Props) => {
     <View style={[imageStyleSheet]}>
       {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
       {image && image.length > 0 ? (
-        <ImageWrapper url={image} style={styles.imageWrap} />
+        <ImageWrapper url={image} style={[styles.imageWrap]} />
       ) : (
-        <DefaultImage itemType={itemType} style={styles.imageWrap} />
+        <DefaultImage itemType={itemType} style={[styles.imageWrap]} />
       )}
     </View>
   );
@@ -65,7 +65,8 @@ const ImageElement = ({ item, imageStyle, image, itemType }: Props) => {
 const styles = StyleSheet.create({
   itemImage: {
     flex: 1,
-    flexDirection: "column-reverse"
+    flexDirection: "column-reverse",
+    borderRadius: borderRadius.borderRadiusM
   },
   itemCard: {
     padding: paddings.paddingXL,
