@@ -16,7 +16,7 @@
 import React, { ReactNode } from "react";
 import { View, StyleSheet, Text, Image, ImageSourcePropType } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, modalSize, paddings, borderRadius } from "@totara/theme/constants";
+import { margins, paddings, borderRadius } from "@totara/theme/constants";
 
 type ModalContentProps = {
   title?: string;
@@ -61,24 +61,22 @@ const styles = StyleSheet.create({
   containerStyle: {
     borderRadius: borderRadius.borderRadiusXS,
     marginHorizontal: margins.marginXL,
-    height: "70%",
+    paddingVertical: paddings.padding3XL,
     justifyContent: "center",
     backgroundColor: TotaraTheme.colorNeutral1
   },
   sectionContainer: {
-    marginVertical: margins.marginL,
+    marginBottom: margins.marginL,
     marginHorizontal: margins.marginXL,
     alignItems: "center"
   },
   actionContainer: {
-    marginVertical: margins.marginL,
-    minHeight: 104,
     justifyContent: "space-between",
     alignSelf: "center"
   },
   infoImage: {
     alignItems: "center",
-    width: modalSize.width,
+    width: 200,
     resizeMode: "contain"
   },
   infoText: {

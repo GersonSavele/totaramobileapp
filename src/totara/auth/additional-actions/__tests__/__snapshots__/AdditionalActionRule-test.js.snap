@@ -22,9 +22,9 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
         Object {
           "backgroundColor": "#FFFFFF",
           "borderRadius": 4,
-          "height": "70%",
           "justifyContent": "center",
           "marginHorizontal": 24,
+          "paddingVertical": 32,
         }
       }
     >
@@ -32,8 +32,8 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -47,7 +47,7 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 525,
+              "width": 200,
             }
           }
         />
@@ -56,8 +56,8 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -99,8 +99,6 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
           Object {
             "alignSelf": "center",
             "justifyContent": "space-between",
-            "marginVertical": 16,
-            "minHeight": 104,
           }
         }
       >

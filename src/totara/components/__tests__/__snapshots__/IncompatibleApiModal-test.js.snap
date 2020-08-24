@@ -22,9 +22,9 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         Object {
           "backgroundColor": "#FFFFFF",
           "borderRadius": 4,
-          "height": "70%",
           "justifyContent": "center",
           "marginHorizontal": 24,
+          "paddingVertical": 32,
         }
       }
     >
@@ -32,8 +32,8 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -47,7 +47,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 525,
+              "width": 200,
             }
           }
         />
@@ -56,8 +56,8 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -99,8 +99,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           Object {
             "alignSelf": "center",
             "justifyContent": "space-between",
-            "marginVertical": 16,
-            "minHeight": 104,
           }
         }
       >
@@ -174,9 +172,9 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         Object {
           "backgroundColor": "#FFFFFF",
           "borderRadius": 4,
-          "height": "70%",
           "justifyContent": "center",
           "marginHorizontal": 24,
+          "paddingVertical": 32,
         }
       }
     >
@@ -184,8 +182,8 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -199,7 +197,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 525,
+              "width": 200,
             }
           }
         />
@@ -208,8 +206,8 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -251,8 +249,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           Object {
             "alignSelf": "center",
             "justifyContent": "space-between",
-            "marginVertical": 16,
-            "minHeight": 104,
           }
         }
       >
@@ -326,9 +322,9 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         Object {
           "backgroundColor": "#FFFFFF",
           "borderRadius": 4,
-          "height": "70%",
           "justifyContent": "center",
           "marginHorizontal": 24,
+          "paddingVertical": 32,
         }
       }
     >
@@ -336,8 +332,8 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -351,7 +347,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 525,
+              "width": 200,
             }
           }
         />
@@ -360,8 +356,8 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -403,8 +399,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
           Object {
             "alignSelf": "center",
             "justifyContent": "space-between",
-            "marginVertical": 16,
-            "minHeight": 104,
           }
         }
       >
@@ -478,9 +472,9 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
         Object {
           "backgroundColor": "#FFFFFF",
           "borderRadius": 4,
-          "height": "70%",
           "justifyContent": "center",
           "marginHorizontal": 24,
+          "paddingVertical": 32,
         }
       }
     >
@@ -488,8 +482,8 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -503,7 +497,7 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 525,
+              "width": 200,
             }
           }
         />
@@ -512,8 +506,8 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
         style={
           Object {
             "alignItems": "center",
+            "marginBottom": 16,
             "marginHorizontal": 24,
-            "marginVertical": 16,
           }
         }
       >
@@ -555,8 +549,6 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
           Object {
             "alignSelf": "center",
             "justifyContent": "space-between",
-            "marginVertical": 16,
-            "minHeight": 104,
           }
         }
       >
