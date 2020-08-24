@@ -38,17 +38,12 @@ const SiteUrl = (props: Props) => {
       <Content enableOnAndroid contentContainerStyle={styles.mainContent}>
         <Form style={styles.siteUrlContainer}>
           <View style={styles.logoContainer}>
-            <Image
-              source={require("@resources/images/totara_logo/totara_logo.png")}
-              style={styles.logo}
-            />
+            <Image source={require("@resources/images/totara_logo/totara_logo.png")} style={styles.logo} />
           </View>
           <View style={styles.formContainer}>
             <View>
               <Text style={styles.urlTitle}>{translate("site_url.title")}</Text>
-              <Text style={styles.urlInformation}>
-                {translate("site_url.url_information")}
-              </Text>
+              <Text style={styles.urlInformation}>{translate("site_url.url_information")}</Text>
             </View>
             <InputTextWithInfo
               placeholder={translate("site_url.url_text_placeholder")}
@@ -78,8 +73,7 @@ const SiteUrl = (props: Props) => {
       </Content>
 
       <Text style={styles.version}>
-        {translate("general.version")}: {DeviceInfo.getVersion()}(
-        {DeviceInfo.getBuildNumber()})
+        {translate("general.version")}: {DeviceInfo.getVersion()}({DeviceInfo.getBuildNumber()})
       </Text>
     </SafeAreaView>
   );
@@ -87,13 +81,12 @@ const SiteUrl = (props: Props) => {
 
 const styles = StyleSheet.create({
   mainContent: {
-    flex: 1
+    flexGrow: 1
   },
   siteUrlContainer: {
     flex: 1,
     justifyContent: "space-between"
   },
-
   logoContainer: {
     height: "40%",
     flexDirection: "column",
