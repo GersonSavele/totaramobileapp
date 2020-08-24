@@ -47,7 +47,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 200,
             }
           }
         />
@@ -197,7 +196,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 200,
             }
           }
         />
@@ -347,7 +345,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 200,
             }
           }
         />
@@ -497,7 +494,6 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 200,
             }
           }
         />

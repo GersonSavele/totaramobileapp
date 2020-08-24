@@ -47,7 +47,6 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 200,
             }
           }
         />

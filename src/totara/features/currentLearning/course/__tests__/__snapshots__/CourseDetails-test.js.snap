@@ -389,7 +389,6 @@ exports[`Testing: Course manual completion Test result : course complete and loa
             Object {
               "alignItems": "center",
               "resizeMode": "contain",
-              "width": 200,
             }
           }
         />

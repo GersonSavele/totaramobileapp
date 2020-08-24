@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
   },
   infoImage: {
     alignItems: "center",
-    width: 200,
     resizeMode: "contain"
   },
   infoText: {
