@@ -113,6 +113,11 @@ const NativeLogin = (props: ManualFlowChildProps) => {
               />
             </InputTextWithInfo>
           </View>
+          <PrimaryButton
+            onPress={onClickEnter}
+            text={translate("general.enter")}
+            mode={nativeLoginState.isRequestingLogin ? "loading" : undefined}
+          />
           <View style={[styles.forgotCredentialContainer, theme.textRegular]}>
             <TouchableOpacity
               onPress={() => {
@@ -121,11 +126,6 @@ const NativeLogin = (props: ManualFlowChildProps) => {
               <Text style={styles.forgotCredential}>{translate("native_login.forgot_username_password")}</Text>
             </TouchableOpacity>
           </View>
-          <PrimaryButton
-            onPress={onClickEnter}
-            text={translate("general.enter")}
-            mode={nativeLoginState.isRequestingLogin ? "loading" : undefined}
-          />
         </Form>
       </Content>
     </Container>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   forgotCredential: {
     padding: margins.marginL,
-    textDecorationLine: "underline",
+    color: TotaraTheme.colorLink,
     textAlign: "center"
   }
 });
