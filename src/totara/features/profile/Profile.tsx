@@ -117,20 +117,19 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
       </View>
 
       <View style={styles.section}>
-        <View style={styles.sectionOption}>
-          <TouchableOpacity testID={"test_ProfileAboutButton"} onPress={goToAbout} style={{ flex: 1 }}>
-            <Text style={TotaraTheme.textRegular}>{translate("user_profile.about")}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.sectionOption}>
-          <AuthConsumer>
-            {(auth) => (
-              <TouchableOpacity testID={"test_ProfileLogoutButton"} onPress={() => confirmationLogout(auth)}>
-                <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>
-              </TouchableOpacity>
-            )}
-          </AuthConsumer>
-        </View>
+        <TouchableOpacity testID={"test_ProfileAboutButton"} onPress={goToAbout} style={styles.sectionOption}>
+          <Text style={TotaraTheme.textRegular}>{translate("user_profile.about")}</Text>
+        </TouchableOpacity>
+        <AuthConsumer>
+          {(auth) => (
+            <TouchableOpacity
+              testID={"test_ProfileLogoutButton"}
+              onPress={() => confirmationLogout(auth)}
+              style={styles.sectionOption}>
+              <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>
+            </TouchableOpacity>
+          )}
+        </AuthConsumer>
       </View>
     </View>
   );
@@ -177,12 +176,10 @@ const styles = StyleSheet.create({
   },
   section: {
     minHeight: deviceScreen.height / 2,
-    padding: paddings.paddingXL
+    paddingHorizontal: paddings.paddingXL
   },
   sectionOption: {
-    paddingTop: paddings.paddingS,
-    paddingBottom: paddings.paddingXL,
-    marginBottom: margins.marginS,
+    paddingVertical: paddings.paddingXL,
     borderBottomColor: TotaraTheme.colorNeutral3,
     borderBottomWidth: 1
   }
