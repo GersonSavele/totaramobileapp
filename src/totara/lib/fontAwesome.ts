@@ -50,7 +50,8 @@ import {
   faCheckCircle,
   faInfoCircle,
   faAngleRight,
-  faInfo
+  faInfo,
+  faBan
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -92,7 +93,8 @@ const init = () => {
     faCheckCircle,
     faInfoCircle,
     faAngleRight,
-    faInfo
+    faInfo,
+    faBan
   );
 };
 

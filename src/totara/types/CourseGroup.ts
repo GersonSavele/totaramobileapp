@@ -29,6 +29,7 @@ export interface CourseGroup {
   completion: Completion;
   currentCourseSets: [[CourseSets]];
   countUnavailableSets: number;
+  courseSetHeader: string;
 }
 
 export interface CourseSets {

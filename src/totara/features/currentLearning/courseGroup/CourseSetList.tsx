@@ -23,6 +23,10 @@ import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import Course from "./Course";
 import MoreInfo from "@totara/components/MoreInfo";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { iconSizes } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type CourseSetListProps = {
   courseSetList: [CourseSets];
@@ -36,19 +40,19 @@ const LearningItems = ({ item, navigate }: any) => {
     setShow(!show);
   };
 
+  const navigateToCourse = () => {
+    navigateTo({
+      navigate: navigate,
+      routeId: NAVIGATION.COURSE_LIST,
+      props: { coursesList: item }
+    });
+  };
+
   const takeFirstTwoCourses = item.courses?.slice(0, 2) || [];
 
   return (
     <View style={courseSet.container} testID={"test_learning_items"}>
-      <TouchableOpacity
-        onPress={() =>
-          navigateTo({
-            navigate: navigate,
-            routeId: NAVIGATION.COURSE_LIST,
-            props: { coursesList: item }
-          })
-        }
-        activeOpacity={1.0}>
+      <TouchableOpacity onPress={navigateToCourse} activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
           <View style={courseSet.headerBar}>
             <Text style={courseSet.headerTitle} testID={"test_header_title"}>
@@ -60,6 +64,17 @@ const LearningItems = ({ item, navigate }: any) => {
             {takeFirstTwoCourses.map((course) => {
               return <Course key={course.id} course={course} navigate={navigate} />;
             })}
+          </View>
+          <View style={courseSet.viewAllContent}>
+            {item.courses && item.courses.length > 1 && (
+              <TouchableOpacity
+                onPress={navigateToCourse}
+                activeOpacity={1.0}
+                style={courseSet.viewAllTouchableOpacity}>
+                <Text style={courseSet.viewAllTitle}>View all</Text>
+                <FontAwesomeIcon icon={faChevronRight} size={iconSizes.sizeM / 2} color={TotaraTheme.colorLink} />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </TouchableOpacity>

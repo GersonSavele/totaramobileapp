@@ -23,7 +23,10 @@ import { translate } from "@totara/locale";
 import { courses } from "./courseGroupStyles";
 import { CourseSets } from "@totara/types/CourseGroup";
 import listViewStyles from "@totara/theme/listView";
-
+import { iconSizes } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
+import { faBan, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 type CoursesProps = {
   courseGroup: CourseGroup;
   navigation: NavigationStackProp;
@@ -32,6 +35,15 @@ type CoursesProps = {
 const Courses = ({ courseGroup, navigation }: CoursesProps) => {
   return (
     <View>
+      {courseGroup.courseSetHeader && courseGroup.courseSetHeader.length > 0 ? (
+        <CompletionInfo
+          title={courseGroup.courseSetHeader}
+          icon={faCheckCircle}
+          viewTestID={"test_set_header"}
+          textTestID={"test_set_header_title"}
+          iconColor={TotaraTheme.colorSuccess}
+        />
+      ) : null}
       {courseGroup.currentCourseSets.map((item: [CourseSets], key: number) => {
         return (
           <View key={key}>
@@ -53,12 +65,35 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
         <Completed endnote={courseGroup.endnote} navigation={navigation} testID={"test_program_completed"} />
       )}
       {courseGroup.countUnavailableSets > 0 && (
-        <View style={courses.unavailableSetWrap} testID={"test_unavailable_set"}>
-          <Text style={courses.unavailableText} testID={"test_unavailable_set_title"}>
-            {courseGroup.countUnavailableSets} {translate("course_group.courses.unavailable_sets")}
-          </Text>
-        </View>
+        <CompletionInfo
+          title={courseGroup.countUnavailableSets.toString() + " " + translate("course_group.courses.unavailable_sets")}
+          icon={faBan}
+          viewTestID={"test_unavailable_set"}
+          textTestID={"test_unavailable_set_title"}
+          iconColor={TotaraTheme.colorAlert}
+        />
       )}
+    </View>
+  );
+};
+
+type CompletionInfoProps = {
+  title: string;
+  icon: any;
+  viewTestID?: string;
+  textTestID?: string;
+  iconColor: string;
+};
+
+const CompletionInfo = ({ title, icon, viewTestID, textTestID, iconColor }: CompletionInfoProps) => {
+  return (
+    <View style={courses.completionStatusViewWrap} testID={viewTestID}>
+      <View style={{ backgroundColor: "transparent" }}>
+        <FontAwesomeIcon icon={icon} size={iconSizes.sizeS} color={iconColor} />
+      </View>
+      <Text style={courses.title} testID={textTestID}>
+        {title}
+      </Text>
     </View>
   );
 };

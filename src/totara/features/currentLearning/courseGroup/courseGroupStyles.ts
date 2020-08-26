@@ -15,10 +15,9 @@
 
 import { StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, paddings, borderRadius, fontWeights, row, shadow, opacities } from "@totara/theme/constants";
+import { margins, paddings, borderRadius, fontWeights, row, shadow } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { spacedFlexRow } from "@totara/lib/styles/base";
-import { viewHeight } from "../constants";
 
 const details = StyleSheet.create({
   container: {
@@ -51,16 +50,20 @@ const courses = StyleSheet.create({
     paddingHorizontal: paddings.padding3XL,
     paddingVertical: paddings.paddingXL
   },
-  unavailableSetWrap: {
+  completionStatusViewWrap: {
     borderRadius: borderRadius.borderRadiusS,
     marginHorizontal: margins.marginL,
     backgroundColor: TotaraTheme.colorNeutral2,
-    marginVertical: margins.marginXL
+    marginVertical: margins.marginXL,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
-  unavailableText: {
+  title: {
     ...TotaraTheme.textRegular,
     textAlign: "center",
-    paddingVertical: paddings.paddingXL
+    paddingVertical: paddings.paddingXL,
+    marginStart: margins.marginM
   },
   completedText: {
     ...TotaraTheme.textMedium,
@@ -100,14 +103,11 @@ const courseSet = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusM,
     margin: margins.marginL,
     width: deviceScreen.width * 0.8,
-    height: viewHeight.LearningItemCard,
-    minHeight: 225,
     backgroundColor: TotaraTheme.colorNeutral1
   },
   itemContainer: {
     borderRadius: borderRadius.borderRadiusM,
-    width: "100%",
-    height: "100%"
+    width: "100%"
   },
   courseSummary: {
     marginVertical: margins.marginS,
@@ -121,11 +121,14 @@ const courseSet = StyleSheet.create({
   },
   courseDetails: {
     flex: 1,
-    marginHorizontal: margins.marginL
+    marginHorizontal: margins.marginL,
+    height: deviceScreen.width * 0.3
   },
   courseSetItemImage: {
     borderTopRightRadius: borderRadius.borderRadiusM,
-    borderTopLeftRadius: borderRadius.borderRadiusM
+    borderTopLeftRadius: borderRadius.borderRadiusM,
+    width: deviceScreen.width * 0.8,
+    height: deviceScreen.width * 0.3
   },
 
   headerBar: {
@@ -141,14 +144,32 @@ const courseSet = StyleSheet.create({
   headerTitle: {
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightSemiBold
+  },
+  viewAllContent: {
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  viewAllTitle: {
+    ...TotaraTheme.textXSmall,
+    fontWeight: fontWeights.fontWeightNormal,
+    color: TotaraTheme.colorLink,
+    marginEnd: margins.marginXS
+  },
+  viewAllTouchableOpacity: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 
 const rowItem = StyleSheet.create({
   container: {
     flexDirection: "row",
-    padding: paddings.paddingM,
-    borderRadius: borderRadius.borderRadiusM
+    padding: paddings.paddingXL,
+    borderRadius: borderRadius.borderRadiusM,
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   imageWrapper: {
     backgroundColor: TotaraTheme.colorNeutral2,
@@ -157,29 +178,22 @@ const rowItem = StyleSheet.create({
   },
   image: {
     height: row.icon.size,
-    width: row.icon.size,
-    aspectRatio: 4 / 3
-  },
-  detailsWrapper: {
-    flex: 1,
-    padding: paddings.paddingM
+    aspectRatio: 1
   },
   courseName: {
-    ...TotaraTheme.textRegular,
-    fontWeight: fontWeights.fontWeightSemiBold
-  },
-  courseSummary: {
     ...TotaraTheme.textSmall,
     fontWeight: fontWeights.fontWeightNormal,
-    opacity: opacities.opacityM
+    marginHorizontal: margins.marginM
+  },
+  detailsWrapper: {
+    flex: 1
   }
 });
 
 const horizontalList = StyleSheet.create({
   container: {
-    backgroundColor: TotaraTheme.colorNeutral2,
-    paddingTop: paddings.paddingXL,
-    paddingBottom: paddings.paddingXL
+    backgroundColor: TotaraTheme.colorNeutral1,
+    paddingVertical: paddings.paddingXL
   },
   listWrapper: {
     ...shadow.ios,

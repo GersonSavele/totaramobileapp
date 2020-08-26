@@ -57,6 +57,7 @@ const coreProgram = gql`
         __typename
       }
       countUnavailableSets: count_unavailablesets
+      courseSetHeader: courseset_header
       __typename
     }
   }
@@ -106,6 +107,7 @@ const coreCertification = gql`
         __typename
       }
       countUnavailableSets: count_unavailablesets
+      courseSetHeader: courseset_header
       __typename
     }
   }

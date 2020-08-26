@@ -24,6 +24,7 @@ import { iconSizes, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { LearningItemCard } from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
+import { capitalizeFirstLetter } from "@totara/lib/tools";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
@@ -114,7 +115,7 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
       <View style={carouselItemStyles.content}>
         <LearningItemCard item={item} image={item.imageSrc} itemType={item.itemtype}>
           <View style={{ flexGrow: 1 }}>
-            <Text style={carouselItemStyles.type}>{item.itemtype}</Text>
+            <Text style={carouselItemStyles.type}>{capitalizeFirstLetter(item.itemtype)}</Text>
             <View style={{ flex: 1, paddingVertical: paddings.paddingM }}>
               <Text style={carouselItemStyles.summary} numberOfLines={30}>
                 {item.summary}

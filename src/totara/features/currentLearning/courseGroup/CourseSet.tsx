@@ -55,7 +55,7 @@ const CourseSetItem = ({ item, navigation }: any) => {
           }
         }}
         activeOpacity={1.0}>
-        <View style={courseSet.itemContainer}>
+        <View style={courseSet.cardContainer}>
           <View style={{ flex: 1 }}>
             {item?.imageSrc?.length > 0 ? (
               <ImageWrapper url={item?.imageSrc} style={courseSet.courseSetItemImage} />

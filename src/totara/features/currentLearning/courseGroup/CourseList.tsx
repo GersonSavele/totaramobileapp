@@ -19,9 +19,10 @@ import { NavigationStackProp } from "react-navigation-stack";
 import Course from "./Course";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "../components/CriteriaSheet";
+import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
 
 const LearningItems = ({ item, navigation }: any) => {
-  return <Course course={item} navigate={navigation.navigate} testID={"test_course"} />;
+  return <CurrentLearningListViewItem item={item} navigation={navigation} />;
 };
 
 type CourseListProps = {
