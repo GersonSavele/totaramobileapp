@@ -310,7 +310,7 @@ const ScormSummary = ({
                         <FontAwesomeIcon
                           icon="chevron-right"
                           size={theme.textRegular.fontSize}
-                          style={{ alignSelf: "center", marginLeft: margins.marginS }}
+                          style={scormSummaryStyles.sectionArrow}
                           color={theme.textColorSubdued}
                         />
                       )}

@@ -33,6 +33,7 @@ const scormSummaryStyles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: paddings.paddingL
   },
+  sectionArrow: { alignSelf: "center", marginLeft: margins.marginS },
   attemptContainer: {
     padding: paddings.paddingL,
     flexDirection: "column",
