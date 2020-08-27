@@ -267,14 +267,7 @@ const navigationOptions = ({ navigation }) => {
   return {
     title,
     headerTitleAlign: "center",
-    headerLeft: (
-      <TouchableIcon
-        icon={backIcon}
-        onPress={backAction}
-        color={TotaraTheme.colorLink}
-        size={TotaraTheme.textHeadline.fontSize}
-      />
-    ),
+    headerLeft: <TouchableIcon icon={backIcon} onPress={backAction} size={TotaraTheme.textHeadline.fontSize} />,
     headerRight: headerRight({ navigation })
   };
 };
