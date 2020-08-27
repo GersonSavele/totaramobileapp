@@ -110,6 +110,7 @@ const GridTitle = ({ theme, textId, style = {} }: GridTitleProps) => (
 const showScormFeedback = ({
   gradeMethod,
   score,
+  showGrades,
   completionScoreRequired,
   navigate,
   navigateTo
@@ -129,6 +130,7 @@ const showScormFeedback = ({
       gradeMethod,
       completionScoreRequired,
       score,
+      showGrades,
       onClose: goToSummary
     }
   });
@@ -301,14 +303,17 @@ const ScormSummary = ({
                           backIcon: "chevron-left"
                         }
                       })
-                    }>
+                    }
+                    disabled={isEmpty(attempts)}>
                     <GridLabelValue theme={theme} textId={"scorm.summary.grade.reported"} value={calculatedGrade}>
-                      <FontAwesomeIcon
-                        icon="chevron-right"
-                        size={theme.textRegular.fontSize}
-                        style={{ alignSelf: "center", marginLeft: 8 }}
-                        color={theme.textColorSubdued}
-                      />
+                      {!isEmpty(attempts) && (
+                        <FontAwesomeIcon
+                          icon="chevron-right"
+                          size={theme.textRegular.fontSize}
+                          style={{ alignSelf: "center", marginLeft: margins.marginS }}
+                          color={theme.textColorSubdued}
+                        />
+                      )}
                     </GridLabelValue>
                   </TouchableOpacity>
                 </>
@@ -379,6 +384,7 @@ const ScormSummary = ({
                       id: id,
                       attempt: attemptNumber,
                       gradeMethod: gradeMethod,
+                      showGrades,
                       completionScoreRequired: completionScoreRequired,
                       client,
                       navigation,

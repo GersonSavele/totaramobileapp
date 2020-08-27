@@ -58,6 +58,7 @@ describe("showScormFeedback", () => {
 
     showScormFeedback({
       gradeMethod: Grade.highest,
+      showGrades: false,
       score: 9,
       completionScoreRequired: 8,
       navigate: navigateMock,
