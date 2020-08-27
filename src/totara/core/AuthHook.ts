@@ -21,6 +21,8 @@ import SplashScreen from "react-native-splash-screen";
 
 import { Log } from "@totara/lib";
 import { AppState, SiteInfo } from "@totara/types";
+import { persistor } from "../store";
+import { purge } from "../actions/root";
 
 /**
  * Custom react hook and its primary role is managing the auth state which is in authContextState.
@@ -67,7 +69,13 @@ export const useAuth = (
   const logOut = async (localOnly: boolean = false) => {
     // TODO MOB-231 should remove this localOnly flag, a bit of a hack
     Log.debug("logging out");
-    apolloClient.current && !localOnly && apolloClient.current!.clearStore();
+    apolloClient.current && !localOnly && (await apolloClient.current!.clearStore());
+
+    if (!localOnly) {
+      purge({});
+      await persistor.purge();
+    }
+
     const mutationPromise = () =>
       apolloClient.current && !localOnly
         ? apolloClient.current.mutate({
