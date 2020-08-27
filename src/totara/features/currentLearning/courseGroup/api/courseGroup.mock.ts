@@ -107,7 +107,8 @@ const courseDetails = {
     __typename: "totara_program_completion"
   },
   currentCourseSets: [currentCourseSet, currentCourseSets],
-  countUnavailableSets: 3
+  countUnavailableSets: 3,
+  courseSetHeader: "1 completed set"
 };
 
 const programMock = [

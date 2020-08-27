@@ -34,7 +34,7 @@ type CoursesProps = {
 
 const Courses = ({ courseGroup, navigation }: CoursesProps) => {
   return (
-    <View>
+    <View style={courses.container}>
       {courseGroup.courseSetHeader && courseGroup.courseSetHeader.length > 0 ? (
         <CompletionInfo
           title={courseGroup.courseSetHeader}
@@ -87,11 +87,11 @@ type CompletionInfoProps = {
 
 const CompletionInfo = ({ title, icon, viewTestID, textTestID, iconColor }: CompletionInfoProps) => {
   return (
-    <View style={courses.completionStatusViewWrap} testID={viewTestID}>
+    <View style={courses.completionInfoView} testID={viewTestID}>
       <View style={{ backgroundColor: "transparent" }}>
         <FontAwesomeIcon icon={icon} size={iconSizes.sizeS} color={iconColor} />
       </View>
-      <Text style={courses.title} testID={textTestID}>
+      <Text style={courses.completionInfoTitle} testID={textTestID}>
         {title}
       </Text>
     </View>

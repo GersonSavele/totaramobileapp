@@ -16,7 +16,6 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
-import Course from "./Course";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "../components/CriteriaSheet";
 import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";

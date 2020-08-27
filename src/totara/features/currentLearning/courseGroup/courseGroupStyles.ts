@@ -31,6 +31,9 @@ const details = StyleSheet.create({
 });
 
 const courses = StyleSheet.create({
+  container: {
+    marginBottom: margins.marginXL
+  },
   bottomView: {
     marginHorizontal: margins.marginXL,
     alignItems: "center",
@@ -50,16 +53,16 @@ const courses = StyleSheet.create({
     paddingHorizontal: paddings.padding3XL,
     paddingVertical: paddings.paddingXL
   },
-  completionStatusViewWrap: {
+  completionInfoView: {
     borderRadius: borderRadius.borderRadiusS,
     marginHorizontal: margins.marginL,
     backgroundColor: TotaraTheme.colorNeutral2,
-    marginVertical: margins.marginXL,
+    marginTop: margins.marginXL,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"
   },
-  title: {
+  completionInfoTitle: {
     ...TotaraTheme.textRegular,
     textAlign: "center",
     paddingVertical: paddings.paddingXL,
@@ -128,7 +131,7 @@ const courseSet = StyleSheet.create({
     borderTopRightRadius: borderRadius.borderRadiusM,
     borderTopLeftRadius: borderRadius.borderRadiusM,
     width: deviceScreen.width * 0.8,
-    height: deviceScreen.width * 0.3
+    aspectRatio: 8 / 3 //To Do: this aspectRatio will be changed later
   },
 
   headerBar: {
@@ -146,7 +149,7 @@ const courseSet = StyleSheet.create({
     fontWeight: fontWeights.fontWeightSemiBold
   },
   viewAllContent: {
-    height: 36,
+    height: 35,
     alignItems: "center",
     justifyContent: "center"
   },

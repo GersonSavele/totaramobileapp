@@ -15,8 +15,8 @@
 
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { courseSetMock, course } from "../api/courseGroup.mock";
-import CourseList, { LearningItems } from "../CourseList";
+import { courseSetMock } from "../api/courseGroup.mock";
+import CourseList from "../CourseList";
 
 const navigation = {
   state: {
@@ -32,12 +32,6 @@ describe("Course set list", () => {
   it("Should render when learning items show in the table", async () => {
     const { getByTestId } = render(<CourseList navigation={navigation} />);
     const courseList = getByTestId("test_course_list");
-    expect(courseList).toBeTruthy();
-  });
-
-  it("Should render when there are row items in the table", async () => {
-    const { getByTestId } = render(<LearningItems item={course} navigation={navigation} />);
-    const courseList = getByTestId("test_course");
     expect(courseList).toBeTruthy();
   });
 });

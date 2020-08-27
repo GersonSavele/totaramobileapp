@@ -66,7 +66,7 @@ const LearningItems = ({ item, navigate }: any) => {
             })}
           </View>
           <View style={courseSet.viewAllContent}>
-            {item.courses && item.courses.length > 1 && (
+            {item.courses && item.courses.length > 2 && (
               <TouchableOpacity
                 onPress={navigateToCourse}
                 activeOpacity={1.0}
