@@ -98,7 +98,7 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
         </View>
         <View style={currentLearningListViewStyles.itemProgress}>
           {progress !== null && (
-            <ProgressCircle size={iconSizes.sizeXXL} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
+            <ProgressCircle size={iconSizes.sizeXL} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
           )}
         </View>
       </View>

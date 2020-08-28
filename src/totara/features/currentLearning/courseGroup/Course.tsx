@@ -72,7 +72,7 @@ const Course = ({ course, navigate, testID }: CourseProps) => {
         <View style={{ alignSelf: "center" }}>
           {course.progress !== null && (
             <ProgressCircle
-              size={iconSizes.sizeXXL}
+              size={iconSizes.sizeXL}
               progress={course.progress}
               testID={"test_CurrentLearningItem_Progress"}
             />
