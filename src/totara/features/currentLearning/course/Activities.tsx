@@ -210,9 +210,14 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
       style={{
         backgroundColor: !isLabel ? TotaraTheme.colorAccent : TotaraTheme.colorSecondary1
       }}>
-      <View style={activitiesStyles.itemContentWrapper}>
+      <View
+        style={
+          isLabel
+            ? [activitiesStyles.itemContentWrapper]
+            : [activitiesStyles.itemContentWrapper, { alignItems: "center" }]
+        }>
         {completionEnabled && (
-          <View>
+          <View style={isLabel && activitiesStyles.labelSelfCompletionIcon}>
             {item.completion === completionTrack.trackingManual ? (
               <TouchableOpacity onPress={onClickSelfComplete}>
                 <CompletionIcon
@@ -280,7 +285,7 @@ const ListItemLock = ({ item }: { item: Activity }) => {
     <View>
       <View style={activitiesStyles.listItemLockContainer}>
         <TouchableOpacity style={activitiesStyles.itemTouchableContent} onPress={onClose}>
-          <View style={[activitiesStyles.itemContentWrapper, { opacity: 0.25 }]}>
+          <View style={[activitiesStyles.itemContentWrapper, activitiesStyles.itemLockContentWrapper]}>
             <CompletionIcon completion={item.completion} status={item.completionstatus} available={item.available} />
             <ListItem item={item} />
           </View>

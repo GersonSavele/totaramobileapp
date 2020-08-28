@@ -41,9 +41,12 @@ const activitiesStyles = StyleSheet.create({
     minHeight: 68,
     justifyContent: "flex-start",
     flexDirection: "row",
-    alignItems: "center",
     flex: 1,
     marginHorizontal: marginL
+  },
+  itemLockContentWrapper: {
+    opacity: 0.25,
+    alignItems: "center"
   },
   itemTextContainer: {
     height: 45,
@@ -78,6 +81,10 @@ const activitiesStyles = StyleSheet.create({
   activityList: {
     backgroundColor: colorSecondary1,
     marginStart: marginL
+  },
+  labelSelfCompletionIcon: {
+    alignSelf: "flex-start",
+    marginTop: margins.marginM
   }
 });
 

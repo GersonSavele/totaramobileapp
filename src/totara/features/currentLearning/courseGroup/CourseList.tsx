@@ -19,6 +19,7 @@ import { NavigationStackProp } from "react-navigation-stack";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "../components/CriteriaSheet";
 import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
+import listViewStyles from "@totara/theme/listView";
 
 const LearningItems = ({ item, navigation }: any) => {
   return <CurrentLearningListViewItem item={item} navigation={navigation} />;
@@ -54,9 +55,15 @@ const CourseList = ({ navigation }: CourseListProps) => {
     return <LearningItems navigation={navigation} item={item} />;
   };
 
+  const renderSeparator = () => {
+    return <View style={listViewStyles.itemSeparator} />;
+  };
+
   return (
     <View testID={"test_course_list"}>
       <FlatList
+        ItemSeparatorComponent={renderSeparator}
+        ListFooterComponent={renderSeparator}
         style={{ height: "100%" }}
         data={courseList.courses}
         renderItem={renderItems}

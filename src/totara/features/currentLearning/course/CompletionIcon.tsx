@@ -15,6 +15,7 @@
 
 import React from "react";
 import { View } from "react-native";
+import { StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { completionTrack, completionStatus, completionIconStateKey } from "../constants";
 import { CircleIcon } from "@totara/components";
@@ -85,7 +86,7 @@ const CompletionIcon = ({ completion, status, available, loading }: BuildContent
   return stateObj ? (
     <View style={{ marginRight: margins.marginL }}>
       {loading ? (
-        <Spinner size={iconSizes.sizeM} />
+        <Spinner size={iconSizes.sizeM} style={styles.spinner} />
       ) : (
         <CircleIcon
           icon={stateObj.icon}
@@ -99,4 +100,10 @@ const CompletionIcon = ({ completion, status, available, loading }: BuildContent
   ) : null;
 };
 
+const styles = StyleSheet.create({
+  spinner: {
+    height: iconSizes.sizeM,
+    width: iconSizes.sizeM
+  }
+});
 export default CompletionIcon;
