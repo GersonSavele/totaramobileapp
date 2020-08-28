@@ -93,7 +93,7 @@ export const useAuth = (
     authContextState.isAuthenticated &&
     apolloClient.current === null
   ) {
-    Log.debug("creating apolloClient");
+    //Log.debug("creating apolloClient");
     apolloClient.current = createApolloClient(
       // false,
       authContextState.appState.apiKey,
@@ -138,7 +138,7 @@ export const useAuth = (
    */
   useEffect(() => {
     const doBootStrap = () => {
-      Log.debug("doBootStrap", authContextState);
+      //Log.debug("doBootStrap", authContextState);
       if (SplashScreen) SplashScreen.hide();
       bootstrap().then((appState) => {
         dispatch({ type: "bootstrap", payload: appState });
@@ -179,7 +179,7 @@ export const useAuth = (
 };
 
 const authContextReducer = (state: AuthContextState, action: Action): AuthContextState => {
-  Log.debug("authContextReducer: state", state, "action", action);
+  //Log.debug("authContextReducer: state", state, "action", action);
   switch (action.type) {
     case "register": {
       if (action.payload && "secret" in action.payload)

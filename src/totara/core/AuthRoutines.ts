@@ -144,7 +144,7 @@ export const bootstrap = (asyncStorage: AsyncStorageStatic) => async (): Promise
   ]);
 
   if (apiKey !== null && host !== null && siteInfo !== null) {
-    Log.info("bootstrap with existing apiKey and host");
+    //Log.info("bootstrap with existing apiKey and host");
     return {
       apiKey: apiKey,
       host: host,

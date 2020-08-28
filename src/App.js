@@ -18,9 +18,8 @@ import { createAppContainer } from "react-navigation";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Sentry from "@sentry/react-native";
 import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store, persistor } from "./totara/store";
-import { useDispatch } from "react-redux";
 
 import { AuthProvider } from "@totara/core/AuthProvider";
 import { AuthFlow } from "@totara/auth/AuthFlow";
@@ -38,6 +37,11 @@ import { createStackNavigator } from "react-navigation-stack";
 import { scormStack } from "@totara/features/activities/scorm/ScormActivity";
 import AboutStack from "@totara/features/about/AboutStack";
 import { LocaleResolver } from "@totara/locale/LocaleResolver";
+import { useMutation } from "@apollo/react-hooks";
+
+import { gql } from "apollo-boost";
+import messaging from "@react-native-firebase/messaging";
+import { tokenSent, updateToken } from "./totara/actions/notification";
 
 const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
 
@@ -94,12 +98,60 @@ const rootStack = () =>
     }
   );
 
+const mutationForToken = gql`
+  mutation totara_mobile_set_fcmtoken($token: String) {
+    set_fcmtoken: totara_mobile_set_fcmtoken(token: $token)
+  }
+`;
+
 const AppContainer = () => {
-  const dispatch = useDispatch();
+  const notificationState = useSelector((state: RootState) => state.notificationReducer);
+  const [sendToken] = useMutation(mutationForToken);
 
   useEffect(() => {
-    return NotificationCenter.init(dispatch);
+    messaging()
+      .getToken()
+      .then((token) => {
+        console.debug("TOKEN=========>", token);
+        updateToken({ token: token });
+      });
+
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.debug("notification ===>", remoteMessage.notification);
+      console.debug("notification data ===>", remoteMessage.data);
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          console.log("notification ===>", remoteMessage.notification);
+          console.log("notification data ===>", remoteMessage.data);
+        }
+      });
+
+    messaging().onMessage(async (remoteMessage) => {
+      console.debug(remoteMessage);
+    });
+
+    return messaging().onTokenRefresh((token) => {
+      updateToken({ token: token });
+    });
   }, []);
+
+  useEffect(() => {
+    const send = !notificationState.tokenSent;
+    if (send) {
+      sendToken({ variables: { token: notificationState.token } })
+        .then((success) => {
+          console.debug(success);
+          tokenSent({ tokenSent: true });
+        })
+        .catch((err) => {
+          console.debug(err);
+        });
+    }
+  }, [notificationState?.tokenSent]);
 
   const [theme] = useContext(ThemeContext);
   const AppMainNavigation = createAppContainer(rootStack());

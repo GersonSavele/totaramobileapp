@@ -13,10 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import { combineReducers } from "redux";
+import notificationReducer from "./notification";
 import resourceReducer from "./resource";
 import { PURGE } from "../actions/root";
 
 const appReducer = combineReducers({
+  notificationReducer,
   resourceReducer
 });
 

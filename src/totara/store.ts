@@ -21,7 +21,7 @@ const persistConfig = {
   // Root
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["resourceReducer"]
+  whitelist: ["resourceReducer", "notificationReducer"]
 };
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
@@ -32,6 +32,6 @@ const createMiddleware = (logger: boolean) => {
 };
 
 // eslint-disable-next-line no-undef
-const store = createStore(persistedReducer, createMiddleware(__DEV__));
+const store = createStore(persistedReducer, createMiddleware(true));
 const persistor = persistStore(store);
 export { store, persistor };
