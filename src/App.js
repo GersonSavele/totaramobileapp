@@ -57,8 +57,8 @@ const App: () => React$Node = () => {
   return (
     <AuthProvider asyncStorage={AsyncStorage}>
       <SafeAreaProvider>
-        <AuthFlow>
-          <ThemeProvider>
+        <ThemeProvider>
+          <AuthFlow>
             <LocaleResolver>
               <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
@@ -68,8 +68,8 @@ const App: () => React$Node = () => {
                 <AttemptSynchronizer />
               </Provider>
             </LocaleResolver>
-          </ThemeProvider>
-        </AuthFlow>
+          </AuthFlow>
+        </ThemeProvider>
       </SafeAreaProvider>
     </AuthProvider>
   );
