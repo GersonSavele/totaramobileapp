@@ -53,10 +53,6 @@ if (!__DEV__) {
 
 FontAwesome.init();
 
-NotificationCenter.handleMessagesInBackground();
-
-ResourceManager.resumeDownloads();
-
 const App: () => React$Node = () => {
   return (
     <AuthProvider asyncStorage={AsyncStorage}>
@@ -105,6 +101,10 @@ const mutationForToken = gql`
 `;
 
 const AppContainer = () => {
+  NotificationCenter.requestUserPermission();
+  NotificationCenter.handleMessagesInBackground();
+  ResourceManager.resumeDownloads();
+
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
   const [sendToken] = useMutation(mutationForToken);
 
@@ -117,6 +117,7 @@ const AppContainer = () => {
       });
 
     messaging().onNotificationOpenedApp((remoteMessage) => {
+      //THIS HANDLING WILL BE IMPLEMENTED IN MOB-700
       console.debug("notification ===>", remoteMessage.notification);
       console.debug("notification data ===>", remoteMessage.data);
     });
@@ -125,12 +126,14 @@ const AppContainer = () => {
       .getInitialNotification()
       .then((remoteMessage) => {
         if (remoteMessage) {
-          console.log("notification ===>", remoteMessage.notification);
-          console.log("notification data ===>", remoteMessage.data);
+          //THIS HANDLING WILL BE IMPLEMENTED IN MOB-700
+          console.debug("notification ===>", remoteMessage.notification);
+          console.debug("notification data ===>", remoteMessage.data);
         }
       });
 
     messaging().onMessage(async (remoteMessage) => {
+      //THIS HANDLING WILL BE IMPLEMENTED IN MOB-700
       console.debug(remoteMessage);
     });
 
