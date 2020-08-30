@@ -25,16 +25,17 @@ import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { Section, Activity } from "@totara/types";
+import { Section, Activity, AppState } from "@totara/types";
+import { AuthContext } from "@totara/core";
 import { GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
 import { completionStatus, completionTrack } from "../constants";
 import { activityModType } from "@totara/lib/constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
-import { activitySelfComplete } from "../course/api";
+import { activitySelfComplete, fetchResource } from "../course/api";
 import listViewStyles from "@totara/theme/listView";
 
-const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
+const { SCORM_ROOT, WEBVIEW_ACTIVITY, RESOURCE_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
@@ -191,6 +192,13 @@ type ListUnLockProps = {
 
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
   const navigation = useContext(NavigationContext);
+
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+
+  const { apiKey, host } = appState as AppState;
+
   const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] = useMutation(
     activitySelfComplete
   );
@@ -256,6 +264,21 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
               case activityModType.label: {
                 break;
               }
+              // case activityModType.resource: {
+              //   fetchResource({
+              //     instanceId: item.instanceid,
+              //     apiKey,
+              //     host
+              //   });
+              //   navigateTo({
+              //     navigate: navigation.navigate,
+              //     routeId: RESOURCE_ACTIVITY,
+              //     props: {
+              //       activity: item,
+              //     }
+              //   });
+              //   break;
+              // }
               default: {
                 navigateTo({
                   navigate: navigation.navigate,

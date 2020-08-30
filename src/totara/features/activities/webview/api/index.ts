@@ -21,6 +21,7 @@ const getResourceDetails = gql`
       id
       mimetype
       size
+      fileurl
       __typename
     }
   }

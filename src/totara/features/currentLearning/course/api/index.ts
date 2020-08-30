@@ -14,6 +14,7 @@
  */
 
 import gql from "graphql-tag";
+import { config } from "@totara/lib";
 
 const coreCourse = gql`
   query totara_mobile_course($courseid: ID!) {
@@ -94,4 +95,38 @@ const activitySelfComplete = gql`
     core_completion_activity_self_complete(cmid: $cmid, complete: $complete)
   }
 `;
-export { coreCourse, courseSelfComplete, activitySelfComplete };
+
+type FetchParam = {
+  instanceId: string;
+  apiKey: string;
+  host: string;
+}
+
+//TODO: This was copied from scorm/api. Might be worth to abstract here? and make a practice for fetch by id
+const fetchResource = ({
+  instanceId,
+  apiKey,
+  host
+}: FetchParam): Promise<Response> => {
+  // fetch from global
+  // eslint-disable-next-line no-undef
+  return fetch(config.apiUri(host), {
+    method: "POST",
+    body: JSON.stringify({
+      operationName: "totara_mobile_resource",
+      variables: { resourceid: instanceId }
+    }),
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${apiKey}`
+    }
+  }).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw new Error(response.status.toString());
+    }
+  });
+};
+
+export { coreCourse, courseSelfComplete, activitySelfComplete, fetchResource };
