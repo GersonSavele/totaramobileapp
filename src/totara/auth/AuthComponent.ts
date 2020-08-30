@@ -20,6 +20,7 @@ import { Setup } from "@totara/core/AuthHook";
 export class AuthComponent<P = {}, S = {}> extends React.Component<AuthFlowChildProps & P, S> {}
 
 export type AuthFlowChildProps = {
+  siteUrl?: string;
   onLoginSuccess: (setup: Setup) => Promise<void>;
   onLoginFailure: (error: Error) => Promise<void>;
 };

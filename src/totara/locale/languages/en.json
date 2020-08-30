@@ -16,7 +16,7 @@
   "site_url": {
     "title": "Get started.",
     "url_information": "Enter your organisation's URL",
-    "url_text_placeholder": "Enter URL",
+    "url_text_placeholder": "URL",
     "validation": {
       "enter_valid_url": "Enter a valid site address"
     },
@@ -90,7 +90,7 @@
     "action_primary": "Refresh",
     "action_tertiary": "Try in browser"
   },
-  "content_error":{
+  "content_error": {
     "title": "Content not available",
     "description": "Please check your connection and try again"
   },

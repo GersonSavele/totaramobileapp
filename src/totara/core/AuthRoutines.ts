@@ -116,7 +116,7 @@ export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
     });
 
   const localCleanUp = asyncStorage
-    .clear()
+    .multiRemove(["apiKey", "siteInfo"])
     .then(() => {
       Log.debug("Cleared storage");
     })

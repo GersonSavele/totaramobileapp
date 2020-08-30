@@ -32,6 +32,7 @@ import { NetworkError, UnsupportedAuthFlow } from "@totara/types/Error";
  */
 
 export const useManualFlow = (fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>) => ({
+  siteUrl,
   onLoginSuccess,
   onLoginFailure
 }: AuthFlowChildProps) => {
@@ -39,7 +40,8 @@ export const useManualFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
     isSiteUrlSubmitted: false,
-    flowStep: "siteUrl"
+    flowStep: "siteUrl",
+    siteUrl
   });
   Log.debug("manualFlowState", manualFlowState);
 
@@ -161,7 +163,6 @@ export const manualFlowReducer = (state: ManualFlowState, action: Action): Manua
       const networkError = action.payload as NetworkError;
       return {
         ...state,
-        isSiteUrlSubmitted: false,
         siteUrlFailure: networkError
       };
     }

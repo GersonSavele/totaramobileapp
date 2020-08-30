@@ -41,7 +41,13 @@ export const AuthFlow = ({ children }: Props) => {
         return <AuthErrorModal action={() => logOut(true)} />;
       case "setupDone":
       case "bootstrapDone":
-        return <ManualFlow onLoginSuccess={onLoginSuccess} onLoginFailure={onLoginFailure} />;
+        return (
+          <ManualFlow
+            onLoginSuccess={onLoginSuccess}
+            onLoginFailure={onLoginFailure}
+            siteUrl={authContextState.setup?.uri}
+          />
+        );
       case "setupSecretInit":
       case "loading":
         return null; // it's in the middle of transitioning don't return any element

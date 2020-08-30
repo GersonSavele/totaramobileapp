@@ -99,7 +99,7 @@ describe("AuthRoutines.deviceCleanup", () => {
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: true } }));
     const mockClearStorage = jest.fn(() => Promise.resolve());
     const mockAsyncStorage = {
-      clear: mockClearStorage
+      multiRemove: mockClearStorage
     };
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
@@ -115,7 +115,7 @@ describe("AuthRoutines.deviceCleanup", () => {
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: true } }));
     const mockClearStorage = jest.fn(() => Promise.reject(errorNoneExistStorage));
     const mockAsyncStorage = {
-      clear: mockClearStorage
+      multiRemove: mockClearStorage
     };
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
@@ -131,7 +131,7 @@ describe("AuthRoutines.deviceCleanup", () => {
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
     const mockClearStorage = jest.fn(() => Promise.resolve());
     const mockAsyncStorage = {
-      clear: mockClearStorage
+      multiRemove: mockClearStorage
     };
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
@@ -146,7 +146,7 @@ describe("AuthRoutines.deviceCleanup", () => {
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: false } }));
     const mockClearStorage = jest.fn(() => Promise.resolve());
     const mockAsyncStorage = {
-      clear: mockClearStorage
+      multiRemove: mockClearStorage
     };
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
@@ -163,7 +163,7 @@ describe("AuthRoutines.deviceCleanup", () => {
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
     const mockClearStorage = jest.fn(() => Promise.reject(unHandledErrorStorage));
     const mockAsyncStorage = {
-      clear: mockClearStorage
+      multiRemove: mockClearStorage
     };
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);

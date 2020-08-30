@@ -18,11 +18,13 @@ import { ApolloClient } from "apollo-client";
 import { gql } from "apollo-boost";
 import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import SplashScreen from "react-native-splash-screen";
+import { isEmpty } from "lodash";
 
 import { Log } from "@totara/lib";
 import { AppState, SiteInfo } from "@totara/types";
 import { persistor } from "../store";
 import { purge } from "../actions/root";
+import AsyncStorage from "@react-native-community/async-storage";
 
 /**
  * Custom react hook and its primary role is managing the auth state which is in authContextState.
@@ -138,7 +140,19 @@ export const useAuth = (
     const doBootStrap = () => {
       if (SplashScreen) SplashScreen.hide();
       bootstrap().then((appState) => {
-        dispatch({ type: "bootstrap", payload: appState });
+        if (isEmpty(appState)) {
+          AsyncStorage.getItem("host")
+            .then((uri) => {
+              if (uri) dispatch({ type: "bootstrap", payload: { ...authContextState.setup, uri } });
+              else dispatch({ type: "bootstrap", payload: appState });
+            })
+            .catch((e) => {
+              Log.debug("doBootStrap getting cached host", e);
+              dispatch({ type: "bootstrap", payload: appState });
+            });
+        } else {
+          dispatch({ type: "bootstrap", payload: appState });
+        }
       });
     };
 
@@ -207,6 +221,14 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
           isLoading: false,
           authStep: "bootstrapDone"
         };
+      else if (action.payload && "uri" in action.payload)
+        return {
+          ...state,
+          setup: action.payload,
+          isAuthenticated: false,
+          isLoading: false,
+          authStep: "bootstrapDone"
+        };
       else
         return {
           ...state,
@@ -272,7 +294,7 @@ export const initialState: AuthContextState = {
 };
 
 export interface Setup {
-  secret: string;
+  secret?: string;
   uri: string;
-  siteInfo: SiteInfo;
+  siteInfo?: SiteInfo;
 }

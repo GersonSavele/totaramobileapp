@@ -98,7 +98,7 @@ describe("useManualFlow", () => {
     await act(async () => waitForNextUpdate());
 
     expect(result.current.manualFlowState).toMatchObject({
-      isSiteUrlSubmitted: false,
+      isSiteUrlSubmitted: true,
       siteUrlFailure: new NetworkFailedError(),
       siteUrl: "https://fail.com"
     });
@@ -241,7 +241,7 @@ describe("manualFlowReducer", () => {
     };
     const newState = manualFlowReducer(currentState, action);
     expect(newState.flowStep).toBe("native");
-    expect(newState.isSiteUrlSubmitted).toBeFalsy();
+    expect(newState.isSiteUrlSubmitted).toBeTruthy();
     expect(newState.siteUrlFailure).toBeDefined();
   });
 

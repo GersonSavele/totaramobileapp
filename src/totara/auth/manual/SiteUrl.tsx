@@ -30,7 +30,7 @@ import { deviceScreen } from "@totara/lib/tools";
 const { DEV_ORG_URL, DEBUG_MODE } = constants;
 
 const SiteUrl = (props: Props) => {
-  const [siteUrl, setSiteUrl] = useState(DEBUG_MODE ? DEV_ORG_URL : "");
+  const [siteUrl, setSiteUrl] = useState(props.siteUrl ? props.siteUrl : DEBUG_MODE ? DEV_ORG_URL : "");
   const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
 
   return (
