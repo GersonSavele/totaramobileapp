@@ -55,7 +55,7 @@ const LearningItems = ({ item, navigate }: any) => {
       <TouchableOpacity onPress={navigateToCourse} activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
           <View style={courseSet.headerBar}>
-            <Text style={courseSet.headerTitle} testID={"test_header_title"}>
+            <Text style={courseSet.headerTitle} numberOfLines={1} ellipsizeMode="tail" testID={"test_header_title"}>
               {item.label}
             </Text>
             <MoreInfo onPress={onClose} testID={"test_view_criteria_clicked"} />

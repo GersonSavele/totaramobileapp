@@ -135,16 +135,18 @@ const courseSet = StyleSheet.create({
   },
 
   headerBar: {
+    flex: 1,
     borderTopRightRadius: borderRadius.borderRadiusM,
     borderTopLeftRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2,
     height: 54,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-end",
-    padding: paddings.paddingL
+    alignItems: "center",
+    padding: paddings.paddingXL
   },
   headerTitle: {
+    flex: 0.95,
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightSemiBold
   },
