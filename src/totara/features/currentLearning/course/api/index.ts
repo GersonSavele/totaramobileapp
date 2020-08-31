@@ -97,17 +97,13 @@ const activitySelfComplete = gql`
 `;
 
 type FetchParam = {
-  instanceId: string;
+  instanceId: number;
   apiKey: string;
   host: string;
-}
+};
 
 //TODO: This was copied from scorm/api. Might be worth to abstract here? and make a practice for fetch by id
-const fetchResource = ({
-  instanceId,
-  apiKey,
-  host
-}: FetchParam): Promise<Response> => {
+const fetchResource = ({ instanceId, apiKey, host }: FetchParam): Promise<Response> => {
   // fetch from global
   // eslint-disable-next-line no-undef
   return fetch(config.apiUri(host), {

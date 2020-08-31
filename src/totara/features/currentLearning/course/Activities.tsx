@@ -20,6 +20,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
+import { get } from "lodash";
+
 import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
@@ -35,7 +37,7 @@ import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete, fetchResource } from "../course/api";
 import listViewStyles from "@totara/theme/listView";
 
-const { SCORM_ROOT, WEBVIEW_ACTIVITY, RESOURCE_ACTIVITY } = NAVIGATION;
+const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
@@ -264,21 +266,30 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
               case activityModType.label: {
                 break;
               }
-              // case activityModType.resource: {
-              //   fetchResource({
-              //     instanceId: item.instanceid,
-              //     apiKey,
-              //     host
-              //   });
-              //   navigateTo({
-              //     navigate: navigation.navigate,
-              //     routeId: RESOURCE_ACTIVITY,
-              //     props: {
-              //       activity: item,
-              //     }
-              //   });
-              //   break;
-              // }
+              case activityModType.resource: {
+                fetchResource({
+                  instanceId: item.instanceid,
+                  apiKey,
+                  host
+                }).then((resourceData) => {
+                  const resource = get(resourceData, "data.resource");
+                  if (resource) {
+                    const { mimetype, fileurl } = resource;
+                    navigateTo({
+                      navigate: navigation.navigate,
+                      routeId: WEBVIEW_ACTIVITY,
+                      props: {
+                        activity: item,
+                        fileurl,
+                        mimetype,
+                        apiKey,
+                        backAction: courseRefreshCallBack
+                      }
+                    });
+                  }
+                });
+                break;
+              }
               default: {
                 navigateTo({
                   navigate: navigation.navigate,

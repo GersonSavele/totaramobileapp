@@ -33,7 +33,6 @@ const COURSE_LIST = "CourseList";
 //scorm routes
 const SCORM_STACK_ROOT = "ScormActivityStack";
 const WEBVIEW_ACTIVITY = "WebviewActivity";
-const RESOURCE_ACTIVITY = "ResourceActivity";
 const SCORM_ROOT = "ScormActivity";
 const SCORM_ATTEMPTS = "ScormAttempts";
 const OFFLINE_SCORM_ACTIVITY = "OfflineScormActivity";
@@ -59,7 +58,6 @@ const NAVIGATION = {
   SCORM_FEEDBACK,
   OFFLINE_SCORM_ACTIVITY,
   WEBVIEW_ACTIVITY,
-  RESOURCE_ACTIVITY,
   CURRENT_LEARNING,
   COURSE_LIST,
   COURSE_DETAILS,

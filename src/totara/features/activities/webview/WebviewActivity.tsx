@@ -15,7 +15,6 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { View, SafeAreaView, BackHandler } from "react-native";
-import { useQuery } from "@apollo/react-hooks";
 import PDFView from "react-native-view-pdf";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import { Activity } from "@totara/types";
@@ -24,8 +23,6 @@ import { AuthenticatedWebView } from "@totara/auth";
 import { NavigationStackProp } from "react-navigation-stack";
 import WebviewToolbar from "../components/WebviewToolbar";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { LoadingError, Loading } from "@totara/components";
-import getResourceDetails from "./api";
 import { activityModType } from "@totara/lib/constants";
 
 const PDF_TYPE = "application/pdf";
@@ -37,6 +34,9 @@ type WebviewActivityParams = {
   activity: Activity;
   uri: string;
   backAction: () => void;
+  fileurl?: string;
+  mimetype?: string;
+  apiKey?: string;
 };
 
 type WebviewActivityProps = {
@@ -44,28 +44,23 @@ type WebviewActivityProps = {
 };
 
 const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
-  const { uri, backAction, activity } = navigation.state.params as WebviewActivityParams;
+  const { uri, backAction, activity, fileurl, mimetype, apiKey } = navigation.state.params as WebviewActivityParams;
+
   if (activity.modtype === activityModType.resource) {
-    const { loading, error, data, refetch } = useQuery(getResourceDetails, {
-      variables: { resourceid: activity.instanceid }
-    });
-    const onContentRefresh = () => {
-      refetch();
-    };
-    if (loading) return <Loading />;
-    if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} />;
-    if (data) {
-      const { mimetype } = data.resource;
-      return (
-        <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
-          {mimetype === PDF_TYPE ? (
-            <PDFView style={{ flex: 1 }} resource={uri || (activity.viewurl as string)} resourceType={"url"} />
-          ) : (
-            <WebViewWrapper uri={uri || activity.viewurl!} backAction={backAction} />
-          )}
-        </SafeAreaView>
-      );
-    }
+    return (
+      <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
+        {mimetype === PDF_TYPE ? (
+          <PDFView
+            style={{ flex: 1 }}
+            resource={fileurl!}
+            resourceType={"url"}
+            urlProps={{ headers: { Authorization: `Bearer ${apiKey}` } }}
+          />
+        ) : (
+          <WebViewWrapper uri={uri || activity.viewurl!} backAction={backAction} />
+        )}
+      </SafeAreaView>
+    );
   } else {
     return (
       <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
