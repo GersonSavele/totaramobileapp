@@ -45,7 +45,7 @@ type WebviewActivityProps = {
 const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
   const { uri, backAction, activity, fileurl, mimetype, apiKey } = navigation.state.params as WebviewActivityParams;
   return (
-    <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
+    <SafeAreaView style={TotaraTheme.viewContainer}>
       {mimetype === PDF_TYPE ? (
         <PDFView
           style={{ flex: 1 }}
