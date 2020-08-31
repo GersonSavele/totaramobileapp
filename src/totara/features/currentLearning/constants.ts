@@ -48,7 +48,35 @@ enum completionIconStateKey {
 }
 
 enum viewHeight {
-  LearningItemCard = deviceScreen.height * 0.3
+  learningItemCard = deviceScreen.height * 0.3
 }
 
-export { learningItemEnum, completionTrack, completionStatus, courseCriteria, completionIconStateKey, viewHeight };
+enum WekaEditorType {
+  attachment = "attachment",
+  text = "text",
+  paragraph = "paragraph",
+  doc = "doc",
+  video = "video",
+  linkBlock = "link_block",
+  linkMedia = "link_media",
+  image = "image",
+  bulletList = "bullet_list",
+  listItem = "list_item",
+  orderedList = "ordered_list",
+  emoji = "emoji",
+  hashtag = "hashtag",
+  mention = "mention",
+  ruler = "ruler",
+  heading = "heading",
+  audio = "audio"
+}
+
+export {
+  learningItemEnum,
+  completionTrack,
+  completionStatus,
+  courseCriteria,
+  completionIconStateKey,
+  viewHeight,
+  WekaEditorType
+};

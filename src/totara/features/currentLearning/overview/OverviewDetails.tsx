@@ -34,7 +34,7 @@ type OverviewProps = {
   criteria?: [Criteria];
   summary?: string;
   gradeFinal?: number;
-  progress: number;
+  progress?: number;
   isCourseSet: boolean;
   showGrades?: boolean;
   completionEnabled?: boolean;
@@ -48,7 +48,7 @@ const OverviewDetails = ({
   criteria,
   summary,
   gradeFinal = 0,
-  progress,
+  progress = 0,
   summaryTypeTitle,
   onclickContinueLearning,
   courseRefreshCallback,

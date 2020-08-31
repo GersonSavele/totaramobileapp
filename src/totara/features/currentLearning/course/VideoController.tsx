@@ -13,25 +13,40 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
-import Video from "react-native-video";
-
+import VideoPlayer from "react-native-video-controls";
+// import Video from "react-native-video";
+import { AuthContext } from "@totara/core";
+import { AUTHORIZATION } from "@totara/lib/constants";
 import { borderRadius } from "@totara/theme/constants";
+
 type VideoType = {
   url: string;
 };
 
-const VideoController = ({ url }: VideoType) => (
-  <Video
-    paused={true}
-    source={{ uri: url }}
-    style={styles.mediaPlayer}
-    volume={10}
-    resizeMode="cover"
-    controls={true}
-  />
-);
+const VideoController = ({ url = "" }: VideoType) => {
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+  const apiKey = appState!.apiKey;
+
+  return (
+    <VideoPlayer
+      paused={true}
+      source={{
+        uri: url,
+        headers: {
+          [AUTHORIZATION]: `Bearer ${apiKey}`
+        }
+      }}
+      style={styles.mediaPlayer}
+      volume={10}
+      resizeMode="contain"
+      disableBack
+    />
+  );
+};
 
 const styles = StyleSheet.create({
   mediaPlayer: {

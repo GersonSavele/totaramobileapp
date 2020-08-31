@@ -26,9 +26,11 @@ import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
+import ActivityLabel from "./ActivityLabel";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity, AppState } from "@totara/types";
 import { AuthContext } from "@totara/core";
+import { DescriptionFormat } from "@totara/types/Activity";
 import { GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
 import { completionStatus, completionTrack } from "../constants";
@@ -322,7 +324,15 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
               }
             }
           }}>
-          {isLabel ? <ActivityTextContent label={item.description!} /> : <ListItem item={item} />}
+          {isLabel ? (
+            item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
+              <ActivityLabel label={item.description! as any} />
+            ) : (
+              <ActivityTextContent label={item.description!} />
+            )
+          ) : (
+            <ListItem item={item} />
+          )}
         </TouchableOpacity>
       </View>
       {!isLabel && <View style={listViewStyles.thinSeparator} />}

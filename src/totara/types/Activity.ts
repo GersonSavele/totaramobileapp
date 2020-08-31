@@ -15,6 +15,10 @@
 
 import { completionTrack, completionStatus } from "@totara/features/currentLearning/constants";
 
+export enum DescriptionFormat {
+  jsonEditor = "JSON_EDITOR",
+  html = "HTML"
+}
 export interface Activity {
   id: number;
   instanceid: number;
@@ -26,6 +30,7 @@ export interface Activity {
   available: boolean;
   availablereason?: [string];
   description?: string;
+  descriptionformat?: DescriptionFormat;
 }
 
 export interface ScormActivity extends Activity {

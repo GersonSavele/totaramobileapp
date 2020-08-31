@@ -48,6 +48,7 @@ const coreCourse = gql`
             description(format: PLAIN)
             gradefinal
             gradepercentage
+            descriptionformat
             __typename
           }
           __typename

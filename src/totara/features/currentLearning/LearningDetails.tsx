@@ -124,7 +124,7 @@ const LearningDetails = ({
     <View style={learningDetailsStyles.container}>
       <ParallaxScrollView
         onPullToRefresh={onPullToRefresh}
-        parallaxHeaderHeight={viewHeight.LearningItemCard}
+        parallaxHeaderHeight={viewHeight.learningItemCard}
         renderBackground={renderImage}
         titleBar={renderTitleBar}
         tabBar={renderTabBar}

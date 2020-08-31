@@ -14,15 +14,14 @@
  */
 
 import React, { ReactNode } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { map } from "lodash";
-import { TotaraTheme } from "@totara/theme/Theme";
 import VideoController from "./VideoController";
-import { Image } from "react-native-animatable";
-import { textAttributes, margins, borderRadius, fontWeights } from "@totara/theme/constants";
-import TextTypeLabel from "./activityLabel";
-
-const { marginL, marginS, marginXS, marginM, margin2XL } = margins;
+import { textAttributes, margins } from "@totara/theme/constants";
+import TextContent from "./ActivityTextContent";
+import { WekaEditorType } from "../constants";
+import { ImageWrapper } from "@totara/components";
+import styles from "./activityLabelStyle";
 
 type ActivityLabelProps = {
   label: any;
@@ -33,7 +32,7 @@ type LabelConfigProps = {
   children?: ReactNode;
 };
 type ImageLabelType = {
-  image: string;
+  url: string;
   children?: ReactNode;
 };
 
@@ -42,7 +41,7 @@ type ChildProps = {
 };
 
 const ActivityLabel = ({ label = {} }: ActivityLabelProps) => {
-  return <View style={styles.container}>{itemsExtract(label)}</View>;
+  return <View style={styles.container}>{itemsExtract(JSON.parse(label))}</View>;
 };
 
 const itemsExtract = (label: any = {}) => {
@@ -67,99 +66,80 @@ const itemsExtract = (label: any = {}) => {
 
 const LabelConfiguration = ({ label = {}, children, index }: LabelConfigProps) => {
   switch (label.type) {
-    case "attachment":
-      return <AttachmentTypeLabel label={label} />;
-    case "text":
-      return <TextTypeLabel label={label} />;
-    case "paragraph":
+    case WekaEditorType.attachment:
+      return <Attachment label={label} />;
+    case WekaEditorType.text:
+      return <TextContent label={label.text}></TextContent>;
+    case WekaEditorType.paragraph:
       return <View>{children}</View>;
-    case "doc":
+    case WekaEditorType.doc:
       return <View>{children}</View>;
-    case "video":
-    case "link_block":
-    case "link_media":
-      return <VideoTypeLabel label={label} />;
-    case "image": {
-      return <ImageTypeLabel image={label.attrs.image} />;
+    case WekaEditorType.video:
+    case WekaEditorType.linkBlock:
+    case WekaEditorType.linkMedia:
+      return <Video label={label} />;
+    case WekaEditorType.image: {
+      return <ImageWrapper url={label.attrs.url} style={styles.imageContainer} />;
     }
-    case "bullet_list": {
-      return <BulletListTypeLabel>{children}</BulletListTypeLabel>;
+    case WekaEditorType.bulletList: {
+      return <BulletList>{children}</BulletList>;
     }
-    case "list_item": {
-      return <ListItemTypeLabel>{children}</ListItemTypeLabel>;
+    case WekaEditorType.listItem: {
+      return <ListItem>{children}</ListItem>;
     }
-    case "ordered_list": {
+    case WekaEditorType.orderedList: {
       return (
-        <OderListTypeLabel label={label} index={index}>
+        <OderList label={label} index={index}>
           {children}
-        </OderListTypeLabel>
+        </OderList>
       );
     }
-    case "emoji": {
-      return <EmojiTypeLabel label={label} />;
+    case WekaEditorType.emoji: {
+      return <Emoji label={label} />;
     }
-    case "hashtag": {
-      return <HashingTypeLabel label={label} />;
+    case WekaEditorType.hashtag: {
+      return <Hashing label={label} />;
     }
-    case "mention": {
-      return <MentionTypeLabel label={label} />;
+    case WekaEditorType.mention: {
+      return <Mention label={label} />;
     }
-    case "ruler": {
-      return <RulerTypeLabel label={label} />;
+    case WekaEditorType.ruler: {
+      return <Ruler label={label} />;
     }
-    case "heading": {
-      return <HeadingTypeLabel>{children}</HeadingTypeLabel>;
+    case WekaEditorType.heading: {
+      return <Heading>{children}</Heading>;
     }
-    case "audio": {
-      return <AudioTypeLabel label={label} />;
+    case WekaEditorType.audio: {
+      return <Audio label={label} />;
     }
     default:
       return null;
   }
 };
 
-const AttachmentTypeLabel = ({ label = {} }: ActivityLabelProps) => {
-  return (
-    <View style={{ marginBottom: margins.marginM }}>
-      <ImageTypeLabel image={label.attrs.filename} />
-    </View>
-  );
+const Attachment = ({ label = {} }: ActivityLabelProps) => {
+  return <ImageWrapper url={label.attrs.url} style={styles.imageContainer} />;
 };
 
-const VideoTypeLabel = ({ label = {} }: ActivityLabelProps) => {
+const Video = ({ label = {} }: ActivityLabelProps) => {
   return (
     <View>
       <View style={{ marginBottom: margins.marginXS }}>
-        <View>
+        {label.attrs.title && (
           <Text numberOfLines={2} style={styles.videoTitle}>
             {label.attrs.title}
           </Text>
-        </View>
+        )}
         <View style={styles.videoContainer}>
           <VideoController url={label.attrs.url} />
         </View>
-        <View>
-          <Text style={styles.videoDescription}>{label.attrs.description}</Text>
-        </View>
+        <Text style={styles.videoDescription}>{label.attrs.description}</Text>
       </View>
     </View>
   );
 };
 
-const ImageTypeLabel = ({ image }: ImageLabelType) => {
-  return (
-    <View>
-      <Image
-        style={styles.imageContainer}
-        source={{
-          uri: image
-        }}
-      />
-    </View>
-  );
-};
-
-const AudioTypeLabel = ({ label = {} }: ActivityLabelProps) => {
+const Audio = ({ label = {} }: ActivityLabelProps) => {
   return (
     <View style={styles.textWrapViewContainer}>
       <Text style={styles.labelText}>{label.type}</Text>
@@ -167,29 +147,29 @@ const AudioTypeLabel = ({ label = {} }: ActivityLabelProps) => {
   );
 };
 
-const BulletListTypeLabel = ({ children }: LabelConfigProps) => {
+const BulletList = ({ children }: LabelConfigProps) => {
   return (
     <View style={styles.listContainer}>
-      <Text style={styles.bulletList}>•</Text>
+      <Text style={styles.list}>•</Text>
       {children}
     </View>
   );
 };
 
-const OderListTypeLabel = ({ children, index }: LabelConfigProps) => {
+const OderList = ({ children, index }: LabelConfigProps) => {
   return (
     <View style={styles.listContainer}>
-      <Text style={styles.orderNumberListText}>{index! + 1}.</Text>
+      <Text style={styles.list}>{index! + 1}.</Text>
       {children}
     </View>
   );
 };
 
-const ListItemTypeLabel = ({ children }: ChildProps) => {
+const ListItem = ({ children }: ChildProps) => {
   return <View>{children}</View>;
 };
 
-const EmojiTypeLabel = ({ label }: any = {}) => {
+const Emoji = ({ label }: any = {}) => {
   let emo = String.fromCodePoint(parseInt(textAttributes.short_code_prefix + label.attrs.shortcode));
   return (
     <View style={styles.textWrapViewContainer}>
@@ -198,7 +178,7 @@ const EmojiTypeLabel = ({ label }: any = {}) => {
   );
 };
 
-const HashingTypeLabel = ({ label = {} }: LabelConfigProps) => {
+const Hashing = ({ label = {} }: LabelConfigProps) => {
   return (
     <View style={styles.textWrapViewContainer}>
       <Text style={styles.labelText}>{label.attrs.text}</Text>
@@ -206,11 +186,11 @@ const HashingTypeLabel = ({ label = {} }: LabelConfigProps) => {
   );
 };
 
-const HeadingTypeLabel = ({ children }: ChildProps) => {
+const Heading = ({ children }: ChildProps) => {
   return <View>{children}</View>;
 };
 
-const MentionTypeLabel = ({ label = {} }: LabelConfigProps) => {
+const Mention = ({ label = {} }: LabelConfigProps) => {
   return (
     <View style={styles.textWrapViewContainer}>
       <Text style={styles.labelText}>{label.attrs.display}</Text>
@@ -218,71 +198,12 @@ const MentionTypeLabel = ({ label = {} }: LabelConfigProps) => {
   );
 };
 
-const RulerTypeLabel = ({ label = {} }: LabelConfigProps) => {
+const Ruler = ({ label = {} }: LabelConfigProps) => {
   return (
     <View style={styles.textWrapViewContainer}>
       <Text style={styles.labelText}>{label.type}</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: marginL,
-    marginVertical: marginXS,
-    justifyContent: "center"
-  },
-  labelWrap: {
-    marginVertical: marginXS,
-    justifyContent: "center"
-  },
-  labelText: {
-    textAlign: "left",
-    ...TotaraTheme.textRegular
-  },
-  textLabeWrap: {
-    justifyContent: "center"
-  },
-  videoTitle: {
-    ...TotaraTheme.textRegular,
-    fontWeight: fontWeights.fontWeightBold,
-    marginBottom: margin2XL
-  },
-  videoContainer: {
-    height: 200,
-    width: 380,
-    borderRadius: borderRadius.borderRadiusM
-  },
-  videoDescription: {
-    ...TotaraTheme.textRegular,
-    marginTop: margin2XL
-  },
-  listContainer: {
-    flexDirection: "row",
-    marginRight: marginM,
-    justifyContent: "flex-start"
-  },
-  orderNumberListText: {
-    marginRight: marginM,
-    marginVertical: marginM,
-    ...TotaraTheme.textRegular
-  },
-  textWrapViewContainer: {
-    justifyContent: "center",
-    marginBottom: margin2XL
-  },
-  imageContainer: {
-    height: 200,
-    width: 380,
-    borderRadius: borderRadius.borderRadiusM,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  bulletList: {
-    color: TotaraTheme.colorNeutral6,
-    marginRight: marginM,
-    marginTop: marginS
-  }
-});
 
 export default ActivityLabel;
