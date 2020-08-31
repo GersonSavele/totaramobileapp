@@ -32,7 +32,7 @@ import { AuthContext } from "@totara/core";
 import { GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
 import { completionStatus, completionTrack } from "../constants";
-import { activityModType } from "@totara/lib/constants";
+import { ActivityModType } from "@totara/lib/constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete, fetchResource } from "../course/api";
 import listViewStyles from "@totara/theme/listView";
@@ -207,7 +207,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
   if (data) {
     courseRefreshCallBack!();
   }
-  const isLabel = item.modtype === activityModType.label;
+  const isLabel = item.modtype === ActivityModType.label;
   const onClickSelfComplete = () => {
     selfComplete({
       variables: {
@@ -252,7 +252,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           style={activitiesStyles.itemTouchableContent}
           onPress={() => {
             switch (item.modtype) {
-              case activityModType.scorm: {
+              case ActivityModType.scorm: {
                 navigateTo({
                   navigate: navigation.navigate,
                   routeId: SCORM_ROOT,
@@ -263,10 +263,10 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                 });
                 break;
               }
-              case activityModType.label: {
+              case ActivityModType.label: {
                 break;
               }
-              case activityModType.resource: {
+              case ActivityModType.resource: {
                 fetchResource({
                   instanceId: item.instanceid,
                   apiKey,

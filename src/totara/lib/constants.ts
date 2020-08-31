@@ -54,7 +54,7 @@ enum scormLessonStatus {
   failed = "failed"
 }
 
-enum activityModType {
+enum ActivityModType {
   scorm = "scorm",
   label = "label",
   resource = "resource"
@@ -82,5 +82,5 @@ export {
   scormLessonStatus,
   scormZipPackagePath,
   offlineScormServerRoot,
-  activityModType
+  ActivityModType
 };
