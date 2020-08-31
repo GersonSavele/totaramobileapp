@@ -42,6 +42,7 @@ import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import messaging from "@react-native-firebase/messaging";
 import { tokenSent, updateToken } from "./totara/actions/notification";
+import NavigationService from "./totara/lib/navigationService";
 
 const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
 
@@ -118,25 +119,19 @@ const AppContainer = () => {
         updateToken({ token: token });
       });
 
-    messaging().onNotificationOpenedApp((remoteMessage) => {
-      //THIS HANDLING WILL BE IMPLEMENTED IN MOB-700
-      console.debug("notification ===>", remoteMessage.notification);
-      console.debug("notification data ===>", remoteMessage.data);
-    });
-
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
         if (remoteMessage) {
-          //THIS HANDLING WILL BE IMPLEMENTED IN MOB-700
-          console.debug("notification ===>", remoteMessage.notification);
-          console.debug("notification data ===>", remoteMessage.data);
+          console.debug("getInitialNotification ===>", remoteMessage);
+          if (remoteMessage?.data?.notification === "1") {
+            NavigationService.navigate("NotificationsTab");
+          }
         }
       });
 
     messaging().onMessage(async (remoteMessage) => {
-      //THIS HANDLING WILL BE IMPLEMENTED IN MOB-700
-      console.debug(remoteMessage);
+      console.debug("onMessage: ", remoteMessage);
     });
 
     return () => {
@@ -163,7 +158,14 @@ const AppContainer = () => {
   const [theme] = useContext(ThemeContext);
   const AppMainNavigation = createAppContainer(rootStack());
 
-  return <AppMainNavigation screenProps={{ theme: theme }} />;
+  return (
+    <AppMainNavigation
+      screenProps={{ theme: theme }}
+      ref={(navigatorRef) => {
+        NavigationService.setTopLevelNavigator(navigatorRef);
+      }}
+    />
+  );
 };
 
 export default App;
