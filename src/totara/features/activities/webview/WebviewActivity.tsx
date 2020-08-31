@@ -23,7 +23,6 @@ import { AuthenticatedWebView } from "@totara/auth";
 import { NavigationStackProp } from "react-navigation-stack";
 import WebviewToolbar from "../components/WebviewToolbar";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { activityModType } from "@totara/lib/constants";
 
 const PDF_TYPE = "application/pdf";
 /**
@@ -45,29 +44,20 @@ type WebviewActivityProps = {
 
 const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
   const { uri, backAction, activity, fileurl, mimetype, apiKey } = navigation.state.params as WebviewActivityParams;
-
-  if (activity.modtype === activityModType.resource) {
-    return (
-      <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
-        {mimetype === PDF_TYPE ? (
-          <PDFView
-            style={{ flex: 1 }}
-            resource={fileurl!}
-            resourceType={"url"}
-            urlProps={{ headers: { Authorization: `Bearer ${apiKey}` } }}
-          />
-        ) : (
-          <WebViewWrapper uri={uri || activity.viewurl!} backAction={backAction} />
-        )}
-      </SafeAreaView>
-    );
-  } else {
-    return (
-      <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
+  return (
+    <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
+      {mimetype === PDF_TYPE ? (
+        <PDFView
+          style={{ flex: 1 }}
+          resource={fileurl!}
+          resourceType={"url"}
+          urlProps={{ headers: { Authorization: `Bearer ${apiKey}` } }}
+        />
+      ) : (
         <WebViewWrapper uri={uri || activity.viewurl!} backAction={backAction} />
-      </SafeAreaView>
-    );
-  }
+      )}
+    </SafeAreaView>
+  );
 };
 
 type WebViewWrapperProps = {
