@@ -71,7 +71,8 @@ const activitiesStyles = StyleSheet.create({
   },
   labelTextDescription: {
     textAlign: "left",
-    ...textRegular
+    ...textRegular,
+    color: TotaraTheme.colorNeutral6
   },
   listItemLockContainer: {
     flex: 1,
