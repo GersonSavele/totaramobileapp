@@ -137,9 +137,11 @@ const AppContainer = () => {
       console.debug(remoteMessage);
     });
 
-    return messaging().onTokenRefresh((token) => {
-      updateToken({ token: token });
-    });
+    return () => {
+      messaging().onTokenRefresh((token) => {
+        updateToken({ token: token });
+      });
+    }
   }, []);
 
   useEffect(() => {
