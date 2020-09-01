@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>422736091421-kia0n0a4re5nfdon9c83rv95krhp92pc.apps.googleusercontent.com</string>
+	<string>REPLACE_CLIENT_ID</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.422736091421-kia0n0a4re5nfdon9c83rv95krhp92pc</string>
+	<string>REPLACE_REPLACE_CLIENT_ID</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>422736091421-gsi8pfb8b31efi31d71p7eo191qqmmve.apps.googleusercontent.com</string>
+	<string>REPLACE_ANDROID_CLIENT_ID</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBnJ4BWkXLyjsl7tCanU4yVrMKWoBgUYdw</string>
+	<string>REPLACE_API_KEY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>422736091421</string>
+	<string>REPLACE_GCM_SENDER_ID</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.totaralearning.TotaraMobileApp</string>
+	<string>REPLACE_BUNDLE_ID</string>
 	<key>PROJECT_ID</key>
-	<string>totara-mobile-app</string>
+	<string>REPLACE_PROJECT_ID</string>
 	<key>STORAGE_BUCKET</key>
-	<string>totara-mobile-app.appspot.com</string>
+	<string>REPLACE_STORAGE_BUCKET</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:422736091421:ios:03ca951618bdffc1a029f4</string>
+	<string>1:123:ios:123</string>
 	<key>DATABASE_URL</key>
-	<string>https://totara-mobile-app.firebaseio.com</string>
+	<string>REPLACE_DATABASE_URL</string>
 </dict>
 </plist>
