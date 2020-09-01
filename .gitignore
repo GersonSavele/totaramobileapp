@@ -30,6 +30,7 @@ build/
 .gradle
 local.properties
 *.iml
+android/app/google-services.json
 
 # node.js
 #
@@ -84,4 +85,3 @@ coverage
 
 # CocoaPods
 /ios/Pods/
-

@@ -34,7 +34,7 @@ const defaultConfig = {
   deepLinkSchema: "totara://",
   minApiVersion: "2020051700",
   rootOfflineScormPlayer: "html",
-  sentryUri: "https://24dc78cc484a4aabaa3b1f2da277eeb3@o377397.ingest.sentry.io/5199484"
+  sentryUri: ""
 };
 
 export const internalConfig = {

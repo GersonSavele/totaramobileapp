@@ -45,9 +45,11 @@ import { tokenSent, updateToken } from "./totara/actions/notification";
 
 const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
 
-if (!__DEV__) {
+// this check will make sure we only use sentry for production flavors
+if (!__DEV__ && config.sentryUri) {
   Sentry.init({
-    dsn: config.sentryUri
+    dsn: config.sentryUri,
+    environment: "production"
   });
 }
 
