@@ -30,7 +30,8 @@ const activityLabelStyle = StyleSheet.create({
   },
   labelText: {
     textAlign: "left",
-    ...TotaraTheme.textRegular
+    ...TotaraTheme.textRegular,
+    color: TotaraTheme.colorNeutral6
   },
   textLabeWrap: {
     justifyContent: "center"
@@ -38,7 +39,8 @@ const activityLabelStyle = StyleSheet.create({
   videoTitle: {
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightBold,
-    marginBottom: margin2XL
+    marginBottom: margin2XL,
+    color: TotaraTheme.colorNeutral6
   },
   videoContainer: {
     maxWidth: deviceScreen.width,
@@ -47,7 +49,8 @@ const activityLabelStyle = StyleSheet.create({
   },
   videoDescription: {
     ...TotaraTheme.textRegular,
-    marginTop: margin2XL
+    marginTop: margin2XL,
+    color: TotaraTheme.colorNeutral6
   },
   listContainer: {
     flexDirection: "row",
@@ -69,7 +72,8 @@ const activityLabelStyle = StyleSheet.create({
     textAlign: "left",
     ...TotaraTheme.textRegular,
     marginRight: marginM,
-    marginTop: marginM
+    marginTop: marginM,
+    color: TotaraTheme.colorNeutral6
   }
 });
 
