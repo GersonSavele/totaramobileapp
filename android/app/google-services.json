@@ -1,61 +1,27 @@
 {
   "project_info": {
-    "project_number": "422736091421",
-    "firebase_url": "https://totara-mobile-app.firebaseio.com",
-    "project_id": "totara-mobile-app",
-    "storage_bucket": "totara-mobile-app.appspot.com"
+    "project_number": "REPLACE_PROJECT_NUMBER",
+    "firebase_url": "REPLACE_FIREBASE_URL",
+    "project_id": "REPLACE_PROJECT_ID",
+    "storage_bucket": "REPLACE_STORAGE_BUCKET"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:422736091421:android:11800042276b6a2da029f4",
+        "mobilesdk_app_id": "1:123:android:123",
         "android_client_info": {
           "package_name": "com.totaramobileapp"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "422736091421-gsi8pfb8b31efi31d71p7eo191qqmmve.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.totaramobileapp",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "422736091421-fu7fig7na2upktndn4b2i8ovrvl0jfub.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.totaramobileapp",
-            "certificate_hash": "ede938b242d8dc51a9b88ec08288d5d7404bfd64"
-          }
-        },
-        {
-          "client_id": "422736091421-7kf3h883us6k2be9on6oc2f1bsgis3kl.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCr60ghS3rDh6CFxwL_1Vp0dOPI9utOboA"
+          "current_key": "REPLACE_APIKEY"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "422736091421-7kf3h883us6k2be9on6oc2f1bsgis3kl.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "422736091421-kia0n0a4re5nfdon9c83rv95krhp92pc.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.totaralearning.TotaraMobileApp",
-                "app_store_id": "1460753566"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
