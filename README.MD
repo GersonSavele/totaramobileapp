@@ -189,3 +189,50 @@ function exemple({ nodeList, callback, thisObject, fromIndex, toIndex }){
 ## When you switch branches and you suspect that there was native code changes(e.g: dependencies additions or upgrades)
 
 Kill RN packger server. Run script `clear:all`. This will clean all the builds and caches on both Android and iOS. Then run your platform script.
+
+## Detox Setup
+
+- Install Node `8.3.0` or above
+
+### Install Detox command line tools
+
+- `detox-cli` should be installed globally
+
+```sh
+npm install -g detox-cli
+```
+
+### Install the Detox node-module
+
+- Go to its root (`package.json`) folder and run the following command:
+
+```sh
+yarn detox --save-dev
+```
+```sh
+yarn detox --save-dev --no-package-lock
+```
+
+### Clear cache data
+
+- Run the following command to clear all the cache, modules && pods and reinstall.
+
+```sh  
+yarn clear:all
+```
+
+### Build app
+
+- Use a convenience method in Detox command line tools to build project
+
+```sh
+detox build
+```
+
+### Run the tests
+
+- Use the Detox command line tools to test project:
+
+```sh
+detox test
+```
