@@ -111,6 +111,14 @@ const AppContainer = () => {
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
   const [sendToken] = useMutation(mutationForToken);
 
+  const handleNotificationReceived = (remoteMessage) => {
+    if (remoteMessage) {
+      if (remoteMessage?.data?.notification === "1") {
+        NavigationService.navigate("NotificationsTab");
+      }
+    }
+  };
+
   useEffect(() => {
     messaging()
       .getToken()
@@ -119,15 +127,16 @@ const AppContainer = () => {
         updateToken({ token: token });
       });
 
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.debug("onNotificationOpenedApp ===>", remoteMessage);
+      handleNotificationReceived(remoteMessage);
+    });
+
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
-        if (remoteMessage) {
-          console.debug("getInitialNotification ===>", remoteMessage);
-          if (remoteMessage?.data?.notification === "1") {
-            NavigationService.navigate("NotificationsTab");
-          }
-        }
+        console.debug("getInitialNotification ===>", remoteMessage);
+        handleNotificationReceived(remoteMessage);
       });
 
     messaging().onMessage(async (remoteMessage) => {
@@ -138,7 +147,7 @@ const AppContainer = () => {
       messaging().onTokenRefresh((token) => {
         updateToken({ token: token });
       });
-    }
+    };
   }, []);
 
   useEffect(() => {
