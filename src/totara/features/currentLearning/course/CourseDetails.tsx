@@ -17,12 +17,13 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Switch } from "react-native";
 import { NavigationParams } from "react-navigation";
 import { NavigationStackProp } from "react-navigation-stack";
+import { isEmpty, filter } from "lodash";
 import { Loading, LoadingError } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
-import { CourseContentDetails } from "@totara/types";
+import { CourseContentDetails, Section } from "@totara/types";
 import { StatusKey } from "@totara/types/Completion";
 import OverviewDetails from "../overview/OverviewDetails";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -71,7 +72,8 @@ const CourseDetailsContent = ({
 }: CourseDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const [showCompletionModal, setShowCompletionModal] = useState(true);
-  const [expandActivities, setExpandActivities] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Section[]>([]);
+
   const onClose = () => {
     setShowCompletionModal(!showCompletionModal);
     courseRefreshCallback();
@@ -80,8 +82,18 @@ const CourseDetailsContent = ({
   const onSwitchTab = () => {
     setShowOverview(!showOverview);
   };
-  const onChangeExpand = () => {
-    setExpandActivities(!expandActivities);
+
+  const allExpanableSections = courseDetails?.course?.sections.filter(
+    (section) => section.available && !isEmpty(section.data)
+  );
+  const isExpandedAll = !isEmpty(allExpanableSections) && allExpanableSections.length === expandedSections?.length!;
+
+  const onChangeExpand = (isExpanded: boolean, sections: Section[]) => {
+    if (isExpanded) {
+      setExpandedSections([]);
+    } else {
+      setExpandedSections(sections);
+    }
   };
   return (
     <LearningDetails
@@ -108,14 +120,15 @@ const CourseDetailsContent = ({
                 </Text>
                 <Switch
                   style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
-                  value={expandActivities}
-                  onValueChange={onChangeExpand}
+                  value={isExpandedAll}
+                  onValueChange={() => onChangeExpand(isExpandedAll, allExpanableSections)}
                 />
               </View>
               <Activities
                 sections={courseDetails.course.sections}
                 courseRefreshCallBack={courseRefreshCallback}
-                expandAllActivities={expandActivities}
+                expandedSections={expandedSections}
+                onSetExpandedSections={setExpandedSections}
                 completionEnabled={courseDetails.course.completionEnabled}
               />
             </View>

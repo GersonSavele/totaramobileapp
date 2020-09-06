@@ -14,13 +14,13 @@
  */
 
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
-import { get } from "lodash";
+import { get, remove } from "lodash";
 
 import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
@@ -41,11 +41,18 @@ const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
-  expandAllActivities: boolean;
+  expandedSections: Section[];
   completionEnabled: boolean;
+  onSetExpandedSections: Function;
 };
 
-const Activities = ({ sections, courseRefreshCallBack, expandAllActivities, completionEnabled }: ActivitiesProps) => {
+const Activities = ({
+  sections,
+  courseRefreshCallBack,
+  expandedSections,
+  completionEnabled,
+  onSetExpandedSections
+}: ActivitiesProps) => {
   return (
     <FlatList
       data={sections}
@@ -54,8 +61,9 @@ const Activities = ({ sections, courseRefreshCallBack, expandAllActivities, comp
           <SectionItem
             section={item}
             courseRefreshCallBack={courseRefreshCallBack}
-            expandAllActivities={expandAllActivities}
+            expandedSections={expandedSections}
             completionEnabled={completionEnabled}
+            onSetExpandedSections={onSetExpandedSections}
           />
         );
       }}
@@ -66,33 +74,44 @@ const Activities = ({ sections, courseRefreshCallBack, expandAllActivities, comp
 type SectionItemProps = {
   courseRefreshCallBack: () => {};
   section: Section;
-  expandAllActivities: boolean;
+  expandedSections: Section[];
   completionEnabled: boolean;
+  onSetExpandedSections: Function;
 };
 
-const SectionItem = ({ section, courseRefreshCallBack, expandAllActivities, completionEnabled }: SectionItemProps) => {
+const SectionItem = ({
+  section,
+  courseRefreshCallBack,
+  expandedSections,
+  completionEnabled,
+  onSetExpandedSections
+}: SectionItemProps) => {
   //every item need to have its own state
-  const [show, setShow] = useState(expandAllActivities);
   const activities = section.data as Array<Activity>;
   const { title, available, availableReason, summary } = section;
-  useEffect(() => {
-    setShow(expandAllActivities);
-  }, [expandAllActivities]);
 
-  const onExpand = () => {
-    setShow(!show);
+  const isExpand = expandedSections?.indexOf(section) >= 0;
+
+  const onExpand = (isExpand: boolean) => {
+    const existingExpandedSections = [...expandedSections];
+    if (isExpand) {
+      remove(existingExpandedSections, (item) => section === item);
+    } else {
+      existingExpandedSections.push(section);
+    }
+    onSetExpandedSections(existingExpandedSections);
   };
 
   return (
     activities && (
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
-        <TouchableOpacity onPress={onExpand}>
-          {available && activities.length > 0 && <ExpandableSectionHeader show={show} title={title} />}
+        <TouchableOpacity onPress={() => onExpand(isExpand)}>
+          {available && activities.length > 0 && <ExpandableSectionHeader show={isExpand} title={title} />}
           {!available && availableReason && availableReason.length > 0 && (
             <RestrictionSectionHeader title={title} availableReason={availableReason} />
           )}
         </TouchableOpacity>
-        {show && (
+        {isExpand && (
           <ActivityList
             data={activities}
             courseRefreshCallBack={courseRefreshCallBack}
