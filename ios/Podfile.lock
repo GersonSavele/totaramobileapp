@@ -278,11 +278,6 @@ PODS:
     - React
   - react-native-static-server (0.4.2):
     - React
-  - react-native-video (5.1.0-alpha8):
-    - React
-    - react-native-video/Video (= 5.1.0-alpha8)
-  - react-native-video/Video (5.1.0-alpha8):
-    - React
   - react-native-webview (10.7.0):
     - React
   - React-RCTActionSheet (0.61.5):
@@ -396,7 +391,6 @@ DEPENDENCIES:
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-static-server (from `../node_modules/react-native-static-server`)
-  - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -488,8 +482,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-splash-screen"
   react-native-static-server:
     :path: "../node_modules/react-native-static-server"
-  react-native-video:
-    :path: "../node_modules/react-native-video"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -581,7 +573,6 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-static-server: af5ae03c8114e5756e27c7ae32a116002f23be02
-  react-native-video: 8d97379f3c2322a569f1e27542ad1a646cad9444
   react-native-webview: 67b9024de02e7c0af9400283b0e3ca6eec55dc26
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360

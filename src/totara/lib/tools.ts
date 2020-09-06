@@ -84,4 +84,28 @@ const deviceScreen = {
   scale: Dimensions.get("screen").scale
 };
 
-export { showMessage, showConfirmation, humanReadablePercentage, uuid, deviceScreen, timeAgo, capitalizeFirstLetter };
+const getHostnameFromRegex = (url) => {
+  // run against regex
+  const matches = url.match(/^https?:\/\/([^/?#]+)(?:[/?#]|$)/i);
+  // extract hostname (will be null if no match is found)
+  return matches && matches[1];
+};
+
+const getUrlLastComponentFromRegex = (url) => {
+  return url
+    .replace(/\/\s*$/, "")
+    .split("/")
+    .pop();
+};
+
+export {
+  showMessage,
+  showConfirmation,
+  humanReadablePercentage,
+  uuid,
+  deviceScreen,
+  timeAgo,
+  capitalizeFirstLetter,
+  getHostnameFromRegex,
+  getUrlLastComponentFromRegex
+};

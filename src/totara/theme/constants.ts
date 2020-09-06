@@ -35,6 +35,16 @@ enum fontWeights {
   fontWeightBold = "700"
 }
 
+enum fontStyle {
+  fontStyleItalic = "italic"
+}
+
+enum marksType {
+  italic = "em",
+  bold = "strong",
+  link = "link"
+}
+
 const fontSizes = {
   fontSizeXS: 11,
   fontSizeS: 15,
@@ -135,5 +145,7 @@ export {
   resultWrapperScaleX,
   shadow,
   row,
-  opacities
+  opacities,
+  fontStyle,
+  marksType
 };

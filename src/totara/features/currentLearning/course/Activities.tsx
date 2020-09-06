@@ -26,7 +26,8 @@ import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
-import ActivityLabel from "./ActivityLabel";
+// import ActivityLabel from "./ActivityLabel";
+import TextEditor from "../editorPreferences/WekaEditor";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity, AppState } from "@totara/types";
 import { AuthContext } from "@totara/core";
@@ -326,7 +327,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           }}>
           {isLabel ? (
             item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
-              <ActivityLabel label={item.description! as any} />
+              <TextEditor content={item.description! as any} />
             ) : (
               <ActivityTextContent label={item.description!} />
             )

@@ -17,64 +17,94 @@ import { StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { margins, borderRadius, fontWeights } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
-const { marginXS, marginM, margin2XL } = margins;
+const { marginXS, marginM, marginS } = margins;
 
-const activityLabelStyle = StyleSheet.create({
+const wekaEditorStyle = StyleSheet.create({
   container: {
     marginBottom: marginXS,
-    justifyContent: "center",
     marginEnd: marginXS
   },
-  labelWrap: {
-    justifyContent: "center"
+  docWrap: {
+    justifyContent: "flex-start",
+    flexDirection: "row"
   },
-  labelText: {
+  emoji: {
     textAlign: "left",
     ...TotaraTheme.textRegular,
-    color: TotaraTheme.colorNeutral6
+    marginVertical: marginM
   },
-  textLabeWrap: {
-    justifyContent: "center"
+  textContainerWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginVertical: marginS
   },
-  videoTitle: {
+  linkMediaTitle: {
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightBold,
-    marginBottom: margin2XL,
-    color: TotaraTheme.colorNeutral6
+    marginTop: margins.marginXL,
+    marginBottom: margins.marginM,
+    color: TotaraTheme.colorFont
   },
-  videoContainer: {
+  linkMediaContainer: {
     maxWidth: deviceScreen.width,
     aspectRatio: 16 / 9,
     borderRadius: borderRadius.borderRadiusM
   },
-  videoDescription: {
+  linkMediaDescription: {
     ...TotaraTheme.textRegular,
-    marginTop: margin2XL,
-    color: TotaraTheme.colorNeutral6
+    marginTop: marginM,
+    color: TotaraTheme.colorFont
   },
   listContainer: {
     flexDirection: "row",
     marginRight: marginM,
     justifyContent: "flex-start"
   },
-  textWrapViewContainer: {
+  textLink: {
     justifyContent: "center",
-    marginBottom: margin2XL
+    marginBottom: marginM,
+    ...TotaraTheme.textRegular,
+    color: TotaraTheme.colorLink
   },
   imageContainer: {
-    width: deviceScreen.width * 0.8,
+    width: "100%",
     aspectRatio: 16 / 9,
     borderRadius: borderRadius.borderRadiusM,
     alignSelf: "center",
-    marginBottom: marginXS
+    marginBottom: marginXS,
+    backgroundColor: TotaraTheme.colorNeutral5,
+    flexWrap: "wrap"
   },
   list: {
     textAlign: "left",
     ...TotaraTheme.textRegular,
     marginRight: marginM,
-    marginTop: marginM,
-    color: TotaraTheme.colorNeutral6
+    marginTop: margins.marginS,
+    alignSelf: "flex-start"
+  },
+  ruler: {
+    backgroundColor: TotaraTheme.colorNeutral6,
+    marginVertical: margins.marginL,
+    height: 0.5
+  },
+  attachmentTouchable: {
+    flexDirection: "column",
+    marginVertical: marginS
+  },
+  attachmentFileName: {
+    textAlign: "left",
+    ...TotaraTheme.textMedium,
+    color: TotaraTheme.colorLink,
+    alignSelf: "flex-start"
+  },
+  webViewWrapper: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    borderRadius: borderRadius.borderRadiusM
   }
 });
 
-export default activityLabelStyle;
+export default wekaEditorStyle;

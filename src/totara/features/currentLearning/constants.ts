@@ -52,7 +52,7 @@ enum viewHeight {
 }
 
 enum WekaEditorType {
-  attachment = "attachment",
+  attachment = "attachments",
   text = "text",
   paragraph = "paragraph",
   doc = "doc",
