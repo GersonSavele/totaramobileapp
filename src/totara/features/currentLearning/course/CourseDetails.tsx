@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Switch } from "react-native";
 import { NavigationParams } from "react-navigation";
 import { NavigationStackProp } from "react-navigation-stack";
-import { isEmpty, filter } from "lodash";
+import { isEmpty } from "lodash";
 import { Loading, LoadingError } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";

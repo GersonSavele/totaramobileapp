@@ -90,11 +90,11 @@ const SectionItem = ({
   const activities = section.data as Array<Activity>;
   const { title, available, availableReason, summary } = section;
 
-  const isExpand = expandedSections?.indexOf(section) >= 0;
+  const isExpanded = expandedSections?.indexOf(section) >= 0;
 
-  const onExpand = (isExpand: boolean) => {
+  const onExpand = (isExpanded: boolean) => {
     const existingExpandedSections = [...expandedSections];
-    if (isExpand) {
+    if (isExpanded) {
       remove(existingExpandedSections, (item) => section === item);
     } else {
       existingExpandedSections.push(section);
@@ -105,13 +105,13 @@ const SectionItem = ({
   return (
     activities && (
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
-        <TouchableOpacity onPress={() => onExpand(isExpand)}>
-          {available && activities.length > 0 && <ExpandableSectionHeader show={isExpand} title={title} />}
+        <TouchableOpacity onPress={() => onExpand(isExpanded)}>
+          {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}
           {!available && availableReason && availableReason.length > 0 && (
             <RestrictionSectionHeader title={title} availableReason={availableReason} />
           )}
         </TouchableOpacity>
-        {isExpand && (
+        {isExpanded && (
           <ActivityList
             data={activities}
             courseRefreshCallBack={courseRefreshCallBack}
