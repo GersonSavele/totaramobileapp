@@ -146,10 +146,7 @@ const TextView = ({ attrs = {}, content = {} }: EditorConfigProps) => {
         onPress={link && onRequestClose}>
         {content.text}
       </Text>
-      {visible && (
-        // should show webview when user tap on the mention or hashtag
-        <View />
-      )}
+      {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose)}
     </Text>
   );
 };
@@ -220,33 +217,35 @@ const Ruler = () => {
 const Attachment = ({ content = {} }: EditorConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
-  const navigation = useContext(NavigationContext);
-
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-
-  const apiKey = appState!.apiKey;
   return (
     content.content &&
     content.content.map((nestedContent: any = {}, index: number) => {
       return (
         <TouchableOpacity style={styles.attachmentTouchable} key={index} onPress={onRequestClose}>
           <Text style={styles.attachmentFileName}>{nestedContent.attrs.filename}</Text>
-          {visible &&
-            navigateTo({
-              navigate: navigation.navigate,
-              routeId: WEBVIEW_ACTIVITY,
-              props: {
-                uri: nestedContent.attrs.url,
-                apiKey,
-                backAction: onRequestClose
-              }
-            })}
+          {visible && navigateWebView(nestedContent.attrs.url, onRequestClose)}
         </TouchableOpacity>
       );
     })
   );
+};
+
+const navigateWebView = (url, onRequestClose) => {
+  const navigation = useContext(NavigationContext);
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+
+  const apiKey = appState!.apiKey;
+  return navigateTo({
+    navigate: navigation.navigate,
+    routeId: WEBVIEW_ACTIVITY,
+    props: {
+      uri: url,
+      apiKey,
+      backAction: onRequestClose
+    }
+  });
 };
 
 const ImageViewerWrapper = ({ content = {} }: EditorConfigProps) => {
