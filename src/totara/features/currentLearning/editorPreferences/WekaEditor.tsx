@@ -34,10 +34,17 @@ enum HostName {
   vimeo = "vimeo.com"
 }
 
-const vimeoUrlPrefix = "https://player.vimeo.com/video/";
+const VIMEO_URL_PREFIX = "https://player.vimeo.com/video/";
+
+let color = {
+  backGroundColor: TotaraTheme.colorNeutral2,
+  textColor: TotaraTheme.colorNeutral6
+};
 
 type WekaEditorProps = {
   content: any;
+  backGroundColor?: string;
+  textColor?: string;
 };
 type EditorConfigProps = {
   content?: any;
@@ -45,9 +52,16 @@ type EditorConfigProps = {
   attrs?: any;
 };
 
-const WekaEditor = ({ content = {} }: WekaEditorProps) => {
+const WekaEditor = ({ content = {}, backGroundColor, textColor }: WekaEditorProps) => {
+  if (backGroundColor) {
+    color.backGroundColor = backGroundColor!;
+  }
+  if (textColor) {
+    color.textColor = textColor!;
+  }
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: color.backGroundColor }]}>
       <ContentExtract content={JSON.parse(content)} />
     </View>
   );
@@ -119,10 +133,10 @@ const TextView = ({ attrs = {}, content = {} }: EditorConfigProps) => {
   const onRequestClose = () => setIsVisible(!visible);
   const fontWeight =
     attrs.level === 1
-      ? { ...TotaraTheme.textH3, color: TotaraTheme.colorNeutral8 }
+      ? { ...TotaraTheme.textH3, color: color.textColor }
       : attrs.level == 2
-      ? { ...TotaraTheme.textHeadline, color: TotaraTheme.colorNeutral8 }
-      : { ...TotaraTheme.textRegular, color: TotaraTheme.colorNeutral8 };
+      ? { ...TotaraTheme.textHeadline, color: color.textColor }
+      : { ...TotaraTheme.textRegular, color: color.textColor };
 
   const fontItalic =
     content.marks &&
@@ -158,7 +172,7 @@ const OderList = ({ content = {} }: EditorConfigProps) => {
         content.content.map((nestedContent: any = {}, index: number) => {
           return (
             <View style={styles.listContainer} key={index}>
-              <Text style={styles.list}>{index! + 1}.</Text>
+              <Text style={[styles.list, { color: color.textColor }]}>{index! + 1}.</Text>
               <Configuration key={index} content={nestedContent} attrs={content.attrs} />
             </View>
           );
@@ -170,7 +184,7 @@ const OderList = ({ content = {} }: EditorConfigProps) => {
 const BulletList = ({ content = {} }: EditorConfigProps) => {
   return (
     <ListWrapper content={content}>
-      <Text style={styles.list}>•</Text>
+      <Text style={[styles.list, { color: color.textColor }]}>•</Text>
     </ListWrapper>
   );
 };
@@ -276,14 +290,14 @@ const LinkMedia = ({ content = {} }: EditorConfigProps) => {
     <View>
       <View style={{ marginBottom: margins.marginXS }}>
         {content.attrs.title && (
-          <Text numberOfLines={2} style={styles.linkMediaTitle}>
+          <Text numberOfLines={2} style={[styles.linkMediaTitle, { color: color.textColor }]}>
             {content.attrs.title}
           </Text>
         )}
         <View style={styles.linkMediaContainer}>
           <WebViewWrapper url={content.attrs.url} />
         </View>
-        <Text style={styles.linkMediaDescription}>{content.attrs.description}</Text>
+        <Text style={[styles.linkMediaDescription, { color: color.textColor }]}>{content.attrs.description}</Text>
       </View>
     </View>
   );
@@ -293,7 +307,7 @@ const WebViewWrapper = ({ url = "" }: { url: string }) => {
   const hostName = getHostnameFromRegex(url);
   // App only support for youtube and vimeo video insert link, and there is configuration for make a full screen video
   hostName === HostName.youtube && (url = url.split("watch?v=").join("embed/"));
-  hostName === HostName.vimeo && (url = vimeoUrlPrefix + getUrlLastComponentFromRegex(url));
+  hostName === HostName.vimeo && (url = VIMEO_URL_PREFIX + getUrlLastComponentFromRegex(url));
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
