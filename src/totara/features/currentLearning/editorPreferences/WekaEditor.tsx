@@ -26,8 +26,10 @@ import styles from "./wekaEditorStyle";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { ImageWrapper } from "@totara/components";
 import { getHostnameFromRegex, getUrlLastComponentFromRegex } from "@totara/lib/tools";
-import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
+import { NAVIGATION } from "@totara/lib/navigation";
+import { AppState } from "@totara/types";
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
+import NavigationService from "@totara/lib/navigationService";
 
 enum HostName {
   youtube = "www.youtube.com",
@@ -37,8 +39,13 @@ enum HostName {
 const VIMEO_URL_PREFIX = "https://player.vimeo.com/video/";
 
 let color = {
-  backGroundColor: TotaraTheme.colorNeutral2,
-  textColor: TotaraTheme.colorNeutral6
+  backGroundColor: "",
+  textColor: ""
+};
+
+const navigateWebView = (url, onRequestClose, apiKey) => {
+  const props = { uri: url, apiKey, backAction: onRequestClose };
+  return NavigationService.navigate(WEBVIEW_ACTIVITY, props);
 };
 
 type WekaEditorProps = {
@@ -50,6 +57,7 @@ type EditorConfigProps = {
   content?: any;
   index?: number;
   attrs?: any;
+  children?: (index: number) => void;
 };
 
 const WekaEditor = ({ content = {}, backGroundColor, textColor }: WekaEditorProps) => {
@@ -59,7 +67,6 @@ const WekaEditor = ({ content = {}, backGroundColor, textColor }: WekaEditorProp
   if (textColor) {
     color.textColor = textColor!;
   }
-
   return (
     <View style={[styles.container, { backgroundColor: color.backGroundColor }]}>
       <ContentExtract content={JSON.parse(content)} />
@@ -85,11 +92,11 @@ const Configuration = ({ content = {}, attrs }: EditorConfigProps) => {
     case WekaEditorType.paragraph:
       return <TextContentWrapper content={content} />;
     case WekaEditorType.listItem:
-      return <ListItem content={content} />;
+      return <ListItem content={content.content && content.content} />;
     case WekaEditorType.text:
       return <TextView content={content} attrs={attrs} />;
     case WekaEditorType.attachment:
-      return <Attachment content={content} />;
+      return <Attachment content={content.content && content.content} />;
     case WekaEditorType.video:
     case WekaEditorType.linkBlock:
     case WekaEditorType.linkMedia:
@@ -97,21 +104,17 @@ const Configuration = ({ content = {}, attrs }: EditorConfigProps) => {
     case WekaEditorType.image:
       return <ImageViewerWrapper content={content} />;
     case WekaEditorType.bulletList:
-      return <BulletList content={content} />;
+      return <BulletList content={content.content && content.content} />;
     case WekaEditorType.orderedList:
-      return <OderList content={content} />;
-    case WekaEditorType.emoji: {
+      return <OderList content={content.content && content.content} />;
+    case WekaEditorType.emoji:
       return <Emoji content={content} />;
-    }
-    case WekaEditorType.mention: {
-      return <Mention content={content} />;
-    }
-    case WekaEditorType.ruler: {
+    case WekaEditorType.mention:
+      return <Link text={content.attrs.display} />;
+    case WekaEditorType.hashtag:
+      return <Link text={content.attrs.text} />;
+    case WekaEditorType.ruler:
       return <Ruler />;
-    }
-    case WekaEditorType.hashtag: {
-      return <Hashtag content={content} />;
-    }
     default:
       return null;
   }
@@ -131,6 +134,12 @@ const TextContentWrapper = ({ content = {} }: EditorConfigProps) => {
 const TextView = ({ attrs = {}, content = {} }: EditorConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
+  const navigation = useContext(NavigationContext);
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+
+  const { apiKey } = appState as AppState;
   const fontWeight =
     attrs.level === 1
       ? { ...TotaraTheme.textH3, color: color.textColor }
@@ -160,31 +169,23 @@ const TextView = ({ attrs = {}, content = {} }: EditorConfigProps) => {
         onPress={link && onRequestClose}>
         {content.text}
       </Text>
-      {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose)}
+      {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose, navigation, apiKey)}
     </Text>
   );
 };
 
 const OderList = ({ content = {} }: EditorConfigProps) => {
   return (
-    <View style={{ flexDirection: "column" }}>
-      {content.content &&
-        content.content.map((nestedContent: any = {}, index: number) => {
-          return (
-            <View style={styles.listContainer} key={index}>
-              <Text style={[styles.list, { color: color.textColor }]}>{index! + 1}.</Text>
-              <Configuration key={index} content={nestedContent} attrs={content.attrs} />
-            </View>
-          );
-        })}
-    </View>
+    <ListWrapper content={content}>
+      {(index) => <Text style={[styles.list, { color: color.textColor }]}>{index! + 1}.</Text>}
+    </ListWrapper>
   );
 };
 
 const BulletList = ({ content = {} }: EditorConfigProps) => {
   return (
     <ListWrapper content={content}>
-      <Text style={[styles.list, { color: color.textColor }]}>•</Text>
+      {() => <Text style={[styles.list, { color: color.textColor }]}>•</Text>}
     </ListWrapper>
   );
 };
@@ -193,18 +194,17 @@ const ListItem = ({ content = {} }: EditorConfigProps) => {
   return <ListWrapper content={content} />;
 };
 
-const ListWrapper = ({ content = {}, children }: any) => {
+const ListWrapper = ({ content = {}, children }: EditorConfigProps) => {
   return (
-    <View style={{ flexDirection: "column" }}>
-      {content.content &&
-        content.content.map((nestedContent: any = {}, index: number) => {
-          return (
-            <View style={styles.listContainer} key={index}>
-              {children}
-              <Configuration key={index} content={nestedContent} attrs={content.attrs} />
-            </View>
-          );
-        })}
+    <View>
+      {content.map((nestedContent: any = {}, index: number) => {
+        return (
+          <View style={styles.listContainer} key={index}>
+            {children && children(index)}
+            <Configuration key={index} content={nestedContent} attrs={content.attrs} />
+          </View>
+        );
+      })}
     </View>
   );
 };
@@ -214,14 +214,10 @@ const Emoji = ({ content = {} }: EditorConfigProps) => {
   return <Text style={styles.emoji}>{emoji}</Text>;
 };
 
-// To Do : Mention is not working as expected behavior, it should link with user profile when user click on mention name
-const Mention = ({ content = {} }: EditorConfigProps) => {
-  return <Text style={styles.textLink}>{content.attrs.display}</Text>;
-};
-
-// To Do: Hashtag can appear only, it could not be tapped
-const Hashtag = ({ content = {} }: EditorConfigProps) => {
-  return <Text style={styles.textLink}>{content.attrs.text}</Text>;
+// To Do : MOB-754,  Mention is not working as expected behaviour, it should link with user profile when user click on mention name
+// To Do : MOB-754, Hashtag can appear only, it could not be tapped
+const Link = ({ text }: { text: string }) => {
+  return <Text style={styles.textLink}>{text}</Text>;
 };
 
 const Ruler = () => {
@@ -231,34 +227,14 @@ const Ruler = () => {
 const Attachment = ({ content = {} }: EditorConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
-  return (
-    content.content &&
-    content.content.map((nestedContent: any = {}, index: number) => {
-      return (
-        <TouchableOpacity style={styles.attachmentTouchable} key={index} onPress={onRequestClose}>
-          <Text style={styles.attachmentFileName}>{nestedContent.attrs.filename}</Text>
-          {visible && navigateWebView(nestedContent.attrs.url, onRequestClose)}
-        </TouchableOpacity>
-      );
-    })
-  );
-};
-
-const navigateWebView = (url, onRequestClose) => {
-  const navigation = useContext(NavigationContext);
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-
-  const apiKey = appState!.apiKey;
-  return navigateTo({
-    navigate: navigation.navigate,
-    routeId: WEBVIEW_ACTIVITY,
-    props: {
-      uri: url,
-      apiKey,
-      backAction: onRequestClose
-    }
+  return content.map((nestedContent: any = {}, index: number) => {
+    return (
+      <TouchableOpacity style={styles.attachmentTouchable} key={index} onPress={onRequestClose}>
+        <Text style={styles.attachmentFileName}>{nestedContent.attrs.filename}</Text>
+        {/* To Do: Implementation of the attachment has not done yet */}
+        {/* {visible && navigateWebView(nestedContent.attrs.url, onRequestClose)} */}
+      </TouchableOpacity>
+    );
   });
 };
 
@@ -268,7 +244,8 @@ const ImageViewerWrapper = ({ content = {} }: EditorConfigProps) => {
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
-  const apiKey = appState!.apiKey;
+
+  const { apiKey } = appState as AppState;
   const images = [
     {
       uri: content.attrs.url,
@@ -311,7 +288,7 @@ const WebViewWrapper = ({ url = "" }: { url: string }) => {
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
-  const apiKey = appState!.apiKey;
+  const { apiKey } = appState as AppState;
   return (
     <WebView
       style={styles.webViewWrapper}
