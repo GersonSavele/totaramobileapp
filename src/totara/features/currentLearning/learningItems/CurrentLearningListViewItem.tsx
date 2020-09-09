@@ -25,6 +25,7 @@ import DefaultImage from "@totara/features/currentLearning/components/DefaultIma
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
 import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/constants";
+import { includes } from "lodash";
 
 type ListViewItemProps = {
   item: any;
@@ -58,10 +59,12 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
 
   const onItemPress = () => {
     if (native) {
+      const targetId = includes(id, "_") ? id.split("_")[1] : id;
+
       navigateTo({
         navigate: navigation.navigate,
         routeId: itemToRouteMap[itemtype],
-        props: { targetId: id, courseGroupType: item.itemtype }
+        props: { targetId: targetId, courseGroupType: item.itemtype }
       });
     } else {
       setShowRestriction(true);

@@ -25,6 +25,7 @@ import { deviceScreen } from "@totara/lib/tools";
 import { LearningItemCard } from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
+import { includes } from "lodash";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
@@ -92,10 +93,11 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
   const [showRestriction, setShowRestriction] = useState(false);
   const clickedLearningItem = () => {
     if (item.native) {
+      const targetId = includes(item.id, "_") ? item.id.split("_")[1] : item.id;
       navigateTo({
         navigate: navigation.navigate,
         routeId: itemToRouteMap[item.itemtype],
-        props: { targetId: item.id, courseGroupType: item.itemtype }
+        props: { targetId: targetId, courseGroupType: item.itemtype }
       });
     } else {
       setShowRestriction(true);
