@@ -62,7 +62,7 @@ export default class AppLinkFlow extends AuthComponent {
           // eslint-disable-next-line no-undef
           await fetchData(fetch)<SiteInfo>(config.infoUri(resultRegistration.uri), {
             method: "POST",
-            body: JSON.stringify({ version: DeviceInfo.getVersion() })
+            body: JSON.stringify({ version: DeviceInfo.getBuildNumber() })
           })
             .then((siteInfo) => {
               this.props.onLoginSuccess({
