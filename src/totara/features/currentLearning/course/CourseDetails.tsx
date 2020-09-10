@@ -17,13 +17,13 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Switch } from "react-native";
 import { NavigationParams } from "react-navigation";
 import { NavigationStackProp } from "react-navigation-stack";
-import { isEmpty } from "lodash";
+import { isEmpty, isEqual } from "lodash";
 import { Loading, LoadingError } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
-import { CourseContentDetails, Section } from "@totara/types";
+import { CourseContentDetails } from "@totara/types";
 import { StatusKey } from "@totara/types/Completion";
 import OverviewDetails from "../overview/OverviewDetails";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -72,7 +72,7 @@ const CourseDetailsContent = ({
 }: CourseDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const [showCompletionModal, setShowCompletionModal] = useState(true);
-  const [expandedSections, setExpandedSections] = useState<Section[]>([]);
+  const [expandedSectionIds, setExpandedSectionIds] = useState<number[]>([]);
 
   const onClose = () => {
     setShowCompletionModal(!showCompletionModal);
@@ -83,16 +83,16 @@ const CourseDetailsContent = ({
     setShowOverview(!showOverview);
   };
 
-  const allExpanableSections = courseDetails?.course?.sections.filter(
-    (section) => section.available && !isEmpty(section.data)
-  );
-  const isExpandedAll = !isEmpty(allExpanableSections) && allExpanableSections.length === expandedSections?.length!;
+  const expanableSections =
+    courseDetails?.course?.sections.filter((section) => section.available && !isEmpty(section.data)) || [];
+  const expanableSectionIds = Array.from(expanableSections, (section) => section.id);
+  const isExpandedAll = !isEmpty(expanableSectionIds) && isEqual(expanableSectionIds.sort(), expandedSectionIds.sort());
 
-  const onChangeExpand = (isExpanded: boolean, sections: Section[]) => {
+  const onChangeExpand = (isExpanded: boolean, sectionIds: number[]) => {
     if (isExpanded) {
-      setExpandedSections([]);
+      setExpandedSectionIds([]);
     } else {
-      setExpandedSections(sections);
+      setExpandedSectionIds(sectionIds);
     }
   };
   return (
@@ -121,14 +121,14 @@ const CourseDetailsContent = ({
                 <Switch
                   style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
                   value={isExpandedAll}
-                  onValueChange={() => onChangeExpand(isExpandedAll, allExpanableSections)}
+                  onValueChange={() => onChangeExpand(isExpandedAll, expanableSectionIds)}
                 />
               </View>
               <Activities
                 sections={courseDetails.course.sections}
                 courseRefreshCallBack={courseRefreshCallback}
-                expandedSections={expandedSections}
-                onSetExpandedSections={setExpandedSections}
+                expandedSectionIds={expandedSectionIds}
+                onSetExpandedSectionIds={setExpandedSectionIds}
                 completionEnabled={courseDetails.course.completionEnabled}
               />
             </View>

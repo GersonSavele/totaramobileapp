@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
-import { get, remove } from "lodash";
+import { get } from "lodash";
 
 import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
@@ -43,17 +43,17 @@ const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
-  expandedSections: Section[];
+  expandedSectionIds: number[];
   completionEnabled: boolean;
-  onSetExpandedSections: Function;
+  onSetExpandedSectionIds: Function;
 };
 
 const Activities = ({
   sections,
   courseRefreshCallBack,
-  expandedSections,
+  expandedSectionIds,
   completionEnabled,
-  onSetExpandedSections
+  onSetExpandedSectionIds
 }: ActivitiesProps) => {
   return (
     <FlatList
@@ -63,9 +63,9 @@ const Activities = ({
           <SectionItem
             section={item}
             courseRefreshCallBack={courseRefreshCallBack}
-            expandedSections={expandedSections}
+            expandedSectionIds={expandedSectionIds}
             completionEnabled={completionEnabled}
-            onSetExpandedSections={onSetExpandedSections}
+            onSetExpandedSectionIds={onSetExpandedSectionIds}
           />
         );
       }}
@@ -76,38 +76,40 @@ const Activities = ({
 type SectionItemProps = {
   courseRefreshCallBack: () => {};
   section: Section;
-  expandedSections: Section[];
+  expandedSectionIds: number[];
   completionEnabled: boolean;
-  onSetExpandedSections: Function;
+  onSetExpandedSectionIds: Function;
 };
 
 const SectionItem = ({
   section,
   courseRefreshCallBack,
-  expandedSections,
+  expandedSectionIds,
   completionEnabled,
-  onSetExpandedSections
+  onSetExpandedSectionIds
 }: SectionItemProps) => {
   //every item need to have its own state
   const activities = section.data as Array<Activity>;
-  const { title, available, availableReason, summary } = section;
+  const { title, available, availableReason, summary, id } = section;
+  const isExpanded = expandedSectionIds?.includes(id);
 
-  const isExpanded = expandedSections?.indexOf(section) >= 0;
-
-  const onExpand = (isExpanded: boolean) => {
-    const existingExpandedSections = [...expandedSections];
+  const onExpand = (isExpanded: boolean, id: number) => {
+    const existingExpandedSectionIds = [...expandedSectionIds];
     if (isExpanded) {
-      remove(existingExpandedSections, (item) => section === item);
+      const index = existingExpandedSectionIds.indexOf(id);
+      if (index > -1) {
+        existingExpandedSectionIds.splice(index, 1);
+      }
     } else {
-      existingExpandedSections.push(section);
+      existingExpandedSectionIds.push(id);
     }
-    onSetExpandedSections(existingExpandedSections);
+    onSetExpandedSectionIds(existingExpandedSectionIds);
   };
 
   return (
     activities && (
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
-        <TouchableOpacity onPress={() => onExpand(isExpanded)}>
+        <TouchableOpacity onPress={() => onExpand(isExpanded, id)}>
           {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}
           {!available && availableReason && availableReason.length > 0 && (
             <RestrictionSectionHeader title={title} availableReason={availableReason} />
