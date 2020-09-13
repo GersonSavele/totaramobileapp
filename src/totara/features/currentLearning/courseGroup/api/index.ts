@@ -24,6 +24,7 @@ const coreProgram = gql`
       duedate(format: ISO8601)
       duedateState: duedate_state(format: PLAIN)
       summary(format: PLAIN)
+      summaryformat
       endnote(format: PLAIN)
       availablefrom(format: ISO8601)
       availableuntil(format: ISO8601)

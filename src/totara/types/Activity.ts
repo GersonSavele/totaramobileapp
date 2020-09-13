@@ -14,11 +14,8 @@
  */
 
 import { completionTrack, completionStatus } from "@totara/features/currentLearning/constants";
+import { DescriptionFormat } from "./LearningItem";
 
-export enum DescriptionFormat {
-  jsonEditor = "JSON_EDITOR",
-  html = "HTML"
-}
 export interface Activity {
   id: number;
   instanceid: number;

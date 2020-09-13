@@ -153,6 +153,7 @@ const CourseDetailsContent = ({
               courseRefreshCallback={courseRefreshCallback}
               showGrades={courseDetails.course.showGrades}
               completionEnabled={courseDetails.course.completionEnabled}
+              summaryFormat={courseDetails.course.summaryformat}
             />
           )}
         </View>

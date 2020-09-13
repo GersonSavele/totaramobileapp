@@ -20,6 +20,7 @@ import { courseSelfComplete } from "../course/api";
 import { AddBadge, Loading, GeneralErrorModal, CircleIcon } from "@totara/components";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "../components/CriteriaSheet";
+import { DescriptionFormat } from "@totara/types/LearningItem";
 import CourseCompletionModal from "../CourseCompletionModal";
 import { Criteria } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
@@ -28,11 +29,13 @@ import { overviewStyles } from "./overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
+import WekaContent from "../weka/WekaContent";
 
 type OverviewProps = {
   id: number;
   criteria?: [Criteria];
   summary?: string;
+  summaryFormat?: DescriptionFormat;
   gradeFinal?: number;
   progress?: number;
   isCourseSet: boolean;
@@ -54,6 +57,7 @@ const OverviewDetails = ({
   courseRefreshCallback,
   isCourseSet,
   showGrades,
+  summaryFormat,
   completionEnabled = true
 }: OverviewProps) => {
   const isSelfCompletion =
@@ -88,7 +92,7 @@ const OverviewDetails = ({
         </View>
       )}
       <View style={{ flex: 4 }}>
-        <Summary summary={summary} summaryTypeTitle={summaryTypeTitle} />
+        <Summary summary={summary} summaryTypeTitle={summaryTypeTitle} summaryFormat={summaryFormat} />
       </View>
     </View>
   );
@@ -245,16 +249,25 @@ const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefr
 type SummaryProps = {
   summary?: string;
   summaryTypeTitle?: string;
+  summaryFormat?: DescriptionFormat;
 };
 
-const Summary = ({ summary = "", summaryTypeTitle = "" }: SummaryProps) => {
+const Summary = ({ summary = "", summaryTypeTitle = "", summaryFormat }: SummaryProps) => {
   return (
     <View style={overviewStyles.summaryContainer}>
       <Text numberOfLines={1} style={TotaraTheme.textHeadline}>
         {summaryTypeTitle}
       </Text>
       <View style={overviewStyles.summaryViewWrap}>
-        <Text style={overviewStyles.summaryText}>{summary}</Text>
+        {summaryFormat == DescriptionFormat.jsonEditor ? (
+          <WekaContent
+            content={summary as string}
+            backGroundColor={TotaraTheme.colorAccent}
+            textColor={TotaraTheme.colorNeutral8}
+          />
+        ) : (
+          <Text style={overviewStyles.summaryText}>{summary}</Text>
+        )}
       </View>
     </View>
   );

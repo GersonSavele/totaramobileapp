@@ -30,6 +30,7 @@ const query = gql`
       duedateState: duedate_state
       native: mobile_coursecompat
       imageSrc: mobile_image
+      summaryFormat: description_format
       __typename
     }
   }

@@ -125,6 +125,7 @@ const CourseGroupDetailsContent = ({
                 progress={courseGroup?.completion?.progress}
                 isCourseSet={true}
                 summaryTypeTitle={translate("course_group.overview.summary_title_program")}
+                summaryFormat={courseGroup.summaryformat}
               />
             )}
           </View>

@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { LearningItem } from "./LearningItem";
+import { LearningItem, DescriptionFormat } from "./LearningItem";
 
 export interface CourseGroup {
   id: number;
@@ -22,6 +22,7 @@ export interface CourseGroup {
   duedate?: Date;
   duedateState?: string;
   summary?: string;
+  summaryformat?: DescriptionFormat; // To-Do :- summaryformat should be camel-case, graphQL api query attribute need to be changed from back-end
   endnote?: string;
   availablefrom: Date;
   availableuntil?: Date;

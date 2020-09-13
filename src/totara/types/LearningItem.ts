@@ -16,6 +16,11 @@
 import { Activity } from "./Activity";
 import { learningItemEnum } from "@totara/features/currentLearning/constants";
 
+export enum DescriptionFormat {
+  jsonEditor = "JSON_EDITOR",
+  html = "HTML"
+}
+
 export interface Section {
   id: number;
   title: string;
@@ -32,6 +37,7 @@ export interface LearningItem {
   shortname: string;
   fullname?: string;
   summary?: string;
+  summaryFormat?: DescriptionFormat;
   duedateState?: string;
   urlView?: string;
   duedate?: Date;

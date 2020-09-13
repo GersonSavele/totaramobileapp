@@ -35,11 +35,11 @@ enum fontWeights {
   fontWeightBold = "700"
 }
 
-enum fontStyle {
+enum fontStyles {
   fontStyleItalic = "italic"
 }
 
-enum marksType {
+enum marksTypes {
   italic = "em",
   bold = "strong",
   link = "link"
@@ -146,6 +146,6 @@ export {
   shadow,
   row,
   opacities,
-  fontStyle,
-  marksType
+  fontStyles,
+  marksTypes
 };

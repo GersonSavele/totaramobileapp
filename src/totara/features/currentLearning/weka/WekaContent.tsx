@@ -17,12 +17,11 @@ import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import ImageView from "react-native-image-viewing";
 import { WebView } from "react-native-webview";
-import { NavigationContext } from "react-navigation";
 import { AuthContext } from "@totara/core";
 import { AUTHORIZATION } from "@totara/lib/constants";
-import { textAttributes, margins, fontWeights, fontStyle, marksType } from "@totara/theme/constants";
+import { textAttributes, margins, fontWeights, fontStyles, marksTypes } from "@totara/theme/constants";
 import { WekaEditorType } from "../constants";
-import styles from "./wekaEditorStyle";
+import styles from "./wekaContentStyle";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { ImageWrapper } from "@totara/components";
 import { getHostnameFromRegex, getUrlLastComponentFromRegex } from "@totara/lib/tools";
@@ -40,38 +39,47 @@ const VIMEO_URL_PREFIX = "https://player.vimeo.com/video/";
 
 let color = {
   backGroundColor: "",
-  textColor: ""
+  textColor: TotaraTheme.colorNeutral8
 };
 
-const navigateWebView = (url, onRequestClose, apiKey) => {
+const navigateWebView = (url, onRequestClose) => {
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+
+  const { apiKey } = appState as AppState;
   const props = { uri: url, apiKey, backAction: onRequestClose };
   return NavigationService.navigate(WEBVIEW_ACTIVITY, props);
 };
 
-type WekaEditorProps = {
+type WekaContentProps = {
   content: any;
   backGroundColor?: string;
   textColor?: string;
 };
-type EditorConfigProps = {
+type ConfigProps = {
   content?: any;
   index?: number;
   attrs?: any;
   children?: (index: number) => void;
 };
 
-const WekaEditor = ({ content = {}, backGroundColor, textColor }: WekaEditorProps) => {
+const WekaContent = ({ content = {}, backGroundColor, textColor }: WekaContentProps) => {
   if (backGroundColor) {
     color.backGroundColor = backGroundColor!;
   }
   if (textColor) {
     color.textColor = textColor!;
   }
-  return (
-    <View style={[styles.container, { backgroundColor: color.backGroundColor }]}>
-      <ContentExtract content={JSON.parse(content)} />
-    </View>
-  );
+  try {
+    return (
+      <View style={[styles.container, { backgroundColor: color.backGroundColor }]}>
+        <ContentExtract content={JSON.parse(content)} />
+      </View>
+    );
+  } catch (e) {
+    return null;
+  }
 };
 
 const ContentExtract = ({ content = [] }: any) => {
@@ -86,7 +94,7 @@ const ContentExtract = ({ content = [] }: any) => {
   );
 };
 
-const Configuration = ({ content = {}, attrs }: EditorConfigProps) => {
+const Configuration = ({ content = {}, attrs }: ConfigProps) => {
   switch (content.type) {
     case WekaEditorType.heading:
     case WekaEditorType.paragraph:
@@ -120,7 +128,7 @@ const Configuration = ({ content = {}, attrs }: EditorConfigProps) => {
   }
 };
 
-const TextContentWrapper = ({ content = {} }: EditorConfigProps) => {
+const TextContentWrapper = ({ content = {} }: ConfigProps) => {
   return (
     <Text style={styles.textContainerWrapper}>
       {content.content &&
@@ -131,50 +139,46 @@ const TextContentWrapper = ({ content = {} }: EditorConfigProps) => {
   );
 };
 
-const TextView = ({ attrs = {}, content = {} }: EditorConfigProps) => {
+const TextView = ({ attrs = {}, content = {} }: ConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
-  const navigation = useContext(NavigationContext);
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-
-  const { apiKey } = appState as AppState;
-  const fontWeight =
+  const font =
     attrs.level === 1
-      ? { ...TotaraTheme.textH3, color: color.textColor }
-      : attrs.level == 2
       ? { ...TotaraTheme.textHeadline, color: color.textColor }
+      : attrs.level == 2
+      ? { ...TotaraTheme.textMedium, color: color.textColor }
       : { ...TotaraTheme.textRegular, color: color.textColor };
 
   const fontItalic =
     content.marks &&
     content.marks.map((marks: any = {}) => {
-      return marks.type === marksType.italic && { fontStyle: fontStyle.fontStyleItalic };
+      return marks.type === marksTypes.italic && { fontStyle: fontStyles.fontStyleItalic };
     });
   const fontBold =
     content.marks &&
     content.marks.map((marks: any = {}) => {
-      return marks.type === marksType.bold && { fontWeight: fontWeights.fontWeightBold };
+      return marks.type === marksTypes.bold && { fontWeight: fontWeights.fontWeightBold };
     });
   const link =
     content.marks &&
     content.marks.map((marks: any = {}) => {
-      return marks.type === marksType.link && { marks };
+      return marks.type === marksTypes.link && { marks };
     });
+
   return (
     <Text>
       <Text
-        style={[fontWeight, fontItalic, fontBold, link && link[0] && styles.textLink]}
+        style={[font, fontItalic, fontBold, link && link[0] && styles.textLink]}
+        testID="test_rich_text"
         onPress={link && onRequestClose}>
         {content.text}
       </Text>
-      {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose, navigation, apiKey)}
+      {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose)}
     </Text>
   );
 };
 
-const OderList = ({ content = {} }: EditorConfigProps) => {
+const OderList = ({ content = {} }: ConfigProps) => {
   return (
     <ListWrapper content={content}>
       {(index) => <Text style={[styles.list, { color: color.textColor }]}>{index! + 1}.</Text>}
@@ -182,7 +186,7 @@ const OderList = ({ content = {} }: EditorConfigProps) => {
   );
 };
 
-const BulletList = ({ content = {} }: EditorConfigProps) => {
+const BulletList = ({ content = {} }: ConfigProps) => {
   return (
     <ListWrapper content={content}>
       {() => <Text style={[styles.list, { color: color.textColor }]}>•</Text>}
@@ -190,28 +194,33 @@ const BulletList = ({ content = {} }: EditorConfigProps) => {
   );
 };
 
-const ListItem = ({ content = {} }: EditorConfigProps) => {
+const ListItem = ({ content = {} }: ConfigProps) => {
   return <ListWrapper content={content} />;
 };
 
-const ListWrapper = ({ content = {}, children }: EditorConfigProps) => {
+const ListWrapper = ({ content = {}, children }: ConfigProps) => {
   return (
     <View>
-      {content.map((nestedContent: any = {}, index: number) => {
-        return (
-          <View style={styles.listContainer} key={index}>
-            {children && children(index)}
-            <Configuration key={index} content={nestedContent} attrs={content.attrs} />
-          </View>
-        );
-      })}
+      {Array.isArray(content) &&
+        content.map((nestedContent: any = {}, index: number) => {
+          return (
+            <View style={styles.listContainer} key={index} testID="test_list_content">
+              {children && children(index)}
+              <Configuration key={index} content={nestedContent} attrs={content.attrs} />
+            </View>
+          );
+        })}
     </View>
   );
 };
 
-const Emoji = ({ content = {} }: EditorConfigProps) => {
+const Emoji = ({ content = {} }: ConfigProps) => {
   let emoji = String.fromCodePoint(parseInt(textAttributes.short_code_prefix + content.attrs.shortcode));
-  return <Text style={styles.emoji}>{emoji}</Text>;
+  return (
+    <Text style={styles.emoji} testID={"test_emoji"}>
+      {emoji}
+    </Text>
+  );
 };
 
 // To Do : MOB-754,  Mention is not working as expected behaviour, it should link with user profile when user click on mention name
@@ -224,7 +233,7 @@ const Ruler = () => {
   return <View style={styles.ruler} />;
 };
 
-const Attachment = ({ content = {} }: EditorConfigProps) => {
+const Attachment = ({ content = {} }: ConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
   return content.map((nestedContent: any = {}, index: number) => {
@@ -238,7 +247,7 @@ const Attachment = ({ content = {} }: EditorConfigProps) => {
   });
 };
 
-const ImageViewerWrapper = ({ content = {} }: EditorConfigProps) => {
+const ImageViewerWrapper = ({ content = {} }: ConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
   const {
@@ -262,33 +271,41 @@ const ImageViewerWrapper = ({ content = {} }: EditorConfigProps) => {
   );
 };
 
-const LinkMedia = ({ content = {} }: EditorConfigProps) => {
+const LinkMedia = ({ content = {} }: ConfigProps) => {
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+  const { apiKey } = appState as AppState;
   return (
     <View>
       <View style={{ marginBottom: margins.marginXS }}>
         {content.attrs.title && (
-          <Text numberOfLines={2} style={[styles.linkMediaTitle, { color: color.textColor }]}>
+          <Text numberOfLines={2} style={[styles.linkMediaTitle, { color: color.textColor }]} testID="test_media_title">
             {content.attrs.title}
           </Text>
         )}
-        <View style={styles.linkMediaContainer}>
-          <WebViewWrapper url={content.attrs.url} />
+        <View style={styles.linkMediaContainer} testID="test_media_content">
+          <WebViewWrapper url={content.attrs.url} apiKey={apiKey} />
         </View>
-        <Text style={[styles.linkMediaDescription, { color: color.textColor }]}>{content.attrs.description}</Text>
+        <Text style={[styles.linkMediaDescription, { color: color.textColor }]} testID="test_media_description">
+          {content.attrs.description}
+        </Text>
       </View>
     </View>
   );
 };
 
-const WebViewWrapper = ({ url = "" }: { url: string }) => {
+type WebViewWrapperProps = {
+  url: string;
+  apiKey: string;
+};
+
+const WebViewWrapper = ({ url = "", apiKey }: WebViewWrapperProps) => {
   const hostName = getHostnameFromRegex(url);
   // App only support for youtube and vimeo video insert link, and there is configuration for make a full screen video
   hostName === HostName.youtube && (url = url.split("watch?v=").join("embed/"));
   hostName === HostName.vimeo && (url = VIMEO_URL_PREFIX + getUrlLastComponentFromRegex(url));
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-  const { apiKey } = appState as AppState;
+
   return (
     <WebView
       style={styles.webViewWrapper}
@@ -305,5 +322,5 @@ const WebViewWrapper = ({ url = "" }: { url: string }) => {
     />
   );
 };
-
-export default WekaEditor;
+export { TextView, ContentExtract, ListWrapper, Emoji, LinkMedia, WebViewWrapper };
+export default WekaContent;

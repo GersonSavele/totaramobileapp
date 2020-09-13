@@ -25,6 +25,7 @@ const coreCourse = gql`
         fullname
         shortname
         summary(format: PLAIN)
+        summaryformat
         startdate(format: ISO8601)
         enddate(format: ISO8601)
         lang
