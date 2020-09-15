@@ -31,6 +31,7 @@ import LearningDetails from "../LearningDetails";
 import CourseCompletionModal from "../CourseCompletionModal";
 import { learningItemEnum } from "../constants";
 import courseDetailsStyle from "./courseDetailsStyle";
+import { CourseFormat } from "@totara/types/Course";
 
 const CourseDetails = ({ navigation }: NavigationParams) => {
   const courseId = navigation.getParam("targetId");
@@ -70,23 +71,26 @@ const CourseDetailsContent = ({
   pullToRefresh,
   navigation
 }: CourseDetailsContentProps) => {
+  const expanableSections =
+    courseDetails?.course?.sections.filter((section) => section.available && !isEmpty(section.data)) || [];
+  const expanableSectionIds = Array.from(expanableSections, (section) => section.id);
+  const isSingleActivity = courseDetails?.course?.format === CourseFormat.singleActivity;
+
   const [showOverview, setShowOverview] = useState(true);
   const [showCompletionModal, setShowCompletionModal] = useState(true);
-  const [expandedSectionIds, setExpandedSectionIds] = useState<number[]>([]);
+  const [expandedSectionIds, setExpandedSectionIds] = useState<number[]>(isSingleActivity ? expanableSectionIds : []);
+
+  const isExpandedAll = !isEmpty(expanableSectionIds) && isEqual(expanableSectionIds.sort(), expandedSectionIds.sort());
 
   const onClose = () => {
     setShowCompletionModal(!showCompletionModal);
     courseRefreshCallback();
     navigation.goBack();
   };
+
   const onSwitchTab = () => {
     setShowOverview(!showOverview);
   };
-
-  const expanableSections =
-    courseDetails?.course?.sections.filter((section) => section.available && !isEmpty(section.data)) || [];
-  const expanableSectionIds = Array.from(expanableSections, (section) => section.id);
-  const isExpandedAll = !isEmpty(expanableSectionIds) && isEqual(expanableSectionIds.sort(), expandedSectionIds.sort());
 
   const onChangeExpand = (isExpanded: boolean, sectionIds: number[]) => {
     if (isExpanded) {
@@ -95,6 +99,7 @@ const CourseDetailsContent = ({
       setExpandedSectionIds(sectionIds);
     }
   };
+
   return (
     <LearningDetails
       onPullToRefresh={pullToRefresh}
@@ -114,22 +119,25 @@ const CourseDetailsContent = ({
               style={{
                 backgroundColor: TotaraTheme.colorAccent
               }}>
-              <View style={courseDetailsStyle.expandContentWrap}>
-                <Text style={courseDetailsStyle.expandTextWrap}>
-                  {translate("course.course_details.expand_or_collapse")}
-                </Text>
-                <Switch
-                  style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
-                  value={isExpandedAll}
-                  onValueChange={() => onChangeExpand(isExpandedAll, expanableSectionIds)}
-                />
-              </View>
+              {!isSingleActivity && (
+                <View style={courseDetailsStyle.expandContentWrap}>
+                  <Text style={courseDetailsStyle.expandTextWrap}>
+                    {translate("course.course_details.expand_or_collapse")}
+                  </Text>
+                  <Switch
+                    style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
+                    value={isExpandedAll}
+                    onValueChange={() => onChangeExpand(isExpandedAll, expanableSectionIds)}
+                  />
+                </View>
+              )}
               <Activities
                 sections={courseDetails.course.sections}
                 courseRefreshCallBack={courseRefreshCallback}
                 expandedSectionIds={expandedSectionIds}
                 onSetExpandedSectionIds={setExpandedSectionIds}
                 completionEnabled={courseDetails.course.completionEnabled}
+                isSingleActivity={isSingleActivity}
               />
             </View>
           ) : (

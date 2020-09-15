@@ -46,6 +46,7 @@ type ActivitiesProps = {
   expandedSectionIds: number[];
   completionEnabled: boolean;
   onSetExpandedSectionIds: Function;
+  isSingleActivity: boolean;
 };
 
 const Activities = ({
@@ -53,7 +54,8 @@ const Activities = ({
   courseRefreshCallBack,
   expandedSectionIds,
   completionEnabled,
-  onSetExpandedSectionIds
+  onSetExpandedSectionIds,
+  isSingleActivity
 }: ActivitiesProps) => {
   return (
     <FlatList
@@ -66,6 +68,7 @@ const Activities = ({
             expandedSectionIds={expandedSectionIds}
             completionEnabled={completionEnabled}
             onSetExpandedSectionIds={onSetExpandedSectionIds}
+            isSingleActivity={isSingleActivity}
           />
         );
       }}
@@ -79,6 +82,7 @@ type SectionItemProps = {
   expandedSectionIds: number[];
   completionEnabled: boolean;
   onSetExpandedSectionIds: Function;
+  isSingleActivity: boolean;
 };
 
 const SectionItem = ({
@@ -86,7 +90,8 @@ const SectionItem = ({
   courseRefreshCallBack,
   expandedSectionIds,
   completionEnabled,
-  onSetExpandedSectionIds
+  onSetExpandedSectionIds,
+  isSingleActivity
 }: SectionItemProps) => {
   //every item need to have its own state
   const activities = section.data as Array<Activity>;
@@ -109,12 +114,14 @@ const SectionItem = ({
   return (
     activities && (
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
-        <TouchableOpacity onPress={() => onExpand(isExpanded, id)}>
-          {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}
-          {!available && availableReason && availableReason.length > 0 && (
-            <RestrictionSectionHeader title={title} availableReason={availableReason} />
-          )}
-        </TouchableOpacity>
+        {!isSingleActivity && (
+          <TouchableOpacity onPress={() => onExpand(isExpanded, id)}>
+            {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}
+            {!available && availableReason && availableReason.length > 0 && (
+              <RestrictionSectionHeader title={title} availableReason={availableReason} />
+            )}
+          </TouchableOpacity>
+        )}
         {isExpanded && (
           <ActivityList
             data={activities}

@@ -21,6 +21,7 @@ const coreCourse = gql`
     mobile_course: totara_mobile_course(courseid: $courseid) {
       course(courseid: $courseid) {
         id
+        format
         fullname
         shortname
         summary(format: PLAIN)

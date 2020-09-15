@@ -36,4 +36,9 @@ export interface Course extends LearningItem {
   showGrades: boolean;
   completionEnabled: boolean;
   completion: Completion;
+  format: string;
+}
+
+export enum CourseFormat {
+  singleActivity = "singleactivity"
 }
