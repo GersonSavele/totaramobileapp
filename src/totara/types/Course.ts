@@ -40,5 +40,9 @@ export interface Course extends LearningItem {
 }
 
 export enum CourseFormat {
-  singleActivity = "singleactivity"
+  demo = "demo",
+  singleActivity = "singleactivity",
+  social = "social",
+  topics = "topics",
+  weeks = "weeks"
 }
