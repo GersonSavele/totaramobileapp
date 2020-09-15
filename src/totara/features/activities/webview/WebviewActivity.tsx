@@ -14,7 +14,7 @@
  */
 
 import React, { useRef, useState, useEffect } from "react";
-import { View, SafeAreaView, BackHandler } from "react-native";
+import { View, SafeAreaView, BackHandler, StyleSheet } from "react-native";
 import PDFView from "react-native-view-pdf";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import { Activity } from "@totara/types";
@@ -23,6 +23,7 @@ import { AuthenticatedWebView } from "@totara/auth";
 import { NavigationStackProp } from "react-navigation-stack";
 import WebviewToolbar from "../components/WebviewToolbar";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { Loading } from "@totara/components";
 
 const PDF_TYPE = "application/pdf";
 /**
@@ -47,12 +48,7 @@ const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
   return (
     <SafeAreaView style={TotaraTheme.viewContainer}>
       {mimetype === PDF_TYPE ? (
-        <PDFView
-          style={{ flex: 1 }}
-          resource={fileurl!}
-          resourceType={"url"}
-          urlProps={{ headers: { Authorization: `Bearer ${apiKey}` } }}
-        />
+        <PDFViewWrapper fileurl={fileurl} apiKey={apiKey} />
       ) : (
         <WebViewWrapper uri={uri || activity.viewurl!} backAction={backAction} />
       )}
@@ -89,5 +85,29 @@ const WebViewWrapper = ({ uri, backAction }: WebViewWrapperProps) => {
     </View>
   );
 };
+
+const PDFViewWrapper = ({ fileurl, apiKey }: { fileurl?: string; apiKey?: string }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <>
+      <PDFView
+        style={{ flex: 1 }}
+        resource={fileurl!}
+        resourceType={"url"}
+        urlProps={{ headers: { Authorization: `Bearer ${apiKey}` } }}
+        onLoad={() => setIsLoaded(true)}></PDFView>
+      {!isLoaded && (
+        <View style={pdfViewStyle.loadingWrapper}>
+          <Loading />
+        </View>
+      )}
+    </>
+  );
+};
+
+const pdfViewStyle = StyleSheet.create({
+  loadingWrapper: { position: "absolute", width: "100%", height: "100%" }
+});
 
 export { WebviewActivity };
