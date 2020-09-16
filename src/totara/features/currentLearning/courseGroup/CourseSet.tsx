@@ -27,6 +27,7 @@ import NativeAccessRestriction from "../NativeAccessRestriction";
 import MoreInfo from "@totara/components/MoreInfo";
 import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
+import { includes } from "lodash";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -44,11 +45,13 @@ const CourseSetItem = ({ item, navigation }: any) => {
       <TouchableOpacity
         key={item.id}
         onPress={() => {
+          const targetId = includes(item.id, "_") ? item.id.split("_")[1] : item.id;
+
           if (item.native) {
             navigateTo({
               navigate: navigation.navigate,
               routeId: NAVIGATION.COURSE_DETAILS,
-              props: { targetId: item.id }
+              props: { targetId: targetId }
             });
           } else {
             setShowRestriction(true);
