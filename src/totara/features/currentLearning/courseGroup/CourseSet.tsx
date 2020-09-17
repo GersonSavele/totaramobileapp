@@ -27,7 +27,7 @@ import NativeAccessRestriction from "../NativeAccessRestriction";
 import MoreInfo from "@totara/components/MoreInfo";
 import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
-import { includes } from "lodash";
+import { extractTargetId } from "../utils";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -45,7 +45,7 @@ const CourseSetItem = ({ item, navigation }: any) => {
       <TouchableOpacity
         key={item.id}
         onPress={() => {
-          const targetId = includes(item.id, "_") ? item.id.split("_")[1] : item.id;
+          const targetId = extractTargetId(item.id);
 
           if (item.native) {
             navigateTo({

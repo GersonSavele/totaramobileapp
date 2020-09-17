@@ -25,7 +25,7 @@ import DefaultImage from "@totara/features/currentLearning/components/DefaultIma
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
 import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/constants";
-import { includes } from "lodash";
+import { extractTargetId } from "../utils";
 
 type ListViewItemProps = {
   item: any;
@@ -59,7 +59,7 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
 
   const onItemPress = () => {
     if (native) {
-      const targetId = includes(id, "_") ? id.split("_")[1] : id;
+      const targetId = extractTargetId(id);
 
       navigateTo({
         navigate: navigation.navigate,
