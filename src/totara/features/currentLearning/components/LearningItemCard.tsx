@@ -29,7 +29,7 @@ interface LearningItemCardProps {
 const LearningItemCard = ({ item }: LearningItemCardProps) => {
   return (
     <View style={{ flex: 1 }}>
-      <ImageElement item={item} image={item.imageSrc} itemType={item.itemType} />
+      <ImageElement item={item} image={item.imageSrc} itemType={item.itemtype} />
       <View style={styles.itemCard}>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.itemFullName} numberOfLines={2}>
