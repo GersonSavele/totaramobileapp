@@ -79,9 +79,12 @@ const capitalizeFirstLetter = (string) => {
 };
 
 const deviceScreen = {
-  width: Dimensions.get("screen").width,
-  height: Dimensions.get("screen").height,
-  scale: Dimensions.get("screen").scale
+  width: Dimensions.get("window").width,
+  height: Dimensions.get("window").height,
+  scale: Dimensions.get("window").scale,
+  screenSizes: {
+    small: Dimensions.get("window").width + Dimensions.get("window").height < 1000 //Iphone 5 and smaller android devices
+  }
 };
 
 const getHostnameFromRegex = (url) => {

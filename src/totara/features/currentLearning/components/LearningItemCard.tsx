@@ -19,7 +19,7 @@ import { LearningItem } from "@totara/types";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings, fontWeights, fontSizes } from "@totara/theme/constants";
 import carouselItemStyles from "@totara/features/currentLearning/learningItems/carouselItemStyles";
-import { capitalizeFirstLetter } from "@totara/lib/tools";
+import { capitalizeFirstLetter, deviceScreen } from "@totara/lib/tools";
 import ImageElement from "./ImageElement";
 
 interface LearningItemCardProps {
@@ -39,7 +39,7 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
         <View style={{ flexGrow: 1 }}>
           <Text style={carouselItemStyles.type}>{capitalizeFirstLetter(item.itemtype)}</Text>
           <View style={{ flex: 1, paddingVertical: paddings.paddingM }}>
-            <Text style={carouselItemStyles.summary} numberOfLines={30}>
+            <Text style={carouselItemStyles.summary} numberOfLines={deviceScreen.screenSizes.small ? 3 : 10}>
               {item.summary}
             </Text>
           </View>
