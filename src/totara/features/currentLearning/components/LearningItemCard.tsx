@@ -13,61 +13,43 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { ImageStyle, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { LearningItem } from "@totara/types";
-import DueDateState from "./DueDateState";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings, fontWeights, fontSizes, borderRadius } from "@totara/theme/constants";
-import { ImageWrapper } from "@totara/components";
-import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
+import { paddings, fontWeights, fontSizes } from "@totara/theme/constants";
+import carouselItemStyles from "@totara/features/currentLearning/learningItems/carouselItemStyles";
+import { capitalizeFirstLetter } from "@totara/lib/tools";
+import ImageElement from "./ImageElement";
 
-interface Props {
+interface LearningItemCardProps {
   item: LearningItem;
-  imageStyle?: ImageStyle;
-  cardStyle?: ViewStyle;
-  children?: JSX.Element;
-  image?: string;
-  itemType?: string;
 }
 
-const LearningItemCard = ({ item, imageStyle, cardStyle, children, image, itemType }: Props) => {
-  const cardStyleSheet = StyleSheet.flatten([styles.itemCard, cardStyle]);
+const LearningItemCard = ({ item }: LearningItemCardProps) => {
   return (
     <View style={{ flex: 1 }}>
-      <ImageElement item={item} imageStyle={imageStyle} image={image} itemType={itemType} />
-      <View style={cardStyleSheet}>
+      <ImageElement item={item} image={item.imageSrc} itemType={item.itemType} />
+      <View style={styles.itemCard}>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.itemFullName} numberOfLines={2}>
             {item.fullname}
           </Text>
         </View>
-        {children}
+        <View style={{ flexGrow: 1 }}>
+          <Text style={carouselItemStyles.type}>{capitalizeFirstLetter(item.itemtype)}</Text>
+          <View style={{ flex: 1, paddingVertical: paddings.paddingM }}>
+            <Text style={carouselItemStyles.summary} numberOfLines={30}>
+              {item.summary}
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   );
 };
 
-const ImageElement = ({ item, imageStyle, image, itemType }: Props) => {
-  const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
-  return (
-    <View style={[imageStyleSheet]}>
-      {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
-      {image && image.length > 0 ? (
-        <ImageWrapper url={image} style={[styles.imageWrap]} />
-      ) : (
-        <DefaultImage itemType={itemType} style={[styles.imageWrap]} />
-      )}
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
-  itemImage: {
-    flex: 1,
-    flexDirection: "column-reverse",
-    borderRadius: borderRadius.borderRadiusM
-  },
   itemCard: {
     padding: paddings.paddingXL,
     justifyContent: "flex-start",
@@ -86,10 +68,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     height: "100%",
     width: "100%"
-  },
-  imageWrap: {
-    flex: 1
   }
 });
 
-export { LearningItemCard, ImageElement };
+export default LearningItemCard;

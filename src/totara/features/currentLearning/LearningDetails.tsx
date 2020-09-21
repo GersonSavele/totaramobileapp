@@ -17,7 +17,7 @@ import React, { ReactNode } from "react";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import ParallaxScrollView from "./ParallaxScrollView";
-import { ImageElement } from "./components/LearningItemCard";
+import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { fontSizes, fontWeights } from "@totara/theme/constants";

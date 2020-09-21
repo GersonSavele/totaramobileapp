@@ -24,7 +24,7 @@ import { iconSizes, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import LearningItemCard from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
-import { extractTargetId } from "../utils";
+import { includes } from "lodash";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
@@ -92,7 +92,7 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
   const [showRestriction, setShowRestriction] = useState(false);
   const clickedLearningItem = () => {
     if (item.native) {
-      const targetId = extractTargetId(item.id);
+      const targetId = includes(item.id, "_") ? item.id.split("_")[1] : item.id;
       navigateTo({
         navigate: navigation.navigate,
         routeId: itemToRouteMap[item.itemtype],

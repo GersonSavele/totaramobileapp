@@ -24,7 +24,12 @@ import { iconSizes, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import LearningItemCard from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
+<<<<<<< HEAD
+import { capitalizeFirstLetter } from "@totara/lib/tools";
 import { extractTargetId } from "../utils";
+=======
+import { includes } from "lodash";
+>>>>>>> MOB-765: LearningItemCard reorganization
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;

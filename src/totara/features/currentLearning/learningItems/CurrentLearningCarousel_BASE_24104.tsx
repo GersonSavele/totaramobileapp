@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useRef, useContext } from "react";
-import { TouchableOpacity, View, ScrollView, RefreshControl } from "react-native";
+import { Text, TouchableOpacity, View, ScrollView, RefreshControl } from "react-native";
 import { NavigationContext } from "react-navigation";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { AddBadge } from "@totara/components";
@@ -22,9 +22,10 @@ import { navigateTo, itemToRouteMap } from "@totara/lib/navigation";
 import NativeAccessRestriction from "../NativeAccessRestriction";
 import { iconSizes, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
-import LearningItemCard from "../components/LearningItemCard";
+import { LearningItemCard } from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
-import { extractTargetId } from "../utils";
+import { capitalizeFirstLetter } from "@totara/lib/tools";
+import { includes } from "lodash";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
@@ -92,7 +93,7 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
   const [showRestriction, setShowRestriction] = useState(false);
   const clickedLearningItem = () => {
     if (item.native) {
-      const targetId = extractTargetId(item.id);
+      const targetId = includes(item.id, "_") ? item.id.split("_")[1] : item.id;
       navigateTo({
         navigate: navigation.navigate,
         routeId: itemToRouteMap[item.itemtype],
@@ -114,7 +115,16 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
       onPress={clickedLearningItem}
       activeOpacity={1.0}>
       <View style={carouselItemStyles.content}>
-        <LearningItemCard item={item} />
+        <LearningItemCard item={item} image={item.imageSrc} itemType={item.itemtype}>
+          <View style={{ flexGrow: 1 }}>
+            <Text style={carouselItemStyles.type}>{capitalizeFirstLetter(item.itemtype)}</Text>
+            <View style={{ flex: 1, paddingVertical: paddings.paddingM }}>
+              <Text style={carouselItemStyles.summary} numberOfLines={30}>
+                {item.summary}
+              </Text>
+            </View>
+          </View>
+        </LearningItemCard>
       </View>
       {showRestriction && <NativeAccessRestriction onClose={onClose} urlView={item.urlView} />}
     </TouchableOpacity>
