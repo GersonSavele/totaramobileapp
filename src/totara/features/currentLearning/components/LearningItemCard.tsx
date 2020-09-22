@@ -14,12 +14,12 @@
  */
 
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { LearningItem } from "@totara/types";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings, fontWeights, fontSizes } from "@totara/theme/constants";
+import { paddings, fontWeights, fontSizes, margins } from "@totara/theme/constants";
 import carouselItemStyles from "@totara/features/currentLearning/learningItems/carouselItemStyles";
-import { capitalizeFirstLetter, deviceScreen } from "@totara/lib/tools";
+import { capitalizeFirstLetter } from "@totara/lib/tools";
 import ImageElement from "./ImageElement";
 
 interface LearningItemCardProps {
@@ -27,6 +27,7 @@ interface LearningItemCardProps {
 }
 
 const LearningItemCard = ({ item }: LearningItemCardProps) => {
+  const [numberOfLines, setNumberOfLines] = useState(3);
   return (
     <View style={{ flex: 1 }}>
       <ImageElement item={item} image={item.imageSrc} itemType={item.itemtype} />
@@ -38,9 +39,13 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
         </View>
         <View style={{ flexGrow: 1 }}>
           <Text style={carouselItemStyles.type}>{capitalizeFirstLetter(item.itemtype)}</Text>
-          <View style={{ flex: 1, paddingVertical: paddings.paddingM }}>
-            <Text style={carouselItemStyles.summary} numberOfLines={deviceScreen.screenSizes.small ? 3 : 10}>
-              {item.summary}
+          <View style={{ flex: 1, marginTop: margins.marginM }} onLayout={(x)=>{
+            const viewHeight = x.nativeEvent.layout.height;
+            const lineHeight = TotaraTheme.textSmall.lineHeight!;
+            setNumberOfLines(Math.floor(viewHeight/lineHeight))
+          }}>
+            <Text style={carouselItemStyles.summary} numberOfLines={numberOfLines}>
+              {capitalizeFirstLetter(item.summary?.toLowerCase())}
             </Text>
           </View>
         </View>
