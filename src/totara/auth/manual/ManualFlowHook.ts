@@ -58,7 +58,7 @@ export const useManualFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
       siteInfo: manualFlowState.siteInfo
     });
 
-  const version = DeviceInfo.getBuildNumber();
+  const version = DeviceInfo.getVersion();
   const fetchSiteInfoPromise = () =>
     fetchData<SiteInfo>(config.infoUri(manualFlowState.siteUrl!), {
       method: "POST",
