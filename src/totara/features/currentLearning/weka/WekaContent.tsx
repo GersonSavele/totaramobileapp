@@ -241,7 +241,7 @@ const Attachment = ({ content = {} }: ConfigProps) => {
       <TouchableOpacity style={styles.attachmentTouchable} key={index} onPress={onRequestClose}>
         <Text style={styles.attachmentFileName}>{nestedContent.attrs.filename}</Text>
         {/* To Do: Implementation of the attachment has not done yet */}
-        {/* {visible && navigateWebView(nestedContent.attrs.url, onRequestClose)} */}
+        {visible && navigateWebView(nestedContent.attrs.url, onRequestClose)}
       </TouchableOpacity>
     );
   });

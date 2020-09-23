@@ -37,6 +37,7 @@ export interface Course extends LearningItem {
   completionEnabled: boolean;
   completion: Completion;
   format: string;
+  summaryformat: string;
 }
 
 export enum CourseFormat {

@@ -24,6 +24,7 @@ const query = gql`
       shortname
       fullname
       summary: description(format: PLAIN)
+      summaryFormat
       progress
       urlView: url_view
       duedate(format: ISO8601)

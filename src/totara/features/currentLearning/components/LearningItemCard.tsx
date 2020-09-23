@@ -21,6 +21,7 @@ import { paddings, fontWeights, fontSizes, margins } from "@totara/theme/constan
 import carouselItemStyles from "@totara/features/currentLearning/learningItems/carouselItemStyles";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import ImageElement from "./ImageElement";
+import { DescriptionFormat } from "@totara/types/LearningItem";
 
 interface LearningItemCardProps {
   item: LearningItem;
@@ -39,14 +40,18 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
         </View>
         <View style={{ flexGrow: 1 }}>
           <Text style={carouselItemStyles.type}>{capitalizeFirstLetter(item.itemtype)}</Text>
-          <View style={{ flex: 1, marginTop: margins.marginM }} onLayout={(x)=>{
-            const viewHeight = x.nativeEvent.layout.height;
-            const lineHeight = TotaraTheme.textSmall.lineHeight!;
-            setNumberOfLines(Math.floor(viewHeight/lineHeight))
-          }}>
-            <Text style={carouselItemStyles.summary} numberOfLines={numberOfLines}>
-              {capitalizeFirstLetter(item.summary?.toLowerCase())}
-            </Text>
+          <View
+            style={{ flex: 1, marginTop: margins.marginM }}
+            onLayout={(x) => {
+              const viewHeight = x.nativeEvent.layout.height;
+              const lineHeight = TotaraTheme.textSmall.lineHeight!;
+              setNumberOfLines(Math.floor(viewHeight / lineHeight));
+            }}>
+            {item.summaryFormat !== DescriptionFormat.jsonEditor && (
+              <Text style={carouselItemStyles.summary} numberOfLines={numberOfLines}>
+                {capitalizeFirstLetter(item.summary?.toLowerCase())}
+              </Text>
+            )}
           </View>
         </View>
       </View>

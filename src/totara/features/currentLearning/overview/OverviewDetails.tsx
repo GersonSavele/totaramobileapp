@@ -50,6 +50,7 @@ const OverviewDetails = ({
   id,
   criteria,
   summary,
+  summaryFormat,
   gradeFinal = 0,
   progress = 0,
   summaryTypeTitle,
@@ -57,7 +58,6 @@ const OverviewDetails = ({
   courseRefreshCallback,
   isCourseSet,
   showGrades,
-  summaryFormat,
   completionEnabled = true
 }: OverviewProps) => {
   const isSelfCompletion =

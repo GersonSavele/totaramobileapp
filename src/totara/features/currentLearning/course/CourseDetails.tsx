@@ -32,6 +32,7 @@ import CourseCompletionModal from "../CourseCompletionModal";
 import { learningItemEnum } from "../constants";
 import courseDetailsStyle from "./courseDetailsStyle";
 import { CourseFormat } from "@totara/types/Course";
+import { DescriptionFormat } from "@totara/types/LearningItem";
 
 const CourseDetails = ({ navigation }: NavigationParams) => {
   const courseId = navigation.getParam("targetId");
@@ -146,6 +147,7 @@ const CourseDetailsContent = ({
               id={courseDetails.course.id}
               criteria={courseDetails.course.criteria}
               summary={courseDetails.course.summary}
+              summaryFormat={courseDetails.course.summaryformat as DescriptionFormat}
               gradeFinal={courseDetails.gradeFinal}
               progress={courseDetails.course.completion.progress}
               summaryTypeTitle={translate("course.course_overview.course_summary")}
@@ -153,7 +155,6 @@ const CourseDetailsContent = ({
               courseRefreshCallback={courseRefreshCallback}
               showGrades={courseDetails.course.showGrades}
               completionEnabled={courseDetails.course.completionEnabled}
-              summaryFormat={courseDetails.course.summaryformat}
             />
           )}
         </View>
