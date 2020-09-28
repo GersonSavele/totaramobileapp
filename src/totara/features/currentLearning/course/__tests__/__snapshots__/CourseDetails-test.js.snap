@@ -35,6 +35,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
           "fontWeight": "700",
           "lineHeight": 41,
           "padding": 8,
+          "textAlign": "center",
         }
       }
     >
@@ -143,6 +144,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
           "fontWeight": "700",
           "lineHeight": 41,
           "padding": 8,
+          "textAlign": "center",
         }
       }
     >
@@ -251,6 +253,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
           "fontWeight": "700",
           "lineHeight": 41,
           "padding": 8,
+          "textAlign": "center",
         }
       }
     >
