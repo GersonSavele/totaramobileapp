@@ -92,7 +92,7 @@
     "action_tertiary": "Try in browser"
   },
   "content_error": {
-    "title": "Content not available",
+    "title": "Not available",
     "description": "Please check your connection and try again"
   },
   "incompatible_api": {

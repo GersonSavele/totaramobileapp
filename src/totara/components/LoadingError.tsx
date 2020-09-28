@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     ...TotaraTheme.textH2,
-    padding: paddings.paddingL
+    padding: paddings.paddingL,
+    textAlign: "center"
   },
   testDescription: {
     ...TotaraTheme.textRegular,
