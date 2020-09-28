@@ -67,6 +67,7 @@
       "other": "You have {{count}} learning items to complete"
     },
     "no_learning_message": "No current learning",
+    "find_learning": "Find learning",
     "restriction_view": {
       "title": "Sorry!",
       "description": "This course is not compatible with the mobile app. Would you like to access this course in the browser?",

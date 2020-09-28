@@ -41,7 +41,7 @@ const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
                 onPress={() => {
                   Linking.openURL(auth.authContextState.appState!.host);
                 }}
-                text={translate("additional_actions_modal.auth_model_go_to_browser")}
+                text={translate("current_learning.find_learning")}
                 icon="external-link-alt"
                 style={{ alignSelf: "center" }}
               />
