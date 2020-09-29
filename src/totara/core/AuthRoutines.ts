@@ -89,6 +89,7 @@ export const registerDevice = (
     .catch((error) => {
       //NOTE: This is using warning so the app does not crash
       Log.warn("unable to get apiKey", error);
+      return {};
     });
 };
 

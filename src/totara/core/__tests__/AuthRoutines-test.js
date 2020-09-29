@@ -82,7 +82,7 @@ describe("AuthRoutines.registerDevice", () => {
 
     const result = registerDevice(mockFetch, mockAsyncStorage)(setupSecret);
 
-    await expect(result).rejects.toThrow("400");
+    await expect(result).resolves.toEqual({});
   });
 });
 

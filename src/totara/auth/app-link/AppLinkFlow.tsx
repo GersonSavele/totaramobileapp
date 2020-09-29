@@ -86,4 +86,4 @@ const iOSLinkingHandler = (onLoginSuccess, onLoginFailure) => (event: { url: str
 };
 
 
-export { linkingHandler, iOSLinkingHandler };
+export { linkingHandler, iOSLinkingHandler, getValueForUrlQueryParameter, getDeviceRegisterData };
