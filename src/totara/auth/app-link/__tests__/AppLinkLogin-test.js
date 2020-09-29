@@ -13,12 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// import React from "react";
 import { getValueForUrlQueryParameter, getDeviceRegisterData } from "../AppLinkFlow";
-// import renderer from "react-test-renderer";
-
-// const mockOnSuccess = jest.fn();
-// const mockOnFail = jest.fn();
 
 describe("Passing different forms of 'url' and get the value for query string parameters('site' and 'setupsecret')", () => {
   it("valid Url, IP-Address and DeepLink with 'site' and 'setupsecret'", () => {
