@@ -20,7 +20,7 @@ import { translate } from "@totara/locale";
 import { AuthContext, AuthContextState } from "@totara/core";
 
 import ManualFlow from "./manual/ManualFlow";
-import { linkingHandler, iOSLinkingHandler } from "./app-link/AppLinkFlow";
+import { linkingHandler, iOSLinkingHandler } from "./authUtils";
 import { Images } from "@resources/images";
 import { ImageSourcePropType, Linking, Platform } from "react-native";
 

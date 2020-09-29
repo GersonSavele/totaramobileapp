@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { getValueForUrlQueryParameter, getDeviceRegisterData } from "../AppLinkFlow";
+import { getValueForUrlQueryParameter, getDeviceRegisterData } from "../authUtils";
 
 describe("Passing different forms of 'url' and get the value for query string parameters('site' and 'setupsecret')", () => {
   it("valid Url, IP-Address and DeepLink with 'site' and 'setupsecret'", () => {
