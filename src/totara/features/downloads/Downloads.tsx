@@ -30,6 +30,7 @@ import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { TotaraTheme } from "@totara/theme/Theme";
 import DownloadItem from "./DownloadItem";
 import { NavigationStackProp } from "react-navigation-stack";
+import { margins } from "@totara/theme/constants";
 const { SCORM_ROOT } = NAVIGATION;
 
 type DownloadsProps = {
@@ -133,7 +134,7 @@ const Downloads = ({ navigation }: DownloadsProps) => {
         {resourcesList.length == 0 ? (
           <View style={styles.noContent} testID={"test_DownloadsEmptyState"}>
             <Image source={Images.noDownloads as ImageSourcePropType} />
-            <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>{translate("downloads.empty")}</Text>
+            <Text style={[TotaraTheme.textHeadline, styles.noContentTitle]}>{translate("downloads.empty")}</Text>
           </View>
         ) : (
           <FlatList
@@ -165,6 +166,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
+  },
+  noContentTitle: {
+    marginTop: margins.margin2XL,
+    fontWeight: "bold"
   }
 });
 

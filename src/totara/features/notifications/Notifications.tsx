@@ -30,6 +30,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { Loading, LoadingError } from "@totara/components";
 import { notificationQueryMarkRead, notificationsQuery, parser } from "@totara/features/notifications/api";
 import { NavigationActions } from "react-navigation";
+import { margins } from "@totara/theme/constants";
 
 type NotificationsProps = {
   navigation: NavigationStackProp<NotificationMessage>;
@@ -153,7 +154,7 @@ const Notifications = ({ navigation }: NotificationsProps) => {
             testID={"test_notificationsEmptyContainer"}>
             <View style={styles.noContent}>
               <Image source={Images.noNotifications as ImageSourcePropType} />
-              <Text style={[TotaraTheme.textHeadline, { fontWeight: "bold" }]}>{translate("notifications.empty")}</Text>
+              <Text style={[TotaraTheme.textHeadline, styles.noContentTitle]}>{translate("notifications.empty")}</Text>
             </View>
           </ScrollView>
         )}
@@ -190,6 +191,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
+  },
+  noContentTitle: {
+    marginTop: margins.margin2XL,
+    fontWeight: "bold"
   }
 });
 
