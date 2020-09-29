@@ -14,7 +14,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, ImageSourcePropType, ListRenderItemInfo, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, ImageSourcePropType, ListRenderItemInfo, Text, View } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { useSelector } from "react-redux";
 import headerStyles from "@totara/theme/headers";
@@ -30,7 +30,6 @@ import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { TotaraTheme } from "@totara/theme/Theme";
 import DownloadItem from "./DownloadItem";
 import { NavigationStackProp } from "react-navigation-stack";
-import { margins } from "@totara/theme/constants";
 const { SCORM_ROOT } = NAVIGATION;
 
 type DownloadsProps = {
@@ -132,9 +131,11 @@ const Downloads = ({ navigation }: DownloadsProps) => {
       <NetworkStatus />
       <View style={{ flex: 1 }}>
         {resourcesList.length == 0 ? (
-          <View style={styles.noContent} testID={"test_DownloadsEmptyState"}>
+          <View style={listViewStyles.noContent} testID={"test_DownloadsEmptyState"}>
             <Image source={Images.noDownloads as ImageSourcePropType} />
-            <Text style={[TotaraTheme.textHeadline, styles.noContentTitle]}>{translate("downloads.empty")}</Text>
+            <Text style={[TotaraTheme.textHeadline, listViewStyles.noContentTitle]}>
+              {translate("downloads.empty")}
+            </Text>
           </View>
         ) : (
           <FlatList
@@ -158,19 +159,5 @@ const Downloads = ({ navigation }: DownloadsProps) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  noContent: {
-    height: "100%",
-    justifyContent: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  noContentTitle: {
-    marginTop: margins.margin2XL,
-    fontWeight: "bold"
-  }
-});
 
 export default Downloads;

@@ -46,6 +46,17 @@ const listViewStyles = StyleSheet.create({
   thickSeparator: {
     ...separator,
     height: 2
+  },
+  noContent: {
+    height: "100%",
+    justifyContent: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  noContentTitle: {
+    marginTop: margins.margin2XL,
+    fontWeight: "bold"
   }
 });
 

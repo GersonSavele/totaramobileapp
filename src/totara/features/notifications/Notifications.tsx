@@ -14,7 +14,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, FlatList, ImageSourcePropType, ScrollView, RefreshControl } from "react-native";
+import { View, Text, Image, FlatList, ImageSourcePropType, ScrollView, RefreshControl } from "react-native";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { NetworkStatus as NS } from "apollo-client/core/networkStatus";
 import { NavigationStackProp } from "react-navigation-stack";
@@ -30,7 +30,6 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { Loading, LoadingError } from "@totara/components";
 import { notificationQueryMarkRead, notificationsQuery, parser } from "@totara/features/notifications/api";
 import { NavigationActions } from "react-navigation";
-import { margins } from "@totara/theme/constants";
 
 type NotificationsProps = {
   navigation: NavigationStackProp<NotificationMessage>;
@@ -152,9 +151,11 @@ const Notifications = ({ navigation }: NotificationsProps) => {
             }}
             refreshControl={<RefreshControl refreshing={networkStatus === NS.refetch} onRefresh={refetch} />}
             testID={"test_notificationsEmptyContainer"}>
-            <View style={styles.noContent}>
+            <View style={listViewStyles.noContent}>
               <Image source={Images.noNotifications as ImageSourcePropType} />
-              <Text style={[TotaraTheme.textHeadline, styles.noContentTitle]}>{translate("notifications.empty")}</Text>
+              <Text style={[TotaraTheme.textHeadline, listViewStyles.noContentTitle]}>
+                {translate("notifications.empty")}
+              </Text>
             </View>
           </ScrollView>
         )}
@@ -183,19 +184,5 @@ const Notifications = ({ navigation }: NotificationsProps) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  noContent: {
-    height: "100%",
-    justifyContent: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  noContentTitle: {
-    marginTop: margins.margin2XL,
-    fontWeight: "bold"
-  }
-});
 
 export default Notifications;
