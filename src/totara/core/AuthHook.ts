@@ -202,14 +202,17 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
     }
 
     case "registered": {
-      if (action.payload && "apiKey" in action.payload)
+      if (action.payload && "apiKey" in action.payload){
         return {
           ...state,
           appState: action.payload,
           isAuthenticated: true,
           authStep: "setupDone"
         };
-      else throw new Error(`unexpected payload in action ${action}`);
+      }
+      //if there's no apiKey, return back to "bootstrapDone"
+      //authStep is like a "state machine controller"
+      return { ...state, authStep: "bootstrapDone" };
     }
 
     case "bootstrap": {

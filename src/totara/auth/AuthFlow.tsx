@@ -13,16 +13,20 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode, useContext, useEffect } from "react";
 
 import { InfoModal, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { AuthContext, AuthContextState } from "@totara/core";
 
 import ManualFlow from "./manual/ManualFlow";
-import AppLinkFlow from "./app-link/AppLinkFlow";
+import { linkingHandler, iOSLinkingHandler } from "./app-link/AppLinkFlow";
 import { Images } from "@resources/images";
-import { ImageSourcePropType } from "react-native";
+import { ImageSourcePropType, Linking, Platform } from "react-native";
+
+type Props = {
+  children: ReactNode;
+};
 
 /**
  * Returns the UI component depending on the authContextState.authStep value
@@ -31,8 +35,28 @@ import { ImageSourcePropType } from "react-native";
  *
  * @param children - when authenticated it would mount the children
  */
-export const AuthFlow = ({ children }: Props) => {
+const AuthFlow = ({ children }: Props) => {
   const { authContextState, logOut, onLoginSuccess, onLoginFailure } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!authContextState.isAuthenticated){
+      if (Platform.OS === "android") {
+        //FIXME: this is running every time we get back to siteUrl component
+        //it should only run once. It should be fixed when doing(MOB-786 - Navigation API in Auth)
+        //so we are able to control how many times this component runs
+        Linking.getInitialURL().then((url) => {
+          if (url){
+            linkingHandler(url, onLoginSuccess, onLoginFailure)
+          }
+        });
+      } else {
+        Linking.addEventListener("url", iOSLinkingHandler(onLoginSuccess, onLoginFailure));
+      }
+    }
+     return (() => {
+      Linking.removeAllListeners("url");
+     })
+   }, []);
 
   // TODO MOB-307 improve and make this testable, logic is getting more complicated
   const showUIFor = (authStep: AuthContextState["authStep"]) => {
@@ -53,18 +77,12 @@ export const AuthFlow = ({ children }: Props) => {
         return null; // it's in the middle of transitioning don't return any element
     }
   };
-
-  return (
-    <React.Fragment>
-      {authContextState.isLoading ? (
-        <AppLinkFlow onLoginFailure={onLoginFailure} onLoginSuccess={onLoginSuccess} />
-      ) : authContextState.isAuthenticated ? (
-        children
-      ) : (
-        showUIFor(authContextState.authStep)
-      )}
-    </React.Fragment>
-  );
+  
+  if (authContextState.isAuthenticated){
+    return <>{children}</>;
+  }else {
+    return <>{showUIFor(authContextState.authStep)}</>;
+  }
 };
 
 type PropAuthError = {
@@ -81,6 +99,5 @@ const AuthErrorModal = ({ action }: PropAuthError) => (
   </InfoModal>
 );
 
-type Props = {
-  children: ReactNode;
-};
+
+export default AuthFlow;

@@ -87,8 +87,8 @@ export const registerDevice = (
       return appState;
     })
     .catch((error) => {
-      Log.error("unable to get apiKey", error);
-      throw error;
+      //NOTE: This is using warning so the app does not crash
+      Log.warn("unable to get apiKey", error);
     });
 };
 

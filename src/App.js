@@ -22,7 +22,7 @@ import { Provider, useSelector } from "react-redux";
 import { store, persistor } from "./totara/store";
 
 import { AuthProvider } from "@totara/core/AuthProvider";
-import { AuthFlow } from "@totara/auth/AuthFlow";
+import AuthFlow from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
 import { ThemeProvider, ThemeContext } from "@totara/theme";
 import { FeatureNavigator } from "@totara/features";
