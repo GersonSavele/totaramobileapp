@@ -13,24 +13,53 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { Image, StyleSheet, Text } from "react-native";
-import { Images } from "@resources/images";
-import { View } from "react-native-animatable";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings } from "@totara/theme/constants";
 import { getBuildNumber, getVersion } from "react-native-device-info";
+import { View } from "react-native-animatable";
+import { Clipboard } from "react-native";
+import { Toast } from "native-base";
+import { Images } from "@resources/images";
+import { TotaraTheme } from "@totara/theme/Theme";
+import { paddings, margins } from "@totara/theme/constants";
 import { translate } from "@totara/locale";
+import { AuthContext } from "@totara/core";
 
 const About = () => {
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+
+  const onSiteURLLongPress = () => {
+    Clipboard.setString(appState?.host as string);
+    Toast.show({
+      text: translate("general.copied_to_clipboard")
+    });
+  };
+
+  const onPluginVersionLongPress = () => {
+    Clipboard.setString(appState?.siteInfo.version as string);
+    Toast.show({
+      text: translate("general.copied_to_clipboard")
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer} animation={"slideInUp"}>
         <Image source={Images.totaraLogo} style={styles.logo} />
       </View>
-      <View style={styles.versionContainer} animation={"slideInUp"} delay={200}>
-        <Text style={styles.version}>{`${translate("general.version")} ${getVersion()} `}</Text>
-        <Text style={styles.build}>{`(${getBuildNumber()})`}</Text>
+      <View style={styles.versionContainer}>
+        <Text style={styles.versionBuild}>{`${translate("general.version").toUpperCase()} ${getVersion()} `}</Text>
+        <Text style={styles.versionBuild}>{`(${getBuildNumber()})`}</Text>
+      </View>
+      <View style={styles.environmentDetails}>
+        <Text
+          style={styles.siteUrlPluginVersion}
+          onLongPress={onSiteURLLongPress}>{`Site URL: ${appState?.host}`}</Text>
+        <Text
+          style={styles.siteUrlPluginVersion}
+          onLongPress={onPluginVersionLongPress}>{`Plugin version: ${appState?.siteInfo.version} `}</Text>
       </View>
     </View>
   );
@@ -43,7 +72,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: { alignSelf: "center" },
   logo: {
-    height: 120, //fixed for this view
+    height: 240 / 2, //half-size of original file
     aspectRatio: 240 / 170 //using aspectRatio of logo_totara@2x.png
   },
   versionContainer: {
@@ -51,15 +80,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingTop: paddings.padding2XL
   },
-  version: {
-    ...TotaraTheme.textRegular,
-    color: TotaraTheme.colorNeutral6,
-    alignSelf: "center"
-  },
-  build: {
+  versionBuild: {
     ...TotaraTheme.textSmall,
     color: TotaraTheme.colorNeutral6,
     alignSelf: "center"
+  },
+  environmentDetails: {
+    alignSelf: "center",
+    marginTop: margins.marginL
+  },
+  siteUrlPluginVersion: {
+    ...TotaraTheme.textXSmall,
+    color: TotaraTheme.colorNeutral6,
+    alignSelf: "center",
+    marginTop: margins.marginXS
   }
 });
 

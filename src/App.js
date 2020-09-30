@@ -19,8 +19,10 @@ import AsyncStorage from "@react-native-community/async-storage";
 import * as Sentry from "@sentry/react-native";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider, useSelector } from "react-redux";
-import { store, persistor } from "./totara/store";
+import { Root } from "native-base";
+import { useMutation } from "@apollo/react-hooks";
 
+import { store, persistor } from "./totara/store";
 import { AuthProvider } from "@totara/core/AuthProvider";
 import AuthFlow from "@totara/auth/AuthFlow";
 import { AdditionalAction } from "@totara/auth/additional-actions";
@@ -37,7 +39,6 @@ import { createStackNavigator } from "react-navigation-stack";
 import { scormStack } from "@totara/features/activities/scorm/ScormActivity";
 import AboutStack from "@totara/features/about/AboutStack";
 import { LocaleResolver } from "@totara/locale/LocaleResolver";
-import { useMutation } from "@apollo/react-hooks";
 
 import { gql } from "apollo-boost";
 import messaging from "@react-native-firebase/messaging";
@@ -61,17 +62,19 @@ const App: () => React$Node = () => {
     <AuthProvider asyncStorage={AsyncStorage}>
       <SafeAreaProvider>
         <ThemeProvider>
-          <AuthFlow>
-            <LocaleResolver>
-              <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                  <AppContainer />
-                </PersistGate>
-                <AdditionalAction />
-                <AttemptSynchronizer />
-              </Provider>
-            </LocaleResolver>
-          </AuthFlow>
+          <Root>
+            <AuthFlow>
+              <LocaleResolver>
+                <Provider store={store}>
+                  <PersistGate loading={null} persistor={persistor}>
+                    <AppContainer />
+                  </PersistGate>
+                  <AdditionalAction />
+                  <AttemptSynchronizer />
+                </Provider>
+              </LocaleResolver>
+            </AuthFlow>
+          </Root>
         </ThemeProvider>
       </SafeAreaProvider>
     </AuthProvider>

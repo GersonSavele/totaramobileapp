@@ -11,7 +11,8 @@
     "no_internet": "You are offline",
     "back": "Back",
     "ok": "Ok",
-    "delete": "Delete"
+    "delete": "Delete",
+    "copied_to_clipboard": "Copied to clipboard"
   },
   "site_url": {
     "title": "Get started.",
