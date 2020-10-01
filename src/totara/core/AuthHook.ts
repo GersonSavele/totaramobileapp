@@ -17,7 +17,6 @@ import { useEffect, useReducer, useRef } from "react";
 import { ApolloClient } from "apollo-client";
 import { gql } from "apollo-boost";
 import { NormalizedCacheObject } from "apollo-cache-inmemory";
-import SplashScreen from "react-native-splash-screen";
 import { isEmpty } from "lodash";
 
 import { Log } from "@totara/lib";
@@ -138,7 +137,6 @@ export const useAuth = (
    */
   useEffect(() => {
     const doBootStrap = () => {
-      if (SplashScreen) SplashScreen.hide();
       bootstrap().then((appState) => {
         if (isEmpty(appState)) {
           AsyncStorage.getItem("host")
@@ -202,7 +200,7 @@ const authContextReducer = (state: AuthContextState, action: Action): AuthContex
     }
 
     case "registered": {
-      if (action.payload && "apiKey" in action.payload){
+      if (action.payload && "apiKey" in action.payload) {
         return {
           ...state,
           appState: action.payload,
