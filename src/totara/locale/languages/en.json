@@ -237,5 +237,10 @@
       "message": "Are you sure you want to logout?"
     },
     "about": "About"
+  },
+  "about": {
+    "version": "VERSION {{version}}",
+    "site_url": "Site URL: {{url}}",
+    "plugin_version": "Plugin version: {{version}}"
   }
 }

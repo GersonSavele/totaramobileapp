@@ -50,16 +50,16 @@ const About = () => {
         <Image source={Images.totaraLogo} style={styles.logo} />
       </View>
       <View style={styles.versionContainer}>
-        <Text style={styles.versionBuild}>{`${translate("general.version").toUpperCase()} ${getVersion()} `}</Text>
+        <Text style={styles.versionBuild}>{translate("about.version", { version: getVersion() })}</Text>
         <Text style={styles.versionBuild}>{`(${getBuildNumber()})`}</Text>
       </View>
       <View style={styles.environmentDetails}>
-        <Text
-          style={styles.siteUrlPluginVersion}
-          onLongPress={onSiteURLLongPress}>{`Site URL: ${appState?.host}`}</Text>
-        <Text
-          style={styles.siteUrlPluginVersion}
-          onLongPress={onPluginVersionLongPress}>{`Plugin version: ${appState?.siteInfo.version} `}</Text>
+        <Text style={styles.siteUrlPluginVersion} onLongPress={onSiteURLLongPress}>
+          {translate("about.site_url", { url: appState?.host })}
+        </Text>
+        <Text style={styles.siteUrlPluginVersion} onLongPress={onPluginVersionLongPress}>
+          {translate("about.plugin_version", { version: appState?.siteInfo.version })}
+        </Text>
       </View>
     </View>
   );
