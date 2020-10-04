@@ -59,7 +59,7 @@ const LocaleResolver = ({ children }: { children: ReactNode }) => {
             const customAppStrings = JSON.parse(result.data.json_string).app;
             const currentAppStrings = getTranslations()[languagePreference];
 
-            if (customAppStrings && currentAppStrings) merge(currentAppStrings, [customAppStrings]);
+            if (customAppStrings && currentAppStrings) merge(currentAppStrings, customAppStrings);
 
             if (customAppStrings) {
               addLocale(languagePreference!, currentAppStrings);
