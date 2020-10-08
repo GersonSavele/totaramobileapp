@@ -17,6 +17,7 @@ import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import FastImage from "react-native-fast-image";
 import { WebView } from "react-native-webview";
+import { isEmpty } from "lodash";
 import { AuthContext } from "@totara/core";
 import { AUTHORIZATION } from "@totara/lib/constants";
 import { textAttributes, fontWeights, fontStyles, marksTypes, iconSizes } from "@totara/theme/constants";
@@ -138,15 +139,17 @@ const Configuration = ({ content = {}, attrs }: ConfigProps) => {
   }
 };
 
-const TextContentWrapper = ({ content = {} }: ConfigProps) => {
-  return (
-    <Text style={styles.textContainerWrapper}>
-      {content.content &&
-        content.content.map((nestedContent: any = {}, index: number) => {
+const TextContentWrapper = ({ content = {} }: EditorConfigProps) => {
+  if (!isEmpty(content.content)){
+    return (
+      <Text style={styles.textContainerWrapper}>  
+        {content.content.map((nestedContent: any = {}, index: number) => {
           return <Configuration key={index} content={nestedContent} attrs={content.attrs} />;
         })}
-    </Text>
-  );
+      </Text> 
+    );
+  }
+  return null;
 };
 
 const TextView = ({ attrs = {}, content = {} }: ConfigProps) => {

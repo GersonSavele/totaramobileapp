@@ -28,6 +28,7 @@ export interface Section {
   availableReason?: [string];
   summary: string;
   data?: [Activity];
+  summaryformat: string;
 }
 
 export interface LearningItem {

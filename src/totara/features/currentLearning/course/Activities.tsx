@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 
 import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
@@ -95,7 +95,7 @@ const SectionItem = ({
 }: SectionItemProps) => {
   //every item need to have its own state
   const activities = section.data as Array<Activity>;
-  const { title, available, availableReason, summary, id } = section;
+  const { title, available, availableReason, summary, id, summaryformat } = section;
   const isExpanded = expandedSectionIds?.includes(id);
 
   const onExpand = (isExpanded: boolean, id: number) => {
@@ -127,6 +127,7 @@ const SectionItem = ({
             data={activities}
             courseRefreshCallBack={courseRefreshCallBack}
             sectionSummary={summary}
+            summaryFormat={summaryformat}
             completionEnabled={completionEnabled}
           />
         )}
@@ -187,15 +188,26 @@ type ActivityListProps = {
   data?: Array<Activity>;
   courseRefreshCallBack: () => {};
   sectionSummary: string;
+  summaryFormat: string;
   completionEnabled: boolean;
 };
 
-const ActivityList = ({ data, courseRefreshCallBack, sectionSummary, completionEnabled }: ActivityListProps) => {
+const ActivityList = ({ data, courseRefreshCallBack, sectionSummary, completionEnabled, summaryFormat }: ActivityListProps) => {
+  console.log("sectionSummary: ", sectionSummary);
   return (
     <View>
-      <View style={activitiesStyles.activityList}>
-        <ActivityTextContent label={sectionSummary} />
-      </View>
+      {summaryFormat === DescriptionFormat.jsonEditor ?
+        (!isEmpty(sectionSummary) && <View style={activitiesStyles.activityList}>
+          <WekaContent
+            content={sectionSummary && (sectionSummary as any)}
+            backGroundColor={TotaraTheme.colorNeutral2}
+            textColor={TotaraTheme.colorNeutral6}
+          />
+        </View>) :
+        (<View style={activitiesStyles.activityList}>
+          <ActivityTextContent label={sectionSummary} />
+        </View>)
+        }
       {data!.map((item: Activity, key: number) => {
         return (
           <View key={key}>

@@ -36,6 +36,7 @@ const coreCourse = gql`
           available
           availablereason(format: PLAIN)
           summary(format: PLAIN)
+          summaryformat
           data: modules {
             id
             instanceid
