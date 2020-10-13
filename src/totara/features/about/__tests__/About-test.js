@@ -13,10 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { act, cleanup, render } from "@testing-library/react-native";
+import { cleanup, render } from "@testing-library/react-native";
 import React from "react";
 import AboutStack from "@totara/features/about/AboutStack";
-import wait from "waait";
 import About from "@totara/features/about/About";
 import { createAppContainer } from "react-navigation";
 
