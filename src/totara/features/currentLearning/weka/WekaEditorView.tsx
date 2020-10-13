@@ -19,16 +19,20 @@ import ImageView from "react-native-image-viewing";
 import { WebView } from "react-native-webview";
 import { AuthContext } from "@totara/core";
 import { AUTHORIZATION } from "@totara/lib/constants";
-import { textAttributes, margins, fontWeights, fontStyles, marksTypes } from "@totara/theme/constants";
+import { textAttributes, margins, fontWeights, fontStyles, marksTypes, iconSizes } from "@totara/theme/constants";
 import { WekaEditorType } from "../constants";
-import styles from "./wekaContentStyle";
+import styles from "./wekaEditorViewStyle";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { ImageWrapper } from "@totara/components";
 import { getHostnameFromRegex, getUrlLastComponentFromRegex } from "@totara/lib/tools";
+// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPaperclip, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { AppState } from "@totara/types";
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 import NavigationService from "@totara/lib/navigationService";
+import { CircleIcon } from "@totara/components";
 
 enum HostName {
   youtube = "www.youtube.com",
@@ -52,7 +56,7 @@ const navigateWebView = (url, onRequestClose) => {
   return NavigationService.navigate(WEBVIEW_ACTIVITY, props);
 };
 
-type WekaContentProps = {
+type WekaEditorViewProps = {
   content: any;
   backGroundColor?: string;
   textColor?: string;
@@ -64,7 +68,7 @@ type ConfigProps = {
   children?: (index: number) => void;
 };
 
-const WekaContent = ({ content = {}, backGroundColor, textColor }: WekaContentProps) => {
+const WekaEditorView = ({ content = {}, backGroundColor, textColor }: WekaEditorViewProps) => {
   if (backGroundColor) {
     color.backGroundColor = backGroundColor!;
   }
@@ -106,6 +110,7 @@ const Configuration = ({ content = {}, attrs }: ConfigProps) => {
     case WekaEditorType.attachment:
       return <Attachment content={content.content && content.content} />;
     case WekaEditorType.video:
+    case WekaEditorType.audio:
     case WekaEditorType.linkBlock:
     case WekaEditorType.linkMedia:
       return <LinkMedia content={content} />;
@@ -236,11 +241,21 @@ const Ruler = () => {
 const Attachment = ({ content = {} }: ConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
+
   return content.map((nestedContent: any = {}, index: number) => {
     return (
-      <TouchableOpacity style={styles.attachmentTouchable} key={index} onPress={onRequestClose}>
-        <Text style={styles.attachmentFileName}>{nestedContent.attrs.filename}</Text>
-        {/* To Do: Implementation of the attachment has not done yet */}
+      <TouchableOpacity style={styles.touchableViewWrap} key={index} onPress={onRequestClose}>
+        <View style={styles.iconWrap}>
+          <FontAwesomeIcon
+            icon={faPaperclip}
+            color={TotaraTheme.colorLink}
+            size={iconSizes.sizeS}
+            style={{ alignSelf: "flex-start" }}
+          />
+        </View>
+        <View style={{ flex: 8 }}>
+          <Text style={styles.attachmentFileName}>{nestedContent.attrs.filename}</Text>
+        </View>
         {visible && navigateWebView(nestedContent.attrs.url, onRequestClose)}
       </TouchableOpacity>
     );
@@ -284,8 +299,14 @@ const LinkMedia = ({ content = {} }: ConfigProps) => {
             {content.attrs.title}
           </Text>
         )}
-        <View style={styles.linkMediaContainer} testID="test_media_content">
-          <WebViewWrapper url={content.attrs.url} apiKey={apiKey} />
+        <View testID="test_media_content">
+          {content.attrs.url.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+            <ImageViewerWrapper content={content} />
+          ) : content.attrs.url.match(/\.(?:wav|mp3)$/i) != null ? (
+            <Audio content={content} />
+          ) : (
+            <WebViewWrapper content={content} apiKey={apiKey} />
+          )}
         </View>
         <Text style={[styles.linkMediaDescription, { color: color.textColor }]} testID="test_media_description">
           {content.attrs.description}
@@ -295,32 +316,57 @@ const LinkMedia = ({ content = {} }: ConfigProps) => {
   );
 };
 
+const Audio = ({ content = {} }: ConfigProps) => {
+  const [visible, setIsVisible] = useState(false);
+  const onRequestClose = () => setIsVisible(!visible);
+
+  return (
+    <TouchableOpacity style={styles.touchableViewWrap} onPress={onRequestClose}>
+      <View style={styles.iconWrap}>
+        <CircleIcon
+          icon={faPlay}
+          backgroundColor={TotaraTheme.colorNeutral2}
+          iconColor={TotaraTheme.colorLink}
+          borderColor={TotaraTheme.colorLink}
+        />
+      </View>
+      <View style={{ flex: 8 }}>
+        <Text style={styles.audioTitle}>Audio file</Text>
+      </View>
+      {visible && navigateWebView(content.attrs.url, onRequestClose)}
+    </TouchableOpacity>
+  );
+};
+
 type WebViewWrapperProps = {
-  url: string;
+  content: ConfigProps;
   apiKey: string;
 };
 
-const WebViewWrapper = ({ url = "", apiKey }: WebViewWrapperProps) => {
+const WebViewWrapper = ({ content = {}, apiKey }: WebViewWrapperProps) => {
+  let url = content.attrs.url;
   const hostName = getHostnameFromRegex(url);
   // App only support for youtube and vimeo video insert link, and there is configuration for make a full screen video
   hostName === HostName.youtube && (url = url.split("watch?v=").join("embed/"));
   hostName === HostName.vimeo && (url = VIMEO_URL_PREFIX + getUrlLastComponentFromRegex(url));
 
   return (
-    <WebView
-      style={styles.webViewWrapper}
-      javaScriptEnabled={true}
-      domStorageEnabled={false}
-      originWhitelist={["*"]}
-      allowsInlineMediaPlayback={true}
-      source={{
-        uri: url,
-        headers: {
-          [AUTHORIZATION]: `Bearer ${apiKey}`
-        }
-      }}
-    />
+    <View style={styles.linkMediaContainer}>
+      <WebView
+        style={styles.webViewWrapper}
+        javaScriptEnabled={true}
+        domStorageEnabled={false}
+        originWhitelist={["*"]}
+        scrollEnabled={false}
+        source={{
+          uri: url,
+          headers: {
+            [AUTHORIZATION]: `Bearer ${apiKey}`
+          }
+        }}
+      />
+    </View>
   );
 };
 export { TextView, ContentExtract, ListWrapper, Emoji, LinkMedia, WebViewWrapper };
-export default WekaContent;
+export default WekaEditorView;

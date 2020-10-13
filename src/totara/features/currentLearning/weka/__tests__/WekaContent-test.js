@@ -17,7 +17,7 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import renderer from "react-test-renderer";
 import { fontSizes, fontWeights, fontStyles } from "@totara/theme/constants";
-import { TextView, ContentExtract, ListWrapper, Emoji, LinkMedia } from "../WekaContent";
+import { TextView, ContentExtract, ListWrapper, Emoji, LinkMedia } from "../WekaEditorView";
 import { AuthContext } from "@totara/core";
 
 describe("Weka content", () => {

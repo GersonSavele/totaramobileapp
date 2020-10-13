@@ -26,7 +26,7 @@ import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
-import WekaContent from "../weka/WekaContent";
+import WekaEditorView from "../weka/WekaEditorView";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity, AppState } from "@totara/types";
 import { AuthContext } from "@totara/core";
@@ -335,7 +335,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           }}>
           {isLabel ? (
             item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
-              <WekaContent
+              <WekaEditorView
                 content={item.description && (item.description as any)}
                 backGroundColor={TotaraTheme.colorNeutral2}
                 textColor={TotaraTheme.colorNeutral6}

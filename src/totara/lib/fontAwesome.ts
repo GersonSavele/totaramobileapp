@@ -51,7 +51,9 @@ import {
   faInfoCircle,
   faAngleRight,
   faInfo,
-  faBan
+  faBan,
+  faPaperclip,
+  faPlay
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -94,7 +96,9 @@ const init = () => {
     faInfoCircle,
     faAngleRight,
     faInfo,
-    faBan
+    faBan,
+    faPaperclip,
+    faPlay
   );
 };
 

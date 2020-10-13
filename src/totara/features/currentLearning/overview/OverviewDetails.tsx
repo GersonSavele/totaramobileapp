@@ -29,7 +29,7 @@ import { overviewStyles } from "./overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
-import WekaContent from "../weka/WekaContent";
+import WekaEditorView from "../weka/WekaEditorView";
 
 type OverviewProps = {
   id: number;
@@ -260,7 +260,7 @@ const Summary = ({ summary = "", summaryTypeTitle = "", summaryFormat }: Summary
       </Text>
       <View style={overviewStyles.summaryViewWrap}>
         {summaryFormat == DescriptionFormat.jsonEditor ? (
-          <WekaContent
+          <WekaEditorView
             content={summary as string}
             backGroundColor={TotaraTheme.colorAccent}
             textColor={TotaraTheme.colorNeutral8}

@@ -29,7 +29,6 @@ const ImageWrapper = ({ url, style }: ImageWrapperType) => {
     authContextState: { appState }
   } = useContext(AuthContext);
   const apiKey = appState!.apiKey;
-
   return (
     <FastImage
       style={style}

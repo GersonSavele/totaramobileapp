@@ -47,8 +47,9 @@ const wekaEditorStyle = StyleSheet.create({
   },
   linkMediaContainer: {
     maxWidth: deviceScreen.width,
-    aspectRatio: 16 / 9,
-    borderRadius: borderRadius.borderRadiusM
+    borderRadius: borderRadius.borderRadiusM,
+    backgroundColor: TotaraTheme.colorNeutral5,
+    aspectRatio: 16 / 9
   },
   linkMediaDescription: {
     ...TotaraTheme.textRegular,
@@ -87,15 +88,28 @@ const wekaEditorStyle = StyleSheet.create({
     marginVertical: margins.marginL,
     height: 0.5
   },
-  attachmentTouchable: {
-    flexDirection: "column",
-    marginVertical: marginS
+  touchableViewWrap: {
+    flexDirection: "row",
+    marginVertical: marginS,
+    alignContent:"center",
+    justifyContent:"center",
+    alignItems:"center"
   },
   attachmentFileName: {
     textAlign: "left",
-    ...TotaraTheme.textMedium,
+    ...TotaraTheme.textRegular,
     color: TotaraTheme.colorLink,
     alignSelf: "flex-start"
+  },
+  iconWrap :{
+     justifyContent: "center",
+     marginEnd:marginS
+  },
+  audioTitle:{
+    textAlign: "left",
+    ...TotaraTheme.textRegular,
+    color : TotaraTheme.colorNeutral6,
+    justifyContent:"center",
   },
   webViewWrapper: {
     position: "absolute",
@@ -103,7 +117,8 @@ const wekaEditorStyle = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    borderRadius: borderRadius.borderRadiusM
+    borderRadius: borderRadius.borderRadiusM,
+    backgroundColor: 'transparent'
   }
 });
 
