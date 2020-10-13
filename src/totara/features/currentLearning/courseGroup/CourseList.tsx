@@ -43,7 +43,7 @@ const CourseList = ({ navigation }: CourseListProps) => {
     });
 
     return () => {
-      onViewCriteriaTapListener.remove();
+      onViewCriteriaTapListener && onViewCriteriaTapListener.remove();
     };
   }, [navigation]);
 

@@ -50,8 +50,8 @@ describe("Downloads", () => {
   });
 
   it("Should render DownloadsStack", () => {
-    const { baseElement } = renderWithAppContainer();
-    expect(baseElement).toBeTruthy();
+    const { findByTestId } = renderWithAppContainer();
+    expect(findByTestId("downloadsContainer")).toBeTruthy();
   });
 
   it("Should render Downloads empty state", () => {
@@ -105,6 +105,6 @@ describe("Downloads", () => {
     });
 
     const itemTest = getByTestId("test_DownloadsItem");
-    fireEvent.longPress(itemTest);
+    fireEvent(itemTest, "longPress");
   });
 });

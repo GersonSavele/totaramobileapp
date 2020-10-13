@@ -44,7 +44,7 @@ describe("CurrentLearningListViewItem", () => {
     expect(title.children[0]).toBe("Example course fullname");
 
     const progress = getByTestId("test_CurrentLearningItem_Progress");
-    const progressPercentage = progress.children[1].children[0].props.children;
+    const progressPercentage = progress.children[1].children[0].children[0].children[0].children[0];
     expect(progressPercentage).toBe("25%");
   });
 

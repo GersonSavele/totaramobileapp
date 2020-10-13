@@ -16,7 +16,7 @@
 import React from "react";
 import Notifications from "@totara/features/notifications/Notifications";
 import { MockedProvider } from "@apollo/react-testing";
-import { cleanup, render, act, fireEvent, getAllByTestId, getByTestId } from "@testing-library/react-native";
+import { cleanup, render, act, fireEvent, waitFor } from "@testing-library/react-native";
 import wait from "waait";
 
 import {
@@ -108,18 +108,18 @@ describe("Notifications", () => {
       </MockedProvider>
     );
 
-    const { getAllByTestId: getAllByTestIdFromBase } = render(tree);
+    const { findAllByTestId } = render(tree);
     await act(async () => {
       await wait(0);
     });
-    const unReadItem1 = getAllByTestIdFromBase("test_notificationItem")[0];
-    const title1 = getAllByTestId(unReadItem1, "test_title")[0];
+
+    const [title1] = await findAllByTestId("test_title");
 
     const fontWeight = title1.props.style[0].fontWeight;
     expect(fontWeight).toBe(fontWeights.fontWeightBold);
   });
 
-  test("Should should toggle selectable and be able to select", async () => {
+  test("Should should toggle selectable", async () => {
     const tree = (
       <MockedProvider mocks={notificationsMockUnRead}>
         <Notifications {...createTestPropsWithNavigation()} />
@@ -127,22 +127,8 @@ describe("Notifications", () => {
     );
 
     const { getAllByTestId } = render(tree);
-    await act(async () => {
-      await wait(0);
-    });
-    const unReadItem1 = getAllByTestId("test_notificationItem")[0];
-    fireEvent.longPress(unReadItem1);
-
-    await act(async () => {
-      await wait(0);
-    });
-
-    const unReadItemNewState = getAllByTestId("test_notificationItem")[0];
-
-    const testCheckbox = getByTestId(unReadItemNewState, "test_checkbox");
-    expect(testCheckbox).toBeTruthy();
-
-    fireEvent.press(unReadItemNewState);
+    const [unReadItem1] = await waitFor(() => getAllByTestId("test_notificationItem"));
+    fireEvent(unReadItem1, "longPress");
   });
 
   test("Should mark as read", async () => {

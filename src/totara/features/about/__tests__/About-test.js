@@ -31,22 +31,13 @@ describe("About", () => {
   afterEach(cleanup);
 
   test("Should render with AboutStack", async () => {
-    const { baseElement } = renderWithNavigation();
+    const { findByTestId } = renderWithNavigation();
 
-    await act(async () => {
-      await wait(0);
-    });
-
-    expect(baseElement).toBeTruthy();
+    expect(findByTestId("aboutContainer")).toBeTruthy();
   });
 
   test("Should render About view", async () => {
-    const { baseElement } = render(<About />);
-
-    await act(async () => {
-      await wait(0);
-    });
-
-    expect(baseElement).toBeTruthy();
+    const { findByTestId } = render(<About />);
+    expect(findByTestId("aboutContainer")).toBeTruthy();
   });
 });

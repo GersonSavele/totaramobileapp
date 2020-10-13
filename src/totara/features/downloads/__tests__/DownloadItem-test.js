@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { act, fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, cleanup } from "@testing-library/react-native";
 import React from "react";
 import DownloadItem from "@totara/features/downloads/DownloadItem";
 import {
@@ -21,7 +21,8 @@ import {
   downloadItemMockAddedWithKilo
 } from "@totara/features/downloads/__mocks__/downloadMock";
 import { ResourceState } from "@totara/types/Resource";
-import wait from "waait";
+
+afterEach(cleanup);
 
 describe("DownloadItem", () => {
   it("Should render DownloadItem added, with name, size in megabytes", () => {
@@ -82,10 +83,8 @@ describe("DownloadItem", () => {
     );
 
     fireEvent.press(getByTestId("test_DownloadItem"));
-    await act(async () => {
-      await wait(0);
-    });
-    await expect(onItemPressCallback).toHaveBeenCalledTimes(1);
+
+    expect(onItemPressCallback).toHaveBeenCalledTimes(1);
   });
 
   it("Should longPress DownloadItem and onItemPressCallback called once", async () => {
@@ -96,10 +95,7 @@ describe("DownloadItem", () => {
       <DownloadItem item={item} onItemLongPress={onItemLongPressCallback} testID={"test_DownloadItem"} />
     );
 
-    fireEvent.longPress(getByTestId("test_DownloadItem"));
-    await act(async () => {
-      await wait(0);
-    });
-    await expect(onItemLongPressCallback).toHaveBeenCalledTimes(1);
+    fireEvent(getByTestId("test_DownloadItem"), "longPress");
+    expect(onItemLongPressCallback).toHaveBeenCalledTimes(1);
   });
 });

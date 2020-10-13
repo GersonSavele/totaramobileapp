@@ -65,10 +65,9 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
   >
     <View
       accessibilityRole="button"
-      accessibilityStates={Array []}
+      accessibilityState={Object {}}
       accessible={true}
       focusable={true}
-      isTVSelectable={true}
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -95,7 +94,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
               Object {
                 "color": "#007AFF",
                 "fontSize": 18,
-                "padding": 8,
+                "margin": 8,
                 "textAlign": "center",
               },
             ]
@@ -174,10 +173,9 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
   >
     <View
       accessibilityRole="button"
-      accessibilityStates={Array []}
+      accessibilityState={Object {}}
       accessible={true}
       focusable={true}
-      isTVSelectable={true}
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -204,7 +202,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
               Object {
                 "color": "#007AFF",
                 "fontSize": 18,
-                "padding": 8,
+                "margin": 8,
                 "textAlign": "center",
               },
             ]
@@ -283,10 +281,9 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
   >
     <View
       accessibilityRole="button"
-      accessibilityStates={Array []}
+      accessibilityState={Object {}}
       accessible={true}
       focusable={true}
-      isTVSelectable={true}
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -313,7 +310,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
               Object {
                 "color": "#007AFF",
                 "fontSize": 18,
-                "padding": 8,
+                "margin": 8,
                 "textAlign": "center",
               },
             ]
@@ -430,10 +427,9 @@ exports[`Testing: Course manual completion Test result : course complete and loa
       >
         <View
           accessibilityRole="button"
-          accessibilityStates={Array []}
+          accessibilityState={Object {}}
           accessible={true}
           focusable={true}
-          isTVSelectable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -460,7 +456,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
                   Object {
                     "color": "#007AFF",
                     "fontSize": 18,
-                    "padding": 8,
+                    "margin": 8,
                     "textAlign": "center",
                   },
                 ]

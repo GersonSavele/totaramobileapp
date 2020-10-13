@@ -45,7 +45,7 @@ const About = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={"aboutContainer"}>
       <View style={styles.logoContainer} animation={"slideInUp"}>
         <Image source={Images.totaraLogo} style={styles.logo} />
       </View>

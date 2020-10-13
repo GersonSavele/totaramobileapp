@@ -124,7 +124,7 @@ const Downloads = ({ navigation }: DownloadsProps) => {
   };
 
   return (
-    <View style={TotaraTheme.viewContainer}>
+    <View style={TotaraTheme.viewContainer} testID={"downloadsContainer"}>
       <View style={[headerStyles.navigationHeader, { flexDirection: "row" }]}>
         <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
       </View>

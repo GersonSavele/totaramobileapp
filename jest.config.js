@@ -37,5 +37,5 @@ module.exports = {
   testPathIgnorePatterns: ["e2e"],
   setupFiles: ["<rootDir>/jest.setup.js"],
   collectCoverageFrom: ["src/totara/**/*.{js,jsx,ts,tsx}"],
-  setupFilesAfterEnv: ["<rootDir>setup-tests.js"]
+  setupFilesAfterEnv: ["<rootDir>setup-tests.js", "@testing-library/jest-native/extend-expect"]
 };

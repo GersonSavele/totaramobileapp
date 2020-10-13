@@ -103,10 +103,9 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
       >
         <View
           accessibilityRole="button"
-          accessibilityStates={Array []}
+          accessibilityState={Object {}}
           accessible={true}
           focusable={true}
-          isTVSelectable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -133,7 +132,7 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
                   Object {
                     "color": "#007AFF",
                     "fontSize": 18,
-                    "padding": 8,
+                    "margin": 8,
                     "textAlign": "center",
                   },
                 ]
@@ -145,10 +144,9 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
         </View>
         <View
           accessibilityRole="button"
-          accessibilityStates={Array []}
+          accessibilityState={Object {}}
           accessible={true}
           focusable={true}
-          isTVSelectable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -175,7 +173,7 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
                   Object {
                     "color": "#007AFF",
                     "fontSize": 18,
-                    "padding": 8,
+                    "margin": 8,
                     "textAlign": "center",
                   },
                 ]

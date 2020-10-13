@@ -69,9 +69,9 @@ describe("NotificationItem", () => {
     expect(childValue).toBe("a few seconds ago");
   });
 
-  it("Should show checkbox option for the select action", () => {
+  it("Should show checkbox option for the select action", async () => {
     const { getByTestId } = render(<NotificationItem item={defaultMockItem} selectable={true} />);
-    const checkBoxView = getByTestId("test_checkbox");
+    const checkBoxView = await getByTestId("test_checkbox");
     expect(checkBoxView).toBeTruthy();
   });
 });
