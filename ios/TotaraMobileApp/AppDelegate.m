@@ -5,24 +5,10 @@
 #import <Firebase.h>
 #import <RNFSManager.h>
 
-//#if DEBUG
-//#ifdef FB_SONARKIT_ENABLED
-//#import <FlipperKit/FlipperClient.h>
-//#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
-//#import <FlipperKitLayoutPlugin/SKDescriptorMapper.h>
-//#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
-//#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-//#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
-//#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
-//#endif
-//#endif
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//  [self initializeFlipper:application];
-  
   if ([FIRApp defaultApp] == nil) {
     [FIRApp configure];
   }
@@ -48,20 +34,6 @@
 
   return YES;
 }
-//
-//- (void) initializeFlipper:(UIApplication *)application {
-//  #if DEBUG
-//  #ifdef FB_SONARKIT_ENABLED
-//    FlipperClient *client = [FlipperClient sharedClient];
-//    SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
-//    [client addPlugin: [[FlipperKitLayoutPlugin alloc] initWithRootNode: application withDescriptorMapper: layoutDescriptorMapper]];
-//    [client addPlugin: [[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
-//    [client addPlugin: [FlipperKitReactPlugin new]];
-//    [client addPlugin: [[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
-//    [client start];
-//  #endif
-//  #endif
-//}
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler
 {
@@ -79,19 +51,5 @@ restorationHandler: (nonnull void (^)(NSArray<id<UIUserActivityRestoring>> *_Nul
   return [RCTLinkingManager application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 
-//- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings // NS_AVAILABLE_IOS(8_0);
-//{
-//        [application registerForRemoteNotifications];
-//}
-//
-//- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
-//
-//  NSLog(@"deviceToken: %@", deviceToken);
-//  [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-//}
-
-//- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-//  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
-//}
 
 @end
