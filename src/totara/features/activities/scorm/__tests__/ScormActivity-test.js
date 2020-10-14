@@ -68,7 +68,7 @@ describe("ScormActivity", () => {
     jest.restoreAllMocks();
   });
 
-  it("Should render loading component iniiiallly, when it recieve responce it should show scorm summary", async (done) => {
+  it("Should render loading component initially, when it recieve responce it should show scorm summary", async (done) => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return downloadsTwoItemsMock;
     });
@@ -84,13 +84,13 @@ describe("ScormActivity", () => {
     );
     const { getByTestId } = render(tree);
 
-    const viewLoading = getByTestId(LOADING_ID);
+    const viewLoading = await getByTestId(LOADING_ID);
     expect(viewLoading).toBeTruthy();
 
     await act(async () => {
       await wait(0);
     });
-    const view = getByTestId(SUMMARY_ID);
+    const view = await getByTestId(SUMMARY_ID);
     expect(view).toBeTruthy();
     done();
   });
@@ -102,7 +102,7 @@ describe("headerDispatch", () => {
   });
 
   const mockDispatch = jest.fn();
-  it("should call passing dispach function with merging passing data and SCORM_ROOT key", () => {
+  it("should call passing dispatch function with merging passing data and SCORM_ROOT key", () => {
     headerDispatch({ data: "data" }, mockDispatch);
     expect(mockDispatch).toHaveBeenCalledTimes(1);
   });

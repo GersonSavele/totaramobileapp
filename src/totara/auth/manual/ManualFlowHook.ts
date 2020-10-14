@@ -22,7 +22,7 @@ import { config, Log } from "@totara/lib";
 import { isValidApiVersion } from "@totara/core/AuthContext";
 import { SiteInfo } from "@totara/types";
 import { AuthFlowChildProps } from "../AuthComponent";
-import { NetworkError, UnsupportedAuthFlow } from "@totara/types/Error";
+import { NetworkError, NetworkFailedError, UnsupportedAuthFlow } from "@totara/types/Error";
 
 /**
  * Custom react hook that manages the state of the manual flow
@@ -159,10 +159,9 @@ export const manualFlowReducer = (state: ManualFlowState, action: Action): Manua
     }
 
     case "siteInfoApiFailure": {
-      const networkError = action.payload as NetworkError;
       return {
         ...state,
-        siteUrlFailure: networkError
+        siteUrlFailure: action.payload as NetworkFailedError
       };
     }
 

@@ -80,7 +80,7 @@ describe("OfflineScormActivity", () => {
 
     const tree = <OfflineScormActivity navigation={navigation} />;
     const { getByTestId } = render(tree);
-    const labelTitleNo = getByTestId(NONE_EXIST_RESOURCE_ID);
+    const labelTitleNo = await getByTestId(NONE_EXIST_RESOURCE_ID);
     expect(labelTitleNo.children[0]).toBe(translate("general.error_unknown"));
   });
 });

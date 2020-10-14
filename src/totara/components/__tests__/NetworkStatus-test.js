@@ -38,11 +38,11 @@ describe("NetworkStatus", () => {
     expect(container.children.length).toBe(1);
   });
 
-  test("Should render as online state", () => {
+  test("Should render as online state", async () => {
     useNetInfo.mockReturnValue(onlineState);
     const tree = <NetworkStatus />;
-    const { getByTestId } = render(tree);
-    const container = getByTestId("test_container");
+    const { findByTestId } = render(tree);
+    const container = await findByTestId("test_container");
 
     expect(container.children.length).toBe(0);
   });

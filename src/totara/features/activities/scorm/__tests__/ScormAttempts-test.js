@@ -61,17 +61,17 @@ describe("ScormAttempts", () => {
   });
   it("Should render empty attempts result list for empty/undefined or null attempts", async () => {
     let tree = render(<ScormAttempts navigation={attemptNavigation([])} />);
-    let viewListAttempts = tree.getByTestId(ATTEMPTS_LIST_ID);
+    let viewListAttempts = await tree.getByTestId(ATTEMPTS_LIST_ID);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();
 
     tree = render(<ScormAttempts navigation={attemptNavigation()} />);
-    viewListAttempts = tree.getByTestId(ATTEMPTS_LIST_ID);
+    viewListAttempts = await tree.getByTestId(ATTEMPTS_LIST_ID);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();
 
     tree = render(<ScormAttempts navigation={attemptNavigation(null)} />);
-    viewListAttempts = tree.getByTestId(ATTEMPTS_LIST_ID);
+    viewListAttempts = await tree.getByTestId(ATTEMPTS_LIST_ID);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();
   });

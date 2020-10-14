@@ -30,20 +30,20 @@ describe("ScormSummary", () => {
   it("Should render the error on summary", async () => {
     const { getByTestId } = render(<ScormSummary error={true} />);
 
-    const loadingView = getByTestId("summary_error");
+    const loadingView = await getByTestId("summary_error");
     expect(loadingView.children[0]).toBeTruthy();
   });
 
   it("Should render the summary view if it is not loading or error", async () => {
     const { getByTestId } = render(<ScormSummary scormBundle={{ scorm: "scorm data" }} />);
 
-    const summaryContainerView = getByTestId("scorm_summary_container");
+    const summaryContainerView = await getByTestId("scorm_summary_container");
     expect(summaryContainerView.children[0]).toBeTruthy();
   });
 
   it("Should render the loading error on summary", async () => {
     const { getByTestId } = render(<ScormSummary loading={true} />);
-    const summaryContainerView = getByTestId("summary_loading");
+    const summaryContainerView = await getByTestId("summary_loading");
     expect(summaryContainerView.children[0]).toBeTruthy();
   });
 });

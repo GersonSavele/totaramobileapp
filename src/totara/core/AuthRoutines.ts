@@ -269,7 +269,7 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
   //TIMEOUT OF 10 SECS (10*1000)
   return new Promise((resolve, reject) => {
     const timeoutId = setTimeout(() => {
-      reject(new Error("promise timeout"));
+      reject(new NetworkFailedError());
     }, 10 * 1000);
     fetchPromise.then(
       (res) => {
