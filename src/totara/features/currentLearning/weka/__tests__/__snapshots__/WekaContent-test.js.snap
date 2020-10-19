@@ -1875,127 +1875,121 @@ Array [
     </View>
   </View>,
   <View>
-    <View
+    <Text
+      numberOfLines={2}
       style={
-        Object {
-          "marginBottom": 6,
-        }
+        Array [
+          Object {
+            "color": undefined,
+            "fontSize": 17,
+            "fontWeight": "700",
+            "lineHeight": 22,
+            "marginBottom": 12,
+            "marginTop": 24,
+          },
+          Object {
+            "color": "#000000",
+          },
+        ]
       }
+      testID="test_media_title"
     >
-      <Text
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "color": undefined,
-              "fontSize": 17,
-              "fontWeight": "700",
-              "lineHeight": 22,
-              "marginBottom": 12,
-              "marginTop": 24,
-            },
-            Object {
-              "color": "#000000",
-            },
-          ]
-        }
-        testID="test_media_title"
-      >
-        Sample Video
-      </Text>
+      Sample Video
+    </Text>
+    <View
+      testID="test_media_content"
+    >
       <View
-        testID="test_media_content"
+        style={
+          Object {
+            "aspectRatio": 1.7777777777777777,
+            "backgroundColor": "#C7C7C7",
+            "borderRadius": 10,
+            "maxWidth": 750,
+          }
+        }
       >
         <View
           style={
-            Object {
-              "aspectRatio": 1.7777777777777777,
-              "backgroundColor": "#C7C7C7",
-              "borderRadius": 10,
-              "maxWidth": 750,
-            }
+            Array [
+              Object {
+                "flex": 1,
+                "overflow": "hidden",
+              },
+              undefined,
+            ]
           }
         >
-          <View
+          <RNCWebView
+            allowsFullscreenVideo={true}
+            allowsInlineMediaPlayback={true}
+            cacheEnabled={true}
+            domStorageEnabled={false}
+            injectedJavaScriptBeforeContentLoadedForMainFrameOnly={true}
+            injectedJavaScriptForMainFrameOnly={true}
+            javaScriptEnabled={true}
+            messagingEnabled={false}
+            onContentProcessDidTerminate={[Function]}
+            onHttpError={[Function]}
+            onLoadingError={[Function]}
+            onLoadingFinish={[Function]}
+            onLoadingProgress={[Function]}
+            onLoadingStart={[Function]}
+            onMessage={[Function]}
+            onShouldStartLoadWithRequest={[Function]}
+            scrollEnabled={false}
+            source={
+              Object {
+                "headers": Object {
+                  "AUTHORIZATION": "Bearer api_key",
+                },
+                "uri": "https://player.vimeo.com/video/347119375",
+              }
+            }
             style={
               Array [
                 Object {
                   "flex": 1,
                   "overflow": "hidden",
                 },
-                undefined,
+                Object {
+                  "backgroundColor": "#ffffff",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderRadius": 10,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
               ]
             }
-          >
-            <RNCWebView
-              cacheEnabled={true}
-              domStorageEnabled={false}
-              injectedJavaScriptBeforeContentLoadedForMainFrameOnly={true}
-              injectedJavaScriptForMainFrameOnly={true}
-              javaScriptEnabled={true}
-              messagingEnabled={false}
-              onContentProcessDidTerminate={[Function]}
-              onHttpError={[Function]}
-              onLoadingError={[Function]}
-              onLoadingFinish={[Function]}
-              onLoadingProgress={[Function]}
-              onLoadingStart={[Function]}
-              onMessage={[Function]}
-              onShouldStartLoadWithRequest={[Function]}
-              scrollEnabled={false}
-              source={
-                Object {
-                  "headers": Object {
-                    "AUTHORIZATION": "Bearer api_key",
-                  },
-                  "uri": "https://player.vimeo.com/video/347119375",
-                }
-              }
-              style={
-                Array [
-                  Object {
-                    "flex": 1,
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "backgroundColor": "#ffffff",
-                  },
-                  Object {
-                    "backgroundColor": "transparent",
-                    "borderRadius": 10,
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  },
-                ]
-              }
-              useSharedProcessPool={true}
-            />
-          </View>
+            useSharedProcessPool={true}
+          />
         </View>
       </View>
-      <Text
-        style={
-          Array [
-            Object {
-              "color": undefined,
-              "fontSize": 17,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "marginTop": 12,
-            },
-            Object {
-              "color": "#000000",
-            },
-          ]
-        }
-        testID="test_media_description"
-      >
-        Sample video.
-      </Text>
     </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": undefined,
+            "fontSize": 17,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "marginTop": 12,
+          },
+          Object {
+            "color": "#000000",
+          },
+        ]
+      }
+      testID="test_media_description"
+    >
+      Sample video.
+    </Text>
   </View>,
   <Text
     style={

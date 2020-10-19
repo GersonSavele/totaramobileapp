@@ -14,12 +14,12 @@
  */
 
 import React, { useContext, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import ImageView from "react-native-image-viewing";
+import { View, Text, TouchableOpacity, Modal } from "react-native";
+import FastImage from "react-native-fast-image";
 import { WebView } from "react-native-webview";
 import { AuthContext } from "@totara/core";
 import { AUTHORIZATION } from "@totara/lib/constants";
-import { textAttributes, margins, fontWeights, fontStyles, marksTypes, iconSizes } from "@totara/theme/constants";
+import { textAttributes, fontWeights, fontStyles, marksTypes, iconSizes } from "@totara/theme/constants";
 import { WekaEditorType } from "../constants";
 import styles from "./wekaEditorViewStyle";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -52,7 +52,11 @@ const navigateWebView = (url, onRequestClose) => {
   } = useContext(AuthContext);
 
   const { apiKey } = appState as AppState;
-  const props = { uri: url, apiKey, backAction: onRequestClose };
+  const props = {
+    uri: url,
+    apiKey: apiKey,
+    backAction: onRequestClose
+  };
   return NavigationService.navigate(WEBVIEW_ACTIVITY, props);
 };
 
@@ -110,6 +114,7 @@ const Configuration = ({ content = {}, attrs }: ConfigProps) => {
     case WekaEditorType.attachment:
       return <Attachment content={content.content && content.content} />;
     case WekaEditorType.video:
+      return <EmbeddedMedia content={content} title="Video file" />;
     case WekaEditorType.audio:
     case WekaEditorType.linkBlock:
     case WekaEditorType.linkMedia:
@@ -241,7 +246,6 @@ const Ruler = () => {
 const Attachment = ({ content = {} }: ConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
-
   return content.map((nestedContent: any = {}, index: number) => {
     return (
       <TouchableOpacity style={styles.touchableViewWrap} key={index} onPress={onRequestClose}>
@@ -270,56 +274,67 @@ const ImageViewerWrapper = ({ content = {} }: ConfigProps) => {
   } = useContext(AuthContext);
 
   const { apiKey } = appState as AppState;
-  const images = [
-    {
-      uri: content.attrs.url,
-      headers: {
-        [AUTHORIZATION]: `Bearer ${apiKey}`
-      }
-    }
-  ];
   return (
     <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose}>
       <ImageWrapper url={content.attrs.url} style={styles.imageContainer} />
-      {visible && <ImageView images={images} imageIndex={0} visible={visible} onRequestClose={onRequestClose} />}
+      {visible && (
+        <Modal animationType={"slide"} transparent={false}>
+          <View style={styles.closeButtonWrap}>
+            <TouchableOpacity style={styles.closeButtonTouchableOpacity} onPress={onRequestClose}>
+              <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.textColorDisabled} />
+            </TouchableOpacity>
+          </View>
+          <FastImage
+            source={{
+              uri: content.attrs.url,
+              cache: "web",
+              priority: FastImage.priority.normal,
+              headers: {
+                [AUTHORIZATION]: `Bearer ${apiKey}`
+              }
+            }}
+            resizeMode="contain"
+            style={{ height: "80%" }}></FastImage>
+        </Modal>
+      )}
     </TouchableOpacity>
   );
 };
 
 const LinkMedia = ({ content = {} }: ConfigProps) => {
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-  const { apiKey } = appState as AppState;
   return (
     <View>
-      <View style={{ marginBottom: margins.marginXS }}>
-        {content.attrs.title && (
-          <Text numberOfLines={2} style={[styles.linkMediaTitle, { color: color.textColor }]} testID="test_media_title">
-            {content.attrs.title}
-          </Text>
+      {content.attrs.title && (
+        <Text numberOfLines={2} style={[styles.linkMediaTitle, { color: color.textColor }]} testID="test_media_title">
+          {content.attrs.title}
+        </Text>
+      )}
+      <View testID="test_media_content">
+        {content.attrs.url.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+          <ImageViewerWrapper content={content} />
+        ) : content.attrs.url.match(/\.(?:wav|mp3)$/i) != null ? (
+          <EmbeddedMedia content={content} title="Audio file" />
+        ) : (
+          <WebViewWrapper content={content} />
         )}
-        <View testID="test_media_content">
-          {content.attrs.url.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
-            <ImageViewerWrapper content={content} />
-          ) : content.attrs.url.match(/\.(?:wav|mp3)$/i) != null ? (
-            <Audio content={content} />
-          ) : (
-            <WebViewWrapper content={content} apiKey={apiKey} />
-          )}
-        </View>
+      </View>
+      {content.attrs.description && (
         <Text style={[styles.linkMediaDescription, { color: color.textColor }]} testID="test_media_description">
           {content.attrs.description}
         </Text>
-      </View>
+      )}
     </View>
   );
 };
 
-const Audio = ({ content = {} }: ConfigProps) => {
+type EmbeddedMediaProps = {
+  content: any;
+  title: string;
+};
+
+const EmbeddedMedia = ({ content = {}, title }: EmbeddedMediaProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
-
   return (
     <TouchableOpacity style={styles.touchableViewWrap} onPress={onRequestClose}>
       <View style={styles.iconWrap}>
@@ -331,25 +346,29 @@ const Audio = ({ content = {} }: ConfigProps) => {
         />
       </View>
       <View style={{ flex: 8 }}>
-        <Text style={styles.audioTitle}>Audio file</Text>
+        <Text style={styles.embeddedMediaTitle}>{title}</Text>
       </View>
       {visible && navigateWebView(content.attrs.url, onRequestClose)}
     </TouchableOpacity>
   );
 };
 
-type WebViewWrapperProps = {
-  content: ConfigProps;
-  apiKey: string;
-};
-
-const WebViewWrapper = ({ content = {}, apiKey }: WebViewWrapperProps) => {
+const WebViewWrapper = ({ content = {} }: ConfigProps) => {
+  const {
+    authContextState: { appState }
+  } = useContext(AuthContext);
+  const { apiKey } = appState as AppState;
   let url = content.attrs.url;
   const hostName = getHostnameFromRegex(url);
   // App only support for youtube and vimeo video insert link, and there is configuration for make a full screen video
   hostName === HostName.youtube && (url = url.split("watch?v=").join("embed/"));
   hostName === HostName.vimeo && (url = VIMEO_URL_PREFIX + getUrlLastComponentFromRegex(url));
 
+  const handleWebViewRequest = (request) => {
+    if (url === request.url) {
+      return true;
+    } else return false;
+  };
   return (
     <View style={styles.linkMediaContainer}>
       <WebView
@@ -358,6 +377,11 @@ const WebViewWrapper = ({ content = {}, apiKey }: WebViewWrapperProps) => {
         domStorageEnabled={false}
         originWhitelist={["*"]}
         scrollEnabled={false}
+        allowsInlineMediaPlayback={true}
+        allowsFullscreenVideo={true}
+        onShouldStartLoadWithRequest={(request) => {
+          return handleWebViewRequest(request);
+        }}
         source={{
           uri: url,
           headers: {

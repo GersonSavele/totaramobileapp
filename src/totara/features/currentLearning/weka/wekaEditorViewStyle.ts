@@ -15,7 +15,7 @@
 
 import { StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, borderRadius, fontWeights } from "@totara/theme/constants";
+import { margins, borderRadius, fontWeights, iconSizes } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 const { marginXS, marginM, marginS } = margins;
 
@@ -105,7 +105,7 @@ const wekaEditorStyle = StyleSheet.create({
      justifyContent: "center",
      marginEnd:marginS
   },
-  audioTitle:{
+  embeddedMediaTitle:{
     textAlign: "left",
     ...TotaraTheme.textRegular,
     color : TotaraTheme.colorNeutral6,
@@ -119,6 +119,19 @@ const wekaEditorStyle = StyleSheet.create({
     right: 0,
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: 'transparent'
+  },
+  closeButtonTouchableOpacity: {
+    marginTop: marginM,
+    marginEnd: marginM,
+    height: iconSizes.sizeXL,
+    width: iconSizes.sizeXL,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  closeButtonWrap : {
+    height: "10%", 
+    justifyContent: "flex-end", 
+    alignItems: "flex-end"
   }
 });
 
