@@ -22,18 +22,20 @@ import CurrentLearningStack from "./currentLearning";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
 import ProfileStack from "./profile";
-import { useQuery } from "@apollo/react-hooks";
-import { notificationsQuery, parser } from "@totara/features/notifications/api";
-import { NotificationMessage } from "@totara/types";
+import { useSelector } from "react-redux";
+import { RootState } from "@totara/reducers";
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
+  const count = useSelector((state: RootState) => state.notificationReducer.count);
+
+  const tabNotifications = NotificationsTab(count);
 
   return createMaterialBottomTabNavigator(
     {
       CurrentLearningTab,
       DownloadsTab,
-      NotificationsTab,
+      tabNotifications,
       ProfileTab
     },
     {
@@ -71,25 +73,16 @@ const ProfileTab = {
   }
 };
 
-const NotificationBellWithCounting = ({ active, tintColor }: { active: boolean; tintColor: string }) => {
-  const { loading, error, data } = useQuery(notificationsQuery, {
-    fetchPolicy: "cache-only"
-  });
-
-  const notifications = loading || error ? [] : (parser(data) as NotificationMessage[]);
-
-  const unReadCount = notifications.filter((x) => !x.isRead).length;
-  return <NotificationBell active={active} tintColor={tintColor} counting={unReadCount} />;
-};
-
-const NotificationsTab = {
-  screen: NotificationsStack,
-  navigationOptions: {
-    // eslint-disable-next-line react/display-name
-    tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) => {
-      return <NotificationBellWithCounting active={tabIconProps.focused} tintColor={tabIconProps.tintColor} />;
+const NotificationsTab = (count) => {
+  return {
+    screen: NotificationsStack,
+    navigationOptions: {
+      // eslint-disable-next-line react/display-name
+      tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) => {
+        return <NotificationBell active={tabIconProps.focused} tintColor={tabIconProps.tintColor} counting={count} />;
+      }
     }
-  }
+  };
 };
 
 const tabBarIconBuilder = (focused: boolean, color: string, imageSet: iconImageProps) => {

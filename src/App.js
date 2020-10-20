@@ -20,7 +20,7 @@ import * as Sentry from "@sentry/react-native";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider, useSelector } from "react-redux";
 import { Root } from "native-base";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { store, persistor } from "./totara/store";
 import { AuthProvider } from "@totara/core/AuthProvider";
@@ -42,8 +42,9 @@ import { LocaleResolver } from "@totara/locale/LocaleResolver";
 
 import { gql } from "apollo-boost";
 import messaging from "@react-native-firebase/messaging";
-import { tokenSent, updateToken } from "./totara/actions/notification";
+import { tokenSent, updateCount, updateToken } from "./totara/actions/notification";
 import NavigationService from "./totara/lib/navigationService";
+import { notificationsQuery } from "@totara/features/notifications/api";
 
 const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
 
@@ -107,6 +108,8 @@ const mutationForToken = gql`
 `;
 
 const AppContainer = () => {
+  const { client } = useQuery(notificationsQuery);
+
   NotificationCenter.requestUserPermission();
   NotificationCenter.handleMessagesInBackground();
   ResourceManager.resumeDownloads();
@@ -123,6 +126,17 @@ const AppContainer = () => {
   };
 
   useEffect(() => {
+    const checkForNotifications = (client) => {
+      if (client) {
+        client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" }).then((then) => {
+          const { message_popup_messages } = then.data;
+          const count = message_popup_messages.filter((x) => x.isread === false).length;
+          console.log("counting", count);
+          updateCount({ count: count });
+        });
+      }
+    };
+
     messaging()
       .getToken()
       .then((token) => {
@@ -133,6 +147,7 @@ const AppContainer = () => {
     messaging().onNotificationOpenedApp((remoteMessage) => {
       console.debug("onNotificationOpenedApp ===>", remoteMessage);
       handleNotificationReceived(remoteMessage);
+      checkForNotifications(client);
     });
 
     messaging()
@@ -140,9 +155,11 @@ const AppContainer = () => {
       .then((remoteMessage) => {
         console.debug("getInitialNotification ===>", remoteMessage);
         handleNotificationReceived(remoteMessage);
+        checkForNotifications(client);
       });
 
     messaging().onMessage(async (remoteMessage) => {
+      checkForNotifications(client);
       console.debug("onMessage: ", remoteMessage);
     });
 

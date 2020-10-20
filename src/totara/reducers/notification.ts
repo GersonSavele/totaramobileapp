@@ -1,8 +1,15 @@
-import { TOKEN_SENT, UPDATE_TOKEN } from "../actions/notification";
+import { TOKEN_SENT, UPDATE_COUNT, UPDATE_TOKEN } from "../actions/notification";
 
-const initialState = {
-  token: String,
-  tokenSent: Boolean
+type notificationType = {
+  token: string;
+  tokenSent: boolean;
+  count: number;
+};
+
+const initialState: notificationType = {
+  token: "",
+  tokenSent: false,
+  count: 0
 };
 
 const notificationReducer = (state = initialState, action) => {
@@ -23,6 +30,13 @@ const notificationReducer = (state = initialState, action) => {
       return {
         ...state,
         tokenSent
+      };
+    }
+    case UPDATE_COUNT: {
+      const { count } = action.payload;
+      return {
+        ...state,
+        ...{ count: count }
       };
     }
     default: {
