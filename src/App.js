@@ -111,7 +111,6 @@ const AppContainer = () => {
   const { client } = useQuery(notificationsQuery);
 
   NotificationCenter.requestUserPermission();
-  NotificationCenter.handleMessagesInBackground();
   ResourceManager.resumeDownloads();
 
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
@@ -146,17 +145,22 @@ const AppContainer = () => {
 
     messaging().onNotificationOpenedApp((remoteMessage) => {
       console.debug("onNotificationOpenedApp ===>", remoteMessage);
-      handleNotificationReceived(remoteMessage);
       checkForNotifications(client);
+      handleNotificationReceived(remoteMessage);
     });
 
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
         console.debug("getInitialNotification ===>", remoteMessage);
-        handleNotificationReceived(remoteMessage);
         checkForNotifications(client);
+        handleNotificationReceived(remoteMessage);
       });
+
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      checkForNotifications(client);
+      console.debug("setBackgroundMessageHandler", remoteMessage);
+    });
 
     messaging().onMessage(async (remoteMessage) => {
       checkForNotifications(client);

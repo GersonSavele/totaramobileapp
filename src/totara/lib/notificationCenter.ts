@@ -13,16 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-/* eslint-disable no-undef */
-
 import messaging from "@react-native-firebase/messaging";
-import { Log } from "@totara/lib/logger";
-
-const handleMessagesInBackground = () => {
-  messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    __DEV__ && Log.info("Message handled in the BACKGROUND: ", JSON.stringify(remoteMessage));
-  });
-};
 
 const requestUserPermission = async () => {
   const authorizationStatus = await messaging().requestPermission();
@@ -32,8 +23,7 @@ const requestUserPermission = async () => {
 };
 
 const NotificationCenter = {
-  requestUserPermission,
-  handleMessagesInBackground
+  requestUserPermission
 };
 
 export default NotificationCenter;
