@@ -33,6 +33,7 @@ import { AppState } from "@totara/types";
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 import NavigationService from "@totara/lib/navigationService";
 import { CircleIcon } from "@totara/components";
+import { any } from "prop-types";
 
 enum HostName {
   youtube = "www.youtube.com",
@@ -50,10 +51,9 @@ const navigateWebView = (url, onRequestClose) => {
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
-
   const { apiKey } = appState as AppState;
   const props = {
-    uri: url,
+    uri: url.replace("totara/mobile/", ""), // This is the temp solution for webview headers error fix
     apiKey: apiKey,
     backAction: onRequestClose
   };
@@ -245,10 +245,14 @@ const Ruler = () => {
 
 const Attachment = ({ content = {} }: ConfigProps) => {
   const [visible, setIsVisible] = useState(false);
-  const onRequestClose = () => setIsVisible(!visible);
+  const [clickIndex, setClickIndex] = useState();
+  const onRequestClose = (index) => {
+    setIsVisible(!visible);
+    setClickIndex(index);
+  };
   return content.map((nestedContent: any = {}, index: number) => {
     return (
-      <TouchableOpacity style={styles.touchableViewWrap} key={index} onPress={onRequestClose}>
+      <TouchableOpacity style={styles.touchableViewWrap} key={index} onPress={() => onRequestClose(index)}>
         <View style={styles.iconWrap}>
           <FontAwesomeIcon
             icon={faPaperclip}
@@ -260,7 +264,7 @@ const Attachment = ({ content = {} }: ConfigProps) => {
         <View style={{ flex: 8 }}>
           <Text style={styles.attachmentFileName}>{nestedContent.attrs.filename}</Text>
         </View>
-        {visible && navigateWebView(nestedContent.attrs.url, onRequestClose)}
+        {visible && clickIndex == index && navigateWebView(nestedContent.attrs.url, onRequestClose)}
       </TouchableOpacity>
     );
   });
@@ -278,12 +282,7 @@ const ImageViewerWrapper = ({ content = {} }: ConfigProps) => {
     <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose}>
       <ImageWrapper url={content.attrs.url} style={styles.imageContainer} />
       {visible && (
-        <Modal animationType={"slide"} transparent={false}>
-          <View style={styles.closeButtonWrap}>
-            <TouchableOpacity style={styles.closeButtonTouchableOpacity} onPress={onRequestClose}>
-              <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.textColorDisabled} />
-            </TouchableOpacity>
-          </View>
+        <ModalView onRequestClose={onRequestClose}>
           <FastImage
             source={{
               uri: content.attrs.url,
@@ -295,9 +294,22 @@ const ImageViewerWrapper = ({ content = {} }: ConfigProps) => {
             }}
             resizeMode="contain"
             style={{ height: "80%" }}></FastImage>
-        </Modal>
+        </ModalView>
       )}
     </TouchableOpacity>
+  );
+};
+
+const ModalView = ({ children, onRequestClose }: any) => {
+  return (
+    <Modal animationType={"slide"} transparent={false}>
+      <View style={styles.closeButtonWrap}>
+        <TouchableOpacity style={styles.closeButtonTouchableOpacity} onPress={onRequestClose}>
+          <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.textColorDisabled} />
+        </TouchableOpacity>
+      </View>
+      {children}
+    </Modal>
   );
 };
 
