@@ -81,7 +81,7 @@ const activitiesStyles = StyleSheet.create({
   },
   activityList: {
     backgroundColor: colorSecondary1,
-    marginStart: marginL
+    marginHorizontal: marginL
   },
   labelSelfCompletionIcon: {
     alignSelf: "flex-start",

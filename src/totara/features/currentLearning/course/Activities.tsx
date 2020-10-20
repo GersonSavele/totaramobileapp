@@ -198,7 +198,7 @@ const ActivityList = ({ data, courseRefreshCallBack, sectionSummary, completionE
     <View>
       {summaryFormat === DescriptionFormat.jsonEditor ?
         (!isEmpty(sectionSummary) && <View style={activitiesStyles.activityList}>
-          <WekaContent
+          <WekaEditorView
             content={sectionSummary && (sectionSummary as any)}
             backGroundColor={TotaraTheme.colorNeutral2}
             textColor={TotaraTheme.colorNeutral6}
