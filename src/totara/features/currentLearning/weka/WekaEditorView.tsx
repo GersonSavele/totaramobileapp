@@ -34,7 +34,6 @@ import { AppState } from "@totara/types";
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 import NavigationService from "@totara/lib/navigationService";
 import { CircleIcon } from "@totara/components";
-import { any } from "prop-types";
 
 enum HostName {
   youtube = "www.youtube.com",
