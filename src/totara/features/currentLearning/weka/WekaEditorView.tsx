@@ -137,7 +137,7 @@ const Configuration = ({ content = {}, attrs }: ConfigProps) => {
   }
 };
 
-const TextContentWrapper = ({ content = {} }: EditorConfigProps) => {
+const TextContentWrapper = ({ content = {} }: ConfigProps) => {
   if (!isEmpty(content.content)) {
     return (
       <Text style={styles.textContainerWrapper}>
