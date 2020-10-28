@@ -11,15 +11,15 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- * 
+ *
  * @author Simon Tegg <simon.tegg@totaralearning.com>
  */
 
-import SCORMAPI from "../SCORM-API-1-2";
-import getSCORMDatamodel from "../get-scorm-data-model";
-import inititalizeCMI from "../initialize-cmi";
-import collectData from "../scorm-collect-data";
-import lessonStatus from "../scorm-mutate-lesson-status";
+import SCORMAPI from "../ScormApi.1.2";
+import getSCORMDatamodel from "../getScormDataModel";
+import inititalizeCMI from "../initializeCmi";
+import collectData from "../scormCollectData";
+import lessonStatus from "../scormMutateLessonStatus";
 
 test('LMSInitialize should return "true"', () => {
   const objectId = "theid";

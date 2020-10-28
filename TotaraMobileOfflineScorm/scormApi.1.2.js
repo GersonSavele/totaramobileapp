@@ -11,18 +11,18 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- * 
+ *
  * @author Simon Tegg <simon.tegg@totaralearning.com>
  */
 
 /* global onpostCommitDataToNative */
-import Models from "./scorm-models";
-import totalTime from "./scorm-total-time";
-import collectData from "./scorm-collect-data";
+import Models from "./scormModels";
+import totalTime from "./scormTotalTime";
+import collectData from "./scormCollectData";
 import { get, set } from "./utils/object";
-import lessonStatus from "./scorm-mutate-lesson-status";
-import initializeCMI from "./initialize-cmi";
-import getSCORMDataModel from "./get-scorm-data-model";
+import lessonStatus from "./scormMutateLessonStatus";
+import initializeCMI from "./initializeCmi";
+import getSCORMDataModel from "./getScormDataModel";
 import { getCurrentTimeStampInSeconds, isDefined, CMIIndex } from "./utils/index";
 
 function SCORMapi1_2(

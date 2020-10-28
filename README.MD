@@ -35,6 +35,11 @@ Go to client config section and choose the beta config : https://docs.sentry.io/
 
 Set your variables in `.env`. The main one is the SENTRY_AUTH_TOKEN. You can find it [here](https://sentry.io/settings/account/api/auth-tokens/)
 
+# Build offline SCORM server script
+
+Offline SCORM Server script should be bundled to "html" directory under "TotaraMobileOfflineScorm", it can be done using  
+`yarn build_scorm` command
+
 # Scripts
 
 All the scripts are executed the following way: `yarn [script]`
@@ -209,6 +214,7 @@ npm install -g detox-cli
 ```sh
 yarn detox --save-dev
 ```
+
 ```sh
 yarn detox --save-dev --no-package-lock
 ```
@@ -217,7 +223,7 @@ yarn detox --save-dev --no-package-lock
 
 - Run the following command to clear all the cache, modules && pods and reinstall.
 
-```sh  
+```sh
 yarn clear:all
 ```
 

@@ -81,7 +81,6 @@
         }
       };
       const onpostCommitDataToNative = (scormid, scoid, attempt, commit, cmi) => {
-        console.log("commitScormData commit:> ", commit, "cmi:", cmi);
         var scormData = {
           scormid: scormid,
           attempt: attempt,
@@ -106,9 +105,9 @@
         mozallowfullscreen="mozallowfullscreen"
         height="100%"
         width="100%"
-        src="loading_scorm.html"
+        src="loading.html"
       ></iframe>
     </div>
-    <script src="scorm_12.bundle.js"></script>
+    <script src="scormApi.1.2.bundle.js"></script>
   </body>
 </html>
