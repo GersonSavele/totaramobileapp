@@ -6,6 +6,7 @@
     "ios": "react-native run-ios",
     "android": "react-native run-android",
     "android_release": "react-native run-android --variant release",
+    "build_scorm": "webpack --config ./TotaraMobileOfflineScorm/webpack.config.js",
     "debug": "REACT_DEBUGGER=\"open -g 'rndebugger://set-debugger-loc?port=8001' ||\" react-native start",
     "start": "react-native start",
     "test": "jest",
@@ -122,7 +123,9 @@
     "react-test-renderer": "^16.13.1",
     "ts-jest": "^25.5.1",
     "typescript": "^3.6.3",
-    "waait": "^1.0.5"
+    "waait": "^1.0.5",
+    "webpack": "^5.3.0",
+    "webpack-cli": "^4.1.0"
   },
   "config": {
     "maxPackagesNumber": 100,
