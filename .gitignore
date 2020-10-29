@@ -59,10 +59,7 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
-<<<<<<< HEAD
-=======
 ./TotaraMobileOfflineScorm/html/scormApi.1.2.bundle.js
->>>>>>> MOB-814 scorm: integrate bundled offline scorm script
 
 # VSCode
 #
