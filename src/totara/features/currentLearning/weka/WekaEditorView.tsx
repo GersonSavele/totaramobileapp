@@ -139,13 +139,13 @@ const Configuration = ({ content = {}, attrs }: ConfigProps) => {
 };
 
 const TextContentWrapper = ({ content = {} }: EditorConfigProps) => {
-  if (!isEmpty(content.content)){
+  if (!isEmpty(content.content)) {
     return (
-      <Text style={styles.textContainerWrapper}>  
+      <Text style={styles.textContainerWrapper}>
         {content.content.map((nestedContent: any = {}, index: number) => {
           return <Configuration key={index} content={nestedContent} attrs={content.attrs} />;
         })}
-      </Text> 
+      </Text>
     );
   }
   return null;
@@ -318,21 +318,23 @@ const ModalView = ({ children, onRequestClose }: any) => {
 const LinkMedia = ({ content = {} }: ConfigProps) => {
   return (
     <View>
-      {!isEmpty(content.attrs.title) && (
+      {!isEmpty(content?.attrs?.title) && (
         <Text numberOfLines={2} style={[styles.linkMediaTitle, { color: color.textColor }]} testID="test_media_title">
           {content.attrs.title}
         </Text>
       )}
-      <View testID="test_media_content">
-        {content.attrs.url.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
-          <ImageViewerWrapper content={content} />
-        ) : content.attrs.url.match(/\.(?:wav|mp3)$/i) != null ? (
-          <EmbeddedMedia content={content} title="Audio file" />
-        ) : (
-          <WebViewWrapper content={content} />
-        )}
-      </View>
-      {!isEmpty(content.attrs.description) && (
+      {!isEmpty(content?.attrs?.url) && (
+        <View testID="test_media_content">
+          {content.attrs.url.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+            <ImageViewerWrapper content={content} />
+          ) : content.attrs.url.match(/\.(?:wav|mp3)$/i) != null ? (
+            <EmbeddedMedia content={content} title="Audio file" />
+          ) : (
+            <WebViewWrapper content={content} />
+          )}
+        </View>
+      )}
+      {!isEmpty(content?.attrs?.description) && (
         <Text style={[styles.linkMediaDescription, { color: color.textColor }]} testID="test_media_description">
           {content.attrs.description}
         </Text>
