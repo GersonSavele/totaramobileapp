@@ -15,18 +15,18 @@
 
 import { WekaEditorType } from "../constants";
 
-export interface Visitor<T>{
+interface Visitor<T>{
   visitWekaRoot(element: WekaRoot): T
   visitWekaParagraph(element: WekaParagraph): T
   visitWekaText(element: WekaText): T
   visitHeader(element: WekaHeading): T
  }
 
- export interface Node{
+interface Node{
    accept(v: Visitor<Element>): Element 
    content? : Node[]
  }
- 
+
  class WekaNode implements Node {
   content: Node[];
   constructor(content: Node[]){
@@ -81,7 +81,7 @@ const mapTypeToNode = {
   }
 };
 
-const jsonObjectToWekaNodes = (data): Node[] => {
+const jsonObjectToWekaNodes = (data : any): Node[] => {
   const dataArray = Array.isArray(data.content) ? data.content : data
     return dataArray && dataArray.map((item: any ) => {
       const { type, content, attrs } = item;
@@ -97,4 +97,8 @@ const wrappedWekaNodes = (nodes: Node[]): WekaRoot => {
   return res;
 }
 
+
+// Disable eslint working interface export from down.
+// eslint-disable-next-line no-undef
+export { Visitor, Node }
 export {  wrappedWekaNodes, jsonObjectToWekaNodes, WekaRoot, WekaParagraph, WekaHeading, WekaText };

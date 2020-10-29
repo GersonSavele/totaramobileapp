@@ -14,7 +14,7 @@
  */
 
 import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../wekaUtils";
-import { ToText } from "../nodesExtractor";
+import { ToShortSummary } from "../treeOperations";
 
 const mockEmptyParagraph = {
   type: "doc",
@@ -62,13 +62,11 @@ const mockParagraphContent = {
 describe("Weka Text/Paragraph", () => {
   it("Should show empty when weka content is empty", () => {
     const root = wrappedWekaNodes(jsonObjectToWekaNodes(mockEmptyParagraph));
-    var result = root.accept(new ToText());
-    expect(result).toBeNull;
+    expect(root.accept(new ToShortSummary())).toBeNull;
   });
   it("Should show string after extract weka content", () => {
     const root = wrappedWekaNodes(jsonObjectToWekaNodes(mockParagraphContent));
-    var result = root.accept(new ToText());
-    expect(result).toBe(
+    expect(root.accept(new ToShortSummary())).toBe(
       "This course will develop your understanding and ability to modify the behaviour of domestic animals.\nThere are 8 lessons in this course"
     );
   });

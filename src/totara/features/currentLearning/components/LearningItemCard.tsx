@@ -23,7 +23,7 @@ import { capitalizeFirstLetter } from "@totara/lib/tools";
 import ImageElement from "./ImageElement";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
-import { ToText } from "../weka/nodesExtractor";
+import { ToShortSummary } from "../weka/treeOperations";
 
 interface LearningItemCardProps {
   item: LearningItem;
@@ -62,10 +62,9 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
   );
 };
 
-const wekaSummary = (summary: string) => {
+const wekaSummary = (summary: Object) => {
   const root = wrappedWekaNodes(jsonObjectToWekaNodes(summary));
-  var result = root.accept(new ToText());
-  return result;
+  return root.accept(new ToShortSummary());
 };
 
 const styles = StyleSheet.create({

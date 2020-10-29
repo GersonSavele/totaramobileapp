@@ -14,8 +14,10 @@
  */
 
 import { Visitor, Node, WekaRoot, WekaParagraph, WekaHeading, WekaText} from "./WekaUtils";
-
-class ToText implements Visitor<string>{
+/*
+@ Class : this class use for node tree operator and implementing abstract method of visitor interface
+*/
+class ToShortSummary implements Visitor<string>{
   visitWekaRoot(element: WekaRoot): string {
     return this.all(element.content);
   }
@@ -28,11 +30,12 @@ class ToText implements Visitor<string>{
   visitWekaText(element: WekaText): string {
     return element.text;
   }
-  all(content: Node[]): any {
-   return content && content.map(( item ) => {
+  all(content: Node[]): string {
+   let text = content && content.map(( item ) => {
     return item && item.accept(this);
-    }).join("\n").toString()
+    })
+  return text.filter(String).join("\n").toString().trim()
   }
  }
 
- export {ToText}
+ export {ToShortSummary}
