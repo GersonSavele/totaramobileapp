@@ -318,7 +318,7 @@ const ModalView = ({ children, onRequestClose }: any) => {
 const LinkMedia = ({ content = {} }: ConfigProps) => {
   return (
     <View>
-      {content.attrs.title && (
+      {!isEmpty(content.attrs.title) && (
         <Text numberOfLines={2} style={[styles.linkMediaTitle, { color: color.textColor }]} testID="test_media_title">
           {content.attrs.title}
         </Text>
@@ -332,7 +332,7 @@ const LinkMedia = ({ content = {} }: ConfigProps) => {
           <WebViewWrapper content={content} />
         )}
       </View>
-      {content.attrs.description && (
+      {!isEmpty(content.attrs.description) && (
         <Text style={[styles.linkMediaDescription, { color: color.textColor }]} testID="test_media_description">
           {content.attrs.description}
         </Text>
