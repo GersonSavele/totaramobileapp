@@ -13,7 +13,22 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { ToText, wrappedWekaNodes } from "../WekaNode";
+import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../wekaUtils";
+import { ToText } from "../nodesExtractor";
+
+const mockEmptyParagraph = {
+  type: "doc",
+  content: [
+    {
+      type: "paragraph",
+      content: []
+    },
+    {
+      type: "paragraph",
+      content: []
+    }
+  ]
+};
 
 const mockParagraphContent = {
   type: "doc",
@@ -44,101 +59,17 @@ const mockParagraphContent = {
   ]
 };
 
-const listMockContent = {
-  type: "ordered_list",
-  attrs: {
-    order: "1"
-  },
-  content: [
-    {
-      type: "ordered_list",
-      attrs: {
-        order: "1"
-      },
-      content: [
-        {
-          type: "list_item",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text:
-                    "Students of psychology (animal study has long been a foundation for understanding human behaviour)"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          type: "list_item",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text: "People who work with animals (farms, wildlife, pets)"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          type: "list_item",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text: "Animal owners and animal lovers"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          type: "list_item",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text: "Laying a foundation to understand animal training"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
-
 describe("Weka Text/Paragraph", () => {
+  it("Should show empty when weka content is empty", () => {
+    const root = wrappedWekaNodes(jsonObjectToWekaNodes(mockEmptyParagraph));
+    var result = root.accept(new ToText());
+    expect(result).toBeNull;
+  });
   it("Should show string after extract weka content", () => {
-    const root = wrappedWekaNodes(mockParagraphContent.content);
+    const root = wrappedWekaNodes(jsonObjectToWekaNodes(mockParagraphContent));
     var result = root.accept(new ToText());
     expect(result).toBe(
       "This course will develop your understanding and ability to modify the behaviour of domestic animals.\nThere are 8 lessons in this course"
     );
   });
 });
-
-// describe("Weka orderedList", () => {
-//   it("Should show string after extract weka content", () => {
-//     const text = Array.isArray(jsonObjectToWekaNodes(listMockContent.content))
-//       ? jsonObjectToWekaNodes(listMockContent.content).map((item) => {
-//           return item;
-//         })
-//       : null;
-
-//     expect(text).toBe(
-//       "Students of psychology (animal study has long been a foundation for understanding human behaviour)"
-//     );
-//     // expect(text[1].nodes[0].text).toBe("There are 8 lessons in this course");
-//   });
-// });

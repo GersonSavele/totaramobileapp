@@ -22,6 +22,8 @@ import carouselItemStyles from "@totara/features/currentLearning/learningItems/c
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import ImageElement from "./ImageElement";
 import { DescriptionFormat } from "@totara/types/LearningItem";
+import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
+import { ToText } from "../weka/nodesExtractor";
 
 interface LearningItemCardProps {
   item: LearningItem;
@@ -29,6 +31,7 @@ interface LearningItemCardProps {
 
 const LearningItemCard = ({ item }: LearningItemCardProps) => {
   const [numberOfLines, setNumberOfLines] = useState(3);
+
   return (
     <View style={{ flex: 1 }}>
       <ImageElement item={item} image={item.imageSrc} itemType={item.itemtype} />
@@ -47,16 +50,22 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
               const lineHeight = TotaraTheme.textSmall.lineHeight!;
               setNumberOfLines(Math.floor(viewHeight / lineHeight));
             }}>
-            {item.summaryFormat !== DescriptionFormat.jsonEditor && (
-              <Text style={carouselItemStyles.summary} numberOfLines={numberOfLines}>
-                {capitalizeFirstLetter(item.summary?.toLowerCase())}
-              </Text>
-            )}
+            <Text style={carouselItemStyles.summary} numberOfLines={numberOfLines}>
+              {item.summaryFormat === DescriptionFormat.jsonEditor
+                ? item.summary && wekaSummary(JSON.parse(item.summary))
+                : capitalizeFirstLetter(item.summary?.toLowerCase())}
+            </Text>
           </View>
         </View>
       </View>
     </View>
   );
+};
+
+const wekaSummary = (summary: string) => {
+  const root = wrappedWekaNodes(jsonObjectToWekaNodes(summary));
+  var result = root.accept(new ToText());
+  return result;
 };
 
 const styles = StyleSheet.create({
