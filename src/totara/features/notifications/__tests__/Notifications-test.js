@@ -16,7 +16,7 @@
 import React from "react";
 import Notifications from "@totara/features/notifications/Notifications";
 import { MockedProvider } from "@apollo/react-testing";
-import { cleanup, render, act, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, act, fireEvent, waitFor } from "@testing-library/react-native";
 import wait from "waait";
 
 import {
@@ -42,8 +42,6 @@ const createTestPropsWithNavigation = (props: Object) => ({
 });
 
 describe("Notifications", () => {
-  afterEach(cleanup);
-
   test("Should render loading", async () => {
     const tree = (
       <MockedProvider mocks={notificationsMock}>

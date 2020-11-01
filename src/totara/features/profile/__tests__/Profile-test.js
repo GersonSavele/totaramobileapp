@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { act, cleanup, fireEvent, render } from "@testing-library/react-native";
+import { act, fireEvent, render } from "@testing-library/react-native";
 import { MockedProvider } from "@apollo/react-testing";
 import { profileMock, profileMockError } from "@totara/features/profile/api/profile.mock";
 import Profile from "@totara/features/profile/Profile";
@@ -33,8 +33,6 @@ const navigationMock = {
 };
 
 describe("Profile", () => {
-  afterEach(cleanup);
-
   test("Should render loading", async () => {
     const tree = (
       <MockedProvider mocks={profileMock}>

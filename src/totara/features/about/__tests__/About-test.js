@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { cleanup, render } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import React from "react";
 import AboutStack from "@totara/features/about/AboutStack";
 import About from "@totara/features/about/About";
@@ -27,15 +27,13 @@ const renderWithNavigation = () => {
 };
 
 describe("About", () => {
-  afterEach(cleanup);
-
-  test("Should render with AboutStack", async () => {
+  test("Should render with AboutStack", () => {
     const { findByTestId } = renderWithNavigation();
 
     expect(findByTestId("aboutContainer")).toBeTruthy();
   });
 
-  test("Should render About view", async () => {
+  test("Should render About view", () => {
     const { findByTestId } = render(<About />);
     expect(findByTestId("aboutContainer")).toBeTruthy();
   });

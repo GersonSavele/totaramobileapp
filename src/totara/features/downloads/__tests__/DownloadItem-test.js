@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { fireEvent, render, cleanup } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import DownloadItem from "@totara/features/downloads/DownloadItem";
 import {
@@ -23,7 +23,6 @@ import {
 import { ResourceState } from "@totara/types/Resource";
 
 describe("DownloadItem", () => {
-  afterEach(cleanup);
   it("Should render DownloadItem added, with name, size in megabytes", () => {
     const itemMega = { ...downloadItemMockAdded };
 

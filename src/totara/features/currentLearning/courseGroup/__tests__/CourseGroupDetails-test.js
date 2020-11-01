@@ -15,7 +15,7 @@
 
 import React from "react";
 import { MockedProvider } from "@apollo/react-testing";
-import { cleanup, render, act } from "@testing-library/react-native";
+import { render, act } from "@testing-library/react-native";
 import wait from "waait";
 
 import { programMock, certificationMock, mockEmpty, mockError } from "../api/courseGroup.mock";
@@ -40,7 +40,6 @@ const navigationCert = {
 };
 
 describe("Program graphQL", () => {
-  afterEach(cleanup);
   test("Should render loading", async () => {
     const tree = (
       <MockedProvider mocks={mockEmpty}>
