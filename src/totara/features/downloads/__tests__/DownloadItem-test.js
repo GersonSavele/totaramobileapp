@@ -22,9 +22,8 @@ import {
 } from "@totara/features/downloads/__mocks__/downloadMock";
 import { ResourceState } from "@totara/types/Resource";
 
-afterEach(cleanup);
-
 describe("DownloadItem", () => {
+  afterEach(cleanup);
   it("Should render DownloadItem added, with name, size in megabytes", () => {
     const itemMega = { ...downloadItemMockAdded };
 
