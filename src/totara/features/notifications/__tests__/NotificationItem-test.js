@@ -29,42 +29,42 @@ describe("NotificationItem", () => {
     fullMessageFormat: "PLAIN"
   };
 
-  it("Should show as not read", () => {
+  it("Should show as not read", async () => {
     const itemToBeTested = { ...defaultMockItem };
     const { getByTestId } = render(<NotificationItem item={itemToBeTested} />);
 
-    const titleLabel = getByTestId("test_title");
+    const titleLabel = await getByTestId("test_title");
     const secondStyleAdded = titleLabel.props.style[1];
     expect(secondStyleAdded).toBe(false);
   });
 
-  it("Should show as read", () => {
+  it("Should show as read", async () => {
     const itemToBeTested = { ...defaultMockItem, isRead: true };
     const { getByTestId } = render(<NotificationItem item={itemToBeTested} />);
 
     const titleLabel = getByTestId("test_title");
-    const secondStyleAdded = titleLabel.props.style[1];
+    const secondStyleAdded = await titleLabel.props.style[1];
     expect(secondStyleAdded.fontWeight).toBe(fontWeights.fontWeightRegular);
   });
 
-  it("Should match title", () => {
+  it("Should match title", async () => {
     const targetValue = "this is a test";
     const itemToBeTested = { ...defaultMockItem, subject: targetValue };
     const { getByTestId } = render(<NotificationItem item={itemToBeTested} />);
 
-    const titleLabel = getByTestId("test_title");
+    const titleLabel = await getByTestId("test_title");
     const childValue = titleLabel.children[0];
     expect(childValue).toBe(targetValue);
   });
 
-  it("Should match 'time ago' with 'a few seconds ago'", () => {
+  it("Should match 'time ago' with 'a few seconds ago'", async () => {
     const itemToBeTested = {
       ...defaultMockItem,
       timeCreated: moment().utc().unix()
     };
 
     const { getByTestId } = render(<NotificationItem item={itemToBeTested} />);
-    const timeAgoLabel = getByTestId("test_timeCreated");
+    const timeAgoLabel = await getByTestId("test_timeCreated");
     const childValue = timeAgoLabel.children[0];
     expect(childValue).toBe("a few seconds ago");
   });

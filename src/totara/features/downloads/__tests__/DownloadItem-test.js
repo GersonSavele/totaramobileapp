@@ -23,12 +23,12 @@ import {
 import { ResourceState } from "@totara/types/Resource";
 
 describe("DownloadItem", () => {
-  it("Should render DownloadItem added, with name, size in megabytes", () => {
+  it("Should render DownloadItem added, with name, size in megabytes", async () => {
     const itemMega = { ...downloadItemMockAdded };
 
     const { getByTestId } = render(<DownloadItem item={itemMega} />);
 
-    const test_DownloadItemItemID = getByTestId("test_DownloadItemItemID");
+    const test_DownloadItemItemID = await getByTestId("test_DownloadItemItemID");
     expect(test_DownloadItemItemID.props.testID).toBe("test_DownloadItemItemID");
 
     const test_DownloadItemName = getByTestId("test_DownloadItemName");
@@ -39,37 +39,37 @@ describe("DownloadItem", () => {
     expect(test_DownloadItemSize.children[0]).toBe("1.00MB");
   });
 
-  it("Should render DownloadItem size in kilobytes", () => {
+  it("Should render DownloadItem size in kilobytes", async () => {
     const itemKilo = { ...downloadItemMockAddedWithKilo };
     const { getByTestId } = render(<DownloadItem item={itemKilo} />);
-    const test_DownloadItemSizeKilo = getByTestId("test_DownloadItemSize");
+    const test_DownloadItemSizeKilo = await getByTestId("test_DownloadItemSize");
     expect(test_DownloadItemSizeKilo.children[0]).toBe("10KB");
   });
 
-  it("Should render DownloadItem with no size defined", () => {
+  it("Should render DownloadItem with no size defined", async () => {
     const item = { ...downloadItemMockAdded, sizeInBytes: undefined };
     const { getByTestId } = render(<DownloadItem item={item} />);
-    const test_DownloadItemSizeKilo = getByTestId("test_DownloadItemSize");
+    const test_DownloadItemSizeKilo = await getByTestId("test_DownloadItemSize");
     expect(test_DownloadItemSizeKilo.children[0]).toBe("...");
   });
 
-  it("Should render DownloadItem WITH NO select option", () => {
+  it("Should render DownloadItem WITH NO select option", async () => {
     const item = { ...downloadItemMockAdded };
     const { queryByTestId } = render(<DownloadItem item={item} />);
-    expect(queryByTestId("test_DownloadItemSelectIcon")).toBeNull();
+    expect(await queryByTestId("test_DownloadItemSelectIcon")).toBeNull();
   });
 
-  it("Should render DownloadItem WITH select option", () => {
+  it("Should render DownloadItem WITH select option", async () => {
     const item = { ...downloadItemMockAdded };
     const { getByTestId } = render(<DownloadItem item={item} selectable={true} />);
-    expect(getByTestId("test_DownloadItemSelectIcon")).toBeTruthy();
+    expect(await getByTestId("test_DownloadItemSelectIcon")).toBeTruthy();
   });
 
-  it("Should render DownloadItem with downloading state", () => {
+  it("Should render DownloadItem with downloading state", async () => {
     const item = { ...downloadItemMockAdded, state: ResourceState.Downloading };
     const { getByTestId } = render(<DownloadItem item={item} />);
 
-    expect(getByTestId("test_DownloadItemResourceDownloader")).toBeTruthy();
+    expect(await getByTestId("test_DownloadItemResourceDownloader")).toBeTruthy();
   });
 
   it("Should press DownloadItem and onItemPressCallback called once ", async () => {
@@ -80,7 +80,7 @@ describe("DownloadItem", () => {
       <DownloadItem item={item} onItemPress={onItemPressCallback} testID={"test_DownloadItem"} />
     );
 
-    fireEvent.press(getByTestId("test_DownloadItem"));
+    fireEvent.press(await getByTestId("test_DownloadItem"));
 
     expect(onItemPressCallback).toHaveBeenCalledTimes(1);
   });
@@ -93,7 +93,7 @@ describe("DownloadItem", () => {
       <DownloadItem item={item} onItemLongPress={onItemLongPressCallback} testID={"test_DownloadItem"} />
     );
 
-    fireEvent(getByTestId("test_DownloadItem"), "longPress");
+    fireEvent(await getByTestId("test_DownloadItem"), "longPress");
     expect(onItemLongPressCallback).toHaveBeenCalledTimes(1);
   });
 });

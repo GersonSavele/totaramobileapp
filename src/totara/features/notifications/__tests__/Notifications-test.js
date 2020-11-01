@@ -50,7 +50,7 @@ describe("Notifications", () => {
     );
 
     const { getByTestId } = render(tree);
-    const loading = getByTestId("test_loading");
+    const loading = await getByTestId("test_loading");
     expect(loading).toBeTruthy();
   });
 
@@ -65,7 +65,7 @@ describe("Notifications", () => {
     await act(async () => {
       await wait(0);
     });
-    const loadingError = getByTestId("test_loadingError");
+    const loadingError = await getByTestId("test_loadingError");
     expect(loadingError).toBeTruthy();
   });
 
@@ -80,7 +80,7 @@ describe("Notifications", () => {
     await act(async () => {
       await wait(0);
     });
-    const emptyListContainer = getByTestId("test_notificationsEmptyContainer");
+    const emptyListContainer = await getByTestId("test_notificationsEmptyContainer");
     expect(emptyListContainer).toBeTruthy();
   });
 
@@ -95,7 +95,7 @@ describe("Notifications", () => {
     await act(async () => {
       await wait(0);
     });
-    const notificationsList = getByTestId("test_notificationsList");
+    const notificationsList = await getByTestId("test_notificationsList");
     expect(notificationsList).toBeTruthy();
   });
 
@@ -157,7 +157,7 @@ describe("Notifications", () => {
     await act(async () => {
       await wait(0);
     });
-    const unReadItem1 = getAllByTestId("test_notificationItem")[0];
+    const unReadItem1 = await getAllByTestId("test_notificationItem")[0];
 
     fireEvent.press(unReadItem1);
     await act(async () => {

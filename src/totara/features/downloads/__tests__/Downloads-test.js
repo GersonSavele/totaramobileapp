@@ -54,14 +54,14 @@ describe("Downloads", () => {
     expect(findByTestId("downloadsContainer")).toBeTruthy();
   });
 
-  it("Should render Downloads empty state", () => {
+  it("Should render Downloads empty state", async () => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return [];
     });
 
     const { getByTestId } = render(<Downloads navigation={navigationMock.navigation} />);
 
-    const test_DownloadsEmptyState = getByTestId("test_DownloadsEmptyState");
+    const test_DownloadsEmptyState = await getByTestId("test_DownloadsEmptyState");
     expect(test_DownloadsEmptyState).toBeTruthy();
   });
 
@@ -72,7 +72,7 @@ describe("Downloads", () => {
 
     const { getAllByTestId } = render(<Downloads navigation={navigationMock.navigation} />);
 
-    const testItems = getAllByTestId("test_DownloadsItem");
+    const testItems = await getAllByTestId("test_DownloadsItem");
     expect(testItems.length).toBe(2);
   });
 
@@ -87,7 +87,7 @@ describe("Downloads", () => {
       await wait(0);
     });
 
-    const itemTest = getByTestId("test_DownloadsItem");
+    const itemTest = await getByTestId("test_DownloadsItem");
     fireEvent.press(itemTest);
 
     expect(navigation.navigate).toBeCalled();
@@ -104,7 +104,7 @@ describe("Downloads", () => {
       await wait(0);
     });
 
-    const itemTest = getByTestId("test_DownloadsItem");
+    const itemTest = await getByTestId("test_DownloadsItem");
     fireEvent(itemTest, "longPress");
   });
 });
