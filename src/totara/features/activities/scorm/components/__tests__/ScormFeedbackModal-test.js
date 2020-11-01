@@ -54,7 +54,7 @@ describe("ScormFeedbackModal", () => {
       }
     };
     const { getByTestId } = render(<ScormFeedbackModal navigation={navigation} />);
-    const view = getByTestId(ATTEMPT_FEEDBACK);
+    const view = await getByTestId(ATTEMPT_FEEDBACK);
     expect(view).toBeTruthy();
     const receivedScoreText = view.props.children.props.title;
     expect(receivedScoreText).toBe("");

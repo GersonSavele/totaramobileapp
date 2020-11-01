@@ -37,13 +37,13 @@ describe("CurrentLearningListViewItem", () => {
       await wait(0);
     });
 
-    const courseType = getByTestId("test_CurrentLearningItem_Type");
+    const courseType = await getByTestId("test_CurrentLearningItem_Type");
     expect(courseType.children[0]).toBe("Course");
 
-    const title = getByTestId("test_CurrentLearningItem_Title");
+    const title = await getByTestId("test_CurrentLearningItem_Title");
     expect(title.children[0]).toBe("Example course fullname");
 
-    const progress = getByTestId("test_CurrentLearningItem_Progress");
+    const progress = await getByTestId("test_CurrentLearningItem_Progress");
     const progressPercentage = progress.children[1].children[0].children[0].children[0].children[0];
     expect(progressPercentage).toBe("25%");
   });
@@ -56,7 +56,7 @@ describe("CurrentLearningListViewItem", () => {
       await wait(0);
     });
 
-    const programType = getByTestId("test_CurrentLearningItem_Type");
+    const programType = await getByTestId("test_CurrentLearningItem_Type");
     expect(programType.children[0]).toBe("Program");
   });
 
@@ -68,7 +68,7 @@ describe("CurrentLearningListViewItem", () => {
       await wait(0);
     });
 
-    const programType = getByTestId("test_CurrentLearningItem_Type");
+    const programType = await getByTestId("test_CurrentLearningItem_Type");
     expect(programType.children[0]).toBe("Certification");
   });
 
@@ -81,7 +81,7 @@ describe("CurrentLearningListViewItem", () => {
       await wait(0);
     });
 
-    const duedateComponent = getByTestId("test_dueDate");
+    const duedateComponent = await getByTestId("test_dueDate");
     const color = duedateComponent.props.style.color;
     expect(color).toBe(TotaraTheme.colorAlert);
   });
@@ -95,7 +95,7 @@ describe("CurrentLearningListViewItem", () => {
       await wait(0);
     });
 
-    const duedateComponent = getByTestId("test_dueDate");
+    const duedateComponent = await getByTestId("test_dueDate");
     const color = duedateComponent.props.style.color;
     expect(color).toBe(TotaraTheme.colorWarning);
   });
@@ -109,7 +109,7 @@ describe("CurrentLearningListViewItem", () => {
       await wait(0);
     });
 
-    const duedateComponent = getByTestId("test_dueDate");
+    const duedateComponent = await getByTestId("test_dueDate");
     const color = duedateComponent.props.style.color;
     expect(color).toBe(TotaraTheme.colorInfo);
   });
