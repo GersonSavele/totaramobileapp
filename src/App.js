@@ -110,7 +110,6 @@ const mutationForToken = gql`
 const AppContainer = () => {
   const { client } = useQuery(notificationsQuery);
 
-  NotificationCenter.requestUserPermission();
   ResourceManager.resumeDownloads();
 
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
@@ -136,12 +135,12 @@ const AppContainer = () => {
       }
     };
 
-    messaging()
-      .getToken()
-      .then((token) => {
-        console.debug("TOKEN=========>", token);
-        updateToken({ token: token });
-      });
+    NotificationCenter.registerPushNotifications().then(token=>{
+      console.debug("TOKEN=========>", token);
+      updateToken({ token: token });
+    }).catch(err=>{
+      console.debug("TOKEN ERROR=========>", err);
+    });
 
     messaging().onNotificationOpenedApp((remoteMessage) => {
       console.debug("onNotificationOpenedApp ===>", remoteMessage);

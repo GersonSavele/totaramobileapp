@@ -15,15 +15,18 @@
 
 import messaging from "@react-native-firebase/messaging";
 
-const requestUserPermission = async () => {
-  const authorizationStatus = await messaging().requestPermission();
-  if (authorizationStatus) {
-    console.log("Notifications Permission status:", authorizationStatus);
+const registerPushNotifications = async () => {
+  try {
+    await messaging().requestPermission()
+  } catch (error) {
+    console.debug("Notifications Permission status:", error);
+    return
   }
+  return await messaging().getToken();
 };
 
 const NotificationCenter = {
-  requestUserPermission
+  registerPushNotifications
 };
 
 export default NotificationCenter;
