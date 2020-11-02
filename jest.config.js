@@ -35,7 +35,7 @@ module.exports = {
     "@resources/(.*)": "<rootDir>/src/resources/$1"
   },
   testPathIgnorePatterns: ["e2e"],
-  setupFiles: ["<rootDir>/jest.setup.js"],
+  setupFiles: ["./node_modules/react-native-gesture-handler/jestSetup.js", "<rootDir>/jest.setup.js"],
   collectCoverageFrom: ["src/totara/**/*.{js,jsx,ts,tsx}"],
-  setupFilesAfterEnv: ["<rootDir>setup-tests.js", "@testing-library/jest-native/extend-expect"]
+  setupFilesAfterEnv: ["<rootDir>setup-tests.js"]
 };
