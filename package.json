@@ -8,7 +8,7 @@
     "android_release": "react-native run-android --variant release",
     "debug": "REACT_DEBUGGER=\"open -g 'rndebugger://set-debugger-loc?port=8001' ||\" react-native start",
     "start": "react-native start",
-    "test": "jest --config jest.config.js",
+    "test": "jest",
     "test-coverage": "jest --config jest.config.js --collectCoverage",
     "test-junit": "jest --config jest.config.js --ci --reporters=jest-junit --reporters=default",
     "eslint": "eslint -c .eslintrc.json --ext .js --ext .ts --ext .tsx ./src/totara",
@@ -147,17 +147,5 @@
       }
     },
     "test-runner": "jest"
-  },
-  "jest": {
-    "preset": "react-native",
-    "moduleDirectories": [
-      "node_modules",
-      "src",
-      "test"
-    ],
-    "setupFiles": [
-      "./node_modules/react-native-gesture-handler/jestSetup.js",
-      "<rootDir>/jest.setup.js"
-    ]
   }
 }
