@@ -164,3 +164,13 @@ jest.mock("react-native-fs", () => ({
   LibraryDirectoryPath: jest.fn(),
   PicturesDirectoryPath: jest.fn()
 }));
+
+jest.mock('redux-persist', () => {
+  const real = jest.requireActual('redux-persist');
+  return {
+    ...real,
+    persistReducer: jest
+      .fn()
+      .mockImplementation((config, reducers) => reducers),
+  };
+});
