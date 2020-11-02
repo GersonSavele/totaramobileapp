@@ -29,6 +29,7 @@ import { paddings } from "@totara/theme/constants";
 import { Switch, SwitchOption } from "@totara/components/Switch";
 import { Icons } from "@resources/icons";
 import { NavigationStackProp } from "react-navigation-stack";
+import { sortByDueDateThenTypeThenFullName } from "@totara/features/currentLearning/utils";
 
 enum ListingOrientation {
   Carousel,
@@ -59,7 +60,9 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
   };
 
   if (data) {
-    const currentLearning = data.currentLearning;
+    const { currentLearning: notSorted } = data;
+    const currentLearning = sortByDueDateThenTypeThenFullName(notSorted);
+
     return (
       <View style={[theme.viewContainer, { flex: 1 }]}>
         <NavigationEvents onWillFocus={onContentRefresh} />
