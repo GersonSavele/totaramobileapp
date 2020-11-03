@@ -59,7 +59,6 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
-./TotaraMobileOfflineScorm/html/scormApi.1.2.bundle.js
 
 # VSCode
 #
