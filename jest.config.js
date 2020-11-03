@@ -34,7 +34,7 @@ module.exports = {
     "@totara/(.*)": "<rootDir>/src/totara/$1",
     "@resources/(.*)": "<rootDir>/src/resources/$1"
   },
-  testPathIgnorePatterns: ["e2e", "src"],
+  testPathIgnorePatterns: ["e2e", "src/totara/features/downloads", "src/totara/features/notifications"],
   setupFiles: ["./node_modules/react-native-gesture-handler/jestSetup.js", "<rootDir>/jest.setup.js"],
   collectCoverageFrom: ["src/totara/**/*.{js,jsx,ts,tsx}"],
   setupFilesAfterEnv: ["<rootDir>setup-tests.js"]
