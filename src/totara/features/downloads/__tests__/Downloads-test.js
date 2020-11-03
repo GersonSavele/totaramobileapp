@@ -49,9 +49,9 @@ describe("Downloads", () => {
     cleanup();
   });
 
-  it("Should render DownloadsStack", () => {
-    const { findByTestId } = renderWithAppContainer();
-    expect(findByTestId("downloadsContainer")).toBeTruthy();
+  it("Should render DownloadsStack", async () => {
+    const { container } = renderWithAppContainer();
+    expect(container).toBeTruthy();
   });
 
   it("Should render Downloads empty state", async () => {

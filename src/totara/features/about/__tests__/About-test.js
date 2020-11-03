@@ -27,14 +27,13 @@ const renderWithNavigation = () => {
 };
 
 describe("About", () => {
-  test("Should render with AboutStack", () => {
-    const { findByTestId } = renderWithNavigation();
-
-    expect(findByTestId("aboutContainer")).toBeTruthy();
+  test("Should render with AboutStack", async() => {
+    const { container } = renderWithNavigation();
+    expect(container).toBeTruthy();
   });
 
-  test("Should render About view", () => {
-    const { findByTestId } = render(<About />);
-    expect(findByTestId("aboutContainer")).toBeTruthy();
+  test("Should render About view", async() => {
+    const { container } = render(<About />);
+    expect(container).toBeTruthy();
   });
 });
