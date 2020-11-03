@@ -32,6 +32,12 @@ const ImageWrapper = ({ url, style }: ImageWrapperType) => {
   return (
     <FastImage
       style={style}
+      onLoadEnd={() => {
+        console.log("Loading end");
+      }}
+      onError={() => {
+        console.log("Loading onError");
+      }}
       source={{
         uri: url,
         cache: "web",

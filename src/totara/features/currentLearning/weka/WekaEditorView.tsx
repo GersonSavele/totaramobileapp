@@ -15,7 +15,6 @@
 
 import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
-import FastImage from "react-native-fast-image";
 import { WebView } from "react-native-webview";
 import { isEmpty } from "lodash";
 import { AuthContext } from "@totara/core";
@@ -275,27 +274,13 @@ const Attachment = ({ content = {} }: ConfigProps) => {
 const ImageViewerWrapper = ({ content = {} }: ConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-
-  const { apiKey } = appState as AppState;
+  // Implementing "random number" key because image view will be replaced by next image view when there is more images
   return (
-    <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose}>
+    <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose} key={Math.random()}>
       <ImageWrapper url={content.attrs.url} style={styles.imageContainer} />
       {visible && (
         <ModalView onRequestClose={onRequestClose}>
-          <FastImage
-            source={{
-              uri: content.attrs.url,
-              cache: "web",
-              priority: FastImage.priority.normal,
-              headers: {
-                [AUTHORIZATION]: `Bearer ${apiKey}`
-              }
-            }}
-            resizeMode="contain"
-            style={{ height: "80%" }}></FastImage>
+          <ImageWrapper url={content.attrs.url} style={{ height: "80%", resizeMode: "contain" }} />
         </ModalView>
       )}
     </TouchableOpacity>

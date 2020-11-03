@@ -131,7 +131,7 @@ const wekaEditorStyle = StyleSheet.create({
   closeButtonWrap : {
     height: "10%", 
     justifyContent: "flex-end", 
-    alignItems: "flex-end"
+    alignItems: "flex-start"
   }
 });
 

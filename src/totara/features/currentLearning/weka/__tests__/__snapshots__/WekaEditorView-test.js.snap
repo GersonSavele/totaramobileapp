@@ -1851,6 +1851,8 @@ Array [
       }
     >
       <FastImageView
+        onFastImageError={[Function]}
+        onFastImageLoadEnd={[Function]}
         resizeMode="cover"
         source={
           Object {
