@@ -16,9 +16,10 @@
 import i18n from "i18n-js";
 import * as RNLocalize from "react-native-localize";
 import moment from "moment";
-import { en, pt } from "@totara/locale/languages";
 
-const translations = { en, pt };
+// if you cannot have this all.json working properly for any reason, just import en.json instead.
+import * as translations from "./languages/all.json";
+
 const { languageTag } = RNLocalize.findBestAvailableLanguage(Object.keys(translations)) || { languageTag: "en" };
 i18n.defaultLocale = languageTag;
 i18n.locale = languageTag;
