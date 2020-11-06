@@ -274,9 +274,9 @@ const Attachment = ({ content = {} }: ConfigProps) => {
 const ImageViewerWrapper = ({ content = {} }: ConfigProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
-  // Implementing "random number" key because image view will be replaced by next image view when there is more images
+  // Implementing key with filename because the list is not updating correctly the image without this
   return (
-    <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose} key={Math.random()}>
+    <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose} key={`index_${content?.attrs?.filename}`}>
       <ImageWrapper url={content.attrs.url} style={styles.imageContainer} />
       {visible && (
         <ModalView onRequestClose={onRequestClose}>
