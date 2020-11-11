@@ -13,9 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { WebView, WebViewMessageEvent, WebViewNavigation } from "react-native-webview";
+import Orientation from "react-native-orientation-locker";
 
 import { SCORM_TEST_IDS } from "../constants";
 import WebviewToolbar from "../../components/WebviewToolbar";
@@ -42,6 +43,11 @@ const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
   const onNavigationStateChange = (navState: WebViewNavigation) => {
     setNavState(navState);
   };
+
+  useEffect(() => {
+    Orientation.unlockAllOrientations();
+    return () => Orientation.lockToPortrait();
+  });
   return (
     <SafeAreaView style={styles.playerContainer} testID={OFFLINE_PLAYER_ID}>
       <WebView

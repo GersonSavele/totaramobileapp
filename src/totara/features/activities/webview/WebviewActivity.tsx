@@ -19,6 +19,7 @@ import PDFView from "react-native-view-pdf";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import { Activity } from "@totara/types";
 import { AuthenticatedWebView } from "@totara/auth";
+import Orientation from "react-native-orientation-locker";
 
 import { NavigationStackProp } from "react-navigation-stack";
 import WebviewToolbar from "../components/WebviewToolbar";
@@ -45,6 +46,11 @@ type WebviewActivityProps = {
 
 const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
   const { uri, backAction, activity, fileurl, mimetype, apiKey } = navigation.state.params as WebviewActivityParams;
+  useEffect(() => {
+    Orientation.unlockAllOrientations();
+    return () => Orientation.lockToPortrait();
+  });
+
   return (
     <SafeAreaView style={TotaraTheme.viewContainer}>
       {mimetype === PDF_TYPE ? (

@@ -20,7 +20,8 @@ import * as Sentry from "@sentry/react-native";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider, useSelector } from "react-redux";
 import { Root } from "native-base";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
+import ScreenOrientation, { PORTRAIT } from "react-native-orientation-locker/ScreenOrientation";
 
 import { store, persistor } from "./totara/store";
 import { AuthProvider } from "@totara/core/AuthProvider";
@@ -67,6 +68,7 @@ const App: () => React$Node = () => {
               <LocaleResolver>
                 <Provider store={store}>
                   <PersistGate loading={null} persistor={persistor}>
+                    <ScreenOrientation orientation={PORTRAIT} />
                     <AppContainer />
                   </PersistGate>
                   <AdditionalAction />
@@ -121,12 +123,24 @@ const AppContainer = () => {
   };
 
   useEffect(() => {
-    NotificationCenter.registerPushNotifications().then(token=>{
-      console.debug("TOKEN=========>", token);
-      updateToken({ token: token });
-    }).catch(err=>{
-      console.debug("TOKEN ERROR=========>", err);
-    });
+    const checkForNotifications = (client) => {
+      if (client) {
+        client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" }).then((then) => {
+          const { message_popup_messages } = then.data;
+          const count = message_popup_messages.filter((x) => x.isread === false).length;
+          updateCount({ count: count });
+        });
+      }
+    };
+
+    NotificationCenter.registerPushNotifications()
+      .then((token) => {
+        console.debug("TOKEN=========>", token);
+        updateToken({ token: token });
+      })
+      .catch((err) => {
+        console.debug("TOKEN ERROR=========>", err);
+      });
 
     messaging().onNotificationOpenedApp((remoteMessage) => {
       handleNotificationReceived(remoteMessage);

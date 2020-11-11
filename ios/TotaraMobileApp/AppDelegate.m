@@ -4,6 +4,7 @@
 #import <React/RCTLinkingManager.h>
 #import <Firebase.h>
 #import <RNFSManager.h>
+#import "Orientation.h"
 
 @implementation AppDelegate
 
@@ -50,6 +51,8 @@ continueUserActivity:(nonnull NSUserActivity *)userActivity
 restorationHandler: (nonnull void (^)(NSArray<id<UIUserActivityRestoring>> *_Nullable))restorationHandler {
   return [RCTLinkingManager application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
-
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
+}
 
 @end

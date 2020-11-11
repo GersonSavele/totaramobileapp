@@ -272,6 +272,8 @@ PODS:
     - React
   - react-native-netinfo (5.9.4):
     - React
+  - react-native-orientation-locker (1.2.0):
+    - React
   - react-native-safe-area-context (0.7.3):
     - React
   - react-native-static-server (0.4.2):
@@ -412,6 +414,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-cookies (from `../node_modules/@react-native-community/cookies`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-static-server (from `../node_modules/react-native-static-server`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -500,6 +503,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cookies"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-static-server:
@@ -594,6 +599,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-cookies: bc1f91a504ee091f1998a1b6c7ff4b7a9ed5b80e
   react-native-netinfo: eed0fb1d6a9424e98ce686f92aad62ff427d4bc9
+  react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-static-server: af5ae03c8114e5756e27c7ae32a116002f23be02
   react-native-webview: 67b9024de02e7c0af9400283b0e3ca6eec55dc26
