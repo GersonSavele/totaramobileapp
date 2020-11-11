@@ -20,4 +20,5 @@ export interface NotificationMessage {
   fullMessageFormat: string;
   isRead: boolean;
   timeCreated: number;
+  contextUrl: string;
 }

@@ -20,6 +20,9 @@ import { NotificationMessage } from "@totara/types";
 import { fontWeights, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { timeAgo } from "@totara/lib/tools";
+import { AuthenticatedWebView } from "@totara/auth";
+import { DescriptionFormat } from "@totara/types/LearningItem";
+import WekaEditorView from "../currentLearning/weka/WekaEditorView";
 
 type ParamList = {
   messageDetails: NotificationMessage;
@@ -28,8 +31,9 @@ type ParamList = {
 type NotificationDetailProps = StackScreenProps<ParamList, "messageDetails">;
 
 const NotificationDetails = ({ route }: NotificationDetailProps) => {
-  const { subject, timeCreated, fullMessage } = route.params;
+  const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat } = route.params;
 
+  if (contextUrl) return <AuthenticatedWebView uri={contextUrl} />;
   return (
     <View style={styles.mainContainer}>
       <View>
@@ -41,7 +45,11 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
         </Text>
       </View>
       <View style={styles.content}>
-        <Text testID={"test_fullMessage"}>{fullMessage}</Text>
+        {fullMessageFormat === DescriptionFormat.jsonEditor ? (
+          <WekaEditorView content={fullMessage as string} />
+        ) : (
+          <Text testID={"test_fullMessage"}>{fullMessage}</Text>
+        )}
       </View>
     </View>
   );

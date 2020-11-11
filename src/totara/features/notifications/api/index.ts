@@ -18,13 +18,24 @@ import { NotificationMessage } from "@totara/types";
 
 const parser = (data) => {
   if (!data) return [];
-  return data.message_popup_messages.map((row) => {
+  return data.message_popup_messages.map((message) => {
+    const {
+      id,
+      subject,
+      isread: isRead,
+      fullmessage: fullMessage,
+      fullmessageformat: fullMessageFormat,
+      timecreated: timeCreated,
+      contextUrl
+    } = message;
     return {
-      id: row.id,
-      subject: row.subject,
-      isRead: row.isread,
-      fullMessage: row.fullmessage,
-      timeCreated: row.timecreated
+      id,
+      subject,
+      isRead,
+      fullMessage,
+      timeCreated,
+      fullMessageFormat,
+      contextUrl
     } as NotificationMessage;
   });
 };
@@ -43,6 +54,7 @@ const notificationsQuery = gql`
       fullmessageformat
       timecreated
       isread
+      contextUrl
       __typename
     }
   }
