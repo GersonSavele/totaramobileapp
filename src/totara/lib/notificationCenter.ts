@@ -19,7 +19,7 @@ const registerPushNotifications = async () => {
   try {
     await messaging().requestPermission()
   } catch (error) {
-    console.debug("Notifications Permission status:", error);
+    console.debug("Notifications Permission status error:", error);
     return
   }
   return await messaging().getToken();

@@ -129,7 +129,6 @@ const AppContainer = () => {
         client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" }).then((then) => {
           const { message_popup_messages } = then.data;
           const count = message_popup_messages.filter((x) => x.isread === false).length;
-          console.log("counting", count);
           updateCount({ count: count });
         });
       }
@@ -143,7 +142,6 @@ const AppContainer = () => {
     });
 
     messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.debug("onNotificationOpenedApp ===>", remoteMessage);
       checkForNotifications(client);
       handleNotificationReceived(remoteMessage);
     });
@@ -151,19 +149,16 @@ const AppContainer = () => {
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
-        console.debug("getInitialNotification ===>", remoteMessage);
         checkForNotifications(client);
         handleNotificationReceived(remoteMessage);
       });
 
-    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+    messaging().setBackgroundMessageHandler(async () => {
       checkForNotifications(client);
-      console.debug("setBackgroundMessageHandler", remoteMessage);
     });
 
-    messaging().onMessage(async (remoteMessage) => {
+    messaging().onMessage(async () => {
       checkForNotifications(client);
-      console.debug("onMessage: ", remoteMessage);
     });
 
     return () => {
