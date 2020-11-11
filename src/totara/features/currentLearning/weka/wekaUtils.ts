@@ -19,7 +19,10 @@ interface Visitor<T> {
   visitWekaRoot(element: WekaRoot): T;
   visitWekaParagraph(element: WekaParagraph): T;
   visitWekaList(element: WekaList): T;
+  visitWekaBulletList(element: WekaBulletList): T;
+  visitWekaOrderList(element: WekaOrderList): T;
   visitWekaEmoji(element: WekaEmoji): T;
+  visitHeader(element: WekaHeading): T;
   visitWekaText(element: WekaText): T;
 }
 
@@ -50,13 +53,35 @@ class WekaParagraph extends WekaNode implements Node {
   }
 }
 
+class WekaBulletList extends WekaNode implements Node {
+  accept(v: Visitor<Element>): Element {
+    return v.visitWekaBulletList(this);
+  }
+}
+
+class WekaOrderList extends WekaNode implements Node {
+  accept(v: Visitor<Element>): Element {
+    return v.visitWekaOrderList(this);
+  }
+}
+
+class WekaHeading extends WekaNode implements Node {
+  accept(v: Visitor<Element>): Element {
+    return v.visitHeader(this);
+  }
+}
+
 class WekaList extends WekaNode implements Node {
   accept(v: Visitor<Element>): Element {
     return v.visitWekaList(this);
   }
 }
 
-class WekaEmoji extends WekaNode implements Node {
+class WekaEmoji implements Node {
+  shortCode: string;
+  constructor(shortcode) {
+    this.shortCode = shortcode;
+  }
   accept(v: Visitor<Element>): Element {
     return v.visitWekaEmoji(this);
   }
@@ -64,10 +89,10 @@ class WekaEmoji extends WekaNode implements Node {
 
 class WekaText implements Node {
   text: string;
-  type: string;
-  constructor(text, type) {
+  attrs: any;
+  constructor(text, attrs) {
     this.text = text;
-    this.type = type;
+    this.attrs = attrs;
   }
   accept(v: Visitor<Element>): Element {
     return v.visitWekaText(this);
@@ -80,23 +105,27 @@ const mapTypeToNode = {
   },
 
   [WekaEditorType.bulletList]: (content) => {
-    return new WekaList(jsonObjectToWekaNodes(content));
+    return new WekaBulletList(jsonObjectToWekaNodes(content));
   },
 
   [WekaEditorType.orderedList]: (content) => {
-    return new WekaList(jsonObjectToWekaNodes(content));
+    return new WekaOrderList(jsonObjectToWekaNodes(content));
   },
 
   [WekaEditorType.listItem]: (content) => {
     return new WekaList(jsonObjectToWekaNodes(content));
   },
 
-  [WekaEditorType.emoji]: (content) => {
-    return new WekaEmoji(jsonObjectToWekaNodes(content));
+  [WekaEditorType.emoji]: (shortcode) => {
+    return new WekaEmoji(shortcode);
   },
 
   [WekaEditorType.text]: (item) => {
     return new WekaText(item.text, item.type);
+  },
+
+  [WekaEditorType.heading]: (content) => {
+    return new WekaHeading(jsonObjectToWekaNodes(content));
   }
 };
 
@@ -108,6 +137,9 @@ const jsonObjectToWekaNodes = (data: any): Node[] => {
       const { type, content, attrs } = item;
       if (type === WekaEditorType.text) {
         return mapTypeToNode[type](item, attrs);
+      }
+      if (type === WekaEditorType.emoji) {
+        return mapTypeToNode[type](attrs.shortcode);
       }
       return content && mapTypeToNode[type] ? mapTypeToNode[type](content) : null;
     })
@@ -122,4 +154,15 @@ const wrappedWekaNodes = (nodes: Node[]): WekaRoot => {
 // Disable eslint working interface export from down.
 // eslint-disable-next-line no-undef
 export { Visitor, Node };
-export { wrappedWekaNodes, jsonObjectToWekaNodes, WekaRoot, WekaParagraph, WekaText, WekaList, WekaEmoji };
+export {
+  wrappedWekaNodes,
+  jsonObjectToWekaNodes,
+  WekaRoot,
+  WekaParagraph,
+  WekaText,
+  WekaList,
+  WekaEmoji,
+  WekaOrderList,
+  WekaBulletList,
+  WekaHeading
+};

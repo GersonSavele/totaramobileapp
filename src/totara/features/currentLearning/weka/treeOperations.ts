@@ -13,16 +13,51 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Visitor, Node, WekaRoot, WekaParagraph, WekaList, WekaEmoji, WekaText } from "./WekaUtils";
+import {
+  Visitor,
+  Node,
+  WekaRoot,
+  WekaParagraph,
+  WekaList,
+  WekaEmoji,
+  WekaText,
+  WekaOrderList,
+  WekaBulletList,
+  WekaHeading
+} from "./WekaUtils";
+import { textAttributes } from "@totara/theme/constants";
 /*
 @ Class : this class use for node tree operator and implementing abstract method of visitor interface
 */
 class ToShortSummary implements Visitor<string> {
+  visitWekaBulletList(element: WekaBulletList): string {
+    return element.content
+      .map((item) => {
+        return "\u2022 " + item?.accept(this);
+      })
+      .filter(String)
+      .join("\n")
+      .toString()
+      .trim();
+  }
+  visitWekaOrderList(element: WekaOrderList): string {
+    return element.content
+      .map((item, index) => {
+        return (index + 1).toString() + ". " + item?.accept(this);
+      })
+      .filter(String)
+      .join("\n")
+      .toString()
+      .trim();
+  }
+  visitHeader(element: WekaHeading): string {
+    return this.all(element.content);
+  }
   visitWekaList(element: WekaList): string {
-    return this.allListItems(element.content);
+    return this.all(element.content);
   }
   visitWekaEmoji(element: WekaEmoji): string {
-    return this.all(element.content);
+    return String.fromCodePoint(parseInt(textAttributes.short_code_prefix + element.shortCode));
   }
   visitWekaRoot(element: WekaRoot): string {
     return this.all(element.content);
@@ -34,20 +69,9 @@ class ToShortSummary implements Visitor<string> {
     return element.text;
   }
   all(content: Node[]): string {
-    let stringArray =
-      content &&
-      content.map((item) => {
-        return item && item.accept(this);
-      });
-    return stringArray.filter(String).join("\n").toString().trim();
-  }
-  allListItems(content: Node[]): string {
-    let stringArray =
-      content &&
-      content.map((item) => {
-        console.log("print 00000", item.accept(this));
-        return (item && ("-- " + item.accept(this)));
-      });
+    let stringArray = content?.map((item) => {
+      return item?.accept(this);
+    });
     return stringArray.filter(String).join("\n").toString().trim();
   }
 }
