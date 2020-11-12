@@ -31,8 +31,8 @@ import { textAttributes } from "@totara/theme/constants";
 */
 class ToShortSummary implements Visitor<string> {
   visitWekaBulletList(element: WekaBulletList): string {
-    return element.content
-      .map((item) => {
+    return element?.content
+      ?.map((item) => {
         return "\u2022 " + item?.accept(this);
       })
       .filter(String)
@@ -41,8 +41,8 @@ class ToShortSummary implements Visitor<string> {
       .trim();
   }
   visitWekaOrderList(element: WekaOrderList): string {
-    return element.content
-      .map((item, index) => {
+    return element?.content
+      ?.map((item, index) => {
         return (index + 1).toString() + ". " + item?.accept(this);
       })
       .filter(String)
@@ -63,7 +63,14 @@ class ToShortSummary implements Visitor<string> {
     return this.all(element.content);
   }
   visitWekaParagraph(element: WekaParagraph): string {
-    return this.all(element.content);
+    return element?.content
+      ?.map((item) => {
+        return item?.accept(this);
+      })
+      .filter(String)
+      .join("")
+      .toString()
+      .trim();
   }
   visitWekaText(element: WekaText): string {
     return element.text;
