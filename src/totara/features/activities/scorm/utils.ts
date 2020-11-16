@@ -28,14 +28,9 @@ import {
   Sco,
   Package
 } from "@totara/types/Scorm";
-import {
-  OFFLINE_SCORM_PREFIX,
-  offlineScormServerRoot,
-  scormZipPackagePath,
-  scormLessonStatus,
-  FILE_EXTENSION,
-  SECONDS_FORMAT
-} from "@totara/lib/constants";
+
+import { offlineScormServerRoot, scormZipPackagePath, scormLessonStatus } from "./constants";
+import { OFFLINE_SCORM_PREFIX, FILE_EXTENSION, SECONDS_FORMAT } from "@totara/lib/constants";
 
 type GetPlayerInitialDataProps = {
   scormId: string;

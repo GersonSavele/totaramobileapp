@@ -23,6 +23,7 @@ import listViewStyles from "@totara/theme/listView";
 import { Criteria } from "@totara/types";
 import criteriaSheetStyle from "./criteriaSheetStyle";
 import { iconSizes } from "@totara/theme/constants";
+import { CL_TEST_IDS, TEST_IDS } from "@totara/lib/constants";
 
 type Props = {
   title: string;
@@ -119,7 +120,10 @@ const BottomSheetHeader = ({ onClose, title }: BottomSheetHeaderProps) => {
   return (
     <View style={criteriaSheetStyle.headerViewWrap}>
       <View style={criteriaSheetStyle.headerInnerViewWrap}>
-        <TouchableOpacity style={criteriaSheetStyle.headerCloseButtonWrap} onPress={onClose}>
+        <TouchableOpacity
+          style={criteriaSheetStyle.headerCloseButtonWrap}
+          onPress={onClose}
+          testID={TEST_IDS.CLICK_CLOSE}>
           <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.textColorDisabled} />
         </TouchableOpacity>
         <View style={criteriaSheetStyle.headerViewIndicatorWrap}>

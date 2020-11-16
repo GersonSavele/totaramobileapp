@@ -25,8 +25,8 @@ type CurrentLearningListViewProps = {
 };
 
 const CurrentLearningListView = ({ currentLearning, loading, onRefresh }: CurrentLearningListViewProps) => {
-  const renderItem = (data) => {
-    return <CurrentLearningListViewItem item={data.item} />;
+  const renderItem = ({ item, index }: any) => {
+    return <CurrentLearningListViewItem item={item} itemTestID={`learningItem_${index}`} />;
   };
 
   return (

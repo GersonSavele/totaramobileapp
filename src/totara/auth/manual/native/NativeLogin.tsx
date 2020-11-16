@@ -28,6 +28,7 @@ import { ManualFlowChildProps } from "../ManualFlowChildProps";
 import { useNativeFlow } from "./NativeFlowHook";
 import { margins } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { TEST_IDS } from "@totara/lib/constants";
 
 const NativeLogin = (props: ManualFlowChildProps) => {
   // fetch from global
@@ -91,6 +92,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
                 value={nativeLoginState.inputUsername}
                 style={styles.inputText}
                 onFocus={onFocusInput}
+                testID={TEST_IDS.USER_INPUT}
               />
             </InputTextWithInfo>
           </View>
@@ -110,6 +112,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
                 value={nativeLoginState.inputPassword}
                 style={styles.inputText}
                 onFocus={onFocusInput}
+                testID={TEST_IDS.USER_PW}
               />
             </InputTextWithInfo>
           </View>
@@ -117,6 +120,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
             onPress={onClickEnter}
             text={translate("general.enter")}
             mode={nativeLoginState.isRequestingLogin ? "loading" : undefined}
+            testID={TEST_IDS.LOGIN}
           />
           <View style={[styles.forgotCredentialContainer, theme.textRegular]}>
             <TouchableOpacity

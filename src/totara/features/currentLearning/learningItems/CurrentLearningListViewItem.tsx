@@ -29,9 +29,10 @@ import { useNavigation } from "@react-navigation/native";
 
 type ListViewItemProps = {
   item: any;
+  itemTestID: string;
 };
 
-const CurrentLearningListViewItem = ({ item }: ListViewItemProps) => {
+const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) => {
   const navigation = useNavigation();
   const [showRestriction, setShowRestriction] = useState(false);
   const { fullname, progress, itemtype, duedate, duedateState, id, native, imageSrc } = item;
@@ -80,7 +81,7 @@ const CurrentLearningListViewItem = ({ item }: ListViewItemProps) => {
       onPress={() => onItemPress()}
       testID={"test_currentLearningListViewItem"}
       activeOpacity={activeOpacity}>
-      <View style={currentLearningListViewStyles.itemContainer}>
+      <View style={currentLearningListViewStyles.itemContainer} testID={itemTestID}>
         <View style={currentLearningListViewStyles.itemImage}>
           {imageSrc && imageSrc.length > 0 ? (
             <ImageWrapper url={imageSrc} style={currentLearningListViewStyles.imageWrap} />

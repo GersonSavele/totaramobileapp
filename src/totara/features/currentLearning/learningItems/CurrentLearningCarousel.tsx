@@ -16,6 +16,7 @@
 import React, { useState, useRef } from "react";
 import { TouchableOpacity, View, ScrollView, RefreshControl } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import { useNavigation } from "@react-navigation/native";
 import { AddBadge } from "@totara/components";
 import { navigateTo, itemToRouteMap } from "@totara/lib/navigation";
 import NativeAccessRestriction from "../NativeAccessRestriction";
@@ -25,7 +26,7 @@ import LearningItemCard from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
 import { extractTargetId } from "../utils";
 import { activeOpacity } from "@totara/lib/styles/base";
-import { useNavigation } from "@react-navigation/native";
+import { CL_TEST_IDS } from "@totara/lib/constants";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
@@ -59,6 +60,7 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
         style={{ height: "100%" }}
         contentContainerStyle={{ height: "100%" }}
         showsVerticalScrollIndicator={false}
+        testID={CL_TEST_IDS.CAROUSEL_WRAPPER_ID}
         refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
         <Carousel
           inactiveSlideScale={1}

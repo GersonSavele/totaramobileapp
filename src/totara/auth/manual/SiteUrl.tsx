@@ -27,10 +27,10 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { margins, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 
-const { DEV_ORG_URL, DEBUG_MODE } = constants;
+const { DEV_ORG_URL, TEST_IDS } = constants;
 
 const SiteUrl = (props: Props) => {
-  const [siteUrl, setSiteUrl] = useState(props.siteUrl ? props.siteUrl : DEBUG_MODE ? DEV_ORG_URL : "");
+  const [siteUrl, setSiteUrl] = useState(props.siteUrl ? props.siteUrl : __DEV__ ? DEV_ORG_URL : "");
   const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
 
   return (
@@ -57,7 +57,7 @@ const SiteUrl = (props: Props) => {
                 value={siteUrl}
                 style={styles.inputText}
                 autoFocus={!isSiteUrlSubmitted}
-                testID={"urlInput"}
+                testID={"SITE_URL_INPUT"}
                 returnKeyType={"done"}
                 onSubmitEditing={() => onSubmit(siteUrl)}
               />
@@ -67,6 +67,7 @@ const SiteUrl = (props: Props) => {
               text={translate("general.enter")}
               style={styles.buttonEnter}
               mode={isSiteUrlSubmitted ? "loading" : undefined}
+              testID={TEST_IDS.SUBMIT_URL}
             />
           </View>
         </Form>

@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import * as RNFS from "react-native-fs";
-import { config } from ".";
+// import * as RNFS from "react-native-fs";
+// import { config } from ".";
 
 const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
 const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
@@ -34,26 +34,43 @@ const SCREEN_WIDTH_MEDIUM = "medium";
 const SCREEN_WIDTH_SMALL = "small";
 
 // eslint-disable-next-line no-undef
-const DEBUG_MODE = __DEV__;
+// const DEBUG_MODE = __DEV__;
 const DEV_ORG_URL = "mobile.demo.totara.software";
 const DEV_USERNAME = "kamala";
 const DEV_PASSWORD = "Abcd123$";
 
 /* SCORM related */
 
-const DOWNLOAD_FOLDER = `${RNFS.DocumentDirectoryPath}`;
+// const DOWNLOAD_FOLDER = `${RNFS.DocumentDirectoryPath}`;
+const TEST_IDS = {
+  SITE_URL_INPUT: "SITE_URL_INPUT",
+  SUBMIT_URL: "SUBMIT_URL",
+  USER_INPUT: "USER_INPUT",
+  USER_PW: "USER_PW",
+  LOGIN: "LOGIN",
+  CLICK_CLOSE: "CLICK_CLOSE"
+};
+
+//Current learning related
+const CL_TEST_IDS = {
+  CL_SWITCH_ID: "CL_SWITCH_ID",
+  CL_TAB_2_ID: "CL_TAB_2_ID",
+  CAROUSEL_WRAPPER_ID: "CAROUSEL_WRAPPER_ID",
+  CL_LIST: "CL_LIST",
+  CL_PROGRESS: "CL_PROGRESS"
+};
 
 const FILE_EXTENSION = ".zip";
 const OFFLINE_SCORM_PREFIX = "OfflineSCORM_";
-const scormZipPackagePath = DOWNLOAD_FOLDER;
-const offlineScormServerRoot = `${scormZipPackagePath}/${config.rootOfflineScormPlayer}`;
+// const scormZipPackagePath = DOWNLOAD_FOLDER;
+// const offlineScormServerRoot = `${scormZipPackagePath}/${config.rootOfflineScormPlayer}`;
 
-enum scormLessonStatus {
-  incomplete = "incomplete",
-  passed = "passed",
-  completed = "completed",
-  failed = "failed"
-}
+// enum scormLessonStatus {
+//   incomplete = "incomplete",
+//   passed = "passed",
+//   completed = "completed",
+//   failed = "failed"
+// }
 
 enum ActivityModType {
   scorm = "scorm",
@@ -78,11 +95,13 @@ export {
   DEV_ORG_URL,
   DEV_USERNAME,
   DEV_PASSWORD,
-  DEBUG_MODE,
   OFFLINE_SCORM_PREFIX,
   FILE_EXTENSION,
-  scormLessonStatus,
-  scormZipPackagePath,
-  offlineScormServerRoot,
-  ActivityModType
+  // DEBUG_MODE,
+  //scormLessonStatus,
+  // scormZipPackagePath,
+  //offlineScormServerRoot,
+  ActivityModType,
+  CL_TEST_IDS,
+  TEST_IDS
 };

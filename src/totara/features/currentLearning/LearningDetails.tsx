@@ -20,6 +20,7 @@ import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { viewHeight } from "./constants";
+import { CL_TEST_IDS } from "@totara/lib/constants";
 import { CourseGroup, Course, LearningItem } from "@totara/types";
 import { margins } from "@totara/theme/constants";
 const { marginXL } = margins;
@@ -88,7 +89,8 @@ const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }:
               { marginLeft: marginXL },
               !overviewIsShown && { ...learningDetailsStyles.tabViewItemSelected }
             ]}
-            onPress={onPress}>
+            onPress={onPress}
+            testID={CL_TEST_IDS.CL_TAB_2_ID}>
             <Text
               style={[
                 learningDetailsStyles.tabViewTitle,

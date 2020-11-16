@@ -235,7 +235,7 @@ describe("onPlayerMessageHandler", () => {
   it("should call saveInTheCach, if tmsevent = `SCORMCOMMIT` and result.cmi.core.lesson_status != `incomplete` of the messageData.", () => {
     const messageDataMock = {
       tmsevent: "SCORMCOMMIT",
-      result: { cmi: { core: { lesson_status: "passed" } } }
+      result: { cmi: { core: { lesson_status: scormLessonStatus.passed } } }
     };
     onPlayerMessageHandler({
       client,

@@ -16,6 +16,7 @@
 import React, { useContext, useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
+import { NavigationEvents } from "@react-navigation/compat";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import CurrentLearningCarousel from "./learningItems/CurrentLearningCarousel";
@@ -28,7 +29,7 @@ import { paddings } from "@totara/theme/constants";
 import { Switch, SwitchOption } from "@totara/components/Switch";
 import { Icons } from "@resources/icons";
 import { sortByDueDateThenTypeThenFullName } from "@totara/features/currentLearning/utils";
-import { NavigationEvents } from "@react-navigation/compat";
+import { CL_TEST_IDS } from "@totara/lib/constants";
 
 enum ListingOrientation {
   Carousel,
@@ -85,7 +86,8 @@ const CurrentLearning = () => {
               accessible={true}
               accessibilityRole={"switch"}
               accessibilityLabel={accessibilityLabelText}
-              accessibilityHint={accessibilityHintText}>
+              accessibilityHint={accessibilityHintText}
+              testID={CL_TEST_IDS.CL_SWITCH_ID}>
               <Switch onPress={toggleListingOrientation}>
                 <SwitchOption icon={Icons.iconCarousel} selected={listingOrientation === ListingOrientation.Carousel} />
                 <SwitchOption icon={Icons.iconList} selected={listingOrientation === ListingOrientation.ListView} />

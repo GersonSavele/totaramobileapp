@@ -20,6 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
 import { get, isEmpty } from "lodash";
+import { useNavigation } from "@react-navigation/native";
 
 import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
@@ -37,7 +38,7 @@ import { ActivityModType } from "@totara/lib/constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete, fetchResource } from "../course/api";
 import listViewStyles from "@totara/theme/listView";
-import { useNavigation } from "@react-navigation/native";
+import { CL_TEST_IDS } from "@totara/lib/constants";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -60,6 +61,7 @@ const Activities = ({
   return (
     <FlatList
       data={sections}
+      testID={CL_TEST_IDS.CL_LIST}
       renderItem={({ item }) => {
         return (
           <SectionItem
@@ -83,6 +85,7 @@ type SectionItemProps = {
   completionEnabled: boolean;
   onSetExpandedSectionIds: Function;
   isSingleActivity: boolean;
+  testID: string;
 };
 
 const SectionItem = ({
@@ -91,7 +94,8 @@ const SectionItem = ({
   expandedSectionIds,
   completionEnabled,
   onSetExpandedSectionIds,
-  isSingleActivity
+  isSingleActivity,
+  testID
 }: SectionItemProps) => {
   //every item need to have its own state
   const activities = section.data as Array<Activity>;
@@ -113,7 +117,7 @@ const SectionItem = ({
 
   return (
     activities && (
-      <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }}>
+      <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }} testID={testID}>
         {!isSingleActivity && (
           <TouchableOpacity onPress={() => onExpand(isExpanded, id)}>
             {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}

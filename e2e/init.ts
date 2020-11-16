@@ -1,7 +1,8 @@
-const detox = require('detox');
-const config = require('../package.json').detox;
-const adapter = require('detox/runners/jest/adapter');
-const specReporter = require('detox/runners/jest/specReporter');
+import { cleanup, init } from "detox";
+// const adapter = require('detox/runners/jest/adapter');
+const adapter = require("detox/runners/jest/adapter");
+const specReporter = require("detox/runners/jest/specReporter");
+const config = require("../package.json").detox;
 
 // Set the default timeout
 jest.setTimeout(120000);
@@ -13,7 +14,7 @@ jasmine.getEnv().addReporter(adapter);
 jasmine.getEnv().addReporter(specReporter);
 
 beforeAll(async () => {
-  await detox.init(config);
+  await init(config, { initGlobals: false });
 }, 300000);
 
 beforeEach(async () => {
@@ -22,5 +23,5 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await adapter.afterAll();
-  await detox.cleanup();
+  await cleanup();
 });

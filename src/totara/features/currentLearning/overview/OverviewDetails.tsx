@@ -31,6 +31,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
 import WekaEditorView from "../weka/WekaEditorView";
 import { activeOpacity } from "@totara/lib/styles/base";
+import { CL_TEST_IDS } from "@totara/lib/constants";
 
 type OverviewProps = {
   id: number;
@@ -135,6 +136,7 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
       style={overviewStyles.container}
       activeOpacity={activeOpacity}
       disabled={isCourseSet}
+      testID={CL_TEST_IDS.CL_PROGRESS}
       onPress={() => setShowCriteria(true)}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>

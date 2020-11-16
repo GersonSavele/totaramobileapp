@@ -1,6 +1,7 @@
 {
-    "setupFilesAfterEnv": ["./init.js"],
+    "preset": "ts-jest",
     "testEnvironment": "node",
+    "setupFilesAfterEnv": ["./init.ts"],
     "reporters": ["detox/runners/jest/streamlineReporter"],
     "verbose": true
 }
