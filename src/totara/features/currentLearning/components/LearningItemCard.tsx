@@ -63,7 +63,7 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
 };
 
 const wekaSummary = (summary: Object) => {
-  let root = wrappedWekaNodes(jsonObjectToWekaNodes(summary));
+  const root = wrappedWekaNodes(jsonObjectToWekaNodes(summary));
   return root.accept(new ToShortSummary());
 };
 
