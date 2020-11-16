@@ -26,6 +26,9 @@ import {
   WekaHeading
 } from "./WekaUtils";
 import { textAttributes } from "@totara/theme/constants";
+
+const BULLET_POINT_UNICODE = "\u2022";
+
 /*
 @ Class : this class use for node tree operator and implementing abstract method of visitor interface
 */
@@ -33,7 +36,7 @@ class ToShortSummary implements Visitor<string> {
   visitWekaBulletList(element: WekaBulletList): string {
     return element?.content
       ?.map((item) => {
-        return "\u2022 " + item?.accept(this);
+        return `${BULLET_POINT_UNICODE} ${item?.accept(this)}`;
       })
       .filter(String)
       .join("\n")

@@ -151,10 +151,12 @@ const wrappedWekaNodes = (nodes: Node[]): WekaRoot => {
   return res;
 };
 
-// Disable eslint working interface export from down.
-// eslint-disable-next-line no-undef
-export { Visitor, Node };
+// Disable eslint for interface so we can export without warnings.
 export {
+  // eslint-disable-next-line no-undef
+  Visitor,
+  // eslint-disable-next-line no-undef
+  Node,
   wrappedWekaNodes,
   jsonObjectToWekaNodes,
   WekaRoot,
