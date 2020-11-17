@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+// apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 import com.android.build.OutputFile
 
 /**
@@ -126,7 +126,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+    flavorDimensions "default"
     defaultConfig {
         applicationId "com.totaramobileapp"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -169,6 +169,17 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+    productFlavors {
+        dev {
+            applicationId 'com.totaramobileapp.dev'
+            resValue "string", "build_config_package", "com.totaramobileapp"
+        }
+        //ProductFlavor names cannot start with 'test'
+        uat {
+            applicationId 'com.totaramobileapp.uat'
+            resValue "string", "build_config_package", "com.totaramobileapp"
         }
     }
     // applicationVariants are e.g. debug, release

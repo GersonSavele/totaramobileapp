@@ -35,6 +35,10 @@ Go to client config section and choose the beta config : https://docs.sentry.io/
 
 Set your variables in `.env`. The main one is the SENTRY_AUTH_TOKEN. You can find it [here](https://sentry.io/settings/account/api/auth-tokens/)
 
+## Firebase json file set up
+
+You will need firebase to get Google services working, such as notifications. You will get it in your [Firebase account](https://console.firebase.google.com), according to your Application ID. Place `google-services.json` in `android/app` folder and `GoogleService-Info.plist` in `ios` folder.
+
 # Build offline SCORM server script
 
 Offline SCORM Server script should be bundled to "html" directory under "TotaraMobileOfflineScorm", it can be done using  

@@ -13,6 +13,7 @@ import com.reactnativecommunity.art.ARTPackage;
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.List;
+import android.webkit.WebView;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -45,5 +46,6 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    WebView.setWebContentsDebuggingEnabled(true);
   }
 }

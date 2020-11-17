@@ -1,6 +1,14 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
+project 'TotaraMobileApp',
+  'Test.Debug' => :debug,
+  'Test.Release' => :release,
+  'Dev.Debug' => :debug,
+  'Dev.Release' => :release,
+  'Debug' => :debug,
+  'Release' => :release
+
 target 'TotaraMobileApp' do
   # Pods for TotaraMobileApp
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
@@ -36,10 +44,10 @@ target 'TotaraMobileApp' do
 
   pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
 
-  target 'TotaraMobileAppTests' do
-    inherit! :complete
-    # Pods for testing
-  end
+  # target 'TotaraMobileAppTests' do
+  #   inherit! :complete
+  #   # Pods for testing
+  # end
 
   use_native_modules!
 end
