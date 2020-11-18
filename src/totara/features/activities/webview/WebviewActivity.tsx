@@ -49,7 +49,7 @@ const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
   useEffect(() => {
     Orientation.unlockAllOrientations();
     return () => Orientation.lockToPortrait();
-  });
+  }, []);
 
   return (
     <SafeAreaView style={TotaraTheme.viewContainer}>

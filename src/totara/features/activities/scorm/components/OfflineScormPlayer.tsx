@@ -47,7 +47,8 @@ const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
   useEffect(() => {
     Orientation.unlockAllOrientations();
     return () => Orientation.lockToPortrait();
-  });
+  }, []);
+
   return (
     <SafeAreaView style={styles.playerContainer} testID={OFFLINE_PLAYER_ID}>
       <WebView
