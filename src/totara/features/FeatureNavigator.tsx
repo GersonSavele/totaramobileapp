@@ -22,20 +22,23 @@ import CurrentLearningStack from "./currentLearning";
 import NotificationsStack from "./notifications";
 import DownloadsStack from "./downloads";
 import ProfileStack from "./profile";
-import { useSelector } from "react-redux";
-import { RootState } from "@totara/reducers";
+import { useQuery } from "react-apollo";
+import { countUnreadMessages, notificationsQuery } from "./notifications/api";
+
+const NotificationBellBadge = ({ active, tintColor }: { active: boolean; tintColor: string }) => {
+  const { data } = useQuery(notificationsQuery);
+  const count = countUnreadMessages(data);
+  return <NotificationBell active={active} tintColor={tintColor} counting={count} />;
+};
 
 const FeatureNavigator = () => {
   const [theme] = useContext(ThemeContext);
-  const count = useSelector((state: RootState) => state.notificationReducer.count);
-
-  const tabNotifications = NotificationsTab(count);
 
   return createMaterialBottomTabNavigator(
     {
       CurrentLearningTab,
       DownloadsTab,
-      tabNotifications,
+      NotificationsTab,
       ProfileTab
     },
     {
@@ -73,16 +76,14 @@ const ProfileTab = {
   }
 };
 
-const NotificationsTab = (count) => {
-  return {
-    screen: NotificationsStack,
-    navigationOptions: {
-      // eslint-disable-next-line react/display-name
-      tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) => {
-        return <NotificationBell active={tabIconProps.focused} tintColor={tabIconProps.tintColor} counting={count} />;
-      }
+const NotificationsTab = {
+  screen: NotificationsStack,
+  navigationOptions: {
+    // eslint-disable-next-line react/display-name
+    tabBarIcon: (tabIconProps: { focused: boolean; tintColor: string }) => {
+      return <NotificationBellBadge active={tabIconProps.focused} tintColor={tabIconProps.tintColor} />;
     }
-  };
+  }
 };
 
 const tabBarIconBuilder = (focused: boolean, color: string, imageSet: iconImageProps) => {

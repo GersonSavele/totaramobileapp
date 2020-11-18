@@ -29,6 +29,11 @@ const parser = (data) => {
   });
 };
 
+const countUnreadMessages = (data) => {
+  if (!data) return 0;
+  return data.message_popup_messages.filter((x) => x.isread === false).length;
+};
+
 const notificationsQuery = gql`
   query totara_mobile_messages {
     message_popup_messages {
@@ -52,4 +57,4 @@ const notificationQueryMarkRead = gql`
   }
 `;
 
-export { notificationsQuery, notificationQueryMarkRead, parser };
+export { notificationsQuery, notificationQueryMarkRead, parser, countUnreadMessages };

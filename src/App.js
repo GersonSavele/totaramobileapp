@@ -42,9 +42,8 @@ import { LocaleResolver } from "@totara/locale/LocaleResolver";
 
 import { gql } from "apollo-boost";
 import messaging from "@react-native-firebase/messaging";
-import { tokenSent, updateCount, updateToken } from "./totara/actions/notification";
+import { tokenSent, updateToken } from "./totara/actions/notification";
 import NavigationService from "./totara/lib/navigationService";
-import { notificationsQuery } from "@totara/features/notifications/api";
 
 const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
 
@@ -108,8 +107,6 @@ const mutationForToken = gql`
 `;
 
 const AppContainer = () => {
-  const { client } = useQuery(notificationsQuery);
-
   ResourceManager.resumeDownloads();
 
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
@@ -124,16 +121,6 @@ const AppContainer = () => {
   };
 
   useEffect(() => {
-    const checkForNotifications = (client) => {
-      if (client) {
-        client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" }).then((then) => {
-          const { message_popup_messages } = then.data;
-          const count = message_popup_messages.filter((x) => x.isread === false).length;
-          updateCount({ count: count });
-        });
-      }
-    };
-
     NotificationCenter.registerPushNotifications().then(token=>{
       console.debug("TOKEN=========>", token);
       updateToken({ token: token });
@@ -142,24 +129,14 @@ const AppContainer = () => {
     });
 
     messaging().onNotificationOpenedApp((remoteMessage) => {
-      checkForNotifications(client);
       handleNotificationReceived(remoteMessage);
     });
 
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
-        checkForNotifications(client);
         handleNotificationReceived(remoteMessage);
       });
-
-    messaging().setBackgroundMessageHandler(async () => {
-      checkForNotifications(client);
-    });
-
-    messaging().onMessage(async () => {
-      checkForNotifications(client);
-    });
 
     return () => {
       messaging().onTokenRefresh((token) => {
