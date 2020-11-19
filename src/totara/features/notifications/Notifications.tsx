@@ -39,6 +39,7 @@ const Notifications = ({ navigation }: NotificationsProps) => {
   const { error, loading, data, refetch, networkStatus } = useQuery(notificationsQuery);
   const [mutationMarkAsRead] = useMutation(notificationQueryMarkRead);
   const notificationList = !loading && !error ? parser(data) : ([] as NotificationMessage[]);
+  const [, setLastRefresh] = useState(Date.now());
   const [selectedList, setSelectedList] = useState<string[]>([]);
   const [selectable, setSelectable] = useState(false);
   const headerTitle =
@@ -134,6 +135,12 @@ const Notifications = ({ navigation }: NotificationsProps) => {
     return selectedList.some((x) => x === item.id);
   };
 
+  const onRefresh = () => {
+    if (refetch) {
+      refetch().finally(() => setLastRefresh(Date.now()));
+    }
+  };
+
   return (
     <View style={TotaraTheme.viewContainer}>
       <View style={headerStyles.navigationHeader}>
@@ -163,7 +170,7 @@ const Notifications = ({ navigation }: NotificationsProps) => {
           <FlatList<NotificationMessage>
             testID={"test_notificationsList"}
             refreshing={networkStatus === NS.refetch}
-            onRefresh={refetch}
+            onRefresh={onRefresh}
             contentContainerStyle={listViewStyles.contentContainerStyle}
             ItemSeparatorComponent={() => <View style={listViewStyles.itemSeparator} />}
             data={notificationList}
