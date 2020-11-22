@@ -21,11 +21,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     }
   >
     <Image
-      source={
-        Object {
-          "testUri": "../../../src/resources/images/offline/offline.png",
-        }
-      }
+      source={null}
     />
     <Text
       style={
@@ -129,11 +125,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     }
   >
     <Image
-      source={
-        Object {
-          "testUri": "../../../src/resources/images/offline/offline.png",
-        }
-      }
+      source={null}
     />
     <Text
       style={
@@ -237,11 +229,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     }
   >
     <Image
-      source={
-        Object {
-          "testUri": "../../../src/resources/images/offline/offline.png",
-        }
-      }
+      source={null}
     />
     <Text
       style={
@@ -362,11 +350,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
         }
       >
         <Image
-          source={
-            Object {
-              "testUri": "../../../src/resources/images/course_complete/course_complete.png",
-            }
-          }
+          source={null}
           style={
             Object {
               "alignItems": "center",

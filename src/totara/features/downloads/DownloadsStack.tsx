@@ -13,49 +13,21 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { createStackNavigator } from "react-navigation-stack";
-import { Text, TouchableOpacity } from "react-native";
-import { paddings } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { translate } from "@totara/locale";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
-import React from "react";
+
 import Downloads from "@totara/features/downloads/Downloads";
 
-const DownloadsStack = createStackNavigator(
+const DownloadsStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     Downloads: {
-      screen: Downloads,
-      navigationOptions: ({ navigation }) => ({
-        headerLeft: navigation.getParam("showActions") && (
-          <TouchableOpacity
-            onPress={() => {
-              // @ts-ignore
-              navigation.emit("onCancelTap");
-            }}
-            style={{ paddingLeft: paddings.paddingL }}>
-            <Text style={TotaraTheme.textMedium}>{translate("general.cancel")}</Text>
-          </TouchableOpacity>
-        ),
-        headerRight: navigation.getParam("showActions") && (
-          <TouchableOpacity
-            onPress={() => {
-              // @ts-ignore
-              navigation.emit("onDeleteTap");
-            }}
-            style={{ paddingRight: paddings.paddingL }}>
-            <Text style={[TotaraTheme.textMedium, { color: TotaraTheme.colorDestructive }]}>
-              {translate("general.delete")}
-            </Text>
-          </TouchableOpacity>
-        )
-      })
+      screen: Downloads
     }
   },
   {
     initialRouteName: "Downloads",
-    initialRouteKey: "Downloads",
-    defaultNavigationOptions: totaraNavigationOptions({})
+    defaultNavigationOptions: totaraNavigationOptions({ title: "" })
   }
 );
 

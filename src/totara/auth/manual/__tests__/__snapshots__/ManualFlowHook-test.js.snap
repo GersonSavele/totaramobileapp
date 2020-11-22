@@ -38,11 +38,7 @@ exports[`manualFlowReducer should set flowStep to browser login and take screen-
         }
       >
         <Image
-          source={
-            Object {
-              "testUri": "../../../src/resources/images/browser_login/browser_login.png",
-            }
-          }
+          source={null}
           style={
             Object {
               "alignItems": "center",

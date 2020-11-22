@@ -13,47 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import { translate } from "../../locale";
-import { Text, TouchableOpacity } from "react-native";
-import { paddings } from "../../theme/constants";
-import { TotaraTheme } from "../../theme/Theme";
 import NotificationDetails from "./NotificationDetail";
-import totaraNavigationOptions from "../../components/NavigationOptions";
+import TotaraNavigationOptions from "../../components/NavigationOptions";
 import Notifications from "./Notifications";
 
-const NotificationsStack = createStackNavigator(
+const NotificationsStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     Notification: {
-      screen: Notifications,
-      navigationOptions: ({ navigation }): any => ({
-        headerBackTitle: translate("general.back"),
-        headerLeft: navigation.getParam("showActions") && (
-          <TouchableOpacity
-            testID={"test_cancel"}
-            onPress={() => {
-              // @ts-ignore
-              navigation.emit("onCancelTap");
-            }}
-            style={{ paddingLeft: paddings.paddingL }}>
-            <Text style={TotaraTheme.textMedium}> {translate("general.cancel")}</Text>
-          </TouchableOpacity>
-        ),
-        headerRight: navigation.getParam("showActions") && (
-          <TouchableOpacity
-            testID={"test_markAsRead"}
-            onPress={() => {
-              // @ts-ignore
-              navigation.emit("onMarkAsRead");
-            }}
-            style={{ paddingRight: paddings.paddingL }}>
-            <Text style={[TotaraTheme.textMedium, { color: TotaraTheme.colorLink }]}>
-              {translate("notifications.mark_as_read")}
-            </Text>
-          </TouchableOpacity>
-        )
-      })
+      screen: Notifications
     },
     NotificationDetail: {
       screen: NotificationDetails
@@ -61,8 +31,7 @@ const NotificationsStack = createStackNavigator(
   },
   {
     initialRouteName: "Notification",
-    initialRouteKey: "Notification",
-    defaultNavigationOptions: totaraNavigationOptions({}) as any
+    defaultNavigationOptions: TotaraNavigationOptions({ backTitle: translate("general.back") })
   }
 );
 

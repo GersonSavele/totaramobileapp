@@ -14,10 +14,20 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, FlatList, ImageSourcePropType, ScrollView, RefreshControl } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ImageSourcePropType,
+  ScrollView,
+  RefreshControl,
+  TouchableOpacity
+} from "react-native";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { NetworkStatus as NS } from "apollo-client/core/networkStatus";
-import { NavigationStackProp } from "react-navigation-stack";
+import { StackScreenProps } from "@react-navigation/stack";
+// import { NavigationActions } from "@react-navigation/native";
 
 import { Images } from "@resources/images";
 import { translate } from "@totara/locale";
@@ -29,13 +39,9 @@ import NotificationItem from "@totara/features/notifications/NotificationItem";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Loading, LoadingError } from "@totara/components";
 import { notificationQueryMarkRead, notificationsQuery, parser } from "@totara/features/notifications/api";
-import { NavigationActions } from "react-navigation";
+import { paddings } from "@totara/theme/constants";
 
-type NotificationsProps = {
-  navigation: NavigationStackProp<NotificationMessage>;
-};
-
-const Notifications = ({ navigation }: NotificationsProps) => {
+const Notifications = ({ navigation }: StackScreenProps<any>) => {
   const { error, loading, data, refetch, networkStatus } = useQuery(notificationsQuery);
   const [mutationMarkAsRead] = useMutation(notificationQueryMarkRead);
   const notificationList = !loading && !error ? parser(data) : ([] as NotificationMessage[]);
@@ -49,26 +55,31 @@ const Notifications = ({ navigation }: NotificationsProps) => {
 
   //EVENTS
   useEffect(() => {
-    headerDispatch(selectable);
-  }, [selectable]);
+    showOptions(selectable);
+  }, [navigation, selectable, selectedList]);
 
-  useEffect(() => {
-    const onCancelTapListener = navigation.addListener("onCancelTap", onCancelTap);
-    const onMarkAsRead = navigation.addListener("onMarkAsRead", markAsReadAllSelected);
-    return () => {
-      onCancelTapListener.remove();
-      onMarkAsRead.remove();
-    };
-  });
+  const showOptions = (show: boolean) => {
+    const leftOption = show && (
+      <TouchableOpacity testID={"test_cancel"} onPress={onCancelTap} style={{ paddingLeft: paddings.paddingL }}>
+        <Text style={TotaraTheme.textMedium}> {translate("general.cancel")}</Text>
+      </TouchableOpacity>
+    );
 
-  const headerDispatch = (showActions: boolean) => {
-    const setParamsAction = NavigationActions.setParams({
-      params: {
-        showActions: showActions
-      },
-      key: "Notification"
+    const rightOption = show && (
+      <TouchableOpacity
+        testID={"test_markAsRead"}
+        onPress={markAsReadAllSelected}
+        style={{ paddingRight: paddings.paddingL }}>
+        <Text style={[TotaraTheme.textMedium, { color: TotaraTheme.colorLink }]}>
+          {translate("notifications.mark_as_read")}
+        </Text>
+      </TouchableOpacity>
+    );
+
+    navigation.setOptions({
+      headerLeft: () => leftOption,
+      headerRight: () => rightOption
     });
-    navigation.dispatch(setParamsAction);
   };
 
   const onCancelTap = () => {

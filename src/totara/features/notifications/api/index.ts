@@ -57,4 +57,10 @@ const notificationQueryMarkRead = gql`
   }
 `;
 
-export { notificationsQuery, notificationQueryMarkRead, parser, countUnreadMessages };
+const mutationForToken = gql`
+  mutation totara_mobile_set_fcmtoken($token: String) {
+    set_fcmtoken: totara_mobile_set_fcmtoken(token: $token)
+  }
+`;
+
+export { notificationsQuery, notificationQueryMarkRead, mutationForToken, parser, countUnreadMessages };

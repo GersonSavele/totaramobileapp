@@ -13,20 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { NavigationStackOptions } from "react-navigation-stack";
-
+import { StackNavigationOptions } from "@react-navigation/stack";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type navigationOptionsProps = {
   title?: string;
   backTitle?: string;
   opacity?: number;
-  rightAction?: JSX.Element;
-  leftAction?: JSX.Element;
 };
 
-const TotaraNavigationOptions = ({ opacity, title, rightAction, leftAction }: navigationOptionsProps) => {
-  const options = {
+const TotaraNavigationOptions = ({ opacity, title = "", backTitle }: navigationOptionsProps) => {
+  const options: StackNavigationOptions = {
     headerStyle: {
       borderBottomWidth: 0,
       backgroundColor: TotaraTheme.colorSecondary1,
@@ -39,12 +36,10 @@ const TotaraNavigationOptions = ({ opacity, title, rightAction, leftAction }: na
       opacity: opacity
     },
     title: title,
-    headerBackTitle: null,
-    headerTintColor: TotaraTheme.navigationHeaderTintColor,
-    headerRight: rightAction,
-    headerLeft: leftAction
+    headerBackTitle: backTitle,
+    headerTintColor: TotaraTheme.navigationHeaderTintColor
   };
-  return options as NavigationStackOptions;
+  return options;
 };
 
 export default TotaraNavigationOptions;

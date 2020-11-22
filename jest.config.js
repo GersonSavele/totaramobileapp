@@ -32,6 +32,7 @@ module.exports = {
   },
   cacheDirectory: ".jest/cache",
   moduleNameMapper: {
+    ".+\\.(png)$": "identity-obj-proxy",
     "@totara/(.*)": "<rootDir>/src/totara/$1",
     "@resources/(.*)": "<rootDir>/src/resources/$1"
   },

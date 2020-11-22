@@ -13,20 +13,21 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import { TouchableIcon } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import React from "react";
 import About from "@totara/features/about/About";
 
-const AboutStack = createStackNavigator(
+const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     About: {
       screen: About,
       navigationOptions: ({ navigation }) => {
         return {
-          headerLeft: (
-            <TouchableIcon icon={"times"} onPress={() => navigation.pop()} size={TotaraTheme.textH3.fontSize} />
+          headerLeft: () => (
+            <TouchableIcon icon={"times"} onPress={() => navigation.goBack()} size={TotaraTheme.textH3.fontSize} />
           )
         };
       }

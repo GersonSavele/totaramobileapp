@@ -38,11 +38,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         }
       >
         <Image
-          source={
-            Object {
-              "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
-            }
-          }
+          source={null}
           style={
             Object {
               "alignItems": "center",
@@ -186,11 +182,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         }
       >
         <Image
-          source={
-            Object {
-              "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
-            }
-          }
+          source={null}
           style={
             Object {
               "alignItems": "center",
@@ -334,11 +326,7 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
         }
       >
         <Image
-          source={
-            Object {
-              "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
-            }
-          }
+          source={null}
           style={
             Object {
               "alignItems": "center",
@@ -482,11 +470,7 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
         }
       >
         <Image
-          source={
-            Object {
-              "testUri": "../../../src/resources/images/url_not_valid/url_not_valid.png",
-            }
-          }
+          source={null}
           style={
             Object {
               "alignItems": "center",

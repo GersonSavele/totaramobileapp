@@ -9,11 +9,7 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
   }
 >
   <Image
-    source={
-      Object {
-        "testUri": "../../../src/resources/images/no_current_learning/no_current_learning.png",
-      }
-    }
+    source={null}
   />
   <Text
     style={

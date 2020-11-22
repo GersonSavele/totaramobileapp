@@ -11,11 +11,7 @@ exports[`NotificationBell active with 10 notifications 1`] = `
   <View>
     <Image
       resizeMode="contain"
-      source={
-        Object {
-          "testUri": "../../../src/resources/icons/tabbar/notificationsSolid.png",
-        }
-      }
+      source={null}
       style={
         Array [
           Object {
@@ -79,11 +75,7 @@ exports[`NotificationBell active with zero notifications 1`] = `
   <View>
     <Image
       resizeMode="contain"
-      source={
-        Object {
-          "testUri": "../../../src/resources/icons/tabbar/notificationsSolid.png",
-        }
-      }
+      source={null}
       style={
         Array [
           Object {
@@ -111,11 +103,7 @@ exports[`NotificationBell inactive with 100 notifications 1`] = `
   <View>
     <Image
       resizeMode="contain"
-      source={
-        Object {
-          "testUri": "../../../src/resources/icons/tabbar/notificationsRegular.png",
-        }
-      }
+      source={null}
       style={
         Array [
           Object {

@@ -38,11 +38,7 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
         }
       >
         <Image
-          source={
-            Object {
-              "testUri": "../../../src/resources/images/general_error/general_error.png",
-            }
-          }
+          source={null}
           style={
             Object {
               "alignItems": "center",

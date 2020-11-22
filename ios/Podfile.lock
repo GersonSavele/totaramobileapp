@@ -347,6 +347,8 @@ PODS:
     - React
   - RNCAsyncStorage (1.9.0):
     - React
+  - RNCMaskedView (0.1.10):
+    - React
   - RNDeviceInfo (5.5.6):
     - React
   - RNFastImage (8.3.2):
@@ -436,6 +438,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -542,6 +545,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/art"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
@@ -623,6 +628,7 @@ SPEC CHECKSUMS:
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   ReactNativeART: f003b07dfa7098aa419ed95b69560923440b1eee
   RNCAsyncStorage: b16697280b08bab4b5f2f67f752d93d13a52e9ed
+  RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
   RNDeviceInfo: c3ea4a4d4547740c548cdd1e5a78f9b04e524688
   RNFastImage: e19ba191922e7dab9d932a4d59d62d76660aa222
   RNFBApp: 7b539bb25520fa73d6a240f5c6ea569e27683645

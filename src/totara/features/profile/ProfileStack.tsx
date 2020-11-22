@@ -13,12 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import Profile from "@totara/features/profile/Profile";
 import { NAVIGATION } from "@totara/lib/navigation";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
-const ProfileStack = createStackNavigator(
+const ProfileStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     [NAVIGATION.PROFILE]: {
       screen: Profile

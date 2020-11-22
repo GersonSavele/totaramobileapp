@@ -14,8 +14,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, ImageSourcePropType, ListRenderItemInfo, Text, View } from "react-native";
-import { NavigationActions } from "react-navigation";
+import { FlatList, Image, ImageSourcePropType, ListRenderItemInfo, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import headerStyles from "@totara/theme/headers";
 import { translate } from "@totara/locale";
@@ -29,14 +28,11 @@ import listViewStyles from "@totara/theme/listView";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { TotaraTheme } from "@totara/theme/Theme";
 import DownloadItem from "./DownloadItem";
-import { NavigationStackProp } from "react-navigation-stack";
+import { paddings } from "@totara/theme/constants";
+import { StackScreenProps } from "@react-navigation/stack";
 const { SCORM_ROOT } = NAVIGATION;
 
-type DownloadsProps = {
-  navigation: NavigationStackProp;
-};
-
-const Downloads = ({ navigation }: DownloadsProps) => {
+const Downloads = ({ navigation }: StackScreenProps<any>) => {
   const resourcesList = useSelector((state: RootState) => state.resourceReducer.resources);
 
   const [selectable, setSelectable] = useState(false);
@@ -47,26 +43,28 @@ const Downloads = ({ navigation }: DownloadsProps) => {
       : translate("downloads.title");
 
   useEffect(() => {
-    const onCancelTapListener = navigation.addListener("onCancelTap", onCancelTap);
-    const onDeleteTapListener = navigation.addListener("onDeleteTap", onDeleteTap);
-    return () => {
-      onCancelTapListener.remove();
-      onDeleteTapListener.remove();
-    };
-  });
+    showOptions(selectable);
+  }, [selectable, navigation, selectedList]);
 
-  useEffect(() => {
-    headerDispatch(selectable);
-  }, [selectable]);
+  const showOptions = (show: boolean) => {
+    const leftOption = show && (
+      <TouchableOpacity onPress={onCancelTap} style={{ paddingLeft: paddings.paddingL }}>
+        <Text style={TotaraTheme.textMedium}>{translate("general.cancel")}</Text>
+      </TouchableOpacity>
+    );
 
-  const headerDispatch = (showActions: boolean) => {
-    const setParamsAction = NavigationActions.setParams({
-      params: {
-        showActions: showActions
-      },
-      key: "Downloads"
+    const rightOption = show && (
+      <TouchableOpacity onPress={onDeleteTap} style={{ paddingRight: paddings.paddingL }}>
+        <Text style={[TotaraTheme.textMedium, { color: TotaraTheme.colorDestructive }]}>
+          {translate("general.delete")}
+        </Text>
+      </TouchableOpacity>
+    );
+
+    navigation.setOptions({
+      headerLeft: () => leftOption,
+      headerRight: () => rightOption
     });
-    navigation.dispatch(setParamsAction);
   };
 
   //EVENTS
