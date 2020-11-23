@@ -35,15 +35,17 @@ type SwitchProps = {
   children: any;
   onPress: () => void;
   accessibilityLabel: string;
+  accessibilityHint: string;
 };
 
-const Switch = ({ children, onPress, accessibilityLabel }: SwitchProps) => {
+const Switch = ({ children, onPress, accessibilityLabel, accessibilityHint }: SwitchProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       accessible={true}
       accessibilityRole={"switch"}
-      accessibilityLabel={accessibilityLabel}>
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}>
       <View style={switchStyles.container}>{children}</View>
     </TouchableOpacity>
   );

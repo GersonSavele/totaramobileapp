@@ -62,9 +62,11 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
   if (data) {
     const { currentLearning: notSorted } = data;
     const currentLearning = sortByDueDateThenTypeThenFullName(notSorted);
-    const accessibilityLabelText = translate("current_learning.accessibility_view_mode", {
-      mode: `${listingOrientation === ListingOrientation.Carousel ? "Carousel" : "List"}`
-    });
+    const accessibilityLabelText = translate("current_learning.accessibility_view_mode");
+    const accessibilityHintText =
+      listingOrientation === ListingOrientation.Carousel
+        ? translate("current_learning.accessibility_view_mode_hint.carousel")
+        : translate("current_learning.accessibility_view_mode_hint.list");
 
     return (
       <View style={[theme.viewContainer, { flex: 1 }]}>
@@ -84,7 +86,10 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
                 alignSelf: "flex-end",
                 paddingRight: paddings.paddingS
               }}>
-              <Switch onPress={toggleListingOrientation} accessibilityLabel={accessibilityLabelText}>
+              <Switch
+                onPress={toggleListingOrientation}
+                accessibilityLabel={accessibilityLabelText}
+                accessibilityHint={accessibilityHintText}>
                 <SwitchOption icon={Icons.iconCarousel} selected={listingOrientation === ListingOrientation.Carousel} />
                 <SwitchOption icon={Icons.iconList} selected={listingOrientation === ListingOrientation.ListView} />
               </Switch>
