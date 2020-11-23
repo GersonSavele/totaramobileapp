@@ -26,8 +26,6 @@ import {
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { NetworkStatus as NS } from "apollo-client/core/networkStatus";
-import { StackScreenProps } from "@react-navigation/stack";
-// import { NavigationActions } from "@react-navigation/native";
 
 import { Images } from "@resources/images";
 import { translate } from "@totara/locale";
@@ -40,6 +38,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { Loading, LoadingError } from "@totara/components";
 import { notificationQueryMarkRead, notificationsQuery, parser } from "@totara/features/notifications/api";
 import { paddings } from "@totara/theme/constants";
+import { StackScreenProps } from "@react-navigation/stack";
 
 const Notifications = ({ navigation }: StackScreenProps<any>) => {
   const { error, loading, data, refetch, networkStatus } = useQuery(notificationsQuery);

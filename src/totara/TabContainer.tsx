@@ -67,7 +67,7 @@ const TabContainer = () => {
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.notifications} />
           ),
-          tabBarBadge: notificationCount
+          tabBarBadge: notificationCount > 0 && notificationCount
         }}
       />
       <Tab.Screen

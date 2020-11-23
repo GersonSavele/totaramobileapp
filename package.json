@@ -32,6 +32,7 @@
     "clean:pods": "rm -rf ios/Pods/ && cd ios && pod install && cd ..",
     "clear:cache": "npm-run-all --parallel clear_cache:*",
     "clear:all": "npm-run-all clear:cache clear:modules && npm i && yarn clean:pods",
+    "clear:jest": "npx jest --clearCache",
     "install:languages": "./scripts/after-install/install-translations.sh",
     "jetify": "npx jetify",
     "fix:ios14images": "npx react-native-fix-image",

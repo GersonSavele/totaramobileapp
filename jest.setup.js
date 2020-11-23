@@ -174,3 +174,13 @@ jest.mock("redux-persist", () => {
 });
 
 jest.mock("react-native-orientation-locker", () => jest.fn());
+
+jest.mock("@react-navigation/native", () => {
+  return {
+    ...jest.requireActual("@react-navigation/native"),
+    useNavigation: () => ({
+      navigate: jest.fn(),
+      setOptions: jest.fn()
+    })
+  };
+});

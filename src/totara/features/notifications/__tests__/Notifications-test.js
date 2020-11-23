@@ -14,11 +14,11 @@
  */
 
 import React from "react";
-import Notifications from "@totara/features/notifications/Notifications";
 import { MockedProvider } from "@apollo/react-testing";
 import { render, act, fireEvent, waitFor } from "@testing-library/react-native";
 import wait from "waait";
 
+import Notifications from "@totara/features/notifications/Notifications";
 import {
   notificationsMock,
   notificationsMockEmpty,
@@ -28,24 +28,18 @@ import {
 import { fontWeights } from "@totara/theme/constants";
 import { notificationQueryMarkRead } from "@totara/features/notifications/api";
 
-const createTestPropsWithNavigation = (props: Object) => ({
+const navigationMock = {
   navigation: {
-    navigate: jest.fn(),
-    dispatch: jest.fn(),
-    addListener: () => {
-      return {
-        remove: jest.fn()
-      };
-    }
-  },
-  ...props
-});
+    setOptions: jest.fn(),
+    navigate: jest.fn()
+  }
+};
 
 describe("Notifications", () => {
   test("Should render loading", async () => {
     const tree = (
       <MockedProvider mocks={notificationsMock}>
-        <Notifications {...createTestPropsWithNavigation()} />
+        <Notifications navigation={navigationMock.navigation} />
       </MockedProvider>
     );
 
@@ -57,7 +51,7 @@ describe("Notifications", () => {
   test("Should render error", async () => {
     const tree = (
       <MockedProvider mocks={notificationsMockError}>
-        <Notifications {...createTestPropsWithNavigation()} />
+        <Notifications navigation={navigationMock.navigation} />
       </MockedProvider>
     );
 
@@ -72,7 +66,7 @@ describe("Notifications", () => {
   test("Should render empty list", async () => {
     const tree = (
       <MockedProvider mocks={notificationsMockEmpty}>
-        <Notifications {...createTestPropsWithNavigation()} />
+        <Notifications navigation={navigationMock.navigation} />
       </MockedProvider>
     );
 
@@ -87,7 +81,7 @@ describe("Notifications", () => {
   test("Should render result list", async () => {
     const tree = (
       <MockedProvider mocks={notificationsMock}>
-        <Notifications {...createTestPropsWithNavigation()} />
+        <Notifications navigation={navigationMock.navigation} />
       </MockedProvider>
     );
 
@@ -102,7 +96,7 @@ describe("Notifications", () => {
   test("Should render unread item", async () => {
     const tree = (
       <MockedProvider mocks={notificationsMockUnRead}>
-        <Notifications {...createTestPropsWithNavigation()} />
+        <Notifications navigation={navigationMock.navigation} />
       </MockedProvider>
     );
 
@@ -120,7 +114,7 @@ describe("Notifications", () => {
   test("Should should toggle selectable", async () => {
     const tree = (
       <MockedProvider mocks={notificationsMockUnRead}>
-        <Notifications {...createTestPropsWithNavigation()} />
+        <Notifications navigation={navigationMock.navigation} />
       </MockedProvider>
     );
 
@@ -149,7 +143,7 @@ describe("Notifications", () => {
 
     const tree = (
       <MockedProvider mocks={mocks}>
-        <Notifications {...createTestPropsWithNavigation()} />
+        <Notifications navigation={navigationMock.navigation} />
       </MockedProvider>
     );
 

@@ -15,6 +15,5 @@
 
 import CurrentLearning from "./currentLearning";
 import Profile from "./profile";
-import FeatureNavigator from "./FeatureNavigator";
 
-export { CurrentLearning, Profile, FeatureNavigator };
+export { CurrentLearning, Profile };

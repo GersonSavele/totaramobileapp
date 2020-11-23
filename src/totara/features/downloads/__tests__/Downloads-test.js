@@ -21,10 +21,6 @@ import * as ReactRedux from "react-redux";
 import { downloadsOneItemMock, downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/downloadMock";
 import wait from "waait";
 
-// jest.mock("react-redux", () => ({
-//   useSelector: jest.fn()
-// }));
-
 const renderWithAppContainer = () => {
   const App = createAppContainer(DownloadsStack);
   return {
@@ -34,13 +30,8 @@ const renderWithAppContainer = () => {
 
 const navigationMock = {
   navigation: {
-    navigate: jest.fn(),
-    dispatch: jest.fn(),
-    addListener: () => {
-      return {
-        remove: jest.fn()
-      };
-    }
+    setOptions: jest.fn(),
+    navigate: jest.fn()
   }
 };
 
