@@ -78,7 +78,8 @@
     "section_title_continue_learn": "Continue your learning",
     "due_in": "Due in",
     "extend_date": "Extend Date",
-    "overdue_by": "Overdue by"
+    "overdue_by": "Overdue by",
+    "accessibility_view_mode": "Item view mode. {{mode}} selected."
   },
   "additional_actions_modal": {
     "auth_model_title": "Action required",

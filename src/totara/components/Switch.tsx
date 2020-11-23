@@ -21,26 +21,29 @@ import { iconSizes, paddings } from "@totara/theme/constants";
 type SwitchOptionProps = {
   icon: any;
   selected: boolean;
-  onPress(): void;
 };
 
-const SwitchOption = ({ icon, selected, onPress }: SwitchOptionProps) => {
+const SwitchOption = ({ icon, selected }: SwitchOptionProps) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[switchStyles.optionWidget, selected && switchStyles.optionWidgetSelected]}>
+    <View style={[switchStyles.optionWidget, selected && switchStyles.optionWidgetSelected]}>
       <Image source={icon} style={[switchStyles.optionImage, selected && { tintColor: "black" }]} />
-    </TouchableOpacity>
+    </View>
   );
 };
 
 type SwitchProps = {
   children: any;
+  onPress: () => void;
+  accessibilityLabel: string;
 };
 
-const Switch = ({ children }: SwitchProps) => {
+const Switch = ({ children, onPress, accessibilityLabel }: SwitchProps) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={onPress}
+      accessible={true}
+      accessibilityRole={"switch"}
+      accessibilityLabel={accessibilityLabel}>
       <View style={switchStyles.container}>{children}</View>
     </TouchableOpacity>
   );
