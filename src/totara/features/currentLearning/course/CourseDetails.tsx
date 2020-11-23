@@ -129,6 +129,7 @@ const CourseDetailsContent = ({
                     style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
                     value={isExpandedAll}
                     onValueChange={() => onChangeExpand(isExpandedAll, expanableSectionIds)}
+                    accessibilityLabel={translate("course.course_details.expand_or_collapse")}
                   />
                 </View>
               )}
