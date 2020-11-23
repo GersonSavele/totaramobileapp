@@ -15,7 +15,6 @@
 
 import React, { useContext } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import About from "@totara/features/about/About";
 import { Image, ImageSourcePropType } from "react-native";
 import { ThemeContext } from "@totara/theme";
 import NotificationsStack from "@totara/features/notifications";
@@ -23,6 +22,7 @@ import DownloadsStack from "@totara/features/downloads";
 import ProfileStack from "@totara/features/profile";
 import { countUnreadMessages, notificationsQuery } from "./features/notifications/api";
 import { useQuery } from "@apollo/react-hooks";
+import CurrentLearningStack from "./features/currentLearning";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -44,7 +44,7 @@ const TabContainer = () => {
     <Tab.Navigator barStyle={{ backgroundColor: theme.colorNeutral1 }} shifting={false}>
       <Tab.Screen
         name="Learning"
-        component={About}
+        component={CurrentLearningStack}
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.current_learning} />

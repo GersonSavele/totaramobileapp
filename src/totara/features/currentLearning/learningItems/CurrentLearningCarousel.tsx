@@ -13,9 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import { TouchableOpacity, View, ScrollView, RefreshControl } from "react-native";
-import { NavigationContext } from "react-navigation";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { AddBadge } from "@totara/components";
 import { navigateTo, itemToRouteMap } from "@totara/lib/navigation";
@@ -26,6 +25,7 @@ import LearningItemCard from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
 import { extractTargetId } from "../utils";
 import { activeOpacity } from "@totara/lib/styles/base";
+import { useNavigation } from "@react-navigation/native";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
@@ -36,10 +36,9 @@ type CurrentLearningCarouselProps = {
 const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: CurrentLearningCarouselProps) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
-  const navigation = useContext(NavigationContext);
 
   const renderItem = ({ item }: any) => {
-    return <LearningItems navigation={navigation} item={item} />;
+    return <LearningItems item={item} />;
   };
   return (
     <View>
@@ -77,19 +76,22 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
   );
 };
 
-const LearningItems = ({ item, navigation }: any) => (
-  <View style={carouselItemStyles.itemWithBadgeContainer}>
-    <View style={carouselItemStyles.badgeContainer}>
-      <LearningItemWithSummaryAndNavigation item={item} navigation={navigation} />
+const LearningItems = ({ item }: any) => {
+  const navigation = useNavigation();
+  return (
+    <View style={carouselItemStyles.itemWithBadgeContainer}>
+      <View style={carouselItemStyles.badgeContainer}>
+        <LearningItemWithSummaryAndNavigation item={item} navigation={navigation} />
+      </View>
+      <View style={carouselItemStyles.learningItem}>
+        <AddBadge status={item.progress} size={iconSizes.sizeM} />
+      </View>
     </View>
-    <View style={carouselItemStyles.learningItem}>
-      <AddBadge status={item.progress} size={iconSizes.sizeM} />
-    </View>
-  </View>
-);
+  );
+};
 
 const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
-  const navigation = useContext(NavigationContext);
+  const navigation = useNavigation();
   const [showRestriction, setShowRestriction] = useState(false);
   const clickedLearningItem = () => {
     if (item.native) {

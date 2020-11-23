@@ -15,20 +15,18 @@
 
 import React from "react";
 import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
-import { NavigationStackProp } from "react-navigation-stack";
 import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
 import listViewStyles from "@totara/theme/listView";
 
 type CurrentLearningListViewProps = {
-  navigation: NavigationStackProp;
   currentLearning?: any;
   loading: boolean;
   onRefresh: () => void;
 };
 
-const CurrentLearningListView = ({ currentLearning, loading, onRefresh, navigation }: CurrentLearningListViewProps) => {
+const CurrentLearningListView = ({ currentLearning, loading, onRefresh }: CurrentLearningListViewProps) => {
   const renderItem = (data) => {
-    return <CurrentLearningListViewItem item={data.item} navigation={navigation} />;
+    return <CurrentLearningListViewItem item={data.item} />;
   };
 
   return (

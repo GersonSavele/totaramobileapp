@@ -20,9 +20,10 @@ type navigationOptionsProps = {
   title?: string;
   backTitle?: string;
   opacity?: number;
+  headerRight?: any;
 };
 
-const TotaraNavigationOptions = ({ opacity, title = "", backTitle }: navigationOptionsProps) => {
+const TotaraNavigationOptions = ({ opacity, title = "", backTitle, headerRight }: navigationOptionsProps) => {
   const options: StackNavigationOptions = {
     headerStyle: {
       borderBottomWidth: 0,
@@ -37,7 +38,8 @@ const TotaraNavigationOptions = ({ opacity, title = "", backTitle }: navigationO
     },
     title: title,
     headerBackTitle: backTitle,
-    headerTintColor: TotaraTheme.navigationHeaderTintColor
+    headerTintColor: TotaraTheme.navigationHeaderTintColor,
+    headerRight: headerRight
   };
   return options;
 };

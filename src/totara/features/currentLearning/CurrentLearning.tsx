@@ -18,7 +18,6 @@ import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { NavigationEvents } from "react-navigation";
 import CurrentLearningCarousel from "./learningItems/CurrentLearningCarousel";
 import CurrentLearningListView from "./learningItems/CurrentLearningListView";
 import NoCurrentLearning from "./learningItems/NoCurrentLearning";
@@ -28,19 +27,15 @@ import { currentLearningStyles } from "./currentLearningStyles";
 import { paddings } from "@totara/theme/constants";
 import { Switch, SwitchOption } from "@totara/components/Switch";
 import { Icons } from "@resources/icons";
-import { NavigationStackProp } from "react-navigation-stack";
 import { sortByDueDateThenTypeThenFullName } from "@totara/features/currentLearning/utils";
+import { NavigationEvents } from "@react-navigation/compat";
 
 enum ListingOrientation {
   Carousel,
   ListView
 }
 
-type CurrentLearningProps = {
-  navigation: NavigationStackProp;
-};
-
-const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
+const CurrentLearning = () => {
   const { loading, error, data, refetch } = useQuery(query);
   const [theme] = useContext(ThemeContext);
   const [listingOrientation, setListingOrientation] = useState<ListingOrientation>(ListingOrientation.Carousel);
@@ -118,7 +113,6 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
                 currentLearning={currentLearning}
                 loading={loading}
                 onRefresh={onContentRefresh}
-                navigation={navigation}
               />
             )
           ) : (

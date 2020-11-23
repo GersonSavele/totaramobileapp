@@ -12,8 +12,6 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-
-import { NavigationStackProp } from "react-navigation-stack";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -27,13 +25,14 @@ import NativeAccessRestriction from "@totara/features/currentLearning/NativeAcce
 import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/constants";
 import { extractTargetId } from "../utils";
 import { activeOpacity } from "@totara/lib/styles/base";
+import { useNavigation } from "@react-navigation/native";
 
 type ListViewItemProps = {
   item: any;
-  navigation: NavigationStackProp;
 };
 
-const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) => {
+const CurrentLearningListViewItem = ({ item }: ListViewItemProps) => {
+  const navigation = useNavigation();
   const [showRestriction, setShowRestriction] = useState(false);
   const { fullname, progress, itemtype, duedate, duedateState, id, native, imageSrc } = item;
 

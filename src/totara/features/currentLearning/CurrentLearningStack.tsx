@@ -13,7 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import React from "react";
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { View } from "react-native";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
@@ -22,11 +23,12 @@ import CourseDetails from "./course/CourseDetails";
 import { CourseGroupDetails, CourseList } from "./courseGroup";
 import { TouchableIcon } from "@totara/components";
 import { WebviewActivity } from "@totara/activities/webview/WebviewActivity";
-const { WEBVIEW_ACTIVITY, CURRENT_LEARNING, COURSE_DETAILS, COURSE_GROUP_DETAILS, COURSE_LIST } = NAVIGATION;
 import { paddings } from "@totara/theme/constants";
 import MoreInfo from "@totara/components/MoreInfo";
 
-const CurrentLearningStack = createStackNavigator(
+const { WEBVIEW_ACTIVITY, CURRENT_LEARNING, COURSE_DETAILS, COURSE_GROUP_DETAILS, COURSE_LIST } = NAVIGATION;
+
+const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     [CURRENT_LEARNING]: {
       screen: CurrentLearning as any,
@@ -58,7 +60,7 @@ const CurrentLearningStack = createStackNavigator(
         totaraNavigationOptions({
           title: navigation.getParam("title"),
           opacity: navigation.getParam("opacity"),
-          rightAction: (
+          headerRight: () => (
             <View style={{ paddingRight: paddings.paddingM }}>
               <MoreInfo
                 onPress={() => {
@@ -81,7 +83,7 @@ const CurrentLearningStack = createStackNavigator(
               icon={"times"}
               onPress={() => {
                 backAction();
-                navigation.pop();
+                navigation.goBack();
               }}
               size={20}
             />
@@ -91,8 +93,8 @@ const CurrentLearningStack = createStackNavigator(
     }
   },
   {
-    initialRouteName: "CurrentLearning",
-    initialRouteKey: "CurrentLearning"
+    initialRouteName: "CurrentLearning"
+    // initialRouteKey: "CurrentLearning"
   }
 );
 
