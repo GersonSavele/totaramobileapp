@@ -22,4 +22,39 @@ describe("User authentication", () => {
     await element(by.id("learningItem_2")).tap();
     await element(by.id(CL_TEST_IDS.CL_TAB_2_ID)).tap();
   });
+
+  it("should have scroll carousal and navigate to the learning item", async () => {
+    await element(by.id(CL_TEST_IDS.CAROUSEL_WRAPPER_ID)).tap();
+    await element(by.id(CL_TEST_IDS.CL_PROGRESS)).tap();
+    await element(by.id(TEST_IDS.CLICK_CLOSE)).tap();
+
+    await element(by.id(CL_TEST_IDS.CL_TAB_2_ID)).tap();
+    let shouldContinue = true;
+    let i = 0;
+    while (shouldContinue) {
+      try {
+        await element(by.id(`sectionItem_${i}`)).tap();
+      } catch (e) {
+        i += 1;
+        await element(by.id(CL_TEST_IDS.CL_LIST)).tap();
+        if (i == 2) shouldContinue = false;
+      }
+    }
+  });
+
+  it("should have scroll list item and navigate to the learning item", async () => {
+    await element(by.id(CL_TEST_IDS.CL_SWITCH_ID)).tap();
+    await element(by.id("learningItem_2")).tap();
+    await element(by.id(CL_TEST_IDS.CL_TAB_2_ID)).tap();
+    let shouldContinue = true;
+    let i = 0;
+    while (shouldContinue) {
+      try {
+        await element(by.id(`sectionItem_${i}`)).tap();
+      } catch (e) {
+        await element(by.id(CL_TEST_IDS.CL_LIST)).tap();
+        shouldContinue = false;
+      }
+    }
+  });
 });
