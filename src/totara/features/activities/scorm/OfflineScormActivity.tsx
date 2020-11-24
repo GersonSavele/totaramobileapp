@@ -36,8 +36,7 @@ import {
   setupOfflineScormPlayer,
   loadScormPackageData
 } from "./utils";
-import { scormLessonStatus } from "@totara/lib/constants";
-import { SCORM_TEST_IDS } from "./constants";
+import { ScormLessonStatus, SCORM_TEST_IDS } from "./constants";
 
 type OfflineScormParams = {
   attempt: number;
@@ -197,7 +196,7 @@ const startServer = (path: string, server: React.MutableRefObject<any>) => {
 const onPlayerMessageHandler = ({ client, maxGrade, gradeMethod }) => (messageData: any) => {
   const { tmsevent, result } = messageData;
   const status = get(result, "cmi.core.lesson_status", undefined);
-  if (tmsevent && tmsevent === "SCORMCOMMIT" && status && status !== scormLessonStatus.incomplete) {
+  if (tmsevent && tmsevent === "SCORMCOMMIT" && status && status !== ScormLessonStatus.incomplete) {
     const scormBundles = retrieveAllData({ client });
     const newData = setScormActivityData({
       scormBundles,

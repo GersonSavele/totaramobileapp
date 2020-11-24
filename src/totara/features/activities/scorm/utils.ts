@@ -29,7 +29,7 @@ import {
   Package
 } from "@totara/types/Scorm";
 
-import { offlineScormServerRoot, scormZipPackagePath, scormLessonStatus } from "./constants";
+import { offlineScormServerRoot, scormZipPackagePath, ScormLessonStatus } from "./constants";
 import { OFFLINE_SCORM_PREFIX, FILE_EXTENSION, SECONDS_FORMAT } from "@totara/lib/constants";
 
 type GetPlayerInitialDataProps = {
@@ -178,7 +178,7 @@ const getGradeForAttempt = ({ attemptCmi, maxGrade, gradeMethod }: GradeForAttem
       // Versions of scorm have different "score" paths
       const rawScore = parseInt(get(cmi, "core.score.raw", undefined) || get(cmi, "score.raw", 0));
       const lessonStatus = get(cmi, "core.lesson_status", "").toLowerCase();
-      if (lessonStatus === scormLessonStatus.passed || lessonStatus === scormLessonStatus.completed) {
+      if (lessonStatus === ScormLessonStatus.passed || lessonStatus === ScormLessonStatus.completed) {
         completedScos = completedScos + 1;
       }
       sumGrade = sumGrade + rawScore;

@@ -30,7 +30,7 @@ import {
   loadScormPackageData
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
-import { scormLessonStatus, offlineScormServerRoot } from "@totara/lib/constants";
+import { ScormLessonStatus, offlineScormServerRoot } from "../constants";
 describe("scorm utilities", () => {
   //This is a mock. These fields are from API response
   const defaultData = {
@@ -229,7 +229,7 @@ describe("scorm utilities", () => {
             score: {
               raw: 4
             },
-            lesson_status: scormLessonStatus.completed
+            lesson_status: ScormLessonStatus.completed
           }
         },
         id2: {
@@ -237,7 +237,7 @@ describe("scorm utilities", () => {
             score: {
               raw: 2
             },
-            lesson_status: scormLessonStatus.failed
+            lesson_status: ScormLessonStatus.failed
           }
         },
         id3: {
@@ -245,7 +245,7 @@ describe("scorm utilities", () => {
             score: {
               raw: 8
             },
-            lesson_status: scormLessonStatus.passed
+            lesson_status: ScormLessonStatus.passed
           }
         }
       });
@@ -283,12 +283,12 @@ describe("scorm utilities", () => {
       const blankAttemptCmi = eval({
         id1: {
           core: {
-            lesson_status: scormLessonStatus.completed
+            lesson_status: ScormLessonStatus.completed
           }
         },
         id2: {
           core: {
-            lesson_status: scormLessonStatus.failed
+            lesson_status: ScormLessonStatus.failed
           }
         },
         id3: {}

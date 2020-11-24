@@ -29,7 +29,7 @@ import { SCORM_TEST_IDS } from "../constants";
 import * as utils from "../utils";
 import * as storageUtils from "../storageUtils";
 import { Grade } from "@totara/types/Scorm";
-import { scormLessonStatus } from "@totara/lib/constants";
+import { ScormLessonStatus } from "../constants";
 
 describe("OfflineScormActivity", () => {
   const { NONE_EXIST_RESOURCE_ID, INVALID_SCORM_ID } = SCORM_TEST_IDS;
@@ -235,7 +235,7 @@ describe("onPlayerMessageHandler", () => {
   it("should call saveInTheCach, if tmsevent = `SCORMCOMMIT` and result.cmi.core.lesson_status != `incomplete` of the messageData.", () => {
     const messageDataMock = {
       tmsevent: "SCORMCOMMIT",
-      result: { cmi: { core: { lesson_status: scormLessonStatus.passed } } }
+      result: { cmi: { core: { lesson_status: ScormLessonStatus.passed } } }
     };
     onPlayerMessageHandler({
       client,
@@ -247,7 +247,7 @@ describe("onPlayerMessageHandler", () => {
 
   it("should not call saveInTheCach, if tmsevent != `SCORMCOMMIT` or result.cmi.core.lesson_status == `incomplete` of the messageData.", () => {
     let messageDataMock = {
-      result: { cmi: { core: { lesson_status: scormLessonStatus.passed } } }
+      result: { cmi: { core: { lesson_status: ScormLessonStatus.passed } } }
     };
     onPlayerMessageHandler({
       client,
@@ -258,7 +258,7 @@ describe("onPlayerMessageHandler", () => {
 
     messageDataMock = {
       tmsevent: "SCORMCOMMIT",
-      result: { cmi: { core: { lesson_status: scormLessonStatus.incomplete } } }
+      result: { cmi: { core: { lesson_status: ScormLessonStatus.incomplete } } }
     };
     onPlayerMessageHandler({
       client,

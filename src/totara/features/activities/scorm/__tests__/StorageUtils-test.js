@@ -27,10 +27,10 @@ import {
   getScormAttemptData
 } from "../storageUtils";
 import { Grade } from "@totara/types/Scorm";
-import { scormLessonStatus } from "@totara/lib/constants";
+import { ScormLessonStatus } from "../constants";
 import { scormActivitiesRecordsQuery } from "../api";
 
-const commitData = (completeValue = scormLessonStatus.completed) => ({
+const commitData = (completeValue = ScormLessonStatus.completed) => ({
   scormid: "18",
   attempt: "16",
   scoid: "item_1",
