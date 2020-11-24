@@ -14,10 +14,9 @@
  */
 
 import React from "react";
-
 import { render } from "@testing-library/react-native";
-import NotificationDetails from "@totara/features/notifications/NotificationDetail";
 import moment from "moment";
+import NotificationDetails from "@totara/features/notifications/NotificationDetail";
 
 describe("NotificationDetails", () => {
   const defaultMockItem = {
@@ -31,14 +30,14 @@ describe("NotificationDetails", () => {
 
   it("Should render with title, time ago, and full message", () => {
     const itemToBeTested = { ...defaultMockItem };
-    const navigation = {
-      state: {
-        params: {
-          ...itemToBeTested
-        }
+
+    const route = {
+      params: {
+        ...itemToBeTested
       }
     };
-    const { getByTestId } = render(<NotificationDetails navigation={navigation} />);
+
+    const { getByTestId } = render(<NotificationDetails route={route} />);
 
     const labelTitle = getByTestId("test_title");
     expect(labelTitle.children[0]).toBe(itemToBeTested.subject);

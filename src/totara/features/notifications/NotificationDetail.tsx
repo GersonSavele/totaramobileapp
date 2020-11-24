@@ -15,18 +15,20 @@
 
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 import { NotificationMessage } from "@totara/types";
 import { fontWeights, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { timeAgo } from "@totara/lib/tools";
-import { NavigationStackProp } from "react-navigation-stack";
 
-type NotificationDetailsProps = {
-  navigation: NavigationStackProp<NotificationMessage>;
+type ParamList = {
+  messageDetails: NotificationMessage;
 };
 
-const NotificationDetails = ({ navigation }: NotificationDetailsProps) => {
-  const { subject, timeCreated, fullMessage } = navigation.state.params as NotificationMessage;
+type NotificationDetailProps = StackScreenProps<ParamList, "messageDetails">;
+
+const NotificationDetails = ({ route }: NotificationDetailProps) => {
+  const { subject, timeCreated, fullMessage } = route.params;
 
   return (
     <View style={styles.mainContainer}>

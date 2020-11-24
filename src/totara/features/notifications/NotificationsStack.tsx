@@ -13,26 +13,38 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import { translate } from "../../locale";
 import NotificationDetails from "./NotificationDetail";
 import TotaraNavigationOptions from "../../components/NavigationOptions";
 import Notifications from "./Notifications";
 
-const NotificationsStack = createCompatNavigatorFactory(createStackNavigator)(
-  {
-    Notification: {
-      screen: Notifications
-    },
-    NotificationDetail: {
-      screen: NotificationDetails
-    }
-  },
-  {
-    initialRouteName: "Notification",
-    defaultNavigationOptions: TotaraNavigationOptions({ backTitle: translate("general.back") })
-  }
-);
+const Stack = createStackNavigator();
+const detaultScreenOptions = TotaraNavigationOptions({ backTitle: translate("general.back") });
+
+const NotificationsStack = () => {
+  return (
+    <Stack.Navigator screenOptions={detaultScreenOptions}>
+      <Stack.Screen name="Notification" component={Notifications} />
+      <Stack.Screen name="NotificationDetail" component={NotificationDetails} />
+    </Stack.Navigator>
+  );
+};
+
+// const NotificationsStack = createCompatNavigatorFactory(createStackNavigator)(
+//   {
+//     Notification: {
+//       screen: Notifications
+//     },
+//     NotificationDetail: {
+//       screen: NotificationDetails
+//     }
+//   },
+//   {
+//     initialRouteName: "Notification",
+//     defaultNavigationOptions: TotaraNavigationOptions({ backTitle: translate("general.back") })
+//   }
+// );
 
 export default NotificationsStack;

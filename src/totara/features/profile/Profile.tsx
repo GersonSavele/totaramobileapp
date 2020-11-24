@@ -16,8 +16,9 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View, ScrollView, RefreshControl, Alert, TouchableOpacity } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
-import { ThemeContext } from "@totara/theme";
+import { StackScreenProps } from "@react-navigation/stack";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { ThemeContext } from "@totara/theme";
 import { AuthConsumer } from "@totara/core";
 import { UserProfile } from "@totara/types";
 import { NAVIGATION } from "@totara/lib/navigation";
@@ -28,13 +29,8 @@ import { NetworkStatus as NS } from "apollo-boost";
 import { margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatus, ImageWrapper, LoadingError } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { NavigationStackProp } from "react-navigation-stack";
 
-type ProfileProps = {
-  navigation: NavigationStackProp;
-};
-
-const Profile = ({ navigation }: ProfileProps) => {
+const Profile = ({ navigation }: StackScreenProps<any>) => {
   const { loading, error, data, refetch, networkStatus } = useQuery(userOwnProfile);
 
   if (loading) return <Loading testID={"test_ProfileLoading"} />;
