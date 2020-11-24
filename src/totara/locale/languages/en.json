@@ -143,7 +143,13 @@
       "overview": "OVERVIEW",
       "expand_or_collapse": "Expand all",
       "badge_title": "Course",
-      "accessibility_expand_all": "Expand all activities."
+      "accessibility_expand_all": "Expand all activities.",
+      "accessibility_activity_completion": "Mark activity as complete",
+      "accessibility_incomplete": "Incomplete",
+      "accessibility_completed": "Completed",
+      "accessibility_failed": "Failed",
+      "accessibility_activity_unavailable": "Unavailable",
+      "accessibility_activity_video": "Video"
     },
     "course_activity_section": {
       "not_available": "Not available"

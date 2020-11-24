@@ -14,14 +14,14 @@
  */
 
 import React from "react";
-import { View } from "react-native";
-import { StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { completionTrack, completionStatus, completionIconStateKey } from "../constants";
 import { CircleIcon } from "@totara/components";
 import { Images } from "@resources/images";
 import { iconSizes, margins } from "@totara/theme/constants";
 import { Spinner } from "native-base";
+import { translate } from "@totara/locale";
 
 const { colorAccent, colorNeutral7, colorSuccess, colorNeutral6, colorAlert } = TotaraTheme;
 
@@ -37,31 +37,40 @@ const completionStates = {
     icon: "lock",
     backgroundColor: colorAccent,
     iconColor: colorNeutral7,
-    borderColor: colorNeutral7
+    borderColor: colorNeutral7,
+    accessibilityLabel: translate("course.course_details.accessibility_activity_unavailable")
   },
   completed: {
     icon: "check",
     backgroundColor: colorSuccess,
     iconColor: colorAccent,
-    borderColor: colorSuccess
+    borderColor: colorSuccess,
+    accessibilityLabel: translate("course.course_details.accessibility_activity_completion"),
+    accessibilityHint: translate("course.course_details.accessibility_completed")
   },
   autoIncomplete: {
     icon: Images.autoCompleteTick,
     backgroundColor: colorAccent,
     iconColor: colorNeutral6,
     borderColor: colorNeutral6,
-    fontAwesomeIcon: false
+    fontAwesomeIcon: false,
+    accessibilityLabel: translate("course.course_details.accessibility_activity_completion"),
+    accessibilityHint: translate("course.course_details.accessibility_incomplete")
   },
   completeFail: {
     icon: "times",
     backgroundColor: colorAlert,
     iconColor: colorAccent,
-    borderColor: colorAlert
+    borderColor: colorAlert,
+    accessibilityLabel: translate("course.course_details.accessibility_activity_completion"),
+    accessibilityHint: translate("course.course_details.accessibility_failed")
   },
   manualIncomplete: {
     backgroundColor: colorAccent,
     iconColor: colorNeutral6,
-    borderColor: colorNeutral6
+    borderColor: colorNeutral6,
+    accessibilityLabel: translate("course.course_details.accessibility_activity_completion"),
+    accessibilityHint: translate("course.course_details.accessibility_incomplete")
   }
 };
 
@@ -94,6 +103,8 @@ const CompletionIcon = ({ completion, status, available, loading }: BuildContent
           iconColor={stateObj.iconColor}
           borderColor={stateObj.borderColor}
           fontAwesomeIcon={stateObj.fontAwesomeIcon}
+          accessibilityLabel={stateObj.accessibilityLabel}
+          accessibilityHint={stateObj.accessibilityHint}
         />
       )}
     </View>
