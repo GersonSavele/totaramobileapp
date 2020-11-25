@@ -14,11 +14,9 @@
  */
 
 import { StyleSheet, ViewStyle } from "react-native";
-import { margins, paddings, borderRadius } from "@totara/theme/constants";
+import { margins, paddings, borderRadius, fontWeights, fontSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { deviceScreen } from "@totara/lib/tools";
 import { viewHeight } from "./constants";
-const { marginL } = margins;
 const {
   colorOpacity70,
   textH2,
@@ -29,6 +27,8 @@ const {
   colorSecondary1,
   navigationHeaderTintColor
 } = TotaraTheme;
+
+const { marginL } = margins;
 
 const viewHeader: ViewStyle = {
   padding: paddings.paddingL
@@ -64,14 +64,6 @@ const learningDetailsStyles = StyleSheet.create({
     flex: 0.4,
     height: 50
   },
-  tabNav: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: marginL,
-    width: deviceScreen.width * 0.5,
-    alignItems: "center",
-    flex: 1
-  },
   programLabelText: {
     ...textXXSmall,
     textAlign: "center",
@@ -81,17 +73,42 @@ const learningDetailsStyles = StyleSheet.create({
     paddingBottom: paddings.paddingXS,
     color: colorNeutral7
   },
-  tabSelected: {
-    height: "100%",
-    justifyContent: "center",
-    paddingHorizontal: paddings.padding2XL
-  },
   modalBackground: {
     flex: 1,
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-around",
     backgroundColor: colorOpacity70
+  },
+  tabNav: {
+    flexDirection: "row",
+    marginLeft: marginL,
+    alignItems: "center",
+    flex: 1
+  },
+  tabViewItem: {
+    height: "100%",
+    justifyContent: "center",
+    borderBottomWidth: 2,
+    borderBottomColor: "transparent"
+  },
+  tabViewItemSelected: {
+    borderBottomColor: TotaraTheme.colorNeutral7
+  },
+
+  tabViewTitle: {
+    ...TotaraTheme.textRegular,
+    color: TotaraTheme.colorNeutral6,
+    fontWeight: fontWeights.fontWeightSemiBold
+  },
+  tabViewTitleSelected: {
+    color: TotaraTheme.colorNeutral7
+  },
+  itemFullName: {
+    flexWrap: "wrap",
+    ...TotaraTheme.textHeadline,
+    fontWeight: fontWeights.fontWeightSemiBold,
+    fontSize: fontSizes.fontSizeL
   }
 });
 

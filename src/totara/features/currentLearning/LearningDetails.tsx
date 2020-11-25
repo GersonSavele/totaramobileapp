@@ -14,15 +14,16 @@
  */
 
 import React, { ReactNode } from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import ParallaxScrollView from "./ParallaxScrollView";
 import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { fontSizes, fontWeights } from "@totara/theme/constants";
 import { viewHeight } from "./constants";
 import { CourseGroup, Course, LearningItem } from "@totara/types";
+import { margins } from "@totara/theme/constants";
+const { marginXL } = margins;
 
 type LearningDetailsProps = {
   item: Course | CourseGroup | LearningItem;
@@ -47,7 +48,7 @@ const TitleBar = ({ item, badgeTitle }: TitleBarProps) => {
   return (
     <View style={learningDetailsStyles.itemCard}>
       <View style={{ flexDirection: "row" }}>
-        <Text style={styles.itemFullName}>{item.fullname}</Text>
+        <Text style={learningDetailsStyles.itemFullName}>{item.fullname}</Text>
       </View>
       <View style={learningDetailsStyles.learningTypeLabelWrap}>
         <Text style={learningDetailsStyles.programLabelText}>{badgeTitle}</Text>
@@ -69,16 +70,31 @@ const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }:
       <View style={[learningDetailsStyles.tabBarContainer]}>
         <View style={learningDetailsStyles.tabNav}>
           <TouchableOpacity
-            style={[learningDetailsStyles.tabSelected, overviewIsShown && { ...styles.overviewTouchableOpacity }]}
+            style={[
+              learningDetailsStyles.tabViewItem,
+              overviewIsShown && { ...learningDetailsStyles.tabViewItemSelected }
+            ]}
             onPress={onPress}>
-            <Text style={[styles.tabViewTitle, overviewIsShown && styles.overviewTextTouchableOpacity]}>
+            <Text
+              style={[
+                learningDetailsStyles.tabViewTitle,
+                overviewIsShown && learningDetailsStyles.tabViewTitleSelected
+              ]}>
               {tabBarLeftTitle}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[learningDetailsStyles.tabSelected, !overviewIsShown && { ...styles.overviewTouchableOpacity }]}
+            style={[
+              learningDetailsStyles.tabViewItem,
+              { marginLeft: marginXL },
+              !overviewIsShown && { ...learningDetailsStyles.tabViewItemSelected }
+            ]}
             onPress={onPress}>
-            <Text style={[styles.tabViewTitle, !overviewIsShown && { ...styles.overviewTextTouchableOpacity }]}>
+            <Text
+              style={[
+                learningDetailsStyles.tabViewTitle,
+                !overviewIsShown && { ...learningDetailsStyles.tabViewTitleSelected }
+              ]}>
               {tabBarRightTitle}
             </Text>
           </TouchableOpacity>
@@ -141,26 +157,5 @@ const LearningDetails = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  tabViewTitle: {
-    color: TotaraTheme.colorNeutral6
-  },
-  overviewTextTouchableOpacity: {
-    ...TotaraTheme.textRegular,
-    fontWeight: fontWeights.fontWeightSemiBold
-  },
-  overviewTouchableOpacity: {
-    borderBottomColor: TotaraTheme.colorNeutral7,
-    borderBottomWidth: 2
-  },
-  itemFullName: {
-    flexWrap: "wrap",
-    ...TotaraTheme.textHeadline,
-    fontWeight: fontWeights.fontWeightSemiBold,
-    fontSize: fontSizes.fontSizeL
-  },
-  itemCard: {}
-});
 
 export default LearningDetails;
