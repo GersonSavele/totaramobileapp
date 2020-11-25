@@ -25,12 +25,12 @@ import { Resource } from "@totara/types";
 import { Images } from "@resources/images";
 import ResourceManager from "@totara/lib/resourceManager";
 import listViewStyles from "@totara/theme/listView";
-import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
+import { NAVIGATION } from "@totara/lib/navigation";
 import { TotaraTheme } from "@totara/theme/Theme";
 import DownloadItem from "./DownloadItem";
 import { paddings } from "@totara/theme/constants";
 import { StackScreenProps } from "@react-navigation/stack";
-const { SCORM_ROOT } = NAVIGATION;
+const { SCORM_ROOT, SCORM_STACK_ROOT } = NAVIGATION;
 
 const Downloads = ({ navigation }: StackScreenProps<any>) => {
   const resourcesList = useSelector((state: RootState) => state.resourceReducer.resources);
@@ -79,10 +79,9 @@ const Downloads = ({ navigation }: StackScreenProps<any>) => {
     toggleSelected(item);
 
     if (!selectable) {
-      navigateTo({
-        navigate: navigation.navigate,
-        routeId: SCORM_ROOT,
-        props: {
+      navigation.navigate(SCORM_STACK_ROOT, {
+        screen: SCORM_ROOT,
+        params: {
           id: item.customId,
           title: item.name
         }

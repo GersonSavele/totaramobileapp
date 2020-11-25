@@ -17,7 +17,6 @@ import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import React, { useState, useContext } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { NavigationContext } from "react-navigation";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
 import { get, isEmpty } from "lodash";
@@ -38,8 +37,9 @@ import { ActivityModType } from "@totara/lib/constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete, fetchResource } from "../course/api";
 import listViewStyles from "@totara/theme/listView";
+import { useNavigation } from "@react-navigation/native";
 
-const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
+const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
@@ -192,22 +192,31 @@ type ActivityListProps = {
   completionEnabled: boolean;
 };
 
-const ActivityList = ({ data, courseRefreshCallBack, sectionSummary, completionEnabled, summaryFormat }: ActivityListProps) => {
+const ActivityList = ({
+  data,
+  courseRefreshCallBack,
+  sectionSummary,
+  completionEnabled,
+  summaryFormat
+}: ActivityListProps) => {
   console.log("sectionSummary: ", sectionSummary);
   return (
     <View>
-      {summaryFormat === DescriptionFormat.jsonEditor ?
-        (!isEmpty(sectionSummary) && <View style={activitiesStyles.activityList}>
-          <WekaEditorView
-            content={sectionSummary && (sectionSummary as any)}
-            backGroundColor={TotaraTheme.colorNeutral2}
-            textColor={TotaraTheme.colorNeutral6}
-          />
-        </View>) :
-        (<View style={activitiesStyles.activityList}>
+      {summaryFormat === DescriptionFormat.jsonEditor ? (
+        !isEmpty(sectionSummary) && (
+          <View style={activitiesStyles.activityList}>
+            <WekaEditorView
+              content={sectionSummary && (sectionSummary as any)}
+              backGroundColor={TotaraTheme.colorNeutral2}
+              textColor={TotaraTheme.colorNeutral6}
+            />
+          </View>
+        )
+      ) : (
+        <View style={activitiesStyles.activityList}>
           <ActivityTextContent label={sectionSummary} />
-        </View>)
-        }
+        </View>
+      )}
       {data!.map((item: Activity, key: number) => {
         return (
           <View key={key}>
@@ -235,7 +244,7 @@ type ListUnLockProps = {
 };
 
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
-  const navigation = useContext(NavigationContext);
+  const navigation = useNavigation();
 
   const {
     authContextState: { appState }
@@ -296,10 +305,9 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           onPress={() => {
             switch (item.modtype) {
               case ActivityModType.scorm: {
-                navigateTo({
-                  navigate: navigation.navigate,
-                  routeId: SCORM_ROOT,
-                  props: {
+                navigation.navigate(SCORM_STACK_ROOT, {
+                  screen: SCORM_ROOT,
+                  params: {
                     id: item.instanceid.toString(),
                     title: item.name
                   }

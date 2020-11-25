@@ -13,11 +13,14 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext, useEffect, useState } from "react";
-import { createStackNavigator, NavigationStackProp } from "react-navigation-stack";
-import { NavigationActions } from "react-navigation";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useQuery } from "@apollo/react-hooks";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createCompatNavigatorFactory } from "@react-navigation/compat";
+import { useApolloClient } from "@apollo/react-hooks";
+import { useNetInfo } from "@react-native-community/netinfo";
+import { SafeAreaView } from "react-native";
 
 import { AppState } from "@totara/types";
 import ScormSummary from "./ScormSummary";
@@ -36,12 +39,8 @@ import ScormAttempts from "./ScormAttempts";
 import Loading from "@totara/components/Loading";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { ScormActivityParams, ScormBundle, Scorm } from "@totara/types/Scorm";
-import { useNetInfo } from "@react-native-community/netinfo";
 import { translate } from "@totara/locale";
-import { SafeAreaView } from "react-native";
 import { fullFlex } from "@totara/lib/styles/base";
-import { useApolloClient } from "@apollo/react-hooks";
-
 import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
 import { getTargetZipFile, getOfflinePackageUnzipPath } from "./utils";
@@ -61,7 +60,7 @@ const {
 } = NAVIGATION;
 
 type ScormActivityProps = {
-  navigation: NavigationStackProp<ScormActivityParams>;
+  navigation: any;
 };
 
 type ApiDataEffectProps = {
@@ -83,14 +82,6 @@ type ResourceListEffectProps = {
 };
 
 const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
-
-const headerDispatch = (params, dispatch) => {
-  const setParamsAction = NavigationActions.setParams({
-    params,
-    key: SCORM_ROOT
-  });
-  dispatch(setParamsAction);
-};
 
 const apiDataEffect = ({ data, client, id, scormBundle, setScormBundle }: ApiDataEffectProps) => () => {
   if (data) {
@@ -133,57 +124,6 @@ const onRefresh = ({
   }
 };
 
-const resourceListEffect = ({
-  scorm,
-  resourceList,
-  id,
-  apiKey,
-  isInternetReachable,
-  navigation,
-  setResourceState
-}: ResourceListEffectProps) => () => {
-  if (scorm?.offlineAttemptsAllowed && scorm?.packageUrl) {
-    const resource = resourceList.find((x) => x.customId === id);
-
-    const resourceState = resource?.state;
-    const progress = resource
-      ? humanReadablePercentage({
-          writtenBytes: resource.bytesDownloaded,
-          sizeInBytes: resource.sizeInBytes
-        })
-      : 0;
-
-    const { packageUrl } = scorm;
-
-    headerDispatch(
-      {
-        downloadProgress: progress,
-        downloadState: resourceState,
-        // if there's no existing scorm resource, a null function will serve disabling the action
-        onDownloadPress: resource
-          ? () => null
-          : ({ id, title }) => {
-              if (isInternetReachable) {
-                download({
-                  apiKey: apiKey,
-                  customId: id,
-                  name: title,
-                  type: ResourceType.ScormActivity,
-                  resourceUrl: packageUrl,
-                  targetPathFile: getTargetZipFile(id),
-                  targetExtractPath: getOfflinePackageUnzipPath(id)
-                });
-              } else {
-                showMessage({ text: translate("general.no_internet") });
-              }
-            }
-      },
-      navigation.dispatch
-    );
-    setResourceState((resource && resource.state) || undefined);
-  }
-};
-
 const ScormActivity = (props: ScormActivityProps) => {
   const { navigation } = props;
   const { id, title = "" } = navigation.state.params as ScormActivityParams;
@@ -197,7 +137,6 @@ const ScormActivity = (props: ScormActivityProps) => {
 
   // FIXME: This is a temporary hack because the server is not returning correct data
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
-  const [resourceState, setResourceState] = useState<ResourceState>();
 
   const {
     authContextState: { appState }
@@ -205,20 +144,50 @@ const ScormActivity = (props: ScormActivityProps) => {
 
   const { apiKey, host } = appState as AppState;
 
+  //FIXME: IMPROVE THIS USESELECTOR, create something like useResource that does all this stuff
   const resourceList: Resource[] = useSelector((state: RootState) => state.resourceReducer.resources);
+  const resource = resourceList.find((x) => x.customId === id);
 
-  useEffect(
-    resourceListEffect({
-      scorm: scormBundle?.scorm,
-      id,
-      apiKey,
-      isInternetReachable,
-      navigation,
-      resourceList,
-      setResourceState
-    }),
-    [resourceList, scormBundle]
-  );
+  const progress = resource
+    ? humanReadablePercentage({
+        writtenBytes: resource.bytesDownloaded,
+        sizeInBytes: resource.sizeInBytes
+      })
+    : 0;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <ResourceDownloader
+            resourceState={resource?.state}
+            progress={progress}
+            size={iconSizes.sizeM}
+            onPress={onDownloadPress}
+          />
+        );
+      }
+    });
+  });
+
+  const scorm = scormBundle?.scorm;
+  const packageUrl = scorm?.offlineAttemptsAllowed && scorm?.packageUrl;
+
+  const onDownloadPress = () => {
+    if (isInternetReachable && packageUrl) {
+      download({
+        apiKey: apiKey,
+        customId: id,
+        name: title,
+        type: ResourceType.ScormActivity,
+        resourceUrl: packageUrl as string,
+        targetPathFile: getTargetZipFile(id),
+        targetExtractPath: getOfflinePackageUnzipPath(id)
+      });
+    } else {
+      showMessage({ text: translate("general.no_internet") });
+    }
+  };
 
   useEffect(
     apiDataEffect({
@@ -252,7 +221,7 @@ const ScormActivity = (props: ScormActivityProps) => {
           setScormBundle,
           id
         })}
-        isDownloaded={resourceState === ResourceState.Completed}
+        isDownloaded={resource?.state === ResourceState.Completed}
         client={apolloClient}
         apiKey={apiKey}
         host={host}
@@ -267,12 +236,12 @@ const navigationOptions = ({ navigation }) => {
   return {
     title,
     headerTitleAlign: "center",
-    headerLeft: <TouchableIcon icon={backIcon} onPress={backAction} size={TotaraTheme.textHeadline.fontSize} />,
-    headerRight: headerRight({ navigation })
+    headerLeft: () => <TouchableIcon icon={backIcon} onPress={backAction} size={TotaraTheme.textHeadline.fontSize} />,
+    headerRight: () => headerRight({ navigation })
   };
 };
 
-const innerStack = createStackNavigator(
+const innerStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     [SCORM_ROOT]: {
       screen: ScormActivity,
@@ -292,12 +261,12 @@ const innerStack = createStackNavigator(
     }
   },
   {
-    initialRouteKey: SCORM_ROOT,
+    // initialRouteKey: SCORM_ROOT,
     initialRouteName: SCORM_ROOT
   }
 );
 
-const scormStack = createStackNavigator(
+const scormStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     [SCORM_STACK_ROOT]: {
       screen: innerStack
@@ -330,5 +299,5 @@ const headerRight = (props) => {
   }
 };
 
-export { scormStack, headerDispatch, apiDataEffect, onRefresh, navigationOptions, resourceListEffect };
+export { scormStack, apiDataEffect, onRefresh, navigationOptions };
 export default ScormActivity;
