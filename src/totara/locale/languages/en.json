@@ -142,7 +142,8 @@
       "activities": "ACTIVITIES",
       "overview": "OVERVIEW",
       "expand_or_collapse": "Expand all",
-      "badge_title": "Course"
+      "badge_title": "Course",
+      "accessibility_expand_all": "Expand all activities."
     },
     "course_activity_section": {
       "not_available": "Not available"
