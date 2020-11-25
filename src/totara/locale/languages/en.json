@@ -79,11 +79,10 @@
     "due_in": "Due in",
     "extend_date": "Extend Date",
     "overdue_by": "Overdue by",
-    "accessibility_view_mode": "View mode.",
-    "accessibility_view_mode_hint": {
-      "carousel": "Carousel selected.",
-      "list": "List selected."
-    }
+    "accessibility_view_mode": "{{mode}} view selected.",
+    "carousel": "Carousel",
+    "list": "List",
+    "accessibility_view_mode_hint": "Toggles between carousel view and list view."
   },
   "additional_actions_modal": {
     "auth_model_title": "Action required",

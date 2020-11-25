@@ -62,11 +62,13 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
   if (data) {
     const { currentLearning: notSorted } = data;
     const currentLearning = sortByDueDateThenTypeThenFullName(notSorted);
-    const accessibilityLabelText = translate("current_learning.accessibility_view_mode");
-    const accessibilityHintText =
-      listingOrientation === ListingOrientation.Carousel
-        ? translate("current_learning.accessibility_view_mode_hint.carousel")
-        : translate("current_learning.accessibility_view_mode_hint.list");
+    const accessibilityLabelText = translate("current_learning.accessibility_view_mode", {
+      mode:
+        listingOrientation === ListingOrientation.Carousel
+          ? translate("current_learning.carousel")
+          : translate("current_learning.list")
+    });
+    const accessibilityHintText = translate("current_learning.accessibility_view_mode_hint");
 
     return (
       <View style={[theme.viewContainer, { flex: 1 }]}>
@@ -75,7 +77,6 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
           <View
             style={{
               flexDirection: "row",
-              alignItems: "center",
               justifyContent: "space-between"
             }}>
             <Text style={currentLearningStyles.headerViewTitleWrap}>
@@ -83,13 +84,14 @@ const CurrentLearning = ({ navigation }: CurrentLearningProps) => {
             </Text>
             <View
               style={{
-                alignSelf: "flex-end",
-                paddingRight: paddings.paddingS
-              }}>
-              <Switch
-                onPress={toggleListingOrientation}
-                accessibilityLabel={accessibilityLabelText}
-                accessibilityHint={accessibilityHintText}>
+                paddingRight: paddings.paddingS,
+                flexDirection: "row"
+              }}
+              accessible={true}
+              accessibilityRole={"switch"}
+              accessibilityLabel={accessibilityLabelText}
+              accessibilityHint={accessibilityHintText}>
+              <Switch onPress={toggleListingOrientation}>
                 <SwitchOption icon={Icons.iconCarousel} selected={listingOrientation === ListingOrientation.Carousel} />
                 <SwitchOption icon={Icons.iconList} selected={listingOrientation === ListingOrientation.ListView} />
               </Switch>

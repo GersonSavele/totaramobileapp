@@ -34,18 +34,11 @@ const SwitchOption = ({ icon, selected }: SwitchOptionProps) => {
 type SwitchProps = {
   children: any;
   onPress: () => void;
-  accessibilityLabel: string;
-  accessibilityHint: string;
 };
 
-const Switch = ({ children, onPress, accessibilityLabel, accessibilityHint }: SwitchProps) => {
+const Switch = ({ children, onPress }: SwitchProps) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      accessible={true}
-      accessibilityRole={"switch"}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityHint={accessibilityHint}>
+    <TouchableOpacity onPress={onPress} style={{ alignSelf: "center" }}>
       <View style={switchStyles.container}>{children}</View>
     </TouchableOpacity>
   );
