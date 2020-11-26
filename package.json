@@ -167,6 +167,9 @@
         }
       }
     },
-    "test-runner": "jest"
+    "test-runner": "jest",
+    "detox": {
+      "specs": ""
+    }
   }
 }
