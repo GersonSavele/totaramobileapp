@@ -16,6 +16,9 @@
         android:theme="@style/AppTheme">
         <!-- For .MainActivity Activity: Commented windowSoftInputMode mode to default to avoid adjusting screen height for keboard -->
         <!-- android:windowSoftInputMode="adjustResize"  -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
 
         <activity
             android:name=".MainActivity"
