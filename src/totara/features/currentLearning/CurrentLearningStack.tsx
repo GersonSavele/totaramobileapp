@@ -78,7 +78,7 @@ const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
         const { backAction } = navigation.state.params;
         return {
           headerTitleAlign: "center",
-          headerLeft: (
+          headerLeft: () => (
             <TouchableIcon
               icon={"times"}
               onPress={() => {

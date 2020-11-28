@@ -23,13 +23,7 @@ import { useApolloClient } from "@apollo/react-hooks";
 
 import { ResourceState } from "@totara/types/Resource";
 import { downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/downloadMock";
-import ScormActivity, {
-  headerDispatch,
-  apiDataEffect,
-  onRefresh,
-  navigationOptions,
-  resourceListEffect
-} from "../ScormActivity";
+import ScormActivity, { apiDataEffect, onRefresh, navigationOptions } from "../ScormActivity";
 import { scormSuccessMock } from "../api/scorm.mock";
 import { AuthContext } from "@totara/core";
 import { SCORM_TEST_IDS } from "../constants";
@@ -52,12 +46,7 @@ describe("ScormActivity", () => {
       }
     },
     navigate: jest.fn(),
-    dispatch: jest.fn(),
-    addListener: () => {
-      return {
-        remove: jest.fn()
-      };
-    }
+    setOptions: jest.fn()
   };
 
   afterEach(() => {
@@ -68,7 +57,7 @@ describe("ScormActivity", () => {
     jest.restoreAllMocks();
   });
 
-  it("Should render loading component initially, when it recieve responce it should show scorm summary", async (done) => {
+  it("Should render loading component initially; when it receives the response, it should show scorm summary", async (done) => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return downloadsTwoItemsMock;
     });
@@ -96,17 +85,17 @@ describe("ScormActivity", () => {
   });
 });
 
-describe("headerDispatch", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+// describe("headerDispatch", () => {
+//   afterEach(() => {
+//     jest.clearAllMocks();
+//   });
 
-  const mockDispatch = jest.fn();
-  it("should call passing dispatch function with merging passing data and SCORM_ROOT key", () => {
-    headerDispatch({ data: "data" }, mockDispatch);
-    expect(mockDispatch).toHaveBeenCalledTimes(1);
-  });
-});
+//   const mockDispatch = jest.fn();
+//   it("should call passing dispatch function with merging passing data and SCORM_ROOT key", () => {
+//     headerDispatch({ data: "data" }, mockDispatch);
+//     expect(mockDispatch).toHaveBeenCalledTimes(1);
+//   });
+// });
 
 describe("apiDataEffect", () => {
   const setScormBundleMock = jest.fn();
@@ -165,6 +154,7 @@ describe("apiDataEffect", () => {
     expect(setScormBundleMock).not.toHaveBeenCalled();
   });
 });
+
 describe("onRefresh", () => {
   const setScormBundleMock = jest.fn();
   const scormBundleMock = { scorm: { id: "18", name: "mock name" } };
@@ -190,6 +180,7 @@ describe("onRefresh", () => {
     })();
     expect(refetchMock).toHaveBeenCalledTimes(1);
   });
+
   it("should call setScormBundle with merging offline attempts and scormBundle, if isInternetReachable false", () => {
     const offlineAttemptsMock = ["offline attemps"];
     const refetchMock = jest.fn();
@@ -243,116 +234,116 @@ describe("navigationOptions", () => {
     expect(result.headerRight).toBeTruthy();
   });
 
-  it("should not set headerRight, if onDownloadPress is not defined.", () => {
-    const navigationDataMock = {
-      state: {
-        params: {
-          id: "18",
-          title: "Title value",
-          backIcon: "times",
-          backAction: backActionMock
-        }
-      }
-    };
+  // it("should not set headerRight, if onDownloadPress is not defined.", () => {
+  //   const navigationDataMock = {
+  //     state: {
+  //       params: {
+  //         id: "18",
+  //         title: "Title value",
+  //         backIcon: "times",
+  //         backAction: backActionMock
+  //       }
+  //     }
+  //   };
 
-    const result = navigationOptions({
-      navigation: navigationDataMock
-    });
-    expect(result.headerLeft).toBeTruthy();
-    expect(result.title).toBe(navigationDataMock.state.params.title);
-    expect(result.headerRight).toBeUndefined();
-  });
+  //   const result = navigationOptions({
+  //     navigation: navigationDataMock
+  //   });
+  //   expect(result.headerLeft).toBeTruthy();
+  //   expect(result.title).toBe(navigationDataMock.state.params.title);
+  //   expect(result.headerRight).toBeUndefined();
+  // });
 });
 
-describe("resourceListEffect", () => {
-  const idMock = "18";
-  const resourceListMock = [
-    {
-      customId: idMock,
-      state: ResourceState.Downloading,
-      bytesDownloaded: 80,
-      sizeInBytes: 100,
-      title: "tile_mock"
-    }
-  ];
-  const apiKeyMock = "api_key";
-  const setResourceStateMock = jest.fn();
-  const dispatchMock = jest.fn();
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+// describe("resourceListEffect", () => {
+//   const idMock = "18";
+//   const resourceListMock = [
+//     {
+//       customId: idMock,
+//       state: ResourceState.Downloading,
+//       bytesDownloaded: 80,
+//       sizeInBytes: 100,
+//       title: "tile_mock"
+//     }
+//   ];
+//   const apiKeyMock = "api_key";
+//   const setResourceStateMock = jest.fn();
+//   const dispatchMock = jest.fn();
+//   afterEach(() => {
+//     jest.clearAllMocks();
+//   });
 
-  it("should call setResourceState, if offlineAttemptsAllowed is true and packageUrl is defined.", () => {
-    resourceListEffect({
-      scorm: {
-        offlineAttemptsAllowed: true,
-        packageUrl: "https://package.url"
-      },
-      resourceList: resourceListMock,
-      id: idMock,
-      apiKey: apiKeyMock,
-      isInternetReachable: true,
-      setResourceState: setResourceStateMock,
-      navigation: { dispatch: dispatchMock }
-    })();
-    const selectedResource = resourceListMock.find((x) => x.customId === idMock);
-    expect(setResourceStateMock).toHaveBeenCalledTimes(1);
-    expect(setResourceStateMock).toHaveBeenCalledWith(selectedResource.state);
-  });
+//   it("should call setResourceState, if offlineAttemptsAllowed is true and packageUrl is defined.", () => {
+//     resourceListEffect({
+//       scorm: {
+//         offlineAttemptsAllowed: true,
+//         packageUrl: "https://package.url"
+//       },
+//       resourceList: resourceListMock,
+//       id: idMock,
+//       apiKey: apiKeyMock,
+//       isInternetReachable: true,
+//       setResourceState: setResourceStateMock,
+//       navigation: { dispatch: dispatchMock }
+//     })();
+//     const selectedResource = resourceListMock.find((x) => x.customId === idMock);
+//     expect(setResourceStateMock).toHaveBeenCalledTimes(1);
+//     expect(setResourceStateMock).toHaveBeenCalledWith(selectedResource.state);
+//   });
 
-  it("should call setResourceState, if offlineAttemptsAllowed is true and packageUrl is defined.", () => {
-    resourceListEffect({
-      scorm: {
-        offlineAttemptsAllowed: true,
-        packageUrl: "https://package.url"
-      },
-      resourceList: [],
-      id: idMock,
-      apiKey: apiKeyMock,
-      isInternetReachable: true,
-      setResourceState: setResourceStateMock,
-      navigation: { dispatch: dispatchMock }
-    })();
-    expect(setResourceStateMock).toHaveBeenCalledTimes(1);
-    expect(setResourceStateMock).toHaveBeenCalledWith(undefined);
-  });
+//   it("should call setResourceState, if offlineAttemptsAllowed is true and packageUrl is defined.", () => {
+//     resourceListEffect({
+//       scorm: {
+//         offlineAttemptsAllowed: true,
+//         packageUrl: "https://package.url"
+//       },
+//       resourceList: [],
+//       id: idMock,
+//       apiKey: apiKeyMock,
+//       isInternetReachable: true,
+//       setResourceState: setResourceStateMock,
+//       navigation: { dispatch: dispatchMock }
+//     })();
+//     expect(setResourceStateMock).toHaveBeenCalledTimes(1);
+//     expect(setResourceStateMock).toHaveBeenCalledWith(undefined);
+//   });
 
-  it("should not call setResourceState, if scorm is undefined of offlineAttemptsAllowed is undefined/false or packageUrl is undefined.", () => {
-    resourceListEffect({
-      scorm: {
-        offlineAttemptsAllowed: false,
-        packageUrl: "https://package.url"
-      },
-      resourceList: resourceListMock,
-      id: idMock,
-      apiKey: apiKeyMock,
-      isInternetReachable: true,
-      setResourceState: setResourceStateMock,
-      navigation: { dispatch: dispatchMock }
-    })();
-    expect(setResourceStateMock).not.toBeCalled();
+//   it("should not call setResourceState, if scorm is undefined of offlineAttemptsAllowed is undefined/false or packageUrl is undefined.", () => {
+//     resourceListEffect({
+//       scorm: {
+//         offlineAttemptsAllowed: false,
+//         packageUrl: "https://package.url"
+//       },
+//       resourceList: resourceListMock,
+//       id: idMock,
+//       apiKey: apiKeyMock,
+//       isInternetReachable: true,
+//       setResourceState: setResourceStateMock,
+//       navigation: { dispatch: dispatchMock }
+//     })();
+//     expect(setResourceStateMock).not.toBeCalled();
 
-    resourceListEffect({
-      scorm: {
-        offlineAttemptsAllowed: true
-      },
-      resourceList: resourceListMock,
-      id: idMock,
-      apiKey: apiKeyMock,
-      isInternetReachable: true,
-      setResourceState: setResourceStateMock,
-      navigation: { dispatch: dispatchMock }
-    })();
-    expect(setResourceStateMock).not.toBeCalled();
+//     resourceListEffect({
+//       scorm: {
+//         offlineAttemptsAllowed: true
+//       },
+//       resourceList: resourceListMock,
+//       id: idMock,
+//       apiKey: apiKeyMock,
+//       isInternetReachable: true,
+//       setResourceState: setResourceStateMock,
+//       navigation: { dispatch: dispatchMock }
+//     })();
+//     expect(setResourceStateMock).not.toBeCalled();
 
-    resourceListEffect({
-      resourceList: resourceListMock,
-      id: idMock,
-      apiKey: apiKeyMock,
-      isInternetReachable: true,
-      setResourceState: setResourceStateMock,
-      navigation: { dispatch: dispatchMock }
-    })();
-    expect(setResourceStateMock).not.toBeCalled();
-  });
-});
+//     resourceListEffect({
+//       resourceList: resourceListMock,
+//       id: idMock,
+//       apiKey: apiKeyMock,
+//       isInternetReachable: true,
+//       setResourceState: setResourceStateMock,
+//       navigation: { dispatch: dispatchMock }
+//     })();
+//     expect(setResourceStateMock).not.toBeCalled();
+//   });
+// });
