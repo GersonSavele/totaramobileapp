@@ -15,7 +15,6 @@
 
 import React from "react";
 import { View, ImageSourcePropType } from "react-native";
-import { NavigationStackProp } from "react-navigation-stack";
 
 import { PrimaryButton, ModalContent } from "@totara/components";
 import { translate } from "@totara/locale";
@@ -31,7 +30,7 @@ type ScormFeedbackProps = {
   onClose: () => void;
 };
 type FeedbackProps = {
-  navigation: NavigationStackProp<ScormFeedbackProps>;
+  navigation: any;
 };
 
 const { ATTEMPT_FEEDBACK } = SCORM_TEST_IDS;

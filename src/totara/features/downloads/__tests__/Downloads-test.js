@@ -15,18 +15,10 @@
 import { act, cleanup, fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import DownloadsStack from "@totara/features/downloads";
-import { createAppContainer } from "react-navigation";
 import Downloads from "@totara/features/downloads/Downloads";
 import * as ReactRedux from "react-redux";
 import { downloadsOneItemMock, downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/downloadMock";
 import wait from "waait";
-
-const renderWithAppContainer = () => {
-  const App = createAppContainer(DownloadsStack);
-  return {
-    ...render(<App />)
-  };
-};
 
 const navigationMock = {
   navigation: {
@@ -38,11 +30,6 @@ const navigationMock = {
 describe("Downloads", () => {
   afterEach(async () => {
     cleanup();
-  });
-
-  it("Should render DownloadsStack", async () => {
-    const { container } = renderWithAppContainer();
-    expect(container).toBeTruthy();
   });
 
   it("Should render Downloads empty state", async () => {

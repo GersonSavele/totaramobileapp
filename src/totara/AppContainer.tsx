@@ -22,7 +22,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { scormStack } from "@totara/features/activities/scorm/ScormActivity";
 import AboutStack from "@totara/features/about/AboutStack";
 import { tokenSent, updateToken } from "./actions/notification";
-import NavigationService from "./lib/navigationService";
+import { navigate, navigationRef } from "./lib/navigationService";
 import { NAVIGATION } from "./lib/navigation";
 import { useSelector } from "react-redux";
 import { mutationForToken } from "./features/notifications/api";
@@ -60,7 +60,7 @@ const AppContainer = () => {
   const handleNotificationReceived = (remoteMessage) => {
     if (remoteMessage) {
       if (remoteMessage?.data?.notification === "1") {
-        NavigationService.navigate("NotificationsTab");
+        navigate("NotificationsTab");
       }
     }
   };
@@ -117,7 +117,7 @@ const AppContainer = () => {
   }, [notificationState?.tokenSent]);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <RootStack />
     </NavigationContainer>
   );

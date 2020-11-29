@@ -15,7 +15,6 @@
 
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
-import { NavigationStackProp } from "react-navigation-stack";
 import CourseSet from "./CourseSet";
 import CourseSetList from "./CourseSetList";
 import { CourseGroup, StatusKey } from "@totara/types/CourseGroup";
@@ -30,7 +29,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { activeOpacity } from "@totara/lib/styles/base";
 type CoursesProps = {
   courseGroup: CourseGroup;
-  navigation: NavigationStackProp;
+  navigation: any;
 };
 
 const Courses = ({ courseGroup, navigation }: CoursesProps) => {
@@ -101,7 +100,7 @@ const CompletionInfo = ({ title, icon, viewTestID, textTestID, iconColor }: Comp
 
 type CompletedProps = {
   endnote?: string;
-  navigation: NavigationStackProp;
+  navigation: any;
   testID: string;
 };
 

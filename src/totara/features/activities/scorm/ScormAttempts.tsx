@@ -19,7 +19,6 @@ import { Text, View, FlatList, SafeAreaView } from "react-native";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { Attempt, Grade } from "@totara/types/Scorm";
-import { NavigationStackProp } from "react-navigation-stack";
 import { fullFlex } from "@totara/lib/styles/base";
 import { scormAttemptsStyles } from "@totara/theme/scorm";
 import { fontWeights } from "@totara/theme/constants";
@@ -32,7 +31,7 @@ type AttemptsParams = {
 };
 
 type ScormActivityProps = {
-  navigation: NavigationStackProp<AttemptsParams>;
+  navigation: any;
 };
 
 const { ATTEMPTS_LIST_ID, ATTEMPT_ITEM_ID } = SCORM_TEST_IDS;

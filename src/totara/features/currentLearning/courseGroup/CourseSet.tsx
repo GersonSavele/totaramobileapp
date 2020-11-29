@@ -15,7 +15,6 @@
 
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import { NavigationStackProp } from "react-navigation-stack";
 import { CourseSets } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
 import { NAVIGATION } from "@totara/lib/navigation";
@@ -32,7 +31,7 @@ import { activeOpacity } from "@totara/lib/styles/base";
 
 type CourseSetProps = {
   courseSets: CourseSets;
-  navigation: NavigationStackProp;
+  navigation: any;
   testID: string;
 };
 

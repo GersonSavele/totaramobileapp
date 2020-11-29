@@ -15,8 +15,6 @@
 
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Switch } from "react-native";
-import { NavigationParams } from "react-navigation";
-import { NavigationStackProp } from "react-navigation-stack";
 import { isEmpty, isEqual } from "lodash";
 import { Loading, LoadingError } from "@totara/components";
 import { useQuery } from "@apollo/react-hooks";
@@ -34,7 +32,7 @@ import courseDetailsStyle from "./courseDetailsStyle";
 import { CourseFormat } from "@totara/types/Course";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 
-const CourseDetails = ({ navigation }: NavigationParams) => {
+const CourseDetails = ({ navigation }: any) => {
   const courseId = navigation.getParam("targetId");
   const { loading, error, data, refetch } = useQuery(coreCourse, {
     variables: { courseid: courseId }
@@ -63,7 +61,7 @@ type CourseDetailsContentProps = {
   courseDetails: CourseContentDetails;
   courseRefreshCallback: () => {};
   pullToRefresh: () => void;
-  navigation: NavigationStackProp;
+  navigation: any;
 };
 
 const CourseDetailsContent = ({

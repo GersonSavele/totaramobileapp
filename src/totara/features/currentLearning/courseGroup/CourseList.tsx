@@ -15,7 +15,6 @@
 
 import React, { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
-import { NavigationStackProp } from "react-navigation-stack";
 import { translate } from "@totara/locale";
 import CriteriaSheet from "../components/CriteriaSheet";
 import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
@@ -26,7 +25,7 @@ const LearningItems = ({ item, navigation }: any) => {
 };
 
 type CourseListProps = {
-  navigation: NavigationStackProp;
+  navigation: any;
 };
 
 const CourseList = ({ navigation }: CourseListProps) => {

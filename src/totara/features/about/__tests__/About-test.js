@@ -13,26 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { render } from "@testing-library/react-native";
 import React from "react";
-import AboutStack from "@totara/features/about/AboutStack";
+import { render } from "@testing-library/react-native";
 import About from "@totara/features/about/About";
-import { createAppContainer } from "react-navigation";
-
-const renderWithNavigation = () => {
-  const App = createAppContainer(AboutStack);
-  return {
-    ...render(<App />)
-  };
-};
 
 describe("About", () => {
-  test("Should render with AboutStack", async() => {
-    const { container } = renderWithNavigation();
-    expect(container).toBeTruthy();
-  });
-
-  test("Should render About view", async() => {
+  test("Should render About view", async () => {
     const { container } = render(<About />);
     expect(container).toBeTruthy();
   });

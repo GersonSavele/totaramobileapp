@@ -42,7 +42,7 @@ type WebviewActivityParams = {
 };
 
 type WebviewActivityProps = {
-  navigation: NavigationStackProp<WebviewActivityParams>;
+  navigation: any;
 };
 
 const WebviewActivity = ({ navigation }: WebviewActivityProps) => {

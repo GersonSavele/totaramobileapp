@@ -15,7 +15,6 @@
 
 import React, { useState } from "react";
 import { View } from "react-native";
-import { NavigationStackProp } from "react-navigation-stack";
 import { useQuery } from "@apollo/react-hooks";
 import { translate } from "@totara/locale";
 import Courses from "./Courses";
@@ -27,7 +26,7 @@ import LearningDetails from "../LearningDetails";
 import { details } from "./courseGroupStyles";
 
 type CourseGroupProps = {
-  navigation: NavigationStackProp;
+  navigation: any;
 };
 
 const courseGroupTypeMap = {
@@ -82,7 +81,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
 type CourseGroupDetailsContentProps = {
   courseGroup: CourseGroup;
   onContentRefresh: () => void;
-  navigation: NavigationStackProp;
+  navigation: any;
   testID?: string;
   badgeTitlePath: string;
   itemType: string;

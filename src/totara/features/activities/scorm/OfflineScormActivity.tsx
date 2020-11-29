@@ -29,7 +29,6 @@ import { setScormActivityData, getScormAttemptData, retrieveAllData, saveInTheCa
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
 import { ResourceType } from "@totara/types/Resource";
-import { NavigationStackProp } from "react-navigation-stack";
 import {
   getOfflineScormPackageName,
   getScormPlayerInitialData,
@@ -48,7 +47,7 @@ type OfflineScormParams = {
 };
 
 type OfflineScormProps = {
-  navigation: NavigationStackProp<OfflineScormParams>;
+  navigation: any;
 };
 const { NONE_EXIST_RESOURCE_ID, INVALID_SCORM_ID } = SCORM_TEST_IDS;
 const getResources = (state: RootState) => state.resourceReducer.resources;

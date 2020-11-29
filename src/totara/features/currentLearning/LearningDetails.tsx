@@ -15,7 +15,6 @@
 
 import React, { ReactNode } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { NavigationStackProp } from "react-navigation-stack";
 import ParallaxScrollView from "./ParallaxScrollView";
 import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
@@ -36,7 +35,7 @@ type LearningDetailsProps = {
   badgeTitle: string;
   image?: string;
   onPullToRefresh: () => void;
-  navigation: NavigationStackProp;
+  navigation: any;
 };
 
 type TitleBarProps = {
