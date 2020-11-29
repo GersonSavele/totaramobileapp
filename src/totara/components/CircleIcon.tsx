@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 
 import { iconSizes } from "@totara/theme/constants";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
@@ -27,19 +27,9 @@ type Props = {
   iconColor?: string;
   borderColor?: string;
   fontAwesomeIcon?: boolean;
-  accessibilityLabel?: string;
-  accessibilityHint?: string;
 };
 
-const CircleIcon = ({
-  icon,
-  backgroundColor,
-  iconColor,
-  borderColor,
-  fontAwesomeIcon = true,
-  accessibilityLabel,
-  accessibilityHint
-}: Props) => {
+const CircleIcon = ({ icon, backgroundColor, iconColor, borderColor, fontAwesomeIcon = true }: Props) => {
   return (
     <View
       style={[
@@ -48,11 +38,7 @@ const CircleIcon = ({
           backgroundColor: backgroundColor == null ? TotaraTheme.textColorDark : backgroundColor,
           borderColor: borderColor == null ? TotaraTheme.textColorDark : borderColor
         }
-      ]}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityHint={accessibilityHint}
-      accessibilityRole={"radio"}
-      accessible={true}>
+      ]}>
       {icon &&
         (fontAwesomeIcon ? (
           <FontAwesomeIcon

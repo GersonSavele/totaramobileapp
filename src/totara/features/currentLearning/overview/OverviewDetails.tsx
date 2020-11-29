@@ -212,16 +212,12 @@ const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefr
               backgroundColor={TotaraTheme.colorSuccess}
               iconColor={TotaraTheme.colorAccent}
               borderColor={TotaraTheme.colorSuccess}
-              accessibilityLabel={translate("course.course_details.accessibility_activity_completion")}
-              accessibilityHint={translate("course.course_details.accessibility_completed")}
             />
           ) : (
             <CircleIcon
               backgroundColor={TotaraTheme.colorAccent}
               iconColor={TotaraTheme.colorNeutral6}
               borderColor={TotaraTheme.colorNeutral6}
-              accessibilityLabel={translate("course.course_details.accessibility_activity_completion")}
-              accessibilityHint={translate("course.course_details.accessibility_incomplete")}
             />
           )}
         </View>

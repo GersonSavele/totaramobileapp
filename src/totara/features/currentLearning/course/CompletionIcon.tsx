@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity, AccessibilityState, AccessibilityRole } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { completionTrack, completionStatus, completionIconStateKey } from "../constants";
 import { CircleIcon } from "@totara/components";
@@ -30,6 +30,7 @@ type BuildContentProps = {
   status?: string;
   available: boolean;
   loading?: boolean;
+  onPress?: () => void;
 };
 
 const completionStates = {
@@ -37,63 +38,112 @@ const completionStates = {
     icon: "lock",
     backgroundColor: colorAccent,
     iconColor: colorNeutral7,
-    borderColor: colorNeutral7,
-    accessibilityLabel: translate("course.course_details.accessibility_activity_unavailable")
+    borderColor: colorNeutral7
   },
   completed: {
     icon: "check",
     backgroundColor: colorSuccess,
     iconColor: colorAccent,
-    borderColor: colorSuccess,
-    accessibilityLabel: translate("course.course_details.accessibility_activity_completion"),
-    accessibilityHint: translate("course.course_details.accessibility_completed")
+    borderColor: colorSuccess
+  },
+  autoCompleted: {
+    icon: "check",
+    backgroundColor: colorSuccess,
+    iconColor: colorAccent,
+    borderColor: colorSuccess
   },
   autoIncomplete: {
     icon: Images.autoCompleteTick,
     backgroundColor: colorAccent,
     iconColor: colorNeutral6,
     borderColor: colorNeutral6,
-    fontAwesomeIcon: false,
-    accessibilityLabel: translate("course.course_details.accessibility_activity_completion"),
-    accessibilityHint: translate("course.course_details.accessibility_incomplete")
+    fontAwesomeIcon: false
   },
   completeFail: {
     icon: "times",
     backgroundColor: colorAlert,
     iconColor: colorAccent,
-    borderColor: colorAlert,
-    accessibilityLabel: translate("course.course_details.accessibility_activity_completion"),
-    accessibilityHint: translate("course.course_details.accessibility_failed")
+    borderColor: colorAlert
   },
   manualIncomplete: {
     backgroundColor: colorAccent,
     iconColor: colorNeutral6,
-    borderColor: colorNeutral6,
-    accessibilityLabel: translate("course.course_details.accessibility_activity_completion"),
-    accessibilityHint: translate("course.course_details.accessibility_incomplete")
+    borderColor: colorNeutral6
   }
 };
 
-const CompletionIcon = ({ completion, status, available, loading }: BuildContentProps) => {
+const completionAccessibility = {
+  notAvailable: {
+    label: translate("course.course_details.accessibility_activity_unavailable"),
+    role: "none"
+  },
+  manualCompletion: {
+    label: translate("course.course_details.accessibility_manual_completion"),
+    state: { checked: false },
+    role: "checkbox"
+  },
+  autoCompletion: {
+    role: "checkbox",
+    label: translate("course.course_details.accessibility_auto_completion"),
+    state: { checked: false, disabled: true }
+  },
+  completeFail: {
+    label: translate("course.course_details.accessibility_manual_completion"),
+    hint: translate("course.course_details.accessibility_failed"),
+    role: "none"
+  }
+};
+
+const CompletionIcon = ({ completion, status, available, loading, onPress }: BuildContentProps) => {
   let stateKey;
+  let accessibility;
+  const isDisabled = loading || !onPress;
+  let accessibleLable: string | undefined = undefined;
+  let accessibleRole: AccessibilityRole = "spinbutton";
+  let accessibleState: AccessibilityState | undefined = undefined;
+
   if (!available) {
     stateKey = completionIconStateKey.notAvailable;
+    accessibility = completionAccessibility.notAvailable;
   } else if (completion !== completionTrack.trackingNone) {
     if (status === completionStatus.completePass || status === completionStatus.complete) {
       stateKey = completionIconStateKey.completed;
+      accessibility =
+        completion === completionTrack.trackingAutomatic
+          ? completionAccessibility.autoCompletion
+          : completionAccessibility.manualCompletion;
+      accessibility.state = { ...accessibility.state, checked: true };
     } else if (status === completionStatus.incomplete) {
       stateKey =
         completion === completionTrack.trackingAutomatic
           ? completionIconStateKey.autoIncomplete
           : completionIconStateKey.manualIncomplete;
+      accessibility =
+        completion === completionTrack.trackingAutomatic
+          ? completionAccessibility.autoCompletion
+          : completionAccessibility.manualCompletion;
+      accessibility.state = { ...accessibility.state, checked: false };
     } else if (status === completionStatus.completeFail) {
       stateKey = completionIconStateKey.completeFail;
+      accessibility = completionAccessibility.completeFail;
     }
   }
   const stateObj = completionStates[stateKey];
+  if (accessibility) {
+    accessibleLable = accessibility.label;
+    accessibleRole = accessibility.role;
+    accessibleState = loading ? { busy: true } : accessibility.state;
+  }
 
   return stateObj ? (
-    <View style={{ marginRight: margins.marginL }}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ marginRight: margins.marginL }}
+      disabled={isDisabled}
+      accessibilityLabel={accessibleLable}
+      accessibilityRole={accessibleRole}
+      accessibilityState={accessibleState}
+      accessible={true}>
       {loading ? (
         <Spinner size={iconSizes.sizeM} style={styles.spinner} />
       ) : (
@@ -103,11 +153,9 @@ const CompletionIcon = ({ completion, status, available, loading }: BuildContent
           iconColor={stateObj.iconColor}
           borderColor={stateObj.borderColor}
           fontAwesomeIcon={stateObj.fontAwesomeIcon}
-          accessibilityLabel={stateObj.accessibilityLabel}
-          accessibilityHint={stateObj.accessibilityHint}
         />
       )}
-    </View>
+    </TouchableOpacity>
   ) : null;
 };
 

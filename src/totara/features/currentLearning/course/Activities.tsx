@@ -280,25 +280,13 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
         }>
         {completionEnabled && (
           <View style={isLabel && activitiesStyles.labelSelfCompletionIcon}>
-            {item.completion === completionTrack.trackingManual ? (
-              <>
-                <TouchableOpacity onPress={onClickSelfComplete}>
-                  <CompletionIcon
-                    loading={loadingSelfComplete}
-                    completion={item.completion}
-                    status={item.completionstatus}
-                    available={item.available}
-                  />
-                </TouchableOpacity>
-              </>
-            ) : (
-              <CompletionIcon
-                loading={loadingSelfComplete}
-                completion={item.completion}
-                status={item.completionstatus}
-                available={item.available}
-              />
-            )}
+            <CompletionIcon
+              loading={loadingSelfComplete}
+              completion={item.completion}
+              status={item.completionstatus}
+              available={item.available}
+              onPress={item.completion === completionTrack.trackingManual ? onClickSelfComplete : undefined}
+            />
           </View>
         )}
         <TouchableOpacity
