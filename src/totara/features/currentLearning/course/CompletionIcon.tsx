@@ -46,12 +46,6 @@ const completionStates = {
     iconColor: colorAccent,
     borderColor: colorSuccess
   },
-  autoCompleted: {
-    icon: "check",
-    backgroundColor: colorSuccess,
-    iconColor: colorAccent,
-    borderColor: colorSuccess
-  },
   autoIncomplete: {
     icon: Images.autoCompleteTick,
     backgroundColor: colorAccent,

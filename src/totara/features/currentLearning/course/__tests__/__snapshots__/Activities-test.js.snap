@@ -8,9 +8,21 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
 
 exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and completion, completionStatus undefined 1`] = `
 <View
+  accessibilityLabel="translated course.course_details.accessibility_activity_unavailable with undefined"
+  accessibilityRole="none"
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     Object {
       "marginRight": 16,
+      "opacity": 1,
     }
   }
 >
