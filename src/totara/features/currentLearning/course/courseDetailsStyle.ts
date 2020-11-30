@@ -17,6 +17,8 @@ import { StyleSheet } from "react-native";
 import { spacedFlexRow } from "@totara/lib/styles/base";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { margins } from "@totara/theme/constants";
+import { Images } from "@resources/images";
+const { colorAccent, colorNeutral7, colorSuccess, colorNeutral6, colorAlert } = TotaraTheme;
 
 const courseDetailsStyle = StyleSheet.create({
   expandContentWrap: {
@@ -32,4 +34,38 @@ const courseDetailsStyle = StyleSheet.create({
   }
 });
 
+const completionStates = {
+  notAvailable: {
+    icon: "lock",
+    backgroundColor: colorAccent,
+    iconColor: colorNeutral7,
+    borderColor: colorNeutral7
+  },
+  completed: {
+    icon: "check",
+    backgroundColor: colorSuccess,
+    iconColor: colorAccent,
+    borderColor: colorSuccess
+  },
+  autoIncomplete: {
+    icon: Images.autoCompleteTick,
+    backgroundColor: colorAccent,
+    iconColor: colorNeutral6,
+    borderColor: colorNeutral6,
+    fontAwesomeIcon: false
+  },
+  completeFail: {
+    icon: "times",
+    backgroundColor: colorAlert,
+    iconColor: colorAccent,
+    borderColor: colorAlert
+  },
+  manualIncomplete: {
+    backgroundColor: colorAccent,
+    iconColor: colorNeutral6,
+    borderColor: colorNeutral6
+  }
+};
+
 export default courseDetailsStyle;
+export { completionStates };

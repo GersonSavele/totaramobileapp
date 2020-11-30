@@ -146,7 +146,7 @@
       "accessibility_expand_all": "Expand all activities.",
       "accessibility_manual_completion": "Manual completion activity.",
       "accessibility_auto_completion": "Auto complete activity.",
-      "accessibility_failed": "Failed",
+      "accessibility_failed": "This activity completion is failed.",
       "accessibility_activity_unavailable": "This activity is not available."
     },
     "course_activity_section": {
