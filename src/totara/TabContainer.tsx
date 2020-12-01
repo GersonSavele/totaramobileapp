@@ -41,7 +41,7 @@ const TabContainer = () => {
   };
 
   return (
-    <Tab.Navigator barStyle={{ backgroundColor: theme.colorNeutral1 }} shifting={false}>
+    <Tab.Navigator barStyle={{ backgroundColor: theme.colorNeutral1 }} shifting={false} labeled={false}>
       <Tab.Screen
         name="Learning"
         component={CurrentLearningStack}

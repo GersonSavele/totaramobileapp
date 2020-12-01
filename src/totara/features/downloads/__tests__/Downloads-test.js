@@ -14,7 +14,6 @@
  */
 import { act, cleanup, fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import DownloadsStack from "@totara/features/downloads";
 import Downloads from "@totara/features/downloads/Downloads";
 import * as ReactRedux from "react-redux";
 import { downloadsOneItemMock, downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/downloadMock";
