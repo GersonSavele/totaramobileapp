@@ -25,6 +25,7 @@ import { deviceScreen } from "@totara/lib/tools";
 import LearningItemCard from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
 import { extractTargetId } from "../utils";
+import { activeOpacity } from "@totara/lib/styles/base";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
@@ -112,7 +113,7 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
       style={carouselItemStyles.container}
       key={item.id}
       onPress={clickedLearningItem}
-      activeOpacity={1.0}>
+      activeOpacity={activeOpacity}>
       <View style={carouselItemStyles.content}>
         <LearningItemCard item={item} />
       </View>

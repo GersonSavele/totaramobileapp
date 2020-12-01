@@ -20,6 +20,8 @@ const spacedFlexRow: StyleProp<ViewStyle> = {
   justifyContent: "space-between"
 };
 
+const activeOpacity = 0.6;
+
 const fullFlex = { flex: 1 };
 
-export { spacedFlexRow, fullFlex };
+export { spacedFlexRow, fullFlex, activeOpacity };

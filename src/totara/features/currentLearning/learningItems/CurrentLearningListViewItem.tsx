@@ -26,6 +26,7 @@ import { capitalizeFirstLetter } from "@totara/lib/tools";
 import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
 import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/constants";
 import { extractTargetId } from "../utils";
+import { activeOpacity } from "@totara/lib/styles/base";
 
 type ListViewItemProps = {
   item: any;
@@ -76,7 +77,10 @@ const CurrentLearningListViewItem = ({ item, navigation }: ListViewItemProps) =>
   };
 
   return (
-    <TouchableOpacity onPress={() => onItemPress()} testID={"test_currentLearningListViewItem"}>
+    <TouchableOpacity
+      onPress={() => onItemPress()}
+      testID={"test_currentLearningListViewItem"}
+      activeOpacity={activeOpacity}>
       <View style={currentLearningListViewStyles.itemContainer}>
         <View style={currentLearningListViewStyles.itemImage}>
           {imageSrc && imageSrc.length > 0 ? (

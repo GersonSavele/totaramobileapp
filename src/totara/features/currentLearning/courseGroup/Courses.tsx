@@ -27,6 +27,7 @@ import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { faBan, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { activeOpacity } from "@totara/lib/styles/base";
 type CoursesProps = {
   courseGroup: CourseGroup;
   navigation: NavigationStackProp;
@@ -115,7 +116,7 @@ const Completed = ({ endnote, navigation, testID }: CompletedProps) => {
         style={courses.button}
         testID={"test_go_back_button"}
         onPress={() => navigation.goBack()}
-        activeOpacity={1.0}>
+        activeOpacity={activeOpacity}>
         <Text style={courses.buttonTextTitle}>{translate("course_group.courses.current_learning_button_title")}</Text>
       </TouchableOpacity>
     </View>

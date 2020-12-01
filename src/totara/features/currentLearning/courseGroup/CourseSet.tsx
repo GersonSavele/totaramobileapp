@@ -28,6 +28,7 @@ import MoreInfo from "@totara/components/MoreInfo";
 import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 import { extractTargetId } from "../utils";
+import { activeOpacity } from "@totara/lib/styles/base";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -57,7 +58,7 @@ const CourseSetItem = ({ item, navigation }: any) => {
             setShowRestriction(true);
           }
         }}
-        activeOpacity={1.0}>
+        activeOpacity={activeOpacity}>
         <View style={courseSet.itemContainer}>
           <View style={{ flex: 1 }}>
             {item?.imageSrc?.length > 0 ? (

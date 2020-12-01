@@ -30,6 +30,7 @@ import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
 import WekaEditorView from "../weka/WekaEditorView";
+import { activeOpacity } from "@totara/lib/styles/base";
 
 type OverviewProps = {
   id: number;
@@ -132,7 +133,7 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
   return (
     <TouchableOpacity
       style={overviewStyles.container}
-      activeOpacity={1.0}
+      activeOpacity={activeOpacity}
       disabled={isCourseSet}
       onPress={() => setShowCriteria(true)}>
       <View style={overviewStyles.contentWrap}>
