@@ -14,13 +14,11 @@
  */
 
 import React from "react";
-import { StyleSheet, TouchableOpacity, AccessibilityRole } from "react-native";
-import { completionTrack, completionStatus, completionIconStateKey } from "../constants";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { CircleIcon } from "@totara/components";
 import { iconSizes, margins } from "@totara/theme/constants";
 import { Spinner } from "native-base";
-import { translate } from "@totara/locale";
-import { completionStates } from "./courseDetailsStyle";
+import { getCompletionStatus } from "../utils";
 
 type BuildContentProps = {
   completion?: string;
@@ -29,71 +27,6 @@ type BuildContentProps = {
   loading?: boolean;
   onPress?: () => void;
   onGetCompletionStatus?: Function;
-};
-
-const completionAccessibility = {
-  notAvailable: {
-    label: translate("course.course_details.accessibility_activity_unavailable"),
-    role: "none",
-    state: { disabled: true }
-  },
-  manualCompletion: {
-    label: translate("course.course_details.accessibility_manual_completion"),
-    state: { checked: false },
-    role: "checkbox"
-  },
-  autoCompletion: {
-    role: "checkbox",
-    label: translate("course.course_details.accessibility_auto_completion"),
-    state: { checked: false, disabled: true }
-  },
-  completeFail: {
-    label: translate("course.course_details.accessibility_failed"),
-    role: "none"
-  }
-};
-
-const getCompletionStatus = ({ available, completion, status }: BuildContentProps) => {
-  if (!available) {
-    return {
-      stateObj: completionStates[completionIconStateKey.notAvailable],
-      accessibility: completionAccessibility.notAvailable
-    };
-  } else if (completion !== completionTrack.trackingNone) {
-    if (status === completionStatus.completePass || status === completionStatus.complete) {
-      let accessibilityCompletion =
-        completion === completionTrack.trackingAutomatic
-          ? completionAccessibility.autoCompletion
-          : completionAccessibility.manualCompletion;
-
-      accessibilityCompletion.state = { ...accessibilityCompletion.state, checked: true };
-      return {
-        stateObj: completionStates[completionIconStateKey.completed],
-        accessibility: accessibilityCompletion
-      };
-    } else if (status === completionStatus.incomplete) {
-      if (completion === completionTrack.trackingAutomatic) {
-        let accessibilityIncomplete = completionAccessibility.autoCompletion;
-        accessibilityIncomplete.state = { ...accessibilityIncomplete.state, checked: false };
-        return {
-          stateObj: completionStates[completionIconStateKey.autoIncomplete],
-          accessibility: accessibilityIncomplete
-        };
-      } else {
-        let accessibilityIncomplete = completionAccessibility.manualCompletion;
-        accessibilityIncomplete.state = { ...accessibilityIncomplete.state, checked: false };
-        return {
-          stateObj: completionStates[completionIconStateKey.manualIncomplete],
-          accessibility: accessibilityIncomplete
-        };
-      }
-    } else if (status === completionStatus.completeFail) {
-      return {
-        stateObj: completionStates[completionIconStateKey.completeFail],
-        accessibility: completionAccessibility.completeFail
-      };
-    }
-  }
 };
 
 const CompletionIcon = ({
