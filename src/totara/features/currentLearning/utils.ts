@@ -52,49 +52,42 @@ type GetCompletionStatusProp = {
   status?: string;
   available: boolean;
 };
+
 const getCompletionStatus = ({ available, completion, status }: GetCompletionStatusProp) => {
+  const { notAvailable, autoCompletion, manualCompletion, completeFail } = completionAccessibility;
   if (!available) {
     return {
       stateObj: completionStates[completionIconStateKey.notAvailable],
-      accessibility: completionAccessibility.notAvailable
+      accessibility: notAvailable
     };
   }
   if (completion !== completionTrack.trackingNone) {
+    let accessibility;
+    let stateObj;
     if (status === completionStatus.completePass || status === completionStatus.complete) {
-      let accessibilityCompletion =
-        completion === completionTrack.trackingAutomatic
-          ? completionAccessibility.autoCompletion
-          : completionAccessibility.manualCompletion;
+      accessibility = completion === completionTrack.trackingAutomatic ? autoCompletion : manualCompletion;
 
-      accessibilityCompletion.state = { ...accessibilityCompletion.state, checked: true };
-      return {
-        stateObj: completionStates[completionIconStateKey.completed],
-        accessibility: accessibilityCompletion
-      };
+      accessibility.state = { ...accessibility.state, checked: true };
+      stateObj = completionStates[completionIconStateKey.completed];
     }
     if (status === completionStatus.incomplete) {
       if (completion === completionTrack.trackingAutomatic) {
-        let accessibilityIncomplete = completionAccessibility.autoCompletion;
-        accessibilityIncomplete.state = { ...accessibilityIncomplete.state, checked: false };
-        return {
-          stateObj: completionStates[completionIconStateKey.autoIncomplete],
-          accessibility: accessibilityIncomplete
-        };
+        accessibility = autoCompletion;
+        stateObj = completionStates[completionIconStateKey.autoIncomplete];
+      } else {
+        accessibility = manualCompletion;
+        stateObj = completionStates[completionIconStateKey.manualIncomplete];
       }
-
-      let accessibilityIncomplete = completionAccessibility.manualCompletion;
-      accessibilityIncomplete.state = { ...accessibilityIncomplete.state, checked: false };
-      return {
-        stateObj: completionStates[completionIconStateKey.manualIncomplete],
-        accessibility: accessibilityIncomplete
-      };
     }
     if (status === completionStatus.completeFail) {
-      return {
-        stateObj: completionStates[completionIconStateKey.completeFail],
-        accessibility: completionAccessibility.completeFail
-      };
+      accessibility = completeFail;
+      stateObj = completionStates[completionIconStateKey.completeFail];
     }
+    return {
+      stateObj,
+      accessibility
+    };
   }
 };
+
 export { extractTargetId, sortByDueDateThenTypeThenFullName, getCompletionStatus, completionAccessibility };
