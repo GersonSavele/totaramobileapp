@@ -36,7 +36,7 @@ const SCREEN_WIDTH_SMALL = "small";
 // eslint-disable-next-line no-undef
 // const DEBUG_MODE = __DEV__;
 const DEV_ORG_URL = "mobile.demo.totara.software";
-const DEV_USERNAME = "kamala";
+const DEV_USERNAME = "tharakad";
 const DEV_PASSWORD = "Abcd123$";
 
 /* SCORM related */
