@@ -1,6 +1,20 @@
 Totara Mobile App Changelog
 
 
+Release 1.0.3 (18th November 2020):
+=====================================
+
+Bug  
+[MOB-834] - Images/Icons not showing on iOS 14 devices
+
+Task
+[MOB-561] - [Discovery] Orientation Portrait/Landscape
+
+Improvement  
+[MOB-778] - Summary Weka text should be shown in the current learning cards
+[MOB-836] - App updates must target Android 10 (API level 29) or higher
+[MOB-840] - Enable dynamic orientation for all activities
+
 Release 1.0.0 (23th September 2020):
 =====================================
 
