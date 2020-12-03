@@ -30,6 +30,7 @@ import {
   exists
 } from "react-native-fs";
 import { Resource } from "@totara/types";
+import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { ResourceState, ResourceType } from "@totara/types/Resource";
 import { uuid } from "@totara/lib/tools";
 import { addResource, updateResource, deleteResource as storeDeleteResource } from "../actions/resource";
@@ -87,7 +88,9 @@ const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, t
     },
     background: true,
     progressDivider: 20,
-    headers: { Authorization: `Bearer ${apiKey}` }
+    headers: {
+      [AUTH_HEADER_FIELD]: apiKey
+    }
   };
 
   const _downloadFile = downloadFile(downloaderOptions);

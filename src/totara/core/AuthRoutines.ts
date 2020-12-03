@@ -25,7 +25,7 @@ import AsyncStorage, { AsyncStorageStatic } from "@react-native-community/async-
 import { persistCache } from "apollo-cache-persist";
 
 import { config, Log } from "@totara/lib";
-import { AUTHORIZATION } from "@totara/lib/constants";
+import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { LearningItem, AppState, SiteInfo } from "@totara/types";
 import { Setup } from "./AuthHook";
 import { ServerError } from "apollo-link-http-common";
@@ -166,7 +166,7 @@ export const createApolloClient = (
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      [AUTHORIZATION]: `Bearer ${apiKey}`
+      [AUTH_HEADER_FIELD]: apiKey
     },
     http: { includeQuery: !config.mobileApi.persistentQuery }
   }));

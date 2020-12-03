@@ -1858,7 +1858,7 @@ Array [
           Object {
             "cache": "web",
             "headers": Object {
-              "AUTHORIZATION": "Bearer api_key",
+              "x-api-key": "api_key",
             },
             "priority": "normal",
             "uri": "https://mobile.demo.totara.software/pluginfile.php/1460/course/summary/73/image-2020-08-24-16-26-22-254.png",
@@ -1943,7 +1943,7 @@ Array [
             source={
               Object {
                 "headers": Object {
-                  "AUTHORIZATION": "Bearer api_key",
+                  "x-api-key": "api_key",
                 },
                 "uri": "https://player.vimeo.com/video/347119375",
               }

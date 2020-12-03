@@ -15,6 +15,7 @@
 
 import gql from "graphql-tag";
 import { config } from "@totara/lib";
+import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 
 //TODO: rename - use alias - when backend finishes TL-26268
 const scormQuery = gql`
@@ -148,7 +149,7 @@ const fetchLastAttemptResult = ({
     }),
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${apiKey}`
+      [AUTH_HEADER_FIELD]: apiKey
     }
   }).then((response) => {
     if (response.status === 200) {

@@ -18,7 +18,7 @@ import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { WebView } from "react-native-webview";
 import { isEmpty } from "lodash";
 import { AuthContext } from "@totara/core";
-import { AUTHORIZATION } from "@totara/lib/constants";
+import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { textAttributes, fontWeights, fontStyles, marksTypes, iconSizes } from "@totara/theme/constants";
 import { WekaEditorType } from "../constants";
 import styles from "./wekaEditorViewStyle";
@@ -386,7 +386,7 @@ const WebViewWrapper = ({ content = {} }: ConfigProps) => {
         source={{
           uri: url,
           headers: {
-            [AUTHORIZATION]: `Bearer ${apiKey}`
+            [AUTH_HEADER_FIELD]: apiKey
           }
         }}
       />

@@ -18,6 +18,7 @@ import { IResource, ResourceState } from "@totara/core/ResourceManager/Resource"
 import { unzip } from "react-native-zip-archive";
 import { DeleteStorage, RetrieveStorage, SaveStorage } from "@totara/core/ResourceManager/StorageManager";
 import { Log, showMessage } from "@totara/lib";
+import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { translate } from "@totara/locale";
 
 export type ResourceObserver = (resourceFile: IResource) => void;
@@ -103,7 +104,9 @@ class ResourceManager {
         this.downloadProgress(id, res);
       },
       progressDivider: 10,
-      headers: { Authorization: `Bearer ${apiKey}` }
+      headers: {
+        [AUTH_HEADER_FIELD]: apiKey
+      }
     };
 
     downloadFile(downloaderOptions)

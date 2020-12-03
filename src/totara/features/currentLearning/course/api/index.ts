@@ -15,6 +15,7 @@
 
 import gql from "graphql-tag";
 import { config } from "@totara/lib";
+import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 
 const coreCourse = gql`
   query totara_mobile_course($courseid: ID!) {
@@ -118,7 +119,7 @@ const fetchResource = ({ instanceId, apiKey, host }: FetchParam): Promise<Respon
     }),
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${apiKey}`
+      [AUTH_HEADER_FIELD]: apiKey
     }
   }).then((response) => {
     if (response.status === 200) {

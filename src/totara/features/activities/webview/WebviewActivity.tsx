@@ -17,11 +17,12 @@ import React, { useRef, useState, useEffect } from "react";
 import { View, SafeAreaView, BackHandler, StyleSheet } from "react-native";
 import PDFView from "react-native-view-pdf";
 import { WebView, WebViewNavigation } from "react-native-webview";
+import Orientation from "react-native-orientation-locker";
+import { NavigationStackProp } from "react-navigation-stack";
 import { Activity } from "@totara/types";
 import { AuthenticatedWebView } from "@totara/auth";
-import Orientation from "react-native-orientation-locker";
+import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 
-import { NavigationStackProp } from "react-navigation-stack";
 import WebviewToolbar from "../components/WebviewToolbar";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Loading } from "@totara/components";
@@ -101,7 +102,7 @@ const PDFViewWrapper = ({ fileurl, apiKey }: { fileurl?: string; apiKey?: string
         style={{ flex: 1 }}
         resource={fileurl!}
         resourceType={"url"}
-        urlProps={{ headers: { Authorization: `Bearer ${apiKey}` } }}
+        urlProps={{ headers: { [AUTH_HEADER_FIELD]: `${apiKey}` } }}
         onLoad={() => setIsLoaded(true)}></PDFView>
       {!isLoaded && (
         <View style={pdfViewStyle.loadingWrapper}>
