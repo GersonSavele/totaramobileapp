@@ -1,5 +1,22 @@
 Totara Mobile App Changelog
 
+Release 1.0.4 (18th November 2020):
+=====================================
+
+Bug
+[MOB-855] - Notifications list must update time automatically
+
+Improvement
+[MOB-475] - App Internal/external Distribution change
+[MOB-620] - In-App notifications auto refresh
+[MOB-682] - Refine tabs
+[MOB-721] - UI - Pressed state for cards
+[MOB-791] - No voice over for the current learning switch
+[MOB-793] - No voice over for expand all switch
+[MOB-794] - No voice over for manual and auto completion check boxes
+[MOB-848] - Run Axe report to check the accessibility issues
+[MOB-850] - Implement Detox test cases for authentication
+[MOB-851] - Implement Detox test cases for current learning
 
 Release 1.0.3 (18th November 2020):
 =====================================
