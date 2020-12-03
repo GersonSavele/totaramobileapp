@@ -18,7 +18,6 @@ import { View, SafeAreaView, BackHandler, StyleSheet } from "react-native";
 import PDFView from "react-native-view-pdf";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import Orientation from "react-native-orientation-locker";
-import { NavigationStackProp } from "react-navigation-stack";
 import { Activity } from "@totara/types";
 import { AuthenticatedWebView } from "@totara/auth";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";

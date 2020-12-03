@@ -66,16 +66,6 @@ const AppContainer = () => {
   };
 
   useEffect(() => {
-    // const checkForNotifications = (client) => {
-    //   if (client) {
-    //     client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" }).then((then) => {
-    //       const { message_popup_messages } = then.data;
-    //       const count = message_popup_messages.filter((x) => x.isread === false).length;
-    //       updateCount({ count: count });
-    //     });
-    //   }
-    // };
-
     NotificationCenter.registerPushNotifications()
       .then((token) => {
         console.debug("TOKEN=========>", token);

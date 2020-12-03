@@ -32,19 +32,4 @@ const NotificationsStack = () => {
   );
 };
 
-// const NotificationsStack = createCompatNavigatorFactory(createStackNavigator)(
-//   {
-//     Notification: {
-//       screen: Notifications
-//     },
-//     NotificationDetail: {
-//       screen: NotificationDetails
-//     }
-//   },
-//   {
-//     initialRouteName: "Notification",
-//     defaultNavigationOptions: TotaraNavigationOptions({ backTitle: translate("general.back") })
-//   }
-// );
-
 export default NotificationsStack;
