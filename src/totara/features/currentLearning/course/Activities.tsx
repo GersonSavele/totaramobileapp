@@ -33,11 +33,12 @@ import { AuthContext } from "@totara/core";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import { GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
-import { completionStatus, completionTrack, CL_TEST_IDS } from "../constants";
+import { completionStatus, completionTrack } from "../constants";
 import { ActivityModType } from "@totara/lib/constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete, fetchResource } from "../course/api";
 import listViewStyles from "@totara/theme/listView";
+import { CL_TEST_IDS } from "@totara/lib/testIds";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {

@@ -19,9 +19,10 @@ import ParallaxScrollView from "./ParallaxScrollView";
 import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { viewHeight, CL_TEST_IDS } from "./constants";
+import { viewHeight } from "./constants";
 import { CourseGroup, Course, LearningItem } from "@totara/types";
 import { margins } from "@totara/theme/constants";
+import { CL_TEST_IDS } from "@totara/lib/testIds";
 const { marginXL } = margins;
 
 type LearningDetailsProps = {

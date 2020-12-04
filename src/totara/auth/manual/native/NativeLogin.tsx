@@ -28,7 +28,7 @@ import { ManualFlowChildProps } from "../ManualFlowChildProps";
 import { useNativeFlow } from "./NativeFlowHook";
 import { margins } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { TEST_IDS } from "@totara/lib/constants";
+import { TEST_IDS } from "@totara/lib/testIds";
 
 const NativeLogin = (props: ManualFlowChildProps) => {
   // fetch from global

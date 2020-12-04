@@ -14,7 +14,8 @@
  */
 
 import { by, device, element } from "detox";
-import { TEST_IDS, DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../lib/constants";
+import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../lib/constants";
+import { TEST_IDS } from "../../lib/testIds";
 
 describe("User authentication", () => {
   beforeEach(async () => {

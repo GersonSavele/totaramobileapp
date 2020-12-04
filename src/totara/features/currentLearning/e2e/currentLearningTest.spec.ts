@@ -14,8 +14,8 @@
  */
 
 import { by, device, element } from "detox";
-import { TEST_IDS, DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../lib/constants";
-import { CL_TEST_IDS } from "../constants";
+import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../lib/constants";
+import { CL_TEST_IDS, TEST_IDS } from "../../../lib/testIds";
 
 describe("Current learning test", () => {
   beforeEach(async () => {

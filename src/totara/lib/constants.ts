@@ -34,15 +34,6 @@ const DEV_ORG_URL = "mobile.demo.totara.software";
 const DEV_USERNAME = "tharakad";
 const DEV_PASSWORD = "Abcd123$";
 
-const TEST_IDS = {
-  SITE_URL_INPUT: "SITE_URL_INPUT",
-  SUBMIT_URL: "SUBMIT_URL",
-  USER_INPUT: "USER_INPUT",
-  USER_PW: "USER_PW",
-  LOGIN: "LOGIN",
-  CLICK_CLOSE: "CLICK_CLOSE"
-};
-
 const FILE_EXTENSION = ".zip";
 const OFFLINE_SCORM_PREFIX = "OfflineSCORM_";
 
@@ -71,6 +62,5 @@ export {
   DEV_PASSWORD,
   OFFLINE_SCORM_PREFIX,
   FILE_EXTENSION,
-  ActivityModType,
-  TEST_IDS
+  ActivityModType
 };

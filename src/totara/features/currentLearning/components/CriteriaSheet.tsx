@@ -23,7 +23,7 @@ import listViewStyles from "@totara/theme/listView";
 import { Criteria } from "@totara/types";
 import criteriaSheetStyle from "./criteriaSheetStyle";
 import { iconSizes } from "@totara/theme/constants";
-import { TEST_IDS } from "@totara/lib/constants";
+import { TEST_IDS } from "@totara/lib/testIds";
 
 type Props = {
   title: string;

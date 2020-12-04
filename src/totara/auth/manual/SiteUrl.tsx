@@ -26,8 +26,9 @@ import { constants } from "@totara/lib";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { margins, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
+import { TEST_IDS } from "@totara/lib/testIds";
 
-const { DEV_ORG_URL, TEST_IDS } = constants;
+const { DEV_ORG_URL } = constants;
 
 const SiteUrl = (props: Props) => {
   const [siteUrl, setSiteUrl] = useState(props.siteUrl ? props.siteUrl : __DEV__ ? DEV_ORG_URL : "");
