@@ -26,7 +26,7 @@ import LearningItemCard from "../components/LearningItemCard";
 import carouselItemStyles from "./carouselItemStyles";
 import { extractTargetId } from "../utils";
 import { activeOpacity } from "@totara/lib/styles/base";
-import { CL_TEST_IDS } from "@totara/lib/constants";
+import { CL_TEST_IDS } from "../constants";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;

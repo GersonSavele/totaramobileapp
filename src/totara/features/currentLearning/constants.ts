@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { deviceScreen } from "@totara/lib/tools";
+import { deviceScreen } from "../../lib/tools";
 
 enum learningItemEnum {
   Course = "course",
@@ -71,6 +71,14 @@ enum WekaEditorType {
   audio = "audio"
 }
 
+const CL_TEST_IDS = {
+  CL_SWITCH_ID: "CL_SWITCH_ID",
+  CL_TAB_2_ID: "CL_TAB_2_ID",
+  CAROUSEL_WRAPPER_ID: "CAROUSEL_WRAPPER_ID",
+  CL_LIST: "CL_LIST",
+  CL_PROGRESS: "CL_PROGRESS"
+};
+
 export {
   learningItemEnum,
   completionTrack,
@@ -78,5 +86,6 @@ export {
   courseCriteria,
   completionIconStateKey,
   viewHeight,
-  WekaEditorType
+  WekaEditorType,
+  CL_TEST_IDS
 };

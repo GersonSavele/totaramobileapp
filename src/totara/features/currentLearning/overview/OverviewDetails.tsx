@@ -31,7 +31,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
 import WekaEditorView from "../weka/WekaEditorView";
 import { activeOpacity } from "@totara/lib/styles/base";
-import { CL_TEST_IDS } from "@totara/lib/constants";
+import { CL_TEST_IDS } from "../constants";
 
 type OverviewProps = {
   id: number;

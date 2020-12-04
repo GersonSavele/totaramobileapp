@@ -29,7 +29,7 @@ import { paddings } from "@totara/theme/constants";
 import { Switch, SwitchOption } from "@totara/components/Switch";
 import { Icons } from "@resources/icons";
 import { sortByDueDateThenTypeThenFullName } from "@totara/features/currentLearning/utils";
-import { CL_TEST_IDS } from "@totara/lib/constants";
+import { CL_TEST_IDS } from "./constants";
 
 enum ListingOrientation {
   Carousel,
