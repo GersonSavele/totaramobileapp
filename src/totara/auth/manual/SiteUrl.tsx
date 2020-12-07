@@ -31,6 +31,7 @@ import { TEST_IDS } from "@totara/lib/testIds";
 const { DEV_ORG_URL } = constants;
 
 const SiteUrl = (props: Props) => {
+  // eslint-disable-next-line no-undef
   const [siteUrl, setSiteUrl] = useState(props.siteUrl ? props.siteUrl : __DEV__ ? DEV_ORG_URL : "");
   const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
 
