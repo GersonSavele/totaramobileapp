@@ -168,7 +168,8 @@ const parallaxScrollViewStyles = StyleSheet.create({
     top: 0
   },
   scrollView: {
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    width: deviceScreen.width
   }
 });
 
