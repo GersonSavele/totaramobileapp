@@ -233,7 +233,8 @@
   "downloads": {
     "title": "Downloads",
     "empty": "No downloads yet!",
-    "selected": "{{count}} Selected"
+    "selected": "{{count}} Selected",
+    "accessibility_icon": "Download"
   },
   "user_profile": {
     "title": "Profile",

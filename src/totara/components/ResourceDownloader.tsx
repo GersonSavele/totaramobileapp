@@ -28,6 +28,7 @@ type ResourceDownloaderProps = {
   size?: number;
   style?: ImageStyle;
   testID?: string;
+  accessibilityLabel?: string;
 };
 
 const DownloadIcon = {
@@ -71,13 +72,22 @@ const ResourceDownloaderComponent = ({ resourceState, progress, size, testID }: 
   }
 };
 
-const ResourceDownloader = ({ resourceState, onPress, progress, size, style, testID }: ResourceDownloaderProps) => {
+const ResourceDownloader = ({
+  resourceState,
+  onPress,
+  progress,
+  size,
+  style,
+  testID,
+  accessibilityLabel = ""
+}: ResourceDownloaderProps) => {
   return (
     <TouchableOpacity
       testID={testID}
       onPress={() => {
         onPress && onPress();
       }}
+      accessibilityLabel={accessibilityLabel}
       disabled={!onPress}
       style={[{ padding: gutter, alignSelf: "center" }, style]}>
       <ResourceDownloaderComponent resourceState={resourceState} size={size} progress={progress} />
