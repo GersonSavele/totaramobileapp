@@ -328,6 +328,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         fileurl,
                         mimetype,
                         apiKey,
+                        title: item?.name,
                         backAction: courseRefreshCallBack
                       }
                     });
@@ -341,6 +342,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
+                    title: item?.name,
                     backAction: courseRefreshCallBack
                   }
                 });

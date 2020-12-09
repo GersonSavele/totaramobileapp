@@ -75,9 +75,10 @@ const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
     [WEBVIEW_ACTIVITY]: {
       screen: WebviewActivity,
       navigationOptions: ({ navigation }) => {
-        const { backAction } = navigation.state.params;
+        const { backAction, title } = navigation.state.params;
         return {
           headerTitleAlign: "center",
+          title: title,
           headerLeft: () => (
             <TouchableIcon
               icon={"times"}

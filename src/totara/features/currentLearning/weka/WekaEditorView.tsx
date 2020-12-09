@@ -30,10 +30,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPaperclip, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { AppState } from "@totara/types";
-const { WEBVIEW_ACTIVITY } = NAVIGATION;
-import NavigationService from "@totara/lib/navigationService";
+import { navigate } from "@totara/lib/navigationService";
 import { CircleIcon } from "@totara/components";
 import { translate } from "@totara/locale";
+
+const { WEBVIEW_ACTIVITY } = NAVIGATION;
 
 enum HostName {
   youtube = "www.youtube.com",
@@ -47,7 +48,7 @@ let color = {
   textColor: TotaraTheme.colorNeutral8
 };
 
-const navigateWebView = (url, onRequestClose) => {
+const navigateWebView = (url, onRequestClose, title) => {
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
@@ -55,9 +56,10 @@ const navigateWebView = (url, onRequestClose) => {
   const props = {
     uri: url.replace("totara/mobile/", ""), // This is the temp solution for webview headers error fix
     apiKey: apiKey,
-    backAction: onRequestClose
+    backAction: onRequestClose,
+    title: title
   };
-  return NavigationService.navigate(WEBVIEW_ACTIVITY, props);
+  return navigate(WEBVIEW_ACTIVITY, props);
 };
 
 type WekaEditorViewProps = {
@@ -185,7 +187,7 @@ const TextView = ({ attrs = {}, content = {} }: ConfigProps) => {
         onPress={link && onRequestClose}>
         {content.text}
       </Text>
-      {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose)}
+      {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose, content.text)}
     </Text>
   );
 };

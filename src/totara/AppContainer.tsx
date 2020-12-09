@@ -29,7 +29,8 @@ import { mutationForToken } from "./features/notifications/api";
 import { RootState } from "./reducers";
 import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import TabContainer from "./TabContainer";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { TotaraTheme } from "./theme/Theme";
 
 const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
 
@@ -106,8 +107,16 @@ const AppContainer = () => {
     }
   }, [notificationState?.tokenSent]);
 
+  const navigationTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: TotaraTheme.viewContainer.backgroundColor!
+    }
+  };
+
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <RootStack />
     </NavigationContainer>
   );

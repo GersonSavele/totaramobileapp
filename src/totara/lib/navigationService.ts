@@ -2,7 +2,7 @@ import React from "react";
 
 const navigationRef = React.createRef<any>();
 
-const navigate = (name, params = undefined) => {
+const navigate = (name, params) => {
   navigationRef.current?.navigate(name, params);
 };
 
