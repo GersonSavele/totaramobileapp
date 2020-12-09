@@ -293,7 +293,7 @@ const headerRight = (props) => {
         resourceState={downloadState}
         progress={downloadProgress}
         size={iconSizes.sizeM}
-        accessibilityLabel={translate("downloads.accessibility_icon") + " " + title}
+        accessibilityLabel={`${translate("downloads.accessibility_icon")} ${title}`}
         onPress={() => onDownloadPress({ id, title })}
       />
     );

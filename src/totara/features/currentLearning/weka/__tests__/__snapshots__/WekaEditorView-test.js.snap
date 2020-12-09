@@ -1851,6 +1851,7 @@ Array [
       }
     >
       <FastImageView
+        accessibilityLabel="translated course.activity.accessibility_image with undefined"
         onFastImageError={[Function]}
         onFastImageLoadEnd={[Function]}
         resizeMode="cover"

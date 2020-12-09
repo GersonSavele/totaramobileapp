@@ -92,7 +92,11 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
             borderColor: theme.colorPrimary
           }}>
           {!useDefaultImage ? (
-            <ImageWrapper url={profile.profileimage} style={styles.avatar} />
+            <ImageWrapper
+              url={profile.profileimage}
+              style={styles.avatar}
+              accessibilityLabel={translate("user_profile.accessibility_image")}
+            />
           ) : (
             <View style={styles.avatar}>
               <FontAwesomeIcon icon={"user"} color={TotaraTheme.colorNeutral4} size={65} />

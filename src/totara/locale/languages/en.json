@@ -151,6 +151,10 @@
     },
     "course_activity_section": {
       "not_available": "Not available"
+    },
+    "activity":{
+      "accessibility_image":"Activity image",
+      "accessibility_image_zoom":"Activity image zoom"
     }
   },
   "course_group": {
@@ -246,7 +250,8 @@
       "title": "Confirmation",
       "message": "Are you sure you want to logout?"
     },
-    "about": "About"
+    "about": "About",
+    "accessibility_image":"Profile image"
   },
   "about": {
     "version": "VERSION {{version}}",

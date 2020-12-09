@@ -22,9 +22,10 @@ import FastImage from "react-native-fast-image";
 type ImageWrapperType = {
   url: string;
   style?: StyleProp<ImageStyle>;
+  accessibilityLabel?: string;
 };
 
-const ImageWrapper = ({ url, style }: ImageWrapperType) => {
+const ImageWrapper = ({ url, style, accessibilityLabel }: ImageWrapperType) => {
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
@@ -38,6 +39,7 @@ const ImageWrapper = ({ url, style }: ImageWrapperType) => {
       onError={() => {
         console.log("Loading onError");
       }}
+      accessibilityLabel={accessibilityLabel}
       source={{
         uri: url,
         cache: "web",

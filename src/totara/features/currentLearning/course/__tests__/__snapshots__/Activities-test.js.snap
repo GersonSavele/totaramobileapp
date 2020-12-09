@@ -126,11 +126,7 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
     }
   >
     <Image
-      source={
-        Object {
-          "testUri": "../../../src/resources/images/auto_complete_tick/auto_complete_tick.png",
-        }
-      }
+      source={null}
     />
   </View>
 </View>

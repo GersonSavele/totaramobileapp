@@ -33,6 +33,7 @@ import { AppState } from "@totara/types";
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 import NavigationService from "@totara/lib/navigationService";
 import { CircleIcon } from "@totara/components";
+import { translate } from "@totara/locale";
 
 enum HostName {
   youtube = "www.youtube.com",
@@ -277,10 +278,18 @@ const ImageViewerWrapper = ({ content = {} }: ConfigProps) => {
   // Implementing key with filename because the list is not updating correctly the image without this
   return (
     <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose} key={`index_${content?.attrs?.filename}`}>
-      <ImageWrapper url={content.attrs.url} style={styles.imageContainer} />
+      <ImageWrapper
+        url={content.attrs.url}
+        style={styles.imageContainer}
+        accessibilityLabel={translate("course.activity.accessibility_image")}
+      />
       {visible && (
         <ModalView onRequestClose={onRequestClose}>
-          <ImageWrapper url={content.attrs.url} style={{ height: "80%", resizeMode: "contain" }} />
+          <ImageWrapper
+            url={content.attrs.url}
+            style={{ height: "80%", resizeMode: "contain" }}
+            accessibilityLabel={translate("course.activity.accessibility_image_zoom")}
+          />
         </ModalView>
       )}
     </TouchableOpacity>
