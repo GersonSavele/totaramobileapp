@@ -49,7 +49,7 @@ describe("Utils", () => {
         status: completionStatus.incomplete,
         completion: completionTrack.trackingAutomatic
       });
-      expect(resultAuto).toMatchObject({
+      expect(resultAuto).toEqual({
         stateObj: completionStates.autoIncomplete,
         accessibility: completionAccessibility.autoCompletion
       });

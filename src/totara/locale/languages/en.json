@@ -238,7 +238,7 @@
     "title": "Downloads",
     "empty": "No downloads yet!",
     "selected": "{{count}} Selected",
-    "accessibility_icon": "Download"
+    "accessibility_icon": "Download {{filename}}"
   },
   "user_profile": {
     "title": "Profile",
