@@ -154,33 +154,32 @@ const ScormActivity = (props: ScormActivityProps) => {
         sizeInBytes: resource.sizeInBytes
       })
     : 0;
+  const scorm = scormBundle?.scorm;
+  const offlinePackageUrl = scorm?.offlineAttemptsAllowed && scorm?.offlinePackageUrl;
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return (
+        return offlinePackageUrl ? (
           <ResourceDownloader
             resourceState={resource?.state}
             progress={progress}
             size={iconSizes.sizeM}
             onPress={onDownloadPress}
           />
-        );
+        ) : null;
       }
     });
   });
 
-  const scorm = scormBundle?.scorm;
-  const packageUrl = scorm?.offlineAttemptsAllowed && scorm?.packageUrl;
-
   const onDownloadPress = () => {
-    if (isInternetReachable && packageUrl) {
+    if (isInternetReachable) {
       download({
         apiKey: apiKey,
         customId: id,
         name: title,
         type: ResourceType.ScormActivity,
-        resourceUrl: packageUrl as string,
+        resourceUrl: offlinePackageUrl as string,
         targetPathFile: getTargetZipFile(id),
         targetExtractPath: getOfflinePackageUnzipPath(id)
       });
