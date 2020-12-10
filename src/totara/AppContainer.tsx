@@ -15,7 +15,7 @@
 
 import React, { useEffect } from "react";
 import messaging from "@react-native-firebase/messaging";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import NotificationCenter from "@totara/lib/notificationCenter";
 import ResourceManager from "@totara/lib/resourceManager";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -25,7 +25,7 @@ import { tokenSent, updateToken } from "./actions/notification";
 import { navigate, navigationRef } from "./lib/navigationService";
 import { NAVIGATION } from "./lib/navigation";
 import { useSelector } from "react-redux";
-import { mutationForToken } from "./features/notifications/api";
+import { mutationForToken, notificationsQuery } from "./features/notifications/api";
 import { RootState } from "./reducers";
 import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import TabContainer from "./TabContainer";
@@ -56,6 +56,7 @@ const AppContainer = () => {
   ResourceManager.resumeDownloads();
 
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
+  const { client } = useQuery(notificationsQuery);
   const [sendToken] = useMutation(mutationForToken);
 
   const handleNotificationReceived = (remoteMessage) => {
@@ -63,6 +64,12 @@ const AppContainer = () => {
       if (remoteMessage?.data?.notification === "1") {
         navigate("NotificationsTab");
       }
+    }
+  };
+
+  const fetchNotifications = (client) => {
+    if (client) {
+      client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" });
     }
   };
 
@@ -83,8 +90,13 @@ const AppContainer = () => {
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
+        fetchNotifications(client);
         handleNotificationReceived(remoteMessage);
       });
+
+    messaging().onMessage(() => {
+      fetchNotifications(client);
+    });
 
     return () => {
       messaging().onTokenRefresh((token) => {
