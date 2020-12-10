@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Image, ImageSourcePropType } from "react-native";
 import { ThemeContext } from "@totara/theme";
@@ -23,6 +23,7 @@ import ProfileStack from "@totara/features/profile";
 import { countUnreadMessages, notificationsQuery } from "./features/notifications/api";
 import { useQuery } from "@apollo/react-hooks";
 import CurrentLearningStack from "./features/currentLearning";
+import { setNotificationBadgeCount } from "@totara/lib/nativeExtensions";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -30,6 +31,10 @@ const TabContainer = () => {
   const [theme] = useContext(ThemeContext);
   const { data } = useQuery(notificationsQuery);
   const notificationCount = countUnreadMessages(data);
+
+  useEffect(() => {
+    setNotificationBadgeCount(notificationCount);
+  }, [notificationCount]);
 
   const TabBarIconBuilder = ({ image, focused, color }: { image: iconImageProps; focused: boolean; color: string }) => {
     return (
