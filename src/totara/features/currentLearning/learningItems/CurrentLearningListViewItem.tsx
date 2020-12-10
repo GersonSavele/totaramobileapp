@@ -50,11 +50,9 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
       dueDateState === "danger" ? translate("current_learning.overdue_by") : translate("current_learning.due_in");
 
     return (
-      <View>
-        <Text testID={"test_dueDate"} style={{ ...currentLearningListViewStyles.dueDate, color: color }}>
-          {`${text} ${moment(dueDate).toNow(true)}`}
-        </Text>
-      </View>
+      <Text testID={"test_dueDate"} style={{ color: color }}>
+        {`${text} ${moment(dueDate).toNow(true)}`}
+      </Text>
     );
   };
 
@@ -89,24 +87,30 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
             <DefaultImage itemType={itemtype} style={currentLearningListViewStyles.imageWrap} />
           )}
         </View>
-        <View style={currentLearningListViewStyles.item}>
-          <Text
-            style={currentLearningListViewStyles.itemTitle}
-            testID={"test_CurrentLearningItem_Title"}
-            numberOfLines={2}>
-            {fullname}
-          </Text>
-          <View style={currentLearningListViewStyles.itemSubLine}>
-            <Text style={currentLearningListViewStyles.itemLearningTypeLabel} testID={"test_CurrentLearningItem_Type"}>
-              {capitalizeFirstLetter(itemtype)}
-            </Text>
-            {DueDateWidget(duedate, duedateState)}
+        <View style={currentLearningListViewStyles.itemInfoWrapper}>
+          <View style={currentLearningListViewStyles.itemInfoContainer}>
+            <View style={currentLearningListViewStyles.item}>
+              <Text
+                style={currentLearningListViewStyles.itemTitle}
+                testID={"test_CurrentLearningItem_Title"}
+                numberOfLines={2}>
+                {fullname}
+              </Text>
+              <Text
+                style={currentLearningListViewStyles.itemLearningTypeLabel}
+                testID={"test_CurrentLearningItem_Type"}>
+                {capitalizeFirstLetter(itemtype)}
+              </Text>
+            </View>
+            {progress !== null && (
+              <ProgressCircle
+                size={iconSizes.sizeXL}
+                progress={progress}
+                testID={"test_CurrentLearningItem_Progress"}
+              />
+            )}
           </View>
-        </View>
-        <View style={currentLearningListViewStyles.itemProgress}>
-          {progress !== null && (
-            <ProgressCircle size={iconSizes.sizeXL} progress={progress} testID={"test_CurrentLearningItem_Progress"} />
-          )}
+          {DueDateWidget(duedate, duedateState)}
         </View>
       </View>
       {showRestriction && <NativeAccessRestriction onClose={onClose} urlView={item.urlView} />}
@@ -116,24 +120,31 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
 
 const currentLearningListViewStyles = StyleSheet.create({
   itemContainer: {
-    height: 100,
-    padding: paddings.paddingXL,
-    flexDirection: "row"
+    flex: 1,
+    flexDirection: "row",
+    padding: paddings.paddingL
   },
   itemImage: {
-    alignSelf: "center",
     height: 80,
     aspectRatio: 4 / 3,
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2
   },
-  item: {
-    flex: 1,
-    justifyContent: "center",
-    padding: paddings.paddingL,
-    flexDirection: "column"
+  itemInfoWrapper: { marginLeft: margins.marginS, flexGrow: 1, flexBasis: 1 },
+  itemInfoContainer: {
+    flexGrow: 1,
+    flexBasis: 1,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center"
   },
-  itemTitle: { ...TotaraTheme.textRegular },
+  item: { flexGrow: 1, flexBasis: 1 },
+  itemTitle: {
+    ...TotaraTheme.textRegular,
+    paddingRight: paddings.paddingXS,
+    flexBasis: 1,
+    flexGrow: 1
+  },
   itemSubLine: {
     marginTop: margins.marginXS,
     flexDirection: "row",
@@ -149,16 +160,14 @@ const currentLearningListViewStyles = StyleSheet.create({
   },
   itemLearningTypeLabel: {
     ...TotaraTheme.textXXSmall,
-    alignSelf: "flex-end",
     paddingHorizontal: paddings.paddingL,
     paddingVertical: paddings.paddingXS,
     borderWidth: 1,
     borderRadius: borderRadius.borderRadiusM,
     color: TotaraTheme.colorNeutral7,
-    borderColor: TotaraTheme.colorNeutral6
-  },
-  dueDate: {
-    marginLeft: margins.marginS
+    borderColor: TotaraTheme.colorNeutral6,
+    alignSelf: "flex-start",
+    marginVertical: margins.marginXS
   }
 });
 

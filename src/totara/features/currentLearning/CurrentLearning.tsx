@@ -70,12 +70,8 @@ const CurrentLearning = () => {
       <View style={[theme.viewContainer, { flex: 1 }]}>
         <NavigationEvents onWillFocus={onContentRefresh} />
         <View style={currentLearningStyles.headerViewWrap}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}>
-            <Text style={currentLearningStyles.headerViewTitleWrap}>
+          <View style={currentLearningStyles.headerWrapper}>
+            <Text style={currentLearningStyles.headerViewTitleWrap} numberOfLines={2}>
               {translate("current_learning.action_primary")}
             </Text>
             <View

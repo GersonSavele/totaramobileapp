@@ -122,8 +122,15 @@ const currentLearningStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent"
   },
+  headerWrapper: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexWrap: "wrap"
+  },
   headerViewTitleWrap: {
-    ...textH2
+    ...textH2,
+    flexGrow: 1,
+    flexBasis: 1
   },
   headerViewSubTitleWrap: {
     ...textXSmall,
