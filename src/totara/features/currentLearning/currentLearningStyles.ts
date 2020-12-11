@@ -127,7 +127,7 @@ const currentLearningStyles = StyleSheet.create({
     justifyContent: "space-between",
     flexWrap: "wrap"
   },
-  headerViewTitleWrap: {
+  title: {
     ...textH2,
     flexGrow: 1,
     flexBasis: 1

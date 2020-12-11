@@ -71,7 +71,7 @@ const CurrentLearning = () => {
         <NavigationEvents onWillFocus={onContentRefresh} />
         <View style={currentLearningStyles.headerViewWrap}>
           <View style={currentLearningStyles.headerWrapper}>
-            <Text style={currentLearningStyles.headerViewTitleWrap} numberOfLines={2}>
+            <Text style={currentLearningStyles.title} numberOfLines={2}>
               {translate("current_learning.action_primary")}
             </Text>
             <View
