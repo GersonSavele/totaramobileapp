@@ -43,7 +43,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 const Notifications = ({ navigation }: StackScreenProps<any>) => {
   const { error, loading, data, refetch, networkStatus } = useQuery(notificationsQuery);
   const [mutationMarkAsRead] = useMutation(notificationQueryMarkRead);
-  const notificationList = !loading && !error ? parser(data) : ([] as NotificationMessage[]);
+  const notificationList = !loading ? parser(data) : ([] as NotificationMessage[]);
   const [, setLastRefresh] = useState(Date.now());
   const [selectedList, setSelectedList] = useState<string[]>([]);
   const [selectable, setSelectable] = useState(false);
@@ -160,7 +160,7 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
       <View style={{ flex: 1 }}>
         {loading && <Loading testID={"test_loading"} />}
         {!data && error && <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} />}
-        {!loading && !error && notificationList.length == 0 && (
+        {!loading && notificationList.length == 0 && (
           <ScrollView
             contentContainerStyle={{
               flexGrow: 1,
@@ -176,7 +176,7 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
             </View>
           </ScrollView>
         )}
-        {!loading && !error && notificationList.length > 0 && (
+        {!loading && notificationList.length > 0 && (
           <FlatList<NotificationMessage>
             testID={"test_notificationsList"}
             refreshing={networkStatus === NS.refetch}

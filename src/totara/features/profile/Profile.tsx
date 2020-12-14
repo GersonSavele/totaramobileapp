@@ -56,7 +56,7 @@ const Profile = ({ navigation }: StackScreenProps<any>) => {
 };
 
 type ProfileContentProps = {
-  navigation: NavigationStackProp;
+  navigation: any;
   profile: UserProfile;
 };
 
