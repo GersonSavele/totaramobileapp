@@ -24,7 +24,7 @@ import { capitalizeFirstLetter } from "@totara/lib/tools";
 import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
 import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/constants";
 import { extractTargetId } from "../utils";
-import { activeOpacity } from "@totara/lib/styles/base";
+import { activeOpacity, flexGrow } from "@totara/lib/styles/base";
 import { useNavigation } from "@react-navigation/native";
 
 type ListViewItemProps = {
@@ -89,7 +89,7 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
         </View>
         <View style={currentLearningListViewStyles.itemInfoWrapper}>
           <View style={currentLearningListViewStyles.itemInfoContainer}>
-            <View style={currentLearningListViewStyles.item}>
+            <View style={flexGrow}>
               <Text
                 style={currentLearningListViewStyles.itemTitle}
                 testID={"test_CurrentLearningItem_Title"}
@@ -130,20 +130,20 @@ const currentLearningListViewStyles = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2
   },
-  itemInfoWrapper: { marginLeft: margins.marginS, flexGrow: 1, flexBasis: 1 },
+  itemInfoWrapper: {
+    ...flexGrow,
+    marginLeft: margins.marginS
+  },
   itemInfoContainer: {
-    flexGrow: 1,
-    flexBasis: 1,
+    ...flexGrow,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center"
   },
-  item: { flexGrow: 1, flexBasis: 1 },
   itemTitle: {
     ...TotaraTheme.textRegular,
-    paddingRight: paddings.paddingXS,
-    flexBasis: 1,
-    flexGrow: 1
+    ...flexGrow,
+    paddingRight: paddings.paddingXS
   },
   itemSubLine: {
     marginTop: margins.marginXS,

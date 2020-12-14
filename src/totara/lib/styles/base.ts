@@ -19,9 +19,13 @@ const spacedFlexRow: StyleProp<ViewStyle> = {
   flexDirection: "row",
   justifyContent: "space-between"
 };
+const flexGrow: ViewStyle = {
+  flexGrow: 1,
+  flexBasis: 1
+};
 
 const activeOpacity = 0.6;
 
 const fullFlex = { flex: 1 };
 
-export { spacedFlexRow, fullFlex, activeOpacity };
+export { spacedFlexRow, fullFlex, activeOpacity, flexGrow };

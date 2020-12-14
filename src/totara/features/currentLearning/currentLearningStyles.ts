@@ -17,6 +17,7 @@ import { StyleSheet, ViewStyle } from "react-native";
 import { margins, paddings, borderRadius, fontWeights, fontSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { viewHeight } from "./constants";
+import { flexGrow } from "@totara/lib/styles/base";
 const {
   colorOpacity70,
   textH2,
@@ -129,8 +130,7 @@ const currentLearningStyles = StyleSheet.create({
   },
   title: {
     ...textH2,
-    flexGrow: 1,
-    flexBasis: 1
+    ...flexGrow
   },
   headerViewSubTitleWrap: {
     ...textXSmall,
