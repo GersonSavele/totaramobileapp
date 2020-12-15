@@ -21,12 +21,10 @@ import totaraNavigationOptions from "@totara/components/NavigationOptions";
 import CurrentLearning from "./CurrentLearning";
 import CourseDetails from "./course/CourseDetails";
 import { CourseGroupDetails, CourseList } from "./courseGroup";
-import { TouchableIcon } from "@totara/components";
-import { WebviewActivity } from "@totara/activities/webview/WebviewActivity";
 import { paddings } from "@totara/theme/constants";
 import MoreInfo from "@totara/components/MoreInfo";
 
-const { WEBVIEW_ACTIVITY, CURRENT_LEARNING, COURSE_DETAILS, COURSE_GROUP_DETAILS, COURSE_LIST } = NAVIGATION;
+const { CURRENT_LEARNING, COURSE_DETAILS, COURSE_GROUP_DETAILS, COURSE_LIST } = NAVIGATION;
 
 const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
   {
@@ -71,31 +69,10 @@ const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
             </View>
           )
         })
-    },
-    [WEBVIEW_ACTIVITY]: {
-      screen: WebviewActivity,
-      navigationOptions: ({ navigation }) => {
-        const { backAction, title } = navigation.state.params;
-        return {
-          headerTitleAlign: "center",
-          title: title,
-          headerLeft: () => (
-            <TouchableIcon
-              icon={"times"}
-              onPress={() => {
-                backAction();
-                navigation.goBack();
-              }}
-              size={20}
-            />
-          )
-        };
-      }
     }
   },
   {
     initialRouteName: "CurrentLearning"
-    // initialRouteKey: "CurrentLearning"
   }
 );
 

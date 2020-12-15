@@ -31,8 +31,9 @@ import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import TabContainer from "./TabContainer";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { TotaraTheme } from "./theme/Theme";
+import WebViewStack from "./features/activities/webview/WebViewStack";
 
-const { SCORM_STACK_ROOT, ABOUT } = NAVIGATION;
+const { SCORM_STACK_ROOT, ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
 
 const RootStack = createCompatNavigatorFactory(createStackNavigator)(
   {
@@ -41,6 +42,9 @@ const RootStack = createCompatNavigatorFactory(createStackNavigator)(
     },
     [SCORM_STACK_ROOT]: {
       screen: scormStack
+    },
+    [WEBVIEW_ACTIVITY]: {
+      screen: WebViewStack
     },
     [ABOUT]: {
       screen: AboutStack
@@ -62,7 +66,7 @@ const AppContainer = () => {
   const handleNotificationReceived = (remoteMessage) => {
     if (remoteMessage) {
       if (remoteMessage?.data?.notification === "1") {
-        navigate("NotificationsTab");
+        navigate("NotificationsTab", {});
       }
     }
   };

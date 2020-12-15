@@ -30,7 +30,6 @@ import FormError from "./FormError";
 import MoreText from "./MoreText";
 import LinkText from "./LinkText";
 import MessageBar from "./MessageBar";
-import TopHeader from "./TopHeader";
 import TotaraNavigationOptions from "./NavigationOptions";
 import NotificationBell from "./NotificationBell";
 import LoadingError from "./LoadingError";
@@ -58,7 +57,6 @@ export {
   MoreText,
   LinkText,
   MessageBar,
-  TopHeader,
   TotaraNavigationOptions,
   NotificationBell,
   Loading,
