@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Alert, Dimensions } from "react-native";
+import { Alert, Dimensions, Platform } from "react-native";
 import { translate } from "@totara/locale";
 import moment from "moment";
 
@@ -101,6 +101,9 @@ const getUrlLastComponentFromRegex = (url) => {
     .pop();
 };
 
+const isIOS = Platform.OS === "ios";
+const isAndroid = Platform.OS === "android";
+
 export {
   showMessage,
   showConfirmation,
@@ -110,5 +113,7 @@ export {
   timeAgo,
   capitalizeFirstLetter,
   getHostnameFromRegex,
-  getUrlLastComponentFromRegex
+  getUrlLastComponentFromRegex,
+  isIOS,
+  isAndroid
 };
