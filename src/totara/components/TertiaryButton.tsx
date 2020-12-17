@@ -34,8 +34,8 @@ const TertiaryButton = ({ text = "", style, onPress, testID, ...rest }: Props) =
     <Button block rounded transparent testID={testID} onPress={onPress} style={[styles.button, style]} {...rest}>
       <Text
         style={{
-          color: theme.textColorDark,
-          fontSize: theme.fontSizeButtonTitle
+          color: theme.colorLink,
+          fontSize: theme.textSmall.fontSize
         }}>
         {text}
       </Text>

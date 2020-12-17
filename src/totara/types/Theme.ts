@@ -15,9 +15,6 @@
 
 export type Theme = {
   urlLogo?: string;
-
-  fontSizeButtonTitle: number;
-
   colorPrimary: string;
   colorText: string;
 

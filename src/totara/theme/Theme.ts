@@ -87,9 +87,6 @@ const TotaraTheme: AppliedTheme = {
     fontWeight: "400"
   },
 
-  //NEEDS BE REMOVED
-  fontSizeButtonTitle: 14,
-
   //NEEDS REVIEW
   //---- Theme color: customizable by [User, Developer] ------
   colorPrimary: colorPrimary,

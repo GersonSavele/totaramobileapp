@@ -79,7 +79,7 @@ const SecondaryButton = ({ children, text, icon, style, onPress, mode, ...rest }
     },
     title: {
       fontWeight: "bold",
-      fontSize: theme.fontSizeButtonTitle,
+      fontSize: theme.textSmall.fontSize,
       color: mode === "disabled" ? theme.colorNeutral7 : theme.textColorDark
     }
   });
@@ -92,7 +92,7 @@ const SecondaryButton = ({ children, text, icon, style, onPress, mode, ...rest }
       style={[buttonStyle.container, style]}
       disabled={mode == "loading" || mode == "disabled"}>
       {text ? <ButtonTitle mode={mode} text={text} style={buttonStyle.title} /> : { children }}
-      <ButtonIndicator mode={mode} icon={icon} color={theme.colorText} size={theme.fontSizeButtonTitle} />
+      <ButtonIndicator mode={mode} icon={icon} color={theme.colorText} size={theme.textSmall.fontSize} />
     </Button>
   );
 };
