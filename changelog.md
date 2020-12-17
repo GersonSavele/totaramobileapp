@@ -1,6 +1,30 @@
 Totara Mobile App Changelog
 
-Release 1.0.4 (18th November 2020):
+Release 1.0.5 (17th November 2020):
+=====================================
+
+Bug
+[MOB-859] - Cannot download SCORM activity after you submit answers
+[MOB-861] - Couser layout should remains as expected when switch back from landscape activities
+
+Task
+[MOB-813] - Check for copied code that doesn’t comply with our licenses
+[MOB-865] - Upload release 1.0.4 to beta distribution(testflight/Gplay)
+[MOB-867] - Upload release 1.0.5 to beta distribution(testflight/Gplay)
+
+Improvement
+[MOB-620] - In-App notifications auto refresh
+[MOB-792] - Layout is broken when font size is changed
+[MOB-794] - No voice over for manual and auto completion check boxes
+[MOB-795] - No voice over for download icon in SCORm summary screen
+[MOB-797] - Accessibility property for all the images
+[MOB-823] - Set up react navigation library compatibility module
+[MOB-850] - Implement Detox test cases for authentication
+[MOB-851] - Implement Detox test cases for current learning ( iOS set up only )
+[MOB-858] - Update header of API calls to use X-API-Key instead of authorisation header
+[MOB-864] - Reset badge in the App icon when reading a notification
+
+Release 1.0.4 (3rd December 2020):
 =====================================
 
 Bug
