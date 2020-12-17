@@ -1,6 +1,6 @@
 Totara Mobile App Changelog
 
-Release 1.0.5 (17th November 2020):
+Release 1.0.5 (17th December 2020):
 =====================================
 
 Bug
