@@ -54,6 +54,7 @@ const notificationsQuery = gql`
       fullmessageformat
       timecreated
       isread
+      fullmessageHTML
       contextUrl
       __typename
     }

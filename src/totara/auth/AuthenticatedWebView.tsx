@@ -126,6 +126,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
               style={{ flex: 1 }}
               ref={innerRef}
               onNavigationStateChange={this.props.onNavigationStateChange}
+              onShouldStartLoadWithRequest={this.props.onShouldStartLoadWithRequest}
             />
           ) : null
         }
@@ -148,11 +149,13 @@ type Props = {
   deleteWebview: MutationFunction<DeleteWebViewResponse, { secret: string }>;
   innerRef: React.Ref<WebView>;
   onNavigationStateChange: (navState: WebViewNavigation) => void;
+  onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
 };
 
 type OuterProps = {
   uri: string;
   onNavigationStateChange?: (navState: WebViewNavigation) => void;
+  onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
 };
 
 type State = {

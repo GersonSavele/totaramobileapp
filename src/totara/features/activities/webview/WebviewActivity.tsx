@@ -64,10 +64,11 @@ const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
 
 type WebViewWrapperProps = {
   uri: string;
-  backAction: () => void;
+  backAction?: () => void;
+  onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
 };
 
-const WebViewWrapper = ({ uri, backAction }: WebViewWrapperProps) => {
+const WebViewWrapper = ({ uri, backAction, onShouldStartLoadWithRequest }: WebViewWrapperProps) => {
   const refWebview = useRef<WebView>(null);
   const [navState, setNavState] = useState<WebViewNavigation>();
 
@@ -76,16 +77,21 @@ const WebViewWrapper = ({ uri, backAction }: WebViewWrapperProps) => {
   };
 
   useEffect(() => {
-    if (uri) {
+    if (uri && backAction) {
       const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
       return () => backHandler.remove();
     }
-  }, [uri]);
+  }, [uri, backAction]);
 
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
-        <AuthenticatedWebView uri={uri} ref={refWebview} onNavigationStateChange={onNavigationStateChange} />
+        <AuthenticatedWebView
+          uri={uri}
+          ref={refWebview}
+          onNavigationStateChange={onNavigationStateChange}
+          onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
+        />
       </View>
       <WebviewToolbar refWebview={refWebview} navState={navState} />
     </View>
@@ -116,4 +122,4 @@ const pdfViewStyle = StyleSheet.create({
   loadingWrapper: { position: "absolute", width: "100%", height: "100%" }
 });
 
-export { WebviewActivity };
+export { WebviewActivity, WebViewWrapper };
