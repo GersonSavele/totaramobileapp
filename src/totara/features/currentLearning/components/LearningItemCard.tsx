@@ -53,7 +53,7 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
             <Text style={carouselItemStyles.summary} numberOfLines={numberOfLines}>
               {item.summaryFormat === DescriptionFormat.jsonEditor
                 ? item.summary && wekaSummary(JSON.parse(item.summary))
-                : capitalizeFirstLetter(item.summary?.toLowerCase())}
+                : item.summary}
             </Text>
           </View>
         </View>
