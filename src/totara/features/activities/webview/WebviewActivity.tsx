@@ -13,18 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useRef, useState, useEffect } from "react";
-import { View, SafeAreaView, BackHandler, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, SafeAreaView, StyleSheet } from "react-native";
 import PDFView from "react-native-view-pdf";
-import { WebView, WebViewNavigation } from "react-native-webview";
 import Orientation from "react-native-orientation-locker";
-import { Activity } from "@totara/types";
-import { AuthenticatedWebView } from "@totara/auth";
-import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 
-import WebviewToolbar from "../components/WebviewToolbar";
+import { Activity } from "@totara/types";
+import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { Loading } from "@totara/components";
+import { Loading, WebViewWrapper } from "@totara/components";
 
 const PDF_TYPE = "application/pdf";
 /**
@@ -62,42 +59,6 @@ const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
   );
 };
 
-type WebViewWrapperProps = {
-  uri: string;
-  backAction?: () => void;
-  onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
-};
-
-const WebViewWrapper = ({ uri, backAction, onShouldStartLoadWithRequest }: WebViewWrapperProps) => {
-  const refWebview = useRef<WebView>(null);
-  const [navState, setNavState] = useState<WebViewNavigation>();
-
-  const onNavigationStateChange = (navState: WebViewNavigation) => {
-    setNavState(navState);
-  };
-
-  useEffect(() => {
-    if (uri && backAction) {
-      const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-      return () => backHandler.remove();
-    }
-  }, [uri, backAction]);
-
-  return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <AuthenticatedWebView
-          uri={uri}
-          ref={refWebview}
-          onNavigationStateChange={onNavigationStateChange}
-          onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
-        />
-      </View>
-      <WebviewToolbar refWebview={refWebview} navState={navState} />
-    </View>
-  );
-};
-
 const PDFViewWrapper = ({ fileurl, apiKey }: { fileurl?: string; apiKey?: string }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -122,4 +83,4 @@ const pdfViewStyle = StyleSheet.create({
   loadingWrapper: { position: "absolute", width: "100%", height: "100%" }
 });
 
-export { WebviewActivity, WebViewWrapper };
+export { WebviewActivity };

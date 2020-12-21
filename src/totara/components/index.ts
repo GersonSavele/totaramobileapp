@@ -37,6 +37,8 @@ import NetworkStatus from "./NetworkStatus";
 import Loading from "./Loading";
 import ImageWrapper from "./ImageWrapper";
 import ModalContent from "./ModalContent";
+import WebViewWrapper from "./WebViewWrapper";
+import WebviewToolbar from "./WebviewToolbar";
 
 export {
   AddBadge,
@@ -63,5 +65,7 @@ export {
   LoadingError,
   NetworkStatus,
   ImageWrapper,
-  ModalContent
+  ModalContent,
+  WebViewWrapper,
+  WebviewToolbar
 };

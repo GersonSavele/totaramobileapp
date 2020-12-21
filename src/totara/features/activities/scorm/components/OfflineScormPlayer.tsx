@@ -19,7 +19,7 @@ import { WebView, WebViewMessageEvent, WebViewNavigation } from "react-native-we
 import Orientation from "react-native-orientation-locker";
 
 import { SCORM_TEST_IDS } from "../constants";
-import WebviewToolbar from "../../components/WebviewToolbar";
+import { WebviewToolbar } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type Props = {
