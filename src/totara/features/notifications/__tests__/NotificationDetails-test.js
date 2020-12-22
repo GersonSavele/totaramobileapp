@@ -16,6 +16,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import moment from "moment";
+import { AuthContext } from "@totara/core";
 import NotificationDetails from "@totara/features/notifications/NotificationDetail";
 
 describe("NotificationDetails", () => {
@@ -27,6 +28,11 @@ describe("NotificationDetails", () => {
     timeCreated: moment().utc().unix(),
     fullMessageFormat: "PLAIN"
   };
+  const authContextState = {
+    appState: {
+      host: "http://site.url"
+    }
+  };
 
   it("Should render with title, time ago, and full message", () => {
     const itemToBeTested = { ...defaultMockItem };
@@ -37,7 +43,14 @@ describe("NotificationDetails", () => {
       }
     };
 
-    const { getByTestId } = render(<NotificationDetails route={route} />);
+    const { getByTestId } = render(
+      <AuthContext.Provider
+        value={{
+          authContextState
+        }}>
+        <NotificationDetails route={route} />
+      </AuthContext.Provider>
+    );
 
     const labelTitle = getByTestId("test_title");
     expect(labelTitle.children[0]).toBe(itemToBeTested.subject);

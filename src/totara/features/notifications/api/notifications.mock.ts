@@ -31,6 +31,8 @@ const notificationsMock = [
             fullmessageformat: "PLAIN",
             isread: true,
             timecreated: 111,
+            contextUrl: "http://dummy.url",
+            fullmessageHTML: "dummy_data",
             __typename: "message_popup_messages"
           },
           {
@@ -40,6 +42,8 @@ const notificationsMock = [
             fullmessageformat: "PLAIN",
             isread: true,
             timecreated: 222,
+            contextUrl: null,
+            fullmessageHTML: null,
             __typename: "message_popup_messages"
           }
         ]
@@ -63,6 +67,8 @@ const notificationsMockUnRead = [
             fullmessageformat: "PLAIN",
             isread: false,
             timecreated: 111,
+            contextUrl: "http://dummy.url",
+            fullmessageHTML: "dummy_data",
             __typename: "message_popup_messages"
           },
           {
@@ -72,6 +78,8 @@ const notificationsMockUnRead = [
             fullmessageformat: "PLAIN",
             isread: false,
             timecreated: 222,
+            contextUrl: null,
+            fullmessageHTML: null,
             __typename: "message_popup_messages"
           }
         ]
