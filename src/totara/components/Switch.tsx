@@ -50,7 +50,8 @@ const switchStyles = StyleSheet.create({
     width: iconSizes.sizeL,
     borderRadius: iconSizes.sizeL / 2,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    overflow: "hidden"
   },
   optionImage: {
     tintColor: "white"
