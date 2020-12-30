@@ -27,7 +27,6 @@ import ScormSummary from "./ScormSummary";
 import { AuthContext } from "@totara/core";
 import OfflineScormActivity from "./OfflineScormActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
-import { TouchableIcon } from "@totara/components";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
 import { RootState } from "@totara/reducers";
 import { scormQuery } from "./api";
@@ -37,7 +36,6 @@ import { getOfflineActivity } from "./storageUtils";
 import { humanReadablePercentage, showMessage } from "@totara/lib/tools";
 import ScormAttempts from "./ScormAttempts";
 import Loading from "@totara/components/Loading";
-import { TotaraTheme } from "@totara/theme/Theme";
 import { ScormActivityParams, ScormBundle, Scorm } from "@totara/types/Scorm";
 import { translate } from "@totara/locale";
 import { fullFlex } from "@totara/lib/styles/base";
@@ -47,6 +45,7 @@ import { getTargetZipFile, getOfflinePackageUnzipPath } from "./utils";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
 import { SCORM_TEST_IDS } from "./constants";
 import { WebviewActivity } from "../webview/WebviewActivity";
+import CloseButton from "@totara/components/CloseButton";
 
 const { download } = ResourceManager;
 
@@ -230,12 +229,11 @@ const ScormActivity = (props: ScormActivityProps) => {
 };
 
 const navigationOptions = ({ navigation }) => {
-  const { title = "", backIcon = "times", backAction = () => navigation.pop() } = navigation.state
-    .params as ScormActivityParams;
+  const { title = "", backAction = () => navigation.pop() } = navigation.state.params as ScormActivityParams;
   return {
     title,
     headerTitleAlign: "center",
-    headerLeft: () => <TouchableIcon icon={backIcon} onPress={backAction} size={TotaraTheme.textHeadline.fontSize} />,
+    headerLeft: () => <CloseButton onPress={backAction} />,
     headerRight: () => headerRight({ navigation })
   };
 };

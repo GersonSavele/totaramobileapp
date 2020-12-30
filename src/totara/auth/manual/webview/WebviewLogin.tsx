@@ -27,6 +27,7 @@ import { ThemeContext } from "@totara/theme";
 
 import { useWebviewFlow } from "./WebviewFlowHook";
 import { ManualFlowChildProps } from "../ManualFlowChildProps";
+import CloseButton from "@totara/components/CloseButton";
 
 const WebviewLogin = (props: ManualFlowChildProps) => {
   const {
@@ -50,12 +51,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
   return (
     <Container style={[theme.viewContainer, { flex: 0 }]}>
       <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
-        <TouchableIcon
-          icon={"times"}
-          onPress={cancelLogin}
-          color={theme.navigationHeaderTintColor}
-          size={theme.textH3.fontSize}
-        />
+        <CloseButton onPress={cancelLogin} />
         <View style={styles.addressContainer}>
           <FontAwesomeIcon
             icon={navProtocol === "https" ? "lock" : "unlock-alt"}

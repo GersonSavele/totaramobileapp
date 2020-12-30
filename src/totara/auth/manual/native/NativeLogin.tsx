@@ -20,7 +20,7 @@ import SafeAreaView from "react-native-safe-area-view";
 
 import { config } from "@totara/lib";
 import { gutter, ThemeContext } from "@totara/theme";
-import { PrimaryButton, InputTextWithInfo, TouchableIcon, FormError } from "@totara/components";
+import { PrimaryButton, InputTextWithInfo, FormError } from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData } from "@totara/core/AuthRoutines";
 
@@ -29,6 +29,7 @@ import { useNativeFlow } from "./NativeFlowHook";
 import { margins } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { TEST_IDS } from "@totara/lib/testIds";
+import CloseButton from "@totara/components/CloseButton";
 
 const NativeLogin = (props: ManualFlowChildProps) => {
   // fetch from global
@@ -51,12 +52,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
       <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
         <SafeAreaView />
         <View style={styles.navigation}>
-          <TouchableIcon
-            onPress={onManualFlowCancel}
-            icon={"times"}
-            color={theme.navigationHeaderTintColor}
-            size={theme.textHeadline.fontSize}
-          />
+          <CloseButton onPress={onManualFlowCancel} />
         </View>
       </View>
       <View style={{ position: "relative", zIndex: 2 }}>

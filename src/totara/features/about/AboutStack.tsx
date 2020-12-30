@@ -15,10 +15,9 @@
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { createCompatNavigatorFactory } from "@react-navigation/compat";
-import { TouchableIcon } from "@totara/components";
-import { TotaraTheme } from "@totara/theme/Theme";
 import React from "react";
 import About from "@totara/features/about/About";
+import CloseButton from "@totara/components/CloseButton";
 
 const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
   {
@@ -26,9 +25,7 @@ const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
       screen: About,
       navigationOptions: ({ navigation }) => {
         return {
-          headerLeft: () => (
-            <TouchableIcon icon={"times"} onPress={() => navigation.goBack()} size={TotaraTheme.textH3.fontSize} />
-          )
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />
         };
       }
     }
