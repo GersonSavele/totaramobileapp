@@ -18,6 +18,7 @@ import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import React from "react";
 import About from "@totara/features/about/About";
 import CloseButton from "@totara/components/CloseButton";
+import { NAVIGATION_TEST_IDS } from "@totara/lib/testIds";
 
 const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
   {
@@ -25,7 +26,7 @@ const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
       screen: About,
       navigationOptions: ({ navigation }) => {
         return {
-          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} testID={NAVIGATION_TEST_IDS.BACK} />
         };
       }
     }

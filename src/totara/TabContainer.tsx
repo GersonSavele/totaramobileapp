@@ -24,6 +24,7 @@ import { countUnreadMessages, notificationsQuery } from "./features/notification
 import { useQuery } from "@apollo/react-hooks";
 import CurrentLearningStack from "./features/currentLearning";
 import { setNotificationBadgeCount } from "@totara/lib/nativeExtensions";
+import { TAB_TEST_IDS } from "./lib/testIds";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -53,7 +54,8 @@ const TabContainer = () => {
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.current_learning} />
-          )
+          ),
+          tabBarTestID: TAB_TEST_IDS.CURRENT_LEARNING
         }}
       />
       <Tab.Screen
@@ -62,7 +64,8 @@ const TabContainer = () => {
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.downloads} />
-          )
+          ),
+          tabBarTestID: TAB_TEST_IDS.DOWNLOADS
         }}
       />
       <Tab.Screen
@@ -72,7 +75,8 @@ const TabContainer = () => {
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.notifications} />
           ),
-          tabBarBadge: notificationCount > 0 && notificationCount
+          tabBarBadge: notificationCount > 0 && notificationCount,
+          tabBarTestID: TAB_TEST_IDS.NOTIFICATIONS
         }}
       />
       <Tab.Screen
@@ -81,7 +85,8 @@ const TabContainer = () => {
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.profile} />
-          )
+          ),
+          tabBarTestID: TAB_TEST_IDS.PROFILE
         }}
       />
     </Tab.Navigator>

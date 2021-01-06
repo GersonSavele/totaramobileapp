@@ -1,8 +1,16 @@
-{   
-    "roots":["../src/totara/auth/e2e","../src/totara/features/currentLearning/e2e"],
+{
+    "roots": [
+        "../src/totara/auth/e2e",
+        "../src/totara/features/currentLearning/e2e",
+        "../src/totara/features/about/e2e"
+    ],
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "setupFilesAfterEnv": ["./init.ts"],
-    "reporters": ["detox/runners/jest/streamlineReporter"],
+    "setupFilesAfterEnv": [
+        "./init.ts"
+    ],
+    "reporters": [
+        "detox/runners/jest/streamlineReporter"
+    ],
     "verbose": true
 }
