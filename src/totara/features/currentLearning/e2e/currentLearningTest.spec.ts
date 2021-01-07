@@ -33,17 +33,33 @@ describe("Current learning test", () => {
   });
 
   it("should have user landing on current learning and switch to the list view and current learning", async () => {
-    await element(by.id(CL_TEST_IDS.CL_SWITCH_ID)).tap();
+    await element(by.id(CL_TEST_IDS.SWITCH)).tap();
     await element(by.id("learningItem_2")).tap();
-    await element(by.id(CL_TEST_IDS.CL_TAB_2_ID)).tap();
+    await element(by.id(CL_TEST_IDS.TAB_2)).tap();
   });
 
-  it("should have scroll carousal and navigate to the learning item", async () => {
-    await element(by.id(CL_TEST_IDS.CAROUSEL_WRAPPER_ID)).tap();
-    await element(by.id(CL_TEST_IDS.CL_PROGRESS)).tap();
-    await element(by.id(TEST_IDS.CLICK_CLOSE)).tap();
+  it("should have scroll list item and navigate to the learning item", async () => {
+    await element(by.id(CL_TEST_IDS.SWITCH)).tap();
+    await element(by.id("learningItem_2")).tap();
+    await element(by.id(CL_TEST_IDS.TAB_2)).tap();
+    let shouldContinue = true;
+    let i = 0;
+    while (shouldContinue) {
+      try {
+        await element(by.id(`sectionItem_${i}`)).tap();
+      } catch (e) {
+        await element(by.id(CL_TEST_IDS.LIST)).tap();
+        shouldContinue = false;
+      }
+    }
+  });
 
-    await element(by.id(CL_TEST_IDS.CL_TAB_2_ID)).tap();
+  it("should have scroll carousal and navigate to the course", async () => {
+    await element(by.id(CL_TEST_IDS.CAROUSEL)).scroll(150, "right", NaN, 0.85);
+    await element(by.id(CL_TEST_IDS.CAROUSEL_WRAPPER_ID)).tap();
+    await element(by.id(CL_TEST_IDS.PROGRESS)).tap();
+    await element(by.id(TEST_IDS.CLICK_CLOSE)).tap();
+    await element(by.id(CL_TEST_IDS.TAB_2)).tap();
     let shouldContinue = true;
     let i = 0;
     while (shouldContinue) {
@@ -51,25 +67,19 @@ describe("Current learning test", () => {
         await element(by.id(`sectionItem_${i}`)).tap();
       } catch (e) {
         i += 1;
-        await element(by.id(CL_TEST_IDS.CL_LIST)).tap();
+        await element(by.id(CL_TEST_IDS.LIST)).tap();
         if (i == 2) shouldContinue = false;
       }
     }
   });
 
-  it("should have scroll list item and navigate to the learning item", async () => {
-    await element(by.id(CL_TEST_IDS.CL_SWITCH_ID)).tap();
-    await element(by.id("learningItem_2")).tap();
-    await element(by.id(CL_TEST_IDS.CL_TAB_2_ID)).tap();
-    let shouldContinue = true;
-    let i = 0;
-    while (shouldContinue) {
-      try {
-        await element(by.id(`sectionItem_${i}`)).tap();
-      } catch (e) {
-        await element(by.id(CL_TEST_IDS.CL_LIST)).tap();
-        shouldContinue = false;
-      }
-    }
+  it("should have scroll carousal and navigate to the programs/certification", async () => {
+    await element(by.id(CL_TEST_IDS.CAROUSEL_WRAPPER_ID)).tap();
+    await element(by.id(CL_TEST_IDS.PROGRESS)).tap();
+    await element(by.id(CL_TEST_IDS.TAB_2)).tap();
+    await element(by.id(CL_TEST_IDS.LEARNING_DETAILS_SCROLL)).scroll(300, "down", NaN, 0.85);
+    await element(by.id(CL_TEST_IDS.MORE_INFO)).tap();
+    await element(by.id(TEST_IDS.CLICK_CLOSE)).tap();
+    await element(by.id(CL_TEST_IDS.COURSE_SET_SCROLL)).scroll(350, "right", NaN, 0.85);
   });
 });

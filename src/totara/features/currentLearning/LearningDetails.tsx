@@ -90,7 +90,7 @@ const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }:
               !overviewIsShown && { ...learningDetailsStyles.tabViewItemSelected }
             ]}
             onPress={onPress}
-            testID={CL_TEST_IDS.CL_TAB_2_ID}>
+            testID={CL_TEST_IDS.TAB_2}>
             <Text
               style={[
                 learningDetailsStyles.tabViewTitle,

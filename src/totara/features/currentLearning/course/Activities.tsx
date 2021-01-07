@@ -61,7 +61,7 @@ const Activities = ({
   return (
     <FlatList
       data={sections}
-      testID={CL_TEST_IDS.CL_LIST}
+      testID={CL_TEST_IDS.LIST}
       renderItem={({ item }) => {
         return (
           <SectionItem

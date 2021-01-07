@@ -65,6 +65,7 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
         <Carousel
           inactiveSlideScale={1}
           ref={sliderRef}
+          testID={CL_TEST_IDS.CAROUSEL}
           data={currentLearning}
           renderItem={renderItem}
           sliderWidth={deviceScreen.width}

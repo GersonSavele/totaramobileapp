@@ -83,7 +83,7 @@ const CurrentLearning = () => {
               accessibilityRole={"switch"}
               accessibilityLabel={accessibilityLabelText}
               accessibilityHint={accessibilityHintText}
-              testID={CL_TEST_IDS.CL_SWITCH_ID}>
+              testID={CL_TEST_IDS.SWITCH}>
               <Switch onPress={toggleListingOrientation}>
                 <SwitchOption icon={Icons.iconCarousel} selected={listingOrientation === ListingOrientation.Carousel} />
                 <SwitchOption icon={Icons.iconList} selected={listingOrientation === ListingOrientation.ListView} />

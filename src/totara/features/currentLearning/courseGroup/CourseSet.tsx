@@ -28,6 +28,7 @@ import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 import { extractTargetId } from "../utils";
 import { activeOpacity } from "@totara/lib/styles/base";
+import { CL_TEST_IDS } from "@totara/lib/testIds";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -44,9 +45,9 @@ const CourseSetItem = ({ item, navigation }: any) => {
     <View style={courseSet.container}>
       <TouchableOpacity
         key={item.id}
+        testID={CL_TEST_IDS.COURSE_SET_ITEM}
         onPress={() => {
           const targetId = extractTargetId(item.id);
-
           if (item.native) {
             navigateTo({
               navigate: navigation.navigate,
@@ -95,7 +96,7 @@ const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
     <View style={{ marginTop: margins.marginXL }} testID={testID}>
       <View style={courseSet.courseSetHeader}>
         <Text style={courseSet.title}>{courseSets.label}</Text>
-        <MoreInfo onPress={onCloseBottomSheet} />
+        <MoreInfo onPress={onCloseBottomSheet} testID={CL_TEST_IDS.MORE_INFO} />
       </View>
       <FlatList
         data={courseSets.courses}
@@ -103,6 +104,7 @@ const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
         keyExtractor={(_, id) => id.toString()}
         showsHorizontalScrollIndicator={false}
         horizontal={true}
+        testID={CL_TEST_IDS.COURSE_SET_SCROLL}
       />
       {show && (
         <CriteriaSheet

@@ -17,6 +17,7 @@ import React, { useState, ReactNode } from "react";
 import { Animated, View, LayoutChangeEvent, RefreshControl, StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { deviceScreen } from "@totara/lib/tools";
+import { CL_TEST_IDS } from "@totara/lib/testIds";
 type ParallaxScrollViewProps = {
   fadeOutForeground?: boolean;
   fadeOutBackground?: boolean;
@@ -104,6 +105,7 @@ const ParallaxScrollView = ({
       </Animated.View>
       {React.cloneElement(
         <Animated.ScrollView
+          testID={CL_TEST_IDS.LEARNING_DETAILS_SCROLL}
           showsVerticalScrollIndicator={false}
           onMomentumScrollEnd={onScrollForHeaderVisibility}
           refreshControl={<RefreshControl refreshing={false} onRefresh={onPullToRefresh} />}

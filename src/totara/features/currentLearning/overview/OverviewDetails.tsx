@@ -136,7 +136,7 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
       style={overviewStyles.container}
       activeOpacity={activeOpacity}
       disabled={isCourseSet}
-      testID={CL_TEST_IDS.CL_PROGRESS}
+      testID={CL_TEST_IDS.PROGRESS}
       onPress={() => setShowCriteria(true)}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
