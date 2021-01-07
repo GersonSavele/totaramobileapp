@@ -29,6 +29,7 @@ import { NetworkStatus as NS } from "apollo-boost";
 import { margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatus, ImageWrapper, LoadingError } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
 
 const Profile = ({ navigation }: StackScreenProps<any>) => {
   const { loading, error, data, refetch, networkStatus } = useQuery(userOwnProfile);
@@ -115,13 +116,13 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
       </View>
 
       <View style={styles.section}>
-        <TouchableOpacity testID={"test_ProfileAboutButton"} onPress={goToAbout} style={styles.sectionOption}>
+        <TouchableOpacity testID={PROFILE_TEST_IDS.ABOUT} onPress={goToAbout} style={styles.sectionOption}>
           <Text style={TotaraTheme.textRegular}>{translate("user_profile.about")}</Text>
         </TouchableOpacity>
         <AuthConsumer>
           {(auth) => (
             <TouchableOpacity
-              testID={"test_ProfileLogoutButton"}
+              testID={PROFILE_TEST_IDS.LOGOUT}
               onPress={() => confirmationLogout(auth)}
               style={styles.sectionOption}>
               <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>

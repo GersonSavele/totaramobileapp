@@ -15,7 +15,7 @@
 
 import { by, device, element } from "detox";
 import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../lib/constants";
-import { TAB_TEST_IDS, TEST_IDS, NAVIGATION_TEST_IDS } from "../../../lib/testIds";
+import { TAB_TEST_IDS, TEST_IDS, NAVIGATION_TEST_IDS, PROFILE_TEST_IDS } from "../../../lib/testIds";
 
 describe("About learning test", () => {
   beforeEach(async () => {
@@ -31,11 +31,12 @@ describe("About learning test", () => {
 
   it("should navigate user to the about screen", async () => {
     await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
-    await element(by.id("test_ProfileAboutButton")).tap();
+    await element(by.id(PROFILE_TEST_IDS.ABOUT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).tap();
-    await element(by.id("test_ProfileLogoutButton")).tap();
+    await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
+    //TODO: this is for selecting alert confirmation action button and it needs to check for the android
     await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
-    await element(by.id("test_ProfileLogoutButton")).tap();
+    await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
     await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
   });
 });

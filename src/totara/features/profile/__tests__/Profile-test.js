@@ -19,6 +19,7 @@ import { MockedProvider } from "@apollo/react-testing";
 import { profileMock, profileMockError } from "@totara/features/profile/api/profile.mock";
 import Profile from "@totara/features/profile/Profile";
 import wait from "waait";
+import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
 
 const navigationMock = {
   navigation: {
@@ -94,7 +95,7 @@ describe("Profile", () => {
       await wait(0);
     });
 
-    const logoutButton = getByTestId("test_ProfileLogoutButton");
+    const logoutButton = getByTestId(PROFILE_TEST_IDS.LOGOUT);
     fireEvent.press(logoutButton);
   });
 
@@ -110,7 +111,7 @@ describe("Profile", () => {
       await wait(0);
     });
 
-    const aboutButton = getByTestId("test_ProfileAboutButton");
+    const aboutButton = getByTestId(PROFILE_TEST_IDS.ABOUT);
     fireEvent.press(aboutButton);
   });
 });
