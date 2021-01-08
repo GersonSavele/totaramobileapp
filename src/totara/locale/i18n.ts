@@ -17,8 +17,10 @@ import i18n from "i18n-js";
 import * as RNLocalize from "react-native-localize";
 import moment from "moment";
 
-// if you cannot have this all.json working properly for any reason, just import en.json instead.
+// if the all.json is not being generated automatically by the post install script for any reason, comment the following line and uncomment the next ones to especify one or more pre defined translations
 import * as translations from "./languages/all.json";
+// import * as en from "./languages/en.json";
+// const translations = { en };
 
 const { languageTag } = RNLocalize.findBestAvailableLanguage(Object.keys(translations)) || { languageTag: "en" };
 i18n.defaultLocale = languageTag;

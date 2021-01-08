@@ -33,10 +33,10 @@
     "clear:cache": "npm-run-all --parallel clear_cache:*",
     "clear:all": "npm-run-all clear:cache clear:modules && npm i && yarn clean:pods",
     "clear:jest": "npx jest --clearCache",
-    "install:languages": "./scripts/after-install/install-translations.sh",
+    "install:translations": "node scripts/after-install/install-translations.js",
     "jetify": "npx jetify",
     "fix:ios14images": "npx react-native-fix-image",
-    "postinstall": "npm-run-all jetify install:languages fix:ios14images"
+    "postinstall": "npm-run-all jetify install:translations fix:ios14images"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
@@ -122,6 +122,7 @@
     "@typescript-eslint/parser": "^1.13.0",
     "babel-jest": "^25.5.1",
     "detox": "^17.11.4",
+    "download": "^8.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
@@ -134,13 +135,13 @@
     "jest-junit": "^8.0.0",
     "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "^0.54.1",
-    "node-jq": "^1.11.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
     "ts-jest": "^25.5.1",
     "typescript": "^3.6.3",
+    "unzipper": "^0.10.11",
     "waait": "^1.0.5",
     "webpack": "^5.3.0",
     "webpack-cli": "^4.1.0"
