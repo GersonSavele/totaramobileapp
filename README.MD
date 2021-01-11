@@ -211,18 +211,6 @@ Kill RN packger server. Run script `clear:all`. This will clean all the builds a
 npm install -g detox-cli
 ```
 
-### Install the Detox node-module
-
-- Go to its root (`package.json`) folder and run the following command:
-
-```sh
-yarn detox --save-dev
-```
-
-```sh
-yarn detox --save-dev --no-package-lock
-```
-
 ### Clear cache data
 
 - Run the following command to clear all the cache, modules && pods and reinstall.
