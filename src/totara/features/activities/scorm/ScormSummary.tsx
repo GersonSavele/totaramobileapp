@@ -37,6 +37,7 @@ import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
 import { fetchLastAttemptResult } from "./api";
+import { TEST_IDS_SCORM } from "@totara/lib/testIds";
 
 const { SCORM_ROOT, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -437,6 +438,7 @@ const AttemptController = ({
           onPress={newAttempt && newAttempt.action}
           style={{ flex: 1 }}
           mode={(!shouldAllowNewAttempt && "disabled") || undefined}
+          testID={TEST_IDS_SCORM.NEW_ATTEMPT}
         />
       </View>
     </View>

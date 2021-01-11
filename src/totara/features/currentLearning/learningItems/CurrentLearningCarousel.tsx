@@ -73,6 +73,7 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
           sliderHeight={deviceScreen.height}
           inactiveSlideOpacity={0.6}
           onSnapToItem={(index) => setActiveSlide(index)}
+          testID={"CAROUSEL"}
         />
       </ScrollView>
     </View>

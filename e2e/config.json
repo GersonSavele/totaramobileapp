@@ -2,7 +2,8 @@
     "roots": [
         "../src/totara/auth/e2e",
         "../src/totara/features/currentLearning/e2e",
-        "../src/totara/features/about/e2e"
+        "../src/totara/features/about/e2e",
+        "../src/totara/features/activities/scorm/e2e"
     ],
     "preset": "ts-jest",
     "testEnvironment": "node",
