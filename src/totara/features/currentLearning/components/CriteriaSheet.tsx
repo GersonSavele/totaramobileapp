@@ -124,7 +124,7 @@ const BottomSheetHeader = ({ onClose, title }: BottomSheetHeaderProps) => {
           style={criteriaSheetStyle.headerCloseButtonWrap}
           onPress={onClose}
           testID={TEST_IDS.CLICK_CLOSE}>
-          <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.textColorDisabled} />
+          <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.colorNeutral5} />
         </TouchableOpacity>
         <View style={criteriaSheetStyle.headerViewIndicatorWrap}>
           <View style={criteriaSheetStyle.indicatorWrap}></View>

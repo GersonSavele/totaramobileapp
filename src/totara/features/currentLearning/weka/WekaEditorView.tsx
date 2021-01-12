@@ -303,7 +303,7 @@ const ModalView = ({ children, onRequestClose }: any) => {
     <Modal animationType={"slide"} transparent={false}>
       <View style={styles.closeButtonWrap}>
         <TouchableOpacity style={styles.closeButtonTouchableOpacity} onPress={onRequestClose}>
-          <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.textColorDisabled} />
+          <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.colorNeutral5} />
         </TouchableOpacity>
       </View>
       {children}

@@ -45,20 +45,14 @@ describe("Set default and custom theme", () => {
       textColorDark: "textColorDark",
       textColorSecondary: "textColorSecondary",
       textColorLight: "textColorLight",
-      textColorSubdued: "textColorSubdued",
-      textColorDisabled: "textColorDisabled",
-
-      navigationHeaderTintColor: "navigationHeaderTintColor"
     };
 
     const newTheme = applyTheme(newCustomizeTheme);
 
     expect(newTheme.colorPrimary).toBe("colorPrimary");
     expect(newTheme.colorText).toBe("colorText");
-    expect(newTheme.tabBarActiveTintColor).toBe("colorPrimary");
-
+    
     expect(newTheme.colorAccent).toBe("colorAccent");
-    expect(newTheme.viewContainer.backgroundColor).toBe("colorAccent");
     expect(newTheme.colorSecondary1).toBe("colorSecondary1");
     expect(newTheme.colorSecondary2).toBe("colorSecondary2");
     expect(newTheme.colorSecondary3).toBe("colorSecondary3");
@@ -75,43 +69,19 @@ describe("Set default and custom theme", () => {
     expect(newTheme.colorNeutral3).toBe("colorNeutral3");
     expect(newTheme.colorNeutral4).toBe("colorNeutral4");
     expect(newTheme.colorNeutral5).toBe("colorNeutral5");
-    expect(newTheme.tabBarInactiveTintColor).toBe("colorNeutral5");
-
-    // expect(newTheme.textColorDark).toBe("textColorDark");
-    // expect(newTheme.textH1.color).toBe("textColorDark");
-    // expect(newTheme.textH2.color).toBe("textColorDark");
-    // expect(newTheme.textH3.color).toBe("textColorDark");
-    // expect(newTheme.textH4.color).toBe("textColorDark");
-    //
-    // //expect(newTheme.textB1.color).toBe("textColorDark");
-    // expect(newTheme.textB2.color).toBe("textColorDark");
-    // expect(newTheme.textB3.color).toBe("textColorDark");
-    //
-    // expect(newTheme.textSmall.color).toBe("textColorDark");
-    // expect(newTheme.textLabel.color).toBe("textColorDark");
 
     expect(newTheme.textColorSecondary).toBe("textColorSecondary");
     expect(newTheme.textColorLight).toBe("textColorLight");
-    expect(newTheme.textColorSubdued).toBe("textColorSubdued");
-    expect(newTheme.textColorDisabled).toBe("textColorDisabled");
 
-    expect(newTheme.navigationHeaderTintColor).toBe("navigationHeaderTintColor");
   });
 
   it("Advanced setting for tabbar theme without apply general theme", () => {
     const newCustomizeTheme = {
       colorPrimary: "colorPrimary",
       colorText: "colorText",
-      colorNeutral5: "colorNeutral5",
-      tabBarInactiveTintColor: "tabBarInactiveTintColor",
-      tabBarActiveTintColor: "tabBarActiveTintColor"
     };
     const newTheme = applyTheme(newCustomizeTheme);
     expect(newTheme.colorPrimary).toBe("colorPrimary");
     expect(newTheme.colorText).toBe("colorText");
-    expect(newTheme.tabBarActiveTintColor).toBe("tabBarActiveTintColor");
-
-    expect(newTheme.colorNeutral5).toBe("colorNeutral5");
-    expect(newTheme.tabBarInactiveTintColor).toBe("tabBarInactiveTintColor");
   });
 });

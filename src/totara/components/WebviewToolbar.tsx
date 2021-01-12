@@ -29,14 +29,14 @@ const WebviewToolbar = ({ refWebview, navState }: WebviewToolbarProps) => {
           disabled={!navState?.canGoBack}
           icon={"chevron-left"}
           onPress={() => refWebview.current && refWebview.current!.goBack()}
-          color={TotaraTheme.navigationHeaderTintColor}
+          color={TotaraTheme.colorNeutral7}
           size={TotaraTheme.textH3.fontSize}
         />
         <TouchableIcon
           disabled={!navState?.canGoForward}
           icon={"chevron-right"}
           onPress={() => refWebview.current && refWebview.current!.goForward()}
-          color={TotaraTheme.navigationHeaderTintColor}
+          color={TotaraTheme.colorNeutral7}
           size={TotaraTheme.textH3.fontSize}
         />
       </View>

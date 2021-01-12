@@ -18,16 +18,7 @@ import { margins, paddings, borderRadius, fontWeights, fontSizes } from "@totara
 import { TotaraTheme } from "@totara/theme/Theme";
 import { viewHeight } from "./constants";
 import { flexGrow } from "@totara/lib/styles/base";
-const {
-  colorOpacity70,
-  textH2,
-  textXSmall,
-  textXXSmall,
-  colorNeutral2,
-  colorNeutral7,
-  colorSecondary1,
-  navigationHeaderTintColor
-} = TotaraTheme;
+const { colorOpacity70, textH2, textXSmall, textXXSmall, colorNeutral2, colorNeutral7, colorSecondary1 } = TotaraTheme;
 
 const { marginL } = margins;
 
@@ -134,7 +125,7 @@ const currentLearningStyles = StyleSheet.create({
   },
   headerViewSubTitleWrap: {
     ...textXSmall,
-    color: navigationHeaderTintColor
+    color: colorNeutral7
   },
   headerViewWrap: {
     ...viewHeader,

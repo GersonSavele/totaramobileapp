@@ -71,7 +71,7 @@ const InputTextWithInfo = ({ children, placeholder, message, status, style, ...r
       marginRight: 0,
       paddingLeft: 0,
       paddingRight: 0,
-      borderBottomColor: status === "error" ? theme.colorAlert : theme.textColorSubdued
+      borderBottomColor: status === "error" ? theme.colorAlert : theme.colorNeutral6
     }
   });
 
@@ -86,7 +86,7 @@ const InputTextWithInfo = ({ children, placeholder, message, status, style, ...r
         <Label
           style={{
             fontSize: theme.textXSmall.fontSize,
-            color: theme.textColorSubdued
+            color: theme.colorNeutral6
           }}>
           {placeholder}
         </Label>

@@ -55,7 +55,7 @@ type SummaryProps = {
   host: string;
 };
 
-const gridStyle = (theme: AppliedTheme) => [theme.textRegular, { color: theme.textColorSubdued }];
+const gridStyle = (theme: AppliedTheme) => [theme.textRegular, { color: theme.colorNeutral6 }];
 
 type GridLabelProps = {
   theme: AppliedTheme;
@@ -311,7 +311,7 @@ const ScormSummary = ({
                           icon="chevron-right"
                           size={theme.textRegular.fontSize}
                           style={scormSummaryStyles.sectionArrow}
-                          color={theme.textColorSubdued}
+                          color={theme.colorNeutral6}
                         />
                       )}
                     </GridLabelValue>

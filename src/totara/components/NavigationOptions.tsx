@@ -32,13 +32,13 @@ const TotaraNavigationOptions = ({ opacity, title = "", backTitle, headerRight }
       elevation: 0
     },
     headerTitleStyle: {
-      color: TotaraTheme.navigationHeaderTintColor,
+      color: TotaraTheme.colorNeutral7,
       fontSize: TotaraTheme.textRegular.fontSize,
       opacity: opacity
     },
     title: title,
     headerBackTitle: backTitle,
-    headerTintColor: TotaraTheme.navigationHeaderTintColor,
+    headerTintColor: TotaraTheme.colorNeutral7,
     headerRight: headerRight
   };
   return options;

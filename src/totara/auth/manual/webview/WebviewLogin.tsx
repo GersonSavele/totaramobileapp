@@ -53,14 +53,8 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
       <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
         <CloseButton onPress={cancelLogin} />
         <View style={styles.addressContainer}>
-          <FontAwesomeIcon
-            icon={navProtocol === "https" ? "lock" : "unlock-alt"}
-            color={theme.navigationHeaderTintColor}
-          />
-          <Text
-            style={[styles.addressText, { color: theme.navigationHeaderTintColor }]}
-            numberOfLines={1}
-            ellipsizeMode={"tail"}>
+          <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} color={theme.colorNeutral7} />
+          <Text style={[styles.addressText, { color: theme.colorNeutral7 }]} numberOfLines={1} ellipsizeMode={"tail"}>
             {navEndPoint}
           </Text>
         </View>
@@ -87,7 +81,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
             onPress={() => {
               refLoginWebview.current && refLoginWebview.current!.goBack();
             }}
-            color={theme.navigationHeaderTintColor}
+            color={theme.colorNeutral7}
             size={theme.textH3.fontSize}
           />
           <TouchableIcon
@@ -96,7 +90,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
             onPress={() => {
               refLoginWebview.current && refLoginWebview.current!.goForward();
             }}
-            color={theme.navigationHeaderTintColor}
+            color={theme.colorNeutral7}
             size={theme.textH3.fontSize}
           />
         </View>
@@ -106,7 +100,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
             onPress={() => {
               Linking.openURL(navProtocol + "://" + navEndPoint);
             }}
-            color={theme.navigationHeaderTintColor}
+            color={theme.colorNeutral7}
             size={theme.textH3.fontSize}
           />
         </View>

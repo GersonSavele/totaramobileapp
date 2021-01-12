@@ -19,8 +19,7 @@ import { TextStyle, ViewStyle } from "react-native";
 const colorFont = "#000000";
 const colorPrimary = "#8CA83D";
 const colorAccent = "#FFFFFF";
-const colorNeutral5 = "#C7C7C7";
-const textColorDark = "#3D444B";
+const textColorDark = "#3D444B"; //BEING USED FOR HEADERS, AND OTHERS NON-BLACK THINGS
 
 const TotaraTheme: AppliedTheme = {
   viewContainer: { backgroundColor: colorAccent, flex: 1 },
@@ -90,7 +89,7 @@ const TotaraTheme: AppliedTheme = {
   //NEEDS REVIEW
   //---- Theme color: customizable by [User, Developer] ------
   colorPrimary: colorPrimary,
-  colorText: "#FFFFFF",
+  colorText: "#FFFFFF", //TODO: THEME REVIEW: THIS COLOUR IS BEING USED FOR BUTTONS
 
   //---- Theme color: customizable by [Developer] ------
   colorAccent: colorAccent,
@@ -113,7 +112,7 @@ const TotaraTheme: AppliedTheme = {
   colorNeutral2: "#F5F5F5",
   colorNeutral3: "#E6E6E6",
   colorNeutral4: "#D2D2D2",
-  colorNeutral5: colorNeutral5,
+  colorNeutral5: "#C7C7C7",
   colorNeutral6: "#7D7D7D",
   colorNeutral7: "#4A4A4A",
   colorNeutral8: "#000000",
@@ -124,16 +123,7 @@ const TotaraTheme: AppliedTheme = {
   //---- Text color: customizable by [Developer] ------
   textColorDark: textColorDark,
   textColorSecondary: "#C5D39D",
-  textColorLight: "#FFFFFF",
-  textColorSubdued: "#7D7D7D",
-  textColorDisabled: "#C7C7C7",
-
-  //---- Navigation color: customizable by [Developer] ------
-  navigationHeaderTintColor: "#3D444B",
-
-  //---- TabBar color: customizable by [Developer] ------
-  tabBarActiveTintColor: colorPrimary,
-  tabBarInactiveTintColor: colorNeutral5
+  textColorLight: "#FFFFFF"
 };
 
 export type AppliedTheme = {
@@ -149,27 +139,8 @@ export type AppliedTheme = {
   textXXSmall: TextStyle;
 } & Theme;
 
-//THIS NEEDS TO BE REVIEWED
 const applyTheme = (theme: Partial<Theme>) => {
-  let newTheme = TotaraTheme;
-  if (theme.colorPrimary) {
-    newTheme.tabBarActiveTintColor = theme.colorPrimary;
-  }
-  if (theme.colorAccent) {
-    newTheme.viewContainer = {
-      ...newTheme.viewContainer,
-      ...{ backgroundColor: theme.colorAccent }
-    };
-  }
-  if (theme.colorNeutral5) {
-    newTheme.tabBarInactiveTintColor = theme.colorNeutral5;
-  }
-  if (theme.textColorDark) {
-    newTheme.textH1 = { ...newTheme.textH1, ...{ color: theme.textColorDark } };
-    newTheme.textH2 = { ...newTheme.textH2, ...{ color: theme.textColorDark } };
-    newTheme.textH3 = { ...newTheme.textH3, ...{ color: theme.textColorDark } };
-  }
-  return { ...newTheme, ...theme };
+  return { ...TotaraTheme, ...theme };
 };
 
 export { TotaraTheme, applyTheme };

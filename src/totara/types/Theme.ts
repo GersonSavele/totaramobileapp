@@ -47,11 +47,4 @@ export type Theme = {
   textColorDark: string;
   textColorSecondary: string;
   textColorLight: string;
-  textColorSubdued: string;
-  textColorDisabled: string;
-
-  navigationHeaderTintColor: string;
-
-  tabBarActiveTintColor: string;
-  tabBarInactiveTintColor: string;
 };

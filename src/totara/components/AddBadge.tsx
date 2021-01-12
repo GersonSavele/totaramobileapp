@@ -79,7 +79,7 @@ const RightBadge = ({ status, size, offsetSize }: Props) => {
   };
   switch (status) {
     case Status.done: {
-      const viewStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
+      const viewStyle = getContainerStyle(size, offsetSize, theme.colorSuccess, theme.colorNeutral1);
       return (
         <View style={viewStyle.container}>
           <CheckBadge size={size} color={theme.textColorLight} />
@@ -87,7 +87,7 @@ const RightBadge = ({ status, size, offsetSize }: Props) => {
       );
     }
     case 100: {
-      const viewStyle = getContainerStyle(size, offsetSize, "#69BD45", theme.colorNeutral1);
+      const viewStyle = getContainerStyle(size, offsetSize, theme.colorSuccess, theme.colorNeutral1);
       return (
         <View style={viewStyle.container}>
           <CheckBadge size={size} color={theme.textColorLight} />
