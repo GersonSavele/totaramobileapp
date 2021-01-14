@@ -430,6 +430,7 @@ const AttemptController = ({
             text={lastAttempt.title}
             onPress={lastAttempt.action}
             style={{ flex: 1, marginRight: newAttempt ? margins.marginL : 0 }}
+            testID={TEST_IDS_SCORM.LAST_ATTEMPT}
           />
         )}
 

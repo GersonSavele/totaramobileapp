@@ -46,6 +46,7 @@ import ScormFeedbackModal from "./components/ScormFeedbackModal";
 import { SCORM_TEST_IDS } from "./constants";
 import { WebviewActivity } from "../webview/WebviewActivity";
 import CloseButton from "@totara/components/CloseButton";
+import { NAVIGATION_TEST_IDS, TEST_IDS_SCORM } from "@totara/lib/testIds";
 
 const { download } = ResourceManager;
 
@@ -165,6 +166,7 @@ const ScormActivity = (props: ScormActivityProps) => {
             progress={progress}
             size={iconSizes.sizeM}
             onPress={onDownloadPress}
+            testID={TEST_IDS_SCORM.DOWNLOAD}
           />
         ) : null;
       }
@@ -233,7 +235,7 @@ const navigationOptions = ({ navigation }) => {
   return {
     title,
     headerTitleAlign: "center",
-    headerLeft: () => <CloseButton onPress={backAction} />,
+    headerLeft: () => <CloseButton onPress={backAction} testID={NAVIGATION_TEST_IDS.BACK} />,
     headerRight: () => headerRight({ navigation })
   };
 };
@@ -292,6 +294,7 @@ const headerRight = (props) => {
         size={iconSizes.sizeM}
         accessibilityLabel={translate("downloads.accessibility_icon", { filename: title })}
         onPress={() => onDownloadPress({ id, title })}
+        testID={TEST_IDS_SCORM.DOWNLOAD}
       />
     );
   }

@@ -15,7 +15,7 @@
 
 import { by, device, element, waitFor } from "detox";
 import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../../lib/constants";
-import { TEST_IDS, CL_TEST_IDS, TEST_IDS_SCORM } from "../../../../lib/testIds";
+import { TEST_IDS, CL_TEST_IDS, TEST_IDS_SCORM, NAVIGATION_TEST_IDS, TEST_IDS_RESOURCE } from "../../../../lib/testIds";
 
 describe("Scorm test", () => {
   beforeAll(async () => {
@@ -29,7 +29,7 @@ describe("Scorm test", () => {
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
 
-  it("should navigate user to the scorm summary screen", async () => {
+  it("should navigate to the scorm summary screen and complete online work flow", async () => {
     await waitFor(element(by.text("(BETA) Audiences in Totara")))
       .toBeVisible()
       .whileElement(by.id("CAROUSEL"))
@@ -42,6 +42,36 @@ describe("Scorm test", () => {
       .whileElement(by.text("Ask Us"))
       .swipe("up", "slow", 0.5);
     await element(by.text("Report in Totara Learn")).tap();
+    await element(by.id(TEST_IDS_SCORM.LAST_ATTEMPT)).tap();
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
+    await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
+    //TODO: this is for selecting alert confirmation action button and it needs to check for the android
+    await element(by.label("Ok").and(by.type("_UIAlertControllerActionView"))).tap();
     await element(by.id(TEST_IDS_SCORM.NEW_ATTEMPT)).tap();
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
+    //TODO: this is for selecting alert confirmation action button and it needs to check for the android
+    await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
+    //TODO: this is for selecting alert confirmation action button and it needs to check for the android
+    await element(by.label("Ok").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(0).tap();
+  });
+
+  it("should be able to follow full offline scorm activity flow", async () => {
+    await element(by.text("Do not touch 2")).tap();
+    await element(by.id(TEST_IDS_SCORM.DOWNLOAD)).tap();
+    await waitFor(element(by.id(TEST_IDS_RESOURCE.DOWNLOADED)))
+      .toBeVisible()
+      .withTimeout(10000);
+    await element(by.id(TEST_IDS_SCORM.NEW_ATTEMPT)).tap();
+
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
+    //TODO: this is for selecting alert confirmation action button and it needs to check for the android
+    await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
+    //TODO: this is for selecting alert confirmation action button and it needs to check for the android
+    await element(by.label("Ok").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(0).tap();
   });
 });

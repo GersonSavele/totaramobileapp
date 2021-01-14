@@ -29,6 +29,7 @@ type Props = {
   style?: ViewStyle;
   onPress?: () => void;
   mode?: "disabled" | "loading" | undefined;
+  testID?: string;
 };
 
 type TitleProps = {
@@ -63,7 +64,7 @@ const ButtonIndicator = ({ mode, icon, color, size }: IndicatorProps) => {
   }
 };
 
-const SecondaryButton = ({ children, text, icon, style, onPress, mode, ...rest }: Props) => {
+const SecondaryButton = ({ children, text, icon, style, onPress, mode, testID, ...rest }: Props) => {
   const [theme] = useContext(ThemeContext);
 
   const buttonStyle = StyleSheet.create({
@@ -88,6 +89,7 @@ const SecondaryButton = ({ children, text, icon, style, onPress, mode, ...rest }
     <Button
       block
       onPress={onPress}
+      testID={testID}
       {...rest}
       style={[buttonStyle.container, style]}
       disabled={mode == "loading" || mode == "disabled"}>
