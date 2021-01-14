@@ -34,13 +34,13 @@ const courseGroupTypeMap = {
     query: coreProgram,
     idField: "programid",
     queryAlias: "totara_mobile_program",
-    badgeTitlePath: "course_group.details.badge_title_program"
+    badgeTitlePath: "learning_items.program"
   },
   certification: {
     query: coreCertification,
     idField: "certificationid",
     queryAlias: "totara_mobile_certification",
-    badgeTitlePath: "course_group.details.badge_title_certification"
+    badgeTitlePath: "learning_items.certification"
   }
 };
 

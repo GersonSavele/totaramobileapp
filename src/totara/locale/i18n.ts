@@ -15,7 +15,9 @@
 
 import i18n from "i18n-js";
 import * as RNLocalize from "react-native-localize";
+
 import moment from "moment";
+import "moment/min/locales";
 
 // if the all.json is not being generated automatically by the post install script for any reason, comment the following line and uncomment the next ones to especify one or more pre defined translations
 import * as translations from "./languages/all.json";

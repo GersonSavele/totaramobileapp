@@ -24,6 +24,7 @@ import ImageElement from "./ImageElement";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
 import { ToShortSummary } from "../weka/treeOperations";
+import { translate } from "@totara/locale";
 
 interface LearningItemCardProps {
   item: LearningItem;
@@ -42,7 +43,9 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
           </Text>
         </View>
         <View style={{ flexGrow: 1 }}>
-          <Text style={carouselItemStyles.type}>{capitalizeFirstLetter(item.itemtype)}</Text>
+          <Text style={carouselItemStyles.type}>
+            {capitalizeFirstLetter(translate(`learning_items.${item.itemtype}`))}
+          </Text>
           <View
             style={{ flex: 1, marginTop: margins.marginM }}
             onLayout={(x) => {

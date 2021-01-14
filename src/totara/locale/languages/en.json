@@ -14,6 +14,11 @@
     "delete": "Delete",
     "copied_to_clipboard": "Copied to clipboard"
   },
+  "learning_items":{
+    "course": "Course",
+    "program": "Program",
+    "certification": "Certification"
+  },
   "site_url": {
     "title": "Get started.",
     "url_information": "Enter your organisation's URL",
@@ -142,7 +147,6 @@
       "activities": "ACTIVITIES",
       "overview": "OVERVIEW",
       "expand_or_collapse": "Expand all",
-      "badge_title": "Course",
       "accessibility_expand_all": "Expand all activities.",
       "accessibility_manual_completion": "Manual completion activity.",
       "accessibility_auto_completion": "Auto complete activity.",
@@ -161,10 +165,6 @@
     "tabs": {
       "overview": "OVERVIEW",
       "courses": "COURSES"
-    },
-    "details": {
-      "badge_title_program": "Program",
-      "badge_title_certification": "Certification"
     },
     "overview": {
       "summary_title_program": "Program Summary",
