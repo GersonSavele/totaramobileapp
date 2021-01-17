@@ -57,7 +57,7 @@ const LocaleResolver = ({ children }: { children: ReactNode }) => {
         .then((result) => {
           if (result.data) {
             const customAppStrings = JSON.parse(result.data.json_string).app;
-            const currentAppStrings = getTranslations()[languagePreference];
+            const currentAppStrings = getTranslations()[languagePreference] || {};
 
             if (customAppStrings && currentAppStrings) merge(currentAppStrings, customAppStrings);
 
