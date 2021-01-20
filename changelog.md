@@ -1,5 +1,28 @@
 Totara Mobile App Changelog
 
+Release 1.0.6 (20th January 2021):
+=====================================
+Bug
+[MOB-380] - Change password while using the app
+[MOB-749] - Should return keyboard while showing Incompatible site url modal
+[MOB-775] - Tertiary button colour is not aligned with the design
+[MOB-860] - New line on current learning cards should respect case from HTML text editor
+[MOB-873] - List icon on the carousel/list switch should be rounded
+[MOB-877] - Language strings are not being translated
+
+Task
+[MOB-874] - Environment updates should be capable of project installation
+
+Improvement
+[MOB-654] - Activity sheet transition
+[MOB-683] - Refactor theme within the code to map to style guide
+[MOB-684] - Use native navigation elements where possible
+[MOB-822] - Check message format for Notifications details
+[MOB-841] - Set up webview in notification details so I can see the notification content
+[MOB-853] - Implement Detox test cases for programs/certification
+[MOB-854] - Implement Detox test cases for user profile
+[MOB-872] - (Discovery) Detox work with mock data instead of real API data
+
 Release 1.0.5 (17th December 2020):
 =====================================
 
