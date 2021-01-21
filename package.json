@@ -33,10 +33,12 @@
     "clear:cache": "npm-run-all --parallel clear_cache:*",
     "clear:all": "npm-run-all clear:cache clear:modules && npm i && yarn clean:pods",
     "clear:jest": "npx jest --clearCache",
-    "install:translations": "node scripts/after-install/install-translations.js",
+    "install:translations": "node scripts/post-install/install-translations.js",
     "jetify": "npx jetify",
-    "fix:ios14images": "npx react-native-fix-image",
-    "postinstall": "npm-run-all jetify install:translations fix:ios14images"
+    "fixIOS14images": "run-script-os",
+    "fixIOS14images:macos": "npx react-native-fix-image",
+    "fixIOS14images:windows": "",
+    "postinstall": "npm-run-all jetify install:translations fixIOS14images"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
@@ -139,6 +141,7 @@
     "prettier": "^2.0.5",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
+    "run-script-os": "^1.1.5",
     "ts-jest": "^25.5.1",
     "typescript": "^3.6.3",
     "unzipper": "^0.10.11",
