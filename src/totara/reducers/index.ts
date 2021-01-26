@@ -15,7 +15,7 @@
 import { combineReducers } from "redux";
 import notificationReducer from "./notification";
 import resourceReducer from "./resource";
-import { PURGE } from "../actions/root";
+import { PURGE } from "../actions/constants";
 
 const appReducer = combineReducers({
   notificationReducer,

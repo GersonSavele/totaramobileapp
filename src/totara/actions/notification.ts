@@ -14,10 +14,7 @@
  */
 
 import { store } from "../store";
-
-const UPDATE_TOKEN = "UPDATE_TOKEN";
-const TOKEN_SENT = "TOKEN_SENT";
-const UPDATE_COUNT = "UPDATE_COUNT";
+import { TOKEN_SENT, UPDATE_COUNT, UPDATE_TOKEN } from "./constants";
 
 const updateToken = (payload) => {
   store.dispatch({
@@ -40,4 +37,4 @@ const updateCount = (payload) => {
   });
 };
 
-export { UPDATE_TOKEN, TOKEN_SENT, UPDATE_COUNT, updateToken, tokenSent, updateCount };
+export { updateToken, tokenSent, updateCount };

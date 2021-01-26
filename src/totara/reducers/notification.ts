@@ -13,7 +13,7 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import { TOKEN_SENT, UPDATE_COUNT, UPDATE_TOKEN } from "../actions/notification";
+import { TOKEN_SENT, UPDATE_COUNT, UPDATE_TOKEN } from "../actions/constants";
 
 type notificationType = {
   token: string;

@@ -33,9 +33,6 @@ const ImageWrapper = ({ url, style, accessibilityLabel }: ImageWrapperType) => {
   return (
     <FastImage
       style={style}
-      onLoadEnd={() => {
-        console.log("Loading end");
-      }}
       onError={() => {
         console.log("Loading onError");
       }}

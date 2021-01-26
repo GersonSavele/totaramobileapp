@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import React from "react";
-import { MessageBar } from "@totara/components/index";
+import MessageBar from "@totara/components/MessageBar";
 import { View } from "react-native";
 import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import { useNetInfo } from "@react-native-community/netinfo";

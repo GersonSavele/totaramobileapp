@@ -15,7 +15,7 @@
 
 import React from "react";
 import { Image, StyleSheet, View, Text } from "react-native";
-import { PrimaryButton } from "@totara/components/index";
+import PrimaryButton from "@totara/components/PrimaryButton";
 import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
 import { translate } from "@totara/locale";

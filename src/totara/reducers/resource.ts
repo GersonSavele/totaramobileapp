@@ -15,7 +15,7 @@
 
 import { Resource } from "@totara/types";
 import { ResourceState } from "@totara/types/Resource";
-import { ADD_RESOURCE, UPDATE_RESOURCE, DELETE_RESOURCE } from "../actions/resource";
+import { ADD_RESOURCE, UPDATE_RESOURCE, DELETE_RESOURCE } from "../actions/constants";
 
 const initialState = {
   resources: [] as Resource[]

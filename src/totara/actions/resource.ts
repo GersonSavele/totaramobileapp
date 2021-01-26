@@ -14,10 +14,7 @@
  */
 
 import { store } from "../store";
-
-const ADD_RESOURCE = "ADD_RESOURCE";
-const UPDATE_RESOURCE = "UPDATE_RESOURCE";
-const DELETE_RESOURCE = "REMOVE_RESOURCE";
+import { ADD_RESOURCE, DELETE_RESOURCE, UPDATE_RESOURCE } from "./constants";
 
 const addResource = (payload) => {
   store.dispatch({
@@ -42,4 +39,4 @@ const deleteResource = (ids: string[]) => {
   });
 };
 
-export { ADD_RESOURCE, UPDATE_RESOURCE, DELETE_RESOURCE, addResource, updateResource, deleteResource };
+export { addResource, updateResource, deleteResource };

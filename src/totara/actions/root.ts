@@ -14,8 +14,7 @@
  */
 
 import { store } from "../store";
-
-const PURGE = "PURGE";
+import { PURGE } from "./constants";
 
 const purge = (payload) => {
   store.dispatch({
@@ -24,4 +23,4 @@ const purge = (payload) => {
   });
 };
 
-export { PURGE, purge };
+export { purge };
