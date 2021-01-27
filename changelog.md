@@ -9,6 +9,7 @@ Bug
 [MOB-860] - New line on current learning cards should respect case from HTML text editor
 [MOB-873] - List icon on the carousel/list switch should be rounded
 [MOB-877] - Language strings are not being translated
+[MOB-875] - Make languages installation script work on Windows
 
 Task
 [MOB-874] - Environment updates should be capable of project installation
