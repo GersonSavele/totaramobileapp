@@ -15,7 +15,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import { TouchableIcon } from "@totara/components";
+import TouchableIcon from "@totara/components/TouchableIcon";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import { TotaraTheme } from "@totara/theme/Theme";
 

@@ -27,11 +27,11 @@ const persistConfig = {
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
 
 const createMiddleware = (logger: boolean) => {
-  if (logger) return applyMiddleware(createLogger({ collapsed: true }));
+  if (logger) return applyMiddleware(createLogger({ collapsed: true, level: "info" }));
   else applyMiddleware();
 };
 
 // eslint-disable-next-line no-undef
-const store = createStore(persistedReducer, createMiddleware(__DEV__));
+const store = createStore(persistedReducer, createMiddleware(false));
 const persistor = persistStore(store);
 export { store, persistor };

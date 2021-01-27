@@ -21,7 +21,8 @@ import Orientation from "react-native-orientation-locker";
 import { Activity } from "@totara/types";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { Loading, WebViewWrapper } from "@totara/components";
+import { Loading } from "@totara/components";
+import WebViewWrapper from "@totara/auth/WebViewWrapper";
 
 const PDF_TYPE = "application/pdf";
 /**

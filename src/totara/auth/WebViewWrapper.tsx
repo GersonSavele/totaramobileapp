@@ -18,7 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import { View, BackHandler } from "react-native";
 import { AuthenticatedWebView } from "@totara/auth";
-import WebviewToolbar from "./WebviewToolbar";
+import WebviewToolbar from "@totara/components/WebviewToolbar";
 
 type WebViewWrapperProps = {
   uri: string;

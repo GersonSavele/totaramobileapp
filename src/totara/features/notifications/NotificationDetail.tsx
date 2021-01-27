@@ -24,7 +24,7 @@ import { timeAgo } from "@totara/lib/tools";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import WekaEditorView from "../currentLearning/weka/WekaEditorView";
 import { AuthContext } from "@totara/core/AuthContext";
-import { WebViewWrapper } from "@totara/components";
+import WebViewWrapper from "@totara/auth/WebViewWrapper";
 
 type ParamList = {
   messageDetails: NotificationMessage;

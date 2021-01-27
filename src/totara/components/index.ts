@@ -37,7 +37,6 @@ import NetworkStatus from "./NetworkStatus";
 import Loading from "./Loading";
 import ImageWrapper from "./ImageWrapper";
 import ModalContent from "./ModalContent";
-import WebViewWrapper from "./WebViewWrapper";
 import WebviewToolbar from "./WebviewToolbar";
 
 export {
@@ -66,6 +65,5 @@ export {
   NetworkStatus,
   ImageWrapper,
   ModalContent,
-  WebViewWrapper,
   WebviewToolbar
 };
