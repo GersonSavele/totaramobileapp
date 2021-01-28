@@ -18,7 +18,7 @@ import { useApolloClient } from "@apollo/react-hooks";
 import { queryLanguageStrings, queryUserLanguagePreference } from "@totara/locale/api";
 import { Loading } from "@totara/components";
 import { addLocale, changeLocale, getLocale, getTranslations } from "@totara/locale/index";
-import { merge } from "lodash";
+import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
 
 const LocaleResolver = ({ children }: { children: ReactNode }) => {
   const [languagePreference, setLanguagePreference] = useState<string>();
@@ -56,15 +56,19 @@ const LocaleResolver = ({ children }: { children: ReactNode }) => {
         })
         .then((result) => {
           if (result.data) {
+            // This custom strings comes from the totara instance API
             const customAppStrings = JSON.parse(result.data.json_string).app;
-            const currentAppStrings = getTranslations()[languagePreference] || {};
+            // This one comes straight from AMOS, generated in build time
+            const translations = getTranslations();
+            const defaultLanguage = translations[DEFAULT_LANGUAGE] || {};
+            const currentAppStrings = translations[languagePreference] || defaultLanguage;
 
-            if (customAppStrings && currentAppStrings) merge(currentAppStrings, customAppStrings);
-
-            if (customAppStrings) {
-              addLocale(languagePreference!, currentAppStrings);
-              changeLocale(languagePreference!);
-            }
+            addLocale(languagePreference!, {
+              ...defaultLanguage,
+              ...currentAppStrings,
+              ...(customAppStrings && customAppStrings)
+            });
+            changeLocale(languagePreference!);
           }
         })
         .finally(() => {

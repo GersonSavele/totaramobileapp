@@ -43,6 +43,8 @@ enum ActivityModType {
   resource = "resource"
 }
 
+const DEFAULT_LANGUAGE = "en";
+
 export {
   DEVICE_REGISTRATION,
   WEBVIEW_SECRET,
@@ -62,5 +64,6 @@ export {
   DEV_PASSWORD,
   OFFLINE_SCORM_PREFIX,
   FILE_EXTENSION,
-  ActivityModType
+  ActivityModType,
+  DEFAULT_LANGUAGE
 };
