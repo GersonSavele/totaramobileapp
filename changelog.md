@@ -1,5 +1,10 @@
 Totara Mobile App Changelog
 
+Release 1.0.7 (29th January 2021):
+=====================================
+Bug
+[MOB-880] - translations falls back to english
+
 Release 1.0.6 (20th January 2021):
 =====================================
 Bug
