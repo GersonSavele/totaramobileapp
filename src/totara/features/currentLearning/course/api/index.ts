@@ -18,7 +18,7 @@ import { config } from "@totara/lib";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 
 const coreCourse = gql`
-  query totara_mobile_course($courseid: ID!) {
+  query totara_mobile_course($courseid: core_id!) {
     mobile_course: totara_mobile_course(courseid: $courseid) {
       course(courseid: $courseid) {
         id
@@ -82,8 +82,8 @@ const coreCourse = gql`
       }
       native: mobile_coursecompat
       imageSrc: mobile_image
-      gradeFinal
-      gradeMax
+      gradeFinal: formatted_gradefinal
+      gradeMax: formatted_grademax
       __typename
     }
   }
