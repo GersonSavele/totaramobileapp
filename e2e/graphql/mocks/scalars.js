@@ -1,3 +1,18 @@
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2021 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
+
 const date = {
   Date: () => new Date()
 };
@@ -12,14 +27,10 @@ const defaultCoreId = {
 const defaultCoreDate = {
   core_date: () => new Date()
 };
-const defaultID = {
-  ID: () => "8"
-};
 
 module.exports = {
   date,
   defaultString,
   defaultCoreId,
-  defaultCoreDate,
-  defaultID
+  defaultCoreDate
 };

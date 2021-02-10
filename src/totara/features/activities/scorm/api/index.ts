@@ -70,13 +70,13 @@ const scormQuery = gql`
       attemptsLockFinal: lastattemptlock
       autoContinue: auto
       offlineAttemptsAllowed: allowmobileoffline
-      newAttemptDefaults
+      newAttemptDefaults: attempt_defaults
       whatgrade
       grademethod
       timeopen
       completionscorerequired
-      attemptsMax
-      showGrades
+      attemptsMax: maxattempt
+      showGrades: showgrades
       __typename
     }
   }

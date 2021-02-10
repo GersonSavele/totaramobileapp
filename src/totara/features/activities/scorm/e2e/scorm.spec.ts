@@ -16,11 +16,30 @@
 import { by, device, element, waitFor } from "detox";
 import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../../lib/constants";
 import { TEST_IDS, CL_TEST_IDS, TEST_IDS_SCORM, NAVIGATION_TEST_IDS, TEST_IDS_RESOURCE } from "../../../../lib/testIds";
+import { startGraphQLServer, stopGraphQLServer } from "../../../../../../e2e/graphql/index";
+import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../../../e2e/graphql/mocks/scalars";
+import { scorm } from "../../../../../../e2e/graphql/mocks/scorm";
+import { currentLearning } from "../../../../../../e2e/graphql/mocks/currentLearning";
+import { courseDetails } from "../../../../../../e2e/graphql/mocks/courseDetails";
+import { mobileMe } from "../../../../../../e2e/graphql/mocks/me";
 
+const customMocks = {
+  ...defaultCoreId,
+  ...defaultCoreDate,
+  ...defaultString,
+
+  Query: () => ({
+    ...mobileMe.default,
+    ...currentLearning.default,
+    ...courseDetails.scorm,
+    ...scorm.default
+  })
+};
 describe("Scorm test", () => {
   beforeAll(async () => {
     await device.reloadReactNative();
     await device.launchApp({ newInstance: false, permissions: { notifications: "YES" } });
+    await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(DEV_ORG_URL);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
@@ -28,14 +47,17 @@ describe("Scorm test", () => {
     await element(by.id(TEST_IDS.USER_PW)).typeText(DEV_PASSWORD);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
+  afterEach(async () => {
+    await stopGraphQLServer();
+  });
 
   it("should navigate to the scorm summary screen and complete online work flow", async () => {
     await waitFor(element(by.text("(BETA) Audiences in Totara")))
       .toBeVisible()
-      .whileElement(by.id("CAROUSEL"))
+      .whileElement(by.id(CL_TEST_IDS.CAROUSEL))
       .scroll(300, "right");
     await element(by.text("(BETA) Audiences in Totara")).tap();
-    await element(by.id(CL_TEST_IDS.CL_TAB_2_ID)).tap();
+    await element(by.id(CL_TEST_IDS.TAB_2)).tap();
     await element(by.text("Ask Us")).tap();
     await waitFor(element(by.text("Report in Totara Learn")))
       .toBeVisible()
@@ -59,7 +81,14 @@ describe("Scorm test", () => {
   });
 
   it("should be able to follow full offline scorm activity flow", async () => {
-    await element(by.text("Do not touch 2")).tap();
+    customMocks.Query = () => ({
+      ...mobileMe.default,
+      ...currentLearning.default,
+      ...courseDetails.scorm,
+      ...scorm.offline
+    });
+    await startGraphQLServer(customMocks);
+    await element(by.text("Introduction to User Experience Design")).tap();
     await element(by.id(TEST_IDS_SCORM.DOWNLOAD)).tap();
     await waitFor(element(by.id(TEST_IDS_RESOURCE.DOWNLOADED)))
       .toBeVisible()

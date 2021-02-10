@@ -38,8 +38,7 @@
     "fixIOS14images": "run-script-os",
     "fixIOS14images:macos": "npx react-native-fix-image",
     "fixIOS14images:windows": "",
-    "postinstall": "npm-run-all jetify install:translations fixIOS14images",
-    "mock_server:schema": "get-graphql-schema https://mobile.demo.totara.software/totara/webapi/dev_graphql_executor.php --json > e2e/graphql/schema.json"
+    "postinstall": "npm-run-all jetify install:translations fixIOS14images"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
@@ -135,7 +134,6 @@
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.14.3",
     "express": "^4.17.1",
-    "get-graphql-schema": "^2.1.2",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.5.1",
     "jest-enzyme": "^7.1.2",

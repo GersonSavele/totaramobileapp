@@ -1,22 +1,35 @@
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2021 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
+
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
-
 const { buildClientSchema } = require("graphql");
+
 const introspectedSchema = require("./schema.json");
-const { resolvers, typeDefs } = require("./resolvers");
-const PORT = 8089;
+const port = 8089;
+const mockServerUri = `http://localhost:${port}/graphql`;
 
 function createServerWithMockedSchema(customMocks = {}) {
   const schema = buildClientSchema(introspectedSchema);
 
   const server = new ApolloServer({
     schema: schema,
-    // typeDefs,
     mocks: customMocks,
     playground: {
-      endpoint: `http://localhost:${PORT}/graphql`
-    },
-    resolvers: resolvers
+      endpoint: mockServerUri
+    }
   });
   return server;
 }
@@ -26,7 +39,7 @@ let httpServer;
 
 function startHttpServer() {
   return new Promise((resolve) => {
-    httpServer = graphQLServerApp.listen(PORT, () => {
+    httpServer = graphQLServerApp.listen(port, () => {
       resolve();
     });
   });

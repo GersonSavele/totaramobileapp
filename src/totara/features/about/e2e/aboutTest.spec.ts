@@ -14,11 +14,30 @@
  */
 
 import { by, device, element } from "detox";
+
 import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../lib/constants";
 import { TAB_TEST_IDS, TEST_IDS, NAVIGATION_TEST_IDS, PROFILE_TEST_IDS } from "../../../lib/testIds";
+import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../../e2e/graphql/mocks/scalars";
+import { startGraphQLServer, stopGraphQLServer } from "../../../../../e2e/graphql/index";
+import { currentLearning } from "../../../../../e2e/graphql/mocks/currentLearning";
+import { mobileMe } from "../../../../../e2e/graphql/mocks/me";
+import { profile } from "../../../../../e2e/graphql/mocks/profile";
+
+const customMocks = {
+  ...defaultCoreId,
+  ...defaultCoreDate,
+  ...defaultString,
+
+  Query: () => ({
+    ...currentLearning.default,
+    ...profile.default,
+    ...mobileMe.default
+  })
+};
 
 describe("About learning test", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
+    await startGraphQLServer(customMocks);
     await device.reloadReactNative();
     await device.launchApp({ newInstance: false, permissions: { notifications: "YES" } });
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
@@ -28,7 +47,9 @@ describe("About learning test", () => {
     await element(by.id(TEST_IDS.USER_PW)).typeText(DEV_PASSWORD);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
-
+  afterAll(async () => {
+    stopGraphQLServer();
+  });
   it("should navigate user to the about screen", async () => {
     await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
     await element(by.id(PROFILE_TEST_IDS.ABOUT)).tap();

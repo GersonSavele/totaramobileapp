@@ -1,7 +1,7 @@
 /**
  * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2021 onwards Totara Learning Solutions LTD
  *
  * Totara Enterprise is provided only to Totara Learning Solutions
  * LTD’s customers and partners, pursuant to the terms and
@@ -15,18 +15,18 @@
 
 const defaultMobileMeData = {
   user: {
-    id: "53",
-    firstname: "Kamala",
-    lastname: "Tennakoon",
-    fullname: "Kamala Tennakoon",
-    lang: "de",
-    email: "kamala.tennakoon@totaralearning.com",
+    id: "61",
+    firstname: "Tharaka",
+    lastname: "Dushmantha",
+    fullname: "Tharaka Dushmantha",
+    lang: "en",
+    email: "tharaka@totara.com",
     __typename: "core_user"
   },
   system: {
     wwwroot: "https://mobile.demo.totara.software/",
     apiurl: "https://mobile.demo.totara.software/totara/mobile/api.php",
-    release: "13.3+ (Build: 20201224.00)",
+    release: "13.4+ (Build: 20210126.00)",
     request_policy_agreement: false,
     request_user_consent: false,
     request_user_fields: false,
@@ -36,9 +36,9 @@ const defaultMobileMeData = {
   },
   __typename: "totara_mobile_me"
 };
-const defaultMobileMe = {
-  totara_mobile_me: () => ({ ...defaultMobileMeData })
+const mobileMe = {
+  default: { totara_mobile_me: () => ({ ...defaultMobileMeData }) }
 };
 module.exports = {
-  defaultMobileMe
+  mobileMe
 };
