@@ -34,8 +34,6 @@ const learningDetailsStyles = StyleSheet.create({
   imageView: {
     flex: 1,
     minHeight: viewHeight.learningItemCard,
-
-    backgroundColor: colorNeutral2
   },
   itemCard: {
     padding: paddings.paddingXL,

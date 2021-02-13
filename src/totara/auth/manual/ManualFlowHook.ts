@@ -43,7 +43,7 @@ export const useManualFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
     flowStep: "siteUrl",
     siteUrl
   });
-  Log.debug("manualFlowState", manualFlowState);
+  // Log.debug("manualFlowState", manualFlowState);
 
   // right state to call onLoginSuccess
   if (

@@ -13,16 +13,18 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useRef } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import ParallaxScrollView from "./ParallaxScrollView";
 import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { viewHeight } from "./constants";
 import { CourseGroup, Course, LearningItem } from "@totara/types";
 import { margins } from "@totara/theme/constants";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
+import Animated, { interpolate, Extrapolate, Value, event } from "react-native-reanimated";
+import LinearGradient from "react-native-linear-gradient";
+import AnimatedHeader from "@totara/components/AnimatedHeader";
+
 const { marginXL } = margins;
 
 type LearningDetailsProps = {
@@ -118,45 +120,89 @@ const LearningDetails = ({
   onPullToRefresh,
   navigation
 }: LearningDetailsProps) => {
-  const renderTitleBar = () => <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />;
-  const renderTabBar = () => (
-    <TabBar
-      onPress={onPress}
-      overviewIsShown={overviewIsShown}
-      tabBarLeftTitle={tabBarLeftTitle}
-      tabBarRightTitle={tabBarRightTitle}
-    />
-  );
 
-  const renderImage = () => (
-    <ImageElement
-      item={item as LearningItem}
-      image={image}
-      itemType={itemType}
-      imageStyle={learningDetailsStyles.imageView}
-    />
-  );
+  const scrollValue = useRef(new Value(0)).current;
+
+  const { fullname } = item;
 
   return (
     <View style={learningDetailsStyles.container}>
-      <ParallaxScrollView
-        onPullToRefresh={onPullToRefresh}
-        parallaxHeaderHeight={viewHeight.learningItemCard}
-        renderBackground={renderImage}
-        titleBar={renderTitleBar}
-        tabBar={renderTabBar}
-        onChangeHeaderVisibility={(headerValue: number) => {
-          navigation!.setParams({ title: item.fullname });
-          const expectedOpacity = headerValue > 0 ? 1 : 0;
-          const currentOpacity = navigation!.getParam("opacity");
-          if (expectedOpacity !== currentOpacity) {
-            navigation!.setParams({ opacity: expectedOpacity });
+      <AnimatedHeader scrollValue={scrollValue} title={fullname!} subTitle={badgeTitle} leftAction={() => navigation?.goBack()} />
+      <Animated.ScrollView
+        onScrollEndDrag={(event) => {
+          const yOffset = event.nativeEvent.contentOffset.y;
+          if (yOffset < 100) {
+            onPullToRefresh();
           }
+        }}
+        onScroll={event(
+          [{ nativeEvent: { contentOffset: { y: scrollValue } } }],
+          {
+            useNativeDriver: true
+          }
+        )}
+        scrollEventThrottle={16}
+      >
+
+        <Animated.View style={{
+          flex: 1,
+          alignItems: 'center',
+          height: 300,
+          transform: [
+            {
+              scale: interpolate(scrollValue, {
+                inputRange: [-300, 0],
+                outputRange: [3, 1],
+                extrapolate: Extrapolate.CLAMP
+              })
+            }
+          ]
         }}>
-        {children}
-      </ParallaxScrollView>
-    </View>
+          <View style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 300
+          }}>
+            <ImageElement
+              item={item as LearningItem}
+              image={image}
+              itemType={itemType}
+              imageStyle={learningDetailsStyles.imageView}
+            />
+          </View>
+          <View style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 100
+          }}>
+            <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0)']} style={{ height: 100, zIndex: 100 }} />
+          </View>
+
+        </Animated.View>
+        <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />
+
+        <View>
+          <TabBar
+            onPress={onPress}
+            overviewIsShown={overviewIsShown}
+            tabBarLeftTitle={tabBarLeftTitle}
+            tabBarRightTitle={tabBarRightTitle}
+          />
+        </View>
+        <View style={{
+          minHeight: 1000,
+        }}>
+          {children}
+        </View>
+      </Animated.ScrollView>
+    </View >
   );
 };
+
+
 
 export default LearningDetails;

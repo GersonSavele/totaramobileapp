@@ -141,21 +141,21 @@ const CourseDetailsContent = ({
               />
             </View>
           ) : (
-            <OverviewDetails
-              isCourseSet={false}
-              id={courseDetails.course.id}
-              criteria={courseDetails.course.criteria}
-              summary={courseDetails.course.summary}
-              summaryFormat={courseDetails.course.summaryformat as DescriptionFormat}
-              gradeFinal={courseDetails.gradeFinal}
-              progress={courseDetails.course.completion.progress}
-              summaryTypeTitle={translate("course.course_overview.course_summary")}
-              onclickContinueLearning={onClose}
-              courseRefreshCallback={courseRefreshCallback}
-              showGrades={courseDetails.course.showGrades}
-              completionEnabled={courseDetails.course.completionEnabled}
-            />
-          )}
+              <OverviewDetails
+                isCourseSet={false}
+                id={courseDetails.course.id}
+                criteria={courseDetails.course.criteria}
+                summary={courseDetails.course.summary}
+                summaryFormat={courseDetails.course.summaryformat as DescriptionFormat}
+                gradeFinal={courseDetails.gradeFinal}
+                progress={courseDetails.course.completion.progress}
+                summaryTypeTitle={translate("course.course_overview.course_summary")}
+                onclickContinueLearning={onClose}
+                courseRefreshCallback={courseRefreshCallback}
+                showGrades={courseDetails.course.showGrades}
+                completionEnabled={courseDetails.course.completionEnabled}
+              />
+            )}
         </View>
       </View>
       {courseDetails.course.completion && courseDetails.course.completion.statuskey === StatusKey.complete && (

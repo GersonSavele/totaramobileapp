@@ -14,7 +14,6 @@
  */
 
 import { Grade, ScormBundle, GradeForAttemptProps } from "@totara/types/Scorm";
-import { Log } from "@totara/lib";
 import { scormActivitiesRecordsQuery } from "@totara/features/activities/scorm/api";
 import { setWith, get, values, remove, omit, isEmpty, difference } from "lodash";
 
@@ -67,7 +66,7 @@ const retrieveAllData = ({ client }): { [key: string]: ScormBundle } => {
     });
     return scormBundles;
   } catch (e) {
-    Log.debug("empty cache for ActivitiesRecords");
+    // Log.debug("empty cache for ActivitiesRecords");
   }
   return {};
 };
