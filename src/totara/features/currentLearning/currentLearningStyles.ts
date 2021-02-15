@@ -35,6 +35,20 @@ const learningDetailsStyles = StyleSheet.create({
     flex: 1,
     minHeight: viewHeight.learningItemCard,
   },
+  imageViewContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 300
+  },
+  imageViewGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 100
+  },
   itemCard: {
     padding: paddings.paddingXL,
     justifyContent: "flex-start",

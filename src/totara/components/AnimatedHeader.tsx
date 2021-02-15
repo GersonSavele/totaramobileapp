@@ -1,26 +1,26 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { fontSizes, paddings } from "@totara/theme/constants";
+import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Extrapolate, interpolate } from "react-native-reanimated";
 import { useSafeArea } from "react-native-safe-area-view";
 
 const TOPNAVI_H = 50;
 const TOPNAVI_OFFSET = 250;
 
-const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: { title: string, subTitle: string, scrollValue: any, leftAction: any }) => {
+const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: { title: string, subTitle?: string, scrollValue?: any, leftAction: any }) => {
     const safeArea = useSafeArea();
     const isFloating = !!scrollValue;
 
     const transparentToOpaqueInterpolate = interpolate(scrollValue, {
-        inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + 50],
+        inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + TOPNAVI_H],
         outputRange: [0, 1],
         extrapolate: Extrapolate.CLAMP,
     });
 
 
     const opaqueToTransparentInterpolate = interpolate(scrollValue, {
-        inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + 50],
+        inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + TOPNAVI_H],
         outputRange: [1, 0],
         extrapolate: Extrapolate.CLAMP,
     });
@@ -35,32 +35,44 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: { title: s
             zIndex: 200,
             flexDirection: 'row'
         }}>
-            <TouchableOpacity onPress={leftAction} style={{ width: 40, paddingLeft: 10, alignContent: 'center', justifyContent: 'center' }}>
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <Animated.View style={{ opacity: transparentToOpaqueInterpolate, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', position: 'absolute' }}>
-                        <FontAwesomeIcon icon="chevron-left" color={"black"} />
-                    </Animated.View>
-                    <Animated.View style={{ opacity: opaqueToTransparentInterpolate, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', position: 'absolute' }}>
-                        <FontAwesomeIcon icon="chevron-left" color={"white"} />
-                    </Animated.View>
-                </View>
+            <TouchableOpacity onPress={leftAction} style={styles.leftAction}>
+                <Animated.View style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]} >
+                    <FontAwesomeIcon icon="chevron-left" color={"black"} />
+                </Animated.View>
+                <Animated.View style={[styles.backIcon, { opacity: opaqueToTransparentInterpolate }]}>
+                    <FontAwesomeIcon icon="chevron-left" color={"white"} />
+                </Animated.View>
             </TouchableOpacity>
+
             <Animated.View style={{ flex: 1, opacity: transparentToOpaqueInterpolate }}>
-                <Text style={{
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    fontSize: fontSizes.fontSizeM,
-                }}>{title}</Text>
-                <Text style={{
-                    textAlign: 'center',
-                    fontSize: fontSizes.fontSizeS,
-                    paddingTop: paddings.paddingS
-                }}>{subTitle}</Text>
+                <Text style={styles.title}>{title}</Text>
+                {subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
             </Animated.View>
             <View style={{ width: 40 }}
             ></View>
         </Animated.View>
     </>
 }
+
+const styles = StyleSheet.create({
+    leftAction: {
+        width: 40, paddingLeft: paddings.paddingL, alignContent: 'center', justifyContent: 'center',
+        flexDirection: 'row', alignItems: 'center'
+    },
+    title: {
+        textAlign: 'center',
+        fontWeight: fontWeights.fontWeightBold,
+        fontSize: fontSizes.fontSizeM,
+    },
+    subTitle: {
+        textAlign: 'center',
+        fontSize: fontSizes.fontSizeS,
+        paddingTop: paddings.paddingS
+    },
+    backIcon: {
+        justifyContent: 'center', alignItems: 'center', alignSelf: 'center', position: 'absolute'
+    }
+
+});
 
 export default AnimatedHeader;

@@ -158,13 +158,7 @@ const LearningDetails = ({
             }
           ]
         }}>
-          <View style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 300
-          }}>
+          <View style={learningDetailsStyles.imageViewContainer}>
             <ImageElement
               item={item as LearningItem}
               image={image}
@@ -172,13 +166,7 @@ const LearningDetails = ({
               imageStyle={learningDetailsStyles.imageView}
             />
           </View>
-          <View style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 100
-          }}>
+          <View style={learningDetailsStyles.imageViewGradient}>
             <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0)']} style={{ height: 100, zIndex: 100 }} />
           </View>
 
@@ -193,9 +181,7 @@ const LearningDetails = ({
             tabBarRightTitle={tabBarRightTitle}
           />
         </View>
-        <View style={{
-          minHeight: 1000,
-        }}>
+        <View>
           {children}
         </View>
       </Animated.ScrollView>
