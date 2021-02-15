@@ -38,7 +38,11 @@
     "fixIOS14images": "run-script-os",
     "fixIOS14images:macos": "npx react-native-fix-image",
     "fixIOS14images:windows": "",
-    "postinstall": "npm-run-all jetify install:translations fixIOS14images"
+    "postinstall": "npm-run-all jetify install:translations fixIOS14images",
+    "mock:setup": "mv src/totara/lib/config.local.ts src/totara/lib/config.local.bak.ts &&  cp src/totara/lib/config.detox.ts src/totara/lib/config.local.ts",
+    "mock:reset": "mv src/totara/lib/config.local.bak.ts src/totara/lib/config.local.ts",
+    "detox:test": "detox build  && detox test || echo '`detox test` completed.'",
+    "detox:run": "npm-run-all mock:setup detox:test mock:reset"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",

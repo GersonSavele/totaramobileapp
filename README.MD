@@ -219,18 +219,10 @@ npm install -g detox-cli
 yarn clear:all
 ```
 
-### Build app
+### Build and Run the tests
 
-- Use a convenience method in Detox command line tools to build project
-
-```sh
-detox build
-```
-
-### Run the tests
-
-- Use the Detox command line tools to test project:
+Use the following command to build and run the detox automated test
 
 ```sh
-detox test
+yarn detox:run
 ```

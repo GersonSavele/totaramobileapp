@@ -37,9 +37,9 @@ const customMocks = {
 
 describe("About learning test", () => {
   beforeAll(async () => {
-    await startGraphQLServer(customMocks);
     await device.reloadReactNative();
     await device.launchApp({ newInstance: false, permissions: { notifications: "YES" } });
+    await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(DEV_ORG_URL);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
@@ -51,6 +51,7 @@ describe("About learning test", () => {
     stopGraphQLServer();
   });
   it("should navigate user to the about screen", async () => {
+    await startGraphQLServer(customMocks);
     await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
     await element(by.id(PROFILE_TEST_IDS.ABOUT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).tap();

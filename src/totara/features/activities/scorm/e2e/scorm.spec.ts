@@ -39,6 +39,11 @@ describe("Scorm test", () => {
   beforeAll(async () => {
     await device.reloadReactNative();
     await device.launchApp({ newInstance: false, permissions: { notifications: "YES" } });
+  });
+  afterEach(async () => {
+    await stopGraphQLServer();
+  });
+  it("user login should be completed", async () => {
     await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(DEV_ORG_URL);
@@ -47,11 +52,8 @@ describe("Scorm test", () => {
     await element(by.id(TEST_IDS.USER_PW)).typeText(DEV_PASSWORD);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
-  afterEach(async () => {
-    await stopGraphQLServer();
-  });
-
   it("should navigate to the scorm summary screen and complete online work flow", async () => {
+    await startGraphQLServer(customMocks);
     await waitFor(element(by.text("(BETA) Audiences in Totara")))
       .toBeVisible()
       .whileElement(by.id(CL_TEST_IDS.CAROUSEL))

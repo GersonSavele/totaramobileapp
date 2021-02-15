@@ -18,38 +18,37 @@ const { ApolloServer } = require("apollo-server-express");
 const { buildClientSchema } = require("graphql");
 
 const introspectedSchema = require("./schema.json");
-const port = 8089;
-const mockServerUri = `http://localhost:${port}/graphql`;
+const { port, mockServerUrl } = require("./config");
 
-function createServerWithMockedSchema(customMocks = {}) {
+const createServerWithMockedSchema = (customMocks = {}) => {
   const schema = buildClientSchema(introspectedSchema);
 
   const server = new ApolloServer({
     schema: schema,
     mocks: customMocks,
     playground: {
-      endpoint: mockServerUri
+      endpoint: mockServerUrl
     }
   });
   return server;
-}
+};
 
 let graphQLServerApp;
 let httpServer;
 
-function startHttpServer() {
+const startHttpServer = () => {
   return new Promise((resolve) => {
     httpServer = graphQLServerApp.listen(port, () => {
       resolve();
     });
   });
-}
+};
 
-function stopHttpServer() {
+const stopHttpServer = () => {
   return new Promise((resolve) => httpServer.close(() => resolve()));
-}
+};
 
-async function startGraphQLServer(mock = {}) {
+const startGraphQLServer = async (mock = {}) => {
   if (httpServer) {
     console.warn("Tried to start HTTP server, when there's already one.");
     return;
@@ -63,9 +62,9 @@ async function startGraphQLServer(mock = {}) {
   });
 
   await startHttpServer();
-}
+};
 
-async function stopGraphQLServer() {
+const stopGraphQLServer = async () => {
   if (!httpServer) {
     console.warn("Tried to close null HTTP server.");
     return;
@@ -74,7 +73,7 @@ async function stopGraphQLServer() {
   await stopHttpServer();
   httpServer = null;
   graphQLServerApp = null;
-}
+};
 
 module.exports = {
   startGraphQLServer,

@@ -32,9 +32,9 @@ const customMocks = {
 
 describe("Current learning test", () => {
   beforeAll(async () => {
-    await startGraphQLServer(customMocks);
     await device.reloadReactNative();
     await device.launchApp({ newInstance: true, permissions: { notifications: "YES" } });
+    await startGraphQLServer(customMocks);
   });
   afterAll(async () => {
     stopGraphQLServer();
