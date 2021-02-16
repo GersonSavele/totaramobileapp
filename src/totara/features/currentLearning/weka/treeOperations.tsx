@@ -13,6 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+import React from "react";
+import { View, Text } from "react-native";
 import {
   Visitor,
   Node,
@@ -23,16 +25,39 @@ import {
   WekaText,
   WekaOrderList,
   WekaBulletList,
-  WekaHeading
+  WekaHeading,
+  WekaImage,
+  WekaLinkMedia,
+  WekaAttachment,
+  WekaVideo
 } from "./WekaUtils";
 import { textAttributes } from "@totara/theme/constants";
-
 const BULLET_POINT_UNICODE = "\u2022";
+import LinkMedia from "./LinkMedia";
+import ImageViewerWrapper from "./ImageViewerWrapper";
+import EmbeddedMedia from "./EmbeddedMedia";
+import Attachment from "./Attachment";
+import styles from "./wekaEditorViewStyle";
 
 /*
 @ Class : this class use for node tree operator and implementing abstract method of visitor interface
 */
 class ToShortSummary implements Visitor<string> {
+  visitWekaVideo(): string {
+    return "";
+  }
+  visitWekaRuler(): string {
+    return "";
+  }
+  visitWekaAttachment(): string {
+    return "";
+  }
+  visitWekaLinkMedia(): string {
+    return "";
+  }
+  visitWekaImage(): string {
+    return "";
+  }
   visitWekaBulletList(element: WekaBulletList): string {
     return element?.content
       ?.map((item) => {
@@ -86,4 +111,106 @@ class ToShortSummary implements Visitor<string> {
   }
 }
 
-export { ToShortSummary };
+class ToFullSummary implements Visitor<Object> {
+  visitWekaVideo(element: WekaVideo): Object {
+    return <EmbeddedMedia content={element.content} title="Video" />;
+  }
+  visitWekaRuler(): Object {
+    return <View style={styles.ruler} />;
+  }
+  visitWekaAttachment(element: WekaAttachment): Object {
+    return <Attachment content={element.content} />;
+  }
+  visitWekaLinkMedia(element: WekaLinkMedia): Object {
+    return <LinkMedia content={{ attrs: element.attrs }} />;
+  }
+  visitWekaList(element: WekaList): Object {
+    return <View>{this.all(element.content)}</View>;
+  }
+  visitWekaBulletList(element: WekaBulletList): Object {
+    return (
+      <Text>
+        {element?.content
+          ?.map((item) => {
+            return `${BULLET_POINT_UNICODE} ${item?.accept(this).toString()}`;
+          })
+          .filter(String)
+          .join("\n")
+          .toString()
+          .trim()}
+      </Text>
+    );
+  }
+  visitWekaOrderList(element: WekaOrderList): Object {
+    return (
+      <Text>
+        {element?.content
+          ?.map((item, index) => {
+            return (index + 1).toString() + ". " + item?.accept(this);
+          })
+          .filter(String)
+          .join("\n")
+          .toString()
+          .trim()}
+      </Text>
+    );
+  }
+  visitWekaEmoji(element: WekaEmoji): Object {
+    return <Text>{String.fromCodePoint(parseInt(textAttributes.short_code_prefix + element.shortCode))}</Text>;
+  }
+  visitHeader(element: WekaHeading): Object {
+    return (
+      <Text>
+        {element.content?.map((item) => {
+          return item?.accept(this);
+        })}
+      </Text>
+    );
+  }
+
+  visitWekaImage(element: WekaImage): Object {
+    return <ImageViewerWrapper fileName={element.fileName} url={element.url} />;
+  }
+
+  visitWekaParagraph(element: WekaParagraph): Object {
+    const res = element?.content
+      ?.map((item) => {
+        return item?.accept(this);
+      })
+      .filter(String)
+      .join("")
+      .toString()
+      .trim();
+    return <Text>{res}</Text>;
+  }
+
+  visitWekaText(element: WekaText): Object {
+    return element.text;
+  }
+  visitWekaRoot(element: WekaRoot): Object {
+    return this.all(element.content);
+  }
+  all(content: Node<Object>[]): Object {
+    return (
+      <View>
+        {content?.map((item) => {
+          return item?.accept(this);
+        })}
+      </View>
+    );
+  }
+
+  bulletList(element: WekaBulletList): string {
+    const list = element?.content
+      ?.map((item) => {
+        return `${BULLET_POINT_UNICODE} ${item?.accept(this)}`;
+      })
+      .filter(String)
+      .join("\n")
+      .toString()
+      .trim();
+    return list;
+  }
+}
+
+export { ToShortSummary, ToFullSummary };

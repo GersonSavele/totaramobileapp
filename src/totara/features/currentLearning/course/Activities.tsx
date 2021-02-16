@@ -41,6 +41,9 @@ import listViewStyles from "@totara/theme/listView";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
 import { showMessage } from "@totara/lib";
 
+import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
+import { ToFullSummary } from "../weka/treeOperations";
+
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
@@ -242,6 +245,11 @@ const ActivityList = ({
   );
 };
 
+const wekaContent = (description: Object) => {
+  const root = wrappedWekaNodes(jsonObjectToWekaNodes(description));
+  return root.accept(new ToFullSummary());
+};
+
 type ListUnLockProps = {
   item: Activity;
   courseRefreshCallBack?: () => {};
@@ -376,11 +384,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           testID={`${CL_TEST_IDS.ACTIVITY}${item.id}`}>
           {isLabel ? (
             item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
-              <WekaEditorView
-                content={item.description && (item.description as any)}
-                backGroundColor={TotaraTheme.colorNeutral2}
-                textColor={TotaraTheme.colorNeutral6}
-              />
+              <View>{wekaContent(JSON.parse(item.description as any))}</View>
             ) : (
               <ActivityTextContent label={item.description!} />
             )
