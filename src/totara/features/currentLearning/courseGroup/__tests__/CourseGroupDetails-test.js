@@ -39,7 +39,8 @@ const navigationCert = {
   }
 };
 
-describe("Program graphQL", () => {
+describe("CourseGroupDetails", () => {
+
   test("Should render loading", async () => {
     const tree = (
       <MockedProvider mocks={mockEmpty}>

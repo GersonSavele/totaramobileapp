@@ -145,3 +145,7 @@ jest.mock("@react-navigation/native", () => {
     })
   };
 });
+
+jest.mock('react-native-safe-area-view', () => ({
+  useSafeArea: () => ({ insets: null }),
+}))
