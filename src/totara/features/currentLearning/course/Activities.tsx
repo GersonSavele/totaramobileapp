@@ -181,8 +181,8 @@ const ExpandableSectionHeader = ({ title, show }: ExpandableSectionHeaderProps) 
         {show ? (
           <FontAwesomeIcon icon={faChevronUp} color={TotaraTheme.colorNeutral5} size={16} />
         ) : (
-          <FontAwesomeIcon icon={faChevronDown} color={TotaraTheme.colorNeutral5} size={16} />
-        )}
+            <FontAwesomeIcon icon={faChevronDown} color={TotaraTheme.colorNeutral5} size={16} />
+          )}
       </View>
     </View>
   );
@@ -203,7 +203,7 @@ const ActivityList = ({
   completionEnabled,
   summaryFormat
 }: ActivityListProps) => {
-  console.log("sectionSummary: ", sectionSummary);
+  // console.log("sectionSummary: ", sectionSummary);
   return (
     <View>
       {summaryFormat === DescriptionFormat.jsonEditor ? (
@@ -217,23 +217,23 @@ const ActivityList = ({
           </View>
         )
       ) : (
-        <View style={activitiesStyles.activityList}>
-          <ActivityTextContent label={sectionSummary} />
-        </View>
-      )}
+          <View style={activitiesStyles.activityList}>
+            <ActivityTextContent label={sectionSummary} />
+          </View>
+        )}
       {data!.map((item: Activity, key: number) => {
         return (
           <View key={key}>
             {item.completionstatus === completionStatus.unknown || item.completionstatus === null || !item.available ? (
               <ListItemLock item={item} key={key} />
             ) : (
-              <ListItemUnlock
-                item={item}
-                courseRefreshCallBack={courseRefreshCallBack}
-                key={key}
-                completionEnabled={completionEnabled}
-              />
-            )}
+                <ListItemUnlock
+                  item={item}
+                  courseRefreshCallBack={courseRefreshCallBack}
+                  key={key}
+                  completionEnabled={completionEnabled}
+                />
+              )}
           </View>
         );
       })}
@@ -357,11 +357,11 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                 textColor={TotaraTheme.colorNeutral6}
               />
             ) : (
-              <ActivityTextContent label={item.description!} />
-            )
+                <ActivityTextContent label={item.description!} />
+              )
           ) : (
-            <ListItem item={item} />
-          )}
+              <ListItem item={item} />
+            )}
         </TouchableOpacity>
       </View>
       {!isLabel && <View style={listViewStyles.thinSeparator} />}

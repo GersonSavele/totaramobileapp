@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Animated, { Extrapolate, interpolate } from "react-native-reanimated";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View, StatusBar } from "react-native";
+import Animated, { Extrapolate, interpolate, call, useCode } from "react-native-reanimated";
 import { useSafeArea } from "react-native-safe-area-view";
 
 const TOPNAVI_H = 50;
@@ -11,13 +11,20 @@ const TOPNAVI_OFFSET = 250;
 const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: { title: string, subTitle?: string, scrollValue?: any, leftAction: any }) => {
     const safeArea = useSafeArea();
     const isFloating = !!scrollValue;
+    const [dark, setDark] = useState(false);
+
+    useCode(() => {
+        return call([scrollValue], (values) => {
+            const [value] = values;
+            setDark((TOPNAVI_OFFSET) < value);
+        })
+    }, [scrollValue])
 
     const transparentToOpaqueInterpolate = interpolate(scrollValue, {
         inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + TOPNAVI_H],
         outputRange: [0, 1],
         extrapolate: Extrapolate.CLAMP,
     });
-
 
     const opaqueToTransparentInterpolate = interpolate(scrollValue, {
         inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + TOPNAVI_H],
@@ -26,6 +33,7 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: { title: s
     });
 
     return <>
+        <StatusBar translucent backgroundColor={"translucent"} barStyle={dark ? "dark-content" : "light-content"} />
         <Animated.View style={{
             paddingTop: safeArea.top,
             marginBottom: isFloating ? -TOPNAVI_H - safeArea.top : 0,
