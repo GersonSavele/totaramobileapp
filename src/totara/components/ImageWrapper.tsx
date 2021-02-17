@@ -23,15 +23,17 @@ type ImageWrapperType = {
   url: string;
   style?: StyleProp<ImageStyle>;
   accessibilityLabel?: string;
+  resizeMode?: "cover" | "contain" | "stretch" | "center" | undefined;
 };
 
-const ImageWrapper = ({ url, style, accessibilityLabel }: ImageWrapperType) => {
+const ImageWrapper = ({ url, style, accessibilityLabel, resizeMode = undefined }: ImageWrapperType) => {
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
   const apiKey = appState!.apiKey;
   return (
     <FastImage
+      resizeMode={resizeMode}
       style={style}
       onError={() => {
         console.log("Loading onError");

@@ -33,7 +33,7 @@ import { AppState } from "@totara/types";
 import { navigate } from "@totara/lib/navigationService";
 import { CircleIcon } from "@totara/components";
 import { translate } from "@totara/locale";
-
+import { Image } from "native-base";
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 
 enum HostName {
@@ -279,17 +279,21 @@ const ImageViewerWrapper = ({ content = {} }: ConfigProps) => {
   const onRequestClose = () => setIsVisible(!visible);
   // Implementing key with filename because the list is not updating correctly the image without this
   return (
-    <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose} key={`index_${content?.attrs?.filename}`}>
-      <ImageWrapper
-        url={content.attrs.url}
-        style={styles.imageContainer}
-        accessibilityLabel={translate("course.activity.accessibility_image")}
-      />
+    <TouchableOpacity onPress={onRequestClose} key={`index_${content?.attrs?.filename}`}>
+      <View style={styles.imageContainerWrapper}>
+        <ImageWrapper
+          resizeMode="contain"
+          url={content.attrs.url}
+          style={styles.imageContainer}
+          accessibilityLabel={translate("course.activity.accessibility_image")}
+        />
+      </View>
       {visible && (
         <ModalView onRequestClose={onRequestClose}>
           <ImageWrapper
             url={content.attrs.url}
-            style={{ height: "80%", resizeMode: "contain" }}
+            resizeMode="contain"
+            style={{ height: "80%" }}
             accessibilityLabel={translate("course.activity.accessibility_image_zoom")}
           />
         </ModalView>

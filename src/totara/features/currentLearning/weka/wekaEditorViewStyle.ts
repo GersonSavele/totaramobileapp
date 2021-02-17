@@ -69,12 +69,17 @@ const wekaEditorStyle = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
-    aspectRatio: 16 / 9,
+    height: deviceScreen.width,
     borderRadius: borderRadius.borderRadiusM,
-    alignSelf: "center",
-    marginBottom: marginXS,
-    backgroundColor: TotaraTheme.colorNeutral5,
-    flexWrap: "wrap"
+    backgroundColor: TotaraTheme.colorNeutral2
+  },
+  imageContainerWrapper: {
+    display: "flex",
+    borderRadius: borderRadius.borderRadiusM,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    height: (deviceScreen.width * 1) / 2 - 20
   },
   list: {
     textAlign: "left",
@@ -91,9 +96,9 @@ const wekaEditorStyle = StyleSheet.create({
   touchableViewWrap: {
     flexDirection: "row",
     marginVertical: marginS,
-    alignContent:"center",
-    justifyContent:"center",
-    alignItems:"center"
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center"
   },
   attachmentFileName: {
     textAlign: "left",
@@ -101,15 +106,15 @@ const wekaEditorStyle = StyleSheet.create({
     color: TotaraTheme.colorLink,
     alignSelf: "flex-start"
   },
-  iconWrap :{
-     justifyContent: "center",
-     marginEnd:marginS
+  iconWrap: {
+    justifyContent: "center",
+    marginEnd: marginS
   },
-  embeddedMediaTitle:{
+  embeddedMediaTitle: {
     textAlign: "left",
     ...TotaraTheme.textRegular,
-    color : TotaraTheme.colorNeutral6,
-    justifyContent:"center",
+    color: TotaraTheme.colorNeutral6,
+    justifyContent: "center"
   },
   webViewWrapper: {
     position: "absolute",
@@ -118,7 +123,7 @@ const wekaEditorStyle = StyleSheet.create({
     bottom: 0,
     right: 0,
     borderRadius: borderRadius.borderRadiusM,
-    backgroundColor: 'transparent'
+    backgroundColor: "transparent"
   },
   closeButtonTouchableOpacity: {
     marginTop: marginM,
@@ -128,9 +133,9 @@ const wekaEditorStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  closeButtonWrap : {
-    height: "10%", 
-    justifyContent: "flex-end", 
+  closeButtonWrap: {
+    height: "10%",
+    justifyContent: "flex-end",
     alignItems: "flex-start"
   }
 });
