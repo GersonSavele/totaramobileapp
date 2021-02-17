@@ -33,7 +33,6 @@ import { AppState } from "@totara/types";
 import { navigate } from "@totara/lib/navigationService";
 import { CircleIcon } from "@totara/components";
 import { translate } from "@totara/locale";
-import { Image } from "native-base";
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 
 enum HostName {

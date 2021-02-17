@@ -1821,59 +1821,62 @@ Array [
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "alignSelf": "center",
-        "aspectRatio": 1.7777777777777777,
-        "backgroundColor": "#C7C7C7",
-        "borderRadius": 10,
-        "flexWrap": "wrap",
-        "marginBottom": 6,
         "opacity": 1,
-        "width": "100%",
       }
     }
   >
     <View
       style={
-        Array [
-          Object {
-            "overflow": "hidden",
-          },
-          Object {
-            "alignSelf": "center",
-            "aspectRatio": 1.7777777777777777,
-            "backgroundColor": "#C7C7C7",
-            "borderRadius": 10,
-            "flexWrap": "wrap",
-            "marginBottom": 6,
-            "width": "100%",
-          },
-        ]
+        Object {
+          "alignItems": "center",
+          "borderRadius": 10,
+          "display": "flex",
+          "height": 355,
+          "justifyContent": "center",
+          "overflow": "hidden",
+        }
       }
     >
-      <FastImageView
-        accessibilityLabel="translated course.activity.accessibility_image with undefined"
-        onFastImageError={[Function]}
-        resizeMode="cover"
-        source={
-          Object {
-            "cache": "web",
-            "headers": Object {
-              "x-api-key": "api_key",
-            },
-            "priority": "normal",
-            "uri": "https://mobile.demo.totara.software/pluginfile.php/1460/course/summary/73/image-2020-08-24-16-26-22-254.png",
-          }
-        }
+      <View
         style={
-          Object {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "backgroundColor": "#F5F5F5",
+              "borderRadius": 10,
+              "height": 750,
+              "width": "100%",
+            },
+          ]
         }
-      />
+      >
+        <FastImageView
+          accessibilityLabel="translated course.activity.accessibility_image with undefined"
+          onFastImageError={[Function]}
+          resizeMode="contain"
+          source={
+            Object {
+              "cache": "web",
+              "headers": Object {
+                "x-api-key": "api_key",
+              },
+              "priority": "normal",
+              "uri": "https://mobile.demo.totara.software/pluginfile.php/1460/course/summary/73/image-2020-08-24-16-26-22-254.png",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
     </View>
   </View>,
   <View>
