@@ -13,15 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { mockServerUrl } from "../../../e2e/graphql/config";
-
-const localConfig = {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  apiUri: (host: string) => mockServerUrl,
-  mobileApi: {
-    persistentQuery: false
-  },
-  disableConsoleYellowBox: true
+const notifications = {
+  default: { message_popup_messages: () => [] }
 };
-
-export default localConfig;
+module.exports = {
+  notifications
+};

@@ -36,9 +36,11 @@ const defaultMobileMeData = {
   },
   __typename: "totara_mobile_me"
 };
+
 const mobileMe = {
   default: { totara_mobile_me: () => ({ ...defaultMobileMeData }) }
 };
+
 module.exports = {
   mobileMe
 };

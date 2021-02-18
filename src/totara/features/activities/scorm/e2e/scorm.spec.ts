@@ -22,7 +22,8 @@ import { scorm } from "../../../../../../e2e/graphql/mocks/scorm";
 import { currentLearning } from "../../../../../../e2e/graphql/mocks/currentLearning";
 import { courseDetails } from "../../../../../../e2e/graphql/mocks/courseDetails";
 import { mobileMe } from "../../../../../../e2e/graphql/mocks/me";
-
+import { notifications } from "../../../../../../e2e/graphql/mocks/notifications";
+import { lang } from "../../../../../../e2e/graphql/mocks/lang";
 const customMocks = {
   ...defaultCoreId,
   ...defaultCoreDate,
@@ -32,18 +33,15 @@ const customMocks = {
     ...mobileMe.default,
     ...currentLearning.default,
     ...courseDetails.scorm,
-    ...scorm.default
+    ...scorm.default,
+    ...notifications.default,
+    ...lang.default
   })
 };
 describe("Scorm test", () => {
   beforeAll(async () => {
     await device.reloadReactNative();
-    await device.launchApp({ newInstance: false, permissions: { notifications: "YES" } });
-  });
-  afterEach(async () => {
-    await stopGraphQLServer();
-  });
-  it("user login should be completed", async () => {
+    await device.launchApp({ newInstance: true, permissions: { notifications: "YES" } });
     await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(DEV_ORG_URL);
@@ -52,8 +50,12 @@ describe("Scorm test", () => {
     await element(by.id(TEST_IDS.USER_PW)).typeText(DEV_PASSWORD);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
+
+  afterAll(async () => {
+    await stopGraphQLServer();
+  });
+
   it("should navigate to the scorm summary screen and complete online work flow", async () => {
-    await startGraphQLServer(customMocks);
     await waitFor(element(by.text("(BETA) Audiences in Totara")))
       .toBeVisible()
       .whileElement(by.id(CL_TEST_IDS.CAROUSEL))
@@ -87,7 +89,9 @@ describe("Scorm test", () => {
       ...mobileMe.default,
       ...currentLearning.default,
       ...courseDetails.scorm,
-      ...scorm.offline
+      ...scorm.offline,
+      ...notifications.default,
+      ...lang.default
     });
     await startGraphQLServer(customMocks);
     await element(by.text("Introduction to User Experience Design")).tap();

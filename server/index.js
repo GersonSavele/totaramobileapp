@@ -18,6 +18,8 @@ const { startGraphQLServer } = require("../e2e/graphql/index");
 const { defaultCoreId, defaultCoreDate, defaultString } = require("../e2e/graphql/mocks/scalars");
 
 const { mobileMe } = require("../e2e/graphql/mocks/me");
+const { lang } = require("../e2e/graphql/mocks/lang");
+const { notifications } = require("../e2e/graphql/mocks/notifications");
 const { currentLearning } = require("../e2e/graphql/mocks/currentLearning");
 const { courseDetails } = require("../e2e/graphql/mocks/courseDetails");
 const { scorm } = require("../e2e/graphql/mocks/scorm");
@@ -33,7 +35,9 @@ const customMocks = {
     ...currentLearning.default,
     ...courseDetails.default,
     ...scorm.default,
-    ...profile.default
+    ...profile.default,
+    ...lang.default,
+    ...notifications.default
   })
 };
 

@@ -32,8 +32,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { config } from "@totara/lib";
 import FontAwesome from "@totara/lib/fontAwesome";
 import { LocaleResolver } from "@totara/locale/LocaleResolver";
-import AppContainer from './totara/AppContainer'
-import { PLATFORM_ANDROID } from './totara/lib/constants';
+import AppContainer from "./totara/AppContainer";
+import { PLATFORM_ANDROID } from "./totara/lib/constants";
 // this check will make sure we only use sentry for production flavors
 if (!__DEV__ && config.sentryUri) {
   Sentry.init({
@@ -43,12 +43,13 @@ if (!__DEV__ && config.sentryUri) {
 }
 
 if (Platform.OS === PLATFORM_ANDROID) {
-  StatusBar.setBackgroundColor("rgba(0,0,0,0)")
-  StatusBar.setBarStyle("dark-content")
+  StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+  StatusBar.setBarStyle("dark-content");
   StatusBar.setTranslucent(true);
 }
 
 FontAwesome.init();
+console.disableYellowBox = config.disableConsoleYellowBox;
 
 const App: () => React$Node = () => {
   return (

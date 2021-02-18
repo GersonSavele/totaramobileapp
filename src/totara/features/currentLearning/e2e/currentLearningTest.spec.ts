@@ -21,13 +21,21 @@ import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../../e2
 import { currentLearning } from "../../../../../e2e/graphql/mocks/currentLearning";
 import { courseDetails } from "../../../../../e2e/graphql/mocks/courseDetails";
 import { mobileMe } from "../../../../../e2e/graphql/mocks/me";
+import { lang } from "../../../../../e2e/graphql/mocks/lang";
+import { notifications } from "../../../../../e2e/graphql/mocks/notifications";
 
 const customMocks = {
   ...defaultCoreId,
   ...defaultCoreDate,
   ...defaultString,
 
-  Query: () => ({ ...mobileMe.default, ...currentLearning.default, ...courseDetails.default })
+  Query: () => ({
+    ...mobileMe.default,
+    ...currentLearning.default,
+    ...courseDetails.default,
+    ...lang.default,
+    ...notifications.default
+  })
 };
 
 describe("Current learning test", () => {
@@ -35,17 +43,16 @@ describe("Current learning test", () => {
     await device.reloadReactNative();
     await device.launchApp({ newInstance: true, permissions: { notifications: "YES" } });
     await startGraphQLServer(customMocks);
-  });
-  afterAll(async () => {
-    stopGraphQLServer();
-  });
-  it("should have organization url input and native login", async () => {
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(DEV_ORG_URL);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
     await element(by.id(TEST_IDS.USER_INPUT)).typeText(DEV_USERNAME);
     await element(by.id(TEST_IDS.USER_PW)).typeText(DEV_PASSWORD);
     await element(by.id(TEST_IDS.LOGIN)).tap();
+  });
+
+  afterAll(async () => {
+    await stopGraphQLServer();
   });
 
   it("should have user landing on current learning and switch to the list view", async () => {

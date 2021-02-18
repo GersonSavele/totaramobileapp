@@ -22,6 +22,8 @@ import { startGraphQLServer, stopGraphQLServer } from "../../../../../e2e/graphq
 import { currentLearning } from "../../../../../e2e/graphql/mocks/currentLearning";
 import { mobileMe } from "../../../../../e2e/graphql/mocks/me";
 import { profile } from "../../../../../e2e/graphql/mocks/profile";
+import { notifications } from "../../../../../e2e/graphql/mocks/notifications";
+import { lang } from "../../../../../e2e/graphql/mocks/lang";
 
 const customMocks = {
   ...defaultCoreId,
@@ -31,11 +33,13 @@ const customMocks = {
   Query: () => ({
     ...currentLearning.default,
     ...profile.default,
-    ...mobileMe.default
+    ...mobileMe.default,
+    ...notifications.default,
+    ...lang.default
   })
 };
 
-describe("About learning test", () => {
+describe("About test", () => {
   beforeAll(async () => {
     await device.reloadReactNative();
     await device.launchApp({ newInstance: false, permissions: { notifications: "YES" } });
@@ -47,11 +51,12 @@ describe("About learning test", () => {
     await element(by.id(TEST_IDS.USER_PW)).typeText(DEV_PASSWORD);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
+
   afterAll(async () => {
-    stopGraphQLServer();
+    await stopGraphQLServer();
   });
+
   it("should navigate user to the about screen", async () => {
-    await startGraphQLServer(customMocks);
     await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
     await element(by.id(PROFILE_TEST_IDS.ABOUT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).tap();

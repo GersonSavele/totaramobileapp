@@ -50,8 +50,8 @@ const stopHttpServer = () => {
 
 const startGraphQLServer = async (mock = {}) => {
   if (httpServer) {
-    console.warn("Tried to start HTTP server, when there's already one.");
-    return;
+    console.warn("Tried to stop running server.");
+    await stopGraphQLServer();
   }
 
   graphQLServerApp = express();

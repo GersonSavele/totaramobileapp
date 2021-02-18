@@ -34,7 +34,8 @@ const defaultConfig = {
   deepLinkSchema: "totara://",
   minApiVersion: "2020100100",
   rootOfflineScormPlayer: "html",
-  sentryUri: ""
+  sentryUri: "",
+  disableConsoleYellowBox: false
 };
 
 export const internalConfig = {
