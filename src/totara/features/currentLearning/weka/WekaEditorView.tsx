@@ -391,6 +391,7 @@ const WebViewWrapper = ({ content = {} }: ConfigProps) => {
         scrollEnabled={false}
         allowsInlineMediaPlayback={true}
         allowsFullscreenVideo={true}
+        androidHardwareAccelerationDisabled
         onShouldStartLoadWithRequest={(request) => {
           return handleWebViewRequest(request);
         }}
