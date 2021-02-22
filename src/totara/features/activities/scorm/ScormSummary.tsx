@@ -37,7 +37,7 @@ import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
 import { fetchLastAttemptResult } from "./api";
-import { TEST_IDS_SCORM } from "@totara/lib/testIds";
+import { TEST_IDS, TEST_IDS_SCORM } from "@totara/lib/testIds";
 
 const { SCORM_ROOT, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -305,7 +305,8 @@ const ScormSummary = ({
                         }
                       })
                     }
-                    disabled={isEmpty(attempts)}>
+                    disabled={isEmpty(attempts)}
+                    testID={TEST_IDS_SCORM.ATTEMPTS_LIST}>
                     <GridLabelValue theme={theme} textId={"scorm.summary.grade.reported"} value={calculatedGrade}>
                       {!isEmpty(attempts) && (
                         <FontAwesomeIcon

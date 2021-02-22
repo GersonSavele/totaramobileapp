@@ -155,7 +155,7 @@ const defaultData = {
 const offlineData = {
   id: "29",
   courseid: "36",
-  showgrades: false,
+  showgrades: true,
   name: "Introduction to User Experience Design",
   scormtype: "local",
   reference: "test.zip",
@@ -194,7 +194,7 @@ const offlineData = {
   launch_url: "https://mobile.demo.totara.software/mod/scorm/player.php?mode=normal&newattempt=on&cm=461&scoid=0",
   repeat_url: "https://mobile.demo.totara.software/mod/scorm/player.php?mode=normal&newattempt=off&cm=461&scoid=0",
   attempts_current: 1,
-  calculated_grade: "0",
+  calculated_grade: "1",
   offline_package_url:
     "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/857/mod_scorm/package/1/test.zip",
   offline_package_contenthash: "b3fda4b2914aebdbc66fc288cfc693519e093332",
@@ -205,7 +205,7 @@ const offlineData = {
     {
       attempt: 1,
       timestarted: "1610596337",
-      gradereported: 0,
+      gradereported: 1,
       __typename: "mod_scorm_scorm_attempt"
     }
   ],

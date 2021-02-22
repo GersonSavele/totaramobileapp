@@ -68,6 +68,8 @@ describe("Scorm test", () => {
       .whileElement(by.text("Ask Us"))
       .swipe("up", "slow", 0.5);
     await element(by.text("Report in Totara Learn")).tap();
+    await element(by.id(TEST_IDS_SCORM.ATTEMPTS_LIST)).tap();
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     await element(by.id(TEST_IDS_SCORM.LAST_ATTEMPT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();

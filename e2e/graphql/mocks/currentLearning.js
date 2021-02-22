@@ -58,8 +58,8 @@ const defaultCurrentLearningData = [
     description_format: "HTML",
     progress: 66,
     url_view: "https://mobile.demo.totara.software/course/view.php?id=36",
-    duedate: "2020-10-15T00:00:00+0100",
-    duedate_state: "danger",
+    duedate: null,
+    duedate_state: null,
     mobile_coursecompat: true,
     mobile_image: "https://mobile.demo.totara.software/pluginfile.php/688/course/images/1612212198/image",
     __typename: "totara_mobile_learning_item"

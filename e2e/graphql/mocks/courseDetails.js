@@ -181,7 +181,7 @@ const mockScormCourseDetails = {
       "GROUPINGG YOUR USERS TO PROVIDE A PERSONALISED LEARNING EXPERIENCE\n\nAudiences are a powerful tool in Totara Learn, allowing you to group your users in order to assign them learning and performance management activities.\n\nEnrol in this course to explore how to:\n\n\t* Create set and dynamic audiences\n\n\t* Assign learning to an audience \n\n The course will take you around one hour 15 minutes to complete.\n\n",
     summaryformat: "HTML",
     startdate: "2017-08-24T00:00:00+0100",
-    enddate: "2020-10-09T00:00:00+0100",
+    enddate: null,
     lang: "",
     image: "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/688/course/images/1612212198/image",
     format: "topics",
@@ -630,7 +630,7 @@ const mockScormCourseDetails = {
         __typename: "core_course_criteria"
       }
     ],
-    showgrades: false,
+    showgrades: true,
     completionenabled: true,
     completion: {
       id: 299,
