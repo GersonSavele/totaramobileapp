@@ -20,7 +20,7 @@ const mockDefaultCourseDetails = {
     fullname: "A Multi-disciplinary Training Day",
     shortname: "A Multi-disciplinary Training Day",
     summary:
-      "Without requirements or design, programming is the art of adding bugs to an empty text file. Its not a bug - its an undocumented feature. They dont make bugs like Bunny anymore. Program testing can be used to show the presence of bugs, but never to show their absence! If debugging is the process of removing software bugs, then programming must be the process of putting them in. Measuring programming progress by lines of code is like measuring aircraft building progress by weight.\n",
+      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Without requirements or design, programming is the art of adding bugs to an empty text file. It\'s not a bug - it\'s an undocumented feature. They don\'t make bugs like Bunny anymore. Program testing can be used to show the presence of bugs, but never to show their absence! If debugging is the process of removing software bugs, then programming must be the process of putting them in. Measuring programming progress by lines of code is like measuring aircraft building progress by weight."}]}]}',
     summaryformat: "JSON_EDITOR",
     startdate: "2019-11-01T00:00:00+0000",
     enddate: null,
