@@ -67,6 +67,7 @@ buck-out/
 #local configuration
 #
 /src/totara/lib/config.local.ts
+/e2e/graphql/schema.json
 
 # Untrack these helper script files and sample files
 

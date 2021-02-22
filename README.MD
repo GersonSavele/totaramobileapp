@@ -216,7 +216,7 @@ npm install -g detox-cli
 - Run the following command to clear all the cache, modules && pods and reinstall.
 
 ```sh
-yarn clear:all
+npm run clear:all
 ```
 
 ### Build and Run the tests
@@ -224,5 +224,5 @@ yarn clear:all
 Use the following command to build and run the detox automated test
 
 ```sh
-yarn detox:run
+npm run detox:run
 ```

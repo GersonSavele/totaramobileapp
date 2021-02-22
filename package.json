@@ -38,10 +38,11 @@
     "fixIOS14images": "run-script-os",
     "fixIOS14images:macos": "npx react-native-fix-image",
     "fixIOS14images:windows": "",
-    "postinstall": "npm-run-all jetify install:translations fixIOS14images",
+    "mock:schema:setup": "get-graphql-schema https://mobile.demo.totara.software/totara/webapi/dev_graphql_executor.php --json > e2e/graphql/schema.json",
+    "postinstall": "npm-run-all jetify install:translations fixIOS14images mock:schema:setup",
     "mock:setup": "mv src/totara/lib/config.local.ts src/totara/lib/config.local.bak.ts &&  cp src/totara/lib/config.detox.ts src/totara/lib/config.local.ts",
     "mock:reset": "mv src/totara/lib/config.local.bak.ts src/totara/lib/config.local.ts",
-    "detox:test": "detox build  && detox test || echo '`detox test` completed.'",
+    "detox:test": "detox build && detox test || echo '`detox test` completed.'",
     "detox:run": "npm-run-all mock:setup detox:test mock:reset"
   },
   "dependencies": {
@@ -138,6 +139,7 @@
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.14.3",
     "express": "^4.17.1",
+    "get-graphql-schema": "^2.1.2",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.5.1",
     "jest-enzyme": "^7.1.2",
