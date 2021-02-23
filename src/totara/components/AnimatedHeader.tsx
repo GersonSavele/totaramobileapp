@@ -1,3 +1,18 @@
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
+
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
 import React, { useState } from "react";
@@ -8,7 +23,10 @@ import { useSafeArea } from "react-native-safe-area-view";
 const TOPNAVI_H = 50;
 const TOPNAVI_OFFSET = 250;
 
-const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: { title: string, subTitle?: string, scrollValue?: any, leftAction: any }) => {
+type AnimatedHeaderProps =
+    { title: string, subTitle?: string, scrollValue?: any, leftAction: any }
+
+const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHeaderProps) => {
     const safeArea = useSafeArea();
     const isFloating = !!scrollValue;
     const [dark, setDark] = useState(false);
@@ -34,7 +52,7 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: { title: s
 
     return <>
         <StatusBar translucent backgroundColor={"translucent"} barStyle={dark ? "dark-content" : "light-content"} />
-        <Animated.View style={{
+        <Animated.View testID={"animated-header-container"} style={{
             paddingTop: safeArea.top,
             marginBottom: isFloating ? -TOPNAVI_H - safeArea.top : 0,
             height: TOPNAVI_H + safeArea.top,
@@ -43,18 +61,20 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: { title: s
             zIndex: 200,
             flexDirection: 'row'
         }}>
-            <TouchableOpacity onPress={leftAction} style={styles.leftAction}>
-                <Animated.View style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]} >
+            <TouchableOpacity testID={"animated-header-backbutton"} onPress={leftAction} style={styles.leftAction}>
+                <Animated.View testID={"animated-header-backbutton-black"} style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]} >
                     <FontAwesomeIcon icon="chevron-left" color={"black"} />
                 </Animated.View>
-                <Animated.View style={[styles.backIcon, { opacity: opaqueToTransparentInterpolate }]}>
+                <Animated.View testID={"animated-header-backbutton-white"} style={[styles.backIcon, { opacity: opaqueToTransparentInterpolate }]}>
                     <FontAwesomeIcon icon="chevron-left" color={"white"} />
                 </Animated.View>
             </TouchableOpacity>
 
-            <Animated.View style={{ flex: 1, opacity: transparentToOpaqueInterpolate }}>
-                <Text style={styles.title}>{title}</Text>
-                {subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
+            <Animated.View testID={"animated-header-title-container"} style={{ flex: 1, opacity: transparentToOpaqueInterpolate }}>
+                <Text testID={"animated-header-title"} style={styles.title}>{title}</Text>
+                {subTitle && <Text testID={"animated-header-subtitle"} style={styles.subTitle}>{subTitle}</Text>}
+
+                {/* <Text testID={"animated-header-subtitle"} style={styles.subTitle}>{subTitle}</Text> */}
             </Animated.View>
             <View style={{ width: 40 }}
             ></View>
