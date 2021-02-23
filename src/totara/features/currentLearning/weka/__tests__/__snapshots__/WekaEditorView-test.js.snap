@@ -1925,6 +1925,7 @@ Array [
           <RNCWebView
             allowsFullscreenVideo={true}
             allowsInlineMediaPlayback={true}
+            androidHardwareAccelerationDisabled={true}
             cacheEnabled={true}
             domStorageEnabled={false}
             injectedJavaScriptBeforeContentLoadedForMainFrameOnly={true}
