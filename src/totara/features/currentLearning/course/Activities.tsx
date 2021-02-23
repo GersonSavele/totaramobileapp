@@ -203,7 +203,6 @@ const ActivityList = ({
   completionEnabled,
   summaryFormat
 }: ActivityListProps) => {
-  // console.log("sectionSummary: ", sectionSummary);
   return (
     <View>
       {summaryFormat === DescriptionFormat.jsonEditor ? (

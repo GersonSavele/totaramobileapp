@@ -16,7 +16,7 @@
 
 import React from "react";
 import { render, cleanup } from "@testing-library/react-native";
-import AnimatedHeader from "@totara/components/AnimatedHeader";
+import { AnimatedHeader } from "@totara/components/AnimatedHeader";
 
 describe("AnimatedHeader", () => {
 

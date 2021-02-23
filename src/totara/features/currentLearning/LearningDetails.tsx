@@ -23,7 +23,7 @@ import { margins } from "@totara/theme/constants";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
 import Animated, { interpolate, Extrapolate, Value, event } from "react-native-reanimated";
 import LinearGradient from "react-native-linear-gradient";
-import AnimatedHeader from "@totara/components/AnimatedHeader";
+import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
 
 const { marginXL } = margins;
 
@@ -131,7 +131,7 @@ const LearningDetails = ({
       <Animated.ScrollView
         onScrollEndDrag={(event) => {
           const yOffset = event.nativeEvent.contentOffset.y;
-          if (yOffset < 100) {
+          if (yOffset < (HEIGHT / 3)) {
             onPullToRefresh();
           }
         }}
@@ -147,11 +147,11 @@ const LearningDetails = ({
         <Animated.View style={{
           flex: 1,
           alignItems: 'center',
-          height: 300,
+          height: HEIGHT,
           transform: [
             {
               scale: interpolate(scrollValue, {
-                inputRange: [-300, 0],
+                inputRange: [-HEIGHT, 0],
                 outputRange: [3, 1],
                 extrapolate: Extrapolate.CLAMP
               })
@@ -167,7 +167,7 @@ const LearningDetails = ({
             />
           </View>
           <View style={learningDetailsStyles.imageViewGradient}>
-            <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0)']} style={{ height: 100, zIndex: 100 }} />
+            <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0)']} style={{ height: HEIGHT / 3, zIndex: 100 }} />
           </View>
 
         </Animated.View>

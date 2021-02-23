@@ -22,6 +22,8 @@ import { useSafeArea } from "react-native-safe-area-view";
 
 const TOPNAVI_H = 50;
 const TOPNAVI_OFFSET = 250;
+const ACTION_WIDTH = 40;
+const HEIGHT = TOPNAVI_OFFSET + TOPNAVI_H;
 
 type AnimatedHeaderProps =
     { title: string, subTitle?: string, scrollValue?: any, leftAction: any }
@@ -56,7 +58,7 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
             paddingTop: safeArea.top,
             marginBottom: isFloating ? -TOPNAVI_H - safeArea.top : 0,
             height: TOPNAVI_H + safeArea.top,
-            backgroundColor: Animated.color(255, 255, 255, transparentToOpaqueInterpolate),
+            backgroundColor: Animated.color(255, 255, 255, transparentToOpaqueInterpolate), //RGB color, 255 being white
             opacity: 1,
             zIndex: 200,
             flexDirection: 'row'
@@ -73,10 +75,8 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
             <Animated.View testID={"animated-header-title-container"} style={{ flex: 1, opacity: transparentToOpaqueInterpolate }}>
                 <Text testID={"animated-header-title"} style={styles.title}>{title}</Text>
                 {subTitle && <Text testID={"animated-header-subtitle"} style={styles.subTitle}>{subTitle}</Text>}
-
-                {/* <Text testID={"animated-header-subtitle"} style={styles.subTitle}>{subTitle}</Text> */}
             </Animated.View>
-            <View style={{ width: 40 }}
+            <View style={{ width: ACTION_WIDTH }}
             ></View>
         </Animated.View>
     </>
@@ -84,7 +84,7 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
 
 const styles = StyleSheet.create({
     leftAction: {
-        width: 40, paddingLeft: paddings.paddingL, alignContent: 'center', justifyContent: 'center',
+        width: ACTION_WIDTH, paddingLeft: paddings.paddingL, alignContent: 'center', justifyContent: 'center',
         flexDirection: 'row', alignItems: 'center'
     },
     title: {
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
     backIcon: {
         justifyContent: 'center', alignItems: 'center', alignSelf: 'center', position: 'absolute'
     }
-
 });
 
-export default AnimatedHeader;
+export { AnimatedHeader, HEIGHT };
