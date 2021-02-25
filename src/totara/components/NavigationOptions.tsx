@@ -14,7 +14,9 @@
  */
 
 import { StackNavigationOptions } from "@react-navigation/stack";
+import { ANDROID_STATUSBAR_HEIGHT, PLATFORM_ANDROID } from "@totara/lib/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { Platform } from "react-native";
 
 type navigationOptionsProps = {
   title?: string;
@@ -28,14 +30,16 @@ const TotaraNavigationOptions = ({ opacity, title = "", backTitle, headerRight, 
   const options: StackNavigationOptions = {
     headerStyle: {
       borderBottomWidth: 0,
-      backgroundColor: TotaraTheme.colorSecondary1,
+      backgroundColor: TotaraTheme.colorNeutral2,
       shadowOpacity: 0,
-      elevation: 0
+      elevation: 0,
+      ...Platform.OS === PLATFORM_ANDROID && { height: ANDROID_STATUSBAR_HEIGHT }
     },
     headerTitleStyle: {
       color: TotaraTheme.colorNeutral7,
       fontSize: TotaraTheme.textRegular.fontSize,
-      opacity: opacity
+      opacity: opacity,
+
     },
     title: title,
     headerBackTitle: backTitle,

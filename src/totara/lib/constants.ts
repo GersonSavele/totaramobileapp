@@ -23,7 +23,8 @@ const DATE_FORMAT_FULL = "dddd, DD MMMM YYYY, h:mm A";
 const SECONDS_FORMAT = "X";
 
 const PLATFORM_IOS = "ios";
-const PLATFORM_ANDROID = "";
+const PLATFORM_ANDROID = "android";
+const ANDROID_STATUSBAR_HEIGHT = 75;
 
 const SCREEN_WIDTH_X_LARGE = "xlarge";
 const SCREEN_WIDTH_LARGE = "large";
@@ -65,5 +66,6 @@ export {
   OFFLINE_SCORM_PREFIX,
   FILE_EXTENSION,
   ActivityModType,
-  DEFAULT_LANGUAGE
+  DEFAULT_LANGUAGE,
+  ANDROID_STATUSBAR_HEIGHT
 };

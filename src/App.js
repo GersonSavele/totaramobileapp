@@ -14,6 +14,7 @@
  */
 
 import React from "react";
+import { StatusBar, Platform } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Sentry from "@sentry/react-native";
 import { PersistGate } from "redux-persist/integration/react";
@@ -32,12 +33,19 @@ import { config } from "@totara/lib";
 import FontAwesome from "@totara/lib/fontAwesome";
 import { LocaleResolver } from "@totara/locale/LocaleResolver";
 import AppContainer from './totara/AppContainer'
+import { PLATFORM_ANDROID } from './totara/lib/constants';
 // this check will make sure we only use sentry for production flavors
 if (!__DEV__ && config.sentryUri) {
   Sentry.init({
     dsn: config.sentryUri,
     environment: "production"
   });
+}
+
+if (Platform.OS === PLATFORM_ANDROID) {
+  StatusBar.setBackgroundColor("rgba(0,0,0,0)")
+  StatusBar.setBarStyle("dark-content")
+  StatusBar.setTranslucent(true);
 }
 
 FontAwesome.init();
