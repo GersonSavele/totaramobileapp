@@ -21,4 +21,5 @@ export interface NotificationMessage {
   isRead: boolean;
   timeCreated: number;
   contextUrl: string;
+  fullMessageHTML: string;
 }

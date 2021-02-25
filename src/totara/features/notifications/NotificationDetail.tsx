@@ -16,9 +16,10 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, Linking } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { WebViewNavigation } from "react-native-webview";
+import WebView, { WebViewNavigation } from "react-native-webview";
 import { AppState, NotificationMessage } from "@totara/types";
 import { fontWeights, paddings } from "@totara/theme/constants";
+import { isEmpty } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { timeAgo } from "@totara/lib/tools";
 import { DescriptionFormat } from "@totara/types/LearningItem";
@@ -33,7 +34,7 @@ type ParamList = {
 type NotificationDetailProps = StackScreenProps<ParamList, "messageDetails">;
 
 const NotificationDetails = ({ route }: NotificationDetailProps) => {
-  const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat } = route.params;
+  const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat, fullMessageHTML } = route.params;
   const {
     authContextState: { appState }
   } = useContext(AuthContext);
@@ -57,13 +58,17 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
           {timeAgo(timeCreated)}
         </Text>
       </View>
-      <View style={styles.content}>
-        {fullMessageFormat === DescriptionFormat.jsonEditor ? (
-          <WekaEditorView content={fullMessage as string} />
-        ) : (
-          <Text testID={"test_fullMessage"}>{fullMessage}</Text>
-        )}
-      </View>
+      {!isEmpty(fullMessageHTML) ? (
+        <WebView source={{ html: fullMessageHTML }} containerStyle={styles.content} />
+      ) : (
+        <View style={styles.content}>
+          {fullMessageFormat === DescriptionFormat.jsonEditor ? (
+            <WekaEditorView content={fullMessage as string} />
+          ) : (
+            <Text testID={"test_fullMessage"}>{fullMessage}</Text>
+          )}
+        </View>
+      )}
     </View>
   );
 };

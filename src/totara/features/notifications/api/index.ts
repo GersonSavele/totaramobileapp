@@ -26,7 +26,8 @@ const parser = (data) => {
       fullmessage: fullMessage,
       fullmessageformat: fullMessageFormat,
       timecreated: timeCreated,
-      contextUrl
+      contextUrl,
+      fullmessageHTML: fullMessageHTML
     } = message;
     return {
       id,
@@ -35,7 +36,8 @@ const parser = (data) => {
       fullMessage,
       timeCreated,
       fullMessageFormat,
-      contextUrl
+      contextUrl,
+      fullMessageHTML
     } as NotificationMessage;
   });
 };
