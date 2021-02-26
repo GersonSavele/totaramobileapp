@@ -17,6 +17,7 @@ import { useReducer } from "react";
 
 import { config } from "@totara/lib";
 import { translate } from "@totara/locale";
+import { isValidUrlText } from "@totara/lib/tools";
 
 export const useSiteUrl = ({ siteUrl, onSiteUrlSuccess, isSiteUrlSubmitted }: Props) => {
   const [siteUrlState, dispatch] = useReducer(siteUrlReducer, {
@@ -86,19 +87,6 @@ type State = {
 type Action = {
   type: "submit" | "change";
   payload?: string;
-};
-
-const isValidUrlText = (urlText: string) => {
-  const pattern = new RegExp(
-    "^(https?:\\/\\/)?" + // protocol
-    "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-    "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-    "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-    "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-      "(\\#[-a-z\\d_]*)?$",
-    "i"
-  ); // fragment locator
-  return pattern.test(urlText);
 };
 
 const formatUrl = (urlText: string) => {

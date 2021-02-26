@@ -21,7 +21,7 @@ import { AppState, NotificationMessage } from "@totara/types";
 import { fontWeights, paddings } from "@totara/theme/constants";
 import { isEmpty } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { timeAgo } from "@totara/lib/tools";
+import { isValidUrlText, timeAgo } from "@totara/lib/tools";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import WekaEditorView from "../currentLearning/weka/WekaEditorView";
 import { AuthContext } from "@totara/core/AuthContext";
@@ -47,6 +47,13 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
     }
     return true;
   };
+  const onLoadWithRequestExternalBrowser = (event) => {
+    if (isValidUrlText(event.url)) {
+      Linking.openURL(event.url);
+      return false;
+    }
+    return true;
+  };
   if (contextUrl) return <WebViewWrapper uri={contextUrl} onShouldStartLoadWithRequest={onLoadWithRequest} />;
   return (
     <View style={styles.mainContainer}>
@@ -59,7 +66,11 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
         </Text>
       </View>
       {!isEmpty(fullMessageHTML) ? (
-        <WebView source={{ html: fullMessageHTML }} containerStyle={styles.content} />
+        <WebView
+          source={{ html: fullMessageHTML }}
+          containerStyle={styles.content}
+          onShouldStartLoadWithRequest={onLoadWithRequestExternalBrowser}
+        />
       ) : (
         <View style={styles.content}>
           {fullMessageFormat === DescriptionFormat.jsonEditor ? (
