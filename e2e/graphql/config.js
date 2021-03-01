@@ -13,5 +13,4 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 const port = 8089;
-const mockServerUrl = `http://localhost:${port}/graphql`;
-module.exports = { mockServerUrl, port };
+module.exports = { port };

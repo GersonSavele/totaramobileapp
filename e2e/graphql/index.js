@@ -12,23 +12,19 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const { buildClientSchema } = require("graphql");
-
 const introspectedSchema = require("./schema.json");
-const { port, mockServerUrl } = require("./config");
+const { port } = require("./config");
+const graphqlApiPath = "/totara/mobile/api.php";
 
 const createServerWithMockedSchema = (customMocks = {}) => {
   const schema = buildClientSchema(introspectedSchema);
 
   const server = new ApolloServer({
     schema: schema,
-    mocks: customMocks,
-    playground: {
-      endpoint: mockServerUrl
-    }
+    mocks: customMocks
   });
   return server;
 };
@@ -53,14 +49,47 @@ const startGraphQLServer = async (mock = {}) => {
     console.warn("Tried to stop running server.");
     await stopGraphQLServer();
   }
-
   graphQLServerApp = express();
   const server = createServerWithMockedSchema(mock);
-
-  server.applyMiddleware({
-    app: graphQLServerApp
+  graphQLServerApp.use("/totara/mobile/api.php", express.json());
+  graphQLServerApp.post("/totara/mobile/site_info.php", (req, res) => {
+    res.json({
+      data: {
+        app_version: "1.0.7",
+        auth: "native",
+        siteMaintenance: "0",
+        theme: {
+          urlLogo: "https://mobile.demo.totara.software/pluginfile.php/1/totara_mobile/logo/0/App%20logo.png",
+          colorPrimary: "#1c5a94",
+          colorText: "#FFFFFF"
+        },
+        version: "2020100100"
+      }
+    });
   });
-
+  graphQLServerApp.get("/totara/mobile/login_setup.php", (req, res) => {
+    res.json({ data: { loginsecret: "mock_login_secret" } });
+  });
+  graphQLServerApp.post("/totara/mobile/login.php", (req, res) => {
+    res.json({
+      data: {
+        setupsecret: "mock_setup_secret"
+      }
+    });
+  });
+  graphQLServerApp.post("/totara/mobile/device_register.php", function (req, res) {
+    res.json({
+      data: {
+        apikey: "mock_apikey",
+        apiurl: "http://127.0.0.1:8089/totara/mobile/api.php",
+        version: "2020100100"
+      }
+    });
+  });
+  server.applyMiddleware({
+    app: graphQLServerApp,
+    path: graphqlApiPath
+  });
   await startHttpServer();
 };
 
