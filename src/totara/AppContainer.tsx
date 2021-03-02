@@ -103,7 +103,7 @@ const AppContainer = () => {
       .catch((err) => {
         console.debug("FCM TOKEN ERROR=========>", err);
       });
-  }, [notificationState?.tokenSent]);
+  }, []);
 
   useEffect(() => {
 

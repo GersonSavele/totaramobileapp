@@ -27,7 +27,7 @@ const registerPushNotifications = async ({ refreshToken = false }: { refreshToke
     await messaging().deleteToken();
   }
 
-  return await messaging().getToken();
+  return messaging().getToken();
 };
 
 const NotificationCenter = {
