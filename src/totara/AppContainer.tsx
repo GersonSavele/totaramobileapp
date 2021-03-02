@@ -78,50 +78,59 @@ const AppContainer = () => {
   };
 
   useEffect(() => {
-    NotificationCenter.registerPushNotifications()
+    if (notificationState?.tokenSent)
+      return;
+
+    NotificationCenter.registerPushNotifications({ refreshToken: true })
       .then((token) => {
-        console.debug("TOKEN=========>", token);
-        updateToken({ token: token });
+        console.debug("FCM TOKEN RECEIVED =========>", token);
+        console.debug("REGISTERING FCM TOKEN");
+        sendToken({ variables: { token } })
+          .then((success) => {
+            if (success) {
+              console.debug("TOKEN REGISTERED");
+              updateToken({ token: token });
+              tokenSent({ tokenSent: true });
+            }
+            else {
+              console.debug("TOKEN REGISTRATION FAIL");
+            }
+          })
+          .catch((err) => {
+            console.debug(err);
+          });
       })
       .catch((err) => {
-        console.debug("TOKEN ERROR=========>", err);
+        console.debug("FCM TOKEN ERROR=========>", err);
       });
+  }, [notificationState?.tokenSent]);
+
+  useEffect(() => {
 
     messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.debug(`onNotificationOpenedApp ${remoteMessage}`);
       handleNotificationReceived(remoteMessage);
     });
 
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
+        console.debug(`getInitialNotification ${remoteMessage}`);
         fetchNotifications(client);
         handleNotificationReceived(remoteMessage);
       });
 
-    messaging().onMessage(() => {
+    messaging().onTokenRefresh((token) => {
+      updateToken({ token: token });
+    });
+
+    const unsubscribe = messaging().onMessage((message) => {
+      console.debug(`onMessage ${JSON.stringify(message)}`);
       fetchNotifications(client);
     });
 
-    return () => {
-      messaging().onTokenRefresh((token) => {
-        updateToken({ token: token });
-      });
-    };
+    return unsubscribe;
   }, []);
-
-  useEffect(() => {
-    const send = !notificationState.tokenSent;
-    if (send) {
-      sendToken({ variables: { token: notificationState.token } })
-        .then((success) => {
-          console.debug(success);
-          tokenSent({ tokenSent: true });
-        })
-        .catch((err) => {
-          console.debug(err);
-        });
-    }
-  }, [notificationState?.tokenSent]);
 
   const navigationTheme = {
     ...DefaultTheme,

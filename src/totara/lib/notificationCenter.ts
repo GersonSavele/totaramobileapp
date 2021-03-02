@@ -15,13 +15,18 @@
 
 import messaging from "@react-native-firebase/messaging";
 
-const registerPushNotifications = async () => {
+const registerPushNotifications = async ({ refreshToken = false }: { refreshToken?: boolean }) => {
   try {
     await messaging().requestPermission()
   } catch (error) {
     console.debug("Notifications Permission status error:", error);
     return
   }
+
+  if (refreshToken) {
+    await messaging().deleteToken();
+  }
+
   return await messaging().getToken();
 };
 
