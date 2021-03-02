@@ -82,7 +82,7 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
 const LearningItems = ({ item }: any) => {
   const navigation = useNavigation();
   return (
-    <View style={carouselItemStyles.itemWithBadgeContainer}>
+    <View style={carouselItemStyles.itemWithBadgeContainer} testID={`${CL_TEST_IDS.LEARNING_ITEM}${item.id}`}>
       <View style={carouselItemStyles.badgeContainer}>
         <LearningItemWithSummaryAndNavigation item={item} navigation={navigation} />
       </View>

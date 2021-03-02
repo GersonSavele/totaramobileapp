@@ -119,7 +119,7 @@ const SectionItem = ({
     activities && (
       <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }} testID={testID}>
         {!isSingleActivity && (
-          <TouchableOpacity onPress={() => onExpand(isExpanded, id)}>
+          <TouchableOpacity onPress={() => onExpand(isExpanded, id)} testID={`${CL_TEST_IDS.ACTIVITY_SECTION}${id}`}>
             {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}
             {!available && availableReason && availableReason.length > 0 && (
               <RestrictionSectionHeader title={title} availableReason={availableReason} />
@@ -347,7 +347,8 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                 });
               }
             }
-          }}>
+          }}
+          testID={`${CL_TEST_IDS.ACTIVITY}${item.id}`}>
           {isLabel ? (
             item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
               <WekaEditorView

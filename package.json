@@ -39,7 +39,7 @@
     "fixIOS14images:macos": "npx react-native-fix-image",
     "fixIOS14images:windows": "",
     "mock:schema:setup": "get-graphql-schema https://mobile.demo.totara.software/totara/webapi/dev_graphql_executor.php --json > e2e/graphql/schema.json",
-    "postinstall": "npm-run-all jetify install:translations fixIOS14images mock:schema:setup",
+    "postinstall": "npm-run-all jetify install:translations fixIOS14images",
     "mock:setup": "mv src/totara/lib/config.local.ts src/totara/lib/config.local.bak.ts &&  cp src/totara/lib/config.detox.ts src/totara/lib/config.local.ts",
     "mock:reset": "mv src/totara/lib/config.local.bak.ts src/totara/lib/config.local.ts",
     "detox:test": "detox build && detox test || echo '`detox test` completed.'",

@@ -56,18 +56,21 @@ describe("Scorm test", () => {
   });
 
   it("should navigate to the scorm summary screen and complete online work flow", async () => {
-    await waitFor(element(by.text("(BETA) Audiences in Totara")))
+    const scormCourseTestId = `${CL_TEST_IDS.LEARNING_ITEM}course_45`;
+    const sectionTestId = `${CL_TEST_IDS.ACTIVITY_SECTION}174`;
+    const activityTestId = `${CL_TEST_IDS.ACTIVITY}462`;
+    await waitFor(element(by.id(scormCourseTestId)))
       .toBeVisible()
       .whileElement(by.id(CL_TEST_IDS.CAROUSEL))
       .scroll(300, "right");
-    await element(by.text("(BETA) Audiences in Totara")).tap();
+    await element(by.id(scormCourseTestId)).tap();
     await element(by.id(CL_TEST_IDS.TAB_2)).tap();
-    await element(by.text("Ask Us")).tap();
-    await waitFor(element(by.text("Report in Totara Learn")))
+    await element(by.id(sectionTestId)).tap();
+    await waitFor(element(by.id(activityTestId)))
       .toBeVisible()
-      .whileElement(by.text("Ask Us"))
+      .whileElement(by.id(sectionTestId))
       .swipe("up", "slow", 0.5);
-    await element(by.text("Report in Totara Learn")).tap();
+    await element(by.id(activityTestId)).tap();
     await element(by.id(TEST_IDS_SCORM.ATTEMPTS_LIST)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     await element(by.id(TEST_IDS_SCORM.LAST_ATTEMPT)).tap();
@@ -95,8 +98,9 @@ describe("Scorm test", () => {
       ...notifications.default,
       ...lang.default
     });
+    const activityTestId = `${CL_TEST_IDS.ACTIVITY}461`;
     await startGraphQLServer(customMocks);
-    await element(by.text("Introduction to User Experience Design")).tap();
+    await element(by.id(activityTestId)).tap();
     await element(by.id(TEST_IDS_SCORM.DOWNLOAD)).tap();
     await waitFor(element(by.id(TEST_IDS_RESOURCE.DOWNLOADED)))
       .toBeVisible()
