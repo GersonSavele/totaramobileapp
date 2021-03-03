@@ -13,6 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+const { MockList } = require("apollo-server-express");
+
 const defaultCurrentLearningData = [
   {
     id: "program_12",
@@ -67,7 +69,7 @@ const defaultCurrentLearningData = [
 ];
 
 const currentLearning = {
-  default: { totara_mobile_current_learning: () => [...defaultCurrentLearningData] }
+  default: { totara_mobile_current_learning: () => new MockList(3) }
 };
 
 module.exports = {

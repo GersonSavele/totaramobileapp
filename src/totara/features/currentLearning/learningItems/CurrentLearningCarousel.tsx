@@ -38,8 +38,8 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
 
-  const renderItem = ({ item }: any) => {
-    return <LearningItems item={item} />;
+  const renderItem = ({ item, index }: any) => {
+    return <LearningItems item={item} index={index} />;
   };
   return (
     <View>
@@ -79,10 +79,10 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
   );
 };
 
-const LearningItems = ({ item }: any) => {
+const LearningItems = ({ item, index }: any) => {
   const navigation = useNavigation();
   return (
-    <View style={carouselItemStyles.itemWithBadgeContainer} testID={`${CL_TEST_IDS.LEARNING_ITEM}${item.id}`}>
+    <View style={carouselItemStyles.itemWithBadgeContainer} testID={`${CL_TEST_IDS.LEARNING_ITEM}${index}`}>
       <View style={carouselItemStyles.badgeContainer}>
         <LearningItemWithSummaryAndNavigation item={item} navigation={navigation} />
       </View>

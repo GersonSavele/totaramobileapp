@@ -17,7 +17,7 @@ import { by, device, element, waitFor } from "detox";
 import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../../lib/constants";
 import { TEST_IDS, CL_TEST_IDS, TEST_IDS_SCORM, NAVIGATION_TEST_IDS, TEST_IDS_RESOURCE } from "../../../../lib/testIds";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../../../e2e/graphql/index";
-import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../../../e2e/graphql/mocks/scalars";
+import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../../e2e/graphql/mocks/scalars";
 import { scorm } from "../../../../../../e2e/graphql/mocks/scorm";
 import { currentLearning } from "../../../../../../e2e/graphql/mocks/currentLearning";
 import { courseDetails } from "../../../../../../e2e/graphql/mocks/courseDetails";
@@ -28,6 +28,7 @@ const customMocks = {
   ...defaultCoreId,
   ...defaultCoreDate,
   ...defaultString,
+  ...defaultLI,
 
   Query: () => ({
     ...mobileMe.default,
@@ -56,7 +57,7 @@ describe("Scorm test", () => {
   });
 
   it("should navigate to the scorm summary screen and complete online work flow", async () => {
-    const scormCourseTestId = `${CL_TEST_IDS.LEARNING_ITEM}course_45`;
+    const scormCourseTestId = `${CL_TEST_IDS.LEARNING_ITEM}1`;
     const sectionTestId = `${CL_TEST_IDS.ACTIVITY_SECTION}174`;
     const activityTestId = `${CL_TEST_IDS.ACTIVITY}462`;
     await waitFor(element(by.id(scormCourseTestId)))

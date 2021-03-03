@@ -18,19 +18,45 @@ const date = {
 };
 
 const defaultString = {
-  String: () => "John Doe"
+  String: () => "Mocked String"
 };
 
 const defaultCoreId = {
   core_id: () => "8"
 };
+
+const defaultFloat = {
+  Float: () => 7
+};
+
 const defaultCoreDate = {
   core_date: () => new Date()
+};
+
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+};
+
+const defaultLI = {
+  totara_mobile_learning_item: () => ({
+    id: `course_${getRandomInt(30)}`,
+    itemtype: "course",
+    itemcomponent: "totara_program",
+    description_format: "HTML",
+    url_view: "https://mobile.demo.totara.software/totara/program/view.php?id=12",
+    duedate: "2020-09-10T00:00:00+0100",
+    duedate_state: "danger",
+    mobile_coursecompat: true,
+    mobile_image: "https://mobile.demo.totara.software/theme/image.php/ventura/totara_program/1612212198/defaultimage",
+    __typename: "totara_mobile_learning_item"
+  })
 };
 
 module.exports = {
   date,
   defaultString,
   defaultCoreId,
-  defaultCoreDate
+  defaultCoreDate,
+  defaultFloat,
+  defaultLI
 };

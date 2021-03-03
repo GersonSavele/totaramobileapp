@@ -295,6 +295,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
         <TouchableOpacity
           style={activitiesStyles.itemTouchableContent}
           disabled={isLabel}
+          testID={`act_item_${item.id}`}
           onPress={() => {
             switch (item.modtype) {
               case ActivityModType.scorm: {

@@ -15,7 +15,13 @@
 
 const { startGraphQLServer } = require("../e2e/graphql/index");
 
-const { defaultCoreId, defaultCoreDate, defaultString } = require("../e2e/graphql/mocks/scalars");
+const {
+  defaultCoreId,
+  defaultCoreDate,
+  defaultString,
+  defaultFloat,
+  defaultLI
+} = require("../e2e/graphql/mocks/scalars");
 
 const { mobileMe } = require("../e2e/graphql/mocks/me");
 const { lang } = require("../e2e/graphql/mocks/lang");
@@ -29,6 +35,8 @@ const customMocks = {
   ...defaultCoreId,
   ...defaultCoreDate,
   ...defaultString,
+  ...defaultFloat,
+  ...defaultLI,
 
   Query: () => ({
     ...mobileMe.default,
