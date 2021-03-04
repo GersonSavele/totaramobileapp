@@ -17,7 +17,7 @@ import { by, device, element } from "detox";
 import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../lib/constants";
 import { CL_TEST_IDS, TEST_IDS } from "../../../lib/testIds";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../../e2e/graphql/index";
-import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../../e2e/graphql/mocks/scalars";
+import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../e2e/graphql/mocks/scalars";
 import { currentLearning } from "../../../../../e2e/graphql/mocks/currentLearning";
 import { courseDetails } from "../../../../../e2e/graphql/mocks/courseDetails";
 import { mobileMe } from "../../../../../e2e/graphql/mocks/me";
@@ -28,6 +28,7 @@ const customMocks = {
   ...defaultCoreId,
   ...defaultCoreDate,
   ...defaultString,
+  ...defaultLI,
 
   Query: () => ({
     ...mobileMe.default,
