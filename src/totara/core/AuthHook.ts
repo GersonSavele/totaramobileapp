@@ -24,6 +24,7 @@ import { AppState, SiteInfo } from "@totara/types";
 import { persistor } from "../store";
 import { purge } from "../actions/root";
 import AsyncStorage from "@react-native-community/async-storage";
+import { unregisterPushNotification } from "@totara/lib/notificationService";
 
 /**
  * Custom react hook and its primary role is managing the auth state which is in authContextState.
@@ -75,13 +76,14 @@ export const useAuth = (
     if (!localOnly) {
       purge({});
       await persistor.purge();
+      await unregisterPushNotification();
     }
 
     const mutationPromise = () =>
       apolloClient.current && !localOnly
         ? apolloClient.current.mutate({
-            mutation: deleteDevice
-          })
+          mutation: deleteDevice
+        })
         : Promise.resolve({ data: { delete_device: true } });
 
     return deviceCleanup(mutationPromise).then(() => dispatch({ type: "deRegister" }));

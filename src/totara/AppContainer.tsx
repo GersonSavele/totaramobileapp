@@ -16,7 +16,7 @@
 import React, { useEffect } from "react";
 import messaging from "@react-native-firebase/messaging";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import NotificationCenter from "@totara/lib/notificationCenter";
+import { registerPushNotifications } from "@totara/lib/notificationService";
 import ResourceManager from "@totara/lib/resourceManager";
 import { createStackNavigator } from "@react-navigation/stack";
 import { scormStack } from "@totara/features/activities/scorm/ScormActivity";
@@ -81,7 +81,7 @@ const AppContainer = () => {
     if (notificationState?.tokenSent)
       return;
 
-    NotificationCenter.registerPushNotifications({ refreshToken: true })
+    registerPushNotifications({ refreshToken: true })
       .then((token) => {
         console.debug("FCM TOKEN RECEIVED =========>", token);
         console.debug("REGISTERING FCM TOKEN");

@@ -30,8 +30,8 @@ const registerPushNotifications = async ({ refreshToken = false }: { refreshToke
   return messaging().getToken();
 };
 
-const NotificationCenter = {
-  registerPushNotifications
-};
+const unregisterPushNotification = async () => {
+  return messaging().deleteToken();
+}
 
-export default NotificationCenter;
+export { registerPushNotifications, unregisterPushNotification };

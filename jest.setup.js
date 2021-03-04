@@ -37,7 +37,7 @@ jest.mock("@react-native-community/cookies", () => {
 
 jest.mock("react-native-reanimated", () => {
   const Reanimated = require("react-native-reanimated/mock");
-  Reanimated.default.call = () => {};
+  Reanimated.default.call = () => { };
   return Reanimated;
 });
 
@@ -75,7 +75,7 @@ jest.mock("react-native-device-info", () => {
 jest.mock("@apollo/react-hooks", () => ({
   ...require.requireActual("@apollo/react-hooks"),
   useApolloClient: jest.fn(() => ({
-    readQuery: jest.fn(() => {}),
+    readQuery: jest.fn(() => { }),
     writeQuery: jest.fn()
   }))
 }));
@@ -148,4 +148,12 @@ jest.mock("@react-navigation/native", () => {
 
 jest.mock('react-native-safe-area-view', () => ({
   useSafeArea: () => ({ insets: null }),
-}))
+}));
+
+jest.mock('@react-native-firebase/messaging', () => {
+  return () => ({
+    requestPermission: jest.fn(),
+    getToken: jest.fn(),
+    deleteToken: jest.fn()
+  })
+});
