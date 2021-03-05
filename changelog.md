@@ -1,5 +1,17 @@
 Totara Mobile App Changelog
 
+Release 1.0.8 (05th March 2021):
+=====================================
+
+Bug
+[MOB-883] - In-app notification not appearing until bell icon is selected and refresh the list
+[MOB-893] - Activities should not crash when the list of activities has a video
+
+Improvement
+[MOB-882] - Reshape Learning Details header
+[MOB-885] - Images added in the WEKA text editor do not scale down correctly when viewed on the mobile app
+[MOB-890] - Use `fullmessageHTML` field in notifications when the format is HTML
+
 Release 1.0.7 (29th January 2021):
 =====================================
 Bug
