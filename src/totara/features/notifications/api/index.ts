@@ -15,6 +15,7 @@
 
 import { gql } from "apollo-boost";
 import { NotificationMessage } from "@totara/types";
+import { isEmpty } from "lodash";
 
 const parser = (data) => {
   if (!data) return [];
@@ -43,8 +44,9 @@ const parser = (data) => {
 };
 
 const countUnreadMessages = (data) => {
-  if (!data) return 0;
-  return data.message_popup_messages.filter((x) => x.isread === false).length;
+  if (data && !isEmpty(data.message_popup_messages))
+    return data.message_popup_messages.filter((x) => x.isread === false).length;
+  return 0;
 };
 
 const notificationsQuery = gql`
