@@ -14,7 +14,6 @@
  */
 
 import { by, device, element } from "detox";
-import localConfig from "../../../lib/config.detox";
 import { CL_TEST_IDS, TEST_IDS } from "../../../lib/testIds";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../../e2e/graphql/index";
 import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../e2e/graphql/mocks/scalars";
@@ -23,8 +22,8 @@ import { courseDetails } from "../../../../../e2e/graphql/mocks/courseDetails";
 import { mobileMe } from "../../../../../e2e/graphql/mocks/me";
 import { lang } from "../../../../../e2e/graphql/mocks/lang";
 import { notifications } from "../../../../../e2e/graphql/mocks/notifications";
+import { mockServerUrl, mockUsername, mockPassword } from "../../../../../e2e/graphql/config";
 
-const { devOrgUrl, testUsername, testPassword } = localConfig;
 const customMocks = {
   ...defaultCoreId,
   ...defaultCoreDate,
@@ -42,14 +41,14 @@ const customMocks = {
 
 describe("Current learning test", () => {
   beforeAll(async () => {
-    await device.reloadReactNative();
-    await device.launchApp({ newInstance: true, permissions: { notifications: "YES" } });
+    // await device.reloadReactNative();
+    await device.launchApp({ permissions: { notifications: "YES" } });
     await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
-    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(devOrgUrl);
+    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
-    await element(by.id(TEST_IDS.USER_INPUT)).typeText(testUsername);
-    await element(by.id(TEST_IDS.USER_PW)).typeText(testPassword);
+    await element(by.id(TEST_IDS.USER_INPUT)).typeText(mockUsername);
+    await element(by.id(TEST_IDS.USER_PW)).typeText(mockPassword);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
 

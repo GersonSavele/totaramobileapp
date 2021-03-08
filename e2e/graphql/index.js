@@ -16,8 +16,11 @@ const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const { buildClientSchema } = require("graphql");
 const introspectedSchema = require("./schema.json");
-const { port } = require("./config");
+const { port, mockServerUrl, mockUsername, mockPassword } = require("./config");
 const graphqlApiPath = "/totara/mobile/api.php";
+
+let graphQLServerApp;
+let httpServer;
 
 const createServerWithMockedSchema = (customMocks = {}) => {
   const schema = buildClientSchema(introspectedSchema);
@@ -28,9 +31,6 @@ const createServerWithMockedSchema = (customMocks = {}) => {
   });
   return server;
 };
-
-let graphQLServerApp;
-let httpServer;
 
 const startHttpServer = () => {
   return new Promise((resolve) => {
@@ -51,7 +51,10 @@ const startGraphQLServer = async (mock = {}) => {
   }
   graphQLServerApp = express();
   const server = createServerWithMockedSchema(mock);
-  graphQLServerApp.use("/totara/mobile/api.php", express.json());
+  graphQLServerApp.use(express.json());
+  graphQLServerApp.use(express.text());
+  graphQLServerApp.use(express.static(__dirname + "/public"));
+  graphQLServerApp.use(express.static(__dirname + "/files"));
   graphQLServerApp.post("/totara/mobile/site_info.php", (req, res) => {
     res.json({
       data: {
@@ -59,7 +62,7 @@ const startGraphQLServer = async (mock = {}) => {
         auth: "native",
         siteMaintenance: "0",
         theme: {
-          urlLogo: "https://mobile.demo.totara.software/pluginfile.php/1/totara_mobile/logo/0/App%20logo.png",
+          urlLogo: `${mockServerUrl}/images/logo-totara.jpg`,
           colorPrimary: "#1c5a94",
           colorText: "#FFFFFF"
         },
@@ -68,23 +71,31 @@ const startGraphQLServer = async (mock = {}) => {
     });
   });
   graphQLServerApp.get("/totara/mobile/login_setup.php", (req, res) => {
-    res.json({ data: { loginsecret: "mock_login_secret" } });
+    res.json({ data: { loginsecret: "mocked_login_secret" } });
   });
   graphQLServerApp.post("/totara/mobile/login.php", (req, res) => {
-    res.json({
-      data: {
-        setupsecret: "mock_setup_secret"
-      }
-    });
+    const requestData = JSON.parse(req.body);
+    if (requestData && requestData.username == mockUsername && requestData.password == mockPassword) {
+      res.json({
+        data: {
+          setupsecret: "mocked_setup_secret"
+        }
+      });
+    } else {
+      res.status(401).send();
+    }
   });
   graphQLServerApp.post("/totara/mobile/device_register.php", function (req, res) {
     res.json({
       data: {
-        apikey: "mock_apikey",
-        apiurl: "http://127.0.0.1:8089/totara/mobile/api.php",
+        apikey: "mocked_apikey",
+        apiurl: `${mockServerUrl}/totara/mobile/api.php`,
         version: "2020100100"
       }
     });
+  });
+  graphQLServerApp.get("/totara/mobile/device_webview.php", function (req, res) {
+    res.redirect("/mocked_page.html");
   });
   server.applyMiddleware({
     app: graphQLServerApp,
@@ -98,7 +109,6 @@ const stopGraphQLServer = async () => {
     console.warn("Tried to close null HTTP server.");
     return;
   }
-
   await stopHttpServer();
   httpServer = null;
   graphQLServerApp = null;

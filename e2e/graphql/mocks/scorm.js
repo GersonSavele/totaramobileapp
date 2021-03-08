@@ -12,7 +12,7 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-
+const { mockServerUrl } = require("../config");
 const defaultData = {
   id: "30",
   courseid: "36",
@@ -195,8 +195,7 @@ const offlineData = {
   repeat_url: "https://mobile.demo.totara.software/mod/scorm/player.php?mode=normal&newattempt=off&cm=461&scoid=0",
   attempts_current: 1,
   calculated_grade: "1",
-  offline_package_url:
-    "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/857/mod_scorm/package/1/test.zip",
+  offline_package_url: `${mockServerUrl}/scorm/being-dynamic-with-totara-learn.zip`,
   offline_package_contenthash: "b3fda4b2914aebdbc66fc288cfc693519e093332",
   offline_package_sco_identifiers: ["item_1"],
   attempt_defaults:

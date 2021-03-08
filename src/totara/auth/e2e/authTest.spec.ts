@@ -14,23 +14,36 @@
  */
 
 import { by, device, element } from "detox";
-import localConfig from "../../lib/config.detox";
 import { TEST_IDS } from "../../lib/testIds";
-
-const { devOrgUrl, testUsername, testPassword } = localConfig;
+import { startGraphQLServer, stopGraphQLServer } from "../../../../e2e/graphql/index";
+import { mockServerUrl, mockUsername, mockPassword } from "../../../../e2e/graphql/config";
+import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../e2e/graphql/mocks/scalars";
+import { mobileMe } from "../../../../e2e/graphql/mocks/me";
 
 describe("User authentication", () => {
-  beforeEach(async () => {
-    await device.reloadReactNative();
+  beforeAll(async () => {
     await device.launchApp({ newInstance: true, permissions: { notifications: "YES" } });
+    const customMocks = {
+      ...defaultCoreId,
+      ...defaultCoreDate,
+      ...defaultString,
+      Query: () => ({
+        ...mobileMe.default
+      })
+    };
+    await startGraphQLServer(customMocks);
+  });
+
+  afterAll(async () => {
+    await stopGraphQLServer({});
   });
 
   it("should have organization url input and native login", async () => {
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
-    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(devOrgUrl);
+    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
-    await element(by.id(TEST_IDS.USER_INPUT)).typeText(testUsername);
-    await element(by.id(TEST_IDS.USER_PW)).typeText(testPassword);
+    await element(by.id(TEST_IDS.USER_INPUT)).typeText(mockUsername);
+    await element(by.id(TEST_IDS.USER_PW)).typeText(mockPassword);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
 });

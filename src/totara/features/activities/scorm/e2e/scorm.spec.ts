@@ -14,7 +14,7 @@
  */
 
 import { by, device, element, waitFor } from "detox";
-import localConfig from "../../../../lib/config.detox";
+import { mockServerUrl, mockUsername, mockPassword } from "../../../../../../e2e/graphql/config";
 import { TEST_IDS, CL_TEST_IDS, SCORM_TEST_IDS, NAVIGATION_TEST_IDS, RESOURCE_TEST_IDS } from "../../../../lib/testIds";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../../../e2e/graphql/index";
 import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../../e2e/graphql/mocks/scalars";
@@ -25,7 +25,6 @@ import { mobileMe } from "../../../../../../e2e/graphql/mocks/me";
 import { notifications } from "../../../../../../e2e/graphql/mocks/notifications";
 import { lang } from "../../../../../../e2e/graphql/mocks/lang";
 
-const { devOrgUrl, testUsername, testPassword } = localConfig;
 const customMocks = {
   ...defaultCoreId,
   ...defaultCoreDate,
@@ -44,13 +43,13 @@ const customMocks = {
 describe("Scorm test", () => {
   beforeAll(async () => {
     await device.reloadReactNative();
-    await device.launchApp({ newInstance: true, permissions: { notifications: "YES" } });
+    await device.launchApp({ permissions: { notifications: "YES" } });
     await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
-    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(devOrgUrl);
+    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
-    await element(by.id(TEST_IDS.USER_INPUT)).typeText(testUsername);
-    await element(by.id(TEST_IDS.USER_PW)).typeText(testPassword);
+    await element(by.id(TEST_IDS.USER_INPUT)).typeText(mockUsername);
+    await element(by.id(TEST_IDS.USER_PW)).typeText(mockPassword);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
 
@@ -116,6 +115,7 @@ describe("Scorm test", () => {
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
     await element(by.label("Ok").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.id(SCORM_TEST_IDS.FEEDBACK_CLOSE)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(0).tap();
   });
 });

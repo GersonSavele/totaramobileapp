@@ -53,7 +53,11 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
           isWithGrade ? "scorm.feedback.completed_attempt_with_grade" : "scorm.feedback.completed_attempt"
         )}
         imageSource={Images.attemptComplete as ImageSourcePropType}>
-        <PrimaryButton text={translate("course.course_complete.button_title")} onPress={onClose} />
+        <PrimaryButton
+          text={translate("course.course_complete.button_title")}
+          onPress={onClose}
+          testID={SCORM_TEST_IDS.FEEDBACK_CLOSE}
+        />
       </ModalContent>
     </View>
   );
