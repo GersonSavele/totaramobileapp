@@ -6,6 +6,7 @@ Release 1.0.8 (05th March 2021):
 Bug
 [MOB-883] - In-app notification not appearing until bell icon is selected and refresh the list
 [MOB-893] - Activities should not crash when the list of activities has a video
+[MOB-891] - Force password change does not redirect user to browser and prevents login to Totara Mobile app
 
 Improvement
 [MOB-882] - Reshape Learning Details header
