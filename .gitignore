@@ -67,8 +67,7 @@ buck-out/
 #local configuration
 #
 /src/totara/lib/config.local.ts
-/src/totara/lib/config.detox.ts
-
+/src/totara/lib/config.local.bak.ts
 # Untrack these helper script files and sample files
 
 nodejs-assets/build-native-modules-MacOS-helper-script-node.sh

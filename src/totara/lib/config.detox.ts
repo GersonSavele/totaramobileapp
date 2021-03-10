@@ -12,8 +12,12 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-const port = 8089;
-const mockServerUrl = `http://127.0.0.1:${port}`;
-const mockUsername = "mockeduser";
-const mockPassword = "mockedpw";
-module.exports = { port, mockServerUrl, mockUsername, mockPassword };
+
+const localConfig = {
+  disableConsoleYellowBox: true,
+  mobileApi: {
+    persistentQuery: false
+  }
+};
+
+export default localConfig;
