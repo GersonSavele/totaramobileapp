@@ -36,7 +36,7 @@ import { translate } from "@totara/locale";
 import { completionStatus, completionTrack } from "../constants";
 import { ActivityModType } from "@totara/lib/constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
-import { activitySelfComplete, fetchResource } from "../course/api";
+import { activitySelfComplete, fetchResource, updateStateViewResource } from "../course/api";
 import listViewStyles from "@totara/theme/listView";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
 
@@ -315,9 +315,27 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   instanceId: item.instanceid,
                   apiKey,
                   host
-                }).then((resourceData) => {
-                  const resource = get(resourceData, "data.resource");
-                  if (resource) {
+                })
+                  .then((resourceData) => {
+                    const resource = get(resourceData, "data.resource");
+                    if (resource) {
+                      return updateStateViewResource({
+                        apiKey,
+                        host,
+                        instanceId: item.id,
+                        modtype: item.modtype
+                      }).then((activityViewResponse) => {
+                        const isLogged = get(activityViewResponse, "data.core_completion_activity_view", false);
+                        if (!isLogged) {
+                          console.warn("Activity logging failed");
+                        }
+                        return resource;
+                      });
+                    } else {
+                      throw new Error("Activity resource data");
+                    }
+                  })
+                  .then((resource) => {
                     const { mimetype, fileurl } = resource;
                     navigateTo({
                       navigate: navigation.navigate,
@@ -331,8 +349,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         backAction: courseRefreshCallBack
                       }
                     });
-                  }
-                });
+                  });
                 break;
               }
               default: {

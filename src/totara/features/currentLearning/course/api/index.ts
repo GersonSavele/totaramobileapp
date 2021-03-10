@@ -105,6 +105,7 @@ type FetchParam = {
   instanceId: number;
   apiKey: string;
   host: string;
+  modtype?: string;
 };
 
 //TODO: This was copied from scorm/api. Might be worth to abstract here? and make a practice for fetch by id
@@ -130,4 +131,26 @@ const fetchResource = ({ instanceId, apiKey, host }: FetchParam): Promise<Respon
   });
 };
 
-export { coreCourse, courseSelfComplete, activitySelfComplete, fetchResource };
+const updateStateViewResource = ({ instanceId, modtype, apiKey, host }: FetchParam): Promise<Response> => {
+  // fetch from global
+  // eslint-disable-next-line no-undef
+  return fetch(config.apiUri(host), {
+    method: "POST",
+    body: JSON.stringify({
+      operationName: "totara_mobile_completion_activity_view",
+      variables: { cmid: instanceId, activity: modtype }
+    }),
+    headers: {
+      Accept: "application/json",
+      [AUTH_HEADER_FIELD]: apiKey
+    }
+  }).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw new Error(response.status.toString());
+    }
+  });
+};
+
+export { coreCourse, courseSelfComplete, activitySelfComplete, fetchResource, updateStateViewResource };
