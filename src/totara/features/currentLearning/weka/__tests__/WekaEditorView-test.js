@@ -100,9 +100,6 @@ describe("Weka content", () => {
     const mediaTitle = getByTestId("test_media_title");
     expect(mediaTitle).toBeTruthy();
 
-    const mediaDescription = getByTestId("test_media_description");
-    expect(mediaDescription).toBeTruthy();
-
     const mediaContent = getByTestId("test_media_content");
     expect(mediaContent).toBeTruthy();
   });

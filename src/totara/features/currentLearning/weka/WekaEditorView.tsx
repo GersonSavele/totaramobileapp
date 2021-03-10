@@ -97,10 +97,10 @@ const ContentExtract = ({ content = [] }: any) => {
       <Configuration content={content} />
     </View>
   ) : (
-    content.content.map((nestedContent: any = {}, index: number) => {
-      return <Configuration key={index} content={nestedContent} attrs={content.attrs} />;
-    })
-  );
+      content.content.map((nestedContent: any = {}, index: number) => {
+        return <Configuration key={index} content={nestedContent} attrs={content.attrs} />;
+      })
+    );
 };
 
 const Configuration = ({ content = {}, attrs }: ConfigProps) => {
@@ -159,8 +159,8 @@ const TextView = ({ attrs = {}, content = {} }: ConfigProps) => {
     attrs.level === 1
       ? { ...TotaraTheme.textHeadline, color: color.textColor }
       : attrs.level == 2
-      ? { ...TotaraTheme.textMedium, color: color.textColor }
-      : { ...TotaraTheme.textRegular, color: color.textColor };
+        ? { ...TotaraTheme.textMedium, color: color.textColor }
+        : { ...TotaraTheme.textRegular, color: color.textColor };
 
   const fontItalic =
     content.marks &&
@@ -329,14 +329,9 @@ const LinkMedia = ({ content = {} }: ConfigProps) => {
           ) : content.attrs.url.match(/\.(?:wav|mp3)$/i) != null ? (
             <EmbeddedMedia content={content} title="Audio file" />
           ) : (
-            <WebViewWrapper content={content} />
-          )}
+                <WebViewWrapper content={content} />
+              )}
         </View>
-      )}
-      {!isEmpty(content?.attrs?.description) && (
-        <Text style={[styles.linkMediaDescription, { color: color.textColor }]} testID="test_media_description">
-          {content.attrs.description}
-        </Text>
       )}
     </View>
   );

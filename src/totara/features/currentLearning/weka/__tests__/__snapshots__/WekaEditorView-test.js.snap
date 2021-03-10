@@ -1977,25 +1977,6 @@ Array [
         </View>
       </View>
     </View>
-    <Text
-      style={
-        Array [
-          Object {
-            "color": undefined,
-            "fontSize": 17,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "marginTop": 12,
-          },
-          Object {
-            "color": "#000000",
-          },
-        ]
-      }
-      testID="test_media_description"
-    >
-      Sample video.
-    </Text>
   </View>,
   <Text
     style={
