@@ -20,7 +20,7 @@ import * as Progress from "react-native-progress";
 import { ThemeContext, gutter } from "@totara/theme";
 import { ResourceState } from "@totara/types/Resource";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { TEST_IDS_RESOURCE } from "@totara/lib/testIds";
+import { RESOURCE_TEST_IDS } from "@totara/lib/testIds";
 
 type ResourceDownloaderProps = {
   resourceState?: ResourceState;
@@ -42,7 +42,7 @@ const ResourceDownloaderComponent = ({ resourceState, progress, size }: Resource
   if (resourceState === ResourceState.Downloading) {
     return (
       <Progress.Circle
-        testID={TEST_IDS_RESOURCE.DOWNLOADING}
+        testID={RESOURCE_TEST_IDS.DOWNLOADING}
         progress={progress / 100}
         size={size}
         unfilledColor={theme.colorNeutral4}
@@ -62,7 +62,7 @@ const ResourceDownloaderComponent = ({ resourceState, progress, size }: Resource
   } else {
     const iconColor = resourceState === ResourceState.Completed ? TotaraTheme.colorNeutral3 : TotaraTheme.colorLink;
     const imageTestId =
-      resourceState === ResourceState.Completed ? TEST_IDS_RESOURCE.DOWNLOADED : TEST_IDS_RESOURCE.DOWNLOAD;
+      resourceState === ResourceState.Completed ? RESOURCE_TEST_IDS.DOWNLOADED : RESOURCE_TEST_IDS.DOWNLOAD;
 
     return (
       <Image

@@ -18,7 +18,7 @@ import { render } from "@testing-library/react-native";
 
 import ScormFeedbackModal from "../ScormFeedbackModal";
 import { Grade } from "@totara/types/Scorm";
-import { SCORM_TEST_IDS } from "../../constants";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 import { translate } from "@totara/locale";
 
 const { ATTEMPT_FEEDBACK } = SCORM_TEST_IDS;

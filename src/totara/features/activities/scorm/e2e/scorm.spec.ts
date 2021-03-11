@@ -15,7 +15,7 @@
 
 import { by, device, element, waitFor } from "detox";
 import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../../lib/constants";
-import { TEST_IDS, CL_TEST_IDS, TEST_IDS_SCORM, NAVIGATION_TEST_IDS, TEST_IDS_RESOURCE } from "../../../../lib/testIds";
+import { TEST_IDS, CL_TEST_IDS, SCORM_TEST_IDS, NAVIGATION_TEST_IDS, RESOURCE_TEST_IDS } from "../../../../lib/testIds";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../../../e2e/graphql/index";
 import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../../e2e/graphql/mocks/scalars";
 import { scorm } from "../../../../../../e2e/graphql/mocks/scorm";
@@ -72,15 +72,15 @@ describe("Scorm test", () => {
       .whileElement(by.id(sectionTestId))
       .swipe("up", "slow", 0.5);
     await element(by.id(activityTestId)).tap();
-    await element(by.id(TEST_IDS_SCORM.ATTEMPTS_LIST)).tap();
+    await element(by.id(SCORM_TEST_IDS.BUTTON_VIEW_ATTEMPTS)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
-    await element(by.id(TEST_IDS_SCORM.LAST_ATTEMPT)).tap();
+    await element(by.id(SCORM_TEST_IDS.LAST_ATTEMPT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
     await element(by.label("Ok").and(by.type("_UIAlertControllerActionView"))).tap();
-    await element(by.id(TEST_IDS_SCORM.NEW_ATTEMPT)).tap();
+    await element(by.id(SCORM_TEST_IDS.NEW_ATTEMPT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
     await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
@@ -102,11 +102,11 @@ describe("Scorm test", () => {
     const activityTestId = `${CL_TEST_IDS.ACTIVITY}461`;
     await startGraphQLServer(customMocks);
     await element(by.id(activityTestId)).tap();
-    await element(by.id(TEST_IDS_SCORM.DOWNLOAD)).tap();
-    await waitFor(element(by.id(TEST_IDS_RESOURCE.DOWNLOADED)))
+    await element(by.id(SCORM_TEST_IDS.DOWNLOAD)).tap();
+    await waitFor(element(by.id(RESOURCE_TEST_IDS.DOWNLOADED)))
       .toBeVisible()
       .withTimeout(10000);
-    await element(by.id(TEST_IDS_SCORM.NEW_ATTEMPT)).tap();
+    await element(by.id(SCORM_TEST_IDS.NEW_ATTEMPT)).tap();
 
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android

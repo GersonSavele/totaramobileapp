@@ -43,10 +43,9 @@ import ResourceManager from "@totara/lib/resourceManager";
 import { iconSizes } from "@totara/theme/constants";
 import { getTargetZipFile, getOfflinePackageUnzipPath } from "./utils";
 import ScormFeedbackModal from "./components/ScormFeedbackModal";
-import { SCORM_TEST_IDS } from "./constants";
 import { WebviewActivity } from "../webview/WebviewActivity";
 import CloseButton from "@totara/components/CloseButton";
-import { NAVIGATION_TEST_IDS, TEST_IDS_SCORM } from "@totara/lib/testIds";
+import { NAVIGATION_TEST_IDS, SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 const { download } = ResourceManager;
 
@@ -166,7 +165,7 @@ const ScormActivity = (props: ScormActivityProps) => {
             progress={progress}
             size={iconSizes.sizeM}
             onPress={onDownloadPress}
-            testID={TEST_IDS_SCORM.DOWNLOAD}
+            testID={SCORM_TEST_IDS.DOWNLOAD}
           />
         ) : null;
       }
@@ -294,7 +293,7 @@ const headerRight = (props) => {
         size={iconSizes.sizeM}
         accessibilityLabel={translate("downloads.accessibility_icon", { filename: title })}
         onPress={() => onDownloadPress({ id, title })}
-        testID={TEST_IDS_SCORM.DOWNLOAD}
+        testID={SCORM_TEST_IDS.DOWNLOAD}
       />
     );
   }

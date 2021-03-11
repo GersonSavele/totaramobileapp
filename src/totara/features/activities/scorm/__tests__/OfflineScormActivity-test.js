@@ -25,7 +25,7 @@ import OfflineScormActivity, {
   stopServer,
   onPlayerMessageHandler
 } from "../OfflineScormActivity";
-import { SCORM_TEST_IDS } from "../constants";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 import * as utils from "../utils";
 import * as storageUtils from "../storageUtils";
 import { Grade } from "@totara/types/Scorm";

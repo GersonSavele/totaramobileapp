@@ -37,7 +37,7 @@ import { spacedFlexRow } from "@totara/lib/styles/base";
 import { showConfirmation } from "@totara/lib/tools";
 import { margins } from "@totara/theme/constants";
 import { fetchLastAttemptResult } from "./api";
-import { TEST_IDS, TEST_IDS_SCORM } from "@totara/lib/testIds";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 const { SCORM_ROOT, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -306,7 +306,7 @@ const ScormSummary = ({
                       })
                     }
                     disabled={isEmpty(attempts)}
-                    testID={TEST_IDS_SCORM.ATTEMPTS_LIST}>
+                    testID={SCORM_TEST_IDS.BUTTON_VIEW_ATTEMPTS}>
                     <GridLabelValue theme={theme} textId={"scorm.summary.grade.reported"} value={calculatedGrade}>
                       {!isEmpty(attempts) && (
                         <FontAwesomeIcon
@@ -431,7 +431,7 @@ const AttemptController = ({
             text={lastAttempt.title}
             onPress={lastAttempt.action}
             style={{ flex: 1, marginRight: newAttempt ? margins.marginL : 0 }}
-            testID={TEST_IDS_SCORM.LAST_ATTEMPT}
+            testID={SCORM_TEST_IDS.LAST_ATTEMPT}
           />
         )}
 
@@ -440,7 +440,7 @@ const AttemptController = ({
           onPress={newAttempt && newAttempt.action}
           style={{ flex: 1 }}
           mode={(!shouldAllowNewAttempt && "disabled") || undefined}
-          testID={TEST_IDS_SCORM.NEW_ATTEMPT}
+          testID={SCORM_TEST_IDS.NEW_ATTEMPT}
         />
       </View>
     </View>

@@ -18,7 +18,7 @@ import { render } from "@testing-library/react-native";
 
 import ScormAttempts from "../ScormAttempts";
 import { Grade } from "@totara/types/Scorm";
-import { SCORM_TEST_IDS } from "../constants";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 const { ATTEMPTS_LIST_ID, ATTEMPT_ITEM_ID } = SCORM_TEST_IDS;
 

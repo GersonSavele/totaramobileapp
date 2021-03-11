@@ -23,7 +23,7 @@ import { fullFlex } from "@totara/lib/styles/base";
 import { scormAttemptsStyles } from "@totara/theme/scorm";
 import { fontWeights } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { SCORM_TEST_IDS } from "./constants";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 type AttemptsParams = {
   gradeMethod: Grade;

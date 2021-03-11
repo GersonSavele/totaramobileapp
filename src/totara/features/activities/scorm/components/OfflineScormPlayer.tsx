@@ -18,9 +18,9 @@ import { StyleSheet, SafeAreaView } from "react-native";
 import { WebView, WebViewMessageEvent, WebViewNavigation } from "react-native-webview";
 import Orientation from "react-native-orientation-locker";
 
-import { SCORM_TEST_IDS } from "../constants";
 import { WebviewToolbar } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 type Props = {
   url: string;

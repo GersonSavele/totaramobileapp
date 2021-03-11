@@ -26,7 +26,7 @@ import { downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/down
 import ScormActivity, { apiDataEffect, onRefresh, navigationOptions } from "../ScormActivity";
 import { scormSuccessMock } from "../api/scorm.mock";
 import { AuthContext } from "@totara/core";
-import { SCORM_TEST_IDS } from "../constants";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 import * as storageUtils from "../storageUtils";
 
 const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;

@@ -36,7 +36,8 @@ import {
   setupOfflineScormPlayer,
   loadScormPackageData
 } from "./utils";
-import { ScormLessonStatus, SCORM_TEST_IDS } from "./constants";
+import { ScormLessonStatus } from "./constants";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 type OfflineScormParams = {
   attempt: number;

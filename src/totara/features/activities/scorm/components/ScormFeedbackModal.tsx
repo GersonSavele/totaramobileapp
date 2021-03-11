@@ -19,8 +19,8 @@ import { View, ImageSourcePropType } from "react-native";
 import { PrimaryButton, ModalContent } from "@totara/components";
 import { translate } from "@totara/locale";
 import { Grade } from "@totara/types/Scorm";
-import { SCORM_TEST_IDS } from "../constants";
 import { Images } from "@resources/images";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 type ScormFeedbackProps = {
   score: string;

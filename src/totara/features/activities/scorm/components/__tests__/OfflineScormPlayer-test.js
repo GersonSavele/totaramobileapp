@@ -17,7 +17,7 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import OfflineScormPlayer from "../OfflineScormPlayer";
-import { SCORM_TEST_IDS } from "../../constants";
+import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 const { OFFLINE_PLAYER_ID } = SCORM_TEST_IDS;
 
