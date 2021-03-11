@@ -15,7 +15,7 @@
 
 import React, { useContext, useEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { Image, ImageSourcePropType } from "react-native";
+import { Image, ImageSourcePropType, View } from "react-native";
 import { ThemeContext } from "@totara/theme";
 import NotificationsStack from "@totara/features/notifications";
 import DownloadsStack from "@totara/features/downloads";
@@ -25,6 +25,7 @@ import { useQuery } from "@apollo/react-hooks";
 import CurrentLearningStack from "./features/currentLearning";
 import { setNotificationBadgeCount } from "@totara/lib/nativeExtensions";
 import { TAB_TEST_IDS } from "./lib/testIds";
+import { translate } from "./locale";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -37,12 +38,18 @@ const TabContainer = () => {
     setNotificationBadgeCount(notificationCount);
   }, [notificationCount]);
 
-  const TabBarIconBuilder = ({ image, focused, color }: { image: iconImageProps; focused: boolean; color: string }) => {
+  const TabBarIconBuilder = ({ image, focused, color, accessibilityLabel }: { image: iconImageProps; focused: boolean; color: string, accessibilityLabel: string }) => {
     return (
-      <Image
-        source={focused ? image.solid : image.regular}
-        style={{ tintColor: focused ? theme.colorPrimary : color }}
-      />
+      <View
+        accessibilityRole="tab"
+        accessibilityLabel={accessibilityLabel}
+        accessibilityState={focused ? { selected: true } : {}}
+      >
+        <Image
+          source={focused ? image.solid : image.regular}
+          style={{ tintColor: focused ? theme.colorPrimary : color }}
+        />
+      </View>
     );
   };
 
@@ -53,7 +60,7 @@ const TabContainer = () => {
         component={CurrentLearningStack}
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.current_learning} />
+            <TabBarIconBuilder accessibilityLabel={translate("current_learning.action_primary")} color={color} focused={focused} image={tabBarIconImages.current_learning} />
           ),
           tabBarTestID: TAB_TEST_IDS.CURRENT_LEARNING
         }}
@@ -63,7 +70,7 @@ const TabContainer = () => {
         component={DownloadsStack}
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.downloads} />
+            <TabBarIconBuilder accessibilityLabel={translate("downloads.title")} color={color} focused={focused} image={tabBarIconImages.downloads} />
           ),
           tabBarTestID: TAB_TEST_IDS.DOWNLOADS
         }}
@@ -73,7 +80,7 @@ const TabContainer = () => {
         component={NotificationsStack}
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.notifications} />
+            <TabBarIconBuilder accessibilityLabel={translate("notifications.title")} color={color} focused={focused} image={tabBarIconImages.notifications} />
           ),
           tabBarBadge: notificationCount > 0 && notificationCount,
           tabBarTestID: TAB_TEST_IDS.NOTIFICATIONS
@@ -84,7 +91,7 @@ const TabContainer = () => {
         component={ProfileStack}
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.profile} />
+            <TabBarIconBuilder accessibilityLabel={translate("user_profile.title")} color={color} focused={focused} image={tabBarIconImages.profile} />
           ),
           tabBarTestID: TAB_TEST_IDS.PROFILE
         }}

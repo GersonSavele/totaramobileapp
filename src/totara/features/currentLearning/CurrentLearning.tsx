@@ -14,7 +14,7 @@
  */
 
 import React, { useContext, useState } from "react";
-import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { RefreshControl, ScrollView, StatusBar, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { NavigationEvents } from "@react-navigation/compat";
 import { ThemeContext } from "@totara/theme";
@@ -68,6 +68,8 @@ const CurrentLearning = () => {
 
     return (
       <View style={[theme.viewContainer, { flex: 1 }]}>
+        <StatusBar backgroundColor={'transparent'}
+          translucent barStyle={"dark-content"} />
         <NavigationEvents onWillFocus={onContentRefresh} />
         <View style={currentLearningStyles.headerViewWrap}>
           <View style={currentLearningStyles.headerWrapper}>
@@ -107,28 +109,28 @@ const CurrentLearning = () => {
                 onRefresh={onContentRefresh}
               />
             ) : (
-              <CurrentLearningListView
-                currentLearning={currentLearning}
-                loading={loading}
-                onRefresh={onContentRefresh}
-              />
-            )
+                <CurrentLearningListView
+                  currentLearning={currentLearning}
+                  loading={loading}
+                  onRefresh={onContentRefresh}
+                />
+              )
           ) : (
-            <View
-              style={{
-                flex: 1
-              }}>
-              <ScrollView
-                refreshControl={<RefreshControl refreshing={loading} onRefresh={onContentRefresh} />}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  justifyContent: "center"
+              <View
+                style={{
+                  flex: 1
                 }}>
-                <NoCurrentLearning testID={"test_NoCurrentLearning"} />
-              </ScrollView>
-            </View>
-          )}
+                <ScrollView
+                  refreshControl={<RefreshControl refreshing={loading} onRefresh={onContentRefresh} />}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                    flexGrow: 1,
+                    justifyContent: "center"
+                  }}>
+                  <NoCurrentLearning testID={"test_NoCurrentLearning"} />
+                </ScrollView>
+              </View>
+            )}
         </View>
       </View>
     );

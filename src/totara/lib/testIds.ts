@@ -24,6 +24,7 @@ const TEST_IDS = {
 
 const CL_TEST_IDS = {
   SWITCH: "SWITCH",
+  TAB_1: "TAB_1",
   TAB_2: "TAB_2",
   CAROUSEL_WRAPPER_ID: "CAROUSEL_WRAPPER_ID",
   LIST: "LIST",

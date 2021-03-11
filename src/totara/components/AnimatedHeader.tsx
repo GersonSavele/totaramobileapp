@@ -72,7 +72,7 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
       zIndex: 200,
       flexDirection: 'row'
     }}>
-      <TouchableOpacity testID={"animated-header-backbutton"} onPress={leftAction} style={styles.leftAction}>
+      <TouchableOpacity accessibilityLabel={"Go back"} accessibilityRole={"button"} testID={"animated-header-backbutton"} onPress={leftAction} style={styles.leftAction}>
         <Animated.View testID={"animated-header-backbutton-black"} style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]} >
           <FontAwesomeIcon icon="chevron-left" color={"black"} />
         </Animated.View>

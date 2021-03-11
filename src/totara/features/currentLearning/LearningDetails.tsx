@@ -76,8 +76,12 @@ const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }:
               learningDetailsStyles.tabViewItem,
               overviewIsShown && { ...learningDetailsStyles.tabViewItemSelected }
             ]}
+            testID={CL_TEST_IDS.TAB_1}
+            accessibilityRole={"tab"}
+            accessibilityState={overviewIsShown ? { selected: true } : {}}
             onPress={onPress}>
             <Text
+
               style={[
                 learningDetailsStyles.tabViewTitle,
                 overviewIsShown && learningDetailsStyles.tabViewTitleSelected
@@ -91,6 +95,8 @@ const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }:
               { marginLeft: marginXL },
               !overviewIsShown && { ...learningDetailsStyles.tabViewItemSelected }
             ]}
+            accessibilityRole={"tab"}
+            accessibilityState={!overviewIsShown ? { selected: true } : {}}
             onPress={onPress}
             testID={CL_TEST_IDS.TAB_2}>
             <Text
@@ -129,6 +135,7 @@ const LearningDetails = ({
     <View style={learningDetailsStyles.container}>
       <AnimatedHeader scrollValue={scrollValue} title={fullname!} subTitle={badgeTitle} leftAction={() => navigation?.goBack()} />
       <Animated.ScrollView
+
         onScrollEndDrag={(event) => {
           const yOffset = event.nativeEvent.contentOffset.y;
           if (yOffset < (HEIGHT / 3)) {
