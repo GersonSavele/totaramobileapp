@@ -22,6 +22,7 @@ import { ThemeContext } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
 import { timeAgo } from "@totara/lib/tools";
+import { translate } from "@totara/locale";
 
 type NotificationItemProps = {
   testID?: string;
@@ -44,6 +45,7 @@ const NotificationItem = ({
   return (
     <TouchableOpacity
       testID={testID}
+      accessibilityHint={translate("notifications.tap_to_launch_hint")}
       onPress={() => onNotificationItemPress(item)}
       onLongPress={() => onNotificationItemLongPress(item)}>
       <View key={item.id} style={listViewStyles.rowItem}>

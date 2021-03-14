@@ -25,6 +25,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { humanReadablePercentage } from "@totara/lib/tools";
 
 import listViewStyles from "@totara/theme/listView";
+import { translate } from "@totara/locale";
 
 type DownloadItemProps = {
   item: Resource;
@@ -56,7 +57,9 @@ const DownloadItem = ({
   const { bytesDownloaded: writtenBytes, sizeInBytes } = item;
 
   return (
-    <TouchableOpacity testID={testID} onPress={() => onItemPress(item)} onLongPress={() => onItemLongPress(item)}>
+    <TouchableOpacity
+      accessibilityHint={translate("downloads.tap_to_launch_hint")}
+      testID={testID} onPress={() => onItemPress(item)} onLongPress={() => onItemLongPress(item)}>
       <View key={item.id} style={listViewStyles.rowItem} testID={"test_DownloadItemItemID"}>
         {selectable && (
           <View style={styles.itemCircle} testID={"test_DownloadItemSelectIcon"}>

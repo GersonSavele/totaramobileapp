@@ -233,13 +233,15 @@
     "title": "Notifications",
     "empty": "No notifications yet!",
     "selected": "{{count}} Selected",
-    "mark_as_read": "Mark as read"
+    "mark_as_read": "Mark as read",
+    "tap_to_launch_hint": "Tap to open the notification details"
   },
   "downloads": {
     "title": "Downloads",
     "empty": "No downloads yet!",
     "selected": "{{count}} Selected",
-    "accessibility_icon": "Download {{filename}}"
+    "accessibility_icon": "Download {{filename}}",
+    "tap_to_launch_hint": "Tap to launch the activity"
   },
   "user_profile": {
     "title": "Profile",

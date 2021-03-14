@@ -38,13 +38,9 @@ const TabContainer = () => {
     setNotificationBadgeCount(notificationCount);
   }, [notificationCount]);
 
-  const TabBarIconBuilder = ({ image, focused, color, accessibilityLabel }: { image: iconImageProps; focused: boolean; color: string, accessibilityLabel: string }) => {
+  const TabBarIconBuilder = ({ image, focused, color }: { image: iconImageProps; focused: boolean; color: string }) => {
     return (
-      <View
-        accessibilityRole="tab"
-        accessibilityLabel={accessibilityLabel}
-        accessibilityState={focused ? { selected: true } : {}}
-      >
+      <View>
         <Image
           source={focused ? image.solid : image.regular}
           style={{ tintColor: focused ? theme.colorPrimary : color }}
@@ -59,8 +55,9 @@ const TabContainer = () => {
         name="Learning"
         component={CurrentLearningStack}
         options={{
+          tabBarAccessibilityLabel: translate("current_learning.action_primary"),
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder accessibilityLabel={translate("current_learning.action_primary")} color={color} focused={focused} image={tabBarIconImages.current_learning} />
+            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.current_learning} />
           ),
           tabBarTestID: TAB_TEST_IDS.CURRENT_LEARNING
         }}
@@ -69,8 +66,9 @@ const TabContainer = () => {
         name="Downloads"
         component={DownloadsStack}
         options={{
+          tabBarAccessibilityLabel: translate("downloads.title"),
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder accessibilityLabel={translate("downloads.title")} color={color} focused={focused} image={tabBarIconImages.downloads} />
+            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.downloads} />
           ),
           tabBarTestID: TAB_TEST_IDS.DOWNLOADS
         }}
@@ -79,8 +77,9 @@ const TabContainer = () => {
         name="Notifications"
         component={NotificationsStack}
         options={{
+          tabBarAccessibilityLabel: translate("notifications.title"),
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder accessibilityLabel={translate("notifications.title")} color={color} focused={focused} image={tabBarIconImages.notifications} />
+            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.notifications} />
           ),
           tabBarBadge: notificationCount > 0 && notificationCount,
           tabBarTestID: TAB_TEST_IDS.NOTIFICATIONS
@@ -90,8 +89,9 @@ const TabContainer = () => {
         name="Profile"
         component={ProfileStack}
         options={{
+          tabBarAccessibilityLabel: translate("user_profile.title"),
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder accessibilityLabel={translate("user_profile.title")} color={color} focused={focused} image={tabBarIconImages.profile} />
+            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.profile} />
           ),
           tabBarTestID: TAB_TEST_IDS.PROFILE
         }}
