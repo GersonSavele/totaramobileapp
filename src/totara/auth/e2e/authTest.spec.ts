@@ -14,8 +14,10 @@
  */
 
 import { by, device, element } from "detox";
-import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../lib/constants";
+import localConfig from "../../lib/config.detox";
 import { TEST_IDS } from "../../lib/testIds";
+
+const { organizationUrl, testUsername, testPassword } = localConfig;
 
 describe("User authentication", () => {
   beforeEach(async () => {
@@ -25,10 +27,10 @@ describe("User authentication", () => {
 
   it("should have organization url input and native login", async () => {
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
-    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(DEV_ORG_URL);
+    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(organizationUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
-    await element(by.id(TEST_IDS.USER_INPUT)).typeText(DEV_USERNAME);
-    await element(by.id(TEST_IDS.USER_PW)).typeText(DEV_PASSWORD);
+    await element(by.id(TEST_IDS.USER_INPUT)).typeText(testUsername);
+    await element(by.id(TEST_IDS.USER_PW)).typeText(testPassword);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
 });

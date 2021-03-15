@@ -31,10 +31,6 @@ const SCREEN_WIDTH_LARGE = "large";
 const SCREEN_WIDTH_MEDIUM = "medium";
 const SCREEN_WIDTH_SMALL = "small";
 
-const DEV_ORG_URL = "mobile.demo.totara.software";
-const DEV_USERNAME = "tharakad";
-const DEV_PASSWORD = "Abcd123$";
-
 const FILE_EXTENSION = ".zip";
 const OFFLINE_SCORM_PREFIX = "OfflineSCORM_";
 
@@ -60,9 +56,6 @@ export {
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,
   SCREEN_WIDTH_SMALL,
-  DEV_ORG_URL,
-  DEV_USERNAME,
-  DEV_PASSWORD,
   OFFLINE_SCORM_PREFIX,
   FILE_EXTENSION,
   ActivityModType,

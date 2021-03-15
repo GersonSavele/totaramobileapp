@@ -67,6 +67,7 @@ buck-out/
 #local configuration
 #
 /src/totara/lib/config.local.ts
+/src/totara/lib/config.detox.ts
 
 # Untrack these helper script files and sample files
 

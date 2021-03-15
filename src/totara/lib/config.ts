@@ -35,7 +35,8 @@ const defaultConfig = {
   minApiVersion: "2020100100",
   rootOfflineScormPlayer: "html",
   sentryUri: "",
-  disableConsoleYellowBox: false
+  disableConsoleYellowBox: false,
+  organizationUrl: ""
 };
 
 export const internalConfig = {

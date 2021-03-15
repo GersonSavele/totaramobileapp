@@ -19,20 +19,21 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import DeviceInfo from "react-native-device-info";
 import { useSiteUrl, Props } from "./SiteUrlHook";
+import { get } from "lodash";
 
 import { InputTextWithInfo, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { constants } from "@totara/lib";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { margins, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { TEST_IDS } from "@totara/lib/testIds";
-
-const { DEV_ORG_URL } = constants;
+import { config } from "@totara/lib";
 
 const SiteUrl = (props: Props) => {
   // eslint-disable-next-line no-undef
-  const [siteUrl, setSiteUrl] = useState(props.siteUrl ? props.siteUrl : __DEV__ ? DEV_ORG_URL : "");
+  const [siteUrl, setSiteUrl] = useState(
+    props.siteUrl ? props.siteUrl : __DEV__ ? get(config, "organizationUrl", "") : ""
+  );
   const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
 
   return (

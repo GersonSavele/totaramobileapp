@@ -14,8 +14,7 @@
  */
 
 import { by, device, element } from "detox";
-
-import { DEV_ORG_URL, DEV_USERNAME, DEV_PASSWORD } from "../../../lib/constants";
+import localConfig from "../../../lib/config.detox";
 import { TAB_TEST_IDS, TEST_IDS, NAVIGATION_TEST_IDS, PROFILE_TEST_IDS } from "../../../lib/testIds";
 import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../../e2e/graphql/mocks/scalars";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../../e2e/graphql/index";
@@ -25,6 +24,7 @@ import { profile } from "../../../../../e2e/graphql/mocks/profile";
 import { notifications } from "../../../../../e2e/graphql/mocks/notifications";
 import { lang } from "../../../../../e2e/graphql/mocks/lang";
 
+const { organizationUrl, testUsername, testPassword } = localConfig;
 const customMocks = {
   ...defaultCoreId,
   ...defaultCoreDate,
@@ -45,10 +45,10 @@ describe("About test", () => {
     await device.launchApp({ newInstance: false, permissions: { notifications: "YES" } });
     await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
-    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(DEV_ORG_URL);
+    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(organizationUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
-    await element(by.id(TEST_IDS.USER_INPUT)).typeText(DEV_USERNAME);
-    await element(by.id(TEST_IDS.USER_PW)).typeText(DEV_PASSWORD);
+    await element(by.id(TEST_IDS.USER_INPUT)).typeText(testUsername);
+    await element(by.id(TEST_IDS.USER_PW)).typeText(testPassword);
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
 
