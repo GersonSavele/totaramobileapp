@@ -14,8 +14,9 @@
  */
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { useFocusEffect } from "@react-navigation/native";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, StatusBar } from "react-native";
 import Animated, { Extrapolate, interpolate, call, useCode } from "react-native-reanimated";
 import { useSafeArea } from "react-native-safe-area-view";
@@ -52,9 +53,16 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
     extrapolate: Extrapolate.CLAMP,
   });
 
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle(dark ? "dark-content" : "light-content", true);
+      return () => {
+        StatusBar.setBarStyle("dark-content", true);
+      };
+    }, [dark])
+  );
+
   return <>
-    <StatusBar backgroundColor={'transparent'}
-      translucent barStyle={dark ? "dark-content" : "light-content"} />
     <Animated.View testID={"animated-header-container"} style={{
       paddingTop: safeArea.top,
       marginBottom: isFloating ? -STATUSBAR_HEIGHT - safeArea.top : 0,
