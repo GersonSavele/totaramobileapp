@@ -14,7 +14,7 @@
     "delete": "Delete",
     "copied_to_clipboard": "Copied to clipboard"
   },
-  "learning_items":{
+  "learning_items": {
     "course": "Course",
     "program": "Program",
     "certification": "Certification"
@@ -156,9 +156,10 @@
     "course_activity_section": {
       "not_available": "Not available"
     },
-    "activity":{
-      "accessibility_image":"Activity image",
-      "accessibility_image_zoom":"Activity image zoom"
+    "activity": {
+      "accessibility_image": "Activity image",
+      "accessibility_image_zoom": "Activity image zoom",
+      "invalid_file_data": "Invalid file data"
     }
   },
   "course_group": {
@@ -251,7 +252,7 @@
       "message": "Are you sure you want to logout?"
     },
     "about": "About",
-    "accessibility_image":"Profile image"
+    "accessibility_image": "Profile image"
   },
   "about": {
     "version": "VERSION {{version}}",

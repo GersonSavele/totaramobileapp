@@ -39,6 +39,7 @@ import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete, fetchResource, updateStateViewResource } from "../course/api";
 import listViewStyles from "@totara/theme/listView";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
+import { showMessage } from "@totara/lib";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -181,8 +182,8 @@ const ExpandableSectionHeader = ({ title, show }: ExpandableSectionHeaderProps) 
         {show ? (
           <FontAwesomeIcon icon={faChevronUp} color={TotaraTheme.colorNeutral5} size={16} />
         ) : (
-            <FontAwesomeIcon icon={faChevronDown} color={TotaraTheme.colorNeutral5} size={16} />
-          )}
+          <FontAwesomeIcon icon={faChevronDown} color={TotaraTheme.colorNeutral5} size={16} />
+        )}
       </View>
     </View>
   );
@@ -216,23 +217,23 @@ const ActivityList = ({
           </View>
         )
       ) : (
-          <View style={activitiesStyles.activityList}>
-            <ActivityTextContent label={sectionSummary} />
-          </View>
-        )}
+        <View style={activitiesStyles.activityList}>
+          <ActivityTextContent label={sectionSummary} />
+        </View>
+      )}
       {data!.map((item: Activity, key: number) => {
         return (
           <View key={key}>
             {item.completionstatus === completionStatus.unknown || item.completionstatus === null || !item.available ? (
               <ListItemLock item={item} key={key} />
             ) : (
-                <ListItemUnlock
-                  item={item}
-                  courseRefreshCallBack={courseRefreshCallBack}
-                  key={key}
-                  completionEnabled={completionEnabled}
-                />
-              )}
+              <ListItemUnlock
+                item={item}
+                courseRefreshCallBack={courseRefreshCallBack}
+                key={key}
+                completionEnabled={completionEnabled}
+              />
+            )}
           </View>
         );
       })}
@@ -332,7 +333,8 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         return resource;
                       });
                     } else {
-                      throw new Error("Activity resource data");
+                      showMessage({ text: translate("course.activity.invalid_file_data") });
+                      throw new Error("Invalid activity resource data");
                     }
                   })
                   .then((resource) => {
@@ -349,6 +351,9 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         backAction: courseRefreshCallBack
                       }
                     });
+                  })
+                  .catch((e) => {
+                    console.warn(e);
                   });
                 break;
               }
@@ -374,11 +379,11 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                 textColor={TotaraTheme.colorNeutral6}
               />
             ) : (
-                <ActivityTextContent label={item.description!} />
-              )
+              <ActivityTextContent label={item.description!} />
+            )
           ) : (
-              <ListItem item={item} />
-            )}
+            <ListItem item={item} />
+          )}
         </TouchableOpacity>
       </View>
       {!isLabel && <View style={listViewStyles.thinSeparator} />}
