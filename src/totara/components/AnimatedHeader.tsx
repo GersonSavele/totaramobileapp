@@ -15,6 +15,7 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useFocusEffect } from "@react-navigation/native";
+import { translate } from "@totara/locale";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, StatusBar } from "react-native";
@@ -72,7 +73,7 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
       zIndex: 200,
       flexDirection: 'row'
     }}>
-      <TouchableOpacity accessibilityLabel={"Go back"} accessibilityRole={"button"} testID={"animated-header-backbutton"} onPress={leftAction} style={styles.leftAction}>
+      <TouchableOpacity accessibilityLabel={translate("general.accessibility_go_back")} accessibilityRole={"button"} testID={"animated-header-backbutton"} onPress={leftAction} style={styles.leftAction}>
         <Animated.View testID={"animated-header-backbutton-black"} style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]} >
           <FontAwesomeIcon icon="chevron-left" color={"black"} />
         </Animated.View>

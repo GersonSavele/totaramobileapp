@@ -14,7 +14,7 @@
  */
 
 import React, { useContext, useState } from "react";
-import { RefreshControl, ScrollView, StatusBar, Text, View } from "react-native";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { NavigationEvents } from "@react-navigation/compat";
 import { ThemeContext } from "@totara/theme";
@@ -68,8 +68,6 @@ const CurrentLearning = () => {
 
     return (
       <View style={[theme.viewContainer, { flex: 1 }]}>
-        <StatusBar backgroundColor={'transparent'}
-          translucent barStyle={"dark-content"} />
         <NavigationEvents onWillFocus={onContentRefresh} />
         <View style={currentLearningStyles.headerViewWrap}>
           <View style={currentLearningStyles.headerWrapper}>

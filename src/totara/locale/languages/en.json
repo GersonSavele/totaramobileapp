@@ -12,7 +12,8 @@
     "back": "Back",
     "ok": "Ok",
     "delete": "Delete",
-    "copied_to_clipboard": "Copied to clipboard"
+    "copied_to_clipboard": "Copied to clipboard",
+    "accessibility_go_back": "Go back"
   },
   "learning_items": {
     "course": "Course",
