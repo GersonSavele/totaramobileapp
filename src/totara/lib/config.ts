@@ -36,7 +36,7 @@ const defaultConfig = {
   rootOfflineScormPlayer: "html",
   sentryUri: "",
   disableConsoleYellowBox: false,
-  organizationUrl: ""
+  devOrgUrl: "" // Default organization url only used in dev mode.
 };
 
 export const internalConfig = {

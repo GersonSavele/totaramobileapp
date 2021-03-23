@@ -31,9 +31,7 @@ import { config } from "@totara/lib";
 
 const SiteUrl = (props: Props) => {
   // eslint-disable-next-line no-undef
-  const [siteUrl, setSiteUrl] = useState(
-    props.siteUrl ? props.siteUrl : __DEV__ ? get(config, "organizationUrl", "") : ""
-  );
+  const [siteUrl, setSiteUrl] = useState(props.siteUrl ? props.siteUrl : __DEV__ ? get(config, "devOrgUrl", "") : "");
   const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
 
   return (

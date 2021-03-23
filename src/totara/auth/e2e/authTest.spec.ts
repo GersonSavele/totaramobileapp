@@ -17,7 +17,7 @@ import { by, device, element } from "detox";
 import localConfig from "../../lib/config.detox";
 import { TEST_IDS } from "../../lib/testIds";
 
-const { organizationUrl, testUsername, testPassword } = localConfig;
+const { devOrgUrl, testUsername, testPassword } = localConfig;
 
 describe("User authentication", () => {
   beforeEach(async () => {
@@ -27,7 +27,7 @@ describe("User authentication", () => {
 
   it("should have organization url input and native login", async () => {
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
-    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(organizationUrl);
+    await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(devOrgUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
     await element(by.id(TEST_IDS.USER_INPUT)).typeText(testUsername);
     await element(by.id(TEST_IDS.USER_PW)).typeText(testPassword);
