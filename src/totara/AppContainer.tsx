@@ -78,10 +78,9 @@ const AppContainer = () => {
   };
 
   useEffect(() => {
-    if (notificationState?.tokenSent)
-      return;
+    if (notificationState?.tokenSent) return;
 
-    registerPushNotifications({ refreshToken: true })
+    registerPushNotifications()
       .then((token) => {
         console.debug("FCM TOKEN RECEIVED =========>", token);
         console.debug("REGISTERING FCM TOKEN");
@@ -91,8 +90,7 @@ const AppContainer = () => {
               console.debug("TOKEN REGISTERED");
               updateToken({ token: token });
               tokenSent({ tokenSent: true });
-            }
-            else {
+            } else {
               console.debug("TOKEN REGISTRATION FAIL");
             }
           })
@@ -106,7 +104,6 @@ const AppContainer = () => {
   }, []);
 
   useEffect(() => {
-
     messaging().onNotificationOpenedApp((remoteMessage) => {
       console.debug(`onNotificationOpenedApp ${remoteMessage}`);
       handleNotificationReceived(remoteMessage);
