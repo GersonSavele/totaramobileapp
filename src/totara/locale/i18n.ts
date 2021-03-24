@@ -21,9 +21,9 @@ import "moment/min/locales";
 import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
 
 // if the all.json is not being generated automatically by the post install script for any reason, comment the following line and uncomment the next ones to especify one or more pre defined translations
-import * as translations from "./languages/all.json";
+import importedTranslations from "./languages/all.json";
 // import * as en from "./languages/en.json";
-// const translations = { en };
+const translations = importedTranslations;
 
 const { languageTag } = RNLocalize.findBestAvailableLanguage(Object.keys(translations)) || {
   languageTag: DEFAULT_LANGUAGE

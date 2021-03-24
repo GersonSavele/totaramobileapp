@@ -19,6 +19,7 @@ import { queryLanguageStrings, queryUserLanguagePreference } from "@totara/local
 import { Loading } from "@totara/components";
 import { addLocale, changeLocale, getLocale, getTranslations } from "@totara/locale/index";
 import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
+import { merge } from "lodash";
 
 const LocaleResolver = ({ children }: { children: ReactNode }) => {
   const [languagePreference, setLanguagePreference] = useState<string>();
@@ -60,14 +61,14 @@ const LocaleResolver = ({ children }: { children: ReactNode }) => {
             const customAppStrings = JSON.parse(result.data.json_string).app;
             // This one comes straight from AMOS, generated in build time
             const translations = getTranslations();
+
             const defaultLanguage = translations[DEFAULT_LANGUAGE] || {};
             const currentAppStrings = translations[languagePreference] || defaultLanguage;
 
-            addLocale(languagePreference!, {
-              ...defaultLanguage,
-              ...currentAppStrings,
-              ...(customAppStrings && customAppStrings)
-            });
+            const merged = {};
+            merge(merged, defaultLanguage, currentAppStrings, customAppStrings);
+
+            addLocale(languagePreference!, merged);
             changeLocale(languagePreference!);
           }
         })
