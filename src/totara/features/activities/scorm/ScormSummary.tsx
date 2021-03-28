@@ -81,7 +81,7 @@ type GridTitleProps = {
   style?: TextStyle;
 };
 
-type OnExitAcitivityAttemptProps = {
+type OnExitActivityAttemptProps = {
   id: string;
   attempt: number;
   gradeMethod?: Grade;
@@ -90,11 +90,12 @@ type OnExitAcitivityAttemptProps = {
   client: any;
   apiKey?: string;
   host?: string;
-  setIsLoadingCurretStatus?: Function;
+  setIsLoadingCurrentStatus?: Function;
   navigation: any;
   isDownloaded: boolean;
   offlinePackageScoIdentifiers?: [string];
   navigateTo: Function;
+  onRefresh: () => void;
 };
 
 const GridTitle = ({ theme, textId, style = {} }: GridTitleProps) => (
@@ -146,12 +147,13 @@ const onExitActivityAttempt = ({
   completionScoreRequired,
   client,
   host,
-  setIsLoadingCurretStatus,
+  setIsLoadingCurrentStatus,
   navigation,
   isDownloaded,
   offlinePackageScoIdentifiers,
-  navigateTo
-}: OnExitAcitivityAttemptProps) => {
+  navigateTo,
+  onRefresh
+}: OnExitActivityAttemptProps) => {
   showConfirmation({
     title: translate("scorm.confirmation.title"),
     message: translate("scorm.confirmation.message"),
@@ -183,7 +185,7 @@ const onExitActivityAttempt = ({
         }
       } else {
         if (apiKey && host) {
-          setIsLoadingCurretStatus && setIsLoadingCurretStatus(true);
+          setIsLoadingCurrentStatus && setIsLoadingCurrentStatus(true);
           fetchLastAttemptResult({
             scormId: id,
             apiKey,
@@ -193,7 +195,8 @@ const onExitActivityAttempt = ({
               const status = get(response, "data.status");
               if (status) {
                 const { attemptsCurrent, gradefinal } = status;
-                if (attempt == attemptsCurrent) {
+                console.warn("about to call fetchLastAttemptResult", attempt, attemptsCurrent);
+                if (attemptsCurrent >= attempt) {
                   showScormFeedback({
                     gradeMethod,
                     showGrades,
@@ -202,12 +205,13 @@ const onExitActivityAttempt = ({
                     navigate: navigation.navigate,
                     navigateTo
                   });
+                  onRefresh();
                 }
               }
             })
             .catch((e) => console.log("Error: ", e))
             .finally(() => {
-              setIsLoadingCurretStatus && setIsLoadingCurretStatus(false);
+              setIsLoadingCurrentStatus && setIsLoadingCurrentStatus(false);
             });
         }
       }
@@ -233,7 +237,7 @@ const ScormSummary = ({
   const theme = TotaraTheme;
 
   const bundleData = getDataForScormSummary(isDownloaded, scormBundle);
-  const [isLoadingCurretStatus, setIsLoadingCurretStatus] = useState(loading);
+  const [isLoadingCurrentStatus, setIsLoadingCurrentStatus] = useState(loading);
   const {
     name,
     description,
@@ -252,7 +256,7 @@ const ScormSummary = ({
     offlinePackageScoIdentifiers,
     showGrades
   } = bundleData;
-  if (isLoadingCurretStatus) {
+  if (isLoadingCurrentStatus) {
     return <Loading testID={"summary_loading"} />;
   }
   if (!scormBundle && error) {
@@ -357,11 +361,12 @@ const ScormSummary = ({
                       client,
                       apiKey,
                       host,
-                      setIsLoadingCurretStatus,
+                      setIsLoadingCurrentStatus,
                       navigation,
                       isDownloaded,
                       offlinePackageScoIdentifiers,
-                      navigateTo
+                      navigateTo,
+                      onRefresh
                     })
                 }
               });
@@ -392,7 +397,8 @@ const ScormSummary = ({
                       navigation,
                       isDownloaded,
                       offlinePackageScoIdentifiers,
-                      navigateTo
+                      navigateTo,
+                      onRefresh
                     })
                 }
               });
