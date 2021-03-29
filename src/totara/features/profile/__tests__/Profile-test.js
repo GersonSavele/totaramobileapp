@@ -58,7 +58,7 @@ describe("Profile", () => {
       await wait(0);
     });
 
-    const errorComponent = await getByTestId("test_ProfileLoadingError");
+    const errorComponent = getByTestId("test_ProfileLoadingError");
     expect(errorComponent).toBeTruthy();
   });
 
@@ -76,10 +76,10 @@ describe("Profile", () => {
 
     const profile = profileMock[0].result.data.profile;
 
-    const test_ProfileUserDetails = await getByTestId("test_ProfileUserDetails");
+    const test_ProfileUserDetails = getByTestId("test_ProfileUserDetails");
     expect(test_ProfileUserDetails.children[0]).toBe(`${profile.firstname} ${profile.surname}`);
 
-    const test_ProfileUserEmail = await getByTestId("test_ProfileUserEmail");
+    const test_ProfileUserEmail = getByTestId("test_ProfileUserEmail");
     expect(test_ProfileUserEmail.children[0]).toBe(profile.email);
   });
 

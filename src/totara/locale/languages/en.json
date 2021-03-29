@@ -248,8 +248,9 @@
     "setting_cell": "Settings",
     "logout": {
       "button_text": "Logout",
-      "title": "Confirmation",
-      "message": "Are you sure you want to logout?"
+      "title": "Log Out",
+      "message_with_warn": "Are you sure you want to log out of this account? If you log out, you will lose your downloaded files."
+
     },
     "about": "About",
     "accessibility_image": "Profile image"

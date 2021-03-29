@@ -13,13 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View, ScrollView, RefreshControl, Alert, TouchableOpacity } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { StackScreenProps } from "@react-navigation/stack";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ThemeContext } from "@totara/theme";
-import { AuthConsumer } from "@totara/core";
+import { AuthContext } from "@totara/core";
 import { UserProfile } from "@totara/types";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { userOwnProfile } from "./api";
@@ -62,21 +62,28 @@ type ProfileContentProps = {
 };
 
 const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
+  const [logout, setLogout] = useState(false);
   const [theme] = useContext(ThemeContext);
-  const confirmationLogout = (auth) =>
-    Alert.alert(
+  const { logOut } = useContext(AuthContext);
+  const confirmationLogout = () => {
+    const confirmedLogout = () => {
+      setLogout(true);
+      logOut();
+    };
+    return Alert.alert(
       translate("user_profile.logout.title"),
-      translate("user_profile.logout.message"),
+      translate("user_profile.logout.message_with_warn"),
       [
         {
           text: translate("general.cancel"),
           onPress: () => {},
           style: "cancel"
         },
-        { text: translate("general.yes"), onPress: () => auth.logOut() }
+        { text: translate("general.yes"), onPress: confirmedLogout }
       ],
       { cancelable: false }
     );
+  };
 
   const goToAbout = () => {
     navigation.navigate(NAVIGATION.ABOUT);
@@ -119,16 +126,13 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
         <TouchableOpacity testID={PROFILE_TEST_IDS.ABOUT} onPress={goToAbout} style={styles.sectionOption}>
           <Text style={TotaraTheme.textRegular}>{translate("user_profile.about")}</Text>
         </TouchableOpacity>
-        <AuthConsumer>
-          {(auth) => (
-            <TouchableOpacity
-              testID={PROFILE_TEST_IDS.LOGOUT}
-              onPress={() => confirmationLogout(auth)}
-              style={styles.sectionOption}>
-              <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>
-            </TouchableOpacity>
-          )}
-        </AuthConsumer>
+        <TouchableOpacity
+          testID={PROFILE_TEST_IDS.LOGOUT}
+          onPress={() => confirmationLogout()}
+          style={styles.sectionOption}>
+          <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>
+        </TouchableOpacity>
+        <View>{logout && <Loading />}</View>
       </View>
     </View>
   );

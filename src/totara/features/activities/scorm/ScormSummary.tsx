@@ -195,7 +195,6 @@ const onExitActivityAttempt = ({
               const status = get(response, "data.status");
               if (status) {
                 const { attemptsCurrent, gradefinal } = status;
-                console.warn("about to call fetchLastAttemptResult", attempt, attemptsCurrent);
                 if (attemptsCurrent >= attempt) {
                   showScormFeedback({
                     gradeMethod,

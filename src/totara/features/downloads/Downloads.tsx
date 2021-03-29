@@ -33,6 +33,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 const { SCORM_ROOT, SCORM_STACK_ROOT } = NAVIGATION;
 
 const Downloads = ({ navigation }: StackScreenProps<any>) => {
+  
   const resourcesList = useSelector((state: RootState) => state.resourceReducer.resources);
 
   const [selectable, setSelectable] = useState(false);
