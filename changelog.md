@@ -1,5 +1,24 @@
 Totara Mobile App Changelog
 
+Release 1.0.9 (30th March 2021):
+=====================================
+
+Bug
+[MOB-804] - File view does not trigger completion in Totara Mobile
+[MOB-901] - Statusbar color does not return to default color when switching tabs
+[MOB-910] - iOS app should receive push notification
+[MOB-915] - SCORM type activity does not save state or register attempt in the app
+
+Improvement
+[MOB-870] - Implement Detox test cases for scorm
+[MOB-879] - Detox with mocked server for Current Learning
+[MOB-888] - Remove LinkMedia description in WekaViewEditor
+[MOB-898] - Move testing credentials to local config file
+[MOB-903] - If the mobile app is logged out of any downloaded SCORMs are deleted.
+
+Technical documentation
+[MOB-887] - Review technical documentation on the mobile side for PN
+
 Release 1.0.8 (05th March 2021):
 =====================================
 
