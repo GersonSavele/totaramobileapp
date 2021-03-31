@@ -132,7 +132,7 @@ android {
         applicationId "com.totaramobileapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 65
+        versionCode 66
         versionName "1.0.9"
         multiDexEnabled true
     }
