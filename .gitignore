@@ -68,8 +68,15 @@ buck-out/
 #
 /src/totara/lib/config.local.ts
 /src/totara/lib/config.local.bak.ts
-# Untrack these helper script files and sample files
+/src/totara/lib/config.detox.ts
 
+#local key files
+/ios/GoogleService-Info.plist
+/android/app/google-services.json
+/android/app/src/dev/google-services.json
+/android/app/src/uat/google-services.json
+
+# Untrack these helper script files and sample files
 nodejs-assets/build-native-modules-MacOS-helper-script-node.sh
 nodejs-assets/build-native-modules-MacOS-helper-script-npm.sh
 
