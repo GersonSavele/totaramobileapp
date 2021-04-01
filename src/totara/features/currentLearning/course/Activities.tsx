@@ -117,27 +117,25 @@ const SectionItem = ({
   };
 
   return (
-    activities && (
-      <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }} testID={testID}>
-        {!isSingleActivity && (
-          <TouchableOpacity onPress={() => onExpand(isExpanded, id)} testID={`${CL_TEST_IDS.ACTIVITY_SECTION}${id}`}>
-            {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}
-            {!available && availableReason && availableReason.length > 0 && (
-              <RestrictionSectionHeader title={title} availableReason={availableReason} />
-            )}
-          </TouchableOpacity>
-        )}
-        {isExpanded && (
-          <ActivityList
-            data={activities}
-            courseRefreshCallBack={courseRefreshCallBack}
-            sectionSummary={summary}
-            summaryFormat={summaryformat}
-            completionEnabled={completionEnabled}
-          />
-        )}
-      </View>
-    )
+    <View style={{ backgroundColor: TotaraTheme.colorSecondary1 }} testID={testID}>
+      {!isSingleActivity && (
+        <TouchableOpacity onPress={() => onExpand(isExpanded, id)} testID={`${CL_TEST_IDS.ACTIVITY_SECTION}${id}`}>
+          {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}
+          {!available && availableReason && availableReason.length > 0 && (
+            <RestrictionSectionHeader title={title} availableReason={availableReason} />
+          )}
+        </TouchableOpacity>
+      )}
+      {isExpanded && (
+        <ActivityList
+          data={activities}
+          courseRefreshCallBack={courseRefreshCallBack}
+          sectionSummary={summary}
+          summaryFormat={summaryformat}
+          completionEnabled={completionEnabled}
+        />
+      )}
+    </View>
   );
 };
 
