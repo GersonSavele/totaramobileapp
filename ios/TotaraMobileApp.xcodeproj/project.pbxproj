@@ -196,6 +196,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 93434G3KR7;
 						LastSwiftMigration = 1130;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -383,6 +384,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TotaraMobileApp/TotaraMobileApp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 67;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 93434G3KR7;
@@ -398,6 +401,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.totaralearning.TotaraMobileApp;
 				PRODUCT_NAME = Totara;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "TotaraMobileApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -500,7 +504,7 @@
 			baseConfigurationReference = 4F1A36D8FB2180B40B82508D /* Pods-TotaraMobileApp.test.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				BUNDLE_ID_SUFFIX = .test;
+				BUNDLE_ID_SUFFIX = .qa;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TotaraMobileApp/TotaraMobileApp.entitlements;
 				CURRENT_PROJECT_VERSION = 67;
@@ -516,7 +520,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.totaralearning.TotaraMobileApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.totaralearning.TotaraMobileApp.qa;
 				PRODUCT_NAME = "Totara Test";
 				SWIFT_OBJC_BRIDGING_HEADER = "TotaraMobileApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -759,7 +763,7 @@
 			baseConfigurationReference = 2A839EFFB4AFEBF91A5243CD /* Pods-TotaraMobileApp.test.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				BUNDLE_ID_SUFFIX = "";
+				BUNDLE_ID_SUFFIX = ".qa";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TotaraMobileApp/TotaraMobileApp.entitlements;
 				CURRENT_PROJECT_VERSION = 67;
@@ -773,7 +777,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.totaralearning.TotaraMobileApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.totaralearning.TotaraMobileApp.qa;
 				PRODUCT_NAME = "Totara Test";
 				SWIFT_OBJC_BRIDGING_HEADER = "TotaraMobileApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
