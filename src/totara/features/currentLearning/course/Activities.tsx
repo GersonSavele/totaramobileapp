@@ -301,7 +301,8 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   screen: SCORM_ROOT,
                   params: {
                     id: item.instanceid.toString(),
-                    title: item.name
+                    title: item.name,
+                    backAction: courseRefreshCallBack
                   }
                 });
                 break;
