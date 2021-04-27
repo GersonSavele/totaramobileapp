@@ -18,7 +18,7 @@ import { FlatList, Image, ImageSourcePropType, ListRenderItemInfo, Text, Touchab
 import { useSelector } from "react-redux";
 import headerStyles from "@totara/theme/headers";
 import { translate } from "@totara/locale";
-import NetworkStatus from "@totara/components/NetworkStatus";
+import NetworkStatusIndicator from "@totara/components/NetworkStatusIndicator";
 import { RootState } from "@totara/reducers";
 import { Resource } from "@totara/types";
 
@@ -33,7 +33,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 const { SCORM_ROOT, SCORM_STACK_ROOT } = NAVIGATION;
 
 const Downloads = ({ navigation }: StackScreenProps<any>) => {
-  
+
   const resourcesList = useSelector((state: RootState) => state.resourceReducer.resources);
 
   const [selectable, setSelectable] = useState(false);
@@ -126,7 +126,7 @@ const Downloads = ({ navigation }: StackScreenProps<any>) => {
       <View style={[headerStyles.navigationHeader, { flexDirection: "row" }]}>
         <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
       </View>
-      <NetworkStatus />
+      <NetworkStatusIndicator />
       <View style={{ flex: 1 }}>
         {resourcesList.length == 0 ? (
           <View style={listViewStyles.noContent} testID={"test_DownloadsEmptyState"}>

@@ -16,20 +16,21 @@
 import React, { useContext, useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { useQuery } from "@apollo/react-hooks";
-import { NavigationEvents } from "@react-navigation/compat";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import CurrentLearningCarousel from "./learningItems/CurrentLearningCarousel";
 import CurrentLearningListView from "./learningItems/CurrentLearningListView";
 import NoCurrentLearning from "./learningItems/NoCurrentLearning";
 import query from "./api";
-import { LoadingError, NetworkStatus, Loading } from "@totara/components";
+import { LoadingError, NetworkStatusIndicator, Loading } from "@totara/components";
 import { currentLearningStyles } from "./currentLearningStyles";
 import { paddings } from "@totara/theme/constants";
 import { Switch, SwitchOption } from "@totara/components/Switch";
 import { Icons } from "@resources/icons";
 import { sortByDueDateThenTypeThenFullName } from "@totara/features/currentLearning/utils";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
+import { NetworkStatus } from "apollo-client";
+import { NavigationEvents } from "@react-navigation/compat";
 
 enum ListingOrientation {
   Carousel,
@@ -37,14 +38,15 @@ enum ListingOrientation {
 }
 
 const CurrentLearning = () => {
-  const { loading, error, data, refetch } = useQuery(query);
+  const { networkStatus, error, data, refetch } = useQuery(query, { notifyOnNetworkStatusChange: true });
   const [theme] = useContext(ThemeContext);
   const [listingOrientation, setListingOrientation] = useState<ListingOrientation>(ListingOrientation.Carousel);
 
   const onContentRefresh = () => {
     refetch();
   };
-  if (loading) return <Loading />;
+
+  if (networkStatus === NetworkStatus.loading) return <Loading />;
   if (!data && error) {
     return <LoadingError onRefreshTap={onContentRefresh} />;
   }
@@ -98,37 +100,35 @@ const CurrentLearning = () => {
         </View>
 
         <View style={[currentLearningStyles.contentWrap]}>
-          <NetworkStatus />
+          <NetworkStatusIndicator />
           {currentLearning && currentLearning.length > 0 ? (
             listingOrientation === ListingOrientation.Carousel ? (
               <CurrentLearningCarousel
                 currentLearning={currentLearning}
-                loading={loading}
                 onRefresh={onContentRefresh}
               />
             ) : (
-                <CurrentLearningListView
-                  currentLearning={currentLearning}
-                  loading={loading}
-                  onRefresh={onContentRefresh}
-                />
-              )
+              <CurrentLearningListView
+                currentLearning={currentLearning}
+                onRefresh={onContentRefresh}
+              />
+            )
           ) : (
-              <View
-                style={{
-                  flex: 1
+            <View
+              style={{
+                flex: 1
+              }}>
+              <ScrollView
+                refreshControl={<RefreshControl refreshing={networkStatus === NetworkStatus.refetch} onRefresh={onContentRefresh} />}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  justifyContent: "center"
                 }}>
-                <ScrollView
-                  refreshControl={<RefreshControl refreshing={loading} onRefresh={onContentRefresh} />}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{
-                    flexGrow: 1,
-                    justifyContent: "center"
-                  }}>
-                  <NoCurrentLearning testID={"test_NoCurrentLearning"} />
-                </ScrollView>
-              </View>
-            )}
+                <NoCurrentLearning testID={"test_NoCurrentLearning"} />
+              </ScrollView>
+            </View>
+          )}
         </View>
       </View>
     );

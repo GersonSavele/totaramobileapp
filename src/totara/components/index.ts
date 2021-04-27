@@ -33,7 +33,7 @@ import MessageBar from "./MessageBar";
 import TotaraNavigationOptions from "./NavigationOptions";
 import NotificationBell from "./NotificationBell";
 import LoadingError from "./LoadingError";
-import NetworkStatus from "./NetworkStatus";
+import NetworkStatusIndicator from "./NetworkStatusIndicator";
 import Loading from "./Loading";
 import ImageWrapper from "./ImageWrapper";
 import ModalContent from "./ModalContent";
@@ -62,7 +62,7 @@ export {
   NotificationBell,
   Loading,
   LoadingError,
-  NetworkStatus,
+  NetworkStatusIndicator,
   ImageWrapper,
   ModalContent,
   WebviewToolbar

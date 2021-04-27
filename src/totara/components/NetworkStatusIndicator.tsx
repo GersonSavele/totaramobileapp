@@ -18,7 +18,7 @@ import { View } from "react-native";
 import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import { useNetInfo } from "@react-native-community/netinfo";
 
-const NetworkStatus = () => {
+const NetworkStatusIndicator = () => {
   const { isConnected, isInternetReachable } = useNetInfo();
   const messageNotConnected = "You are not connected to the internet";
   const messageConnecting = "Connecting...";
@@ -35,4 +35,4 @@ const NetworkStatus = () => {
   );
 };
 
-export default NetworkStatus;
+export default NetworkStatusIndicator;

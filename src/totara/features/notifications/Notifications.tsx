@@ -25,13 +25,13 @@ import {
   TouchableOpacity
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { NetworkStatus as NS } from "apollo-client/core/networkStatus";
+import { NetworkStatus } from "apollo-client/core/networkStatus";
 
 import { Images } from "@resources/images";
 import { translate } from "@totara/locale";
 import headerStyles from "@totara/theme/headers";
 import listViewStyles from "@totara/theme/listView";
-import NetworkStatus from "@totara/components/NetworkStatus";
+import NetworkStatusIndicator from "@totara/components/NetworkStatusIndicator";
 import { NotificationMessage } from "@totara/types";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -41,9 +41,10 @@ import { paddings } from "@totara/theme/constants";
 import { StackScreenProps } from "@react-navigation/stack";
 
 const Notifications = ({ navigation }: StackScreenProps<any>) => {
-  const { error, loading, data, refetch, networkStatus } = useQuery(notificationsQuery);
+  const { error, networkStatus, data, refetch } = useQuery(notificationsQuery, { notifyOnNetworkStatusChange: true });
   const [mutationMarkAsRead] = useMutation(notificationQueryMarkRead);
-  const notificationList = !loading ? parser(data) : ([] as NotificationMessage[]);
+
+  const notificationList = parser(data);
   const [, setLastRefresh] = useState(Date.now());
   const [selectedList, setSelectedList] = useState<string[]>([]);
   const [selectable, setSelectable] = useState(false);
@@ -156,17 +157,17 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
       <View style={headerStyles.navigationHeader}>
         <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
       </View>
-      <NetworkStatus />
+      <NetworkStatusIndicator />
       <View style={{ flex: 1 }}>
-        {loading && <Loading testID={"test_loading"} />}
+        {networkStatus === NetworkStatus.loading && <Loading testID={"test_loading"} />}
         {!data && error && <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} />}
-        {!loading && notificationList.length == 0 && (
+        {notificationList.length == 0 && (
           <ScrollView
             contentContainerStyle={{
               flexGrow: 1,
               justifyContent: "center"
             }}
-            refreshControl={<RefreshControl refreshing={networkStatus === NS.refetch} onRefresh={refetch} />}
+            refreshControl={<RefreshControl refreshing={networkStatus === NetworkStatus.refetch} onRefresh={refetch} />}
             testID={"test_notificationsEmptyContainer"}>
             <View style={listViewStyles.noContent}>
               <Image source={Images.noNotifications as ImageSourcePropType} />
@@ -176,10 +177,10 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
             </View>
           </ScrollView>
         )}
-        {!loading && notificationList.length > 0 && (
+        {notificationList.length > 0 && (
           <FlatList<NotificationMessage>
             testID={"test_notificationsList"}
-            refreshing={networkStatus === NS.refetch}
+            refreshing={networkStatus === NetworkStatus.refetch}
             onRefresh={onRefresh}
             contentContainerStyle={listViewStyles.contentContainerStyle}
             ItemSeparatorComponent={() => <View style={listViewStyles.itemSeparator} />}

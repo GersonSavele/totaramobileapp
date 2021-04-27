@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import { ScrollView, Text, View, TextStyle, TouchableOpacity, RefreshControl } from "react-native";
 import { get, isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { MessageBar, NetworkStatus, LoadingError, PrimaryButton, SecondaryButton, Loading } from "@totara/components";
+import { MessageBar, NetworkStatusIndicator, LoadingError, PrimaryButton, SecondaryButton, Loading } from "@totara/components";
 import { gutter } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AppliedTheme, TotaraTheme } from "@totara/theme/Theme";
@@ -264,7 +264,7 @@ const ScormSummary = ({
   return (
     <>
       <View style={scormSummaryStyles.expanded} testID={"scorm_summary_container"}>
-        <NetworkStatus />
+        <NetworkStatusIndicator />
         {maxAttempts && maxAttempts <= totalAttempt && (
           <MessageBar mode={"alert"} text={translate("scorm.info_completed_attempts")} icon={"exclamation-circle"} />
         )}

@@ -25,28 +25,28 @@ import { NAVIGATION } from "@totara/lib/navigation";
 import { userOwnProfile } from "./api";
 import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
-import { NetworkStatus as NS } from "apollo-boost";
+import { NetworkStatus } from "apollo-boost";
 import { margins, paddings } from "@totara/theme/constants";
-import { Loading, NetworkStatus, ImageWrapper, LoadingError } from "@totara/components";
+import { Loading, NetworkStatusIndicator, ImageWrapper, LoadingError } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
 
 const Profile = ({ navigation }: StackScreenProps<any>) => {
-  const { loading, error, data, refetch, networkStatus } = useQuery(userOwnProfile);
+  const { error, data, refetch, networkStatus } = useQuery(userOwnProfile, { notifyOnNetworkStatusChange: true });
 
-  if (loading) return <Loading testID={"test_ProfileLoading"} />;
+  if (networkStatus === NetworkStatus.loading) return <Loading testID={"test_ProfileLoading"} />;
   if (!data && error) return <LoadingError onRefreshTap={refetch} testID={"test_ProfileLoadingError"} />;
 
   return (
     <View>
-      <NetworkStatus />
+      <NetworkStatusIndicator />
       <ScrollView
-        style={{ backgroundColor: TotaraTheme.colorAccent }}
+        style={{ backgroundColor: TotaraTheme.colorNeutral2 }}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             tintColor={TotaraTheme.colorNeutral8}
-            refreshing={networkStatus === NS.refetch}
+            refreshing={networkStatus === NetworkStatus.refetch}
             onRefresh={refetch}
           />
         }>
@@ -76,7 +76,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
       [
         {
           text: translate("general.cancel"),
-          onPress: () => {},
+          onPress: () => { },
           style: "cancel"
         },
         { text: translate("general.yes"), onPress: confirmedLogout }

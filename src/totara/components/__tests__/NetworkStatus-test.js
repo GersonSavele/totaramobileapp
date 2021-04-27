@@ -15,7 +15,7 @@
 
 import React from "react";
 import { render } from "@testing-library/react-native";
-import NetworkStatus from "@totara/components/NetworkStatus";
+import NetworkStatusIndicator from "@totara/components/NetworkStatusIndicator";
 import { useNetInfo } from "@react-native-community/netinfo";
 
 const offlineState = {
@@ -31,7 +31,7 @@ const onlineState = {
 describe("NetworkStatus", () => {
   test("Should render as offline state", () => {
     useNetInfo.mockReturnValue(offlineState);
-    const tree = <NetworkStatus />;
+    const tree = <NetworkStatusIndicator />;
     const { getByTestId } = render(tree);
     const container = getByTestId("test_container");
 
@@ -40,7 +40,7 @@ describe("NetworkStatus", () => {
 
   test("Should render as online state", async () => {
     useNetInfo.mockReturnValue(onlineState);
-    const tree = <NetworkStatus />;
+    const tree = <NetworkStatusIndicator />;
     const { findByTestId } = render(tree);
     const container = await findByTestId("test_container");
 

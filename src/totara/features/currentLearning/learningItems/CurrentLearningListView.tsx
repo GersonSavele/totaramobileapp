@@ -20,11 +20,10 @@ import listViewStyles from "@totara/theme/listView";
 
 type CurrentLearningListViewProps = {
   currentLearning?: any;
-  loading: boolean;
   onRefresh: () => void;
 };
 
-const CurrentLearningListView = ({ currentLearning, loading, onRefresh }: CurrentLearningListViewProps) => {
+const CurrentLearningListView = ({ currentLearning, onRefresh }: CurrentLearningListViewProps) => {
   const renderItem = ({ item, index }: any) => {
     return <CurrentLearningListViewItem item={item} itemTestID={`learningItem_${index}`} />;
   };
@@ -36,7 +35,7 @@ const CurrentLearningListView = ({ currentLearning, loading, onRefresh }: Curren
         testID={"test_currentLearningListView"}
         data={currentLearning}
         renderItem={renderItem}
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
       />
     </View>
   );

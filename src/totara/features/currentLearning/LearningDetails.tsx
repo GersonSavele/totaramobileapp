@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode, useRef } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
+import { RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -24,8 +24,6 @@ import { CL_TEST_IDS } from "@totara/lib/testIds";
 import Animated, { interpolate, Extrapolate, Value, event } from "react-native-reanimated";
 import LinearGradient from "react-native-linear-gradient";
 import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
-import { Spinner } from "native-base";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const { marginXL } = margins;
 
@@ -132,19 +130,28 @@ const LearningDetails = ({
 }: LearningDetailsProps) => {
 
   const scrollValue = useRef(new Value(0)).current;
+  const [isRefreshing, setRefreshing] = useState(false);
 
   const { fullname } = item;
+
+  const onUserPullToRefresh = () => {
+    setRefreshing(true);
+    onPullToRefresh()
+  }
+
+  useEffect(() => {
+    if (!loading)
+      setRefreshing(false);
+  }, [loading]);
+
+  const gradientShadowZIndex = 100;
 
   return (
     <View style={learningDetailsStyles.container}>
       <AnimatedHeader scrollValue={scrollValue} title={fullname!} subTitle={badgeTitle} leftAction={() => navigation?.goBack()} />
       <Animated.ScrollView
-        onScrollEndDrag={(event) => {
-          const yOffset = event.nativeEvent.contentOffset.y;
-          if (yOffset < (HEIGHT / 3)) {
-            onPullToRefresh();
-          }
-        }}
+        contentInsetAdjustmentBehavior={"scrollableAxes"}
+        refreshControl={<RefreshControl style={{ zIndex: gradientShadowZIndex + 100 }} refreshing={isRefreshing} tintColor={TotaraTheme.colorNeutral2} onRefresh={onUserPullToRefresh}></RefreshControl>}
         onScroll={event(
           [{ nativeEvent: { contentOffset: { y: scrollValue } } }],
           {
@@ -178,14 +185,8 @@ const LearningDetails = ({
             />
           </View>
           <View style={learningDetailsStyles.imageViewGradient}>
-            <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0)']} style={{ height: HEIGHT / 2, zIndex: 100 }} />
+            <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0)']} style={{ height: HEIGHT / 2, zIndex: gradientShadowZIndex }} />
           </View>
-          <View>
-            {loading && <SafeAreaView>
-              <Spinner color={TotaraTheme.textColorLight} />
-            </SafeAreaView>}
-          </View>
-
         </Animated.View>
         <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />
 

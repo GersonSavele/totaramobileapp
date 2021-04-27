@@ -30,11 +30,10 @@ import { CL_TEST_IDS } from "@totara/lib/testIds";
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
-  loading: boolean;
   onRefresh: () => void;
 };
 
-const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: CurrentLearningCarouselProps) => {
+const CurrentLearningCarousel = ({ currentLearning, onRefresh }: CurrentLearningCarouselProps) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
 
@@ -61,7 +60,7 @@ const CurrentLearningCarousel = ({ currentLearning, loading, onRefresh }: Curren
         contentContainerStyle={{ height: "100%" }}
         showsVerticalScrollIndicator={false}
         testID={CL_TEST_IDS.CAROUSEL_WRAPPER_ID}
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
+        refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}>
         <Carousel
           inactiveSlideScale={1}
           ref={sliderRef}
