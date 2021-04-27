@@ -41,7 +41,6 @@ const customMocks = {
 
 describe("Current learning test", () => {
   beforeAll(async () => {
-    // await device.reloadReactNative();
     await device.launchApp({ permissions: { notifications: "YES" } });
     await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
