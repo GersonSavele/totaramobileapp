@@ -24,6 +24,7 @@ import { LoadingError, Loading } from "@totara/components";
 import { coreProgram, coreCertification } from "./api";
 import LearningDetails from "../LearningDetails";
 import { details } from "./courseGroupStyles";
+import { NetworkStatus } from "apollo-client";
 
 type CourseGroupProps = {
   navigation: any;
@@ -52,15 +53,15 @@ type ParamsType = {
 const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
   const { targetId, courseGroupType } = navigation.state.params as ParamsType;
   const typeMap = courseGroupTypeMap[courseGroupType];
-  const { loading, error, data, refetch } = useQuery(typeMap.query, {
-    variables: { [typeMap.idField]: targetId }
+  const { networkStatus, error, data, refetch } = useQuery(typeMap.query, {
+    variables: { [typeMap.idField]: targetId }, notifyOnNetworkStatusChange: true
   });
 
   const onContentRefresh = () => {
     refetch();
   };
 
-  if (loading) return <Loading testID={"test_loading"} />;
+  if (networkStatus === NetworkStatus.loading) return <Loading testID={"test_loading"} />;
   if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} testID={"test_error"} />;
 
   if (data) {
@@ -73,6 +74,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
         testID={"test_data"}
         badgeTitlePath={typeMap.badgeTitlePath}
         itemType={courseGroupType}
+        loading={networkStatus === NetworkStatus.refetch}
       />
     );
   }
@@ -85,6 +87,7 @@ type CourseGroupDetailsContentProps = {
   testID?: string;
   badgeTitlePath: string;
   itemType: string;
+  loading: boolean
 };
 
 const CourseGroupDetailsContent = ({
@@ -93,7 +96,8 @@ const CourseGroupDetailsContent = ({
   navigation,
   testID,
   badgeTitlePath,
-  itemType
+  itemType,
+  loading
 }: CourseGroupDetailsContentProps) => {
   const [showOverview, setShowOverview] = useState(true);
   const onSwitchTab = () => {
@@ -103,6 +107,7 @@ const CourseGroupDetailsContent = ({
   return (
     <View testID={testID} style={{ flex: 1 }}>
       <LearningDetails
+        loading={loading}
         item={courseGroup}
         itemType={itemType}
         tabBarLeftTitle={translate("course_group.tabs.overview")}

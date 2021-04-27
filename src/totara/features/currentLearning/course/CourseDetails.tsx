@@ -31,23 +31,25 @@ import { learningItemEnum } from "../constants";
 import courseDetailsStyle from "./courseDetailsStyle";
 import { CourseFormat } from "@totara/types/Course";
 import { DescriptionFormat } from "@totara/types/LearningItem";
+import { NetworkStatus } from "apollo-client";
 
 const CourseDetails = ({ navigation }: any) => {
   const courseId = navigation.getParam("targetId");
-  const { loading, error, data, refetch } = useQuery(coreCourse, {
-    variables: { courseid: courseId }
+  const { networkStatus, error, data, refetch } = useQuery(coreCourse, {
+    variables: { courseid: courseId }, notifyOnNetworkStatusChange: true
   });
 
   const onContentRefresh = () => {
     refetch();
   };
 
-  if (loading) return <Loading />;
+  if (networkStatus === NetworkStatus.loading) return <Loading />;
   if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} />;
 
   if (data) {
     return (
       <CourseDetailsContent
+        loading={networkStatus === NetworkStatus.refetch}
         pullToRefresh={onContentRefresh}
         courseDetails={data.mobile_course}
         courseRefreshCallback={refetch}
@@ -62,13 +64,15 @@ type CourseDetailsContentProps = {
   courseRefreshCallback: () => {};
   pullToRefresh: () => void;
   navigation: any;
+  loading: boolean
 };
 
 const CourseDetailsContent = ({
   courseDetails,
   courseRefreshCallback,
   pullToRefresh,
-  navigation
+  navigation,
+  loading
 }: CourseDetailsContentProps) => {
   const expanableSections =
     courseDetails?.course?.sections.filter((section) => section.available && !isEmpty(section.data)) || [];
@@ -102,6 +106,7 @@ const CourseDetailsContent = ({
   return (
     <LearningDetails
       onPullToRefresh={pullToRefresh}
+      loading={loading}
       item={courseDetails.course}
       itemType={learningItemEnum.Course}
       tabBarLeftTitle={translate("course.course_details.overview")}
@@ -141,21 +146,21 @@ const CourseDetailsContent = ({
               />
             </View>
           ) : (
-              <OverviewDetails
-                isCourseSet={false}
-                id={courseDetails.course.id}
-                criteria={courseDetails.course.criteria}
-                summary={courseDetails.course.summary}
-                summaryFormat={courseDetails.course.summaryformat as DescriptionFormat}
-                gradeFinal={courseDetails.gradeFinal}
-                progress={courseDetails.course.completion.progress}
-                summaryTypeTitle={translate("course.course_overview.course_summary")}
-                onclickContinueLearning={onClose}
-                courseRefreshCallback={courseRefreshCallback}
-                showGrades={courseDetails.course.showGrades}
-                completionEnabled={courseDetails.course.completionEnabled}
-              />
-            )}
+            <OverviewDetails
+              isCourseSet={false}
+              id={courseDetails.course.id}
+              criteria={courseDetails.course.criteria}
+              summary={courseDetails.course.summary}
+              summaryFormat={courseDetails.course.summaryformat as DescriptionFormat}
+              gradeFinal={courseDetails.gradeFinal}
+              progress={courseDetails.course.completion.progress}
+              summaryTypeTitle={translate("course.course_overview.course_summary")}
+              onclickContinueLearning={onClose}
+              courseRefreshCallback={courseRefreshCallback}
+              showGrades={courseDetails.course.showGrades}
+              completionEnabled={courseDetails.course.completionEnabled}
+            />
+          )}
         </View>
       </View>
       {courseDetails.course.completion && courseDetails.course.completion.statuskey === StatusKey.complete && (

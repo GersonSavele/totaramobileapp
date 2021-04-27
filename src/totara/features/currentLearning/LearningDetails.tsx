@@ -24,6 +24,8 @@ import { CL_TEST_IDS } from "@totara/lib/testIds";
 import Animated, { interpolate, Extrapolate, Value, event } from "react-native-reanimated";
 import LinearGradient from "react-native-linear-gradient";
 import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
+import { Spinner } from "native-base";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { marginXL } = margins;
 
@@ -39,6 +41,7 @@ type LearningDetailsProps = {
   image?: string;
   onPullToRefresh: () => void;
   navigation: any;
+  loading: boolean;
 };
 
 type TitleBarProps = {
@@ -124,7 +127,8 @@ const LearningDetails = ({
   badgeTitle,
   image,
   onPullToRefresh,
-  navigation
+  navigation,
+  loading
 }: LearningDetailsProps) => {
 
   const scrollValue = useRef(new Value(0)).current;
@@ -135,7 +139,6 @@ const LearningDetails = ({
     <View style={learningDetailsStyles.container}>
       <AnimatedHeader scrollValue={scrollValue} title={fullname!} subTitle={badgeTitle} leftAction={() => navigation?.goBack()} />
       <Animated.ScrollView
-
         onScrollEndDrag={(event) => {
           const yOffset = event.nativeEvent.contentOffset.y;
           if (yOffset < (HEIGHT / 3)) {
@@ -165,6 +168,7 @@ const LearningDetails = ({
             }
           ]
         }}>
+
           <View style={learningDetailsStyles.imageViewContainer}>
             <ImageElement
               item={item as LearningItem}
@@ -174,7 +178,12 @@ const LearningDetails = ({
             />
           </View>
           <View style={learningDetailsStyles.imageViewGradient}>
-            <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0)']} style={{ height: HEIGHT / 3, zIndex: 100 }} />
+            <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0)']} style={{ height: HEIGHT / 2, zIndex: 100 }} />
+          </View>
+          <View>
+            {loading && <SafeAreaView>
+              <Spinner color={TotaraTheme.textColorLight} />
+            </SafeAreaView>}
           </View>
 
         </Animated.View>
