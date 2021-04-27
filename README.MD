@@ -4,12 +4,11 @@ React Native App
 
 # Requirements
 
-- node >= v13.7.0
-- yarn >= 1.21.1
-- React Native = 0.61.5
+- node >= v12.20.1 (LTS) or higher lts version
 - Android SDK (API 28)
-- XCode >= 11.3.1
+- XCode >= 12
 - Cocoapods = 1.9.1
+- yarn >= 1.21.1 (optional)
 
 # Setup
 
@@ -225,4 +224,32 @@ Use the following command to build and run the detox automated test
 
 ```sh
 npm run detox:run
+```
+
+
+# Other useful commands
+
+## Device listing
+
+Both platforms:
+```sh
+npm run devices:ios      
+```
+
+For iOS only:
+```sh
+npm run devices:ios  
+```
+or 
+```sh
+xcrun xctrace list devices    
+```
+
+For Android only:
+```sh
+npm run devices:android
+```
+or 
+```sh
+adb devices  
 ```

@@ -43,7 +43,10 @@
     "mock:setup": "mv src/totara/lib/config.local.ts src/totara/lib/config.local.bak.ts &&  cp src/totara/lib/config.detox.ts src/totara/lib/config.local.ts",
     "mock:reset": "mv src/totara/lib/config.local.bak.ts src/totara/lib/config.local.ts",
     "detox:test": "detox build && detox test || echo '`detox test` completed.'",
-    "detox:run": "npm-run-all mock:setup detox:test mock:reset"
+    "detox:run": "npm-run-all mock:setup detox:test mock:reset",
+    "devices": "npm-run-all devices:ios devices:android",
+    "devices:ios": "xcrun xctrace list devices",
+    "devices:android": "adb devices"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",

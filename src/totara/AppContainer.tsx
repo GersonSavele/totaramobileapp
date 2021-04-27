@@ -65,8 +65,9 @@ const AppContainer = () => {
 
   const handleNotificationReceived = (remoteMessage) => {
     if (remoteMessage) {
+      fetchNotifications(client);
       if (remoteMessage?.data?.notification === "1") {
-        navigate("NotificationsTab", {});
+        navigate("Notifications", {});
       }
     }
   };
