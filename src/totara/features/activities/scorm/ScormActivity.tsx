@@ -230,32 +230,11 @@ const ScormActivity = (props: ScormActivityProps) => {
 };
 
 const navigationOptions = ({ navigation }) => {
-  console.log("----- print -----");
-  const { title = "" } = navigation.state.params as ScormActivityParams;
-  const backButtonClick = () => {
-    navigation.goBack();
-  };
-
+  const { title = "", backAction = () => navigation.pop() } = navigation.state.params as ScormActivityParams;
   return {
     title,
     headerTitleAlign: "center",
-    headerLeft: () => <CloseButton onPress={backButtonClick} testID={NAVIGATION_TEST_IDS.BACK} />,
-    headerRight: () => headerRight({ navigation })
-  };
-};
-
-const navigationOptionsScormActivity = ({ navigation }) => {
-  console.log("----- print -----");
-  const { title = "", backAction } = navigation.state.params as ScormActivityParams;
-  const backButtonClick = () => {
-    backAction!();
-    navigation.goBack();
-  };
-
-  return {
-    title,
-    headerTitleAlign: "center",
-    headerLeft: () => <CloseButton onPress={backButtonClick} testID={NAVIGATION_TEST_IDS.BACK} />,
+    headerLeft: () => <CloseButton onPress={backAction} testID={NAVIGATION_TEST_IDS.BACK} />,
     headerRight: () => headerRight({ navigation })
   };
 };
@@ -264,7 +243,7 @@ const innerStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     [SCORM_ROOT]: {
       screen: ScormActivity,
-      navigationOptions: navigationOptionsScormActivity
+      navigationOptions
     },
     [SCORM_ATTEMPTS]: {
       screen: ScormAttempts,

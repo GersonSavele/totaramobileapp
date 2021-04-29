@@ -14,7 +14,7 @@
  */
 
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -59,6 +59,9 @@ const Activities = ({
   onSetExpandedSectionIds,
   isSingleActivity
 }: ActivitiesProps) => {
+  const navigation = useNavigation();
+
+  useEffect(() => navigation.addListener("focus", courseRefreshCallBack), [navigation]);
   return (
     <FlatList
       data={sections}
@@ -260,6 +263,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
   if (data) {
     courseRefreshCallBack!();
   }
+
   const isLabel = item.modtype === ActivityModType.label;
   const onClickSelfComplete = () => {
     selfComplete({
@@ -269,6 +273,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
       }
     });
   };
+
   return (
     <View
       style={{
@@ -301,8 +306,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   screen: SCORM_ROOT,
                   params: {
                     id: item.instanceid.toString(),
-                    title: item.name,
-                    backAction: courseRefreshCallBack
+                    title: item.name
                   }
                 });
                 break;
@@ -346,8 +350,8 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         fileurl,
                         mimetype,
                         apiKey,
-                        title: item?.name,
-                        backAction: courseRefreshCallBack
+                        backAction: () => {},
+                        title: item?.name
                       }
                     });
                   })
@@ -362,8 +366,8 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
-                    title: item?.name,
-                    backAction: courseRefreshCallBack
+                    backAction: () => {},
+                    title: item?.name
                   }
                 });
               }
