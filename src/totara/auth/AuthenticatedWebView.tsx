@@ -24,6 +24,7 @@ import { config, Log } from "@totara/lib";
 import { AuthConsumer } from "@totara/core";
 import { WEBVIEW_SECRET } from "@totara/lib/constants";
 import { Loading, LoadingError } from "@totara/components";
+import { getUserAgent } from "react-native-device-info";
 
 const createWebview = gql`
   mutation totara_mobile_create_webview($url: String!) {
@@ -55,9 +56,12 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
       error: undefined,
       isLoading: true,
       isAuthenticated: false,
-      webviewSecret: undefined
+      webviewSecret: undefined,
+      agent: config.userAgent
     };
   }
+
+
 
   async componentDidMount() {
     const { createWebview, uri } = this.props;
@@ -87,7 +91,12 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
       Log.warn("unable to clearcookies", error)
     );
 
-    return Promise.all([createWebViewPromise, clearCookiesPromise]);
+    const userAgentPromise = getUserAgent().then(agent => {
+      this.setState({ ...this.state, agent: `${agent} ${config.userAgent}` });
+    });
+
+
+    return Promise.all([createWebViewPromise, clearCookiesPromise, userAgentPromise]);
   }
 
   async componentWillUnmount() {
@@ -122,8 +131,8 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
                 uri: config.webViewUri(auth.authContextState.appState.host),
                 headers: { [WEBVIEW_SECRET]: this.state.webviewSecret }
               }}
-              userAgent={config.userAgent}
               style={{ flex: 1 }}
+              userAgent={this.state.agent}
               ref={innerRef}
               onNavigationStateChange={this.props.onNavigationStateChange}
               onShouldStartLoadWithRequest={this.props.onShouldStartLoadWithRequest}
@@ -163,6 +172,7 @@ type State = {
   isLoading: boolean;
   isAuthenticated: boolean;
   webviewSecret?: string;
+  agent?: string
 };
 
 const AuthenticatedWebViewGraphQL = compose<Props, { innerRef: React.Ref<WebView> }>(
