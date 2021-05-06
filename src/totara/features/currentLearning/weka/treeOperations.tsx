@@ -127,34 +127,28 @@ class ToFullSummary implements Visitor<Object> {
   visitWekaList(element: WekaList): Object {
     return <View>{this.all(element.content)}</View>;
   }
+
   visitWekaBulletList(element: WekaBulletList): Object {
-    return (
-      <Text>
-        {element?.content
-          ?.map((item) => {
-            return `${BULLET_POINT_UNICODE} ${item?.accept(this).toString()}`;
-          })
-          .filter(String)
-          .join("\n")
-          .toString()
-          .trim()}
-      </Text>
-    );
+    return element?.content?.map((item, index) => {
+      return this.listItem({ mark: BULLET_POINT_UNICODE, component: item?.accept(this), key: `${index}` });
+    });
   }
+
   visitWekaOrderList(element: WekaOrderList): Object {
-    return (
-      <Text>
-        {element?.content
-          ?.map((item, index) => {
-            return (index + 1).toString() + ". " + item?.accept(this);
-          })
-          .filter(String)
-          .join("\n")
-          .toString()
-          .trim()}
-      </Text>
+    return element?.content?.map((item, index) =>
+      this.listItem({ mark: `${index + 1}.`, component: item?.accept(this), key: `${index}` })
     );
   }
+
+  listItem({ mark, component, key }: { mark: string; component?: Object; key?: string }): Object {
+    return (
+      <View style={styles.listItemWrapper} key={key}>
+        <Text style={styles.listItem}>{mark}</Text>
+        <View style={styles.listItemContent}>{component}</View>
+      </View>
+    );
+  }
+
   visitWekaEmoji(element: WekaEmoji): Object {
     return <Text>{String.fromCodePoint(parseInt(textAttributes.short_code_prefix + element.shortCode))}</Text>;
   }
@@ -187,9 +181,11 @@ class ToFullSummary implements Visitor<Object> {
   visitWekaText(element: WekaText): Object {
     return element.text;
   }
+
   visitWekaRoot(element: WekaRoot): Object {
     return this.all(element.content);
   }
+
   all(content: Node<Object>[]): Object {
     return (
       <View>
@@ -198,18 +194,6 @@ class ToFullSummary implements Visitor<Object> {
         })}
       </View>
     );
-  }
-
-  bulletList(element: WekaBulletList): string {
-    const list = element?.content
-      ?.map((item) => {
-        return `${BULLET_POINT_UNICODE} ${item?.accept(this)}`;
-      })
-      .filter(String)
-      .join("\n")
-      .toString()
-      .trim();
-    return list;
   }
 }
 

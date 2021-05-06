@@ -18,7 +18,7 @@ import { AuthContext } from "@totara/core";
 import { AppState } from "@totara/types";
 import { navigate } from "@totara/lib/navigationService";
 import { NAVIGATION } from "@totara/lib/navigation";
-import { WekaEditorType } from "../constants";
+import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from "../constants";
 
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -151,20 +151,20 @@ class WekaImage implements Node<Object> {
 }
 
 const mapTypeToNode = {
-  [WekaEditorType.paragraph]: (content) => {
-    return new WekaParagraph(jsonObjectToWekaNodes(content));
+  [WekaEditorType.paragraph]: (content, level) => {
+    return new WekaParagraph(jsonObjectToWekaNodes(content, level));
   },
 
-  [WekaEditorType.bulletList]: (content) => {
-    return new WekaBulletList(jsonObjectToWekaNodes(content));
+  [WekaEditorType.bulletList]: (content, level) => {
+    return new WekaBulletList(jsonObjectToWekaNodes(content, level));
   },
 
-  [WekaEditorType.orderedList]: (content) => {
-    return new WekaOrderList(jsonObjectToWekaNodes(content));
+  [WekaEditorType.orderedList]: (content, level) => {
+    return new WekaOrderList(jsonObjectToWekaNodes(content, level));
   },
 
-  [WekaEditorType.listItem]: (content) => {
-    return new WekaList(jsonObjectToWekaNodes(content));
+  [WekaEditorType.listItem]: (content, level) => {
+    return new WekaList(jsonObjectToWekaNodes(content, level));
   },
 
   [WekaEditorType.image]: (item) => {
@@ -179,8 +179,8 @@ const mapTypeToNode = {
     return new WekaText(item.text, item.type);
   },
 
-  [WekaEditorType.heading]: (content) => {
-    return new WekaHeading(jsonObjectToWekaNodes(content));
+  [WekaEditorType.heading]: (content, level) => {
+    return new WekaHeading(jsonObjectToWekaNodes(content, level));
   },
   [WekaEditorType.linkMedia]: (content) => {
     return new WekaLinkMedia(content);
@@ -193,7 +193,7 @@ const mapTypeToNode = {
   }
 };
 
-const jsonObjectToWekaNodes = (data: any): Node<Object>[] => {
+const jsonObjectToWekaNodes = (data: any, level = 1): Node<Object>[] => {
   const dataArray = Array.isArray(data.content) ? data.content : data;
   return (
     dataArray &&
@@ -214,10 +214,13 @@ const jsonObjectToWekaNodes = (data: any): Node<Object>[] => {
       if (type === WekaEditorType.video) {
         return mapTypeToNode[type](attrs);
       }
-      if (type === WekaEditorType.bulletList) {
-        return mapTypeToNode[type](item);
+      if (type === WekaEditorType.bulletList || type === WekaEditorType.orderedList) {
+        if (level <= MAX_LIST_ITEM_LEVELS) {
+          return mapTypeToNode[type](item, level + 1);
+        }
+        return null;
       }
-      return content && mapTypeToNode[type] ? mapTypeToNode[type](content) : null;
+      return content && mapTypeToNode[type] ? mapTypeToNode[type](content, level) : null;
     })
   );
 };

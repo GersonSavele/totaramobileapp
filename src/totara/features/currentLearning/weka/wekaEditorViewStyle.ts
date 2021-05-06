@@ -15,7 +15,7 @@
 
 import { StyleSheet } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, borderRadius, fontWeights, iconSizes } from "@totara/theme/constants";
+import { margins, borderRadius, fontWeights, iconSizes, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 const { marginXS, marginM, marginS } = margins;
 
@@ -137,6 +137,19 @@ const wekaEditorStyle = StyleSheet.create({
     height: "10%",
     justifyContent: "flex-end",
     alignItems: "flex-start"
+  },
+  listItemWrapper: {
+    flexDirection: "row",
+    flex: 1,
+    marginLeft: margins.marginXS,
+    paddingVertical: paddings.paddingS
+  },
+  listItem: {
+    width: iconSizes.sizeM,
+    paddingRight: paddings.paddingXS
+  },
+  listItemContent: {
+    flexShrink: 1
   }
 });
 

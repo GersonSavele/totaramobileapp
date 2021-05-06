@@ -71,6 +71,8 @@ enum WekaEditorType {
   audio = "audio"
 }
 
+const MAX_LIST_ITEM_LEVELS = 5;
+
 export {
   learningItemEnum,
   completionTrack,
@@ -78,5 +80,6 @@ export {
   courseCriteria,
   completionIconStateKey,
   viewHeight,
-  WekaEditorType
+  WekaEditorType,
+  MAX_LIST_ITEM_LEVELS
 };
