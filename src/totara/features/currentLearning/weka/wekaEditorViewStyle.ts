@@ -69,7 +69,7 @@ const wekaEditorStyle = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
-    height: deviceScreen.width,
+    height: "100%",
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2
   },
@@ -79,7 +79,9 @@ const wekaEditorStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    height: (deviceScreen.width * 1) / 2 - 20
+    marginVertical: marginM,
+    width: "100%",
+    aspectRatio: 16 / 9
   },
   list: {
     textAlign: "left",

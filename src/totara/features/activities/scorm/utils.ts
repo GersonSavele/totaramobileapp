@@ -214,11 +214,21 @@ const getScormPlayerInitialData = ({
   playerInitalData
 }: GetPlayerInitialDataProps) => {
   const { defaults, interactions, objectives } = playerInitalData;
+<<<<<<< HEAD
   const _entrysrc = launchSrc ? `${packageLocation}/${launchSrc}` : undefined;
   const _scormdebugging = false;
   const _scormauto = 0;
   const _scormid = scormId;
   const _scoid = scoId;
+=======
+  const selectedSCO: Sco | undefined = scos.find((sco) => sco.id === scoId);
+  console.log(selectedSCO);
+  const _entrysrc = `${packageLocation}/${selectedSCO?.launchSrc}`;
+  const _scormdebugging = false;
+  const _scormauto = 0;
+  const _scormid = scormId;
+  const _scoid = selectedSCO?.id;
+>>>>>>> MOB-928: Applied Styles to the new weka viewer
   const _autocommit = false;
   const _masteryoverride = true;
   const _hidetoc = 1;
