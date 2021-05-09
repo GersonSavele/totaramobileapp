@@ -45,7 +45,7 @@ const LinkMedia = ({ content = {}, textColor = TotaraTheme.colorNeutral8 }: Conf
       {!isEmpty(content?.attrs?.url) && (
         <View testID="test_media_content">
           {content.attrs.url.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
-            <ImageViewerWrapper content={content} />
+            <ImageViewerWrapper url={content.attrs.url} fileName="" />
           ) : content.attrs.url.match(/\.(?:wav|mp3)$/i) != null ? (
             <EmbeddedMedia content={content} title="Audio file" />
           ) : (
