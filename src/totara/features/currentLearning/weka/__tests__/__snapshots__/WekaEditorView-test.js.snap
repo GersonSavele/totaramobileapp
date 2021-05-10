@@ -1829,11 +1829,13 @@ Array [
       style={
         Object {
           "alignItems": "center",
+          "aspectRatio": 1.7777777777777777,
           "borderRadius": 10,
           "display": "flex",
-          "height": 355,
           "justifyContent": "center",
+          "marginVertical": 12,
           "overflow": "hidden",
+          "width": "100%",
         }
       }
     >
@@ -1846,7 +1848,7 @@ Array [
             Object {
               "backgroundColor": "#F5F5F5",
               "borderRadius": 10,
-              "height": 750,
+              "height": "100%",
               "width": "100%",
             },
           ]
