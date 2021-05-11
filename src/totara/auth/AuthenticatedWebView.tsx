@@ -92,7 +92,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     );
 
     const userAgentPromise = getUserAgent().then(agent => {
-      this.setState({ ...this.state, agent: `${agent} ${config.userAgent}` });
+      this.setState({ agent: `${agent} ${config.userAgent}` });
     });
 
 
