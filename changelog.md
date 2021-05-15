@@ -1,5 +1,27 @@
 Totara Mobile App Changelog
 
+Release 1.0.10 (17th May 2021):
+=====================================
+
+Bug
+[MOB-911] - SCORM content not displayed in landscape view in mobile app
+[MOB-905] - Course sections without activities
+[MOB-922] - Loading spinner in Course details is not working
+[MOB-923] - Tapping on a PN pop up doesn't go to the target notification
+[MOB-904] - Cannot open link within PDF file on Android devices
+
+Task
+[MOB-900] - Language in Mobile app seems to be dependant on language detection
+[MOB-912] - Investigate why some SCORM packages are not navigable on Webviews
+
+Improvements
+[MOB-796] - Refine focus order in all screens(Discovery)
+[MOB-819] - Embedded Media(Audio/Video) should show in the inline-player
+[MOB-895] - Mocked server for Native login flow
+
+Technical documentation
+[MOB-919] - Improve release documentation
+
 Release 1.0.9 (30th March 2021):
 =====================================
 
