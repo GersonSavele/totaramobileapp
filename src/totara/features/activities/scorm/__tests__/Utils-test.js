@@ -503,11 +503,12 @@ describe("scorm utilities", () => {
       const scormId = "1";
       const attempt = 1;
       const scoId = "sco-1";
+      const launchSrc = "sco-1/index.html";
       const scos = [
         { id: "sco-1", organizationId: "org-1", launchSrc: "sco-1/index.html" },
         { id: "sco-2", organizationId: "org-1", launchSrc: "sco-2/index.html" }
       ];
-      const packageLocation = "path/packagName";
+      const packageLocation = "path/packageName";
       const playerInitalData = {
         defaults: {
           "sco-1": "initial default data 1",
@@ -528,10 +529,11 @@ describe("scorm utilities", () => {
         scoId,
         attempt,
         packageLocation,
-        playerInitalData
+        playerInitalData,
+        launchSrc
       });
 
-      expect(result.entrysrc).toBe(packageLocation + "/sco-1/index.html");
+      expect(result.entrysrc).toBe(`${packageLocation}/${launchSrc}`);
       expect(result.def).toMatchObject(playerInitalData.defaults);
       expect(result.obj).toMatchObject(playerInitalData.objectives);
       expect(result.int).toMatchObject(playerInitalData.interactions);

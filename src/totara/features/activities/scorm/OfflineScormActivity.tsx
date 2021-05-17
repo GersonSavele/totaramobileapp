@@ -42,7 +42,6 @@ import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 type OfflineScormParams = {
   attempt: number;
   scorm?: Scorm;
-  scoid?: string;
   backAction: () => void;
 };
 
@@ -53,7 +52,7 @@ const { NONE_EXIST_RESOURCE_ID, INVALID_SCORM_ID } = SCORM_TEST_IDS;
 const getResources = (state: RootState) => state.resourceReducer.resources;
 
 const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
-  const { scorm, attempt, scoid, backAction } = navigation.state.params as OfflineScormParams;
+  const { scorm, attempt, backAction } = navigation.state.params as OfflineScormParams;
   if (!scorm || !scorm.id) {
     return <Text testID={INVALID_SCORM_ID}>{translate("general.error_unknown")}</Text>;
   }
@@ -95,7 +94,6 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
       scorm,
       attempt,
       client,
-      scoid,
       defaultSco,
       setJsCode
     }),
@@ -122,7 +120,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   );
 };
 
-const packageEffect = ({ url, scos, scorm, attempt, client, scoid, defaultSco, setJsCode }) => () => {
+const packageEffect = ({ url, scos, scorm, attempt, client, defaultSco, setJsCode }) => () => {
   if (url && scos) {
     const { id, newAttemptDefaults } = scorm;
     const cmiData = getScormAttemptData({
@@ -130,12 +128,13 @@ const packageEffect = ({ url, scos, scorm, attempt, client, scoid, defaultSco, s
       attempt,
       client
     });
-    const selectedScoId = scoid || (defaultSco && defaultSco.id!);
-    const lastActivityCmi = (cmiData && cmiData[selectedScoId]) || null;
+    const selectedSco = defaultSco ? defaultSco : scos[0];
+    const lastActivityCmi = (cmiData && cmiData[selectedSco.id]) || null;
     const cmi = getScormPlayerInitialData({
+      launchSrc: selectedSco?.launchSrc,
       scormId: id,
       scos,
-      scoId: selectedScoId || "",
+      scoId: selectedSco?.id,
       attempt,
       packageLocation: getOfflineScormPackageName(scorm.id),
       playerInitalData: {

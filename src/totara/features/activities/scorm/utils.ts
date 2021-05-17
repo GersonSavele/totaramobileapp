@@ -33,6 +33,7 @@ import { offlineScormServerRoot, scormZipPackagePath, ScormLessonStatus } from "
 import { OFFLINE_SCORM_PREFIX, FILE_EXTENSION, SECONDS_FORMAT } from "@totara/lib/constants";
 
 type GetPlayerInitialDataProps = {
+  launchSrc: string;
   scormId: string;
   scos: [Sco];
   scoId: string;
@@ -205,21 +206,19 @@ const shouldAllowAttempt = ({ timeOpen, maxAttempts, totalAttempt = 0 }) =>
   !timeOpen && (!maxAttempts || maxAttempts > totalAttempt);
 
 const getScormPlayerInitialData = ({
+  launchSrc,
   scormId,
-  scos,
   scoId,
   attempt,
   packageLocation,
   playerInitalData
 }: GetPlayerInitialDataProps) => {
   const { defaults, interactions, objectives } = playerInitalData;
-  const selectedSCO: Sco | undefined = scos.find((sco) => sco.id === scoId);
-
-  const _entrysrc = `${packageLocation}/${selectedSCO!.launchSrc}`;
+  const _entrysrc = launchSrc ? `${packageLocation}/${launchSrc}` : undefined;
   const _scormdebugging = false;
   const _scormauto = 0;
   const _scormid = scormId;
-  const _scoid = selectedSCO!.id;
+  const _scoid = scoId;
   const _autocommit = false;
   const _masteryoverride = true;
   const _hidetoc = 1;
@@ -387,6 +386,7 @@ const getScormPackageData = (packagPath: string) => {
       const xmlData = new dom().parseFromString(xmlcontent);
       const scosList = getScosDataForPackage(xmlData);
       const defaultSco = getInitialScormLoadData(xmlData);
+
       if (!isEmpty(scosList)) return { scos: scosList, defaultSco: defaultSco } as Package;
     }
   });
@@ -400,7 +400,6 @@ const getScormPackageData = (packagPath: string) => {
  */
 const getScosDataForPackage = (manifestDom: any) => {
   const resultOrganisations = xpath.evaluate(
-    // "//*[local-name(.)='organizations']/*[local-name()='organization']",
     "//*[local-name(.)='organizations']/*[local-name()='organization']",
     manifestDom, // contextNode
     null, // namespaceResolver
@@ -474,11 +473,13 @@ const getInitialScormLoadData = (manifestDom: any) => {
       defaultLaunchSrc = getDefaultScoLaunchUrl(manifestDom, defaultScoId!);
     }
   }
-  return {
-    id: defaultScoId,
-    organizationId: defaultOrgizationId,
-    launchSrc: defaultLaunchSrc
-  };
+  if (defaultOrgizationId && defaultScoId && defaultLaunchSrc) {
+    return {
+      id: defaultScoId,
+      organizationId: defaultOrgizationId,
+      launchSrc: defaultLaunchSrc
+    };
+  }
 };
 
 const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string) => {
