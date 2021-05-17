@@ -15,6 +15,7 @@
 
 import { AppliedTheme } from "@totara/theme/Theme";
 
+/** @deprecated */
 export type SiteInfo = {
   auth: string;
   siteMaintenance: boolean;
@@ -22,6 +23,7 @@ export type SiteInfo = {
   version: string;
 };
 
+/** @deprecated */
 export type AppState = {
   apiKey: string;
   host: string;

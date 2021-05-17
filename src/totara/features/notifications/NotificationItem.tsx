@@ -41,7 +41,7 @@ const NotificationItem = ({
   selectable = true,
   selected = false
 }: NotificationItemProps) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   return (
     <TouchableOpacity
       testID={testID}

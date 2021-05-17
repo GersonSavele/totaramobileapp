@@ -25,7 +25,7 @@ type Props = {
 };
 
 const FormError = ({ message, isShow }: Props) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   const [animationType, setAnimationType] = useState();
 
   useEffect(() => {

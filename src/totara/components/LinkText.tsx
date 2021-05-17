@@ -26,7 +26,7 @@ type Props = {
 };
 
 const LinkText = ({ text, style, onPress, children, ...rest }: Props) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
 
   return (
     <TouchableOpacity onPress={onPress}>

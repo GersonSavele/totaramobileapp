@@ -15,11 +15,13 @@
 import { combineReducers } from "redux";
 import notificationReducer from "./notification";
 import resourceReducer from "./resource";
+import sessionReducer from "./session";
 import { PURGE } from "../actions/constants";
 
 const appReducer = combineReducers({
   notificationReducer,
-  resourceReducer
+  resourceReducer,
+  sessionReducer
 });
 
 const rootReducer = (state, action) => {

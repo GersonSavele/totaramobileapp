@@ -13,7 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+import { TransitionPresets } from "@react-navigation/stack";
 import { learningItemEnum } from "@totara/features/currentLearning/constants";
+import { translate } from "@totara/locale";
+import { paddings } from "@totara/theme/constants";
 
 /**
  * Navigates to a next screen using react navigation.
@@ -64,4 +67,15 @@ const NAVIGATION = {
   COURSE_GROUP_DETAILS
 };
 
-export { navigateTo, NAVIGATION, itemToRouteMap };
+const cardModalOptions = {
+  cardOverlayEnabled: true,
+  ...TransitionPresets.ModalPresentationIOS,
+  headerStatusBarHeight: 0,
+  headerShown: true,
+  headerBackTitle: translate('general.cancel'),
+  headerTitle: '',
+  headerBackImage: () => null,
+  headerBackTitleStyle: { paddingLeft: paddings.paddingL }
+}
+
+export { navigateTo, NAVIGATION, itemToRouteMap, cardModalOptions };

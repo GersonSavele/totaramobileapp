@@ -21,7 +21,7 @@ const persistConfig = {
   // Root
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["resourceReducer", "notificationReducer"]
+  whitelist: ["sessionReducer", "resourceReducer", "notificationReducer"]
 };
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);

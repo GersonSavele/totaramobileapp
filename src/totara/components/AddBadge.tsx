@@ -59,7 +59,7 @@ const AddBadge = ({
 };
 
 const RightBadge = ({ status, size, offsetSize }: Props) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   const getContainerStyle = (size: number, offsetSize: number, backgroundColor: string, borderColor: string) => {
     return StyleSheet.create({
       container: {

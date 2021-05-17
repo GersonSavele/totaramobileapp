@@ -1,7 +1,7 @@
 /**
  * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2021 onwards Totara Learning Solutions LTD
  *
  * Totara Enterprise is provided only to Totara Learning Solutions
  * LTD’s customers and partners, pursuant to the terms and
@@ -29,8 +29,7 @@ import { mutationForToken, notificationsQuery } from "./features/notifications/a
 import { RootState } from "./reducers";
 import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import TabContainer from "./TabContainer";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { TotaraTheme } from "./theme/Theme";
+import { NavigationContainer } from "@react-navigation/native";
 import WebViewStack from "./features/activities/webview/WebViewStack";
 
 const { SCORM_STACK_ROOT, ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
@@ -56,7 +55,7 @@ const RootStack = createCompatNavigatorFactory(createStackNavigator)(
   }
 );
 
-const AppContainer = () => {
+const RootContainer = () => {
   ResourceManager.resumeDownloads();
 
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
@@ -130,19 +129,11 @@ const AppContainer = () => {
     return unsubscribe;
   }, []);
 
-  const navigationTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      background: TotaraTheme.viewContainer.backgroundColor!
-    }
-  };
-
   return (
-    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+    <NavigationContainer ref={navigationRef} >
       <RootStack />
     </NavigationContainer>
   );
 };
 
-export default AppContainer;
+export default RootContainer;

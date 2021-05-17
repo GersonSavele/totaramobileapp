@@ -63,7 +63,7 @@ type ProfileContentProps = {
 
 const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
   const [logout, setLogout] = useState(false);
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   const { logOut } = useContext(AuthContext);
   const confirmationLogout = () => {
     const confirmedLogout = () => {

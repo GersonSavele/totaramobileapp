@@ -39,7 +39,7 @@ enum ListingOrientation {
 
 const CurrentLearning = () => {
   const { networkStatus, error, data, refetch } = useQuery(query, { notifyOnNetworkStatusChange: true });
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   const [listingOrientation, setListingOrientation] = useState<ListingOrientation>(ListingOrientation.Carousel);
 
   const onContentRefresh = () => {

@@ -22,7 +22,7 @@ type MoreTextProps = {
   style?: TextStyle;
 };
 const MoreText = ({ longText, style }: MoreTextProps) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   const renderViewMore = (event: () => void) => {
     return (
       <View style={styles.moreLessContainer}>

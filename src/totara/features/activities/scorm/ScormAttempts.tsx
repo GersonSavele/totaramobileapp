@@ -74,7 +74,7 @@ type AttemptReport = {
 };
 
 const AttemptReport = ({ attemptReport, attempt, gradeMethod }: AttemptReport) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
 
   const calculatedScore = attemptReport.gradereported;
   const formattedScore = gradeMethod == Grade.objective ? calculatedScore.toString() : `${calculatedScore}%`;

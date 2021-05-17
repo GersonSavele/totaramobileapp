@@ -241,6 +241,7 @@ export const createApolloClient = (
  *   }
  *
  */
+
 export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>) => async <T>(
   input: RequestInfo,
   init?: RequestInit
@@ -261,7 +262,7 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
       return Promise.reject(error);
     })
     .then((json) => {
-      Log.debug("json response", json);
+      // Log.debug("json response", json);
       if (json.data) return (json.data as unknown) as T;
       else return Promise.reject("json expected to have data attribute");
     });

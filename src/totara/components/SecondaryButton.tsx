@@ -65,7 +65,7 @@ const ButtonIndicator = ({ mode, icon, color, size }: IndicatorProps) => {
 };
 
 const SecondaryButton = ({ children, text, icon, style, onPress, mode, testID, ...rest }: Props) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
 
   const buttonStyle = StyleSheet.create({
     container: {

@@ -28,7 +28,7 @@ type Props = {
 };
 
 const TertiaryButton = ({ text = "", style, onPress, testID, ...rest }: Props) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
 
   return (
     <Button block rounded transparent testID={testID} onPress={onPress} style={[styles.button, style]} {...rest}>

@@ -15,5 +15,6 @@
 
 import { AuthContext, AuthConsumer } from "./AuthContext";
 import { AuthContextState } from "./AuthHook";
+import useSession from "./UseSession";
 
-export { AuthContext, AuthConsumer, AuthContextState };
+export { AuthContext, AuthConsumer, AuthContextState, useSession };

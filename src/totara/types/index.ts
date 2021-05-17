@@ -25,6 +25,7 @@ import { UserProfile } from "./UserProfile";
 import { NotificationMessage } from "./NotificationMessage";
 import { Resource } from "./Resource";
 import { CourseGroup } from "./CourseGroup";
+import { Session } from "./Session";
 
 export {
   LearningItem,
@@ -45,5 +46,6 @@ export {
   NotificationMessage,
   Resource,
   CourseContentDetails,
-  CourseGroup
+  CourseGroup,
+  Session
 };

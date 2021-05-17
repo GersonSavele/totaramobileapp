@@ -1,7 +1,7 @@
 /**
  * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2019 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2021 onwards Totara Learning Solutions LTD
  *
  * Totara Enterprise is provided only to Totara Learning Solutions
  * LTD’s customers and partners, pursuant to the terms and
@@ -16,9 +16,8 @@
 import { Content, Form, Input } from "native-base";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import SafeAreaView from "react-native-safe-area-view";
 import DeviceInfo from "react-native-device-info";
-import { useSiteUrl, Props } from "./SiteUrlHook";
+import { useSiteUrl } from "./SiteUrlHook";
 import { get } from "lodash";
 
 import { InputTextWithInfo, PrimaryButton } from "@totara/components";
@@ -28,11 +27,26 @@ import { margins, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
 import { TEST_IDS } from "@totara/lib/testIds";
 import { config } from "@totara/lib";
+import { useSession } from "@totara/core";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const SiteUrl = (props: Props) => {
+const SiteUrl = () => {
+
+  const { host } = useSession();
+
   // eslint-disable-next-line no-undef
-  const [siteUrl, setSiteUrl] = useState(props.siteUrl ? props.siteUrl : __DEV__ ? get(config, "devOrgUrl", "") : "");
-  const { siteUrlState, onSubmit, isSiteUrlSubmitted } = useSiteUrl(props);
+  const [siteUrl, setSiteUrl] = useState(host ? host : __DEV__ ? get(config, "devOrgUrl", "") : "");
+  const navigation = useNavigation();
+  const { setupSiteInfo } = useSession();
+
+  const { siteUrlState, onSubmit } = useSiteUrl({
+    siteUrl: siteUrl,
+    onSiteInfoDone: (siteInfo) => {
+      setupSiteInfo({ host: siteUrl, siteInfo });
+      return navigation.navigate('NativeLogin');
+    }
+  });
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -49,7 +63,8 @@ const SiteUrl = (props: Props) => {
             <InputTextWithInfo
               placeholder={translate("site_url.url_text_placeholder")}
               message={siteUrlState.inputSiteUrlMessage}
-              status={siteUrlState.inputSiteUrlStatus}>
+              status={siteUrlState.inputSiteUrlStatus === "fetching" ? "success" :
+                siteUrlState.inputSiteUrlStatus}>
               <Input
                 keyboardType="url"
                 clearButtonMode="while-editing"
@@ -57,7 +72,7 @@ const SiteUrl = (props: Props) => {
                 onChangeText={(text) => setSiteUrl(text)}
                 value={siteUrl}
                 style={styles.inputText}
-                autoFocus={!isSiteUrlSubmitted}
+                autoFocus={siteUrlState.inputSiteUrlStatus !== 'fetching'}
                 testID={"SITE_URL_INPUT"}
                 returnKeyType={"done"}
                 onSubmitEditing={() => onSubmit(siteUrl)}
@@ -67,7 +82,7 @@ const SiteUrl = (props: Props) => {
               onPress={() => onSubmit(siteUrl)}
               text={translate("general.enter")}
               style={styles.buttonEnter}
-              mode={isSiteUrlSubmitted ? "loading" : undefined}
+              mode={siteUrlState.inputSiteUrlStatus === 'fetching' ? "loading" : undefined}
               testID={TEST_IDS.SUBMIT_URL}
             />
           </View>
@@ -112,7 +127,6 @@ const styles = StyleSheet.create({
     ...TotaraTheme.textXSmall,
     color: TotaraTheme.colorNeutral6,
     textAlign: "center",
-    marginBottom: margins.marginS,
     flexDirection: "column-reverse"
   },
 

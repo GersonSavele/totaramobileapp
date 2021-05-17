@@ -30,7 +30,7 @@ type Props = {
 };
 
 const InfoText = ({ status, message }: Props) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   const stylesInfo = StyleSheet.create({
     hide: {
       opacity: 0
@@ -62,7 +62,7 @@ const InfoText = ({ status, message }: Props) => {
 };
 
 const InputTextWithInfo = ({ children, placeholder, message, status, style, ...rest }: Props) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   const floatingLabelStyles = StyleSheet.create({
     item: {
       marginTop: 0,

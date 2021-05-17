@@ -16,7 +16,6 @@
 import React, { useContext } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity, Linking } from "react-native";
 import { Form, Input, Container, Content } from "native-base";
-import SafeAreaView from "react-native-safe-area-view";
 
 import { config } from "@totara/lib";
 import { gutter, ThemeContext } from "@totara/theme";
@@ -29,7 +28,6 @@ import { useNativeFlow } from "./NativeFlowHook";
 import { margins } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { TEST_IDS } from "@totara/lib/testIds";
-import CloseButton from "@totara/components/CloseButton";
 
 const NativeLogin = (props: ManualFlowChildProps) => {
   // fetch from global
@@ -38,23 +36,27 @@ const NativeLogin = (props: ManualFlowChildProps) => {
 
   const {
     nativeLoginState,
-    onManualFlowCancel,
+    // onManualFlowCancel,
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,
     onFocusInput
   } = useNativeFlow(fetchDataWithFetch)(props);
 
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
+
+  const onClickEnter2 = () => {
+    onClickEnter();
+  }
 
   return (
     <Container style={[{ flex: 0 }, theme.viewContainer]}>
-      <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
+      {/* <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
         <SafeAreaView />
         <View style={styles.navigation}>
-          <CloseButton onPress={onManualFlowCancel} />
+          <CloseButton onPress={onCancel} />
         </View>
-      </View>
+      </View> */}
       <View style={{ position: "relative", zIndex: 2 }}>
         <FormError
           message={translate("native_login.error_unauthorized")}
@@ -113,7 +115,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
             </InputTextWithInfo>
           </View>
           <PrimaryButton
-            onPress={onClickEnter}
+            onPress={onClickEnter2}
             text={translate("general.enter")}
             mode={nativeLoginState.isRequestingLogin ? "loading" : undefined}
             testID={TEST_IDS.LOGIN}
@@ -144,7 +146,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     borderBottomWidth: 0,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    paddingBottom: margins.marginM
   },
   content: {
     paddingHorizontal: gutter

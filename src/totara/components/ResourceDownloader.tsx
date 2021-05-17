@@ -38,7 +38,7 @@ const DownloadIcon = {
 };
 
 const ResourceDownloaderComponent = ({ resourceState, progress, size }: ResourceDownloaderProps) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   if (resourceState === ResourceState.Downloading) {
     return (
       <Progress.Circle

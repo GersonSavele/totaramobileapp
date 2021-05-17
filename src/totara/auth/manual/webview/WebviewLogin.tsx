@@ -46,7 +46,7 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
 
   const refLoginWebview = useRef<WebView>(null);
 
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
 
   return (
     <Container style={[theme.viewContainer, { flex: 0 }]}>

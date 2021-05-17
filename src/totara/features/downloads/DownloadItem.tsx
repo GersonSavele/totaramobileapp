@@ -44,7 +44,7 @@ const DownloadItem = ({
   onItemLongPress,
   testID
 }: DownloadItemProps) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
 
   const humanReadableSize = (sizeInBytes: number) => {
     if (!sizeInBytes) return "...";

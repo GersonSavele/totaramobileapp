@@ -13,21 +13,41 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 
 import { config } from "@totara/lib";
 import { translate } from "@totara/locale";
 import { isValidUrlText } from "@totara/lib/tools";
+import { fetchData } from "@totara/core/AuthRoutines";
+import { SiteInfo } from "@totara/types/SiteInfo";
+import { getVersion } from "react-native-device-info";
 
-export const useSiteUrl = ({ siteUrl, onSiteUrlSuccess, isSiteUrlSubmitted }: Props) => {
+export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: Props) => {
   const [siteUrlState, dispatch] = useReducer(siteUrlReducer, {
     inputSiteUrlStatus: undefined,
     inputSiteUrlMessage: undefined,
     inputSiteUrl: siteUrl
   });
 
-  if (siteUrlState.inputSiteUrlStatus === "success" && siteUrlState.inputSiteUrl)
-    onSiteUrlSuccess(siteUrlState.inputSiteUrl);
+  useEffect(() => {
+    if (siteUrlState.inputSiteUrlStatus === 'fetching') {
+
+      // eslint-disable-next-line no-undef
+      const fetchDataWithFetch = fetchData(fetch);
+      const onSubmitCall = fetchDataWithFetch<SiteInfo>(config.infoUri(siteUrlState.inputSiteUrl!), {
+        method: "POST",
+        body: JSON.stringify({ version: getVersion() })
+      });
+
+      onSubmitCall.then(result => {
+        dispatch({ type: "done" })
+        onSiteInfoDone(result);
+      }).catch(error => {
+        console.log(error);
+        dispatch({ type: "error", payload: error.message })
+      });
+    }
+  }, [siteUrlState.inputSiteUrlStatus])
 
   const onSubmit = (siteUrl: string) => {
     dispatch({ type: "submit", payload: siteUrl });
@@ -41,18 +61,19 @@ export const useSiteUrl = ({ siteUrl, onSiteUrlSuccess, isSiteUrlSubmitted }: Pr
     siteUrlState,
     onChangeInputSiteUrl,
     onSubmit,
-    isSiteUrlSubmitted
   };
 };
 
+
 const siteUrlReducer = (state: State, action: Action): State => {
+
   switch (action.type) {
     case "submit": {
       if (action.payload && isValidUrlText(action.payload)) {
         return {
           ...state,
           inputSiteUrl: formatUrl(action.payload || ""),
-          inputSiteUrlStatus: "success"
+          inputSiteUrlStatus: "fetching"
         };
       } else {
         return {
@@ -62,31 +83,42 @@ const siteUrlReducer = (state: State, action: Action): State => {
         };
       }
     }
-
+    case "done": {
+      return {
+        ...state,
+        inputSiteUrlStatus: "done"
+      }
+    }
     case "change": {
       return {
         ...state,
         inputSiteUrl: action.payload
       };
     }
+    case "error": {
+      return {
+        ...state,
+        inputSiteUrlStatus: "error",
+        inputSiteUrlMessage: action.payload
+      };
+    }
   }
 };
 
 export type Props = {
-  onSiteUrlSuccess: (data: string) => void;
   siteUrl?: string;
-  isSiteUrlSubmitted: boolean;
+  onSiteInfoDone: any
 };
 
 type State = {
-  inputSiteUrlStatus?: "success" | "error";
+  inputSiteUrlStatus?: "done" | "fetching" | "error";
   inputSiteUrlMessage?: string;
   inputSiteUrl?: string;
 };
 
 type Action = {
-  type: "submit" | "change";
-  payload?: string;
+  type: "error" | "done" | "submit" | "change";
+  payload?: any;
 };
 
 const formatUrl = (urlText: string) => {

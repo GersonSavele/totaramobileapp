@@ -30,7 +30,7 @@ import { translate } from "./locale";
 const Tab = createMaterialBottomTabNavigator();
 
 const TabContainer = () => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   const { data } = useQuery(notificationsQuery);
   const notificationCount = countUnreadMessages(data);
 
