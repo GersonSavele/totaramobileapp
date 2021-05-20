@@ -13,16 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { LearningItem } from "@totara/types";
 import { ImageStyle, StyleSheet, View, ViewStyle } from "react-native";
-import DueDateState from "@totara/features/currentLearning/components/DueDateState";
 import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 import React from "react";
 import { borderRadius } from "@totara/theme/constants";
 
 interface ImageElementProps {
-  item: LearningItem;
   imageStyle?: ImageStyle;
   cardStyle?: ViewStyle;
   children?: JSX.Element;
@@ -30,11 +27,10 @@ interface ImageElementProps {
   itemType?: string;
 }
 
-const ImageElement = ({ item, imageStyle, image, itemType }: ImageElementProps) => {
+const ImageElement = ({ imageStyle, image, itemType }: ImageElementProps) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   return (
     <View style={[imageStyleSheet]}>
-      {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
       {image && image.length > 0 ? (
         <ImageWrapper url={image} style={[styles.imageWrap]} />
       ) : (

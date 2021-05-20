@@ -24,6 +24,7 @@ import { CL_TEST_IDS } from "@totara/lib/testIds";
 import Animated, { interpolate, Extrapolate, Value, event } from "react-native-reanimated";
 import LinearGradient from "react-native-linear-gradient";
 import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
+import DueDateState from "./components/DueDateState";
 
 const { marginXL } = margins;
 
@@ -82,7 +83,6 @@ const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }:
             accessibilityState={overviewIsShown ? { selected: true } : {}}
             onPress={onPress}>
             <Text
-
               style={[
                 learningDetailsStyles.tabViewTitle,
                 overviewIsShown && learningDetailsStyles.tabViewTitleSelected
@@ -128,7 +128,6 @@ const LearningDetails = ({
   navigation,
   loading
 }: LearningDetailsProps) => {
-
   const scrollValue = useRef(new Value(0)).current;
   const [isRefreshing, setRefreshing] = useState(false);
 
@@ -178,17 +177,13 @@ const LearningDetails = ({
         }}>
 
           <View style={learningDetailsStyles.imageViewContainer}>
-            <ImageElement
-              item={item as LearningItem}
-              image={image}
-              itemType={itemType}
-              imageStyle={learningDetailsStyles.imageView}
-            />
+            <ImageElement image={image} itemType={itemType} imageStyle={learningDetailsStyles.imageView} />
           </View>
           <View style={learningDetailsStyles.imageViewGradient}>
             <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0)']} style={{ height: HEIGHT / 2, zIndex: gradientShadowZIndex }} />
           </View>
         </Animated.View>
+        {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
         <TitleBar badgeTitle={badgeTitle} item={item as LearningItem} />
 
         <View>
@@ -206,7 +201,5 @@ const LearningDetails = ({
     </View >
   );
 };
-
-
 
 export default LearningDetails;

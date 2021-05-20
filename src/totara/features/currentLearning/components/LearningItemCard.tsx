@@ -25,6 +25,7 @@ import { DescriptionFormat } from "@totara/types/LearningItem";
 import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
 import { ToShortSummary } from "../weka/treeOperations";
 import { translate } from "@totara/locale";
+import DueDateState from "./DueDateState";
 
 interface LearningItemCardProps {
   item: LearningItem;
@@ -35,7 +36,8 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <ImageElement item={item} image={item.imageSrc} itemType={item.itemtype} />
+      <ImageElement image={item.imageSrc} itemType={item.itemtype} />
+      {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
       <View style={styles.itemCard}>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.itemFullName} numberOfLines={2}>
