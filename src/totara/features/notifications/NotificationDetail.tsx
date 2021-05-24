@@ -23,15 +23,21 @@ import { isEmpty } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { isValidUrlText, timeAgo } from "@totara/lib/tools";
 import { DescriptionFormat } from "@totara/types/LearningItem";
-import WekaEditorView from "../currentLearning/weka/WekaEditorView";
 import { AuthContext } from "@totara/core/AuthContext";
 import WebViewWrapper from "@totara/auth/WebViewWrapper";
+import { ToFullSummary } from "../currentLearning/weka/treeOperations";
+import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../currentLearning/weka/wekaUtils";
 
 type ParamList = {
   messageDetails: NotificationMessage;
 };
 
 type NotificationDetailProps = StackScreenProps<ParamList, "messageDetails">;
+
+const wekaContent = (description: Object) => {
+  const root = wrappedWekaNodes(jsonObjectToWekaNodes(description));
+  return root.accept(new ToFullSummary());
+};
 
 const NotificationDetails = ({ route }: NotificationDetailProps) => {
   const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat, fullMessageHTML } = route.params;
@@ -74,7 +80,7 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
       ) : (
         <View style={styles.content}>
           {fullMessageFormat === DescriptionFormat.jsonEditor ? (
-            <WekaEditorView content={fullMessage as string} />
+            <View>{wekaContent(JSON.parse(fullMessage as string))}</View>
           ) : (
             <Text testID={"test_fullMessage"}>{fullMessage}</Text>
           )}

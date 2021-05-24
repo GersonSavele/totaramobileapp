@@ -29,9 +29,10 @@ import { overviewStyles } from "./overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
-import WekaEditorView from "../weka/WekaEditorView";
 import { activeOpacity } from "@totara/lib/styles/base";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
+import { ToFullSummary } from "../weka/treeOperations";
+import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
 
 type OverviewProps = {
   id: number;
@@ -249,6 +250,11 @@ const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefr
   );
 };
 
+const wekaContent = (description: Object) => {
+  const root = wrappedWekaNodes(jsonObjectToWekaNodes(description));
+  return root.accept(new ToFullSummary());
+};
+
 type SummaryProps = {
   summary?: string;
   summaryTypeTitle?: string;
@@ -263,11 +269,7 @@ const Summary = ({ summary = "", summaryTypeTitle = "", summaryFormat }: Summary
       </Text>
       <View style={overviewStyles.summaryViewWrap}>
         {summaryFormat == DescriptionFormat.jsonEditor ? (
-          <WekaEditorView
-            content={summary as string}
-            backGroundColor={TotaraTheme.colorAccent}
-            textColor={TotaraTheme.colorNeutral8}
-          />
+          <View>{wekaContent(JSON.parse(summary as string))}</View>
         ) : (
           <Text style={overviewStyles.summaryText}>{summary}</Text>
         )}
