@@ -150,7 +150,7 @@ const LearningDetails = ({
     <View style={learningDetailsStyles.container}>
       <AnimatedHeader scrollValue={scrollValue} title={fullname!} subTitle={badgeTitle} leftAction={() => navigation?.goBack()} />
       <Animated.ScrollView
-        automaticallyAdjustContentInsets={false}
+        scrollIndicatorInsets={{ right: 0 }}
         contentInsetAdjustmentBehavior={"scrollableAxes"}
         refreshControl={<RefreshControl style={{ zIndex: gradientShadowZIndex + 100 }} refreshing={isRefreshing} tintColor={TotaraTheme.colorNeutral2} onRefresh={onUserPullToRefresh}></RefreshControl>}
         onScroll={event(
