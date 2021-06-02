@@ -31,7 +31,6 @@ type ConfigProps = {
 };
 
 const Attachment = ({ content = {} }: ConfigProps) => {
-  console.log("print--", content);
   const [visible, setIsVisible] = useState(false);
   const [clickIndex, setClickIndex] = useState();
   const onRequestClose = (index) => {

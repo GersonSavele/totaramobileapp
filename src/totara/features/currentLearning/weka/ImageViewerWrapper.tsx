@@ -20,7 +20,6 @@ import { translate } from "@totara/locale";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { ConfigProps } from "./Wekautils";
 import styles from "./wekaEditorViewStyle";
 
 const ModalView = ({ children, onRequestClose }: any) => {

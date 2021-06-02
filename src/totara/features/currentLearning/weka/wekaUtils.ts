@@ -215,7 +215,6 @@ const jsonObjectToWekaNodes = (data: any): Node<Object>[] => {
         return mapTypeToNode[type](attrs);
       }
       if (type === WekaEditorType.bulletList) {
-        // console.warn("item: ", item);
         return mapTypeToNode[type](item);
       }
       return content && mapTypeToNode[type] ? mapTypeToNode[type](content) : null;
