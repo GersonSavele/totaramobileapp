@@ -23,7 +23,7 @@ import { AppState } from "@totara/types";
 import { getHostnameFromRegex, getUrlLastComponentFromRegex } from "@totara/lib/tools";
 import { ConfigProps } from "./Wekautils";
 import ImageViewerWrapper from "./ImageViewerWrapper";
-import styles from "./wekaEditorViewStyle";
+import styles from "./wekaStyle";
 import EmbeddedMedia from "./EmbeddedMedia";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 

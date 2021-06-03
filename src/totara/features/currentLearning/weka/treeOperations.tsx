@@ -37,7 +37,11 @@ import LinkMedia from "./LinkMedia";
 import ImageViewerWrapper from "./ImageViewerWrapper";
 import EmbeddedMedia from "./EmbeddedMedia";
 import Attachment from "./Attachment";
-import styles from "./wekaEditorViewStyle";
+import TextContentWrapper from "./TextContentWrapper";
+import styles from "./wekaStyle";
+import { margins } from "@totara/theme/constants";
+
+const { marginS } = margins;
 
 /*
 @ Class : this class use for node tree operator and implementing abstract method of visitor interface
@@ -103,7 +107,7 @@ class ToShortSummary implements Visitor<string> {
   visitWekaText(element: WekaText): string {
     return element.text;
   }
-  all(content: Node[]): string {
+  all(content: Node<Object>[]): string {
     let stringArray = content?.map((item) => {
       return item?.accept(this);
     });
@@ -115,15 +119,19 @@ class ToFullSummary implements Visitor<Object> {
   visitWekaVideo(element: WekaVideo): Object {
     return <EmbeddedMedia content={element.content} title="Video" />;
   }
+
   visitWekaRuler(): Object {
     return <View style={styles.ruler} />;
   }
+
   visitWekaAttachment(element: WekaAttachment): Object {
     return <Attachment content={element.content} />;
   }
+
   visitWekaLinkMedia(element: WekaLinkMedia): Object {
     return <LinkMedia content={{ attrs: element.attrs }} />;
   }
+
   visitWekaList(element: WekaList): Object {
     return <View>{this.all(element.content)}</View>;
   }
@@ -150,11 +158,13 @@ class ToFullSummary implements Visitor<Object> {
   }
 
   visitWekaEmoji(element: WekaEmoji): Object {
-    return <Text>{String.fromCodePoint(parseInt(textAttributes.short_code_prefix + element.shortCode))}</Text>;
+    let emoji = String.fromCodePoint(parseInt(textAttributes.short_code_prefix + element.shortCode));
+    return <Text style={styles.emoji}>{emoji}</Text>;
   }
+
   visitHeader(element: WekaHeading): Object {
     return (
-      <Text>
+      <Text style={{ marginBottom: marginS }}>
         {element.content?.map((item) => {
           return item?.accept(this);
         })}
@@ -167,19 +177,14 @@ class ToFullSummary implements Visitor<Object> {
   }
 
   visitWekaParagraph(element: WekaParagraph): Object {
-    const res = element?.content
-      ?.map((item) => {
-        return item?.accept(this);
-      })
-      .filter(String)
-      .join("")
-      .toString()
-      .trim();
-    return <Text>{res}</Text>;
+    const paragraph = element?.content?.map((item) => {
+      return item?.accept(this);
+    });
+    return <Text style={{ marginBottom: marginS }}>{paragraph}</Text>;
   }
 
   visitWekaText(element: WekaText): Object {
-    return element.text;
+    return <TextContentWrapper attrs={element.attrs} text={element.text} marks={element.marks} />;
   }
 
   visitWekaRoot(element: WekaRoot): Object {

@@ -20,7 +20,7 @@ import { translate } from "@totara/locale";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import styles from "./wekaEditorViewStyle";
+import styles from "./wekaStyle";
 
 const ModalView = ({ children, onRequestClose }: any) => {
   return (
@@ -44,10 +44,11 @@ const ImageViewerWrapper = ({ fileName, url }: ImageViewProps) => {
   const [visible, setIsVisible] = useState(false);
   const onRequestClose = () => setIsVisible(!visible);
   return (
-    <TouchableOpacity style={styles.imageContainer} onPress={onRequestClose} key={`index_${fileName}`}>
+    <TouchableOpacity style={styles.imageContainerWrapper} onPress={onRequestClose} key={`index_${fileName}`}>
       <ImageWrapper
         url={url}
         style={styles.imageContainer}
+        resizeMode="contain"
         accessibilityLabel={translate("course.activity.accessibility_image")}
       />
       {visible && (

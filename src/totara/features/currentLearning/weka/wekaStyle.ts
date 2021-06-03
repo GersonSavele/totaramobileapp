@@ -19,7 +19,7 @@ import { margins, borderRadius, fontWeights, iconSizes, paddings } from "@totara
 import { deviceScreen } from "@totara/lib/tools";
 const { marginXS, marginM, marginS } = margins;
 
-const wekaEditorStyle = StyleSheet.create({
+const wekaStyle = StyleSheet.create({
   container: {
     marginBottom: marginXS,
     marginEnd: marginXS
@@ -69,6 +69,7 @@ const wekaEditorStyle = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
+    height: deviceScreen.width,
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2
   },
@@ -152,4 +153,4 @@ const wekaEditorStyle = StyleSheet.create({
   }
 });
 
-export default wekaEditorStyle;
+export default wekaStyle;

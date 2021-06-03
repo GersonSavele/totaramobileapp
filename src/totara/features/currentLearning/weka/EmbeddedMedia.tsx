@@ -18,7 +18,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { CircleIcon } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import styles from "./wekaEditorViewStyle";
+import styles from "./wekaStyle";
 import { navigateWebView, EmbeddedMediaProps } from "./wekaUtils";
 
 const EmbeddedMedia = ({ content = {}, title }: EmbeddedMediaProps) => {

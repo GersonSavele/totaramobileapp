@@ -15,7 +15,7 @@
 import React, { useState } from "react";
 import { Text } from "react-native";
 import { fontWeights, fontStyles, marksTypes } from "@totara/theme/constants";
-import styles from "./wekaEditorViewStyle";
+import styles from "./wekaStyle";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { navigateWebView } from "./wekaUtils";
 
@@ -53,7 +53,7 @@ const TextContentWrapper = ({ attrs = {}, marks = {}, textColor, text }: TextPro
     });
 
   return (
-    <Text>
+    <Text style={styles.textContainerWrapper}>
       <Text
         style={[font, fontItalic, fontBold, link && link[0] && styles.textLink]}
         testID="test_rich_text"

@@ -129,9 +129,11 @@ class WekaRuler extends WekaNode {
 class WekaText implements Node<Object> {
   text: string;
   attrs: any;
-  constructor(text, attrs) {
+  marks: any;
+  constructor(text, attrs, marks) {
     this.text = text;
     this.attrs = attrs;
+    this.marks = marks;
   }
   accept(v: Visitor<Object>): Object {
     return v.visitWekaText(this);
@@ -176,7 +178,7 @@ const mapTypeToNode = {
   },
 
   [WekaEditorType.text]: (item) => {
-    return new WekaText(item.text, item.type);
+    return new WekaText(item.text, item.type, item.marks);
   },
 
   [WekaEditorType.heading]: (content, level) => {
@@ -190,6 +192,9 @@ const mapTypeToNode = {
   },
   [WekaEditorType.video]: (content) => {
     return new WekaVideo(content);
+  },
+  [WekaEditorType.ruler]: (content) => {
+    return new WekaRuler(content);
   }
 };
 
@@ -199,9 +204,15 @@ const jsonObjectToWekaNodes = (data: any, level = 1): Node<Object>[] => {
     dataArray &&
     dataArray.map((item: any) => {
       const { type, content, attrs } = item;
+
       if (type === WekaEditorType.text) {
         return mapTypeToNode[type](item, attrs);
       }
+
+      if (type === WekaEditorType.paragraph) {
+        return mapTypeToNode[type](item, level);
+      }
+
       if (type === WekaEditorType.emoji) {
         return mapTypeToNode[type](attrs.shortcode);
       }
@@ -219,6 +230,10 @@ const jsonObjectToWekaNodes = (data: any, level = 1): Node<Object>[] => {
           return mapTypeToNode[type](item, level + 1);
         }
         return null;
+      }
+
+      if (type === WekaEditorType.ruler) {
+        return mapTypeToNode[type](item);
       }
       return content && mapTypeToNode[type] ? mapTypeToNode[type](content, level) : null;
     })

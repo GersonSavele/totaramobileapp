@@ -26,7 +26,6 @@ import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
-import WekaEditorView from "../weka/WekaEditorView";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity, AppState } from "@totara/types";
 import { AuthContext } from "@totara/core";
@@ -92,7 +91,7 @@ type SectionItemProps = {
   completionEnabled: boolean;
   onSetExpandedSectionIds: Function;
   isSingleActivity: boolean;
-  testID: string;
+  testID?: string;
 };
 
 const SectionItem = ({
@@ -213,11 +212,7 @@ const ActivityList = ({
       {summaryFormat === DescriptionFormat.jsonEditor ? (
         !isEmpty(sectionSummary) && (
           <View style={activitiesStyles.activityList}>
-            <WekaEditorView
-              content={sectionSummary && (sectionSummary as any)}
-              backGroundColor={TotaraTheme.colorNeutral2}
-              textColor={TotaraTheme.colorNeutral6}
-            />
+            <View>{wekaContent(JSON.parse(sectionSummary && (sectionSummary as any)))}</View>
           </View>
         )
       ) : (
