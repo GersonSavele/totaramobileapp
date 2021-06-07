@@ -216,13 +216,7 @@ const jsonObjectToWekaNodes = (data: any, level = 1): Node<Object>[] => {
       if (type === WekaEditorType.emoji) {
         return mapTypeToNode[type](attrs.shortcode);
       }
-      if (type === WekaEditorType.image) {
-        return mapTypeToNode[type](attrs);
-      }
-      if (type === WekaEditorType.linkMedia) {
-        return mapTypeToNode[type](attrs);
-      }
-      if (type === WekaEditorType.video) {
+      if (type === WekaEditorType.image || type === WekaEditorType.linkMedia || type === WekaEditorType.video) {
         return mapTypeToNode[type](attrs);
       }
       if (type === WekaEditorType.bulletList || type === WekaEditorType.orderedList) {
@@ -264,7 +258,7 @@ const navigateWebView = (url, onRequestClose, title) => {
   } = useContext(AuthContext);
   const { apiKey } = appState as AppState;
   const props = {
-    uri: url.replace("totara/mobile/", ""), // This is the temp solution for webview headers error fix
+    uri: url?.replace("totara/mobile/", ""), // This is the temp solution for webview headers error fix
     apiKey: apiKey,
     backAction: onRequestClose,
     title: title

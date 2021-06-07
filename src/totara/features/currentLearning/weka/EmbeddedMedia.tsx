@@ -37,7 +37,7 @@ const EmbeddedMedia = ({ content = {}, title }: EmbeddedMediaProps) => {
       <View style={{ flex: 8 }}>
         <Text style={styles.embeddedMediaTitle}>{title}</Text>
       </View>
-      {visible && navigateWebView(content.attrs.url, onRequestClose, title)}
+      {visible && navigateWebView(content?.attrs?.url, onRequestClose, title)}
     </TouchableOpacity>
   );
 };

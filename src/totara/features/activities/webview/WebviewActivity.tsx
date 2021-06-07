@@ -54,7 +54,7 @@ const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
       {mimetype === PDF_TYPE ? (
         <PDFViewWrapper fileurl={fileurl} apiKey={apiKey} />
       ) : (
-        <WebViewWrapper uri={uri || activity.viewurl!} backAction={backAction} />
+        <WebViewWrapper uri={uri || activity?.viewurl!} backAction={backAction} />
       )}
     </SafeAreaView>
   );
