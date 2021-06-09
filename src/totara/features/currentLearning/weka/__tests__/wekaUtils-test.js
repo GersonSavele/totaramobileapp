@@ -15,6 +15,7 @@
 
 import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../wekaUtils";
 import { ToShortSummary } from "../treeOperations";
+import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from "../../constants";
 
 const mockEmptyParagraph = {
   type: "doc",
@@ -154,6 +155,58 @@ const mockOrderListContent = {
   ]
 };
 
+const mockedElement = { value: "Mocked element", type: WekaEditorType.text };
+const mockOrderedBulletListItem = (elementType = WekaEditorType.bulletList) => ({
+  type: elementType,
+  content: [
+    {
+      type: WekaEditorType.listItem,
+      content: [{ type: WekaEditorType.paragraph, content: [{ type: mockedElement.type, text: mockedElement.value }] }]
+    }
+  ]
+});
+const mockNestedOrderedBulletListContent = (noOfItems) => {
+  if (noOfItems < 1)
+    return {
+      type: WekaEditorType.doc,
+      content: []
+    };
+  let mockData;
+  for (let i = noOfItems; i > 0; i--) {
+    const elementType = i % 2 === 0 ? WekaEditorType.orderedList : WekaEditorType.bulletList;
+    const tmpMock = { ...mockOrderedBulletListItem(elementType) };
+    if (mockData) {
+      tmpMock.content[0].content = [...tmpMock.content[0].content, { ...mockData }];
+    }
+    mockData = { ...tmpMock };
+  }
+  return {
+    type: WekaEditorType.doc,
+    content: [{ ...mockData }]
+  };
+};
+
+const mockResultOrderedBulletListItem = () => ({
+  content: [
+    {
+      content: [{ content: [{ text: mockedElement.value, attrs: mockedElement.type }] }]
+    }
+  ]
+});
+const mockResultNestedOrderedBulletListContent = () => {
+  let mockData;
+  for (let i = MAX_LIST_ITEM_LEVELS; i > 0; i--) {
+    const tmpMock = { ...mockResultOrderedBulletListItem() };
+    if (mockData) {
+      tmpMock.content[0].content = [...tmpMock.content[0].content, { ...mockData }];
+    } else {
+      tmpMock.content[0].content = [...tmpMock.content[0].content, null];
+    }
+    mockData = { ...tmpMock };
+  }
+  return [{ ...mockData }];
+};
+
 describe("Weka Text/Paragraph", () => {
   it("Should show empty when weka content is empty", () => {
     const root = wrappedWekaNodes(jsonObjectToWekaNodes(mockEmptyParagraph));
@@ -189,5 +242,35 @@ describe("Weka Order-list/Numerical-list", () => {
     expect(root.accept(new ToShortSummary())).toBe(
       "1. Each lesson culminates in an assignment\n2. Students of psychology"
     );
+  });
+});
+
+describe("Weka nested ordered/bullet list", () => {
+  it("Should show limited levels of bullet/order list", () => {
+    const expectedResult = mockResultNestedOrderedBulletListContent();
+    const resultFormattedOrderBulletList = jsonObjectToWekaNodes(mockNestedOrderedBulletListContent(8));
+    expect(resultFormattedOrderBulletList).toMatchObject(expectedResult);
+  });
+
+  it("Should be false data is invalid or empty", () => {
+    let resultFormattedOrderBulletList = jsonObjectToWekaNodes({
+      type: WekaEditorType.doc,
+      content: null
+    });
+    expect(resultFormattedOrderBulletList).toMatchObject([]);
+
+    resultFormattedOrderBulletList = jsonObjectToWekaNodes(mockNestedOrderedBulletListContent(0));
+    expect(resultFormattedOrderBulletList).toMatchObject([]);
+
+    resultFormattedOrderBulletList = jsonObjectToWekaNodes({
+      type: WekaEditorType.doc
+    });
+    expect(resultFormattedOrderBulletList).toMatchObject([]);
+
+    resultFormattedOrderBulletList = jsonObjectToWekaNodes({});
+    expect(resultFormattedOrderBulletList).toMatchObject([]);
+
+    resultFormattedOrderBulletList = jsonObjectToWekaNodes(null);
+    expect(resultFormattedOrderBulletList).toMatchObject([]);
   });
 });

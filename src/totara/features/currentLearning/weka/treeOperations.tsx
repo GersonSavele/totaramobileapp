@@ -133,7 +133,7 @@ class ToFullSummary implements Visitor<Object> {
   }
 
   visitWekaList(element: WekaList): Object {
-    return <View>{this.all(element.content)}</View>;
+    return this.all(element.content);
   }
 
   visitWekaBulletList(element: WekaBulletList): Object {

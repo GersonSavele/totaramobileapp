@@ -199,39 +199,44 @@ const mapTypeToNode = {
 };
 
 const jsonObjectToWekaNodes = (data: any, level = 1): Node<Object>[] => {
-  const dataArray = Array.isArray(data.content) ? data.content : data;
-  return (
-    dataArray &&
-    dataArray.map((item: any) => {
-      const { type, content, attrs } = item;
+  if (data) {
+    const dataArray = Array.isArray(data.content) ? data.content : data;
+    if (Array.isArray(dataArray)) {
+      return (
+        dataArray &&
+        dataArray.map((item: any) => {
+          const { type, content, attrs } = item;
 
-      if (type === WekaEditorType.text) {
-        return mapTypeToNode[type](item, attrs);
-      }
+          if (type === WekaEditorType.text) {
+            return mapTypeToNode[type](item, attrs);
+          }
 
-      if (type === WekaEditorType.paragraph) {
-        return mapTypeToNode[type](item, level);
-      }
+          if (type === WekaEditorType.paragraph) {
+            return mapTypeToNode[type](item, level);
+          }
 
-      if (type === WekaEditorType.emoji) {
-        return mapTypeToNode[type](attrs.shortcode);
-      }
-      if (type === WekaEditorType.image || type === WekaEditorType.linkMedia || type === WekaEditorType.video) {
-        return mapTypeToNode[type](attrs);
-      }
-      if (type === WekaEditorType.bulletList || type === WekaEditorType.orderedList) {
-        if (level <= MAX_LIST_ITEM_LEVELS) {
-          return mapTypeToNode[type](item, level + 1);
-        }
-        return null;
-      }
+          if (type === WekaEditorType.emoji) {
+            return mapTypeToNode[type](attrs.shortcode);
+          }
+          if (type === WekaEditorType.image || type === WekaEditorType.linkMedia || type === WekaEditorType.video) {
+            return mapTypeToNode[type](attrs);
+          }
+          if (type === WekaEditorType.bulletList || type === WekaEditorType.orderedList) {
+            if (level <= MAX_LIST_ITEM_LEVELS) {
+              return mapTypeToNode[type](item, level + 1);
+            }
+            return null;
+          }
 
-      if (type === WekaEditorType.ruler) {
-        return mapTypeToNode[type](item);
-      }
-      return content && mapTypeToNode[type] ? mapTypeToNode[type](content, level) : null;
-    })
-  );
+          if (type === WekaEditorType.ruler) {
+            return mapTypeToNode[type](item);
+          }
+          return content && mapTypeToNode[type] ? mapTypeToNode[type](content, level) : null;
+        })
+      );
+    }
+  }
+  return [];
 };
 
 const wrappedWekaNodes = (nodes: Node<Object>[]): WekaRoot => {
