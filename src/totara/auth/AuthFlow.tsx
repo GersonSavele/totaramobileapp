@@ -20,9 +20,9 @@ import { translate } from "@totara/locale";
 import { AuthContext, AuthContextState } from "@totara/core";
 
 import ManualFlow from "./manual/ManualFlow";
-import { linkingHandler, iOSLinkingHandler } from "./authUtils";
+import { linkingHandler, authLinkingHandler } from "./authUtils";
 import { Images } from "@resources/images";
-import { ImageSourcePropType, Linking, Platform } from "react-native";
+import { ImageSourcePropType, Linking } from "react-native";
 
 type Props = {
   children: ReactNode;
@@ -39,24 +39,21 @@ const AuthFlow = ({ children }: Props) => {
   const { authContextState, logOut, onLoginSuccess, onLoginFailure } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!authContextState.isAuthenticated){
-      if (Platform.OS === "android") {
-        //FIXME: this is running every time we get back to siteUrl component
-        //it should only run once. It should be fixed when doing(MOB-786 - Navigation API in Auth)
-        //so we are able to control how many times this component runs
-        Linking.getInitialURL().then((url) => {
-          if (url){
-            linkingHandler(url, onLoginSuccess, onLoginFailure)
-          }
-        });
-      } else {
-        Linking.addEventListener("url", iOSLinkingHandler(onLoginSuccess, onLoginFailure));
-      }
+    if (!authContextState.isAuthenticated) {
+      //FIXME: this is running every time we get back to siteUrl component
+      //it should only run once. It should be fixed when doing(MOB-786 - Navigation API in Auth)
+      //so we are able to control how many times this component runs
+      Linking.getInitialURL().then((url) => {
+        if (url) {
+          linkingHandler(url, onLoginSuccess, onLoginFailure);
+        }
+      });
+      Linking.addEventListener("url", authLinkingHandler(onLoginSuccess, onLoginFailure));
     }
-     return (() => {
+    return () => {
       Linking.removeAllListeners("url");
-     })
-   }, []);
+    };
+  }, []);
 
   // TODO MOB-307 improve and make this testable, logic is getting more complicated
   const showUIFor = (authStep: AuthContextState["authStep"]) => {
@@ -77,10 +74,10 @@ const AuthFlow = ({ children }: Props) => {
         return null; // it's in the middle of transitioning don't return any element
     }
   };
-  
-  if (authContextState.isAuthenticated){
+
+  if (authContextState.isAuthenticated) {
     return <>{children}</>;
-  }else {
+  } else {
     return <>{showUIFor(authContextState.authStep)}</>;
   }
 };
@@ -98,6 +95,5 @@ const AuthErrorModal = ({ action }: PropAuthError) => (
     <PrimaryButton text={translate("native_login.auth_general_error.action_primary")} onPress={() => action()} />
   </InfoModal>
 );
-
 
 export default AuthFlow;
