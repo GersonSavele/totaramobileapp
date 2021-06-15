@@ -33,7 +33,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const SiteUrl = () => {
 
-  const { host } = useSession();
+  const { session } = useSession();
+  const { host } = session;
 
   // eslint-disable-next-line no-undef
   const [siteUrl, setSiteUrl] = useState(host ? host : __DEV__ ? get(config, "devOrgUrl", "") : "");

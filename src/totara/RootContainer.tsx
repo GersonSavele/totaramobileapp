@@ -130,9 +130,9 @@ const RootContainer = () => {
   }, []);
 
   return (
-    <NavigationContainer ref={navigationRef} >
-      <RootStack />
-    </NavigationContainer>
+    // <NavigationContainer ref={navigationRef} >
+    <RootStack />
+    // </NavigationContainer>
   );
 };
 

@@ -22,17 +22,20 @@ import { gutter, ThemeContext } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, FormError } from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData } from "@totara/core/AuthRoutines";
-
-import { ManualFlowChildProps } from "../ManualFlowChildProps";
 import { useNativeFlow } from "./NativeFlowHook";
 import { margins } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { TEST_IDS } from "@totara/lib/testIds";
+import { useSession } from "@totara/core";
+import { useEffect } from "react";
+import { useState } from "react";
 
-const NativeLogin = (props: ManualFlowChildProps) => {
-  // fetch from global
+const NativeLogin = () => {
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
+  const { session, login } = useSession();
+  const { siteInfo, host } = session;
+  const [setupSecret, setSetupSecret] = useState<string>();
 
   const {
     nativeLoginState,
@@ -40,23 +43,31 @@ const NativeLogin = (props: ManualFlowChildProps) => {
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,
-    onFocusInput
-  } = useNativeFlow(fetchDataWithFetch)(props);
+    onFocusInput,
+  } = useNativeFlow(fetchDataWithFetch)({
+    siteInfo: siteInfo!,
+    siteUrl: host!,
+    onManualFlowCancel: () => {
+      console.warn(`onManualFlowCancel`)
+    },
+    onSetupSecretFailure: () => {
+      console.warn(`onSetupSecretFailure`)
+    },
+    onSetupSecretSuccess: (setupSecret) => {
+      setSetupSecret(setupSecret);
+    }
+  });
+
+  useEffect(() => {
+    if (setupSecret) {
+      //register device
+    }
+  }, [setupSecret])
 
   const theme = useContext(ThemeContext);
 
-  const onClickEnter2 = () => {
-    onClickEnter();
-  }
-
   return (
-    <Container style={[{ flex: 0 }, theme.viewContainer]}>
-      {/* <View style={{ backgroundColor: theme.colorSecondary1, zIndex: 3 }}>
-        <SafeAreaView />
-        <View style={styles.navigation}>
-          <CloseButton onPress={onCancel} />
-        </View>
-      </View> */}
+    <Container style={theme.viewContainer}>
       <View style={{ position: "relative", zIndex: 2 }}>
         <FormError
           message={translate("native_login.error_unauthorized")}
@@ -115,7 +126,7 @@ const NativeLogin = (props: ManualFlowChildProps) => {
             </InputTextWithInfo>
           </View>
           <PrimaryButton
-            onPress={onClickEnter2}
+            onPress={onClickEnter}
             text={translate("general.enter")}
             mode={nativeLoginState.isRequestingLogin ? "loading" : undefined}
             testID={TEST_IDS.LOGIN}

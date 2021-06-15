@@ -47,7 +47,6 @@ FontAwesome.init();
 console.disableYellowBox = config.disableConsoleYellowBox;
 
 const App: () => React$Node = () => {
-
   return (
     <SafeAreaProvider>
       <Root>

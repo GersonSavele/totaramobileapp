@@ -27,15 +27,12 @@ const useSession = () => {
     setSession(sessionSelector);
   }, [sessionSelector]);
 
-
-
-  const login = () => {
-    //TODO: perform login
+  const login = ({ apiKey }) => {
     initSession({
       user: {
         id: '123',
       },
-      apiKey: 'xyz123'
+      apiKey
     })
   }
 

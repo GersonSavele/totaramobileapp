@@ -14,18 +14,20 @@
  */
 
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Spinner } from "native-base";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type LoadingProps = {
+  text?: string;
   testID?: string;
 };
 
-const Loading = ({ testID }: LoadingProps) => {
+const Loading = ({ text, testID }: LoadingProps) => {
   return (
     <View style={loadingViewSyles.container} testID={testID}>
       <Spinner color={TotaraTheme.textColorDark} />
+      {text && <Text>{text}</Text>}
     </View>
   );
 };

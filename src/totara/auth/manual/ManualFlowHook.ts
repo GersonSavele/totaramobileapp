@@ -36,7 +36,7 @@ export const useManualFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
   onLoginSuccess,
   onLoginFailure
 }: AuthFlowChildProps) => {
-  const [, setTheme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
     isSiteUrlSubmitted: false,

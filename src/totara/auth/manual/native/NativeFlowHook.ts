@@ -22,6 +22,7 @@ import { NetworkError } from "@totara/types/Error";
 
 const initialState = {
   setupSecret: undefined,
+  apiKey: undefined,
   inputUsername: config.userName || "",
   inputPassword: config.password || "",
   inputUsernameStatus: undefined,
@@ -32,10 +33,10 @@ const initialState = {
 };
 
 export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>) => ({
+  siteUrl,
+  onManualFlowCancel,
   onSetupSecretSuccess,
   onSetupSecretFailure,
-  siteUrl,
-  onManualFlowCancel
 }: ManualFlowChildProps) => {
   const [nativeLoginState, dispatch] = useReducer(nativeReducer, initialState);
 
@@ -55,27 +56,27 @@ export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
     dispatch({ type: "resetform" });
   };
 
-  const fetchLoginPromise = () =>
-    fetchData<LoginSetup>(config.nativeLoginSetupUri(siteUrl), {
-      method: "GET",
-      headers: { [DEVICE_REGISTRATION]: config.userAgent }
-    }).then((loginSetup) => {
-      // eslint-disable-next-line no-undef
-      return fetchData<SetupSecret>(config.nativeLoginUri(siteUrl), {
-        method: "POST",
-        body: JSON.stringify({
-          loginsecret: loginSetup.loginsecret,
-          username: nativeLoginState.inputUsername,
-          password: nativeLoginState.inputPassword
-        }),
-        headers: { [DEVICE_REGISTRATION]: config.userAgent }
-      });
-    });
+
+  //first step, get the login secret
+  const loginSecretPromise = () => fetchData<LoginSetup>(config.nativeLoginSetupUri(siteUrl), {
+    method: "GET",
+    headers: { [DEVICE_REGISTRATION]: config.userAgent }
+  });
+
+  //second step, perform the login and obtain the setupsecret
+  const loginPromise = (loginSecret) => fetchData<SetupSecret>(config.nativeLoginUri(siteUrl), {
+    method: "POST",
+    body: JSON.stringify({
+      loginsecret: loginSecret,
+      username: nativeLoginState.inputUsername,
+      password: nativeLoginState.inputPassword
+    }),
+    headers: { [DEVICE_REGISTRATION]: config.userAgent }
+  });
 
   useEffect(() => {
-    const run = nativeLoginState.isRequestingLogin;
-    if (run) {
-      fetchLoginPromise()
+    if (nativeLoginState.isRequestingLogin) {
+      loginSecretPromise().then(s => loginPromise(s.loginsecret))
         .then((setupSecret) => {
           dispatch({ type: "setupsecret", payload: setupSecret.setupsecret });
         })
@@ -90,11 +91,12 @@ export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
   }, [nativeLoginState.isRequestingLogin]);
 
   if (nativeLoginState.unhandledLoginError) {
+    Log.debug("Login failure!", nativeLoginState.setupSecret);
     onSetupSecretFailure(nativeLoginState.unhandledLoginError);
   }
 
   if (nativeLoginState.setupSecret) {
-    Log.debug("Setup Secret", nativeLoginState.setupSecret);
+    Log.debug("Login success! Obtained the Setup Secret", nativeLoginState.setupSecret);
     onSetupSecretSuccess(nativeLoginState.setupSecret);
   }
 
@@ -190,6 +192,7 @@ export const nativeReducer = (state: NativeLoginState = initialState, action: Ac
 
 type NativeLoginState = {
   setupSecret?: string;
+  apiKey?: string
   inputUsername: string;
   inputPassword: string;
   inputUsernameStatus?: "error" | undefined;

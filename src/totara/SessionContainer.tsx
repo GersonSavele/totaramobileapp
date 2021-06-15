@@ -24,6 +24,12 @@ import SiteUrl from "./auth/manual/SiteUrl";
 import NativeLogin from "./auth/manual/native/NativeLogin";
 import RootContainer from "./RootContainer";
 import { cardModalOptions } from "./lib/navigation";
+import { ApolloProvider } from "@apollo/react-hooks";
+import { useState } from "react";
+import { Loading } from "./components";
+import { useEffect } from "react";
+import { createApolloClient } from "./core/AuthRoutines";
+import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 
 const navigationTheme = {
   ...DefaultTheme,
@@ -33,7 +39,40 @@ const navigationTheme = {
   }
 };
 
-const Stack = createStackNavigator();
+const ApolloWrapper = () => {
+  const { session } = useSession();
+  const { apiKey, host } = session;
+
+  const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
+
+
+  const logOut = async (localOnly: boolean = false) => {
+    //console.warn('logout');
+  }
+
+  useEffect(() => {
+    if (apiKey) {
+      const apc = createApolloClient(
+        apiKey,
+        host!,
+        logOut
+      );
+      setApolloClient(apc)
+    }
+
+  }, [apiKey]);
+
+  console.debug(apiKey, host);
+
+  if (!apolloClient)
+    return <Loading text={"Waiting for apolloclient"} />
+
+  return <ApolloProvider client={apolloClient!}>
+    <RootContainer />
+  </ApolloProvider>
+}
+
+const Stack = createStackNavigator()
 
 const SessionContainer = () => {
   const { session } = useSession();
@@ -43,7 +82,7 @@ const SessionContainer = () => {
     <Stack.Navigator mode={"modal"} screenOptions={{
       headerShown: false
     }} >
-      {host && apiKey && <Stack.Screen name="RootContainer" component={RootContainer} />}
+      {host && apiKey && <Stack.Screen name="RootContainer" component={ApolloWrapper} />}
       <Stack.Screen name="SiteUrl" component={SiteUrl} />
       <Stack.Screen name="NativeLogin" component={NativeLogin} options={cardModalOptions} />
     </Stack.Navigator>

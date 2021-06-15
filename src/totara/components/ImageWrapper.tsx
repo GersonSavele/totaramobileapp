@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
-import { AuthContext } from "@totara/core";
+import React from "react";
+import { useSession } from "@totara/core";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { ImageStyle, StyleProp } from "react-native";
 import FastImage from "react-native-fast-image";
@@ -27,10 +27,14 @@ type ImageWrapperType = {
 };
 
 const ImageWrapper = ({ url, style, accessibilityLabel, resizeMode = undefined }: ImageWrapperType) => {
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-  const apiKey = appState!.apiKey;
+  // const {
+  //   authContextState: { appState }
+  // } = useContext(AuthContext);
+  // const apiKey = appState!.apiKey;
+
+  const { session } = useSession();
+  const { apiKey } = session;
+
   return (
     <FastImage
       resizeMode={resizeMode}
