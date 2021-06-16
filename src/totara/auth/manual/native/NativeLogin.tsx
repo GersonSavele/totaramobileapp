@@ -21,7 +21,7 @@ import { config } from "@totara/lib";
 import { gutter, ThemeContext } from "@totara/theme";
 import { PrimaryButton, InputTextWithInfo, FormError } from "@totara/components";
 import { translate } from "@totara/locale";
-import { fetchData } from "@totara/core/AuthRoutines";
+import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
 import { useNativeFlow } from "./NativeFlowHook";
 import { margins } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -29,13 +29,16 @@ import { TEST_IDS } from "@totara/lib/testIds";
 import { useSession } from "@totara/core";
 import { useEffect } from "react";
 import { useState } from "react";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const NativeLogin = () => {
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
   const { session, login } = useSession();
-  const { siteInfo, host } = session;
-  const [setupSecret, setSetupSecret] = useState<string>();
+  const { siteInfo, host, apiKey } = session;
+  const theme = useContext(ThemeContext);
+  const navigation = useNavigation();
 
   const {
     nativeLoginState,
@@ -53,18 +56,25 @@ const NativeLogin = () => {
     onSetupSecretFailure: () => {
       console.warn(`onSetupSecretFailure`)
     },
-    onSetupSecretSuccess: (setupSecret) => {
-      setSetupSecret(setupSecret);
+    onSetupSecretSuccess: () => {
+      console.warn(`onSetupSuccess`)
     }
   });
 
   useEffect(() => {
-    if (setupSecret) {
-      //register device
+    if (nativeLoginState.setupSecret && !apiKey) {
+      registerDevice(fetchDataWithFetch, AsyncStorage)({
+        uri: host!,
+        secret: nativeLoginState.setupSecret,
+        siteInfo: siteInfo
+      }).then(res => {
+        login({ apiKey: res.apiKey });
+        navigation.goBack();
+      });
     }
-  }, [setupSecret])
+  }, [nativeLoginState.setupSecret, apiKey])
 
-  const theme = useContext(ThemeContext);
+
 
   return (
     <Container style={theme.viewContainer}>

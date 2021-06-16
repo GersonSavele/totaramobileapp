@@ -14,79 +14,29 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-
-import { useSession } from "./core";
-import { TotaraTheme } from "./theme/Theme";
-import SiteUrl from "./auth/manual/SiteUrl";
-import NativeLogin from "./auth/manual/native/NativeLogin";
-import RootContainer from "./RootContainer";
-import { cardModalOptions } from "./lib/navigation";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect } from "react";
 import { Loading } from "./components";
-import { useEffect } from "react";
-import { createApolloClient } from "./core/AuthRoutines";
-import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
-
-const navigationTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: TotaraTheme.viewContainer.backgroundColor!
-  }
-};
-
-const ApolloWrapper = () => {
-  const { session } = useSession();
-  const { apiKey, host } = session;
-
-  const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
-
-
-  const logOut = async (localOnly: boolean = false) => {
-    //console.warn('logout');
-  }
-
-  useEffect(() => {
-    if (apiKey) {
-      const apc = createApolloClient(
-        apiKey,
-        host!,
-        logOut
-      );
-      setApolloClient(apc)
-    }
-
-  }, [apiKey]);
-
-  console.debug(apiKey, host);
-
-  if (!apolloClient)
-    return <Loading text={"Waiting for apolloclient"} />
-
-  return <ApolloProvider client={apolloClient!}>
-    <RootContainer />
-  </ApolloProvider>
-}
-
-const Stack = createStackNavigator()
+import { useSession } from "./core";
 
 const SessionContainer = () => {
   const { session } = useSession();
   const { host, apiKey } = session;
+  const navigation = useNavigation();
 
-  return <NavigationContainer theme={navigationTheme}>
-    <Stack.Navigator mode={"modal"} screenOptions={{
-      headerShown: false
-    }} >
-      {host && apiKey && <Stack.Screen name="RootContainer" component={ApolloWrapper} />}
-      <Stack.Screen name="SiteUrl" component={SiteUrl} />
-      <Stack.Screen name="NativeLogin" component={NativeLogin} options={cardModalOptions} />
-    </Stack.Navigator>
-  </NavigationContainer>
+  useEffect(() => {
+    if (!host) {
+      navigation.navigate('SiteUrl');
+      return;
+    }
+  }, [host]);
+
+  useEffect(() => {
+    if (apiKey)
+      navigation.navigate('ApolloWrapper')
+  }, [apiKey]);
+
+  return <Loading />
 }
 
 export default SessionContainer;

@@ -82,14 +82,14 @@ export const registerDevice = (
         apiKey: apiKey.apikey,
         host: setup.uri,
         siteInfo: setup.siteInfo
-      };
+      } as AppState;
       Log.debug("appState done", appState);
       return appState;
     })
     .catch((error) => {
       //NOTE: This is using warning so the app does not crash
       Log.warn("unable to get apiKey", error);
-      return {};
+      return {} as AppState;
     });
 };
 

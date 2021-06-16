@@ -20,7 +20,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Sentry from "@sentry/react-native";
 
 import { config } from "@totara/lib";
-import SessionContainer from "./totara/SessionContainer";
+import RootContainer from "./totara/RootContainer";
 import FontAwesome from "@totara/lib/fontAwesome";
 import { PLATFORM_ANDROID } from "./totara/lib/constants";
 import { store, persistor } from "./totara/store";
@@ -46,6 +46,7 @@ if (Platform.OS === PLATFORM_ANDROID) {
 FontAwesome.init();
 console.disableYellowBox = config.disableConsoleYellowBox;
 
+
 const App: () => React$Node = () => {
   return (
     <SafeAreaProvider>
@@ -53,7 +54,7 @@ const App: () => React$Node = () => {
         <Provider store={store}>
           <PersistGate loading={<Loading />} persistor={persistor}>
             <ThemeProvider>
-              <SessionContainer />
+              <RootContainer />
             </ThemeProvider>
           </PersistGate>
         </Provider>

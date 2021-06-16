@@ -75,10 +75,11 @@ export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
   });
 
   useEffect(() => {
-    if (nativeLoginState.isRequestingLogin) {
+    if (nativeLoginState.isRequestingLogin && !nativeLoginState.setupSecret) {
       loginSecretPromise().then(s => loginPromise(s.loginsecret))
         .then((setupSecret) => {
           dispatch({ type: "setupsecret", payload: setupSecret.setupsecret });
+
         })
         .catch((error) => {
           if (error.status === 401) {
@@ -88,17 +89,17 @@ export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
           }
         });
     }
-  }, [nativeLoginState.isRequestingLogin]);
+  }, [nativeLoginState.isRequestingLogin, nativeLoginState.setupSecret]);
 
   if (nativeLoginState.unhandledLoginError) {
     Log.debug("Login failure!", nativeLoginState.setupSecret);
     onSetupSecretFailure(nativeLoginState.unhandledLoginError);
   }
 
-  if (nativeLoginState.setupSecret) {
-    Log.debug("Login success! Obtained the Setup Secret", nativeLoginState.setupSecret);
-    onSetupSecretSuccess(nativeLoginState.setupSecret);
-  }
+  // if (nativeLoginState.setupSecret) {
+  //   Log.debug("Login success! Obtained the Setup Secret", nativeLoginState.setupSecret);
+  //   onSetupSecretSuccess(nativeLoginState.setupSecret);
+  // }
 
   return {
     nativeLoginState,
