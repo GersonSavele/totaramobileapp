@@ -99,7 +99,7 @@ const SiteUrl = () => {
 
 const styles = StyleSheet.create({
   mainContent: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   siteUrlContainer: {
     flex: 1,
@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
     ...TotaraTheme.textXSmall,
     color: TotaraTheme.colorNeutral6,
     textAlign: "center",
-    flexDirection: "column-reverse"
+    flexDirection: "column-reverse",
+    paddingBottom: paddings.paddingL
   },
 
   urlTitle: {

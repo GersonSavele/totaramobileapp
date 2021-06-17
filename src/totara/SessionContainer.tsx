@@ -14,29 +14,48 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
+import React, { useEffect, useState } from "react";
+import { ApolloProvider } from "react-apollo";
+import SiteUrl from "./auth/manual/SiteUrl";
 import { Loading } from "./components";
 import { useSession } from "./core";
+import { createApolloClient } from "./core/AuthRoutines";
+import MainContainer from "./MainContainer";
 
 const SessionContainer = () => {
   const { session } = useSession();
-  const { host, apiKey } = session;
-  const navigation = useNavigation();
+  const { host, apiKey, } = session;
+  const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
+
+  const logOut = async (localOnly: boolean = false) => {
+    //console.warn('logout');
+  }
 
   useEffect(() => {
-    if (!host) {
-      navigation.navigate('SiteUrl');
-      return;
+    //only init apolloclient if apiKey exists and apolloClient dont
+    if (apiKey && !apolloClient) {
+      const apc = createApolloClient(
+        apiKey,
+        host!,
+        logOut
+      );
+      setApolloClient(apc)
     }
-  }, [host]);
+  }, [apiKey, apolloClient]);
 
-  useEffect(() => {
-    if (apiKey)
-      navigation.navigate('ApolloWrapper')
-  }, [apiKey]);
 
-  return <Loading />
+  console.log(host, apiKey);
+  if (!host || !apiKey) {
+    return <SiteUrl />
+  }
+
+  if (!apolloClient)
+    return <Loading />
+
+  return <ApolloProvider client={apolloClient!}>
+    <MainContainer />
+  </ApolloProvider>
 }
 
 export default SessionContainer;

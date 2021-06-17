@@ -27,7 +27,7 @@ import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { Section, Activity, AppState } from "@totara/types";
-import { AuthContext } from "@totara/core";
+import { AuthContext, useSession } from "@totara/core";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import { GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
@@ -253,11 +253,8 @@ type ListUnLockProps = {
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
   const navigation = useNavigation();
 
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-
-  const { apiKey, host } = appState as AppState;
+  const session = useSession();
+  const { host, apiKey } = session;
 
   const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] = useMutation(
     activitySelfComplete
@@ -352,7 +349,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         fileurl,
                         mimetype,
                         apiKey,
-                        backAction: () => {},
+                        backAction: () => { },
                         title: item?.name
                       }
                     });
@@ -368,7 +365,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
-                    backAction: () => {},
+                    backAction: () => { },
                     title: item?.name
                   }
                 });

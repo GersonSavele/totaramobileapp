@@ -27,32 +27,12 @@ import { NAVIGATION } from "./lib/navigation";
 import { useSelector } from "react-redux";
 import { mutationForToken, notificationsQuery } from "./features/notifications/api";
 import { RootState } from "./reducers";
-import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import TabContainer from "./TabContainer";
 import WebViewStack from "./features/activities/webview/WebViewStack";
 
 const { SCORM_STACK_ROOT, ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
 
-const MainStack = createCompatNavigatorFactory(createStackNavigator)(
-  {
-    FeatureNavigator: {
-      screen: TabContainer
-    },
-    [SCORM_STACK_ROOT]: {
-      screen: scormStack
-    },
-    [WEBVIEW_ACTIVITY]: {
-      screen: WebViewStack
-    },
-    [ABOUT]: {
-      screen: AboutStack
-    }
-  },
-  {
-    mode: "modal",
-    headerMode: "none"
-  }
-);
+const Stack = createStackNavigator();
 
 const MainContainer = () => {
   ResourceManager.resumeDownloads();
@@ -129,9 +109,15 @@ const MainContainer = () => {
   }, []);
 
   return (
-    // <NavigationContainer ref={navigationRef} >
-    <MainStack />
-    // </NavigationContainer>
+    <Stack.Navigator mode={"modal"} screenOptions={{
+      headerShown: false
+    }} >
+      <Stack.Screen name="FeatureNavigator" component={TabContainer} />
+      <Stack.Screen name={SCORM_STACK_ROOT} component={scormStack} />
+      <Stack.Screen name={WEBVIEW_ACTIVITY} component={WebViewStack} />
+      <Stack.Screen name={ABOUT} component={AboutStack} />
+
+    </Stack.Navigator>
   );
 };
 

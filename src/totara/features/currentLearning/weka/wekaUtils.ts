@@ -14,7 +14,7 @@
  */
 
 import { useContext } from "react";
-import { AuthContext } from "@totara/core";
+import { AuthContext, useSession } from "@totara/core";
 import { AppState } from "@totara/types";
 import { navigate } from "@totara/lib/navigationService";
 import { NAVIGATION } from "@totara/lib/navigation";
@@ -258,10 +258,9 @@ type EmbeddedMediaProps = {
 };
 
 const navigateWebView = (url, onRequestClose, title) => {
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-  const { apiKey } = appState as AppState;
+  const session = useSession();
+  const { apiKey } = session;
+
   const props = {
     uri: url?.replace("totara/mobile/", ""), // This is the temp solution for webview headers error fix
     apiKey: apiKey,

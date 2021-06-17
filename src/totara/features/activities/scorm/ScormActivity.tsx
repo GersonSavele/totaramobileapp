@@ -24,7 +24,7 @@ import { SafeAreaView } from "react-native";
 
 import { AppState } from "@totara/types";
 import ScormSummary from "./ScormSummary";
-import { AuthContext } from "@totara/core";
+import { AuthContext, useSession } from "@totara/core";
 import OfflineScormActivity from "./OfflineScormActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
@@ -137,11 +137,8 @@ const ScormActivity = (props: ScormActivityProps) => {
   // FIXME: This is a temporary hack because the server is not returning correct data
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
 
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-
-  const { apiKey, host } = appState as AppState;
+  const session = useSession();
+  const { apiKey, host } = session;
 
   //FIXME: IMPROVE THIS USESELECTOR, create something like useResource that does all this stuff
   const resourceList: Resource[] = useSelector((state: RootState) => state.resourceReducer.resources);
@@ -149,9 +146,9 @@ const ScormActivity = (props: ScormActivityProps) => {
 
   const progress = resource
     ? humanReadablePercentage({
-        writtenBytes: resource.bytesDownloaded,
-        sizeInBytes: resource.sizeInBytes
-      })
+      writtenBytes: resource.bytesDownloaded,
+      sizeInBytes: resource.sizeInBytes
+    })
     : 0;
   const scorm = scormBundle?.scorm;
   const offlinePackageUrl = scorm?.offlineAttemptsAllowed && scorm?.offlinePackageUrl;

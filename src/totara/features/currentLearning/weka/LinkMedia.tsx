@@ -18,7 +18,7 @@ import { View, Text } from "react-native";
 import { WebView } from "react-native-webview";
 import { isEmpty } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { AuthContext } from "@totara/core";
+import { AuthContext, useSession } from "@totara/core";
 import { AppState } from "@totara/types";
 import { getHostnameFromRegex, getUrlLastComponentFromRegex } from "@totara/lib/tools";
 import { ConfigProps } from "./Wekautils";
@@ -63,10 +63,9 @@ const LinkMedia = ({ content = {}, textColor = TotaraTheme.colorNeutral8 }: Conf
 };
 
 const WebViewWrapper = ({ content = {} }: ConfigProps) => {
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-  const { apiKey } = appState as AppState;
+  const session = useSession();
+  const { apiKey } = session;
+
   let url = content.attrs.url;
   const hostName = getHostnameFromRegex(url);
   // App only support for youtube and vimeo video insert link, and there is configuration for make a full screen video

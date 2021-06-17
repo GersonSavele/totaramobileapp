@@ -22,7 +22,6 @@ import SiteUrl from "./auth/manual/SiteUrl";
 import NativeLogin from "./auth/manual/native/NativeLogin";
 import { cardModalOptions } from "./lib/navigation";
 import SessionContainer from "./SessionContainer";
-import ApolloWrapper from "./ApolloWrapper";
 
 const navigationTheme = {
   ...DefaultTheme,
@@ -35,12 +34,12 @@ const navigationTheme = {
 const Stack = createStackNavigator();
 
 const RootContainer = () => {
+
   return <NavigationContainer theme={navigationTheme}>
     <Stack.Navigator mode={"modal"} screenOptions={{
       headerShown: false
     }} >
       <Stack.Screen name="SessionContainer" component={SessionContainer} />
-      <Stack.Screen name="ApolloWrapper" component={ApolloWrapper} />
       <Stack.Screen name="SiteUrl" component={SiteUrl} />
       <Stack.Screen name="NativeLogin" component={NativeLogin} options={cardModalOptions} />
     </Stack.Navigator>
