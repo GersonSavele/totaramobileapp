@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import { useApolloClient } from "@apollo/react-hooks";
 import { queryLanguageStrings, queryUserLanguagePreference } from "@totara/locale/api";
 import { Loading } from "@totara/components";
@@ -21,7 +21,7 @@ import { addLocale, changeLocale, getLocale, getTranslations } from "@totara/loc
 import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
 import { merge } from "lodash";
 
-const LocaleResolver = ({ children }: { children: ReactNode }) => {
+const LocaleResolver = ({ children }: { children: any }) => {
   const [languagePreference, setLanguagePreference] = useState<string>();
   const [languageStringLoaded, setLanguageStringLoaded] = useState<boolean>();
   const client = useApolloClient();
@@ -83,4 +83,4 @@ const LocaleResolver = ({ children }: { children: ReactNode }) => {
   return languageStringsLoaded ? children : <Loading />;
 };
 
-export { LocaleResolver };
+export default LocaleResolver;

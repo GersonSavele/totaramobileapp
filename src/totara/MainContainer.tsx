@@ -116,7 +116,6 @@ const MainContainer = () => {
       <Stack.Screen name={SCORM_STACK_ROOT} component={scormStack} />
       <Stack.Screen name={WEBVIEW_ACTIVITY} component={WebViewStack} />
       <Stack.Screen name={ABOUT} component={AboutStack} />
-
     </Stack.Navigator>
   );
 };

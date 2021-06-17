@@ -28,7 +28,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import Loading from "@totara/components/Loading";
 import { ThemeProvider } from "./totara/theme";
-
+import ScreenOrientation, { PORTRAIT } from "react-native-orientation-locker/ScreenOrientation"
 // this check will make sure we only use sentry for production flavors
 if (!__DEV__ && config.sentryUri) {
   Sentry.init({
@@ -53,6 +53,7 @@ const App: () => React$Node = () => {
       <Root>
         <Provider store={store}>
           <PersistGate loading={<Loading />} persistor={persistor}>
+            <ScreenOrientation orientation={PORTRAIT} />
             <ThemeProvider>
               <RootContainer />
             </ThemeProvider>

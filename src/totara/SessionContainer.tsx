@@ -21,6 +21,7 @@ import SiteUrl from "./auth/manual/SiteUrl";
 import { Loading } from "./components";
 import { useSession } from "./core";
 import { createApolloClient, logOut } from "./core/AuthRoutines";
+import LocaleResolver from "./locale/LocaleResolver";
 import MainContainer from "./MainContainer";
 
 const SessionContainer = () => {
@@ -54,7 +55,9 @@ const SessionContainer = () => {
     return <Loading />
 
   return <ApolloProvider client={apolloClient!}>
-    <MainContainer />
+    <LocaleResolver>
+      <MainContainer />
+    </LocaleResolver>
   </ApolloProvider>
 }
 
