@@ -1,6 +1,23 @@
 Totara Mobile App Changelog
 
-Release 1.0.10 (17th May 2021):
+Release 1.0.11 (17th Jun 2021):
+=====================================
+
+Bug
+[MOB-934] - Overdue date should be shown in the course detail screen on iPhone
+[MOB-935] - There is extra space after the scroll bar indicator in Learning item
+[MOB-937] - "Mobile browser" authentication doesn't work
+[MOB-940] - Put a limit on the Bullet/ordered list levels
+[MOB-931] - SCORM landscape should be full screen and show responsive content
+
+Improvements
+[MOB-806] - Restructuring weka viewer
+[MOB-899] - Instructions for developers so we are able to log out in dev mode
+[MOB-925] - When completing a activity from within the app it does not update the completion state immediately
+[MOB-928] - Refactoring Styles to the new weka viewer
+[MOB-930] - The app crash when SCORM package is used after the download
+
+Release 1.0.10 (26th May 2021):
 =====================================
 
 Bug
