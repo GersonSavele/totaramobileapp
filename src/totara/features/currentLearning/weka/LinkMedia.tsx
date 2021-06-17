@@ -13,13 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import { WebView } from "react-native-webview";
 import { isEmpty } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { AuthContext, useSession } from "@totara/core";
-import { AppState } from "@totara/types";
+import { useSession } from "@totara/core";
 import { getHostnameFromRegex, getUrlLastComponentFromRegex } from "@totara/lib/tools";
 import { ConfigProps } from "./Wekautils";
 import ImageViewerWrapper from "./ImageViewerWrapper";
@@ -63,7 +62,7 @@ const LinkMedia = ({ content = {}, textColor = TotaraTheme.colorNeutral8 }: Conf
 };
 
 const WebViewWrapper = ({ content = {} }: ConfigProps) => {
-  const session = useSession();
+  const { session } = useSession();
   const { apiKey } = session;
 
   let url = content.attrs.url;

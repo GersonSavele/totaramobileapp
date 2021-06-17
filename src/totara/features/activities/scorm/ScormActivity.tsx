@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useQuery } from "@apollo/react-hooks";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -22,9 +22,8 @@ import { useApolloClient } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { SafeAreaView } from "react-native";
 
-import { AppState } from "@totara/types";
 import ScormSummary from "./ScormSummary";
-import { AuthContext, useSession } from "@totara/core";
+import { useSession } from "@totara/core";
 import OfflineScormActivity from "./OfflineScormActivity";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { Resource, ResourceType, ResourceState } from "@totara/types/Resource";
@@ -137,7 +136,7 @@ const ScormActivity = (props: ScormActivityProps) => {
   // FIXME: This is a temporary hack because the server is not returning correct data
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
 
-  const session = useSession();
+  const { session } = useSession();
   const { apiKey, host } = session;
 
   //FIXME: IMPROVE THIS USESELECTOR, create something like useResource that does all this stuff

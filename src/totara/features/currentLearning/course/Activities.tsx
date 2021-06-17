@@ -14,7 +14,7 @@
  */
 
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -26,8 +26,8 @@ import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { Section, Activity, AppState } from "@totara/types";
-import { AuthContext, useSession } from "@totara/core";
+import { Section, Activity } from "@totara/types";
+import { useSession } from "@totara/core";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import { GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
@@ -253,7 +253,7 @@ type ListUnLockProps = {
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
   const navigation = useNavigation();
 
-  const session = useSession();
+  const { session } = useSession();
   const { host, apiKey } = session;
 
   const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] = useMutation(

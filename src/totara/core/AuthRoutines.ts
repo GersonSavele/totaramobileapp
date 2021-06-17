@@ -31,6 +31,8 @@ import { Setup } from "./AuthHook";
 import { ServerError } from "apollo-link-http-common";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 import { NetworkFailedError } from "@totara/types/Error";
+import { persistor } from "./../store";
+import { purge } from "./../actions/root";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -284,3 +286,12 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
     );
   });
 };
+
+export const logOut = async ({ apolloClient }) => {
+  const { cache } = apolloClient;
+  await cache.reset(); //clear the apollo client cache
+  await purge({}); //root purge (hot)
+  await persistor.purge();  //root purge (stored)
+
+  return Promise.resolve();
+}

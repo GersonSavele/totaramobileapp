@@ -36,6 +36,8 @@ import { registerDevice, deviceCleanup, bootstrap, createApolloClient, fetchData
  * </AuthProvider>
  *
  */
+
+/** @deprecated */
 export const AuthProvider = ({ asyncStorage, children }: Props) => {
   const auth = useAuth(
     bootstrap(asyncStorage),

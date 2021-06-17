@@ -15,11 +15,10 @@
 
 import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View, ScrollView, RefreshControl, Alert, TouchableOpacity } from "react-native";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useApolloClient } from "@apollo/react-hooks";
 import { StackScreenProps } from "@react-navigation/stack";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ThemeContext } from "@totara/theme";
-import { AuthContext } from "@totara/core";
 import { UserProfile } from "@totara/types";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { userOwnProfile } from "./api";
@@ -30,6 +29,7 @@ import { margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatusIndicator, ImageWrapper, LoadingError } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
+import { logOut } from "@totara/core/AuthRoutines";
 
 const Profile = ({ navigation }: StackScreenProps<any>) => {
   const { error, data, refetch, networkStatus } = useQuery(userOwnProfile, { notifyOnNetworkStatusChange: true });
@@ -62,14 +62,16 @@ type ProfileContentProps = {
 };
 
 const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
-  const [logout, setLogout] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const theme = useContext(ThemeContext);
-  const { logOut } = useContext(AuthContext);
+  const apolloClient = useApolloClient();
+
+  const confirmedLogout = async () => {
+    setLoggingOut(true);
+    logOut({ apolloClient })
+  };
+
   const confirmationLogout = () => {
-    const confirmedLogout = () => {
-      setLogout(true);
-      logOut();
-    };
     return Alert.alert(
       translate("user_profile.logout.title"),
       translate("user_profile.logout.message_with_warn"),
@@ -132,7 +134,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
           style={styles.sectionOption}>
           <Text style={TotaraTheme.textRegular}>{translate("user_profile.logout.button_text")}</Text>
         </TouchableOpacity>
-        <View>{logout && <Loading />}</View>
+        <View>{loggingOut && <Loading />}</View>
       </View>
     </View>
   );

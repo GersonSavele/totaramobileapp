@@ -13,16 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useEffect, useReducer, useContext } from "react";
+import { useEffect, useReducer } from "react";
 import DeviceInfo from "react-native-device-info";
-
-import { ThemeContext, applyTheme } from "@totara/theme";
-import { TotaraTheme } from "@totara/theme/Theme";
 import { config, Log } from "@totara/lib";
 import { isValidApiVersion } from "@totara/core/AuthContext";
-import { SiteInfo } from "@totara/types";
 import { AuthFlowChildProps } from "../AuthComponent";
 import { NetworkError, NetworkFailedError, UnsupportedAuthFlow } from "@totara/types/Error";
+import { SiteInfo } from "@totara/types";
 
 /**
  * Custom react hook that manages the state of the manual flow
@@ -36,7 +33,7 @@ export const useManualFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
   onLoginSuccess,
   onLoginFailure
 }: AuthFlowChildProps) => {
-  const theme = useContext(ThemeContext);
+  // const theme = useContext(ThemeContext);
 
   const [manualFlowState, dispatch] = useReducer(manualFlowReducer, {
     isSiteUrlSubmitted: false,
@@ -77,18 +74,6 @@ export const useManualFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
         });
     }
   }, [manualFlowState.siteUrl, manualFlowState.isSiteUrlSubmitted]);
-
-  useEffect(() => {
-    if (manualFlowState.flowStep === "siteUrl" && !manualFlowState.isSiteUrlSubmitted) {
-      setTheme(applyTheme(TotaraTheme));
-    } else if (manualFlowState.flowStep !== "siteUrl" && manualFlowState.isSiteUrlSubmitted) {
-      setTheme(
-        applyTheme(
-          manualFlowState.siteInfo && manualFlowState.siteInfo.theme ? manualFlowState.siteInfo.theme : TotaraTheme
-        )
-      );
-    }
-  }, [manualFlowState.flowStep, manualFlowState.siteInfo, manualFlowState.isSiteUrlSubmitted]);
 
   const onSiteUrlSuccess = (url: string) => {
     dispatch({ type: "siteInfoApiInit", payload: url });

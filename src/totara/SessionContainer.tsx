@@ -20,16 +20,16 @@ import { ApolloProvider } from "react-apollo";
 import SiteUrl from "./auth/manual/SiteUrl";
 import { Loading } from "./components";
 import { useSession } from "./core";
-import { createApolloClient } from "./core/AuthRoutines";
+import { createApolloClient, logOut } from "./core/AuthRoutines";
 import MainContainer from "./MainContainer";
 
 const SessionContainer = () => {
   const { session } = useSession();
-  const { host, apiKey, } = session;
+  const { host, apiKey } = session;
   const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
 
-  const logOut = async (localOnly: boolean = false) => {
-    //console.warn('logout');
+  const onLogout = async () => {
+    logOut({ apolloClient });
   }
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const SessionContainer = () => {
       const apc = createApolloClient(
         apiKey,
         host!,
-        logOut
+        onLogout
       );
       setApolloClient(apc)
     }

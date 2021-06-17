@@ -15,7 +15,7 @@
 
 import { useReducer, useEffect } from "react";
 
-import { config, Log } from "@totara/lib";
+import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/constants";
 import { ManualFlowChildProps } from "../ManualFlowChildProps";
 import { NetworkError } from "@totara/types/Error";
@@ -34,9 +34,7 @@ const initialState = {
 
 export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>) => ({
   siteUrl,
-  onManualFlowCancel,
-  onSetupSecretSuccess,
-  onSetupSecretFailure,
+
 }: ManualFlowChildProps) => {
   const [nativeLoginState, dispatch] = useReducer(nativeReducer, initialState);
 
@@ -91,19 +89,8 @@ export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
     }
   }, [nativeLoginState.isRequestingLogin, nativeLoginState.setupSecret]);
 
-  if (nativeLoginState.unhandledLoginError) {
-    Log.debug("Login failure!", nativeLoginState.setupSecret);
-    onSetupSecretFailure(nativeLoginState.unhandledLoginError);
-  }
-
-  // if (nativeLoginState.setupSecret) {
-  //   Log.debug("Login success! Obtained the Setup Secret", nativeLoginState.setupSecret);
-  //   onSetupSecretSuccess(nativeLoginState.setupSecret);
-  // }
-
   return {
     nativeLoginState,
-    onManualFlowCancel,
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,

@@ -36,7 +36,9 @@ const useSession = () => {
     })
   }
 
-  const logout = () => endSession();
+  const logout = () => {
+    return endSession()
+  };
 
   const setupSiteInfo = ({ host, siteInfo }) => {
     setupHost({

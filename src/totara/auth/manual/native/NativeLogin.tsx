@@ -28,7 +28,6 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { TEST_IDS } from "@totara/lib/testIds";
 import { useSession } from "@totara/core";
 import { useEffect } from "react";
-import { useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
@@ -42,23 +41,13 @@ const NativeLogin = () => {
 
   const {
     nativeLoginState,
-    // onManualFlowCancel,
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,
     onFocusInput,
   } = useNativeFlow(fetchDataWithFetch)({
     siteInfo: siteInfo!,
-    siteUrl: host!,
-    onManualFlowCancel: () => {
-      console.warn(`onManualFlowCancel`)
-    },
-    onSetupSecretFailure: () => {
-      console.warn(`onSetupSecretFailure`)
-    },
-    onSetupSecretSuccess: () => {
-      console.warn(`onSetupSuccess`)
-    }
+    siteUrl: host!
   });
 
   useEffect(() => {
@@ -144,7 +133,7 @@ const NativeLogin = () => {
           <View style={[styles.forgotCredentialContainer, theme.textRegular]}>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(config.forgotPasswordUri(props.siteUrl));
+                Linking.openURL(config.forgotPasswordUri(host!));
               }}>
               <Text style={styles.forgotCredential}>{translate("native_login.forgot_username_password")}</Text>
             </TouchableOpacity>

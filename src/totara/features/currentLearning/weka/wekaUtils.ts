@@ -13,9 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useContext } from "react";
-import { AuthContext, useSession } from "@totara/core";
-import { AppState } from "@totara/types";
+import { useSession } from "@totara/core";
 import { navigate } from "@totara/lib/navigationService";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from "../constants";
@@ -258,7 +256,7 @@ type EmbeddedMediaProps = {
 };
 
 const navigateWebView = (url, onRequestClose, title) => {
-  const session = useSession();
+  const { session } = useSession();
   const { apiKey } = session;
 
   const props = {

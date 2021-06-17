@@ -15,7 +15,6 @@
 
 import { Dimensions } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { DefaultTheme } from "react-native-paper";
 
 const textAttributes = {
   short_code_prefix: "0x"
