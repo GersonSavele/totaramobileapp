@@ -49,7 +49,8 @@ const wekaStyle = StyleSheet.create({
     maxWidth: deviceScreen.width,
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral5,
-    aspectRatio: 16 / 9
+    aspectRatio: 16 / 9,
+    overflow: "hidden"
   },
   linkMediaDescription: {
     ...TotaraTheme.textRegular,
@@ -123,7 +124,8 @@ const wekaStyle = StyleSheet.create({
     bottom: 0,
     right: 0,
     borderRadius: borderRadius.borderRadiusM,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    opacity: 0.99
   },
   closeButtonTouchableOpacity: {
     marginTop: marginM,
