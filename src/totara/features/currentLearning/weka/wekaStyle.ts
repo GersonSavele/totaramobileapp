@@ -50,7 +50,7 @@ const wekaStyle = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral5,
     aspectRatio: 16 / 9,
-    overflow: "hidden"
+    overflow: "hidden" //Fixed: MOB-920, https://stackoverflow.com/questions/54131875/screen-blinks-once-when-rendering-a-webview-on-android/54719378#54719378
   },
   linkMediaDescription: {
     ...TotaraTheme.textRegular,
@@ -125,7 +125,7 @@ const wekaStyle = StyleSheet.create({
     right: 0,
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: "transparent",
-    opacity: 0.99
+    opacity: 0.99 //Fixed: MOB-920, https://stackoverflow.com/questions/54131875/screen-blinks-once-when-rendering-a-webview-on-android/54719378#54719378
   },
   closeButtonTouchableOpacity: {
     marginTop: marginM,

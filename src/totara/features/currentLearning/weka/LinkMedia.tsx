@@ -86,7 +86,6 @@ const WebViewWrapper = ({ content = {} }: ConfigProps) => {
         domStorageEnabled={false}
         originWhitelist={["*"]}
         scrollEnabled={false}
-        androidHardwareAccelerationDisabled={true}
         allowsInlineMediaPlayback={true}
         allowsFullscreenVideo={true}
         onShouldStartLoadWithRequest={(request) => {
