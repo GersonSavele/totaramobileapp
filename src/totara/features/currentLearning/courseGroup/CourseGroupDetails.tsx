@@ -13,15 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { useQuery, NetworkStatus } from "@apollo/client";
+import { useQuery, NetworkStatus, useMutation } from "@apollo/client";
 import { translate } from "@totara/locale";
 import Courses from "./Courses";
 import OverviewDetails from "../overview/OverviewDetails";
 import { CourseGroup } from "@totara/types";
 import { LoadingError, Loading } from "@totara/components";
-import { coreProgram, coreCertification } from "./api";
+import { coreProgram, coreCertification, mutationReportProgramme } from "./api";
 import LearningDetails from "../LearningDetails";
 import { details } from "./courseGroupStyles";
 
@@ -53,12 +53,27 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
   const { targetId, courseGroupType } = navigation.state.params as ParamsType;
   const typeMap = courseGroupTypeMap[courseGroupType];
   const { networkStatus, error, data, refetch } = useQuery(typeMap.query, {
-    variables: { [typeMap.idField]: targetId }, notifyOnNetworkStatusChange: true
+    variables: { [typeMap.idField]: targetId },
+    notifyOnNetworkStatusChange: true
   });
-
+  const [setReportProgramme] = useMutation(mutationReportProgramme);
   const onContentRefresh = () => {
     refetch();
   };
+
+  useEffect(() => {
+    if (networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch) {
+      setReportProgramme({
+        variables: {
+          program_id: targetId
+        }
+      }).then(({ data }) => {
+        if (!data?.totara_mobile_program_view) {
+          throw new Error("Programme/Certificate reoporting failed.");
+        }
+      });
+    }
+  }, [data]);
 
   if (networkStatus === NetworkStatus.loading) return <Loading testID={"test_loading"} />;
   if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} testID={"test_error"} />;

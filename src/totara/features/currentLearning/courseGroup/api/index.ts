@@ -114,4 +114,10 @@ const coreCertification = gql`
   }
 `;
 
-export { coreProgram, coreCertification };
+const mutationReportProgramme = gql`
+  mutation totara_mobile_program_view($program_id: core_id!) {
+    totara_mobile_program_view(program_id: $program_id)
+  }
+`;
+
+export { coreProgram, coreCertification, mutationReportProgramme };
