@@ -29,7 +29,7 @@ describe("SiteUrlHook", () => {
     });
 
     expect(result.current.siteUrlState).toMatchObject({
-      inputSiteUrlStatus: "error"
+      inputSiteUrlStatus: "invalidUrl"
     });
   });
 
@@ -45,7 +45,7 @@ describe("SiteUrlHook", () => {
     });
 
     expect(result.current.siteUrlState).toMatchObject({
-      inputSiteUrlStatus: "error"
+      inputSiteUrlStatus: "invalidUrl"
     });
   });
 

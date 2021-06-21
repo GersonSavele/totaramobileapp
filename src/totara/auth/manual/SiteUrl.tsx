@@ -14,13 +14,13 @@
  */
 
 import { Content, Form, Input } from "native-base";
-import React, { useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useSiteUrl } from "./SiteUrlHook";
 import { get } from "lodash";
 
-import { InputTextWithInfo, PrimaryButton } from "@totara/components";
+import { InfoModal, InputTextWithInfo, PrimaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { margins, paddings } from "@totara/theme/constants";
@@ -30,6 +30,39 @@ import { config } from "@totara/lib";
 import { useSession } from "@totara/core";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Images } from "@resources/images";
+
+type PropSiteError = {
+  onDismiss: () => void;
+  siteUrlFailure: string;
+};
+
+const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
+  const content = siteUrlFailure === 'networkError'
+    ? {
+      title: translate("server_not_reachable.title"),
+      description: translate("server_not_reachable.message"),
+      imageSource: Images.generalError,
+      primaryAction: translate("server_not_reachable.go_back")
+    }
+    : {
+      title: translate("site_url.auth_invalid_site.title"),
+      description: translate("site_url.auth_invalid_site.description"),
+      imageSource: Images.urlNotValid,
+      primaryAction: translate("site_url.auth_invalid_site.action_primary")
+    };
+
+  return (
+    <InfoModal
+      visible={true}
+      title={content.title}
+      description={content.description}
+      imageSource={content.imageSource as ImageSourcePropType}>
+      <PrimaryButton text={content.primaryAction} onPress={onDismiss} />
+    </InfoModal>
+  );
+};
+
 
 const SiteUrl = () => {
 
@@ -37,17 +70,19 @@ const SiteUrl = () => {
   const { host } = session;
 
   // eslint-disable-next-line no-undef
-  const [siteUrl, setSiteUrl] = useState(host ? host : __DEV__ ? get(config, "devOrgUrl", "") : "");
+  const initialSiteURL = host ? host : __DEV__ ? get(config, "devOrgUrl", "") : "";
   const navigation = useNavigation();
   const { setupSiteInfo } = useSession();
 
-  const { siteUrlState, onSubmit } = useSiteUrl({
-    siteUrl: siteUrl,
+  const { siteUrlState, onSubmit, reset, onChangeInputSiteUrl } = useSiteUrl({
+    siteUrl: initialSiteURL,
     onSiteInfoDone: (siteInfo) => {
-      setupSiteInfo({ host: siteUrl, siteInfo });
+      setupSiteInfo({ host: siteUrlState.inputSiteUrl, siteInfo });
       return navigation.navigate('NativeLogin');
     }
   });
+
+  const { inputSiteUrl, inputSiteUrlMessage, inputSiteUrlStatus } = siteUrlState
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -63,24 +98,23 @@ const SiteUrl = () => {
             </View>
             <InputTextWithInfo
               placeholder={translate("site_url.url_text_placeholder")}
-              message={siteUrlState.inputSiteUrlMessage}
-              status={siteUrlState.inputSiteUrlStatus === "fetching" ? "success" :
-                siteUrlState.inputSiteUrlStatus}>
+              message={inputSiteUrlMessage}
+              status={inputSiteUrlStatus === 'invalidUrl' ? "error" : "focus"}>
               <Input
                 keyboardType="url"
                 clearButtonMode="while-editing"
                 autoCapitalize="none"
-                onChangeText={(text) => setSiteUrl(text)}
-                value={siteUrl}
+                onChangeText={(text) => onChangeInputSiteUrl(text)}
+                value={inputSiteUrl}
                 style={styles.inputText}
-                autoFocus={siteUrlState.inputSiteUrlStatus !== 'fetching'}
+                autoFocus={inputSiteUrlStatus !== 'fetching'}
                 testID={"SITE_URL_INPUT"}
                 returnKeyType={"done"}
-                onSubmitEditing={() => onSubmit(siteUrl)}
+                onSubmitEditing={() => onSubmit(inputSiteUrl!)}
               />
             </InputTextWithInfo>
             <PrimaryButton
-              onPress={() => onSubmit(siteUrl)}
+              onPress={() => onSubmit(inputSiteUrl!)}
               text={translate("general.enter")}
               style={styles.buttonEnter}
               mode={siteUrlState.inputSiteUrlStatus === 'fetching' ? "loading" : undefined}
@@ -93,9 +127,14 @@ const SiteUrl = () => {
       <Text style={styles.version}>
         {translate("general.version")}: {DeviceInfo.getVersion()}({DeviceInfo.getBuildNumber()})
       </Text>
+
+      {(siteUrlState.inputSiteUrlStatus === 'invalidAPI' || siteUrlState.inputSiteUrlStatus === 'networkError') && (
+        <SiteErrorModal onDismiss={() => reset()} siteUrlFailure={siteUrlState.inputSiteUrlStatus} />
+      )}
     </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   mainContent: {

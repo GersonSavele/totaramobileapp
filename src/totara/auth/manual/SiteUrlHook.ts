@@ -22,11 +22,16 @@ import { fetchData } from "@totara/core/AuthRoutines";
 import { SiteInfo } from "@totara/types/SiteInfo";
 import { getVersion } from "react-native-device-info";
 
-export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: Props) => {
+export type useSiteUrlProps = {
+  siteUrl?: string;
+  onSiteInfoDone: any
+};
+
+export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: useSiteUrlProps) => {
   const [siteUrlState, dispatch] = useReducer(siteUrlReducer, {
     inputSiteUrlStatus: undefined,
     inputSiteUrlMessage: undefined,
-    inputSiteUrl: siteUrl
+    inputSiteUrl: siteUrl,
   });
 
   useEffect(() => {
@@ -43,8 +48,8 @@ export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: Props) => {
         dispatch({ type: "done" })
         onSiteInfoDone(result);
       }).catch(error => {
-        console.log(error);
-        dispatch({ type: "error", payload: error.message })
+        const errorType = error.status === 404 ? "invalidAPI" : "networkError";
+        dispatch({ type: errorType, payload: error.message })
       });
     }
   }, [siteUrlState.inputSiteUrlStatus])
@@ -57,10 +62,15 @@ export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: Props) => {
     dispatch({ type: "change", payload: siteUrl });
   };
 
+  const reset = () => {
+    dispatch({ type: "done", payload: siteUrl });
+  }
+
   return {
     siteUrlState,
     onChangeInputSiteUrl,
     onSubmit,
+    reset
   };
 };
 
@@ -78,7 +88,7 @@ const siteUrlReducer = (state: State, action: Action): State => {
       } else {
         return {
           ...state,
-          inputSiteUrlStatus: "error",
+          inputSiteUrlStatus: "invalidUrl",
           inputSiteUrlMessage: translate("site_url.validation.enter_valid_url")
         };
       }
@@ -95,29 +105,30 @@ const siteUrlReducer = (state: State, action: Action): State => {
         inputSiteUrl: action.payload
       };
     }
-    case "error": {
+    case "networkError": case "invalidAPI": {
       return {
         ...state,
-        inputSiteUrlStatus: "error",
+        inputSiteUrlStatus: action.type,
         inputSiteUrlMessage: action.payload
       };
     }
+    default:
+      return {
+        ...state
+      }
   }
 };
 
-export type Props = {
-  siteUrl?: string;
-  onSiteInfoDone: any
-};
+
 
 type State = {
-  inputSiteUrlStatus?: "done" | "fetching" | "error";
+  inputSiteUrlStatus?: "done" | "fetching" | "invalidUrl" | "invalidAPI" | "networkError";
   inputSiteUrlMessage?: string;
   inputSiteUrl?: string;
 };
 
 type Action = {
-  type: "error" | "done" | "submit" | "change";
+  type: "invalidUrl" | "invalidAPI" | "networkError" | "done" | "submit" | "change";
   payload?: any;
 };
 

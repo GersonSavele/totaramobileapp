@@ -16,7 +16,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { WebView, WebViewMessageEvent, WebViewNavigation } from "react-native-webview";
-import { OrientationLocker } from "react-native-orientation-locker";
+import Orientation from "react-native-orientation-locker";
 
 import { WebviewToolbar } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
