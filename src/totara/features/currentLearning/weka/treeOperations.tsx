@@ -40,6 +40,7 @@ import Attachment from "./Attachment";
 import TextContentWrapper from "./TextContentWrapper";
 import styles from "./wekaStyle";
 import { margins } from "@totara/theme/constants";
+import { decodeHtmlCharCodes } from "@totara/lib/tools";
 
 const { marginS } = margins;
 
@@ -180,7 +181,7 @@ class ToFullSummary implements Visitor<Object> {
     const paragraph = element?.content?.map((item) => {
       return item?.accept(this);
     });
-    return <Text style={{ marginBottom: marginS }}>{paragraph}</Text>;
+    return <Text style={{ marginBottom: marginS }}>{decodeHtmlCharCodes(paragraph)}</Text>;
   }
 
   visitWekaText(element: WekaText): Object {

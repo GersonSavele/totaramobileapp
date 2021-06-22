@@ -21,7 +21,6 @@ import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/react-hooks";
 import { get, isEmpty } from "lodash";
 import { useNavigation } from "@react-navigation/native";
-
 import CriteriaSheet from "../components/CriteriaSheet";
 import ActivityTextContent from "./ActivityTextContent";
 import CompletionIcon from "./CompletionIcon";
@@ -39,9 +38,9 @@ import { activitySelfComplete, fetchResource, updateStateViewResource } from "..
 import listViewStyles from "@totara/theme/listView";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
 import { showMessage } from "@totara/lib";
-
 import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
 import { ToFullSummary } from "../weka/treeOperations";
+import { decodeHtmlCharCodes } from "@totara/lib/tools";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -153,7 +152,7 @@ const RestrictionSectionHeader = ({ title, availableReason }: { availableReason:
     <View>
       <TouchableOpacity style={activitiesStyles.sectionView} onPress={onClose}>
         <Text numberOfLines={1} style={activitiesStyles.sectionTitle}>
-          {title}
+          {decodeHtmlCharCodes(title)}
         </Text>
         <Text style={activitiesStyles.sectionNotAvailable}>
           {translate("course.course_activity_section.not_available")}
@@ -180,7 +179,7 @@ const ExpandableSectionHeader = ({ title, show }: ExpandableSectionHeaderProps) 
     <View>
       <View style={activitiesStyles.sectionView}>
         <Text numberOfLines={1} style={activitiesStyles.sectionTitle}>
-          {title}
+          {decodeHtmlCharCodes(title)}
         </Text>
         {show ? (
           <FontAwesomeIcon icon={faChevronUp} color={TotaraTheme.colorNeutral5} size={16} />
@@ -217,7 +216,7 @@ const ActivityList = ({
         )
       ) : (
         <View style={activitiesStyles.activityList}>
-          <ActivityTextContent label={sectionSummary} />
+          <ActivityTextContent label={decodeHtmlCharCodes(sectionSummary)} />
         </View>
       )}
       {data!.map((item: Activity, key: number) => {
@@ -381,7 +380,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
             item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
               <View>{wekaContent(JSON.parse(item.description as any))}</View>
             ) : (
-              <ActivityTextContent label={item.description!} />
+              <ActivityTextContent label={decodeHtmlCharCodes(item.description)} />
             )
           ) : (
             <ListItem item={item} />
@@ -425,7 +424,7 @@ const ListItem = ({ item }: { item: Activity }) => {
   return (
     <View style={activitiesStyles.itemTextContainer}>
       <Text numberOfLines={1} style={activitiesStyles.itemTitle}>
-        {item.name.trim()}
+        {decodeHtmlCharCodes(item.name.trim())}
       </Text>
     </View>
   );

@@ -18,6 +18,7 @@ import { fontWeights, fontStyles, marksTypes } from "@totara/theme/constants";
 import styles from "./wekaStyle";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { navigateWebView } from "./wekaUtils";
+import { decodeHtmlCharCodes } from "@totara/lib/tools";
 
 type TextProps = {
   attrs?: any;
@@ -58,7 +59,7 @@ const TextContentWrapper = ({ attrs = {}, marks = {}, textColor, text }: TextPro
         style={[font, fontItalic, fontBold, link && link[0] && styles.textLink]}
         testID="test_rich_text"
         onPress={link && onRequestClose}>
-        {text}
+        {decodeHtmlCharCodes(text)}
       </Text>
       {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose, text)}
     </Text>

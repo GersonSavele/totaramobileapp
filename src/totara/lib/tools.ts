@@ -117,6 +117,9 @@ const isValidUrlText = (urlText: string) => {
   return pattern.test(urlText);
 };
 
+const decodeHtmlCharCodes = (str) =>
+  str.replace(/(&#(\d+);)/g, (match, capture, charCode) => String.fromCharCode(charCode));
+
 export {
   showMessage,
   showConfirmation,
@@ -129,5 +132,6 @@ export {
   getUrlLastComponentFromRegex,
   isIOS,
   isAndroid,
-  isValidUrlText
+  isValidUrlText,
+  decodeHtmlCharCodes
 };
