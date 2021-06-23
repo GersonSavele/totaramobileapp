@@ -23,35 +23,29 @@ type navigationOptionsProps = {
   backTitle?: string;
   opacity?: number;
   headerRight?: any;
-  headerShown?: boolean;
+  headerShown?: boolean
 };
 
-const TotaraNavigationOptions = ({
-  opacity,
-  title = "",
-  backTitle,
-  headerRight,
-  headerShown = true
-}: navigationOptionsProps) => {
+const TotaraNavigationOptions = ({ opacity, title = "", backTitle, headerRight, headerShown = true }: navigationOptionsProps) => {
   const options: StackNavigationOptions = {
-    animationEnabled: false,
     headerStyle: {
       borderBottomWidth: 0,
       backgroundColor: TotaraTheme.colorNeutral2,
       shadowOpacity: 0,
       elevation: 0,
-      ...(Platform.OS === PLATFORM_ANDROID && { height: ANDROID_STATUSBAR_HEIGHT })
+      ...Platform.OS === PLATFORM_ANDROID && { height: ANDROID_STATUSBAR_HEIGHT }
     },
     headerTitleStyle: {
       color: TotaraTheme.colorNeutral7,
       fontSize: TotaraTheme.textRegular.fontSize,
-      opacity: opacity
+      opacity: opacity,
+
     },
     title: title,
     headerBackTitle: backTitle,
     headerTintColor: TotaraTheme.colorNeutral7,
     headerRight: headerRight,
-    headerShown: headerShown
+    headerShown: headerShown,
   };
   return options;
 };
