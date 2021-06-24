@@ -216,7 +216,7 @@ const ActivityList = ({
         )
       ) : (
         <View style={activitiesStyles.activityList}>
-          <ActivityTextContent label={decodeHtmlCharCodes(sectionSummary)} />
+          <ActivityTextContent label={sectionSummary} />
         </View>
       )}
       {data!.map((item: Activity, key: number) => {
@@ -380,7 +380,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
             item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
               <View>{wekaContent(JSON.parse(item.description as any))}</View>
             ) : (
-              <ActivityTextContent label={decodeHtmlCharCodes(item.description)} />
+              item.description && <ActivityTextContent label={item.description} />
             )
           ) : (
             <ListItem item={item} />
@@ -424,7 +424,7 @@ const ListItem = ({ item }: { item: Activity }) => {
   return (
     <View style={activitiesStyles.itemTextContainer}>
       <Text numberOfLines={1} style={activitiesStyles.itemTitle}>
-        {decodeHtmlCharCodes(item.name.trim())}
+        {item.name.trim()}
       </Text>
     </View>
   );
