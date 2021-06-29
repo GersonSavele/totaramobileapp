@@ -1,4 +1,3 @@
-
 /**
  * This file is part of Totara Enterprise.
  *
@@ -20,6 +19,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { TotaraTheme } from "./theme/Theme";
 import SiteUrl from "./auth/manual/SiteUrl";
 import NativeLogin from "./auth/manual/native/NativeLogin";
+import WebviewLogin from "./auth/manual/webview/WebviewLogin";
 import { cardModalOptions } from "./lib/navigation";
 import SessionContainer from "./SessionContainer";
 
@@ -34,16 +34,20 @@ const navigationTheme = {
 const Stack = createStackNavigator();
 
 const RootContainer = () => {
-
-  return <NavigationContainer theme={navigationTheme}>
-    <Stack.Navigator mode={"modal"} screenOptions={{
-      headerShown: false
-    }} >
-      <Stack.Screen name="SessionContainer" component={SessionContainer} />
-      <Stack.Screen name="SiteUrl" component={SiteUrl} />
-      <Stack.Screen name="NativeLogin" component={NativeLogin} options={cardModalOptions} />
-    </Stack.Navigator>
-  </NavigationContainer>
-}
+  return (
+    <NavigationContainer theme={navigationTheme}>
+      <Stack.Navigator
+        mode={"modal"}
+        screenOptions={{
+          headerShown: false
+        }}>
+        <Stack.Screen name="SessionContainer" component={SessionContainer} />
+        <Stack.Screen name="SiteUrl" component={SiteUrl} />
+        <Stack.Screen name="NativeLogin" component={NativeLogin} options={cardModalOptions} />
+        <Stack.Screen name="WebviewLogin" component={WebviewLogin} options={cardModalOptions} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default RootContainer;

@@ -13,33 +13,52 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useRef, useContext } from "react";
-import { View, StyleSheet, Linking, Text } from "react-native";
+import React, { useRef, useContext, useEffect } from "react";
+import { View, StyleSheet, Linking } from "react-native";
 import { WebView } from "react-native-webview";
-// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { Container, Header, Content, Footer } from "native-base";
-
+import { Container, Content, Footer } from "native-base";
+import { useNavigation } from "@react-navigation/native";
 import { config } from "@totara/lib";
 import { DEVICE_REGISTRATION } from "@totara/lib/constants";
 import { TouchableIcon } from "@totara/components";
 import { ThemeContext } from "@totara/theme";
-
 import { useWebviewFlow } from "./WebviewFlowHook";
-import { ManualFlowChildProps } from "../ManualFlowChildProps";
-import CloseButton from "@totara/components/CloseButton";
+import { useSession } from "@totara/core";
+import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
+import AsyncStorage from "@react-native-community/async-storage";
 
-const WebviewLogin = (props: ManualFlowChildProps) => {
+const WebviewLogin = () => {
+  const { session, login } = useSession();
+  const { siteInfo, host, apiKey } = session;
+  // eslint-disable-next-line no-undef
+  const fetchDataWithFetch = fetchData(fetch);
+  const navigation = useNavigation();
   const {
     loginUrl,
     navProtocol,
     navEndPoint,
-    cancelLogin,
+    setupSecret,
     didReceiveOnMessage,
     canWebGoBackward,
     canWebGoForward,
     onLogViewNavigate
-  } = useWebviewFlow(props);
+  } = useWebviewFlow({ siteInfo: siteInfo!, siteUrl: host! });
+
+  useEffect(() => {
+    if (setupSecret && !apiKey) {
+      registerDevice(
+        fetchDataWithFetch,
+        AsyncStorage
+      )({
+        uri: host!,
+        secret: setupSecret,
+        siteInfo: siteInfo
+      }).then((res) => {
+        login({ apiKey: res.apiKey });
+        navigation.goBack();
+      });
+    }
+  }, [setupSecret, apiKey]);
 
   const jsCode =
     "window.ReactNativeWebView.postMessage(document.getElementById('totara_mobile-setup-secret') && document.getElementById('totara_mobile-setup-secret').getAttribute('data-totara-mobile-setup-secret'))";
@@ -50,15 +69,6 @@ const WebviewLogin = (props: ManualFlowChildProps) => {
 
   return (
     <Container style={[theme.viewContainer, { flex: 0 }]}>
-      <Header style={[styles.navigation, { backgroundColor: theme.colorSecondary1 }]} iosBarStyle={"default"}>
-        <CloseButton onPress={cancelLogin} />
-        <View style={styles.addressContainer}>
-          <FontAwesomeIcon icon={navProtocol === "https" ? "lock" : "unlock-alt"} color={theme.colorNeutral7} />
-          <Text style={[styles.addressText, { color: theme.colorNeutral7 }]} numberOfLines={1} ellipsizeMode={"tail"}>
-            {navEndPoint}
-          </Text>
-        </View>
-      </Header>
       <Content contentContainerStyle={{ flex: 1 }}>
         <WebView
           ref={refLoginWebview}

@@ -20,15 +20,13 @@ import CookieManager from "@react-native-community/cookies";
 import { config } from "@totara/lib";
 import { ManualFlowChildProps } from "@totara/auth/manual/ManualFlowChildProps";
 
-export const useWebviewFlow = ({ siteUrl, onSetupSecretSuccess, onManualFlowCancel }: ManualFlowChildProps) => {
+export const useWebviewFlow = ({ siteUrl }: ManualFlowChildProps) => {
   const getProtocolEndpoint = (url: string) => url.split("://");
-
-  const cancelLogin = onManualFlowCancel;
 
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
     if (typeof setupSecretValue !== "undefined" && setupSecretValue != "null" && setupSecretValue) {
-      onSetupSecretSuccess(setupSecretValue);
+      setsetupSecret(setupSecretValue);
     }
   };
 
@@ -49,6 +47,7 @@ export const useWebviewFlow = ({ siteUrl, onSetupSecretSuccess, onManualFlowCanc
   const [canWebGoBackward, setCanWebGoBackward] = useState(false);
   const [canWebGoForward, setCanWebGoForward] = useState(false);
   const [isInitialize, setIsInitialize] = useState(true);
+  const [setupSecret, setsetupSecret] = useState("");
 
   useEffect(() => {
     if (isInitialize) {
@@ -63,8 +62,8 @@ export const useWebviewFlow = ({ siteUrl, onSetupSecretSuccess, onManualFlowCanc
     navEndPoint,
     canWebGoBackward,
     canWebGoForward,
-    cancelLogin,
     didReceiveOnMessage,
-    onLogViewNavigate
+    onLogViewNavigate,
+    setupSecret
   };
 };

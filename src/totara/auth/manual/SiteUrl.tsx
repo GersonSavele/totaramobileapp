@@ -38,19 +38,20 @@ type PropSiteError = {
 };
 
 const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
-  const content = siteUrlFailure === 'networkError'
-    ? {
-      title: translate("server_not_reachable.title"),
-      description: translate("server_not_reachable.message"),
-      imageSource: Images.generalError,
-      primaryAction: translate("server_not_reachable.go_back")
-    }
-    : {
-      title: translate("site_url.auth_invalid_site.title"),
-      description: translate("site_url.auth_invalid_site.description"),
-      imageSource: Images.urlNotValid,
-      primaryAction: translate("site_url.auth_invalid_site.action_primary")
-    };
+  const content =
+    siteUrlFailure === "networkError"
+      ? {
+          title: translate("server_not_reachable.title"),
+          description: translate("server_not_reachable.message"),
+          imageSource: Images.generalError,
+          primaryAction: translate("server_not_reachable.go_back")
+        }
+      : {
+          title: translate("site_url.auth_invalid_site.title"),
+          description: translate("site_url.auth_invalid_site.description"),
+          imageSource: Images.urlNotValid,
+          primaryAction: translate("site_url.auth_invalid_site.action_primary")
+        };
 
   return (
     <InfoModal
@@ -63,9 +64,7 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
   );
 };
 
-
 const SiteUrl = () => {
-
   const { session } = useSession();
   const { host } = session;
 
@@ -78,11 +77,20 @@ const SiteUrl = () => {
     siteUrl: initialSiteURL,
     onSiteInfoDone: (siteInfo) => {
       setupSiteInfo({ host: siteUrlState.inputSiteUrl, siteInfo });
-      return navigation.navigate('NativeLogin');
+      const { auth } = siteInfo;
+      if (auth === "browser") {
+        return navigation.navigate("BrowserLogin", {
+          siteUrl: siteUrlState.inputSiteUrl
+        });
+      } else if (auth === "native") {
+        return navigation.navigate("NativeLogin");
+      } else {
+        return navigation.navigate("WebviewLogin");
+      }
     }
   });
 
-  const { inputSiteUrl, inputSiteUrlMessage, inputSiteUrlStatus } = siteUrlState
+  const { inputSiteUrl, inputSiteUrlMessage, inputSiteUrlStatus } = siteUrlState;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -99,7 +107,7 @@ const SiteUrl = () => {
             <InputTextWithInfo
               placeholder={translate("site_url.url_text_placeholder")}
               message={inputSiteUrlMessage}
-              status={inputSiteUrlStatus === 'invalidUrl' ? "error" : "focus"}>
+              status={inputSiteUrlStatus === "invalidUrl" ? "error" : "focus"}>
               <Input
                 keyboardType="url"
                 clearButtonMode="while-editing"
@@ -107,7 +115,7 @@ const SiteUrl = () => {
                 onChangeText={(text) => onChangeInputSiteUrl(text)}
                 value={inputSiteUrl}
                 style={styles.inputText}
-                autoFocus={inputSiteUrlStatus !== 'fetching'}
+                autoFocus={inputSiteUrlStatus !== "fetching"}
                 testID={"SITE_URL_INPUT"}
                 returnKeyType={"done"}
                 onSubmitEditing={() => onSubmit(inputSiteUrl!)}
@@ -117,7 +125,7 @@ const SiteUrl = () => {
               onPress={() => onSubmit(inputSiteUrl!)}
               text={translate("general.enter")}
               style={styles.buttonEnter}
-              mode={siteUrlState.inputSiteUrlStatus === 'fetching' ? "loading" : undefined}
+              mode={siteUrlState.inputSiteUrlStatus === "fetching" ? "loading" : undefined}
               testID={TEST_IDS.SUBMIT_URL}
             />
           </View>
@@ -128,17 +136,16 @@ const SiteUrl = () => {
         {translate("general.version")}: {DeviceInfo.getVersion()}({DeviceInfo.getBuildNumber()})
       </Text>
 
-      {(siteUrlState.inputSiteUrlStatus === 'invalidAPI' || siteUrlState.inputSiteUrlStatus === 'networkError') && (
+      {(siteUrlState.inputSiteUrlStatus === "invalidAPI" || siteUrlState.inputSiteUrlStatus === "networkError") && (
         <SiteErrorModal onDismiss={() => reset()} siteUrlFailure={siteUrlState.inputSiteUrlStatus} />
       )}
     </SafeAreaView>
   );
 };
 
-
 const styles = StyleSheet.create({
   mainContent: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   siteUrlContainer: {
     flex: 1,
