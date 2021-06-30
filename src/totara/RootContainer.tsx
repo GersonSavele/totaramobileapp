@@ -20,8 +20,9 @@ import { TotaraTheme } from "./theme/Theme";
 import SiteUrl from "./auth/manual/SiteUrl";
 import NativeLogin from "./auth/manual/native/NativeLogin";
 import WebviewLogin from "./auth/manual/webview/WebviewLogin";
-import { cardModalOptions } from "./lib/navigation";
+import { cardModalOptions, popupModalOptions } from "./lib/navigation";
 import SessionContainer from "./SessionContainer";
+import BrowserLogin from "./auth/manual/browser";
 
 const navigationTheme = {
   ...DefaultTheme,
@@ -45,6 +46,7 @@ const RootContainer = () => {
         <Stack.Screen name="SiteUrl" component={SiteUrl} />
         <Stack.Screen name="NativeLogin" component={NativeLogin} options={cardModalOptions} />
         <Stack.Screen name="WebviewLogin" component={WebviewLogin} options={cardModalOptions} />
+        <Stack.Screen name="BrowserLogin" component={BrowserLogin} options={popupModalOptions} />
       </Stack.Navigator>
     </NavigationContainer>
   );

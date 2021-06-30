@@ -28,7 +28,7 @@ type InfoModalProps = {
 
 const InfoModal = ({ title, description, imageSource, children, visible = true, ...rest }: InfoModalProps) => {
   return (
-    <Modal {...rest} transparent={true} animationType="fade" onDismiss={() => null} visible={visible}>
+    <Modal transparent={true} animationType="fade" visible={visible} {...rest}  >
       <ModalContent title={title} description={description} imageSource={imageSource}>
         {children}
       </ModalContent>

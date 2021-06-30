@@ -13,24 +13,68 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
+import React, { useCallback } from "react";
 import { Linking, ImageSourcePropType } from "react-native";
 
 import { PrimaryButton, TertiaryButton, InfoModal } from "@totara/components";
 import { translate } from "@totara/locale";
-import { ManualFlowChildProps } from "../ManualFlowChildProps";
 import { Images } from "@resources/images";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useState } from "react";
+import { authLinkingHandler } from "@totara/auth/authUtils";
+import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useSession } from "@totara/core";
+import { useEffect } from "react";
 
-const BrowserLogin = ({
-  onManualFlowCancel,
-  siteUrl
-}: Pick<ManualFlowChildProps, "onManualFlowCancel" | "siteUrl">) => {
+const BrowserLogin = () => {
+
+  // eslint-disable-next-line no-undef
+  const fetchDataWithFetch = fetchData(fetch);
+  const navigation = useNavigation();
+  const { params } = useRoute();
+  const { siteUrl } = params as any;
+  const { login, session: { siteInfo, apiKey } } = useSession();
+  const [visible, setVisible] = useState(true);
+
+  const [setupSecret, setSetupSecret] = useState();
+
+  const urlHandler = (url) => {
+    authLinkingHandler(({ secret }) => {
+      setSetupSecret(secret);
+    }, () => { console.warn('error') })(url);
+  }
+
+  useEffect(() => {
+    if (setupSecret && !apiKey) {
+      registerDevice(fetchDataWithFetch, AsyncStorage)({
+        uri: siteUrl,
+        secret: setupSecret,
+        siteInfo: siteInfo
+      }).then(res => {
+        login({ apiKey: res.apiKey });
+        navigation.goBack();
+      }).catch(ee => {
+        console.warn(ee);
+      });
+    }
+  }, [setupSecret, apiKey])
+
+  useFocusEffect(
+    useCallback(() => {
+      Linking.addEventListener("url", urlHandler);
+      return () => {
+        Linking.removeAllListeners("url");
+      };
+    }, [])
+  );
+
   return (
     <InfoModal
       title={translate("browser_login.title")}
       description={translate("browser_login.description")}
       imageSource={Images.browserLogin as ImageSourcePropType}
-      visible={true}>
+      visible={visible}>
       <PrimaryButton
         text={translate("browser_login.primary_title")}
         onPress={() => {
@@ -41,7 +85,8 @@ const BrowserLogin = ({
       <TertiaryButton
         text={translate("browser_login.tertiary_title")}
         onPress={() => {
-          onManualFlowCancel && onManualFlowCancel();
+          setVisible(false);
+          navigation.goBack();
         }}
       />
     </InfoModal>

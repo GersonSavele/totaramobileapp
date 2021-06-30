@@ -13,10 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import DeviceInfo from "react-native-device-info";
-import { SiteInfo } from "@totara/types";
 import { config } from "@totara/lib";
-import { fetchData } from "@totara/core/AuthRoutines";
 
 const linkingHandler = (encodedUrl: string | null, onLoginSuccess, onLoginFailure) => {
   if (encodedUrl) {
@@ -32,20 +29,10 @@ const linkingHandler = (encodedUrl: string | null, onLoginSuccess, onLoginFailur
     if (requestRegister.includes(requestUrl)) {
       try {
         const resultRegistration = getDeviceRegisterData(url);
-        // fetch from global
-        // eslint-disable-next-line no-undef
-        fetchData(fetch)<SiteInfo>(config.infoUri(resultRegistration.uri), {
-          method: "POST",
-          body: JSON.stringify({ version: DeviceInfo.getVersion() })
-        })
-          .then((siteInfo) => {
-            onLoginSuccess({
-              secret: resultRegistration.secret,
-              uri: resultRegistration.uri,
-              siteInfo: siteInfo
-            });
-          })
-          .catch((error) => onLoginFailure(error));
+        onLoginSuccess({
+          secret: resultRegistration.secret,
+          uri: resultRegistration.uri
+        });
       } catch (error) {
         onLoginFailure(error);
       }
@@ -74,7 +61,7 @@ const getDeviceRegisterData = (url: string) => {
   }
 };
 
-const  getValueForUrlQueryParameter = (url: string, key: string) => {
+const getValueForUrlQueryParameter = (url: string, key: string) => {
   key = key.replace(/[[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + key + "=([^&#]*)");
   var results = regex.exec(url);

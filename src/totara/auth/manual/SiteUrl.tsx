@@ -41,17 +41,17 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
   const content =
     siteUrlFailure === "networkError"
       ? {
-          title: translate("server_not_reachable.title"),
-          description: translate("server_not_reachable.message"),
-          imageSource: Images.generalError,
-          primaryAction: translate("server_not_reachable.go_back")
-        }
+        title: translate("server_not_reachable.title"),
+        description: translate("server_not_reachable.message"),
+        imageSource: Images.generalError,
+        primaryAction: translate("server_not_reachable.go_back")
+      }
       : {
-          title: translate("site_url.auth_invalid_site.title"),
-          description: translate("site_url.auth_invalid_site.description"),
-          imageSource: Images.urlNotValid,
-          primaryAction: translate("site_url.auth_invalid_site.action_primary")
-        };
+        title: translate("site_url.auth_invalid_site.title"),
+        description: translate("site_url.auth_invalid_site.description"),
+        imageSource: Images.urlNotValid,
+        primaryAction: translate("site_url.auth_invalid_site.action_primary")
+      };
 
   return (
     <InfoModal

@@ -78,4 +78,19 @@ const cardModalOptions = {
   headerBackTitleStyle: { paddingLeft: paddings.paddingL }
 }
 
-export { navigateTo, NAVIGATION, itemToRouteMap, cardModalOptions };
+const popupModalOptions = {
+  animationEnabled: true,
+  cardStyle: { backgroundColor: "rgba(0,0,0, 0.15)" },
+  cardStyleInterpolator: ({ current: { progress } }) => {
+    return {
+      cardStyle: {
+        opacity: progress.interpolate({
+          inputRange: [0, 0.15, 0.9, 1],
+          outputRange: [0, 0.25, 0.7, 1]
+        })
+      }
+    }
+  }
+}
+
+export { navigateTo, NAVIGATION, itemToRouteMap, cardModalOptions, popupModalOptions };

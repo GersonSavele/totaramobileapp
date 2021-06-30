@@ -4,7 +4,6 @@ exports[`AdditionalActionRule, Apollo MockedProvider should test three state suc
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onDismiss={[Function]}
   transparent={true}
   visible={false}
 >

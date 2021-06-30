@@ -4,7 +4,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onDismiss={[Function]}
   transparent={true}
   visible={true}
 >
@@ -148,7 +147,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onDismiss={[Function]}
   transparent={true}
   visible={true}
 >
@@ -292,7 +290,6 @@ exports[`IncompatibleApiModal it should not show any modal screens for valid api
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onDismiss={[Function]}
   transparent={true}
   visible={true}
 >
@@ -436,7 +433,6 @@ exports[`IncompatibleApiModal it should show error modal screens for incompatibl
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onDismiss={[Function]}
   transparent={true}
   visible={true}
 >

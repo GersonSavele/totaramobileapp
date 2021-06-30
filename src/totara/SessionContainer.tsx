@@ -14,19 +14,25 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+import { useFocusEffect } from "@react-navigation/native";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ApolloProvider } from "react-apollo";
+import { Linking } from "react-native";
+import { linkingHandler } from "./auth/authUtils";
 import SiteUrl from "./auth/manual/SiteUrl";
 import { Loading } from "./components";
 import { useSession } from "./core";
-import { createApolloClient, logOut } from "./core/AuthRoutines";
+import { createApolloClient, fetchData, logOut, registerDevice } from "./core/AuthRoutines";
 import LocaleResolver from "./locale/LocaleResolver";
 import MainContainer from "./MainContainer";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const SessionContainer = () => {
-  const { session } = useSession();
-  const { host, apiKey } = session;
+  // eslint-disable-next-line no-undef
+  const fetchDataWithFetch = fetchData(fetch);
+
+  const { login, session: { host, apiKey, siteInfo } } = useSession();
   const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
 
   const onLogout = async () => {
@@ -45,8 +51,37 @@ const SessionContainer = () => {
     }
   }, [apiKey, apolloClient]);
 
+  const initialURLHandler = (url) => {
+    if (url) {
+      linkingHandler(url, ({ secret, uri }) => {
+        registerDevice(fetchDataWithFetch, AsyncStorage)({
+          uri: uri,
+          secret: secret,
+          siteInfo: siteInfo
+        }).then(res => {
+          login({ apiKey: res.apiKey });
+        }).catch(ee => {
+          console.warn(ee);
+        });
+      }, () => {
+        console.warn('fail');
+      })
+    }
+  }
 
-  console.log(host, apiKey);
+  useFocusEffect(
+    useCallback(() => {
+      if (!apiKey) {
+        Linking.getInitialURL().then(initialURLHandler);
+      }
+      else {
+        return () => {
+          Linking.removeAllListeners("url");
+        };
+      }
+    }, [apiKey])
+  );
+
   if (!host || !apiKey) {
     return <SiteUrl />
   }

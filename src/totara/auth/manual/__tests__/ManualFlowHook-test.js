@@ -245,30 +245,30 @@ describe("manualFlowReducer", () => {
     expect(newState.siteUrlFailure).toBeDefined();
   });
 
-  it("should set flowStep to browser login and take screen-shot in Information modal", () => {
-    const currentState = {
-      isSiteUrlSubmitted: true,
-      flowStep: "siteUrl"
-    };
-    const testSiteInfo = {
-      auth: "browser",
-      siteMaintenance: false,
-      theme: {
-        urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
-        colorPrimary: "#CCFFCC"
-      },
-      version: "2019101802"
-    };
-    const action = {
-      type: "siteInfoApiSuccess",
-      payload: testSiteInfo
-    };
+  // it("should set flowStep to browser login and take screen-shot in Information modal", () => {
+  //   const currentState = {
+  //     isSiteUrlSubmitted: true,
+  //     flowStep: "siteUrl"
+  //   };
+  //   const testSiteInfo = {
+  //     auth: "browser",
+  //     siteMaintenance: false,
+  //     theme: {
+  //       urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
+  //       colorPrimary: "#CCFFCC"
+  //     },
+  //     version: "2019101802"
+  //   };
+  //   const action = {
+  //     type: "siteInfoApiSuccess",
+  //     payload: testSiteInfo
+  //   };
 
-    const newState = manualFlowReducer(currentState, action);
+  //   const newState = manualFlowReducer(currentState, action);
 
-    expect(newState.flowStep).toBe("browser");
-    expect(newState.siteInfo).toMatchObject(testSiteInfo);
-    const tree = renderer.create(<BrowserLogin siteUrl={"siteUrl"} onManualFlowCancel={jest.fn()} />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
+  //   expect(newState.flowStep).toBe("browser");
+  //   expect(newState.siteInfo).toMatchObject(testSiteInfo);
+  //   const tree = renderer.create(<BrowserLogin siteUrl={"siteUrl"} onManualFlowCancel={jest.fn()} />).toJSON();
+  //   expect(tree).toMatchSnapshot();
+  // });
 });

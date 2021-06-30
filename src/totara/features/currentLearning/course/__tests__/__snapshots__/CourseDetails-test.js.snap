@@ -316,7 +316,6 @@ exports[`Testing: Course manual completion Test result : course complete and loa
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onDismiss={[Function]}
   transparent={true}
   visible={true}
 >
