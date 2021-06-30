@@ -253,7 +253,6 @@
       "button_text": "Logout",
       "title": "Log Out",
       "message_with_warn": "Are you sure you want to log out of this account? If you log out, you will lose your downloaded files."
-
     },
     "about": "About",
     "accessibility_image": "Profile image"
@@ -262,5 +261,9 @@
     "version": "VERSION {{version}}",
     "site_url": "Site URL: {{url}}",
     "plugin_version": "Plugin version: {{version}}"
+  },
+  "find_learning": {
+    "search": "Search",
+    "title": "Find Learning"
   }
 }

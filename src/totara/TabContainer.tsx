@@ -26,6 +26,7 @@ import CurrentLearningStack from "./features/currentLearning";
 import { setNotificationBadgeCount } from "@totara/lib/nativeExtensions";
 import { TAB_TEST_IDS } from "./lib/testIds";
 import { translate } from "./locale";
+import FindLearningStack from "./features/findLearning/FindLearningStack";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -60,6 +61,17 @@ const TabContainer = () => {
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.current_learning} />
           ),
           tabBarTestID: TAB_TEST_IDS.CURRENT_LEARNING
+        }}
+      />
+      <Tab.Screen
+        name="FindLearning"
+        component={FindLearningStack}
+        options={{
+          tabBarAccessibilityLabel: translate("find_learning.title"),
+          tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
+            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.find_learning} />
+          ),
+          tabBarTestID: TAB_TEST_IDS.FIND_LEARNING
         }}
       />
       <Tab.Screen
@@ -107,6 +119,7 @@ type iconImageProps = {
 
 const tabBarIconImages: {
   current_learning: iconImageProps;
+  find_learning: iconImageProps;
   downloads: iconImageProps;
   notifications: iconImageProps;
   profile: iconImageProps;
@@ -114,6 +127,10 @@ const tabBarIconImages: {
   current_learning: {
     solid: require("@resources/icons/tabbar/current_learning_solid.png"),
     regular: require("@resources/icons/tabbar/current_learning_regular.png")
+  },
+  find_learning: {
+    solid: require("@resources/icons/tabbar/find_learning_solid.png"),
+    regular: require("@resources/icons/tabbar/find_learning_regular.png")
   },
   downloads: {
     solid: require("@resources/icons/tabbar/downloads_solid.png"),

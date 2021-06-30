@@ -45,6 +45,8 @@ const PROFILE = "Profile";
 const ABOUT = "About";
 const SETTINGS = "Settings";
 
+const FIND_LEARNING = "FindLearning";
+
 const itemToRouteMap = {
   [learningItemEnum.Course]: COURSE_DETAILS,
   [learningItemEnum.Program]: COURSE_GROUP_DETAILS,
@@ -64,7 +66,8 @@ const NAVIGATION = {
   CURRENT_LEARNING,
   COURSE_LIST,
   COURSE_DETAILS,
-  COURSE_GROUP_DETAILS
+  COURSE_GROUP_DETAILS,
+  FIND_LEARNING
 };
 
 const cardModalOptions = {
