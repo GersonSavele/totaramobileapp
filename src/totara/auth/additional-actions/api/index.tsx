@@ -14,9 +14,9 @@
  */
 
 import * as React from "react";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import { Me } from "@totara/types";
+import { Query } from "@apollo/client/react/components"
 
 type Response = {
   me: Me;

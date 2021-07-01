@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 const query = gql`
   query totara_mobile_current_learning {

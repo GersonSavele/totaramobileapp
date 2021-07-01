@@ -18,7 +18,7 @@ import React, { useState, useEffect } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { get, isEmpty } from "lodash";
 import { useNavigation } from "@react-navigation/native";
 import CriteriaSheet from "../components/CriteriaSheet";
@@ -253,8 +253,7 @@ type ListUnLockProps = {
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
   const navigation = useNavigation();
 
-  const { session } = useSession();
-  const { host, apiKey } = session;
+  const { session: { host, apiKey } } = useSession();
 
   const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] = useMutation(
     activitySelfComplete

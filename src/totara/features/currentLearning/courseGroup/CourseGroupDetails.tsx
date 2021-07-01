@@ -15,7 +15,7 @@
 
 import React, { useState } from "react";
 import { View } from "react-native";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, NetworkStatus } from "@apollo/client";
 import { translate } from "@totara/locale";
 import Courses from "./Courses";
 import OverviewDetails from "../overview/OverviewDetails";
@@ -24,7 +24,6 @@ import { LoadingError, Loading } from "@totara/components";
 import { coreProgram, coreCertification } from "./api";
 import LearningDetails from "../LearningDetails";
 import { details } from "./courseGroupStyles";
-import { NetworkStatus } from "apollo-client";
 
 type CourseGroupProps = {
   navigation: any;

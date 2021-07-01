@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import { UserProfile } from "@totara/types";
 
 export type QueryResult = {

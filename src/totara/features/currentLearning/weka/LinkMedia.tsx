@@ -62,8 +62,7 @@ const LinkMedia = ({ content = {}, textColor = TotaraTheme.colorNeutral8 }: Conf
 };
 
 const WebViewWrapper = ({ content = {} }: ConfigProps) => {
-  const { session } = useSession();
-  const { apiKey } = session;
+  const { session: { apiKey } } = useSession();
 
   let url = content.attrs.url;
   const hostName = getHostnameFromRegex(url);

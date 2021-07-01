@@ -34,8 +34,7 @@ import { useNavigation } from "@react-navigation/native";
 const NativeLogin = () => {
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
-  const { session, login } = useSession();
-  const { siteInfo, host, apiKey } = session;
+  const { session: { siteInfo, host, apiKey }, initSession } = useSession();
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
 
@@ -47,7 +46,7 @@ const NativeLogin = () => {
     onFocusInput,
   } = useNativeFlow(fetchDataWithFetch)({
     siteInfo: siteInfo!,
-    siteUrl: host!
+    siteUrl: host!,
   });
 
   useEffect(() => {
@@ -57,13 +56,11 @@ const NativeLogin = () => {
         secret: nativeLoginState.setupSecret,
         siteInfo: siteInfo
       }).then(res => {
-        login({ apiKey: res.apiKey });
+        initSession({ apiKey: res.apiKey });
         navigation.goBack();
       });
     }
   }, [nativeLoginState.setupSecret, apiKey])
-
-
 
   return (
     <Container style={theme.viewContainer}>

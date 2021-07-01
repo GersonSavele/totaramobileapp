@@ -15,7 +15,7 @@
 
 import React, { ReactNode } from "react";
 import { AsyncStorageStatic } from "@react-native-community/async-storage";
-import { ApolloProvider } from "@apollo/react-common";
+import { ApolloProvider } from "@apollo/client";
 
 import { AuthContext } from "./AuthContext";
 import { useAuth, initialState } from "./AuthHook";

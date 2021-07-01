@@ -34,7 +34,7 @@ const BrowserLogin = () => {
   const navigation = useNavigation();
   const { params } = useRoute();
   const { siteUrl } = params as any;
-  const { login, session: { siteInfo, apiKey } } = useSession();
+  const { initSession, session: { siteInfo, apiKey } } = useSession();
   const [visible, setVisible] = useState(true);
 
   const [setupSecret, setSetupSecret] = useState();
@@ -52,7 +52,7 @@ const BrowserLogin = () => {
         secret: setupSecret,
         siteInfo: siteInfo
       }).then(res => {
-        login({ apiKey: res.apiKey });
+        initSession({ apiKey: res.apiKey });
         navigation.goBack();
       }).catch(ee => {
         console.warn(ee);

@@ -14,7 +14,7 @@
  */
 
 import React, { useState } from "react";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
 import { courseSelfComplete } from "../course/api";
 import { AddBadge, Loading, GeneralErrorModal, CircleIcon } from "@totara/components";
@@ -103,7 +103,7 @@ const OverviewDetails = ({
 
 const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
   return (
-    <TouchableOpacity style={overviewStyles.container} activeOpacity={1.0} onPress={() => {}}>
+    <TouchableOpacity style={overviewStyles.container} activeOpacity={1.0} onPress={() => { }}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
@@ -169,7 +169,7 @@ type CompletionProps = {
   courseRefreshCallback?: () => {};
 };
 
-const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefreshCallback }: CompletionProps) => {
+const Complete = ({ id, criteria, onclickContinueLearning = () => { }, courseRefreshCallback }: CompletionProps) => {
   const isSelfCompleted = criteria?.some((value) => {
     if (value["type"] === courseCriteria.selfComplete) {
       return value["complete"] === true;

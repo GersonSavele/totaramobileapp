@@ -14,12 +14,12 @@
  */
 
 import React from "react";
-import { MockedProvider } from "@apollo/react-testing";
+import { MockedProvider } from '@apollo/client/testing';
 import * as ReactRedux from "react-redux";
 import { act } from "react-test-renderer";
 import wait from "waait";
 import { render } from "@testing-library/react-native";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/client";
 
 import { ResourceState } from "@totara/types/Resource";
 import { downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/downloadMock";

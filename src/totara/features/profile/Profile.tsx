@@ -15,7 +15,7 @@
 
 import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View, ScrollView, RefreshControl, Alert, TouchableOpacity } from "react-native";
-import { useQuery, useApolloClient } from "@apollo/react-hooks";
+import { useQuery, useApolloClient } from "@apollo/client";
 import { StackScreenProps } from "@react-navigation/stack";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ThemeContext } from "@totara/theme";
@@ -24,7 +24,7 @@ import { NAVIGATION } from "@totara/lib/navigation";
 import { userOwnProfile } from "./api";
 import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
-import { NetworkStatus } from "apollo-boost";
+import { NetworkStatus } from "@apollo/client";
 import { margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatusIndicator, ImageWrapper, LoadingError } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";

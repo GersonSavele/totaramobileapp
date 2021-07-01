@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/client";
 import { queryLanguageStrings, queryUserLanguagePreference } from "@totara/locale/api";
 import { Loading } from "@totara/components";
 import { addLocale, changeLocale, getLocale, getTranslations } from "@totara/locale/index";

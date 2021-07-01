@@ -256,8 +256,7 @@ type EmbeddedMediaProps = {
 };
 
 const navigateWebView = (url, onRequestClose, title) => {
-  const { session } = useSession();
-  const { apiKey } = session;
+  const { session: { apiKey } } = useSession();
 
   const props = {
     uri: url?.replace("totara/mobile/", ""), // This is the temp solution for webview headers error fix

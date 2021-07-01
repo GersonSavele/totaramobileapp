@@ -21,7 +21,7 @@ import NotificationsStack from "@totara/features/notifications";
 import DownloadsStack from "@totara/features/downloads";
 import ProfileStack from "@totara/features/profile";
 import { countUnreadMessages, notificationsQuery } from "./features/notifications/api";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import CurrentLearningStack from "./features/currentLearning";
 import { setNotificationBadgeCount } from "@totara/lib/nativeExtensions";
 import { TAB_TEST_IDS } from "./lib/testIds";

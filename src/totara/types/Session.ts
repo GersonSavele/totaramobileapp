@@ -13,11 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { User } from "./Me";
 import { SiteInfo } from "./SiteInfo";
 
 export type Session = {
-  user?: User;
   apiKey?: string;
   host?: string;
   siteInfo?: SiteInfo;

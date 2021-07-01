@@ -13,23 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { ApolloClient } from "apollo-client";
-import { ApolloLink } from "apollo-link";
-import { RetryLink } from "apollo-link-retry";
-import { HttpLink } from "apollo-link-http";
+import { ApolloClient, ApolloLink, HttpLink, NormalizedCacheObject, ServerError } from "@apollo/client";
 import ApolloLinkTimeout from "apollo-link-timeout";
-import { onError, ErrorResponse } from "apollo-link-error";
-import { InMemoryCache, NormalizedCacheObject, defaultDataIdFromObject } from "apollo-cache-inmemory";
-import { setContext } from "apollo-link-context";
-import AsyncStorage, { AsyncStorageStatic } from "@react-native-community/async-storage";
-import { persistCache } from "apollo-cache-persist";
+import { setContext } from "@apollo/client/link/context";
+import { RetryLink } from "@apollo/client/link/retry";
+import { onError, ErrorResponse } from "@apollo/client/link/error";
 
+import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { config, Log } from "@totara/lib";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
-import { LearningItem, AppState, SiteInfo } from "@totara/types";
+import { AppState, SiteInfo } from "@totara/types";
 import { Setup } from "./AuthHook";
-import { ServerError } from "apollo-link-http-common";
-import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 import { NetworkFailedError } from "@totara/types/Error";
 import { persistor } from "./../store";
 import { purge } from "./../actions/root";
@@ -163,6 +157,7 @@ export const bootstrap = (asyncStorage: AsyncStorageStatic) => async (): Promise
 export const createApolloClient = (
   apiKey: string,
   host: string,
+  cache: any,
   logOut: (localOnly: boolean) => Promise<void>
 ): ApolloClient<NormalizedCacheObject> => {
   const authLink = setContext((_, { headers }) => ({
@@ -199,24 +194,6 @@ export const createApolloClient = (
     authLink,
     timeOutLinkWithHttpLink
   ]);
-
-  const cache = new InMemoryCache({
-    dataIdFromObject: (object) => {
-      switch (object.__typename) {
-        case "totara_mobile_current_learning": {
-          const learningItem = (object as unknown) as LearningItem;
-          return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
-        }
-        default:
-          return defaultDataIdFromObject(object); // fall back to default for all other types
-      }
-    }
-  });
-
-  persistCache({
-    cache,
-    storage: AsyncStorage as PersistentStorage<PersistedData<NormalizedCacheObject>>
-  });
 
   return new ApolloClient({
     link: link,
@@ -290,6 +267,7 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
 export const logOut = async ({ apolloClient }) => {
   const { cache } = apolloClient;
   await cache.reset(); //clear the apollo client cache
+  // apolloClient.clearCache();
   await purge({}); //root purge (hot)
   await persistor.purge();  //root purge (stored)
 

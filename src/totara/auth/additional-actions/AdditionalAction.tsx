@@ -18,7 +18,7 @@ import { Linking, ImageSourcePropType } from "react-native";
 
 import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { AuthConsumer } from "@totara/core";
+import { AuthConsumer, useSession } from "@totara/core";
 import { AdditionalActionRule } from "./AdditionalActionRule";
 import { Images } from "@resources/images";
 
@@ -46,21 +46,15 @@ const AdditionalActionModal = () => {
 };
 
 const ActionButtonPrimary = () => {
+  const { session: { host } } = useSession();
   return (
-    <AuthConsumer>
-      {(auth) =>
-        auth.authContextState.appState &&
-        auth.authContextState.appState.host && (
-          <PrimaryButton
-            text={translate("additional_actions_modal.auth_model_go_to_browser")}
-            icon={"external-link-alt"}
-            onPress={() => {
-              Linking.openURL(auth.authContextState.appState!.host);
-            }}
-          />
-        )
-      }
-    </AuthConsumer>
+    <PrimaryButton
+      text={translate("additional_actions_modal.auth_model_go_to_browser")}
+      icon={"external-link-alt"}
+      onPress={() => {
+        Linking.openURL(host!);
+      }}
+    />
   );
 };
 

@@ -192,7 +192,6 @@ type NativeLoginState = {
 
 type Action = {
   type: "setupsecret" | "setusername" | "setpassword" | "submit" | "loginfailed" | "resetform" | "unhandledloginfail";
-
   payload?: string | boolean | NetworkError;
 };
 

@@ -17,7 +17,6 @@ import React from "react";
 import { Linking, ImageSourcePropType } from "react-native";
 import { translate } from "@totara/locale";
 import { PrimaryButton, InfoModal, TertiaryButton } from "@totara/components";
-import { AuthConsumer } from "@totara/core";
 import { Images } from "@resources/images";
 
 type Props = {
@@ -32,21 +31,14 @@ const NativeAccessRestriction = ({ onClose, urlView }: Props) => {
       description={translate("current_learning.restriction_view.description")}
       imageSource={Images.courseCompatible as ImageSourcePropType}
       visible>
-      <AuthConsumer>
-        {(auth) =>
-          auth.authContextState.appState &&
-          auth.authContextState.appState.host && (
-            <PrimaryButton
-              onPress={() => {
-                Linking.openURL(urlView);
-              }}
-              text={translate("current_learning.restriction_view.primary_button_title")}
-              icon="external-link-alt"
-              style={{ alignSelf: "center" }}
-            />
-          )
-        }
-      </AuthConsumer>
+      <PrimaryButton
+        onPress={() => {
+          Linking.openURL(urlView);
+        }}
+        text={translate("current_learning.restriction_view.primary_button_title")}
+        icon="external-link-alt"
+        style={{ alignSelf: "center" }}
+      />
       <TertiaryButton text={translate("current_learning.restriction_view.tertiary_button_title")} onPress={onClose} />
     </InfoModal>
   );

@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/client";
 
 import { syncScormAttempt, syncServerWithScormAttempt, netInfoEffect } from "../AttemptSynchronizer";
 import * as storageUtils from "../storageUtils";

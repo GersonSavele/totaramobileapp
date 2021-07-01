@@ -18,7 +18,7 @@ import { render } from "@testing-library/react-native";
 
 import ScormSummary, { showScormFeedback, onExitActivityAttempt } from "../ScormSummary";
 import { Grade } from "@totara/types/Scorm";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/client";
 import * as storageUtils from "../storageUtils";
 import * as tools from "@totara/lib/tools";
 

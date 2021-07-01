@@ -15,10 +15,9 @@
 
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useApolloClient } from "@apollo/client";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createCompatNavigatorFactory } from "@react-navigation/compat";
-import { useApolloClient } from "@apollo/react-hooks";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { SafeAreaView } from "react-native";
 
@@ -136,8 +135,7 @@ const ScormActivity = (props: ScormActivityProps) => {
   // FIXME: This is a temporary hack because the server is not returning correct data
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
 
-  const { session } = useSession();
-  const { apiKey, host } = session;
+  const { session: { apiKey, host } } = useSession();
 
   //FIXME: IMPROVE THIS USESELECTOR, create something like useResource that does all this stuff
   const resourceList: Resource[] = useSelector((state: RootState) => state.resourceReducer.resources);

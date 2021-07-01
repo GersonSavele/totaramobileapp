@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { gql } from "apollo-boost";
+import { gql } from "@apollo/client";
 import { NotificationMessage } from "@totara/types";
 import { isEmpty } from "lodash";
 

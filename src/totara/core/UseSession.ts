@@ -27,31 +27,11 @@ const useSession = () => {
     setSession(sessionSelector);
   }, [sessionSelector]);
 
-  const login = ({ apiKey }) => {
-    initSession({
-      user: {
-        id: '123',
-      },
-      apiKey
-    })
-  }
-
-  const logout = () => {
-    return endSession()
-  };
-
-  const setupSiteInfo = ({ host, siteInfo }) => {
-    setupHost({
-      host,
-      siteInfo
-    })
-  }
-
   return {
     session,
-    login,
-    logout,
-    setupSiteInfo
+    initSession,
+    endSession,
+    setupHost
   }
 }
 

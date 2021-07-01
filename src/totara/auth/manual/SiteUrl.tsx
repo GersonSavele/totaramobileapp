@@ -65,18 +65,16 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
 };
 
 const SiteUrl = () => {
-  const { session } = useSession();
-  const { host } = session;
+  const navigation = useNavigation();
+  const { setupHost, session: { host } } = useSession();
 
   // eslint-disable-next-line no-undef
   const initialSiteURL = host ? host : __DEV__ ? get(config, "devOrgUrl", "") : "";
-  const navigation = useNavigation();
-  const { setupSiteInfo } = useSession();
 
   const { siteUrlState, onSubmit, reset, onChangeInputSiteUrl } = useSiteUrl({
     siteUrl: initialSiteURL,
     onSiteInfoDone: (siteInfo) => {
-      setupSiteInfo({ host: siteUrlState.inputSiteUrl, siteInfo });
+      setupHost({ host: siteUrlState.inputSiteUrl, siteInfo });
       const { auth } = siteInfo;
       if (auth === "browser") {
         return navigation.navigate("BrowserLogin", {

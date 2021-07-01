@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { MockedProvider } from "@apollo/react-testing";
+import { MockedProvider } from '@apollo/client/testing';
 import TestRenderer from "react-test-renderer";
 import React from "react";
 import wait from "waait";

@@ -15,7 +15,7 @@
 
 import React, { useEffect } from "react";
 import messaging from "@react-native-firebase/messaging";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/client";
 import { registerPushNotifications } from "@totara/lib/notificationService";
 import ResourceManager from "@totara/lib/resourceManager";
 import { createStackNavigator } from "@react-navigation/stack";

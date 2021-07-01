@@ -24,8 +24,7 @@ import {
   RefreshControl,
   TouchableOpacity
 } from "react-native";
-import { useMutation, useQuery } from "@apollo/react-hooks";
-import { NetworkStatus } from "apollo-client/core/networkStatus";
+import { useMutation, useQuery, NetworkStatus } from "@apollo/client";
 
 import { Images } from "@resources/images";
 import { translate } from "@totara/locale";

@@ -15,7 +15,7 @@
 
 import React from "react";
 import { act, fireEvent, render } from "@testing-library/react-native";
-import { MockedProvider } from "@apollo/react-testing";
+import { MockedProvider } from '@apollo/client/testing';
 import { profileMock, profileMockError } from "@totara/features/profile/api/profile.mock";
 import Profile from "@totara/features/profile/Profile";
 import wait from "waait";

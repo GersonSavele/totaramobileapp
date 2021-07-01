@@ -22,7 +22,7 @@ import { gutter } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AppliedTheme, TotaraTheme } from "@totara/theme/Theme";
 import { scormSummaryStyles } from "@totara/theme/scorm";
-import { NetworkStatus as ApolloNetworkStatus } from "apollo-boost";
+import { NetworkStatus as ApolloNetworkStatus } from "@apollo/client";
 import {
   setCompletedScormAttempt,
   getOfflineLastActivityResult,

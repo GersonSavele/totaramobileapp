@@ -14,7 +14,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { useMutation, useApolloClient } from "@apollo/client";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { isEmpty, get } from "lodash";
 

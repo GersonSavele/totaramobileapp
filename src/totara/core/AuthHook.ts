@@ -14,16 +14,14 @@
  */
 
 import { useEffect, useReducer, useRef } from "react";
-import { ApolloClient } from "apollo-client";
-import { gql } from "apollo-boost";
-import { NormalizedCacheObject } from "apollo-cache-inmemory";
+import { ApolloClient, gql, NormalizedCacheObject } from "@apollo/client";
 import { isEmpty } from "lodash";
+import AsyncStorage from "@react-native-community/async-storage";
 
 import { Log } from "@totara/lib";
 import { AppState, SiteInfo } from "@totara/types";
 import { persistor } from "../store";
 import { purge } from "../actions/root";
-import AsyncStorage from "@react-native-community/async-storage";
 import { unregisterPushNotification } from "@totara/lib/notificationService";
 
 /**

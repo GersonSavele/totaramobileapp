@@ -13,12 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
 import { renderHook, act } from "@testing-library/react-hooks";
 import { useManualFlow, manualFlowReducer } from "../ManualFlowHook";
 import { config } from "@totara/lib";
-import BrowserLogin from "../browser";
-import renderer from "react-test-renderer";
 import { NetworkFailedError } from "@totara/types/Error";
 
 describe("useManualFlow", () => {
@@ -244,31 +241,4 @@ describe("manualFlowReducer", () => {
     expect(newState.isSiteUrlSubmitted).toBeTruthy();
     expect(newState.siteUrlFailure).toBeDefined();
   });
-
-  // it("should set flowStep to browser login and take screen-shot in Information modal", () => {
-  //   const currentState = {
-  //     isSiteUrlSubmitted: true,
-  //     flowStep: "siteUrl"
-  //   };
-  //   const testSiteInfo = {
-  //     auth: "browser",
-  //     siteMaintenance: false,
-  //     theme: {
-  //       urlLogo: "https://mytotara.client.com/totara/mobile/logo.png",
-  //       colorPrimary: "#CCFFCC"
-  //     },
-  //     version: "2019101802"
-  //   };
-  //   const action = {
-  //     type: "siteInfoApiSuccess",
-  //     payload: testSiteInfo
-  //   };
-
-  //   const newState = manualFlowReducer(currentState, action);
-
-  //   expect(newState.flowStep).toBe("browser");
-  //   expect(newState.siteInfo).toMatchObject(testSiteInfo);
-  //   const tree = renderer.create(<BrowserLogin siteUrl={"siteUrl"} onManualFlowCancel={jest.fn()} />).toJSON();
-  //   expect(tree).toMatchSnapshot();
-  // });
 });

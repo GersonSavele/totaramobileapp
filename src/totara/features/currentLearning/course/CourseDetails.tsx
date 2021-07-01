@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Switch } from "react-native";
 import { isEmpty, isEqual } from "lodash";
 import { Loading, LoadingError } from "@totara/components";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, NetworkStatus } from "@apollo/client";
 import { translate } from "@totara/locale";
 import { coreCourse } from "./api";
 import Activities from "./Activities";
@@ -31,7 +31,6 @@ import { learningItemEnum } from "../constants";
 import courseDetailsStyle from "./courseDetailsStyle";
 import { CourseFormat } from "@totara/types/Course";
 import { DescriptionFormat } from "@totara/types/LearningItem";
-import { NetworkStatus } from "apollo-client";
 
 const CourseDetails = ({ navigation }: any) => {
   const courseId = navigation.getParam("targetId");

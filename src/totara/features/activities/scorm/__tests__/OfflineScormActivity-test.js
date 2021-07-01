@@ -17,7 +17,7 @@ import React from "react";
 import * as redux from "react-redux";
 import { render } from "@testing-library/react-native";
 import { translate } from "@totara/locale";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/client";
 
 import OfflineScormActivity, {
   packageEffect,

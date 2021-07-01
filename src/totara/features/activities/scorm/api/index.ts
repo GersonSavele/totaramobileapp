@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import { config } from "@totara/lib";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 

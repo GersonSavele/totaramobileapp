@@ -15,7 +15,7 @@
 
 import React, { useContext, useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, NetworkStatus } from "@apollo/client";
 import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import CurrentLearningCarousel from "./learningItems/CurrentLearningCarousel";
@@ -29,7 +29,6 @@ import { Switch, SwitchOption } from "@totara/components/Switch";
 import { Icons } from "@resources/icons";
 import { sortByDueDateThenTypeThenFullName } from "@totara/features/currentLearning/utils";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
-import { NetworkStatus } from "apollo-client";
 import { NavigationEvents } from "@react-navigation/compat";
 
 enum ListingOrientation {

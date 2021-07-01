@@ -22,7 +22,7 @@ import OfflineScormPlayer from "./components/OfflineScormPlayer";
 import { Package, Scorm } from "@totara/types/Scorm";
 import { Log } from "@totara/lib";
 import { translate } from "@totara/locale";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/client";
 import { get, isEmpty } from "lodash";
 
 import { setScormActivityData, getScormAttemptData, retrieveAllData, saveInTheCache } from "./storageUtils";

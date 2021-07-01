@@ -13,12 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { SiteInfo } from "@totara/types";
+import { SiteInfo } from "@totara/types/SiteInfo";
 
 export type ManualFlowChildProps = {
   siteUrl: string;
   siteInfo: SiteInfo;
-  onSetupSecretSuccess: (setupSecret: string) => void;
-  onSetupSecretFailure: (error: Error) => void;
-  onManualFlowCancel: () => void;
 };

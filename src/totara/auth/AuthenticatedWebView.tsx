@@ -15,9 +15,9 @@
 
 import React, { forwardRef } from "react";
 import { WebView, WebViewNavigation } from "react-native-webview";
-import { graphql, MutationFunction } from "react-apollo";
+import { MutationFunction, gql } from "@apollo/client";
+import { graphql } from '@apollo/client/react/hoc';
 import { compose } from "recompose";
-import gql from "graphql-tag";
 import CookieManager from "@react-native-community/cookies";
 
 import { config, Log } from "@totara/lib";
