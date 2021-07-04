@@ -46,7 +46,7 @@ const AdditionalActionModal = () => {
 };
 
 const ActionButtonPrimary = () => {
-  const { session: { host } } = useSession();
+  const { host } = useSession();
   return (
     <PrimaryButton
       text={translate("additional_actions_modal.auth_model_go_to_browser")}

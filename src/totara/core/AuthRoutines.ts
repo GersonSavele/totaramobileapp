@@ -267,7 +267,6 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
 export const logOut = async ({ apolloClient }) => {
   const { cache } = apolloClient;
   await cache.reset(); //clear the apollo client cache
-  // apolloClient.clearCache();
   await purge({}); //root purge (hot)
   await persistor.purge();  //root purge (stored)
 

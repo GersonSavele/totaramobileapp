@@ -34,7 +34,7 @@ import { useNavigation } from "@react-navigation/native";
 const NativeLogin = () => {
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
-  const { session: { siteInfo, host, apiKey }, initSession } = useSession();
+  const { siteInfo, host, apiKey, initSession } = useSession();
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
 

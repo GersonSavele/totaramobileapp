@@ -66,7 +66,7 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
 
 const SiteUrl = () => {
   const navigation = useNavigation();
-  const { setupHost, session: { host } } = useSession();
+  const { setupHost, host } = useSession();
 
   // eslint-disable-next-line no-undef
   const initialSiteURL = host ? host : __DEV__ ? get(config, "devOrgUrl", "") : "";

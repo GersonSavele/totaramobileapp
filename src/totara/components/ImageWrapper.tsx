@@ -27,7 +27,7 @@ type ImageWrapperType = {
 };
 
 const ImageWrapper = ({ url, style, accessibilityLabel, resizeMode = undefined }: ImageWrapperType) => {
-  const { session: { apiKey } } = useSession();
+  const { apiKey } = useSession();
 
   return (
     <FastImage

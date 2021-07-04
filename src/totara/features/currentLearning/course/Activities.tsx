@@ -253,7 +253,7 @@ type ListUnLockProps = {
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
   const navigation = useNavigation();
 
-  const { session: { host, apiKey } } = useSession();
+  const { host, apiKey } = useSession();
 
   const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] = useMutation(
     activitySelfComplete

@@ -34,7 +34,7 @@ const BrowserLogin = () => {
   const navigation = useNavigation();
   const { params } = useRoute();
   const { siteUrl } = params as any;
-  const { initSession, session: { siteInfo, apiKey } } = useSession();
+  const { initSession, siteInfo, apiKey } = useSession();
   const [visible, setVisible] = useState(true);
 
   const [setupSecret, setSetupSecret] = useState();

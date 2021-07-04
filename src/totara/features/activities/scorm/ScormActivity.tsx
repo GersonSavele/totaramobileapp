@@ -135,7 +135,7 @@ const ScormActivity = (props: ScormActivityProps) => {
   // FIXME: This is a temporary hack because the server is not returning correct data
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
 
-  const { session: { apiKey, host } } = useSession();
+  const { apiKey, host } = useSession();
 
   //FIXME: IMPROVE THIS USESELECTOR, create something like useResource that does all this stuff
   const resourceList: Resource[] = useSelector((state: RootState) => state.resourceReducer.resources);

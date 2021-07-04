@@ -28,7 +28,7 @@ import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const WebviewLogin = () => {
-  const { initSession, session: { siteInfo, host, apiKey } } = useSession();
+  const { initSession, siteInfo, host, apiKey } = useSession();
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
   const navigation = useNavigation();

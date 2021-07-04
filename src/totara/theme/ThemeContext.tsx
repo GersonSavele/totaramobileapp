@@ -25,7 +25,7 @@ type Props = {
 const ThemeContext = React.createContext<AppliedTheme>(TotaraTheme);
 
 const ThemeProvider = ({ children }: Props) => {
-  const { session: { siteInfo } } = useSession();
+  const { siteInfo } = useSession();
 
   const customerTheme = siteInfo && siteInfo.theme ? applyTheme(siteInfo.theme) : TotaraTheme;
 
