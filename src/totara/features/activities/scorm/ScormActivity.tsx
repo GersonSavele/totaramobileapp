@@ -68,6 +68,7 @@ type ApiDataEffectProps = {
   setScormBundle: Function;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ResourceListEffectProps = {
   scorm?: Scorm;
   resourceList: Resource[];

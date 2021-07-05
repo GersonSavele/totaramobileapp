@@ -91,7 +91,7 @@ describe("Notifications", () => {
     });
     const notificationsList = await getByTestId("test_notificationsList");
     expect(notificationsList).toBeTruthy();
-  });
+  }, 30000); // Increased timeout to avoid concurrency related failures for slower workstations
 
   test("Should render unread item", async () => {
     const tree = (

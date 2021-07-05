@@ -73,6 +73,7 @@ type AttemptReport = {
   gradeMethod: Grade;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 const AttemptReport = ({ attemptReport, attempt, gradeMethod }: AttemptReport) => {
   const theme = useContext(ThemeContext);
 

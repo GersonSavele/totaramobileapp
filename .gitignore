@@ -5,6 +5,8 @@
 # Xcode
 #
 build/
+/output/
+/derivedData/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -24,7 +26,6 @@ xcuserdata/
 
 # Android/IntelliJ
 #
-build/
 .idea
 .gradle
 local.properties
@@ -71,10 +72,8 @@ buck-out/
 /src/totara/lib/config.detox.ts
 
 #local key files
-/ios/GoogleService-Info.plist
-/android/app/google-services.json
-/android/app/src/dev/google-services.json
-/android/app/src/uat/google-services.json
+GoogleService-Info.plist
+google-services.json
 
 # Untrack these helper script files and sample files
 nodejs-assets/build-native-modules-MacOS-helper-script-node.sh
@@ -90,3 +89,9 @@ coverage
 
 # CocoaPods
 /ios/Pods/
+
+# iOS AppStore key
+fastlane/appstore-key.json
+
+# Fastlane CI thing
+fastlane/report.xml
