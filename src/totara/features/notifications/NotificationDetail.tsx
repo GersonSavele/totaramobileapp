@@ -13,20 +13,20 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Linking } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import WebView, { WebViewNavigation } from "react-native-webview";
-import { AppState, NotificationMessage } from "@totara/types";
+import { NotificationMessage } from "@totara/types";
 import { fontWeights, paddings } from "@totara/theme/constants";
 import { isEmpty } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { isValidUrlText, timeAgo } from "@totara/lib/tools";
 import { DescriptionFormat } from "@totara/types/LearningItem";
-import { AuthContext } from "@totara/core/AuthContext";
 import WebViewWrapper from "@totara/auth/WebViewWrapper";
 import { ToFullSummary } from "../currentLearning/weka/treeOperations";
 import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../currentLearning/weka/wekaUtils";
+import { useSession } from "@totara/core";
 
 type ParamList = {
   messageDetails: NotificationMessage;
@@ -41,13 +41,10 @@ const wekaContent = (description: Object) => {
 
 const NotificationDetails = ({ route }: NotificationDetailProps) => {
   const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat, fullMessageHTML } = route.params;
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
+  const { host } = useSession();
 
-  const { host } = appState as AppState;
   const onLoadWithRequest = (navState: WebViewNavigation) => {
-    if (navState.url.indexOf(host) < 0) {
+    if (navState.url.indexOf(host!) < 0) {
       Linking.openURL(navState.url);
       return false;
     }

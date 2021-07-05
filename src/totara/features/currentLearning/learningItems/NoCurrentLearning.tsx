@@ -19,7 +19,7 @@ import { View, StyleSheet, Image, Text, Linking, ImageSourcePropType } from "rea
 import { PrimaryButton } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { translate } from "@totara/locale";
-import { AuthConsumer } from "@totara/core";
+import { useSession } from "@totara/core";
 import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
 
@@ -28,28 +28,22 @@ type NoCurrentLearningProps = {
 };
 
 const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
+  const { host } = useSession();
   return (
     <View style={styles.containerStyle} testID={testID}>
       <Image source={Images.noCurrentLearning as ImageSourcePropType} />
       <Text style={styles.noCurrentLearningDescription}>{translate("current_learning.no_learning_message")}</Text>
       <View style={styles.goToBrowserAction}>
-        <AuthConsumer>
-          {(auth) =>
-            auth.authContextState.appState &&
-            auth.authContextState.appState.host && (
-              <PrimaryButton
-                onPress={() => {
-                  Linking.openURL(auth.authContextState.appState!.host);
-                }}
-                text={translate("current_learning.find_learning")}
-                icon="external-link-alt"
-                style={{ alignSelf: "center" }}
-              />
-            )
-          }
-        </AuthConsumer>
+        <PrimaryButton
+          onPress={() => {
+            Linking.openURL(host!);
+          }}
+          text={translate("current_learning.find_learning")}
+          icon="external-link-alt"
+          style={{ alignSelf: "center" }}
+        />
       </View>
-    </View>
+    </View >
   );
 };
 

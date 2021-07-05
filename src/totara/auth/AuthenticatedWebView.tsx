@@ -21,7 +21,6 @@ import { compose } from "recompose";
 import CookieManager from "@react-native-community/cookies";
 
 import { config, Log } from "@totara/lib";
-import { AuthConsumer } from "@totara/core";
 import { WEBVIEW_SECRET } from "@totara/lib/constants";
 import { Loading, LoadingError } from "@totara/components";
 import { getUserAgent } from "react-native-device-info";
@@ -49,6 +48,7 @@ const deleteWebview = gql`
  *  if an existing session exists (either webview, cookie is still valid)
  */
 class AuthenticatedWebViewComponent extends React.Component<Props, State> {
+
   constructor(props: Props) {
     super(props);
 
@@ -62,9 +62,8 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
   }
 
 
-
   async componentDidMount() {
-    const { createWebview, uri } = this.props;
+    const { createWebview, host, uri } = this.props;
 
     this.setState({ ...this.state, error: undefined, isLoading: true });
 
@@ -74,6 +73,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
         if (response.data) {
           this.setState({
+            host: host,
             isLoading: false,
             webviewSecret: response.data.create_webview,
             isAuthenticated: true
@@ -110,10 +110,11 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
   render() {
     const { innerRef } = this.props;
+    const { isLoading, error, webviewSecret, agent, host } = this.state;
 
-    if (this.state.isLoading) return <Loading />;
+    if (isLoading) return <Loading />;
 
-    if (this.state.error)
+    if (error)
       return (
         <LoadingError
           onRefreshTap={async () => {
@@ -123,23 +124,17 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
       );
 
     return (
-      <AuthConsumer>
-        {(auth) =>
-          this.state.webviewSecret && auth.authContextState.appState ? (
-            <WebView
-              source={{
-                uri: config.webViewUri(auth.authContextState.appState.host),
-                headers: { [WEBVIEW_SECRET]: this.state.webviewSecret }
-              }}
-              style={{ flex: 1 }}
-              userAgent={this.state.agent}
-              ref={innerRef}
-              onNavigationStateChange={this.props.onNavigationStateChange}
-              onShouldStartLoadWithRequest={this.props.onShouldStartLoadWithRequest}
-            />
-          ) : null
-        }
-      </AuthConsumer>
+      <WebView
+        source={{
+          uri: config.webViewUri(host!),
+          headers: { [WEBVIEW_SECRET]: webviewSecret }
+        }}
+        style={{ flex: 1 }}
+        userAgent={agent}
+        ref={innerRef}
+        onNavigationStateChange={this.props.onNavigationStateChange}
+        onShouldStartLoadWithRequest={this.props.onShouldStartLoadWithRequest}
+      />
     );
   }
 }
@@ -153,6 +148,7 @@ type DeleteWebViewResponse = {
 };
 
 type Props = {
+  host: string;
   uri: string;
   createWebview: MutationFunction<CreateWebViewResponse, { url: string }>;
   deleteWebview: MutationFunction<DeleteWebViewResponse, { secret: string }>;
@@ -162,12 +158,14 @@ type Props = {
 };
 
 type OuterProps = {
+  host: string;
   uri: string;
   onNavigationStateChange?: (navState: WebViewNavigation) => void;
   onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
 };
 
 type State = {
+  host?: string;
   error?: Error;
   isLoading: boolean;
   isAuthenticated: boolean;

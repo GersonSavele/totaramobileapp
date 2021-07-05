@@ -13,16 +13,14 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React from "react";
 
 import { translate } from "@totara/locale";
-import { AuthContext } from "@totara/core";
-import { isValidApiVersion } from "@totara/core/AuthContext"; // TODO for clean up
-import InfoModal from "./InfoModal";
-import PrimaryButton from "./PrimaryButton";
+import { useSession } from "@totara/core";
+import { isValidApiVersion } from "@totara/core/coreUtils";
+import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
 import { config } from "@totara/lib";
 import { Linking, ImageSourcePropType } from "react-native";
-import TertiaryButton from "./TertiaryButton";
 import { Images } from "@resources/images";
 
 type Props = {
@@ -31,12 +29,9 @@ type Props = {
 };
 
 const IncompatibleApiModal = ({ onCancel, siteUrl }: Props) => {
-  const {
-    authContextState: { isAuthenticated, appState },
-    logOut
-  } = useContext(AuthContext);
-  const isShowIncompatibleApi = appState ? !isValidApiVersion(appState.siteInfo.version) : true;
-  const site = appState ? appState.host : siteUrl;
+  const { siteInfo, host } = useSession();
+  const isShowIncompatibleApi = siteInfo ? !isValidApiVersion(siteInfo.version) : true;
+  const site = host || siteUrl;
   if (isShowIncompatibleApi)
     return (
       <InfoModal
@@ -52,21 +47,12 @@ const IncompatibleApiModal = ({ onCancel, siteUrl }: Props) => {
             }}
           />
         )}
-        {isAuthenticated ? (
-          <TertiaryButton
-            text={translate("incompatible_api.action_tertiary")}
-            onPress={() => {
-              logOut();
-            }}
-          />
-        ) : (
-          <TertiaryButton
-            text={translate("incompatible_api.action_tertiary_cancel")}
-            onPress={() => {
-              onCancel && onCancel();
-            }}
-          />
-        )}
+        <TertiaryButton
+          text={translate("incompatible_api.action_tertiary_cancel")}
+          onPress={() => {
+            onCancel && onCancel();
+          }}
+        />
       </InfoModal>
     );
   else return null;

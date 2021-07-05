@@ -45,6 +45,12 @@ export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: useSiteUrlProps) => {
       });
 
       onSubmitCall.then(result => {
+        const { version } = result;
+        if (version < config.minApiVersion) {
+          dispatch({ type: "minAPIVersionMismatch" })
+          return;
+        }
+
         dispatch({ type: "done" })
         onSiteInfoDone(result);
       }).catch(error => {
@@ -105,7 +111,7 @@ const siteUrlReducer = (state: State, action: Action): State => {
         inputSiteUrl: action.payload
       };
     }
-    case "networkError": case "invalidAPI": {
+    case "networkError": case "invalidAPI": case "minAPIVersionMismatch": {
       return {
         ...state,
         inputSiteUrlStatus: action.type,
@@ -122,13 +128,13 @@ const siteUrlReducer = (state: State, action: Action): State => {
 
 
 type State = {
-  inputSiteUrlStatus?: "done" | "fetching" | "invalidUrl" | "invalidAPI" | "networkError";
+  inputSiteUrlStatus?: "done" | "fetching" | "invalidUrl" | "invalidAPI" | "minAPIVersionMismatch" | "networkError";
   inputSiteUrlMessage?: string;
   inputSiteUrl?: string;
 };
 
 type Action = {
-  type: "invalidUrl" | "invalidAPI" | "networkError" | "done" | "submit" | "change";
+  type: "invalidUrl" | "invalidAPI" | "minAPIVersionMismatch" | "networkError" | "done" | "submit" | "change";
   payload?: any;
 };
 

@@ -25,7 +25,6 @@ import GeneralErrorModal from "./GeneralErrorModal";
 import InputTextWithInfo from "./InputTextWithInfo";
 import TertiaryButton from "./TertiaryButton";
 import TouchableIcon from "./TouchableIcon";
-import IncompatibleApiModal from "./IncompatibleApiModal";
 import FormError from "./FormError";
 import MoreText from "./MoreText";
 import LinkText from "./LinkText";
@@ -52,7 +51,6 @@ export {
   InputTextWithInfo,
   TertiaryButton,
   TouchableIcon,
-  IncompatibleApiModal,
   FormError,
   SecondaryButton,
   MoreText,

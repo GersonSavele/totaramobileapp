@@ -19,6 +19,7 @@ import { WebView, WebViewNavigation } from "react-native-webview";
 import { View, BackHandler } from "react-native";
 import { AuthenticatedWebView } from "@totara/auth";
 import WebviewToolbar from "@totara/components/WebviewToolbar";
+import useSession from "@totara/core/UseSession";
 
 type WebViewWrapperProps = {
   uri: string;
@@ -29,6 +30,7 @@ type WebViewWrapperProps = {
 const WebViewWrapper = ({ uri, backAction, onShouldStartLoadWithRequest }: WebViewWrapperProps) => {
   const refWebview = useRef<WebView>(null);
   const [navState, setNavState] = useState<WebViewNavigation>();
+  const { host } = useSession();
 
   const onNavigationStateChange = (navState: WebViewNavigation) => {
     setNavState(navState);
@@ -45,6 +47,7 @@ const WebViewWrapper = ({ uri, backAction, onShouldStartLoadWithRequest }: WebVi
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <AuthenticatedWebView
+          host={host}
           uri={uri}
           ref={refWebview}
           onNavigationStateChange={onNavigationStateChange}

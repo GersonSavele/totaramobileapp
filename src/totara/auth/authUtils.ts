@@ -72,4 +72,5 @@ const authLinkingHandler = (onLoginSuccess, onLoginFailure) => (event: { url: st
   linkingHandler(event.url, onLoginSuccess, onLoginFailure);
 };
 
+
 export { linkingHandler, authLinkingHandler, getValueForUrlQueryParameter, getDeviceRegisterData };

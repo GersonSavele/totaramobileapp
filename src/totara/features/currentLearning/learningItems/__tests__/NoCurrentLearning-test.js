@@ -13,11 +13,19 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import React from "react";
-import NoCurrentLearning from "../NoCurrentLearning";
 import renderer from "react-test-renderer";
+import * as ReactRedux from "react-redux";
+import NoCurrentLearning from "../NoCurrentLearning";
 
 describe("NoCurrentLearning, No current learning screen should launch when api return doesn't have courses", () => {
   it("Test result : take screen-shot when no current learning", () => {
+
+    jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
+      return {
+        host: 'https://mobile.demo.totara.software'
+      };
+    });
+
     const tree = renderer.create(<NoCurrentLearning />).toJSON();
     expect(tree).toMatchSnapshot();
   });

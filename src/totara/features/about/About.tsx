@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { Image, StyleSheet, Text } from "react-native";
 import { getBuildNumber, getVersion } from "react-native-device-info";
 import { View } from "react-native-animatable";
@@ -23,22 +23,19 @@ import { Images } from "@resources/images";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings, margins } from "@totara/theme/constants";
 import { translate } from "@totara/locale";
-import { AuthContext } from "@totara/core";
+import { useSession } from "@totara/core";
 
 const About = () => {
-  const {
-    authContextState: { appState }
-  } = useContext(AuthContext);
-
+  const { host, siteInfo } = useSession();
   const onSiteURLLongPress = () => {
-    Clipboard.setString(appState?.host as string);
+    Clipboard.setString(host!);
     Toast.show({
       text: translate("general.copied_to_clipboard")
     });
   };
 
   const onPluginVersionLongPress = () => {
-    Clipboard.setString(appState?.siteInfo.version as string);
+    Clipboard.setString(siteInfo!.version as string);
     Toast.show({
       text: translate("general.copied_to_clipboard")
     });
@@ -55,10 +52,10 @@ const About = () => {
       </View>
       <View style={styles.environmentDetails}>
         <Text style={styles.siteUrlPluginVersion} onLongPress={onSiteURLLongPress}>
-          {translate("about.site_url", { url: appState?.host })}
+          {translate("about.site_url", { url: host })}
         </Text>
         <Text style={styles.siteUrlPluginVersion} onLongPress={onPluginVersionLongPress}>
-          {translate("about.plugin_version", { version: appState?.siteInfo.version })}
+          {translate("about.plugin_version", { version: siteInfo!.version })}
         </Text>
       </View>
     </View>

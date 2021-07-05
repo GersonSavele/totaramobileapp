@@ -61,27 +61,6 @@ const App: () => React$Node = () => {
         </Provider>
       </Root>
     </SafeAreaProvider>
-
-    // <AuthProvider asyncStorage={AsyncStorage}>
-    //   <SafeAreaProvider>
-    //     <ThemeProvider>
-    //       <Root>
-    //         <AuthFlow>
-    //           <LocaleResolver>
-    //             <Provider store={store}>
-    //               <PersistGate loading={null} persistor={persistor}>
-    //                 <ScreenOrientation orientation={PORTRAIT} />
-    //                 <AppContainer />
-    //               </PersistGate>
-    //               <AdditionalAction />
-    //               <AttemptSynchronizer />
-    //             </Provider>
-    //           </LocaleResolver>
-    //         </AuthFlow>
-    //       </Root>
-    //     </ThemeProvider>
-    //   </SafeAreaProvider>
-    // </AuthProvider>
   );
 };
 

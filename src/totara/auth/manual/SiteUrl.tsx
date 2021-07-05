@@ -31,6 +31,7 @@ import { useSession } from "@totara/core";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Images } from "@resources/images";
+import IncompatibleApiModal from "@totara/core/IncompatibleApiModal";
 
 type PropSiteError = {
   onDismiss: () => void;
@@ -136,6 +137,9 @@ const SiteUrl = () => {
 
       {(siteUrlState.inputSiteUrlStatus === "invalidAPI" || siteUrlState.inputSiteUrlStatus === "networkError") && (
         <SiteErrorModal onDismiss={() => reset()} siteUrlFailure={siteUrlState.inputSiteUrlStatus} />
+      )}
+      {(siteUrlState.inputSiteUrlStatus === "minAPIVersionMismatch") && (
+        <IncompatibleApiModal onCancel={() => reset()} siteUrl={siteUrlState.inputSiteUrl!} />
       )}
     </SafeAreaView>
   );

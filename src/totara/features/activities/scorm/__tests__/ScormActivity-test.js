@@ -25,19 +25,12 @@ import { ResourceState } from "@totara/types/Resource";
 import { downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/downloadMock";
 import ScormActivity, { apiDataEffect, onRefresh, navigationOptions } from "../ScormActivity";
 import { scormSuccessMock } from "../api/scorm.mock";
-import { AuthContext } from "@totara/core";
 import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 import * as storageUtils from "../storageUtils";
 
 const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
 
 describe("ScormActivity", () => {
-  const authContextState = {
-    appState: {
-      host: "http://site.url",
-      apiKey: "api_key"
-    }
-  };
   const navigation = {
     state: {
       params: {
@@ -62,14 +55,9 @@ describe("ScormActivity", () => {
       return downloadsTwoItemsMock;
     });
     const tree = (
-      <AuthContext.Provider
-        value={{
-          authContextState
-        }}>
-        <MockedProvider mocks={scormSuccessMock}>
-          <ScormActivity navigation={navigation} />
-        </MockedProvider>
-      </AuthContext.Provider>
+      <MockedProvider mocks={scormSuccessMock}>
+        <ScormActivity navigation={navigation} />
+      </MockedProvider>
     );
     const { getByTestId } = render(tree);
 

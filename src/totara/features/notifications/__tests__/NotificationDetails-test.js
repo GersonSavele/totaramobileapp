@@ -16,10 +16,20 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import moment from "moment";
-import { AuthContext } from "@totara/core";
+import * as ReactRedux from "react-redux";
 import NotificationDetails from "@totara/features/notifications/NotificationDetail";
 
 describe("NotificationDetails", () => {
+
+  jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
+    return {
+      siteInfo: {
+        version: "1.0"
+      },
+      host: 'https://mobile.demo.totara.software'
+    };
+  });
+
   const defaultMockItem = {
     id: "123",
     isRead: false,
@@ -27,11 +37,6 @@ describe("NotificationDetails", () => {
     fullMessage: "fullMessage text",
     timeCreated: moment().utc().unix(),
     fullMessageFormat: "PLAIN"
-  };
-  const authContextState = {
-    appState: {
-      host: "http://site.url"
-    }
   };
 
   it("Should render with title, time ago, and full message", () => {
@@ -44,12 +49,7 @@ describe("NotificationDetails", () => {
     };
 
     const { getByTestId } = render(
-      <AuthContext.Provider
-        value={{
-          authContextState
-        }}>
-        <NotificationDetails route={route} />
-      </AuthContext.Provider>
+      <NotificationDetails route={route} />
     );
 
     const labelTitle = getByTestId("test_title");

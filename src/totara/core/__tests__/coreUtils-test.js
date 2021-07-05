@@ -13,10 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { isCompatible, isValidApiVersion } from "../AuthContext";
+import { isCompatible, isValidApiVersion } from "../coreUtils";
 import { config } from "@totara/lib";
 
-describe("IncompatibleApiModal", () => {
+describe("coreUtils", () => {
   it("should returns available features for current older and higher API version", async () => {
     config.minApiVersion = "2019101802";
     const validVersion = isCompatible("2019101802");

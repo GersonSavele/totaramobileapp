@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { AuthContext, AuthConsumer } from "./AuthContext";
 import { AuthContextState } from "./AuthHook";
 import useSession from "./UseSession";
+import coreUtils from "./coreUtils";
 
-export { AuthContext, AuthConsumer, AuthContextState, useSession };
+export { AuthContextState, useSession, coreUtils };
