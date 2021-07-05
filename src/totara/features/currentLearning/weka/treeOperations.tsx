@@ -143,9 +143,9 @@ class ToFullSummary implements Visitor<Object> {
   }
 
   visitWekaOrderList(element: WekaOrderList): Object {
-    return element?.content?.map((item, index) =>
-      this.listItem({ mark: `${index + 1}.`, component: item?.accept(this), key: `${index}` })
-    );
+    return element?.content?.map((item, index) => {
+      return this.listItem({ mark: `${index + 1}.`, component: item?.accept(this), key: `${index}` });
+    });
   }
 
   listItem({ mark, component, key }: { mark: string; component?: Object; key?: string }): Object {
@@ -165,8 +165,8 @@ class ToFullSummary implements Visitor<Object> {
   visitHeader(element: WekaHeading): Object {
     return (
       <Text style={{ marginBottom: marginS }}>
-        {element.content?.map((item) => {
-          return item?.accept(this);
+        {element.content?.map((item, index) => {
+          return <Text key={`${index}`}> {item?.accept(this)}</Text>;
         })}
       </Text>
     );
@@ -177,8 +177,8 @@ class ToFullSummary implements Visitor<Object> {
   }
 
   visitWekaParagraph(element: WekaParagraph): Object {
-    const paragraph = element?.content?.map((item) => {
-      return item?.accept(this);
+    const paragraph = element?.content?.map((item, index) => {
+      return <Text key={`${index}`}>{item?.accept(this)}</Text>;
     });
     return <Text style={{ marginBottom: marginS }}>{paragraph}</Text>;
   }
@@ -194,8 +194,8 @@ class ToFullSummary implements Visitor<Object> {
   all(content: Node<Object>[]): Object {
     return (
       <View>
-        {content?.map((item) => {
-          return item?.accept(this);
+        {content?.map((item, index) => {
+          return <View key={`${index}`}>{item?.accept(this)}</View>;
         })}
       </View>
     );

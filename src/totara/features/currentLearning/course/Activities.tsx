@@ -219,16 +219,15 @@ const ActivityList = ({
           <ActivityTextContent label={sectionSummary} />
         </View>
       )}
-      {data!.map((item: Activity, key: number) => {
+      {data!.map((item: Activity) => {
         return (
-          <View key={key}>
+          <View key={item.id}>
             {item.completionstatus === completionStatus.unknown || item.completionstatus === null || !item.available ? (
-              <ListItemLock item={item} key={key} />
+              <ListItemLock item={item} />
             ) : (
               <ListItemUnlock
                 item={item}
                 courseRefreshCallBack={courseRefreshCallBack}
-                key={key}
                 completionEnabled={completionEnabled}
               />
             )}
