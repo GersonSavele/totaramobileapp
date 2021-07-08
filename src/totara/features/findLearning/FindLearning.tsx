@@ -123,7 +123,7 @@ export const FindLearning = () => {
   );
 };
 const LearningItem = ({ item, index }: { item: any; index: number }) => {
-  const [theme] = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
   return (
     <View key={index} style={{ ...findLearningStyles.tileWrapper, backgroundColor: theme.colorNeutral2 }}>
       <Text style={findLearningStyles.itemTitle}>{item.title}</Text>
