@@ -14,12 +14,12 @@
  */
 
 import React, { useContext } from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity, Linking } from "react-native";
+import { StyleSheet, View, Image, Text, TouchableOpacity, Linking, ImageSourcePropType } from "react-native";
 import { Form, Input, Container, Content } from "native-base";
 
 import { config } from "@totara/lib";
 import { gutter, ThemeContext } from "@totara/theme";
-import { PrimaryButton, InputTextWithInfo, FormError } from "@totara/components";
+import { PrimaryButton, InputTextWithInfo, FormError, InfoModal } from "@totara/components";
 import { translate } from "@totara/locale";
 import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
 import { useNativeFlow } from "./NativeFlowHook";
@@ -30,6 +30,7 @@ import { useSession } from "@totara/core";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { Images } from "@resources/images";
 
 const NativeLogin = () => {
   // eslint-disable-next-line no-undef
@@ -137,6 +138,15 @@ const NativeLogin = () => {
           </View>
         </Form>
       </Content>
+
+      {nativeLoginState.unhandledLoginError && (
+        <InfoModal
+          title={translate("native_login.auth_general_error.title")}
+          description={translate("native_login.auth_general_error.description")}
+          imageSource={Images.generalError as ImageSourcePropType}>
+          <PrimaryButton text={translate("native_login.auth_general_error.action_primary")} onPress={onFocusInput} />
+        </InfoModal>
+      )}
     </Container>
   );
 };

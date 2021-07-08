@@ -23,7 +23,7 @@ type InfoModalProps = {
   description?: string;
   imageSource: ImageSourcePropType;
   children?: ReactNode;
-  visible: boolean;
+  visible?: boolean;
 };
 
 const InfoModal = ({ title, description, imageSource, children, visible = true, ...rest }: InfoModalProps) => {

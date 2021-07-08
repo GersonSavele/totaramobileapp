@@ -130,11 +130,13 @@ export const nativeReducer = (state: NativeLoginState = initialState, action: Ac
     case "resetform":
       return {
         ...state,
-        errorStatusUnauthorized: false
+        errorStatusUnauthorized: false,
+        unhandledLoginError: undefined
       };
     case "unhandledloginfail":
       return {
         ...state,
+        isRequestingLogin: false,
         unhandledLoginError: action.payload as NetworkError
       };
     case "submit":
