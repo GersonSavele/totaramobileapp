@@ -16,7 +16,6 @@
 import {
   faHome,
   faCloudDownloadAlt,
-  faBell,
   faUser,
   faVideo,
   faTimes,
@@ -61,7 +60,6 @@ const init = () => {
   library.add(
     faHome,
     faCloudDownloadAlt,
-    faBell,
     faUser,
     faVideo,
     faTimes,

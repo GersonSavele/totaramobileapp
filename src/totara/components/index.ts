@@ -30,7 +30,6 @@ import MoreText from "./MoreText";
 import LinkText from "./LinkText";
 import MessageBar from "./MessageBar";
 import TotaraNavigationOptions from "./NavigationOptions";
-import NotificationBell from "./NotificationBell";
 import LoadingError from "./LoadingError";
 import NetworkStatusIndicator from "./NetworkStatusIndicator";
 import Loading from "./Loading";
@@ -57,7 +56,6 @@ export {
   LinkText,
   MessageBar,
   TotaraNavigationOptions,
-  NotificationBell,
   Loading,
   LoadingError,
   NetworkStatusIndicator,

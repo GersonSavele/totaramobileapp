@@ -125,8 +125,8 @@ const tabBarIconImages: {
   profile: iconImageProps;
 } = {
   current_learning: {
-    solid: require("@resources/icons/tabbar/current_learning_solid.png"),
-    regular: require("@resources/icons/tabbar/current_learning_regular.png")
+    solid: require("@resources/icons/tabbar/home_solid.png"),
+    regular: require("@resources/icons/tabbar/home_regular.png")
   },
   find_learning: {
     solid: require("@resources/icons/tabbar/find_learning_solid.png"),
@@ -137,8 +137,8 @@ const tabBarIconImages: {
     regular: require("@resources/icons/tabbar/downloads_regular.png")
   },
   notifications: {
-    solid: require("@resources/icons/tabbar/notificationsSolid.png"),
-    regular: require("@resources/icons/tabbar/notificationsRegular.png")
+    solid: require("@resources/icons/tabbar/notifications_solid.png"),
+    regular: require("@resources/icons/tabbar/notifications_regular.png")
   },
   profile: {
     solid: require("@resources/icons/tabbar/profile_solid.png"),

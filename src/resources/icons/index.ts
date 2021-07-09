@@ -13,16 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import iconBell from "./tabbar/notificationsRegular.png";
-import iconBellSolid from "./tabbar/notificationsSolid.png";
-
 import iconCarousel from "./carousel/carousel.png";
 import iconList from "./list/list.png";
 import closeIcon from "./closeIcon/closeIcon.png";
 
 const Icons = {
-  iconBell,
-  iconBellSolid,
   iconCarousel,
   iconList,
   closeIcon
