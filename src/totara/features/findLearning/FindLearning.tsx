@@ -12,8 +12,8 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React, { useState } from "react";
-import { FlatList, Platform, Text, View } from "react-native";
+import React, { useState, useCallback } from "react";
+import { FlatList, Platform, Text, View, Dimensions } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -21,6 +21,8 @@ import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
 import { LearningItemTile } from "./components/LearningItemTile";
 import { findLearningStyles } from "./findLearningStyles";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 const mockSearchResult: any = {
   max_count: 599,
@@ -147,6 +149,8 @@ type FindLearningHeaderProps = {
   onSearch: () => void;
   count?: number;
 };
+
+
 const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: FindLearningHeaderProps) => {
   return (
     <View style={findLearningStyles.headerWrapper}>
@@ -177,13 +181,19 @@ const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: 
   );
 };
 
+
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+
 export const FindLearning = () => {
-  const [searchResult, setSearchResult] = useState();
+  const isLoading = true; // This `isloading` should replace with useQuery
+  const [searchResult, setSearchResult] = useState<any | null>(null);
   const [findLeaningText, setFindLearningText] = useState<string>("");
 
   const onSearch = () => {
-    if (findLeaningText) {
+    if (findLeaningText && !isLoading) {
       setSearchResult(mockSearchResult);
+    } else if (findLeaningText && isLoading) {
+      setSearchResult(Array.from(Array(Math.floor(SCREEN_HEIGHT / 100)), (_, i) => i + i));
     } else {
       setSearchResult(undefined);
     }
@@ -191,11 +201,14 @@ export const FindLearning = () => {
 
   const onChangeText = (text) => {
     setFindLearningText(text);
-  };
+  }
 
-  const learningItem = (item: any) => {
-    return <LearningItemTile item={item} />;
-  };
+  const learningItem = useCallback(
+    ({ item }: { item: any; index: number }) => <LearningItemTile item={item} />,
+    []
+  );
+
+  const learningItemLoading = useCallback(({ index }: { index: number }) => <LoadingPlaceHolder index={index} />, []);
 
   return (
     <SafeAreaView style={findLearningStyles.mainWrapper} edges={["top"]}>
@@ -210,10 +223,26 @@ export const FindLearning = () => {
         }
         style={findLearningStyles.listWrapper}
         data={searchResult?.items}
-        renderItem={({ item }) => learningItem(item)}
+        renderItem={isLoading ? learningItemLoading : learningItem}
         numColumns={2}
         keyExtractor={(_, index) => index.toString()}
       />
     </SafeAreaView>
   );
 };
+
+
+const LoadingPlaceHolder = ({ index }: { index: number }) => {
+  return (
+    <View key={index} style={findLearningStyles.skeletonWrapper}>
+      <SkeletonPlaceholder highlightColor={TotaraTheme.colorNeutral2} backgroundColor={TotaraTheme.colorNeutral3}>
+        <View style={findLearningStyles.skeletonContentWrapper}>
+          <View style={findLearningStyles.imageSkeleton} />
+          <View style={findLearningStyles.nameSkeleton} />
+          <View style={findLearningStyles.typeSkeleton} />
+        </View>
+      </SkeletonPlaceholder>
+    </View>
+  );
+};
+

@@ -13,9 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { margins, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { StyleSheet } from "react-native";
+import { margins, paddings, borderRadius } from "@totara/theme/constants";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export const findLearningStyles = StyleSheet.create({
   mainWrapper: {
@@ -49,5 +51,43 @@ export const findLearningStyles = StyleSheet.create({
   },
   listWrapper: {
     paddingHorizontal: paddings.paddingL
+  },
+
+
+
+
+
+  itemTitle: {
+    textAlign: "center",
+    flex: 1
+  },
+  skeletonWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    flex: 0.5,
+    height: 150,
+    marginTop: margins.marginL,
+    paddingHorizontal: paddings.paddingXL
+  },
+  skeletonContentWrapper: {
+    flexDirection: "column",
+    height: 150,
+    justifyContent: "space-around"
+  },
+  imageSkeleton: {
+    width: SCREEN_WIDTH / 2 - 10,
+    height: 100,
+    borderRadius: borderRadius.borderRadiusS
+  },
+  nameSkeleton: {
+    width: "80%",
+    height: 20,
+    borderRadius: borderRadius.borderRadiusXS
+  },
+  typeSkeleton: {
+    width: "50%",
+    height: 20,
+    borderRadius: borderRadius.borderRadiusXS
   }
 });
