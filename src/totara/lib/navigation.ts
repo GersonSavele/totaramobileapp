@@ -15,7 +15,6 @@
 
 import { TransitionPresets } from "@react-navigation/stack";
 import { learningItemEnum } from "@totara/features/currentLearning/constants";
-import { translate } from "@totara/locale";
 import { paddings } from "@totara/theme/constants";
 
 /**
@@ -45,7 +44,15 @@ const PROFILE = "Profile";
 const ABOUT = "About";
 const SETTINGS = "Settings";
 
+//Find Learning
 const FIND_LEARNING = "FindLearning";
+const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
+
+//Site url and Login
+const SITE_URL = "SiteUrl";
+const NATIVE_LOGIN = "NativeLogin";
+const BROWSER_LOGIN = "BrowserLogin";
+const WEBVIEW_LOGIN = "WebViewLogin";
 
 const itemToRouteMap = {
   [learningItemEnum.Course]: COURSE_DETAILS,
@@ -67,7 +74,12 @@ const NAVIGATION = {
   COURSE_LIST,
   COURSE_DETAILS,
   COURSE_GROUP_DETAILS,
-  FIND_LEARNING
+  FIND_LEARNING,
+  FIND_LEARNING_OVERVIEW,
+  SITE_URL,
+  NATIVE_LOGIN,
+  WEBVIEW_LOGIN,
+  BROWSER_LOGIN
 };
 
 const cardModalOptions = {
@@ -75,7 +87,7 @@ const cardModalOptions = {
   ...TransitionPresets.ModalPresentationIOS,
   headerStatusBarHeight: 0,
   headerShown: true,
-  headerBackTitle: translate('general.cancel'),
+  headerBackTitleVisible: false,
   headerTitle: '',
   headerBackImage: () => null,
   headerBackTitleStyle: { paddingLeft: paddings.paddingL }

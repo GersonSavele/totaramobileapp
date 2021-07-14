@@ -32,6 +32,7 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Images } from "@resources/images";
 import IncompatibleApiModal from "@totara/core/IncompatibleApiModal";
+import { NAVIGATION } from "@totara/lib/navigation";
 
 type PropSiteError = {
   onDismiss: () => void;
@@ -78,13 +79,13 @@ const SiteUrl = () => {
       setupHost({ host: siteUrlState.inputSiteUrl, siteInfo });
       const { auth } = siteInfo;
       if (auth === "browser") {
-        return navigation.navigate("BrowserLogin", {
+        return navigation.navigate(NAVIGATION.BROWSER_LOGIN, {
           siteUrl: siteUrlState.inputSiteUrl
         });
       } else if (auth === "native") {
-        return navigation.navigate("NativeLogin");
+        return navigation.navigate(NAVIGATION.NATIVE_LOGIN);
       } else {
-        return navigation.navigate("WebviewLogin");
+        return navigation.navigate(NAVIGATION.WEBVIEW_LOGIN);
       }
     }
   });

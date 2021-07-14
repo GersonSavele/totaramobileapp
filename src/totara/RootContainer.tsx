@@ -20,9 +20,11 @@ import { TotaraTheme } from "./theme/Theme";
 import SiteUrl from "./auth/manual/SiteUrl";
 import NativeLogin from "./auth/manual/native/NativeLogin";
 import WebviewLogin from "./auth/manual/webview/WebviewLogin";
-import { cardModalOptions, popupModalOptions } from "./lib/navigation";
+import { cardModalOptions, NAVIGATION } from "./lib/navigation";
 import SessionContainer from "./SessionContainer";
 import BrowserLogin from "./auth/manual/browser";
+import { OverviewModal } from "./features/findLearning/OverviewModal";
+import { translate } from "./locale";
 
 const navigationTheme = {
   ...DefaultTheme,
@@ -43,10 +45,11 @@ const RootContainer = () => {
           headerShown: false
         }}>
         <Stack.Screen name="SessionContainer" component={SessionContainer} />
-        <Stack.Screen name="SiteUrl" component={SiteUrl} />
-        <Stack.Screen name="NativeLogin" component={NativeLogin} options={cardModalOptions} />
-        <Stack.Screen name="WebviewLogin" component={WebviewLogin} options={cardModalOptions} />
-        <Stack.Screen name="BrowserLogin" component={BrowserLogin} options={popupModalOptions} />
+        <Stack.Screen name={NAVIGATION.SITE_URL} component={SiteUrl} />
+        <Stack.Screen name={NAVIGATION.NATIVE_LOGIN} component={NativeLogin} options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: true }} />
+        <Stack.Screen name={NAVIGATION.WEBVIEW_LOGIN} component={WebviewLogin} options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: true }} />
+        <Stack.Screen name={NAVIGATION.BROWSER_LOGIN} component={BrowserLogin} options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: true }} />
+        <Stack.Screen name={NAVIGATION.FIND_LEARNING_OVERVIEW} component={OverviewModal} options={cardModalOptions} />
       </Stack.Navigator>
     </NavigationContainer>
   );
