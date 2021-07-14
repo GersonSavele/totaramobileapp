@@ -12,19 +12,14 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
 
-import { FindLearning } from "./FindLearning";
-import { NAVIGATION } from "@totara/lib/navigation";
+import { learningItemEnum } from "@totara/features/currentLearning/constants";
 
-const Stack = createStackNavigator();
-
-const FindLearningStack = () => {
-  return (
-    <Stack.Navigator headerMode={"none"}>
-      <Stack.Screen name={NAVIGATION.FIND_LEARNING} component={FindLearning} />
-    </Stack.Navigator>
-  );
-};
-export default FindLearningStack;
+export interface CatalogItem {
+  id: number;
+  itemid: number;
+  itemtype: learningItemEnum.Program | learningItemEnum.Course | learningItemEnum.Certification | "playlist";
+  title: string;
+  mobile_image?: string;
+  description?: string;
+}

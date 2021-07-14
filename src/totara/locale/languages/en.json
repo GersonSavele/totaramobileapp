@@ -263,7 +263,8 @@
     "plugin_version": "Plugin version: {{version}}"
   },
   "find_learning": {
-    "search": "Search",
-    "title": "Find Learning"
+    "search": "Search courses, articles, playlists...",
+    "title": "Find Learning",
+    "results": "{{value}} results"
   }
 }

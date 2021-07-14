@@ -12,72 +12,136 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React, { useState, useContext } from "react";
-import { FlatList, Platform, SafeAreaView, Text, View } from "react-native";
+import React, { useState } from "react";
+import { FlatList, Platform, Text, View } from "react-native";
 import { SearchBar } from "react-native-elements";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { fullFlex } from "@totara/lib/styles/base";
-import { findLearningStyles } from "./findLearningStyles";
-import { ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
+import { LearningItemTile } from "./components/LearningItemTile";
+import { margins, paddings } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
+import { findLearningStyles } from "./findLearningStyles";
 
-const mockSearchResult: any = [
-  {
-    title: "(AND ONLY) Simple Test Programme"
-  },
-  {
-    title: "(BETA) Audiences in Totara"
-  },
-  {
-    title: "Become A Learning Machine 2.0: Read 300 Books This Year"
-  },
-  {
-    title: "Hypnosis: Learn Self Hypnosis For Personal Development"
-  },
-  {
-    title: "Productivity Masterclass: How To Powerfully Get Things Done "
-  },
-  {
-    title: "The Complete SQL Bootcamp "
-  },
-  {
-    title: "Deep Learning: Hands-On Artificial Neural Networks"
-  },
-  {
-    title: "Data Science: Real-Life Data Science Exercises Included "
-  },
-  {
-    title: "Blockchain: Learn How To Build Your First Blockchain "
-  },
-  {
-    title: "NLP Personal Transformation (NLP for Personal Development)"
-  },
-  {
-    title: "Coaching Skills Mastery (NLP Life Coaching) "
-  },
-  {
-    title: "Management Skills: Productivity "
-  },
-  {
-    title: "Leadership: Practical Leadership Skills "
-  },
-  {
-    title: "Certified Lean Management Professional "
-  },
-  {
-    title: "How to Manage & Influence Your Virtual Team "
-  },
-  {
-    title: "Virtual Assistant: Find, Hire, Train, and Manage "
-  },
-  {
-    title: "Machine Learning: Hands-On Python & R In Data Science"
-  },
-  {
-    title: "Blockchain: Learn How To Build Your First Blockchain "
-  }
-];
+const mockSearchResult: any = {
+  max_count: 599,
+  items: [
+    {
+      title: "(AND ONLY) Simple Test Programme",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "(BETA) Audiences in Totara",
+      itemtype: "course",
+      mobile_image: "https://jooinn.com/images/square-4.jpg"
+    },
+    {
+      title: "Become A Learning Machine 2.0: Read 300 Books This Year",
+      itemtype: "course",
+      mobile_image:
+        "https://thumbs.dreamstime.com/z/words-tall-short-flashcard-cartoon-animal-characters-opposite-adjectives-explanation-card-flat-vector-illustration-179247227.jpg"
+    },
+    {
+      title: "Hypnosis: Learn Self Hypnosis For Personal Development",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Productivity Masterclass: How To Powerfully Get Things Done ",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "The Complete SQL Bootcamp ",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Deep Learning: Hands-On Artificial Neural Networks",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Data Science: Real-Life Data Science Exercises Included ",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Blockchain: Learn How To Build Your First Blockchain ",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "NLP Personal Transformation (NLP for Personal Development)",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Coaching Skills Mastery (NLP Life Coaching) ",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Management Skills: Productivity ",
+      itemtype: "playlist",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Leadership: Practical Leadership Skills ",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Certified Lean Management Professional ",
+      itemtype: "programe",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "How to Manage & Influence Your Virtual Team ",
+      itemtype: "programe",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Virtual Assistant: Find, Hire, Train, and Manage ",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Machine Learning: Hands-On Python & R In Data Science",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Blockchain: Learn How To Build Your First Blockchain ",
+      itemtype: "course",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    },
+    {
+      title: "Blockchain: Learn How To Build Your First Blockchain ",
+      itemtype: "programe",
+      mobile_image:
+        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
+    }
+  ]
+};
 
 export const FindLearning = () => {
   const [searchResult, setSearchResult] = useState();
@@ -94,39 +158,49 @@ export const FindLearning = () => {
   const onChangeText = (text) => {
     setFindLearningText(text);
   };
-  const learningItem = (item: any, index: number) => {
-    return <LearningItem item={item} index={index} />;
+
+  const learningItem = (item: any) => {
+    return <LearningItemTile item={item} />;
   };
 
   return (
-    <SafeAreaView style={fullFlex}>
-      <SearchBar
-        placeholder={translate("find_learning.search")}
-        onChangeText={onChangeText}
-        value={findLeaningText}
-        onSubmitEditing={onSearch}
-        platform={Platform.OS === PLATFORM_ANDROID ? PLATFORM_ANDROID : PLATFORM_IOS}
-        onCancel={onSearch}
-        returnKeyType="search"
-      />
-      <FlatList
-        style={fullFlex}
-        data={searchResult}
-        renderItem={({ item, index }) => {
-          return learningItem(item, index);
-        }}
-        alwaysBounceVertical={false}
-        numColumns={2}
-        keyExtractor={(_, index) => index.toString()}
-      />
+    <SafeAreaView style={findLearningStyles.mainWrapper} edges={["right", "top", "left"]}>
+      <View style={findLearningStyles.headerWrapper}>
+        <Text style={findLearningStyles.header}>{translate("find_learning.title")}</Text>
+        <SearchBar
+          placeholder={translate("find_learning.search")}
+          onChangeText={onChangeText}
+          value={findLeaningText}
+          onSubmitEditing={onSearch}
+          platform={Platform.OS === PLATFORM_ANDROID ? PLATFORM_ANDROID : PLATFORM_IOS}
+          onCancel={onSearch}
+          returnKeyType="search"
+          showCancel={true}
+          containerStyle={findLearningStyles.searchBarContainer}
+          inputContainerStyle={findLearningStyles.searchBar}
+          inputStyle={findLearningStyles.searchBar}
+          rightIconContainerStyle={findLearningStyles.clearSearch}
+        />
+      </View>
+      {searchResult ? (
+        <>
+          <Text style={findLearningStyles.result}>
+            {translate("find_learning.results", {
+              value: searchResult.max_count
+            })}
+          </Text>
+          <FlatList
+            style={findLearningStyles.listWrapper}
+            data={searchResult.items}
+            renderItem={({ item }) => {
+              return learningItem(item);
+            }}
+            alwaysBounceVertical={false}
+            numColumns={2}
+            keyExtractor={(_, index) => index.toString()}
+          />
+        </>
+      ) : null}
     </SafeAreaView>
-  );
-};
-const LearningItem = ({ item, index }: { item: any; index: number }) => {
-  const theme = useContext(ThemeContext);
-  return (
-    <View key={index} style={{ ...findLearningStyles.tileWrapper, backgroundColor: theme.colorNeutral2 }}>
-      <Text style={findLearningStyles.itemTitle}>{item.title}</Text>
-    </View>
   );
 };

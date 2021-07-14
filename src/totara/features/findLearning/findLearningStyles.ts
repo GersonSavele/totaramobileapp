@@ -14,20 +14,41 @@
  */
 
 import { margins, paddings } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
 import { StyleSheet } from "react-native";
 
 export const findLearningStyles = StyleSheet.create({
-  tileWrapper: {
-    justifyContent: "center",
-    alignItems: "center",
-    margin: margins.marginS,
-    height: 100,
-    flexDirection: "row",
-    padding: paddings.paddingS,
-    flex: 0.5
+  mainWrapper: {
+    flex: 1,
+    marginBottom: margins.marginS
   },
-  itemTitle: {
-    textAlign: "center",
-    flex: 1
+  headerWrapper: {
+    paddingHorizontal: paddings.paddingXL,
+    marginTop: margins.margin2XL
+  },
+  header: {
+    ...TotaraTheme.textH2
+  },
+  searchBarContainer: {
+    paddingBottom: 0,
+    paddingTop: paddings.paddingL
+  },
+  searchBar: {
+    backgroundColor: TotaraTheme.colorNeutral3,
+    marginLeft: 0,
+    paddingHorizontal: paddings.paddingL,
+    ...TotaraTheme.textRegular,
+    lineHeight: TotaraTheme.textRegular.fontSize
+  },
+  clearSearch: {
+    marginLeft: 0,
+    marginRight: 0
+  },
+  result: {
+    ...TotaraTheme.textHeadline,
+    padding: paddings.paddingXL
+  },
+  listWrapper: {
+    paddingHorizontal: paddings.paddingL
   }
 });
