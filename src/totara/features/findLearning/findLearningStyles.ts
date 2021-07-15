@@ -23,8 +23,9 @@ export const findLearningStyles = StyleSheet.create({
     marginBottom: margins.marginS
   },
   headerWrapper: {
-    paddingHorizontal: paddings.paddingXL,
-    marginTop: margins.margin2XL
+    paddingHorizontal: paddings.paddingL,
+    marginTop: margins.margin2XL,
+    marginBottom: margins.marginL
   },
   header: {
     ...TotaraTheme.textH2
@@ -36,17 +37,15 @@ export const findLearningStyles = StyleSheet.create({
   searchBar: {
     backgroundColor: TotaraTheme.colorNeutral3,
     marginLeft: 0,
-    paddingHorizontal: paddings.paddingL,
-    ...TotaraTheme.textRegular,
-    lineHeight: TotaraTheme.textRegular.fontSize
+    paddingHorizontal: paddings.paddingL
   },
   clearSearch: {
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
   },
   result: {
     ...TotaraTheme.textHeadline,
-    padding: paddings.paddingXL
+    paddingTop: paddings.paddingXL
   },
   listWrapper: {
     paddingHorizontal: paddings.paddingL

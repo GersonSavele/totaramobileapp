@@ -20,8 +20,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
 import { LearningItemTile } from "./components/LearningItemTile";
-import { margins, paddings } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
 import { findLearningStyles } from "./findLearningStyles";
 
 const mockSearchResult: any = {
@@ -143,6 +141,42 @@ const mockSearchResult: any = {
   ]
 };
 
+type FindLearningHeaderProps = {
+  onChangeText: (text: string) => void;
+  findLeaningText: string;
+  onSearch: () => void;
+  count?: number;
+};
+const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: FindLearningHeaderProps) => {
+  return (
+    <View style={findLearningStyles.headerWrapper}>
+      <Text style={findLearningStyles.header}>{translate("find_learning.title")}</Text>
+      <SearchBar
+        placeholder={translate("find_learning.search")}
+        onChangeText={onChangeText}
+        value={findLeaningText}
+        onSubmitEditing={onSearch}
+        platform={Platform.OS === PLATFORM_ANDROID ? PLATFORM_ANDROID : PLATFORM_IOS}
+        onCancel={onSearch}
+        returnKeyType="search"
+        showCancel={true}
+        containerStyle={findLearningStyles.searchBarContainer}
+        inputContainerStyle={findLearningStyles.searchBar}
+        inputStyle={findLearningStyles.searchBar}
+        rightIconContainerStyle={findLearningStyles.clearSearch}
+      />
+
+      {count || count === 0 ? (
+        <Text style={findLearningStyles.result}>
+          {translate("find_learning.results", {
+            value: count
+          })}
+        </Text>
+      ) : null}
+    </View>
+  );
+};
+
 export const FindLearning = () => {
   const [searchResult, setSearchResult] = useState();
   const [findLeaningText, setFindLearningText] = useState<string>("");
@@ -164,43 +198,22 @@ export const FindLearning = () => {
   };
 
   return (
-    <SafeAreaView style={findLearningStyles.mainWrapper} edges={["right", "top", "left"]}>
-      <View style={findLearningStyles.headerWrapper}>
-        <Text style={findLearningStyles.header}>{translate("find_learning.title")}</Text>
-        <SearchBar
-          placeholder={translate("find_learning.search")}
-          onChangeText={onChangeText}
-          value={findLeaningText}
-          onSubmitEditing={onSearch}
-          platform={Platform.OS === PLATFORM_ANDROID ? PLATFORM_ANDROID : PLATFORM_IOS}
-          onCancel={onSearch}
-          returnKeyType="search"
-          showCancel={true}
-          containerStyle={findLearningStyles.searchBarContainer}
-          inputContainerStyle={findLearningStyles.searchBar}
-          inputStyle={findLearningStyles.searchBar}
-          rightIconContainerStyle={findLearningStyles.clearSearch}
-        />
-      </View>
-      {searchResult ? (
-        <>
-          <Text style={findLearningStyles.result}>
-            {translate("find_learning.results", {
-              value: searchResult.max_count
-            })}
-          </Text>
-          <FlatList
-            style={findLearningStyles.listWrapper}
-            data={searchResult.items}
-            renderItem={({ item }) => {
-              return learningItem(item);
-            }}
-            alwaysBounceVertical={false}
-            numColumns={2}
-            keyExtractor={(_, index) => index.toString()}
+    <SafeAreaView style={findLearningStyles.mainWrapper} edges={["top"]}>
+      <FlatList
+        ListHeaderComponent={
+          <FindLearningHeader
+            onChangeText={onChangeText}
+            onSearch={onSearch}
+            findLeaningText={findLeaningText}
+            count={searchResult?.max_count}
           />
-        </>
-      ) : null}
+        }
+        style={findLearningStyles.listWrapper}
+        data={searchResult?.items}
+        renderItem={({ item }) => learningItem(item)}
+        numColumns={2}
+        keyExtractor={(_, index) => index.toString()}
+      />
     </SafeAreaView>
   );
 };

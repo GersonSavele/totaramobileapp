@@ -13,12 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings, fontWeights, margins } from "@totara/theme/constants";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import { CatalogItem } from "@totara/types/CatalogItem";
+import { ImageElement } from "./ImageElement";
 
 interface LearningItemTileProps {
   item: CatalogItem;
@@ -27,20 +28,13 @@ interface LearningItemTileProps {
 export const LearningItemTile = ({ item }: LearningItemTileProps) => {
   return (
     <View style={styles.itemWrapper}>
-      <View style={styles.tileWrapper}>
-        <Image
-          source={{
-            uri: item.mobile_image
-          }}
-          style={styles.itemImage}
-        />
-        <View style={styles.detailWrapper}>
-          <View style={styles.detail}>
-            <Text style={styles.itemFullName} numberOfLines={2}>
-              {item.title}
-            </Text>
-            <Text style={styles.itemType}>{capitalizeFirstLetter(item.itemtype)}</Text>
-          </View>
+      <ImageElement imageSrc={item.mobile_image} style={styles.itemImage} />
+      <View style={styles.detailWrapper}>
+        <View style={styles.detail}>
+          <Text style={styles.itemFullName} numberOfLines={2}>
+            {item.title}
+          </Text>
+          <Text style={styles.itemType}>{capitalizeFirstLetter(item.itemtype)}</Text>
         </View>
       </View>
     </View>
@@ -49,14 +43,9 @@ export const LearningItemTile = ({ item }: LearningItemTileProps) => {
 
 const styles = StyleSheet.create({
   itemWrapper: {
-    flex: 0.5,
-    aspectRatio: 1
-  },
-  tileWrapper: {
     justifyContent: "flex-start",
-    flex: 2,
+    flex: 1,
     marginHorizontal: margins.marginS,
-    marginTop: 0,
     marginBottom: margins.marginL,
     borderColor: TotaraTheme.colorNeutral5,
     borderWidth: 1,
@@ -65,13 +54,9 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     width: "100%",
-    height: "auto",
     aspectRatio: 2,
-    resizeMode: "cover",
-    flex: 1
   },
   detailWrapper: {
-    flex: 1,
     backgroundColor: TotaraTheme.colorNeutral2
   },
   detail: {
