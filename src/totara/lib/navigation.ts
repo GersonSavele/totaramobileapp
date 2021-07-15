@@ -15,7 +15,6 @@
 
 import { TransitionPresets } from "@react-navigation/stack";
 import { learningItemEnum } from "@totara/features/currentLearning/constants";
-import { paddings } from "@totara/theme/constants";
 
 /**
  * Navigates to a next screen using react navigation.
@@ -89,8 +88,6 @@ const cardModalOptions = {
   headerShown: true,
   headerBackTitleVisible: false,
   headerTitle: '',
-  headerBackImage: () => null,
-  headerBackTitleStyle: { paddingLeft: paddings.paddingL }
 }
 
 const popupModalOptions = {

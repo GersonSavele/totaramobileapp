@@ -13,7 +13,8 @@
     "ok": "Ok",
     "delete": "Delete",
     "copied_to_clipboard": "Copied to clipboard",
-    "accessibility_go_back": "Go back"
+    "accessibility_go_back": "Go back",
+    "done": "Done"
   },
   "learning_items": {
     "course": "Course",
@@ -266,5 +267,13 @@
     "search": "Search courses, articles, playlists...",
     "title": "Find Learning",
     "results": "{{value}} results"
+  },
+  "find_learning_overview": {
+    "overview": "Overview",
+    "course": "Course",
+    "go_to_course": "Go to course",
+    "you_can_enrol": "You can enrol in this course",
+    "you_are_enrolled": "You are enrolled in this course",
+    "you_are_not_enrolled": "You are not enrolled in this course"
   }
 }

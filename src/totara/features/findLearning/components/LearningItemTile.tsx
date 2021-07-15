@@ -21,9 +21,11 @@ import { capitalizeFirstLetter } from "@totara/lib/tools";
 import { CatalogItem } from "@totara/types/CatalogItem";
 import { ImageElement } from "./ImageElement";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface LearningItemTileProps {
   item: CatalogItem;
+  onItemTap: () => void
 }
 
 export const LearningItemTileSkeleton = () => {
@@ -39,10 +41,10 @@ export const LearningItemTileSkeleton = () => {
   </View >
 };
 
-export const LearningItemTile = ({ item }: LearningItemTileProps) => {
+export const LearningItemTile = ({ item, onItemTap }: LearningItemTileProps) => {
 
   return (
-    <View style={styles.itemWrapper}>
+    <TouchableOpacity containerStyle={styles.itemWrapper} onPress={onItemTap}>
       <ImageElement imageSrc={item.mobile_image} style={styles.itemImage} />
       <View style={styles.detailWrapper}>
         <View style={styles.detail}>
@@ -52,7 +54,7 @@ export const LearningItemTile = ({ item }: LearningItemTileProps) => {
           <Text style={styles.itemType}>{capitalizeFirstLetter(item.itemtype)}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

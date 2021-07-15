@@ -22,6 +22,8 @@ import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
 import { LearningItemTile, LearningItemTileSkeleton } from "./components/LearningItemTile";
 import { findLearningStyles } from "./findLearningStyles";
 import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NAVIGATION } from "@totara/lib/navigation";
 
 const mockSearchResult: any = {
   max_count: 599,
@@ -184,6 +186,7 @@ export const FindLearning = () => {
   const [isLoading, setIsLoading] = useState(true); // This `isloading` should replace with useQuery
   const [searchResult, setSearchResult] = useState<any | null>(null);
   const [findLeaningText, setFindLearningText] = useState<string>("");
+  const navigation = useNavigation();
 
   const onSearch = () => {
     setIsLoading(true);
@@ -198,8 +201,12 @@ export const FindLearning = () => {
     }
   }, [isLoading]);
 
+  const onItemTap = () => {
+    navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW);
+  }
+
   const learningItem = useCallback(
-    ({ item }: { item: any; index: number }) => <LearningItemTile item={item} />,
+    ({ item }: { item: any }) => <LearningItemTile item={item} onItemTap={onItemTap} />,
     []
   );
 
