@@ -208,7 +208,9 @@ export const FindLearning = () => {
     []
   );
 
-  const learningItemLoading = useCallback(({ index }: { index: number }) => <LoadingPlaceHolder index={index} />, []);
+  const learningItemLoading = useCallback(({ index }: { index: number }) => <LoadingPlaceHolder index={index} />, [
+    searchResult
+  ]);
 
   return (
     <SafeAreaView style={findLearningStyles.mainWrapper} edges={["top"]}>
