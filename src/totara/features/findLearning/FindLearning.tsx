@@ -13,16 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import React, { useState, useCallback } from "react";
-import { FlatList, Platform, Text, View, Dimensions } from "react-native";
+import { FlatList, Platform, Text, View } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
-import { LearningItemTile } from "./components/LearningItemTile";
+import { LearningItemTile, LearningItemTileSkeleton } from "./components/LearningItemTile";
 import { findLearningStyles } from "./findLearningStyles";
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { useEffect } from "react";
 
 const mockSearchResult: any = {
   max_count: 599,
@@ -181,51 +180,46 @@ const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: 
   );
 };
 
-
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
-
 export const FindLearning = () => {
-  const isLoading = true; // This `isloading` should replace with useQuery
+  const [isLoading, setIsLoading] = useState(true); // This `isloading` should replace with useQuery
   const [searchResult, setSearchResult] = useState<any | null>(null);
   const [findLeaningText, setFindLearningText] = useState<string>("");
 
   const onSearch = () => {
-    if (findLeaningText && !isLoading) {
-      setSearchResult(mockSearchResult);
-    } else if (findLeaningText && isLoading) {
-      setSearchResult(Array.from(Array(Math.floor(SCREEN_HEIGHT / 100)), (_, i) => i + i));
-    } else {
-      setSearchResult(undefined);
-    }
+    setIsLoading(true);
   };
 
-  const onChangeText = (text) => {
-    setFindLearningText(text);
-  }
+  useEffect(() => {
+    if (isLoading) {
+      setTimeout(() => {
+        setSearchResult(mockSearchResult);
+        setIsLoading(false);
+      }, 2000);
+    }
+  }, [isLoading]);
 
   const learningItem = useCallback(
     ({ item }: { item: any; index: number }) => <LearningItemTile item={item} />,
     []
   );
 
-  const learningItemLoading = useCallback(({ index }: { index: number }) => <LoadingPlaceHolder index={index} />, [
-    searchResult
-  ]);
-
   return (
     <SafeAreaView style={findLearningStyles.mainWrapper} edges={["top"]}>
       <FlatList
         ListHeaderComponent={
           <FindLearningHeader
-            onChangeText={onChangeText}
+            onChangeText={setFindLearningText}
             onSearch={onSearch}
             findLeaningText={findLeaningText}
             count={searchResult?.max_count}
           />
         }
+        ListFooterComponent={
+          isLoading ? <SkeletonLoading /> : null
+        }
         style={findLearningStyles.listWrapper}
-        data={searchResult?.items}
-        renderItem={isLoading ? learningItemLoading : learningItem}
+        data={!isLoading && searchResult?.items}
+        renderItem={learningItem}
         numColumns={2}
         keyExtractor={(_, index) => index.toString()}
       />
@@ -234,17 +228,9 @@ export const FindLearning = () => {
 };
 
 
-const LoadingPlaceHolder = ({ index }: { index: number }) => {
-  return (
-    <View key={index} style={findLearningStyles.skeletonWrapper}>
-      <SkeletonPlaceholder highlightColor={TotaraTheme.colorNeutral2} backgroundColor={TotaraTheme.colorNeutral3}>
-        <View style={findLearningStyles.skeletonContentWrapper}>
-          <View style={findLearningStyles.imageSkeleton} />
-          <View style={findLearningStyles.nameSkeleton} />
-          <View style={findLearningStyles.typeSkeleton} />
-        </View>
-      </SkeletonPlaceholder>
-    </View>
-  );
-};
+const SkeletonLoading = () => {
+  return <View style={{ flexWrap: 'wrap', flexDirection: 'row' }} >
+    {Array.from(Array(8)).map((_, i) => <LearningItemTileSkeleton key={i} />)}
+  </View >
+}
 

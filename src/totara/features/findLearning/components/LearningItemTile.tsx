@@ -16,22 +16,37 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings, fontWeights, margins } from "@totara/theme/constants";
+import { paddings, fontWeights, margins, borderRadius } from "@totara/theme/constants";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import { CatalogItem } from "@totara/types/CatalogItem";
 import { ImageElement } from "./ImageElement";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 interface LearningItemTileProps {
   item: CatalogItem;
 }
 
+export const LearningItemTileSkeleton = () => {
+
+  return <View style={styles.skeletonWrapper}>
+    <SkeletonPlaceholder highlightColor={TotaraTheme.colorNeutral2} backgroundColor={TotaraTheme.colorNeutral3}>
+      <View style={{ aspectRatio: 1 }}>
+        <View style={styles.skeletonImage} />
+        <View style={styles.skeletonTitle} />
+        <View style={styles.skeletonType} />
+      </View>
+    </SkeletonPlaceholder>
+  </View >
+};
+
 export const LearningItemTile = ({ item }: LearningItemTileProps) => {
+
   return (
     <View style={styles.itemWrapper}>
       <ImageElement imageSrc={item.mobile_image} style={styles.itemImage} />
       <View style={styles.detailWrapper}>
         <View style={styles.detail}>
-          <Text style={styles.itemFullName} numberOfLines={2}>
+          <Text style={styles.title} numberOfLines={2}>
             {item.title}
           </Text>
           <Text style={styles.itemType}>{capitalizeFirstLetter(item.itemtype)}</Text>
@@ -50,7 +65,7 @@ const styles = StyleSheet.create({
     borderColor: TotaraTheme.colorNeutral5,
     borderWidth: 1,
     overflow: "hidden",
-    borderRadius: margins.marginS
+    borderRadius: borderRadius.borderRadiusS
   },
   itemImage: {
     width: "100%",
@@ -62,7 +77,7 @@ const styles = StyleSheet.create({
   detail: {
     padding: paddings.paddingL
   },
-  itemFullName: {
+  title: {
     flexWrap: "wrap",
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightBold
@@ -71,5 +86,25 @@ const styles = StyleSheet.create({
     marginTop: margins.marginS,
     ...TotaraTheme.textSmall,
     color: TotaraTheme.colorNeutral7
+  },
+  skeletonWrapper: {
+    flexBasis: '50%',
+    padding: paddings.paddingL,
+    paddingTop: 0,
+    marginBottom: margins.marginS,
+  },
+  skeletonImage: {
+    aspectRatio: 2,
+    borderRadius: borderRadius.borderRadiusS
+  },
+  skeletonTitle: {
+    height: 30,
+    marginTop: margins.marginL,
+    borderRadius: borderRadius.borderRadiusS
+  },
+  skeletonType: {
+    height: 15,
+    marginTop: margins.marginL,
+    borderRadius: borderRadius.borderRadiusS
   }
 });
