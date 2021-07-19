@@ -69,7 +69,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
         }
       }).then(({ data }) => {
         if (!data?.totara_mobile_program_view) {
-          throw new Error("Programme/Certificate reoporting failed.");
+          console.warn("Programme/Certificate reporting failed.");
         }
       });
     }
@@ -101,7 +101,7 @@ type CourseGroupDetailsContentProps = {
   testID?: string;
   badgeTitlePath: string;
   itemType: string;
-  loading: boolean
+  loading: boolean;
 };
 
 const CourseGroupDetailsContent = ({
