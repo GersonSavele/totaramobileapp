@@ -25,7 +25,7 @@ import { margins, iconSizes } from "@totara/theme/constants";
 import { Images } from "@resources/images";
 import { LearningItem } from "@totara/types";
 import listViewStyles from "@totara/theme/listView";
-
+import { extractTargetId } from "../utils";
 type CourseProps = {
   course: LearningItem;
   navigate: any;
@@ -37,6 +37,7 @@ const Course = ({ course, navigate, testID }: CourseProps) => {
   const onClose = () => {
     setShowRestriction(!showRestriction);
   };
+
   return (
     <TouchableOpacity
       testID={testID}
@@ -45,7 +46,7 @@ const Course = ({ course, navigate, testID }: CourseProps) => {
           navigateTo({
             navigate: navigate,
             routeId: NAVIGATION.COURSE_DETAILS,
-            props: { targetId: course.id }
+            props: { targetId: extractTargetId(course.id) }
           });
         } else {
           setShowRestriction(true);
