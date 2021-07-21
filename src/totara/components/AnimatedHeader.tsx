@@ -20,7 +20,7 @@ import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, StatusBar } from "react-native";
 import Animated, { Extrapolate, interpolate, call, useCode } from "react-native-reanimated";
-import { useSafeArea } from "react-native-safe-area-view";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const STATUSBAR_HEIGHT = 50;
 const TOPNAVI_OFFSET = 250;
@@ -31,7 +31,7 @@ type AnimatedHeaderProps =
   { title: string, subTitle?: string, scrollValue?: any, leftAction: any }
 
 const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHeaderProps) => {
-  const safeArea = useSafeArea();
+  const safeArea = useSafeAreaInsets();
   const isFloating = !!scrollValue;
   const [dark, setDark] = useState(false);
 
