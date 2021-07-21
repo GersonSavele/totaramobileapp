@@ -8,6 +8,7 @@ import { StyleSheet, Text, View, ImageSourcePropType, Image, ScrollView } from "
 import { Images } from "@resources/images";
 import { translate } from "@totara/locale";
 import { HeaderBackButton } from '@react-navigation/stack';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 
@@ -47,12 +48,6 @@ const overviewStyles = StyleSheet.create({
 
   enrolmentAction: {
     marginTop: margins.marginL
-  },
-
-  descriptionContainer: {
-    flex: 1,
-    marginTop: margins.marginL,
-    marginBottom: margins.marginL
   },
   description: {
     ...textRegular
@@ -97,6 +92,7 @@ const OverviewModalContent = ({
   isPrivilegedUser: boolean
 }) => {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -123,7 +119,7 @@ const OverviewModalContent = ({
     isGuestAccessEnabled || isSelfEnrolmentEnabled ? translate("find_learning_overview.you_can_enrol") : translate("find_learning_overview.you_are_not_enrolled")
   );
 
-  return <View style={overviewStyles.root}>
+  return <ScrollView style={{ ...overviewStyles.root, marginBottom: insets.bottom }}>
 
     <View style={overviewStyles.banner}>
       <ImageElement imageSrc={undefined} />
@@ -145,12 +141,10 @@ const OverviewModalContent = ({
       </View>}
     </View>
 
-    <ScrollView style={overviewStyles.descriptionContainer}>
-      <Text style={overviewStyles.description}>
-        Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum. Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum. Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum.
-      </Text>
-    </ScrollView>
+    <Text style={overviewStyles.description}>
+      Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum. Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum. Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum.
+    </Text>
 
-  </View >
+  </ScrollView >
 }
 
