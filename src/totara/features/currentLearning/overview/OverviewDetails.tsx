@@ -268,13 +268,15 @@ const Summary = ({ summary = "", summaryTypeTitle = "", summaryFormat }: Summary
       <Text numberOfLines={1} style={TotaraTheme.textHeadline}>
         {summaryTypeTitle}
       </Text>
-      <View style={overviewStyles.summaryViewWrap}>
-        {summaryFormat == DescriptionFormat.jsonEditor ? (
-          <View>{wekaContent(!isEmpty(summary) && JSON.parse(summary as string))}</View>
-        ) : (
-          <Text style={overviewStyles.summaryText}>{summary}</Text>
-        )}
-      </View>
+      {!isEmpty(summary) && (
+        <View style={overviewStyles.summaryViewWrap}>
+          {summaryFormat == DescriptionFormat.jsonEditor ? (
+            <View>{wekaContent(JSON.parse(summary as string))}</View>
+          ) : (
+            <Text style={overviewStyles.summaryText}>{summary}</Text>
+          )}
+        </View>
+      )}
     </View>
   );
 };
