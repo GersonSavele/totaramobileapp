@@ -16,6 +16,7 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
+import { isEmpty } from "lodash";
 import { courseSelfComplete } from "../course/api";
 import { AddBadge, Loading, GeneralErrorModal, CircleIcon } from "@totara/components";
 import { translate } from "@totara/locale";
@@ -269,7 +270,7 @@ const Summary = ({ summary = "", summaryTypeTitle = "", summaryFormat }: Summary
       </Text>
       <View style={overviewStyles.summaryViewWrap}>
         {summaryFormat == DescriptionFormat.jsonEditor ? (
-          <View>{wekaContent(JSON.parse(summary as string))}</View>
+          <View>{wekaContent(!isEmpty(summary) && JSON.parse(summary as string))}</View>
         ) : (
           <Text style={overviewStyles.summaryText}>{summary}</Text>
         )}
