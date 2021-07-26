@@ -55,17 +55,7 @@ const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
       navigationOptions: ({ navigation }: any) =>
         totaraNavigationOptions({
           title: navigation.getParam("title"),
-          opacity: navigation.getParam("opacity"),
-          headerRight: () => (
-            <View style={{ paddingRight: paddings.paddingM }}>
-              <MoreInfo
-                onPress={() => {
-                  // @ts-ignore
-                  navigation.emit("viewCriteriaTap");
-                }}
-              />
-            </View>
-          )
+          opacity: navigation.getParam("opacity")
         })
     }
   },

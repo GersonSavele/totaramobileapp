@@ -19,6 +19,8 @@ import { translate } from "@totara/locale";
 import CriteriaSheet from "../components/CriteriaSheet";
 import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
 import listViewStyles from "@totara/theme/listView";
+import { paddings } from "@totara/theme/constants";
+import MoreInfo from "@totara/components/MoreInfo";
 
 const LearningItems = ({ item, navigation }: any) => {
   return <CurrentLearningListViewItem item={item} navigation={navigation} />;
@@ -34,17 +36,16 @@ const CourseList = ({ navigation }: CourseListProps) => {
 
   useEffect(() => {
     navigation.state.params!.title = courseList.label;
+    navigation.setOptions({
+      headerRight: rightOption
+    });
   }, [courseList.label]);
 
-  useEffect(() => {
-    const onViewCriteriaTapListener = navigation.addListener("viewCriteriaTap", () => {
-      setShow(true);
-    });
-
-    return () => {
-      onViewCriteriaTapListener && onViewCriteriaTapListener.remove();
-    };
-  }, [navigation]);
+  const rightOption = () => (
+    <View style={{ paddingRight: paddings.paddingM }}>
+      <MoreInfo onPress={() => setShow(true)} />
+    </View>
+  );
 
   const onClose = () => {
     setShow(!show);
