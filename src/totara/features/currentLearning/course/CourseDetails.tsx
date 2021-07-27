@@ -32,8 +32,8 @@ import courseDetailsStyle from "./courseDetailsStyle";
 import { CourseFormat } from "@totara/types/Course";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 
-const CourseDetails = ({ navigation }: any) => {
-  const courseId = navigation.getParam("targetId");
+const CourseDetails = ({ navigation, route }: any) => {
+  const courseId = route?.params?.targetId || navigation.getParam("targetId");
   const { networkStatus, error, data, refetch } = useQuery(coreCourse, {
     variables: { courseid: courseId }, notifyOnNetworkStatusChange: true
   });
@@ -43,19 +43,17 @@ const CourseDetails = ({ navigation }: any) => {
   };
 
   if (networkStatus === NetworkStatus.loading) return <Loading />;
-  if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} />;
+  if (!data || error) return <LoadingError onRefreshTap={onContentRefresh} />;
 
-  if (data) {
-    return (
-      <CourseDetailsContent
-        loading={networkStatus === NetworkStatus.refetch}
-        pullToRefresh={onContentRefresh}
-        courseDetails={data.mobile_course}
-        courseRefreshCallback={refetch}
-        navigation={navigation}
-      />
-    );
-  }
+  return (
+    <CourseDetailsContent
+      loading={networkStatus === NetworkStatus.refetch}
+      pullToRefresh={onContentRefresh}
+      courseDetails={data.mobile_course}
+      courseRefreshCallback={refetch}
+      navigation={navigation}
+    />
+  );
 };
 
 type CourseDetailsContentProps = {

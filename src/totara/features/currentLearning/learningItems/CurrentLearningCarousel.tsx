@@ -18,7 +18,7 @@ import { TouchableOpacity, View, ScrollView, RefreshControl } from "react-native
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { AddBadge } from "@totara/components";
-import { navigateTo, itemToRouteMap } from "@totara/lib/navigation";
+import { navigateTo, learningItemToRouteMap } from "@totara/lib/navigation";
 import NativeAccessRestriction from "../NativeAccessRestriction";
 import { iconSizes, paddings } from "@totara/theme/constants";
 import { deviceScreen } from "@totara/lib/tools";
@@ -100,7 +100,7 @@ const LearningItemWithSummaryAndNavigation = ({ item }: any) => {
       const targetId = extractTargetId(item.id);
       navigateTo({
         navigate: navigation.navigate,
-        routeId: itemToRouteMap[item.itemtype],
+        routeId: learningItemToRouteMap[item.itemtype],
         props: { targetId: targetId, courseGroupType: item.itemtype }
       });
     } else {

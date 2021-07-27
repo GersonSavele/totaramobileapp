@@ -46,6 +46,7 @@ const SETTINGS = "Settings";
 //Find Learning
 const FIND_LEARNING = "FindLearning";
 const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
+const FIND_LEARNING_COURSE_DETAILS = "FindLearningCourseDetails";
 
 //Site url and Login
 const SITE_URL = "SiteUrl";
@@ -53,7 +54,7 @@ const NATIVE_LOGIN = "NativeLogin";
 const BROWSER_LOGIN = "BrowserLogin";
 const WEBVIEW_LOGIN = "WebViewLogin";
 
-const itemToRouteMap = {
+const learningItemToRouteMap = {
   [learningItemEnum.Course]: COURSE_DETAILS,
   [learningItemEnum.Program]: COURSE_GROUP_DETAILS,
   [learningItemEnum.Certification]: COURSE_GROUP_DETAILS
@@ -75,6 +76,7 @@ const NAVIGATION = {
   COURSE_GROUP_DETAILS,
   FIND_LEARNING,
   FIND_LEARNING_OVERVIEW,
+  FIND_LEARNING_COURSE_DETAILS,
   SITE_URL,
   NATIVE_LOGIN,
   WEBVIEW_LOGIN,
@@ -105,4 +107,4 @@ const popupModalOptions = {
   }
 }
 
-export { navigateTo, NAVIGATION, itemToRouteMap, cardModalOptions, popupModalOptions };
+export { navigateTo, NAVIGATION, learningItemToRouteMap, cardModalOptions, popupModalOptions };

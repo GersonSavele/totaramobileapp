@@ -17,7 +17,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { translate } from "@totara/locale";
 import moment from "moment";
-import { itemToRouteMap, navigateTo } from "@totara/lib/navigation";
+import { learningItemToRouteMap, navigateTo } from "@totara/lib/navigation";
 import { ImageWrapper, ProgressCircle } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
@@ -44,8 +44,8 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
       dueDateState === "danger"
         ? TotaraTheme.colorAlert
         : dueDateState === "warning"
-        ? TotaraTheme.colorWarning
-        : TotaraTheme.colorInfo;
+          ? TotaraTheme.colorWarning
+          : TotaraTheme.colorInfo;
     const text =
       dueDateState === "danger" ? translate("current_learning.overdue_by") : translate("current_learning.due_in");
 
@@ -62,7 +62,7 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
 
       navigateTo({
         navigate: navigation.navigate,
-        routeId: itemToRouteMap[itemtype],
+        routeId: learningItemToRouteMap[itemtype],
         props: { targetId: targetId, courseGroupType: item.itemtype }
       });
     } else {

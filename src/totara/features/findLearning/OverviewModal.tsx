@@ -94,6 +94,14 @@ const OverviewModalContent = ({
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
+  const goToCourse = () => {
+    const routeId = "FindLearningCourseDetails"
+    const targetId = 440
+    const itemType = 'course'
+
+    navigation.navigate(routeId, { targetId: targetId, courseGroupType: itemType })
+  }
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: (props) => (
@@ -105,11 +113,8 @@ const OverviewModalContent = ({
         />
       ),
       headerRight: () => {
-        //will close this modal and redirect the user to the user with no need to enrol (privileged user, ie: admin)
         return isPrivilegedUser && <TertiaryButton text={translate("find_learning_overview.go_to_course")}
-          onPress={() => {
-            navigation.goBack();
-          }}
+          onPress={goToCourse}
         />
       }
     });
@@ -134,10 +139,7 @@ const OverviewModalContent = ({
 
       {(isGuestAccessEnabled || isUserEnrolled || isSelfEnrolmentEnabled || isPrivilegedUser) && <View>
         <PrimaryButton style={overviewStyles.enrolmentAction} text={translate("find_learning_overview.go_to_course")}
-          onPress={() => {
-            //will handle go to the course and open the enrolment options when necessary
-            navigation.goBack();
-          }} />
+          onPress={goToCourse} />
       </View>}
     </View>
 
