@@ -16,6 +16,7 @@ import React, { useState, useCallback } from "react";
 import { FlatList, Platform, Text, View } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { isEmpty } from "lodash";
 
 import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
@@ -24,125 +25,9 @@ import { findLearningStyles } from "./findLearningStyles";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { NAVIGATION } from "@totara/lib/navigation";
-
-const mockSearchResult: any = {
-  max_count: 599,
-  items: [
-    {
-      title: "(AND ONLY) Simple Test Programme",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "(BETA) Audiences in Totara",
-      itemtype: "course",
-      mobile_image: "https://jooinn.com/images/square-4.jpg"
-    },
-    {
-      title: "Become A Learning Machine 2.0: Read 300 Books This Year",
-      itemtype: "course",
-      mobile_image:
-        "https://thumbs.dreamstime.com/z/words-tall-short-flashcard-cartoon-animal-characters-opposite-adjectives-explanation-card-flat-vector-illustration-179247227.jpg"
-    },
-    {
-      title: "Hypnosis: Learn Self Hypnosis For Personal Development",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Productivity Masterclass: How To Powerfully Get Things Done ",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "The Complete SQL Bootcamp ",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Deep Learning: Hands-On Artificial Neural Networks",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Data Science: Real-Life Data Science Exercises Included ",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Blockchain: Learn How To Build Your First Blockchain ",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "NLP Personal Transformation (NLP for Personal Development)",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Coaching Skills Mastery (NLP Life Coaching) ",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Management Skills: Productivity ",
-      itemtype: "playlist",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Leadership: Practical Leadership Skills ",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Certified Lean Management Professional ",
-      itemtype: "programe",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "How to Manage & Influence Your Virtual Team ",
-      itemtype: "programe",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Virtual Assistant: Find, Hire, Train, and Manage ",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Machine Learning: Hands-On Python & R In Data Science",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Blockchain: Learn How To Build Your First Blockchain ",
-      itemtype: "course",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    },
-    {
-      title: "Blockchain: Learn How To Build Your First Blockchain ",
-      itemtype: "programe",
-      mobile_image:
-        "https://www.businessinsider.in/thumb/msid-81769823,width-600,resizemode-4,imgsize-297676/tech/how-to/how-to-reverse-image-search-on-google-to-find-information-related-to-a-specific-photo/img60638be021887500193e8451.jpg"
-    }
-  ]
-};
+import { useLazyQuery } from "@apollo/client";
+import { queryFindLearning } from "./api";
+import { CatalogItem, FindLearningPage } from "@totara/types/FindLearning";
 
 type FindLearningHeaderProps = {
   onChangeText: (text: string) => void;
@@ -150,7 +35,6 @@ type FindLearningHeaderProps = {
   onSearch: () => void;
   count?: number;
 };
-
 
 const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: FindLearningHeaderProps) => {
   return (
@@ -170,7 +54,6 @@ const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: 
         inputStyle={findLearningStyles.searchBar}
         rightIconContainerStyle={findLearningStyles.clearSearch}
       />
-
       {count || count === 0 ? (
         <Text style={findLearningStyles.result}>
           {translate("find_learning.results", {
@@ -183,32 +66,63 @@ const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: 
 };
 
 export const FindLearning = () => {
-  const [isLoading, setIsLoading] = useState(true); // This `isloading` should replace with useQuery
-  const [searchResult, setSearchResult] = useState<any | null>(null);
+  const [searchResult, setSearchResult] = useState<FindLearningPage>();
+  const [pointer, setPointer] = useState(0);
   const [findLeaningText, setFindLearningText] = useState<string>("");
   const navigation = useNavigation();
-
-  const onSearch = () => {
-    setIsLoading(true);
-  };
+  const [onCallSearch, { loading, data }] = useLazyQuery(queryFindLearning, {
+    fetchPolicy: "no-cache"
+  });
 
   useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => {
-        setSearchResult(mockSearchResult);
-        setIsLoading(false);
-      }, 2000);
+    if (data?.catalog_page) {
+      const formattedSearchResult = isEmpty(searchResult)
+        ? data?.catalog_page
+        : { ...data?.catalog_page, items: [...searchResult?.items, ...data?.catalog_page.items] };
+      setSearchResult(formattedSearchResult);
+    } else {
+      setSearchResult(undefined);
     }
-  }, [isLoading]);
+  }, [data]);
+
+  useEffect(() => {
+    setPointer(0);
+  }, [findLeaningText]);
+
+  useEffect(() => {
+    onSearch();
+  }, [pointer]);
+
+  const onSearch = () => {
+    if (isEmpty(findLeaningText)) {
+      setSearchResult(undefined);
+      return;
+    }
+    onCallSearch({
+      variables: {
+        pointer: pointer,
+        filter_data: {
+          catalog_fts: findLeaningText
+        }
+      },
+      notifyOnNetworkStatusChange: true
+    });
+  };
 
   const onItemTap = () => {
     navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW);
-  }
+  };
 
   const learningItem = useCallback(
-    ({ item }: { item: any }) => <LearningItemTile item={item} onItemTap={onItemTap} />,
+    ({ item }: { item: CatalogItem }) => <LearningItemTile item={item} onItemTap={onItemTap} />,
     []
   );
+
+  const loadNextPage = () => {
+    if (!searchResult?.final_page && searchResult?.items) {
+      setPointer(searchResult?.items?.length);
+    }
+  };
 
   return (
     <SafeAreaView style={findLearningStyles.mainWrapper} edges={["top"]}>
@@ -221,23 +135,25 @@ export const FindLearning = () => {
             count={searchResult?.max_count}
           />
         }
-        ListFooterComponent={
-          isLoading ? <SkeletonLoading /> : null
-        }
+        ListFooterComponent={loading ? <SkeletonLoading /> : null}
         style={findLearningStyles.listWrapper}
-        data={!isLoading && searchResult?.items}
+        data={searchResult?.items}
         renderItem={learningItem}
         numColumns={2}
         keyExtractor={(_, index) => index.toString()}
+        onEndReachedThreshold={0}
+        onEndReached={loadNextPage}
       />
     </SafeAreaView>
   );
 };
 
-
 const SkeletonLoading = () => {
-  return <View style={{ flexWrap: 'wrap', flexDirection: 'row' }} >
-    {Array.from(Array(8)).map((_, i) => <LearningItemTileSkeleton key={i} />)}
-  </View >
-}
-
+  return (
+    <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
+      {Array.from(Array(8)).map((_, i) => (
+        <LearningItemTileSkeleton key={i} />
+      ))}
+    </View>
+  );
+};

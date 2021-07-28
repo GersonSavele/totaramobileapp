@@ -18,8 +18,15 @@ import { learningItemEnum } from "@totara/features/currentLearning/constants";
 export interface CatalogItem {
   id: number;
   itemid: number;
-  itemtype: learningItemEnum.Program | learningItemEnum.Course | learningItemEnum.Certification | "playlist";
+  item_type: learningItemEnum.Course | learningItemEnum.Playlist;
   title: string;
   mobile_image?: string;
   description?: string;
+}
+
+export interface FindLearningPage {
+  max_count: number;
+  pointer: number;
+  final_page: boolean;
+  items: [CatalogItem?];
 }

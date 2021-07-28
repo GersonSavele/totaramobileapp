@@ -18,7 +18,8 @@ import { deviceScreen } from "../../lib/tools";
 enum learningItemEnum {
   Course = "course",
   Program = "program",
-  Certification = "certification"
+  Certification = "certification",
+  Playlist = "playlist"
 }
 
 enum completionTrack {

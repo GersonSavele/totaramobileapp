@@ -18,40 +18,42 @@ import React from "react";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings, fontWeights, margins, borderRadius } from "@totara/theme/constants";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
-import { CatalogItem } from "@totara/types/CatalogItem";
+import { CatalogItem } from "@totara/types/FindLearning";
 import { ImageElement } from "./ImageElement";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface LearningItemTileProps {
   item: CatalogItem;
-  onItemTap: () => void
+  onItemTap: () => void;
 }
 
 export const LearningItemTileSkeleton = () => {
-
-  return <View style={styles.skeletonWrapper}>
-    <SkeletonPlaceholder highlightColor={TotaraTheme.colorNeutral2} backgroundColor={TotaraTheme.colorNeutral3}>
-      <View style={{ aspectRatio: 1 }}>
-        <View style={styles.skeletonImage} />
-        <View style={styles.skeletonTitle} />
-        <View style={styles.skeletonType} />
-      </View>
-    </SkeletonPlaceholder>
-  </View >
+  return (
+    <View style={styles.skeletonWrapper}>
+      <SkeletonPlaceholder highlightColor={TotaraTheme.colorNeutral2} backgroundColor={TotaraTheme.colorNeutral3}>
+        <View style={{ aspectRatio: 1 }}>
+          <View style={styles.skeletonImage} />
+          <View style={styles.skeletonTitle} />
+          <View style={styles.skeletonType} />
+        </View>
+      </SkeletonPlaceholder>
+    </View>
+  );
 };
 
 export const LearningItemTile = ({ item, onItemTap }: LearningItemTileProps) => {
+  const { mobile_image, title, item_type } = item;
 
   return (
     <TouchableOpacity containerStyle={styles.itemWrapper} onPress={onItemTap}>
-      <ImageElement imageSrc={item.mobile_image} style={styles.itemImage} />
+      <ImageElement imageSrc={mobile_image} style={styles.itemImage} />
       <View style={styles.detailWrapper}>
         <View style={styles.detail}>
           <Text style={styles.title} numberOfLines={2}>
-            {item.title}
+            {title}
           </Text>
-          <Text style={styles.itemType}>{capitalizeFirstLetter(item.itemtype)}</Text>
+          <Text style={styles.itemType}>{capitalizeFirstLetter(item_type)}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     width: "100%",
-    aspectRatio: 2,
+    aspectRatio: 2
   },
   detailWrapper: {
     backgroundColor: TotaraTheme.colorNeutral2
@@ -90,10 +92,10 @@ const styles = StyleSheet.create({
     color: TotaraTheme.colorNeutral7
   },
   skeletonWrapper: {
-    flexBasis: '50%',
+    flexBasis: "50%",
     padding: paddings.paddingL,
     paddingTop: 0,
-    marginBottom: margins.marginS,
+    marginBottom: margins.marginS
   },
   skeletonImage: {
     aspectRatio: 2,
