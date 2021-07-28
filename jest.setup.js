@@ -158,3 +158,9 @@ jest.mock("@react-native-firebase/messaging", () => {
     deleteToken: jest.fn()
   });
 });
+
+jest.mock("react-native-keyboard-aware-scroll-view", () => {
+  return {
+    KeyboardAwareScrollView: jest.fn().mockImplementation(({ children }) => children)
+  };
+});

@@ -14,8 +14,7 @@
  */
 
 import { useSession } from "@totara/core";
-import { navigate } from "@totara/lib/navigationService";
-import { NAVIGATION } from "@totara/lib/navigation";
+import { NAVIGATION, navigateByRef } from "@totara/lib/navigation";
 import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from "../constants";
 import { NavigationAction, useNavigation } from "@react-navigation/native";
 import { isValidUrlText } from "@totara/lib/tools";

@@ -1,2 +1,2 @@
 TotaraMobileOfflineScorm/html/**/*.js
-src/totara/lib/config.local.ts
+**/node_modules/**

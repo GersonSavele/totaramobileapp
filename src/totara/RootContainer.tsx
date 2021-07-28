@@ -16,15 +16,15 @@
 import React from "react";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { TotaraTheme } from "./theme/Theme";
+
+import SessionContainer from "./SessionContainer";
 import SiteUrl from "./auth/manual/SiteUrl";
+import BrowserLogin from "./auth/manual/browser";
 import NativeLogin from "./auth/manual/native/NativeLogin";
 import WebviewLogin from "./auth/manual/webview/WebviewLogin";
-import { cardModalOptions, NAVIGATION } from "./lib/navigation";
-import SessionContainer from "./SessionContainer";
-import BrowserLogin from "./auth/manual/browser";
-import { OverviewModal } from "./features/findLearning/OverviewModal";
+import { cardModalOptions, NAVIGATION, navigationRef } from "./lib/navigation";
 import { translate } from "./locale";
+import { TotaraTheme } from "./theme/Theme";
 
 const navigationTheme = {
   ...DefaultTheme,
@@ -38,7 +38,7 @@ const Stack = createStackNavigator();
 
 const RootContainer = () => {
   return (
-    <NavigationContainer theme={navigationTheme}>
+    <NavigationContainer theme={navigationTheme} ref={navigationRef}>
       <Stack.Navigator
         mode={"modal"}
         screenOptions={{
@@ -46,10 +46,21 @@ const RootContainer = () => {
         }}>
         <Stack.Screen name="SessionContainer" component={SessionContainer} />
         <Stack.Screen name={NAVIGATION.SITE_URL} component={SiteUrl} />
-        <Stack.Screen name={NAVIGATION.NATIVE_LOGIN} component={NativeLogin} options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: true }} />
-        <Stack.Screen name={NAVIGATION.WEBVIEW_LOGIN} component={WebviewLogin} options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: true }} />
-        <Stack.Screen name={NAVIGATION.BROWSER_LOGIN} component={BrowserLogin} options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: true }} />
-        <Stack.Screen name={NAVIGATION.FIND_LEARNING_OVERVIEW} component={OverviewModal} options={cardModalOptions} />
+        <Stack.Screen
+          name={NAVIGATION.NATIVE_LOGIN}
+          component={NativeLogin}
+          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: true }}
+        />
+        <Stack.Screen
+          name={NAVIGATION.WEBVIEW_LOGIN}
+          component={WebviewLogin}
+          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: true }}
+        />
+        <Stack.Screen
+          name={NAVIGATION.BROWSER_LOGIN}
+          component={BrowserLogin}
+          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: true }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

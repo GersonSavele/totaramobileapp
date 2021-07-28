@@ -275,5 +275,16 @@
     "you_can_enrol": "You can enrol in this course",
     "you_are_enrolled": "You are enrolled in this course",
     "you_are_not_enrolled": "You are not enrolled in this course"
+  },
+  "enrolment_options": {
+    "title": "Enrolment Options",
+    "guest_access": "Guest access",
+    "self_enrolment_title": "Self enrolment ({{roleName}})",
+    "enrol_me": "Enrol me",
+    "go_to_course": "Go to course",
+    "password_required": "Password (requited)",
+    "enrolment_key": "Enrolment Key (required)",
+    "loading_enrolment_data": "Loading enrolment data...",
+    "loading_enrolment_error": "Error: Failed to load enrolment data. If this error persist please contact your site administrator"
   }
 }

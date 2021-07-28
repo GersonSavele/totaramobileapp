@@ -16,19 +16,22 @@
 import React, { useEffect } from "react";
 import messaging from "@react-native-firebase/messaging";
 import { useMutation, useQuery } from "@apollo/client";
+import { createStackNavigator } from "@react-navigation/stack";
+import { useSelector } from "react-redux";
+
 import { registerPushNotifications } from "@totara/lib/notificationService";
 import ResourceManager from "@totara/lib/resourceManager";
-import { createStackNavigator } from "@react-navigation/stack";
 import { scormStack } from "@totara/features/activities/scorm/ScormActivity";
 import AboutStack from "@totara/features/about/AboutStack";
 import { tokenSent, updateToken } from "./actions/notification";
-import { navigate } from "./lib/navigationService";
+import { cardModalOptions, navigateByRef } from "./lib/navigation";
 import { NAVIGATION } from "./lib/navigation";
-import { useSelector } from "react-redux";
 import { mutationForToken, notificationsQuery } from "./features/notifications/api";
 import { RootState } from "./reducers";
 import TabContainer from "./TabContainer";
 import WebViewStack from "./features/activities/webview/WebViewStack";
+import { OverviewModal } from "./features/findLearning/OverviewModal";
+import { EnrolmentModalMocked } from "./features/enrolment/EnrolmentModal";
 
 const { SCORM_STACK_ROOT, ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -45,7 +48,7 @@ const MainContainer = () => {
     if (remoteMessage) {
       fetchNotifications(client);
       if (remoteMessage?.data?.notification === "1") {
-        navigate("Notifications", {});
+        navigateByRef("Notifications", {});
       }
     }
   };
@@ -117,6 +120,8 @@ const MainContainer = () => {
       <Stack.Screen name={SCORM_STACK_ROOT} component={scormStack} />
       <Stack.Screen name={WEBVIEW_ACTIVITY} component={WebViewStack} />
       <Stack.Screen name={ABOUT} component={AboutStack} />
+      <Stack.Screen name={NAVIGATION.FIND_LEARNING_OVERVIEW} component={OverviewModal} options={cardModalOptions} />
+      <Stack.Screen name={NAVIGATION.ENROLMENT_MODAL} component={EnrolmentModalMocked} options={cardModalOptions} />
     </Stack.Navigator>
   );
 };

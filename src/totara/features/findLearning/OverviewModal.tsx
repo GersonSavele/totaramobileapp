@@ -9,6 +9,7 @@ import { Images } from "@resources/images";
 import { translate } from "@totara/locale";
 import { HeaderBackButton } from '@react-navigation/stack';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { NAVIGATION, popAndGoToByRef } from "@totara/lib/navigation";
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 
@@ -74,9 +75,9 @@ export const OverviewModal = () => {
 
   return <OverviewModalContent
     isGuestAccessEnabled={false}
-    isSelfEnrolmentEnabled={false}
+    isSelfEnrolmentEnabled={true}
     isUserEnrolled={false}
-    isPrivilegedUser={true} />
+    isPrivilegedUser={false} />
 }
 
 
@@ -94,16 +95,24 @@ const OverviewModalContent = ({
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
-  const goToCourse = () => {
-    const routeId = "FindLearningCourseDetails"
-    const targetId = 440
-    const itemType = 'course'
+  const goTo = () => {
+    if (isUserEnrolled || isGuestAccessEnabled || isPrivilegedUser) {
+      const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS
+      const targetId = 440
+      const itemType = 'course'
 
-    navigation.navigate(routeId, { targetId: targetId, courseGroupType: itemType })
+      navigation.navigate(routeId, { targetId: targetId, courseGroupType: itemType })
+    }
+    else {
+      popAndGoToByRef(NAVIGATION.ENROLMENT_MODAL, {
+        targetId: 440
+      })
+    }
   }
 
   useLayoutEffect(() => {
     navigation.setOptions({
+
       headerLeft: (props) => (
         <HeaderBackButton
           {...props}
@@ -114,7 +123,7 @@ const OverviewModalContent = ({
       ),
       headerRight: () => {
         return isPrivilegedUser && <TertiaryButton text={translate("find_learning_overview.go_to_course")}
-          onPress={goToCourse}
+          onPress={goTo}
         />
       }
     });
@@ -139,7 +148,7 @@ const OverviewModalContent = ({
 
       {(isGuestAccessEnabled || isUserEnrolled || isSelfEnrolmentEnabled || isPrivilegedUser) && <View>
         <PrimaryButton style={overviewStyles.enrolmentAction} text={translate("find_learning_overview.go_to_course")}
-          onPress={goToCourse} />
+          onPress={goTo} />
       </View>}
     </View>
 

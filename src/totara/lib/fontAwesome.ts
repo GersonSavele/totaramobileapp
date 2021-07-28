@@ -52,7 +52,9 @@ import {
   faInfo,
   faBan,
   faPaperclip,
-  faPlay
+  faPlay,
+  faEye,
+  faEyeSlash
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -96,7 +98,9 @@ const init = () => {
     faInfo,
     faBan,
     faPaperclip,
-    faPlay
+    faPlay,
+    faEyeSlash,
+    faEye
   );
 };
 

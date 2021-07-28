@@ -15,6 +15,7 @@
 
 import { TransitionPresets } from "@react-navigation/stack";
 import { learningItemEnum } from "@totara/features/currentLearning/constants";
+import React from "react";
 
 /**
  * Navigates to a next screen using react navigation.
@@ -24,6 +25,9 @@ import { learningItemEnum } from "@totara/features/currentLearning/constants";
 const navigateTo = ({ navigate, routeId, props }) => {
   navigate(routeId, props);
 };
+
+const navigationRef = React.createRef<any>();
+
 
 //current learning
 const CURRENT_LEARNING = "CurrentLearning";
@@ -47,6 +51,7 @@ const SETTINGS = "Settings";
 const FIND_LEARNING = "FindLearning";
 const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
 const FIND_LEARNING_COURSE_DETAILS = "FindLearningCourseDetails";
+const ENROLMENT_MODAL = "EnrolmentModal";
 
 //Site url and Login
 const SITE_URL = "SiteUrl";
@@ -80,7 +85,8 @@ const NAVIGATION = {
   SITE_URL,
   NATIVE_LOGIN,
   WEBVIEW_LOGIN,
-  BROWSER_LOGIN
+  BROWSER_LOGIN,
+  ENROLMENT_MODAL
 };
 
 const cardModalOptions = {
@@ -90,6 +96,10 @@ const cardModalOptions = {
   headerShown: true,
   headerBackTitleVisible: false,
   headerTitle: '',
+  headerStyle: {
+    shadowColor: 'transparent',
+    elevation: 0,
+  }
 }
 
 const popupModalOptions = {
@@ -107,4 +117,15 @@ const popupModalOptions = {
   }
 }
 
-export { navigateTo, NAVIGATION, learningItemToRouteMap, cardModalOptions, popupModalOptions };
+const navigateByRef = (name, params) => {
+  navigationRef.current?.navigate(name, params);
+};
+
+const popAndGoToByRef = (to, params) => {
+  navigationRef.current?.goBack();
+  setTimeout(() => {
+    navigationRef.current?.navigate(to, params);
+  }, 200);
+};
+
+export { navigationRef, navigateByRef, popAndGoToByRef, navigateTo, NAVIGATION, learningItemToRouteMap, cardModalOptions, popupModalOptions };

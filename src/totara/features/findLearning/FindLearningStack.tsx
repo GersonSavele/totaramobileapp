@@ -23,7 +23,7 @@ const Stack = createStackNavigator();
 
 const FindLearningStack = () => {
   return (
-    <Stack.Navigator headerMode={"none"}>
+    <Stack.Navigator headerMode={"none"} mode="modal">
       <Stack.Screen name={NAVIGATION.FIND_LEARNING} component={FindLearning} />
       <Stack.Screen name={NAVIGATION.FIND_LEARNING_COURSE_DETAILS} component={CourseDetails} />
     </Stack.Navigator>
