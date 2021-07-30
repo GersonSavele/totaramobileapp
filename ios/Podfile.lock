@@ -285,8 +285,8 @@ PODS:
     - React-Core
   - react-native-orientation-locker (1.2.0):
     - React
-  - react-native-safe-area-context (0.7.3):
-    - React
+  - react-native-safe-area-context (3.2.0):
+    - React-Core
   - react-native-static-server (0.5.0):
     - GCDWebServer (~> 3.0)
     - React
@@ -388,8 +388,8 @@ PODS:
     - Sentry (~> 4.4.0)
   - RNSVG (12.1.0):
     - React
-  - RNVectorIcons (6.6.0):
-    - React
+  - RNVectorIcons (8.1.0):
+    - React-Core
   - RNZipArchive (5.0.2):
     - React
     - RNZipArchive/Core (= 5.0.2)
@@ -629,7 +629,7 @@ SPEC CHECKSUMS:
   react-native-cookies: bc1f91a504ee091f1998a1b6c7ff4b7a9ed5b80e
   react-native-netinfo: 52cf0ee8342548a485e28f4b09e56b477567244d
   react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
-  react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
+  react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
   react-native-static-server: 201b2a945a35096be3ae7f43e367c65bcbd61343
   react-native-webview: 67b9024de02e7c0af9400283b0e3ca6eec55dc26
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
@@ -657,7 +657,7 @@ SPEC CHECKSUMS:
   RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
   RNSentry: 9c9783b13fb5cba387fff55f085cc1da3854ce71
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   RNZipArchive: f06fe0dcfb9e2fa7437fc7f6c03d5400952f2d57
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
