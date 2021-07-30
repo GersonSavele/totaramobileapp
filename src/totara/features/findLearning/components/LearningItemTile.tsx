@@ -43,17 +43,17 @@ export const LearningItemTileSkeleton = () => {
 };
 
 export const LearningItemTile = ({ item, onItemTap }: LearningItemTileProps) => {
-  const { mobile_image, title, item_type } = item;
+  const { mobileImage, title, itemType } = item;
 
   return (
     <TouchableOpacity containerStyle={styles.itemWrapper} onPress={onItemTap}>
-      <ImageElement imageSrc={mobile_image} style={styles.itemImage} />
+      <ImageElement imageSrc={mobileImage} style={styles.itemImage} />
       <View style={styles.detailWrapper}>
         <View style={styles.detail}>
           <Text style={styles.title} numberOfLines={2}>
             {title}
           </Text>
-          <Text style={styles.itemType}>{capitalizeFirstLetter(item_type)}</Text>
+          <Text style={styles.itemType}>{capitalizeFirstLetter(itemType)}</Text>
         </View>
       </View>
     </TouchableOpacity>

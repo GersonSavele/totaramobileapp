@@ -75,13 +75,9 @@ export const FindLearning = () => {
   });
 
   useEffect(() => {
-    if (data?.catalog_page) {
-      const formattedSearchResult = isEmpty(searchResult)
-        ? data?.catalog_page
-        : { ...data?.catalog_page, items: [...searchResult?.items, ...data?.catalog_page.items] };
-      setSearchResult(formattedSearchResult);
-    } else {
-      setSearchResult(undefined);
+    if (data?.catalogPage) {
+      const currentPageData = formatPageData({ pageData: data?.catalogPage, previousResultItems: searchResult?.items });
+      setSearchResult(currentPageData);
     }
   }, [data]);
 
@@ -92,6 +88,19 @@ export const FindLearning = () => {
   useEffect(() => {
     onSearch();
   }, [pointer]);
+
+  const formatPageData = ({
+    pageData,
+    previousResultItems
+  }: {
+    pageData: FindLearningPage;
+    previousResultItems?: [CatalogItem?];
+  }) => {
+    if (previousResultItems) {
+      return { ...pageData, items: [...previousResultItems, ...pageData.items] } as FindLearningPage;
+    }
+    return { ...pageData } as FindLearningPage;
+  };
 
   const onSearch = () => {
     if (isEmpty(findLeaningText)) {
@@ -119,7 +128,7 @@ export const FindLearning = () => {
   );
 
   const loadNextPage = () => {
-    if (!searchResult?.final_page && searchResult?.items) {
+    if (!searchResult?.finalPage && searchResult?.items) {
       setPointer(searchResult?.items?.length);
     }
   };
@@ -132,7 +141,7 @@ export const FindLearning = () => {
             onChangeText={setFindLearningText}
             onSearch={onSearch}
             findLeaningText={findLeaningText}
-            count={searchResult?.max_count}
+            count={searchResult?.maxCount}
           />
         }
         ListFooterComponent={loading ? <SkeletonLoading /> : null}

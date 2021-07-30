@@ -16,17 +16,18 @@ import { gql } from "@apollo/client";
 
 const queryFindLearning = gql`
   query mobile_findlearning_filter_catalog($pointer: Int, $filter_data: mobile_findlearning_filter_input!) {
-    catalog_page: mobile_findlearning_filter_catalog(limit_from: $pointer, filter_data: $filter_data) {
-      max_count
+    catalogPage: mobile_findlearning_filter_catalog(limit_from: $pointer, filter_data: $filter_data) {
+      maxCount: max_count
       pointer: limit_from
-      final_page: final_records
+      finalPage: final_records
       items {
         id
         itemid
-        item_type
+        itemType: item_type
         title
-        mobile_image: image_url
+        mobileImage: image_url
         summary(format: MOBILE)
+        summaryFormat: summary_format
         __typename
       }
     }
