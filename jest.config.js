@@ -32,7 +32,8 @@ module.exports = {
   },
   cacheDirectory: ".jest/cache",
   moduleNameMapper: {
-    ".+\\.(png)$": "identity-obj-proxy",
+    // ".+\\.(png)$": "identity-obj-proxy",
+    "\\.(jpg|jpeg|png)$": "<rootDir>/src/__mocks__/fileMock.js",
     "@totara/(.*)": "<rootDir>/src/totara/$1",
     "@resources/(.*)": "<rootDir>/src/resources/$1"
   },
@@ -40,7 +41,5 @@ module.exports = {
   setupFiles: ["./node_modules/react-native-gesture-handler/jestSetup.js", "<rootDir>/jest.setup.js"],
   collectCoverageFrom: ["src/totara/**/*.{js,jsx,ts,tsx}"],
   setupFilesAfterEnv: ["<rootDir>setup-tests.js"],
-  transformIgnorePatterns: [
-    'node_modules/(?!(jest-)?react-native|@react-native-community|@react-navigation)',
-  ]
+  transformIgnorePatterns: ["node_modules/(?!(jest-)?react-native|@react-native-community|@react-navigation)"]
 };

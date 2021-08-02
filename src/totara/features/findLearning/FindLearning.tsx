@@ -96,12 +96,19 @@ const FindLearning = () => {
     });
   }, [searchData.pointer]);
 
-  const onItemTap = () => {
-    navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW);
+  const onItemTap = ({ item }: { item: CatalogItem }) => {
+    const { itemid, title, mobileImage, summary, summaryFormat } = item;
+    navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
+      itemid,
+      title,
+      mobileImage,
+      summary,
+      summaryFormat
+    });
   };
 
   const learningItem = useCallback(
-    ({ item }: { item: CatalogItem }) => <LearningItemTile item={item} onItemTap={onItemTap} />,
+    ({ item }: { item: CatalogItem }) => <LearningItemTile item={item} onItemTap={() => onItemTap({ item })} />,
     []
   );
 

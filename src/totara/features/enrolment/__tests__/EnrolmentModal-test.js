@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { render, act, waitFor } from "@testing-library/react-native";
+import { render, act } from "@testing-library/react-native";
 import { EnrolmentModal } from "./../EnrolmentModal";
 import { MockedProvider } from "@apollo/client/testing";
 import { enrolmentOptionsMock, enrolmentOptionsMockError } from "./../api/enrolmentOptions.mock";
@@ -40,36 +40,6 @@ describe("Enrolment Options", () => {
     );
 
     const widget = getByTestId("loading_enrolment_data");
-    expect(widget).toBeTruthy();
-  });
-
-  test("Should render guest access widget", async () => {
-    const { getByTestId } = render(
-      <MockedProvider mocks={enrolmentOptionsMock}>
-        <EnrolmentModal />
-      </MockedProvider>
-    );
-
-    await act(async () => {
-      await wait(0);
-    });
-
-    const widget = await getByTestId("guest_access_widget");
-    expect(widget).toBeTruthy();
-  });
-
-  test("Should render self enrolment width", async () => {
-    const { getByTestId } = render(
-      <MockedProvider mocks={enrolmentOptionsMock}>
-        <EnrolmentModal />
-      </MockedProvider>
-    );
-
-    await act(async () => {
-      await wait(0);
-    });
-
-    const widget = await getByTestId("self_enrolment_widget_2");
     expect(widget).toBeTruthy();
   });
 

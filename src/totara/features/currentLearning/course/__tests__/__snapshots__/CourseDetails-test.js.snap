@@ -21,7 +21,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     }
   >
     <Image
-      source={null}
+      source="test-file-stub"
     />
     <Text
       style={
@@ -142,7 +142,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     }
   >
     <Image
-      source={null}
+      source="test-file-stub"
     />
     <Text
       style={
@@ -262,7 +262,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
         }
       >
         <Image
-          source={null}
+          source="test-file-stub"
           style={
             Object {
               "alignItems": "center",

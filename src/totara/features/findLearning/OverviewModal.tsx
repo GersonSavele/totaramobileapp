@@ -1,15 +1,31 @@
+/**
+ * This file is part of Totara Enterprise.
+ *
+ * Copyright (C) 2021 onwards Totara Learning Solutions LTD
+ *
+ * Totara Enterprise is provided only to Totara Learning Solutions
+ * LTD’s customers and partners, pursuant to the terms and
+ * conditions of a separate agreement with Totara Learning
+ * Solutions LTD or its affiliate.
+ *
+ * If you do not have an agreement with Totara Learning Solutions
+ * LTD, you may not access, use, modify, or distribute this software.
+ * Please contact [sales@totaralearning.com] for more information.
+ */
 
-import { useNavigation } from "@react-navigation/native";
-import { ImageWrapper, PrimaryButton, TertiaryButton } from "@totara/components";
+import { PrimaryButton, SecondaryButton, TertiaryButton } from "@totara/components";
 import { fontWeights, margins, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import React, { useLayoutEffect } from "react";
-import { StyleSheet, Text, View, ImageSourcePropType, Image, ScrollView } from "react-native";
-import { Images } from "@resources/images";
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import { translate } from "@totara/locale";
-import { HeaderBackButton } from '@react-navigation/stack';
+import { HeaderBackButton } from "@react-navigation/stack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NAVIGATION, popAndGoToByRef } from "@totara/lib/navigation";
+import { ImageElement } from "./components";
+import { NetworkStatus, useQuery } from "@apollo/client";
+import { enrolmentInfoQuery } from "../enrolment/api";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 
@@ -20,11 +36,21 @@ const overviewStyles = StyleSheet.create({
   },
 
   banner: {
-    aspectRatio: 2 / 1, justifyContent: "center",
-    alignItems: 'center', display: 'flex'
+    aspectRatio: 2,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex"
   },
 
-  defaultImage: { borderWidth: 1, borderColor: colorNeutral3, flex: 1, width: '100%', aspectRatio: 2 / 1, justifyContent: 'center', alignItems: 'center' },
+  imageElement: {
+    borderWidth: 1,
+    borderColor: colorNeutral3,
+    flex: 1,
+    width: "100%",
+    aspectRatio: 2,
+    justifyContent: "center",
+    alignItems: "center"
+  },
 
   title: {
     marginTop: margins.marginL,
@@ -39,7 +65,7 @@ const overviewStyles = StyleSheet.create({
   enrolment: {
     marginTop: margins.marginL,
     backgroundColor: colorNeutral3,
-    alignItems: 'center',
+    alignItems: "center",
     padding: paddings.paddingXL
   },
 
@@ -47,72 +73,67 @@ const overviewStyles = StyleSheet.create({
     ...textHeadline
   },
 
+  enrolmentLoading: {
+    marginTop: margins.marginL
+  },
+
   enrolmentAction: {
     marginTop: margins.marginL
   },
   description: {
+    marginTop: margins.marginL,
     ...textRegular
-  },
+  }
 });
 
-const ImageElement = ({ imageSrc }: { imageSrc?: string }) => {
-  const defaultImage = Images.defaultCourses;
-  return (
-
-    imageSrc && imageSrc.length > 0 ? (
-      <ImageWrapper url={imageSrc} />
-    ) : (
-      <View style={overviewStyles.defaultImage}>
-        <Image source={defaultImage as ImageSourcePropType} resizeMode={"contain"} />
-      </View>
-    )
-  );
+type OverviewModalParamList = {
+  OverviewModal: {
+    itemid: string;
+    title: string;
+    mobileImage: string;
+    summary: string;
+  };
 };
 
-
-/** THIS COMPONENT WILL HANDLE GRAPHQL DATA */
 export const OverviewModal = () => {
-
-  return <OverviewModalContent
-    isGuestAccessEnabled={false}
-    isSelfEnrolmentEnabled={true}
-    isUserEnrolled={false}
-    isPrivilegedUser={false} />
-}
-
-
-const OverviewModalContent = ({
-  isGuestAccessEnabled,
-  isSelfEnrolmentEnabled,
-  isUserEnrolled,
-  isPrivilegedUser
-}: {
-  isGuestAccessEnabled: boolean,
-  isSelfEnrolmentEnabled: boolean,
-  isUserEnrolled: boolean,
-  isPrivilegedUser: boolean
-}) => {
-  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
+  const { params } = useRoute<RouteProp<OverviewModalParamList, "OverviewModal">>();
+
+  const { itemid, title, mobileImage: imageSource, summary } = params;
+
+  const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
+    variables: { courseid: itemid },
+    fetchPolicy: "no-cache"
+  });
+
+  const enrolmentInfo = data?.enrolmentInfo;
+
+  const canEnrol = enrolmentInfo?.canEnrol,
+    guestAccess = enrolmentInfo?.guestAccess,
+    isEnrolled = enrolmentInfo?.isEnrolled,
+    privileged = enrolmentInfo?.privileged;
 
   const goTo = () => {
-    if (isUserEnrolled || isGuestAccessEnabled || isPrivilegedUser) {
-      const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS
-      const targetId = 440
-      const itemType = 'course'
+    if (isEnrolled || guestAccess || privileged) {
+      const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
+      const targetId = itemid;
+      const itemType = "course";
 
-      navigation.navigate(routeId, { targetId: targetId, courseGroupType: itemType })
-    }
-    else {
+      navigation.navigate(routeId, { targetId: targetId, courseGroupType: itemType });
+    } else {
       popAndGoToByRef(NAVIGATION.ENROLMENT_MODAL, {
-        targetId: 440
-      })
+        targetId: itemid
+      });
     }
-  }
+  };
+
+  const onTryReload = () => {
+    refetch();
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
-
       headerLeft: (props) => (
         <HeaderBackButton
           {...props}
@@ -122,40 +143,66 @@ const OverviewModalContent = ({
         />
       ),
       headerRight: () => {
-        return isPrivilegedUser && <TertiaryButton text={translate("find_learning_overview.go_to_course")}
-          onPress={goTo}
-        />
+        return (
+          privileged && (
+            <TertiaryButton
+              testID="enrolment_modal_header_go_to_course"
+              text={translate("find_learning_overview.go_to_course")}
+              onPress={goTo}
+            />
+          )
+        );
       }
     });
   }, [navigation]);
 
-  const enrolmentStatusText = isUserEnrolled ? translate("find_learning_overview.you_are_enrolled") : (
-    isGuestAccessEnabled || isSelfEnrolmentEnabled ? translate("find_learning_overview.you_can_enrol") : translate("find_learning_overview.you_are_not_enrolled")
+  const enrolmentStatusText = isEnrolled
+    ? translate("find_learning_overview.you_are_enrolled")
+    : guestAccess || canEnrol
+    ? translate("find_learning_overview.you_can_enrol")
+    : translate("find_learning_overview.you_are_not_enrolled");
+
+  const isLoading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch;
+
+  return (
+    <ScrollView style={{ ...overviewStyles.root, marginBottom: insets.bottom }}>
+      <View style={overviewStyles.banner}>
+        <ImageElement imageSrc={imageSource} style={overviewStyles.imageElement} />
+      </View>
+      <View style={overviewStyles.enrolment}>
+        {isLoading && (
+          <View testID={"enrolment_modal_loading"}>
+            <ActivityIndicator />
+            <Text style={overviewStyles.enrolmentLoading}>{translate("enrolment_options.loading_enrolment_data")}</Text>
+          </View>
+        )}
+        {error && (
+          <View testID={"enrolment_modal_loading_error"}>
+            <Text>{translate("enrolment_options.loading_enrolment_error")}</Text>
+            <View style={{ marginTop: margins.marginL }}>
+              <SecondaryButton text={translate("general.try_again")} onPress={onTryReload}></SecondaryButton>
+            </View>
+          </View>
+        )}
+        {!isLoading && !error && (
+          <View>
+            <Text testID={"enrolment_modal_status_text"} style={overviewStyles.enrolmentStatus}>
+              {enrolmentStatusText}
+            </Text>
+            {(guestAccess || isEnrolled || canEnrol || privileged) && (
+              <View testID={"enrolment_modal_status_button"}>
+                <PrimaryButton
+                  style={overviewStyles.enrolmentAction}
+                  text={translate("find_learning_overview.go_to_course")}
+                  onPress={goTo}
+                />
+              </View>
+            )}
+          </View>
+        )}
+      </View>
+      <Text style={overviewStyles.title}>{title}</Text>
+      <Text style={overviewStyles.description}>{summary}</Text>
+    </ScrollView>
   );
-
-  return <ScrollView style={{ ...overviewStyles.root, marginBottom: insets.bottom }}>
-
-    <View style={overviewStyles.banner}>
-      <ImageElement imageSrc={undefined} />
-    </View>
-
-    <Text style={overviewStyles.title}>Master your calendar</Text>
-
-    <Text style={overviewStyles.course}>{translate("find_learning_overview.course")}</Text>
-
-    <View style={overviewStyles.enrolment}>
-      <Text style={overviewStyles.enrolmentStatus}>{enrolmentStatusText}</Text>
-
-      {(isGuestAccessEnabled || isUserEnrolled || isSelfEnrolmentEnabled || isPrivilegedUser) && <View>
-        <PrimaryButton style={overviewStyles.enrolmentAction} text={translate("find_learning_overview.go_to_course")}
-          onPress={goTo} />
-      </View>}
-    </View>
-
-    <Text style={overviewStyles.description}>
-      Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum. Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum. Mussum Ipsum, cacilds vidis litro abertis. Delegadis gente finis, bibendum egestas augue arcu ut est. Diuretics paradis num copo é motivis de denguis. Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum.
-    </Text>
-
-  </ScrollView >
-}
-
+};

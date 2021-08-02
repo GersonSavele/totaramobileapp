@@ -1,7 +1,7 @@
 /**
  * This file is part of Totara Enterprise.
  *
- * Copyright (C) 2020 onwards Totara Learning Solutions LTD
+ * Copyright (C) 2021 onwards Totara Learning Solutions LTD
  *
  * Totara Enterprise is provided only to Totara Learning Solutions
  * LTD’s customers and partners, pursuant to the terms and
@@ -15,23 +15,22 @@
 
 import { gql } from "@apollo/client";
 
-export const enrolmentOptionsQuery = gql`
+export const enrolmentInfoQuery = gql`
 query mobile_findlearning_enrolment_info($courseid: core_id!) {
-  enrolmentInfo: enrolment_options {
-    isComplete
-    isEnrolled
-    guestAccess
-    canEnrol
-    privileged
+  enrolmentInfo: core_enrol_course_info(courseid: $courseid) {
+    isComplete: is_complete
+    isEnrolled: is_enrolled
+    guestAccess: guest_access
+    canEnrol: can_enrol
+    priviledged: can_view
     enrolmentOptions: enrolment_options {
       id
       type
-      roleName
-      customName
-      sortOrder
-      passwordRequired
+      roleName: role_name
+      customName: custom_name
+      sortOrder: sort_order
+      passwordRequired: password_required
     }
-    __typename
   }
 }
 `;

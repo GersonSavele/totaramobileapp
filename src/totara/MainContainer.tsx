@@ -31,7 +31,7 @@ import { RootState } from "./reducers";
 import TabContainer from "./TabContainer";
 import WebViewStack from "./features/activities/webview/WebViewStack";
 import { OverviewModal } from "./features/findLearning/OverviewModal";
-import { EnrolmentModalMocked } from "./features/enrolment/EnrolmentModal";
+import { EnrolmentModal } from "./features/enrolment/EnrolmentModal";
 
 const { SCORM_STACK_ROOT, ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -121,7 +121,7 @@ const MainContainer = () => {
       <Stack.Screen name={WEBVIEW_ACTIVITY} component={WebViewStack} />
       <Stack.Screen name={ABOUT} component={AboutStack} />
       <Stack.Screen name={NAVIGATION.FIND_LEARNING_OVERVIEW} component={OverviewModal} options={cardModalOptions} />
-      <Stack.Screen name={NAVIGATION.ENROLMENT_MODAL} component={EnrolmentModalMocked} options={cardModalOptions} />
+      <Stack.Screen name={NAVIGATION.ENROLMENT_MODAL} component={EnrolmentModal} options={cardModalOptions} />
     </Stack.Navigator>
   );
 };

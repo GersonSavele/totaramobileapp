@@ -126,7 +126,7 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
     }
   >
     <Image
-      source={null}
+      source="test-file-stub"
     />
   </View>
 </View>

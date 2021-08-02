@@ -13,22 +13,18 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useLayoutEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import React, { useLayoutEffect } from "react";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Input } from "react-native-elements/dist/input/Input";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { PrimaryButton, SecondaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { fontSizes, fontWeights, margins, paddings } from "@totara/theme/constants";
+import { fontWeights, margins, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { NetworkStatus, useQuery } from "@apollo/client";
-import { MockedProvider } from "@apollo/client/testing";
-import { enrolmentOptionsQuery } from "./api";
-import { enrolmentOptionsMock } from "./api/enrolmentOptions.mock";
+import { enrolmentInfoQuery } from "./api";
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -169,7 +165,7 @@ const LoadingError = ({ onTryReload }: { onTryReload: () => void }) => {
 export const EnrolmentModal = () => {
   const navigation = useNavigation();
 
-  const { error, networkStatus, data, refetch } = useQuery(enrolmentOptionsQuery, {
+  const { error, networkStatus, data, refetch } = useQuery(enrolmentInfoQuery, {
     notifyOnNetworkStatusChange: true,
     variables: {
       courseid: 1,
@@ -197,12 +193,4 @@ export const EnrolmentModal = () => {
   const { enrolmentOptions } = enrolmentInfo;
 
   return <EnrolmentOptionsContent enrolmentOptions={enrolmentOptions} />;
-};
-
-export const EnrolmentModalMocked = () => {
-  return (
-    <MockedProvider mocks={enrolmentOptionsMock}>
-      <EnrolmentModal />
-    </MockedProvider>
-  );
 };
