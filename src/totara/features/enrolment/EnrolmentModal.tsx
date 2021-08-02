@@ -95,8 +95,6 @@ const SelfEnrolmentWidget = ({
   customName: string;
   roleName: string;
 }) => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
-
   const title = customName ? customName : translate("enrolment_options.self_enrolment_title", { roleName: roleName });
   return (
     <View testID={"self_enrolment_widget_" + id} style={styles.widgetContainer}>
@@ -109,19 +107,6 @@ const SelfEnrolmentWidget = ({
           autoCapitalize="none"
           testID={"self_enrolment_enrolment_key"}
           returnKeyType={"done"}
-          secureTextEntry={!passwordVisible}
-          rightIcon={
-            <TouchableOpacity
-              onPress={() => {
-                setPasswordVisible(!passwordVisible);
-              }}>
-              <FontAwesomeIcon
-                icon={passwordVisible ? faEye : faEyeSlash}
-                size={fontSizes.fontSizeL}
-                color={TotaraTheme.colorNeutral5}
-              />
-            </TouchableOpacity>
-          }
         />
       )}
       <PrimaryButton
