@@ -83,6 +83,7 @@ export const FindLearning = () => {
 
   useEffect(() => {
     setPointer(0);
+    setSearchResult(undefined);
   }, [findLeaningText]);
 
   useEffect(() => {

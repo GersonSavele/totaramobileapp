@@ -46,43 +46,46 @@ export const LearningItemTile = ({ item, onItemTap }: LearningItemTileProps) => 
   const { mobileImage, title, itemType } = item;
 
   return (
-    <TouchableOpacity containerStyle={styles.itemWrapper} onPress={onItemTap}>
-      <ImageElement imageSrc={mobileImage} style={styles.itemImage} />
-      <View style={styles.detailWrapper}>
-        <View style={styles.detail}>
+    <View style={styles.itemContainer}>
+      <TouchableOpacity containerStyle={styles.itemWrapper} onPress={onItemTap}>
+        <ImageElement imageSrc={mobileImage} style={styles.itemImage} />
+        <View style={styles.detailWrapper}>
           <Text style={styles.title} numberOfLines={2}>
             {title}
           </Text>
           <Text style={styles.itemType}>{capitalizeFirstLetter(itemType)}</Text>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  itemContainer: {
+    aspectRatio: 1,
+    flex: 0.5
+  },
   itemWrapper: {
-    justifyContent: "flex-start",
     flex: 1,
     marginHorizontal: margins.marginS,
     marginBottom: margins.marginL,
     borderColor: TotaraTheme.colorNeutral5,
     borderWidth: 1,
     overflow: "hidden",
-    borderRadius: borderRadius.borderRadiusS
+    borderRadius: borderRadius.borderRadiusS,
+    backgroundColor: TotaraTheme.colorNeutral2
   },
   itemImage: {
     width: "100%",
-    aspectRatio: 2
+    aspectRatio: 2,
+    backgroundColor: TotaraTheme.colorAccent
   },
   detailWrapper: {
-    backgroundColor: TotaraTheme.colorNeutral2
-  },
-  detail: {
-    padding: paddings.paddingL
+    padding: paddings.paddingL,
+    justifyContent: "space-between",
+    height: "50%"
   },
   title: {
-    flexWrap: "wrap",
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightBold
   },
