@@ -99,7 +99,7 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
               <Text
                 style={currentLearningListViewStyles.itemLearningTypeLabel}
                 testID={"test_CurrentLearningItem_Type"}>
-                {capitalizeFirstLetter(itemtype)}
+                {capitalizeFirstLetter(translate(`learning_items.${itemtype}`))}
               </Text>
             </View>
             {progress !== null && (
