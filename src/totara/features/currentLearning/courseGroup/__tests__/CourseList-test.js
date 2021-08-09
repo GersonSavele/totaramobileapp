@@ -25,7 +25,8 @@ const navigation = {
     }
   },
   addListener: jest.fn(),
-  navigate: jest.fn()
+  navigate: jest.fn(),
+  setOptions: jest.fn()
 };
 
 describe("Course set list", () => {
