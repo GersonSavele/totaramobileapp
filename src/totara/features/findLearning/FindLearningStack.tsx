@@ -15,7 +15,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { FindLearning } from "./FindLearning";
+import FindLearning from "./FindLearning";
 import { NAVIGATION } from "@totara/lib/navigation";
 import CourseDetails from "../currentLearning/course/CourseDetails";
 

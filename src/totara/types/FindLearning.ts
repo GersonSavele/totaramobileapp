@@ -21,7 +21,6 @@ export interface CatalogItem {
   itemType: learningItemEnum.Course | learningItemEnum.Playlist;
   title: string;
   mobileImage?: string;
-  description?: string;
   summary?: string;
   summaryFormat: string;
 }
@@ -30,5 +29,5 @@ export interface FindLearningPage {
   maxCount: number;
   pointer: number;
   finalPage: boolean;
-  items: [CatalogItem?];
+  items?: [CatalogItem];
 }

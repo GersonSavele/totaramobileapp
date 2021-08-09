@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { paddings, fontWeights, margins, borderRadius } from "@totara/theme/constants";
@@ -21,7 +21,7 @@ import { capitalizeFirstLetter } from "@totara/lib/tools";
 import { CatalogItem } from "@totara/types/FindLearning";
 import { ImageElement } from "./ImageElement";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { FINDLEARNING_TEST_IDS } from "@totara/lib/testIds";
 
 interface LearningItemTileProps {
   item: CatalogItem;
@@ -46,8 +46,8 @@ export const LearningItemTile = ({ item, onItemTap }: LearningItemTileProps) => 
   const { mobileImage, title, itemType } = item;
 
   return (
-    <View style={styles.itemContainer}>
-      <TouchableOpacity containerStyle={styles.itemWrapper} onPress={onItemTap}>
+    <View style={styles.itemContainer} testID={FINDLEARNING_TEST_IDS.LEARNING_ITEM_TILE}>
+      <TouchableOpacity style={styles.itemWrapper} onPress={onItemTap}>
         <ImageElement imageSrc={mobileImage} style={styles.itemImage} />
         <View style={styles.detailWrapper}>
           <Text style={styles.title} numberOfLines={2}>
