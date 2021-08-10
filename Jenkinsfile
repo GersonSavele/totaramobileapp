@@ -21,15 +21,6 @@ pipeline {
   }
 
   parameters {
-    // GIT SSH access key used to checkout code
-
-    credentials(
-      name: 'GIT_CREDENTIALS',
-      defaultValue: null,
-      credentialType: 'SSH Username with private key',
-      description: 'Git SSH key'
-    )
-
     // BitBucket API credentials
 
     credentials(
@@ -138,7 +129,7 @@ pipeline {
     // BitBucket options to facilitate pull request builds
 
     string(
-      name: 'PULL_REQUEST_ID',
+      name: 'PRID',
       defaultValue: null,
       description: 'BitBucket pull request ID or branch:$$Branch name$$ or tag:$$Tag name$$'
     )
@@ -148,12 +139,12 @@ pipeline {
       description: 'BitBucket target SSH clone URL (Git clone URL)'
     )
     string(
-      name: 'PULL_REQUEST_USER_NAME',
+      name: 'USER',
       defaultValue: '',
       description: 'BitBucket pull request user name'
     )
     string(
-      name: 'PULL_REQUEST_USER_EMAIL_ADDRESS',
+      name: 'EMAIL',
       defaultValue: '',
       description: 'BitBucket pull request user email address'
     )
@@ -197,47 +188,48 @@ pipeline {
 
         // Let's figure out whether we need to checkout a pull request, a tag or a branch?
         script {
-          switch(params.PULL_REQUEST_ID) {
+          switch(params.PRID) {
             case ~/^tag:.*$/:
-              buildRef = "refs/tags/${params.PULL_REQUEST_ID.substring(4)}";
+              buildRef = "refs/tags/${params.PRID.substring(4)}";
               break;
             case ~/^branch:.*$/:
-              buildRef = "refs/heads/${params.PULL_REQUEST_ID.substring(7)}";
+              buildRef = "refs/heads/${params.PRID.substring(7)}";
               break;
             case ~/^[0-9]+$/:
-              buildRef = "refs/pull-requests/${params.PULL_REQUEST_ID}/from";
+              buildRef = "refs/pull-requests/${params.PRID}/from";
               break;
           }
-        }
 
-        checkout changelog: false,
-          poll: false,
-          scm: [
-            $class: 'GitSCM',
-            branches: [[name: 'refs/remotes/origin/build']],
-            doGenerateSubmoduleConfigurations: false,
-            extensions: [
-              [
-                $class: 'CloneOption',
-                honorRefspec: true,
-                noTags: false,
-                reference: totaraMobileAppReferenceRepository,
-                shallow: true
-              ]
-            ],
-            submoduleCfg: [],
-            userRemoteConfigs: [
-              [
-                credentialsId: "${params.GIT_CREDENTIALS}",
-                name: 'origin',
-                refspec: "+${buildRef}:refs/remotes/origin/build",
-                url: params.PULL_REQUEST_TO_SSH_CLONE_URL
+          // Let's figure out the checkout string
+          def checkoutString = params.PULL_REQUEST_TO_SSH_CLONE_URL
+
+          checkout changelog: false,
+            poll: false,
+            scm: [
+              $class: 'GitSCM',
+              branches: [[name: 'refs/remotes/origin/build']],
+              doGenerateSubmoduleConfigurations: false,
+              extensions: [
+                [
+                  $class: 'CloneOption',
+                  honorRefspec: true,
+                  noTags: false,
+                  reference: totaraMobileAppReferenceRepository,
+                  shallow: true
+                ]
+              ],
+              submoduleCfg: [],
+              userRemoteConfigs: [
+                [
+                  name: 'origin',
+                  refspec: "+${buildRef}:refs/remotes/origin/build",
+                  url: checkoutString
+                ]
               ]
             ]
-          ]
-        script {
-          notifyBitbucket()
-        }
+
+           notifyBitbucket()
+         }
       }
     }
 
@@ -259,10 +251,19 @@ pipeline {
 
     stage('Run linter') {
       steps {
-        catchError {
-          sh "fastlane lint"
+        script {
+          try {
+            sh "fastlane lint"
+          } catch (err) {
+              echo "Looks like linting failed... : ${err}"
+          }
+
+          if (fileExists('coverage/eslint.xml')) {
+            recordIssues(tools: [esLint(pattern: 'coverage/*.xml')])
+          } else {
+            currentBuild.result = 'FAILURE'
+          }
         }
-        recordIssues(tools: [esLint(pattern: 'coverage/*.xml')])
       }
     }
 
@@ -351,7 +352,7 @@ pipeline {
         buildStatus = currentBuild.result == "SUCCESS"
 
         // Let's see whether we run a PR build
-        isPrBuild = params.PULL_REQUEST_ID ==~ /^[0-9]+$/
+        isPrBuild = params.PRID ==~ /^[0-9]+$/
 
         // Let's check whether we need to notify Mattermost of the result of the build
         if (params.MATTERMOST_NOTIFICATIONS_ENABLED ==~ /(?i)yes/) {
@@ -361,7 +362,7 @@ pipeline {
             If it is a tag build or a branch build we will notify the channel instead and only if the build is failed
           */
 
-          channel = [params.PULL_REQUEST_USER_NAME, buildUserId].findResult({
+          channel = [params.USER, buildUserId].findResult({
             it?.trim() ? it : null
           })
 
@@ -381,14 +382,14 @@ pipeline {
                 channel: channel,
                 color: 'good',
                 icon: params.MATTERMOST_NOTIFICATION_ICON,
-                message: "📱 **[${params.ENV} Build succeeded](${env.BUILD_URL})** 🤓\n\n[Build artifacts](${env.BUILD_URL}artifact/build)\n\nPR or branch: ${params.PULL_REQUEST_ID}"
+                message: "📱 **[${params.ENV} Build succeeded](${env.BUILD_URL})** 🤓\n\n[Build artifacts](${env.BUILD_URL}artifact/build)\n\nPR or branch: ${params.PRID}"
               )
             } else {
               mattermostSend(
                 channel: channel,
                 color: 'danger',
                 icon: params.MATTERMOST_NOTIFICATION_ICON,
-                message: "📱 **[${params.ENV} Build failed](${env.BUILD_URL})** 🤕\n\n[Browse full log](${env.BUILD_URL}consoleText)\n\nPR or branch: ${params.PULL_REQUEST_ID}"
+                message: "📱 **[${params.ENV} Build failed](${env.BUILD_URL})** 🤕\n\n[Browse full log](${env.BUILD_URL}consoleText)\n\nPR or branch: ${params.PRID}"
               )
             }
           }
@@ -398,7 +399,7 @@ pipeline {
         if (params.EMAIL_NOTIFICATIONS_ENABLED ==~ /(?i)yes/ && !buildStatus) {
           // Let's figure out email address.
           // If User email is not provided, let's attempt to figure it out from Jenkins signed in user.
-          email = [params.PULL_REQUEST_USER_EMAIL_ADDRESS, buildUserEmail].findResult({
+          email = [params.EMAIL, buildUserEmail].findResult({
             it?.trim() ? it : null
           })
 
@@ -407,7 +408,7 @@ pipeline {
               to: email,
               attachLog: true,
               body: "Please go to ${env.BUILD_URL}consoleText for more details.",
-              subject: "Mobile pull request '${params.PULL_REQUEST_ID}' build failed!"
+              subject: "Mobile pull request '${params.PRID}' build failed!"
             )
           }
         }

@@ -128,7 +128,7 @@ lane :app_store do
   ios_prerequisites
 
   # Let's copy plist file
-  sh "cp '#{ENV['IOS_GOOGLE_SERVICES_PLIST']}' #{project_root}/ios/GoogleService-Info.plist"
+  sh "cp '#{ENV['IOS_GOOGLE_SERVICES_PLIST']}' '#{project_root}/ios/GoogleService-Info.plist'"
 
   profile = "match AppStore #{ios_app_store_app_identifier}"
   xcargs = "CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='#{profile}'"
@@ -162,7 +162,7 @@ lane :ad_hoc do
   ios_prerequisites
 
   # Let's copy plist file
-  sh "cp '#{ENV['IOS_GOOGLE_SERVICES_PLIST']}' #{project_root}/ios/GoogleService-Info.plist"
+  sh "cp '#{ENV['IOS_GOOGLE_SERVICES_PLIST']}' '#{project_root}/ios/GoogleService-Info.plist'"
 
   profile = "match AdHoc #{ios_ad_hoc_app_identifier}"
   xcargs = "CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='#{profile}'"
@@ -210,7 +210,7 @@ lane :android_app_store do
   ENV['ANDROID_HOME'] = '/usr/local/share/android-sdk' unless ENV['ANDROID_HOME']
 
   # Let's copy plist file
-  sh "cp '#{ENV['ANDROID_GOOGLE_SERVICES_JSON']}' #{project_root}/android/app"
+  sh "cp '#{ENV['ANDROID_GOOGLE_SERVICES_JSON']}' '#{project_root}/android/app'"
 
   gradle(
     task: "clean",
@@ -232,7 +232,7 @@ lane :android_app_store do
   )
 
   # We gotta copy built app buried deep in the android project folder
-  sh "cp '#{project_root}/android/app/build/outputs/apk/prod/release/app-prod-release.apk' #{project_root}/build/."
+  sh "cp '#{project_root}/android/app/build/outputs/apk/prod/release/app-prod-release.apk' '#{project_root}/build/.'"
 end
 
 
@@ -245,7 +245,7 @@ lane :android_ad_hoc do
   ENV['ANDROID_HOME'] = '/usr/local/share/android-sdk' unless ENV['ANDROID_HOME']
 
   # Let's copy plist file
-  sh "cp '#{ENV['ANDROID_GOOGLE_SERVICES_JSON']}' #{project_root}/android/app"
+  sh "cp '#{ENV['ANDROID_GOOGLE_SERVICES_JSON']}' '#{project_root}/android/app'"
 
   gradle(
     task: "clean",
@@ -263,7 +263,7 @@ lane :android_ad_hoc do
   )
 
   # We gotta copy built app buried deep in the android project folder
-  sh "cp '#{project_root}/android/app/build/outputs/apk/qa/release/app-qa-release.apk' #{project_root}/build/."
+  sh "cp '#{project_root}/android/app/build/outputs/apk/qa/release/app-qa-release.apk' '#{project_root}/build/.'"
 end
 
 ########################################################################################################################
