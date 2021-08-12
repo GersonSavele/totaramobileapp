@@ -15,7 +15,7 @@
 
 import React, { useLayoutEffect } from "react";
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Input } from "react-native-elements/dist/input/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -162,15 +162,20 @@ const LoadingError = ({ onTryReload }: { onTryReload: () => void }) => {
   );
 };
 
+type EnrolmentModalParamList = {
+  EnrolmentModal: {
+    targetId: string;
+  };
+};
+
 export const EnrolmentModal = () => {
   const navigation = useNavigation();
+  const { params } = useRoute<RouteProp<EnrolmentModalParamList, "EnrolmentModal">>();
+  const { targetId } = params;
 
-  const { error, networkStatus, data, refetch } = useQuery(enrolmentInfoQuery, {
-    notifyOnNetworkStatusChange: true,
-    variables: {
-      courseid: 1,
-      userid: 1
-    }
+  const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
+    variables: { courseid: targetId },
+    fetchPolicy: "no-cache"
   });
 
   useLayoutEffect(() => {

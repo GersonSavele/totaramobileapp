@@ -19,20 +19,16 @@ import { EnrolmentModal } from "./../EnrolmentModal";
 import { MockedProvider } from "@apollo/client/testing";
 import { enrolmentOptionsMock, enrolmentOptionsMockError } from "./../api/enrolmentOptions.mock";
 import wait from "waait";
-
-const mockedNavigate = jest.fn();
-
-jest.mock("@react-navigation/native", () => {
-  return {
-    ...jest.requireActual("@react-navigation/native"),
-    useNavigation: () => ({
-      navigate: mockedNavigate
-    })
-  };
-});
+import { useRoute } from "@react-navigation/native";
 
 describe("Enrolment Options", () => {
   test("Should render loading widget", async () => {
+    useRoute.mockReturnValue({
+      params: {
+        itemid: 1
+      }
+    });
+
     const { getByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
         <EnrolmentModal />
@@ -44,6 +40,12 @@ describe("Enrolment Options", () => {
   });
 
   test("Should render loading error", async () => {
+    useRoute.mockReturnValue({
+      params: {
+        itemid: 1
+      }
+    });
+
     const { getByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMockError}>
         <EnrolmentModal />

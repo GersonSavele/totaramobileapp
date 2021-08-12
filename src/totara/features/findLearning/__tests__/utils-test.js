@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { formatPageData, onSearch, getNextPointer } from "../utils";
+import { formatPageData, onSearch } from "../utils";
 import { catalogPageMock } from "../api/findLearning.mock";
 
 describe("FindLearning utils", () => {

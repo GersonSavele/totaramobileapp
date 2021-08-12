@@ -115,12 +115,11 @@ export const OverviewModal = () => {
     privileged = enrolmentInfo?.privileged;
 
   const goTo = () => {
-    if (isEnrolled || guestAccess || privileged) {
+    if (isEnrolled || privileged) {
       const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
-      const targetId = itemid;
       const itemType = "course";
 
-      navigation.navigate(routeId, { targetId: targetId, courseGroupType: itemType });
+      navigation.navigate(routeId, { targetId: itemid, courseGroupType: itemType });
     } else {
       popAndGoToByRef(NAVIGATION.ENROLMENT_MODAL, {
         targetId: itemid
