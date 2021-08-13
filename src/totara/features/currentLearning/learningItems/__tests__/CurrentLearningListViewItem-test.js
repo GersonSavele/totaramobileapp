@@ -20,6 +20,8 @@ import wait from "waait";
 import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
 import moment from "moment";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { translate } from "@totara/locale";
+import { capitalizeFirstLetter } from "@totara/lib/tools";
 
 const navigation = {
   navigation: {
@@ -38,7 +40,7 @@ describe("CurrentLearningListViewItem", () => {
     });
 
     const courseType = await getByTestId("test_CurrentLearningItem_Type");
-    expect(courseType.children[0]).toBe("Course");
+    expect(courseType.children[0]).toBe(capitalizeFirstLetter(translate("learning_items.course")));
 
     const title = await getByTestId("test_CurrentLearningItem_Title");
     expect(title.children[0]).toBe("Example course fullname");
@@ -57,7 +59,7 @@ describe("CurrentLearningListViewItem", () => {
     });
 
     const programType = await getByTestId("test_CurrentLearningItem_Type");
-    expect(programType.children[0]).toBe("Program");
+    expect(programType.children[0]).toBe(capitalizeFirstLetter(translate("learning_items.program")));
   });
 
   it("Should render Program certification type", async () => {
@@ -69,7 +71,7 @@ describe("CurrentLearningListViewItem", () => {
     });
 
     const programType = await getByTestId("test_CurrentLearningItem_Type");
-    expect(programType.children[0]).toBe("Certification");
+    expect(programType.children[0]).toBe(capitalizeFirstLetter(translate("learning_items.certification")));
   });
 
   it("Should render Course item with due date expired (alert)", async () => {
