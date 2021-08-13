@@ -18,7 +18,7 @@ import "react-native-gesture-handler/jestSetup";
 
 global.console = {
   log: jest.fn(),
-  error: console.error,
+  error: jest.fn(),
   warn: jest.fn(),
   info: jest.fn(),
   debug: jest.fn()
@@ -37,7 +37,7 @@ jest.mock("@react-native-community/cookies", () => {
 
 jest.mock("react-native-reanimated", () => {
   const Reanimated = require("react-native-reanimated/mock");
-  Reanimated.default.call = () => { };
+  Reanimated.default.call = () => {};
   return Reanimated;
 });
 
@@ -75,7 +75,7 @@ jest.mock("react-native-device-info", () => {
 jest.mock("@apollo/client", () => ({
   ...require.requireActual("@apollo/client"),
   useApolloClient: jest.fn(() => ({
-    readQuery: jest.fn(() => { }),
+    readQuery: jest.fn(() => {}),
     writeQuery: jest.fn()
   }))
 }));
@@ -147,14 +147,14 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
-jest.mock('react-native-safe-area-view', () => ({
-  useSafeArea: () => ({ insets: null }),
+jest.mock("react-native-safe-area-view", () => ({
+  useSafeArea: () => ({ insets: null })
 }));
 
-jest.mock('@react-native-firebase/messaging', () => {
+jest.mock("@react-native-firebase/messaging", () => {
   return () => ({
     requestPermission: jest.fn(),
     getToken: jest.fn(),
     deleteToken: jest.fn()
-  })
+  });
 });

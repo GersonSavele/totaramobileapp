@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { endSession, initSession, setupHost } from "./../actions/session";
+import { endSession, initSession, setupHost, setCore } from "./../actions/session";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@totara/reducers";
@@ -22,20 +22,21 @@ import { Session } from "@totara/types";
 const useSession = () => {
   const sessionSelector = useSelector((state: RootState) => state.sessionReducer);
   const [session, setSession] = useState<Session>(sessionSelector);
-  const { apiKey, host, siteInfo } = session;
+  const { apiKey, host, siteInfo, core } = session;
 
   useEffect(() => {
     setSession(sessionSelector);
   }, [sessionSelector]);
 
-
   return {
     apiKey,
     host,
     siteInfo,
+    core,
     initSession,
     endSession,
-    setupHost
+    setupHost,
+    setCore
   }
 }
 

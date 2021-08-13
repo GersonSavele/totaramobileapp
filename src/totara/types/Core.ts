@@ -19,6 +19,7 @@ export interface User {
   lastname: string;
   fullname: string;
   email: string;
+  lang: string;
 }
 
 export interface System {
@@ -31,7 +32,13 @@ export interface System {
   password_change_required: boolean;
 }
 
+/** @deprecated */
 export interface Me {
+  user: User;
+  system: System;
+}
+
+export interface Core {
   user: User;
   system: System;
 }

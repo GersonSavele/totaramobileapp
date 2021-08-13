@@ -14,17 +14,25 @@
  */
 
 import { Session } from "@totara/types";
-import { SETUP_HOST, INIT_SESSION, END_SESSION } from "../actions/constants";
+import { SETUP_HOST, INIT_SESSION, END_SESSION, SET_CORE} from "../actions/constants";
 
 const initialState = {
   apiKey: undefined,
   host: undefined,
   user: undefined,
-  siteInfo: undefined
+  siteInfo: undefined,
+  core: undefined
 } as Session;
 
 const sessionReducer = (state = initialState, action) => {
   switch (action.type) {
+    case INIT_SESSION: {
+      return {
+        ...state,
+        apiKey: action.payload.apiKey,
+        user: action.payload.user
+      } as Session;
+    }
     case SETUP_HOST: {
       return {
         ...state,
@@ -32,11 +40,10 @@ const sessionReducer = (state = initialState, action) => {
         siteInfo: action.payload.siteInfo
       } as Session;
     }
-    case INIT_SESSION: {
+    case SET_CORE:{
       return {
         ...state,
-        apiKey: action.payload.apiKey,
-        user: action.payload.user
+        core: action.payload
       } as Session;
     }
     case END_SESSION: {

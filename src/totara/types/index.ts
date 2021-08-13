@@ -18,7 +18,7 @@ import { Activity, ActivityType, ScormActivity } from "./Activity";
 import { Course, CourseSets, CourseContentDetails } from "./Course";
 import { Criteria } from "./Criteria";
 import { Status, LearningStatus } from "./LearningStatus";
-import { Me } from "./Me";
+import { Me } from "./Core";
 import { SiteInfo, AppState } from "./Auth";
 import { Theme } from "./Theme";
 import { UserProfile } from "./UserProfile";

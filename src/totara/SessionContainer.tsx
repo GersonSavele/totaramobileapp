@@ -1,4 +1,3 @@
-
 /**
  * This file is part of Totara Enterprise.
  *
@@ -16,7 +15,13 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { ApolloProvider, ApolloClient, NormalizedCacheObject, InMemoryCache, defaultDataIdFromObject } from "@apollo/client";
+import {
+  ApolloProvider,
+  ApolloClient,
+  NormalizedCacheObject,
+  InMemoryCache,
+  defaultDataIdFromObject
+} from "@apollo/client";
 import { Linking } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -29,8 +34,7 @@ import LocaleResolver from "./locale/LocaleResolver";
 import MainContainer from "./MainContainer";
 import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
 import { LearningItem } from "./types";
-
-
+import { queryCore } from "./core/api/core";
 
 const setupApolloClient = async ({ apiKey, host, onLogout }) => {
   const cache = new InMemoryCache({
@@ -48,55 +52,56 @@ const setupApolloClient = async ({ apiKey, host, onLogout }) => {
 
   const newPersistor = new CachePersistor({
     cache,
-    storage: new AsyncStorageWrapper(AsyncStorage),
+    storage: new AsyncStorageWrapper(AsyncStorage)
   });
 
-  const newApolloClient = createApolloClient(
-    apiKey,
-    host!,
-    cache,
-    onLogout
-  );
+  const newApolloClient = createApolloClient(apiKey, host!, cache, onLogout);
 
   return {
     apolloClient: newApolloClient,
     persistor: newPersistor
-  }
-}
+  };
+};
 
 const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession }) => {
   if (url) {
-    linkingHandler(url, ({ secret, uri }) => {
-      registerDevice(fetchDataWithFetch, AsyncStorage)({
-        uri: uri,
-        secret: secret,
-        siteInfo: siteInfo
-      }).then(res => {
-        initSession({ apiKey: res.apiKey });
-      }).catch(ee => {
-        console.warn(ee);
-      });
-    }, () => {
-      console.warn('fail');
-    })
+    linkingHandler(
+      url,
+      ({ secret, uri }) => {
+        registerDevice(
+          fetchDataWithFetch,
+          AsyncStorage
+        )({
+          uri: uri,
+          secret: secret,
+          siteInfo: siteInfo
+        })
+          .then((res) => {
+            initSession({ apiKey: res.apiKey });
+          })
+          .catch((ee) => {
+            console.warn(ee);
+          });
+      },
+      () => {
+        console.warn("fail");
+      }
+    );
   }
-}
-
-
-
+};
 
 const SessionContainer = () => {
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
 
-  const { initSession, host, apiKey, siteInfo } = useSession();
+  const { initSession, host, apiKey, siteInfo, core, setCore } = useSession();
   const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
   const [persistor, setPersistor] = useState<CachePersistor<NormalizedCacheObject>>();
   const isFocused = useIsFocused();
 
   const onLogout = async () => {
     logOut({ apolloClient });
-  }
+  };
 
   useEffect(() => {
     if (apiKey && !apolloClient) {
@@ -104,23 +109,36 @@ const SessionContainer = () => {
         setPersistor(persistor);
         setApolloClient(apolloClient);
         persistor?.restore();
-      })
-    }
-    else if (!apiKey && apolloClient) {
+      });
+    } else if (!apiKey && apolloClient) {
       persistor?.purge();
       setApolloClient(undefined);
     }
   }, [apiKey, apolloClient]);
+
+  useEffect(() => {
+    //only runs if apolloClient exists and core not yet
+    if (apolloClient && !core) {
+      apolloClient
+        .query({
+          query: queryCore
+        })
+        .then((result) => {
+          console.log(result.data);
+          const core = result.data.me;
+          setCore(core);
+        });
+    }
+  }, [apolloClient, core]);
 
   useFocusEffect(
     useCallback(() => {
       if (isFocused) {
         if (!apiKey) {
           Linking.getInitialURL().then((url) => {
-            initialURLHandler({ fetchDataWithFetch, url, siteInfo, initSession })
+            initialURLHandler({ fetchDataWithFetch, url, siteInfo, initSession });
           });
-        }
-        else {
+        } else {
           return () => {
             Linking.removeAllListeners("url");
           };
@@ -130,17 +148,18 @@ const SessionContainer = () => {
   );
 
   if (!host || !apiKey) {
-    return <SiteUrl />
+    return <SiteUrl />;
   }
 
-  if (!apolloClient)
-    return <Loading />
+  if (!apolloClient || !core) return <Loading />;
 
-  return <ApolloProvider client={apolloClient!}>
-    <LocaleResolver>
-      <MainContainer />
-    </LocaleResolver>
-  </ApolloProvider>
-}
+  return (
+    <ApolloProvider client={apolloClient!}>
+      <LocaleResolver>
+        <MainContainer />
+      </LocaleResolver>
+    </ApolloProvider>
+  );
+};
 
 export default SessionContainer;

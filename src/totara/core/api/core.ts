@@ -1,3 +1,4 @@
+
 /**
  * This file is part of Totara Enterprise.
  *
@@ -13,12 +14,29 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Core } from "./Core";
-import { SiteInfo } from "./SiteInfo";
+import { gql } from "@apollo/client";
 
-export type Session = {
-  apiKey?: string;
-  host?: string;
-  siteInfo?: SiteInfo;
-  core?: Core;
-};
+export const queryCore = gql`
+  query totara_mobile_me {
+    me: totara_mobile_me {
+      user {
+        id
+        firstname
+        lastname
+        fullname
+        email
+        lang,
+        profileimage: profileimageurl
+      }
+      system {
+        wwwroot
+        apiurl
+        release
+        request_policy_agreement
+        request_user_consent
+        request_user_fields
+        password_change_required
+      }
+    }
+  }
+`;

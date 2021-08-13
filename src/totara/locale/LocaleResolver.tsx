@@ -15,39 +15,21 @@
 
 import React, { useState, useEffect } from "react";
 import { useApolloClient } from "@apollo/client";
-import { queryLanguageStrings, queryUserLanguagePreference } from "@totara/locale/api";
+import { queryLanguageStrings } from "@totara/locale/api";
 import { Loading } from "@totara/components";
-import { addLocale, changeLocale, getLocale, getTranslations } from "@totara/locale/index";
+import { addLocale, changeLocale, getTranslations } from "@totara/locale/index";
 import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
 import { merge } from "lodash";
+import { useSession } from "@totara/core";
 
 const LocaleResolver = ({ children }: { children: any }) => {
-  const [languagePreference, setLanguagePreference] = useState<string>();
   const [languageStringLoaded, setLanguageStringLoaded] = useState<boolean>();
   const client = useApolloClient();
+  const { core } = useSession();
+  const languagePreference = core?.user?.lang || "en";
 
   useEffect(() => {
-    if (!languagePreference) {
-      client
-        .query({
-          query: queryUserLanguagePreference
-        })
-        .then((result) => {
-          if (result.data) {
-            const lang = result.data.me?.user?.lang;
-            if (lang) {
-              setLanguagePreference(lang);
-            } else setLanguagePreference(getLocale());
-          }
-        })
-        .catch(() => {
-          setLanguagePreference(getLocale());
-        });
-    }
-  }, [languagePreference]);
-
-  useEffect(() => {
-    if (languagePreference && !languageStringLoaded) {
+    if (!languageStringLoaded) {
       client
         .query({
           query: queryLanguageStrings,

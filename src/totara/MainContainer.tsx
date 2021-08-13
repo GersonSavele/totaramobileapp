@@ -109,10 +109,12 @@ const MainContainer = () => {
   }, []);
 
   return (
-    <Stack.Navigator mode={"modal"} screenOptions={{
-      headerShown: false
-    }} >
-      <Stack.Screen name="FeatureNavigator" component={TabContainer} />
+    <Stack.Navigator
+      mode={"modal"}
+      screenOptions={{
+        headerShown: false
+      }}>
+      <Stack.Screen name="TabContainer" component={TabContainer} />
       <Stack.Screen name={SCORM_STACK_ROOT} component={scormStack} />
       <Stack.Screen name={WEBVIEW_ACTIVITY} component={WebViewStack} />
       <Stack.Screen name={ABOUT} component={AboutStack} />
