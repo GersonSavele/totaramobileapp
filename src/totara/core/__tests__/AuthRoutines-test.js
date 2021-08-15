@@ -94,7 +94,7 @@ describe("AuthRoutines.deviceCleanup", () => {
   });
 
   it("should successfully deregister and cleanup storage", async () => {
-    expect.assertions(3);
+    expect.assertions(2);
 
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: true } }));
     const mockClearStorage = jest.fn(() => Promise.resolve());
@@ -104,12 +104,11 @@ describe("AuthRoutines.deviceCleanup", () => {
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
     expect(result).toBeTruthy();
-    expect(Log.debug).toHaveBeenCalledTimes(2);
     expect(Log.warn).not.toHaveBeenCalled();
   });
 
   it("should handle error on cleanup non-existing storage", async () => {
-    expect.assertions(3);
+    expect.assertions(2);
 
     const errorNoneExistStorage = new Error("Failed to delete storage directory with");
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: true } }));
@@ -120,12 +119,11 @@ describe("AuthRoutines.deviceCleanup", () => {
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
     expect(result).toBeTruthy();
-    expect(Log.debug).toHaveBeenCalledTimes(1);
     expect(Log.warn).toHaveBeenCalledTimes(1);
   });
 
   it("should handle error on deregister the device", async () => {
-    expect.assertions(3);
+    expect.assertions(2);
 
     const unHandledErrorServer = new Error("Server error");
     const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
@@ -136,12 +134,11 @@ describe("AuthRoutines.deviceCleanup", () => {
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
     expect(result).toBeTruthy();
-    expect(Log.debug).toHaveBeenCalledTimes(1);
     expect(Log.warn).toHaveBeenCalledTimes(1);
   });
 
   it("should handle unsuccessful deregister", async () => {
-    expect.assertions(3);
+    expect.assertions(2);
 
     const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: false } }));
     const mockClearStorage = jest.fn(() => Promise.resolve());
@@ -151,12 +148,11 @@ describe("AuthRoutines.deviceCleanup", () => {
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
     expect(result).toBeTruthy();
-    expect(Log.debug).toHaveBeenCalledTimes(2);
     expect(Log.warn).toHaveBeenCalledTimes(1);
   });
 
   it("should handle errors on deregister and clean up storage", async () => {
-    expect.assertions(3);
+    expect.assertions(2);
 
     const unHandledErrorServer = new Error("Server error");
     const unHandledErrorStorage = new Error("Un handled errors for clean storage");
@@ -168,7 +164,6 @@ describe("AuthRoutines.deviceCleanup", () => {
 
     const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
     expect(result).toBeTruthy();
-    expect(Log.debug).not.toHaveBeenCalled();
     expect(Log.warn).toHaveBeenCalledTimes(2);
   });
 });

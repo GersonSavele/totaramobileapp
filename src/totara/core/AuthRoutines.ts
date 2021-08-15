@@ -79,7 +79,6 @@ export const registerDevice = (
         host: setup.uri,
         siteInfo: setup.siteInfo
       } as AppState;
-      Log.debug("appState done", appState);
       return appState;
     })
     .catch((error) => {
@@ -104,7 +103,6 @@ export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
 ): Promise<boolean> => {
   const remoteCleanUp = deviceDelete()
     .then(({ data: { delete_device } }) => {
-      Log.debug("Device deleted from server", delete_device);
       if (!delete_device) Log.warn("Unable to delete device from server");
       return delete_device;
     })
@@ -114,9 +112,7 @@ export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
 
   const localCleanUp = asyncStorage
     .multiRemove(["apiKey", "siteInfo"])
-    .then(() => {
-      Log.debug("Cleared storage");
-    })
+    .then(() => {})
     .catch((error) => {
       if (error.message.startsWith("Failed to delete storage directory")) {
         Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
@@ -241,7 +237,6 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
       return Promise.reject(error);
     })
     .then((json) => {
-      // Log.debug("json response", json);
       if (json.data) return (json.data as unknown) as T;
       else return Promise.reject("json expected to have data attribute");
     });
@@ -268,7 +263,6 @@ export const logOut = async ({ apolloClient }) => {
   const { cache } = apolloClient;
   await cache.reset(); //clear the apollo client cache
   await purge({}); //root purge (hot)
-  await persistor.purge();  //root purge (stored)
-
+  await persistor.purge(); //root purge (stored)
   return Promise.resolve();
-}
+};

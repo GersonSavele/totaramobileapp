@@ -66,9 +66,8 @@ const retrieveAllData = ({ client }): { [key: string]: ScormBundle } => {
     });
     return scormBundles;
   } catch (e) {
-    // Log.debug("empty cache for ActivitiesRecords");
+    return {};
   }
-  return {};
 };
 /**
  * This saves the map of scorm bundle with the new scormBunble in the cache

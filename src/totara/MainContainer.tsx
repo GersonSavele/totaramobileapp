@@ -61,7 +61,6 @@ const MainContainer = () => {
 
     registerPushNotifications()
       .then((token) => {
-        console.debug("FCM TOKEN RECEIVED =========>", token);
         console.debug("REGISTERING FCM TOKEN");
         sendToken({ variables: { token } })
           .then((success) => {

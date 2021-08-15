@@ -61,7 +61,6 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     };
   }
 
-
   async componentDidMount() {
     const { createWebview, host, uri } = this.props;
 
@@ -69,8 +68,6 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
     const createWebViewPromise = createWebview({ variables: { url: uri } })
       .then((response) => {
-        Log.debug("created webview", response);
-
         if (response.data) {
           this.setState({
             host: host,
@@ -94,7 +91,6 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     const userAgentPromise = getUserAgent().then(agent => {
       this.setState({ agent: `${agent} ${config.userAgent}` });
     });
-
 
     return Promise.all([createWebViewPromise, clearCookiesPromise, userAgentPromise]);
   }

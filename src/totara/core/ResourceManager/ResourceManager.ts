@@ -118,7 +118,6 @@ class ResourceManager {
         }
       })
       .then(() => {
-        //console.log(targetFile);
         return unlink(targetFile);
       })
       .then(() => {

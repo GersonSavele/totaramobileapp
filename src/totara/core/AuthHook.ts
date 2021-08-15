@@ -80,8 +80,8 @@ export const useAuth = (
     const mutationPromise = () =>
       apolloClient.current && !localOnly
         ? apolloClient.current.mutate({
-          mutation: deleteDevice
-        })
+            mutation: deleteDevice
+          })
         : Promise.resolve({ data: { delete_device: true } });
 
     return deviceCleanup(mutationPromise).then(() => dispatch({ type: "deRegister" }));
@@ -127,8 +127,6 @@ export const useAuth = (
    * @param error
    */
   const onLoginFailure = async (error: Error) => {
-    //Log.error("login failure, bringing back to initial loading state", error);
-
     dispatch({ type: "authError", payload: error });
   };
 
@@ -162,7 +160,6 @@ export const useAuth = (
    */
   useEffect(() => {
     const doRegisterDevice = () => {
-      Log.debug("doRegisterDevice", authContextState);
       if (authContextState.setup) {
         registerDevice(authContextState.setup)
           .then((appState) => {
