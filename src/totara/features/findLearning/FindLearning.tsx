@@ -118,14 +118,15 @@ const FindLearning = () => {
         ListHeaderComponent={
           <FindLearningHeader
             onChangeText={(text) => setSearchData({ key: text, pointer: 0 })}
-            onSearch={() =>
+            onSearch={() => {
+              setSearchResult(undefined);
               onSearch({
                 pointer: searchData.pointer,
                 findLearningText: searchData.key,
                 resetSearchResult: setSearchResult,
                 onSearchCallback: onCallSearch
-              })
-            }
+              });
+            }}
             findLeaningText={searchData.key}
             count={searchResult?.maxCount}
           />
