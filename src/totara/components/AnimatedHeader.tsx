@@ -27,8 +27,7 @@ const TOPNAVI_OFFSET = 250;
 const ACTION_WIDTH = 40;
 const HEIGHT = TOPNAVI_OFFSET + STATUSBAR_HEIGHT;
 
-type AnimatedHeaderProps =
-  { title: string, subTitle?: string, scrollValue?: any, leftAction: any }
+type AnimatedHeaderProps = { title: string; subTitle?: string; scrollValue?: any; leftAction: any };
 
 const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHeaderProps) => {
   const safeArea = useSafeAreaInsets();
@@ -38,20 +37,20 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
   useCode(() => {
     return call([scrollValue], (values) => {
       const [value] = values;
-      setDark((TOPNAVI_OFFSET) < value);
-    })
-  }, [scrollValue])
+      setDark(TOPNAVI_OFFSET < value);
+    });
+  }, [scrollValue]);
 
   const transparentToOpaqueInterpolate = interpolate(scrollValue, {
     inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT],
     outputRange: [0, 1],
-    extrapolate: Extrapolate.CLAMP,
+    extrapolate: Extrapolate.CLAMP
   });
 
   const opaqueToTransparentInterpolate = interpolate(scrollValue, {
     inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT],
     outputRange: [1, 0],
-    extrapolate: Extrapolate.CLAMP,
+    extrapolate: Extrapolate.CLAMP
   });
 
   useFocusEffect(
@@ -60,55 +59,82 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
       return () => {
         StatusBar.setBarStyle("dark-content", true);
       };
-    }, [dark])
+    }, [])
   );
 
-  return <>
-    <Animated.View testID={"animated-header-container"} style={{
-      paddingTop: safeArea.top,
-      marginBottom: isFloating ? -STATUSBAR_HEIGHT - safeArea.top : 0,
-      height: STATUSBAR_HEIGHT + safeArea.top,
-      backgroundColor: Animated.color(255, 255, 255, transparentToOpaqueInterpolate), //RGB color, 255 being white
-      opacity: 1,
-      zIndex: 200,
-      flexDirection: 'row'
-    }}>
-      <TouchableOpacity accessibilityLabel={translate("general.accessibility_go_back")} accessibilityRole={"button"} testID={"animated-header-backbutton"} onPress={leftAction} style={styles.leftAction}>
-        <Animated.View testID={"animated-header-backbutton-black"} style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]} >
-          <FontAwesomeIcon icon="chevron-left" color={"black"} />
-        </Animated.View>
-        <Animated.View testID={"animated-header-backbutton-white"} style={[styles.backIcon, { opacity: opaqueToTransparentInterpolate }]}>
-          <FontAwesomeIcon icon="chevron-left" color={"white"} />
-        </Animated.View>
-      </TouchableOpacity>
+  return (
+    <>
+      <Animated.View
+        testID={"animated-header-container"}
+        style={{
+          paddingTop: safeArea.top,
+          marginBottom: isFloating ? -STATUSBAR_HEIGHT - safeArea.top : 0,
+          height: STATUSBAR_HEIGHT + safeArea.top,
+          backgroundColor: Animated.color(255, 255, 255, transparentToOpaqueInterpolate), //RGB color, 255 being white
+          opacity: 1,
+          zIndex: 200,
+          flexDirection: "row"
+        }}>
+        <TouchableOpacity
+          accessibilityLabel={translate("general.accessibility_go_back")}
+          accessibilityRole={"button"}
+          testID={"animated-header-backbutton"}
+          onPress={leftAction}
+          style={styles.leftAction}>
+          <Animated.View
+            testID={"animated-header-backbutton-black"}
+            style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]}>
+            <FontAwesomeIcon icon="chevron-left" color={"black"} />
+          </Animated.View>
+          <Animated.View
+            testID={"animated-header-backbutton-white"}
+            style={[styles.backIcon, { opacity: opaqueToTransparentInterpolate }]}>
+            <FontAwesomeIcon icon="chevron-left" color={"white"} />
+          </Animated.View>
+        </TouchableOpacity>
 
-      <Animated.View testID={"animated-header-title-container"} style={{ flex: 1, opacity: transparentToOpaqueInterpolate }}>
-        <Text numberOfLines={1} testID={"animated-header-title"} style={styles.title}>{title}</Text>
-        {subTitle && <Text testID={"animated-header-subtitle"} style={styles.subTitle}>{subTitle}</Text>}
+        <Animated.View
+          testID={"animated-header-title-container"}
+          style={{ flex: 1, opacity: transparentToOpaqueInterpolate }}>
+          <Text numberOfLines={1} testID={"animated-header-title"} style={styles.title}>
+            {title}
+          </Text>
+          {subTitle && (
+            <Text testID={"animated-header-subtitle"} style={styles.subTitle}>
+              {subTitle}
+            </Text>
+          )}
+        </Animated.View>
+        <View style={{ width: ACTION_WIDTH }}></View>
       </Animated.View>
-      <View style={{ width: ACTION_WIDTH }}
-      ></View>
-    </Animated.View>
-  </>
-}
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   leftAction: {
-    width: ACTION_WIDTH, paddingLeft: paddings.paddingL, alignContent: 'center', justifyContent: 'center',
-    flexDirection: 'row', alignItems: 'center'
+    width: ACTION_WIDTH,
+    paddingLeft: paddings.paddingL,
+    alignContent: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center"
   },
   title: {
-    textAlign: 'center',
+    textAlign: "center",
     fontWeight: fontWeights.fontWeightBold,
-    fontSize: fontSizes.fontSizeM,
+    fontSize: fontSizes.fontSizeM
   },
   subTitle: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: fontSizes.fontSizeS,
     paddingTop: paddings.paddingS
   },
   backIcon: {
-    justifyContent: 'center', alignItems: 'center', alignSelf: 'center', position: 'absolute'
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    position: "absolute"
   }
 });
 

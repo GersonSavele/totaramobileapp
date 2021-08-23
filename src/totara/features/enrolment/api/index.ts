@@ -16,21 +16,41 @@
 import { gql } from "@apollo/client";
 
 export const enrolmentInfoQuery = gql`
-query mobile_findlearning_enrolment_info($courseid: core_id!) {
-  enrolmentInfo: core_enrol_course_info(courseid: $courseid) {
-    isComplete: is_complete
-    isEnrolled: is_enrolled
-    guestAccess: guest_access
-    canEnrol: can_enrol
-    priviledged: can_view
-    enrolmentOptions: enrolment_options {
-      id
-      type
-      roleName: role_name
-      customName: custom_name
-      sortOrder: sort_order
-      passwordRequired: password_required
+  query mobile_findlearning_enrolment_info($courseid: core_id!) {
+    enrolmentInfo: core_enrol_course_info(courseid: $courseid) {
+      isComplete: is_complete
+      isEnrolled: is_enrolled
+      guestAccess: guest_access
+      canEnrol: can_enrol
+      priviledged: can_view
+      enrolmentOptions: enrolment_options {
+        id
+        type
+        roleName: role_name
+        customName: custom_name
+        sortOrder: sort_order
+        passwordRequired: password_required
+      }
     }
   }
-}
+`;
+
+export const selfEnrolmentMutation = gql`
+  mutation mobile_findlearning_attempt_self_enrolment($input: core_enrol_attempt_self_enrolment_input!) {
+    mobile_findlearning_enrolment_result: core_enrol_attempt_self_enrolment(input: $input) {
+      success
+      msgKey: msg_key
+      __typename
+    }
+  }
+`;
+
+export const guestAccessMutation = gql`
+  mutation mobile_findlearning_attempt_guest_access($input: core_enrol_attempt_input!) {
+    mobile_findlearning_guest_access_result: core_enrol_attempt_guest_access(input: $input) {
+      success
+      msgKey: msg_key
+      __typename
+    }
+  }
 `;

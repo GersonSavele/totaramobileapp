@@ -34,8 +34,10 @@ import { DescriptionFormat } from "@totara/types/LearningItem";
 
 const CourseDetails = ({ navigation, route }: any) => {
   const courseId = route?.params?.targetId || navigation.getParam("targetId");
+  const guestPWD = route?.params?.guestPWD;
+
   const { networkStatus, error, data, refetch } = useQuery(coreCourse, {
-    variables: { courseid: courseId },
+    variables: { courseid: courseId, guestpw: guestPWD },
     notifyOnNetworkStatusChange: true
   });
 

@@ -13,8 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-
-export enum EnrolmentStatus {
-  enrolled,
-  notEnrolled
-}
+export type EnrolmentOption = {
+  id: string;
+  type: string;
+  passwordRequired: boolean;
+  customName: string;
+  roleName: string;
+  sortOrder: number;
+};

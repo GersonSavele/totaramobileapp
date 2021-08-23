@@ -18,8 +18,8 @@ import { config } from "@totara/lib";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 
 const coreCourse = gql`
-  query totara_mobile_course($courseid: core_id!) {
-    mobile_course: totara_mobile_course(courseid: $courseid) {
+  query totara_mobile_course($courseid: core_id!, $guestpw: String) {
+    mobile_course: totara_mobile_course(courseid: $courseid, guestpw: $guestpw) {
       course(courseid: $courseid) {
         id
         format

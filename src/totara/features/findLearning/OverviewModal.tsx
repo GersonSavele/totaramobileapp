@@ -26,6 +26,7 @@ import { ImageElement } from "./components";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { enrolmentInfoQuery } from "../enrolment/api";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { learningItemEnum } from "../constants";
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 
@@ -101,7 +102,6 @@ export const OverviewModal = () => {
   const { params } = useRoute<RouteProp<OverviewModalParamList, "OverviewModal">>();
 
   const { itemid, title, mobileImage: imageSource, summary } = params;
-
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
     variables: { courseid: itemid },
     fetchPolicy: "no-cache"
@@ -117,9 +117,7 @@ export const OverviewModal = () => {
   const goTo = () => {
     if (isEnrolled || privileged) {
       const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
-      const itemType = "course";
-
-      navigation.navigate(routeId, { targetId: itemid, courseGroupType: itemType });
+      navigation.navigate(routeId, { targetId: itemid, courseGroupType: learningItemEnum.Course });
     } else {
       popAndGoToByRef(NAVIGATION.ENROLMENT_MODAL, {
         targetId: itemid
