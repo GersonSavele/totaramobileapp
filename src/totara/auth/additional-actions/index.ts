@@ -14,6 +14,5 @@
  */
 
 import AdditionalAction from "./AdditionalAction";
-import { AdditionalActionRule, AdditionalActionRuleCondition } from "./AdditionalActionRule";
 
-export { AdditionalAction, AdditionalActionRule, AdditionalActionRuleCondition };
+export { AdditionalAction };

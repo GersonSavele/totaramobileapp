@@ -18,59 +18,32 @@ import { Linking, ImageSourcePropType } from "react-native";
 
 import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
-import { AuthConsumer, useSession } from "@totara/core";
-import { AdditionalActionRule } from "./AdditionalActionRule";
+import { useSession } from "@totara/core";
 import { Images } from "@resources/images";
 
-class AdditionalAction extends React.Component {
-  render() {
-    return (
-      <AdditionalActionRule>
-        <AdditionalActionModal />
-      </AdditionalActionRule>
-    );
-  }
-}
-
 const AdditionalActionModal = () => {
+  const { host, endSession } = useSession();
   return (
     <InfoModal
       title={translate("additional_actions_modal.auth_model_title")}
       description={translate("additional_actions_modal.auth_model_description")}
       imageSource={Images.actionRequired as ImageSourcePropType}
       visible={true}>
-      <ActionButtonPrimary />
-      <ActionButtonTertiary />
+      <PrimaryButton
+        text={translate("additional_actions_modal.auth_model_go_to_browser")}
+        icon={"external-link-alt"}
+        onPress={() => {
+          Linking.openURL(host!);
+        }}
+      />
+      <TertiaryButton
+        text={translate("additional_actions_modal.auth_model_logout")}
+        onPress={() => {
+          endSession();
+        }}
+      />
     </InfoModal>
   );
 };
 
-const ActionButtonPrimary = () => {
-  const { host } = useSession();
-  return (
-    <PrimaryButton
-      text={translate("additional_actions_modal.auth_model_go_to_browser")}
-      icon={"external-link-alt"}
-      onPress={() => {
-        Linking.openURL(host!);
-      }}
-    />
-  );
-};
-
-const ActionButtonTertiary = () => {
-  return (
-    <AuthConsumer>
-      {(auth) => (
-        <TertiaryButton
-          text={translate("additional_actions_modal.auth_model_logout")}
-          onPress={() => {
-            auth.logOut();
-          }}
-        />
-      )}
-    </AuthConsumer>
-  );
-};
-
-export default AdditionalAction;
+export default AdditionalActionModal;

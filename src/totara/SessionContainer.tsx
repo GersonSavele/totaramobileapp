@@ -27,7 +27,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import { linkingHandler } from "./auth/authUtils";
 import SiteUrl from "./auth/manual/SiteUrl";
-import { Loading } from "./components";
+import { AppStateListener, Loading } from "./components";
 import { useSession } from "./core";
 import { createApolloClient, fetchData, logOut, registerDevice } from "./core/AuthRoutines";
 import LocaleResolver from "./locale/LocaleResolver";
@@ -35,6 +35,7 @@ import MainContainer from "./MainContainer";
 import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
 import { LearningItem } from "./types";
 import { queryCore } from "./core/api/core";
+import { AdditionalAction } from "./auth/additional-actions";
 
 const setupApolloClient = async ({ apiKey, host, onLogout }) => {
   const cache = new InMemoryCache({
@@ -131,6 +132,12 @@ const SessionContainer = () => {
     }
   }, [apolloClient, apiKey, core]);
 
+  const requiresAdditionalAction =
+    core?.system.password_change_required ||
+    core?.system.request_policy_agreement ||
+    core?.system.request_user_consent ||
+    core?.system.request_user_fields;
+
   useFocusEffect(
     useCallback(() => {
       if (isFocused) {
@@ -151,7 +158,18 @@ const SessionContainer = () => {
     return <SiteUrl />;
   }
 
-  if (!apolloClient || !core) return <Loading />;
+  if (requiresAdditionalAction) {
+    return (
+      <AppStateListener
+        onActive={() => {
+          setCore(undefined);
+        }}>
+        <AdditionalAction />
+      </AppStateListener>
+    );
+  }
+
+  if (!apolloClient || !core || requiresAdditionalAction) return <Loading />;
 
   return (
     <ApolloProvider client={apolloClient!}>
