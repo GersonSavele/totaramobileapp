@@ -118,18 +118,18 @@ const SessionContainer = () => {
 
   useEffect(() => {
     //only runs if apolloClient exists and core not yet
-    if (apolloClient && !core) {
+    if (apolloClient && apiKey && !core) {
       apolloClient
         .query({
           query: queryCore
         })
         .then((result) => {
-          console.log(result.data);
+          // console.log(result.data);
           const core = result.data.me;
           setCore(core);
         });
     }
-  }, [apolloClient, core]);
+  }, [apolloClient, apiKey, core]);
 
   useFocusEffect(
     useCallback(() => {
