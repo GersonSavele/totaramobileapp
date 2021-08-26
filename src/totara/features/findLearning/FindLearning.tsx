@@ -16,7 +16,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { FlatList, Platform, Text, View } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { useSession } from "@totara/core";
 import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
 import { LearningItemTile, LearningItemTileSkeleton } from "./components/LearningItemTile";
@@ -83,6 +83,8 @@ const FindLearning = () => {
     }
   }, [data]);
 
+  const { apiKey } = useSession();
+
   useEffect(() => {
     setSearchResult(undefined);
   }, [searchData.key]);
@@ -97,14 +99,23 @@ const FindLearning = () => {
   }, [searchData.pointer]);
 
   const onItemTap = ({ item }: { item: CatalogItem }) => {
-    const { itemid, title, mobileImage, summary, summaryFormat } = item;
-    navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
-      itemid,
-      title,
-      mobileImage,
-      summary,
-      summaryFormat
-    });
+    const { itemid, title, mobileImage, summary, summaryFormat, viewUrl, itemType } = item;
+    // navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
+    //   itemid,
+    //   title,
+    //   mobileImage,
+    //   summary,
+    //   summaryFormat,
+    //   viewUrl,
+    //   itemType
+    // });
+    navigation.navigate(NAVIGATION.FIND_LEARNING_WEB_VIEW);
+    // navigation.navigate(NAVIGATION.WEBVIEW_ACTIVITY, {
+    //   uri: viewUrl,
+    //   apiKey,
+    //   backAction: () => {},
+    //   title: title
+    // });
   };
 
   const learningItem = useCallback(

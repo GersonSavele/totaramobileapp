@@ -23,6 +23,7 @@ export interface CatalogItem {
   mobileImage?: string;
   summary?: string;
   summaryFormat: string;
+  viewUrl?: string;
 }
 
 export interface FindLearningPage {

@@ -28,7 +28,6 @@ const navigateTo = ({ navigate, routeId, props }) => {
 
 const navigationRef = React.createRef<any>();
 
-
 //current learning
 const CURRENT_LEARNING = "CurrentLearning";
 const COURSE_DETAILS = "CourseDetails";
@@ -51,6 +50,7 @@ const SETTINGS = "Settings";
 const FIND_LEARNING = "FindLearning";
 const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
 const FIND_LEARNING_COURSE_DETAILS = "FindLearningCourseDetails";
+const FIND_LEARNING_WEB_VIEW = "FindLearningWebView";
 const ENROLMENT_MODAL = "EnrolmentModal";
 
 //Site url and Login
@@ -86,7 +86,8 @@ const NAVIGATION = {
   NATIVE_LOGIN,
   WEBVIEW_LOGIN,
   BROWSER_LOGIN,
-  ENROLMENT_MODAL
+  ENROLMENT_MODAL,
+  FIND_LEARNING_WEB_VIEW
 };
 
 const cardModalOptions = {
@@ -95,12 +96,12 @@ const cardModalOptions = {
   headerStatusBarHeight: 0,
   headerShown: true,
   headerBackTitleVisible: false,
-  headerTitle: '',
+  headerTitle: "",
   headerStyle: {
-    shadowColor: 'transparent',
-    elevation: 0,
+    shadowColor: "transparent",
+    elevation: 0
   }
-}
+};
 
 const popupModalOptions = {
   animationEnabled: true,
@@ -113,9 +114,26 @@ const popupModalOptions = {
           outputRange: [0, 0.25, 0.7, 1]
         })
       }
-    }
+    };
   }
-}
+};
+
+const horizontalAnimation = {
+  cardStyleInterpolator: ({ current, layouts }) => {
+    return {
+      cardStyle: {
+        transform: [
+          {
+            translateX: current.progress.interpolate({
+              inputRange: [0, 1],
+              outputRange: [layouts.screen.width, 0]
+            })
+          }
+        ]
+      }
+    };
+  }
+};
 
 const navigateByRef = (name, params) => {
   navigationRef.current?.navigate(name, params);
@@ -128,4 +146,14 @@ const popAndGoToByRef = (to, params) => {
   }, 200);
 };
 
-export { navigationRef, navigateByRef, popAndGoToByRef, navigateTo, NAVIGATION, learningItemToRouteMap, cardModalOptions, popupModalOptions };
+export {
+  navigationRef,
+  navigateByRef,
+  popAndGoToByRef,
+  navigateTo,
+  NAVIGATION,
+  learningItemToRouteMap,
+  cardModalOptions,
+  popupModalOptions,
+  horizontalAnimation
+};
