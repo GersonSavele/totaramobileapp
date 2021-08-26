@@ -1,5 +1,32 @@
 Totara Mobile App Changelog
 
+Release 1.0.12 (27th Aug 2021):
+=====================================
+
+Bug
+[MOB-805] - Not all logging present in Totara Mobile
+[MOB-913] - implementing promise handler when user logout
+[MOB-920] - Videos embedded in the mobile app do not display correctly unless made full screen
+[MOB-942] - Expanding weka content activity should not show warning
+[MOB-944] - Characters in course activity section titles should not show as HTML entities
+[MOB-956] - Error in courses list info inside a program or certificate set
+[MOB-969] - Navigation to Course in program is not working
+[MOB-972] - App should show course overview
+[MOB-977] - Versions information not showing corectly
+[MOB-980] - Learning items view list translation error
+[MOB-988] - Remove console logs
+[MOB-1005] - Additional Actions not working
+[MOB-1009] - When user log into the app it should set correct session data
+
+Improvements
+[MOB-786] - Authentication flow should use Navigation API instead of switching components in one screen
+[MOB-927] - App state handling
+[MOB-945] - Navigation API for webview login
+[MOB-946] - Navigation API for browser login
+[MOB-953] - Add support for Fastlane, run builds and code signing easier
+[MOB-954] - Auth Code Review
+[MOB-1006] - Create Core query
+
 Release 1.0.11 (17th Jun 2021):
 =====================================
 
