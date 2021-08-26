@@ -83,6 +83,8 @@ const FindLearning = () => {
     }
   }, [data]);
 
+  const { apiKey } = useSession();
+
   useEffect(() => {
     setSearchResult(undefined);
   }, [searchData.key]);

@@ -15,8 +15,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import FindLearning from "./FindLearning";
-import { NAVIGATION } from "@totara/lib/navigation";
+import { NAVIGATION, horizontalAnimation } from "@totara/lib/navigation";
 import CourseDetails from "../currentLearning/course/CourseDetails";
+import FindLearningWebView from "./FindLearningWebView";
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,11 @@ const FindLearningStack = () => {
     <Stack.Navigator headerMode={"none"} mode="modal">
       <Stack.Screen name={NAVIGATION.FIND_LEARNING} component={FindLearning} />
       <Stack.Screen name={NAVIGATION.FIND_LEARNING_COURSE_DETAILS} component={CourseDetails} />
+      <Stack.Screen
+        name={NAVIGATION.FIND_LEARNING_WEB_VIEW}
+        component={FindLearningWebView}
+        options={horizontalAnimation}
+      />
     </Stack.Navigator>
   );
 };

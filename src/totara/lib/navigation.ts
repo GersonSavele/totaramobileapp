@@ -50,7 +50,11 @@ const SETTINGS = "Settings";
 const FIND_LEARNING = "FindLearning";
 const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
 const FIND_LEARNING_COURSE_DETAILS = "FindLearningCourseDetails";
+<<<<<<< HEAD
 const FIND_LEARNING_DETAILS = "FindLearningDetails";
+=======
+const FIND_LEARNING_WEB_VIEW = "FindLearningWebView";
+>>>>>>> 1c7846cc... MOB-1000:Implmeting findlearning web-content
 const ENROLMENT_MODAL = "EnrolmentModal";
 
 //Site url and Login
@@ -87,7 +91,11 @@ const NAVIGATION = {
   WEBVIEW_LOGIN,
   BROWSER_LOGIN,
   ENROLMENT_MODAL,
+<<<<<<< HEAD
   FIND_LEARNING_DETAILS
+=======
+  FIND_LEARNING_WEB_VIEW
+>>>>>>> 1c7846cc... MOB-1000:Implmeting findlearning web-content
 };
 
 const cardModalOptions = {
