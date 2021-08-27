@@ -59,7 +59,6 @@
     "@react-native-community/netinfo": "^5.9.10",
     "@react-native-firebase/app": "^6.7.1",
     "@react-native-firebase/messaging": "^6.7.1",
-    "@react-native-masked-view/masked-view": "^0.2.5",
     "@react-navigation/compat": "^5.3.10",
     "@react-navigation/material-bottom-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
