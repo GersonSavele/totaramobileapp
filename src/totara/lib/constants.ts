@@ -44,6 +44,10 @@ const DEFAULT_LANGUAGE = "en";
 
 const PULL_TO_REFRESH_OFFSET = 50;
 
+enum SubPlugin {
+  findLearning = "findlearning"
+}
+
 export {
   DEVICE_REGISTRATION,
   WEBVIEW_SECRET,
@@ -63,5 +67,6 @@ export {
   ActivityModType,
   DEFAULT_LANGUAGE,
   ANDROID_STATUSBAR_HEIGHT,
-  PULL_TO_REFRESH_OFFSET
+  PULL_TO_REFRESH_OFFSET,
+  SubPlugin
 };

@@ -27,6 +27,9 @@ import { setNotificationBadgeCount } from "@totara/lib/nativeExtensions";
 import { TAB_TEST_IDS } from "./lib/testIds";
 import { translate } from "./locale";
 import FindLearningStack from "./features/findLearning/FindLearningStack";
+import { useSession } from "./core";
+import { get, isEmpty } from "lodash";
+import { SubPlugin } from "./lib/constants";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -34,6 +37,10 @@ const TabContainer = () => {
   const theme = useContext(ThemeContext);
   const { data } = useQuery(notificationsQuery);
   const notificationCount = countUnreadMessages(data);
+  const { core } = useSession();
+
+  const subPlugnis = get(core, "system.mobile_subplugins");
+  const isEnableFindLearning = !isEmpty(subPlugnis?.find((element) => element.pluginname === SubPlugin.findLearning));
 
   useEffect(() => {
     setNotificationBadgeCount(notificationCount);
@@ -63,17 +70,19 @@ const TabContainer = () => {
           tabBarTestID: TAB_TEST_IDS.CURRENT_LEARNING
         }}
       />
-      <Tab.Screen
-        name="FindLearning"
-        component={FindLearningStack}
-        options={{
-          tabBarAccessibilityLabel: translate("find_learning.title"),
-          tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.find_learning} />
-          ),
-          tabBarTestID: TAB_TEST_IDS.FIND_LEARNING
-        }}
-      />
+      {isEnableFindLearning && (
+        <Tab.Screen
+          name="FindLearning"
+          component={FindLearningStack}
+          options={{
+            tabBarAccessibilityLabel: translate("find_learning.title"),
+            tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
+              <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.find_learning} />
+            ),
+            tabBarTestID: TAB_TEST_IDS.FIND_LEARNING
+          }}
+        />
+      )}
       <Tab.Screen
         name="Downloads"
         component={DownloadsStack}

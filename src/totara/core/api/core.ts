@@ -1,4 +1,3 @@
-
 /**
  * This file is part of Totara Enterprise.
  *
@@ -25,7 +24,7 @@ export const queryCore = gql`
         lastname
         fullname
         email
-        lang,
+        lang
         profileimage: profileimageurl
       }
       system {
@@ -36,6 +35,7 @@ export const queryCore = gql`
         request_user_consent
         request_user_fields
         password_change_required
+        mobile_plugins_enabled
       }
     }
   }
