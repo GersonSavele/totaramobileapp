@@ -13,12 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { learningItemEnum } from "@totara/features/currentLearning/constants";
+import { learningItemEnum } from "@totara/features/constants";
 
 export interface CatalogItem {
   id: number;
   itemid: number;
-  itemType: learningItemEnum.Course | learningItemEnum.Playlist;
+  itemType: learningItemEnum.Course | learningItemEnum.Playlist | learningItemEnum.Resource;
   title: string;
   mobileImage?: string;
   summary?: string;

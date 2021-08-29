@@ -27,7 +27,7 @@ import OverviewDetails from "../overview/OverviewDetails";
 import { TotaraTheme } from "@totara/theme/Theme";
 import LearningDetails from "../LearningDetails";
 import CourseCompletionModal from "../CourseCompletionModal";
-import { learningItemEnum } from "../constants";
+import { learningItemEnum } from "@totara/features/constants";
 import courseDetailsStyle from "./courseDetailsStyle";
 import { CourseFormat } from "@totara/types/Course";
 import { DescriptionFormat } from "@totara/types/LearningItem";
@@ -35,7 +35,8 @@ import { DescriptionFormat } from "@totara/types/LearningItem";
 const CourseDetails = ({ navigation, route }: any) => {
   const courseId = route?.params?.targetId || navigation.getParam("targetId");
   const { networkStatus, error, data, refetch } = useQuery(coreCourse, {
-    variables: { courseid: courseId }, notifyOnNetworkStatusChange: true
+    variables: { courseid: courseId },
+    notifyOnNetworkStatusChange: true
   });
 
   const onContentRefresh = () => {
@@ -61,7 +62,7 @@ type CourseDetailsContentProps = {
   courseRefreshCallback: () => {};
   pullToRefresh: () => void;
   navigation: any;
-  loading: boolean
+  loading: boolean;
 };
 
 const CourseDetailsContent = ({

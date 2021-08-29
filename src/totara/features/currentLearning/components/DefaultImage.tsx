@@ -15,7 +15,7 @@
  */
 
 import { Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet, View } from "react-native";
-import { learningItemEnum } from "@totara/features/currentLearning/constants";
+import { learningItemEnum } from "@totara/features/constants";
 import { Images } from "@resources/images";
 import React from "react";
 import { TotaraTheme } from "@totara/theme/Theme";

@@ -25,9 +25,15 @@ type WebViewWrapperProps = {
   uri: string;
   backAction?: () => void;
   onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
+  isToolbarActions?: boolean;
 };
 
-const WebViewWrapper = ({ uri, backAction, onShouldStartLoadWithRequest }: WebViewWrapperProps) => {
+const WebViewWrapper = ({
+  uri,
+  backAction,
+  onShouldStartLoadWithRequest,
+  isToolbarActions = false
+}: WebViewWrapperProps) => {
   const refWebview = useRef<WebView>(null);
   const [navState, setNavState] = useState<WebViewNavigation>();
   const { host } = useSession();
@@ -54,7 +60,7 @@ const WebViewWrapper = ({ uri, backAction, onShouldStartLoadWithRequest }: WebVi
           onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         />
       </View>
-      <WebviewToolbar refWebview={refWebview} navState={navState} />
+      <WebviewToolbar refWebview={refWebview} navState={navState} viewUrl={uri} isToolbarActions={isToolbarActions} />
     </View>
   );
 };

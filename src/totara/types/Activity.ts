@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { completionTrack, completionStatus } from "@totara/features/currentLearning/constants";
+import { completionTrack, completionStatus } from "@totara/features/constants";
 import { DescriptionFormat } from "./LearningItem";
 
 export interface Activity {

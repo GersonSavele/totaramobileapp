@@ -14,7 +14,7 @@
  */
 
 import { Activity } from "./Activity";
-import { learningItemEnum } from "@totara/features/currentLearning/constants";
+import { learningItemEnum } from "@totara/features/constants";
 
 export enum DescriptionFormat {
   jsonEditor = "JSON_EDITOR",

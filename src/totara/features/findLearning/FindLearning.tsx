@@ -16,9 +16,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { FlatList, Platform, Text, View } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSession } from "@totara/core";
 import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
+import { learningItemEnum } from "@totara/features/constants";
 import { LearningItemTile, LearningItemTileSkeleton } from "./components/LearningItemTile";
 import { findLearningStyles } from "./findLearningStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -83,8 +83,6 @@ const FindLearning = () => {
     }
   }, [data]);
 
-  const { apiKey } = useSession();
-
   useEffect(() => {
     setSearchResult(undefined);
   }, [searchData.key]);
@@ -100,22 +98,30 @@ const FindLearning = () => {
 
   const onItemTap = ({ item }: { item: CatalogItem }) => {
     const { itemid, title, mobileImage, summary, summaryFormat, viewUrl, itemType } = item;
-    // navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
-    //   itemid,
-    //   title,
-    //   mobileImage,
-    //   summary,
-    //   summaryFormat,
-    //   viewUrl,
-    //   itemType
-    // });
-    navigation.navigate(NAVIGATION.FIND_LEARNING_WEB_VIEW);
-    // navigation.navigate(NAVIGATION.WEBVIEW_ACTIVITY, {
-    //   uri: viewUrl,
-    //   apiKey,
-    //   backAction: () => {},
-    //   title: title
-    // });
+    switch (itemType) {
+      case learningItemEnum.Course: {
+        navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
+          itemid,
+          title,
+          mobileImage,
+          summary,
+          summaryFormat,
+          viewUrl,
+          itemType
+        });
+        break;
+      }
+      case learningItemEnum.Resource: {
+        navigation.navigate(NAVIGATION.FIND_LEARNING_DETAILS, {
+          viewUrl,
+          title: translate("learning_items.resource")
+        });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   };
 
   const learningItem = useCallback(

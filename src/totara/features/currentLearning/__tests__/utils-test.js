@@ -15,7 +15,7 @@
 
 import { extractTargetId, getCompletionStatus, completionAccessibility } from "../utils";
 import { completionStates } from "../course/courseDetailsStyle";
-import { completionTrack, completionStatus } from "../constants";
+import { completionTrack, completionStatus } from "@totara/features/constants";
 
 describe("Utils", () => {
   it("Should extract targetId with character '_' provided", () => {

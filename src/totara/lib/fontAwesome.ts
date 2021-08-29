@@ -54,7 +54,8 @@ import {
   faPaperclip,
   faPlay,
   faEye,
-  faEyeSlash
+  faEyeSlash,
+  faShareAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -100,7 +101,8 @@ const init = () => {
     faPaperclip,
     faPlay,
     faEyeSlash,
-    faEye
+    faEye,
+    faShareAlt
   );
 };
 

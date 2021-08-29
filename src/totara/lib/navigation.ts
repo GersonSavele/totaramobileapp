@@ -14,7 +14,7 @@
  */
 
 import { TransitionPresets } from "@react-navigation/stack";
-import { learningItemEnum } from "@totara/features/currentLearning/constants";
+import { learningItemEnum } from "@totara/features/constants";
 import React from "react";
 
 /**
@@ -50,7 +50,7 @@ const SETTINGS = "Settings";
 const FIND_LEARNING = "FindLearning";
 const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
 const FIND_LEARNING_COURSE_DETAILS = "FindLearningCourseDetails";
-const FIND_LEARNING_WEB_VIEW = "FindLearningWebView";
+const FIND_LEARNING_DETAILS = "FindLearningDetails";
 const ENROLMENT_MODAL = "EnrolmentModal";
 
 //Site url and Login
@@ -87,7 +87,7 @@ const NAVIGATION = {
   WEBVIEW_LOGIN,
   BROWSER_LOGIN,
   ENROLMENT_MODAL,
-  FIND_LEARNING_WEB_VIEW
+  FIND_LEARNING_DETAILS
 };
 
 const cardModalOptions = {

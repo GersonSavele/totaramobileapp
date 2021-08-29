@@ -24,19 +24,22 @@ import ResourceManager from "@totara/lib/resourceManager";
 import { scormStack } from "@totara/features/activities/scorm/ScormActivity";
 import AboutStack from "@totara/features/about/AboutStack";
 import { tokenSent, updateToken } from "./actions/notification";
-import { cardModalOptions, navigateByRef } from "./lib/navigation";
+import { cardModalOptions, navigateByRef, horizontalAnimation } from "./lib/navigation";
 import { NAVIGATION } from "./lib/navigation";
 import { mutationForToken, notificationsQuery } from "./features/notifications/api";
 import { RootState } from "./reducers";
 import TabContainer from "./TabContainer";
 import WebViewStack from "./features/activities/webview/WebViewStack";
 import { OverviewModal } from "./features/findLearning/OverviewModal";
+import FindLearningDetails from "./features/findLearning/FindLearningDetails";
 import { EnrolmentModal } from "./features/enrolment/EnrolmentModal";
+import { translate } from "./locale";
+import TotaraNavigationOptions from "./components/NavigationOptions";
 
 const { SCORM_STACK_ROOT, ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
 
 const Stack = createStackNavigator();
-
+const detaultScreenOptions = TotaraNavigationOptions({ backTitle: translate("general.back") });
 const MainContainer = () => {
   ResourceManager.resumeDownloads();
 
@@ -111,17 +114,23 @@ const MainContainer = () => {
   }, []);
 
   return (
-    <Stack.Navigator
-      mode={"modal"}
-      screenOptions={{
-        headerShown: false
-      }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} mode={"modal"}>
       <Stack.Screen name="TabContainer" component={TabContainer} />
       <Stack.Screen name={SCORM_STACK_ROOT} component={scormStack} />
       <Stack.Screen name={WEBVIEW_ACTIVITY} component={WebViewStack} />
       <Stack.Screen name={ABOUT} component={AboutStack} />
       <Stack.Screen name={NAVIGATION.FIND_LEARNING_OVERVIEW} component={OverviewModal} options={cardModalOptions} />
       <Stack.Screen name={NAVIGATION.ENROLMENT_MODAL} component={EnrolmentModal} options={cardModalOptions} />
+      <Stack.Screen
+        name={NAVIGATION.FIND_LEARNING_DETAILS}
+        component={FindLearningDetails}
+        options={({ route }: any) => ({
+          ...horizontalAnimation,
+          ...detaultScreenOptions,
+          gestureDirection: "horizontal",
+          headerTitle: route.params.title
+        })}
+      />
     </Stack.Navigator>
   );
 };

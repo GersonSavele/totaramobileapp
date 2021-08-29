@@ -32,7 +32,6 @@ import { get, isEmpty } from "lodash";
 import { SubPlugin } from "./lib/constants";
 
 const Tab = createMaterialBottomTabNavigator();
-
 const TabContainer = () => {
   const theme = useContext(ThemeContext);
   const { data } = useQuery(notificationsQuery);

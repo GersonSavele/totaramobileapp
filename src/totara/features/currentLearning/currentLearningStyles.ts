@@ -16,7 +16,7 @@
 import { StyleSheet, ViewStyle } from "react-native";
 import { margins, paddings, borderRadius, fontWeights, fontSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { viewHeight } from "./constants";
+import { viewHeight } from "@totara/features/constants";
 import { flexGrow } from "@totara/lib/styles/base";
 const { colorOpacity70, textH2, textXSmall, textXXSmall, colorNeutral2, colorNeutral7, colorSecondary1 } = TotaraTheme;
 
@@ -33,17 +33,17 @@ const learningDetailsStyles = StyleSheet.create({
   },
   imageView: {
     flex: 1,
-    minHeight: viewHeight.learningItemCard,
+    minHeight: viewHeight.learningItemCard
   },
   imageViewContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     height: 300
   },
   imageViewGradient: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,

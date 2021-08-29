@@ -13,13 +13,14 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { deviceScreen } from "../../lib/tools";
+import { deviceScreen } from "../lib/tools";
 
 enum learningItemEnum {
   Course = "course",
   Program = "program",
   Certification = "certification",
-  Playlist = "playlist"
+  Playlist = "playlist",
+  Resource = "engage_article"
 }
 
 enum completionTrack {

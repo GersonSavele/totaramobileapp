@@ -25,7 +25,7 @@ import { DescriptionFormat } from "@totara/types/LearningItem";
 import CourseCompletionModal from "../CourseCompletionModal";
 import { Criteria } from "@totara/types";
 import SelfCompletion from "./SelfCompletion";
-import { courseCriteria } from "../constants";
+import { courseCriteria } from "@totara/features/constants";
 import { overviewStyles } from "./overviewStyles";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -104,7 +104,7 @@ const OverviewDetails = ({
 
 const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
   return (
-    <TouchableOpacity style={overviewStyles.container} activeOpacity={1.0} onPress={() => { }}>
+    <TouchableOpacity style={overviewStyles.container} activeOpacity={1.0} onPress={() => {}}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
@@ -170,7 +170,7 @@ type CompletionProps = {
   courseRefreshCallback?: () => {};
 };
 
-const Complete = ({ id, criteria, onclickContinueLearning = () => { }, courseRefreshCallback }: CompletionProps) => {
+const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefreshCallback }: CompletionProps) => {
   const isSelfCompleted = criteria?.some((value) => {
     if (value["type"] === courseCriteria.selfComplete) {
       return value["complete"] === true;

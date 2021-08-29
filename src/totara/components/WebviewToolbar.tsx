@@ -13,33 +13,77 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Platform, Linking, Share } from "react-native";
 
 import TouchableIcon from "@totara/components/TouchableIcon";
 import { WebView, WebViewNavigation } from "react-native-webview";
+import { showMessage } from "@totara/lib";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { iconSizes } from "@totara/theme/constants";
+import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
+import { faSafari, faChrome } from "@fortawesome/free-brands-svg-icons";
 
-type WebviewToolbarProps = { refWebview: React.RefObject<WebView>; navState?: WebViewNavigation };
+type WebviewToolbarProps = {
+  refWebview: React.RefObject<WebView>;
+  navState?: WebViewNavigation;
+  viewUrl: string;
+  isToolbarActions: boolean;
+};
 
-const WebviewToolbar = ({ refWebview, navState }: WebviewToolbarProps) => {
+const WebviewToolbar = ({ refWebview, navState, viewUrl, isToolbarActions = false }: WebviewToolbarProps) => {
+  const ckickedOnShare = async () => {
+    try {
+      await Share.share({
+        message: viewUrl
+      });
+    } catch (error) {
+      showMessage({ text: error.message });
+    }
+  };
+
+  const clickedOpenBrowser = () => {
+    Linking.canOpenURL(viewUrl).then((supported) => {
+      if (supported) {
+        Linking.openURL(viewUrl);
+      }
+    });
+  };
+
   return (
     <View style={styles.footer}>
-      <View style={styles.barContent}>
+      <View style={[styles.barNavigationContent, isToolbarActions && { justifyContent: "space-around" }]}>
         <TouchableIcon
           disabled={!navState?.canGoBack}
           icon={"chevron-left"}
           onPress={() => refWebview.current && refWebview.current!.goBack()}
           color={TotaraTheme.colorNeutral7}
-          size={TotaraTheme.textH3.fontSize}
+          size={iconSizes.sizeM}
         />
         <TouchableIcon
           disabled={!navState?.canGoForward}
           icon={"chevron-right"}
           onPress={() => refWebview.current && refWebview.current!.goForward()}
           color={TotaraTheme.colorNeutral7}
-          size={TotaraTheme.textH3.fontSize}
+          size={iconSizes.sizeM}
         />
       </View>
+      {isToolbarActions && (
+        <View style={styles.barExtraActionContent}>
+          <TouchableIcon
+            icon={faShareAlt}
+            onPress={ckickedOnShare}
+            color={TotaraTheme.colorLink}
+            size={iconSizes.sizeM}
+          />
+          <TouchableIcon
+            icon={Platform.OS === "android" ? (faChrome as IconDefinition) : (faSafari as IconDefinition)}
+            onPress={clickedOpenBrowser}
+            color={TotaraTheme.colorLink}
+            size={iconSizes.sizeM}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -49,9 +93,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
-  barContent: {
+  barNavigationContent: {
+    flex: 1,
     flexDirection: "row",
     alignSelf: "flex-start"
+  },
+  barExtraActionContent: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    flex: 1
   }
 });
 

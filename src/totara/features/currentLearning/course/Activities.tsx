@@ -31,7 +31,7 @@ import { useSession } from "@totara/core";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import { GeneralErrorModal } from "@totara/components";
 import { translate } from "@totara/locale";
-import { completionStatus, completionTrack } from "../constants";
+import { completionStatus, completionTrack } from "@totara/features/constants";
 import { ActivityModType } from "@totara/lib/constants";
 import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
 import { activitySelfComplete, fetchResource, updateStateViewResource } from "../course/api";

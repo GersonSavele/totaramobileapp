@@ -16,7 +16,7 @@
 import { includes } from "lodash";
 import { sortBy } from "lodash";
 import { completionStates } from "./course/courseDetailsStyle";
-import { completionTrack, completionStatus, completionIconStateKey, learningItemEnum } from "./constants";
+import { completionTrack, completionStatus, completionIconStateKey, learningItemEnum } from "../constants";
 import { translate } from "@totara/locale";
 
 const extractTargetId = (id) => {
