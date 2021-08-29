@@ -22,6 +22,7 @@ import { CatalogItem } from "@totara/types/FindLearning";
 import { ImageElement } from "./ImageElement";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { FINDLEARNING_TEST_IDS } from "@totara/lib/testIds";
+import { translate } from "@totara/locale";
 
 interface LearningItemTileProps {
   item: CatalogItem;
@@ -53,7 +54,7 @@ export const LearningItemTile = ({ item, onItemTap }: LearningItemTileProps) => 
           <Text style={styles.title} numberOfLines={2}>
             {title}
           </Text>
-          <Text style={styles.itemType}>{capitalizeFirstLetter(itemType)}</Text>
+          <Text style={styles.itemType}>{capitalizeFirstLetter(translate(`learning_items.${itemType}`))}</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   itemImage: {
     width: "100%",
     aspectRatio: 2,
-    backgroundColor: TotaraTheme.colorAccent
+    backgroundColor: TotaraTheme.colorPrimary
   },
   detailWrapper: {
     padding: paddings.paddingL,

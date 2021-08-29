@@ -19,7 +19,11 @@
   "learning_items": {
     "course": "Course",
     "program": "Program",
-    "certification": "Certification"
+    "certification": "Certification",
+    "playlist": "Playlist",
+    "resource": "Resource",
+    "engage_article": "Resource",
+    "totara_playlist": "Playlist"
   },
   "site_url": {
     "title": "Get started.",
