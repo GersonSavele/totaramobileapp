@@ -102,16 +102,17 @@ const styles = StyleSheet.create({
   },
   skeletonImage: {
     aspectRatio: 2,
-    borderRadius: borderRadius.borderRadiusS
+    borderRadius: borderRadius.borderRadiusM
   },
   skeletonTitle: {
     height: 30,
     marginTop: margins.marginL,
-    borderRadius: borderRadius.borderRadiusS
+    borderRadius: borderRadius.borderRadiusM
   },
   skeletonType: {
     height: 15,
     marginTop: margins.marginL,
-    borderRadius: borderRadius.borderRadiusS
+    borderRadius: borderRadius.borderRadiusM,
+    width: "40%"
   }
 });
