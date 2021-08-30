@@ -21,8 +21,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export const findLearningStyles = StyleSheet.create({
   mainWrapper: {
-    flex: 1,
-    marginBottom: margins.marginS
+    flex: 1
   },
   headerWrapper: {
     paddingHorizontal: paddings.paddingL,
