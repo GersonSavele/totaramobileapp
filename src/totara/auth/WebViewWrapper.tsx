@@ -25,14 +25,14 @@ type WebViewWrapperProps = {
   uri: string;
   backAction?: () => void;
   onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
-  isToolbarActions?: boolean;
+  showAllToolbarItems?: boolean;
 };
 
 const WebViewWrapper = ({
   uri,
   backAction,
   onShouldStartLoadWithRequest,
-  isToolbarActions = false
+  showAllToolbarItems = false
 }: WebViewWrapperProps) => {
   const refWebview = useRef<WebView>(null);
   const [navState, setNavState] = useState<WebViewNavigation>();
@@ -60,7 +60,12 @@ const WebViewWrapper = ({
           onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         />
       </View>
-      <WebviewToolbar refWebview={refWebview} navState={navState} viewUrl={uri} isToolbarActions={isToolbarActions} />
+      <WebviewToolbar
+        refWebview={refWebview}
+        navState={navState}
+        viewUrl={uri}
+        showAllToolbarItems={showAllToolbarItems}
+      />
     </View>
   );
 };

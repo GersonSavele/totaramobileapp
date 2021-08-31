@@ -28,11 +28,11 @@ type WebviewToolbarProps = {
   refWebview: React.RefObject<WebView>;
   navState?: WebViewNavigation;
   viewUrl: string;
-  isToolbarActions: boolean;
+  showAllToolbarItems: boolean;
 };
 
-const WebviewToolbar = ({ refWebview, navState, viewUrl, isToolbarActions = false }: WebviewToolbarProps) => {
-  const ckickedOnShare = async () => {
+const WebviewToolbar = ({ refWebview, navState, viewUrl, showAllToolbarItems = false }: WebviewToolbarProps) => {
+  const onShare = async () => {
     try {
       await Share.share({
         message: viewUrl
@@ -42,7 +42,7 @@ const WebviewToolbar = ({ refWebview, navState, viewUrl, isToolbarActions = fals
     }
   };
 
-  const clickedOpenBrowser = () => {
+  const openExternalURL = () => {
     Linking.canOpenURL(viewUrl).then((supported) => {
       if (supported) {
         Linking.openURL(viewUrl);
@@ -52,33 +52,28 @@ const WebviewToolbar = ({ refWebview, navState, viewUrl, isToolbarActions = fals
 
   return (
     <View style={styles.footer}>
-      <View style={[styles.barNavigationContent, isToolbarActions && { justifyContent: "space-around" }]}>
+      <View style={[styles.barNavigationContent, showAllToolbarItems && { justifyContent: "space-around" }]}>
         <TouchableIcon
           disabled={!navState?.canGoBack}
           icon={"chevron-left"}
           onPress={() => refWebview.current && refWebview.current!.goBack()}
-          color={TotaraTheme.colorNeutral7}
+          color={TotaraTheme.colorLink}
           size={iconSizes.sizeM}
         />
         <TouchableIcon
           disabled={!navState?.canGoForward}
           icon={"chevron-right"}
           onPress={() => refWebview.current && refWebview.current!.goForward()}
-          color={TotaraTheme.colorNeutral7}
+          color={TotaraTheme.colorLink}
           size={iconSizes.sizeM}
         />
       </View>
-      {isToolbarActions && (
+      {showAllToolbarItems && (
         <View style={styles.barExtraActionContent}>
-          <TouchableIcon
-            icon={faShareAlt}
-            onPress={ckickedOnShare}
-            color={TotaraTheme.colorLink}
-            size={iconSizes.sizeM}
-          />
+          <TouchableIcon icon={faShareAlt} onPress={onShare} color={TotaraTheme.colorLink} size={iconSizes.sizeM} />
           <TouchableIcon
             icon={Platform.OS === "android" ? (faChrome as IconDefinition) : (faSafari as IconDefinition)}
-            onPress={clickedOpenBrowser}
+            onPress={openExternalURL}
             color={TotaraTheme.colorLink}
             size={iconSizes.sizeM}
           />

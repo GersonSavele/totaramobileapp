@@ -21,13 +21,13 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { RouteProp, useRoute } from "@react-navigation/native";
 
 type WebviewProps = {
-  FindLearningDetails: {
+  FindLearningWebViewWrapper: {
     viewUrl: string;
   };
 };
 
-const FindLearningDetails = () => {
-  const { params } = useRoute<RouteProp<WebviewProps, "FindLearningDetails">>();
+const FindLearningWebViewWrapper = () => {
+  const { params } = useRoute<RouteProp<WebviewProps, "FindLearningWebViewWrapper">>();
   const { viewUrl } = params;
 
   const onLoadWithRequest = (navState: WebViewNavigation) => {
@@ -39,9 +39,9 @@ const FindLearningDetails = () => {
 
   return (
     <SafeAreaView style={{ ...TotaraTheme.viewContainer, backgroundColor: TotaraTheme.colorSecondary1 }}>
-      <WebViewWrapper uri={viewUrl} onShouldStartLoadWithRequest={onLoadWithRequest} isToolbarActions={true} />
+      <WebViewWrapper uri={viewUrl} onShouldStartLoadWithRequest={onLoadWithRequest} showAllToolbarItems={true} />
     </SafeAreaView>
   );
 };
 
-export default FindLearningDetails;
+export default FindLearningWebViewWrapper;

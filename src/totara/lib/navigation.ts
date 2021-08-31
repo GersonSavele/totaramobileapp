@@ -50,7 +50,7 @@ const SETTINGS = "Settings";
 const FIND_LEARNING = "FindLearning";
 const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
 const FIND_LEARNING_COURSE_DETAILS = "FindLearningCourseDetails";
-const FIND_LEARNING_DETAILS = "FindLearningDetails";
+const FIND_LEARNING_WEBVIEW = "FindLearningWebViewWrapper";
 const ENROLMENT_MODAL = "EnrolmentModal";
 
 //Site url and Login
@@ -87,7 +87,7 @@ const NAVIGATION = {
   WEBVIEW_LOGIN,
   BROWSER_LOGIN,
   ENROLMENT_MODAL,
-  FIND_LEARNING_DETAILS
+  FIND_LEARNING_WEBVIEW
 };
 
 const cardModalOptions = {

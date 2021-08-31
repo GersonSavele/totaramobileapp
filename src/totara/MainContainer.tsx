@@ -31,7 +31,7 @@ import { RootState } from "./reducers";
 import TabContainer from "./TabContainer";
 import WebViewStack from "./features/activities/webview/WebViewStack";
 import { OverviewModal } from "./features/findLearning/OverviewModal";
-import FindLearningDetails from "./features/findLearning/FindLearningDetails";
+import FindLearningWebViewWrapper from "./features/findLearning/FindLearningWebViewWrapper";
 import { EnrolmentModal } from "./features/enrolment/EnrolmentModal";
 import { translate } from "./locale";
 import TotaraNavigationOptions from "./components/NavigationOptions";
@@ -122,8 +122,8 @@ const MainContainer = () => {
       <Stack.Screen name={NAVIGATION.FIND_LEARNING_OVERVIEW} component={OverviewModal} options={cardModalOptions} />
       <Stack.Screen name={NAVIGATION.ENROLMENT_MODAL} component={EnrolmentModal} options={cardModalOptions} />
       <Stack.Screen
-        name={NAVIGATION.FIND_LEARNING_DETAILS}
-        component={FindLearningDetails}
+        name={NAVIGATION.FIND_LEARNING_WEBVIEW}
+        component={FindLearningWebViewWrapper}
         options={({ route }: any) => ({
           ...horizontalAnimation,
           ...detaultScreenOptions,
