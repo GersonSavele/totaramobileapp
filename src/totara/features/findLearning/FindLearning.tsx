@@ -98,6 +98,7 @@ const FindLearning = () => {
 
   const onItemTap = ({ item }: { item: CatalogItem }) => {
     const { itemid, title, mobileImage, summary, summaryFormat, viewUrl, itemType } = item;
+    console.log("print -----", item);
     switch (itemType) {
       case learningItemEnum.Course: {
         navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
@@ -111,10 +112,14 @@ const FindLearning = () => {
         });
         break;
       }
-      case learningItemEnum.Resource: {
+      case learningItemEnum.Resource:
+      case learningItemEnum.Playlist: {
         navigation.navigate(NAVIGATION.FIND_LEARNING_DETAILS, {
           viewUrl,
-          title: translate("learning_items.resource")
+          title:
+            itemType == learningItemEnum.Resource
+              ? translate("learning_items.resource")
+              : itemType == learningItemEnum.Playlist && translate("learning_items.playlist")
         });
         break;
       }
