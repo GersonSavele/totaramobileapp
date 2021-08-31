@@ -36,6 +36,7 @@ import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
 import { LearningItem } from "./types";
 import { queryCore } from "./core/api/core";
 import { AdditionalAction } from "./auth/additional-actions";
+import AttemptSynchronizer from "@totara/activities/scorm/AttemptSynchronizer";
 
 const setupApolloClient = async ({ apiKey, host, onLogout }) => {
   const cache = new InMemoryCache({
@@ -175,6 +176,7 @@ const SessionContainer = () => {
     <ApolloProvider client={apolloClient!}>
       <LocaleResolver>
         <MainContainer />
+        <AttemptSynchronizer />
       </LocaleResolver>
     </ApolloProvider>
   );
