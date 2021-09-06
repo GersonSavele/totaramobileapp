@@ -56,7 +56,7 @@
     "@react-native-community/async-storage": "^1.6.2",
     "@react-native-community/cookies": "^2.0.7",
     "@react-native-community/masked-view": "^0.1.10",
-    "@react-native-community/netinfo": "^5.9.4",
+    "@react-native-community/netinfo": "^5.9.10",
     "@react-native-firebase/app": "^6.7.1",
     "@react-native-firebase/messaging": "^6.7.1",
     "@react-navigation/compat": "^5.3.10",
