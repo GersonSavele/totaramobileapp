@@ -22,8 +22,8 @@ import carouselItemStyles from "@totara/features/currentLearning/learningItems/c
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import ImageElement from "./ImageElement";
 import { DescriptionFormat } from "@totara/types/LearningItem";
-import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
-import { ToShortSummary } from "../weka/treeOperations";
+import { wrappedWekaNodes, jsonObjectToWekaNodes } from "@totara/components/weka/wekaUtils";
+import { ToShortSummary } from "@totara/components/weka/treeOperations";
 import { translate } from "@totara/locale";
 import DueDateState from "./DueDateState";
 

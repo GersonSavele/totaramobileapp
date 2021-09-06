@@ -15,7 +15,7 @@
 
 import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../wekaUtils";
 import { ToShortSummary } from "../treeOperations";
-import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from "@totara/features/constants";
+import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from "../constants";
 
 const mockEmptyParagraph = {
   type: "doc",

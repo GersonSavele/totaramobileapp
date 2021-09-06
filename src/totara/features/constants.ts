@@ -53,35 +53,4 @@ enum viewHeight {
   learningItemCard = deviceScreen.height * 0.3
 }
 
-enum WekaEditorType {
-  attachment = "attachments",
-  text = "text",
-  paragraph = "paragraph",
-  doc = "doc",
-  video = "video",
-  linkBlock = "link_block",
-  linkMedia = "link_media",
-  image = "image",
-  bulletList = "bullet_list",
-  listItem = "list_item",
-  orderedList = "ordered_list",
-  emoji = "emoji",
-  hashtag = "hashtag",
-  mention = "mention",
-  ruler = "ruler",
-  heading = "heading",
-  audio = "audio"
-}
-
-const MAX_LIST_ITEM_LEVELS = 5;
-
-export {
-  learningItemEnum,
-  completionTrack,
-  completionStatus,
-  courseCriteria,
-  completionIconStateKey,
-  viewHeight,
-  WekaEditorType,
-  MAX_LIST_ITEM_LEVELS
-};
+export { learningItemEnum, completionTrack, completionStatus, courseCriteria, completionIconStateKey, viewHeight };

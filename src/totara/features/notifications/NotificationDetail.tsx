@@ -16,28 +16,21 @@
 import React from "react";
 import { View, Text, StyleSheet, Linking } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
-import WebView, { WebViewNavigation } from "react-native-webview";
+import { WebViewNavigation } from "react-native-webview";
 import { NotificationMessage } from "@totara/types";
 import { fontWeights, paddings } from "@totara/theme/constants";
-import { isEmpty } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { isValidUrlText, timeAgo } from "@totara/lib/tools";
+import { timeAgo } from "@totara/lib/tools";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import WebViewWrapper from "@totara/auth/WebViewWrapper";
-import { ToFullSummary } from "../currentLearning/weka/treeOperations";
-import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../currentLearning/weka/wekaUtils";
 import { useSession } from "@totara/core";
+import { DescriptionContent } from "@totara/components/DescriptionContent";
 
 type ParamList = {
   messageDetails: NotificationMessage;
 };
 
 type NotificationDetailProps = StackScreenProps<ParamList, "messageDetails">;
-
-const wekaContent = (description: Object) => {
-  const root = wrappedWekaNodes(jsonObjectToWekaNodes(description));
-  return root.accept(new ToFullSummary());
-};
 
 const NotificationDetails = ({ route }: NotificationDetailProps) => {
   const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat, fullMessageHTML } = route.params;
@@ -50,13 +43,7 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
     }
     return true;
   };
-  const onLoadWithRequestExternalBrowser = (event) => {
-    if (isValidUrlText(event.url)) {
-      Linking.openURL(event.url);
-      return false;
-    }
-    return true;
-  };
+
   if (contextUrl) return <WebViewWrapper uri={contextUrl} onShouldStartLoadWithRequest={onLoadWithRequest} />;
   return (
     <View style={styles.mainContainer}>
@@ -68,21 +55,13 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
           {timeAgo(timeCreated)}
         </Text>
       </View>
-      {!isEmpty(fullMessageHTML) ? (
-        <WebView
-          source={{ html: fullMessageHTML }}
-          containerStyle={styles.content}
-          onShouldStartLoadWithRequest={onLoadWithRequestExternalBrowser}
-        />
-      ) : (
-        <View style={styles.content}>
-          {fullMessageFormat === DescriptionFormat.jsonEditor ? (
-            <View>{wekaContent(JSON.parse(fullMessage as string))}</View>
-          ) : (
-            <Text testID={"test_fullMessage"}>{fullMessage}</Text>
-          )}
-        </View>
-      )}
+      <DescriptionContent
+        content={fullMessage}
+        contentType={fullMessageFormat as DescriptionFormat}
+        testID={"test_fullMessage"}
+        source={{ html: fullMessageHTML }}
+        style={styles.content}
+      />
     </View>
   );
 };

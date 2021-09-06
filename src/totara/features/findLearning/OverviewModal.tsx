@@ -26,7 +26,7 @@ import { ImageElement } from "./components";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { enrolmentInfoQuery } from "../enrolment/api";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { learningItemEnum } from "../constants";
+import { DescriptionContent } from "@totara/components/DescriptionContent";
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 
@@ -101,7 +101,8 @@ export const OverviewModal = () => {
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<OverviewModalParamList, "OverviewModal">>();
 
-  const { itemid, title, mobileImage: imageSource, summary } = params;
+  const { itemid, title, mobileImage: imageSource, summary, summaryFormat } = params;
+
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
     variables: { courseid: itemid },
     fetchPolicy: "no-cache"
@@ -199,7 +200,7 @@ export const OverviewModal = () => {
         )}
       </View>
       <Text style={overviewStyles.title}>{title}</Text>
-      <Text style={overviewStyles.description}>{summary}</Text>
+      <DescriptionContent contentType={summaryFormat} content={summary} style={overviewStyles.description} />
     </ScrollView>
   );
 };

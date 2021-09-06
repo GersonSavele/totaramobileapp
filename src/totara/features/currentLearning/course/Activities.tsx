@@ -38,9 +38,8 @@ import { activitySelfComplete, fetchResource, updateStateViewResource } from "..
 import listViewStyles from "@totara/theme/listView";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
 import { showMessage } from "@totara/lib";
-import { wrappedWekaNodes, jsonObjectToWekaNodes } from "../weka/wekaUtils";
-import { ToFullSummary } from "../weka/treeOperations";
 import { decodeHtmlCharCodes } from "@totara/lib/tools";
+import { WekaContent } from "@totara/components/weka/WekaContent";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -211,7 +210,7 @@ const ActivityList = ({
       {summaryFormat === DescriptionFormat.jsonEditor ? (
         !isEmpty(sectionSummary) && (
           <View style={activitiesStyles.activityList}>
-            <View>{wekaContent(JSON.parse(sectionSummary && (sectionSummary as any)))}</View>
+            <WekaContent content={sectionSummary} />
           </View>
         )
       ) : (
@@ -236,11 +235,6 @@ const ActivityList = ({
       })}
     </View>
   );
-};
-
-const wekaContent = (description: Object) => {
-  const root = wrappedWekaNodes(jsonObjectToWekaNodes(description));
-  return root.accept(new ToFullSummary());
 };
 
 type ListUnLockProps = {
@@ -375,7 +369,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           {isLabel ? (
             item.description ? (
               item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
-                <View>{wekaContent(JSON.parse(item.description as any))}</View>
+                <WekaContent content={item.description} />
               ) : (
                 item.description && <ActivityTextContent label={item.description} />
               )
