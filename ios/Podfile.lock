@@ -281,8 +281,8 @@ PODS:
     - React-Core
   - react-native-cookies (2.0.9):
     - React
-  - react-native-netinfo (5.9.4):
-    - React
+  - react-native-netinfo (5.9.10):
+    - React-Core
   - react-native-orientation-locker (1.2.0):
     - React
   - react-native-safe-area-context (0.7.3):
@@ -627,7 +627,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-config: d8b45133fd13d4f23bd2064b72f6e2c08b2763ed
   react-native-cookies: bc1f91a504ee091f1998a1b6c7ff4b7a9ed5b80e
-  react-native-netinfo: eed0fb1d6a9424e98ce686f92aad62ff427d4bc9
+  react-native-netinfo: 52cf0ee8342548a485e28f4b09e56b477567244d
   react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-static-server: 201b2a945a35096be3ae7f43e367c65bcbd61343
