@@ -64,10 +64,6 @@ const overviewStyles = StyleSheet.create({
     marginTop: margins.marginXL,
     paddingBottom: paddings.padding3XL
   },
-  summaryText: {
-    ...TotaraTheme.textSmall,
-    marginTop: margins.marginL
-  },
   badgeContainer: {
     marginLeft: margins.margin2XL,
     marginBottom: margins.margin2XL

@@ -60,7 +60,6 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
         contentType={fullMessageFormat as DescriptionFormat}
         testID={"test_fullMessage"}
         source={{ html: fullMessageHTML }}
-        style={styles.content}
       />
     </View>
   );
@@ -78,10 +77,6 @@ const styles = StyleSheet.create({
   title: {
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightSemiBold
-  },
-  content: {
-    ...TotaraTheme.textRegular,
-    paddingTop: paddings.padding2XL
   }
 });
 

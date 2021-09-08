@@ -27,6 +27,7 @@ import { NetworkStatus, useQuery } from "@apollo/client";
 import { enrolmentInfoQuery } from "../enrolment/api";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { DescriptionContent } from "@totara/components/DescriptionContent";
+import { learningItemEnum } from "../constants";
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 
@@ -80,10 +81,6 @@ const overviewStyles = StyleSheet.create({
 
   enrolmentAction: {
     marginTop: margins.marginL
-  },
-  description: {
-    marginTop: margins.marginL,
-    ...textRegular
   }
 });
 
@@ -200,7 +197,7 @@ export const OverviewModal = () => {
         )}
       </View>
       <Text style={overviewStyles.title}>{title}</Text>
-      <DescriptionContent contentType={summaryFormat} content={summary} style={overviewStyles.description} />
+      <DescriptionContent contentType={summaryFormat} content={summary} />
     </ScrollView>
   );
 };

@@ -262,13 +262,7 @@ const Summary = ({ summary = "", summaryTypeTitle = "", summaryFormat }: Summary
       <Text numberOfLines={1} style={TotaraTheme.textHeadline}>
         {summaryTypeTitle}
       </Text>
-      {!isEmpty(summary) && (
-        <DescriptionContent
-          contentType={summaryFormat as DescriptionFormat}
-          content={summary}
-          style={overviewStyles.summaryText}
-        />
-      )}
+      {!isEmpty(summary) && <DescriptionContent contentType={summaryFormat as DescriptionFormat} content={summary} />}
     </View>
   );
 };
