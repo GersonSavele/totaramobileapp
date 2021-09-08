@@ -15,35 +15,43 @@
 
 import React from "react";
 import { View, StyleSheet, Image, Text, Linking, ImageSourcePropType } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
 import { PrimaryButton } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { translate } from "@totara/locale";
 import { useSession } from "@totara/core";
 import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
+import { NAVIGATION } from "@totara/lib/navigation";
+import { isEnableFindLearning } from "@totara/lib/tools";
 
 type NoCurrentLearningProps = {
   testID?: string;
 };
 
 const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
-  const { host } = useSession();
+  const { host, core } = useSession();
+  const navigation = useNavigation();
+  const onPressFindLearning = () => {
+    if (isEnableFindLearning(core)) {
+      navigation.navigate(NAVIGATION.FIND_LEARNING);
+    } else {
+      Linking.openURL(host!);
+    }
+  };
   return (
     <View style={styles.containerStyle} testID={testID}>
       <Image source={Images.noCurrentLearning as ImageSourcePropType} />
       <Text style={styles.noCurrentLearningDescription}>{translate("current_learning.no_learning_message")}</Text>
       <View style={styles.goToBrowserAction}>
         <PrimaryButton
-          onPress={() => {
-            Linking.openURL(host!);
-          }}
+          onPress={onPressFindLearning}
           text={translate("current_learning.find_learning")}
-          icon="external-link-alt"
+          icon={!isEnableFindLearning(core) ? "external-link-alt" : ""}
           style={{ alignSelf: "center" }}
         />
       </View>
-    </View >
+    </View>
   );
 };
 

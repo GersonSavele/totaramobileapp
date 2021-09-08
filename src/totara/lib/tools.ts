@@ -16,6 +16,8 @@
 import { Alert, Dimensions, Platform } from "react-native";
 import { translate } from "@totara/locale";
 import moment from "moment";
+import { get, isEmpty } from "lodash";
+import { SubPlugin } from "@totara/lib/constants";
 
 type ShowMessageParams = {
   title?: string;
@@ -120,6 +122,11 @@ const isValidUrlText = (urlText: string) => {
 const decodeHtmlCharCodes = (str) =>
   str.replace(/(&#(\d+);)/g, (match, capture, charCode) => String.fromCharCode(charCode));
 
+const isEnableFindLearning = (core) => {
+  const subPlugnis = get(core, "system.mobile_subplugins");
+  return !isEmpty(subPlugnis?.find((element) => element.pluginname === SubPlugin.findLearning));
+};
+
 export {
   showMessage,
   showConfirmation,
@@ -133,5 +140,6 @@ export {
   isIOS,
   isAndroid,
   isValidUrlText,
-  decodeHtmlCharCodes
+  decodeHtmlCharCodes,
+  isEnableFindLearning
 };
