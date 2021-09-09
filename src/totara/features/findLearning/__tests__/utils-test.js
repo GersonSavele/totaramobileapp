@@ -33,13 +33,15 @@ describe("FindLearning utils", () => {
   });
 
   describe("Should call search with valid data", () => {
-    it("Should call search function for none empty string", () => {
-      const mockResetSearchResult = jest.fn();
-      onSearch({ resetSearchResult: mockResetSearchResult });
-      expect(mockResetSearchResult).toBeCalled();
-
+    it("Should call search function when pointer is defined", () => {
       const mockOnSearchCallback = jest.fn();
-      onSearch({ findLearningText: "mocksearch", onSearchCallback: mockOnSearchCallback });
+      onSearch({ key: "mocksearch", onSearchCallback: mockOnSearchCallback });
+      expect(mockOnSearchCallback).not.toBeCalled();
+
+      onSearch({ key: "mocksearch", pointer: 0, onSearchCallback: mockOnSearchCallback });
+      expect(mockOnSearchCallback).toBeCalled();
+
+      onSearch({ key: "mocksearch", pointer: 1, onSearchCallback: mockOnSearchCallback });
       expect(mockOnSearchCallback).toBeCalled();
     });
   });

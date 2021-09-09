@@ -34,28 +34,24 @@ const formatPageData = ({
 
 const onSearch = ({
   pointer,
-  findLearningText,
-  resetSearchResult,
+  key,
   onSearchCallback
 }: {
-  pointer: Number;
-  findLearningText: String;
-  resetSearchResult: Function;
+  pointer?: Number;
+  key: String;
   onSearchCallback: Function;
 }) => {
-  if (isEmpty(findLearningText)) {
-    resetSearchResult(undefined);
-    return;
+  if (pointer !== undefined) {
+    onSearchCallback({
+      variables: {
+        pointer: pointer,
+        filter_data: {
+          catalog_fts: key
+        }
+      },
+      notifyOnNetworkStatusChange: true
+    });
   }
-  onSearchCallback({
-    variables: {
-      pointer: pointer,
-      filter_data: {
-        catalog_fts: findLearningText
-      }
-    },
-    notifyOnNetworkStatusChange: true
-  });
 };
 
 export { formatPageData, onSearch };

@@ -24,19 +24,27 @@ import { findLearningStyles } from "./findLearningStyles";
 import { useNavigation } from "@react-navigation/native";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { useLazyQuery } from "@apollo/client";
-import { queryFindLearning } from "./api";
+import { queryFindLearning, queryViewCatelog } from "./api";
 import { CatalogItem, FindLearningPage } from "@totara/types/FindLearning";
 import { FINDLEARNING_TEST_IDS } from "@totara/lib/testIds";
 import { formatPageData, onSearch } from "./utils";
+import { isEmpty } from "lodash";
 
 type FindLearningHeaderProps = {
   onChangeText: (text: string) => void;
   findLeaningText: string;
   onSearch: () => void;
   count?: number;
+  onFocusText: () => void;
 };
 
-const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: FindLearningHeaderProps) => {
+const FindLearningHeader = ({
+  onChangeText,
+  findLeaningText,
+  onSearch,
+  count,
+  onFocusText
+}: FindLearningHeaderProps) => {
   return (
     <View style={findLearningStyles.headerWrapper} testID={FINDLEARNING_TEST_IDS.HEADER}>
       <Text style={findLearningStyles.header}>{translate("find_learning.title")}</Text>
@@ -45,6 +53,7 @@ const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: 
         onChangeText={onChangeText}
         value={findLeaningText}
         onSubmitEditing={onSearch}
+        onFocus={onFocusText}
         platform={Platform.OS === PLATFORM_ANDROID ? PLATFORM_ANDROID : PLATFORM_IOS}
         onCancel={onSearch}
         returnKeyType="search"
@@ -68,11 +77,13 @@ const FindLearningHeader = ({ onChangeText, findLeaningText, onSearch, count }: 
 
 const FindLearning = () => {
   const [searchResult, setSearchResult] = useState<FindLearningPage>();
-  const [searchData, setSearchData] = useState({ key: "", pointer: 0 });
+  const [searchData, setSearchData] = useState<{ key: string; pointer?: number }>({ key: "", pointer: 0 });
 
   const navigation = useNavigation();
+  const filterQuery =
+    isEmpty(searchData.key) && searchData.pointer !== undefined ? queryViewCatelog : queryFindLearning;
 
-  const [onCallSearch, { loading, data }] = useLazyQuery(queryFindLearning, {
+  const [onCallSearch, { loading, data }] = useLazyQuery(filterQuery, {
     fetchPolicy: "no-cache"
   });
 
@@ -89,9 +100,7 @@ const FindLearning = () => {
 
   useEffect(() => {
     onSearch({
-      pointer: searchData.pointer,
-      findLearningText: searchData.key,
-      resetSearchResult: setSearchResult,
+      ...searchData,
       onSearchCallback: onCallSearch
     });
   }, [searchData.pointer]);
@@ -138,18 +147,16 @@ const FindLearning = () => {
       <FlatList
         ListHeaderComponent={
           <FindLearningHeader
-            onChangeText={(text) => setSearchData({ key: text, pointer: 0 })}
+            onChangeText={(text) => setSearchData({ key: text })}
             onSearch={() => {
               setSearchResult(undefined);
-              onSearch({
-                pointer: searchData.pointer,
-                findLearningText: searchData.key,
-                resetSearchResult: setSearchResult,
-                onSearchCallback: onCallSearch
-              });
+              setSearchData({ ...searchData, pointer: 0 });
             }}
             findLeaningText={searchData.key}
             count={searchResult?.maxCount}
+            onFocusText={() => {
+              setSearchData({ key: searchData.key });
+            }}
           />
         }
         ListFooterComponent={loading ? <SkeletonLoading /> : null}

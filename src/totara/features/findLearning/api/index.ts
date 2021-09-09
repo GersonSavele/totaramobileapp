@@ -34,4 +34,23 @@ const queryFindLearning = gql`
   }
 `;
 
-export { queryFindLearning };
+const queryViewCatelog = gql`
+  query mobile_findlearning_view_catalog($pointer: Int) {
+    catalog_page: mobile_findlearning_view_catalog(limit_from: $pointer) {
+      max_count
+      pointer: limit_from
+      final_page: final_records
+      items {
+        id
+        itemid
+        item_type
+        title
+        mobile_image: image_url
+        description
+        __typename
+      }
+    }
+  }
+`;
+
+export { queryFindLearning, queryViewCatelog };
