@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import React, { useState, useEffect, useCallback } from "react";
-import { FlatList, Platform, Text, View } from "react-native";
+import { FlatList, Image, ImageSourcePropType, Platform, Text, View } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { translate } from "@totara/locale";
@@ -24,11 +24,12 @@ import { findLearningStyles } from "./findLearningStyles";
 import { useNavigation } from "@react-navigation/native";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { useLazyQuery } from "@apollo/client";
-import { queryFindLearning, queryViewCatelog } from "./api";
+import { queryFindLearning, queryViewCatalog } from "./api";
 import { CatalogItem, FindLearningPage } from "@totara/types/FindLearning";
 import { FINDLEARNING_TEST_IDS } from "@totara/lib/testIds";
 import { formatPageData, onSearch } from "./utils";
 import { isEmpty } from "lodash";
+import { Images } from "@resources/images";
 
 type FindLearningHeaderProps = {
   onChangeText: (text: string) => void;
@@ -64,10 +65,10 @@ const FindLearningHeader = ({
         rightIconContainerStyle={findLearningStyles.clearSearch}
         testID={FINDLEARNING_TEST_IDS.SEARCH_TEXT_INPUT}
       />
-      {count || count === 0 ? (
+      {count || (count === 0 && !isEmpty(findLeaningText)) ? (
         <Text style={findLearningStyles.result} testID={FINDLEARNING_TEST_IDS.NO_OF_ITEMS}>
           {translate("find_learning.results", {
-            value: count
+            count
           })}
         </Text>
       ) : null}
@@ -81,7 +82,7 @@ const FindLearning = () => {
 
   const navigation = useNavigation();
   const filterQuery =
-    isEmpty(searchData.key) && searchData.pointer !== undefined ? queryViewCatelog : queryFindLearning;
+    isEmpty(searchData.key) && searchData.pointer !== undefined ? queryViewCatalog : queryFindLearning;
 
   const [onCallSearch, { loading, data }] = useLazyQuery(filterQuery, {
     fetchPolicy: "no-cache"
@@ -160,7 +161,7 @@ const FindLearning = () => {
           />
         }
         ListFooterComponent={loading ? <SkeletonLoading /> : null}
-        style={findLearningStyles.listWrapper}
+        contentContainerStyle={findLearningStyles.listWrapper}
         data={searchResult?.items}
         renderItem={learningItem}
         numColumns={2}
@@ -170,6 +171,9 @@ const FindLearning = () => {
           searchResult &&
           !searchResult.finalPage &&
           setSearchData({ ...searchData, pointer: searchResult.items?.length ?? 0 })
+        }
+        ListEmptyComponent={
+          (!loading && searchData.key === "" && searchData.pointer === 0 && <NoFindLearning />) || null
         }
       />
     </SafeAreaView>
@@ -186,4 +190,12 @@ const SkeletonLoading = () => {
   );
 };
 
+const NoFindLearning = () => {
+  return (
+    <View style={findLearningStyles.noLearningItemContainer}>
+      <Image source={Images.noCurrentLearning as ImageSourcePropType} />
+      <Text style={findLearningStyles.noLearningItemsText}>{translate("find_learning.no_learning_items")}</Text>
+    </View>
+  );
+};
 export default FindLearning;

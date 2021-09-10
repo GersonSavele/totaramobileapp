@@ -42,20 +42,16 @@ export const findLearningStyles = StyleSheet.create({
   },
   clearSearch: {
     marginLeft: 0,
-    marginRight: 0,
+    marginRight: 0
   },
   result: {
     ...TotaraTheme.textHeadline,
     paddingTop: paddings.paddingXL
   },
   listWrapper: {
-    paddingHorizontal: paddings.paddingL
+    paddingHorizontal: paddings.paddingL,
+    flexGrow: 1
   },
-
-
-
-
-
   itemTitle: {
     textAlign: "center",
     flex: 1
@@ -88,5 +84,16 @@ export const findLearningStyles = StyleSheet.create({
     width: "50%",
     height: 20,
     borderRadius: borderRadius.borderRadiusXS
+  },
+  noLearningItemContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    flexGrow: 1
+  },
+  noLearningItemsText: {
+    ...TotaraTheme.textHeadline,
+    fontWeight: "bold",
+    paddingTop: paddings.padding3XL
   }
 });

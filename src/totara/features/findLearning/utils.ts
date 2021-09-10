@@ -13,7 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { isEmpty } from "lodash";
 import { FindLearningPage } from "@totara/types/FindLearning";
 
 const formatPageData = ({

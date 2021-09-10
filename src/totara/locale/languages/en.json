@@ -268,9 +268,13 @@
     "plugin_version": "Plugin version: {{version}}"
   },
   "find_learning": {
-    "search": "Search courses, articles, playlists...",
+    "search": "Search",
     "title": "Find Learning",
-    "results": "{{value}} results"
+    "results": {
+      "one": "{{count}} result",
+      "other": "{{count}} results"
+    },
+    "no_learning_items": "Learning catalogue is empty"
   },
   "find_learning_overview": {
     "overview": "Overview",

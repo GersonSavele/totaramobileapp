@@ -34,7 +34,7 @@ const queryFindLearning = gql`
   }
 `;
 
-const queryViewCatelog = gql`
+const queryViewCatalog = gql`
   query mobile_findlearning_view_catalog($pointer: Int) {
     catalog_page: mobile_findlearning_view_catalog(limit_from: $pointer) {
       max_count
@@ -53,4 +53,4 @@ const queryViewCatelog = gql`
   }
 `;
 
-export { queryFindLearning, queryViewCatelog };
+export { queryFindLearning, queryViewCatalog };
