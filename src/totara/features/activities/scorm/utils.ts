@@ -172,7 +172,7 @@ const getGradeForAttempt = ({ attemptCmi, maxGrade, gradeMethod }: GradeForAttem
   let highestGrade = 0;
   let completedScos = 0;
   let averageGrade = 0;
-  if (Object.keys(attemptCmi) && Object.keys(attemptCmi).length > 0) {
+  if (!isEmpty(attemptCmi) && typeof Object.keys(attemptCmi) !== undefined && Object.keys(attemptCmi).length > 0) {
     const numberOfScors = Object.keys(attemptCmi).length;
     for (let [, cmi] of Object.entries(attemptCmi)) {
       // Check whether SCORM-1.2 can be "score.raw" and "core.score.raw"
