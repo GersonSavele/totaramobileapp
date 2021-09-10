@@ -61,7 +61,7 @@ export const DescriptionContent = ({ contentType, content, testID, source }: Des
     // caution: break is omitted intentionally
     default:
       return (
-        <Text testID={testID || DESCRIPTIONCONTENT_TEST_IDS.TEXT} style={container}>
+        <Text testID={testID || DESCRIPTIONCONTENT_TEST_IDS.TEXT} style={{ ...TotaraTheme.textSmall, ...container }}>
           {content}
         </Text>
       );
@@ -70,7 +70,6 @@ export const DescriptionContent = ({ contentType, content, testID, source }: Des
 
 const styles = StyleSheet.create({
   container: {
-    ...TotaraTheme.textSmall,
     marginTop: margins.marginL
   }
 });
