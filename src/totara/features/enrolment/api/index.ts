@@ -35,19 +35,19 @@ export const enrolmentInfoQuery = gql`
   }
 `;
 
-export const selfEnrolmentMutation = gql`
-  mutation mobile_findlearning_attempt_self_enrolment($input: core_enrol_attempt_self_enrolment_input!) {
-    mobile_findlearning_enrolment_result: core_enrol_attempt_self_enrolment(input: $input) {
+export const guestAccessQuery = gql`
+  query mobile_findlearning_validate_guest_password($input: mobile_findlearning_guest_password_input!) {
+    mobile_findlearning_validate_guest_password(input: $input) {
       success
-      msgKey: msg_key
+      failureMessage: message
       __typename
     }
   }
 `;
 
-export const guestAccessMutation = gql`
-  mutation mobile_findlearning_attempt_guest_access($input: core_enrol_attempt_input!) {
-    mobile_findlearning_guest_access_result: core_enrol_attempt_guest_access(input: $input) {
+export const selfEnrolmentMutation = gql`
+  mutation mobile_findlearning_attempt_self_enrolment($input: core_enrol_attempt_self_enrolment_input!) {
+    mobile_findlearning_enrolment_result: core_enrol_attempt_self_enrolment(input: $input) {
       success
       msgKey: msg_key
       __typename

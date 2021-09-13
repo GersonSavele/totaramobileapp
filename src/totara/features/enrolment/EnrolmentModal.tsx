@@ -18,7 +18,7 @@ import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Input } from "react-native-elements/dist/input/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
+import { NetworkStatus, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { isEmpty } from "lodash";
 
 import { PrimaryButton, SecondaryButton } from "@totara/components";
@@ -26,7 +26,7 @@ import { translate } from "@totara/locale";
 import { fontWeights, margins, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { NAVIGATION } from "@totara/lib/navigation";
-import { enrolmentInfoQuery, guestAccessMutation, selfEnrolmentMutation } from "./api";
+import { enrolmentInfoQuery, guestAccessQuery, selfEnrolmentMutation } from "./api";
 import { EnrolmentOption } from "@totara/types/EnrolmentOption";
 import { learningItemEnum } from "../constants";
 
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 /** As guest access and self enrolment diverge on labels and mutations, so I made them two separated components.  */
 type GuestPasswordState = {
   password?: string;
-  isNotValid?: boolean;
+  errorMessage?: string;
 };
 
 const GuestAccessWidget = ({
@@ -77,12 +77,9 @@ const GuestAccessWidget = ({
   enrolment: EnrolmentOption;
 }) => {
   const navigation = useNavigation();
-  const [guestAccess, { data: guestAccessResult, loading }] = useMutation(guestAccessMutation);
+  const [validateGuestAccess, { loading, data: guestAccessResult }] = useLazyQuery(guestAccessQuery);
 
-  const [passwordState, setPasswordState] = useState<GuestPasswordState>({
-    password: undefined,
-    isNotValid: undefined
-  });
+  const [passwordState, setPasswordState] = useState<GuestPasswordState>({});
 
   const goToCourseOnTap = () => {
     const missingPassword = passwordRequired && isEmpty(passwordState?.password);
@@ -90,12 +87,12 @@ const GuestAccessWidget = ({
     if (missingPassword) {
       setPasswordState({
         ...passwordState,
-        isNotValid: true
+        errorMessage: translate("enrolment_options.required")
       });
       return;
     }
 
-    guestAccess({
+    validateGuestAccess({
       variables: {
         input: {
           courseid: courseId,
@@ -118,11 +115,12 @@ const GuestAccessWidget = ({
     setPasswordState({
       ...passwordState,
       password: newValue,
-      isNotValid: passwordRequired && isEmpty(newValue)
+      errorMessage: undefined
     });
   };
 
-  const guestHasAccess = guestAccessResult?.mobile_findlearning_guest_access_result?.success;
+  const guestHasAccess = guestAccessResult?.mobile_findlearning_validate_guest_password?.success;
+  const guestHasFailureMessage = guestAccessResult?.mobile_findlearning_validate_guest_password?.failureMessage;
 
   useEffect(() => {
     if (guestHasAccess) {
@@ -130,8 +128,12 @@ const GuestAccessWidget = ({
     }
   }, [guestHasAccess]);
 
-  const guestAccessErrorRequiredPassword = passwordState.isNotValid && translate("enrolment_options.required");
-  const guestAccessError = guestAccessResult?.mobile_findlearning_guest_access_result?.msgKey;
+  useEffect(() => {
+    setPasswordState({
+      ...passwordState,
+      errorMessage: guestHasFailureMessage
+    });
+  }, [guestHasFailureMessage]);
 
   return (
     <View testID={"guest_access_widget"} style={styles.widgetContainer}>
@@ -144,7 +146,7 @@ const GuestAccessWidget = ({
           autoCapitalize="none"
           testID={"guest_access_password"}
           returnKeyType={"done"}
-          errorMessage={guestAccessErrorRequiredPassword || guestAccessError}
+          errorMessage={passwordState.errorMessage}
           errorStyle={styles.inputError}
           onChangeText={onPasswordChange}
         />
