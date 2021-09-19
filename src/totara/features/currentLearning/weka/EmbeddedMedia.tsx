@@ -20,12 +20,17 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import styles from "./wekaStyle";
 import { navigateWebView, EmbeddedMediaProps } from "./wekaUtils";
+import { useSession } from "@totara/core";
+import { useNavigation } from "@react-navigation/native";
 
 const EmbeddedMedia = ({ content = {}, title }: EmbeddedMediaProps) => {
-  const [visible, setIsVisible] = useState(false);
-  const onRequestClose = () => setIsVisible(!visible);
+  const { apiKey } = useSession();
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity style={styles.touchableViewWrap} onPress={onRequestClose}>
+    <TouchableOpacity
+      style={styles.touchableViewWrap}
+      onPress={() => navigateWebView({ url: content?.url, title, apiKey, navigation })}>
       <View style={styles.iconWrap}>
         <CircleIcon
           icon={faPlay}
@@ -37,7 +42,6 @@ const EmbeddedMedia = ({ content = {}, title }: EmbeddedMediaProps) => {
       <View style={{ flex: 8 }}>
         <Text style={styles.embeddedMediaTitle}>{title}</Text>
       </View>
-      {visible && navigateWebView(content?.attrs?.url, onRequestClose, title)}
     </TouchableOpacity>
   );
 };

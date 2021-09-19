@@ -12,12 +12,14 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React, { useState } from "react";
+import React from "react";
 import { Text } from "react-native";
 import { fontWeights, fontStyles, marksTypes } from "@totara/theme/constants";
 import styles from "./wekaStyle";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { navigateWebView } from "./wekaUtils";
+import { useSession } from "@totara/core";
+import { useNavigation } from "@react-navigation/native";
 
 type TextProps = {
   attrs?: any;
@@ -27,8 +29,6 @@ type TextProps = {
 };
 
 const TextContentWrapper = ({ attrs = {}, marks = {}, textColor, text }: TextProps) => {
-  const [visible, setIsVisible] = useState(false);
-  const onRequestClose = () => setIsVisible(!visible);
   const font =
     attrs.level === 1
       ? { ...TotaraTheme.textHeadline, color: textColor }
@@ -52,15 +52,17 @@ const TextContentWrapper = ({ attrs = {}, marks = {}, textColor, text }: TextPro
       return marks.type === marksTypes.link && { marks };
     });
 
+  const { apiKey } = useSession();
+  const navigation = useNavigation();
+
   return (
     <Text style={styles.textContainerWrapper}>
       <Text
         style={[font, fontItalic, fontBold, link && link[0] && styles.textLink]}
         testID="test_rich_text"
-        onPress={link && onRequestClose}>
+        onPress={() => navigateWebView({ url: link[0]?.marks?.attrs?.href, title: text, apiKey, navigation })}>
         {text}
       </Text>
-      {visible && link && link[0] && navigateWebView(link[0].marks.attrs.href, onRequestClose, text)}
     </Text>
   );
 };

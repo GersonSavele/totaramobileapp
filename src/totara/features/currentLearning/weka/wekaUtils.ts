@@ -17,6 +17,8 @@ import { useSession } from "@totara/core";
 import { navigate } from "@totara/lib/navigationService";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from "../constants";
+import { NavigationAction, useNavigation } from "@react-navigation/native";
+import { isValidUrlText } from "@totara/lib/tools";
 
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -255,16 +257,34 @@ type EmbeddedMediaProps = {
   title: string;
 };
 
-const navigateWebView = (url, onRequestClose, title) => {
-  const { apiKey } = useSession();
-
+const navigateWebView = ({
+  url,
+  onRequestClose = () => undefined,
+  title,
+  apiKey,
+  navigation
+}: {
+  url?: string;
+  title?: string;
+  onRequestClose?: Function;
+  apiKey?: string;
+  navigation: any;
+}) => {
   const props = {
     uri: url?.replace("totara/mobile/", ""), // This is the temp solution for webview headers error fix
-    apiKey: apiKey,
+    apiKey,
     backAction: onRequestClose,
     title: title
   };
-  return navigate(WEBVIEW_ACTIVITY, props);
+
+  if (url) {
+    navigation.navigate(WEBVIEW_ACTIVITY, {
+      screen: WEBVIEW_ACTIVITY,
+      params: {
+        ...props
+      }
+    });
+  }
 };
 
 // Disable eslint for interface so we can export without warnings.

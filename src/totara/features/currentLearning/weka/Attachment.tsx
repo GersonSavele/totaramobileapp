@@ -22,6 +22,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import styles from "./wekaStyle";
 import { navigateWebView } from "./wekaUtils";
+import { useSession } from "@totara/core";
+import { useNavigation } from "@react-navigation/native";
 
 type ConfigProps = {
   content?: any;
@@ -31,15 +33,14 @@ type ConfigProps = {
 };
 
 const Attachment = ({ content = {} }: ConfigProps) => {
-  const [visible, setIsVisible] = useState(false);
-  const [clickIndex, setClickIndex] = useState();
-  const onRequestClose = (index) => {
-    setIsVisible(!visible);
-    setClickIndex(index);
-  };
+  const { apiKey } = useSession();
+  const navigation = useNavigation();
   return content.map((nestedContent: any = {}, index: number) => {
     return (
-      <TouchableOpacity style={styles.touchableViewWrap} key={index} onPress={() => onRequestClose(index)}>
+      <TouchableOpacity
+        style={styles.touchableViewWrap}
+        key={index}
+        onPress={() => navigateWebView({ url: nestedContent.attrs.url, apiKey, navigation, title: "" })}>
         <View style={styles.iconWrap}>
           <FontAwesomeIcon
             icon={faPaperclip}
@@ -51,8 +52,6 @@ const Attachment = ({ content = {} }: ConfigProps) => {
         <View style={{ flex: 8 }}>
           <Text style={styles.attachmentFileName}>{nestedContent.attrs.filename}</Text>
         </View>
-
-        {visible && clickIndex == index && navigateWebView(nestedContent.attrs.url, onRequestClose, "")}
       </TouchableOpacity>
     );
   });
