@@ -44,7 +44,7 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
   const { host } = useSession();
 
   const onLoadWithRequest = (navState: WebViewNavigation) => {
-    if (navState.url.indexOf(host!) < 0) {
+    if (navState.url.indexOf(host!) < 0 && navState.loading) {
       Linking.openURL(navState.url);
       return false;
     }
