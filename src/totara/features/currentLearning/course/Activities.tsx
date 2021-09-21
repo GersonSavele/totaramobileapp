@@ -293,6 +293,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
             />
           </View>
         )}
+
         <TouchableOpacity
           style={activitiesStyles.itemTouchableContent}
           disabled={isLabel}
@@ -347,7 +348,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         fileurl,
                         mimetype,
                         apiKey,
-                        backAction: () => { },
+                        backAction: () => {},
                         title: item?.name
                       }
                     });
@@ -363,7 +364,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
-                    backAction: () => { },
+                    backAction: () => {},
                     title: item?.name
                   }
                 });
@@ -372,10 +373,14 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           }}
           testID={`${CL_TEST_IDS.ACTIVITY}${item.id}`}>
           {isLabel ? (
-            item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
-              <View>{wekaContent(JSON.parse(item.description as any))}</View>
+            item.description ? (
+              item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
+                <View>{wekaContent(JSON.parse(item.description as any))}</View>
+              ) : (
+                item.description && <ActivityTextContent label={item.description} />
+              )
             ) : (
-              item.description && <ActivityTextContent label={item.description} />
+              <View></View>
             )
           ) : (
             <ListItem item={item} />
