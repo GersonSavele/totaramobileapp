@@ -34,10 +34,7 @@ const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
     },
     [COURSE_DETAILS]: {
       screen: CourseDetails as any,
-      navigationOptions: () =>
-        totaraNavigationOptions({
-          headerShown: false
-        })
+      navigationOptions: () => totaraNavigationOptions({})
     },
     [COURSE_GROUP_DETAILS]: {
       screen: CourseGroupDetails as any,

@@ -46,17 +46,21 @@ const CourseDetails = ({ navigation, route }: any) => {
   };
 
   if (networkStatus === NetworkStatus.loading) return <Loading />;
-  if (!data || error) return <LoadingError onRefreshTap={onContentRefresh} />;
+  if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} />;
 
-  return (
-    <CourseDetailsContent
-      loading={networkStatus === NetworkStatus.refetch}
-      pullToRefresh={onContentRefresh}
-      courseDetails={data.mobile_course}
-      courseRefreshCallback={refetch}
-      navigation={navigation}
-    />
-  );
+  if (data) {
+    return (
+      <CourseDetailsContent
+        loading={networkStatus === NetworkStatus.refetch}
+        pullToRefresh={onContentRefresh}
+        courseDetails={data.mobile_course}
+        courseRefreshCallback={refetch}
+        navigation={navigation}
+      />
+    );
+  } else {
+    return <Loading />;
+  }
 };
 
 type CourseDetailsContentProps = {

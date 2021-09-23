@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
@@ -25,6 +25,7 @@ import Animated, { interpolate, Extrapolate, Value, event } from "react-native-r
 import LinearGradient from "react-native-linear-gradient";
 import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
 import DueDateState from "./components/DueDateState";
+import { useNavigation } from "@react-navigation/native";
 
 const { marginXL } = margins;
 
@@ -135,52 +136,69 @@ const LearningDetails = ({
 
   const onUserPullToRefresh = () => {
     setRefreshing(true);
-    onPullToRefresh()
-  }
+    onPullToRefresh();
+  };
+
+  const nav = useNavigation();
+  useLayoutEffect(() => {
+    nav.setOptions({
+      headerShown: false
+    });
+
+    return () => {};
+  }, []);
 
   useEffect(() => {
-    if (!loading)
-      setRefreshing(false);
+    if (!loading) setRefreshing(false);
   }, [loading]);
 
   const gradientShadowZIndex = 100;
 
   return (
     <View style={learningDetailsStyles.container}>
-      <AnimatedHeader scrollValue={scrollValue} title={fullname!} subTitle={badgeTitle} leftAction={() => navigation?.goBack()} />
+      <AnimatedHeader
+        scrollValue={scrollValue}
+        title={fullname!}
+        subTitle={badgeTitle}
+        leftAction={() => navigation?.goBack()}
+      />
       <Animated.ScrollView
         scrollIndicatorInsets={{ right: 0 }}
         contentInsetAdjustmentBehavior={"scrollableAxes"}
-        refreshControl={<RefreshControl style={{ zIndex: gradientShadowZIndex + 100 }} refreshing={isRefreshing} tintColor={TotaraTheme.colorNeutral2} onRefresh={onUserPullToRefresh}></RefreshControl>}
-        onScroll={event(
-          [{ nativeEvent: { contentOffset: { y: scrollValue } } }],
-          {
-            useNativeDriver: true
-          }
-        )}
-        scrollEventThrottle={16}
-      >
-
-        <Animated.View style={{
-          flex: 1,
-          alignItems: 'center',
-          height: HEIGHT,
-          transform: [
-            {
-              scale: interpolate(scrollValue, {
-                inputRange: [-HEIGHT, 0],
-                outputRange: [3, 1],
-                extrapolate: Extrapolate.CLAMP
-              })
-            }
-          ]
-        }}>
-
+        refreshControl={
+          <RefreshControl
+            style={{ zIndex: gradientShadowZIndex + 100 }}
+            refreshing={isRefreshing}
+            tintColor={TotaraTheme.colorNeutral2}
+            onRefresh={onUserPullToRefresh}></RefreshControl>
+        }
+        onScroll={event([{ nativeEvent: { contentOffset: { y: scrollValue } } }], {
+          useNativeDriver: true
+        })}
+        scrollEventThrottle={16}>
+        <Animated.View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            height: HEIGHT,
+            transform: [
+              {
+                scale: interpolate(scrollValue, {
+                  inputRange: [-HEIGHT, 0],
+                  outputRange: [3, 1],
+                  extrapolate: Extrapolate.CLAMP
+                })
+              }
+            ]
+          }}>
           <View style={learningDetailsStyles.imageViewContainer}>
             <ImageElement image={image} itemType={itemType} imageStyle={learningDetailsStyles.imageView} />
           </View>
           <View style={learningDetailsStyles.imageViewGradient}>
-            <LinearGradient colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0)']} style={{ height: HEIGHT / 2, zIndex: gradientShadowZIndex }} />
+            <LinearGradient
+              colors={["rgba(0, 0, 0, 0.6)", "rgba(0, 0, 0, 0.4)", "rgba(0, 0, 0, 0)"]}
+              style={{ height: HEIGHT / 2, zIndex: gradientShadowZIndex }}
+            />
           </View>
         </Animated.View>
         {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
@@ -194,11 +212,9 @@ const LearningDetails = ({
             tabBarRightTitle={tabBarRightTitle}
           />
         </View>
-        <View>
-          {children}
-        </View>
+        <View>{children}</View>
       </Animated.ScrollView>
-    </View >
+    </View>
   );
 };
 
