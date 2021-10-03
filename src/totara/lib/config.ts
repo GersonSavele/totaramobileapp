@@ -25,6 +25,7 @@ const defaultConfig = {
   apiUri: (host: string) => `${host}/totara/mobile/api.php`,
   infoUri: (host: string) => `${host}/totara/mobile/site_info.php`,
   loginUri: (host: string) => `${host}/login/index.php`,
+  findLearningUri: (host: string) => `${host}/totara/catalog/index.php`,
   deviceRegisterUri: (host: string) => `${host}/totara/mobile/device_register.php`,
   webViewUri: (host: string) => `${host}/totara/mobile/device_webview.php`,
   forgotPasswordUri: (host: string) => `${host}/login/forgot_password.php`,

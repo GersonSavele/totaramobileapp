@@ -24,6 +24,7 @@ import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { isEnableFindLearning } from "@totara/lib/tools";
+import { config } from "@totara/lib";
 
 type NoCurrentLearningProps = {
   testID?: string;
@@ -36,7 +37,7 @@ const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
     if (isEnableFindLearning(core)) {
       navigation.navigate(NAVIGATION.FIND_LEARNING);
     } else {
-      Linking.openURL(host!);
+      Linking.openURL(config.findLearningUri(host!));
     }
   };
   return (
