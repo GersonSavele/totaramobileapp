@@ -1,5 +1,17 @@
 Totara Mobile App Changelog
 
+Release 1.0.13 (15th Oct 2021):
+=====================================
+
+Bug
+[MOB-1012] - Autoplaying embedded video in resource webview
+[MOB-1024] - SCORM stopped working for some packages
+[MOB-1027] - Mobile app crashes when accessing a course
+[MOB-1028] - App crashes when clicking on a link in a course
+
+Improvement
+[MOB-1025] - Fix Android core lib version to a stable version
+
 Release 1.0.12 (27th Aug 2021):
 =====================================
 
