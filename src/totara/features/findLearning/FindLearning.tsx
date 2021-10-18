@@ -170,7 +170,7 @@ const FindLearning = () => {
         onEndReached={() =>
           searchResult &&
           !searchResult.finalPage &&
-          setSearchData({ ...searchData, pointer: searchResult.items?.length ?? 0 })
+          setSearchData({ ...searchData, pointer: searchResult.pointer ?? 0 })
         }
         ListEmptyComponent={
           (!loading && searchData.key === "" && searchData.pointer === 0 && <NoFindLearning />) || null
