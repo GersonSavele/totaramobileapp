@@ -1,5 +1,45 @@
 Totara Mobile App Changelog
 
+Release 1.1 (19th Oct 2021):
+=====================================
+
+New Feature
+[MOB-948] - Create a new bottom tab item and dummy page
+[MOB-960] - Find Learning: Loading state
+[MOB-961] - Find Learning: Result tiles for courses, resources and playlists
+[MOB-962] - Find Learning: Course overview modal
+[MOB-973] - Backend integration with Find learning screen
+[MOB-983] - Enrolment Options - data integration
+[MOB-984] - Enrolment Options - Enrol/Go to course
+
+Bug
+[MOB-986] - 'Current learning' page empty state: Link to Find learning in the app
+[MOB-987] - Find learning: Cache not cleared when reseting search
+[MOB-989] - Find learning: 4 issues with tiles
+[MOB-990] - Find learning default view is empty
+[MOB-997] - Skeleton placeholders design
+[MOB-1004] - Find learning tiles pane is too short
+[MOB-1008] - Course overview modal is rendering the course summary incorrectly
+[MOB-1027] - Mobile app crashes when acessing a course
+[MOB-1029] - Adjust guest password validation
+[MOB-1031] - 'Find learning' link in Current learning empty state in t13/t14 leads to dashboard
+
+Task
+[MOB-998] - Review default images
+[MOB-1016] - Test web view changes for Totara 13 and 14
+
+Improvement
+[MOB-952] - Refine design of Bottom Tab Bar based on DES-645
+[MOB-965] - REFACTOR: Decouple course access from current learning
+[MOB-967] - Course overview - data integration
+[MOB-970] - Remove react-native-safe-area-view lib
+[MOB-971] - Overview Modal full scroll mode
+[MOB-975] - Pagination/Infinite scrolling improvement and Unit test
+[MOB-976] - Enrolment options modal
+[MOB-982] - Show/hide find learning in the app based on backend availability
+[MOB-1000] - Resources view
+[MOB-1001] - Playlist view
+
 Release 1.0.13 (15th Oct 2021):
 =====================================
 
