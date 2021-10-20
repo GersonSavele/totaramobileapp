@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { CircleIcon } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
