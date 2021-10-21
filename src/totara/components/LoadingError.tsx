@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { Image, StyleSheet, View, Text } from "react-native";
+import { Image, StyleSheet, View, Text, ImageSourcePropType } from "react-native";
 import PrimaryButton from "@totara/components/PrimaryButton";
 import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
@@ -30,9 +30,9 @@ const LoadingError = ({ onRefreshTap, testID }: LoadingErrorProps) => {
   return (
     <View style={styles.containerStyle} testID={testID}>
       <View style={styles.errorContainer}>
-        <Image source={Images.offline} />
-        <Text style={styles.textTitle}>{translate("content_error.title")}</Text>
-        <Text style={styles.testDescription}>{translate("content_error.description")}</Text>
+        <Image source={Images.generalError as ImageSourcePropType} />
+        <Text style={styles.textTitle}>{translate("general_error_feedback_modal.title")}</Text>
+        <Text style={styles.testDescription}>{translate("general_error_feedback_modal.description")}</Text>
       </View>
 
       <View style={styles.actionContainer}>

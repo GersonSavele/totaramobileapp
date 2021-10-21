@@ -35,7 +35,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         }
       }
     >
-      translated content_error.title with undefined
+      translated general_error_feedback_modal.title with undefined
     </Text>
     <Text
       style={
@@ -49,7 +49,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         }
       }
     >
-      translated content_error.description with undefined
+      translated general_error_feedback_modal.description with undefined
     </Text>
   </View>
   <View
@@ -156,7 +156,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         }
       }
     >
-      translated content_error.title with undefined
+      translated general_error_feedback_modal.title with undefined
     </Text>
     <Text
       style={
@@ -170,7 +170,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         }
       }
     >
-      translated content_error.description with undefined
+      translated general_error_feedback_modal.description with undefined
     </Text>
   </View>
   <View
