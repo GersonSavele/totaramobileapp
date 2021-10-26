@@ -166,7 +166,6 @@ const FindLearning = () => {
         renderItem={learningItem}
         numColumns={2}
         keyExtractor={(_, index) => index.toString()}
-        onEndReachedThreshold={0}
         onEndReached={() =>
           searchResult &&
           !searchResult.finalPage &&
