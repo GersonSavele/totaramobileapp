@@ -47,7 +47,7 @@ const CurrentLearning = () => {
 
   if (networkStatus === NetworkStatus.loading) return <Loading />;
   if (!data && error) {
-    return <LoadingError onRefreshTap={onContentRefresh} />;
+    return <LoadingError onRefreshTap={onContentRefresh} error={error} />;
   }
 
   const toggleListingOrientation = () => {

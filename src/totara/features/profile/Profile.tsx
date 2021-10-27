@@ -35,7 +35,7 @@ const Profile = ({ navigation }: StackScreenProps<any>) => {
   const { error, data, refetch, networkStatus } = useQuery(userOwnProfile, { notifyOnNetworkStatusChange: true });
 
   if (networkStatus === NetworkStatus.loading) return <Loading testID={"test_ProfileLoading"} />;
-  if (!data && error) return <LoadingError onRefreshTap={refetch} testID={"test_ProfileLoadingError"} />;
+  if (!data && error) return <LoadingError onRefreshTap={refetch} testID={"test_ProfileLoadingError"} error={error} />;
 
   return (
     <View>

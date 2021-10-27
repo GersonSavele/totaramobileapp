@@ -20,19 +20,38 @@ import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
 import { translate } from "@totara/locale";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { ApolloError } from "@apollo/client/errors";
 
 type LoadingErrorProps = {
   onRefreshTap(): void;
   testID?: string;
+  error?: ApolloError;
 };
 
-const LoadingError = ({ onRefreshTap, testID }: LoadingErrorProps) => {
+const getErrorFeedback = (error?: ApolloError) => {
+  // @ts-ignore next line
+  if (error.networkError && (!error.networkError.statusCode || error.networkError.statusCode === 408)) {
+    return {
+      image: Images.offline,
+      title: translate("content_error.title"),
+      description: translate("content_error.description")
+    };
+  }
+  return {
+    image: Images.generalError,
+    title: translate("general_error_feedback_modal.title"),
+    description: translate("general_error_feedback_modal.description")
+  };
+};
+
+const LoadingError = ({ onRefreshTap, testID, error }: LoadingErrorProps) => {
+  const errorFeedback = getErrorFeedback(error);
   return (
     <View style={styles.containerStyle} testID={testID}>
       <View style={styles.errorContainer}>
-        <Image source={Images.generalError as ImageSourcePropType} />
-        <Text style={styles.textTitle}>{translate("general_error_feedback_modal.title")}</Text>
-        <Text style={styles.testDescription}>{translate("general_error_feedback_modal.description")}</Text>
+        <Image source={errorFeedback.image as ImageSourcePropType} />
+        <Text style={styles.textTitle}>{errorFeedback.title}</Text>
+        <Text style={styles.testDescription}>{errorFeedback.description}</Text>
       </View>
 
       <View style={styles.actionContainer}>

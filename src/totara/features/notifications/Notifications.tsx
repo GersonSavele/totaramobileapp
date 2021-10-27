@@ -159,7 +159,7 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
       <NetworkStatusIndicator />
       <View style={{ flex: 1 }}>
         {networkStatus === NetworkStatus.loading && <Loading testID={"test_loading"} />}
-        {!data && error && <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} />}
+        {!data && error && <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} error={error} />}
         {notificationList.length == 0 && (
           <ScrollView
             contentContainerStyle={{

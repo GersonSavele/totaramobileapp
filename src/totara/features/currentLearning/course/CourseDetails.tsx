@@ -46,7 +46,7 @@ const CourseDetails = ({ navigation, route }: any) => {
   };
 
   if (networkStatus === NetworkStatus.loading) return <Loading />;
-  if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} />;
+  if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} error={error} />;
 
   if (data) {
     return (

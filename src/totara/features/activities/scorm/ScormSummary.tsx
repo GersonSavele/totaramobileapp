@@ -17,7 +17,14 @@ import React, { useState } from "react";
 import { ScrollView, Text, View, TextStyle, TouchableOpacity, RefreshControl } from "react-native";
 import { get, isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { MessageBar, NetworkStatusIndicator, LoadingError, PrimaryButton, SecondaryButton, Loading } from "@totara/components";
+import {
+  MessageBar,
+  NetworkStatusIndicator,
+  LoadingError,
+  PrimaryButton,
+  SecondaryButton,
+  Loading
+} from "@totara/components";
 import { gutter } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { AppliedTheme, TotaraTheme } from "@totara/theme/Theme";
@@ -259,7 +266,7 @@ const ScormSummary = ({
     return <Loading testID={"summary_loading"} />;
   }
   if (!scormBundle && error) {
-    return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} />;
+    return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} error={error} />;
   }
   return (
     <>
