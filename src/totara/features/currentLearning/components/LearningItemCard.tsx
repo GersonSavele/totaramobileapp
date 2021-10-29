@@ -21,11 +21,9 @@ import { paddings, fontWeights, fontSizes, margins } from "@totara/theme/constan
 import carouselItemStyles from "@totara/features/currentLearning/learningItems/carouselItemStyles";
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import ImageElement from "./ImageElement";
-import { DescriptionFormat } from "@totara/types/LearningItem";
-import { wrappedWekaNodes, jsonObjectToWekaNodes } from "@totara/components/weka/wekaUtils";
-import { ToShortSummary } from "@totara/components/weka/treeOperations";
 import { translate } from "@totara/locale";
 import DueDateState from "./DueDateState";
+import { SummaryContent } from "@totara/components/SummaryContent";
 
 interface LearningItemCardProps {
   item: LearningItem;
@@ -55,21 +53,17 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
               const lineHeight = TotaraTheme.textSmall.lineHeight!;
               setNumberOfLines(Math.floor(viewHeight / lineHeight));
             }}>
-            <Text style={carouselItemStyles.summary} numberOfLines={numberOfLines}>
-              {item.summaryFormat === DescriptionFormat.jsonEditor
-                ? item.summary && wekaSummary(JSON.parse(item.summary))
-                : item.summary}
-            </Text>
+            <SummaryContent
+              style={carouselItemStyles.summary}
+              numberOfLines={numberOfLines}
+              content={item.summary}
+              contentType={item.summaryFormat}
+            />
           </View>
         </View>
       </View>
     </View>
   );
-};
-
-const wekaSummary = (summary: Object) => {
-  const root = wrappedWekaNodes(jsonObjectToWekaNodes(summary));
-  return root.accept(new ToShortSummary());
 };
 
 const styles = StyleSheet.create({

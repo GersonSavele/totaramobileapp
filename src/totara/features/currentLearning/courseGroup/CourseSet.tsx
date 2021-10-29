@@ -29,6 +29,7 @@ import DefaultImage from "@totara/features/currentLearning/components/DefaultIma
 import { extractTargetId } from "../utils";
 import { activeOpacity } from "@totara/lib/styles/base";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
+import { SummaryContent } from "@totara/components/SummaryContent";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -71,9 +72,12 @@ const CourseSetItem = ({ item, navigation }: any) => {
             <Text numberOfLines={1} style={courseSet.courseTitle}>
               {item.fullname}
             </Text>
-            <Text numberOfLines={2} style={courseSet.courseSummary}>
-              {item.summary}
-            </Text>
+            <SummaryContent
+              numberOfLines={2}
+              style={courseSet.courseSummary}
+              content={item.summary}
+              contentType={item.summaryFormat}
+            />
           </View>
         </View>
         {showRestriction && <NativeAccessRestriction onClose={onCloseRestriction} urlView={item.urlView} />}
