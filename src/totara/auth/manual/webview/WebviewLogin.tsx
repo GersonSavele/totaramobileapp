@@ -26,6 +26,7 @@ import { useWebviewFlow } from "./WebviewFlowHook";
 import { useSession } from "@totara/core";
 import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
 import AsyncStorage from "@react-native-community/async-storage";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 const WebviewLogin = () => {
   const { initSession, siteInfo, host, apiKey } = useSession();
@@ -67,7 +68,7 @@ const WebviewLogin = () => {
   const theme = useContext(ThemeContext);
 
   return (
-    <Container style={[theme.viewContainer, { flex: 0 }]}>
+    <Container style={TotaraTheme.viewContainer}>
       <Content contentContainerStyle={{ flex: 1 }}>
         <WebView
           ref={refLoginWebview}
