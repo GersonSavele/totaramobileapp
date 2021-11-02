@@ -53,12 +53,7 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
               const lineHeight = TotaraTheme.textSmall.lineHeight!;
               setNumberOfLines(Math.floor(viewHeight / lineHeight));
             }}>
-            <SummaryContent
-              style={carouselItemStyles.summary}
-              numberOfLines={numberOfLines}
-              content={item.summary}
-              contentType={item.summaryFormat}
-            />
+            <SummaryContent numberOfLines={numberOfLines} content={item.summary} contentType={item.summaryFormat} />
           </View>
         </View>
       </View>

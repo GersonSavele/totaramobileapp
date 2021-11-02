@@ -13,21 +13,21 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import React from "react";
-import { Text, TextStyle } from "react-native";
+import { Text } from "react-native";
 import { isEmpty } from "lodash";
 
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import { jsonObjectToWekaNodes, wrappedWekaNodes } from "./weka/wekaUtils";
 import { ToShortSummary } from "./weka/treeOperations";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type SummaryContentProps = {
   contentType?: DescriptionFormat;
   content?: any;
-  style: TextStyle;
   numberOfLines: number;
 };
 
-export const SummaryContent = ({ contentType, content, numberOfLines, style }: SummaryContentProps) => {
+export const SummaryContent = ({ contentType, content, numberOfLines }: SummaryContentProps) => {
   if (isEmpty(content)) {
     return null;
   }
@@ -37,7 +37,7 @@ export const SummaryContent = ({ contentType, content, numberOfLines, style }: S
   }
 
   return (
-    <Text style={style} numberOfLines={numberOfLines}>
+    <Text style={TotaraTheme.textSmall} numberOfLines={numberOfLines}>
       {shortText}
     </Text>
   );

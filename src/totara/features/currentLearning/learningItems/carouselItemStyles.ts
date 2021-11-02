@@ -45,11 +45,6 @@ const carouselItemStyles = StyleSheet.create({
     borderColor: colorNeutral6,
     ...TotaraTheme.textXXSmall
   },
-  summary: {
-    alignSelf: "flex-start",
-    width: "100%",
-    ...TotaraTheme.textSmall
-  },
   badgeContainer: {
     zIndex: 1
   },

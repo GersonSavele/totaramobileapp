@@ -112,20 +112,9 @@ const courseSet = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusM,
     width: "100%"
   },
-  courseSummary: {
-    marginVertical: margins.marginS,
-    ...TotaraTheme.textSmall,
-    fontWeight: fontWeights.fontWeightNormal
-  },
   courseTitle: {
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightSemiBold,
-    marginTop: margins.marginL
-  },
-  courseDetails: {
-    flex: 1,
-    marginHorizontal: margins.marginL,
-    height: deviceScreen.width * 0.3
   },
   courseSetItemImage: {
     borderTopRightRadius: borderRadius.borderRadiusM,

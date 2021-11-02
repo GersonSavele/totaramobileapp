@@ -68,16 +68,13 @@ const CourseSetItem = ({ item, navigation }: any) => {
               <DefaultImage itemType={item.itemtype} style={courseSet.courseSetItemImage} />
             )}
           </View>
-          <View style={courseSet.courseDetails}>
+          <View style={{ padding: margins.marginL }}>
             <Text numberOfLines={1} style={courseSet.courseTitle}>
               {item.fullname}
             </Text>
-            <SummaryContent
-              numberOfLines={2}
-              style={courseSet.courseSummary}
-              content={item.summary}
-              contentType={item.summaryFormat}
-            />
+            <View style={{ marginTop: margins.marginM }}>
+              <SummaryContent numberOfLines={2} content={item.summary} contentType={item.summaryFormat} />
+            </View>
           </View>
         </View>
         {showRestriction && <NativeAccessRestriction onClose={onCloseRestriction} urlView={item.urlView} />}
