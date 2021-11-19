@@ -26,39 +26,50 @@ import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useSession } from "@totara/core";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const BrowserLogin = () => {
-
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
   const navigation = useNavigation();
   const { params } = useRoute();
   const { siteUrl } = params as any;
   const { initSession, siteInfo, apiKey } = useSession();
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(true);
 
   const [setupSecret, setSetupSecret] = useState();
 
   const urlHandler = (url) => {
-    authLinkingHandler(({ secret }) => {
-      setSetupSecret(secret);
-    }, () => { console.warn('error') })(url);
-  }
+    authLinkingHandler(
+      ({ secret }) => {
+        setSetupSecret(secret);
+      },
+      () => {
+        console.warn("error");
+      }
+    )(url);
+  };
 
   useEffect(() => {
     if (setupSecret && !apiKey) {
-      registerDevice(fetchDataWithFetch, AsyncStorage)({
+      registerDevice(
+        fetchDataWithFetch,
+        AsyncStorage
+      )({
         uri: siteUrl,
         secret: setupSecret,
         siteInfo: siteInfo
-      }).then(res => {
-        initSession({ apiKey: res.apiKey });
-        navigation.goBack();
-      }).catch(ee => {
-        console.warn(ee);
-      });
+      })
+        .then((res) => {
+          dispatch(initSession({ apiKey: res.apiKey }));
+          navigation.goBack();
+        })
+        .catch((ee) => {
+          console.warn(ee);
+        });
     }
-  }, [setupSecret, apiKey])
+  }, [setupSecret, apiKey]);
 
   useFocusEffect(
     useCallback(() => {

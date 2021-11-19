@@ -32,6 +32,6 @@ const createMiddleware = (logger: boolean) => {
 };
 
 // eslint-disable-next-line no-undef
-const store = createStore(persistedReducer, createMiddleware(false));
+const store = createStore(persistedReducer, createMiddleware(__DEV__));
 const persistor = persistStore(store);
 export { store, persistor };

@@ -30,6 +30,7 @@ import { Loading, NetworkStatusIndicator, ImageWrapper, LoadingError } from "@to
 import { TotaraTheme } from "@totara/theme/Theme";
 import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
 import { logOut } from "@totara/core/AuthRoutines";
+import { useDispatch } from "react-redux";
 
 const Profile = ({ navigation }: StackScreenProps<any>) => {
   const { error, data, refetch, networkStatus } = useQuery(userOwnProfile, { notifyOnNetworkStatusChange: true });
@@ -65,10 +66,11 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
   const [loggingOut, setLoggingOut] = useState(false);
   const theme = useContext(ThemeContext);
   const apolloClient = useApolloClient();
+  const dispatch = useDispatch();
 
   const confirmedLogout = async () => {
     setLoggingOut(true);
-    logOut({ apolloClient })
+    logOut({ apolloClient, dispatch });
   };
 
   const confirmationLogout = () => {
@@ -78,7 +80,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
       [
         {
           text: translate("general.cancel"),
-          onPress: () => { },
+          onPress: () => {},
           style: "cancel"
         },
         { text: translate("general.yes"), onPress: confirmedLogout }

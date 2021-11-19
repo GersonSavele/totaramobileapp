@@ -17,7 +17,7 @@ import React, { useEffect } from "react";
 import messaging from "@react-native-firebase/messaging";
 import { useMutation, useQuery } from "@apollo/client";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { registerPushNotifications } from "@totara/lib/notificationService";
 import ResourceManager from "@totara/lib/resourceManager";
@@ -46,6 +46,7 @@ const MainContainer = () => {
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
   const { client } = useQuery(notificationsQuery);
   const [sendToken] = useMutation(mutationForToken);
+  const dispatch = useDispatch();
 
   const handleNotificationReceived = (remoteMessage) => {
     if (remoteMessage) {
@@ -72,8 +73,8 @@ const MainContainer = () => {
           .then((success) => {
             if (success) {
               console.debug("TOKEN REGISTERED");
-              updateToken({ token: token });
-              tokenSent({ tokenSent: true });
+              dispatch(updateToken({ token: token }));
+              dispatch(tokenSent({ tokenSent: true }));
             } else {
               console.debug("TOKEN REGISTRATION FAIL");
             }
@@ -102,7 +103,7 @@ const MainContainer = () => {
       });
 
     messaging().onTokenRefresh((token) => {
-      updateToken({ token: token });
+      dispatch(updateToken({ token: token }));
     });
 
     const unsubscribe = messaging().onMessage((message) => {

@@ -20,9 +20,11 @@ import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
 import { translate } from "@totara/locale";
 import { useSession } from "@totara/core";
 import { Images } from "@resources/images";
+import { useDispatch } from "react-redux";
 
 const AdditionalActionModal = () => {
   const { host, endSession } = useSession();
+  const dispatch = useDispatch();
   return (
     <InfoModal
       title={translate("additional_actions_modal.auth_model_title")}
@@ -39,7 +41,7 @@ const AdditionalActionModal = () => {
       <TertiaryButton
         text={translate("additional_actions_modal.auth_model_logout")}
         onPress={() => {
-          endSession();
+          dispatch(endSession());
         }}
       />
     </InfoModal>

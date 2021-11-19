@@ -28,7 +28,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import Loading from "@totara/components/Loading";
 import { ThemeProvider } from "./totara/theme";
-import ScreenOrientation, { PORTRAIT } from "react-native-orientation-locker/ScreenOrientation"
+import ScreenOrientation, { PORTRAIT } from "react-native-orientation-locker/ScreenOrientation";
 // this check will make sure we only use sentry for production flavors
 if (!__DEV__ && config.sentryUri) {
   Sentry.init({
@@ -45,7 +45,6 @@ if (Platform.OS === PLATFORM_ANDROID) {
 
 FontAwesome.init();
 console.disableYellowBox = config.disableConsoleYellowBox;
-
 
 const App: () => React$Node = () => {
   return (

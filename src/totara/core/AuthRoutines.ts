@@ -154,7 +154,7 @@ export const createApolloClient = (
   apiKey: string,
   host: string,
   cache: any,
-  logOut: (localOnly: boolean) => Promise<void>
+  onLogout: (localOnly: boolean) => Promise<void>
 ): ApolloClient<NormalizedCacheObject> => {
   const authLink = setContext((_, { headers }) => ({
     headers: {
@@ -167,7 +167,7 @@ export const createApolloClient = (
   const logoutLink = onError(({ networkError }: ErrorResponse) => {
     Log.warn("Apollo client network error", networkError);
     if (networkError && (networkError as ServerError).statusCode === 401) {
-      logOut(true);
+      onLogout(true);
     }
   });
 
@@ -259,10 +259,10 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
   });
 };
 
-export const logOut = async ({ apolloClient }) => {
+export const logOut = async ({ apolloClient, dispatch }) => {
   const { cache } = apolloClient;
   await cache.reset(); //clear the apollo client cache
-  await purge({}); //root purge (hot)
+  await dispatch(purge({})); //root purge (hot)
   await persistor.purge(); //root purge (stored)
   return Promise.resolve();
 };

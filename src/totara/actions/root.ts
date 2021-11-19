@@ -13,14 +13,11 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import { store } from "../store";
 import { PURGE } from "./constants";
 
-const purge = (payload) => {
-  store.dispatch({
-    type: PURGE,
-    payload: payload
-  });
-};
+const purge = (payload) => ({
+  type: PURGE,
+  payload: payload
+});
 
 export { purge };

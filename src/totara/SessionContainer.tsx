@@ -37,6 +37,7 @@ import { LearningItem } from "./types";
 import { queryCore } from "./core/api/core";
 import { AdditionalAction } from "./auth/additional-actions";
 import AttemptSynchronizer from "@totara/activities/scorm/AttemptSynchronizer";
+import { useDispatch } from "react-redux";
 
 const setupApolloClient = async ({ apiKey, host, onLogout }) => {
   const cache = new InMemoryCache({
@@ -65,7 +66,7 @@ const setupApolloClient = async ({ apiKey, host, onLogout }) => {
   };
 };
 
-const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession }) => {
+const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dispatch }) => {
   if (url) {
     linkingHandler(
       url,
@@ -79,7 +80,7 @@ const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession }) =
           siteInfo: siteInfo
         })
           .then((res) => {
-            initSession({ apiKey: res.apiKey });
+            dispatch(initSession({ apiKey: res.apiKey }));
           })
           .catch((ee) => {
             console.warn(ee);
@@ -97,12 +98,13 @@ const SessionContainer = () => {
   const fetchDataWithFetch = fetchData(fetch);
 
   const { initSession, host, apiKey, siteInfo, core, setCore } = useSession();
+  const dispatch = useDispatch();
   const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
   const [persistor, setPersistor] = useState<CachePersistor<NormalizedCacheObject>>();
   const isFocused = useIsFocused();
 
   const onLogout = async () => {
-    logOut({ apolloClient });
+    logOut({ apolloClient, dispatch });
   };
 
   useEffect(() => {
@@ -128,7 +130,7 @@ const SessionContainer = () => {
         .then((result) => {
           // console.log(result.data);
           const core = result.data.me;
-          setCore(core);
+          dispatch(setCore(core));
         });
     }
   }, [apolloClient, apiKey, core]);
@@ -144,7 +146,7 @@ const SessionContainer = () => {
       if (isFocused) {
         if (!apiKey) {
           Linking.getInitialURL().then((url) => {
-            initialURLHandler({ fetchDataWithFetch, url, siteInfo, initSession });
+            initialURLHandler({ fetchDataWithFetch, url, siteInfo, initSession, dispatch });
           });
         } else {
           return () => {
@@ -163,7 +165,7 @@ const SessionContainer = () => {
     return (
       <AppStateListener
         onActive={() => {
-          setCore(undefined);
+          dispatch(setCore(undefined));
         }}>
         <AdditionalAction />
       </AppStateListener>

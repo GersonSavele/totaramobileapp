@@ -31,11 +31,13 @@ import { useEffect } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Images } from "@resources/images";
+import { useDispatch } from "react-redux";
 
 const NativeLogin = () => {
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
   const { siteInfo, host, apiKey, initSession } = useSession();
+  const dispatch = useDispatch();
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
 
@@ -44,24 +46,27 @@ const NativeLogin = () => {
     onClickEnter,
     inputUsernameWithShowError,
     inputPasswordWithShowError,
-    onFocusInput,
+    onFocusInput
   } = useNativeFlow(fetchDataWithFetch)({
     siteInfo: siteInfo!,
-    siteUrl: host!,
+    siteUrl: host!
   });
 
   useEffect(() => {
     if (nativeLoginState.setupSecret && !apiKey) {
-      registerDevice(fetchDataWithFetch, AsyncStorage)({
+      registerDevice(
+        fetchDataWithFetch,
+        AsyncStorage
+      )({
         uri: host!,
         secret: nativeLoginState.setupSecret,
         siteInfo: siteInfo
-      }).then(res => {
-        initSession({ apiKey: res.apiKey });
+      }).then((res) => {
+        dispatch(initSession({ apiKey: res.apiKey }));
         navigation.goBack();
       });
     }
-  }, [nativeLoginState.setupSecret, apiKey])
+  }, [nativeLoginState.setupSecret, apiKey]);
 
   return (
     <Container style={theme.viewContainer}>

@@ -27,9 +27,11 @@ import { useSession } from "@totara/core";
 import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
 import AsyncStorage from "@react-native-community/async-storage";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { useDispatch } from "react-redux";
 
 const WebviewLogin = () => {
   const { initSession, siteInfo, host, apiKey } = useSession();
+  const dispatch = useDispatch();
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
   const navigation = useNavigation();
@@ -54,7 +56,7 @@ const WebviewLogin = () => {
         secret: setupSecret,
         siteInfo: siteInfo
       }).then((res) => {
-        initSession({ apiKey: res.apiKey });
+        dispatch(initSession({ apiKey: res.apiKey }));
         navigation.goBack();
       });
     }

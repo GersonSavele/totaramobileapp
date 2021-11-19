@@ -33,6 +33,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Images } from "@resources/images";
 import IncompatibleApiModal from "@totara/core/IncompatibleApiModal";
 import { NAVIGATION } from "@totara/lib/navigation";
+import { useDispatch } from "react-redux";
 
 type PropSiteError = {
   onDismiss: () => void;
@@ -43,17 +44,17 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
   const content =
     siteUrlFailure === "networkError"
       ? {
-        title: translate("server_not_reachable.title"),
-        description: translate("server_not_reachable.message"),
-        imageSource: Images.generalError,
-        primaryAction: translate("server_not_reachable.go_back")
-      }
+          title: translate("server_not_reachable.title"),
+          description: translate("server_not_reachable.message"),
+          imageSource: Images.generalError,
+          primaryAction: translate("server_not_reachable.go_back")
+        }
       : {
-        title: translate("site_url.auth_invalid_site.title"),
-        description: translate("site_url.auth_invalid_site.description"),
-        imageSource: Images.urlNotValid,
-        primaryAction: translate("site_url.auth_invalid_site.action_primary")
-      };
+          title: translate("site_url.auth_invalid_site.title"),
+          description: translate("site_url.auth_invalid_site.description"),
+          imageSource: Images.urlNotValid,
+          primaryAction: translate("site_url.auth_invalid_site.action_primary")
+        };
 
   return (
     <InfoModal
@@ -69,6 +70,7 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
 const SiteUrl = () => {
   const navigation = useNavigation();
   const { setupHost, host } = useSession();
+  const dispatch = useDispatch();
 
   // eslint-disable-next-line no-undef
   const initialSiteURL = host ? host : __DEV__ ? get(config, "devOrgUrl", "") : "";
@@ -76,7 +78,7 @@ const SiteUrl = () => {
   const { siteUrlState, onSubmit, reset, onChangeInputSiteUrl } = useSiteUrl({
     siteUrl: initialSiteURL,
     onSiteInfoDone: (siteInfo) => {
-      setupHost({ host: siteUrlState.inputSiteUrl, siteInfo });
+      dispatch(setupHost({ host: siteUrlState.inputSiteUrl, siteInfo }));
       const { auth } = siteInfo;
       if (auth === "browser") {
         return navigation.navigate(NAVIGATION.BROWSER_LOGIN, {
@@ -139,7 +141,7 @@ const SiteUrl = () => {
       {(siteUrlState.inputSiteUrlStatus === "invalidAPI" || siteUrlState.inputSiteUrlStatus === "networkError") && (
         <SiteErrorModal onDismiss={() => reset()} siteUrlFailure={siteUrlState.inputSiteUrlStatus} />
       )}
-      {(siteUrlState.inputSiteUrlStatus === "minAPIVersionMismatch") && (
+      {siteUrlState.inputSiteUrlStatus === "minAPIVersionMismatch" && (
         <IncompatibleApiModal onCancel={() => reset()} siteUrl={siteUrlState.inputSiteUrl!} />
       )}
     </SafeAreaView>
