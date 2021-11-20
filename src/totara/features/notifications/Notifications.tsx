@@ -34,7 +34,7 @@ import NetworkStatusIndicator from "@totara/components/NetworkStatusIndicator";
 import { NotificationMessage } from "@totara/types";
 import NotificationItem from "@totara/features/notifications/NotificationItem";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { Loading, LoadingError } from "@totara/components";
+import { Loading, MessageBar } from "@totara/components";
 import { notificationQueryMarkRead, notificationsQuery, parser } from "@totara/features/notifications/api";
 import { paddings } from "@totara/theme/constants";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -157,9 +157,9 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
         <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
       </View>
       <NetworkStatusIndicator />
+      {error && <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />}
       <View style={{ flex: 1 }}>
         {networkStatus === NetworkStatus.loading && <Loading testID={"test_loading"} />}
-        {!data && error && <LoadingError onRefreshTap={refetch} testID={"test_loadingError"} error={error} />}
         {notificationList.length == 0 && (
           <ScrollView
             contentContainerStyle={{

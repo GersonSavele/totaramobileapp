@@ -26,7 +26,7 @@ import { deviceScreen } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
 import { NetworkStatus } from "@apollo/client";
 import { margins, paddings } from "@totara/theme/constants";
-import { Loading, NetworkStatusIndicator, ImageWrapper, LoadingError } from "@totara/components";
+import { Loading, NetworkStatusIndicator, ImageWrapper, MessageBar } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
 import { logOut } from "@totara/core/AuthRoutines";
@@ -36,11 +36,13 @@ const Profile = ({ navigation }: StackScreenProps<any>) => {
   const { error, data, refetch, networkStatus } = useQuery(userOwnProfile, { notifyOnNetworkStatusChange: true });
 
   if (networkStatus === NetworkStatus.loading) return <Loading testID={"test_ProfileLoading"} />;
-  if (!data && error) return <LoadingError onRefreshTap={refetch} testID={"test_ProfileLoadingError"} error={error} />;
 
   return (
     <View>
       <NetworkStatusIndicator />
+      {(!data || error) && (
+        <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />
+      )}
       <ScrollView
         style={{ backgroundColor: TotaraTheme.colorNeutral2 }}
         showsVerticalScrollIndicator={false}
@@ -51,7 +53,7 @@ const Profile = ({ navigation }: StackScreenProps<any>) => {
             onRefresh={refetch}
           />
         }>
-        <ProfileContent profile={data.profile} navigation={navigation} />
+        <ProfileContent profile={data ? data.profile : undefined} navigation={navigation} />
       </ScrollView>
     </View>
   );
@@ -93,7 +95,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
     navigation.navigate(NAVIGATION.ABOUT);
   };
 
-  const useDefaultImage = profile.profileimage.indexOf("theme/image.php/") >= 0; //TODO: WEIRD WORKAROUND WE SUPPOSE TO FIX ONE DAY
+  const useDefaultImage = profile ? profile.profileimage.indexOf("theme/image.php/") >= 0 : undefined; //TODO: WEIRD WORKAROUND WE SUPPOSE TO FIX ONE DAY
 
   return (
     <View style={[TotaraTheme.viewContainer]} testID={"test_ProfileContainer"}>
@@ -103,7 +105,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
             ...styles.avatarContainer,
             borderColor: theme.colorPrimary
           }}>
-          {!useDefaultImage ? (
+          {profile && !useDefaultImage ? (
             <ImageWrapper
               url={profile.profileimage}
               style={styles.avatar}
@@ -115,15 +117,19 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
             </View>
           )}
         </View>
-        <Text style={styles.userDetails} testID={"test_ProfileUserDetails"}>
-          {`${profile.firstname} ${profile.surname}`}
-        </Text>
-        <Text style={styles.userEmail} testID={"test_ProfileUserEmail"}>
-          {profile.email}
-        </Text>
-        <Text style={styles.userLoginAs} testID={"test_ProfileUserLogin"}>
-          {translate("user_profile.login_as", { username: profile.username })}
-        </Text>
+        {profile && (
+          <>
+            <Text style={styles.userDetails} testID={"test_ProfileUserDetails"}>
+              {`${profile.firstname} ${profile.surname}`}
+            </Text>
+            <Text style={styles.userEmail} testID={"test_ProfileUserEmail"}>
+              {profile.email}
+            </Text>
+            <Text style={styles.userLoginAs} testID={"test_ProfileUserLogin"}>
+              {translate("user_profile.login_as", { username: profile.username })}
+            </Text>
+          </>
+        )}
       </View>
 
       <View style={styles.section}>
