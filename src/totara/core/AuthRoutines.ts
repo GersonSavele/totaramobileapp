@@ -154,7 +154,7 @@ export const createApolloClient = (
   apiKey: string,
   host: string,
   cache: any,
-  onLogout: (localOnly: boolean) => Promise<void>
+  onLogout: () => Promise<void>
 ): ApolloClient<NormalizedCacheObject> => {
   const authLink = setContext((_, { headers }) => ({
     headers: {
@@ -164,17 +164,17 @@ export const createApolloClient = (
     http: { includeQuery: !config.mobileApi.persistentQuery }
   }));
 
-  const logoutLink = onError(({ networkError }: ErrorResponse) => {
+  const errorLink = onError(({ networkError }: ErrorResponse) => {
     Log.warn("Apollo client network error", networkError);
     if (networkError && (networkError as ServerError).statusCode === 401) {
-      onLogout(true);
+      onLogout();
     }
   });
 
   const httpLink = new HttpLink({ uri: config.apiUri(host) });
   const timeOutLinkWithHttpLink = new ApolloLinkTimeout(10 * 1000).concat(httpLink);
   const link = ApolloLink.from([
-    logoutLink,
+    errorLink,
     new RetryLink({
       attempts: {
         max: 2,
