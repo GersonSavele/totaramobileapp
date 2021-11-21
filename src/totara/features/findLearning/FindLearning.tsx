@@ -30,6 +30,7 @@ import { FINDLEARNING_TEST_IDS } from "@totara/lib/testIds";
 import { formatPageData, onSearch } from "./utils";
 import { isEmpty } from "lodash";
 import { Images } from "@resources/images";
+import { MessageBar } from "@totara/components";
 
 type FindLearningHeaderProps = {
   onChangeText: (text: string) => void;
@@ -84,7 +85,7 @@ const FindLearning = () => {
   const filterQuery =
     isEmpty(searchData.key) && searchData.pointer !== undefined ? queryViewCatalog : queryFindLearning;
 
-  const [onCallSearch, { loading, data }] = useLazyQuery(filterQuery, {
+  const [onCallSearch, { loading, data, error }] = useLazyQuery(filterQuery, {
     fetchPolicy: "no-cache"
   });
 
@@ -147,18 +148,23 @@ const FindLearning = () => {
     <SafeAreaView style={findLearningStyles.mainWrapper} edges={["top"]}>
       <FlatList
         ListHeaderComponent={
-          <FindLearningHeader
-            onChangeText={(text) => setSearchData({ key: text })}
-            onSearch={() => {
-              setSearchResult(undefined);
-              setSearchData({ ...searchData, pointer: 0 });
-            }}
-            findLeaningText={searchData.key}
-            count={searchResult?.maxCount}
-            onFocusText={() => {
-              setSearchData({ key: searchData.key });
-            }}
-          />
+          <>
+            <FindLearningHeader
+              onChangeText={(text) => setSearchData({ key: text })}
+              onSearch={() => {
+                setSearchResult(undefined);
+                setSearchData({ ...searchData, pointer: 0 });
+              }}
+              findLeaningText={searchData.key}
+              count={searchResult?.maxCount}
+              onFocusText={() => {
+                setSearchData({ key: searchData.key });
+              }}
+            />
+            {error && (
+              <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />
+            )}
+          </>
         }
         ListFooterComponent={loading ? <SkeletonLoading /> : null}
         contentContainerStyle={findLearningStyles.listWrapper}

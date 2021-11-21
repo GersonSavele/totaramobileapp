@@ -22,7 +22,7 @@ import CurrentLearningCarousel from "./learningItems/CurrentLearningCarousel";
 import CurrentLearningListView from "./learningItems/CurrentLearningListView";
 import NoCurrentLearning from "./learningItems/NoCurrentLearning";
 import query from "./api";
-import { LoadingError, NetworkStatusIndicator, Loading } from "@totara/components";
+import { LoadingError, NetworkStatusIndicator, Loading, MessageBar } from "@totara/components";
 import { currentLearningStyles } from "./currentLearningStyles";
 import { paddings } from "@totara/theme/constants";
 import { Switch, SwitchOption } from "@totara/components/Switch";
@@ -100,17 +100,12 @@ const CurrentLearning = () => {
 
         <View style={[currentLearningStyles.contentWrap]}>
           <NetworkStatusIndicator />
+          {error && <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />}
           {currentLearning && currentLearning.length > 0 ? (
             listingOrientation === ListingOrientation.Carousel ? (
-              <CurrentLearningCarousel
-                currentLearning={currentLearning}
-                onRefresh={onContentRefresh}
-              />
+              <CurrentLearningCarousel currentLearning={currentLearning} onRefresh={onContentRefresh} />
             ) : (
-              <CurrentLearningListView
-                currentLearning={currentLearning}
-                onRefresh={onContentRefresh}
-              />
+              <CurrentLearningListView currentLearning={currentLearning} onRefresh={onContentRefresh} />
             )
           ) : (
             <View
@@ -118,7 +113,9 @@ const CurrentLearning = () => {
                 flex: 1
               }}>
               <ScrollView
-                refreshControl={<RefreshControl refreshing={networkStatus === NetworkStatus.refetch} onRefresh={onContentRefresh} />}
+                refreshControl={
+                  <RefreshControl refreshing={networkStatus === NetworkStatus.refetch} onRefresh={onContentRefresh} />
+                }
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   flexGrow: 1,
