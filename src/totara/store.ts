@@ -12,15 +12,21 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import AsyncStorage from "@react-native-community/async-storage";
 import { createStore, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 import { persistStore, persistReducer } from "redux-persist";
+import createSensitiveStorage from "redux-persist-sensitive-storage";
 import rootReducer, { RootState } from "./reducers";
+
+const storage = createSensitiveStorage({
+  keychainService: "myKeychain",
+  sharedPreferencesName: "mySharedPrefs"
+});
+
 const persistConfig = {
   // Root
   key: "root",
-  storage: AsyncStorage,
+  storage,
   whitelist: ["sessionReducer", "resourceReducer", "notificationReducer"]
 };
 
