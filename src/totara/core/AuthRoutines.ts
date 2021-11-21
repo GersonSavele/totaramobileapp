@@ -23,10 +23,11 @@ import { AsyncStorageStatic } from "@react-native-community/async-storage";
 import { config, Log } from "@totara/lib";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { AppState, SiteInfo } from "@totara/types";
-import { Setup } from "./AuthHook";
 import { NetworkFailedError } from "@totara/types/Error";
 import { persistor } from "./../store";
 import { purge } from "./../actions/root";
+import { deleteDevice } from "./api/core";
+import { Setup } from "@totara/types/Auth";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -94,34 +95,25 @@ export const registerDevice = (
  * clean up.  It would catch all errors, as a user would be logged off regardless issues on the
  * remote and local services.  It would always clear the memory state
  *
- * @param asyncStorage device storage
+ * @param apolloClient
  *
- * @param deviceDelete - remote device deletion mutation
+ * @param dispatch - to update the redux store
  */
-export const deviceCleanup = (asyncStorage: AsyncStorageStatic) => async (
-  deviceDelete: () => Promise<{ data: { delete_device: boolean } }>
-): Promise<boolean> => {
-  const remoteCleanUp = deviceDelete()
+export const deviceCleanup = ({ apolloClient, dispatch }) => {
+  apolloClient
+    ?.mutate({
+      mutation: deleteDevice
+    })
     .then(({ data: { delete_device } }) => {
       if (!delete_device) Log.warn("Unable to delete device from server");
       return delete_device;
     })
     .catch((error) => {
       Log.warn("remote clean up had issues, but continue to do local clean up", error);
+    })
+    .finally(() => {
+      logOut({ apolloClient, dispatch });
     });
-
-  const localCleanUp = asyncStorage
-    .multiRemove(["apiKey", "siteInfo"])
-    .then(() => {})
-    .catch((error) => {
-      if (error.message.startsWith("Failed to delete storage directory")) {
-        Log.warn("Fail to clear Async storage, this expected if user is sign out ", error);
-      } else {
-        Log.warn("Error cleaning up device, but we still continue to logout the user", error);
-      }
-    });
-
-  return Promise.all([localCleanUp, remoteCleanUp]).then(() => true);
 };
 
 /**
@@ -150,12 +142,7 @@ export const bootstrap = (asyncStorage: AsyncStorageStatic) => async (): Promise
 /**
  * create an authenticated Apollo client that has the right credentials to the api
  */
-export const createApolloClient = (
-  apiKey: string,
-  host: string,
-  cache: any,
-  onLogout: () => Promise<void>
-): ApolloClient<NormalizedCacheObject> => {
+export const createApolloClient = (apiKey: string, host: string, cache: any): ApolloClient<NormalizedCacheObject> => {
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
@@ -167,7 +154,7 @@ export const createApolloClient = (
   const errorLink = onError(({ networkError }: ErrorResponse) => {
     Log.warn("Apollo client network error", networkError);
     if (networkError && (networkError as ServerError).statusCode === 401) {
-      onLogout();
+      Log.warn("Forbidden error");
     }
   });
 

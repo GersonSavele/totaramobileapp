@@ -16,4 +16,10 @@
 import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
 
 const event = new EventEmitter();
+
+const EVENTS = {
+  LOGOUT: "logout"
+};
+
+export { EVENTS };
 export default event;

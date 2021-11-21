@@ -40,3 +40,9 @@ export const queryCore = gql`
     }
   }
 `;
+
+export const deleteDevice = gql`
+  mutation totara_mobile_delete_device {
+    delete_device: totara_mobile_delete_device
+  }
+`;

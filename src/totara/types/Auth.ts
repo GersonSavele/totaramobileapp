@@ -29,3 +29,9 @@ export type AppState = {
   host: string;
   siteInfo: SiteInfo;
 };
+
+export interface Setup {
+  secret?: string;
+  uri: string;
+  siteInfo?: SiteInfo;
+}

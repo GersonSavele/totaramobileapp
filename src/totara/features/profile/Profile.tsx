@@ -15,7 +15,7 @@
 
 import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View, ScrollView, RefreshControl, Alert, TouchableOpacity } from "react-native";
-import { useQuery, useApolloClient } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { StackScreenProps } from "@react-navigation/stack";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ThemeContext } from "@totara/theme";
@@ -29,8 +29,7 @@ import { margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatusIndicator, ImageWrapper, MessageBar } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
-import { logOut } from "@totara/core/AuthRoutines";
-import { useDispatch } from "react-redux";
+import event, { EVENTS } from "@totara/lib/event";
 
 const Profile = ({ navigation }: StackScreenProps<any>) => {
   const { error, data, refetch, networkStatus } = useQuery(userOwnProfile, { notifyOnNetworkStatusChange: true });
@@ -40,9 +39,7 @@ const Profile = ({ navigation }: StackScreenProps<any>) => {
   return (
     <View>
       <NetworkStatusIndicator />
-      {(!data || error) && (
-        <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />
-      )}
+      {error && <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />}
       <ScrollView
         style={{ backgroundColor: TotaraTheme.colorNeutral2 }}
         showsVerticalScrollIndicator={false}
@@ -67,12 +64,10 @@ type ProfileContentProps = {
 const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
   const [loggingOut, setLoggingOut] = useState(false);
   const theme = useContext(ThemeContext);
-  const apolloClient = useApolloClient();
-  const dispatch = useDispatch();
 
   const confirmedLogout = async () => {
     setLoggingOut(true);
-    logOut({ apolloClient, dispatch });
+    event.emit(EVENTS.LOGOUT);
   };
 
   const confirmationLogout = () => {

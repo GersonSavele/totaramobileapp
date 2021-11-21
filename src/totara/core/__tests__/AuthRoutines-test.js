@@ -13,8 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { registerDevice, deviceCleanup, bootstrap, fetchData } from "../AuthRoutines";
-import { Log } from "@totara/lib";
+import { registerDevice, bootstrap, fetchData } from "../AuthRoutines";
 
 describe("AuthRoutines.registerDevice", () => {
   it("should get api key if setup secret is valid", async () => {
@@ -83,88 +82,6 @@ describe("AuthRoutines.registerDevice", () => {
     const result = registerDevice(mockFetch, mockAsyncStorage)(setupSecret);
 
     await expect(result).resolves.toEqual({});
-  });
-});
-
-describe("AuthRoutines.deviceCleanup", () => {
-  Log.debug = jest.fn();
-  Log.warn = jest.fn();
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("should successfully deregister and cleanup storage", async () => {
-    expect.assertions(2);
-
-    const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: true } }));
-    const mockClearStorage = jest.fn(() => Promise.resolve());
-    const mockAsyncStorage = {
-      multiRemove: mockClearStorage
-    };
-
-    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
-    expect(result).toBeTruthy();
-    expect(Log.warn).not.toHaveBeenCalled();
-  });
-
-  it("should handle error on cleanup non-existing storage", async () => {
-    expect.assertions(2);
-
-    const errorNoneExistStorage = new Error("Failed to delete storage directory with");
-    const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: true } }));
-    const mockClearStorage = jest.fn(() => Promise.reject(errorNoneExistStorage));
-    const mockAsyncStorage = {
-      multiRemove: mockClearStorage
-    };
-
-    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
-    expect(result).toBeTruthy();
-    expect(Log.warn).toHaveBeenCalledTimes(1);
-  });
-
-  it("should handle error on deregister the device", async () => {
-    expect.assertions(2);
-
-    const unHandledErrorServer = new Error("Server error");
-    const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
-    const mockClearStorage = jest.fn(() => Promise.resolve());
-    const mockAsyncStorage = {
-      multiRemove: mockClearStorage
-    };
-
-    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
-    expect(result).toBeTruthy();
-    expect(Log.warn).toHaveBeenCalledTimes(1);
-  });
-
-  it("should handle unsuccessful deregister", async () => {
-    expect.assertions(2);
-
-    const mockDeleteDevice = jest.fn(() => Promise.resolve({ data: { delete_device: false } }));
-    const mockClearStorage = jest.fn(() => Promise.resolve());
-    const mockAsyncStorage = {
-      multiRemove: mockClearStorage
-    };
-
-    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
-    expect(result).toBeTruthy();
-    expect(Log.warn).toHaveBeenCalledTimes(1);
-  });
-
-  it("should handle errors on deregister and clean up storage", async () => {
-    expect.assertions(2);
-
-    const unHandledErrorServer = new Error("Server error");
-    const unHandledErrorStorage = new Error("Un handled errors for clean storage");
-    const mockDeleteDevice = jest.fn(() => Promise.reject(unHandledErrorServer));
-    const mockClearStorage = jest.fn(() => Promise.reject(unHandledErrorStorage));
-    const mockAsyncStorage = {
-      multiRemove: mockClearStorage
-    };
-
-    const result = await deviceCleanup(mockAsyncStorage)(mockDeleteDevice);
-    expect(result).toBeTruthy();
-    expect(Log.warn).toHaveBeenCalledTimes(2);
   });
 });
 

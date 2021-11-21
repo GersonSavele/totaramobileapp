@@ -29,7 +29,7 @@ import { linkingHandler } from "./auth/authUtils";
 import SiteUrl from "./auth/manual/SiteUrl";
 import { AppStateListener, Loading } from "./components";
 import { useSession } from "./core";
-import { createApolloClient, fetchData, logOut, registerDevice } from "./core/AuthRoutines";
+import { createApolloClient, deviceCleanup, fetchData, registerDevice } from "./core/AuthRoutines";
 import LocaleResolver from "./locale/LocaleResolver";
 import MainContainer from "./MainContainer";
 import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
@@ -38,8 +38,9 @@ import { queryCore } from "./core/api/core";
 import { AdditionalAction } from "./auth/additional-actions";
 import AttemptSynchronizer from "@totara/activities/scorm/AttemptSynchronizer";
 import { useDispatch } from "react-redux";
+import event, { EVENTS } from "./lib/event";
 
-const setupApolloClient = async ({ apiKey, host, onLogout }) => {
+const setupApolloClient = async ({ apiKey, host }) => {
   const cache = new InMemoryCache({
     dataIdFromObject: (object) => {
       switch (object.__typename) {
@@ -58,7 +59,7 @@ const setupApolloClient = async ({ apiKey, host, onLogout }) => {
     storage: new AsyncStorageWrapper(AsyncStorage)
   });
 
-  const newApolloClient = createApolloClient(apiKey, host!, cache, onLogout);
+  const newApolloClient = createApolloClient(apiKey, host!, cache);
 
   return {
     apolloClient: newApolloClient,
@@ -103,13 +104,21 @@ const SessionContainer = () => {
   const [persistor, setPersistor] = useState<CachePersistor<NormalizedCacheObject>>();
   const isFocused = useIsFocused();
 
-  const onLogout = async () => {
-    logOut({ apolloClient, dispatch });
+  const onLogout = async (apolloClient, dispatch) => {
+    deviceCleanup({ apolloClient, dispatch });
   };
+
+  React.useEffect(() => {
+    const unsubscribe = event.addListener(EVENTS.LOGOUT, () => {
+      onLogout(apolloClient, dispatch);
+    });
+
+    return () => unsubscribe;
+  }, [apolloClient]);
 
   useEffect(() => {
     if (apiKey && !apolloClient) {
-      setupApolloClient({ apiKey, host, onLogout }).then(({ apolloClient, persistor }) => {
+      setupApolloClient({ apiKey, host }).then(({ apolloClient, persistor }) => {
         setPersistor(persistor);
         setApolloClient(apolloClient);
         persistor?.restore();
