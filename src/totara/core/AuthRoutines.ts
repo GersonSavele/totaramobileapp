@@ -28,6 +28,7 @@ import { persistor } from "./../store";
 import { purge } from "./../actions/root";
 import { deleteDevice } from "./api/core";
 import { Setup } from "@totara/types/Auth";
+import event, { Events, EVENT_LISTENER } from "@totara/lib/event";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -155,6 +156,8 @@ export const createApolloClient = (apiKey: string, host: string, cache: any): Ap
     Log.warn("Apollo client network error", networkError);
     if (networkError && (networkError as ServerError).statusCode === 401) {
       Log.warn("Forbidden error");
+    } else {
+      event.emit(EVENT_LISTENER, { event: Events.NetworkError });
     }
   });
 

@@ -38,7 +38,7 @@ import { queryCore } from "./core/api/core";
 import { AdditionalAction } from "./auth/additional-actions";
 import AttemptSynchronizer from "@totara/activities/scorm/AttemptSynchronizer";
 import { useDispatch } from "react-redux";
-import event, { EVENTS } from "./lib/event";
+import event, { Events, EVENT_LISTENER } from "./lib/event";
 
 const setupApolloClient = async ({ apiKey, host }) => {
   const cache = new InMemoryCache({
@@ -109,8 +109,10 @@ const SessionContainer = () => {
   };
 
   React.useEffect(() => {
-    const unsubscribe = event.addListener(EVENTS.LOGOUT, () => {
-      onLogout(apolloClient, dispatch);
+    const unsubscribe = event.addListener(EVENT_LISTENER, (param) => {
+      if ((param.event === Events.NetworkError && !core) || param.event === Events.Logout) {
+        onLogout(apolloClient, dispatch);
+      }
     });
 
     return () => unsubscribe;

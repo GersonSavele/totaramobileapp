@@ -29,7 +29,7 @@ import { margins, paddings } from "@totara/theme/constants";
 import { Loading, NetworkStatusIndicator, ImageWrapper, MessageBar } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
-import event, { EVENTS } from "@totara/lib/event";
+import event, { EVENT_LISTENER, Events } from "@totara/lib/event";
 
 const Profile = ({ navigation }: StackScreenProps<any>) => {
   const { error, data, refetch, networkStatus } = useQuery(userOwnProfile, { notifyOnNetworkStatusChange: true });
@@ -67,7 +67,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
 
   const confirmedLogout = async () => {
     setLoggingOut(true);
-    event.emit(EVENTS.LOGOUT);
+    event.emit(EVENT_LISTENER, { event: Events.Logout });
   };
 
   const confirmationLogout = () => {

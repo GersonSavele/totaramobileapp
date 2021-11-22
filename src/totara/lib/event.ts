@@ -17,9 +17,12 @@ import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
 
 const event = new EventEmitter();
 
-const EVENTS = {
-  LOGOUT: "logout"
-};
+const EVENT_LISTENER = "event_listener";
 
-export { EVENTS };
+enum Events {
+  Logout,
+  NetworkError
+}
+
+export { Events, EVENT_LISTENER };
 export default event;
