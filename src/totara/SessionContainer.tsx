@@ -39,6 +39,7 @@ import { AdditionalAction } from "./auth/additional-actions";
 import AttemptSynchronizer from "@totara/activities/scorm/AttemptSynchronizer";
 import { useDispatch } from "react-redux";
 import event, { Events, EVENT_LISTENER } from "./lib/event";
+import { showMessage } from "./lib";
 
 const setupApolloClient = async ({ apiKey, host }) => {
   const cache = new InMemoryCache({
@@ -102,6 +103,7 @@ const SessionContainer = () => {
   const dispatch = useDispatch();
   const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
   const [persistor, setPersistor] = useState<CachePersistor<NormalizedCacheObject>>();
+  const [isLoading, setIsLoading] = useState(true);
   const isFocused = useIsFocused();
 
   const onLogout = async (apolloClient, dispatch) => {
@@ -110,7 +112,15 @@ const SessionContainer = () => {
 
   React.useEffect(() => {
     const unsubscribe = event.addListener(EVENT_LISTENER, (param) => {
-      if ((param.event === Events.NetworkError && !core) || param.event === Events.Logout) {
+      if (param.event === Events.NetworkError) {
+        showMessage({
+          title: "",
+          text: param.payload?.errorMessage,
+          callback: () => {
+            onLogout(apolloClient, dispatch);
+          }
+        });
+      } else if (param.event === Events.Logout) {
         onLogout(apolloClient, dispatch);
       }
     });
@@ -139,9 +149,12 @@ const SessionContainer = () => {
           query: queryCore
         })
         .then((result) => {
-          // console.log(result.data);
           const core = result.data.me;
           dispatch(setCore(core));
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.warn("Failing to fetching user data: ", e);
         });
     }
   }, [apolloClient, apiKey, core]);
@@ -183,7 +196,7 @@ const SessionContainer = () => {
     );
   }
 
-  if (!apolloClient || !core || requiresAdditionalAction) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <ApolloProvider client={apolloClient!}>

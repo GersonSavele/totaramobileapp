@@ -15,6 +15,7 @@
 
 import { ApolloClient, ApolloLink, HttpLink, NormalizedCacheObject, ServerError } from "@apollo/client";
 import ApolloLinkTimeout from "apollo-link-timeout";
+import { get } from "lodash";
 import { setContext } from "@apollo/client/link/context";
 import { RetryLink } from "@apollo/client/link/retry";
 import { onError, ErrorResponse } from "@apollo/client/link/error";
@@ -29,6 +30,7 @@ import { purge } from "./../actions/root";
 import { deleteDevice } from "./api/core";
 import { Setup } from "@totara/types/Auth";
 import event, { Events, EVENT_LISTENER } from "@totara/lib/event";
+import { translate } from "@totara/locale";
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -101,6 +103,7 @@ export const registerDevice = (
  * @param dispatch - to update the redux store
  */
 export const deviceCleanup = ({ apolloClient, dispatch }) => {
+  if (!apolloClient) logOut({ apolloClient, dispatch });
   apolloClient
     ?.mutate({
       mutation: deleteDevice
@@ -157,7 +160,10 @@ export const createApolloClient = (apiKey: string, host: string, cache: any): Ap
     if (networkError && (networkError as ServerError).statusCode === 401) {
       Log.warn("Forbidden error");
     } else {
-      event.emit(EVENT_LISTENER, { event: Events.NetworkError });
+      const payload = {
+        errorMessage: get(networkError, "result.errors[0].message", translate("general.error_unknown"))
+      };
+      event.emit(EVENT_LISTENER, { event: Events.NetworkError, payload });
     }
   });
 
@@ -250,8 +256,10 @@ export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Pro
 };
 
 export const logOut = async ({ apolloClient, dispatch }) => {
-  const { cache } = apolloClient;
-  await cache.reset(); //clear the apollo client cache
+  if (apolloClient) {
+    const { cache } = apolloClient;
+    await cache.reset(); //clear the apollo client cache
+  }
   await dispatch(purge({})); //root purge (hot)
   await persistor.purge(); //root purge (stored)
   return Promise.resolve();
