@@ -1,5 +1,22 @@
 Totara Mobile App Changelog
 
+Release 1.1.1 (26th Nov 2021):
+=====================================
+
+Bug
+[MOB-1035] - When server returns 500, try again button crashes the App
+[MOB-1037] - Mobile friendly course summary adds extra characters in mobile app
+[MOB-1039] - Not possible to scroll or move to selected field in webview
+[MOB-1046] - Unable to load more than 20 courses in find learning
+[MOB-1052] - When server returns 500, the app shows wrong "network message"
+[MOB-1053] - Findlearning view and filter query pointer should use responce pointer value for paggination
+[MOB-1064] - Profile screen gets to a "try again screen" when the servers crashes
+[MOB-1066] - App should continue deregistering mobile devices when logging out
+
+Improvement
+[MOB-1043] - Update Android target to API level 30
+[MOB-1056] - Secure storage API key in the encrypted storage
+
 Release 1.1 (19th Oct 2021):
 =====================================
 
