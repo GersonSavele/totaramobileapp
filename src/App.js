@@ -33,7 +33,13 @@ import ScreenOrientation, { PORTRAIT } from "react-native-orientation-locker/Scr
 if (!__DEV__ && config.sentryUri) {
   Sentry.init({
     dsn: config.sentryUri,
-    environment: "production"
+    environment: "production",
+    beforeBreadcrumb(breadcrumb) {
+      if (breadcrumb.category === "xhr") {
+        return null;
+      }
+      return breadcrumb;
+    }
   });
 }
 
