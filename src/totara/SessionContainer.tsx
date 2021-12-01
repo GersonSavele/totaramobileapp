@@ -138,6 +138,8 @@ const SessionContainer = () => {
     } else if (!apiKey && apolloClient) {
       persistor?.purge();
       setApolloClient(undefined);
+    } else if (apiKey && apolloClient && isLoading) {
+      setIsLoading(false);
     }
   }, [apiKey, apolloClient]);
 
@@ -196,7 +198,7 @@ const SessionContainer = () => {
     );
   }
 
-  if (isLoading) return <Loading />;
+  if (isLoading || !apolloClient) return <Loading />;
 
   return (
     <ApolloProvider client={apolloClient!}>
