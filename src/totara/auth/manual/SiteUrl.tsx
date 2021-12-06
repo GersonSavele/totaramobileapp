@@ -118,7 +118,7 @@ const SiteUrl = () => {
                 value={inputSiteUrl}
                 style={styles.inputText}
                 autoFocus={inputSiteUrlStatus !== "fetching"}
-                testID={"SITE_URL_INPUT"}
+                testID={TEST_IDS.SITE_URL_INPUT}
                 returnKeyType={"done"}
                 onSubmitEditing={() => onSubmit(inputSiteUrl!)}
               />

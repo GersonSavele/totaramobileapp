@@ -32,6 +32,18 @@ const defaultMobileMeData = {
     request_user_fields: false,
     password_change_required: false,
     view_own_profile: true,
+    mobile_subplugins: [
+      {
+        pluginname: "currentlearning",
+        version: "2021110500",
+        __typename: "totara_mobile_subplugin"
+      },
+      {
+        pluginname: "findlearning",
+        version: "2021110500",
+        __typename: "totara_mobile_subplugin"
+      }
+    ],
     __typename: "totara_mobile_system"
   },
   __typename: "totara_mobile_me"

@@ -35,7 +35,10 @@ export const queryCore = gql`
         request_user_consent
         request_user_fields
         password_change_required
-        mobile_plugins_enabled
+        mobile_subplugins {
+          pluginname: name
+          version
+        }
       }
     }
   }
