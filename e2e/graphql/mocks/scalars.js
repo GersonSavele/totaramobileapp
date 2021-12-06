@@ -38,7 +38,7 @@ const getRandomInt = (max) => {
 };
 
 const defaultLI = {
-  totara_mobile_learning_item: () => ({
+  mobile_currentlearning_item: () => ({
     id: `course_${getRandomInt(30)}`,
     itemtype: "course",
     itemcomponent: "totara_program",
@@ -48,7 +48,7 @@ const defaultLI = {
     duedate_state: "danger",
     mobile_coursecompat: true,
     mobile_image: "https://mobile.demo.totara.software/theme/image.php/ventura/totara_program/1612212198/defaultimage",
-    __typename: "totara_mobile_learning_item"
+    __typename: "mobile_currentlearning_item"
   })
 };
 

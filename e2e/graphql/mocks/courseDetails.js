@@ -166,7 +166,7 @@ const mockDefaultCourseDetails = {
     },
     __typename: "core_course"
   },
-  mobile_coursecompat: true,
+  native: true,
   mobile_image: "https://mobile.demo.totara.software/pluginfile.php/859/course/images/1612212198/image",
   formatted_gradefinal: "",
   formatted_grademax: "100.00",
@@ -643,7 +643,7 @@ const mockScormCourseDetails = {
   },
   formatted_gradefinal: "27.87",
   formatted_grademax: "100.00",
-  mobile_coursecompat: true,
+  native: true,
   mobile_image: "https://mobile.demo.totara.software/totara/mobile/pluginfile.php/688/course/images/1612212198/image",
   __typename: "totara_mobile_course"
 };
