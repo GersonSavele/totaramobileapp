@@ -1,4 +1,4 @@
-import { cleanup, init } from "detox";
+import { cleanup, init, device } from "detox";
 // const adapter = require('detox/runners/jest/adapter');
 const adapter = require("detox/runners/jest/adapter");
 const specReporter = require("detox/runners/jest/specReporter");
@@ -14,7 +14,8 @@ jasmine.getEnv().addReporter(adapter);
 jasmine.getEnv().addReporter(specReporter);
 
 beforeAll(async () => {
-  await init(config, { initGlobals: false });
+  await init(config, { initGlobals: false, launchApp: false });
+  await device.launchApp({ permissions: { notifications: "YES" } });
 }, 300000);
 
 beforeEach(async () => {

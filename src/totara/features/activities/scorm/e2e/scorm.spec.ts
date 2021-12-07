@@ -13,9 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { by, device, element, waitFor } from "detox";
+import { by, element, waitFor } from "detox";
 import { mockServerUrl, mockUsername, mockPassword } from "../../../../../../e2e/graphql/config";
-import { TEST_IDS, CL_TEST_IDS, SCORM_TEST_IDS, NAVIGATION_TEST_IDS, RESOURCE_TEST_IDS } from "../../../../lib/testIds";
+import {
+  TEST_IDS,
+  CL_TEST_IDS,
+  SCORM_TEST_IDS,
+  NAVIGATION_TEST_IDS,
+  RESOURCE_TEST_IDS,
+  TAB_TEST_IDS,
+  PROFILE_TEST_IDS
+} from "../../../../lib/testIds";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../../../e2e/graphql/index";
 import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../../e2e/graphql/mocks/scalars";
 import { scorm } from "../../../../../../e2e/graphql/mocks/scorm";
@@ -42,8 +50,6 @@ const customMocks = {
 };
 describe("Scorm test", () => {
   beforeAll(async () => {
-    await device.reloadReactNative();
-    await device.launchApp({ permissions: { notifications: "YES" } });
     await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
@@ -54,6 +60,10 @@ describe("Scorm test", () => {
   });
 
   afterAll(async () => {
+    await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
+    await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
+    await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
+
     await stopGraphQLServer();
   });
 

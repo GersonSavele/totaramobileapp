@@ -17,6 +17,7 @@ import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import { createStackNavigator } from "@react-navigation/stack";
 import CloseButton from "@totara/components/CloseButton";
 import { NAVIGATION } from "@totara/lib/navigation";
+import { NAVIGATION_TEST_IDS } from "@totara/lib/testIds";
 import React from "react";
 import { WebviewActivity } from "./WebviewActivity";
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
@@ -36,6 +37,7 @@ const WebViewStack = createCompatNavigatorFactory(createStackNavigator)(
                 backAction();
                 navigation.goBack();
               }}
+              testID={NAVIGATION_TEST_IDS.BACK}
             />
           )
         };

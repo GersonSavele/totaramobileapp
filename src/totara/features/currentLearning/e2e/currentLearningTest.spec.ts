@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { by, device, element } from "detox";
-import { CL_TEST_IDS, TEST_IDS } from "../../../lib/testIds";
+import { by, element } from "detox";
+import { CL_TEST_IDS, NAVIGATION_TEST_IDS, PROFILE_TEST_IDS, TAB_TEST_IDS, TEST_IDS } from "../../../lib/testIds";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../../e2e/graphql/index";
 import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../e2e/graphql/mocks/scalars";
 import { currentLearning } from "../../../../../e2e/graphql/mocks/currentLearning";
@@ -41,7 +41,6 @@ const customMocks = {
 
 describe("Current learning test", () => {
   beforeAll(async () => {
-    await device.launchApp({ permissions: { notifications: "YES" } });
     await startGraphQLServer(customMocks);
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
@@ -52,6 +51,10 @@ describe("Current learning test", () => {
   });
 
   afterAll(async () => {
+    await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
+    await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
+    await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
+
     await stopGraphQLServer();
   });
 
@@ -78,5 +81,6 @@ describe("Current learning test", () => {
         if (i == 2) shouldContinue = false;
       }
     }
+    await element(by.id(NAVIGATION_TEST_IDS.BACK)).tap();
   });
 });

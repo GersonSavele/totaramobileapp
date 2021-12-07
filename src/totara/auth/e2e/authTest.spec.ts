@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { by, device, element } from "detox";
-import { TEST_IDS } from "../../lib/testIds";
+import { by, element } from "detox";
+import { PROFILE_TEST_IDS, TAB_TEST_IDS, TEST_IDS } from "../../lib/testIds";
 import { startGraphQLServer, stopGraphQLServer } from "../../../../e2e/graphql/index";
 import { mockServerUrl, mockUsername, mockPassword } from "../../../../e2e/graphql/config";
 import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../e2e/graphql/mocks/scalars";
@@ -22,7 +22,6 @@ import { mobileMe } from "../../../../e2e/graphql/mocks/me";
 
 describe("User authentication", () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true, permissions: { notifications: "YES" } });
     const customMocks = {
       ...defaultCoreId,
       ...defaultCoreDate,
@@ -35,7 +34,10 @@ describe("User authentication", () => {
   });
 
   afterAll(async () => {
-    await stopGraphQLServer({});
+    await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
+    await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
+    await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
+    await stopGraphQLServer();
   });
 
   it("should have organization url input and native login", async () => {
