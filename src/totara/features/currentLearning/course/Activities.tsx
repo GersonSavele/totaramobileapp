@@ -22,7 +22,7 @@ import { useMutation } from "@apollo/client";
 import { get, isEmpty } from "lodash";
 import { useNavigation } from "@react-navigation/native";
 import CriteriaSheet from "../components/CriteriaSheet";
-import ActivityTextContent from "./ActivityTextContent";
+import TextContent from "./TextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -40,6 +40,7 @@ import { CL_TEST_IDS } from "@totara/lib/testIds";
 import { showMessage } from "@totara/lib";
 import { decodeHtmlCharCodes } from "@totara/lib/tools";
 import { WekaContent } from "@totara/components/weka/WekaContent";
+import { margins } from "@totara/theme/constants";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -124,6 +125,9 @@ const SectionItem = ({
       {!isSingleActivity && (
         <TouchableOpacity onPress={() => onExpand(isExpanded, id)} testID={`${CL_TEST_IDS.ACTIVITY_SECTION}${id}`}>
           {available && activities.length > 0 && <ExpandableSectionHeader show={isExpanded} title={title} />}
+          {available && activities.length == 0 && (
+            <NonExpandableSectionHeader summaryFormat={summaryformat} title={title} sectionSummary={summary} />
+          )}
           {!available && availableReason && availableReason.length > 0 && (
             <RestrictionSectionHeader title={title} availableReason={availableReason} />
           )}
@@ -141,6 +145,44 @@ const SectionItem = ({
     </View>
   );
 };
+
+type NonExpandableSectionHeaderProps = {
+  title: string;
+  sectionSummary: string;
+  summaryFormat: string;
+};
+
+const NonExpandableSectionHeader = ({ title, sectionSummary, summaryFormat }: NonExpandableSectionHeaderProps) => {
+  return (
+    <View style={{ margin: margins.marginL }}>
+      <Text numberOfLines={1} style={activitiesStyles.sectionTitle}>
+        {decodeHtmlCharCodes(title)}
+      </Text>
+      <TextContentWrapper sectionSummary={sectionSummary} summaryFormat={summaryFormat} />
+    </View>
+  );
+};
+
+type TextContentWrapperProps = {
+  sectionSummary: string;
+  summaryFormat: string;
+};
+
+const TextContentWrapper = ({ sectionSummary, summaryFormat }: TextContentWrapperProps) => (
+  <View style={{ flex: 1 }}>
+    {summaryFormat === DescriptionFormat.jsonEditor ? (
+      !isEmpty(sectionSummary) && (
+        <View style={activitiesStyles.activityList}>
+          <WekaContent content={sectionSummary} />
+        </View>
+      )
+    ) : (
+      <View style={activitiesStyles.activityList}>
+        <TextContent label={sectionSummary} />
+      </View>
+    )}
+  </View>
+);
 
 const RestrictionSectionHeader = ({ title, availableReason }: { availableReason: [string]; title: string }) => {
   const [show, setShow] = useState(false);
@@ -207,17 +249,7 @@ const ActivityList = ({
 }: ActivityListProps) => {
   return (
     <View>
-      {summaryFormat === DescriptionFormat.jsonEditor ? (
-        !isEmpty(sectionSummary) && (
-          <View style={activitiesStyles.activityList}>
-            <WekaContent content={sectionSummary} />
-          </View>
-        )
-      ) : (
-        <View style={activitiesStyles.activityList}>
-          <ActivityTextContent label={sectionSummary} />
-        </View>
-      )}
+      <TextContentWrapper sectionSummary={sectionSummary} summaryFormat={summaryFormat} />
       {data!.map((item: Activity) => {
         return (
           <View key={item.id}>
@@ -371,7 +403,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
               item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
                 <WekaContent content={item.description} />
               ) : (
-                item.description && <ActivityTextContent label={item.description} />
+                item.description && <TextContent label={item.description} />
               )
             ) : (
               <View></View>

@@ -13,24 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+import renderer from "react-test-renderer";
 import React from "react";
-import { Text, View } from "react-native";
-import activitiesStyles from "./activitiesStyles";
+import TextContent from "../TextContent";
 
-type ActivityLabelProps = {
-  label: string;
-};
-const ActivityTextContent = ({ label }: ActivityLabelProps) => {
-  const text = validationProperty(label);
-  return text ? (
-    <View style={activitiesStyles.labelContainer}>
-      <Text style={activitiesStyles.labelTextDescription}>{text}</Text>
-    </View>
-  ) : null;
-};
+const mockLabel = "Some of the activities in this course make brief";
 
-const validationProperty = (label: string) => {
-  return label && label.trim().length > 0 && label.trim();
-};
-
-export default ActivityTextContent;
+describe("Activity-Label-Type, testing UI with or without label", () => {
+  it("Test result : label include value", () => {
+    const component = renderer.create(<TextContent label={mockLabel}></TextContent>);
+    expect(component.toJSON()).toMatchSnapshot();
+  });
+});
