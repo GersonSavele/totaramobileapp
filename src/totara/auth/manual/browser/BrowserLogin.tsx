@@ -41,14 +41,14 @@ const BrowserLogin = () => {
   const [setupSecret, setSetupSecret] = useState();
 
   const urlHandler = (url) => {
-    authLinkingHandler(
-      ({ secret }) => {
+    authLinkingHandler({
+      onLoginSuccess: ({ secret }) => {
         setSetupSecret(secret);
       },
-      () => {
+      onLoginFailure: () => {
         console.warn("error");
       }
-    )(url);
+    })(url);
   };
 
   useEffect(() => {

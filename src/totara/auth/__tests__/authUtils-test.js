@@ -13,7 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { getValueForUrlQueryParameter, getDeviceRegisterData } from "../authUtils";
+import { getValueForUrlQueryParameter, getDeviceRegisterData, linkingHandler, authLinkingHandler } from "../authUtils";
+import { config } from "@totara/lib";
 
 describe("Passing different forms of 'url' and get the value for query string parameters('site' and 'setupsecret')", () => {
   it("valid Url, IP-Address and DeepLink with 'site' and 'setupsecret'", () => {
@@ -262,5 +263,111 @@ describe("Action for Auth Universal/AppLink and Deeplink event according to diff
     } catch (e) {
       expect(e).toMatchObject(expectDataDeepLink);
     }
+  });
+});
+describe("Passing different forms of 'url' to call valid callback", () => {
+  it("valid full urls", () => {
+    const onLoginSuccessMock = jest.fn();
+    const onLoginFailureMock = jest.fn();
+
+    linkingHandler(`${config.appLinkDomain}/register?site=xxx&setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginSuccessMock).toHaveBeenCalledTimes(1);
+
+    linkingHandler(
+      `${config.appLinkDomain}/register/?site=xxx&setupsecret=xxx`,
+      onLoginSuccessMock,
+      onLoginFailureMock
+    );
+    expect(onLoginSuccessMock).toHaveBeenCalledTimes(2);
+
+    linkingHandler(
+      `${config.deepLinkSchema}/register?site=xxx&setupsecret=xxx`,
+      onLoginSuccessMock,
+      onLoginFailureMock
+    );
+    expect(onLoginSuccessMock).toHaveBeenCalledTimes(3);
+
+    linkingHandler(
+      `${config.deepLinkSchema}/register/?site=xxx&setupsecret=xxx`,
+      onLoginSuccessMock,
+      onLoginFailureMock
+    );
+    expect(onLoginSuccessMock).toHaveBeenCalledTimes(4);
+  });
+  it("empty and invalid urls", () => {
+    const onLoginSuccessMock = jest.fn();
+    const onLoginFailureMock = jest.fn();
+
+    linkingHandler(undefined, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginSuccessMock).not.toHaveBeenCalled();
+    expect(onLoginFailureMock).not.toHaveBeenCalled();
+
+    linkingHandler(null, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginSuccessMock).not.toHaveBeenCalled();
+    expect(onLoginFailureMock).not.toHaveBeenCalled();
+
+    linkingHandler("", onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginSuccessMock).not.toHaveBeenCalled();
+    expect(onLoginFailureMock).not.toHaveBeenCalled();
+
+    linkingHandler("https://totaralearning.com", onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginSuccessMock).not.toHaveBeenCalled();
+    expect(onLoginFailureMock).not.toHaveBeenCalled();
+  });
+
+  it("valid urls with invalid query", () => {
+    const onLoginSuccessMock = jest.fn();
+    const onLoginFailureMock = jest.fn();
+
+    linkingHandler(`${config.appLinkDomain}/register?setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
+
+    linkingHandler(`${config.deepLinkSchema}/register?setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(2);
+
+    linkingHandler(`${config.appLinkDomain}/register/?setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(3);
+
+    linkingHandler(`${config.deepLinkSchema}/register/?setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(4);
+
+    linkingHandler(`${config.appLinkDomain}/register/`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(5);
+
+    linkingHandler(`${config.deepLinkSchema}/register/`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(6);
+
+    linkingHandler(`${config.appLinkDomain}/register`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(7);
+
+    linkingHandler(`${config.deepLinkSchema}/register`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(8);
+
+    linkingHandler(`${config.appLinkDomain}/register?site=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(9);
+
+    linkingHandler(`${config.deepLinkSchema}/register?site=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(10);
+
+    linkingHandler(`${config.appLinkDomain}/register/?site=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(11);
+
+    linkingHandler(`${config.deepLinkSchema}/register/?site=xxx`, onLoginSuccessMock, onLoginFailureMock);
+    expect(onLoginFailureMock).toHaveBeenCalledTimes(12);
+  });
+});
+
+describe("Link handler for authentication", () => {
+  it("linkHandler should be triggered by the event", () => {
+    const onLoginSuccessMock = jest.fn();
+    const onLoginFailureMock = jest.fn();
+    const onLinkingHandlerMock = jest.fn();
+
+    authLinkingHandler({
+      onLoginSuccess: onLoginSuccessMock,
+      onLoginFailure: onLoginFailureMock,
+      onLinkingHandler: onLinkingHandlerMock
+    })({ url: `${config.deepLinkSchema}/register/?site=xxx&setupsecret=xxx` });
+    expect(onLinkingHandlerMock).toHaveBeenCalled();
   });
 });

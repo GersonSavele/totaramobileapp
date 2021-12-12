@@ -22,7 +22,7 @@ import { useSession } from "@totara/core";
 import { Images } from "@resources/images";
 import { useDispatch } from "react-redux";
 
-const AdditionalActionModal = () => {
+const AdditionalAction = () => {
   const { host, endSession } = useSession();
   const dispatch = useDispatch();
   return (
@@ -48,4 +48,4 @@ const AdditionalActionModal = () => {
   );
 };
 
-export default AdditionalActionModal;
+export default AdditionalAction;

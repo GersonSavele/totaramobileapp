@@ -35,7 +35,7 @@ import MainContainer from "./MainContainer";
 import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
 import { LearningItem } from "./types";
 import { queryCore } from "./core/api/core";
-import { AdditionalAction } from "./auth/additional-actions";
+import AdditionalAction from "./auth/additional-actions/AdditionalAction";
 import AttemptSynchronizer from "@totara/activities/scorm/AttemptSynchronizer";
 import { useDispatch } from "react-redux";
 import event, { Events, EVENT_LISTENER } from "./lib/event";

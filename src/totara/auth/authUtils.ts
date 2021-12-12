@@ -68,9 +68,16 @@ const getValueForUrlQueryParameter = (url: string, key: string) => {
   return results === null ? null : results[1].replace(/\+/g, " ");
 };
 
-const authLinkingHandler = (onLoginSuccess, onLoginFailure) => (event: { url: string }) => {
-  linkingHandler(event.url, onLoginSuccess, onLoginFailure);
+const authLinkingHandler = ({
+  onLoginSuccess,
+  onLoginFailure,
+  onLinkingHandler = linkingHandler
+}: {
+  onLoginSuccess: Function;
+  onLoginFailure: Function;
+  onLinkingHandler?: Function;
+}) => (event: { url: string }) => {
+  onLinkingHandler(event.url, onLoginSuccess, onLoginFailure);
 };
-
 
 export { linkingHandler, authLinkingHandler, getValueForUrlQueryParameter, getDeviceRegisterData };
