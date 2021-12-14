@@ -13,7 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { getValueForUrlQueryParameter, getDeviceRegisterData, linkingHandler, authLinkingHandler } from "../authUtils";
+import {
+  getValueForUrlQueryParameter,
+  getDeviceRegisterData,
+  linkingHandler,
+  authLinkingHandler,
+  formatUrl
+} from "../authUtils";
 import { config } from "@totara/lib";
 
 describe("Passing different forms of 'url' and get the value for query string parameters('site' and 'setupsecret')", () => {
@@ -369,5 +375,13 @@ describe("Link handler for authentication", () => {
       onLinkingHandler: onLinkingHandlerMock
     })({ url: `${config.deepLinkSchema}/register/?site=xxx&setupsecret=xxx` });
     expect(onLinkingHandlerMock).toHaveBeenCalled();
+  });
+});
+
+describe("formatUrl", () => {
+  it("should return passed valid url with prepending configured protocol", () => {
+    expect(formatUrl("abc")).toBe(`${config.urlProtocol}://abc`);
+    expect(formatUrl("http://abc")).toBe("http://abc");
+    expect(formatUrl("https://abc")).toBe("https://abc");
   });
 });

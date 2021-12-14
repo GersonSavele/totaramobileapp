@@ -21,22 +21,22 @@ import { isValidUrlText } from "@totara/lib/tools";
 import { fetchData } from "@totara/core/AuthRoutines";
 import { SiteInfo } from "@totara/types/SiteInfo";
 import { getVersion } from "react-native-device-info";
+import { formatUrl } from "../authUtils";
 
 export type useSiteUrlProps = {
   siteUrl?: string;
-  onSiteInfoDone: any
+  onSiteInfoDone: any;
 };
 
 export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: useSiteUrlProps) => {
   const [siteUrlState, dispatch] = useReducer(siteUrlReducer, {
     inputSiteUrlStatus: undefined,
     inputSiteUrlMessage: undefined,
-    inputSiteUrl: siteUrl,
+    inputSiteUrl: siteUrl
   });
 
   useEffect(() => {
-    if (siteUrlState.inputSiteUrlStatus === 'fetching') {
-
+    if (siteUrlState.inputSiteUrlStatus === "fetching") {
       // eslint-disable-next-line no-undef
       const fetchDataWithFetch = fetchData(fetch);
       const onSubmitCall = fetchDataWithFetch<SiteInfo>(config.infoUri(siteUrlState.inputSiteUrl!), {
@@ -44,21 +44,23 @@ export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: useSiteUrlProps) => {
         body: JSON.stringify({ version: getVersion() })
       });
 
-      onSubmitCall.then(result => {
-        const { version } = result;
-        if (version < config.minApiVersion) {
-          dispatch({ type: "minAPIVersionMismatch" })
-          return;
-        }
+      onSubmitCall
+        .then((result) => {
+          const { version } = result;
+          if (version < config.minApiVersion) {
+            dispatch({ type: "minAPIVersionMismatch" });
+            return;
+          }
 
-        dispatch({ type: "done" })
-        onSiteInfoDone(result);
-      }).catch(error => {
-        const errorType = error.status === 404 ? "invalidAPI" : "networkError";
-        dispatch({ type: errorType, payload: error.message })
-      });
+          dispatch({ type: "done" });
+          onSiteInfoDone(result);
+        })
+        .catch((error) => {
+          const errorType = error.status === 404 ? "invalidAPI" : "networkError";
+          dispatch({ type: errorType, payload: error.message });
+        });
     }
-  }, [siteUrlState.inputSiteUrlStatus])
+  }, [siteUrlState.inputSiteUrlStatus]);
 
   const onSubmit = (siteUrl: string) => {
     dispatch({ type: "submit", payload: siteUrl });
@@ -70,7 +72,7 @@ export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: useSiteUrlProps) => {
 
   const reset = () => {
     dispatch({ type: "done", payload: siteUrl });
-  }
+  };
 
   return {
     siteUrlState,
@@ -80,9 +82,7 @@ export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: useSiteUrlProps) => {
   };
 };
 
-
 const siteUrlReducer = (state: State, action: Action): State => {
-
   switch (action.type) {
     case "submit": {
       if (action.payload && isValidUrlText(action.payload)) {
@@ -103,7 +103,7 @@ const siteUrlReducer = (state: State, action: Action): State => {
       return {
         ...state,
         inputSiteUrlStatus: "done"
-      }
+      };
     }
     case "change": {
       return {
@@ -111,7 +111,9 @@ const siteUrlReducer = (state: State, action: Action): State => {
         inputSiteUrl: action.payload
       };
     }
-    case "networkError": case "invalidAPI": case "minAPIVersionMismatch": {
+    case "networkError":
+    case "invalidAPI":
+    case "minAPIVersionMismatch": {
       return {
         ...state,
         inputSiteUrlStatus: action.type,
@@ -121,11 +123,9 @@ const siteUrlReducer = (state: State, action: Action): State => {
     default:
       return {
         ...state
-      }
+      };
   }
 };
-
-
 
 type State = {
   inputSiteUrlStatus?: "done" | "fetching" | "invalidUrl" | "invalidAPI" | "minAPIVersionMismatch" | "networkError";
@@ -136,12 +136,4 @@ type State = {
 type Action = {
   type: "invalidUrl" | "invalidAPI" | "minAPIVersionMismatch" | "networkError" | "done" | "submit" | "change";
   payload?: any;
-};
-
-const formatUrl = (urlText: string) => {
-  const pattern = new RegExp("^(https?:\\/\\/)", "i"); // fragment locator
-  if (!pattern.test(urlText)) {
-    return config.urlProtocol + "://" + urlText;
-  }
-  return urlText;
 };

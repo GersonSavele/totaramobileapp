@@ -80,4 +80,12 @@ const authLinkingHandler = ({
   onLinkingHandler(event.url, onLoginSuccess, onLoginFailure);
 };
 
-export { linkingHandler, authLinkingHandler, getValueForUrlQueryParameter, getDeviceRegisterData };
+const formatUrl = (urlText: string) => {
+  const pattern = new RegExp("^(https?:\\/\\/)", "i"); // fragment locator
+  if (!pattern.test(urlText)) {
+    return config.urlProtocol + "://" + urlText;
+  }
+  return urlText;
+};
+
+export { linkingHandler, authLinkingHandler, getValueForUrlQueryParameter, getDeviceRegisterData, formatUrl };

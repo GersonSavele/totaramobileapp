@@ -24,12 +24,13 @@ type InfoModalProps = {
   imageSource: ImageSourcePropType;
   children?: ReactNode;
   visible?: boolean;
+  testID?: string;
 };
 
-const InfoModal = ({ title, description, imageSource, children, visible = true, ...rest }: InfoModalProps) => {
+const InfoModal = ({ title, description, imageSource, children, visible = true, testID, ...rest }: InfoModalProps) => {
   return (
-    <Modal transparent={true} animationType="fade" visible={visible} {...rest}  >
-      <ModalContent title={title} description={description} imageSource={imageSource}>
+    <Modal transparent={true} animationType="fade" visible={visible} {...rest}>
+      <ModalContent title={title} description={description} imageSource={imageSource} testID={testID}>
         {children}
       </ModalContent>
     </Modal>

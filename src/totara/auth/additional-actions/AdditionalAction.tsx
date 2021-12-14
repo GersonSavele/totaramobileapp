@@ -21,6 +21,7 @@ import { translate } from "@totara/locale";
 import { useSession } from "@totara/core";
 import { Images } from "@resources/images";
 import { useDispatch } from "react-redux";
+import { ADDITIONALACTION_TEST_IDS } from "@totara/lib/testIds";
 
 const AdditionalAction = () => {
   const { host, endSession } = useSession();
@@ -30,19 +31,22 @@ const AdditionalAction = () => {
       title={translate("additional_actions_modal.auth_model_title")}
       description={translate("additional_actions_modal.auth_model_description")}
       imageSource={Images.actionRequired as ImageSourcePropType}
-      visible={true}>
+      visible={true}
+      testID={ADDITIONALACTION_TEST_IDS.INFOR}>
       <PrimaryButton
         text={translate("additional_actions_modal.auth_model_go_to_browser")}
         icon={"external-link-alt"}
         onPress={() => {
           Linking.openURL(host!);
         }}
+        testID={ADDITIONALACTION_TEST_IDS.PRIMARY_BUTTON}
       />
       <TertiaryButton
         text={translate("additional_actions_modal.auth_model_logout")}
         onPress={() => {
           dispatch(endSession());
         }}
+        testID={ADDITIONALACTION_TEST_IDS.TERTIARY_BUTTON}
       />
     </InfoModal>
   );

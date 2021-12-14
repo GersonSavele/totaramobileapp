@@ -23,11 +23,12 @@ type ModalContentProps = {
   description?: string;
   imageSource: ImageSourcePropType;
   children?: ReactNode;
+  testID?: string;
 };
 
-const ModalContent = ({ title, description, children, imageSource }: ModalContentProps) => {
+const ModalContent = ({ title, description, children, imageSource, testID }: ModalContentProps) => {
   return (
-    <View style={styles.transparentViewStyle}>
+    <View style={styles.transparentViewStyle} testID={testID}>
       <View style={styles.containerStyle}>
         <View style={styles.sectionContainer}>
           {imageSource && <Image style={styles.infoImage} source={imageSource} />}
