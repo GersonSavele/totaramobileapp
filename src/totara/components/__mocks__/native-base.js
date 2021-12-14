@@ -14,17 +14,22 @@
  */
 
 import React from "react";
-import { Button, Text } from "react-native";
+import { Button, Text, TextInput } from "react-native";
 import PropTypes from "prop-types";
 
 // use react-native button instead on jest, as native-base button
 // has issues while on test
 
-const MockButton = ({ onPress }) => <Button title={"this is a mock button"} onPress={onPress} />;
+const MockButton = ({ onPress, ...rest }) => <Button title={"this is a mock button"} onPress={onPress} {...rest} />;
 const Spinner = () => <Text>mock spinner</Text>;
+const Form = ({ children }) => children;
+const Content = ({ children }) => children;
+const Item = ({ children }) => children;
+const Label = ({ children }) => children;
+const Input = ({ ...rest }) => <TextInput {...rest} />;
 
 MockButton.propTypes = {
   onPress: PropTypes.func
 };
 
-export { MockButton as Button, Spinner };
+export { MockButton as Button, Spinner, Form, Content, Item, Label, Input };

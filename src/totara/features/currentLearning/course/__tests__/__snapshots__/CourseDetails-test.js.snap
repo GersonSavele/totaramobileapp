@@ -85,6 +85,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         }
       >
         <Text
+          disabled={false}
           style={
             Array [
               Object {
@@ -206,6 +207,7 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
         }
       >
         <Text
+          disabled={false}
           style={
             Array [
               Object {
@@ -347,6 +349,7 @@ exports[`Testing: Course manual completion Test result : course complete and loa
             }
           >
             <Text
+              disabled={false}
               style={
                 Array [
                   Object {

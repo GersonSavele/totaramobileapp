@@ -26,9 +26,10 @@ import { Images } from "@resources/images";
 type Props = {
   onCancel?: () => void;
   siteUrl?: string;
+  testID?: string;
 };
 
-const IncompatibleApiModal = ({ onCancel, siteUrl }: Props) => {
+const IncompatibleApiModal = ({ onCancel, siteUrl, testID }: Props) => {
   const { siteInfo, host } = useSession();
   const isShowIncompatibleApi = siteInfo ? !isValidApiVersion(siteInfo.version) : true;
   const site = host || siteUrl;
@@ -38,7 +39,8 @@ const IncompatibleApiModal = ({ onCancel, siteUrl }: Props) => {
         title={translate("incompatible_api.title")}
         description={translate("incompatible_api.description")}
         imageSource={Images.urlNotValid as ImageSourcePropType}
-        visible={isShowIncompatibleApi}>
+        visible={isShowIncompatibleApi}
+        testID={testID}>
         {site && (
           <PrimaryButton
             text={translate("incompatible_api.action_primary")}

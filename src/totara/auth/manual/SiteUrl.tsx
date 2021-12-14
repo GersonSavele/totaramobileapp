@@ -38,9 +38,10 @@ import { useDispatch } from "react-redux";
 type PropSiteError = {
   onDismiss: () => void;
   siteUrlFailure: string;
+  testID?: string;
 };
 
-const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
+const SiteErrorModal = ({ onDismiss, siteUrlFailure, testID }: PropSiteError) => {
   const content =
     siteUrlFailure === "networkError"
       ? {
@@ -61,7 +62,8 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure }: PropSiteError) => {
       visible={true}
       title={content.title}
       description={content.description}
-      imageSource={content.imageSource as ImageSourcePropType}>
+      imageSource={content.imageSource as ImageSourcePropType}
+      testID={testID}>
       <PrimaryButton text={content.primaryAction} onPress={onDismiss} />
     </InfoModal>
   );
@@ -139,10 +141,18 @@ const SiteUrl = () => {
       </Text>
 
       {(siteUrlState.inputSiteUrlStatus === "invalidAPI" || siteUrlState.inputSiteUrlStatus === "networkError") && (
-        <SiteErrorModal onDismiss={() => reset()} siteUrlFailure={siteUrlState.inputSiteUrlStatus} />
+        <SiteErrorModal
+          onDismiss={() => reset()}
+          siteUrlFailure={siteUrlState.inputSiteUrlStatus}
+          testID={TEST_IDS.SITE_ERROR_MODAL}
+        />
       )}
       {siteUrlState.inputSiteUrlStatus === "minAPIVersionMismatch" && (
-        <IncompatibleApiModal onCancel={() => reset()} siteUrl={siteUrlState.inputSiteUrl!} />
+        <IncompatibleApiModal
+          onCancel={() => reset()}
+          siteUrl={siteUrlState.inputSiteUrl!}
+          testID={TEST_IDS.INCOMPATIBLE_API_MODAL}
+        />
       )}
     </SafeAreaView>
   );
