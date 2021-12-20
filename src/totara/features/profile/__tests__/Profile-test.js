@@ -14,10 +14,12 @@
  */
 
 import React from "react";
-import { render } from "@testing-library/react-native";
+import { render, act, fireEvent } from "@testing-library/react-native";
 import { MockedProvider } from "@apollo/client/testing";
 import { profileMock } from "@totara/features/profile/api/profile.mock";
 import Profile from "@totara/features/profile/Profile";
+import wait from "waait";
+import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
 
 const navigationMock = {
   navigation: {
@@ -44,60 +46,56 @@ describe("Profile", () => {
     expect(loadingComponent).toBeTruthy();
   });
 
-  //TODO: uncommenting these tests we get: "Unable to find node on an unmounted component"
-  // reference: https://stackoverflow.com/questions/64566527/react-native-test-error-unable-to-find-node-on-an-unmounted-component
-  // according to the link, the issue is in the third party lib, therefore the problem might be solved if we update the dependencies.
+  test("Should render profile", async () => {
+    const tree = (
+      <MockedProvider mocks={profileMock}>
+        <Profile navigation={navigationMock.navigation} />
+      </MockedProvider>
+    );
 
-  // test("Should render profile", async () => {
-  //   const tree = (
-  //     <MockedProvider mocks={profileMock}>
-  //       <Profile navigation={navigationMock.navigation} />
-  //     </MockedProvider>
-  //   );
+    const { getByTestId } = render(tree);
+    await act(async () => {
+      await wait(0);
+    });
 
-  //   const { getByTestId } = render(tree);
-  //   await act(async () => {
-  //     await wait(0);
-  //   });
+    const profile = profileMock[0].result.data.profile;
 
-  //   const profile = profileMock[0].result.data.profile;
+    const test_ProfileUserDetails = getByTestId("test_ProfileUserDetails");
+    expect(test_ProfileUserDetails.children[0]).toBe(`${profile.firstname} ${profile.surname}`);
 
-  //   const test_ProfileUserDetails = getByTestId("test_ProfileUserDetails");
-  //   expect(test_ProfileUserDetails.children[0]).toBe(`${profile.firstname} ${profile.surname}`);
+    const test_ProfileUserEmail = getByTestId("test_ProfileUserEmail");
+    expect(test_ProfileUserEmail.children[0]).toBe(profile.email);
+  });
 
-  //   const test_ProfileUserEmail = getByTestId("test_ProfileUserEmail");
-  //   expect(test_ProfileUserEmail.children[0]).toBe(profile.email);
-  // });
+  test("Should tap on logout button", async () => {
+    const tree = (
+      <MockedProvider mocks={profileMock}>
+        <Profile navigation={navigationMock.navigation} />
+      </MockedProvider>
+    );
 
-  // test("Should tap on logout button", async () => {
-  //   const tree = (
-  //     <MockedProvider mocks={profileMock}>
-  //       <Profile navigation={navigationMock.navigation} />
-  //     </MockedProvider>
-  //   );
+    const { getByTestId } = render(tree);
+    await act(async () => {
+      await wait(0);
+    });
 
-  //   const { getByTestId } = render(tree);
-  //   await act(async () => {
-  //     await wait(0);
-  //   });
+    const logoutButton = getByTestId(PROFILE_TEST_IDS.LOGOUT);
+    fireEvent.press(logoutButton);
+  });
 
-  //   const logoutButton = getByTestId(PROFILE_TEST_IDS.LOGOUT);
-  //   fireEvent.press(logoutButton);
-  // });
+  test("Should tap on about button", async () => {
+    const tree = (
+      <MockedProvider mocks={profileMock}>
+        <Profile navigation={navigationMock.navigation} />
+      </MockedProvider>
+    );
 
-  // test("Should tap on about button", async () => {
-  //   const tree = (
-  //     <MockedProvider mocks={profileMock}>
-  //       <Profile navigation={navigationMock.navigation} />
-  //     </MockedProvider>
-  //   );
+    const { getByTestId } = render(tree);
+    await act(async () => {
+      await wait(0);
+    });
 
-  //   const { getByTestId } = render(tree);
-  //   await act(async () => {
-  //     await wait(0);
-  //   });
-
-  //   const aboutButton = getByTestId(PROFILE_TEST_IDS.ABOUT);
-  //   fireEvent.press(aboutButton);
-  // });
+    const aboutButton = getByTestId(PROFILE_TEST_IDS.ABOUT);
+    fireEvent.press(aboutButton);
+  });
 });
