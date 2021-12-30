@@ -46,15 +46,13 @@ export const useWebviewFlow = ({ siteUrl }: ManualFlowChildProps) => {
 
   const [canWebGoBackward, setCanWebGoBackward] = useState(false);
   const [canWebGoForward, setCanWebGoForward] = useState(false);
-  const [isInitialize, setIsInitialize] = useState(true);
   const [setupSecret, setsetupSecret] = useState("");
 
   useEffect(() => {
-    if (isInitialize) {
+    return () => {
       CookieManager.clearAll(true);
-      setIsInitialize(false);
-    }
-  }, [isInitialize]);
+    };
+  }, []);
 
   return {
     loginUrl,
