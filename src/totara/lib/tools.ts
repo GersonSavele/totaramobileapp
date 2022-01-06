@@ -18,6 +18,7 @@ import { translate } from "@totara/locale";
 import moment from "moment";
 import { get, isEmpty } from "lodash";
 import { SubPlugin } from "@totara/lib/constants";
+import config from "./config";
 
 type ShowMessageParams = {
   title?: string;
@@ -123,6 +124,9 @@ const decodeHtmlCharCodes = (str) =>
   str.replace(/(&#(\d+);)/g, (match, capture, charCode) => String.fromCharCode(charCode));
 
 const isEnableFindLearning = (core) => {
+  if (config.disableFindLearning) {
+    return false;
+  }
   const subPlugnis = get(core, "system.mobile_subplugins");
   return !isEmpty(subPlugnis?.find((element) => element.pluginname === SubPlugin.findLearning));
 };
