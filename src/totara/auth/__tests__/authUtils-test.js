@@ -278,27 +278,6 @@ describe("Passing different forms of 'url' to call valid callback", () => {
 
     linkingHandler(`${config.appLinkDomain}/register?site=xxx&setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
     expect(onLoginSuccessMock).toHaveBeenCalledTimes(1);
-
-    linkingHandler(
-      `${config.appLinkDomain}/register/?site=xxx&setupsecret=xxx`,
-      onLoginSuccessMock,
-      onLoginFailureMock
-    );
-    expect(onLoginSuccessMock).toHaveBeenCalledTimes(2);
-
-    linkingHandler(
-      `${config.deepLinkSchema}/register?site=xxx&setupsecret=xxx`,
-      onLoginSuccessMock,
-      onLoginFailureMock
-    );
-    expect(onLoginSuccessMock).toHaveBeenCalledTimes(3);
-
-    linkingHandler(
-      `${config.deepLinkSchema}/register/?site=xxx&setupsecret=xxx`,
-      onLoginSuccessMock,
-      onLoginFailureMock
-    );
-    expect(onLoginSuccessMock).toHaveBeenCalledTimes(4);
   });
   it("empty and invalid urls", () => {
     const onLoginSuccessMock = jest.fn();
@@ -326,50 +305,6 @@ describe("Passing different forms of 'url' to call valid callback", () => {
     const onLoginFailureMock = jest.fn();
 
     linkingHandler(`${config.appLinkDomain}/register?setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.deepLinkSchema}/register?setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.appLinkDomain}/register/?setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.deepLinkSchema}/register/?setupsecret=xxx`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.appLinkDomain}/register/`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.deepLinkSchema}/register/`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.appLinkDomain}/register`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.deepLinkSchema}/register`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.appLinkDomain}/register?site=xxx`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.deepLinkSchema}/register?site=xxx`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.appLinkDomain}/register/?site=xxx`, onLoginSuccessMock, onLoginFailureMock);
-    expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
-    onLoginFailureMock.mockClear();
-
-    linkingHandler(`${config.deepLinkSchema}/register/?site=xxx`, onLoginSuccessMock, onLoginFailureMock);
     expect(onLoginFailureMock).toHaveBeenCalledTimes(1);
     onLoginFailureMock.mockClear();
   });
