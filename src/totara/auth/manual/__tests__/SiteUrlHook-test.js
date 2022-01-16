@@ -102,10 +102,9 @@ describe("SiteUrlHook", () => {
   });
 
   it("should set correct state when resetting", () => {
-    const { result } = renderHook(
-      ({ siteUrl, onSiteUrlSuccess }) => useSiteUrl({ siteUrl: siteUrl, onSiteUrlSuccess: onSiteUrlSuccess }),
-      { initialProps: { siteUrl: "abc.com" } }
-    );
+    const { result } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
+      initialProps: { siteUrl: "abc.com" }
+    });
 
     act(() => {
       result.current.reset();
@@ -126,10 +125,9 @@ describe("SiteUrlHook", () => {
     );
 
     const validUrl = "https://mobile.demo.totara.software";
-    const { result, waitForNextUpdate } = renderHook(
-      ({ siteUrl, onSiteUrlSuccess }) => useSiteUrl({ siteUrl: siteUrl, onSiteUrlSuccess: onSiteUrlSuccess }),
-      { initialProps: { siteUrl: validUrl } }
-    );
+    const { result, waitForNextUpdate } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
+      initialProps: { siteUrl: validUrl }
+    });
 
     act(() => {
       result.current.onSubmit(validUrl);
@@ -149,10 +147,9 @@ describe("SiteUrlHook", () => {
       })
     );
     const validUrl = "https://mobile.demo.totara.software";
-    const { result } = renderHook(
-      ({ siteUrl, onSiteUrlSuccess }) => useSiteUrl({ siteUrl: siteUrl, onSiteUrlSuccess: onSiteUrlSuccess }),
-      { initialProps: { siteUrl: validUrl } }
-    );
+    const { result } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
+      initialProps: { siteUrl: validUrl }
+    });
 
     act(() => {
       result.current.onSubmit(validUrl);
@@ -168,10 +165,9 @@ describe("SiteUrlHook", () => {
       })
     );
     const validUrl = "https://mobile.demo.totara.software";
-    const { result, waitForNextUpdate } = renderHook(
-      ({ siteUrl, onSiteUrlSuccess }) => useSiteUrl({ siteUrl: siteUrl, onSiteUrlSuccess: onSiteUrlSuccess }),
-      { initialProps: { siteUrl: validUrl } }
-    );
+    const { result, waitForNextUpdate } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
+      initialProps: { siteUrl: validUrl }
+    });
 
     act(() => {
       result.current.onSubmit(validUrl);
@@ -184,10 +180,9 @@ describe("SiteUrlHook", () => {
   it("should set networkError state for error", async () => {
     global.fetch = jest.fn().mockImplementation(() => Promise.reject({}));
     const validUrl = "https://mobile.demo.totara.software";
-    const { result, waitForNextUpdate } = renderHook(
-      ({ siteUrl, onSiteUrlSuccess }) => useSiteUrl({ siteUrl: siteUrl, onSiteUrlSuccess: onSiteUrlSuccess }),
-      { initialProps: { siteUrl: validUrl } }
-    );
+    const { result, waitForNextUpdate } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
+      initialProps: { siteUrl: validUrl }
+    });
 
     act(() => {
       result.current.onSubmit(validUrl);
