@@ -157,7 +157,14 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
         <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
       </View>
       <NetworkStatusIndicator />
-      {error && <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />}
+      {error && (
+        <MessageBar
+          mode={"alert"}
+          text={translate("general.error_unknown")}
+          icon={"exclamation-circle"}
+          testID={"test_messageError"}
+        />
+      )}
       <View style={{ flex: 1 }}>
         {networkStatus === NetworkStatus.loading && <Loading testID={"test_loading"} />}
         {notificationList.length == 0 && (

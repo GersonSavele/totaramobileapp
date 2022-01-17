@@ -22,7 +22,8 @@ import Notifications from "@totara/features/notifications/Notifications";
 import {
   notificationsMock,
   notificationsMockEmpty,
-  notificationsMockUnRead
+  notificationsMockUnRead,
+  notificationsMockError
 } from "@totara/features/notifications/api/notifications.mock";
 import { fontWeights } from "@totara/theme/constants";
 import { notificationQueryMarkRead } from "@totara/features/notifications/api";
@@ -47,22 +48,20 @@ describe("Notifications", () => {
     expect(loading).toBeTruthy();
   });
 
-  //TODO: change to "should render message bar"
+  test("Should render message bar", async () => {
+    const tree = (
+      <MockedProvider mocks={notificationsMockError}>
+        <Notifications navigation={navigationMock.navigation} />
+      </MockedProvider>
+    );
 
-  // test("Should render error", async () => {
-  //   const tree = (
-  //     <MockedProvider mocks={notificationsMockError}>
-  //       <Notifications navigation={navigationMock.navigation} />
-  //     </MockedProvider>
-  //   );
-
-  //   const { getByTestId } = render(tree);
-  //   await act(async () => {
-  //     await wait(0);
-  //   });
-  //   const loadingError = await getByTestId("test_loadingError");
-  //   expect(loadingError).toBeTruthy();
-  // });
+    const { getByTestId } = render(tree);
+    await act(async () => {
+      await wait(0);
+    });
+    const loadingError = await getByTestId("test_messageError");
+    expect(loadingError).toBeTruthy();
+  });
 
   test("Should render empty list", async () => {
     const tree = (
