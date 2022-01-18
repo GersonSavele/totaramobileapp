@@ -25,7 +25,7 @@ import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
 import { useNativeFlow } from "./NativeFlowHook";
 import { margins } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { TEST_IDS } from "@totara/lib/testIds";
+import { NATIVE_LOGIN_TEST_IDS, TEST_IDS } from "@totara/lib/testIds";
 import { useSession } from "@totara/core";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -143,12 +143,12 @@ const NativeLogin = () => {
           </View>
         </Form>
       </Content>
-
       {nativeLoginState.unhandledLoginError && (
         <InfoModal
           title={translate("native_login.auth_general_error.title")}
           description={translate("native_login.auth_general_error.description")}
-          imageSource={Images.generalError as ImageSourcePropType}>
+          imageSource={Images.generalError as ImageSourcePropType}
+          testID={NATIVE_LOGIN_TEST_IDS.UNHANDLED_ERROR}>
           <PrimaryButton text={translate("native_login.auth_general_error.action_primary")} onPress={onFocusInput} />
         </InfoModal>
       )}

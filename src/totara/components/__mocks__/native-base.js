@@ -27,9 +27,11 @@ const Content = ({ children }) => children;
 const Item = ({ children }) => children;
 const Label = ({ children }) => children;
 const Input = ({ ...rest }) => <TextInput {...rest} />;
+const Footer = ({ children }) => children;
+const Container = ({ children }) => children;
 
 MockButton.propTypes = {
   onPress: PropTypes.func
 };
 
-export { MockButton as Button, Spinner, Form, Content, Item, Label, Input };
+export { MockButton as Button, Spinner, Form, Content, Item, Label, Input, Footer, Container };

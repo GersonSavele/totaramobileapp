@@ -19,7 +19,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import SessionContainer from "./SessionContainer";
 import SiteUrl from "./auth/manual/SiteUrl";
-import BrowserLogin from "./auth/manual/browser";
+import BrowserLogin from "./auth/manual/browser/BrowserLogin";
 import NativeLogin from "./auth/manual/native/NativeLogin";
 import WebviewLogin from "./auth/manual/webview/WebviewLogin";
 import { cardModalOptions, NAVIGATION, navigationRef } from "./lib/navigation";
