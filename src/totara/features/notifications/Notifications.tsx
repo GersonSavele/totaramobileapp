@@ -38,6 +38,7 @@ import { Loading, MessageBar } from "@totara/components";
 import { notificationQueryMarkRead, notificationsQuery, parser } from "@totara/features/notifications/api";
 import { paddings } from "@totara/theme/constants";
 import { StackScreenProps } from "@react-navigation/stack";
+import { TEST_IDS } from "../../lib/testIds";
 
 const Notifications = ({ navigation }: StackScreenProps<any>) => {
   const { error, networkStatus, data, refetch } = useQuery(notificationsQuery, { notifyOnNetworkStatusChange: true });
@@ -162,7 +163,7 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
           mode={"alert"}
           text={translate("general.error_unknown")}
           icon={"exclamation-circle"}
-          testID={"test_messageError"}
+          testID={TEST_IDS.MESSAGE_ERROR_ID}
         />
       )}
       <View style={{ flex: 1 }}>

@@ -26,6 +26,7 @@ import {
   notificationsMockError
 } from "@totara/features/notifications/api/notifications.mock";
 import { fontWeights } from "@totara/theme/constants";
+import { TEST_IDS } from "../../../lib/testIds";
 import { notificationQueryMarkRead } from "@totara/features/notifications/api";
 
 const navigationMock = {
@@ -59,7 +60,7 @@ describe("Notifications", () => {
     await act(async () => {
       await wait(0);
     });
-    const loadingError = await getByTestId("test_messageError");
+    const loadingError = await getByTestId(TEST_IDS.MESSAGE_ERROR_ID);
     expect(loadingError).toBeTruthy();
   });
 
