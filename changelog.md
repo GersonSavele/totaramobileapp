@@ -1,5 +1,33 @@
 Totara Mobile App Changelog
 
+Release 1.1.4 (21st Jan 2022):
+=====================================
+
+Bug
+[MOB-1026] - Topic sections not displayed in Mobile if no activities
+[MOB-1067] - Update detox schema data file so the Automated test is back working
+[MOB-1081] - Webview login show error for Android login
+
+Improvement
+[MOB-1072] - Notification error unit test
+[MOB-1073] - Profile-test file TODO: Unable to find node on an unmounted component
+[MOB-1074] - Authentication unit testing low coverage
+[MOB-1077] - Detox tests should not break when app is logged-in
+[MOB-1080] - Enable Find Learning (Catalogue) to be configurable
+[MOB-1082] - Authentication unit testing for user login
+
+Release 1.1.3 (6th Dec 2021):
+=====================================
+
+Bug
+[MOB-1076] - Android App cannot be opened(in a few devices) due to sentry lib issue
+
+Release 1.1.2 (2nd Dec 2021):
+=====================================
+
+Improvement
+[MOB-1063] - Remove xhr events in breadcrumbs data from Sentry
+
 Release 1.1.1 (26th Nov 2021):
 =====================================
 
