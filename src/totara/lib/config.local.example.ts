@@ -13,6 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+// All your custom config from your servers(urls, API versions) or third party services
 const localConfig = {
   /* Uncomment the following line to disable the FindLearning feature. */
   // disableFindLearning: true
