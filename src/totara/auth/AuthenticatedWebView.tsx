@@ -16,7 +16,7 @@
 import React, { forwardRef } from "react";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import { MutationFunction, gql } from "@apollo/client";
-import { graphql } from '@apollo/client/react/hoc';
+import { graphql } from "@apollo/client/react/hoc";
 import { compose } from "recompose";
 import CookieManager from "@react-native-community/cookies";
 
@@ -24,6 +24,7 @@ import { config, Log } from "@totara/lib";
 import { WEBVIEW_SECRET } from "@totara/lib/constants";
 import { Loading, LoadingError } from "@totara/components";
 import { getUserAgent } from "react-native-device-info";
+import { TEST_IDS } from "@totara/lib/testIds";
 
 const createWebview = gql`
   mutation totara_mobile_create_webview($url: String!) {
@@ -48,7 +49,6 @@ const deleteWebview = gql`
  *  if an existing session exists (either webview, cookie is still valid)
  */
 class AuthenticatedWebViewComponent extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
 
@@ -88,7 +88,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
       Log.warn("unable to clearcookies", error)
     );
 
-    const userAgentPromise = getUserAgent().then(agent => {
+    const userAgentPromise = getUserAgent().then((agent) => {
       this.setState({ agent: `${agent} ${config.userAgent}` });
     });
 
@@ -108,7 +108,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     const { innerRef } = this.props;
     const { isLoading, error, webviewSecret, agent, host } = this.state;
 
-    if (isLoading) return <Loading />;
+    if (isLoading) return <Loading testID={TEST_IDS.LOADING} />;
 
     if (error)
       return (
@@ -116,6 +116,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
           onRefreshTap={async () => {
             await this.componentDidMount();
           }}
+          testID={TEST_IDS.LOADING_ERROR}
         />
       );
 
@@ -130,6 +131,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
         ref={innerRef}
         onNavigationStateChange={this.props.onNavigationStateChange}
         onShouldStartLoadWithRequest={this.props.onShouldStartLoadWithRequest}
+        testID={TEST_IDS.AUTHENTICATED_WEBVIEW}
       />
     );
   }
@@ -166,7 +168,7 @@ type State = {
   isLoading: boolean;
   isAuthenticated: boolean;
   webviewSecret?: string;
-  agent?: string
+  agent?: string;
 };
 
 const AuthenticatedWebViewGraphQL = compose<Props, { innerRef: React.Ref<WebView> }>(
@@ -180,4 +182,4 @@ const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>(
 
 AuthenticatedWebViewComponentForwardRef.displayName = "AuthenticatedWebViewComponentWrap";
 
-export { AuthenticatedWebViewComponentForwardRef as AuthenticatedWebView };
+export { AuthenticatedWebViewComponentForwardRef as AuthenticatedWebView, AuthenticatedWebViewComponent };

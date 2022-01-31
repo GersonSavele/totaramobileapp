@@ -68,6 +68,9 @@ jest.mock("react-native-device-info", () => {
     }),
     getBuildNumber: jest.fn(() => {
       return "UnknownVersion";
+    }),
+    getUserAgent: jest.fn(() => {
+      return "MockedUserAgent";
     })
   };
 });

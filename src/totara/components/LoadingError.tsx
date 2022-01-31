@@ -30,7 +30,7 @@ type LoadingErrorProps = {
 
 const getErrorFeedback = (error?: ApolloError) => {
   // @ts-ignore next line
-  if (error.networkError && (!error.networkError.statusCode || error.networkError.statusCode === 408)) {
+  if (error && error.networkError && (!error.networkError.statusCode || error.networkError.statusCode === 408)) {
     return {
       image: Images.offline,
       title: translate("content_error.title"),
