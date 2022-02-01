@@ -14,10 +14,11 @@
  */
 
 import { includes } from "lodash";
-import { sortBy } from "lodash";
+import { sortBy, isEmpty } from "lodash";
 import { completionStates } from "./course/courseDetailsStyle";
 import { completionTrack, completionStatus, completionIconStateKey, learningItemEnum } from "../constants";
 import { translate } from "@totara/locale";
+import moment from "moment";
 
 const extractTargetId = (id) => {
   return includes(id, "_") ? id.split("_")[1] : id;
@@ -105,4 +106,14 @@ const getCompletionStatus = ({ available, completion, status }: GetCompletionSta
   }
 };
 
-export { extractTargetId, sortByDueDateThenTypeThenFullName, getCompletionStatus, completionAccessibility };
+const isInvalidDueDate = ({ dueDate, dueDateState }: { dueDate?: Date; dueDateState?: String }) => {
+  return isEmpty(dueDate) || (isEmpty(dueDateState) && moment().diff(moment(dueDate)) > 0);
+};
+
+export {
+  extractTargetId,
+  sortByDueDateThenTypeThenFullName,
+  getCompletionStatus,
+  completionAccessibility,
+  isInvalidDueDate
+};

@@ -13,9 +13,10 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import { extractTargetId, getCompletionStatus, completionAccessibility } from "../utils";
+import { extractTargetId, getCompletionStatus, completionAccessibility, isInvalidDueDate } from "../utils";
 import { completionStates } from "../course/courseDetailsStyle";
 import { completionTrack, completionStatus } from "@totara/features/constants";
+import moment from "moment";
 
 describe("Utils", () => {
   it("Should extract targetId with character '_' provided", () => {
@@ -89,6 +90,17 @@ describe("Utils", () => {
         stateObj: completionStates.completeFail,
         accessibility: completionAccessibility.completeFail
       });
+    });
+  });
+  describe("isInvalidDueDate", () => {
+    it("Should return true for invalid(past dueDate without dueDateStatus) duedate", () => {
+      expect(isInvalidDueDate({})).toBeTruthy();
+      expect(isInvalidDueDate({ dueDate: "1970-01-01T00:59:59+0100", dueDateState: null })).toBeTruthy();
+    });
+    it("Should return false for valid duedate", () => {
+      expect(isInvalidDueDate({})).toBeTruthy();
+      expect(isInvalidDueDate({ dueDate: "1990-01-01T00:59:59+0100", dueDateState: "danger" })).toBeFalsy();
+      expect(isInvalidDueDate({ dueDate: moment(), dueDateState: null })).toBeFalsy();
     });
   });
 });

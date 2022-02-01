@@ -23,7 +23,7 @@ import DefaultImage from "@totara/features/currentLearning/components/DefaultIma
 import { capitalizeFirstLetter } from "@totara/lib/tools";
 import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
 import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/constants";
-import { extractTargetId } from "../utils";
+import { extractTargetId, isInvalidDueDate } from "../utils";
 import { activeOpacity, flexGrow } from "@totara/lib/styles/base";
 import { useNavigation } from "@react-navigation/native";
 
@@ -38,7 +38,7 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
   const { fullname, progress, itemtype, duedate, duedateState, id, native, imageSrc } = item;
 
   const DueDateWidget = (dueDate, dueDateState) => {
-    if (!dueDate) return <View testID={"test_noDueDate"} />;
+    if (isInvalidDueDate({ dueDate, dueDateState })) return <View testID={"test_noDueDate"} />;
 
     const color =
       dueDateState === "danger"

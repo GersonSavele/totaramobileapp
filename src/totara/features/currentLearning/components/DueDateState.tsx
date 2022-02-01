@@ -20,6 +20,7 @@ import { paddings } from "@totara/theme/constants";
 import { translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
+import { isInvalidDueDate } from "../utils";
 
 /**
  * Component to render dueDate and change style depending on the dueDateState
@@ -43,7 +44,7 @@ const getDueDateModeStyle = (dueDateState?: string) => {
 
 const DueDateState = ({ dueDate, dueDateState }: Props) => {
   const dueDateModeStyle = getDueDateModeStyle(dueDateState);
-
+  if (isInvalidDueDate({ dueDate, dueDateState })) return null;
   return (
     <View style={[styles.container, dueDateModeStyle]}>
       <Text style={[TotaraTheme.textXSmall, { color: TotaraTheme.textColorLight }]}>
