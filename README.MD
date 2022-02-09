@@ -4,16 +4,6 @@ React Native App
 
 Please avoid adding content here, because it is better to keep one single documentation(https://help.totaralearning.com/display/DEV/Totara+Mobile)
 
-
-## Twelve Factor setup
-
-### Dev setup
-
-Copy .env.sample and set your environment variables. These variables will be looked up in compile time.
-
-### Beta setup
-
-Copy .env.beta.sample and set your environment variables. These variables will be looked up in compile time.
 # Build offline SCORM server script
 
 The offline SCORM server set up is not required to be updated normally, but if it is the case, its script should be bundled to "html" directory under "TotaraMobileOfflineScorm", it can be done using  
