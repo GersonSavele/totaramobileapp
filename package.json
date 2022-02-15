@@ -5,7 +5,8 @@
   "scripts": {
     "ios": "react-native run-ios --configuration Dev.Debug --scheme TotaraMobileApp",
     "android": "react-native run-android --variant=devDebug --appIdSuffix=dev",
-    "local:android-release": "cd android/ && ./gradlew installProdRelease",
+    "local:android-release-apk": "cd android/ && ./gradlew installProdRelease",
+    "local:android-release-aab": "cd android/ && ./gradlew bundleProdRelease",
     "load:env_test": "ENVFILE=.env.test",
     "ci:ios-test": "react-native run-ios --configuration Test.Debug",
     "ci:android-test": "react-native run-android --variant=qaDebug --appIdSuffix=qa",
