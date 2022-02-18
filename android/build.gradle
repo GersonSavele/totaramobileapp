@@ -2,18 +2,19 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "28.0.3"
+        buildToolsVersion = "30.0.2"
         minSdkVersion = 21
-        compileSdkVersion = 29
+        compileSdkVersion = 30
         targetSdkVersion = 30
+        ndkVersion = "21.4.7075529"
         pdfViewer = "3.1.0-beta.1" // fix clickable hyperlink in the pdf on android(react-native-view-pdf)
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:3.5.2')
+        classpath('com.android.tools.build:gradle:4.2.2')
         classpath('com.google.gms:google-services:4.2.0')
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -23,7 +24,7 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
+        // mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
@@ -34,14 +35,15 @@ allprojects {
         }
 
         google()
-        jcenter()
+        // jcenter()
         maven { url 'https://www.jitpack.io' }
 
-        configurations.all {
-            resolutionStrategy {
-                // use 0.9.0 to fix crash on Android 11
-                force "com.facebook.soloader:soloader:0.9.0"
-			}
-		}
+        //TODO: remove if that works for android 11
+        // configurations.all {
+        //     resolutionStrategy {
+        //         // use 0.9.0 to fix crash on Android 11
+        //         force "com.facebook.soloader:soloader:0.9.0"
+		// 	}
+		// }
     }
 }

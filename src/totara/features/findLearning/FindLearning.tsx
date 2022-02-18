@@ -150,7 +150,7 @@ const FindLearning = () => {
         ListHeaderComponent={
           <>
             <FindLearningHeader
-              onChangeText={(text) => setSearchData({ key: text })}
+              onChangeText={text => setSearchData({ key: text })}
               onSearch={() => {
                 setSearchResult(undefined);
                 setSearchData({ ...searchData, pointer: 0 });
