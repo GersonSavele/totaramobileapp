@@ -18,7 +18,7 @@ import { WebView, WebViewNavigation } from "react-native-webview";
 import { MutationFunction, gql } from "@apollo/client";
 import { graphql } from "@apollo/client/react/hoc";
 import { compose } from "recompose";
-import CookieManager from "@react-native-community/cookies";
+import CookieManager from "@react-native-cookies/cookies";
 
 import { config, Log } from "@totara/lib";
 import { WEBVIEW_SECRET } from "@totara/lib/constants";
@@ -67,7 +67,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     this.setState({ ...this.state, error: undefined, isLoading: true });
 
     const createWebViewPromise = createWebview({ variables: { url: uri } })
-      .then((response) => {
+      .then(response => {
         if (response.data) {
           this.setState({
             host: host,
@@ -79,16 +79,14 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
           throw new Error("data missing on response");
         }
       })
-      .catch((error) => {
+      .catch(error => {
         Log.warn(error);
         this.setState({ ...this.state, error: error, isLoading: false });
       });
 
-    const clearCookiesPromise = CookieManager.clearAll(true).catch((error) =>
-      Log.warn("unable to clearcookies", error)
-    );
+    const clearCookiesPromise = CookieManager.clearAll(true).catch(error => Log.warn("unable to clearcookies", error));
 
-    const userAgentPromise = getUserAgent().then((agent) => {
+    const userAgentPromise = getUserAgent().then(agent => {
       this.setState({ agent: `${agent} ${config.userAgent}` });
     });
 
@@ -99,8 +97,8 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     const { deleteWebview } = this.props;
     if (this.state.webviewSecret) {
       return deleteWebview({ variables: { secret: this.state.webviewSecret } })
-        .then((data) => Log.debug("deleted webview", data))
-        .catch((error) => Log.warn("unable to create webview", error));
+        .then(data => Log.debug("deleted webview", data))
+        .catch(error => Log.warn("unable to create webview", error));
     }
   }
 

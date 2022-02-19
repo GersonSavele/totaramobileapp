@@ -3,7 +3,7 @@
 buildscript {
     ext {
         buildToolsVersion = "30.0.2"
-        minSdkVersion = 21
+        minSdkVersion = 23//static server dependency require at least v23
         compileSdkVersion = 30
         targetSdkVersion = 30
         ndkVersion = "21.4.7075529"
@@ -15,7 +15,7 @@ buildscript {
     }
     dependencies {
         classpath('com.android.tools.build:gradle:4.2.2')
-        classpath('com.google.gms:google-services:4.2.0')
+        classpath('com.google.gms:google-services:4.3.10')
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -24,7 +24,7 @@ buildscript {
 
 allprojects {
     repositories {
-        // mavenLocal()
+//        mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
@@ -35,7 +35,8 @@ allprojects {
         }
 
         google()
-        // jcenter()
+        mavenCentral()//this is required for resolving the dependencies declared in app/build.gradle
+        jcenter()//pdf view library is using a version from this repository jcenter
         maven { url 'https://www.jitpack.io' }
 
         //TODO: remove if that works for android 11

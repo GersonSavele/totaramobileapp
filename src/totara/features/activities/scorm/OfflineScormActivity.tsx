@@ -16,7 +16,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Text, BackHandler } from "react-native";
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
-import StaticServer from "react-native-static-server";
+import StaticServer from "@dr.pogodin/react-native-static-server";
 
 import OfflineScormPlayer from "./components/OfflineScormPlayer";
 import { Package, Scorm } from "@totara/types/Scorm";
@@ -59,7 +59,7 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
 
   const resourcesList = useSelector(getResources);
   const targetResource = resourcesList.find(
-    (resource) => resource.customId === scorm.id && resource.type === ResourceType.ScormActivity
+    resource => resource.customId === scorm.id && resource.type === ResourceType.ScormActivity
   );
   if (!targetResource) {
     return <Text testID={NONE_EXIST_RESOURCE_ID}>{translate("general.error_unknown")}</Text>;
@@ -147,7 +147,7 @@ const packageEffect = ({ url, scos, scorm, attempt, client, defaultSco, setJsCod
 
 const loadedScormEffect = ({ server, setUrl, scormPackageData, setScormPackageData, backAction }) => () => {
   setupOfflineScormPlayer()
-    .then((offlineServerPath) => {
+    .then(offlineServerPath => {
       if (!isEmpty(offlineServerPath)) {
         return startServer(offlineServerPath, server);
       } else {
@@ -157,15 +157,15 @@ const loadedScormEffect = ({ server, setUrl, scormPackageData, setScormPackageDa
     .then((serverOrigin: string) => {
       setUrl(serverOrigin);
     })
-    .catch((e) => {
+    .catch(e => {
       Log.debug(e.messageData);
     });
 
   loadScormPackageData(scormPackageData)
-    .then((data) => {
+    .then(data => {
       setScormPackageData(data);
     })
-    .catch((e) => {
+    .catch(e => {
       Log.debug(e.messageData);
     });
 
