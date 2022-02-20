@@ -69,7 +69,7 @@ export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestI
       username: nativeLoginState.inputUsername,
       password: nativeLoginState.inputPassword
     }),
-    headers: { [DEVICE_REGISTRATION]: config.userAgent }
+    headers: { [DEVICE_REGISTRATION]: config.userAgent, "Content-Type": "application/json" }
   });
 
   useEffect(() => {
