@@ -25,7 +25,7 @@ import { ThemeContext } from "@totara/theme";
 import { useWebviewFlow } from "./WebviewFlowHook";
 import { useSession } from "@totara/core";
 import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { useDispatch } from "react-redux";
 
@@ -55,7 +55,7 @@ const WebviewLogin = () => {
         uri: host!,
         secret: setupSecret,
         siteInfo: siteInfo
-      }).then((res) => {
+      }).then(res => {
         dispatch(initSession({ apiKey: res.apiKey }));
         navigation.goBack();
       });

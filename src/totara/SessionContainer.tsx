@@ -23,7 +23,7 @@ import {
   defaultDataIdFromObject
 } from "@apollo/client";
 import { Linking } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { linkingHandler } from "./auth/authUtils";
 import SiteUrl from "./auth/manual/SiteUrl";
@@ -42,10 +42,10 @@ import event, { Events, EVENT_LISTENER } from "./lib/event";
 
 const setupApolloClient = async ({ apiKey, host }) => {
   const cache = new InMemoryCache({
-    dataIdFromObject: (object) => {
+    dataIdFromObject: object => {
       switch (object.__typename) {
         case "totara_mobile_current_learning": {
-          const learningItem = (object as unknown) as LearningItem;
+          const learningItem = object as unknown as LearningItem;
           return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
         }
         default:
@@ -80,10 +80,10 @@ const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dis
           secret: secret,
           siteInfo: siteInfo
         })
-          .then((res) => {
+          .then(res => {
             dispatch(initSession({ apiKey: res.apiKey }));
           })
-          .catch((ee) => {
+          .catch(ee => {
             console.warn(ee);
           });
       },
@@ -110,7 +110,7 @@ const SessionContainer = () => {
   };
 
   React.useEffect(() => {
-    const unsubscribe = event.addListener(EVENT_LISTENER, (param) => {
+    const unsubscribe = event.addListener(EVENT_LISTENER, param => {
       if (param.event === Events.NetworkError) {
         console.log("network error");
       } else if (param.event === Events.Logout) {
@@ -143,12 +143,12 @@ const SessionContainer = () => {
         .query({
           query: queryCore
         })
-        .then((result) => {
+        .then(result => {
           const core = result.data.me;
           dispatch(setCore(core));
           setIsLoading(false);
         })
-        .catch((e) => {
+        .catch(e => {
           console.warn("Failing to fetching user data: ", e);
         });
     }
@@ -164,7 +164,7 @@ const SessionContainer = () => {
     useCallback(() => {
       if (isFocused) {
         if (!apiKey) {
-          Linking.getInitialURL().then((url) => {
+          Linking.getInitialURL().then(url => {
             initialURLHandler({ fetchDataWithFetch, url, siteInfo, initSession, dispatch });
           });
         } else {

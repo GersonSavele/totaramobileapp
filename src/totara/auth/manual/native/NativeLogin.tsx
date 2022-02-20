@@ -28,7 +28,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { NATIVE_LOGIN_TEST_IDS, TEST_IDS } from "@totara/lib/testIds";
 import { useSession } from "@totara/core";
 import { useEffect } from "react";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Images } from "@resources/images";
 import { useDispatch } from "react-redux";
@@ -41,16 +41,11 @@ const NativeLogin = () => {
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
 
-  const {
-    nativeLoginState,
-    onClickEnter,
-    inputUsernameWithShowError,
-    inputPasswordWithShowError,
-    onFocusInput
-  } = useNativeFlow(fetchDataWithFetch)({
-    siteInfo: siteInfo!,
-    siteUrl: host!
-  });
+  const { nativeLoginState, onClickEnter, inputUsernameWithShowError, inputPasswordWithShowError, onFocusInput } =
+    useNativeFlow(fetchDataWithFetch)({
+      siteInfo: siteInfo!,
+      siteUrl: host!
+    });
 
   useEffect(() => {
     if (nativeLoginState.setupSecret && !apiKey) {
@@ -61,7 +56,7 @@ const NativeLogin = () => {
         uri: host!,
         secret: nativeLoginState.setupSecret,
         siteInfo: siteInfo
-      }).then((res) => {
+      }).then(res => {
         dispatch(initSession({ apiKey: res.apiKey }));
         navigation.goBack();
       });

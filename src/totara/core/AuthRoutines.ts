@@ -20,7 +20,7 @@ import { setContext } from "@apollo/client/link/context";
 import { RetryLink } from "@apollo/client/link/retry";
 import { onError, ErrorResponse } from "@apollo/client/link/error";
 
-import { AsyncStorageStatic } from "@react-native-community/async-storage";
+import { AsyncStorageStatic } from "@react-native-async-storage/async-storage";
 import { config, Log } from "@totara/lib";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { AppState, SiteInfo } from "@totara/types";
@@ -53,44 +53,43 @@ import { translate } from "@totara/locale";
  *
  * @returns promise of appState which contains the valid apiKey and which host it was obtained from
  */
-export const registerDevice = (
-  fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>,
-  asyncStorage: AsyncStorageStatic
-) => async (setup: Setup): Promise<AppState> => {
-  type ApiKey = {
-    apikey: string;
-  };
+export const registerDevice =
+  (fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>, asyncStorage: AsyncStorageStatic) =>
+  async (setup: Setup): Promise<AppState> => {
+    type ApiKey = {
+      apikey: string;
+    };
 
-  return fetchData<ApiKey>(config.deviceRegisterUri(setup.uri), {
-    method: "POST",
-    body: JSON.stringify({
-      setupsecret: setup.secret
+    return fetchData<ApiKey>(config.deviceRegisterUri(setup.uri), {
+      method: "POST",
+      body: JSON.stringify({
+        setupsecret: setup.secret
+      })
     })
-  })
-    .then((apiKey) => {
-      const siteInfoData = JSON.stringify(setup.siteInfo);
-      return Promise.all([
-        asyncStorage.setItem("apiKey", apiKey.apikey),
-        asyncStorage.setItem("siteInfo", siteInfoData),
-        asyncStorage.setItem("host", setup.uri)
-      ]).then(() => {
-        return apiKey;
+      .then(apiKey => {
+        const siteInfoData = JSON.stringify(setup.siteInfo);
+        return Promise.all([
+          asyncStorage.setItem("apiKey", apiKey.apikey),
+          asyncStorage.setItem("siteInfo", siteInfoData),
+          asyncStorage.setItem("host", setup.uri)
+        ]).then(() => {
+          return apiKey;
+        });
+      })
+      .then(apiKey => {
+        const appState = {
+          apiKey: apiKey.apikey,
+          host: setup.uri,
+          siteInfo: setup.siteInfo
+        } as AppState;
+        return appState;
+      })
+      .catch(error => {
+        //NOTE: This is using warning so the app does not crash
+        Log.warn("unable to get apiKey", error);
+        return {} as AppState;
       });
-    })
-    .then((apiKey) => {
-      const appState = {
-        apiKey: apiKey.apikey,
-        host: setup.uri,
-        siteInfo: setup.siteInfo
-      } as AppState;
-      return appState;
-    })
-    .catch((error) => {
-      //NOTE: This is using warning so the app does not crash
-      Log.warn("unable to get apiKey", error);
-      return {} as AppState;
-    });
-};
+  };
 
 /**
  *
@@ -112,7 +111,7 @@ export const deviceCleanup = ({ apolloClient, dispatch }) => {
       if (!delete_device) Log.warn("Unable to delete device from server");
       return delete_device;
     })
-    .catch((error) => {
+    .catch(error => {
       Log.warn("remote clean up had issues, but continue to do local clean up", error);
     })
     .finally(() => {
@@ -174,7 +173,7 @@ export const createApolloClient = (apiKey: string, host: string, cache: any): Ap
     new RetryLink({
       attempts: {
         max: 2,
-        retryIf: (error) => {
+        retryIf: error => {
           if (error.statusCode && error.statusCode === 401) {
             return false; // do not retry on 401 errors, fail fast
           } else {
@@ -213,47 +212,46 @@ export const createApolloClient = (apiKey: string, host: string, cache: any): Ap
  *
  */
 
-export const fetchData = (fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>) => async <T>(
-  input: RequestInfo,
-  init?: RequestInit
-): Promise<T> => {
-  const fetchPromise = fetch(input, init)
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        Log.warn("fetch error response", response);
-        return Promise.reject(response);
-      }
-    })
-    .catch((error) => {
-      if (error?.message === "Network request failed") {
-        return Promise.reject(new NetworkFailedError());
-      }
-      return Promise.reject(error);
-    })
-    .then((json) => {
-      if (json.data) return (json.data as unknown) as T;
-      else return Promise.reject("json expected to have data attribute");
-    });
+export const fetchData =
+  (fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>) =>
+  async <T>(input: RequestInfo, init?: RequestInit): Promise<T> => {
+    const fetchPromise = fetch(input, init)
+      .then(response => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          Log.warn("fetch error response", response);
+          return Promise.reject(response);
+        }
+      })
+      .catch(error => {
+        if (error?.message === "Network request failed") {
+          return Promise.reject(new NetworkFailedError());
+        }
+        return Promise.reject(error);
+      })
+      .then(json => {
+        if (json.data) return json.data as unknown as T;
+        else return Promise.reject("json expected to have data attribute");
+      });
 
-  //TIMEOUT OF 10 SECS (10*1000)
-  return new Promise((resolve, reject) => {
-    const timeoutId = setTimeout(() => {
-      reject(new NetworkFailedError());
-    }, 10 * 1000);
-    fetchPromise.then(
-      (res) => {
-        clearTimeout(timeoutId);
-        resolve(res);
-      },
-      (err) => {
-        clearTimeout(timeoutId);
-        reject(err);
-      }
-    );
-  });
-};
+    //TIMEOUT OF 10 SECS (10*1000)
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        reject(new NetworkFailedError());
+      }, 10 * 1000);
+      fetchPromise.then(
+        res => {
+          clearTimeout(timeoutId);
+          resolve(res);
+        },
+        err => {
+          clearTimeout(timeoutId);
+          reject(err);
+        }
+      );
+    });
+  };
 
 export const logOut = async ({ apolloClient, dispatch }) => {
   if (apolloClient) {

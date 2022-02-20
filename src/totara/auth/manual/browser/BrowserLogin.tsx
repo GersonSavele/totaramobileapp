@@ -23,7 +23,7 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import { useState } from "react";
 import { authLinkingHandler } from "@totara/auth/authUtils";
 import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSession } from "@totara/core";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -40,7 +40,7 @@ const BrowserLogin = () => {
 
   const [setupSecret, setSetupSecret] = useState();
 
-  const urlHandler = (url) => {
+  const urlHandler = url => {
     authLinkingHandler({
       onLoginSuccess: ({ secret }) => {
         setSetupSecret(secret);
@@ -61,11 +61,11 @@ const BrowserLogin = () => {
         secret: setupSecret,
         siteInfo: siteInfo
       })
-        .then((res) => {
+        .then(res => {
           dispatch(initSession({ apiKey: res.apiKey }));
           navigation.goBack();
         })
-        .catch((ee) => {
+        .catch(ee => {
           console.warn(ee);
         });
     }

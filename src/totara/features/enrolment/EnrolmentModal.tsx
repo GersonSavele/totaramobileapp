@@ -17,7 +17,7 @@ import React, { useLayoutEffect, useState, useEffect } from "react";
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Input } from "react-native-elements/dist/input/Input";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
 import { NetworkStatus, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { isEmpty } from "lodash";
 
@@ -111,7 +111,7 @@ const GuestAccessWidget = ({
     navigation.navigate(routeId, { targetId: courseId, guestPWD, courseGroupType: learningItemEnum.Course });
   };
 
-  const onPasswordChange = (newValue) => {
+  const onPasswordChange = newValue => {
     setPasswordState({
       ...passwordState,
       password: newValue,
@@ -182,7 +182,7 @@ const SelfEnrolmentWidget = ({
     isNotValid: undefined
   });
 
-  const onEnrolmentKeyChange = (newValue) => {
+  const onEnrolmentKeyChange = newValue => {
     setEnrolmentKeyState({
       ...enrolmentKeyState,
       key: newValue,
@@ -271,7 +271,7 @@ const EnrolmentOptionsContent = ({
       <View testID={"enrolment_options_content"}>
         {enrolmentOptions
           .sort((e1, e2) => e1.sortOrder - e2.sortOrder)
-          .map((enrolmentOption) => {
+          .map(enrolmentOption => {
             const { id, type } = enrolmentOption;
             if (type === "guest") {
               return <GuestAccessWidget courseId={courseId} key={id} enrolment={enrolmentOption} />;

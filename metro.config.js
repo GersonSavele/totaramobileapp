@@ -5,6 +5,9 @@
  * @format
  */
 
+const { getDefaultConfig } = require("metro-config");
+const { resolver: defaultResolver } = getDefaultConfig.getDefaultValues();
+
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
@@ -13,5 +16,10 @@ module.exports = {
         inlineRequires: true
       }
     })
+  },
+  //@apollo/client only works adding this "sourceExts"
+  resolver: {
+    ...defaultResolver,
+    sourceExts: [...defaultResolver.sourceExts, "cjs"]
   }
 };
