@@ -170,7 +170,7 @@ jest.mock("@react-native-firebase/messaging", () => {
   });
 });
 
-jest.mock("react-native-keyboard-aware-scroll-view", () => {
+jest.mock("@codler/react-native-keyboard-aware-scroll-view", () => {
   return {
     KeyboardAwareScrollView: jest.fn().mockImplementation(({ children }) => children)
   };
