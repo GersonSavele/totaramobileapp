@@ -15,7 +15,7 @@
 
 import { StyleProp, ViewStyle } from "react-native";
 
-const spacedFlexRow: StyleProp<ViewStyle> = {
+const spacedFlexRow = {
   flexDirection: "row",
   justifyContent: "space-between"
 };
