@@ -32,7 +32,7 @@
     "clear:modules": "rm -rf node_modules",
     "clean:pods": "rm -rf ios/Pods/ && cd ios && pod install && cd ..",
     "clear:cache": "npm-run-all --parallel clear_cache:*",
-    "clear:all": "npm-run-all clear:cache clear:modules && npm install",
+    "clear:all": "npm-run-all clear:cache clear:modules && yarn && yarn clean:pods",
     "clear:jest": "npx jest --clearCache",
     "install:translations": "node scripts/post-install/install-translations.js",
     "jetify": "npx jetify",
@@ -46,8 +46,11 @@
     "devices:ios": "xcrun xctrace list devices",
     "devices:android": "adb devices"
   },
+  "resolutions": {
+    "@codler/react-native-keyboard-aware-scroll-view": "2.0.1"
+  },
   "dependencies": {
-    "@apollo/client": "^3.3.20",
+    "@apollo/client": "^3.5.9",
     "@codler/react-native-keyboard-aware-scroll-view": "^2.0.1",
     "@dr.pogodin/react-native-static-server": "github:birdofpreyru/react-native-static-server",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
