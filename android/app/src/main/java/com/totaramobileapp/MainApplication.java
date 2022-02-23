@@ -11,13 +11,6 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-//import com.facebook.soloader.SoLoader;
-//import com.reactnativecommunity.art.ARTPackage;
-//import java.lang.reflect.InvocationTargetException;
-
-import java.util.List;
-import android.webkit.WebView;
-
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -30,7 +23,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-//      packages.add(new ARTPackage());
       return packages;
     }
 
@@ -49,7 +41,6 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-//    WebView.setWebContentsDebuggingEnabled(true);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
@@ -68,7 +59,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.testproject.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.totaramobileapp.ReactNativeFlipper");
         aClass
                 .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
                 .invoke(null, context, reactInstanceManager);

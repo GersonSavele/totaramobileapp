@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { StatusBar, Platform } from "react-native";
+import { StatusBar, Platform, LogBox } from "react-native";
 import { Root } from "native-base";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Sentry from "@sentry/react-native";
@@ -50,8 +50,10 @@ if (Platform.OS === PLATFORM_ANDROID) {
 }
 
 FontAwesome.init();
-// TODO: console.disableYellowBox has been deprecated and will be removed in a future release. Please use LogBox.ignoreAllLogs(value) instead.
-// console.disableYellowBox = config.disableConsoleYellowBox;
+if (config.disableConsoleYellowBox){
+  LogBox.ignoreAllLogs();
+}
+LogBox.ignoreLogs(['new NativeEventEmitter']);
 
 const App: () => React$Node = () => {
   return (
