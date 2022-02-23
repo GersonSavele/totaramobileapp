@@ -27,7 +27,7 @@ import {
   DownloadProgressCallbackResult,
   unlink,
   resumeDownload,
-  exists
+  exists,
 } from "react-native-fs";
 import { Resource } from "@totara/types";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
@@ -35,6 +35,8 @@ import { ResourceState, ResourceType } from "@totara/types/Resource";
 import { uuid } from "@totara/lib/tools";
 import { addResource, updateResource, deleteResource as storeDeleteResource } from "../actions/resource";
 import { store } from "../store";
+import { showMessage } from ".";
+import { translate } from "@totara/locale";
 
 const onDownloadBegin = (id: string, res: DownloadBeginCallbackResult) => {
   updateResource({
@@ -120,10 +122,7 @@ const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, t
 
         return unzip(targetPathFile, targetExtractPath);
       } else {
-        updateResource({
-          id: id,
-          state: ResourceState.Errored
-        });
+        showMessage({ title: "", text: translate("general.error_unknown") })
       }
     })
     .then((unzipped) => {
@@ -135,7 +134,8 @@ const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, t
     })
     .then((fileExists) => {
       if (fileExists) return unlink(targetPathFile);
-    });
+    })
+    .catch(e => console.warn(e));
   return _downloadFile.jobId;
 };
 
