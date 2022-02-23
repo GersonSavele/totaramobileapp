@@ -24,7 +24,7 @@ global.console = {
   debug: jest.fn()
 };
 
-jest.mock("@react-native-community/cookies", () => {
+jest.mock("@react-native-cookies/cookies", () => {
   return {
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
@@ -41,7 +41,7 @@ jest.mock("react-native-reanimated", () => {
   return Reanimated;
 });
 
-jest.mock("react-native/Libraries/Animated/src/NativeAnimatedHelper");
+// jest.mock("react-native/Libraries/Animated/src/NativeAnimatedHelper");
 
 jest.mock("react-native-gesture-handler", () => {
   return {
