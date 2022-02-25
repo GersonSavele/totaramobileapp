@@ -50,7 +50,7 @@ describe("ScormActivity", () => {
     jest.restoreAllMocks();
   });
 
-  it("Should render loading component initially; when it receives the response, it should show scorm summary", async (done) => {
+  it("Should render loading component initially; when it receives the response, it should show scorm summary", async() => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return downloadsTwoItemsMock;
     });
@@ -69,7 +69,6 @@ describe("ScormActivity", () => {
     });
     const view = await getByTestId(SUMMARY_ID);
     expect(view).toBeTruthy();
-    done();
   });
 });
 

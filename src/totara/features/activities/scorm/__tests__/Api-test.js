@@ -22,7 +22,7 @@ describe("fetchLastAttemptResult", () => {
   const mockSuccessData = {
     data: "mock_data"
   };
-  it("Should get json object for response with status code 200", async (done) => {
+  it("Should get json object for response with status code 200", async () => {
     const mockSuccessResponse = Promise.resolve({
       json: () => mockSuccessData,
       status: 200
@@ -37,10 +37,9 @@ describe("fetchLastAttemptResult", () => {
     }
     expect(global.fetch).toHaveBeenCalledTimes(1);
     global.fetch.mockClear();
-    done();
   });
 
-  it("Should throw an error for response status which is not equal to 200", async (done) => {
+  it("Should throw an error for response status which is not equal to 200", async () => {
     const mockResponseStatus = 500;
     global.fetch = jest.fn().mockImplementation(() =>
       Promise.resolve({
@@ -56,10 +55,9 @@ describe("fetchLastAttemptResult", () => {
     }
     expect(global.fetch).toHaveBeenCalledTimes(1);
     global.fetch.mockClear();
-    done();
   });
 
-  it("Should throw an error, if fetch thorows an error", async (done) => {
+  it("Should throw an error, if fetch thorows an error", async () => {
     const mockError = "unknown error";
     global.fetch = jest.fn().mockImplementation(() => Promise.reject(mockError));
     try {
@@ -70,6 +68,5 @@ describe("fetchLastAttemptResult", () => {
     }
     expect(global.fetch).toHaveBeenCalledTimes(1);
     global.fetch.mockClear();
-    done();
   });
 });

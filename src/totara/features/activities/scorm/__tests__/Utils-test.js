@@ -772,7 +772,7 @@ describe("scorm player package handling", () => {
       }
     });
 
-    it("should remove all existing files before copy, if there any existing files", async (done) => {
+    it("should remove all existing files before copy, if there any existing files", async () => {
       setupDefaultConfigeMock({ platformOS: "android" });
       RNFS.exists.mockImplementation(jest.fn(() => Promise.resolve(true)));
 
@@ -780,15 +780,12 @@ describe("scorm player package handling", () => {
       expect(RNFS.unlink).toHaveBeenCalledTimes(mockSourceDirContent.length);
       expect(resultAndroid.length).toBe(mockSourceDirContent.length);
 
-      done();
-
       setupDefaultConfigeMock({ platformOS: "ios" });
       RNFS.exists.mockImplementation(jest.fn(() => Promise.resolve(true)));
 
       const resultIOS = await initializeScormWebplayer();
       expect(RNFS.unlink).toHaveBeenCalledTimes(mockSourceDirContent.length);
       expect(resultIOS.length).toBe(mockSourceDirContent.length);
-      done();
     });
   });
   describe("isScormPlayerInitialized", () => {

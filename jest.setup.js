@@ -76,7 +76,7 @@ jest.mock("react-native-device-info", () => {
 });
 
 jest.mock("@apollo/client", () => ({
-  ...require.requireActual("@apollo/client"),
+  ...jest.requireActual("@apollo/client"),
   useApolloClient: jest.fn(() => ({
     readQuery: jest.fn(() => {}),
     writeQuery: jest.fn()
@@ -137,9 +137,22 @@ jest.mock("redux-persist", () => {
   };
 });
 
-jest.mock("react-native-orientation-locker", () => jest.fn());
+jest.mock('react-native-orientation-locker', () => {
+	return {
+		addEventListener: jest.fn(),
+		removeEventListener: jest.fn(),
+		lockToPortrait: jest.fn(),
+		lockToLandscapeLeft: jest.fn(),
+		lockToLandscapeRight: jest.fn(),
+		unlockAllOrientations: jest.fn(),
+	};
+});
 
 jest.mock("redux-persist-sensitive-storage", () => jest.fn());
+
+jest.mock("@dr.pogodin/react-native-static-server", () => jest.fn());
+
+jest.mock("@react-native-async-storage/async-storage", () => jest.fn());
 
 jest.mock("react-native-zip-archive", () => ({
   unzip: jest.fn()

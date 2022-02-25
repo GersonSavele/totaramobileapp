@@ -30,7 +30,11 @@ describe("FindLearning", () => {
   });
 
   it("Should only show search bar initially", async () => {
-    const tree = <FindLearning />;
+    const tree = (
+      <MockedProvider>
+        <FindLearning />
+      </MockedProvider>
+    );
     const { getByTestId } = render(tree);
     await expect(getByTestId(FINDLEARNING_TEST_IDS.HEADER)).toBeTruthy();
   });
