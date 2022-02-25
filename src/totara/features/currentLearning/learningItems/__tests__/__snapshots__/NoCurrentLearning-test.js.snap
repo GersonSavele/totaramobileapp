@@ -33,8 +33,13 @@ exports[`NoCurrentLearning, No current learning screen should launch when api re
   >
     <View
       accessibilityRole="button"
-      accessibilityState={Object {}}
+      accessibilityState={
+        Object {
+          "disabled": false,
+        }
+      }
       accessible={true}
+      collapsable={false}
       focusable={true}
       onClick={[Function]}
       onResponderGrant={[Function]}

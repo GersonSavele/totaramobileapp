@@ -2,7 +2,13 @@
 
 exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and  completionStatus completeFail 1`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
   accessible={true}
+  collapsable={false}
   focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
@@ -46,7 +52,13 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
 
 exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and auto-completion, completionStatus complete, complete-pass 1`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
   accessible={true}
+  collapsable={false}
   focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
@@ -90,7 +102,13 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
 
 exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and auto-completion, completionStatus incomplete 1`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
   accessible={true}
+  collapsable={false}
   focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
@@ -134,7 +152,13 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
 
 exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and completion, completionStatus undefined 1`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
   accessible={true}
+  collapsable={false}
   focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
@@ -180,7 +204,13 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
 
 exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and manual-completion, completionStatus complete 1`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
   accessible={true}
+  collapsable={false}
   focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
@@ -224,7 +254,13 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
 
 exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is available and manual-completion, completionStatus incomplete 1`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
   accessible={true}
+  collapsable={false}
   focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
@@ -264,7 +300,13 @@ exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto
 
 exports[`Activity-Icon, testing UI activity checkbox for self-completion or auto-completion Test result : Activity is not available and completion, completionStatus undefined 1`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
   accessible={true}
+  collapsable={false}
   focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
