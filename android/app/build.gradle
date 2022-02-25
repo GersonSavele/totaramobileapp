@@ -195,20 +195,20 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-    // productFlavors {
-    //     dev {
-    //         applicationIdSuffix '.dev'
-    //         resValue "string", "build_config_package", "com.totaramobileapp"
-    //     }
-    //     //ProductFlavor names cannot start with 'test'
-    //     qa {
-    //         applicationIdSuffix '.qa'
-    //         resValue "string", "build_config_package", "com.totaramobileapp"
-    //     }
-    //     prod {
-    //         resValue "string", "build_config_package", "com.totaramobileapp"
-    //     }
-    // }
+    productFlavors {
+        dev {
+            applicationIdSuffix '.dev'
+            resValue "string", "build_config_package", "com.totaramobileapp"
+        }
+        //ProductFlavor names cannot start with 'test'
+        qa {
+            applicationIdSuffix '.qa'
+            resValue "string", "build_config_package", "com.totaramobileapp"
+        }
+        prod {
+            resValue "string", "build_config_package", "com.totaramobileapp"
+        }
+    }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
