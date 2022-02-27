@@ -24,7 +24,6 @@ buildscript {
 
 allprojects {
     repositories {
-//        mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
@@ -38,13 +37,5 @@ allprojects {
         mavenCentral()//this is required for resolving the dependencies declared in app/build.gradle
         jcenter()//pdf view library is using a version from this repository jcenter
         maven { url 'https://www.jitpack.io' }
-
-        //TODO: remove if that works for android 11
-        // configurations.all {
-        //     resolutionStrategy {
-        //         // use 0.9.0 to fix crash on Android 11
-        //         force "com.facebook.soloader:soloader:0.9.0"
-		// 	}
-		// }
     }
 }

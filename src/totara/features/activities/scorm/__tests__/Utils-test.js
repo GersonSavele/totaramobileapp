@@ -784,7 +784,7 @@ describe("scorm player package handling", () => {
       RNFS.exists.mockImplementation(jest.fn(() => Promise.resolve(true)));
 
       const resultIOS = await initializeScormWebplayer();
-      expect(RNFS.unlink).toHaveBeenCalledTimes(mockSourceDirContent.length);
+      expect(RNFS.unlink).toHaveBeenCalledTimes(mockSourceDirContent.length*2);
       expect(resultIOS.length).toBe(mockSourceDirContent.length);
     });
   });
