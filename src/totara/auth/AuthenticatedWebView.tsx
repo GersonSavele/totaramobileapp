@@ -131,6 +131,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
         ref={innerRef}
         onNavigationStateChange={this.props.onNavigationStateChange}
         onShouldStartLoadWithRequest={this.props.onShouldStartLoadWithRequest}
+        allowsInlineMediaPlayback={true}
         testID={TEST_IDS.AUTHENTICATED_WEBVIEW}
       />
     );

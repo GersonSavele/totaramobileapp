@@ -56,6 +56,7 @@ const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
         javaScriptEnabled={true}
         onMessage={didReceiveOnMessage}
         injectedJavaScript={injectScript}
+        allowsInlineMediaPlayback={true}
         style={styles.player}
         ref={refWebview}
         onNavigationStateChange={onNavigationStateChange}
