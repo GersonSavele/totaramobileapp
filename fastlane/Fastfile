@@ -35,7 +35,7 @@ lane :node do
   stubs
 
   # NPM install
-  sh "(cd '#{project_root}' && ADBLOCK=1 npm ci --no-progress)"
+  sh "(cd '#{project_root}' && ADBLOCK=1 yarn install --frozen-lockfile)"
 end
 
 desc "Initialise cocoapods"
