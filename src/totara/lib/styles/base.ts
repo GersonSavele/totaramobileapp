@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleProp, ViewStyle } from "react-native";
+import { ViewStyle } from "react-native";
 
 const spacedFlexRow = {
   flexDirection: "row",
