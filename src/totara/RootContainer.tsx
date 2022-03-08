@@ -49,17 +49,17 @@ const RootContainer = () => {
         <Stack.Screen
           name={NAVIGATION.NATIVE_LOGIN}
           component={NativeLogin}
-          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: true }}
+          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: false }}
         />
         <Stack.Screen
           name={NAVIGATION.WEBVIEW_LOGIN}
           component={WebviewLogin}
-          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: true }}
+          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: false }}
         />
         <Stack.Screen
           name={NAVIGATION.BROWSER_LOGIN}
           component={BrowserLogin}
-          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: true }}
+          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
