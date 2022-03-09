@@ -18,7 +18,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { translate } from "@totara/locale";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
 import React, { useCallback, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, StatusBar } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, StatusBar, Platform } from "react-native";
 import Animated, { Extrapolate, interpolate, call, useCode } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -28,6 +28,8 @@ const ACTION_WIDTH = 40;
 const HEIGHT = TOPNAVI_OFFSET + STATUSBAR_HEIGHT;
 
 type AnimatedHeaderProps = { title: string; subTitle?: string; scrollValue?: any; leftAction: any };
+
+const getIcon = () => Platform.OS === "ios" ? "chevron-left" : "arrow-left";
 
 const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHeaderProps) => {
   const safeArea = useSafeAreaInsets();
@@ -84,12 +86,12 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
           <Animated.View
             testID={"animated-header-backbutton-black"}
             style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]}>
-            <FontAwesomeIcon icon="chevron-left" color={"black"} />
+            <FontAwesomeIcon icon={getIcon()} color={"black"} />
           </Animated.View>
           <Animated.View
             testID={"animated-header-backbutton-white"}
             style={[styles.backIcon, { opacity: opaqueToTransparentInterpolate }]}>
-            <FontAwesomeIcon icon="chevron-left" color={"white"} />
+            <FontAwesomeIcon icon={getIcon()} color={"white"} />
           </Animated.View>
         </TouchableOpacity>
 
