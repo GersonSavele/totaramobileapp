@@ -20,7 +20,6 @@ import WebViewWrapper from "../WebViewWrapper";
 
 describe("WebViewWrapper", () => {
   beforeAll(() => {
-    jest.useFakeTimers();
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => ({}));
   });
 
