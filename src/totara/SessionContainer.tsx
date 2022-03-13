@@ -113,13 +113,7 @@ const SessionContainer = () => {
   React.useEffect(() => {
     const unsubscribe = event.addListener(EVENT_LISTENER, (param) => {
       if (param.event === Events.NetworkError) {
-        showMessage({
-          title: "",
-          text: param.payload?.errorMessage,
-          callback: () => {
-            onLogout(apolloClient, dispatch);
-          }
-        });
+        console.log("network error");
       } else if (param.event === Events.Logout) {
         onLogout(apolloClient, dispatch);
       }
