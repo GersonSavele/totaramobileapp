@@ -39,7 +39,6 @@ import AdditionalAction from "./auth/additional-actions/AdditionalAction";
 import AttemptSynchronizer from "@totara/activities/scorm/AttemptSynchronizer";
 import { useDispatch } from "react-redux";
 import event, { Events, EVENT_LISTENER } from "./lib/event";
-import { showMessage } from "./lib";
 
 const setupApolloClient = async ({ apiKey, host }) => {
   const cache = new InMemoryCache({
