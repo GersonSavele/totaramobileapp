@@ -1,5 +1,17 @@
 Totara Mobile App Changelog
 
+Release 1.1.5 (15th March 2022):
+=====================================
+
+Bug
+[MOB-1099] - Due date display for programs and certifications is incorrect
+[MOB-1101] - Browser login with Firefox in Android should work
+[MOB-1107] - SCORM video is not playing on iOS
+[MOB-1128] - Mobile app loses site settings when no connection to the internet
+
+Improvement
+[MOB-1102] - Include App Bundle release option for the mobile app
+
 Release 1.1.4 (21st Jan 2022):
 =====================================
 
