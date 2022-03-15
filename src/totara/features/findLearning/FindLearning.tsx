@@ -60,6 +60,7 @@ const FindLearningHeader = ({
         onCancel={onSearch}
         returnKeyType="search"
         showCancel={true}
+        cancelButtonTitle={translate("general.cancel")}
         containerStyle={findLearningStyles.searchBarContainer}
         inputContainerStyle={findLearningStyles.searchBar}
         inputStyle={findLearningStyles.searchBar}
