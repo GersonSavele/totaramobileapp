@@ -143,14 +143,8 @@ android {
         applicationId "com.totaramobileapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-<<<<<<< HEAD
         versionCode 78
         versionName "1.1.5"
-        multiDexEnabled true
-=======
-        versionCode 77
-        versionName "1.1.4"
->>>>>>> 8d5d61d1 (MOB-803: clean up code)
     }
     splits {
         abi {
