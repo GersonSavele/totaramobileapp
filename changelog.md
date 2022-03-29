@@ -1,11 +1,33 @@
 Totara Mobile App Changelog
 
+Release 1.1.6 (30th March 2022):
+=====================================
+
+Bug
+[MOB-1106] - Missing lang string in Totara Mobile
+
+Improvement
+[MOB-803] - Upgrade React Native lib to 0.67
+[MOB-1061] - Write Doc for How to contribute to the code base using our best practices and 
+standards
+[MOB-1086] - Make Firebase & Sentry configurations easier and clearer
+[MOB-1087] - Add unit test for AuthenticatedWebview, WebviewWrapper
+[MOB-1088] - Clarify .env documentation questions and doc location
+[MOB-1091] - Incompatibility with Xcode 13 and Xcode 12.5
+[MOB-1102] - Include App Bundle release option for the mobile app
+[MOB-1108] - Getting Started - Login screen navigation
+[MOB-1109] - Navigating Current Learning - Program and Course
+[MOB-1122] - Make sure the main unit tests are still green
+[MOB-1127] - Fix render timeout unit tests issues
+
+Technical documentation
+[MOB-1085] - Add detailed environment setup section in our public dev docs
+
 Release 1.1.5 (15th March 2022):
 =====================================
 
 Bug
 [MOB-1099] - Due date display for programs and certifications is incorrect
-[MOB-1101] - Browser login with Firefox in Android should work
 [MOB-1107] - SCORM video is not playing on iOS
 [MOB-1128] - Mobile app loses site settings when no connection to the internet
 
