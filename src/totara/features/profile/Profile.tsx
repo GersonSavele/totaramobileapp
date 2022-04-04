@@ -90,7 +90,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
     navigation.navigate(NAVIGATION.ABOUT);
   };
 
-  const useDefaultImage = profile ? profile.profileimage.indexOf("theme/image.php/") >= 0 : undefined; //TODO: WEIRD WORKAROUND WE SUPPOSE TO FIX ONE DAY
+  const { profileimage } = profile || {};
 
   return (
     <View style={[TotaraTheme.viewContainer]} testID={"test_ProfileContainer"}>
@@ -100,9 +100,9 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
             ...styles.avatarContainer,
             borderColor: theme.colorPrimary
           }}>
-          {profile && !useDefaultImage ? (
+          {profileimage ? (
             <ImageWrapper
-              url={profile.profileimage}
+              url={profileimage}
               style={styles.avatar}
               accessibilityLabel={translate("user_profile.accessibility_image")}
             />

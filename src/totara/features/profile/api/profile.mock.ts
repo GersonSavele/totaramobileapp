@@ -15,23 +15,44 @@
 import { userOwnProfile } from "@totara/features/profile/api/index";
 import { GraphQLError } from "graphql";
 
+const fullProfile = {
+  profile: {
+    __typename: "core_user",
+    email: "totara.user@totaralearning.com",
+    firstname: "Totara",
+    id: "999",
+    profileimage: "theme/image.php/basis/core/",
+    surname: "User",
+    username: "totarau"
+  }
+}
+
+const shortProfile = {
+  profile: {
+    __typename: "core_user",
+    firstname: "Totara",
+    surname: "User"
+  }
+}
+
 const profileMock = [
   {
     request: {
       query: userOwnProfile
     },
     result: {
-      data: {
-        profile: {
-          __typename: "core_user",
-          email: "totara.user@totaralearning.com",
-          firstname: "Totara",
-          id: "999",
-          profileimage: "theme/image.php/basis/core/",
-          surname: "User",
-          username: "totarau"
-        }
-      }
+      data: fullProfile
+    }
+  }
+];
+
+const shortProfileMock = [
+  {
+    request: {
+      query: userOwnProfile
+    },
+    result: {
+      data: shortProfile
     }
   }
 ];
@@ -47,4 +68,4 @@ const profileMockError = [
   }
 ];
 
-export { profileMock, profileMockError };
+export { profileMock, shortProfileMock, profileMockError };

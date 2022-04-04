@@ -14,9 +14,10 @@
  */
 
 import React from "react";
+import * as ReactRedux from "react-redux";
 import { render, act, fireEvent } from "@testing-library/react-native";
 import { MockedProvider } from "@apollo/client/testing";
-import { profileMock } from "@totara/features/profile/api/profile.mock";
+import { profileMock, shortProfileMock } from "@totara/features/profile/api/profile.mock";
 import Profile from "@totara/features/profile/Profile";
 import wait from "waait";
 import { PROFILE_TEST_IDS } from "@totara/lib/testIds";
@@ -34,6 +35,10 @@ const navigationMock = {
 };
 
 describe("Profile", () => {
+  beforeAll(() => {
+    jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => ({}));
+  });
+
   test("Should render loading", async () => {
     const tree = (
       <MockedProvider mocks={profileMock}>
@@ -45,7 +50,7 @@ describe("Profile", () => {
     const loadingComponent = getByTestId("test_ProfileLoading");
     expect(loadingComponent).toBeTruthy();
   });
-
+  
   test("Should render profile", async () => {
     const tree = (
       <MockedProvider mocks={profileMock}>
@@ -65,6 +70,24 @@ describe("Profile", () => {
 
     const test_ProfileUserEmail = getByTestId("test_ProfileUserEmail");
     expect(test_ProfileUserEmail.children[0]).toBe(profile.email);
+  });
+
+  test("Should render short profile", async () => {
+    const tree = (
+      <MockedProvider mocks={shortProfileMock}>
+        <Profile navigation={navigationMock.navigation} />
+      </MockedProvider>
+    );
+
+    const { getByTestId } = render(tree);
+    await act(async () => {
+      await wait(0);
+    });
+
+    const profile = profileMock[0].result.data.profile;
+
+    const test_ProfileUserDetails = getByTestId("test_ProfileUserDetails");
+    expect(test_ProfileUserDetails.children[0]).toBe(`${profile.firstname} ${profile.surname}`);
   });
 
   test("Should tap on logout button", async () => {
