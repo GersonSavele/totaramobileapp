@@ -106,6 +106,7 @@ const coreCertification = gql`
           duedateState: duedate_state
           native: mobile_coursecompat
           imageSrc: mobile_image
+          viewable
           __typename
         }
         __typename
