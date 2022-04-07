@@ -30,6 +30,8 @@ import { extractTargetId } from "../utils";
 import { activeOpacity } from "@totara/lib/styles/base";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
 import { SummaryContent } from "@totara/components/SummaryContent";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { TotaraTheme } from "@totara/theme/Theme";
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -42,11 +44,16 @@ const CourseSetItem = ({ item, navigation }: any) => {
   const onCloseRestriction = () => {
     setShowRestriction(!showRestriction);
   };
+  console.debug("item.fullname item.summary: ", item.fullname, item.summary);
+  // in case the endpoint doesn't return "viewable" field, then the course would be "viewable"
+  const viewable = item.viewable === undefined || item.viewable;
   return (
-    <View style={courseSet.container}>
+    <View style={[courseSet.container, !viewable && { backgroundColor: TotaraTheme.colorNeutral2 }]}>
       <TouchableOpacity
         key={item.id}
         testID={CL_TEST_IDS.COURSE_SET_ITEM}
+        disabled={!viewable}
+        style={{ opacity: viewable ? 1 : 0.6 }}
         onPress={() => {
           const targetId = extractTargetId(item.id);
           if (item.native) {
@@ -72,13 +79,19 @@ const CourseSetItem = ({ item, navigation }: any) => {
             <Text numberOfLines={1} style={courseSet.courseTitle}>
               {item.fullname}
             </Text>
-            <View style={{ marginTop: margins.marginM }}>
-              <SummaryContent numberOfLines={2} content={item.summary} contentType={item.summaryFormat} />
+            <View style={{ marginTop: margins.marginM, minHeight: margins.marginM }}>
+              {viewable && <SummaryContent numberOfLines={2} content={item.summary} contentType={item.summaryFormat} />}
             </View>
           </View>
         </View>
         {showRestriction && <NativeAccessRestriction onClose={onCloseRestriction} urlView={item.urlView} />}
       </TouchableOpacity>
+      {!viewable && (
+        <View style={courseSet.absoluteItem}>
+          <FontAwesomeIcon icon={"ban"} color={TotaraTheme.colorAlert} size={16} />
+          <Text style={{ marginLeft: margins.marginS }}>{translate("course_group.courses.unavailable_course")}</Text>
+        </View>
+      )}
     </View>
   );
 };

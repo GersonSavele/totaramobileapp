@@ -179,6 +179,7 @@
     },
     "courses": {
       "unavailable_sets": "unavailable set",
+      "unavailable_course": "Unavailable course",
       "compete": "Successfully completed!",
       "current_learning_button_title": "Current Learning"
     },

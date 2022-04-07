@@ -114,7 +114,7 @@ const courseSet = StyleSheet.create({
   },
   courseTitle: {
     ...TotaraTheme.textRegular,
-    fontWeight: fontWeights.fontWeightSemiBold,
+    fontWeight: fontWeights.fontWeightSemiBold
   },
   courseSetItemImage: {
     borderTopRightRadius: borderRadius.borderRadiusM,
@@ -122,7 +122,12 @@ const courseSet = StyleSheet.create({
     width: deviceScreen.width * 0.8,
     aspectRatio: 8 / 3 //To Do: this aspectRatio will be changed later
   },
-
+  absoluteItem: {
+    position: "absolute",
+    bottom: margins.marginL,
+    left: margins.marginL,
+    flexDirection: "row"
+  },
   headerBar: {
     flex: 1,
     borderTopRightRadius: borderRadius.borderRadiusM,

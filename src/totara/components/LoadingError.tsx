@@ -15,6 +15,7 @@
 
 import React from "react";
 import { Image, StyleSheet, View, Text, ImageSourcePropType } from "react-native";
+import { get } from "lodash";
 import PrimaryButton from "@totara/components/PrimaryButton";
 import { Images } from "@resources/images";
 import { paddings } from "@totara/theme/constants";
@@ -37,10 +38,15 @@ const getErrorFeedback = (error?: ApolloError) => {
       description: translate("content_error.description")
     };
   }
+  const errorMessage = get(
+    error,
+    "networkError.result.errors[0].message",
+    translate("general_error_feedback_modal.description")
+  );
   return {
     image: Images.generalError,
     title: translate("general_error_feedback_modal.title"),
-    description: translate("general_error_feedback_modal.description")
+    description: errorMessage
   };
 };
 

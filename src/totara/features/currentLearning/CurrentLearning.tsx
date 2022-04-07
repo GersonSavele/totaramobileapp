@@ -40,6 +40,8 @@ const CurrentLearning = () => {
   const { networkStatus, error, data, refetch } = useQuery(query, { notifyOnNetworkStatusChange: true });
   const theme = useContext(ThemeContext);
   const [listingOrientation, setListingOrientation] = useState<ListingOrientation>(ListingOrientation.Carousel);
+  // this is to make sure timing out errors are not shown for the functional error component
+  const hasNotTimedOut = error?.networkError?.statusCode !== 408;
 
   const onContentRefresh = () => {
     refetch();
@@ -100,7 +102,9 @@ const CurrentLearning = () => {
 
         <View style={[currentLearningStyles.contentWrap]}>
           <NetworkStatusIndicator />
-          {error && <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />}
+          {error && hasNotTimedOut && (
+            <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />
+          )}
           {currentLearning && currentLearning.length > 0 ? (
             listingOrientation === ListingOrientation.Carousel ? (
               <CurrentLearningCarousel currentLearning={currentLearning} onRefresh={onContentRefresh} />
