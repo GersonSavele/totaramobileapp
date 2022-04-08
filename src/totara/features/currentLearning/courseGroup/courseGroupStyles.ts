@@ -90,6 +90,13 @@ const courses = StyleSheet.create({
   }
 });
 
+const cardStyle = {
+  borderRadius: borderRadius.borderRadiusM,
+  margin: margins.marginL,
+  width: deviceScreen.width * 0.8,
+  backgroundColor: TotaraTheme.colorNeutral1
+};
+
 const courseSet = StyleSheet.create({
   courseSetHeader: {
     ...spacedFlexRow,
@@ -103,10 +110,11 @@ const courseSet = StyleSheet.create({
   container: {
     ...shadow.ios,
     ...shadow.android,
-    borderRadius: borderRadius.borderRadiusM,
-    margin: margins.marginL,
-    width: deviceScreen.width * 0.8,
-    backgroundColor: TotaraTheme.colorNeutral1
+    ...cardStyle
+  },
+  noShadowContainer: {
+    ...cardStyle,
+    backgroundColor: TotaraTheme.colorNeutral2
   },
   itemContainer: {
     borderRadius: borderRadius.borderRadiusM,

@@ -44,11 +44,10 @@ const CourseSetItem = ({ item, navigation }: any) => {
   const onCloseRestriction = () => {
     setShowRestriction(!showRestriction);
   };
-  console.debug("item.fullname item.summary: ", item.fullname, item.summary);
   // in case the endpoint doesn't return "viewable" field, then the course would be "viewable"
   const viewable = item.viewable === undefined || item.viewable;
   return (
-    <View style={[courseSet.container, !viewable && { backgroundColor: TotaraTheme.colorNeutral2 }]}>
+    <View style={[viewable && courseSet.container, !viewable && courseSet.noShadowContainer]}>
       <TouchableOpacity
         key={item.id}
         testID={CL_TEST_IDS.COURSE_SET_ITEM}
