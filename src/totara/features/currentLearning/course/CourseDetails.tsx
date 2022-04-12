@@ -36,7 +36,7 @@ const CourseDetails = ({ navigation, route }: any) => {
   const courseId = route?.params?.targetId || navigation.getParam("targetId");
   const passwordRequired = route?.params?.passwordRequired;
 
-  let queryVariables = { courseid: courseId, guestpw: false };
+  let queryVariables = { courseid: courseId };
   if (passwordRequired) {
     const guestPassword = route?.params?.guestPassword;
     queryVariables = { ...queryVariables, guestpw: guestPassword };
