@@ -34,10 +34,16 @@ import { DescriptionFormat } from "@totara/types/LearningItem";
 
 const CourseDetails = ({ navigation, route }: any) => {
   const courseId = route?.params?.targetId || navigation.getParam("targetId");
-  const guestPWD = route?.params?.guestPWD;
+  const passwordRequired = route?.params?.passwordRequired;
+
+  let queryVariables = { courseid: courseId, guestpw: false };
+  if (passwordRequired) {
+    const guestPassword = route?.params?.guestPassword;
+    queryVariables = { ...queryVariables, guestpw: guestPassword };
+  }
 
   const { networkStatus, error, data, refetch } = useQuery(coreCourse, {
-    variables: { courseid: courseId, guestpw: guestPWD },
+    variables: queryVariables,
     notifyOnNetworkStatusChange: true
   });
 
@@ -79,8 +85,8 @@ const CourseDetailsContent = ({
   loading
 }: CourseDetailsContentProps) => {
   const expanableSections =
-    courseDetails?.course?.sections.filter((section) => section.available && !isEmpty(section.data)) || [];
-  const expanableSectionIds = Array.from(expanableSections, (section) => section.id);
+    courseDetails?.course?.sections.filter(section => section.available && !isEmpty(section.data)) || [];
+  const expanableSectionIds = Array.from(expanableSections, section => section.id);
   const isSingleActivity = courseDetails?.course?.format === CourseFormat.singleActivity;
 
   const [showOverview, setShowOverview] = useState(true);

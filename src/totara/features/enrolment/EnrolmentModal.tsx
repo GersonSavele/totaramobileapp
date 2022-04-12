@@ -106,9 +106,12 @@ const GuestAccessWidget = ({
   const navigateToCourse = () => {
     const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
 
-    const guestPWD = passwordRequired && passwordState.password;
-
-    navigation.navigate(routeId, { targetId: courseId, guestPWD, courseGroupType: learningItemEnum.Course });
+    navigation.navigate(routeId, {
+      targetId: courseId,
+      guestPassword: passwordState.password,
+      passwordRequired,
+      courseGroupType: learningItemEnum.Course
+    });
   };
 
   const onPasswordChange = newValue => {
