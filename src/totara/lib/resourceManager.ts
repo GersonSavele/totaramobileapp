@@ -26,8 +26,9 @@ import {
   downloadFile,
   DownloadProgressCallbackResult,
   unlink,
+  isResumable,
   resumeDownload,
-  exists,
+  exists
 } from "react-native-fs";
 import { Resource } from "@totara/types";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
@@ -37,6 +38,7 @@ import { addResource, updateResource, deleteResource as storeDeleteResource } fr
 import { store } from "../store";
 import { showMessage } from ".";
 import { translate } from "@totara/locale";
+import { Platform } from "react-native";
 
 const onDownloadBegin = (id: string, res: DownloadBeginCallbackResult) => {
   updateResource({
@@ -82,10 +84,10 @@ const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, t
   const downloaderOptions = {
     fromUrl: resourceUrl,
     toFile: targetPathFile,
-    begin: (res) => {
+    begin: res => {
       onDownloadBegin(id, res);
     },
-    progress: (res) => {
+    progress: res => {
       onDownloadProgress(id, res);
     },
     background: true,
@@ -107,7 +109,7 @@ const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, t
 
   //download
   _downloadFile.promise
-    .then((response) => {
+    .then(response => {
       if (response.statusCode === 200) {
         updateResource({
           id: id,
@@ -122,17 +124,17 @@ const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, t
 
         return unzip(targetPathFile, targetExtractPath);
       } else {
-        showMessage({ title: "", text: translate("general.error_unknown") })
+        showMessage({ title: "", text: translate("general.error_unknown") });
       }
     })
-    .then((unzipped) => {
+    .then(unzipped => {
       updateResource({
         id: id,
         unzipPath: unzipped
       });
       return exists(targetPathFile);
     })
-    .then((fileExists) => {
+    .then(fileExists => {
       if (fileExists) return unlink(targetPathFile);
     })
     .catch(e => console.warn(e));
@@ -141,9 +143,9 @@ const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, t
 
 const deleteResource = (ids: string[]) => {
   const list = store.getState().resourceReducer.resources;
-  const filtered = list.filter((x) => ids.indexOf(x.id) >= 0 && x.unzipPath);
+  const filtered = list.filter(x => ids.indexOf(x.id) >= 0 && x.unzipPath);
   return Promise.all(
-    filtered.map(async (x) => {
+    filtered.map(async x => {
       if (await exists(x.unzipPath)) {
         return unlink(x.unzipPath);
       }
@@ -157,12 +159,17 @@ const resumeDownloads = () => {
   const resources = store.getState().resourceReducer.resources;
   const statesForResume = [ResourceState.Added, ResourceState.Errored, ResourceState.Downloading];
   const filteredJobId = resources
-    .filter((resource) => statesForResume.some((state) => state === resource.state))
-    .map((resource) => resource.jobId);
+    .filter(resource => statesForResume.some(state => state === resource.state))
+    .map(resource => resource.jobId);
 
-  filteredJobId.forEach((id) => {
-    resumeDownload(id);
-  });
+  if (Platform.OS === "ios") {
+    //this feature is only available to iOS
+    filteredJobId.forEach(async id => {
+      if (await isResumable(id)) {
+        resumeDownload(id);
+      }
+    });
+  }
 };
 
 const ResourceManager = {
