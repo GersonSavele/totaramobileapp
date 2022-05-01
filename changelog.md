@@ -1,5 +1,17 @@
 Totara Mobile App Changelog
 
+Release 1.1.7 (3rd May 2022):
+=====================================
+
+Bug
+[MOB-1135] - [Sentry report] App crashes when profileImage field is empty
+[MOB-1138] - [Sentry report] App crashes for Android resuming download
+[MOB-1139] - Find Learning - guest access should work for all cases
+[MOB-1146] - Runtime exception on Sentry report
+
+Improvement
+[MOB-1105] - Unavailable courses should be greyed out
+
 Release 1.1.6 (30th March 2022):
 =====================================
 
