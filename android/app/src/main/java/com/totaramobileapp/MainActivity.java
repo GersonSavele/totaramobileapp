@@ -13,4 +13,8 @@ public class MainActivity extends ReactActivity {
         return "TotaraMobileApp";
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(null);
+    }
 }
