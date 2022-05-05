@@ -353,7 +353,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.4.1):
     - React-Core
-  - react-native-sensitive-info (5.5.8):
+  - react-native-sensitive-info (5.5.1):
     - React
   - react-native-static-server (0.5.3):
     - GCDWebServer (~> 3.0)
@@ -756,7 +756,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-orientation-locker: 2da91e5391971dace445495821c899c111dcad7a
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
-  react-native-sensitive-info: 400c6e3d27945e15c8cddb5b4b92233c85ee06f8
+  react-native-sensitive-info: e05877777e50e8112b8728f69eab407c3dcf38ab
   react-native-static-server: d2e7392c8991b7e88a80ce163fe6e33eb8e63c26
   react-native-webview: 380c1a03ec94b7ed764dac8db1e7c9952d08c93a
   React-perflogger: 3c9bb7372493e49036f07a82c44c8cf65cbe88db

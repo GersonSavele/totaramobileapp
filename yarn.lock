@@ -8937,10 +8937,9 @@ react-native-screens@^3.12.0:
     react-native-gradle-plugin "^0.0.3"
     warn-once "^0.1.0"
 
-react-native-sensitive-info@^5.5.8:
-  version "5.5.8"
-  resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-5.5.8.tgz#6ebb67eed83d1c2867bd435630ef2c41eef204ed"
-  integrity sha512-p99oaEW4QG1RdUNrkvd/c6Qdm856dQw/Rk81f9fA6Y3DlPs6ADNdU+jbPuTz3CcOUJwuKBDNenX6LR9KfmGFEg==
+"react-native-sensitive-info@https://github.com/mCodex/react-native-sensitive-info.git#keystore":
+  version "5.5.1"
+  resolved "https://github.com/mCodex/react-native-sensitive-info.git#1575f8992ff7113443199bce5a3fb1e11392878d"
 
 react-native-size-matters@^0.3.1:
   version "0.3.1"
