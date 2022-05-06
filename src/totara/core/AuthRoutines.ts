@@ -159,7 +159,7 @@ export const createApolloClient = (apiKey: string, host: string, cache: any): Ap
       Log.warn("Forbidden error");
     } else {
       const errorMessage = get(networkError, "result.errors[0].message", translate("general.error_unknown"));
-      Log.warn("Network error status code: ", (networkError as ServerError).statusCode);
+      if (networkError) Log.warn("Network error status code: ", (networkError as ServerError).statusCode);
       Log.warn("Error message: ", errorMessage);
       const payload = { errorMessage };
       event.emit(EVENT_LISTENER, { event: Events.NetworkError, payload });
