@@ -16,6 +16,7 @@
 import React, { useContext } from "react";
 import { Image, TouchableOpacity, ImageStyle } from "react-native";
 import * as Progress from "react-native-progress";
+import { debounce } from "lodash";
 
 import { ThemeContext, gutter } from "@totara/theme";
 import { ResourceState } from "@totara/types/Resource";
@@ -84,14 +85,18 @@ const ResourceDownloader = ({
   testID,
   accessibilityLabel = ""
 }: ResourceDownloaderProps) => {
+  const disabled =
+    (resourceState === undefined && !onPress) ||
+    resourceState === ResourceState.Completed ||
+    resourceState === ResourceState.Downloading;
   return (
     <TouchableOpacity
       testID={testID}
-      onPress={() => {
+      onPress={debounce(() => {
         onPress && onPress();
-      }}
+      }, 1000)}
       accessibilityLabel={accessibilityLabel}
-      disabled={!onPress}
+      disabled={disabled}
       style={[{ padding: gutter, alignSelf: "center" }, style]}>
       <ResourceDownloaderComponent resourceState={resourceState} size={size} progress={progress} />
     </TouchableOpacity>
