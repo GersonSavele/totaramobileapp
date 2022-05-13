@@ -1,5 +1,15 @@
 Totara Mobile App Changelog
 
+Release 1.1.8 (16th May 2022):
+=====================================
+
+Bug
+[MOB-1147] - Sentry issue - typeError Cannot read property 'statusCode' of undefined
+
+Improvement
+[MOB-1141] - Android - Move api key to keystore
+[MOB-1143] - Bump android version so Janus security vulnerability concerns are addressed
+
 Release 1.1.7 (3rd May 2022):
 =====================================
 
