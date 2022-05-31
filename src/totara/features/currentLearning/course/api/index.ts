@@ -110,7 +110,7 @@ type FetchParam = {
 
 const XMLHttpRequestPostFetch = (host, body, apiKey) => {
   return new Promise(function (resolve, reject) {
-    // We decide to use XMLHttpRequest instead of fetch because fetch seems to have an issue being blocked by some missing certificate
+    // We decided to use XMLHttpRequest instead of fetch because fetch seems to have an issue being blocked by some missing certificate
     // please check https://github.com/facebook/react-native/issues/32931 and MOB-1144
     // eslint-disable-next-line no-undef
     var request = new XMLHttpRequest();
