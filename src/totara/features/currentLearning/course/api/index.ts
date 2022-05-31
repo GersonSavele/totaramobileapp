@@ -108,49 +108,58 @@ type FetchParam = {
   modtype?: string;
 };
 
-//TODO: This was copied from scorm/api. Might be worth to abstract here? and make a practice for fetch by id
-const fetchResource = ({ instanceId, apiKey, host }: FetchParam): Promise<Response> => {
-  // fetch from global
-  // eslint-disable-next-line no-undef
-  return fetch(config.apiUri(host), {
-    method: "POST",
-    body: JSON.stringify({
-      operationName: "totara_mobile_resource",
-      variables: { resourceid: instanceId }
-    }),
-    headers: {
-      Accept: "application/json",
-      [AUTH_HEADER_FIELD]: apiKey
-    }
-  }).then((response) => {
-    if (response.status === 200) {
-      return response.json();
-    } else {
-      throw new Error(response.status.toString());
-    }
+const XMLHttpRequestPostFetch = (host, body, apiKey) => {
+  return new Promise(function (resolve, reject) {
+    // We decide to use XMLHttpRequest instead of fetch because fetch seems to have an issue being blocked by some missing certificate
+    // please check https://github.com/facebook/react-native/issues/32931 and MOB-1144
+    // eslint-disable-next-line no-undef
+    var request = new XMLHttpRequest();
+    request.open("POST", config.apiUri(host));
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.setRequestHeader(AUTH_HEADER_FIELD, apiKey);
+
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 300) {
+        resolve(request.response);
+      } else {
+        reject({
+          status: request.status,
+          statusText: request.statusText
+        });
+      }
+    };
+
+    request.onerror = function () {
+      reject({
+        status: request.status,
+        statusText: request.statusText
+      });
+    };
+
+    request.send(body);
   });
 };
 
-const updateStateViewResource = ({ instanceId, modtype, apiKey, host }: FetchParam): Promise<Response> => {
-  // fetch from global
-  // eslint-disable-next-line no-undef
-  return fetch(config.apiUri(host), {
-    method: "POST",
-    body: JSON.stringify({
+const fetchResource = ({ instanceId, apiKey, host }: FetchParam): Promise<unknown> => {
+  return XMLHttpRequestPostFetch(
+    host,
+    JSON.stringify({
+      operationName: "totara_mobile_resource",
+      variables: { resourceid: instanceId }
+    }),
+    apiKey
+  );
+};
+
+const updateStateViewResource = ({ instanceId, modtype, apiKey, host }: FetchParam): Promise<unknown> => {
+  return XMLHttpRequestPostFetch(
+    host,
+    JSON.stringify({
       operationName: "totara_mobile_completion_activity_view",
       variables: { cmid: instanceId, activity: modtype }
     }),
-    headers: {
-      Accept: "application/json",
-      [AUTH_HEADER_FIELD]: apiKey
-    }
-  }).then((response) => {
-    if (response.status === 200) {
-      return response.json();
-    } else {
-      throw new Error(response.status.toString());
-    }
-  });
+    apiKey
+  );
 };
 
 export { coreCourse, courseSelfComplete, activitySelfComplete, fetchResource, updateStateViewResource };

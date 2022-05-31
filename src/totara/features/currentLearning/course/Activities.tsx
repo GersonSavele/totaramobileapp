@@ -280,9 +280,8 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
 
   const { host, apiKey } = useSession();
 
-  const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] = useMutation(
-    activitySelfComplete
-  );
+  const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] =
+    useMutation(activitySelfComplete);
   if (data) {
     courseRefreshCallBack!();
   }
@@ -344,15 +343,16 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   apiKey,
                   host
                 })
-                  .then((resourceData) => {
-                    const resource = get(resourceData, "data.resource");
+                  .then(resourceData => {
+                    const objResourceData = JSON.parse(resourceData);
+                    const resource = get(objResourceData, "data.resource");
                     if (resource) {
                       return updateStateViewResource({
                         apiKey,
                         host,
                         instanceId: item.id,
                         modtype: item.modtype
-                      }).then((activityViewResponse) => {
+                      }).then(activityViewResponse => {
                         const isLogged = get(activityViewResponse, "data.core_completion_activity_view", false);
                         if (!isLogged) {
                           console.warn("Activity logging failed");
@@ -364,7 +364,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                       throw new Error("Invalid activity resource data");
                     }
                   })
-                  .then((resource) => {
+                  .then(resource => {
                     const { mimetype, fileurl } = resource;
                     navigateTo({
                       navigate: navigation.navigate,
@@ -379,7 +379,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                       }
                     });
                   })
-                  .catch((e) => {
+                  .catch(e => {
                     console.warn(e);
                   });
                 break;
