@@ -91,6 +91,8 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
         loading={networkStatus === NetworkStatus.refetch}
       />
     );
+  } else {
+    return <Loading />;
   }
 };
 
