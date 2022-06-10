@@ -21,7 +21,7 @@ import React, { useContext } from "react";
 import { ThemeContext } from "@totara/theme";
 import { TotaraTheme } from "@totara/theme/Theme";
 import listViewStyles from "@totara/theme/listView";
-import { timeAgo } from "@totara/lib/tools";
+import { decodeHtmlCharCodes, timeAgo } from "@totara/lib/tools";
 import { translate } from "@totara/locale";
 
 type NotificationItemProps = {
@@ -60,7 +60,7 @@ const NotificationItem = ({
         )}
         <View style={{ flex: 1 }}>
           <Text testID={"test_title"} style={[styles.title, item.isRead && styles.read]}>
-            {item.subject}
+            {decodeHtmlCharCodes(item.subject)}
           </Text>
           <Text testID={"test_timeCreated"} style={styles.timeCreated}>
             {timeAgo(item.timeCreated)}
