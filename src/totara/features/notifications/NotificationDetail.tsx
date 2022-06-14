@@ -20,7 +20,7 @@ import { WebViewNavigation } from "react-native-webview";
 import { NotificationMessage } from "@totara/types";
 import { fontWeights, paddings } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { timeAgo } from "@totara/lib/tools";
+import { decodeHtmlCharCodes, timeAgo } from "@totara/lib/tools";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import WebViewWrapper from "@totara/auth/WebViewWrapper";
 import { useSession } from "@totara/core";
@@ -49,7 +49,7 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
     <View style={styles.mainContainer}>
       <View>
         <Text testID={"test_title"} style={styles.title}>
-          {subject}
+          {decodeHtmlCharCodes(subject)}
         </Text>
         <Text testID={"test_timeCreated"} style={styles.timeCreated}>
           {timeAgo(timeCreated)}
