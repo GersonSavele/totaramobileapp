@@ -1,5 +1,19 @@
 Totara Mobile App Changelog
 
+Release 1.1.9 (22nd Jun 2022):
+=====================================
+
+Bug
+MOB-1137 - [Sentry report] - CourseGroupDetails component crashes when returns null
+MOB-1144 - Video file resource doesn't open in mobile app
+MOB-1150 - Debounce sequence of downloads
+MOB-1151 - Android PDF viewing stopped working in 1.1.6
+MOB-1153 - Characters in notifications titles should not show as HTML entities
+
+Improvement
+MOB-1140 - Remove http access for Android devices
+MOB-1155 - Fullscreen should be allowed in Android Webviews
+
 Release 1.1.8 (16th May 2022):
 =====================================
 
