@@ -15,6 +15,7 @@
 
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
 import "react-native-gesture-handler/jestSetup";
+require("isomorphic-fetch");
 
 global.console = {
   log: jest.fn(),
@@ -40,8 +41,6 @@ jest.mock("react-native-reanimated", () => {
   Reanimated.default.call = () => {};
   return Reanimated;
 });
-
-// jest.mock("react-native/Libraries/Animated/src/NativeAnimatedHelper");
 
 jest.mock("react-native-gesture-handler", () => {
   return {
@@ -79,6 +78,7 @@ jest.mock("@apollo/client", () => ({
   ...jest.requireActual("@apollo/client"),
   useApolloClient: jest.fn(() => ({
     readQuery: jest.fn(() => {}),
+    query: jest.fn(() => Promise.resolve({})),
     writeQuery: jest.fn()
   }))
 }));
@@ -137,15 +137,15 @@ jest.mock("redux-persist", () => {
   };
 });
 
-jest.mock('react-native-orientation-locker', () => {
-	return {
-		addEventListener: jest.fn(),
-		removeEventListener: jest.fn(),
-		lockToPortrait: jest.fn(),
-		lockToLandscapeLeft: jest.fn(),
-		lockToLandscapeRight: jest.fn(),
-		unlockAllOrientations: jest.fn(),
-	};
+jest.mock("react-native-orientation-locker", () => {
+  return {
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    lockToPortrait: jest.fn(),
+    lockToLandscapeLeft: jest.fn(),
+    lockToLandscapeRight: jest.fn(),
+    unlockAllOrientations: jest.fn()
+  };
 });
 
 jest.mock("redux-persist-sensitive-storage", () => jest.fn());
@@ -186,5 +186,11 @@ jest.mock("@react-native-firebase/messaging", () => {
 jest.mock("@codler/react-native-keyboard-aware-scroll-view", () => {
   return {
     KeyboardAwareScrollView: jest.fn().mockImplementation(({ children }) => children)
+  };
+});
+
+jest.mock("react-native-localize", () => {
+  return {
+    findBestAvailableLanguage: jest.fn()
   };
 });

@@ -41,5 +41,7 @@ module.exports = {
   setupFiles: ["./node_modules/react-native-gesture-handler/jestSetup.js", "<rootDir>/jest.setup.js"],
   collectCoverageFrom: ["src/totara/**/*.{js,jsx,ts,tsx}"],
   setupFilesAfterEnv: ["<rootDir>setup-tests.js"],
-  transformIgnorePatterns: ["node_modules/(?!(jest-)?react-native|@react-native|@react-native-community|@react-navigation)"]
+  transformIgnorePatterns: [
+    "node_modules/(?!(jest-)?react-native|@react-native|@react-native-community|@react-navigation)"
+  ]
 };

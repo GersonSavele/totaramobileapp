@@ -14,6 +14,11 @@
  */
 
 import { config } from "@totara/lib";
+import { InMemoryCache, defaultDataIdFromObject } from "@apollo/client";
+import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createApolloClient } from "./AuthRoutines";
+import { LearningItem } from "../types";
 
 enum Compatible {
   Api = 1
@@ -34,4 +39,31 @@ const isCompatible = (version?: string) => {
   }
 };
 
-export { isValidApiVersion, isCompatible }
+const setupApolloClient = async ({ apiKey, host }) => {
+  const cache = new InMemoryCache({
+    dataIdFromObject: object => {
+      switch (object.__typename) {
+        case "totara_mobile_current_learning": {
+          const learningItem = object as unknown as LearningItem;
+          return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
+        }
+        default:
+          return defaultDataIdFromObject(object); // fall back to default for all other types
+      }
+    }
+  });
+
+  const newPersistor = new CachePersistor({
+    cache,
+    storage: new AsyncStorageWrapper(AsyncStorage)
+  });
+
+  const newApolloClient = createApolloClient(apiKey, host!, cache);
+
+  return {
+    apolloClient: newApolloClient,
+    persistor: newPersistor
+  };
+};
+
+export { isValidApiVersion, isCompatible, setupApolloClient };

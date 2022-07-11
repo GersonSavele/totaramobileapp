@@ -22,7 +22,7 @@ import { Session } from "@totara/types";
 const useSession = () => {
   const sessionSelector = useSelector((state: RootState) => state.sessionReducer);
   const [session, setSession] = useState<Session>(sessionSelector);
-  const { apiKey, host, siteInfo, core } = session;
+  const { apiKey, host, siteInfo, core } = session || {};
 
   useEffect(() => {
     setSession(sessionSelector);
@@ -37,8 +37,7 @@ const useSession = () => {
     endSession,
     setupHost,
     setCore
-  }
-}
-
+  };
+};
 
 export default useSession;
