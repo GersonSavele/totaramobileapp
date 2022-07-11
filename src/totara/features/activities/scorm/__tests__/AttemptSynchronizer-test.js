@@ -68,14 +68,14 @@ describe("syncScormAttempt", () => {
         saveAttempt: saveAttemptMock
       });
     } catch (error) {
-      expect(error.message).toEqual("Data sync failed.");
+      expect(error.message).toEqual(undefined);
     }
   });
 });
 
 describe("syncServerWithScormAttempt", () => {
   const scormIdMock = "18";
-  const tracksMock = ["first data set", "second data set", "third data set"];
+  const tracksMock = [{ tracks: ["first data set", "second data set", "third data set"] }];
   afterEach(() => {
     jest.clearAllMocks();
   });

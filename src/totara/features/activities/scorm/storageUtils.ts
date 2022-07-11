@@ -140,7 +140,7 @@ const setCompletedScormAttempt = ({
     if (nonExistingScos && nonExistingScos.length > 0) {
       newData = setCleanScormCommit({ scormBundles, scormId, attempt });
     } else {
-      if (!newCommitsData.some((x) => x === attempt)) {
+      if (!newCommitsData.some(x => x === attempt)) {
         newCommitsData.push(attempt);
         setWith(newData, `completed_attempts.[${scormId}]`, newCommitsData, Object);
       }
@@ -185,7 +185,7 @@ const getOfflineScormCommits = ({ client, onRetrieveAllData = retrieveAllData }:
 
         const commitScormAttempt = get(allOfflineData, `${[scormId]}.commits[${[attempt]}]`, undefined);
         if (commitScormAttempt) {
-          const commitTracks = values(commitScormAttempt).filter((value) => value);
+          const commitTracks = values(commitScormAttempt).filter(value => value);
           const commit = {
             scormId: scormId,
             attempt: parseInt(attempt),
@@ -206,9 +206,11 @@ const setCleanScormCommit = ({ scormBundles, scormId, attempt }: ScormCommitProp
   if (scormBundles && !isEmpty(scormBundles)) {
     let newData = { ...scormBundles };
 
-    const completedScormAttempts = get(newData, `completed_attempts.[${scormId}]`, undefined);
+    // Using `get` was keeping a reference to `newData`
+    // Just using `get` was not enough for creating a clone, so, I put in a new array using spread operator
+    const completedScormAttempts = [...get(newData, `completed_attempts.[${scormId}]`, undefined)];
     if (completedScormAttempts) {
-      remove(completedScormAttempts, (num) => num == attempt);
+      remove(completedScormAttempts, num => num == attempt);
       if (!completedScormAttempts) {
         newData = omit(newData, [`completed_attempts.[${scormId}]`]);
       } else {
@@ -216,9 +218,11 @@ const setCleanScormCommit = ({ scormBundles, scormId, attempt }: ScormCommitProp
       }
     }
     newData = omit(newData, [`[${scormId}].commits[${attempt}]`, `[${scormId}].cmi[${attempt}]`]);
-    const existingOfflineActivityData = get(newData, `[${scormId}].offlineAttempts`, []);
+    // Using `get` was keeping a reference to `newData`
+    // Just using `get` was not enough for creating a clone, so, I put in a new array using spread operator
+    const existingOfflineActivityData = [...get(newData, `[${scormId}].offlineAttempts`, [])];
     // record.attempt is string and attempt is number, so avoid checking type
-    remove(existingOfflineActivityData, (record) => record.attempt == attempt);
+    remove(existingOfflineActivityData, record => record.attempt == attempt);
     setWith(newData, `[${scormId}].offlineAttempts`, existingOfflineActivityData, Object);
     return newData;
   }

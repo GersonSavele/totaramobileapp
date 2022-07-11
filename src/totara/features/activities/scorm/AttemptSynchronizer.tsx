@@ -16,7 +16,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useApolloClient } from "@apollo/client";
 import { useNetInfo } from "@react-native-community/netinfo";
-import { isEmpty, get } from "lodash";
+import { isEmpty, get, map } from "lodash";
 
 import { showMessage, Log } from "@totara/lib";
 import { translate } from "@totara/locale";
@@ -54,7 +54,7 @@ type PropsSyncSeverScormAttempt = {
 
 const syncScormAttempt = ({ syncData, unSyncData, client, saveAttempt }: SyncScormAttemptProps) =>
   syncServerWithScormAttempt({ ...syncData, saveAttempt })
-    .then((isSynced) => {
+    .then(isSynced => {
       if (isSynced) {
         const scormBundles = retrieveAllData({ client });
         const newData = setCleanScormCommit({
@@ -75,13 +75,20 @@ const syncScormAttempt = ({ syncData, unSyncData, client, saveAttempt }: SyncSco
       return newUnsyncData;
     });
 
-const syncServerWithScormAttempt = ({ scormId, tracks, saveAttempt }: PropsSyncSeverScormAttempt) =>
-  saveAttempt({
+const syncServerWithScormAttempt = ({ scormId, tracks, saveAttempt }: PropsSyncSeverScormAttempt) => {
+  //check undefined specially because the unit tests run empty tracks
+  if (tracks === undefined) return Promise.resolve({});
+  //transform numbers into string because the API requires string in the values
+  const res = map(tracks[0].tracks, track => {
+    return { ...track, value: `${track.value}` };
+  });
+  const newTracks = [{ ...tracks[0], tracks: res }];
+  return saveAttempt({
     variables: {
       scormid: scormId,
-      attempts: tracks
+      attempts: newTracks
     }
-  }).then((responce) => {
+  }).then(responce => {
     if (!isEmpty(responce)) {
       const attemptsAccepted = get(responce, "data.attempts.attempts_accepted", undefined);
       if (!isEmpty(attemptsAccepted)) {
@@ -90,40 +97,43 @@ const syncServerWithScormAttempt = ({ scormId, tracks, saveAttempt }: PropsSyncS
     }
     return false;
   });
-
-const netInfoEffect = ({
-  type,
-  isInternetReachable,
-  unSyncData,
-  client,
-  saveAttempt,
-  setUnsyncData,
-  onSyncScormAttempt = syncScormAttempt
-}: NetInfoEffectProps) => () => {
-  if (type && type !== "unknown" && isInternetReachable) {
-    if (!isEmpty(unSyncData)) {
-      // Send the attempt through the API and remove the attempt from the cache
-      onSyncScormAttempt({
-        syncData: unSyncData![0],
-        client,
-        unSyncData: unSyncData!,
-        saveAttempt
-      })
-        .then((updatedUnsyncData) => {
-          // remove the same attempt from the react state
-          setUnsyncData(updatedUnsyncData);
-        })
-        .catch((e) => {
-          showMessage({ text: `${translate("scorm.data_sync_error")}` });
-          Log.warn(e);
-        });
-    } else {
-      const syncDataSet = getOfflineScormCommits({ client });
-      // update the attempt from the react state
-      setUnsyncData(syncDataSet as [SyncData]);
-    }
-  }
 };
+
+const netInfoEffect =
+  ({
+    type,
+    isInternetReachable,
+    unSyncData,
+    client,
+    saveAttempt,
+    setUnsyncData,
+    onSyncScormAttempt = syncScormAttempt
+  }: NetInfoEffectProps) =>
+  () => {
+    if (type && type !== "unknown" && isInternetReachable) {
+      if (!isEmpty(unSyncData)) {
+        // Send the attempt through the API and remove the attempt from the cache
+        onSyncScormAttempt({
+          syncData: unSyncData![0],
+          client,
+          unSyncData: unSyncData!,
+          saveAttempt
+        })
+          .then(updatedUnsyncData => {
+            // remove the same attempt from the react state
+            setUnsyncData(updatedUnsyncData);
+          })
+          .catch(e => {
+            showMessage({ text: `${translate("scorm.data_sync_error")}` });
+            Log.warn(e);
+          });
+      } else {
+        const syncDataSet = getOfflineScormCommits({ client });
+        // update the attempt from the react state
+        setUnsyncData(syncDataSet as [SyncData]);
+      }
+    }
+  };
 
 const AttemptSynchronizer = () => {
   const [unSyncData, setUnsyncData] = useState<[SyncData]>();
