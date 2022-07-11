@@ -15,13 +15,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import {
-  ApolloProvider,
-  ApolloClient,
-  NormalizedCacheObject,
-  InMemoryCache,
-  defaultDataIdFromObject
-} from "@apollo/client";
+import { ApolloProvider, ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -29,43 +23,16 @@ import { linkingHandler } from "./auth/authUtils";
 import SiteUrl from "./auth/manual/SiteUrl";
 import { AppStateListener, Loading } from "./components";
 import { useSession } from "./core";
-import { createApolloClient, deviceCleanup, fetchData, registerDevice } from "./core/AuthRoutines";
+import { deviceCleanup, fetchData, registerDevice } from "./core/AuthRoutines";
 import LocaleResolver from "./locale/LocaleResolver";
 import MainContainer from "./MainContainer";
-import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
-import { LearningItem } from "./types";
+import { CachePersistor } from "apollo3-cache-persist";
+import { setupApolloClient } from "./core/coreUtils";
 import { queryCore } from "./core/api/core";
 import AdditionalAction from "./auth/additional-actions/AdditionalAction";
-import AttemptSynchronizer from "@totara/activities/scorm/AttemptSynchronizer";
+import AttemptSynchronizer from "@totara/features/activities/scorm/AttemptSynchronizer";
 import { useDispatch } from "react-redux";
 import event, { Events, EVENT_LISTENER } from "./lib/event";
-
-const setupApolloClient = async ({ apiKey, host }) => {
-  const cache = new InMemoryCache({
-    dataIdFromObject: object => {
-      switch (object.__typename) {
-        case "totara_mobile_current_learning": {
-          const learningItem = object as unknown as LearningItem;
-          return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
-        }
-        default:
-          return defaultDataIdFromObject(object); // fall back to default for all other types
-      }
-    }
-  });
-
-  const newPersistor = new CachePersistor({
-    cache,
-    storage: new AsyncStorageWrapper(AsyncStorage)
-  });
-
-  const newApolloClient = createApolloClient(apiKey, host!, cache);
-
-  return {
-    apolloClient: newApolloClient,
-    persistor: newPersistor
-  };
-};
 
 const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dispatch }) => {
   if (url) {
@@ -94,22 +61,30 @@ const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dis
   }
 };
 
-const SessionContainer = () => {
+/**
+ * Session container contains all the elements when the user is either logged in OR logged out
+ *
+ *
+ * @param initialClient this is only used for testing purposes
+ * @returns either the log in flow of the main container
+ */
+const SessionContainer = ({ initialClient }: { initialClient: any }) => {
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
+  const initialIsLoading: boolean = !initialClient;
 
   const { initSession, host, apiKey, siteInfo, core, setCore } = useSession();
   const dispatch = useDispatch();
-  const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
+  const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>(initialClient);
   const [persistor, setPersistor] = useState<CachePersistor<NormalizedCacheObject>>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(initialIsLoading);
   const isFocused = useIsFocused();
 
   const onLogout = async (apolloClient, dispatch) => {
     deviceCleanup({ apolloClient, dispatch });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = event.addListener(EVENT_LISTENER, param => {
       if (param.event === Events.Logout) {
         onLogout(apolloClient, dispatch);
@@ -119,6 +94,9 @@ const SessionContainer = () => {
     return () => unsubscribe;
   }, [apolloClient]);
 
+  //please note this use effect utilises apollo client, which touches the storage and
+  //therefore can cause problems when running unit tests in parallel
+  //as a workaround, please run the test passing a mocked client
   useEffect(() => {
     if (apiKey && !apolloClient) {
       setupApolloClient({ apiKey, host }).then(({ apolloClient, persistor }) => {
@@ -142,9 +120,11 @@ const SessionContainer = () => {
           query: queryCore
         })
         .then(result => {
-          const core = result.data.me;
-          dispatch(setCore(core));
-          setIsLoading(false);
+          const core = result?.data?.me;
+          if (core) {
+            dispatch(setCore(core));
+            setIsLoading(false);
+          }
         })
         .catch(e => {
           console.warn("Failing to fetching user data: ", e);
