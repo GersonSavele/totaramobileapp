@@ -31,7 +31,7 @@ describe("syncScormAttempt", () => {
   const client = useApolloClient();
 
   const unSyncDataMock = [{ data: "first data" }, { data: "second data" }, { data: "third data" }];
-  const syncDataMock = unSyncDataMock[0];
+  const syncDataMock = { tracks: [unSyncDataMock[0]] };
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -68,7 +68,7 @@ describe("syncScormAttempt", () => {
         saveAttempt: saveAttemptMock
       });
     } catch (error) {
-      expect(error.message).toEqual(undefined);
+      expect(error.message).toEqual("Data sync failed.");
     }
   });
 });

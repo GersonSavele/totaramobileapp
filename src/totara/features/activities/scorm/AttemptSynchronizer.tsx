@@ -76,8 +76,6 @@ const syncScormAttempt = ({ syncData, unSyncData, client, saveAttempt }: SyncSco
     });
 
 const syncServerWithScormAttempt = ({ scormId, tracks, saveAttempt }: PropsSyncSeverScormAttempt) => {
-  //check undefined specially because the unit tests run empty tracks
-  if (tracks === undefined) return Promise.resolve({});
   //transform numbers into string because the API requires string in the values
   const res = map(tracks[0].tracks, track => {
     return { ...track, value: `${track.value}` };
