@@ -75,16 +75,20 @@ const syncScormAttempt = ({ syncData, unSyncData, client, saveAttempt }: SyncSco
       return newUnsyncData;
     });
 
-const syncServerWithScormAttempt = ({ scormId, tracks, saveAttempt }: PropsSyncSeverScormAttempt) => {
-  //transform numbers into string because the API requires string in the values
-  const res = map(tracks[0].tracks, track => {
+//transform numbers into string because the API requires string in the values
+const formatTracks = tracks => {
+  const res = map(tracks[0]?.tracks, track => {
     return { ...track, value: `${track.value}` };
   });
-  const newTracks = [{ ...tracks[0], tracks: res }];
+  return [{ ...tracks[0], tracks: res }];
+};
+
+const syncServerWithScormAttempt = ({ scormId, tracks, saveAttempt }: PropsSyncSeverScormAttempt) => {
+  const formattedTracks = tracks ? formatTracks(tracks) : [];
   return saveAttempt({
     variables: {
       scormid: scormId,
-      attempts: newTracks
+      attempts: formattedTracks
     }
   }).then(responce => {
     if (!isEmpty(responce)) {

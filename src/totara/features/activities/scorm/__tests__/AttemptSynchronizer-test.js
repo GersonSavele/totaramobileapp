@@ -71,6 +71,24 @@ describe("syncScormAttempt", () => {
       expect(error.message).toEqual("Data sync failed.");
     }
   });
+
+  it("tries to sync empty tracks", async () => {
+    const saveAttemptMock = jest.fn(() =>
+      Promise.resolve({
+        data: { attempts: { attempts_accepted: [false] } }
+      })
+    );
+    try {
+      await syncScormAttempt({
+        syncData: { tracks: [] },
+        unSyncData: unSyncDataMock,
+        client,
+        saveAttempt: saveAttemptMock
+      });
+    } catch (error) {
+      expect(error.message).toEqual("Data sync failed.");
+    }
+  });
 });
 
 describe("syncServerWithScormAttempt", () => {
