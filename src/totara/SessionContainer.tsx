@@ -68,7 +68,7 @@ const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dis
  * @param initialClient this is only used for testing purposes
  * @returns either the log in flow of the main container
  */
-const SessionContainer = ({ initialClient }: { initialClient: any }) => {
+const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<NormalizedCacheObject> }) => {
   // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
   const initialIsLoading: boolean = !initialClient;
