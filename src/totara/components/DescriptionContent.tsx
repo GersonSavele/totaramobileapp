@@ -15,6 +15,7 @@
 
 import React from "react";
 import { Linking, StyleSheet, Text } from "react-native";
+import { isEmpty } from "lodash";
 
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import { WekaContent } from "./weka/WekaContent";
@@ -31,13 +32,22 @@ type DescriptionContentProps = {
   source?: any;
 };
 
-const onLoadWithRequestExternalBrowser = (event) => {
+const onLoadWithRequestExternalBrowser = event => {
   if (isValidUrlText(event.url)) {
     Linking.openURL(event.url);
     return false;
   }
   return true;
 };
+
+const getWebview = ({ source, container, testID }) => (
+  <WebView
+    source={source}
+    style={container}
+    onShouldStartLoadWithRequest={onLoadWithRequestExternalBrowser}
+    testID={testID || DESCRIPTIONCONTENT_TEST_IDS.WEB}
+  />
+);
 
 // This will return component accordingly contentType(HTML, JSON_EDITOR or PLAIN_TEXT)
 export const DescriptionContent = ({ contentType, content, testID, source }: DescriptionContentProps) => {
@@ -48,18 +58,17 @@ export const DescriptionContent = ({ contentType, content, testID, source }: Des
     case DescriptionFormat.jsonEditor:
       return <WekaContent content={content} testID={testID || DESCRIPTIONCONTENT_TEST_IDS.WEKA} style={container} />;
     case DescriptionFormat.html:
-      if (source && source.html) {
-        return (
-          <WebView
-            source={source}
-            style={container}
-            onShouldStartLoadWithRequest={onLoadWithRequestExternalBrowser}
-            testID={testID || DESCRIPTIONCONTENT_TEST_IDS.WEB}
-          />
-        );
+      if (!isEmpty(source?.html)) {
+        return getWebview({ source, container, testID });
       }
     // caution: break is omitted intentionally
     default:
+      // This is a workaround because the api should return contentType as html
+      // but sometimes it doesn't so it falls under this default.
+      // As soon as the Api fixes this, you may remove this if condition.
+      if (!isEmpty(source?.html)) {
+        return getWebview({ source, container, testID });
+      }
       return (
         <Text testID={testID || DESCRIPTIONCONTENT_TEST_IDS.TEXT} style={{ ...TotaraTheme.textSmall, ...container }}>
           {content}
