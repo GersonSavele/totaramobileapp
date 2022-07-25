@@ -65,7 +65,7 @@ export const DescriptionContent = ({ contentType, content, testID, source }: Des
     default:
       // This is a workaround because the api should return contentType as html
       // but sometimes it doesn't so it falls under this default.
-      // As soon as the Api fixes this, you may remove this if condition.
+      // As soon as the Api adjusts this, you may remove this if condition.
       if (!isEmpty(source?.html)) {
         return getWebview({ source, container, testID });
       }
