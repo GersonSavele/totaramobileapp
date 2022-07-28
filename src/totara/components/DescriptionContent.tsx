@@ -57,15 +57,9 @@ export const DescriptionContent = ({ contentType, content, testID, source }: Des
   switch (contentType) {
     case DescriptionFormat.jsonEditor:
       return <WekaContent content={content} testID={testID || DESCRIPTIONCONTENT_TEST_IDS.WEKA} style={container} />;
-    case DescriptionFormat.html:
-      if (!isEmpty(source?.html)) {
-        return getWebview({ source, container, testID });
-      }
-    // caution: break is omitted intentionally
     default:
-      // This is a workaround because the api should return contentType as html
-      // but sometimes it doesn't so it falls under this default.
-      // As soon as the Api adjusts this, you may remove this if condition.
+      // according to comment on MOB-1168:
+      // If there is a 'fullmessagehtml'(source.html) field you should use that, and it will always be HTML
       if (!isEmpty(source?.html)) {
         return getWebview({ source, container, testID });
       }
