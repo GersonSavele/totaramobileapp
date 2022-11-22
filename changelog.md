@@ -1,5 +1,19 @@
 Totara Mobile App Changelog
 
+Release 1.1.10 (24th Nov 2022):
+=====================================
+
+Bug
+MOB-1168 - Links in notifications are not clickable
+MOB-1174 - Cannot sync SCORM data
+MOB-1175 - [iOS] "Mobile browser" authentication doesn't work
+
+Task
+MOB-1095 - Upgrade Jenkins machine to Xcode 13 and Mac OS Monterey if needed
+
+Improvement
+MOB-1176 - Unit test review for Session Container component 
+
 Release 1.1.9 (22nd Jun 2022):
 =====================================
 
