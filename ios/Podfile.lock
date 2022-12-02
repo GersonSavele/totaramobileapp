@@ -431,7 +431,7 @@ PODS:
     - React
   - RNDeviceInfo (5.6.5):
     - React
-  - RNFastImage (8.5.11):
+  - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
@@ -774,7 +774,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
-  RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
+  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBApp: 06c8447270d295edc431bccd55970d8711a07a42
   RNFBMessaging: 8e3575bb0303b43a852bf5decbe99c3272035048
   RNFS: fc610f78fdf8bfc89a9e5cc2f898519f4dba1002
@@ -794,6 +794,6 @@ SPEC CHECKSUMS:
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ef7eb14071cd9b067dffb0d9ddb125fb9c72e432
+PODFILE CHECKSUM: c651ec32070213412e9c607d9602ab5b191158a2
 
 COCOAPODS: 1.11.3
