@@ -22,6 +22,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+ios/.xcode.env.local
 xcuserdata/
 
 # Android/IntelliJ
@@ -31,6 +32,9 @@ xcuserdata/
 local.properties
 *.iml
 *.hprof
+.cxx/
+*.keystore
+!debug.keystore
 
 # node.js
 #
@@ -38,10 +42,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# BUCK
-buck-out/
-\.buckd/
-*.keystore
+#android
 /android/.project
 /android/.settings/org.eclipse.buildship.core.prefs
 /android/app/.classpath
@@ -55,9 +56,10 @@ buck-out/
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/
 
-*/fastlane/report.xml
-*/fastlane/Preview.html
-*/fastlane/screenshots
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
 # Bundle artifact
 *.jsbundle
@@ -88,8 +90,12 @@ nodejs-assets/nodejs-project/sample-package.json
 junit.xml
 coverage
 
-# CocoaPods
+# Ruby / CocoaPods
 /ios/Pods/
+/vendor/bundle/
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
 
 # iOS AppStore key
 fastlane/appstore-key.json
