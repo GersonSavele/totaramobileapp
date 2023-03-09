@@ -1,5 +1,12 @@
 Totara Mobile App Changelog
 
+Release 1.1.11 (13th Mar 2023):
+=====================================
+
+Bug
+[MOB-1187] - Certificates dont download in mobile app
+[MOB-1189] - Error when accessing SCORM that has been downloaded in mobile app
+
 Release 1.1.10 (24th Nov 2022):
 =====================================
 
