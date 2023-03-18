@@ -17,17 +17,19 @@ import { StyleSheet, Text, View } from "react-native";
 import moment from "moment";
 import React from "react";
 import { paddings } from "@totara/theme/constants";
-import { translate } from "@totara/locale";
+import { getLocale, translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { isInvalidDueDate } from "../utils";
+import { formatDistance } from 'date-fns';
+import * as locales from 'date-fns/locale';
 
 /**
  * Component to render dueDate and change style depending on the dueDateState
  * it would also offer a button fire a function when state is on warning or danger
  */
 type Props = {
-  dueDate?: Date;
+  dueDate?: Date | string | number;
   dueDateState?: string;
 };
 
@@ -42,8 +44,11 @@ const getDueDateModeStyle = (dueDateState?: string) => {
   }
 };
 
-const DueDateState = ({ dueDate, dueDateState }: Props) => {
+const DueDateState = ({ dueDate = "", dueDateState }: Props) => {
   const dueDateModeStyle = getDueDateModeStyle(dueDateState);
+
+  const formatedDistance = formatDistance(new Date(dueDate), new Date(), { locale: locales[getLocale()] })
+
   if (isInvalidDueDate({ dueDate, dueDateState })) return null;
   return (
     <View style={[styles.container, dueDateModeStyle]}>
@@ -52,7 +57,7 @@ const DueDateState = ({ dueDate, dueDateState }: Props) => {
           ? translate("current_learning.overdue_by")
           : translate("current_learning.due_in")}
         &nbsp;
-        <Text style={{ fontWeight: "bold" }}>{moment(dueDate).toNow(true)}&nbsp;</Text>
+        <Text style={{ fontWeight: "bold" }}>{formatedDistance}&nbsp;</Text>
       </Text>
       <Text style={[TotaraTheme.textXSmall, { color: TotaraTheme.textColorLight }]}>
         ({moment(dueDate).format(DATE_FORMAT)})

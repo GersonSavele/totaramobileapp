@@ -106,7 +106,7 @@ const getCompletionStatus = ({ available, completion, status }: GetCompletionSta
   }
 };
 
-const isInvalidDueDate = ({ dueDate, dueDateState }: { dueDate?: Date; dueDateState?: String }) => {
+const isInvalidDueDate = ({ dueDate, dueDateState }: { dueDate?: Date | string | number; dueDateState?: String }) => {
   return isEmpty(dueDate) || (isEmpty(dueDateState) && moment().diff(moment(dueDate)) > 0);
 };
 

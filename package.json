@@ -73,6 +73,7 @@
     "apollo-link-logger": "^1.2.3",
     "apollo-link-timeout": "^4.0.0",
     "apollo3-cache-persist": "^0.9.1",
+    "date-fns": "^2.29.3",
     "graphql": "^15.0.0",
     "i18n-js": "^3.3.0",
     "lodash": "^4.17.15",

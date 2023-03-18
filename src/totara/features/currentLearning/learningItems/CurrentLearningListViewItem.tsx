@@ -15,8 +15,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { translate } from "@totara/locale";
-import moment from "moment";
+import { getLocale, translate } from "@totara/locale";
 import { learningItemToRouteMap, navigateTo } from "@totara/lib/navigation";
 import { ImageWrapper, ProgressCircle } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
@@ -26,6 +25,8 @@ import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/consta
 import { extractTargetId, isInvalidDueDate } from "../utils";
 import { activeOpacity, flexGrow } from "@totara/lib/styles/base";
 import { useNavigation } from "@react-navigation/native";
+import { formatDistance } from 'date-fns';
+import * as locales from 'date-fns/locale';
 
 type ListViewItemProps = {
   item: any;
@@ -49,9 +50,11 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
     const text =
       dueDateState === "danger" ? translate("current_learning.overdue_by") : translate("current_learning.due_in");
 
+    const formatedDistance = formatDistance(new Date(dueDate), new Date(), { locale: locales[getLocale()] })
+
     return (
       <Text testID={"test_dueDate"} style={{ color: color }}>
-        {`${text} ${moment(dueDate).toNow(true)}`}
+        {`${text} ${formatedDistance}`}
       </Text>
     );
   };
