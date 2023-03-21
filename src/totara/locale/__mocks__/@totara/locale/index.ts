@@ -19,4 +19,6 @@ import { Scope, TranslateOptions } from "i18n-js";
 // on test we don't need to check translations
 const translate = (scope: Scope, options?: TranslateOptions) => `translated ${scope} with ${options}`;
 
-export { translate };
+const getLocale = () => "en";
+
+export { translate, getLocale };

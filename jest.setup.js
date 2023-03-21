@@ -194,3 +194,9 @@ jest.mock("react-native-localize", () => {
     findBestAvailableLanguage: jest.fn()
   };
 });
+
+jest.mock("date-fns", () => {
+  return {
+    formatDistance: jest.fn()
+  };
+});
