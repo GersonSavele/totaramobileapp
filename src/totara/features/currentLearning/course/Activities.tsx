@@ -251,6 +251,7 @@ const ActivityList = ({
     <View>
       <TextContentWrapper sectionSummary={sectionSummary} summaryFormat={summaryFormat} />
       {data!.map((item: Activity) => {
+        if (!item.available && isEmpty(item.availablereason)) return <View/>;
         return (
           <View key={item.id}>
             {item.completionstatus === completionStatus.unknown || item.completionstatus === null || !item.available ? (
