@@ -25,7 +25,7 @@ import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/consta
 import { extractTargetId, isInvalidDueDate } from "../utils";
 import { activeOpacity, flexGrow } from "@totara/lib/styles/base";
 import { useNavigation } from "@react-navigation/native";
-import { formatDistance } from 'date-fns';
+import { formatDistance, parseISO } from 'date-fns';
 import * as locales from 'date-fns/locale';
 
 type ListViewItemProps = {
@@ -50,8 +50,7 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
     const text =
       dueDateState === "danger" ? translate("current_learning.overdue_by") : translate("current_learning.due_in");
 
-    const formatedDistance = formatDistance(new Date(dueDate), new Date(), { locale: locales[getLocale()] })
-
+    const formatedDistance = formatDistance(new Date(parseISO(`${dueDate}`)), new Date(), { locale: locales[getLocale()] });
     return (
       <Text testID={"test_dueDate"} style={{ color: color }}>
         {`${text} ${formatedDistance}`}

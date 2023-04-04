@@ -21,7 +21,7 @@ import { getLocale, translate } from "@totara/locale";
 import { DATE_FORMAT } from "@totara/lib/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { isInvalidDueDate } from "../utils";
-import { formatDistance } from 'date-fns';
+import { formatDistance, parseISO } from 'date-fns';
 import * as locales from 'date-fns/locale';
 
 /**
@@ -45,11 +45,9 @@ const getDueDateModeStyle = (dueDateState?: string) => {
 };
 
 const DueDateState = ({ dueDate = "", dueDateState }: Props) => {
-  const dueDateModeStyle = getDueDateModeStyle(dueDateState);
-
-  const formatedDistance = formatDistance(new Date(dueDate), new Date(), { locale: locales[getLocale()] })
-
   if (isInvalidDueDate({ dueDate, dueDateState })) return null;
+  const dueDateModeStyle = getDueDateModeStyle(dueDateState);
+  const formatedDistance = formatDistance(new Date(parseISO(`${dueDate}`)), new Date(), { locale: locales[getLocale()] });
   return (
     <View style={[styles.container, dueDateModeStyle]}>
       <Text style={[TotaraTheme.textXSmall, { color: TotaraTheme.textColorLight }]}>
