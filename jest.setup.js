@@ -197,6 +197,7 @@ jest.mock("react-native-localize", () => {
 
 jest.mock("date-fns", () => {
   return {
-    formatDistance: jest.fn()
+    formatDistance: jest.fn(),
+    parseISO: jest.fn()
   };
 });
