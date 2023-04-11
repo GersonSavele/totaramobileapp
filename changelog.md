@@ -1,5 +1,13 @@
 Totara Mobile App Changelog
 
+Release 1.1.12 (11th April 2023):
+=====================================
+
+Bug
+[MOB-1207] - Some language strings are not translated
+[MOB-1208] - Fix iOS when attempting to communicate with the camera
+[MOB-1209] - Hidden Access restriction condition displayed
+
 Release 1.1.11 (13th Mar 2023):
 =====================================
 
