@@ -94,7 +94,7 @@
     "react-native-orientation-locker": "^1.4.0",
     "react-native-paper": "^4.7.1",
     "react-native-progress": "^5.0.0",
-    "react-native-reanimated": "^3.0.0",
+    "react-native-reanimated": "2.17.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.18.2",
     "react-native-sensitive-info": "https://github.com/mCodex/react-native-sensitive-info.git#keystore",
