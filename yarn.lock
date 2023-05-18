@@ -1651,9 +1651,18 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
-"@dr.pogodin/react-native-static-server@github:birdofpreyru/react-native-static-server":
-  version "0.5.3"
-  resolved "https://codeload.github.com/birdofpreyru/react-native-static-server/tar.gz/64e9fec0a1ea93239129e6eea486e25783343f08"
+"@dr.pogodin/js-utils@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@dr.pogodin/js-utils/-/js-utils-0.0.3.tgz#f736a3d621316ba6cb22b3d654e03c28164bd103"
+  integrity sha512-JVzEA0L/ozjzrS4ioBUngKrvwhMbyLd22JGSISvhwWYZpLqZxFNSaq/RdBF62Ejh43lpB+RPLN+D3Z7Om/c9qw==
+
+"@dr.pogodin/react-native-static-server@^0.7.10":
+  version "0.7.10"
+  resolved "https://registry.yarnpkg.com/@dr.pogodin/react-native-static-server/-/react-native-static-server-0.7.10.tgz#5d5ce53c4b0157e26df0682208d15ce5f8b1b9c4"
+  integrity sha512-6ha8nSp6CRzRYPCPEmVo+sUDB/J1FY4UBbSzsoJs74sbt4t4UcWs4K/U4aRsPmTKrF5Ja7e8f8ZacBb0P+FwdA==
+  dependencies:
+    "@dr.pogodin/js-utils" "^0.0.3"
+    react-native-fs "^2.20.0"
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -9886,6 +9895,14 @@ react-native-fs@^2.16.6:
   version "2.19.0"
   resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.19.0.tgz#5747eb52a5a3d2b31c8fb76f5f8044d0a855122c"
   integrity sha512-Yl09IbETkV5UJcBtVtBLttyTmiAhJIHpGA/LvredI5dYiw3MXMMVu42bzELiuH2Bwj7F+qd0fMNvgfBDiDxd2A==
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^3.0.0"
+
+react-native-fs@^2.20.0:
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.20.0.tgz#05a9362b473bfc0910772c0acbb73a78dbc810f6"
+  integrity sha512-VkTBzs7fIDUiy/XajOSNk0XazFE9l+QlMAce7lGuebZcag5CnjszB+u4BdqzwaQOdcYb5wsJIsqq4kxInIRpJQ==
   dependencies:
     base-64 "^0.1.0"
     utf8 "^3.0.0"

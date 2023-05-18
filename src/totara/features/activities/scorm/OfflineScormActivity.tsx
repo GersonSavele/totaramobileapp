@@ -14,9 +14,9 @@
  */
 
 import React, { useEffect, useState, useRef } from "react";
-import { Text, BackHandler } from "react-native";
+import { Text, BackHandler, Platform } from "react-native";
 // @ts-ignore //TODO: THERE'S NO TYPED FOR REACT-NATIVE-STATIC-SERVER https://github.com/futurepress/react-native-static-server/issues/67
-import StaticServer from "@dr.pogodin/react-native-static-server";
+import Server from "@dr.pogodin/react-native-static-server";
 
 import OfflineScormPlayer from "./components/OfflineScormPlayer";
 import { Package, Scorm } from "@totara/types/Scorm";
@@ -78,7 +78,6 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
 
   useEffect(
     loadedScormEffect({
-      server,
       setUrl,
       scormPackageData,
       setScormPackageData,
@@ -145,17 +144,27 @@ const packageEffect = ({ url, scos, scorm, attempt, client, defaultSco, setJsCod
   }
 };
 
-const loadedScormEffect = ({ server, setUrl, scormPackageData, setScormPackageData, backAction }) => () => {
+const loadedScormEffect = ({ setUrl, scormPackageData, setScormPackageData, backAction }) => () => {
+  let server: null | Server;
   setupOfflineScormPlayer()
-    .then(offlineServerPath => {
+    .then(async offlineServerPath => {
       if (!isEmpty(offlineServerPath)) {
-        return startServer(offlineServerPath, server);
+        let fileDir: string = Platform.select({
+          android: offlineServerPath,
+          ios: offlineServerPath,
+          default: ''
+        });
+        server = new Server({ fileDir, stopInBackground: true });
+
+        const res = await server?.start();
+        if (res && server) {
+          setUrl(res);
+        }
+
+        // return startServer(offlineServerPath, server);
       } else {
-        throw new Error("Cannot fine offline server details.");
+        throw new Error("Cannot find offline server details.");
       }
-    })
-    .then((serverOrigin: string) => {
-      setUrl(serverOrigin);
     })
     .catch(e => {
       Log.debug(e.messageData);
@@ -170,7 +179,17 @@ const loadedScormEffect = ({ server, setUrl, scormPackageData, setScormPackageDa
     });
 
   const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-  return () => backHandler.remove();
+  // return () => backHandler.remove();
+
+  return () => {
+    (async () => {
+      backHandler.remove();
+      server?.stop();
+
+      server = null;
+      setUrl('');
+    })();
+  };
 };
 
 const stopServer = (server: React.MutableRefObject<any>, setUrl) => {
@@ -181,16 +200,23 @@ const stopServer = (server: React.MutableRefObject<any>, setUrl) => {
   setUrl(undefined);
 };
 
-const startServer = (path: string, server: React.MutableRefObject<any>) => {
-  if (server && server.current) {
-    server.current.stop();
-    server.current = null;
-  }
-  server.current = new StaticServer(0, path, {
-    keepAlive: true,
-    localOnly: true
+const startServer = (path: string) => {
+  // if (server && server.current) {
+  //   server.current.stop();
+  //   server.current = null;
+  // }
+  let fileDir: string = Platform.select({
+    android: path,
+    ios: path,
+    default: ''
   });
-  return server.current.start();
+  let server: null | Server = new Server({ fileDir, stopInBackground: true });
+  // const serverId = server.id;
+  // server.current = new Server(0, path, {
+  //   keepAlive: true,
+  //   localOnly: true
+  // });
+  // return server.current.start();
 };
 
 const onPlayerMessageHandler = ({ client, maxGrade, gradeMethod }) => (messageData: any) => {
