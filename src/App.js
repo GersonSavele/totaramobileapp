@@ -58,7 +58,7 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
 const App: () => React$Node = () => {
   return (
     <SafeAreaProvider>
-      <Root>
+      {/* <Root> */}
         <Provider store={store}>
           <PersistGate loading={<Loading />} persistor={persistor}>
             <OrientationLocker orientation={PORTRAIT} />
@@ -67,7 +67,7 @@ const App: () => React$Node = () => {
             </ThemeProvider>
           </PersistGate>
         </Provider>
-      </Root>
+      {/* </Root> */}
     </SafeAreaProvider>
   );
 };

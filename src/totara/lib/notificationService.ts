@@ -13,21 +13,21 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import messaging from "@react-native-firebase/messaging";
+// import messaging from "@react-native-firebase/messaging";
 
 const registerPushNotifications = async () => {
-  try {
-    await messaging().requestPermission();
-  } catch (error) {
-    console.debug("Notifications Permission status error:", error);
-    return;
-  }
-  await unregisterPushNotification();
-  return messaging().getToken(undefined, "*");
+  // try {
+  //   await messaging().requestPermission();
+  // } catch (error) {
+  //   console.debug("Notifications Permission status error:", error);
+  //   return;
+  // }
+  // await unregisterPushNotification();
+  // return messaging().getToken(undefined, "*");
 };
 
 const unregisterPushNotification = async () => {
-  return messaging().deleteToken(undefined, "*");
+  // return messaging().deleteToken(undefined, "*");
 };
 
 export { registerPushNotifications, unregisterPushNotification };
