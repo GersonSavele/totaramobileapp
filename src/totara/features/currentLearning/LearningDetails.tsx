@@ -21,7 +21,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { CourseGroup, Course, LearningItem } from "@totara/types";
 import { margins } from "@totara/theme/constants";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
-import Animated, { interpolate, Extrapolate, Value, event } from "react-native-reanimated";
+import Animated, { interpolateNode, Extrapolate, Value, event } from "react-native-reanimated";
 import LinearGradient from "react-native-linear-gradient";
 import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
 import DueDateState from "./components/DueDateState";
@@ -183,7 +183,7 @@ const LearningDetails = ({
             height: HEIGHT,
             transform: [
               {
-                scale: interpolate(scrollValue, {
+                scale: interpolateNode(scrollValue, {
                   inputRange: [-HEIGHT, 0],
                   outputRange: [3, 1],
                   extrapolate: Extrapolate.CLAMP

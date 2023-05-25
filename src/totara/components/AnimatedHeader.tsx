@@ -19,7 +19,7 @@ import { translate } from "@totara/locale";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, StatusBar, Platform } from "react-native";
-import Animated, { Extrapolate, interpolate, call, useCode } from "react-native-reanimated";
+import Animated, { Extrapolate, interpolateNode, call, useCode } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const STATUSBAR_HEIGHT = 50;
@@ -43,13 +43,13 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
     });
   }, [scrollValue]);
 
-  const transparentToOpaqueInterpolate = interpolate(scrollValue, {
+  const transparentToOpaqueInterpolate = interpolateNode(scrollValue, {
     inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT],
     outputRange: [0, 1],
     extrapolate: Extrapolate.CLAMP
   });
 
-  const opaqueToTransparentInterpolate = interpolate(scrollValue, {
+  const opaqueToTransparentInterpolate = interpolateNode(scrollValue, {
     inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT],
     outputRange: [1, 0],
     extrapolate: Extrapolate.CLAMP
