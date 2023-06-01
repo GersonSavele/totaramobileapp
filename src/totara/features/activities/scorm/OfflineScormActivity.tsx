@@ -160,8 +160,6 @@ const loadedScormEffect = ({ setUrl, scormPackageData, setScormPackageData, back
         if (res && server) {
           setUrl(res);
         }
-
-        // return startServer(offlineServerPath, server);
       } else {
         throw new Error("Cannot find offline server details.");
       }
@@ -179,8 +177,6 @@ const loadedScormEffect = ({ setUrl, scormPackageData, setScormPackageData, back
     });
 
   const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-  // return () => backHandler.remove();
-
   return () => {
     (async () => {
       backHandler.remove();
@@ -198,25 +194,6 @@ const stopServer = (server: React.MutableRefObject<any>, setUrl) => {
     server.current = null;
   }
   setUrl(undefined);
-};
-
-const startServer = (path: string) => {
-  // if (server && server.current) {
-  //   server.current.stop();
-  //   server.current = null;
-  // }
-  let fileDir: string = Platform.select({
-    android: path,
-    ios: path,
-    default: ''
-  });
-  let server: null | Server = new Server({ fileDir, stopInBackground: true });
-  // const serverId = server.id;
-  // server.current = new Server(0, path, {
-  //   keepAlive: true,
-  //   localOnly: true
-  // });
-  // return server.current.start();
 };
 
 const onPlayerMessageHandler = ({ client, maxGrade, gradeMethod }) => (messageData: any) => {
