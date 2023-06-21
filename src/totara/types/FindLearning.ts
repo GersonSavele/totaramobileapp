@@ -24,6 +24,7 @@ export interface CatalogItem {
   summary?: string;
   summaryFormat: string;
   viewUrl?: string;
+  native: boolean;
 }
 
 export interface FindLearningPage {

@@ -28,6 +28,7 @@ const queryFindLearning = gql`
         mobileImage: image_url
         summary(format: MOBILE)
         summaryFormat: summary_format
+        native: mobile_coursecompat
         __typename
       }
     }
@@ -47,6 +48,7 @@ const queryViewCatalog = gql`
         title
         mobile_image: image_url
         description
+        native: mobile_coursecompat
         __typename
       }
     }
