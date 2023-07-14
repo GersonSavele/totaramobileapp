@@ -31,6 +31,7 @@ import { formatPageData, onSearch } from "./utils";
 import { isEmpty } from "lodash";
 import { Images } from "@resources/images";
 import { MessageBar } from "@totara/components";
+import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
 
 type FindLearningHeaderProps = {
   onChangeText: (text: string) => void;
@@ -108,19 +109,27 @@ const FindLearning = () => {
     });
   }, [searchData.pointer]);
 
+  const [showRestriction, setShowRestriction] = useState(false);
+  const [urlViewTarget, setUrlViewTarget] = useState<string>("");
+
   const onItemTap = ({ item }: { item: CatalogItem }) => {
-    const { itemid, title, mobileImage, summary, summaryFormat, viewUrl, itemType } = item;
+    const { itemid, title, mobileImage, summary, summaryFormat, viewUrl = "", itemType, native } = item;
     switch (itemType) {
       case learningItemEnum.Course: {
-        navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
-          itemid,
-          title,
-          mobileImage,
-          summary,
-          summaryFormat,
-          viewUrl,
-          itemType
-        });
+        if (native === false) {
+          setUrlViewTarget(viewUrl);
+          setShowRestriction(true);
+        } else {//if native is undefined or true // comparing with undefined if the api is not compatible
+          navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
+            itemid,
+            title,
+            mobileImage,
+            summary,
+            summaryFormat,
+            viewUrl,
+            itemType
+          });
+        }
         break;
       }
       case learningItemEnum.Resource:
@@ -138,6 +147,10 @@ const FindLearning = () => {
         break;
       }
     }
+  };
+
+  const onClose = () => {
+    setShowRestriction(false);
   };
 
   const learningItem = useCallback(
@@ -182,6 +195,7 @@ const FindLearning = () => {
           (!loading && searchData.key === "" && searchData.pointer === 0 && <NoFindLearning />) || null
         }
       />
+      {showRestriction && <NativeAccessRestriction onClose={onClose} urlView={urlViewTarget} />}
     </SafeAreaView>
   );
 };
