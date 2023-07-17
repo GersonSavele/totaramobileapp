@@ -24,9 +24,11 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSApplicationCategoryType</key>
+  <key>NSCrossWebsiteTrackingUsageDescription</key>
+  <string></string>
+  <key>LSApplicationCategoryType</key>
 	<string></string>
-	<key>LSRequiresIPhoneOS</key>
+  <key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
