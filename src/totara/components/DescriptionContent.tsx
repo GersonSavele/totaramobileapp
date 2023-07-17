@@ -42,7 +42,7 @@ const onLoadWithRequestExternalBrowser = event => {
 
 const getWebview = ({ source, container, testID }) => (
   <WebView
-    source={source}
+    source={{ html: `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body>${source?.html}</body></html>` }}
     style={container}
     onShouldStartLoadWithRequest={onLoadWithRequestExternalBrowser}
     testID={testID || DESCRIPTIONCONTENT_TEST_IDS.WEB}
