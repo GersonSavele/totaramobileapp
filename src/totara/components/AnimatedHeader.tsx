@@ -19,7 +19,13 @@ import { translate } from "@totara/locale";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, StatusBar, Platform } from "react-native";
-import Animated, { Extrapolate, interpolateNode, call, useCode } from "react-native-reanimated";
+import Animated, {
+  Extrapolation,
+  interpolate,
+  interpolateColor,
+  useAnimatedStyle
+  // call, useCode
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const STATUSBAR_HEIGHT = 50;
@@ -29,30 +35,45 @@ const HEIGHT = TOPNAVI_OFFSET + STATUSBAR_HEIGHT;
 
 type AnimatedHeaderProps = { title: string; subTitle?: string; scrollValue?: any; leftAction: any };
 
-const getIcon = () => Platform.OS === "ios" ? "chevron-left" : "arrow-left";
+const getIcon = () => (Platform.OS === "ios" ? "chevron-left" : "arrow-left");
 
 const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHeaderProps) => {
   const safeArea = useSafeAreaInsets();
   const isFloating = !!scrollValue;
   const [dark, setDark] = useState(false);
 
-  useCode(() => {
-    return call([scrollValue], (values) => {
-      const [value] = values;
-      setDark(TOPNAVI_OFFSET < value);
-    });
-  }, [scrollValue]);
+  //TODO: migrate this code to new API
+  // useCode(() => {
+  //   return call([scrollValue], (values) => {
+  //     const [value] = values;
+  //     setDark(TOPNAVI_OFFSET < value);
+  //   });
+  // }, [scrollValue]);
 
-  const transparentToOpaqueInterpolate = interpolateNode(scrollValue, {
-    inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT],
-    outputRange: [0, 1],
-    extrapolate: Extrapolate.CLAMP
+  const transparentToWhiteInterpolate = useAnimatedStyle(() => {
+    return {
+      backgroundColor: interpolateColor(
+        scrollValue.value,
+        [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT],
+        ["transparent", "white"]
+      )
+    };
   });
 
-  const opaqueToTransparentInterpolate = interpolateNode(scrollValue, {
-    inputRange: [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT],
-    outputRange: [1, 0],
-    extrapolate: Extrapolate.CLAMP
+  const transparentToOpaqueInterpolate = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollValue.value, [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT], [0, 1], {
+        extrapolateRight: Extrapolation.CLAMP
+      })
+    };
+  });
+
+  const animatedStyle2 = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollValue.value, [TOPNAVI_OFFSET, TOPNAVI_OFFSET + STATUSBAR_HEIGHT], [1, 0], {
+        extrapolateRight: Extrapolation.CLAMP
+      })
+    };
   });
 
   useFocusEffect(
@@ -68,15 +89,17 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
     <>
       <Animated.View
         testID={"animated-header-container"}
-        style={{
-          paddingTop: safeArea.top,
-          marginBottom: isFloating ? -STATUSBAR_HEIGHT - safeArea.top : 0,
-          height: STATUSBAR_HEIGHT + safeArea.top,
-          backgroundColor: Animated.color(255, 255, 255, transparentToOpaqueInterpolate), //RGB color, 255 being white
-          opacity: 1,
-          zIndex: 200,
-          flexDirection: "row"
-        }}>
+        style={[
+          {
+            paddingTop: safeArea.top,
+            marginBottom: isFloating ? -STATUSBAR_HEIGHT - safeArea.top : 0,
+            height: STATUSBAR_HEIGHT + safeArea.top,
+            opacity: 1,
+            zIndex: 200,
+            flexDirection: "row"
+          },
+          transparentToWhiteInterpolate
+        ]}>
         <TouchableOpacity
           accessibilityLabel={translate("general.accessibility_go_back")}
           accessibilityRole={"button"}
@@ -85,19 +108,15 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
           style={styles.leftAction}>
           <Animated.View
             testID={"animated-header-backbutton-black"}
-            style={[styles.backIcon, { opacity: transparentToOpaqueInterpolate }]}>
+            style={[styles.backIcon, transparentToOpaqueInterpolate]}>
             <FontAwesomeIcon icon={getIcon()} color={"black"} />
           </Animated.View>
-          <Animated.View
-            testID={"animated-header-backbutton-white"}
-            style={[styles.backIcon, { opacity: opaqueToTransparentInterpolate }]}>
+          <Animated.View testID={"animated-header-backbutton-white"} style={[styles.backIcon, animatedStyle2]}>
             <FontAwesomeIcon icon={getIcon()} color={"white"} />
           </Animated.View>
         </TouchableOpacity>
 
-        <Animated.View
-          testID={"animated-header-title-container"}
-          style={{ flex: 1, opacity: transparentToOpaqueInterpolate }}>
+        <Animated.View testID={"animated-header-title-container"} style={[{ flex: 1 }, transparentToOpaqueInterpolate]}>
           <Text numberOfLines={1} testID={"animated-header-title"} style={styles.title}>
             {title}
           </Text>

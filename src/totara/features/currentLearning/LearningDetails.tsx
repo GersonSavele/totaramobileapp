@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
 import { RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import ImageElement from "./components/ImageElement";
 import { learningDetailsStyles } from "./currentLearningStyles";
@@ -21,7 +21,12 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { CourseGroup, Course, LearningItem } from "@totara/types";
 import { margins } from "@totara/theme/constants";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
-import Animated, { interpolateNode, Extrapolate, Value, event } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  useSharedValue,
+  useAnimatedScrollHandler,
+  Extrapolation
+} from "react-native-reanimated";
 import LinearGradient from "react-native-linear-gradient";
 import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
 import DueDateState from "./components/DueDateState";
@@ -129,7 +134,7 @@ const LearningDetails = ({
   navigation,
   loading
 }: LearningDetailsProps) => {
-  const scrollValue = useRef(new Value(0)).current;
+  const scrollValue = useSharedValue(0);
   const [isRefreshing, setRefreshing] = useState(false);
 
   const { fullname } = item;
@@ -154,6 +159,13 @@ const LearningDetails = ({
 
   const gradientShadowZIndex = 100;
 
+  //TODO: use Animated.useEvent and useNativeDriver
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: e => {
+      scrollValue.value = e.contentOffset.y;
+    }
+  });
+
   return (
     <View style={learningDetailsStyles.container}>
       <AnimatedHeader
@@ -172,9 +184,7 @@ const LearningDetails = ({
             tintColor={TotaraTheme.colorNeutral2}
             onRefresh={onUserPullToRefresh}></RefreshControl>
         }
-        onScroll={event([{ nativeEvent: { contentOffset: { y: scrollValue } } }], {
-          useNativeDriver: true
-        })}
+        onScroll={scrollHandler}
         scrollEventThrottle={16}>
         <Animated.View
           style={{
@@ -183,10 +193,8 @@ const LearningDetails = ({
             height: HEIGHT,
             transform: [
               {
-                scale: interpolateNode(scrollValue, {
-                  inputRange: [-HEIGHT, 0],
-                  outputRange: [3, 1],
-                  extrapolate: Extrapolate.CLAMP
+                scale: interpolate(scrollValue.value, [-HEIGHT, 0], [3, 1], {
+                  extrapolateRight: Extrapolation.CLAMP
                 })
               }
             ]
