@@ -33,6 +33,8 @@ import AdditionalAction from "./auth/additional-actions/AdditionalAction";
 import AttemptSynchronizer from "@totara/features/activities/scorm/AttemptSynchronizer";
 import { useDispatch } from "react-redux";
 import event, { Events, EVENT_LISTENER } from "./lib/event";
+import { changeLocale, setUpLocale } from "./locale";
+import { DEFAULT_LANGUAGE } from "./lib/constants";
 
 const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dispatch }) => {
   if (url) {
@@ -85,6 +87,10 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
   };
 
   useEffect(() => {
+    if (core) changeLocale(core?.user?.lang || DEFAULT_LANGUAGE);
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = event.addListener(EVENT_LISTENER, param => {
       if (param.event === Events.Logout) {
         onLogout(apolloClient, dispatch);
@@ -122,6 +128,12 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
         .then(result => {
           const core = result?.data?.me;
           if (core) {
+            const languagePreference = core?.user?.lang || DEFAULT_LANGUAGE;
+            setUpLocale({
+              client: apolloClient,
+              languagePreference: languagePreference,
+              onFinish: () => changeLocale(languagePreference)
+            });
             dispatch(setCore(core));
             setIsLoading(false);
           }
@@ -173,10 +185,8 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
 
   return (
     <ApolloProvider client={apolloClient!}>
-      <LocaleResolver>
-        <MainContainer />
-        <AttemptSynchronizer />
-      </LocaleResolver>
+      <MainContainer />
+      <AttemptSynchronizer />
     </ApolloProvider>
   );
 };

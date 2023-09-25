@@ -62,7 +62,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const { createWebview, host, uri } = this.props;
+    const { createWebview, host, uri, languagePreference } = this.props;
 
     this.setState({ ...this.state, error: undefined, isLoading: true });
 
@@ -71,6 +71,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
         if (response.data) {
           this.setState({
             host: host,
+            languagePreference: languagePreference,
             isLoading: false,
             webviewSecret: response.data.create_webview,
             isAuthenticated: true
@@ -104,7 +105,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
 
   render() {
     const { innerRef } = this.props;
-    const { isLoading, error, webviewSecret, agent, host } = this.state;
+    const { isLoading, error, webviewSecret, agent, host, languagePreference } = this.state;
 
     if (isLoading) return <Loading testID={TEST_IDS.LOADING} />;
 
@@ -122,7 +123,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
       <WebView
         source={{
           uri: config.webViewUri(host!),
-          headers: { [WEBVIEW_SECRET]: webviewSecret }
+          headers: { [WEBVIEW_SECRET]: webviewSecret, "Accept-Language": `${languagePreference}` }
         }}
         style={{ flex: 1 }}
         userAgent={agent}
@@ -148,6 +149,7 @@ type DeleteWebViewResponse = {
 
 type Props = {
   host: string;
+  languagePreference: string;
   uri: string;
   createWebview: MutationFunction<CreateWebViewResponse, { url: string }>;
   deleteWebview: MutationFunction<DeleteWebViewResponse, { secret: string }>;
@@ -157,7 +159,8 @@ type Props = {
 };
 
 type OuterProps = {
-  host: string;
+  host: string | undefined;
+  languagePreference: string;
   uri: string;
   onNavigationStateChange?: (navState: WebViewNavigation) => void;
   onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
@@ -165,6 +168,7 @@ type OuterProps = {
 
 type State = {
   host?: string;
+  languagePreference: string;
   error?: Error;
   isLoading: boolean;
   isAuthenticated: boolean;

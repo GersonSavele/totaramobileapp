@@ -20,6 +20,7 @@ import { View, BackHandler } from "react-native";
 import { AuthenticatedWebView } from "./AuthenticatedWebView";
 import WebviewToolbar from "@totara/components/WebviewToolbar";
 import useSession from "@totara/core/UseSession";
+import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
 
 type WebViewWrapperProps = {
   uri: string;
@@ -36,7 +37,7 @@ const WebViewWrapper = ({
 }: WebViewWrapperProps) => {
   const refWebview = useRef<WebView>(null);
   const [navState, setNavState] = useState<WebViewNavigation>();
-  const { host } = useSession();
+  const { host, core } = useSession();
 
   const onNavigationStateChange = (navState: WebViewNavigation) => {
     setNavState(navState);
@@ -58,6 +59,7 @@ const WebViewWrapper = ({
           ref={refWebview}
           onNavigationStateChange={onNavigationStateChange}
           onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
+          languagePreference={core?.user?.lang || DEFAULT_LANGUAGE}
         />
       </View>
       <WebviewToolbar

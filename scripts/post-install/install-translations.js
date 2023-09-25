@@ -8,7 +8,7 @@ const unzipper = require("unzipper");
 const path = require("path");
 
 const LANGS_FOLDER = path.join(__dirname, "../..", "src/totara/locale/languages/");
-const LANGS_URL = "https://download.totaralms.com/lang/T13/";
+const LANGS_URL = "https://download.totaralms.com/lang/T15/";
 const ZIP_FILE_NAME = "mobile.json.zip";
 
 const downloadURL = `${LANGS_URL}${ZIP_FILE_NAME}`;
@@ -29,14 +29,14 @@ async function main() {
     .promise();
 
   const folder = fs.readdirSync(LANGS_FOLDER);
-  const filter = folder.filter((x) => path.extname(x).toLowerCase() === ".json" && x !== "all.json");
+  const filter = folder.filter(x => path.extname(x).toLowerCase() === ".json" && x !== "all.json");
 
   console.log(`${filter.length} translations have been found.`);
   console.log(filter);
 
   const body = {};
 
-  filter.forEach((x) => {
+  filter.forEach(x => {
     console.log(x);
     const lang = x.split(".")[0];
     const content = fs.readFileSync(LANGS_FOLDER + x, "utf8");
