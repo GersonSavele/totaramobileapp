@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SessionContainer Should render SessionContainer navigation stack 1`] = `
+<ApolloProvider
+  client={
+    Object {
+      "query": [MockFunction],
+      "readQuery": [MockFunction],
+      "writeQuery": [MockFunction],
+    }
+  }
+>
+  <MainContainer />
+  <AttemptSynchronizer />
+</ApolloProvider>
+`;

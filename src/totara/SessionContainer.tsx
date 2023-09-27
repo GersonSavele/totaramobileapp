@@ -24,7 +24,6 @@ import SiteUrl from "./auth/manual/SiteUrl";
 import { AppStateListener, Loading } from "./components";
 import { useSession } from "./core";
 import { deviceCleanup, fetchData, registerDevice } from "./core/AuthRoutines";
-import LocaleResolver from "./locale/LocaleResolver";
 import MainContainer from "./MainContainer";
 import { CachePersistor } from "apollo3-cache-persist";
 import { setupApolloClient } from "./core/coreUtils";

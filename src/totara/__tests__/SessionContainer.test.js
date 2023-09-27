@@ -18,6 +18,7 @@ import * as ReactRedux from "react-redux";
 import RNNative from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import { useApolloClient } from "@apollo/client";
+import { shallow } from "enzyme";
 import SessionContainer from "../SessionContainer";
 
 describe("SessionContainer", () => {
@@ -47,7 +48,7 @@ describe("SessionContainer", () => {
     // SessionContainer utilises apollo client, which touches the storage and
     //therefore can cause problems when running unit tests in parallel
     //as a workaround, this runs the test passing a client
-    const { container } = render(<SessionContainer initialClient={client} />);
-    expect(container).toBeTruthy();
+    const wrapper = shallow(<SessionContainer initialClient={client} />);
+    expect(wrapper).toMatchSnapshot();
   });
 });
