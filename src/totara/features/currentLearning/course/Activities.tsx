@@ -251,7 +251,7 @@ const ActivityList = ({
     <View>
       <TextContentWrapper sectionSummary={sectionSummary} summaryFormat={summaryFormat} />
       {data!.map((item: Activity) => {
-        if (!item.available && isEmpty(item.availablereason)) return <View/>;
+        if (!item.available && isEmpty(item.availablereason)) return <View />;
         return (
           <View key={item.id}>
             {item.completionstatus === completionStatus.unknown || item.completionstatus === null || !item.available ? (
@@ -410,7 +410,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
               <View></View>
             )
           ) : (
-            <ListItem item={item} />
+            <ListItem text={item.name?.trim()} />
           )}
         </TouchableOpacity>
       </View>
@@ -431,7 +431,12 @@ const ListItemLock = ({ item }: { item: Activity }) => {
         <TouchableOpacity style={activitiesStyles.itemTouchableContent} onPress={onClose}>
           <View style={[activitiesStyles.itemContentWrapper, activitiesStyles.itemLockContentWrapper]}>
             <CompletionIcon completion={item.completion} status={item.completionstatus} available={item.available} />
-            <ListItem item={item} />
+            {item.descriptionformat === DescriptionFormat.jsonEditor && item.name?.trim() && (
+              <ListItem text={item.name?.trim()} />
+            )}
+            {item.descriptionformat !== DescriptionFormat.jsonEditor && item.description?.trim() && (
+              <ListItem text={item.description?.trim()} />
+            )}
           </View>
         </TouchableOpacity>
         {show && (
@@ -447,11 +452,11 @@ const ListItemLock = ({ item }: { item: Activity }) => {
   );
 };
 
-const ListItem = ({ item }: { item: Activity }) => {
+const ListItem = ({ text }: { text: string }) => {
   return (
     <View style={activitiesStyles.itemTextContainer}>
       <Text numberOfLines={1} style={activitiesStyles.itemTitle}>
-        {item.name.trim()}
+        {text}
       </Text>
     </View>
   );
