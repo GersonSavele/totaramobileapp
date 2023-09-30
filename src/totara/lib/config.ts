@@ -24,7 +24,7 @@ const defaultConfig = {
   userAgent: "TotaraMobileApp",
   apiUri: (host: string) => `${host}/totara/mobile/api.php`,
   infoUri: (host: string) => `${host}/totara/mobile/site_info.php`,
-  loginUri: (host: string) => `${host}/login/index.php`,
+  loginUri: (host: string) => `${host}/login/index.php?mobile_initiated=1`,
   findLearningUri: (host: string) => `${host}/totara/catalog/index.php`,
   deviceRegisterUri: (host: string) => `${host}/totara/mobile/device_register.php`,
   webViewUri: (host: string) => `${host}/totara/mobile/device_webview.php`,

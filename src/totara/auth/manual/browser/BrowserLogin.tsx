@@ -27,6 +27,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSession } from "@totara/core";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { config } from "@totara/lib";
 
 const BrowserLogin = () => {
   // eslint-disable-next-line no-undef
@@ -79,7 +80,7 @@ const BrowserLogin = () => {
       };
     }, [])
   );
-
+  const loginUrl = config.loginUri(siteUrl);
   return (
     <InfoModal
       title={translate("browser_login.title")}
@@ -89,7 +90,7 @@ const BrowserLogin = () => {
       <PrimaryButton
         text={translate("browser_login.primary_title")}
         onPress={() => {
-          Linking.openURL(siteUrl);
+          Linking.openURL(loginUrl);
         }}
         icon="external-link-alt"
       />
