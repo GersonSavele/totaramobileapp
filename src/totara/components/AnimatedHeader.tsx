@@ -14,18 +14,11 @@
  */
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { useFocusEffect } from "@react-navigation/native";
 import { translate } from "@totara/locale";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
-import React, { useCallback, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, StatusBar, Platform } from "react-native";
-import Animated, {
-  Extrapolation,
-  interpolate,
-  interpolateColor,
-  useAnimatedStyle
-  // call, useCode
-} from "react-native-reanimated";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View, Platform } from "react-native";
+import Animated, { Extrapolation, interpolate, interpolateColor, useAnimatedStyle } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const STATUSBAR_HEIGHT = 50;
@@ -42,7 +35,7 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
   const isFloating = !!scrollValue;
   const [dark, setDark] = useState(false);
 
-  //TODO: migrate this code to new API
+  // TODO: migrate this code to new API OR assess remove this
   // useCode(() => {
   //   return call([scrollValue], (values) => {
   //     const [value] = values;
@@ -75,15 +68,6 @@ const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHe
       })
     };
   });
-
-  useFocusEffect(
-    useCallback(() => {
-      StatusBar.setBarStyle(dark ? "dark-content" : "light-content", true);
-      return () => {
-        StatusBar.setBarStyle("dark-content", true);
-      };
-    }, [])
-  );
 
   return (
     <>

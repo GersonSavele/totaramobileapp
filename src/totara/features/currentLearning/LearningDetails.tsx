@@ -21,12 +21,7 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import { CourseGroup, Course, LearningItem } from "@totara/types";
 import { margins } from "@totara/theme/constants";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
-import Animated, {
-  interpolate,
-  useSharedValue,
-  useAnimatedScrollHandler,
-  Extrapolation
-} from "react-native-reanimated";
+import Animated, { useSharedValue, useAnimatedScrollHandler } from "react-native-reanimated";
 import LinearGradient from "react-native-linear-gradient";
 import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
 import DueDateState from "./components/DueDateState";
@@ -159,7 +154,6 @@ const LearningDetails = ({
 
   const gradientShadowZIndex = 100;
 
-  //TODO: use Animated.useEvent and useNativeDriver
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: e => {
       scrollValue.value = e.contentOffset.y;
@@ -190,14 +184,7 @@ const LearningDetails = ({
           style={{
             flex: 1,
             alignItems: "center",
-            height: HEIGHT,
-            transform: [
-              {
-                scale: interpolate(scrollValue.value, [-HEIGHT, 0], [3, 1], {
-                  extrapolateRight: Extrapolation.CLAMP
-                })
-              }
-            ]
+            height: HEIGHT
           }}>
           <View style={learningDetailsStyles.imageViewContainer}>
             <ImageElement image={image} itemType={itemType} imageStyle={learningDetailsStyles.imageView} />

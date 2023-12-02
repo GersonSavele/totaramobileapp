@@ -68,6 +68,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
           program_id: targetId
         }
       }).then(({ data }) => {
+        //TODO: investigate - somehow the API is not returning "totara_mobile_program_view"
         if (!data?.totara_mobile_program_view) {
           console.warn("Programme/Certificate reporting failed.");
         }
