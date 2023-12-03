@@ -63,6 +63,8 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.10",
     "@react-native-cookies/cookies": "github:react-native-cookies/cookies",
+    "@react-native-firebase/app": "^18.7.1",
+    "@react-native-firebase/messaging": "^18.7.1",
     "@react-navigation/compat": "^5.3.10",
     "@react-navigation/material-bottom-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",

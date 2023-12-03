@@ -1,3 +1,5 @@
+$RNFirebaseAsStaticFramework = true # toggle this to true (and set 'use_frameworks!' below to test static frameworks)
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -17,7 +19,8 @@ prepare_react_native_project!
 #   dependencies: {
 #     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
 # ```
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+# Flipper is NOT compatible with the new version of Firebase, therefore, because it is not essential, it is disabled
+flipper_config = FlipperConfiguration.disabled # ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -39,6 +42,7 @@ target 'TotaraMobileApp' do
   # Flags change depending on the env values.
   flags = get_default_flags()
 
+  use_frameworks! :linkage => :static
   use_react_native!(
     :path => config[:reactNativePath],
     

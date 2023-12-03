@@ -1,16 +1,14 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
-// #import <Firebase.h>
+#import <Firebase.h>
 #import <React/RCTLinkingManager.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  // if ([FIRApp defaultApp] == nil) {
-  //     [FIRApp configure];
-  // }
+  [FIRApp configure];
 
   self.moduleName = @"TotaraMobileApp";
   // You can add your custom initial props in the dictionary below.

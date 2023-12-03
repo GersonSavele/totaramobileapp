@@ -14,7 +14,7 @@
  */
 
 import React, { useEffect } from "react";
-// import messaging from "@react-native-firebase/messaging";
+import messaging from "@react-native-firebase/messaging";
 import { useMutation, useQuery } from "@apollo/client";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,7 +48,7 @@ const MainContainer = () => {
   const [sendToken] = useMutation(mutationForToken);
   const dispatch = useDispatch();
 
-  const handleNotificationReceived = (remoteMessage) => {
+  const handleNotificationReceived = remoteMessage => {
     if (remoteMessage) {
       fetchNotifications(client);
       if (remoteMessage?.data?.notification === "1") {
@@ -57,7 +57,7 @@ const MainContainer = () => {
     }
   };
 
-  const fetchNotifications = (client) => {
+  const fetchNotifications = client => {
     if (client) {
       client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" });
     }
@@ -67,10 +67,10 @@ const MainContainer = () => {
     if (notificationState?.tokenSent) return;
 
     registerPushNotifications()
-      .then((token) => {
+      .then(token => {
         console.debug("REGISTERING FCM TOKEN");
         sendToken({ variables: { token } })
-          .then((success) => {
+          .then(success => {
             if (success) {
               console.debug("TOKEN REGISTERED");
               dispatch(updateToken({ token: token }));
@@ -79,40 +79,40 @@ const MainContainer = () => {
               console.debug("TOKEN REGISTRATION FAIL");
             }
           })
-          .catch((err) => {
+          .catch(err => {
             console.debug(err);
           });
       })
-      .catch((err) => {
+      .catch(err => {
         console.debug("FCM TOKEN ERROR=========>", err);
       });
   }, []);
 
-  // useEffect(() => {
-  //   messaging().onNotificationOpenedApp((remoteMessage) => {
-  //     console.debug(`onNotificationOpenedApp ${remoteMessage}`);
-  //     handleNotificationReceived(remoteMessage);
-  //   });
+  useEffect(() => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.debug(`onNotificationOpenedApp ${remoteMessage}`);
+      handleNotificationReceived(remoteMessage);
+    });
 
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then((remoteMessage) => {
-  //       console.debug(`getInitialNotification ${remoteMessage}`);
-  //       fetchNotifications(client);
-  //       handleNotificationReceived(remoteMessage);
-  //     });
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        console.debug(`getInitialNotification ${remoteMessage}`);
+        fetchNotifications(client);
+        handleNotificationReceived(remoteMessage);
+      });
 
-  //   messaging().onTokenRefresh((token) => {
-  //     dispatch(updateToken({ token: token }));
-  //   });
+    messaging().onTokenRefresh(token => {
+      dispatch(updateToken({ token: token }));
+    });
 
-  //   const unsubscribe = messaging().onMessage((message) => {
-  //     console.debug(`onMessage ${JSON.stringify(message)}`);
-  //     fetchNotifications(client);
-  //   });
+    const unsubscribe = messaging().onMessage(message => {
+      console.debug(`onMessage ${JSON.stringify(message)}`);
+      fetchNotifications(client);
+    });
 
-  //   return unsubscribe;
-  // }, []);
+    return unsubscribe;
+  }, []);
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} mode={"modal"}>
