@@ -2,10 +2,11 @@
 
 "use strict";
 
-const fs = require("fs");
 const download = require("download");
-const unzipper = require("unzipper");
 const path = require("path");
+const yauzl = require("yauzl-promise"),
+  fs = require("fs"),
+  { pipeline } = require("stream/promises");
 
 const LANGS_FOLDER = path.join(__dirname, "../..", "src/totara/locale/languages/");
 const LANGS_URL = "https://download.totaralms.com/lang/T15/";
@@ -20,13 +21,20 @@ async function main() {
   const zipFile = LANGS_FOLDER + ZIP_FILE_NAME;
   console.log(`Downloaded ${zipFile} with size of ${fetched.length / 1024} KB`);
 
-  await fs
-    .createReadStream(zipFile)
-    .pipe(unzipper.Extract({ path: LANGS_FOLDER }))
-    .on("entry", function (entry) {
-      console.log(`extracted ${entry.path}`);
-    })
-    .promise();
+  const zip = await yauzl.open(zipFile);
+  try {
+    for await (const entry of zip) {
+      if (entry.filename.endsWith("/")) {
+        await fs.promises.mkdir(`${LANGS_FOLDER}${entry.filename}`);
+      } else {
+        const readStream = await entry.openReadStream();
+        const writeStream = fs.createWriteStream(`${LANGS_FOLDER}${entry.filename}`);
+        await pipeline(readStream, writeStream);
+      }
+    }
+  } finally {
+    await zip.close();
+  }
 
   const folder = fs.readdirSync(LANGS_FOLDER);
   const filter = folder.filter(x => path.extname(x).toLowerCase() === ".json" && x !== "all.json");
@@ -40,7 +48,11 @@ async function main() {
     console.log(x);
     const lang = x.split(".")[0];
     const content = fs.readFileSync(LANGS_FOLDER + x, "utf8");
-    body[lang] = JSON.parse(content);
+    try {
+      body[lang] = JSON.parse(content);
+    } catch (e) {
+      console.error("Could not parse for json: ", e);
+    }
   });
 
   fs.writeFileSync(`${LANGS_FOLDER}all.json`, JSON.stringify(body, null, 2));

@@ -41,6 +41,10 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
 
 #android
 /android/.project
