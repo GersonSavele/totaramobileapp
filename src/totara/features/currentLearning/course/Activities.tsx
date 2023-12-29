@@ -21,7 +21,6 @@ import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/client";
 import { get, isEmpty } from "lodash";
 import { useNavigation } from "@react-navigation/native";
-import CriteriaSheet from "../components/CriteriaSheet";
 import TextContent from "./TextContent";
 import CompletionIcon from "./CompletionIcon";
 import activitiesStyles from "./activitiesStyles";
@@ -40,7 +39,7 @@ import { CL_TEST_IDS } from "@totara/lib/testIds";
 import { showMessage } from "@totara/lib";
 import { decodeHtmlCharCodes } from "@totara/lib/tools";
 import { WekaContent } from "@totara/components/weka/WekaContent";
-import { margins } from "@totara/theme/constants";
+import { margins, paddings } from "@totara/theme/constants";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -50,6 +49,7 @@ type ActivitiesProps = {
   completionEnabled: boolean;
   onSetExpandedSectionIds: Function;
   isSingleActivity: boolean;
+  showCriteriaList: (any) => void;
 };
 
 const Activities = ({
@@ -58,7 +58,8 @@ const Activities = ({
   expandedSectionIds,
   completionEnabled,
   onSetExpandedSectionIds,
-  isSingleActivity
+  isSingleActivity,
+  showCriteriaList
 }: ActivitiesProps) => {
   const navigation = useNavigation();
 
@@ -76,6 +77,7 @@ const Activities = ({
             completionEnabled={completionEnabled}
             onSetExpandedSectionIds={onSetExpandedSectionIds}
             isSingleActivity={isSingleActivity}
+            showCriteriaList={() => showCriteriaList(item.availableReason)}
           />
         );
       }}
@@ -91,6 +93,7 @@ type SectionItemProps = {
   onSetExpandedSectionIds: Function;
   isSingleActivity: boolean;
   testID?: string;
+  showCriteriaList: () => void;
 };
 
 const SectionItem = ({
@@ -100,7 +103,8 @@ const SectionItem = ({
   completionEnabled,
   onSetExpandedSectionIds,
   isSingleActivity,
-  testID
+  testID,
+  showCriteriaList
 }: SectionItemProps) => {
   //every item need to have its own state
   const activities = section.data as Array<Activity>;
@@ -129,7 +133,7 @@ const SectionItem = ({
             <NonExpandableSectionHeader summaryFormat={summaryformat} title={title} sectionSummary={summary} />
           )}
           {!available && availableReason && availableReason.length > 0 && (
-            <RestrictionSectionHeader title={title} availableReason={availableReason} />
+            <RestrictionSectionHeader title={title} showCriteriaList={showCriteriaList} />
           )}
         </TouchableOpacity>
       )}
@@ -140,6 +144,7 @@ const SectionItem = ({
           sectionSummary={summary}
           summaryFormat={summaryformat}
           completionEnabled={completionEnabled}
+          showCriteriaList={showCriteriaList}
         />
       )}
     </View>
@@ -184,14 +189,15 @@ const TextContentWrapper = ({ sectionSummary, summaryFormat }: TextContentWrappe
   </View>
 );
 
-const RestrictionSectionHeader = ({ title, availableReason }: { availableReason: [string]; title: string }) => {
-  const [show, setShow] = useState(false);
-  const onClose = () => {
-    setShow(!show);
-  };
+type RestHeaderProps = {
+  title: string;
+  showCriteriaList: () => void;
+};
+
+const RestrictionSectionHeader = ({ title, showCriteriaList }: RestHeaderProps) => {
   return (
     <View>
-      <TouchableOpacity style={activitiesStyles.sectionView} onPress={onClose}>
+      <TouchableOpacity style={activitiesStyles.sectionView} onPress={showCriteriaList}>
         <Text numberOfLines={1} style={activitiesStyles.sectionTitle}>
           {decodeHtmlCharCodes(title)}
         </Text>
@@ -199,13 +205,6 @@ const RestrictionSectionHeader = ({ title, availableReason }: { availableReason:
           {translate("course.course_activity_section.not_available")}
         </Text>
       </TouchableOpacity>
-      {show && (
-        <CriteriaSheet
-          title={translate("course.course_criteria.bottom_sheet_header")}
-          criteriaList={availableReason}
-          onClose={onClose}
-        />
-      )}
     </View>
   );
 };
@@ -238,6 +237,7 @@ type ActivityListProps = {
   sectionSummary: string;
   summaryFormat: string;
   completionEnabled: boolean;
+  showCriteriaList: () => void;
 };
 
 const ActivityList = ({
@@ -245,7 +245,8 @@ const ActivityList = ({
   courseRefreshCallBack,
   sectionSummary,
   completionEnabled,
-  summaryFormat
+  summaryFormat,
+  showCriteriaList
 }: ActivityListProps) => {
   return (
     <View>
@@ -255,7 +256,7 @@ const ActivityList = ({
         return (
           <View key={item.id}>
             {item.completionstatus === completionStatus.unknown || item.completionstatus === null || !item.available ? (
-              <ListItemLock item={item} />
+              <ListItemLock item={item} showCriteriaList={showCriteriaList} />
             ) : (
               <ListItemUnlock
                 item={item}
@@ -402,7 +403,9 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           {isLabel ? (
             item.description ? (
               item.descriptionformat && item.descriptionformat === DescriptionFormat.jsonEditor ? (
-                <WekaContent content={item.description} />
+                <View style={{ paddingTop: margins.marginM }}>
+                  <WekaContent content={item.description} />
+                </View>
               ) : (
                 item.description && <TextContent label={item.description} />
               )
@@ -420,15 +423,13 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
   );
 };
 
-const ListItemLock = ({ item }: { item: Activity }) => {
-  const [show, setShow] = useState(false);
-  const onClose = () => {
-    setShow(!show);
-  };
+type ListItemLockProps = { item: Activity; showCriteriaList: () => void };
+
+const ListItemLock = ({ item, showCriteriaList }: ListItemLockProps) => {
   return (
     <View>
       <View style={activitiesStyles.listItemLockContainer}>
-        <TouchableOpacity style={activitiesStyles.itemTouchableContent} onPress={onClose}>
+        <TouchableOpacity style={activitiesStyles.itemTouchableContent} onPress={showCriteriaList}>
           <View style={[activitiesStyles.itemContentWrapper, activitiesStyles.itemLockContentWrapper]}>
             <CompletionIcon completion={item.completion} status={item.completionstatus} available={item.available} />
             {item.descriptionformat === DescriptionFormat.jsonEditor && item.name?.trim() && (
@@ -439,13 +440,6 @@ const ListItemLock = ({ item }: { item: Activity }) => {
             )}
           </View>
         </TouchableOpacity>
-        {show && (
-          <CriteriaSheet
-            title={translate("course.course_criteria.bottom_sheet_header")}
-            criteriaList={item.availablereason}
-            onClose={onClose}
-          />
-        )}
       </View>
       <View style={listViewStyles.thinSeparator} />
     </View>

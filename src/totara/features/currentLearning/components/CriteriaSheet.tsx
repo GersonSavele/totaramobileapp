@@ -13,12 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useRef, useEffect } from "react";
-import { View, Modal, TouchableOpacity, SectionList, Text, FlatList } from "react-native";
+import React, { useRef, useCallback, useMemo } from "react";
+import { View, TouchableOpacity, SectionList, Text, FlatList, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { groupBy } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
-import BottomSheet from "reanimated-bottom-sheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 import listViewStyles from "@totara/theme/listView";
 import { Criteria } from "@totara/types";
 import criteriaSheetStyle from "./criteriaSheetStyle";
@@ -30,6 +30,7 @@ type Props = {
   criteriaList?: [Criteria] | [string];
   onClose: () => void;
   isOverview?: boolean;
+  index?: number;
 };
 
 const ListItem = ({ item, isOverview }: any) => {
@@ -77,12 +78,11 @@ const SectionHeader = ({ title }: { title: string }) => {
 };
 
 type ContentProps = {
-  criteriaList?: [Criteria] | [string];
-  isOverview: boolean;
+  criteriaList?: [Criteria] | [string] | [];
 };
 
-const BottomSheetContent = ({ criteriaList, isOverview }: ContentProps) => {
-  if (isOverview) {
+const BottomSheetContent = ({ criteriaList = [] }: ContentProps) => {
+  if (criteriaList[0] && criteriaList[0]["__typename"] !== undefined) {
     const groupedCriteriaList = groupBy(criteriaList, "type");
     const criteriaSectionList = Object.entries(groupedCriteriaList).map(([key, value]) => {
       return { title: key, data: value };
@@ -92,7 +92,7 @@ const BottomSheetContent = ({ criteriaList, isOverview }: ContentProps) => {
         <SectionList
           style={criteriaSheetStyle.renderListWrap}
           sections={criteriaSectionList as []}
-          renderItem={({ item }) => <ListItem item={item} isOverview={isOverview} />}
+          renderItem={({ item }) => <ListItem item={item} isOverview={true} />}
           renderSectionHeader={({ section }) => <SectionHeader title={section.title} />}
           stickySectionHeadersEnabled={false}
           showsVerticalScrollIndicator={false}
@@ -104,7 +104,7 @@ const BottomSheetContent = ({ criteriaList, isOverview }: ContentProps) => {
     <View style={criteriaSheetStyle.listContent}>
       <FlatList
         data={criteriaList as [string]}
-        renderItem={({ item }) => <ListItem item={item} isOverview={isOverview} />}
+        renderItem={({ item }) => <ListItem item={item} isOverview={false} />}
         keyExtractor={(_, index) => index.toString()}
       />
     </View>
@@ -119,42 +119,51 @@ type BottomSheetHeaderProps = {
 const BottomSheetHeader = ({ onClose, title }: BottomSheetHeaderProps) => {
   return (
     <View style={criteriaSheetStyle.headerViewWrap}>
-      <View style={criteriaSheetStyle.headerInnerViewWrap}>
+      <View>
         <TouchableOpacity
           style={criteriaSheetStyle.headerCloseButtonWrap}
           onPress={onClose}
           testID={TEST_IDS.CLICK_CLOSE}>
           <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.colorNeutral5} />
         </TouchableOpacity>
-        <View style={criteriaSheetStyle.headerViewIndicatorWrap}>
-          <View style={criteriaSheetStyle.indicatorWrap}></View>
-        </View>
       </View>
-      <Text style={criteriaSheetStyle.listHeader}>{title}</Text>
+      <View>
+        <Text style={criteriaSheetStyle.listHeader} numberOfLines={2}>
+          {title}
+        </Text>
+      </View>
     </View>
   );
 };
 
-const CriteriaSheet = ({ criteriaList, onClose, isOverview = false, title }: Props) => {
-  const bottomDrawerRef = useRef<any>(null);
+const CriteriaSheet = ({ criteriaList, onClose, title, index = -1 }: Props) => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
-  useEffect(() => {
-    bottomDrawerRef.current.snapTo(0);
-  }, [bottomDrawerRef]);
+  // variables
+  const snapPoints = useMemo(() => ["25%", "75%"], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
+
+  const handleClosePress = () => {
+    bottomSheetRef.current.close();
+    onClose();
+  };
 
   return (
-    <Modal transparent={true}>
-      <View style={criteriaSheetStyle.transparentView}>
-        <BottomSheet
-          snapPoints={["95%", "50%", "50%"]}
-          renderContent={() => <BottomSheetContent criteriaList={criteriaList} isOverview={isOverview} />}
-          renderHeader={() => <BottomSheetHeader onClose={onClose} title={title} />}
-          ref={bottomDrawerRef}
-          enabledGestureInteraction={true}
-          enabledBottomInitialAnimation={true}
-        />
-      </View>
-    </Modal>
+    <>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={index}
+        enablePanDownToClose={false}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}>
+        <BottomSheetHeader onClose={handleClosePress} title={title} />
+        {criteriaList && <BottomSheetContent criteriaList={criteriaList} />}
+      </BottomSheet>
+    </>
   );
 };
 

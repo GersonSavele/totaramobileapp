@@ -14,9 +14,8 @@
  */
 
 import React from "react";
-import { StatusBar, Platform, LogBox } from "react-native";
+import { StatusBar, Platform, LogBox, View, Text, SafeAreaView } from "react-native";
 import { Root } from "native-base";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Sentry from "@sentry/react-native";
 
 import { config } from "@totara/lib";
@@ -50,25 +49,26 @@ if (Platform.OS === PLATFORM_ANDROID) {
 }
 
 FontAwesome.init();
-if (config.disableConsoleYellowBox){
+if (config.disableConsoleYellowBox) {
   LogBox.ignoreAllLogs();
 }
-LogBox.ignoreLogs(['new NativeEventEmitter']);
+LogBox.ignoreLogs(["new NativeEventEmitter"]);
 
 const App: () => React$Node = () => {
   return (
-    <SafeAreaProvider>
+    <SafeAreaView style={{ flex: 1 }}>
+      {/* TODO: remove this comment after further testing */}
       {/* <Root> */}
-        <Provider store={store}>
-          <PersistGate loading={<Loading />} persistor={persistor}>
-            <OrientationLocker orientation={PORTRAIT} />
-            <ThemeProvider>
-              <RootContainer />
-            </ThemeProvider>
-          </PersistGate>
-        </Provider>
+      <Provider store={store}>
+        <PersistGate loading={<Loading />} persistor={persistor}>
+          <OrientationLocker orientation={PORTRAIT} />
+          <ThemeProvider>
+            <RootContainer />
+          </ThemeProvider>
+        </PersistGate>
+      </Provider>
       {/* </Root> */}
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 };
 

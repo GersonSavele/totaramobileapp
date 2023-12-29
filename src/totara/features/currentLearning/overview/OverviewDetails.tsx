@@ -47,6 +47,7 @@ type OverviewProps = {
   summaryTypeTitle?: string;
   onclickContinueLearning?: () => void;
   courseRefreshCallback?: () => {};
+  showCriteriaList: (any) => void;
 };
 
 const OverviewDetails = ({
@@ -61,12 +62,13 @@ const OverviewDetails = ({
   courseRefreshCallback,
   isCourseSet,
   showGrades,
-  completionEnabled = true
+  completionEnabled = true,
+  showCriteriaList
 }: OverviewProps) => {
   const isSelfCompletion =
     completionEnabled &&
     criteria &&
-    criteria?.some((value) => {
+    criteria?.some(value => {
       return value["type"] === courseCriteria.selfComplete;
     });
 
@@ -80,7 +82,16 @@ const OverviewDetails = ({
             horizontal={true}
             contentContainerStyle={overviewStyles.scrollViewContainer}
             showsHorizontalScrollIndicator={false}>
-            {completionEnabled && <Progress progress={progress} criteria={criteria} isCourseSet={isCourseSet} />}
+            {completionEnabled && (
+              <Progress
+                progress={progress}
+                isCourseSet={isCourseSet}
+                showCriteriaList={() => {
+                  //show progress details only if there's a criteria
+                  if (criteria !== null && criteria!.length > 0) showCriteriaList(criteria);
+                }}
+              />
+            )}
             {showGrades && <Grade gradeFinal={gradeFinal} />}
             {isSelfCompletion && (
               <Complete
@@ -123,22 +134,18 @@ const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
 
 type ProgressProps = {
   progress: number;
-  criteria?: [Criteria];
   isCourseSet: boolean;
+  showCriteriaList: () => void;
 };
 
-const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
-  const [showCriteria, setShowCriteria] = useState(false);
-  const onClose = () => {
-    setShowCriteria(!showCriteria);
-  };
+const Progress = ({ progress, isCourseSet, showCriteriaList = () => null }: ProgressProps) => {
   return (
     <TouchableOpacity
       style={overviewStyles.container}
       activeOpacity={activeOpacity}
       disabled={isCourseSet}
       testID={CL_TEST_IDS.PROGRESS}
-      onPress={() => setShowCriteria(true)}>
+      onPress={showCriteriaList}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
           <ProgressCircle value={progress} />
@@ -150,14 +157,6 @@ const Progress = ({ progress, criteria, isCourseSet }: ProgressProps) => {
           </Text>
         </View>
       </View>
-      {showCriteria && criteria !== null && criteria!.length > 0 && (
-        <CriteriaSheet
-          criteriaList={criteria}
-          onClose={onClose}
-          isOverview={true}
-          title={translate("course.course_criteria.title")}
-        />
-      )}
     </TouchableOpacity>
   );
 };
@@ -170,13 +169,13 @@ type CompletionProps = {
 };
 
 const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefreshCallback }: CompletionProps) => {
-  const isSelfCompleted = criteria?.some((value) => {
+  const isSelfCompleted = criteria?.some(value => {
     if (value["type"] === courseCriteria.selfComplete) {
       return value["complete"] === true;
     }
   });
 
-  const isCourseCompleted = criteria?.every((value) => {
+  const isCourseCompleted = criteria?.every(value => {
     return value["complete"] === true;
   });
 

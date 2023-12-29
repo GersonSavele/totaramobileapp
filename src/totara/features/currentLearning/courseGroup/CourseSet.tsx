@@ -17,11 +17,9 @@ import React, { useState } from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { CourseSets } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
-import { NAVIGATION } from "@totara/lib/navigation";
-import { navigateTo } from "@totara/lib/navigation";
+import { NAVIGATION, navigateTo } from "@totara/lib/navigation";
 import { courseSet } from "./courseGroupStyles";
 import { margins } from "@totara/theme/constants";
-import CriteriaSheet from "../components/CriteriaSheet";
 import NativeAccessRestriction from "../NativeAccessRestriction";
 import MoreInfo from "@totara/components/MoreInfo";
 import { ImageWrapper } from "@totara/components";
@@ -37,6 +35,7 @@ type CourseSetProps = {
   courseSets: CourseSets;
   navigation: any;
   testID: string;
+  showCriteriaList?: () => void;
 };
 
 const CourseSetItem = ({ item, navigation }: any) => {
@@ -95,12 +94,7 @@ const CourseSetItem = ({ item, navigation }: any) => {
   );
 };
 
-const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
-  const [show, setShow] = useState(false);
-  const onCloseBottomSheet = () => {
-    setShow(!show);
-  };
-
+const CourseSet = ({ courseSets, navigation, testID, showCriteriaList = () => null }: CourseSetProps) => {
   const renderItem = ({ item }: any) => {
     return <CourseSetItem navigation={navigation} item={item} />;
   };
@@ -109,7 +103,7 @@ const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
     <View style={{ marginTop: margins.marginXL }} testID={testID}>
       <View style={courseSet.courseSetHeader}>
         <Text style={courseSet.title}>{courseSets.label}</Text>
-        <MoreInfo onPress={onCloseBottomSheet} testID={CL_TEST_IDS.MORE_INFO} />
+        <MoreInfo onPress={showCriteriaList} testID={CL_TEST_IDS.MORE_INFO} />
       </View>
       <FlatList
         data={courseSets.courses}
@@ -119,13 +113,6 @@ const CourseSet = ({ courseSets, navigation, testID }: CourseSetProps) => {
         horizontal={true}
         testID={CL_TEST_IDS.COURSE_SET_SCROLL}
       />
-      {show && (
-        <CriteriaSheet
-          title={translate("course_group.criteria.bottom_sheet_header")}
-          criteriaList={courseSets.completionCriteria}
-          onClose={onCloseBottomSheet}
-        />
-      )}
     </View>
   );
 };

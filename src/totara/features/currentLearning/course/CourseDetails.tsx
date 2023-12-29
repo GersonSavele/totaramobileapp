@@ -31,6 +31,7 @@ import { learningItemEnum } from "@totara/features/constants";
 import courseDetailsStyle from "./courseDetailsStyle";
 import { CourseFormat } from "@totara/types/Course";
 import { DescriptionFormat } from "@totara/types/LearningItem";
+import CriteriaSheet from "../components/CriteriaSheet";
 
 const CourseDetails = ({ navigation, route }: any) => {
   const courseId = route?.params?.targetId || navigation.getParam("targetId");
@@ -95,6 +96,18 @@ const CourseDetailsContent = ({
 
   const isExpandedAll = !isEmpty(expanableSectionIds) && isEqual(expanableSectionIds.sort(), expandedSectionIds.sort());
 
+  const [index, setIndex] = useState(-1);
+  const [criteria, setCriteria] = useState(undefined);
+
+  const onCloseLayover = () => {
+    setIndex(-1);
+  };
+
+  const showCriteriaList: (any) => void = completionCriteria => {
+    setCriteria(completionCriteria);
+    setIndex(1);
+  };
+
   const onClose = () => {
     setShowCompletionModal(!showCompletionModal);
     courseRefreshCallback();
@@ -114,69 +127,79 @@ const CourseDetailsContent = ({
   };
 
   return (
-    <LearningDetails
-      onPullToRefresh={pullToRefresh}
-      loading={loading}
-      item={courseDetails.course}
-      itemType={learningItemEnum.Course}
-      tabBarLeftTitle={translate("course.course_details.overview")}
-      tabBarRightTitle={translate("course.course_details.activities")}
-      onPress={onSwitchTab}
-      overviewIsShown={showOverview}
-      image={courseDetails.imageSrc}
-      badgeTitle={translate("learning_items.course")}
-      navigation={navigation}>
-      <View style={[styles.container, { backgroundColor: TotaraTheme.colorNeutral2 }]}>
-        <View style={[styles.activitiesContainer, { backgroundColor: TotaraTheme.colorNeutral1 }]}>
-          {!showOverview ? (
-            <View
-              style={{
-                backgroundColor: TotaraTheme.colorAccent
-              }}>
-              {!isSingleActivity && (
-                <View style={courseDetailsStyle.expandContentWrap}>
-                  <Text style={courseDetailsStyle.expandTextWrap}>
-                    {translate("course.course_details.expand_or_collapse")}
-                  </Text>
-                  <Switch
-                    style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
-                    value={isExpandedAll}
-                    onValueChange={() => onChangeExpand(isExpandedAll, expanableSectionIds)}
-                    accessibilityLabel={translate("course.course_details.accessibility_expand_all")}
-                  />
-                </View>
-              )}
-              <Activities
-                sections={courseDetails.course.sections}
-                courseRefreshCallBack={courseRefreshCallback}
-                expandedSectionIds={expandedSectionIds}
-                onSetExpandedSectionIds={setExpandedSectionIds}
+    <View style={{ flex: 1 }}>
+      <LearningDetails
+        onPullToRefresh={pullToRefresh}
+        loading={loading}
+        item={courseDetails.course}
+        itemType={learningItemEnum.Course}
+        tabBarLeftTitle={translate("course.course_details.overview")}
+        tabBarRightTitle={translate("course.course_details.activities")}
+        onPress={onSwitchTab}
+        overviewIsShown={showOverview}
+        image={courseDetails.imageSrc}
+        badgeTitle={translate("learning_items.course")}
+        navigation={navigation}>
+        <View style={[styles.container, { backgroundColor: TotaraTheme.colorNeutral2 }]}>
+          <View style={[styles.activitiesContainer, { backgroundColor: TotaraTheme.colorNeutral1 }]}>
+            {!showOverview ? (
+              <View
+                style={{
+                  backgroundColor: TotaraTheme.colorAccent
+                }}>
+                {!isSingleActivity && (
+                  <View style={courseDetailsStyle.expandContentWrap}>
+                    <Text style={courseDetailsStyle.expandTextWrap}>
+                      {translate("course.course_details.expand_or_collapse")}
+                    </Text>
+                    <Switch
+                      style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
+                      value={isExpandedAll}
+                      onValueChange={() => onChangeExpand(isExpandedAll, expanableSectionIds)}
+                      accessibilityLabel={translate("course.course_details.accessibility_expand_all")}
+                    />
+                  </View>
+                )}
+                <Activities
+                  sections={courseDetails.course.sections}
+                  courseRefreshCallBack={courseRefreshCallback}
+                  expandedSectionIds={expandedSectionIds}
+                  onSetExpandedSectionIds={setExpandedSectionIds}
+                  completionEnabled={courseDetails.course.completionEnabled}
+                  isSingleActivity={isSingleActivity}
+                  showCriteriaList={showCriteriaList}
+                />
+              </View>
+            ) : (
+              <OverviewDetails
+                isCourseSet={false}
+                id={courseDetails.course.id}
+                criteria={courseDetails.course.criteria}
+                summary={courseDetails.course.summary}
+                summaryFormat={courseDetails.course.summaryformat as DescriptionFormat}
+                gradeFinal={courseDetails.gradeFinal}
+                progress={courseDetails.course.completion.progress}
+                summaryTypeTitle={translate("course.course_overview.course_summary")}
+                onclickContinueLearning={onClose}
+                courseRefreshCallback={courseRefreshCallback}
+                showGrades={courseDetails.course.showGrades}
                 completionEnabled={courseDetails.course.completionEnabled}
-                isSingleActivity={isSingleActivity}
+                showCriteriaList={showCriteriaList}
               />
-            </View>
-          ) : (
-            <OverviewDetails
-              isCourseSet={false}
-              id={courseDetails.course.id}
-              criteria={courseDetails.course.criteria}
-              summary={courseDetails.course.summary}
-              summaryFormat={courseDetails.course.summaryformat as DescriptionFormat}
-              gradeFinal={courseDetails.gradeFinal}
-              progress={courseDetails.course.completion.progress}
-              summaryTypeTitle={translate("course.course_overview.course_summary")}
-              onclickContinueLearning={onClose}
-              courseRefreshCallback={courseRefreshCallback}
-              showGrades={courseDetails.course.showGrades}
-              completionEnabled={courseDetails.course.completionEnabled}
-            />
-          )}
+            )}
+          </View>
         </View>
-      </View>
-      {courseDetails.course.completion && courseDetails.course.completion.statuskey === StatusKey.complete && (
-        <CourseCompletionModal onClose={onClose} />
-      )}
-    </LearningDetails>
+        {courseDetails.course.completion && courseDetails.course.completion.statuskey === StatusKey.complete && (
+          <CourseCompletionModal onClose={onClose} />
+        )}
+      </LearningDetails>
+      <CriteriaSheet
+        title={translate("course_group.criteria.bottom_sheet_header")}
+        criteriaList={criteria}
+        onClose={onCloseLayover}
+        index={index}
+      />
+    </View>
   );
 };
 

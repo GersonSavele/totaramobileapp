@@ -13,12 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { CourseSets } from "@totara/types/CourseGroup";
-import { translate } from "@totara/locale";
 import { courseSet, horizontalList } from "./courseGroupStyles";
-import CriteriaSheet from "../components/CriteriaSheet";
 import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import Course from "./Course";
@@ -33,14 +31,10 @@ type CourseSetListProps = {
   courseSetList: [CourseSets];
   navigate: any;
   testID: string;
+  showCriteriaList?: (any) => void;
 };
 
-const LearningItems = ({ item, navigate }: any) => {
-  const [show, setShow] = useState(false);
-  const onClose = () => {
-    setShow(!show);
-  };
-
+const LearningItems = ({ item, navigate, showCriteriaList = () => null }: any) => {
   const navigateToCourse = () => {
     navigateTo({
       navigate: navigate,
@@ -59,10 +53,10 @@ const LearningItems = ({ item, navigate }: any) => {
             <Text style={courseSet.headerTitle} numberOfLines={1} ellipsizeMode="tail" testID={"test_header_title"}>
               {item.label}
             </Text>
-            <MoreInfo onPress={onClose} testID={"test_view_criteria_clicked"} />
+            <MoreInfo onPress={showCriteriaList} testID={"test_view_criteria_clicked"} />
           </View>
           <View>
-            {takeFirstTwoCourses.map((course) => {
+            {takeFirstTwoCourses.map(course => {
               return <Course key={course.id} course={course} navigate={navigate} />;
             })}
           </View>
@@ -79,20 +73,19 @@ const LearningItems = ({ item, navigate }: any) => {
           </View>
         </View>
       </TouchableOpacity>
-      {show && (
-        <CriteriaSheet
-          title={translate("course_group.criteria.bottom_sheet_header")}
-          criteriaList={item.completionCriteria}
-          onClose={onClose}
-        />
-      )}
     </View>
   );
 };
 
-const CourseSetList = ({ courseSetList, navigate, testID }: CourseSetListProps) => {
+const CourseSetList = ({ courseSetList, navigate, testID, showCriteriaList = () => null }: CourseSetListProps) => {
   const renderItems = ({ item }: any) => {
-    return <LearningItems navigate={navigate} item={item} />;
+    return (
+      <LearningItems
+        navigate={navigate}
+        item={item}
+        showCriteriaList={() => showCriteriaList(item.completionCriteria)}
+      />
+    );
   };
 
   return (

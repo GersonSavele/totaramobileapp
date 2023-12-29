@@ -61,10 +61,6 @@ const criteriaSheetStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  headerInnerViewWrap: {
-    flexDirection: "row",
-    flex: 1
-  },
   headerViewIndicatorWrap: {
     flex: 1,
     alignItems: "center",

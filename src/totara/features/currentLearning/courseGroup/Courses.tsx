@@ -17,22 +17,23 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import CourseSet from "./CourseSet";
 import CourseSetList from "./CourseSetList";
-import { CourseGroup, StatusKey } from "@totara/types/CourseGroup";
+import { CourseGroup, StatusKey, CourseSets } from "@totara/types/CourseGroup";
 import { translate } from "@totara/locale";
 import { courses } from "./courseGroupStyles";
-import { CourseSets } from "@totara/types/CourseGroup";
 import listViewStyles from "@totara/theme/listView";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { faBan, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { activeOpacity } from "@totara/lib/styles/base";
+
 type CoursesProps = {
   courseGroup: CourseGroup;
   navigation: any;
+  showCriteriaList?: (any) => void;
 };
 
-const Courses = ({ courseGroup, navigation }: CoursesProps) => {
+const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: CoursesProps) => {
   return (
     <View style={courses.container}>
       {courseGroup.courseSetHeader && courseGroup.courseSetHeader.length > 0 ? (
@@ -47,9 +48,21 @@ const Courses = ({ courseGroup, navigation }: CoursesProps) => {
       {courseGroup.currentCourseSets.map((item: [CourseSets], key: number) => {
         return (
           <View key={key}>
-            {item.length == 1 && <CourseSet courseSets={item[0]} navigation={navigation} testID={"test_course_set"} />}
+            {item.length == 1 && (
+              <CourseSet
+                courseSets={item[0]}
+                navigation={navigation}
+                testID={"test_course_set"}
+                showCriteriaList={() => showCriteriaList(item[0].completionCriteria)}
+              />
+            )}
             {item.length > 1 && (
-              <CourseSetList courseSetList={item} navigate={navigation.navigate} testID={"test_course_set_list"} />
+              <CourseSetList
+                courseSetList={item}
+                navigate={navigation.navigate}
+                testID={"test_course_set_list"}
+                showCriteriaList={showCriteriaList}
+              />
             )}
             {item[item.length - 1] && item[item.length - 1].nextsetoperator && (
               <View style={courses.nextSet}>

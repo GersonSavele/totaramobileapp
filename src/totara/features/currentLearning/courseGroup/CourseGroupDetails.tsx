@@ -24,6 +24,7 @@ import { LoadingError, Loading } from "@totara/components";
 import { coreProgram, coreCertification, mutationReportProgramme } from "./api";
 import LearningDetails from "../LearningDetails";
 import { details } from "./courseGroupStyles";
+import CriteriaSheet from "../components/CriteriaSheet";
 
 type CourseGroupProps = {
   navigation: any;
@@ -121,6 +122,18 @@ const CourseGroupDetailsContent = ({
     setShowOverview(!showOverview);
   };
 
+  const [index, setIndex] = useState(-1);
+  const [criteria, setCriteria] = useState(undefined);
+
+  const onClose = () => {
+    setIndex(-1);
+  };
+
+  const showCriteriaList: (any) => void = completionCriteria => {
+    setCriteria(completionCriteria);
+    setIndex(1);
+  };
+
   return (
     <View testID={testID} style={{ flex: 1 }}>
       <LearningDetails
@@ -138,7 +151,7 @@ const CourseGroupDetailsContent = ({
         <View style={details.container}>
           <View style={details.activitiesContainer}>
             {!showOverview ? (
-              <Courses courseGroup={courseGroup} navigation={navigation} />
+              <Courses courseGroup={courseGroup} navigation={navigation} showCriteriaList={showCriteriaList} />
             ) : (
               <OverviewDetails
                 id={courseGroup.id}
@@ -146,12 +159,19 @@ const CourseGroupDetailsContent = ({
                 summaryFormat={courseGroup.summaryformat!}
                 progress={courseGroup?.completion?.progress}
                 isCourseSet={true}
+                showCriteriaList={showCriteriaList}
                 summaryTypeTitle={translate("course_group.overview.summary_title_program")}
               />
             )}
           </View>
         </View>
       </LearningDetails>
+      <CriteriaSheet
+        title={translate("course_group.criteria.bottom_sheet_header")}
+        criteriaList={criteria}
+        onClose={onClose}
+        index={index}
+      />
     </View>
   );
 };

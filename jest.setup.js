@@ -52,14 +52,6 @@ jest.mock("react-native-gesture-handler", () => {
   };
 });
 
-jest.mock("reanimated-bottom-sheet", () => {
-  return {
-    snapPoints: jest.fn(),
-    renderContent: jest.fn(),
-    renderHeader: jest.fn()
-  };
-});
-
 jest.mock("react-native-device-info", () => {
   return {
     getVersion: jest.fn(() => {

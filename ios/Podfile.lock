@@ -395,7 +395,7 @@ PODS:
     - React-Core
   - react-native-orientation-locker (1.4.0):
     - React-Core
-  - react-native-safe-area-context (3.4.1):
+  - react-native-safe-area-context (4.8.0):
     - React-Core
   - react-native-sensitive-info (5.5.1):
     - React
@@ -858,7 +858,7 @@ SPEC CHECKSUMS:
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-orientation-locker: 2da91e5391971dace445495821c899c111dcad7a
-  react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
+  react-native-safe-area-context: d1c8161a1e9560f7066e8926a7d825eb57c5dab5
   react-native-sensitive-info: e05877777e50e8112b8728f69eab407c3dcf38ab
   react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
   React-NativeModulesApple: ac9cea059dfe97cf3a4f00aa2774293bf5a99463

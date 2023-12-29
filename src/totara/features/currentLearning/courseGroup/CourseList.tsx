@@ -32,7 +32,16 @@ type CourseListProps = {
 
 const CourseList = ({ navigation }: CourseListProps) => {
   const courseList = navigation.state.params!.coursesList;
-  const [show, setShow] = useState(false);
+
+  const [index, setIndex] = useState(-1);
+
+  const onClose = () => {
+    setIndex(-1);
+  };
+
+  const onOpen = () => {
+    setIndex(1);
+  };
 
   useEffect(() => {
     navigation.state.params!.title = courseList.label;
@@ -43,13 +52,9 @@ const CourseList = ({ navigation }: CourseListProps) => {
 
   const rightOption = () => (
     <View style={{ paddingRight: paddings.paddingM }}>
-      <MoreInfo onPress={() => setShow(true)} />
+      <MoreInfo onPress={onOpen} />
     </View>
   );
-
-  const onClose = () => {
-    setShow(!show);
-  };
 
   const renderItems = ({ item }: any) => {
     return <LearningItems navigation={navigation} item={item} />;
@@ -70,13 +75,12 @@ const CourseList = ({ navigation }: CourseListProps) => {
         keyExtractor={(_, id) => id.toString()}
         showsHorizontalScrollIndicator={false}
       />
-      {show && (
-        <CriteriaSheet
-          title={translate("course_group.criteria.bottom_sheet_header")}
-          criteriaList={courseList.completionCriteria}
-          onClose={onClose}
-        />
-      )}
+      <CriteriaSheet
+        title={translate("course_group.criteria.bottom_sheet_header")}
+        criteriaList={courseList.completionCriteria}
+        onClose={onClose}
+        index={index}
+      />
     </View>
   );
 };

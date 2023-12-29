@@ -2791,6 +2791,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gorhom/bottom-sheet@npm:^4":
+  version: 4.5.1
+  resolution: "@gorhom/bottom-sheet@npm:4.5.1"
+  dependencies:
+    "@gorhom/portal": "npm:1.0.14"
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-native": "*"
+    react: "*"
+    react-native: "*"
+    react-native-gesture-handler: ">=1.10.1"
+    react-native-reanimated: ">=2.2.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-native":
+      optional: true
+  checksum: 0710680977bd0df1537d15222208eb32c85eabfe5f0ce00052b4b87ffa5d39afbb154204a417b543450101554a7abeb3d8fa3f5df050e83580cc38faf1ec7361
+  languageName: node
+  linkType: hard
+
+"@gorhom/portal@npm:1.0.14":
+  version: 1.0.14
+  resolution: "@gorhom/portal@npm:1.0.14"
+  dependencies:
+    nanoid: "npm:^3.3.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 86f33afc2ac2656a86a6f3fd1e41565419839576ede2c38333434a93a0a2fe4fb6fc18ab3360579427f2a1fc3b4564b933cc5ae1793a7e2825c93860a00b215f
+  languageName: node
+  linkType: hard
+
 "@graphql-typed-document-node/core@npm:^3.0.0":
   version: 3.1.1
   resolution: "@graphql-typed-document-node/core@npm:3.1.1"
@@ -5121,6 +5155,7 @@ __metadata:
     "@fortawesome/free-brands-svg-icons": "npm:^5.15.4"
     "@fortawesome/free-solid-svg-icons": "npm:^5.13.0"
     "@fortawesome/react-native-fontawesome": "npm:^0.2.3"
+    "@gorhom/bottom-sheet": "npm:^4"
     "@react-native-async-storage/async-storage": "npm:^1.16.1"
     "@react-native-community/masked-view": "npm:^0.1.10"
     "@react-native-community/netinfo": "npm:^5.9.10"
@@ -5191,7 +5226,7 @@ __metadata:
     react-native-paper: "npm:^4.7.1"
     react-native-progress: "npm:^5.0.0"
     react-native-reanimated: "npm:3.3.0"
-    react-native-safe-area-context: "npm:^3.2.0"
+    react-native-safe-area-context: "npm:^4.8.0"
     react-native-screens: "npm:^3.18.2"
     react-native-sensitive-info: "https://github.com/mCodex/react-native-sensitive-info.git#keystore"
     react-native-skeleton-placeholder: "npm:^4.0.0"
@@ -5204,7 +5239,6 @@ __metadata:
     react-native-zip-archive: "npm:^6.0.6"
     react-redux: "npm:^7.2.0"
     react-test-renderer: "npm:18.2.0"
-    reanimated-bottom-sheet: "npm:1.0.0-alpha.20"
     recompose: "npm:^0.30.0"
     redux: "npm:^4.0.5"
     redux-logger: "npm:^3.0.6"
@@ -12720,6 +12754,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.1":
+  version: 3.3.7
+  resolution: "nanoid@npm:3.3.7"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: e3fb661aa083454f40500473bb69eedb85dc160e763150b9a2c567c7e9ff560ce028a9f833123b618a6ea742e311138b591910e795614a629029e86e180660f3
+  languageName: node
+  linkType: hard
+
 "nanomatch@npm:^1.2.9":
   version: 1.2.13
   resolution: "nanomatch@npm:1.2.13"
@@ -14361,13 +14404,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^3.2.0":
-  version: 3.4.1
-  resolution: "react-native-safe-area-context@npm:3.4.1"
+"react-native-safe-area-context@npm:^4.8.0":
+  version: 4.8.0
+  resolution: "react-native-safe-area-context@npm:4.8.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 641b26ebbec78cd5cab8bb4198c6a4541d0e72e251f6d417f448ef897afef030a3fcc0c38b98a3944775f0c1ebf46a518eaa9a5019ec249c39ed49524e57eda3
+  checksum: ccc59970bd0bf12ee019e5b05ee1b93933ea80fe17a4fa01c71a533aaa70269ecde086c04dbede6c736b6d68968ed571b17c045133ca54fdb1a7db478865624a
   languageName: node
   linkType: hard
 
@@ -14724,18 +14767,6 @@ __metadata:
   dependencies:
     util.promisify: "npm:^1.0.0"
   checksum: 8211c9d7046266ef1f504a8fc11d4dacaff9b5e915756993157d6dd3c112f2f4c5ece6c18732f1970c2bd8d49015fb0d4d8c75cd934f4354160360b74548ddb5
-  languageName: node
-  linkType: hard
-
-"reanimated-bottom-sheet@npm:1.0.0-alpha.20":
-  version: 1.0.0-alpha.20
-  resolution: "reanimated-bottom-sheet@npm:1.0.0-alpha.20"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-gesture-handler: "*"
-    react-native-reanimated: "*"
-  checksum: db5601d43a592e3b5df927ec590d24f6ec00a1a695d1d2143f907c5e2a8b45fb0062ba12cf0ba938febbaa0587ec7427066696c1d2080fc4a44738ce89f6c79c
   languageName: node
   linkType: hard
 
