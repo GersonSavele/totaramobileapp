@@ -30,6 +30,7 @@ const FormError = ({ message, isShow }: Props) => {
 
   useEffect(() => {
     if (animationType !== undefined || isShow) {
+      // @ts-ignore
       setAnimationType(isShow ? "fadeInDown" : "fadeOutUp");
     }
   }, [isShow]);

@@ -91,7 +91,7 @@ const PrimaryButton = ({ children, text, icon, style, onPress, mode, testID, ...
       {...rest}
       style={[buttonStyle.container, style]}
       disabled={mode == "loading" || mode == "disabled"}>
-      {text ? <ButtonTitle mode={mode} text={text} style={buttonStyle.title} /> : { children }}
+      {text ? <ButtonTitle mode={mode} text={text} style={buttonStyle.title} /> : <>{children}</>}
       <ButtonIndicator mode={mode} icon={icon} color={theme.colorText} size={theme.textSmall.fontSize} />
     </Button>
   );

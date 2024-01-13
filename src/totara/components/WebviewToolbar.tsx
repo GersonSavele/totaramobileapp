@@ -23,6 +23,7 @@ import { iconSizes } from "@totara/theme/constants";
 import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { faSafari, faChrome } from "@fortawesome/free-brands-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type WebviewToolbarProps = {
   refWebview: React.RefObject<WebView>;
@@ -37,13 +38,13 @@ const WebviewToolbar = ({ refWebview, navState, viewUrl, showAllToolbarItems = f
       await Share.share({
         message: viewUrl
       });
-    } catch (error) {
+    } catch (error: any) {
       showMessage({ text: error.message });
     }
   };
 
   const openExternalURL = () => {
-    Linking.canOpenURL(viewUrl).then((supported) => {
+    Linking.canOpenURL(viewUrl).then(supported => {
       if (supported) {
         Linking.openURL(viewUrl);
       }
@@ -70,9 +71,14 @@ const WebviewToolbar = ({ refWebview, navState, viewUrl, showAllToolbarItems = f
       </View>
       {showAllToolbarItems && (
         <View style={styles.barExtraActionContent}>
-          <TouchableIcon icon={faShareAlt} onPress={onShare} color={TotaraTheme.colorLink} size={iconSizes.sizeM} />
           <TouchableIcon
-            icon={Platform.OS === "android" ? (faChrome as IconDefinition) : (faSafari as IconDefinition)}
+            icon={faShareAlt as IconProp}
+            onPress={onShare}
+            color={TotaraTheme.colorLink}
+            size={iconSizes.sizeM}
+          />
+          <TouchableIcon
+            icon={Platform.OS === "android" ? (faChrome as IconProp) : (faSafari as IconProp)}
             onPress={openExternalURL}
             color={TotaraTheme.colorLink}
             size={iconSizes.sizeM}

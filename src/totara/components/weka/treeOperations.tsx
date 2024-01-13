@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
+import React, { ReactNode } from "react";
 import { View, Text } from "react-native";
 import {
   Visitor,
@@ -64,7 +64,7 @@ class ToShortSummary implements Visitor<string> {
   }
   visitWekaBulletList(element: WekaBulletList): string {
     return element?.content
-      ?.map((item) => {
+      ?.map(item => {
         return `${BULLET_POINT_UNICODE} ${item?.accept(this)}`;
       })
       .filter(String)
@@ -96,7 +96,7 @@ class ToShortSummary implements Visitor<string> {
   }
   visitWekaParagraph(element: WekaParagraph): string {
     return element?.content
-      ?.map((item) => {
+      ?.map(item => {
         return item?.accept(this);
       })
       .filter(String)
@@ -108,7 +108,7 @@ class ToShortSummary implements Visitor<string> {
     return element.text;
   }
   all(content: Node<Object>[]): string {
-    let stringArray = content?.map((item) => {
+    let stringArray = content?.map(item => {
       return item?.accept(this);
     });
     return stringArray.filter(String).join("\n").toString().trim();
@@ -152,7 +152,7 @@ class ToFullSummary implements Visitor<Object> {
     return (
       <View style={styles.listItemWrapper} key={key}>
         <Text style={styles.listItem}>{mark}</Text>
-        <View style={styles.listItemContent}>{component}</View>
+        <View style={styles.listItemContent}>{component as ReactNode}</View>
       </View>
     );
   }
@@ -166,7 +166,7 @@ class ToFullSummary implements Visitor<Object> {
     return (
       <Text style={{ marginBottom: marginS }}>
         {element.content?.map((item, index) => {
-          return <Text key={`${index}`}> {item?.accept(this)}</Text>;
+          return <Text key={`${index}`}> {item?.accept(this) as ReactNode}</Text>;
         })}
       </Text>
     );
@@ -178,7 +178,7 @@ class ToFullSummary implements Visitor<Object> {
 
   visitWekaParagraph(element: WekaParagraph): Object {
     const paragraph = element?.content?.map((item, index) => {
-      return <Text key={`${index}`}>{item?.accept(this)}</Text>;
+      return <Text key={`${index}`}>{item?.accept(this) as ReactNode}</Text>;
     });
     return <Text style={{ marginBottom: marginS }}>{paragraph}</Text>;
   }
@@ -195,7 +195,7 @@ class ToFullSummary implements Visitor<Object> {
     return (
       <View>
         {content?.map((item, index) => {
-          return <View key={`${index}`}>{item?.accept(this)}</View>;
+          return <View key={`${index}`}>{item?.accept(this) as ReactNode}</View>;
         })}
       </View>
     );

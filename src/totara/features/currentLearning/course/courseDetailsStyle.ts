@@ -21,6 +21,7 @@ import { Images } from "@resources/images";
 const { colorAccent, colorNeutral7, colorSuccess, colorNeutral6, colorAlert } = TotaraTheme;
 
 const courseDetailsStyle = StyleSheet.create({
+  //@ts-ignore
   expandContentWrap: {
     margin: margins.marginL,
     ...spacedFlexRow

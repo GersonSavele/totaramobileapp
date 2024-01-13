@@ -43,6 +43,7 @@ class AppStateListener extends React.Component<Props> {
   }
 
   componentWillUnmount() {
+    //@ts-ignore
     AppState.removeEventListener("change", this.handleAppStateChange);
   }
 

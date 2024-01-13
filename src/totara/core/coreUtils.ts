@@ -67,3 +67,4 @@ const setupApolloClient = async ({ apiKey, host }) => {
 };
 
 export { isValidApiVersion, isCompatible, setupApolloClient };
+export default { isValidApiVersion, isCompatible, setupApolloClient };

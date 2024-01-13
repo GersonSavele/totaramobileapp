@@ -44,6 +44,6 @@ export const internalConfig = {
   logger: ConsoleLogger
 };
 
-let config = { ...defaultConfig, ...localConfig };
+let config: any = { ...defaultConfig, ...localConfig };
 
 export default config;

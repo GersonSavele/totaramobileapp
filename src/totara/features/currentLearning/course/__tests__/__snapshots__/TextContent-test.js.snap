@@ -3,7 +3,7 @@
 exports[`Activity-Label-Type, testing UI with or without label Test result : label include value 1`] = `
 <View
   style={
-    Object {
+    {
       "justifyContent": "center",
       "marginVertical": 12,
     }
@@ -11,7 +11,7 @@ exports[`Activity-Label-Type, testing UI with or without label Test result : lab
 >
   <Text
     style={
-      Object {
+      {
         "color": "#7D7D7D",
         "fontSize": 17,
         "fontWeight": "400",

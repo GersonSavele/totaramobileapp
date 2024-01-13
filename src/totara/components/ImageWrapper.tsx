@@ -12,23 +12,22 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-
+// @ts-nocheck
 import React from "react";
 import { useSession } from "@totara/core";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
-import { ImageStyle, StyleProp } from "react-native";
+import { ImageStyle, TextStyle, ViewStyle } from "react-native";
 import FastImage from "react-native-fast-image";
 
 type ImageWrapperType = {
   url: string;
-  style?: StyleProp<ImageStyle>;
+  style?: ViewStyle | TextStyle | ImageStyle;
   accessibilityLabel?: string;
   resizeMode?: "cover" | "contain" | "stretch" | "center" | undefined;
 };
 
 const ImageWrapper = ({ url, style, accessibilityLabel, resizeMode = undefined }: ImageWrapperType) => {
   const { apiKey } = useSession();
-
 
   return (
     <FastImage

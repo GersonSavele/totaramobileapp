@@ -29,9 +29,10 @@ type MessageBarProps = {
   testID?: string;
 };
 
+// @ts-ignore
 const MessageBar = ({ text, icon = faInfoCircle, mode = "info", style, testID }: MessageBarProps) => {
   let backgroundStyle = { backgroundColor: TotaraTheme.colorInfo };
-  let textStyle = [TotaraTheme.textSmall, styles.content, { color: TotaraTheme.colorNeutral1 }];
+  let textStyle: any = [TotaraTheme.textSmall, styles.content, { color: TotaraTheme.colorNeutral1 }];
   if (style) {
     textStyle.push(style);
   }

@@ -13,22 +13,27 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 const { defaults: tsjPreset } = require("ts-jest/presets");
+const { defaults } = require("jest-config");
 
 module.exports = {
   verbose: true,
-  ...tsjPreset,
   preset: "react-native",
   transform: {
-    ...tsjPreset.transform,
-    "\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    "^.+\\.(ts|tsx)?$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest",
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        tsconfig: "tsconfig.spec.json",
+        babelConfig: true,
+        diagnostics: {
+          warnOnly: true
+        }
+      }
+    ]
   },
   globals: {
-    "ts-jest": {
-      babelConfig: true,
-      diagnostics: {
-        warnOnly: true
-      }
-    }
+    __DEV__: true
   },
   cacheDirectory: ".jest/cache",
   moduleNameMapper: {
@@ -42,6 +47,7 @@ module.exports = {
   collectCoverageFrom: ["src/totara/**/*.{js,jsx,ts,tsx}"],
   setupFilesAfterEnv: ["<rootDir>setup-tests.js"],
   transformIgnorePatterns: [
-    "node_modules/(?!(jest-)?react-native|@react-native|@react-native-community|@react-navigation)"
-  ]
+    "node_modules/(?!(jest-)?react-native|@react-native|@react-native-community|@react-navigation|@fortawesome)"
+  ],
+  moduleFileExtensions: [...defaults.moduleFileExtensions, "android.js", "ios.js"]
 };

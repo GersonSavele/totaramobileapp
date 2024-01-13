@@ -12,6 +12,10 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
+
+// @ts-nocheck
+// ts no check because the imcompatibility in icon types
+
 import React from "react";
 import MessageBar from "@totara/components/MessageBar";
 import { View } from "react-native";

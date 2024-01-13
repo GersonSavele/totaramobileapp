@@ -15,7 +15,7 @@
 
 import { LearningItem, Section } from "./LearningItem";
 import { Activity, ActivityType, ScormActivity } from "./Activity";
-import { Course, CourseSets, CourseContentDetails } from "./Course";
+import { Course, CourseContentDetails } from "./Course";
 import { Criteria } from "./Criteria";
 import { Status, LearningStatus } from "./LearningStatus";
 import { Me } from "./Core";
@@ -41,7 +41,6 @@ export {
   AppState,
   Theme,
   Section,
-  CourseSets,
   Criteria,
   NotificationMessage,
   Resource,

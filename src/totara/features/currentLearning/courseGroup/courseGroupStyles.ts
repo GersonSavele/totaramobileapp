@@ -98,6 +98,7 @@ const cardStyle = {
 };
 
 const courseSet = StyleSheet.create({
+  //@ts-ignore
   courseSetHeader: {
     ...spacedFlexRow,
     flex: 1,

@@ -13,6 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+// @ts-nocheck
+// using no check because there's a bug with native-base ts rule in Item component, line 80
 import React, { useContext } from "react";
 import { View, StyleSheet, ViewStyle, Text } from "react-native";
 import { Item, Label } from "native-base";

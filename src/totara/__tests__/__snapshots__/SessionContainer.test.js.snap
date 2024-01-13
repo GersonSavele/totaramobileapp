@@ -3,7 +3,7 @@
 exports[`SessionContainer Should render SessionContainer navigation stack 1`] = `
 <ApolloProvider
   client={
-    Object {
+    {
       "query": [MockFunction],
       "readQuery": [MockFunction],
       "writeQuery": [MockFunction],

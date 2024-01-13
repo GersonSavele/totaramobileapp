@@ -21,11 +21,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { gutter, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
   children?: Element;
   text?: string;
-  icon?: string;
+  icon?: IconProp;
   style?: ViewStyle;
   onPress?: () => void;
   mode?: "disabled" | "loading" | undefined;
@@ -39,7 +40,7 @@ type TitleProps = {
 };
 
 type IndicatorProps = {
-  icon?: string;
+  icon?: IconProp;
   mode?: "disabled" | "loading" | undefined;
   color?: string;
   size?: number;
@@ -93,7 +94,7 @@ const SecondaryButton = ({ children, text, icon, style, onPress, mode, testID, .
       {...rest}
       style={[buttonStyle.container, style]}
       disabled={mode == "loading" || mode == "disabled"}>
-      {text ? <ButtonTitle mode={mode} text={text} style={buttonStyle.title} /> : { children }}
+      {text ? <ButtonTitle mode={mode} text={text} style={buttonStyle.title} /> : <>{children}</>}
       <ButtonIndicator mode={mode} icon={icon} color={theme.colorText} size={theme.textSmall.fontSize} />
     </Button>
   );

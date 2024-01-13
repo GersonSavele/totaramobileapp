@@ -31,7 +31,7 @@ const LinkText = ({ text, style, onPress, children, ...rest }: Props) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <Text style={[{ fontSize: 16, color: theme.colorLink }, style]} {...rest}>
-        {children ? children : text}
+        <>{children ? children : text}</>
       </Text>
     </TouchableOpacity>
   );

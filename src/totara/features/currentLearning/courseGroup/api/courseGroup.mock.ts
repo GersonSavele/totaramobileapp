@@ -115,7 +115,7 @@ const programMock = [
   {
     request: {
       query: coreProgram,
-      variables: { programid: 5 }
+      variables: { program_id: 5 }
     },
     result: {
       data: {
