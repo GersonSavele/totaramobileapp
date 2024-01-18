@@ -12,7 +12,7 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React from "react";
+import React, { ReactNode } from "react";
 import { View } from "react-native";
 import { isEmpty } from "lodash";
 
@@ -27,7 +27,7 @@ const WekaContent = ({ content, testID, style }: { content?: any; testID?: strin
   const root = wrappedWekaNodes(jsonObjectToWekaNodes(JSON.parse(content)));
   return (
     <View style={style} testID={testID}>
-      {root.accept(new ToFullSummary())}
+      {root.accept(new ToFullSummary()) as ReactNode}
     </View>
   );
 };

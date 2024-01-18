@@ -24,6 +24,7 @@ import styles from "./wekaStyle";
 import { navigateWebView } from "./wekaUtils";
 import { useSession } from "@totara/core";
 import { useNavigation } from "@react-navigation/native";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type ConfigProps = {
   content?: any;
@@ -43,7 +44,7 @@ const Attachment = ({ content = {} }: ConfigProps) => {
         onPress={() => navigateWebView({ url: nestedContent.attrs.url, apiKey, navigation, title: "" })}>
         <View style={styles.iconWrap}>
           <FontAwesomeIcon
-            icon={faPaperclip}
+            icon={faPaperclip as IconProp}
             color={TotaraTheme.colorLink}
             size={iconSizes.sizeS}
             style={{ alignSelf: "flex-start" }}

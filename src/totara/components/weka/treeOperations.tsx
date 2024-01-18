@@ -30,7 +30,7 @@ import {
   WekaLinkMedia,
   WekaAttachment,
   WekaVideo
-} from "./WekaUtils";
+} from "./wekaUtils";
 import { textAttributes } from "@totara/theme/constants";
 const BULLET_POINT_UNICODE = "\u2022";
 import LinkMedia from "./LinkMedia";

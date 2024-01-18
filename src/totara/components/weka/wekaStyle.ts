@@ -43,6 +43,7 @@ const wekaStyle = StyleSheet.create({
     fontWeight: fontWeights.fontWeightBold,
     marginTop: margins.marginXL,
     marginBottom: margins.marginM,
+    // @ts-ignore
     color: TotaraTheme.colorFont
   },
   linkMediaContainer: {
@@ -55,6 +56,7 @@ const wekaStyle = StyleSheet.create({
   linkMediaDescription: {
     ...TotaraTheme.textRegular,
     marginTop: marginM,
+    // @ts-ignore
     color: TotaraTheme.colorFont
   },
   listContainer: {

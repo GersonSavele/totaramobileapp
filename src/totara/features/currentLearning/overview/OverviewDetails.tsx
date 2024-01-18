@@ -118,7 +118,7 @@ const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={overviewStyles.gradePrefixText}>{gradeFinal.length > 0 ? gradeFinal : 0}</Text>
+            <Text style={overviewStyles.gradePrefixText}>{`${gradeFinal}`.length > 0 ? gradeFinal : 0}</Text>
           </View>
         </View>
         <View style={overviewStyles.horizontalSeparator} />

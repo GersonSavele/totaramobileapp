@@ -12,12 +12,13 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-
+// @ts-nocheck
 import { ImageStyle, StyleSheet, View, ViewStyle } from "react-native";
 import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 import React from "react";
 import { borderRadius } from "@totara/theme/constants";
+import { learningItemEnum } from "@totara/features/constants";
 
 interface ImageElementProps {
   imageStyle?: ImageStyle;

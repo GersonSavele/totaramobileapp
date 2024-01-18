@@ -26,6 +26,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { activeOpacity } from "@totara/lib/styles/base";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type CourseSetListProps = {
   courseSetList: [CourseSets];
@@ -67,7 +68,11 @@ const LearningItems = ({ item, navigate, showCriteriaList = () => null }: any) =
                 activeOpacity={activeOpacity}
                 style={courseSet.viewAllTouchableOpacity}>
                 <Text style={courseSet.viewAllTitle}>View all</Text>
-                <FontAwesomeIcon icon={faChevronRight} size={iconSizes.sizeM / 2} color={TotaraTheme.colorLink} />
+                <FontAwesomeIcon
+                  icon={faChevronRight as IconProp}
+                  size={iconSizes.sizeM / 2}
+                  color={TotaraTheme.colorLink}
+                />
               </TouchableOpacity>
             )}
           </View>

@@ -93,7 +93,10 @@ const BottomSheetContent = ({ criteriaList = [] }: ContentProps) => {
           style={criteriaSheetStyle.renderListWrap}
           sections={criteriaSectionList as []}
           renderItem={({ item }) => <ListItem item={item} isOverview={true} />}
-          renderSectionHeader={({ section }) => <SectionHeader title={section.title} />}
+          renderSectionHeader={({ section }) => {
+            // @ts-ignore
+            return <SectionHeader title={section.title} />;
+          }}
           stickySectionHeadersEnabled={false}
           showsVerticalScrollIndicator={false}
         />
@@ -148,7 +151,7 @@ const CriteriaSheet = ({ criteriaList, onClose, title, index = -1 }: Props) => {
   }, []);
 
   const handleClosePress = () => {
-    bottomSheetRef.current.close();
+    bottomSheetRef.current?.close();
     onClose();
   };
 
