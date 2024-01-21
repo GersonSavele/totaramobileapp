@@ -13,6 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+// FIX: Native base typescript bug
+// @ts-nocheck
+
 import React, { useRef, useContext, useEffect } from "react";
 import { View, StyleSheet, Linking } from "react-native";
 import { WebView } from "react-native-webview";

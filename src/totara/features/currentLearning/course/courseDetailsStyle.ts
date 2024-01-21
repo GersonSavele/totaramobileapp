@@ -24,6 +24,7 @@ const courseDetailsStyle = StyleSheet.create({
   //@ts-ignore
   expandContentWrap: {
     margin: margins.marginL,
+    // @ts-ignore
     ...spacedFlexRow
   },
   expandTextWrap: {

@@ -12,6 +12,7 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
+//@ts-nocheck
 
 import React from "react";
 import { Image, StyleSheet, Text } from "react-native";

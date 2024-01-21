@@ -40,6 +40,7 @@ const CourseDetails = ({ navigation, route }: any) => {
   let queryVariables = { courseid: courseId };
   if (passwordRequired) {
     const guestPassword = route?.params?.guestPassword;
+    // @ts-ignore
     queryVariables = { ...queryVariables, guestpw: guestPassword };
   }
 

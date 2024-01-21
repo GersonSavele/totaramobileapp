@@ -13,6 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+// FIX: Native-base Form has a type check issue, therefore ignoring
+//@ts-nocheck
+
 import { Content, Form, Input } from "native-base";
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
@@ -79,7 +82,7 @@ const SiteUrl = () => {
 
   const { siteUrlState, onSubmit, reset, onChangeInputSiteUrl } = useSiteUrl({
     siteUrl: initialSiteURL,
-    onSiteInfoDone: (siteInfo) => {
+    onSiteInfoDone: siteInfo => {
       dispatch(setupHost({ host: siteUrlState.inputSiteUrl, siteInfo }));
       const { auth } = siteInfo;
       if (auth === "browser") {
@@ -116,7 +119,7 @@ const SiteUrl = () => {
                 keyboardType="url"
                 clearButtonMode="while-editing"
                 autoCapitalize="none"
-                onChangeText={(text) => onChangeInputSiteUrl(text)}
+                onChangeText={text => onChangeInputSiteUrl(text)}
                 value={inputSiteUrl}
                 style={styles.inputText}
                 autoFocus={inputSiteUrlStatus !== "fetching"}

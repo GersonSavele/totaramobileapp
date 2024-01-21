@@ -14,8 +14,8 @@
  */
 
 import React from "react";
-import { MockedProvider } from '@apollo/client/testing';
-import { render, act } from "@testing-library/react-native";
+import { MockedProvider } from "@apollo/client/testing";
+import { render, screen, act } from "@testing-library/react-native";
 import wait from "waait";
 
 import { programMock, certificationMock, mockEmpty, mockError } from "../api/courseGroup.mock";
@@ -40,10 +40,9 @@ const navigationCert = {
 };
 
 describe("CourseGroupDetails", () => {
-
   test("Should render loading", async () => {
     const tree = (
-      <MockedProvider mocks={mockEmpty}>
+      <MockedProvider mocks={mockEmpty} addTypename={false}>
         <CourseGroupDetails navigation={navigationProgram} />
       </MockedProvider>
     );
@@ -80,7 +79,7 @@ describe("CourseGroupDetails", () => {
       await wait(0);
     });
 
-    const programDetailsContainer = getByTestId("test_data");
+    const programDetailsContainer = getByTestId("test_error");
     expect(programDetailsContainer).toBeTruthy();
   });
 
@@ -90,13 +89,8 @@ describe("CourseGroupDetails", () => {
         <CourseGroupDetails navigation={navigationCert} />
       </MockedProvider>
     );
-
-    const { getByTestId } = render(tree);
-    await act(async () => {
-      await wait(0);
-    });
-
-    const programDetailsContainer = getByTestId("test_data");
+    render(tree);
+    const programDetailsContainer = await screen.findByTestId("test_loading");
     expect(programDetailsContainer).toBeTruthy();
   });
 });

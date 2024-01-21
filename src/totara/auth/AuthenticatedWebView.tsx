@@ -52,6 +52,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    // @ts-ignore
     this.state = {
       error: undefined,
       isLoading: true,

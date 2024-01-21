@@ -38,6 +38,7 @@ import {
 } from "./utils";
 import { ScormLessonStatus } from "./constants";
 import { SCORM_TEST_IDS } from "@totara/lib/testIds";
+import StaticServer from "@dr.pogodin/react-native-static-server";
 
 type OfflineScormParams = {
   attempt: number;
@@ -119,74 +120,78 @@ const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
   );
 };
 
-const packageEffect = ({ url, scos, scorm, attempt, client, defaultSco, setJsCode }) => () => {
-  if (url && scos) {
-    const { id, newAttemptDefaults } = scorm;
-    const cmiData = getScormAttemptData({
-      scormId: scorm.id,
-      attempt,
-      client
-    });
-    const selectedSco = defaultSco ? defaultSco : scos[0];
-    const lastActivityCmi = (cmiData && cmiData[selectedSco.id]) || null;
-    const cmi = getScormPlayerInitialData({
-      launchSrc: selectedSco?.launchSrc,
-      scormId: id,
-      scos,
-      scoId: selectedSco?.id,
-      attempt,
-      packageLocation: getOfflineScormPackageName(scorm.id),
-      playerInitalData: {
-        defaults: JSON.parse(newAttemptDefaults)
-      }
-    });
-    setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
-  }
-};
-
-const loadedScormEffect = ({ setUrl, scormPackageData, setScormPackageData, backAction }) => () => {
-  let server: null | Server;
-  setupOfflineScormPlayer()
-    .then(async offlineServerPath => {
-      if (!isEmpty(offlineServerPath)) {
-        let fileDir: string = Platform.select({
-          android: offlineServerPath,
-          ios: offlineServerPath,
-          default: ''
-        });
-        server = new Server({ fileDir, stopInBackground: true });
-
-        const res = await server?.start();
-        if (res && server) {
-          setUrl(res);
+const packageEffect =
+  ({ url, scos, scorm, attempt, client, defaultSco, setJsCode }) =>
+  () => {
+    if (url && scos) {
+      const { id, newAttemptDefaults } = scorm;
+      const cmiData = getScormAttemptData({
+        scormId: scorm.id,
+        attempt,
+        client
+      });
+      const selectedSco = defaultSco ? defaultSco : scos[0];
+      const lastActivityCmi = (cmiData && cmiData[selectedSco.id]) || null;
+      const cmi = getScormPlayerInitialData({
+        launchSrc: selectedSco?.launchSrc,
+        scormId: id,
+        scos,
+        scoId: selectedSco?.id,
+        attempt,
+        packageLocation: getOfflineScormPackageName(scorm.id),
+        playerInitalData: {
+          defaults: JSON.parse(newAttemptDefaults)
         }
-      } else {
-        throw new Error("Cannot find offline server details.");
-      }
-    })
-    .catch(e => {
-      Log.debug(e.messageData);
-    });
-
-  loadScormPackageData(scormPackageData)
-    .then(data => {
-      setScormPackageData(data);
-    })
-    .catch(e => {
-      Log.debug(e.messageData);
-    });
-
-  const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-  return () => {
-    (async () => {
-      backHandler.remove();
-      server?.stop();
-
-      server = null;
-      setUrl('');
-    })();
+      });
+      setJsCode(scormDataIntoJsInitCode(cmi, lastActivityCmi));
+    }
   };
-};
+
+const loadedScormEffect =
+  ({ setUrl, scormPackageData, setScormPackageData, backAction }) =>
+  () => {
+    let server: null | Server;
+    setupOfflineScormPlayer()
+      .then(async offlineServerPath => {
+        if (!isEmpty(offlineServerPath)) {
+          let fileDir: string = Platform.select({
+            android: offlineServerPath,
+            ios: offlineServerPath,
+            default: ""
+          });
+          server = new Server({ fileDir, stopInBackground: true });
+
+          const res = await server?.start();
+          if (res && server) {
+            setUrl(res);
+          }
+        } else {
+          throw new Error("Cannot find offline server details.");
+        }
+      })
+      .catch(e => {
+        Log.debug(e.messageData);
+      });
+
+    loadScormPackageData(scormPackageData)
+      .then(data => {
+        setScormPackageData(data);
+      })
+      .catch(e => {
+        Log.debug(e.messageData);
+      });
+
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+    return () => {
+      (async () => {
+        backHandler.remove();
+        server?.stop();
+
+        server = null;
+        setUrl("");
+      })();
+    };
+  };
 
 const stopServer = (server: React.MutableRefObject<any>, setUrl) => {
   if (server && server.current) {
@@ -196,23 +201,25 @@ const stopServer = (server: React.MutableRefObject<any>, setUrl) => {
   setUrl(undefined);
 };
 
-const onPlayerMessageHandler = ({ client, maxGrade, gradeMethod }) => (messageData: any) => {
-  const { tmsevent, result } = messageData;
-  const status = get(result, "cmi.core.lesson_status", undefined);
-  if (tmsevent && tmsevent === "SCORMCOMMIT" && status && status !== ScormLessonStatus.incomplete) {
-    const scormBundles = retrieveAllData({ client });
-    const newData = setScormActivityData({
-      scormBundles,
-      data: result,
-      maxGrade,
-      gradeMethod
-    });
-    saveInTheCache({
-      client,
-      scormBundles: newData
-    });
-  }
-};
+const onPlayerMessageHandler =
+  ({ client, maxGrade, gradeMethod }) =>
+  (messageData: any) => {
+    const { tmsevent, result } = messageData;
+    const status = get(result, "cmi.core.lesson_status", undefined);
+    if (tmsevent && tmsevent === "SCORMCOMMIT" && status && status !== ScormLessonStatus.incomplete) {
+      const scormBundles = retrieveAllData({ client });
+      const newData = setScormActivityData({
+        scormBundles,
+        data: result,
+        maxGrade,
+        gradeMethod
+      });
+      saveInTheCache({
+        client,
+        scormBundles: newData
+      });
+    }
+  };
 
 export { packageEffect, loadedScormEffect, stopServer, onPlayerMessageHandler };
 export default OfflineScormActivity;

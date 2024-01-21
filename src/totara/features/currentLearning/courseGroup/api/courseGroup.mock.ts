@@ -14,7 +14,7 @@
  */
 
 import { GraphQLError } from "graphql";
-import { coreProgram, coreCertification } from "./index";
+import { coreProgram, coreCertification, mutationReportProgramme } from "./index";
 
 const course = {
   id: "44",
@@ -111,6 +111,18 @@ const courseDetails = {
   courseSetHeader: "1 completed set"
 };
 
+const reportProgrammeMutationRequest = {
+  request: {
+    query: mutationReportProgramme,
+    variables: { program_id: 5 }
+  },
+  result: {
+    data: {
+      totara_mobile_program_view: true
+    }
+  }
+}
+
 const programMock = [
   {
     request: {
@@ -125,7 +137,7 @@ const programMock = [
         }
       }
     }
-  }
+  }, reportProgrammeMutationRequest
 ];
 
 const certificationMock = [
@@ -142,33 +154,33 @@ const certificationMock = [
         }
       }
     }
-  }
+  }, reportProgrammeMutationRequest
 ];
 
 const mockEmpty = [
   {
     request: {
       query: coreProgram,
-      variables: { programid: 5 }
+      variables: { program_id: 5 }
     },
     result: {
       data: {
         totara_mobile_program: []
       }
     }
-  }
+  }, reportProgrammeMutationRequest
 ];
 
 const mockError = [
   {
     request: {
       query: coreProgram,
-      variables: { programid: 5 }
+      variables: { program_id: 5 }
     },
     result: {
       errors: [new GraphQLError("Error!")]
     }
-  }
+  }, reportProgrammeMutationRequest
 ];
 
 const courseSetMock = {

@@ -23,6 +23,8 @@ import { paddings } from "@totara/theme/constants";
 import MoreInfo from "@totara/components/MoreInfo";
 
 const LearningItems = ({ item, navigation }: any) => {
+  // Note: This navigation is only injected for testing purposes.
+  // @ts-ignore
   return <CurrentLearningListViewItem item={item} navigation={navigation} />;
 };
 

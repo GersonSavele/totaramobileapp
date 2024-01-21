@@ -94,7 +94,7 @@ const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
       />
     );
   } else {
-    return <Loading />;
+    return <Loading testID={"data_loading"} />;
   }
 };
 

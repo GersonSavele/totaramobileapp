@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { ScrollView, Text, View, TextStyle, TouchableOpacity, RefreshControl } from "react-native";
 import { get, isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -77,7 +77,7 @@ const GridLabelValue = ({ theme, textId, value, children }: GridLabelProps) => (
     <Text style={theme.textRegular}>{translate(textId)}</Text>
     <View style={{ flexDirection: "row" }}>
       <Text style={gridStyle(theme)}>{value}</Text>
-      {children}
+      {children as ReactNode}
     </View>
   </View>
 );
@@ -198,7 +198,7 @@ const onExitActivityAttempt = ({
             apiKey,
             host
           })
-            .then((response) => {
+            .then(response => {
               const status = get(response, "data.status");
               if (status) {
                 const { attemptsCurrent, gradefinal } = status;
@@ -215,7 +215,7 @@ const onExitActivityAttempt = ({
                 }
               }
             })
-            .catch((e) => console.log("Error: ", e))
+            .catch(e => console.log("Error: ", e))
             .finally(() => {
               setIsLoadingCurrentStatus && setIsLoadingCurrentStatus(false);
             });

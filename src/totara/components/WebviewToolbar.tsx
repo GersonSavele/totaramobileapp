@@ -28,11 +28,11 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 type WebviewToolbarProps = {
   refWebview: React.RefObject<WebView>;
   navState?: WebViewNavigation;
-  viewUrl: string;
-  showAllToolbarItems: boolean;
+  viewUrl?: string;
+  showAllToolbarItems?: boolean;
 };
 
-const WebviewToolbar = ({ refWebview, navState, viewUrl, showAllToolbarItems = false }: WebviewToolbarProps) => {
+const WebviewToolbar = ({ refWebview, navState, viewUrl = "", showAllToolbarItems = false }: WebviewToolbarProps) => {
   const onShare = async () => {
     try {
       await Share.share({

@@ -14,7 +14,7 @@
  */
 
 import React, { useRef, useCallback, useMemo } from "react";
-import { View, TouchableOpacity, SectionList, Text, FlatList, StyleSheet } from "react-native";
+import { View, TouchableOpacity, SectionList, Text, FlatList } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { groupBy } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
@@ -156,6 +156,7 @@ const CriteriaSheet = ({ criteriaList, onClose, title, index = -1 }: Props) => {
   };
 
   return (
+    // Note: BottomSheet does NOT work being wrapped by <View/>
     <>
       <BottomSheet
         ref={bottomSheetRef}

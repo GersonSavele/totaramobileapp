@@ -13,6 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+// FIX: Native base typescript bug
+// @ts-nocheck
+
 import React, { useContext } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity, Linking, ImageSourcePropType } from "react-native";
 import { Form, Input, Container, Content } from "native-base";

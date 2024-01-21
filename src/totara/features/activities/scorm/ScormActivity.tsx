@@ -47,14 +47,8 @@ import { NAVIGATION_TEST_IDS, SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 const { download } = ResourceManager;
 
-const {
-  SCORM_ROOT,
-  SCORM_STACK_ROOT,
-  SCORM_ATTEMPTS,
-  OFFLINE_SCORM_ACTIVITY,
-  WEBVIEW_ACTIVITY,
-  SCORM_FEEDBACK
-} = NAVIGATION;
+const { SCORM_ROOT, SCORM_STACK_ROOT, SCORM_ATTEMPTS, OFFLINE_SCORM_ACTIVITY, WEBVIEW_ACTIVITY, SCORM_FEEDBACK } =
+  NAVIGATION;
 
 type ScormActivityProps = {
   navigation: any;
@@ -81,46 +75,50 @@ type ResourceListEffectProps = {
 
 const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
 
-const apiDataEffect = ({ data, client, id, scormBundle, setScormBundle }: ApiDataEffectProps) => () => {
-  if (data) {
-    let mergedData = { ...data };
+const apiDataEffect =
+  ({ data, client, id, scormBundle, setScormBundle }: ApiDataEffectProps) =>
+  () => {
+    if (data) {
+      let mergedData = { ...data };
 
-    const offlineAttempts = getOfflineActivity({
-      client,
-      scormId: id
-    });
-    setScormBundle({
-      ...scormBundle,
-      ...mergedData,
-      offlineAttempts: offlineAttempts
-    });
-  }
-};
+      const offlineAttempts = getOfflineActivity({
+        client,
+        scormId: id
+      });
+      setScormBundle({
+        ...scormBundle,
+        ...mergedData,
+        offlineAttempts: offlineAttempts
+      });
+    }
+  };
 
-const onRefresh = ({
-  isInternetReachable,
-  refetch,
-  client,
-  id,
-  scormBundle,
-  setScormBundle
-}: ApiDataEffectProps & {
-  isInternetReachable?: null | boolean;
-  refetch: Function;
-}) => () => {
-  if (isInternetReachable) {
-    refetch();
-  } else {
-    const offlineAttempts = getOfflineActivity({
-      client,
-      scormId: id
-    });
-    setScormBundle({
-      ...scormBundle,
-      offlineAttempts: offlineAttempts
-    });
-  }
-};
+const onRefresh =
+  ({
+    isInternetReachable,
+    refetch,
+    client,
+    id,
+    scormBundle,
+    setScormBundle
+  }: ApiDataEffectProps & {
+    isInternetReachable?: null | boolean;
+    refetch: Function;
+  }) =>
+  () => {
+    if (isInternetReachable) {
+      refetch();
+    } else {
+      const offlineAttempts = getOfflineActivity({
+        client,
+        scormId: id
+      });
+      setScormBundle({
+        ...scormBundle,
+        offlineAttempts: offlineAttempts
+      });
+    }
+  };
 
 const ScormActivity = (props: ScormActivityProps) => {
   const { navigation } = props;
@@ -136,17 +134,17 @@ const ScormActivity = (props: ScormActivityProps) => {
   // FIXME: This is a temporary hack because the server is not returning correct data
   const [scormBundle, setScormBundle] = useState<ScormBundle | undefined>(data);
 
-  const { apiKey, host } = useSession();
+  const { apiKey = "", host = "" } = useSession();
 
   //FIXME: IMPROVE THIS USESELECTOR, create something like useResource that does all this stuff
   const resourceList: Resource[] = useSelector((state: RootState) => state.resourceReducer.resources);
-  const resource = resourceList.find((x) => x.customId === id);
+  const resource = resourceList.find(x => x.customId === id);
 
   const progress = resource
     ? humanReadablePercentage({
-      writtenBytes: resource.bytesDownloaded,
-      sizeInBytes: resource.sizeInBytes
-    })
+        writtenBytes: resource.bytesDownloaded,
+        sizeInBytes: resource.sizeInBytes
+      })
     : 0;
   const scorm = scormBundle?.scorm;
   const offlinePackageUrl = scorm?.offlineAttemptsAllowed && scorm?.offlinePackageUrl;
@@ -275,10 +273,15 @@ const scormStack = createCompatNavigatorFactory(createStackNavigator)(
   }
 );
 
-const headerRight = (props) => {
+const headerRight = props => {
   const { navigation } = props;
-  const { id, title = "", downloadProgress = 0, downloadState, onDownloadPress } = navigation.state
-    .params as ScormActivityParams;
+  const {
+    id,
+    title = "",
+    downloadProgress = 0,
+    downloadState,
+    onDownloadPress
+  } = navigation.state.params as ScormActivityParams;
 
   if (onDownloadPress) {
     return (

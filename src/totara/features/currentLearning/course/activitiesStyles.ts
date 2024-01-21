@@ -28,6 +28,7 @@ const activitiesStyles = StyleSheet.create({
     alignSelf: "flex-start"
   },
   sectionView: {
+    // @ts-ignore
     ...spacedFlexRow,
     height: 58,
     marginHorizontal: marginL,
