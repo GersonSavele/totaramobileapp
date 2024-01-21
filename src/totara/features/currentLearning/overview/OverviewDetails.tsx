@@ -20,7 +20,6 @@ import { isEmpty } from "lodash";
 import { courseSelfComplete } from "../course/api";
 import { AddBadge, Loading, GeneralErrorModal, CircleIcon } from "@totara/components";
 import { translate } from "@totara/locale";
-import CriteriaSheet from "../components/CriteriaSheet";
 import { DescriptionFormat } from "@totara/types/LearningItem";
 import CourseCompletionModal from "../CourseCompletionModal";
 import { Criteria } from "@totara/types";
@@ -88,7 +87,11 @@ const OverviewDetails = ({
                 isCourseSet={isCourseSet}
                 showCriteriaList={() => {
                   //show progress details only if there's a criteria
-                  if (criteria !== null && criteria!.length > 0) showCriteriaList(criteria);
+                  if (criteria && criteria !== null && criteria.length > 0) {
+                    showCriteriaList(criteria);
+                  } else {
+                    showCriteriaList([]);
+                  }
                 }}
               />
             )}

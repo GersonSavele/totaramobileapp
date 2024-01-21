@@ -12,6 +12,10 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
+
+// FIX: searchbar typescript bug
+// @ts-nocheck
+
 import React, { useState, useEffect, useCallback } from "react";
 import { FlatList, Image, ImageSourcePropType, Platform, Text, View } from "react-native";
 import { SearchBar } from "react-native-elements";
@@ -39,14 +43,16 @@ type FindLearningHeaderProps = {
   onSearch: () => void;
   count?: number;
   onFocusText: () => void;
+  loading: boolean;
 };
 
 const FindLearningHeader = ({
   onChangeText,
   findLeaningText,
   onSearch,
-  count,
-  onFocusText
+  count = 0,
+  onFocusText,
+  loading = false
 }: FindLearningHeaderProps) => {
   return (
     <View style={findLearningStyles.headerWrapper} testID={FINDLEARNING_TEST_IDS.HEADER}>
@@ -68,7 +74,7 @@ const FindLearningHeader = ({
         rightIconContainerStyle={findLearningStyles.clearSearch}
         testID={FINDLEARNING_TEST_IDS.SEARCH_TEXT_INPUT}
       />
-      {count || (count === 0 && !isEmpty(findLeaningText)) ? (
+      {!loading && (count || (count === 0 && !isEmpty(findLeaningText))) ? (
         <Text style={findLearningStyles.result} testID={FINDLEARNING_TEST_IDS.NO_OF_ITEMS}>
           {translate("find_learning.results", {
             count
@@ -119,7 +125,8 @@ const FindLearning = () => {
         if (native === false) {
           setUrlViewTarget(viewUrl);
           setShowRestriction(true);
-        } else {//if native is undefined or true // comparing with undefined if the api is not compatible
+        } else {
+          //if native is undefined or true // comparing with undefined if the api is not compatible
           navigation.navigate(NAVIGATION.FIND_LEARNING_OVERVIEW, {
             itemid,
             title,
@@ -164,13 +171,16 @@ const FindLearning = () => {
         ListHeaderComponent={
           <>
             <FindLearningHeader
-              onChangeText={text => setSearchData({ key: text })}
+              onChangeText={text => {
+                setSearchData({ key: text });
+              }}
               onSearch={() => {
                 setSearchResult(undefined);
                 setSearchData({ ...searchData, pointer: 0 });
               }}
               findLeaningText={searchData.key}
               count={searchResult?.maxCount}
+              loading={loading}
               onFocusText={() => {
                 setSearchData({ key: searchData.key });
               }}

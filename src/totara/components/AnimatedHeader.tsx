@@ -30,7 +30,7 @@ type AnimatedHeaderProps = { title: string; subTitle?: string; scrollValue?: any
 
 const getIcon = () => (Platform.OS === "ios" ? "chevron-left" : "arrow-left");
 
-const AnimatedHeader = ({ title, subTitle, scrollValue, leftAction }: AnimatedHeaderProps) => {
+const AnimatedHeader = ({ title, subTitle, scrollValue = {}, leftAction }: AnimatedHeaderProps) => {
   const safeArea = useSafeAreaInsets();
   const isFloating = !!scrollValue;
   const [dark, setDark] = useState(false);

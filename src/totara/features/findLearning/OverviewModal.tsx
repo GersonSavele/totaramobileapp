@@ -98,6 +98,7 @@ export const OverviewModal = () => {
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<OverviewModalParamList, "OverviewModal">>();
 
+  // @ts-ignore
   const { itemid, title, mobileImage: imageSource, summary, summaryFormat } = params;
 
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
@@ -129,7 +130,7 @@ export const OverviewModal = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: (props) => (
+      headerLeft: props => (
         <HeaderBackButton
           {...props}
           onPress={() => {

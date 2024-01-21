@@ -89,6 +89,7 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
     if (core) changeLocale(core?.user?.lang || DEFAULT_LANGUAGE);
   }, []);
 
+  // @ts-ignore
   useEffect(() => {
     const unsubscribe = event.addListener(EVENT_LISTENER, param => {
       if (param.event === Events.Logout) {
@@ -111,6 +112,7 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
       });
     } else if (!apiKey && apolloClient) {
       persistor?.purge();
+      // @ts-ignore
       setApolloClient(undefined);
     } else if (apiKey && apolloClient && isLoading) {
       setIsLoading(false);
