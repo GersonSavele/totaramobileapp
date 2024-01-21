@@ -26,7 +26,7 @@ describe("WebviewLogin", () => {
   });
 
   it("should render WebviewLogin view", async () => {
-    const { container } = render(<WebviewLogin />);
-    expect(container).toBeTruthy();
+    const { root } = render(<WebviewLogin />);
+    expect(root).toBeTruthy();
   });
 });

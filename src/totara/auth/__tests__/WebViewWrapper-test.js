@@ -24,11 +24,11 @@ describe("WebViewWrapper", () => {
   });
 
   it("Should render WebViewWrapper view", async () => {
-    const { container } = render(
+    const { root } = render(
       <MockedProvider mocks={[]} addTypename={false}>
         <WebViewWrapper />
       </MockedProvider>
     );
-    expect(container).toBeTruthy();
+    expect(root).toBeTruthy();
   });
 });

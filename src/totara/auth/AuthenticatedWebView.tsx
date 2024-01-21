@@ -23,7 +23,7 @@ import CookieManager from "@react-native-cookies/cookies";
 import { config, Log } from "@totara/lib";
 import { WEBVIEW_SECRET } from "@totara/lib/constants";
 import { Loading, LoadingError } from "@totara/components";
-import { getUserAgent } from "react-native-device-info";
+import DeviceInfo from "react-native-device-info";
 import { TEST_IDS } from "@totara/lib/testIds";
 
 const createWebview = gql`
@@ -83,12 +83,12 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
       })
       .catch(error => {
         Log.warn(error);
-        this.setState({ ...this.state, error: error, isLoading: false });
+        this.setState({ error: error, isLoading: false });
       });
 
     const clearCookiesPromise = CookieManager.clearAll(true).catch(error => Log.warn("unable to clearcookies", error));
 
-    const userAgentPromise = getUserAgent().then(agent => {
+    const userAgentPromise = DeviceInfo.getUserAgent().then(agent => {
       this.setState({ agent: `${agent} ${config.userAgent}` });
     });
 

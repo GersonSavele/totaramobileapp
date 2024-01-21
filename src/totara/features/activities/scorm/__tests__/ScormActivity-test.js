@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from "@apollo/client/testing";
 import * as ReactRedux from "react-redux";
 import { act } from "react-test-renderer";
 import wait from "waait";
@@ -50,7 +50,7 @@ describe("ScormActivity", () => {
     jest.restoreAllMocks();
   });
 
-  it("Should render loading component initially; when it receives the response, it should show scorm summary", async() => {
+  test("Should render loading component initially; when it receives the response, it should show scorm summary", async () => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return downloadsTwoItemsMock;
     });

@@ -28,8 +28,8 @@ describe("NativeLogin", () => {
   });
 
   it("should render NativeLogin view without InforModal", async () => {
-    const { container, queryByTestId } = render(<NativeLogin />);
-    expect(container).toBeTruthy();
+    const { root, queryByTestId } = render(<NativeLogin />);
+    expect(root).toBeTruthy();
     expect(queryByTestId(NATIVE_LOGIN_TEST_IDS.UNHANDLED_ERROR)).toBeNull();
   });
 
@@ -37,8 +37,8 @@ describe("NativeLogin", () => {
     jest
       .spyOn(nativeFlow, "useNativeFlow")
       .mockReturnValue(() => ({ nativeLoginState: { unhandledLoginError: true } }));
-    const { container, getByTestId } = render(<NativeLogin />);
-    expect(container).toBeTruthy();
+    const { root, getByTestId } = render(<NativeLogin />);
+    expect(root).toBeTruthy();
     expect(getByTestId(NATIVE_LOGIN_TEST_IDS.UNHANDLED_ERROR)).toBeTruthy();
   });
 });

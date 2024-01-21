@@ -18,7 +18,6 @@ import { render } from "@testing-library/react-native";
 import * as ReactRedux from "react-redux";
 import About from "@totara/features/about/About";
 
-
 describe("About", () => {
   test("Should render About view", async () => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
@@ -26,11 +25,11 @@ describe("About", () => {
         siteInfo: {
           version: "1.0"
         },
-        host: 'https://mobile.demo.totara.software'
+        host: "https://mobile.demo.totara.software"
       };
     });
 
-    const { container } = render(<About />);
-    expect(container).toBeTruthy();
+    const { root } = render(<About />);
+    expect(root).toBeTruthy();
   });
 });

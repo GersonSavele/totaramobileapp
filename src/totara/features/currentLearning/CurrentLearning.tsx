@@ -41,6 +41,7 @@ const CurrentLearning = () => {
   const theme = useContext(ThemeContext);
   const [listingOrientation, setListingOrientation] = useState<ListingOrientation>(ListingOrientation.Carousel);
   // this is to make sure timing out errors are not shown for the functional error component
+  // @ts-ignore
   const hasNotTimedOut = error?.networkError?.statusCode !== 408;
 
   const onContentRefresh = () => {

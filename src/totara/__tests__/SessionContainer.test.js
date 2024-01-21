@@ -30,8 +30,8 @@ describe("SessionContainer", () => {
   it("Should render empty SessionContainer navigation stack", () => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => jest.fn());
 
-    const { container } = render(<SessionContainer />);
-    expect(container).toBeTruthy();
+    const { root } = render(<SessionContainer />);
+    expect(root).toBeTruthy();
   });
 
   it("Should render SessionContainer navigation stack", () => {

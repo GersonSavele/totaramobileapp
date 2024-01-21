@@ -389,7 +389,9 @@ const getScormPackageData = (packagPath: string) => {
 
       if (!isEmpty(scosList)) return { scos: scosList, defaultSco: defaultSco } as Package;
     }
-  });
+  }).catch((e => {
+    console.warn('error', e)
+  }));
 };
 
 /**

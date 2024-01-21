@@ -27,7 +27,7 @@ describe("BrowserLogin", () => {
     jest.spyOn(nav, "useRoute").mockReturnValue({ params: { siteUrl: "http://abc.com" } });
   });
   it("should render BrowserLogin InforModal", async () => {
-    const { container } = render(<BrowserLogin />);
-    expect(container).toBeTruthy();
+    const { root } = render(<BrowserLogin />);
+    expect(root).toBeTruthy();
   });
 });

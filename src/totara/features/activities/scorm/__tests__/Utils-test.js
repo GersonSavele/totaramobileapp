@@ -105,7 +105,7 @@ describe("scorm utilities", () => {
       shouldAllowNewAttempt: false
     };
     //For Offline
-    it("returns correct object for valid `scormBundle` and default values for undefined on offline mode.", () => {
+    test("returns correct object for valid `scormBundle` and default values for undefined on offline mode.", () => {
       const isDownloaded = true;
       expect(getDataForScormSummary(isDownloaded, undefined)).toEqual(expectedDataForUndefined);
 
@@ -121,7 +121,7 @@ describe("scorm utilities", () => {
       expect(getDataForScormSummary(isDownloaded, scormBundle)).toEqual(expectResultScormBundle);
     });
 
-    it("returns incremented total attempts because there are a initial number of attempts done when offline", () => {
+    test("returns incremented total attempts because there are a initial number of attempts done when offline", () => {
       const isDownloaded = true;
       const previousOfflineAttempt = {
         attempt: 2,
@@ -499,7 +499,7 @@ describe("scorm utilities", () => {
   });
 
   describe("getScormPlayerInitialData", () => {
-    it("should return initialize data for scomr player", () => {
+    test("should return initialize data for scomr player", () => {
       const scormId = "1";
       const attempt = 1;
       const scoId = "sco-1";
@@ -553,14 +553,14 @@ describe("scorm utilities", () => {
       jest.clearAllMocks();
     });
 
-    it("should return server root path", async () => {
+    test("should return server root path", async () => {
       const isScormPlayerInitializedMock = jest.fn(() => Promise.resolve(true));
       const onInitializeScormWebplayerMock = jest.fn(() => Promise.resolve(true));
       const result = await setupOfflineScormPlayer(isScormPlayerInitializedMock, onInitializeScormWebplayerMock);
       expect(result).toStrictEqual(offlineScormServerRoot);
     });
 
-    it("should return server root path, scorm player is initialized", async () => {
+    test("should return server root path, scorm player is initialized", async () => {
       const isScormPlayerInitializedMock = jest.fn(() => Promise.resolve(false));
       const onInitializeScormWebplayerMock = jest.fn(() => Promise.resolve(true));
       const result = await setupOfflineScormPlayer(isScormPlayerInitializedMock, onInitializeScormWebplayerMock);
@@ -573,7 +573,7 @@ describe("scorm utilities", () => {
       jest.clearAllMocks();
     });
 
-    it("should return package data, if data is already exists", async () => {
+    test("should return package data, if data is already exists", async () => {
       const packageDataMock = {
         path: "path",
         scos: ["sco one", "sco two"],
@@ -583,7 +583,7 @@ describe("scorm utilities", () => {
       expect(result).toMatchObject(packageDataMock);
     });
 
-    it("should get package data using getScormPackageData and return package data, if package path is not available", async () => {
+    test("should get package data using getScormPackageData and return package data, if package path is not available", async () => {
       const packageDataMock = {
         path: "path",
         scos: ["sco one", "sco two"]
@@ -593,7 +593,7 @@ describe("scorm utilities", () => {
       expect(result).toMatchObject(packageDataMock);
     });
 
-    it("should throw error, if package path is empty", async () => {
+    test("should throw error, if package path is empty", async () => {
       let packageDataMock = { path: undefined };
       try {
         await loadScormPackageData(packageDataMock);
@@ -658,7 +658,7 @@ describe("scorm player package handling", () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
-    it("should return array of promises copy files in the directory.", async () => {
+    test("should return array of promises copy files in the directory.", async () => {
       setupDefaultConfigeMock({ platformOS: "android" });
       let result;
       result = await initializeScormWebplayer();
@@ -784,7 +784,7 @@ describe("scorm player package handling", () => {
       RNFS.exists.mockImplementation(jest.fn(() => Promise.resolve(true)));
 
       const resultIOS = await initializeScormWebplayer();
-      expect(RNFS.unlink).toHaveBeenCalledTimes(mockSourceDirContent.length*2);
+      expect(RNFS.unlink).toHaveBeenCalledTimes(mockSourceDirContent.length * 2);
       expect(resultIOS.length).toBe(mockSourceDirContent.length);
     });
   });
@@ -903,7 +903,7 @@ describe("downloaded scorm activity package processing", () => {
   const imsManifestPath = packagePath + "/imsmanifest.xml";
 
   describe("getScormPackageData", () => {
-    it("should return correct object for valid manifest xml content", async () => {
+    test("should return correct object for valid manifest xml content", async () => {
       const configInput = {
         nextOrg: secondOrg,
         defatultOrgId: firstOrg.organizationId
@@ -916,7 +916,7 @@ describe("downloaded scorm activity package processing", () => {
       expect(result).toMatchObject(expectedData(configInput));
     });
 
-    it("should not return any data for invalid manifest xml content", async () => {
+    test("should not return any data for invalid manifest xml content", async () => {
       RNFS.readFile.mockImplementation(() => {
         return Promise.resolve("");
       });
@@ -932,11 +932,9 @@ describe("downloaded scorm activity package processing", () => {
       expect(resultUndefined).toBeUndefined();
     });
 
-    it("should throw an error for file read error", async () => {
+    test("should throw an error for file read error", async () => {
       const errorMessage = "This is xml read error";
-      RNFS.readFile.mockImplementation(() => {
-        return Promise.reject(errorMessage);
-      });
+      RNFS.readFile.mockImplementation(jest.fn(() => Promise.reject(errorMessage)));
       try {
         getScormPackageData(packagePath);
       } catch (e) {

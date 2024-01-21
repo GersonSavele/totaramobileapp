@@ -40,6 +40,7 @@ import { showMessage } from "@totara/lib";
 import { decodeHtmlCharCodes } from "@totara/lib/tools";
 import { WekaContent } from "@totara/components/weka/WekaContent";
 import { margins, paddings } from "@totara/theme/constants";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -222,9 +223,9 @@ const ExpandableSectionHeader = ({ title, show }: ExpandableSectionHeaderProps) 
           {decodeHtmlCharCodes(title)}
         </Text>
         {show ? (
-          <FontAwesomeIcon icon={faChevronUp} color={TotaraTheme.colorNeutral5} size={16} />
+          <FontAwesomeIcon icon={faChevronUp as IconProp} color={TotaraTheme.colorNeutral5} size={16} />
         ) : (
-          <FontAwesomeIcon icon={faChevronDown} color={TotaraTheme.colorNeutral5} size={16} />
+          <FontAwesomeIcon icon={faChevronDown as IconProp} color={TotaraTheme.colorNeutral5} size={16} />
         )}
       </View>
     </View>
@@ -280,7 +281,7 @@ type ListUnLockProps = {
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
   const navigation = useNavigation();
 
-  const { host, apiKey } = useSession();
+  const { host = "", apiKey = "" } = useSession();
 
   const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] =
     useMutation(activitySelfComplete);
@@ -346,6 +347,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   host
                 })
                   .then(resourceData => {
+                    // @ts-ignore
                     const objResourceData = JSON.parse(resourceData);
                     const resource = get(objResourceData, "data.resource");
                     if (resource) {

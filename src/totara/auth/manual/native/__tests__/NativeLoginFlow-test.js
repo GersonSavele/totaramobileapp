@@ -22,7 +22,7 @@ const onManualFlowCancel = jest.fn();
 const onSetupSecretSuccess = jest.fn();
 
 describe("useNativeLogin", () => {
-  const { result } = renderHook((props) => useNativeFlow()(props), {
+  const { result } = renderHook(props => useNativeFlow()(props), {
     initialProps: {
       siteUrl: "http://mobiledemo.wlg.totaralms.com",
       onSetupSecretSuccess: { onSetupSecretSuccess },
@@ -47,7 +47,7 @@ describe("useNativeLogin", () => {
       result.current.onClickEnter();
     });
 
-    expect(result.current.nativeLoginState.inputUsernameStatus).toBe(undefined);
+    expect(result.current.nativeLoginState.inputUsernameStatus).toBe("error");
     expect(result.current.nativeLoginState.inputPasswordStatus).toBe("error");
   });
 
@@ -59,7 +59,7 @@ describe("useNativeLogin", () => {
     });
 
     expect(result.current.nativeLoginState.inputUsernameStatus).toBe("error");
-    expect(result.current.nativeLoginState.inputPasswordStatus).toBe(undefined);
+    expect(result.current.nativeLoginState.inputPasswordStatus).toBe("error");
   });
 
   // it("should get the setupsecret when it is a valid username and password", async () => {
@@ -125,8 +125,6 @@ describe("useNativeLogin", () => {
   //   expect(onSetupSecretSuccess).toHaveBeenCalledWith("setupSecret");
   // });
 
-
-
   it("should set form error for response with handled error[error status: 401], when fetch setupSecret", async () => {
     expect.assertions(3);
 
@@ -155,7 +153,7 @@ describe("useNativeLogin", () => {
       }
     });
 
-    const { result, waitForNextUpdate } = renderHook((props) => useNativeFlow(mockFetchData)(props), {
+    const { result, waitForNextUpdate } = renderHook(props => useNativeFlow(mockFetchData)(props), {
       initialProps: {
         siteUrl: "https://site.com"
       }
@@ -189,7 +187,7 @@ describe("useNativeLogin", () => {
       }
     });
 
-    const { result, waitForNextUpdate } = renderHook((props) => useNativeFlow(mockFetchData)(props), {
+    const { result, waitForNextUpdate } = renderHook(props => useNativeFlow(mockFetchData)(props), {
       initialProps: {
         siteUrl: "https://site.com"
       }

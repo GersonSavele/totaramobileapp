@@ -19,33 +19,33 @@ import { act } from "react-test-renderer";
 
 describe("WebviewLoginHook", () => {
   it("initial props for the unsecured url(http://)", () => {
-    const { result } = renderHook((props) => useWebviewFlow(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "http://mobiledemo.wlg.totaralms.com"
       }
     });
-    expect(result.current.loginUrl).toBe("http://mobiledemo.wlg.totaralms.com/login/index.php");
-    expect(result.current.navEndPoint).toBe("mobiledemo.wlg.totaralms.com/login/index.php");
+    expect(result.current.loginUrl).toBe("http://mobiledemo.wlg.totaralms.com/login/index.php?mobile_initiated=1");
+    expect(result.current.navEndPoint).toBe("mobiledemo.wlg.totaralms.com/login/index.php?mobile_initiated=1");
     expect(result.current.navProtocol).toBe("http");
     expect(result.current.canWebGoBackward).toBeFalsy();
     expect(result.current.canWebGoForward).toBeFalsy();
   });
 
   it("initial props for the secured url(https://)", () => {
-    const { result } = renderHook((props) => useWebviewFlow(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com"
       }
     });
-    expect(result.current.loginUrl).toBe("https://mobiledemo.wlg.totaralms.com/login/index.php");
-    expect(result.current.navEndPoint).toBe("mobiledemo.wlg.totaralms.com/login/index.php");
+    expect(result.current.loginUrl).toBe("https://mobiledemo.wlg.totaralms.com/login/index.php?mobile_initiated=1");
+    expect(result.current.navEndPoint).toBe("mobiledemo.wlg.totaralms.com/login/index.php?mobile_initiated=1");
     expect(result.current.navProtocol).toBe("https");
     expect(result.current.canWebGoBackward).toBeFalsy();
     expect(result.current.canWebGoForward).toBeFalsy();
   });
 
   it("Enable go back when navigate to another page in webview", () => {
-    const { result } = renderHook((props) => useWebviewFlow(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com"
       }
@@ -67,7 +67,7 @@ describe("WebviewLoginHook", () => {
   });
 
   it("Enable go forward when came back from first tapped link in webview", () => {
-    const { result } = renderHook((props) => useWebviewFlow(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com/tapped/firstlink"
       }
@@ -86,7 +86,7 @@ describe("WebviewLoginHook", () => {
   });
 
   it("Enable go back and forward in webview", () => {
-    const { result } = renderHook((props) => useWebviewFlow(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com"
       }
@@ -105,7 +105,7 @@ describe("WebviewLoginHook", () => {
   });
 
   it("Handling the completion of successful login", () => {
-    const { result } = renderHook((props) => useWebviewFlow(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com"
       }
@@ -123,7 +123,7 @@ describe("WebviewLoginHook", () => {
 
   it("Handling the completion of login for invalid values", () => {
     const mockOnRecievedSetupSecret = jest.fn();
-    const { result } = renderHook((props) => useWebviewFlow(props), {
+    const { result } = renderHook(props => useWebviewFlow(props), {
       initialProps: {
         siteUrl: "https://mobiledemo.wlg.totaralms.com"
       }

@@ -23,11 +23,11 @@ const registerPushNotifications = async () => {
     return;
   }
   await unregisterPushNotification();
-  return messaging().getToken(undefined, "*");
+  return messaging().getToken();
 };
 
 const unregisterPushNotification = async () => {
-  return messaging().deleteToken(undefined, "*");
+  return messaging().deleteToken();
 };
 
 export { registerPushNotifications, unregisterPushNotification };
