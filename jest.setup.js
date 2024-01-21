@@ -15,6 +15,7 @@
 
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
 import "react-native-gesture-handler/jestSetup";
+import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 require("isomorphic-fetch");
 
 global.console = {
@@ -32,7 +33,7 @@ jest.mock("@react-native-cookies/cookies", () => {
     openURL: jest.fn(),
     canOpenURL: jest.fn(),
     getInitialURL: jest.fn(),
-    clearAll: jest.fn()
+    clearAll: jest.fn(() => Promise.resolve({}))
   };
 });
 
@@ -52,19 +53,7 @@ jest.mock("react-native-gesture-handler", () => {
   };
 });
 
-jest.mock("react-native-device-info", () => {
-  return {
-    getVersion: jest.fn(() => {
-      return "UnknownVersion";
-    }),
-    getBuildNumber: jest.fn(() => {
-      return "UnknownVersion";
-    }),
-    getUserAgent: jest.fn(() => {
-      return "MockedUserAgent";
-    })
-  };
-});
+jest.mock("react-native-device-info", () => mockRNDeviceInfo);
 
 jest.mock("@apollo/client", () => ({
   ...jest.requireActual("@apollo/client"),

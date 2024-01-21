@@ -47,7 +47,7 @@ module.exports = {
   collectCoverageFrom: ["src/totara/**/*.{js,jsx,ts,tsx}"],
   setupFilesAfterEnv: ["<rootDir>setup-tests.js"],
   transformIgnorePatterns: [
-    "node_modules/(?!(jest-)?react-native|@react-native|@react-native-community|@react-navigation|@fortawesome)"
+    "node_modules/(?!(jest-)?react-native|@react-native|@react-native-community|@react-navigation|@fortawesome|@gorhom|zen-observable|@apollo)"
   ],
   moduleFileExtensions: [...defaults.moduleFileExtensions, "android.js", "ios.js"]
 };
