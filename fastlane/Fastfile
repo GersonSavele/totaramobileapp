@@ -40,6 +40,8 @@ end
 
 desc "Initialise cocoapods"
 lane :pods do
+  sh("ruby", "-v")
+  sh("pod", "repo", "update")
   sh("bundle", "update")
   # pod install
   cocoapods(
