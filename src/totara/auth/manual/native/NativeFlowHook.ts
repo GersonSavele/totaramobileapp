@@ -23,8 +23,8 @@ import { NetworkError } from "@totara/types/Error";
 const initialState = {
   setupSecret: undefined,
   apiKey: undefined,
-  inputUsername: config.userName || "",
-  inputPassword: config.password || "",
+  inputUsername: __DEV__ ? config.userName || "" : "",
+  inputPassword: __DEV__ ? config.password || "" : "",
   inputUsernameStatus: undefined,
   inputPasswordStatus: undefined,
   isRequestingLogin: false,
