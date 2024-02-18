@@ -42,9 +42,9 @@ if (!__DEV__ && config.sentryUri) {
   });
 }
 
+StatusBar.setBarStyle("default");
 if (Platform.OS === PLATFORM_ANDROID) {
   StatusBar.setBackgroundColor("rgba(0,0,0,0)");
-  StatusBar.setBarStyle("dark-content");
   StatusBar.setTranslucent(true);
 }
 
