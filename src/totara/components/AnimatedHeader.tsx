@@ -16,7 +16,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { translate } from "@totara/locale";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Platform } from "react-native";
 import Animated, { Extrapolation, interpolate, interpolateColor, useAnimatedStyle } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -33,15 +33,6 @@ const getIcon = () => (Platform.OS === "ios" ? "chevron-left" : "arrow-left");
 const AnimatedHeader = ({ title, subTitle, scrollValue = {}, leftAction }: AnimatedHeaderProps) => {
   const safeArea = useSafeAreaInsets();
   const isFloating = !!scrollValue;
-  const [dark, setDark] = useState(false);
-
-  // TODO: migrate this code to new API OR assess remove this
-  // useCode(() => {
-  //   return call([scrollValue], (values) => {
-  //     const [value] = values;
-  //     setDark(TOPNAVI_OFFSET < value);
-  //   });
-  // }, [scrollValue]);
 
   const transparentToWhiteInterpolate = useAnimatedStyle(() => {
     return {
