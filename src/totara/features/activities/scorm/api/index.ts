@@ -149,7 +149,8 @@ const fetchLastAttemptResult = ({
     }),
     headers: {
       Accept: "application/json",
-      [AUTH_HEADER_FIELD]: apiKey
+      [AUTH_HEADER_FIELD]: apiKey,
+      "Content-Type": "application/json"
     }
   }).then((response) => {
     if (response.status === 200) {
