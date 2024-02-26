@@ -50,7 +50,7 @@ describe("Profile", () => {
     const loadingComponent = getByTestId("test_ProfileLoading");
     expect(loadingComponent).toBeTruthy();
   });
-  
+
   test("Should render profile", async () => {
     const tree = (
       <MockedProvider mocks={profileMock}>

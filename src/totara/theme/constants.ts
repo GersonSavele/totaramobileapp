@@ -147,5 +147,5 @@ export {
   row,
   opacities,
   fontStyles,
-  marksTypes,
+  marksTypes
 };

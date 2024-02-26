@@ -28,7 +28,7 @@ const mockInjectJs = "";
 describe("OfflineScormPlayer", () => {
   let useEffect;
   const mockUseEffect = () => {
-    useEffect.mockImplementationOnce((f) => f());
+    useEffect.mockImplementationOnce(f => f());
   };
   beforeEach(() => {
     useEffect = jest.spyOn(React, "useEffect");
@@ -43,6 +43,6 @@ describe("OfflineScormPlayer", () => {
         onMessageHandler={mockMessageHandler}
       />
     );
-    expect(wrapper.findWhere((node) => node.prop("testID") === OFFLINE_PLAYER_ID)).toExist();
+    expect(wrapper.findWhere(node => node.prop("testID") === OFFLINE_PLAYER_ID)).toExist();
   });
 });

@@ -18,7 +18,6 @@ import { ImageWrapper } from "@totara/components";
 import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
 import React from "react";
 import { borderRadius } from "@totara/theme/constants";
-import { learningItemEnum } from "@totara/features/constants";
 
 interface ImageElementProps {
   imageStyle?: ImageStyle;

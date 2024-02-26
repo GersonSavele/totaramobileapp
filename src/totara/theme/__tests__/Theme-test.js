@@ -44,14 +44,13 @@ describe("Set default and custom theme", () => {
 
       textColorDark: "textColorDark",
       textColorSecondary: "textColorSecondary",
-      textColorLight: "textColorLight",
+      textColorLight: "textColorLight"
     };
 
     const newTheme = applyTheme(newCustomizeTheme);
 
     expect(newTheme.colorPrimary).toBe("colorPrimary");
     expect(newTheme.colorText).toBe("colorText");
-    
     expect(newTheme.colorAccent).toBe("colorAccent");
     expect(newTheme.colorSecondary1).toBe("colorSecondary1");
     expect(newTheme.colorSecondary2).toBe("colorSecondary2");
@@ -72,13 +71,12 @@ describe("Set default and custom theme", () => {
 
     expect(newTheme.textColorSecondary).toBe("textColorSecondary");
     expect(newTheme.textColorLight).toBe("textColorLight");
-
   });
 
   it("Advanced setting for tabbar theme without apply general theme", () => {
     const newCustomizeTheme = {
       colorPrimary: "colorPrimary",
-      colorText: "colorText",
+      colorText: "colorText"
     };
     const newTheme = applyTheme(newCustomizeTheme);
     expect(newTheme.colorPrimary).toBe("colorPrimary");

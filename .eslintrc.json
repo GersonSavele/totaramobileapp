@@ -45,7 +45,11 @@
                 "@typescript-eslint/no-unused-vars": "error",
                 "react/display-name": "off",
                 "no-redeclare": "off",
-                "@typescript-eslint/no-redeclare": ["error"]
+                "@typescript-eslint/no-redeclare": ["error"],
+                "comma-dangle": ["error", "never"],
+                "quotes": "off",
+                "prettier/prettier": "off",
+                "react-hooks/exhaustive-deps": "off"
             }
         },
         {

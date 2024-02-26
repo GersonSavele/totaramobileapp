@@ -14,7 +14,7 @@
  */
 
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -39,7 +39,7 @@ import { CL_TEST_IDS } from "@totara/lib/testIds";
 import { showMessage } from "@totara/lib";
 import { decodeHtmlCharCodes } from "@totara/lib/tools";
 import { WekaContent } from "@totara/components/weka/WekaContent";
-import { margins, paddings } from "@totara/theme/constants";
+import { margins } from "@totara/theme/constants";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;

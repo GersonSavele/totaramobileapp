@@ -19,10 +19,9 @@ import NoCurrentLearning from "../NoCurrentLearning";
 
 describe("NoCurrentLearning, No current learning screen should launch when api return doesn't have courses", () => {
   it("Test result : take screen-shot when no current learning", () => {
-
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return {
-        host: 'https://mobile.demo.totara.software'
+        host: "https://mobile.demo.totara.software"
       };
     });
 

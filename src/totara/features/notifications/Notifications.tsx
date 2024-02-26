@@ -110,18 +110,18 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
   };
 
   const toggleSelected = (item: NotificationMessage) => {
-    const exists = selectedList.some((x) => x === item.id);
+    const exists = selectedList.some(x => x === item.id);
     if (!exists) setSelectedList([...selectedList, item.id]);
     else {
-      setSelectedList([...selectedList.filter((x) => x !== item.id)]);
+      setSelectedList([...selectedList.filter(x => x !== item.id)]);
     }
   };
 
   const markAsReadAllSelected = () => {
     const toMarkAsReadList = (notificationList as NotificationMessage[]).filter(
-      (x) => !x.isRead && selectedList.find((y) => y === x.id)
+      x => !x.isRead && selectedList.find(y => y === x.id)
     );
-    markAsRead(toMarkAsReadList.map((x) => x.id));
+    markAsRead(toMarkAsReadList.map(x => x.id));
     unSelectAll();
     setSelectable(false);
   };
@@ -135,7 +135,7 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
           message_ids: messageIds
         }
       }
-    }).then((result) => {
+    }).then(result => {
       if (!result.errors) {
         refetch();
       }
@@ -143,7 +143,7 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
   };
 
   const isSelected = (item: NotificationMessage) => {
-    return selectedList.some((x) => x === item.id);
+    return selectedList.some(x => x === item.id);
   };
 
   const onRefresh = () => {
@@ -192,7 +192,7 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
             contentContainerStyle={listViewStyles.contentContainerStyle}
             ItemSeparatorComponent={() => <View style={listViewStyles.itemSeparator} />}
             data={notificationList}
-            keyExtractor={(notificationItem) => notificationItem.id}
+            keyExtractor={notificationItem => notificationItem.id}
             renderItem={({ item }) => (
               <NotificationItem
                 testID={`test_notificationItem`}

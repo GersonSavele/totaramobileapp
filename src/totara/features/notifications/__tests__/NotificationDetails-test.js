@@ -20,13 +20,12 @@ import * as ReactRedux from "react-redux";
 import NotificationDetails from "@totara/features/notifications/NotificationDetail";
 
 describe("NotificationDetails", () => {
-
   jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
     return {
       siteInfo: {
         version: "1.0"
       },
-      host: 'https://mobile.demo.totara.software'
+      host: "https://mobile.demo.totara.software"
     };
   });
 
@@ -48,9 +47,7 @@ describe("NotificationDetails", () => {
       }
     };
 
-    const { getByTestId } = render(
-      <NotificationDetails route={route} />
-    );
+    const { getByTestId } = render(<NotificationDetails route={route} />);
 
     const labelTitle = getByTestId("test_title");
     expect(labelTitle.children[0]).toBe(itemToBeTested.subject);
