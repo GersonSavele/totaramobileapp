@@ -53,7 +53,7 @@ describe("SiteUrlHook", () => {
 
   it("should use the initial address if it is present with a protocol", () => {
     const validUrl = "https://abc.com";
-    const successMock = jest.fn((data) => {
+    const successMock = jest.fn(data => {
       expect(data).toBe(validUrl);
     });
     const { result } = renderHook(
@@ -73,7 +73,7 @@ describe("SiteUrlHook", () => {
 
   it("should use the initial address as it is without a protocol", () => {
     const validUrl = "https://abc.com";
-    const successMock = jest.fn((data) => {
+    const successMock = jest.fn(data => {
       expect(data).toBe(validUrl);
     });
     const { result } = renderHook(

@@ -110,7 +110,7 @@ android {
         applicationId "com.totaramobileapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 95
+        versionCode 97
         versionName "1.2.0"
     }
     splits {

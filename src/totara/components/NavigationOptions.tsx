@@ -38,14 +38,14 @@ const TotaraNavigationOptions = ({ opacity, title = "", backTitle, headerRight, 
     headerTitleStyle: {
       color: TotaraTheme.colorNeutral7,
       fontSize: TotaraTheme.textRegular.fontSize,
-      opacity: opacity,
+      opacity: opacity
 
     },
     title: title,
     headerBackTitle: backTitle,
     headerTintColor: TotaraTheme.colorNeutral7,
     headerRight: headerRight,
-    headerShown: headerShown,
+    headerShown: headerShown
   };
   return options;
 };

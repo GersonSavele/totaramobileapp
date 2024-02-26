@@ -11,14 +11,14 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- * 
+ *
  * @author Simon Tegg <simon.tegg@totaralearning.com>
  */
 
 export const CMIIndex = /[._](\d+)./g;
 
 export function isDefined(val) {
-  return typeof val !== 'undefined'
+  return typeof val !== "undefined";
 }
 
 export function getCurrentTimeStampInSeconds() {

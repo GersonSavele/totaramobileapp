@@ -11,7 +11,7 @@
  * If you do not have an agreement with Totara Learning Solutions
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
- * 
+ *
  * @author Simon Tegg <simon.tegg@totaralearning.com>
  */
 import { isDefined, getCurrentTimeStampInSeconds } from "./utils/index";
@@ -21,7 +21,7 @@ import { CMIIndex } from "./utils/index";
 function collectData({ dataModel, objectId, data, parent }) {
   let dataList = [];
 
-  Object.keys(data).forEach((property) => {
+  Object.keys(data).forEach(property => {
     const value = data[property];
 
     if (typeof value == "object") {

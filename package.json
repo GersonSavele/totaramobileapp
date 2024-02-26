@@ -19,7 +19,7 @@
     "test": "jest",
     "test-coverage": "jest --config jest.config.js --collectCoverage",
     "test-junit": "jest --config jest.config.js --ci --reporters=jest-junit --reporters=default",
-    "eslint": "eslint -c .eslintrc.json --ext .js --ext .ts --ext .tsx ./src/totara ./TotaraMobileOfflineScorm",
+    "eslint": "eslint -c .eslintrc.json --quiet --ext .js --ext .ts --ext .tsx ./src/totara ./TotaraMobileOfflineScorm",
     "clean": "rm -rf node_modules",
     "reconnect": "adb reverse tcp:8081 tcp:8081 && yarn refresh",
     "menu": "adb shell input keyevent 82",

@@ -165,7 +165,7 @@ const mockOrderedBulletListItem = (elementType = WekaEditorType.bulletList) => (
     }
   ]
 });
-const mockNestedOrderedBulletListContent = (noOfItems) => {
+const mockNestedOrderedBulletListContent = noOfItems => {
   if (noOfItems < 1)
     return {
       type: WekaEditorType.doc,

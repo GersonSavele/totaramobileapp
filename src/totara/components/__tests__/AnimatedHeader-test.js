@@ -13,13 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-
 import React from "react";
 import { render, cleanup } from "@testing-library/react-native";
 import { AnimatedHeader } from "@totara/components/AnimatedHeader";
 
 describe("AnimatedHeader", () => {
-
   afterEach(cleanup);
 
   test("Should render the header with title and no subtitle", async () => {
@@ -32,7 +30,7 @@ describe("AnimatedHeader", () => {
     const title = await getByTestId("animated-header-title");
     expect(title.props.children).toBe(titleValue);
 
-    const subtitle = await queryByTestId("animated-header-subtitle")
+    const subtitle = await queryByTestId("animated-header-subtitle");
     expect(subtitle).toBeNull();
   });
 
@@ -43,7 +41,7 @@ describe("AnimatedHeader", () => {
 
     const { getByTestId } = render(tree);
 
-    const subtitle = await getByTestId("animated-header-subtitle")
+    const subtitle = await getByTestId("animated-header-subtitle");
     expect(subtitle.props.children).toBe(subtitleValue);
   });
-})
+});

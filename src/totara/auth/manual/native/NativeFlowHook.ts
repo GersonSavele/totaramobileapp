@@ -33,7 +33,7 @@ const initialState = {
 };
 
 export const useNativeFlow = (fetchData: <T>(input: RequestInfo, init?: RequestInit) => Promise<T>) => ({
-  siteUrl,
+  siteUrl
 
 }: ManualFlowChildProps) => {
   const [nativeLoginState, dispatch] = useReducer(nativeReducer, initialState);

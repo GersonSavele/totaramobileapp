@@ -39,16 +39,16 @@ const objectConstructorString = Function.prototype.toString.call(Object);
  * @returns {boolean}
  */
 export function isPlainObject(value) {
-  if (!value || typeof value != 'object') {
+  if (!value || typeof value != "object") {
     return false;
   }
   const proto = Object.getPrototypeOf(value);
   if (proto == null) {
     return true;
   }
-  const ctor = hasOwnProperty(proto, 'constructor') && proto.constructor;
+  const ctor = hasOwnProperty(proto, "constructor") && proto.constructor;
   return (
-    typeof ctor == 'function' &&
+    typeof ctor == "function" &&
     ctor instanceof ctor &&
     Function.prototype.toString.call(ctor) === objectConstructorString
   );
@@ -80,7 +80,7 @@ export function structuralShallowClone(obj) {
 
 function structuralCloneImpl(obj, deep, stack) {
   if (stack && stack.includes(obj)) {
-    throw new TypeError('Cannot clone circular structure.');
+    throw new TypeError("Cannot clone circular structure.");
   }
 
   let result = obj;
@@ -101,9 +101,7 @@ function structuralCloneImpl(obj, deep, stack) {
           substack = stack.slice();
           substack.push(result);
         }
-        result[key] = deep
-          ? structuralCloneImpl(obj[key], deep, substack)
-          : obj[key];
+        result[key] = deep ? structuralCloneImpl(obj[key], deep, substack) : obj[key];
       }
     }
   }
@@ -119,7 +117,7 @@ function structuralCloneImpl(obj, deep, stack) {
  * @returns {*} Value at path.
  */
 export function get(object, path) {
-  if (typeof path === 'string') {
+  if (typeof path === "string") {
     return object[path];
   }
 
@@ -130,8 +128,7 @@ export function get(object, path) {
   return object;
 }
 
-export const isIndex = val =>
-  typeof val == 'number' || /^(?:0|[1-9]\d*)$/.test(val);
+export const isIndex = val => typeof val == "number" || /^(?:0|[1-9]\d*)$/.test(val);
 
 const setKey = (target, key, value) => {
   target[key] = value;
@@ -161,7 +158,7 @@ export function set(object, path, value) {
  * @returns {object}
  */
 export function baseSet(object, path, value, setKey) {
-  if (typeof path === 'string') {
+  if (typeof path === "string") {
     setKey(object, path, value);
     return;
   }
@@ -184,4 +181,3 @@ export function baseSet(object, path, value, setKey) {
   }
   return object;
 }
-

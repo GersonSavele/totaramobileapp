@@ -178,13 +178,13 @@ describe("saveInTheCache", () => {
       }
     });
     const fullDataMock = {
-      "1": {
+      1: {
         cmi: "data_cmi",
         commits: "data_commits",
         offlineAttempts: [{ attempt: 1, gradereported: 10 }]
       },
       completed_attempts: {
-        "1": [1]
+        1: [1]
       }
     };
     saveInTheCache({ client, scormBundles: fullDataMock });

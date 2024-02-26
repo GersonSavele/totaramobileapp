@@ -22,7 +22,7 @@ import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 const { ATTEMPTS_LIST_ID, ATTEMPT_ITEM_ID } = SCORM_TEST_IDS;
 
-const attemptNavigation = (attempts) => ({
+const attemptNavigation = attempts => ({
   state: {
     params: {
       gradeMethod: Grade.objective,

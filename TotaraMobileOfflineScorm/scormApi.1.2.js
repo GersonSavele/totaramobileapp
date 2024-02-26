@@ -235,13 +235,13 @@ function SCORMapi1_2(
 
       // ensure value has ancestor objects
       const ancestorPath = [];
-      path.forEach((part) => {
+      path.forEach(part => {
         if (part.match(/\d/)) {
           // store under 'private' keys: _n
           ancestorPath.push(`_${part}`);
           const ancestor = get(cmi, ancestorPath);
           if (!ancestor) {
-            const modelId = ancestorPath.filter((part) => !part.match(/\d/)).join(".");
+            const modelId = ancestorPath.filter(part => !part.match(/\d/)).join(".");
             const Model = Models[modelId];
             const update = Model();
             set(cmi, ancestorPath, update);

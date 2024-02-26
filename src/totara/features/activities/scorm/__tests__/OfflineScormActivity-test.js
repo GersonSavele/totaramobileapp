@@ -40,7 +40,7 @@ describe("OfflineScormActivity", () => {
   };
   let useEffect;
   const mockUseEffect = () => {
-    useEffect.mockImplementationOnce((f) => f());
+    useEffect.mockImplementationOnce(f => f());
   };
   beforeEach(() => {
     useEffect = jest.spyOn(React, "useEffect");

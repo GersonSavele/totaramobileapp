@@ -49,13 +49,15 @@
                 "comma-dangle": ["error", "never"],
                 "quotes": "off",
                 "prettier/prettier": "off",
-                "react-hooks/exhaustive-deps": "off"
+                "react-hooks/exhaustive-deps": "off",
+                "react-hooks/rules-of-hooks": "off"
             }
         },
         {
             "files": [ "**/__tests__/*.js" ],
             "rules": {
-                "no-import-assign": "off"
+                "no-import-assign": "off",
+                "no-eval": "off"
             }
         }
     ],

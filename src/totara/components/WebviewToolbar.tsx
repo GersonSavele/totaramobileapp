@@ -21,7 +21,6 @@ import { showMessage } from "@totara/lib";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { iconSizes } from "@totara/theme/constants";
 import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
-import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { faSafari, faChrome } from "@fortawesome/free-brands-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 

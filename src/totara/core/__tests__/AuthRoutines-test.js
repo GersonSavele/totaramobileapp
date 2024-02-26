@@ -89,7 +89,7 @@ describe("AuthRoutines.bootstrap", () => {
   it("should return the apiKey and host if they exists", async () => {
     expect.assertions(1);
     const mockAsyncStorage = {
-      getItem: jest.fn((key) => {
+      getItem: jest.fn(key => {
         switch (key) {
           case "apiKey":
             return Promise.resolve("the_api_key");
@@ -163,7 +163,7 @@ describe("fetchData", () => {
 
     await fetchData(failedResponse)("http://apisite.com", {
       method: "GET"
-    }).catch((error) => {
+    }).catch(error => {
       expect(error.status).toBe(500);
     });
   });
@@ -181,7 +181,7 @@ describe("fetchData", () => {
 
     await fetchData(failedResponse)("http://apisite.com", {
       method: "GET"
-    }).catch((error) => {
+    }).catch(error => {
       expect(error.message).toBe("error");
     });
   });
@@ -199,7 +199,7 @@ describe("fetchData", () => {
 
     await fetchData(failedResponse)("http://apisite.com", {
       method: "GET"
-    }).catch((error) => {
+    }).catch(error => {
       expect(error).toBe("json expected to have data attribute");
     });
   });
