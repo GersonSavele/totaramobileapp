@@ -1,4 +1,0 @@
-<resources>
-    <string name="app_name">Totara</string>
-    <string name="asset_statements" translatable="false">[{ \"include\": \"https://mobile.totaralearning.com/.well-known/assetlinks.json\" }]</string>
-</resources>
