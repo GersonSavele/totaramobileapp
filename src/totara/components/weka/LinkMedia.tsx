@@ -20,7 +20,7 @@ import { isEmpty } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { useSession } from "@totara/core";
 import { getHostnameFromRegex, getUrlLastComponentFromRegex } from "@totara/lib/tools";
-import { ConfigProps } from "./Wekautils";
+import { ConfigProps } from "./wekaUtils";
 import ImageViewerWrapper from "./ImageViewerWrapper";
 import styles from "./wekaStyle";
 import EmbeddedMedia from "./EmbeddedMedia";

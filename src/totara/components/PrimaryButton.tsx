@@ -14,18 +14,18 @@
  */
 
 import React, { useContext } from "react";
-import { Text, ViewStyle, StyleSheet, TextStyle } from "react-native";
-import { Button, Spinner } from "native-base";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { Text, ViewStyle, StyleSheet, TextStyle, ActivityIndicator } from "react-native";
+import { Button } from "native-base";
+
+import Icon, { IconName } from "@totara/components/Icon";
 import { gutter, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
 import { borderRadius, paddings } from "@totara/theme/constants";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type PrimaryButtonProps = {
   children?: Element;
   text?: string;
-  icon?: string;
+  icon?: IconName;
   style?: ViewStyle;
   onPress?: () => void;
   mode?: "disabled" | "loading" | undefined;
@@ -39,7 +39,7 @@ type TitleProps = {
 };
 
 type IndicatorProps = {
-  icon?: string;
+  icon?: IconName;
   mode?: "disabled" | "loading" | undefined;
   color?: string;
   size?: number;
@@ -58,9 +58,9 @@ const ButtonIndicator = ({ mode, icon, color, size }: IndicatorProps) => {
   const styleIndicator = { marginLeft: gutter };
   switch (mode) {
     case "loading":
-      return <Spinner size="small" color={color} style={styleIndicator} />;
+      return <ActivityIndicator size="small" color={color} style={styleIndicator} />;
     default:
-      return icon ? <FontAwesomeIcon icon={icon as IconProp} size={size} color={color} style={styleIndicator} /> : null;
+      return icon ? <Icon name={icon} size={size} color={color} style={styleIndicator} /> : null;
   }
 };
 
@@ -84,8 +84,9 @@ const PrimaryButton = ({ children, text, icon, style, onPress, mode, testID, ...
   });
 
   return (
+    // TODO Fix block should mean full width
     <Button
-      block
+      // block
       testID={testID}
       onPress={onPress}
       {...rest}

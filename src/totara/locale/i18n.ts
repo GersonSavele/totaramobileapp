@@ -14,7 +14,7 @@
  */
 
 import i18n from "i18n-js";
-import * as RNLocalize from "react-native-localize";
+// import * as RNLocalize from "react-native-localize";
 
 import moment from "moment";
 import "moment/min/locales";
@@ -25,9 +25,10 @@ import importedTranslations from "./languages/all.json";
 // import * as en from "./languages/en.json";
 const translations = importedTranslations;
 
-const { languageTag } = RNLocalize.findBestAvailableLanguage(Object.keys(translations)) || {
-  languageTag: DEFAULT_LANGUAGE
-};
+// const { languageTag } = RNLocalize.findBestAvailableLanguage(Object.keys(translations)) || {
+//   languageTag: DEFAULT_LANGUAGE
+// };
+const languageTag = "en";
 i18n.defaultLocale = languageTag;
 i18n.locale = languageTag;
 i18n.fallbacks = true;

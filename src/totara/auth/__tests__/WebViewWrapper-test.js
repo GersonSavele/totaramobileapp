@@ -13,22 +13,31 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 import React from "react";
+import { View } from "react-native";
 import * as ReactRedux from "react-redux";
 import { render } from "@testing-library/react-native";
 import { MockedProvider } from "@apollo/client/testing";
 import WebViewWrapper from "../WebViewWrapper";
+import { AuthenticatedWebView } from "../AuthenticatedWebView";
+
+jest.mock('../AuthenticatedWebView', () => (
+  { 
+    AuthenticatedWebView: jest.fn()
+  }
+));
 
 describe("WebViewWrapper", () => {
   beforeAll(() => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => ({}));
+    AuthenticatedWebView.mockImplementation(() => (<View testID="my-authenticated-web-view"></View>))
   });
 
   it("Should render WebViewWrapper view", async () => {
-    const { root } = render(
+    const { getByTestId } = render(
       <MockedProvider mocks={[]} addTypename={false}>
         <WebViewWrapper />
       </MockedProvider>
     );
-    expect(root).toBeTruthy();
+    expect(getByTestId("my-authenticated-web-view")).toBeTruthy();
   });
 });

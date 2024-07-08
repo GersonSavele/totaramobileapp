@@ -22,11 +22,13 @@ import FindLearning from "@totara/features/findLearning/FindLearning";
 import { searchResult } from "@totara/features/findLearning/api/findLearning.mock";
 import * as coreSession from "@totara/core";
 
+jest.mock("@totara/core", () => ({
+  useSession: () => ({}),
+  coreUtils: () => ({}),
+}))
+
 describe("FindLearning", () => {
   beforeAll(() => {
-    jest.spyOn(coreSession, "useSession").mockImplementation(() => {
-      return "MOCKED-SESSION";
-    });
   });
 
   it("Should only show search bar initially", async () => {

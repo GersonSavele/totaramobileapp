@@ -18,10 +18,16 @@ import { render } from "@testing-library/react-native";
 import * as coreSession from "@totara/core";
 import * as ReactRedux from "react-redux";
 
+jest.mock('@totara/core', () => ({
+  __esModule: true,
+  useSession: jest.fn(),
+  coreUtils: jest.fn(),
+}));
+
 describe("WebviewLogin", () => {
   beforeAll(() => {
     jest.spyOn(ReactRedux, "useDispatch").mockImplementation(() => jest.fn());
-    jest.spyOn(coreSession, "useSession").mockImplementation(() => jest.fn());
+    coreSession.useSession = () => ({});
     global.fetch = jest.fn().mockImplementation(() => jest.fn());
   });
 

@@ -20,9 +20,6 @@ import { WebView, WebViewNavigation } from "react-native-webview";
 import { showMessage } from "@totara/lib";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { iconSizes } from "@totara/theme/constants";
-import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
-import { faSafari, faChrome } from "@fortawesome/free-brands-svg-icons";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type WebviewToolbarProps = {
   refWebview: React.RefObject<WebView>;
@@ -71,13 +68,13 @@ const WebviewToolbar = ({ refWebview, navState, viewUrl = "", showAllToolbarItem
       {showAllToolbarItems && (
         <View style={styles.barExtraActionContent}>
           <TouchableIcon
-            icon={faShareAlt as IconProp}
+            icon={"share-nodes"}
             onPress={onShare}
             color={TotaraTheme.colorLink}
             size={iconSizes.sizeM}
           />
           <TouchableIcon
-            icon={Platform.OS === "android" ? (faChrome as IconProp) : (faSafari as IconProp)}
+            icon={Platform.OS === "android" ? ("chrome") : ("safari")}
             onPress={openExternalURL}
             color={TotaraTheme.colorLink}
             size={iconSizes.sizeM}

@@ -14,10 +14,10 @@
  */
 
 import React, { useLayoutEffect, useState, useEffect } from "react";
-import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator, ScrollView } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { Input } from "react-native-elements/dist/input/Input";
-import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
+import { Input } from "@placeholders/react-native-elements/dist/input/Input";
+import { KeyboardAwareScrollView } from "@placeholders/react-native-keyboard-aware-scroll-view";
 import { NetworkStatus, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { isEmpty } from "lodash";
 
@@ -106,12 +106,13 @@ const GuestAccessWidget = ({
   const navigateToCourse = () => {
     const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
 
-    navigation.navigate(routeId, {
-      targetId: courseId,
-      guestPassword: passwordState.password,
-      passwordRequired,
-      courseGroupType: learningItemEnum.Course
-    });
+    // TODO Fix
+    // navigation.navigate(routeId, {
+    //   targetId: courseId,
+    //   guestPassword: passwordState.password,
+    //   passwordRequired,
+    //   courseGroupType: learningItemEnum.Course
+    // });
   };
 
   const onPasswordChange = newValue => {
@@ -195,7 +196,8 @@ const SelfEnrolmentWidget = ({
 
   const navigateToCourse = () => {
     const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
-    navigation.navigate(routeId, { targetId: courseId, courseGroupType: learningItemEnum.Course });
+    // TODO Fix
+    // navigation.navigate(routeId, { targetId: courseId, courseGroupType: learningItemEnum.Course });
   };
 
   const enrolmentSuccess = dataSelfEnrol?.mobile_findlearning_enrolment_result?.success;
@@ -270,7 +272,7 @@ const EnrolmentOptionsContent = ({
   enrolmentOptions: EnrolmentOption[];
 }) => {
   return (
-    <KeyboardAwareScrollView style={styles.mainContainer}>
+    <ScrollView style={styles.mainContainer}>
       <View testID={"enrolment_options_content"}>
         {enrolmentOptions
           .sort((e1, e2) => e1.sortOrder - e2.sortOrder)
@@ -282,7 +284,7 @@ const EnrolmentOptionsContent = ({
             return <SelfEnrolmentWidget courseId={courseId} key={id} enrolment={enrolmentOption} />;
           })}
       </View>
-    </KeyboardAwareScrollView>
+    </ScrollView>
   );
 };
 

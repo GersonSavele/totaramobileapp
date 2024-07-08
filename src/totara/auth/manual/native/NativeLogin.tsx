@@ -18,7 +18,7 @@
 
 import React, { useContext } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity, Linking, ImageSourcePropType } from "react-native";
-import { Form, Input, Container, Content } from "native-base";
+import { Input, ScrollView, FormControl } from "native-base";
 
 import { config } from "@totara/lib";
 import { gutter, ThemeContext } from "@totara/theme";
@@ -67,14 +67,14 @@ const NativeLogin = () => {
   }, [nativeLoginState.setupSecret, apiKey]);
 
   return (
-    <Container style={theme.viewContainer}>
+    <ScrollView style={theme.viewContainer}>
       <View style={{ position: "relative", zIndex: 2 }}>
         <FormError
           message={translate("native_login.error_unauthorized")}
           isShow={nativeLoginState.errorStatusUnauthorized}
         />
       </View>
-      <Content style={styles.content} enableOnAndroid>
+      <ScrollView style={styles.content} enableOnAndroid>
         <Image
           source={theme.urlLogo ? { uri: theme.urlLogo } : require("@resources/images/totara_logo/totara_logo.png")}
           style={styles.totaraLogo}
@@ -84,7 +84,7 @@ const NativeLogin = () => {
           <Text style={styles.loginTitle}>{translate("native_login.header_title")}</Text>
           <Text style={styles.loginInformation}>{translate("native_login.login_information")}</Text>
         </View>
-        <Form>
+        <FormControl>
           <View>
             <InputTextWithInfo
               placeholder={translate("native_login.username_text_placeholder")}
@@ -139,8 +139,8 @@ const NativeLogin = () => {
               <Text style={styles.forgotCredential}>{translate("native_login.forgot_username_password")}</Text>
             </TouchableOpacity>
           </View>
-        </Form>
-      </Content>
+        </FormControl>
+      </ScrollView>
       {nativeLoginState.unhandledLoginError && (
         <InfoModal
           title={translate("native_login.auth_general_error.title")}
@@ -150,7 +150,7 @@ const NativeLogin = () => {
           <PrimaryButton text={translate("native_login.auth_general_error.action_primary")} onPress={onFocusInput} />
         </InfoModal>
       )}
-    </Container>
+    </ScrollView>
   );
 };
 

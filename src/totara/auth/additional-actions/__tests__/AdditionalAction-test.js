@@ -19,14 +19,16 @@ import wait from "waait";
 import * as coreSession from "@totara/core";
 import * as redux from "react-redux";
 
+jest.mock("@totara/core", () => ({
+  useSession: () => ({}),
+  coreUtils: () => ({}),
+}))
+
 import AdditionalAction from "../AdditionalAction";
 import { ADDITIONALACTION_TEST_IDS } from "@totara/lib/testIds";
 
 describe("AdditionalAction", () => {
   beforeAll(() => {
-    jest.spyOn(coreSession, "useSession").mockImplementation(() => {
-      return { host: "MOCKED-SESSION", endSession: jest.fn() };
-    });
     jest.spyOn(redux, "useDispatch").mockImplementation(() => jest.fn());
   });
 

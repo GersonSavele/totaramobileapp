@@ -34,8 +34,8 @@ import { DescriptionFormat } from "@totara/types/LearningItem";
 import CriteriaSheet from "../components/CriteriaSheet";
 
 const CourseDetails = ({ navigation, route }: any) => {
-  const courseId = route?.params?.targetId || navigation.getParam("targetId");
-  const passwordRequired = route?.params?.passwordRequired;
+  const courseId = route.params.targetId
+  const passwordRequired = route.params.passwordRequired;
 
   let queryVariables = { courseid: courseId };
   if (passwordRequired) {

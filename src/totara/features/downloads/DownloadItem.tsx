@@ -15,7 +15,8 @@
 
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import Icon from "@totara/components/Icon";
 import { ThemeContext } from "@totara/theme";
 import ResourceDownloader from "@totara/components/ResourceDownloader";
 import { TouchableIcon } from "@totara/components";
@@ -63,10 +64,10 @@ const DownloadItem = ({
       <View key={item.id} style={listViewStyles.rowItem} testID={"test_DownloadItemItemID"}>
         {selectable && (
           <View style={styles.itemCircle} testID={"test_DownloadItemSelectIcon"}>
-            <FontAwesomeIcon
-              size={iconSizes.sizeM}
-              icon={"check-circle"}
+            <Icon
+              name="check-circle"
               color={selected ? theme.colorLink : TotaraTheme.colorNeutral3}
+              size={iconSizes.sizeM}
             />
           </View>
         )}

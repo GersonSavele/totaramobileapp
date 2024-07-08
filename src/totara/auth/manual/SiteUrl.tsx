@@ -16,7 +16,7 @@
 // FIX: Native-base Form has a type check issue, therefore ignoring
 //@ts-nocheck
 
-import { Content, Form, Input } from "native-base";
+import { FormControl, Input, ScrollView } from "native-base";
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -48,17 +48,17 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure, testID }: PropSiteError) =>
   const content =
     siteUrlFailure === "networkError"
       ? {
-          title: translate("server_not_reachable.title"),
-          description: translate("server_not_reachable.message"),
-          imageSource: Images.generalError,
-          primaryAction: translate("server_not_reachable.go_back")
-        }
+        title: translate("server_not_reachable.title"),
+        description: translate("server_not_reachable.message"),
+        imageSource: Images.generalError,
+        primaryAction: translate("server_not_reachable.go_back")
+      }
       : {
-          title: translate("site_url.auth_invalid_site.title"),
-          description: translate("site_url.auth_invalid_site.description"),
-          imageSource: Images.urlNotValid,
-          primaryAction: translate("site_url.auth_invalid_site.action_primary")
-        };
+        title: translate("site_url.auth_invalid_site.title"),
+        description: translate("site_url.auth_invalid_site.description"),
+        imageSource: Images.urlNotValid,
+        primaryAction: translate("site_url.auth_invalid_site.action_primary")
+      };
 
   return (
     <InfoModal
@@ -101,8 +101,8 @@ const SiteUrl = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Content enableOnAndroid contentContainerStyle={styles.mainContent}>
-        <Form style={styles.siteUrlContainer}>
+      <ScrollView enableOnAndroid contentContainerStyle={styles.mainContent}>
+        <FormControl style={styles.siteUrlContainer}>
           <View style={styles.logoContainer}>
             <Image source={require("@resources/images/totara_logo/totara_logo.png")} style={styles.logo} />
           </View>
@@ -136,8 +136,8 @@ const SiteUrl = () => {
               testID={TEST_IDS.SUBMIT_URL}
             />
           </View>
-        </Form>
-      </Content>
+        </FormControl>
+      </ScrollView>
 
       <Text style={styles.version}>
         {translate("general.version")}: {DeviceInfo.getVersion()}({DeviceInfo.getBuildNumber()})

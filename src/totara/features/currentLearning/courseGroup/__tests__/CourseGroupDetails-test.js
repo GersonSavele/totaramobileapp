@@ -21,21 +21,19 @@ import wait from "waait";
 import { programMock, certificationMock, mockEmpty, mockError } from "../api/courseGroup.mock";
 import CourseGroupDetails from "../CourseGroupDetails";
 
-const navigationProgram = {
-  state: {
-    params: {
-      targetId: 5,
-      courseGroupType: "program"
-    }
+const navigation = {};
+
+const routeProgram = { 
+  params: { 
+    targetId: 5,
+    courseGroupType: "program"
   }
 };
 
-const navigationCert = {
-  state: {
-    params: {
-      targetId: 5,
-      courseGroupType: "certification"
-    }
+const routeCert = { 
+  params: { 
+    targetId: 5,
+    courseGroupType: "certification"
   }
 };
 
@@ -43,7 +41,7 @@ describe("CourseGroupDetails", () => {
   test("Should render loading", async () => {
     const tree = (
       <MockedProvider mocks={mockEmpty} addTypename={false}>
-        <CourseGroupDetails navigation={navigationProgram} />
+        <CourseGroupDetails navigation={navigation} route={routeProgram} />
       </MockedProvider>
     );
 
@@ -55,7 +53,7 @@ describe("CourseGroupDetails", () => {
   test("Should render error", async () => {
     const tree = (
       <MockedProvider mocks={mockError}>
-        <CourseGroupDetails navigation={navigationProgram} />
+        <CourseGroupDetails navigation={navigation} route={routeProgram} />
       </MockedProvider>
     );
 
@@ -70,7 +68,7 @@ describe("CourseGroupDetails", () => {
   test("Should render program", async () => {
     const tree = (
       <MockedProvider mocks={programMock}>
-        <CourseGroupDetails navigation={navigationProgram} />
+        <CourseGroupDetails navigation={navigation} route={routeProgram} />
       </MockedProvider>
     );
 
@@ -86,7 +84,7 @@ describe("CourseGroupDetails", () => {
   test("Should render certificate", async () => {
     const tree = (
       <MockedProvider mocks={certificationMock}>
-        <CourseGroupDetails navigation={navigationCert} />
+        <CourseGroupDetails navigation={navigation} route={routeCert} />
       </MockedProvider>
     );
     render(tree);

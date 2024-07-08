@@ -14,24 +14,33 @@
  */
 
 import { createStackNavigator } from "@react-navigation/stack";
-import { createCompatNavigatorFactory } from "@react-navigation/compat";
-import React from "react";
-import About from "@totara/features/about/About";
-import CloseButton from "@totara/components/CloseButton";
-import { NAVIGATION_TEST_IDS } from "@totara/lib/testIds";
+import { NAVIGATION } from "../../lib/navigation";
+import About from "./About";
+import CloseButton from "../../components/CloseButton";
+import { NAVIGATION_TEST_IDS } from "../../lib/testIds";
 
-const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
-  {
-    About: {
-      screen: About,
-      navigationOptions: ({ navigation }) => {
-        return {
-          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} testID={NAVIGATION_TEST_IDS.BACK} />
-        };
-      }
-    }
-  },
-  { initialRouteName: "About" }
-);
+// const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
+//   {
+//     About: {
+//       screen: About,
+//       navigationOptions: ({ navigation }) => {
+//         return {
+//           headerLeft: () => <CloseButton onPress={() => navigation.goBack()} testID={NAVIGATION_TEST_IDS.BACK} />
+//         };
+//       }
+//     }
+//   },
+//   { initialRouteName: "About" }
+// );
+
+const Stack = createStackNavigator();
+
+const AboutStack = () => (
+  <Stack.Navigator initialRouteName={NAVIGATION.ABOUT}>
+    <Stack.Screen name={NAVIGATION.ABOUT} component={About} options={({ navigation }) => ({
+      headerLeft: () => <CloseButton onPress={() => navigation.goBack()} testID={NAVIGATION_TEST_IDS.BACK} />
+    })} />
+  </Stack.Navigator>
+)
 
 export default AboutStack;

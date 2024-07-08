@@ -39,18 +39,30 @@ const customMocks = {
   ...defaultString,
   ...defaultLI,
 
-  Query: () => ({
-    ...mobileMe.default,
-    ...currentLearning.default,
-    ...courseDetails.scorm,
-    ...scorm.default,
-    ...notifications.default,
-    ...lang.default
-  })
+  Query: () => null
+  //   ({
+  //   ...mobileMe.default,
+  //   ...currentLearning.default,
+  //   ...courseDetails.scorm,
+  //   ...scorm.default,
+  //   ...notifications.default,
+  //   ...lang.default
+  // })
 };
+
+customMocks.Query = () => ({
+  ...mobileMe.default,
+  ...currentLearning.default,
+  ...courseDetails.scorm,
+  ...scorm.default,
+  ...notifications.default,
+  ...lang.default
+})
+
 describe("Scorm test", () => {
   beforeAll(async () => {
     await startGraphQLServer(customMocks);
+    await device.launchApp();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
@@ -60,11 +72,11 @@ describe("Scorm test", () => {
   });
 
   afterAll(async () => {
-    await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
-    await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
-    await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
+    // await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
+    // await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
+    // await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
 
-    await stopGraphQLServer();
+    // await stopGraphQLServer();
   });
 
   it("should navigate to the scorm summary screen and complete online work flow", async () => {
@@ -80,8 +92,8 @@ describe("Scorm test", () => {
     await element(by.id(sectionTestId)).tap();
     await waitFor(element(by.id(activityTestId)))
       .toBeVisible()
-      .whileElement(by.id(sectionTestId))
-      .swipe("up", "slow", 0.5);
+      .whileElement(by.id(sectionTestId));
+    await element(by.id(sectionTestId)).swipe("up", "slow", 0.5);
     await element(by.id(activityTestId)).tap();
     await element(by.id(SCORM_TEST_IDS.BUTTON_VIEW_ATTEMPTS)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();

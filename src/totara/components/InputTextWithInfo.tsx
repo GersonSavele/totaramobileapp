@@ -13,13 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// @ts-nocheck
-// using no check because there's a bug with native-base ts rule in Item component, line 80
 import React, { useContext } from "react";
 import { View, StyleSheet, ViewStyle, Text } from "react-native";
-import { Item, Label } from "native-base";
-
+import { FormControl } from "native-base";
 import { ThemeContext } from "@totara/theme";
+
 
 type Props = {
   children?: Element;
@@ -79,21 +77,21 @@ const InputTextWithInfo = ({ children, placeholder, message, status, style, ...r
 
   return (
     <View style={{ marginBottom: 8 }}>
-      <Item
-        floatingLabel
+      <FormControl
+        // floatingLabel
         {...rest}
-        success={status === "success"}
-        error={status === "error"}
+        // success={status === "success"}
+        // error={status === "error"}
         style={[style, floatingLabelStyles.item]}>
-        <Label
+        <FormControl.Label
           style={{
-            fontSize: theme.textXSmall.fontSize,
-            color: theme.colorNeutral6
+            // fontSize: theme.textXSmall.fontSize,
+            // color: theme.colorNeutral6
           }}>
           {placeholder}
-        </Label>
+        </FormControl.Label>
         {children}
-      </Item>
+      </FormControl>
       <InfoText status={status} message={message} />
     </View>
   );

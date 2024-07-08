@@ -62,9 +62,10 @@ describe("Enrolment Options", () => {
   });
 
   test("Should render guest widget", async () => {
+    const id = 1;
     useRoute.mockReturnValue({
       params: {
-        targetId: 1
+        targetId: id
       }
     });
 
@@ -124,7 +125,7 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    const widgetEnrolmentKey = getByTestId(`self_enrolment_key`);
+    const widgetEnrolmentKey = await getByTestId(`self_enrolment_key`);
     expect(widgetEnrolmentKey).toBeTruthy();
   });
 

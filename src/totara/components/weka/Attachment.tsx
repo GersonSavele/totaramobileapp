@@ -17,14 +17,11 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
+import Icon from "@totara/components/Icon";
 import styles from "./wekaStyle";
 import { navigateWebView } from "./wekaUtils";
 import { useSession } from "@totara/core";
 import { useNavigation } from "@react-navigation/native";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type ConfigProps = {
   content?: any;
@@ -43,8 +40,8 @@ const Attachment = ({ content = {} }: ConfigProps) => {
         key={index}
         onPress={() => navigateWebView({ url: nestedContent.attrs.url, apiKey, navigation, title: "" })}>
         <View style={styles.iconWrap}>
-          <FontAwesomeIcon
-            icon={faPaperclip as IconProp}
+          <Icon
+            name="paperclip"
             color={TotaraTheme.colorLink}
             size={iconSizes.sizeS}
             style={{ alignSelf: "flex-start" }}

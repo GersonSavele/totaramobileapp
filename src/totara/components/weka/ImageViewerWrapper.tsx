@@ -17,7 +17,8 @@ import React, { useState } from "react";
 import { TouchableOpacity, Modal, View } from "react-native";
 import { ImageWrapper } from "@totara/components";
 import { translate } from "@totara/locale";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import Icon from "@totara/components/Icon";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import styles from "./wekaStyle";
@@ -27,7 +28,7 @@ const ModalView = ({ children, onRequestClose }: any) => {
     <Modal animationType={"slide"} transparent={false}>
       <View style={styles.closeButtonWrap}>
         <TouchableOpacity style={styles.closeButtonTouchableOpacity} onPress={onRequestClose}>
-          <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.colorNeutral5} />
+          <Icon name="times" size={iconSizes.sizeM} color={TotaraTheme.colorNeutral5} />
         </TouchableOpacity>
       </View>
       {children}

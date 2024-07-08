@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import useSession from "./UseSession";
+import useSession from "./useSession";
 import coreUtils from "./coreUtils";
 
 export { useSession, coreUtils };

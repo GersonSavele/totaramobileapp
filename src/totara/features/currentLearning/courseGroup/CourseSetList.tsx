@@ -21,12 +21,10 @@ import { NAVIGATION } from "@totara/lib/navigation";
 import { navigateTo } from "@totara/lib/navigation";
 import Course from "./Course";
 import MoreInfo from "@totara/components/MoreInfo";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import Icon from "@totara/components/Icon";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
 import { activeOpacity } from "@totara/lib/styles/base";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type CourseSetListProps = {
   courseSetList: [CourseSets];
@@ -68,10 +66,10 @@ const LearningItems = ({ item, navigate, showCriteriaList = () => null }: any) =
                 activeOpacity={activeOpacity}
                 style={courseSet.viewAllTouchableOpacity}>
                 <Text style={courseSet.viewAllTitle}>View all</Text>
-                <FontAwesomeIcon
-                  icon={faChevronRight as IconProp}
-                  size={iconSizes.sizeM / 2}
+                <Icon
+                  name="chevron-right"
                   color={TotaraTheme.colorLink}
+                  size={iconSizes.sizeM / 2}
                 />
               </TouchableOpacity>
             )}

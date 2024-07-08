@@ -12,18 +12,10 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-/** @type {import('jest').Config} */
 
-const config = {
-    verbose: true,
-    preset: "jest-expo",
-    moduleNameMapper: {
-        "\\.(jpg|jpeg|png)$": "<rootDir>/src/__mocks__/fileMock.js",
-        "@totara/(.*)": "<rootDir>/src/totara/$1",
-        "@resources/(.*)": "<rootDir>/src/resources/$1"
-      },
-    setupFiles: ["<rootDir>/jest.setup.js"],
-    testPathIgnorePatterns: ["e2e"],
-  };
-  
-  module.exports = config;
+import React from "react";
+import { Text } from "react-native";
+
+const FontAwesome6 = () => <Text>mock icon</Text>;
+
+export { FontAwesome6 };

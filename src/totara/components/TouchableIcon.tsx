@@ -15,13 +15,12 @@
 
 import React from "react";
 import { TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
+import Icon, { IconName } from "@totara/components/Icon";
 import { paddings } from "@totara/theme/constants";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
-  icon: IconProp;
+  icon: IconName;
   onPress?: () => void;
   disabled?: boolean;
   color?: string;
@@ -33,7 +32,7 @@ type Props = {
 const TouchableIcon = ({ icon, onPress, disabled, size, style, testID, ...rest }: Props) => {
   return (
     <TouchableOpacity testID={testID} onPress={onPress} style={[styles.container, style]} disabled={disabled}>
-      <FontAwesomeIcon icon={icon} size={size} {...rest} style={{ opacity: disabled ? 0.5 : 1 }} />
+      <Icon name={icon} size={size} {...rest} style={{ opacity: disabled ? 0.5 : 1 }} />
     </TouchableOpacity>
   );
 };

@@ -66,7 +66,7 @@ describe("AuthenticatedWebview", () => {
     expect(getByTestId(TEST_IDS.LOADING_ERROR)).toBeTruthy();
   });
 
-  it("Should render webview ", async () => {
+  test("Should render webview ", async () => {
     const mockCreateWebviewResolve = jest.fn(() => Promise.resolve({ data: { create_webview: "mocked_secret" } }));
     const tree = (
       <AuthenticatedWebViewComponent

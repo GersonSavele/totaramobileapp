@@ -19,7 +19,7 @@ import { WebView, WebViewNavigation } from "react-native-webview";
 import { View, BackHandler } from "react-native";
 import { AuthenticatedWebView } from "./AuthenticatedWebView";
 import WebviewToolbar from "@totara/components/WebviewToolbar";
-import useSession from "@totara/core/UseSession";
+import { useSession } from "@totara/core";
 import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
 
 type WebViewWrapperProps = {

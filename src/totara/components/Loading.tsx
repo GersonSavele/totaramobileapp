@@ -14,8 +14,7 @@
  */
 
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Spinner } from "native-base";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type LoadingProps = {
@@ -26,7 +25,7 @@ type LoadingProps = {
 const Loading = ({ text, testID }: LoadingProps) => {
   return (
     <View style={loadingViewSyles.container} testID={testID}>
-      <Spinner color={TotaraTheme.textColorDark} />
+      <ActivityIndicator color={TotaraTheme.textColorDark} />
       {text && <Text>{text}</Text>}
     </View>
   );

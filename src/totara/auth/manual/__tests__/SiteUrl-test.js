@@ -23,11 +23,16 @@ import * as siteUrlHook from "../SiteUrlHook";
 import SiteUrl from "../SiteUrl";
 import { TEST_IDS } from "@totara/lib/testIds";
 
+jest.mock('@totara/core', () => ({
+  __esModule: true,
+  useSession: jest.fn(),
+  coreUtils: jest.fn(),
+}));
+
+
 describe("SiteUrl", () => {
   beforeAll(() => {
-    jest.spyOn(coreSession, "useSession").mockImplementation(() => {
-      return { host: "MOCKED-HOST", setupHost: jest.fn() };
-    });
+    coreSession.useSession = () => ({ host: "MOCKED-HOST", setupHost: jest.fn() })
     jest.spyOn(redux, "useDispatch").mockImplementation(() => jest.fn());
     jest.spyOn(navigation, "useNavigation").mockImplementation(() => {
       return {

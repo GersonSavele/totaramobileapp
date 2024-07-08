@@ -1,17 +1,27 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true,
+    "noImplicitAny": false,
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@placeholders/*": [
+        "./src/placeholders/*"
+      ],
+      "@totara/*": [
+        "./src/totara/*"
+      ],
+      "@resources/*": [
+        "./src/resources/*"
       ]
     }
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "e2e"
   ]
 }

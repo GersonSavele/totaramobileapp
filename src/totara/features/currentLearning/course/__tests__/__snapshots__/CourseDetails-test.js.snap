@@ -133,9 +133,9 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     }
   }
 >
-  <Text>
-    mock spinner
-  </Text>
+  <ActivityIndicator
+    color="#3D444B"
+  />
 </View>
 `;
 
@@ -150,9 +150,9 @@ exports[`Testing: Apollo MockedProvider should test three state such as loading,
     }
   }
 >
-  <Text>
-    mock spinner
-  </Text>
+  <ActivityIndicator
+    color="#3D444B"
+  />
 </View>
 `;
 

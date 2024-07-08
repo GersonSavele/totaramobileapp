@@ -39,11 +39,13 @@ type WebviewActivityParams = {
 };
 
 type WebviewActivityProps = {
+  route: any;
   navigation: any;
 };
 
-const WebviewActivity = ({ navigation }: WebviewActivityProps) => {
-  const { uri, backAction, activity, fileurl, mimetype, apiKey } = navigation.state.params as WebviewActivityParams;
+const WebviewActivity = ({ route, navigation }: WebviewActivityProps) => {
+  const { uri, backAction, activity, fileurl, mimetype, apiKey } = route.params as WebviewActivityParams;
+  // const { uri, backAction, activity, fileurl, mimetype, apiKey } = navigation.state.params as WebviewActivityParams;
   useEffect(() => {
     Orientation.unlockAllOrientations();
     return () => Orientation.lockToPortrait();

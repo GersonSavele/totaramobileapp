@@ -17,7 +17,6 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { CircleIcon } from "@totara/components";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import styles from "./wekaStyle";
 import { navigateWebView, EmbeddedMediaProps } from "./wekaUtils";
 import { useSession } from "@totara/core";
@@ -33,7 +32,7 @@ const EmbeddedMedia = ({ content = {}, title }: EmbeddedMediaProps) => {
       onPress={() => navigateWebView({ url: content?.url, title, apiKey, navigation })}>
       <View style={styles.iconWrap}>
         <CircleIcon
-          icon={faPlay}
+          icon={"play"}
           backgroundColor={TotaraTheme.colorNeutral2}
           iconColor={TotaraTheme.colorLink}
           borderColor={TotaraTheme.colorLink}

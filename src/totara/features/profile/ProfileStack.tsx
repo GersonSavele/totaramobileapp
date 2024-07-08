@@ -14,22 +14,29 @@
  */
 
 import { createStackNavigator } from "@react-navigation/stack";
-import { createCompatNavigatorFactory } from "@react-navigation/compat";
-import Profile from "@totara/features/profile/Profile";
-import { NAVIGATION } from "@totara/lib/navigation";
+import { NAVIGATION } from "../../lib/navigation";
+import Profile from "./Profile";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
 
-const ProfileStack = createCompatNavigatorFactory(createStackNavigator)(
-  {
-    [NAVIGATION.PROFILE]: {
-      screen: Profile
-    }
-  },
-  {
-    mode: "modal",
-    initialRouteName: NAVIGATION.PROFILE,
-    defaultNavigationOptions: totaraNavigationOptions({})
-  }
-);
+// const ProfileStack = createCompatNavigatorFactory(createStackNavigator)(
+//     {
+//         [NAVIGATION.PROFILE]: {
+//             screen: Profile
+//         }
+//     },
+//     {
+//         mode: "modal",
+//         initialRouteName: NAVIGATION.PROFILE,
+//         defaultNavigationOptions: totaraNavigationOptions({})
+//     }
+// );
+
+const Stack = createStackNavigator();
+
+const ProfileStack = () => (
+  <Stack.Navigator initialRouteName={NAVIGATION.PROFILE} screenOptions={{ ...totaraNavigationOptions({}) }}>
+    <Stack.Screen name={NAVIGATION.PROFILE} component={Profile} />
+  </Stack.Navigator>
+)
 
 export default ProfileStack;

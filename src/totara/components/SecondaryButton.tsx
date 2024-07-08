@@ -14,19 +14,17 @@
  */
 
 import React, { useContext } from "react";
-import { Text, ViewStyle, StyleSheet, TextStyle } from "react-native";
-import { Button, Spinner } from "native-base";
-// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { Text, ViewStyle, StyleSheet, TextStyle, ActivityIndicator } from "react-native";
+import { Button } from "native-base";
 
+import Icon, { IconName } from "@totara/components/Icon";
 import { gutter, ThemeContext } from "@totara/theme";
 import { translate } from "@totara/locale";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
   children?: Element;
   text?: string;
-  icon?: IconProp;
+  icon?: IconName;
   style?: ViewStyle;
   onPress?: () => void;
   mode?: "disabled" | "loading" | undefined;
@@ -40,7 +38,7 @@ type TitleProps = {
 };
 
 type IndicatorProps = {
-  icon?: IconProp;
+  icon?: IconName;
   mode?: "disabled" | "loading" | undefined;
   color?: string;
   size?: number;
@@ -59,9 +57,9 @@ const ButtonIndicator = ({ mode, icon, color, size }: IndicatorProps) => {
   const styleIndicator = { marginLeft: gutter };
   switch (mode) {
     case "loading":
-      return <Spinner size="small" color={color} style={styleIndicator} />;
+      return <ActivityIndicator size="small" color={color} style={styleIndicator} />;
     default:
-      return icon ? <FontAwesomeIcon icon={icon} size={size} color={color} style={styleIndicator} /> : null;
+      return icon ? <Icon name={icon} size={size} color={color} style={styleIndicator} /> : null;
   }
 };
 
@@ -87,8 +85,9 @@ const SecondaryButton = ({ children, text, icon, style, onPress, mode, testID, .
   });
 
   return (
+    // TODO Fix block should mean full width
     <Button
-      block
+      // block
       onPress={onPress}
       testID={testID}
       {...rest}

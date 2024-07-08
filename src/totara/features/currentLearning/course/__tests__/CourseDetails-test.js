@@ -87,6 +87,7 @@ const course = {
 };
 
 const navigation = { getParam: jest.fn() };
+const route = { params: {  } };
 const mocks = [
   {
     request: {
@@ -115,7 +116,7 @@ describe("Testing: Apollo MockedProvider should test three state such as loading
     await TestRenderer.act(async () => {
       component = TestRenderer.create(
         <MockedProvider mocks={[]} addTypename={false}>
-          <CourseDetails navigation={navigation} />
+          <CourseDetails navigation={navigation} route={route} />
         </MockedProvider>
       );
     });
@@ -128,7 +129,7 @@ describe("Testing: Apollo MockedProvider should test three state such as loading
     await TestRenderer.act(async () => {
       component = TestRenderer.create(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <CourseDetails navigation={navigation} />
+          <CourseDetails navigation={navigation} route={route} />
         </MockedProvider>
       );
     });
@@ -144,7 +145,7 @@ describe("Testing: Apollo MockedProvider should test three state such as loading
     await TestRenderer.act(async () => {
       component = TestRenderer.create(
         <MockedProvider mocks={mocksError} addTypename={false}>
-          <CourseDetails navigation={navigation} />
+          <CourseDetails navigation={navigation} route={route} />
         </MockedProvider>
       );
     });

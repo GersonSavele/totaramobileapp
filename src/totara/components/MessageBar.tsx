@@ -15,22 +15,21 @@
 
 import React from "react";
 import { Text, TextStyle, StyleSheet, View } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
+
+import Icon, { IconName } from "@totara/components/Icon";
 import { margins, paddings } from "@totara/theme/constants";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type MessageBarProps = {
   text: string;
-  icon?: IconProp;
+  icon?: IconName;
   mode?: "info" | "alert";
   style?: TextStyle;
   testID?: string;
 };
 
 // @ts-ignore
-const MessageBar = ({ text, icon = faInfoCircle, mode = "info", style, testID }: MessageBarProps) => {
+const MessageBar = ({ text, icon = 'circle-info', mode = "info", style, testID }: MessageBarProps) => {
   let backgroundStyle = { backgroundColor: TotaraTheme.colorInfo };
   let textStyle: any = [TotaraTheme.textSmall, styles.content, { color: TotaraTheme.colorNeutral1 }];
   if (style) {
@@ -42,7 +41,7 @@ const MessageBar = ({ text, icon = faInfoCircle, mode = "info", style, testID }:
 
   return (
     <View style={[styles.container, backgroundStyle]} testID={testID}>
-      {icon && <FontAwesomeIcon icon={icon} size={textStyle.fontSize} style={[styles.content, textStyle]} />}
+      {icon && <Icon name={icon} size={textStyle.fontSize} style={[styles.content, textStyle]} />}
       <Text style={textStyle}>{text}</Text>
     </View>
   );

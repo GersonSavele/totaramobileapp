@@ -19,7 +19,8 @@ import { TotaraTheme } from "@totara/theme/Theme";
 import React, { useLayoutEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import { translate } from "@totara/locale";
-import { HeaderBackButton } from "@react-navigation/stack";
+// import { HeaderBackButton } from "@react-navigation/stack";
+import { HeaderBackButton } from "@react-navigation/elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NAVIGATION, popAndGoToByRef } from "@totara/lib/navigation";
 import { ImageElement } from "./components";
@@ -116,7 +117,8 @@ export const OverviewModal = () => {
   const goTo = () => {
     if (isEnrolled || privileged) {
       const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
-      navigation.navigate(routeId, { targetId: itemid, courseGroupType: learningItemEnum.Course });
+      // TODO Fix API Change!
+      // navigation.navigate(routeId, { targetId: itemid, courseGroupType: learningItemEnum.Course });
     } else {
       popAndGoToByRef(NAVIGATION.ENROLMENT_MODAL, {
         targetId: itemid
@@ -155,8 +157,8 @@ export const OverviewModal = () => {
   const enrolmentStatusText = isEnrolled
     ? translate("find_learning_overview.you_are_enrolled")
     : guestAccess || canEnrol
-    ? translate("find_learning_overview.you_can_enrol")
-    : translate("find_learning_overview.you_are_not_enrolled");
+      ? translate("find_learning_overview.you_can_enrol")
+      : translate("find_learning_overview.you_are_not_enrolled");
 
   const isLoading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch;
 

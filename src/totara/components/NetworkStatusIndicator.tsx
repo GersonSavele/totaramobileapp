@@ -19,7 +19,6 @@
 import React from "react";
 import MessageBar from "@totara/components/MessageBar";
 import { View } from "react-native";
-import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import { useNetInfo } from "@react-native-community/netinfo";
 
 const NetworkStatusIndicator = () => {
@@ -32,7 +31,7 @@ const NetworkStatusIndicator = () => {
         <MessageBar
           testID={"test_messageBar"}
           text={!isConnected ? messageNotConnected : messageConnecting}
-          icon={faBolt}
+          icon={"bolt"}
         />
       )}
     </View>

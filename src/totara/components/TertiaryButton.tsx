@@ -30,8 +30,9 @@ type Props = {
 const TertiaryButton = ({ text = "", style, onPress, testID, ...rest }: Props) => {
   const theme = useContext(ThemeContext);
 
+  // TODO Fix block should mean full width
   return (
-    <Button block rounded transparent testID={testID} onPress={onPress} style={[styles.button, style]} {...rest}>
+    <Button /*block*/ rounded="md" variant="ghost" testID={testID} onPress={onPress} style={[styles.button, style]} {...rest}>
       <Text
         style={{
           color: theme.colorLink,

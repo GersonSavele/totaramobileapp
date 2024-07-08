@@ -14,12 +14,11 @@
  */
 
 import React, { useContext, useEffect } from "react";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { Image, ImageSourcePropType, View } from "react-native";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Image, ImageSourcePropType, Text, View } from "react-native";
 import { ThemeContext } from "@totara/theme";
 import NotificationsStack from "@totara/features/notifications";
 import DownloadsStack from "@totara/features/downloads";
-import ProfileStack from "@totara/features/profile";
 import { countUnreadMessages, notificationsQuery } from "./features/notifications/api";
 import { useQuery } from "@apollo/client";
 import CurrentLearningStack from "./features/currentLearning";
@@ -29,15 +28,19 @@ import { translate } from "./locale";
 import FindLearningStack from "./features/findLearning/FindLearningStack";
 import { useSession } from "./core";
 import { isEnableFindLearning } from "@totara/lib/tools";
+import Profile from "./features/profile/Profile";
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 const TabContainer = () => {
   const theme = useContext(ThemeContext);
   const { data } = useQuery(notificationsQuery);
-  const notificationCount = countUnreadMessages(data);
+  // const notificationCount = countUnreadMessages(data);
   const { core } = useSession();
 
+  const notificationCount = 7;
+
   useEffect(() => {
+    console.log('Setting it!');
     setNotificationBadgeCount(notificationCount);
   }, [notificationCount]);
 
@@ -53,7 +56,9 @@ const TabContainer = () => {
   };
 
   return (
-    <Tab.Navigator barStyle={{ backgroundColor: theme.colorNeutral1 }} shifting={false} labeled={false}>
+    <Tab.Navigator screenOptions={{
+      tabBarShowLabel: false
+    }}>
       <Tab.Screen
         name="Learning"
         component={CurrentLearningStack}
@@ -97,13 +102,13 @@ const TabContainer = () => {
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.notifications} />
           ),
-          tabBarBadge: notificationCount > 0 && notificationCount,
+          tabBarBadge: (notificationCount && notificationCount > 0) ? notificationCount : null,
           tabBarTestID: TAB_TEST_IDS.NOTIFICATIONS
         }}
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileStack}
+        component={Profile}
         options={{
           tabBarAccessibilityLabel: translate("user_profile.title"),
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (

@@ -27,6 +27,7 @@ import { details } from "./courseGroupStyles";
 import CriteriaSheet from "../components/CriteriaSheet";
 
 type CourseGroupProps = {
+  route: any;
   navigation: any;
 };
 
@@ -50,8 +51,8 @@ type ParamsType = {
   courseGroupType: string;
 };
 
-const CourseGroupDetails = ({ navigation }: CourseGroupProps) => {
-  const { targetId, courseGroupType } = navigation.state.params as ParamsType;
+const CourseGroupDetails = ({ route, navigation }: CourseGroupProps) => {
+  const { targetId, courseGroupType } = route.params as ParamsType;
   const typeMap = courseGroupTypeMap[courseGroupType];
   const { networkStatus, error, data, refetch } = useQuery(typeMap.query, {
     variables: { [typeMap.idField]: targetId },

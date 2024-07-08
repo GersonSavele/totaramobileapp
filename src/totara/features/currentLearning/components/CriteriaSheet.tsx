@@ -15,7 +15,8 @@
 
 import React, { useRef, useCallback, useMemo } from "react";
 import { View, TouchableOpacity, SectionList, Text, FlatList } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import Icon from "@totara/components/Icon";
 import { groupBy } from "lodash";
 import { TotaraTheme } from "@totara/theme/Theme";
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -127,7 +128,7 @@ const BottomSheetHeader = ({ onClose, title }: BottomSheetHeaderProps) => {
           style={criteriaSheetStyle.headerCloseButtonWrap}
           onPress={onClose}
           testID={TEST_IDS.CLICK_CLOSE}>
-          <FontAwesomeIcon icon="times" size={iconSizes.sizeM} color={TotaraTheme.colorNeutral5} />
+          <Icon name="times" size={iconSizes.sizeM} color={TotaraTheme.colorNeutral5} />
         </TouchableOpacity>
       </View>
       <View>

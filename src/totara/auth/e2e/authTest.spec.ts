@@ -31,7 +31,12 @@ describe("User authentication", () => {
       })
     };
     await startGraphQLServer(customMocks);
+    await device.launchApp();
   });
+
+  // beforeEach(async () => {
+  //   await device.reloadReactNative();
+  // });
 
   afterAll(async () => {
     await element(by.id(TAB_TEST_IDS.PROFILE)).tap();

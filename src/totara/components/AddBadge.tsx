@@ -15,9 +15,8 @@
 
 import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
-// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
+import Icon from "@totara/components/Icon";
 import { Status } from "@totara/types";
 import ProgressCircle from "./ProgressCircle";
 import { ThemeContext } from "@totara/theme";
@@ -120,9 +119,9 @@ const RightBadge = ({ status, size, offsetSize }: Props) => {
   }
 };
 
-const CheckBadge = ({ size, color }: IconBadgeProps) => <FontAwesomeIcon icon={"check"} color={color} size={size} />;
+const CheckBadge = ({ size, color }: IconBadgeProps) => <Icon name="check" color={color} size={size} />;
 
-const LockBadge = ({ size, color }: IconBadgeProps) => <FontAwesomeIcon icon={"lock"} color={color} size={size} />;
+const LockBadge = ({ size, color }: IconBadgeProps) => <Icon name="lock" color={color} size={size} />;
 
 const ProgressBadge = ({ size, progress }: ProgressProps) => (
   <ProgressCircle size={size ? size * 2 : 32} progress={progress} />

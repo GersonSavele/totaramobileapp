@@ -13,34 +13,19 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { StatusBar, Platform, LogBox, View, Text, SafeAreaView } from "react-native";
-import { Root } from "native-base";
-import * as Sentry from "@sentry/react-native";
+import React, { ReactNode } from "react";
+import { StatusBar, Platform, LogBox, Text, SafeAreaView, NativeModules } from "react-native";
 
 import { config } from "@totara/lib";
-import RootContainer from "./totara/RootContainer";
-import FontAwesome from "@totara/lib/fontAwesome";
-import { PLATFORM_ANDROID } from "./totara/lib/constants";
-import { store, persistor } from "./totara/store";
+import RootContainer from "@totara/RootContainer";
+import { PLATFORM_ANDROID } from "@totara/lib/constants";
+import { store, persistor } from "@totara/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import Loading from "@totara/components/Loading";
-import { ThemeProvider } from "./totara/theme";
+import { ThemeProvider } from "@totara/theme";
 import { OrientationLocker, PORTRAIT } from "react-native-orientation-locker";
-// this check will make sure we only use sentry for production flavors
-if (!__DEV__ && config.sentryUri) {
-  Sentry.init({
-    dsn: config.sentryUri,
-    environment: "production",
-    beforeBreadcrumb(breadcrumb) {
-      if (breadcrumb.category === "xhr") {
-        return null;
-      }
-      return breadcrumb;
-    }
-  });
-}
+import { NativeBaseProvider } from "native-base";
 
 if (Platform.OS === PLATFORM_ANDROID) {
   StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -50,26 +35,25 @@ if (Platform.OS === PLATFORM_ANDROID) {
   StatusBar.setBarStyle("default");
 }
 
-FontAwesome.init();
 if (config.disableConsoleYellowBox) {
   LogBox.ignoreAllLogs();
 }
 LogBox.ignoreLogs(["new NativeEventEmitter"]);
 
-const App: () => React$Node = () => {
+
+const App: () => ReactNode = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {/* TODO: remove this comment after further testing */}
-      {/* <Root> */}
       <Provider store={store}>
         <PersistGate loading={<Loading />} persistor={persistor}>
           <OrientationLocker orientation={PORTRAIT} />
           <ThemeProvider>
-            <RootContainer />
+            <NativeBaseProvider>
+              <RootContainer />
+            </NativeBaseProvider>
           </ThemeProvider>
         </PersistGate>
       </Provider>
-      {/* </Root> */}
     </SafeAreaView>
   );
 };

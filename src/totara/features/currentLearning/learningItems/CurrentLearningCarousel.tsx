@@ -12,13 +12,8 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-
-// FIX pagination carousel TS bug
-// @ts-nocheck
-
 import React, { useState, useRef } from "react";
-import { TouchableOpacity, View, ScrollView, RefreshControl } from "react-native";
-import Carousel, { Pagination } from "react-native-snap-carousel";
+import { TouchableOpacity, View, ScrollView, RefreshControl, FlatList, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AddBadge } from "@totara/components";
 import { navigateTo, learningItemToRouteMap } from "@totara/lib/navigation";
@@ -38,44 +33,41 @@ type CurrentLearningCarouselProps = {
 
 const CurrentLearningCarousel = ({ currentLearning, onRefresh }: CurrentLearningCarouselProps) => {
   const [activeSlide, setActiveSlide] = useState(0);
-  const sliderRef = useRef(null);
+
+  const slideOverlap = 23;
+  const slideWidth = deviceScreen.width - slideOverlap * 2;
 
   const renderItem = ({ item, index }: any) => {
-    return <LearningItems item={item} index={index} />;
+    return (
+      <View style={{ width: slideWidth, padding: paddings.paddingS }}>
+        <LearningItems item={item} index={index} />
+      </View>
+    );
   };
+
   return (
     <View>
-      <Pagination
-        activeDotIndex={activeSlide}
-        dotsLength={currentLearning.length}
-        containerStyle={carouselItemStyles.pagination}
-        dotStyle={[carouselItemStyles.dot, { width: deviceScreen.width / currentLearning.length }]}
-        dotContainerStyle={{
-          marginHorizontal: 0
-        }}
-        carouselRef={sliderRef.current}
-        tappableDots={sliderRef && !sliderRef.current}
-        inactiveDotOpacity={0}
-        inactiveDotScale={1}
-      />
       <ScrollView
         style={{ height: "100%" }}
         contentContainerStyle={{ height: "100%" }}
         showsVerticalScrollIndicator={false}
         testID={CL_TEST_IDS.CAROUSEL_WRAPPER_ID}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}>
-        <Carousel
-          inactiveSlideScale={1}
-          ref={sliderRef}
-          testID={CL_TEST_IDS.CAROUSEL}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
+      >
+        <FlatList
+          style={{ flex: 1, paddingStart: slideOverlap }}
           data={currentLearning}
           renderItem={renderItem}
-          sliderWidth={deviceScreen.width}
-          itemWidth={deviceScreen.width - paddings.paddingXL * 2}
-          sliderHeight={deviceScreen.height}
-          inactiveSlideOpacity={0.6}
-          onSnapToItem={index => setActiveSlide(index)}
+          horizontal={true}
+          pagingEnabled={false}
+          snapToInterval={slideWidth}
+          snapToAlignment="start"
+          decelerationRate={0}
+          showsHorizontalScrollIndicator={true}
+          testID={CL_TEST_IDS.CAROUSEL}
+          onViewableItemsChanged={({ viewableItems }) => viewableItems[0] && setActiveSlide(viewableItems[0].index)}
         />
+        <Text>{activeSlide}</Text>
       </ScrollView>
     </View>
   );

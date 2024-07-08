@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-const { MockList } = require("apollo-server-express");
+const { MockList } = require("@graphql-tools/mock");
 
 const defaultCurrentLearningData = [
   {

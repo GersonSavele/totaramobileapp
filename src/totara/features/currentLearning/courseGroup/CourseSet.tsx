@@ -28,7 +28,8 @@ import { extractTargetId } from "../utils";
 import { activeOpacity } from "@totara/lib/styles/base";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
 import { SummaryContent } from "@totara/components/SummaryContent";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import Icon from "@totara/components/Icon";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type CourseSetProps = {
@@ -86,7 +87,7 @@ const CourseSetItem = ({ item, navigation }: any) => {
       </TouchableOpacity>
       {!viewable && (
         <View style={courseSet.absoluteItem}>
-          <FontAwesomeIcon icon={"ban"} color={TotaraTheme.colorAlert} size={16} />
+          <Icon name="ban" color={TotaraTheme.colorAlert} size={16} />
           <Text style={{ marginLeft: margins.marginS }}>{translate("course_group.courses.unavailable_course")}</Text>
         </View>
       )}

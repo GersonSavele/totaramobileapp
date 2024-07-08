@@ -18,7 +18,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { FlatList, Image, ImageSourcePropType, Platform, Text, View } from "react-native";
-import { SearchBar } from "react-native-elements";
+import { SearchBar } from "@placeholders/react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";

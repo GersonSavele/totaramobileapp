@@ -2,7 +2,7 @@
 
 React Native App
 
-Please avoid adding content here, because it is better to keep one single documentation(https://help.totaralearning.com/display/DEV/Totara+Mobile)
+Please avoid adding content here, because it is better to keep one single documentation(https://totara.atlassian.net/wiki/spaces/DEV/pages/121185059/Getting+started+with+the+Totara+Mobile+app)
 
 # Build offline SCORM server script
 

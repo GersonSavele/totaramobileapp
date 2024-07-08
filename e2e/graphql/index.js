@@ -74,7 +74,7 @@ const startGraphQLServer = async (mock = {}) => {
     res.json({ data: { loginsecret: "mocked_login_secret" } });
   });
   graphQLServerApp.post("/totara/mobile/login.php", (req, res) => {
-    const requestData = JSON.parse(req.body);
+    const requestData = req.body;
     if (requestData && requestData.username == mockUsername && requestData.password == mockPassword) {
       res.json({
         data: {
@@ -89,7 +89,7 @@ const startGraphQLServer = async (mock = {}) => {
     res.json({
       data: {
         apikey: "mocked_apikey",
-        apiurl: `${mockServerUrl}/totara/mobile/api.php`,
+        apiurl: `${mockServerUrl}${graphqlApiPath}`,
         version: "2020100100"
       }
     });
@@ -97,6 +97,8 @@ const startGraphQLServer = async (mock = {}) => {
   graphQLServerApp.get("/totara/mobile/device_webview.php", function (req, res) {
     res.redirect("/mocked_page.html");
   });
+
+  await server.start();
   server.applyMiddleware({
     app: graphQLServerApp,
     path: graphqlApiPath

@@ -17,7 +17,8 @@ import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View, ScrollView, RefreshControl, Alert, TouchableOpacity } from "react-native";
 import { useQuery } from "@apollo/client";
 import { StackScreenProps } from "@react-navigation/stack";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import Icon from "@totara/components/Icon";
 import { ThemeContext } from "@totara/theme";
 import { UserProfile } from "@totara/types";
 import { NAVIGATION } from "@totara/lib/navigation";
@@ -77,7 +78,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
       [
         {
           text: translate("general.cancel"),
-          onPress: () => {},
+          onPress: () => { },
           style: "cancel"
         },
         { text: translate("general.yes"), onPress: confirmedLogout }
@@ -108,7 +109,7 @@ const ProfileContent = ({ profile, navigation }: ProfileContentProps) => {
             />
           ) : (
             <View style={styles.avatar}>
-              <FontAwesomeIcon icon={"user"} color={TotaraTheme.colorNeutral4} size={65} />
+              <Icon name="user" color={TotaraTheme.colorNeutral4} size={65} />
             </View>
           )}
         </View>

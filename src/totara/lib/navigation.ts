@@ -23,7 +23,26 @@ import React from "react";
  * @param item
  */
 const navigateTo = ({ navigate, routeId, props }) => {
-  navigate(routeId, props);
+  switch (routeId) {
+    case WEBVIEW_ACTIVITY:
+      navigate(routeId, 
+        { 
+          screen: routeId, 
+          params: props,
+        }
+      );
+      break;
+    case SCORM_ROOT:
+      navigate(routeId, 
+        { 
+          screen: routeId, 
+          params: props,
+        }
+      );
+      break;
+    default:
+      navigate(routeId, props);
+  }
 };
 
 const navigationRef = React.createRef<any>();
@@ -36,8 +55,10 @@ const COURSE_LIST = "CourseList";
 
 //scorm routes
 const SCORM_STACK_ROOT = "ScormActivityStack";
+const WEBVIEW_ACTIVITY_STACK = "WebviewActivityStack";
 const WEBVIEW_ACTIVITY = "WebviewActivity";
 const SCORM_ROOT = "ScormActivity";
+// const SCORM_ACTIVITY = "ScormActivity";
 const SCORM_ATTEMPTS = "ScormAttempts";
 const OFFLINE_SCORM_ACTIVITY = "OfflineScormActivity";
 const SCORM_FEEDBACK = "ScormFeedback";
@@ -45,8 +66,10 @@ const SCORM_FEEDBACK = "ScormFeedback";
 const PROFILE = "Profile";
 const ABOUT = "About";
 const SETTINGS = "Settings";
+const DOWNLOADS = "Downloads";
 
 //Find Learning
+const FIND_LEARNING_STACK = "FindLearningStack";
 const FIND_LEARNING = "FindLearning";
 const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
 const FIND_LEARNING_COURSE_DETAILS = "FindLearningCourseDetails";
@@ -69,16 +92,19 @@ const NAVIGATION = {
   PROFILE,
   ABOUT,
   SETTINGS,
+  DOWNLOADS,
   SCORM_STACK_ROOT,
   SCORM_ROOT,
   SCORM_ATTEMPTS,
   SCORM_FEEDBACK,
   OFFLINE_SCORM_ACTIVITY,
+  WEBVIEW_ACTIVITY_STACK,
   WEBVIEW_ACTIVITY,
   CURRENT_LEARNING,
   COURSE_LIST,
   COURSE_DETAILS,
   COURSE_GROUP_DETAILS,
+  FIND_LEARNING_STACK,
   FIND_LEARNING,
   FIND_LEARNING_OVERVIEW,
   FIND_LEARNING_COURSE_DETAILS,

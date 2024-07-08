@@ -42,6 +42,7 @@ const customMocks = {
 describe("Current learning test", () => {
   beforeAll(async () => {
     await startGraphQLServer(customMocks);
+    await device.launchApp();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();

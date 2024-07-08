@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 // import { initialState, useAuth } from "../AuthHook";
-// import { renderHook, act } from "@testing-library/react-hooks";
+import { act, renderHook } from "@testing-library/react-native";
 
 describe("useAuthContext", () => {
   it("should cleanup device during logout", async () => {

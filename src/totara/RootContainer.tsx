@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer, Theme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import SessionContainer from "./SessionContainer";
@@ -26,11 +26,11 @@ import { cardModalOptions, NAVIGATION, navigationRef } from "./lib/navigation";
 import { translate } from "./locale";
 import { TotaraTheme } from "./theme/Theme";
 
-const navigationTheme = {
+const navigationTheme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: TotaraTheme.viewContainer.backgroundColor!
+    background: TotaraTheme.viewContainer.backgroundColor! as string
   }
 };
 
@@ -40,8 +40,8 @@ const RootContainer = () => {
   return (
     <NavigationContainer theme={navigationTheme} ref={navigationRef}>
       <Stack.Navigator
-        mode={"modal"}
         screenOptions={{
+          presentation: "modal",
           headerShown: false
         }}>
         <Stack.Screen name="SessionContainer" component={SessionContainer} />

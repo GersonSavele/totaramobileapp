@@ -14,21 +14,28 @@
  */
 
 import { createStackNavigator } from "@react-navigation/stack";
-import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import totaraNavigationOptions from "@totara/components/NavigationOptions";
-
 import Downloads from "@totara/features/downloads/Downloads";
+import { NAVIGATION } from "../../lib/navigation";
 
-const DownloadsStack = createCompatNavigatorFactory(createStackNavigator)(
-  {
-    Downloads: {
-      screen: Downloads
-    }
-  },
-  {
-    initialRouteName: "Downloads",
-    defaultNavigationOptions: totaraNavigationOptions({ title: "" })
-  }
-);
+// const DownloadsStack = createCompatNavigatorFactory(createStackNavigator)(
+//   {
+//     Downloads: {
+//       screen: Downloads
+//     }
+//   },
+//   {
+//     initialRouteName: "Downloads",
+//     defaultNavigationOptions: totaraNavigationOptions({ title: "" })
+//   }
+// );
+
+const Stack = createStackNavigator();
+
+const DownloadsStack = () => (
+  <Stack.Navigator initialRouteName={NAVIGATION.DOWNLOADS} screenOptions={{ ...totaraNavigationOptions({}) }}>
+    <Stack.Screen name={NAVIGATION.DOWNLOADS} component={Downloads} />
+  </Stack.Navigator>
+)
 
 export default DownloadsStack;

@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { Button, Text, TextInput } from "react-native";
+import { Button, Text, TextInput, View } from "react-native";
 import PropTypes from "prop-types";
 
 // use react-native button instead on jest, as native-base button
@@ -29,9 +29,16 @@ const Label = ({ children }) => children;
 const Input = ({ ...rest }) => <TextInput {...rest} />;
 const Footer = ({ children }) => children;
 const Container = ({ children }) => children;
+const NativeBaseProvider = ({ children }) => children;
+const Toast = () => ({ show: () => {} });
+const ScrollView = ({ children }) => children;
+
+const FormControl = ({ children }) => children;
+FormControl.Label = ({ children }) => children;
+
 
 MockButton.propTypes = {
   onPress: PropTypes.func
 };
 
-export { MockButton as Button, Spinner, Form, Content, Item, Label, Input, Footer, Container };
+export { MockButton as Button, NativeBaseProvider, Spinner, Form, FormControl, Content, Item, Label, Input, Footer, Container, Toast, ScrollView };

@@ -23,8 +23,8 @@ import { courses } from "./courseGroupStyles";
 import listViewStyles from "@totara/theme/listView";
 import { iconSizes } from "@totara/theme/constants";
 import { TotaraTheme } from "@totara/theme/Theme";
-import { faBan, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import Icon from "@totara/components/Icon";
 import { activeOpacity } from "@totara/lib/styles/base";
 
 type CoursesProps = {
@@ -39,7 +39,7 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
       {courseGroup.courseSetHeader && courseGroup.courseSetHeader.length > 0 ? (
         <CompletionInfo
           title={courseGroup.courseSetHeader}
-          icon={faCheckCircle}
+          icon={"check-circle"}
           viewTestID={"test_set_header"}
           textTestID={"test_set_header_title"}
           iconColor={TotaraTheme.colorSuccess}
@@ -80,7 +80,7 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
       {courseGroup.countUnavailableSets > 0 && (
         <CompletionInfo
           title={courseGroup.countUnavailableSets.toString() + " " + translate("course_group.courses.unavailable_sets")}
-          icon={faBan}
+          icon={"ban"}
           viewTestID={"test_unavailable_set"}
           textTestID={"test_unavailable_set_title"}
           iconColor={TotaraTheme.colorAlert}
@@ -102,7 +102,7 @@ const CompletionInfo = ({ title, icon, viewTestID, textTestID, iconColor }: Comp
   return (
     <View style={courses.completionInfoView} testID={viewTestID}>
       <View style={{ backgroundColor: "transparent" }}>
-        <FontAwesomeIcon icon={icon} size={iconSizes.sizeS} color={iconColor} />
+        <Icon name={icon} size={iconSizes.sizeS} color={iconColor} />
       </View>
       <Text style={courses.completionInfoTitle} testID={textTestID}>
         {title}

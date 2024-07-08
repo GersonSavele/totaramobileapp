@@ -17,7 +17,6 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useQuery, useApolloClient } from "@apollo/client";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createCompatNavigatorFactory } from "@react-navigation/compat";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { SafeAreaView } from "react-native";
 
@@ -47,9 +46,6 @@ import { NAVIGATION_TEST_IDS, SCORM_TEST_IDS } from "@totara/lib/testIds";
 
 const { download } = ResourceManager;
 
-const { SCORM_ROOT, SCORM_STACK_ROOT, SCORM_ATTEMPTS, OFFLINE_SCORM_ACTIVITY, WEBVIEW_ACTIVITY, SCORM_FEEDBACK } =
-  NAVIGATION;
-
 type ScormActivityProps = {
   navigation: any;
 };
@@ -77,21 +73,21 @@ const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
 
 const apiDataEffect =
   ({ data, client, id, scormBundle, setScormBundle }: ApiDataEffectProps) =>
-  () => {
-    if (data) {
-      let mergedData = { ...data };
+    () => {
+      if (data) {
+        let mergedData = { ...data };
 
-      const offlineAttempts = getOfflineActivity({
-        client,
-        scormId: id
-      });
-      setScormBundle({
-        ...scormBundle,
-        ...mergedData,
-        offlineAttempts: offlineAttempts
-      });
-    }
-  };
+        const offlineAttempts = getOfflineActivity({
+          client,
+          scormId: id
+        });
+        setScormBundle({
+          ...scormBundle,
+          ...mergedData,
+          offlineAttempts: offlineAttempts
+        });
+      }
+    };
 
 const onRefresh =
   ({
@@ -105,20 +101,20 @@ const onRefresh =
     isInternetReachable?: null | boolean;
     refetch: Function;
   }) =>
-  () => {
-    if (isInternetReachable) {
-      refetch();
-    } else {
-      const offlineAttempts = getOfflineActivity({
-        client,
-        scormId: id
-      });
-      setScormBundle({
-        ...scormBundle,
-        offlineAttempts: offlineAttempts
-      });
-    }
-  };
+    () => {
+      if (isInternetReachable) {
+        refetch();
+      } else {
+        const offlineAttempts = getOfflineActivity({
+          client,
+          scormId: id
+        });
+        setScormBundle({
+          ...scormBundle,
+          offlineAttempts: offlineAttempts
+        });
+      }
+    };
 
 const ScormActivity = (props: ScormActivityProps) => {
   const { navigation } = props;
@@ -142,9 +138,9 @@ const ScormActivity = (props: ScormActivityProps) => {
 
   const progress = resource
     ? humanReadablePercentage({
-        writtenBytes: resource.bytesDownloaded,
-        sizeInBytes: resource.sizeInBytes
-      })
+      writtenBytes: resource.bytesDownloaded,
+      sizeInBytes: resource.sizeInBytes
+    })
     : 0;
   const scorm = scormBundle?.scorm;
   const offlinePackageUrl = scorm?.offlineAttemptsAllowed && scorm?.offlinePackageUrl;
@@ -222,6 +218,8 @@ const ScormActivity = (props: ScormActivityProps) => {
   );
 };
 
+const Stack = createStackNavigator();
+
 const navigationOptions = ({ navigation }) => {
   const { title = "", backAction = () => navigation.pop() } = navigation.state.params as ScormActivityParams;
   return {
@@ -232,46 +230,62 @@ const navigationOptions = ({ navigation }) => {
   };
 };
 
-const innerStack = createCompatNavigatorFactory(createStackNavigator)(
-  {
-    [SCORM_ROOT]: {
-      screen: ScormActivity,
-      navigationOptions
-    },
-    [SCORM_ATTEMPTS]: {
-      screen: ScormAttempts,
-      navigationOptions
-    },
-    [OFFLINE_SCORM_ACTIVITY]: {
-      screen: OfflineScormActivity,
-      navigationOptions
-    },
-    [WEBVIEW_ACTIVITY]: {
-      screen: WebviewActivity,
-      navigationOptions
-    }
-  },
-  {
-    // initialRouteKey: SCORM_ROOT,
-    initialRouteName: SCORM_ROOT
-  }
-);
+// const innerStack = createCompatNavigatorFactory(createStackNavigator)(
+//   {
+//     [SCORM_ROOT]: {
+//       screen: ScormActivity,
+//       navigationOptions
+//     },
+//     [SCORM_ATTEMPTS]: {
+//       screen: ScormAttempts,
+//       navigationOptions
+//     },
+//     [OFFLINE_SCORM_ACTIVITY]: {
+//       screen: OfflineScormActivity,
+//       navigationOptions
+//     },
+//     [WEBVIEW_ACTIVITY]: {
+//       screen: WebviewActivity,
+//       navigationOptions
+//     }
+//   },
+//   {
+//     // initialRouteKey: SCORM_ROOT,
+//     initialRouteName: SCORM_ROOT
+//   }
+// );
 
-const scormStack = createCompatNavigatorFactory(createStackNavigator)(
-  {
-    [SCORM_STACK_ROOT]: {
-      screen: innerStack
-    },
-    [SCORM_FEEDBACK]: {
-      screen: ScormFeedbackModal,
-      navigationOptions
-    }
-  },
-  {
-    mode: "modal",
-    headerMode: "none"
-  }
-);
+const innerStack = () => (
+  <Stack.Navigator initialRouteName={NAVIGATION.SCORM_ROOT}>
+    <Stack.Screen name={NAVIGATION.SCORM_ROOT} component={ScormActivity} options={{ ...navigationOptions }} />
+    <Stack.Screen name={NAVIGATION.SCORM_ATTEMPTS} component={ScormAttempts} options={{ ...navigationOptions }} />
+    <Stack.Screen name={NAVIGATION.OFFLINE_SCORM_ACTIVITY} component={OfflineScormActivity} options={{ ...navigationOptions }} />
+    <Stack.Screen name={NAVIGATION.WEBVIEW_ACTIVITY} component={WebviewActivity} options={{ ...navigationOptions }} />
+  </Stack.Navigator>
+)
+
+// const scormStack = createCompatNavigatorFactory(createStackNavigator)(
+//   {
+//     [SCORM_STACK_ROOT]: {
+//       screen: innerStack
+//     },
+//     [SCORM_FEEDBACK]: {
+//       screen: ScormFeedbackModal,
+//       navigationOptions
+//     }
+//   },
+//   {
+//     mode: "modal",
+//     headerMode: "none"
+//   }
+// );
+
+const ScormStack = () => (
+  <Stack.Navigator screenOptions={{ presentation: "modal", headerShown: false }}>
+    <Stack.Screen name={NAVIGATION.SCORM_STACK_ROOT} component={innerStack} />
+    <Stack.Screen name={NAVIGATION.SCORM_FEEDBACK} component={ScormFeedbackModal} options={{ ...navigationOptions }} />
+  </Stack.Navigator>
+)
 
 const headerRight = props => {
   const { navigation } = props;
@@ -297,5 +311,5 @@ const headerRight = props => {
   }
 };
 
-export { scormStack, apiDataEffect, onRefresh, navigationOptions };
+export { ScormStack, apiDataEffect, onRefresh, navigationOptions };
 export default ScormActivity;

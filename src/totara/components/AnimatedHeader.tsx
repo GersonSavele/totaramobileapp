@@ -13,7 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import Icon from "@totara/components/Icon";
 import { translate } from "@totara/locale";
 import { fontSizes, fontWeights, paddings } from "@totara/theme/constants";
 import React from "react";
@@ -84,10 +85,10 @@ const AnimatedHeader = ({ title, subTitle, scrollValue = {}, leftAction }: Anima
           <Animated.View
             testID={"animated-header-backbutton-black"}
             style={[styles.backIcon, transparentToOpaqueInterpolate]}>
-            <FontAwesomeIcon icon={getIcon()} color={"black"} />
+            <Icon name={getIcon()} color={"black"} />
           </Animated.View>
           <Animated.View testID={"animated-header-backbutton-white"} style={[styles.backIcon, animatedStyle2]}>
-            <FontAwesomeIcon icon={getIcon()} color={"white"} />
+            <Icon name={getIcon()} color={"white"} />
           </Animated.View>
         </TouchableOpacity>
 

@@ -35,7 +35,8 @@ const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
   const navigation = useNavigation();
   const onPressFindLearning = () => {
     if (isEnableFindLearning(core)) {
-      navigation.navigate(NAVIGATION.FIND_LEARNING);
+      // TODO Fix
+      // navigation.navigate(NAVIGATION.FIND_LEARNING);
     } else {
       Linking.openURL(config.findLearningUri(host!));
     }
@@ -48,7 +49,7 @@ const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
         <PrimaryButton
           onPress={onPressFindLearning}
           text={translate("current_learning.find_learning")}
-          icon={!isEnableFindLearning(core) ? "external-link-alt" : ""}
+          icon={!isEnableFindLearning(core) ? "up-right-from-square" : null}
           style={{ alignSelf: "center" }}
         />
       </View>

@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Text, TouchableOpacity, View, FlatList } from "react-native";
+import { Text, TouchableOpacity, View, FlatList, SafeAreaView } from "react-native";
 import React, { useEffect } from "react";
 // @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
+import Icon from "@totara/components/Icon";
 import { useMutation } from "@apollo/client";
 import { get, isEmpty } from "lodash";
 import { useNavigation } from "@react-navigation/native";
@@ -40,7 +40,6 @@ import { showMessage } from "@totara/lib";
 import { decodeHtmlCharCodes } from "@totara/lib/tools";
 import { WekaContent } from "@totara/components/weka/WekaContent";
 import { margins } from "@totara/theme/constants";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -63,15 +62,15 @@ const Activities = ({
   showCriteriaList
 }: ActivitiesProps) => {
   const navigation = useNavigation();
+  // const navigation = useNavigation<{ ScormActivityStack: any }>();
 
   useEffect(() => navigation.addListener("focus", courseRefreshCallBack), [navigation]);
   return (
-    <FlatList
-      data={sections}
-      testID={CL_TEST_IDS.LIST}
-      renderItem={({ item }) => {
+    <SafeAreaView>
+      {sections.map(item => {
         return (
           <SectionItem
+            key={item.id}
             section={item}
             courseRefreshCallBack={courseRefreshCallBack}
             expandedSectionIds={expandedSectionIds}
@@ -81,8 +80,8 @@ const Activities = ({
             showCriteriaList={() => showCriteriaList(item.availableReason)}
           />
         );
-      }}
-    />
+      })}
+    </SafeAreaView>
   );
 };
 
@@ -223,9 +222,9 @@ const ExpandableSectionHeader = ({ title, show }: ExpandableSectionHeaderProps) 
           {decodeHtmlCharCodes(title)}
         </Text>
         {show ? (
-          <FontAwesomeIcon icon={faChevronUp as IconProp} color={TotaraTheme.colorNeutral5} size={16} />
+          <Icon name="chevron-up" color={TotaraTheme.colorNeutral5} size={16} />
         ) : (
-          <FontAwesomeIcon icon={faChevronDown as IconProp} color={TotaraTheme.colorNeutral5} size={16} />
+          <Icon name="chevron-down" color={TotaraTheme.colorNeutral5} size={16} />
         )}
       </View>
     </View>
@@ -328,13 +327,23 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           onPress={() => {
             switch (item.modtype) {
               case ActivityModType.scorm: {
-                navigation.navigate(SCORM_STACK_ROOT, {
-                  screen: SCORM_ROOT,
-                  params: {
+                // TODO Fix
+                // navigation.navigate(SCORM_STACK_ROOT, {
+                //   screen: SCORM_ROOT,
+                //   params: {
+                //     id: item.instanceid.toString(),
+                //     title: item.name
+                //   }
+                // });
+                console.log("SCORM");
+                navigateTo({
+                  navigate: navigation.navigate,
+                  routeId: SCORM_ROOT,
+                  props: {
                     id: item.instanceid.toString(),
                     title: item.name
                   }
-                });
+                })
                 break;
               }
               case ActivityModType.label: {
@@ -378,7 +387,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         fileurl,
                         mimetype,
                         apiKey,
-                        backAction: () => {},
+                        backAction: () => { },
                         title: item?.name
                       }
                     });
@@ -394,7 +403,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
-                    backAction: () => {},
+                    backAction: () => { },
                     title: item?.name
                   }
                 });

@@ -15,9 +15,7 @@
 
 import React, { forwardRef } from "react";
 import { WebView, WebViewNavigation } from "react-native-webview";
-import { MutationFunction, gql } from "@apollo/client";
-import { graphql } from "@apollo/client/react/hoc";
-import { compose } from "recompose";
+import { MutationFunction, gql, useMutation } from "@apollo/client";
 import CookieManager from "@react-native-cookies/cookies";
 
 import { config, Log } from "@totara/lib";
@@ -25,6 +23,7 @@ import { WEBVIEW_SECRET } from "@totara/lib/constants";
 import { Loading, LoadingError } from "@totara/components";
 import DeviceInfo from "react-native-device-info";
 import { TEST_IDS } from "@totara/lib/testIds";
+import { connect } from "react-redux";
 
 const createWebview = gql`
   mutation totara_mobile_create_webview($url: String!) {
@@ -155,7 +154,7 @@ type Props = {
   createWebview: MutationFunction<CreateWebViewResponse, { url: string }>;
   deleteWebview: MutationFunction<DeleteWebViewResponse, { secret: string }>;
   innerRef: React.Ref<WebView>;
-  onNavigationStateChange: (navState: WebViewNavigation) => void;
+  onNavigationStateChange?: (navState: WebViewNavigation) => void;
   onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
 };
 
@@ -177,14 +176,15 @@ type State = {
   agent?: string;
 };
 
-const AuthenticatedWebViewGraphQL = compose<Props, { innerRef: React.Ref<WebView> }>(
-  graphql(createWebview, { name: "createWebview" }),
-  graphql(deleteWebview, { name: "deleteWebview" })
-)(AuthenticatedWebViewComponent);
+const mapStateToProps = (state: State): State => ({ ...state })
+const ConnectedAuthenticatedWebViewComponent = connect(mapStateToProps)(AuthenticatedWebViewComponent)
 
-const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>((props, ref) => (
-  <AuthenticatedWebViewGraphQL innerRef={ref} {...props} />
-));
+const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>((props, ref) => {
+  const [cwv] = useMutation(createWebview);
+  const [dwv] = useMutation(deleteWebview);
+
+  return <ConnectedAuthenticatedWebViewComponent {...props} innerRef={ref} createWebview={cwv} deleteWebview={dwv} />
+});
 
 AuthenticatedWebViewComponentForwardRef.displayName = "AuthenticatedWebViewComponentWrap";
 

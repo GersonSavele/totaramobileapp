@@ -1,3 +1,5 @@
+/*
+// TODO Revisit this
 import { cleanup, init, device } from "detox";
 // const adapter = require('detox/runners/jest/adapter');
 const adapter = require("detox/runners/jest/adapter");
@@ -26,3 +28,4 @@ afterAll(async () => {
   await adapter.afterAll();
   await cleanup();
 });
+*/

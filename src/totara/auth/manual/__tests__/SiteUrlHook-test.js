@@ -14,7 +14,7 @@
  */
 
 import { useSiteUrl } from "../SiteUrlHook";
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook, waitFor } from "@testing-library/react-native";
 import { act } from "react-test-renderer";
 import wait from "waait";
 import { config } from "@totara/lib";
@@ -125,7 +125,7 @@ describe("SiteUrlHook", () => {
     );
 
     const validUrl = "https://mobile.demo.totara.software";
-    const { result, waitForNextUpdate } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
+    const { result } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
       initialProps: { siteUrl: validUrl }
     });
 
@@ -134,8 +134,9 @@ describe("SiteUrlHook", () => {
     });
 
     expect(result.current.siteUrlState).toMatchObject({ inputSiteUrlStatus: "fetching" });
-    await act(async () => waitForNextUpdate());
-    expect(result.current.siteUrlState).toMatchObject({ inputSiteUrlStatus: "minAPIVersionMismatch" });
+    await waitFor(() => {
+      expect(result.current.siteUrlState).toMatchObject({ inputSiteUrlStatus: "minAPIVersionMismatch" });
+    })
   });
 
   it("should call success for the valid version of the api", async () => {
@@ -165,7 +166,7 @@ describe("SiteUrlHook", () => {
       })
     );
     const validUrl = "https://mobile.demo.totara.software";
-    const { result, waitForNextUpdate } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
+    const { result } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
       initialProps: { siteUrl: validUrl }
     });
 
@@ -173,14 +174,15 @@ describe("SiteUrlHook", () => {
       result.current.onSubmit(validUrl);
     });
     expect(result.current.siteUrlState).toMatchObject({ inputSiteUrlStatus: "fetching" });
-    await act(async () => waitForNextUpdate());
-    expect(result.current.siteUrlState).toMatchObject({ inputSiteUrlStatus: "invalidAPI" });
+    await waitFor(() => {
+      expect(result.current.siteUrlState).toMatchObject({ inputSiteUrlStatus: "invalidAPI" });
+    });
   });
 
   it("should set networkError state for error", async () => {
     global.fetch = jest.fn().mockImplementation(() => Promise.reject({}));
     const validUrl = "https://mobile.demo.totara.software";
-    const { result, waitForNextUpdate } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
+    const { result } = renderHook(({ siteUrl }) => useSiteUrl({ siteUrl: siteUrl }), {
       initialProps: { siteUrl: validUrl }
     });
 
@@ -188,9 +190,10 @@ describe("SiteUrlHook", () => {
       result.current.onSubmit(validUrl);
     });
 
-    await act(async () => waitForNextUpdate());
-    expect(result.current.siteUrlState).toMatchObject({
-      inputSiteUrlStatus: "networkError"
+    await waitFor(() => {
+      expect(result.current.siteUrlState).toMatchObject({
+        inputSiteUrlStatus: "networkError"
+      });
     });
   });
 });

@@ -14,8 +14,7 @@
  */
 
 import { useWebviewFlow } from "../WebviewFlowHook";
-import { renderHook } from "@testing-library/react-hooks";
-import { act } from "react-test-renderer";
+import { act, renderHook } from "@testing-library/react-native";
 
 describe("WebviewLoginHook", () => {
   it("initial props for the unsecured url(http://)", () => {

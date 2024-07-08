@@ -19,9 +19,13 @@ import * as coreSession from "@totara/core";
 import * as ReactRedux from "react-redux";
 import * as nav from "@react-navigation/native";
 
+jest.mock("@totara/core", () => ({
+  useSession: () => ({}),
+  coreUtils: () => ({}),
+}))
+
 describe("BrowserLogin", () => {
   beforeAll(() => {
-    jest.spyOn(coreSession, "useSession").mockImplementation(() => jest.fn());
     jest.spyOn(ReactRedux, "useDispatch").mockImplementation(() => jest.fn());
     global.fetch = jest.fn().mockImplementation(() => jest.fn());
     jest.spyOn(nav, "useRoute").mockReturnValue({ params: { siteUrl: "http://abc.com" } });

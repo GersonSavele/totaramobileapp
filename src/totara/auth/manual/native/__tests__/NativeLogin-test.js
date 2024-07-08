@@ -20,10 +20,15 @@ import * as ReactRedux from "react-redux";
 import * as nativeFlow from "../NativeFlowHook";
 import { NATIVE_LOGIN_TEST_IDS } from "@totara/lib/testIds";
 
+jest.mock("@totara/core", () => ({
+  useSession: () => ({}),
+  coreUtils: () => ({}),
+}))
+
 describe("NativeLogin", () => {
   beforeAll(() => {
     jest.spyOn(ReactRedux, "useDispatch").mockImplementation(() => jest.fn());
-    jest.spyOn(coreSession, "useSession").mockImplementation(() => jest.fn());
+    coreSession.useSession = () => ({ host: "MOCKED-HOST", setupHost: jest.fn() });
     global.fetch = jest.fn().mockImplementation(() => jest.fn());
   });
 

@@ -14,10 +14,9 @@
  */
 
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
 import { CircleIcon } from "@totara/components";
 import { iconSizes, margins } from "@totara/theme/constants";
-import { Spinner } from "native-base";
 import { getCompletionStatus } from "../utils";
 
 type BuildContentProps = {
@@ -62,7 +61,7 @@ const CompletionIcon = ({
         accessibilityState={accessibleState}
         accessible={true}>
         {loading ? (
-          <Spinner size={iconSizes.sizeM} style={styles.spinner} />
+          <ActivityIndicator size={iconSizes.sizeM} style={styles.spinner} />
         ) : (
           <CircleIcon
             icon={stateObj.icon}

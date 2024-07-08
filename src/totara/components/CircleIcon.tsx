@@ -16,9 +16,8 @@
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
 
+import Icon from "@totara/components/Icon";
 import { iconSizes } from "@totara/theme/constants";
-// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { TotaraTheme } from "@totara/theme/Theme";
 
 type Props = {
@@ -41,10 +40,10 @@ const CircleIcon = ({ icon, backgroundColor, iconColor, borderColor, fontAwesome
       ]}>
       {icon &&
         (fontAwesomeIcon ? (
-          <FontAwesomeIcon
-            icon={icon}
-            size={iconSizes.sizeM / 2}
+          <Icon
+            name={icon}
             color={iconColor == null ? TotaraTheme.colorAccent : iconColor}
+            size={iconSizes.sizeM / 2}
           />
         ) : (
           <Image source={icon}></Image>

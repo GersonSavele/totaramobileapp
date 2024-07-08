@@ -16,14 +16,14 @@
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
 import "react-native-gesture-handler/jestSetup";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
-require("isomorphic-fetch");
+// require("isomorphic-fetch");
 
 global.console = {
-  log: jest.fn(),
+  log: console.log,
   error: jest.fn(),
   warn: jest.fn(),
   info: jest.fn(),
-  debug: jest.fn()
+  debug: console.debug
 };
 
 jest.mock("@react-native-cookies/cookies", () => {
@@ -164,17 +164,17 @@ jest.mock("@react-native-firebase/messaging", () => {
   });
 });
 
-jest.mock("@codler/react-native-keyboard-aware-scroll-view", () => {
-  return {
-    KeyboardAwareScrollView: jest.fn().mockImplementation(({ children }) => children)
-  };
-});
+// jest.mock("@codler/react-native-keyboard-aware-scroll-view", () => {
+//   return {
+//     KeyboardAwareScrollView: jest.fn().mockImplementation(({ children }) => children)
+//   };
+// });
 
-jest.mock("react-native-localize", () => {
-  return {
-    findBestAvailableLanguage: jest.fn()
-  };
-});
+// jest.mock("react-native-localize", () => {
+//   return {
+//     findBestAvailableLanguage: jest.fn()
+//   };
+// });
 
 jest.mock("date-fns", () => {
   return {

@@ -118,7 +118,7 @@ const setScormActivityData = ({
       existingOfflineActivityData.pop();
     }
   }
-  setWith(newData, `[${scormId}].offlineAttempts`, existingOfflineActivityData.concat([newAttemptGrade]), Object);
+  setWith(newData, `[${scormId}].offlineAttempts`, existingOfflineActivityData.concat<ScormBundle>([newAttemptGrade]), Object);
 
   setWith(newData, `[${scormId}].commits[${attempt}][${scoId}]`, commitData, Object);
   return newData;

@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react-native";
 
 import OfflineScormPlayer from "../OfflineScormPlayer";
 import { SCORM_TEST_IDS } from "@totara/lib/testIds";
@@ -35,7 +35,7 @@ describe("OfflineScormPlayer", () => {
     mockUseEffect();
   });
   it("Should render web player for given non-empty url", () => {
-    const wrapper = shallow(
+    const tree = (
       <OfflineScormPlayer
         url={"http://site.url"}
         injectScript={mockInjectJs}
@@ -43,6 +43,7 @@ describe("OfflineScormPlayer", () => {
         onMessageHandler={mockMessageHandler}
       />
     );
-    expect(wrapper.findWhere(node => node.prop("testID") === OFFLINE_PLAYER_ID)).toExist();
+    const { getByTestId } = render(tree);
+    expect(getByTestId(OFFLINE_PLAYER_ID)).toBeTruthy();
   });
 });

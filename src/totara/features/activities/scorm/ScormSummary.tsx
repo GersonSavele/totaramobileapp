@@ -16,7 +16,8 @@
 import React, { ReactNode, useState } from "react";
 import { ScrollView, Text, View, TextStyle, TouchableOpacity, RefreshControl } from "react-native";
 import { get, isEmpty } from "lodash";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import Icon from "@totara/components/Icon";
 import {
   MessageBar,
   NetworkStatusIndicator,
@@ -69,7 +70,7 @@ type GridLabelProps = {
   theme: AppliedTheme;
   textId: string;
   value: string;
-  children?: Element;
+  children?: ReactNode;
 };
 
 const GridLabelValue = ({ theme, textId, value, children }: GridLabelProps) => (
@@ -77,7 +78,7 @@ const GridLabelValue = ({ theme, textId, value, children }: GridLabelProps) => (
     <Text style={theme.textRegular}>{translate(textId)}</Text>
     <View style={{ flexDirection: "row" }}>
       <Text style={gridStyle(theme)}>{value}</Text>
-      {children as ReactNode}
+      {children}
     </View>
   </View>
 );
@@ -319,11 +320,11 @@ const ScormSummary = ({
                     testID={SCORM_TEST_IDS.BUTTON_VIEW_ATTEMPTS}>
                     <GridLabelValue theme={theme} textId={"scorm.summary.grade.reported"} value={calculatedGrade}>
                       {!isEmpty(attempts) && (
-                        <FontAwesomeIcon
-                          icon="chevron-right"
+                        <Icon
+                          name="chevron-right"
+                          color={theme.colorNeutral6}
                           size={theme.textRegular.fontSize}
                           style={scormSummaryStyles.sectionArrow}
-                          color={theme.colorNeutral6}
                         />
                       )}
                     </GridLabelValue>

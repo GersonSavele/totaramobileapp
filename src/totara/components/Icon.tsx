@@ -14,8 +14,29 @@
  */
 
 import React from "react";
-import { Text } from "react-native";
+import { FontAwesome6 } from '@expo/vector-icons';
+import glyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/FontAwesome6Free.json';
 
-const FontAwesomeIcon = () => <Text>mock icon</Text>;
+import { iconSizes } from "../theme/constants";
 
-export { FontAwesomeIcon };
+export type IconName = keyof typeof glyphMap;
+
+type IconProps = {
+  name: IconName;
+  color?: string;
+  size?: number;
+  style?: object;
+};
+
+const Icon = ({
+  name,
+  color = 'black',
+  size = iconSizes.sizeM,
+  style = {},
+}: IconProps) => {
+  return (
+    <FontAwesome6 name={name} size={size} color={color} style={style} />
+  );
+};
+
+export default Icon;
