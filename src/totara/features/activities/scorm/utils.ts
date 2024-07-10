@@ -14,7 +14,7 @@
  */
 
 import { get, isEmpty } from "lodash";
-import * as RNFS from "react-native-fs";
+import * as RNFS from "@dr.pogodin/react-native-fs";
 import { Platform } from "react-native";
 import moment from "moment";
 

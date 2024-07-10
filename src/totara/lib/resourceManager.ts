@@ -22,14 +22,14 @@
 import { unzip, subscribe } from "react-native-zip-archive";
 
 import {
-  DownloadBeginCallbackResult,
+  DownloadBeginCallbackResultT,
   downloadFile,
-  DownloadProgressCallbackResult,
+  DownloadProgressCallbackResultT,
   unlink,
   isResumable,
   resumeDownload,
   exists
-} from "react-native-fs";
+} from "@dr.pogodin/react-native-fs";
 import { Resource } from "@totara/types";
 import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
 import { ResourceState, ResourceType } from "@totara/types/Resource";
@@ -40,7 +40,7 @@ import { showMessage } from ".";
 import { translate } from "@totara/locale";
 import { Platform } from "react-native";
 
-const onDownloadBegin = (id: string, res: DownloadBeginCallbackResult) => {
+const onDownloadBegin = (id: string, res: DownloadBeginCallbackResultT) => {
   updateResource({
     id: id,
     jobId: res.jobId,
@@ -50,7 +50,7 @@ const onDownloadBegin = (id: string, res: DownloadBeginCallbackResult) => {
   });
 };
 
-const onDownloadProgress = (id: string, res: DownloadProgressCallbackResult) => {
+const onDownloadProgress = (id: string, res: DownloadProgressCallbackResultT) => {
   updateResource({
     id: id,
     jobId: res.jobId,

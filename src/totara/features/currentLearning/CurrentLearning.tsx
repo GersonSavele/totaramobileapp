@@ -30,33 +30,10 @@ import { Icons } from "@resources/icons";
 import { sortByDueDateThenTypeThenFullName } from "@totara/features/currentLearning/utils";
 import { CL_TEST_IDS } from "@totara/lib/testIds";
 
-import { gql } from "@apollo/client";
-
 enum ListingOrientation {
   Carousel,
   ListView
 }
-
-const newQuery = gql`
-query totara_mobile_current_learning {
-  currentLearning: totara_mobile_current_learning {
-    id
-    itemtype
-    itemcomponent
-    shortname
-    fullname
-    summary: description(format: PLAIN)
-    progress
-    urlView: url_view
-    duedate(format: ISO8601)
-    duedateState: duedate_state
-    native: mobile_coursecompat
-    imageSrc: mobile_image
-    summaryFormat: description_format
-    __typename
-  }
-}
-`
 
 const CurrentLearning = () => {
   const { networkStatus, error, data, refetch } = useQuery(query, { notifyOnNetworkStatusChange: true });

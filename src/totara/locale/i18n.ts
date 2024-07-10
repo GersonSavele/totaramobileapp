@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import i18n from "i18n-js";
+import { I18n } from "i18n-js";
 // import * as RNLocalize from "react-native-localize";
 
 import moment from "moment";
@@ -29,9 +29,10 @@ const translations = importedTranslations;
 //   languageTag: DEFAULT_LANGUAGE
 // };
 const languageTag = "en";
+const i18n = new I18n(translations);
 i18n.defaultLocale = languageTag;
 i18n.locale = languageTag;
-i18n.fallbacks = true;
+i18n.enableFallback = true;
 i18n.translations = translations;
 
 moment.locale(i18n.locale);

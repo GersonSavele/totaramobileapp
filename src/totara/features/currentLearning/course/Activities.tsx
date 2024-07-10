@@ -15,7 +15,6 @@
 
 import { Text, TouchableOpacity, View, FlatList, SafeAreaView } from "react-native";
 import React, { useEffect } from "react";
-// @ts-ignore no types published yet for fortawesome react-native, they do have it react so check in future and remove this ignore
 
 import Icon from "@totara/components/Icon";
 import { useMutation } from "@apollo/client";

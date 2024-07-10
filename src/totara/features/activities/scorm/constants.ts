@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import * as RNFS from "react-native-fs";
+import * as RNFS from "@dr.pogodin/react-native-fs";
 import { config } from "@totara/lib";
 
 const DOWNLOAD_FOLDER = `${RNFS.DocumentDirectoryPath}`;

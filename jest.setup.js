@@ -66,7 +66,7 @@ jest.mock("@apollo/client", () => ({
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo);
 
-jest.mock("react-native-fs", () => ({
+jest.mock("@dr.pogodin/react-native-fs", () => ({
   mkdir: jest.fn(),
   moveFile: jest.fn(),
   copyFile: jest.fn(),
