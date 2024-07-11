@@ -13,7 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import localConfig from "./config.local";
+// TODO: Look at whether this is needed
+// import localConfig from "./config.local";
 import ConsoleLogger from "./logger/ConsoleLogger";
 
 const defaultConfig = {
@@ -44,6 +45,6 @@ export const internalConfig = {
   logger: ConsoleLogger
 };
 
-let config: any = { ...defaultConfig, ...localConfig };
+let config: any = { ...defaultConfig };
 
 export default config;
