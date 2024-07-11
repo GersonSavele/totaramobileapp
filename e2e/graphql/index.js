@@ -53,6 +53,23 @@ const startGraphQLServer = async (mock = {}) => {
   const server = createServerWithMockedSchema(mock);
   graphQLServerApp.use(express.json());
   graphQLServerApp.use(express.text());
+
+  // TEST
+  graphQLServerApp.use((req, res, next) => {
+    console.log(req.method, req.hostname, req.path);
+    if (req.method === "POST") {
+      console.log('BODY:', req.body);
+      if (req.body.query) {
+        console.log(req.body.query);
+      }
+    }
+
+    console.log('res', res.statusCode);
+
+    next();
+  });
+  // TEST
+  
   graphQLServerApp.use(express.static(__dirname + "/public"));
   graphQLServerApp.use(express.static(__dirname + "/files"));
   graphQLServerApp.post("/totara/mobile/site_info.php", (req, res) => {

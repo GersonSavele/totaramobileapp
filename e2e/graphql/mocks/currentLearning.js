@@ -69,7 +69,9 @@ const defaultCurrentLearningData = [
 ];
 
 const currentLearning = {
-  default: { totara_mobile_current_learning: () => new MockList(3) }
+
+  // default: { totara_mobile_current_learning: () => new MockList(3) }
+  default: { totara_mobile_current_learning: () => ([ ...defaultCurrentLearningData ]) }
 };
 
 module.exports = {

@@ -48,6 +48,8 @@ const CourseGroupDetails = () => {
   const { targetId, courseGroupType } = useParams('CourseGroupDetails');
   const navigation = useNavigation('CourseGroupDetails');
   const typeMap = courseGroupTypeMap[courseGroupType];
+  console.log({ query: typeMap.query, variables: { [typeMap.idField]: targetId } });
+  console.log(typeMap.query);
   const { networkStatus, error, data, refetch } = useQuery(typeMap.query, {
     variables: { [typeMap.idField]: targetId },
     notifyOnNetworkStatusChange: true

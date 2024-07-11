@@ -28,8 +28,6 @@ const defaultProfileData = {
   timezone: "Europe/London",
   description: "",
   descriptionformat: "HTML",
-  webpage: "",
-  skypeid: "",
   institution: "",
   department: "",
   phone: "",

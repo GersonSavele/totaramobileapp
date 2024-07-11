@@ -156,12 +156,18 @@ export const createApolloClient = (apiKey: string, host: string, cache: any): Ap
     http: { includeQuery: !config.mobileApi.persistentQuery }
   }));
 
-  const errorLink = onError(({ networkError }: ErrorResponse) => {
+  const errorLink = onError(({ networkError, graphQLErrors, response }: ErrorResponse) => {
     if (networkError && (networkError as ServerError).statusCode === 401) {
       Log.warn('Forbidden error');
     } else {
       const errorMessage = get(networkError, 'result.errors[0].message', translate('general.error_unknown'));
-      if (networkError) Log.warn('Network error status code: ', (networkError as ServerError).statusCode);
+      if (networkError) {
+        Log.warn('Network error status code: ', (networkError as ServerError).statusCode);
+        console.log('-');
+        console.log(graphQLErrors);
+        console.log(response);
+        console.log('-');
+      }
       Log.warn('Error message: ', errorMessage);
       const payload = { errorMessage };
       event.emit(EVENT_LISTENER, { event: Events.NetworkError, payload });

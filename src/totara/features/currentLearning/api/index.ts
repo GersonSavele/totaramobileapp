@@ -16,6 +16,8 @@
 import { gql } from '@apollo/client';
 import { config } from '@totara/lib';
 
+// TODO List Courses
+
 const query = config.mobileApi.persistentQuery
   ? gql`
       query totara_mobile_current_learning {
@@ -59,3 +61,5 @@ const query = config.mobileApi.persistentQuery
     `;
 
 export default query;
+
+

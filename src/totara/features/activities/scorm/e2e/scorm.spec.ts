@@ -54,13 +54,15 @@ customMocks.Query = () => ({
 
 describe('Scorm test', () => {
   beforeAll(async () => {
-    await startGraphQLServer(customMocks);
-    await device.launchApp();
+    // await startGraphQLServer(customMocks);
+    await device.launchApp({ permissions: { notifications: "YES" } });
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
+    await element(by.id(TEST_IDS.SUBMIT_URL)).tap();
     await element(by.id(TEST_IDS.USER_INPUT)).typeText(mockUsername);
     await element(by.id(TEST_IDS.USER_PW)).typeText(mockPassword);
+    await element(by.id(TEST_IDS.LOGIN)).tap();
     await element(by.id(TEST_IDS.LOGIN)).tap();
   });
 

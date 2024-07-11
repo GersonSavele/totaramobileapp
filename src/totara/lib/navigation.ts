@@ -23,6 +23,7 @@ import React from 'react';
  * @param item
  */
 const navigateTo = ({ navigate, routeId, props }) => {
+  console.log({ navigate, routeId, props });
   switch (routeId) {
     case WEBVIEW_ACTIVITY:
       navigate(routeId, {

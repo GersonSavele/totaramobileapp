@@ -41,9 +41,9 @@ const customMocks = {
   Query: () => ({
     ...mobileMe.default,
     ...currentLearning.default,
-    ...courseDetails.default,
-    ...scorm.default,
-    ...profile.default,
+    // ...courseDetails.default,
+    // ...scorm.default,
+    // ...profile.default,
     ...lang.default,
     ...notifications.default
   })
@@ -51,6 +51,7 @@ const customMocks = {
 
 async function start() {
   await startGraphQLServer(customMocks);
+  console.log('Connected');
 }
 
 start();
