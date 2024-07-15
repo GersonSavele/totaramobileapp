@@ -25,3 +25,7 @@ google-services.json
 # VSCode
 #
 .vscode/
+
+# ios and android directories created by Expo
+ios/
+android/
