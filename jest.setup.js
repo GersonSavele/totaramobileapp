@@ -193,3 +193,5 @@ jest.mock("@gorhom/bottom-sheet", () => {
     BottomSheetScrollView: react.ScrollView
   };
 });
+
+jest.mock("@notifee/react-native", () => ({}))
