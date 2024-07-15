@@ -22,13 +22,13 @@ import DownloadsStack from "@totara/features/downloads";
 import { countUnreadMessages, notificationsQuery } from "./features/notifications/api";
 import { useQuery } from "@apollo/client";
 import CurrentLearningStack from "./features/currentLearning";
-import { setNotificationBadgeCount } from "@totara/lib/nativeExtensions";
 import { TAB_TEST_IDS } from "./lib/testIds";
 import { translate } from "./locale";
 import FindLearningStack from "./features/findLearning/FindLearningStack";
 import { useSession } from "./core";
 import { isEnableFindLearning } from "@totara/lib/tools";
 import Profile from "./features/profile/Profile";
+import notifee from "@notifee/react-native"
 
 const Tab = createBottomTabNavigator();
 const TabContainer = () => {
@@ -41,7 +41,7 @@ const TabContainer = () => {
 
   useEffect(() => {
     console.log('Setting it!');
-    setNotificationBadgeCount(notificationCount);
+    notifee.setBadgeCount(notificationCount).then(() => console.log('Badge count set!'));
   }, [notificationCount]);
 
   const TabBarIconBuilder = ({ image, focused, color }: { image: iconImageProps; focused: boolean; color: string }) => {
