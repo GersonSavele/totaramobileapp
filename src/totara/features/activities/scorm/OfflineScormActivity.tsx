@@ -15,7 +15,6 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { Text, BackHandler, Platform } from "react-native";
-import Server from "@dr.pogodin/react-native-static-server";
 
 import OfflineScormPlayer from "./components/OfflineScormPlayer";
 import { Package, Scorm } from "@totara/types/Scorm";
@@ -149,7 +148,7 @@ const packageEffect =
 const loadedScormEffect =
   ({ setUrl, scormPackageData, setScormPackageData, backAction }) =>
     () => {
-      let server: null | Server;
+      let server: null | StaticServer;
       setupOfflineScormPlayer()
         .then(async offlineServerPath => {
           if (!isEmpty(offlineServerPath)) {
@@ -158,7 +157,7 @@ const loadedScormEffect =
               ios: offlineServerPath,
               default: ""
             });
-            server = new Server({ fileDir, stopInBackground: true });
+            server = new StaticServer({ fileDir, stopInBackground: true });
 
             const res = await server?.start();
             if (res && server) {

@@ -15,7 +15,7 @@
 
 import React, { useState, useEffect } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
-import PDFView from "react-native-view-pdf";
+import { PDFView } from "@placeholders/react-native-view-pdf";
 import Orientation from "react-native-orientation-locker";
 
 import { Activity } from "@totara/types";
