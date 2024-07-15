@@ -39,7 +39,8 @@ export default (): ExpoConfig => ({
           minSdkVersion: 28
         }
       }
-    ]
+    ],
+    "./plugins/notifee-mod.js"
   ],
   experiments: {},
   extra: {
