@@ -14,7 +14,7 @@
  */
 
 import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, paddings, borderRadius } from "@totara/theme/constants";
+import { margins, paddings, borderRadius, fontSizes } from "@totara/theme/constants";
 import { StyleSheet, Dimensions } from "react-native";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -38,11 +38,18 @@ export const findLearningStyles = StyleSheet.create({
   searchBar: {
     backgroundColor: TotaraTheme.colorNeutral3,
     marginLeft: 0,
-    paddingHorizontal: paddings.paddingL
+    paddingHorizontal: paddings.paddingL,
+    paddingVertical: paddings.paddingM,
+    fontSize: fontSizes.fontSizeL,
+    flexDirection: "row",
+    alignItems: "center",
+    width: "auto",
+    flexGrow: 1,
+    borderRadius: borderRadius.borderRadiusS, 
   },
   clearSearch: {
-    marginLeft: 0,
-    marginRight: 0
+    marginLeft: "auto",
+    marginRight: 0,
   },
   result: {
     ...TotaraTheme.textHeadline,

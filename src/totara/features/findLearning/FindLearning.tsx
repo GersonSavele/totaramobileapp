@@ -17,8 +17,7 @@
 // @ts-nocheck
 
 import React, { useState, useEffect, useCallback } from "react";
-import { FlatList, Image, ImageSourcePropType, Platform, Text, View } from "react-native";
-import { SearchBar } from "@placeholders/react-native-elements";
+import { FlatList, Image, ImageSourcePropType, Platform, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { translate } from "@totara/locale";
 import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
@@ -36,52 +35,63 @@ import { isEmpty } from "lodash";
 import { Images } from "@resources/images";
 import { MessageBar } from "@totara/components";
 import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
+import Icon from "../../components/Icon";
 
 type FindLearningHeaderProps = {
   onChangeText: (text: string) => void;
   findLeaningText: string;
   onSearch: () => void;
+  onCancel: () => void;
   count?: number;
   onFocusText: () => void;
   loading: boolean;
+  showCancel?: boolean;
 };
 
 const FindLearningHeader = ({
   onChangeText,
   findLeaningText,
   onSearch,
+  onCancel,
   count = 0,
   onFocusText,
-  loading = false
+  loading = false,
+  showCancel = true,
 }: FindLearningHeaderProps) => {
   return (
     <View style={findLearningStyles.headerWrapper} testID={FINDLEARNING_TEST_IDS.HEADER}>
       <Text style={findLearningStyles.header}>{translate("find_learning.title")}</Text>
-      <SearchBar
-        placeholder={translate("find_learning.search")}
-        onChangeText={onChangeText}
-        value={findLeaningText}
-        onSubmitEditing={onSearch}
-        onFocus={onFocusText}
-        platform={Platform.OS === PLATFORM_ANDROID ? PLATFORM_ANDROID : PLATFORM_IOS}
-        onCancel={onSearch}
-        returnKeyType="search"
-        showCancel={true}
-        cancelButtonTitle={translate("general.cancel")}
-        containerStyle={findLearningStyles.searchBarContainer}
-        inputContainerStyle={findLearningStyles.searchBar}
-        inputStyle={findLearningStyles.searchBar}
-        rightIconContainerStyle={findLearningStyles.clearSearch}
-        testID={FINDLEARNING_TEST_IDS.SEARCH_TEXT_INPUT}
-      />
-      {!loading && (count || (count === 0 && !isEmpty(findLeaningText))) ? (
-        <Text style={findLearningStyles.result} testID={FINDLEARNING_TEST_IDS.NO_OF_ITEMS}>
-          {translate("find_learning.results", {
-            count
-          })}
-        </Text>
-      ) : null}
-    </View>
+      <View style={findLearningStyles.searchBarContainer}>
+        <View style={findLearningStyles.searchBar}>
+          <View>
+            <Icon name="magnifying-glass" style={{ padding: 5 }} />
+          </View>
+          <TextInput
+            placeholder={translate("find_learning.search")}
+            style={findLearningStyles.searchBar}
+            onChangeText={onChangeText}
+            value={findLeaningText}
+            onSubmitEditing={onSearch}
+            returnKeyType="search"
+            testID={FINDLEARNING_TEST_IDS.SEARCH_TEXT_INPUT}
+          />
+          <View style={{ ...findLearningStyles.clearSearch, display: (showCancel ? "flex" : "none") }}>
+            <Pressable onPress={(e) => { onCancel(); }}>
+              <Icon name="xmark" style={{ padding: 10 }} />
+            </Pressable>
+          </View>
+        </View>
+      </View>
+      {
+        !loading && (count || (count === 0 && !isEmpty(findLeaningText))) ? (
+          <Text style={findLearningStyles.result} testID={FINDLEARNING_TEST_IDS.NO_OF_ITEMS}>
+            {translate("find_learning.results", {
+              count
+            })}
+          </Text>
+        ) : null
+      }
+    </View >
   );
 };
 
@@ -172,12 +182,24 @@ const FindLearning = () => {
           <>
             <FindLearningHeader
               onChangeText={text => {
-                setSearchData({ key: text });
+                const newSearchData = { key: text };
+                setSearchData(newSearchData);
               }}
               onSearch={() => {
-                setSearchResult(undefined);
-                setSearchData({ ...searchData, pointer: 0 });
+                if (searchData.key !== "") {
+                  setSearchResult(undefined);
+                }
+                const newSearchData = { ...searchData, pointer: 0 };
+                setSearchData(newSearchData);
               }}
+              onCancel={() => {
+                if (searchData.key !== "") {
+                  setSearchResult(undefined);
+                }
+                const newSearchData = { key: '', pointer: 0 };
+                setSearchData(newSearchData);
+              }}
+              showCancel={searchData.key.length > 0}
               findLeaningText={searchData.key}
               count={searchResult?.maxCount}
               loading={loading}

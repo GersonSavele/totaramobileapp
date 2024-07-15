@@ -16,7 +16,6 @@
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import { StyleSheet, View, Text, ActivityIndicator, ScrollView } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { Input } from "@placeholders/react-native-elements/dist/input/Input";
 import { KeyboardAwareScrollView } from "@placeholders/react-native-keyboard-aware-scroll-view";
 import { NetworkStatus, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { isEmpty } from "lodash";

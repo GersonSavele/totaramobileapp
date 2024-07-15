@@ -67,7 +67,6 @@ const CurrentLearningCarousel = ({ currentLearning, onRefresh }: CurrentLearning
           testID={CL_TEST_IDS.CAROUSEL}
           onViewableItemsChanged={({ viewableItems }) => viewableItems[0] && setActiveSlide(viewableItems[0].index)}
         />
-        <Text>{activeSlide}</Text>
       </ScrollView>
     </View>
   );
