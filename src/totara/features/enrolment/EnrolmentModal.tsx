@@ -17,7 +17,7 @@ import { NetworkStatus, useLazyQuery, useMutation, useQuery } from '@apollo/clie
 import { Input } from '@placeholders/react-native-elements';
 import type { RouteProp } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Button, SecondaryButton } from '@totara/components';
+import { Button, TertiaryButton } from '@totara/components';
 import { NAVIGATION } from '@totara/lib/navigation';
 import { translate } from '@totara/locale';
 import { fontWeights, margins, paddings } from '@totara/theme/constants';
@@ -311,7 +311,7 @@ const LoadingError = ({ onTryReload }: { onTryReload: () => void }) => {
         {translate('enrolment_options.loading_enrolment_error')}
       </Text>
       <View style={{ marginTop: margins.marginL }}>
-        <SecondaryButton text={translate('general.try_again')} onPress={onTryReload}></SecondaryButton>
+        <Button variant="secondary" text={translate('general.try_again')} onPress={onTryReload} />
       </View>
     </View>
   );

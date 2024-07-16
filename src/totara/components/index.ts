@@ -32,7 +32,6 @@ import MoreText from './MoreText';
 import TotaraNavigationOptions from './NavigationOptions';
 import NetworkStatusIndicator from './NetworkStatusIndicator';
 import ProgressCircle from './ProgressCircle';
-import SecondaryButton from './SecondaryButton';
 import TertiaryButton from './TertiaryButton';
 import TouchableIcon from './TouchableIcon';
 import WebviewToolbar from './WebviewToolbar';
@@ -57,7 +56,6 @@ export {
   MoreText,
   NetworkStatusIndicator,
   ProgressCircle,
-  SecondaryButton,
   TertiaryButton,
   TotaraNavigationOptions,
   TouchableIcon,

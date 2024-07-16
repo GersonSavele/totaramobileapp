@@ -14,7 +14,7 @@
  */
 
 import { NetworkStatus as ApolloNetworkStatus } from '@apollo/client';
-import { Button, Loading, LoadingError, MessageBar, NetworkStatusIndicator, SecondaryButton } from '@totara/components';
+import { Button, Loading, LoadingError, MessageBar, NetworkStatusIndicator } from '@totara/components';
 import Icon from '@totara/components/Icon';
 import { DATE_FORMAT_FULL } from '@totara/lib/constants';
 import { navigateTo, NAVIGATION } from '@totara/lib/navigation';
@@ -437,7 +437,8 @@ const AttemptController = ({
     <View style={scormSummaryStyles.attemptContainer}>
       <View style={spacedFlexRow}>
         {lastAttempt && shouldAllowLastAttempt && (
-          <SecondaryButton
+          <Button
+            variant="secondary"
             text={lastAttempt.title}
             onPress={lastAttempt.action}
             style={{ flex: 1, marginRight: newAttempt ? margins.marginL : 0 }}

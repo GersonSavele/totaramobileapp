@@ -17,7 +17,7 @@ import { NetworkStatus, useQuery } from '@apollo/client';
 import { HeaderBackButton } from '@react-navigation/elements';
 import type { RouteProp } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Button, SecondaryButton, TertiaryButton } from '@totara/components';
+import { Button, TertiaryButton } from '@totara/components';
 import { DescriptionContent } from '@totara/components/DescriptionContent';
 import { NAVIGATION, popAndGoToByRef } from '@totara/lib/navigation';
 import { translate } from '@totara/locale';
@@ -179,7 +179,7 @@ export const OverviewModal = () => {
           <View testID={'enrolment_modal_loading_error'}>
             <Text>{translate('enrolment_options.loading_enrolment_error')}</Text>
             <View style={{ marginTop: margins.marginL }}>
-              <SecondaryButton text={translate('general.try_again')} onPress={onTryReload}></SecondaryButton>
+              <Button variant="secondary" text={translate('general.try_again')} onPress={onTryReload} />
             </View>
           </View>
         )}
