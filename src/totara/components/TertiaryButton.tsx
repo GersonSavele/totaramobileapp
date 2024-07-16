@@ -13,11 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode, useContext } from "react";
-import { Text, StyleSheet, ViewStyle } from "react-native";
-import { Button } from "native-base";
 import { ThemeContext } from "@totara/theme";
 import { borderRadius, paddings } from "@totara/theme/constants";
+import { Button } from "native-base";
+import type { ReactNode} from "react";
+import React, { useContext } from "react";
+import type { ViewStyle } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 type Props = {
   children?: ReactNode;

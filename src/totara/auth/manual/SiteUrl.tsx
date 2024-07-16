@@ -16,27 +16,28 @@
 // FIX: Native-base Form has a type check issue, therefore ignoring
 //@ts-nocheck
 
+import { useNavigation } from "@react-navigation/native";
+import { Images } from "@resources/images";
+import { InfoModal, InputTextWithInfo, PrimaryButton } from "@totara/components";
+import { useSession } from "@totara/core";
+import IncompatibleApiModal from "@totara/core/IncompatibleApiModal";
+import { config } from "@totara/lib";
+import { NAVIGATION } from "@totara/lib/navigation";
+import { TEST_IDS } from "@totara/lib/testIds";
+import { deviceScreen } from "@totara/lib/tools";
+import { translate } from "@totara/locale";
+import { margins, paddings } from "@totara/theme/constants";
+import { TotaraTheme } from "@totara/theme/Theme";
+import { get } from "lodash";
 import { FormControl, Input, ScrollView } from "native-base";
 import React from "react";
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import type { ImageSourcePropType} from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { useSiteUrl } from "./SiteUrlHook";
-import { get } from "lodash";
-
-import { InfoModal, InputTextWithInfo, PrimaryButton } from "@totara/components";
-import { translate } from "@totara/locale";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, paddings } from "@totara/theme/constants";
-import { deviceScreen } from "@totara/lib/tools";
-import { TEST_IDS } from "@totara/lib/testIds";
-import { config } from "@totara/lib";
-import { useSession } from "@totara/core";
-import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Images } from "@resources/images";
-import IncompatibleApiModal from "@totara/core/IncompatibleApiModal";
-import { NAVIGATION } from "@totara/lib/navigation";
 import { useDispatch } from "react-redux";
+
+import { useSiteUrl } from "./SiteUrlHook";
 
 type PropSiteError = {
   onDismiss: () => void;

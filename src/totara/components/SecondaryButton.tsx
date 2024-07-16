@@ -13,13 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
-import { Text, ViewStyle, StyleSheet, TextStyle, ActivityIndicator } from "react-native";
-import { Button } from "native-base";
-
-import Icon, { IconName } from "@totara/components/Icon";
-import { gutter, ThemeContext } from "@totara/theme";
+import type { IconName } from "@totara/components/Icon";
+import Icon from "@totara/components/Icon";
 import { translate } from "@totara/locale";
+import { gutter, ThemeContext } from "@totara/theme";
+import React, { useContext } from "react";
+import type { TextStyle,ViewStyle } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type Props = {
   children?: Element;
@@ -65,6 +65,7 @@ const ButtonIndicator = ({ mode, icon, color, size }: IndicatorProps) => {
 
 const SecondaryButton = ({ children, text, icon, style, onPress, mode, testID, ...rest }: Props) => {
   const theme = useContext(ThemeContext);
+  const disabledModes = ['loading', 'disabled'] as const;
 
   const buttonStyle = StyleSheet.create({
     container: {
@@ -75,7 +76,9 @@ const SecondaryButton = ({ children, text, icon, style, onPress, mode, testID, .
       borderWidth: mode === "disabled" ? 0 : 1,
       borderColor: theme.colorNeutral7,
       backgroundColor: mode === "disabled" ? theme.colorSecondary1 : theme.colorNeutral1,
-      opacity: mode == "loading" || mode == "disabled" ? 0.5 : 1
+      opacity: disabledModes.includes(mode) ? 0.5 : 1,
+      alignItems: "center",
+      justifyContent: "center",
     },
     title: {
       fontWeight: "bold",
@@ -86,16 +89,15 @@ const SecondaryButton = ({ children, text, icon, style, onPress, mode, testID, .
 
   return (
     // TODO Fix block should mean full width
-    <Button
-      // block
+    <TouchableOpacity
       onPress={onPress}
       testID={testID}
       {...rest}
       style={[buttonStyle.container, style]}
-      disabled={mode == "loading" || mode == "disabled"}>
+      disabled={disabledModes.includes(mode)}>
       {text ? <ButtonTitle mode={mode} text={text} style={buttonStyle.title} /> : <>{children}</>}
       <ButtonIndicator mode={mode} icon={icon} color={theme.colorText} size={theme.textSmall.fontSize} />
-    </Button>
+    </TouchableOpacity>
   );
 };
 

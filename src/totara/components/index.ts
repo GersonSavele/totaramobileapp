@@ -36,9 +36,11 @@ import Loading from "./Loading";
 import ImageWrapper from "./ImageWrapper";
 import ModalContent from "./ModalContent";
 import WebviewToolbar from "./WebviewToolbar";
+import Button from "./Button";
 
 export {
   AddBadge,
+  Button,
   DueDateState,
   CircleIcon,
   CheckBadge,
