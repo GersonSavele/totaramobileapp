@@ -13,14 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
-import { Linking, ImageSourcePropType } from "react-native";
-import PrimaryButton from "./PrimaryButton";
-import InfoModal from "./InfoModal";
-import TertiaryButton from "./TertiaryButton";
+import { Images } from '@resources/images';
+import { translate } from '@totara/locale';
+import React, { useState } from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Linking } from 'react-native';
 
-import { translate } from "@totara/locale";
-import { Images } from "@resources/images";
+import Button from './Button';
+import InfoModal from './InfoModal';
+import TertiaryButton from './TertiaryButton';
 
 type GeneralErrorModalProps = {
   customTitle?: string;
@@ -43,13 +44,14 @@ const GeneralErrorModal = ({
 
   return (
     <InfoModal
-      title={customTitle ?? translate("general_error_feedback_modal.title")}
-      description={customDescription ?? translate("general_error_feedback_modal.description")}
+      title={customTitle ?? translate('general_error_feedback_modal.title')}
+      description={customDescription ?? translate('general_error_feedback_modal.description')}
       imageSource={Images.generalError as ImageSourcePropType}
       visible={_visible}>
-      <PrimaryButton
-        testID={"test_generalErrorDismiss"}
-        text={primaryActionCustomText ?? translate("general_error_feedback_modal.action_primary")}
+      <Button
+        variant="primary"
+        testID={'test_generalErrorDismiss'}
+        text={primaryActionCustomText ?? translate('general_error_feedback_modal.action_primary')}
         onPress={() => {
           setVisible(!visible);
           if (onPrimaryActionTap) {
@@ -59,8 +61,8 @@ const GeneralErrorModal = ({
       />
       {siteUrl && siteUrl.length > 0 && (
         <TertiaryButton
-          testID={"test_generalErrorOpenURL"}
-          text={translate("general_error_feedback_modal.action_tertiary")}
+          testID={'test_generalErrorOpenURL'}
+          text={translate('general_error_feedback_modal.action_tertiary')}
           onPress={() => {
             Linking.openURL(siteUrl);
           }}

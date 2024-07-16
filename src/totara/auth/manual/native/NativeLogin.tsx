@@ -16,25 +16,25 @@
 // FIX: Native base typescript bug
 // @ts-nocheck
 
-import React, { useContext } from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity, Linking, ImageSourcePropType } from "react-native";
-import { Input, ScrollView, FormControl } from "native-base";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { Images } from '@resources/images';
+import { Button, FormError, InfoModal, InputTextWithInfo } from '@totara/components';
+import { useSession } from '@totara/core';
+import { fetchData, registerDevice } from '@totara/core/AuthRoutines';
+import { config } from '@totara/lib';
+import { NATIVE_LOGIN_TEST_IDS, TEST_IDS } from '@totara/lib/testIds';
+import { translate } from '@totara/locale';
+import { gutter, ThemeContext } from '@totara/theme';
+import { margins } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { FormControl, Input, ScrollView } from 'native-base';
+import React, { useContext, useEffect } from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { config } from "@totara/lib";
-import { gutter, ThemeContext } from "@totara/theme";
-import { PrimaryButton, InputTextWithInfo, FormError, InfoModal } from "@totara/components";
-import { translate } from "@totara/locale";
-import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
-import { useNativeFlow } from "./NativeFlowHook";
-import { margins } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { NATIVE_LOGIN_TEST_IDS, TEST_IDS } from "@totara/lib/testIds";
-import { useSession } from "@totara/core";
-import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import { Images } from "@resources/images";
-import { useDispatch } from "react-redux";
+import { useNativeFlow } from './NativeFlowHook';
 
 const NativeLogin = () => {
   // eslint-disable-next-line no-undef
@@ -68,29 +68,29 @@ const NativeLogin = () => {
 
   return (
     <ScrollView style={theme.viewContainer}>
-      <View style={{ position: "relative", zIndex: 2 }}>
+      <View style={{ position: 'relative', zIndex: 2 }}>
         <FormError
-          message={translate("native_login.error_unauthorized")}
+          message={translate('native_login.error_unauthorized')}
           isShow={nativeLoginState.errorStatusUnauthorized}
         />
       </View>
       <ScrollView style={styles.content} enableOnAndroid>
         <Image
-          source={theme.urlLogo ? { uri: theme.urlLogo } : require("@resources/images/totara_logo/totara_logo.png")}
+          source={theme.urlLogo ? { uri: theme.urlLogo } : require('@resources/images/totara_logo/totara_logo.png')}
           style={styles.totaraLogo}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
         <View style={styles.infoContainer}>
-          <Text style={styles.loginTitle}>{translate("native_login.header_title")}</Text>
-          <Text style={styles.loginInformation}>{translate("native_login.login_information")}</Text>
+          <Text style={styles.loginTitle}>{translate('native_login.header_title')}</Text>
+          <Text style={styles.loginInformation}>{translate('native_login.login_information')}</Text>
         </View>
         <FormControl>
           <View>
             <InputTextWithInfo
-              placeholder={translate("native_login.username_text_placeholder")}
+              placeholder={translate('native_login.username_text_placeholder')}
               message={
-                nativeLoginState.inputUsernameStatus == "error"
-                  ? translate("native_login.validation.enter_valid_username")
+                nativeLoginState.inputUsernameStatus == 'error'
+                  ? translate('native_login.validation.enter_valid_username')
                   : undefined
               }
               status={nativeLoginState.inputUsernameStatus}>
@@ -107,10 +107,10 @@ const NativeLogin = () => {
           </View>
           <View>
             <InputTextWithInfo
-              placeholder={translate("native_login.password_text_placeholder")}
+              placeholder={translate('native_login.password_text_placeholder')}
               message={
-                nativeLoginState.inputPasswordStatus == "error"
-                  ? translate("native_login.validation.enter_valid_password")
+                nativeLoginState.inputPasswordStatus == 'error'
+                  ? translate('native_login.validation.enter_valid_password')
                   : undefined
               }
               status={nativeLoginState.inputPasswordStatus}>
@@ -125,10 +125,11 @@ const NativeLogin = () => {
               />
             </InputTextWithInfo>
           </View>
-          <PrimaryButton
+          <Button
+            type="variant"
             onPress={onClickEnter}
-            text={translate("general.enter")}
-            mode={nativeLoginState.isRequestingLogin ? "loading" : undefined}
+            text={translate('general.enter')}
+            mode={nativeLoginState.isRequestingLogin ? 'loading' : undefined}
             testID={TEST_IDS.LOGIN}
           />
           <View style={[styles.forgotCredentialContainer, theme.textRegular]}>
@@ -136,18 +137,22 @@ const NativeLogin = () => {
               onPress={() => {
                 Linking.openURL(config.forgotPasswordUri(host!));
               }}>
-              <Text style={styles.forgotCredential}>{translate("native_login.forgot_username_password")}</Text>
+              <Text style={styles.forgotCredential}>{translate('native_login.forgot_username_password')}</Text>
             </TouchableOpacity>
           </View>
         </FormControl>
       </ScrollView>
       {nativeLoginState.unhandledLoginError && (
         <InfoModal
-          title={translate("native_login.auth_general_error.title")}
-          description={translate("native_login.auth_general_error.description")}
+          title={translate('native_login.auth_general_error.title')}
+          description={translate('native_login.auth_general_error.description')}
           imageSource={Images.generalError as ImageSourcePropType}
           testID={NATIVE_LOGIN_TEST_IDS.UNHANDLED_ERROR}>
-          <PrimaryButton text={translate("native_login.auth_general_error.action_primary")} onPress={onFocusInput} />
+          <Button
+            type="variant"
+            text={translate('native_login.auth_general_error.action_primary')}
+            onPress={onFocusInput}
+          />
         </InfoModal>
       )}
     </ScrollView>
@@ -163,10 +168,10 @@ const styles = StyleSheet.create({
     color: TotaraTheme.colorNeutral6
   },
   navigation: {
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     borderBottomWidth: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingBottom: margins.marginM
   },
   content: {
@@ -174,12 +179,12 @@ const styles = StyleSheet.create({
   },
   totaraLogo: {
     height: 88,
-    width: "100%",
+    width: '100%',
     marginTop: margins.marginXL
   },
   infoContainer: {
-    justifyContent: "space-between",
-    textAlignVertical: "center",
+    justifyContent: 'space-between',
+    textAlignVertical: 'center',
     marginBottom: margins.marginM,
     marginTop: margins.margin2XL
   },
@@ -188,14 +193,14 @@ const styles = StyleSheet.create({
     marginLeft: 0
   },
   forgotCredentialContainer: {
-    justifyContent: "space-around",
-    alignItems: "center",
+    justifyContent: 'space-around',
+    alignItems: 'center',
     marginBottom: margins.marginS
   },
   forgotCredential: {
     padding: margins.marginL,
     color: TotaraTheme.colorLink,
-    textAlign: "center"
+    textAlign: 'center'
   }
 });
 

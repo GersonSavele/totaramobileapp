@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { translate } from "@totara/locale";
-import { PrimaryButton, InfoModal } from "@totara/components";
-import { Images } from "@resources/images";
-import { ImageSourcePropType } from "react-native";
+import { Images } from '@resources/images';
+import { Button, InfoModal } from '@totara/components';
+import { translate } from '@totara/locale';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
 
 type CourseCompletionProps = {
   onClose: () => void;
@@ -26,11 +26,11 @@ type CourseCompletionProps = {
 const CourseCompletionModal = ({ onClose }: CourseCompletionProps) => {
   return (
     <InfoModal
-      title={translate("course.course_complete.title")}
-      description={translate("course.course_complete.description")}
+      title={translate('course.course_complete.title')}
+      description={translate('course.course_complete.description')}
       imageSource={Images.courseComplete as ImageSourcePropType}
       visible>
-      <PrimaryButton text={translate("course.course_complete.button_title")} onPress={onClose} />
+      <Button variant="primary" text={translate('course.course_complete.button_title')} onPress={onClose} />
     </InfoModal>
   );
 };

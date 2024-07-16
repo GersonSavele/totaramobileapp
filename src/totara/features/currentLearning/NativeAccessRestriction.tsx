@@ -13,11 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { Linking, ImageSourcePropType } from "react-native";
-import { translate } from "@totara/locale";
-import { PrimaryButton, InfoModal, TertiaryButton } from "@totara/components";
-import { Images } from "@resources/images";
+import { Images } from '@resources/images';
+import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { translate } from '@totara/locale';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Linking } from 'react-native';
 
 type Props = {
   onClose: () => void;
@@ -27,19 +28,18 @@ type Props = {
 const NativeAccessRestriction = ({ onClose, urlView }: Props) => {
   return (
     <InfoModal
-      title={translate("current_learning.restriction_view.title")}
-      description={translate("current_learning.restriction_view.description")}
+      title={translate('current_learning.restriction_view.title')}
+      description={translate('current_learning.restriction_view.description')}
       imageSource={Images.courseCompatible as ImageSourcePropType}
       visible>
-      <PrimaryButton
-        onPress={() => {
-          Linking.openURL(urlView);
-        }}
-        text={translate("current_learning.restriction_view.primary_button_title")}
+      <Button
+        variant="primary"
+        onPress={() => Linking.openURL(urlView)}
+        text={translate('current_learning.restriction_view.primary_button_title')}
         icon="external-link-alt"
-        style={{ alignSelf: "center" }}
+        style={{ alignSelf: 'center' }}
       />
-      <TertiaryButton text={translate("current_learning.restriction_view.tertiary_button_title")} onPress={onClose} />
+      <TertiaryButton text={translate('current_learning.restriction_view.tertiary_button_title')} onPress={onClose} />
     </InfoModal>
   );
 };

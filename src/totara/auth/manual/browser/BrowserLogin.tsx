@@ -13,21 +13,19 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useCallback } from "react";
-import { Linking, ImageSourcePropType } from "react-native";
-
-import { PrimaryButton, TertiaryButton, InfoModal } from "@totara/components";
-import { translate } from "@totara/locale";
-import { Images } from "@resources/images";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { useState } from "react";
-import { authLinkingHandler } from "@totara/auth/authUtils";
-import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSession } from "@totara/core";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { config } from "@totara/lib";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { Images } from '@resources/images';
+import { authLinkingHandler } from '@totara/auth/authUtils';
+import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { useSession } from '@totara/core';
+import { fetchData, registerDevice } from '@totara/core/AuthRoutines';
+import { config } from '@totara/lib';
+import { translate } from '@totara/locale';
+import React, { useCallback, useEffect, useState } from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Linking } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 const BrowserLogin = () => {
   // eslint-disable-next-line no-undef
@@ -47,7 +45,7 @@ const BrowserLogin = () => {
         setSetupSecret(secret);
       },
       onLoginFailure: () => {
-        console.warn("error");
+        console.warn('error');
       }
     })(url);
   };
@@ -74,28 +72,29 @@ const BrowserLogin = () => {
 
   useFocusEffect(
     useCallback(() => {
-      Linking.addEventListener("url", urlHandler);
+      Linking.addEventListener('url', urlHandler);
       return () => {
-        Linking.removeAllListeners("url");
+        Linking.removeAllListeners('url');
       };
     }, [])
   );
   const loginUrl = config.loginUri(siteUrl);
   return (
     <InfoModal
-      title={translate("browser_login.title")}
-      description={translate("browser_login.description")}
+      title={translate('browser_login.title')}
+      description={translate('browser_login.description')}
       imageSource={Images.browserLogin as ImageSourcePropType}
       visible={visible}>
-      <PrimaryButton
-        text={translate("browser_login.primary_title")}
+      <Button
+        variant="primary"
+        text={translate('browser_login.primary_title')}
         onPress={() => {
           Linking.openURL(loginUrl);
         }}
         icon="external-link-alt"
       />
       <TertiaryButton
-        text={translate("browser_login.tertiary_title")}
+        text={translate('browser_login.tertiary_title')}
         onPress={() => {
           setVisible(false);
           navigation.goBack();

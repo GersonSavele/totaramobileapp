@@ -13,18 +13,18 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View, StyleSheet, Image, Text, Linking, ImageSourcePropType } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { PrimaryButton } from "@totara/components";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { translate } from "@totara/locale";
-import { useSession } from "@totara/core";
-import { Images } from "@resources/images";
-import { paddings } from "@totara/theme/constants";
-import { NAVIGATION } from "@totara/lib/navigation";
-import { isEnableFindLearning } from "@totara/lib/tools";
-import { config } from "@totara/lib";
+import { useNavigation } from '@react-navigation/native';
+import { Images } from '@resources/images';
+import { Button } from '@totara/components';
+import { useSession } from '@totara/core';
+import { config } from '@totara/lib';
+import { isEnableFindLearning } from '@totara/lib/tools';
+import { translate } from '@totara/locale';
+import { paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Image, Linking, StyleSheet, Text, View } from 'react-native';
 
 type NoCurrentLearningProps = {
   testID?: string;
@@ -44,13 +44,14 @@ const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
   return (
     <View style={styles.containerStyle} testID={testID}>
       <Image source={Images.noCurrentLearning as ImageSourcePropType} />
-      <Text style={styles.noCurrentLearningDescription}>{translate("current_learning.no_learning_message")}</Text>
+      <Text style={styles.noCurrentLearningDescription}>{translate('current_learning.no_learning_message')}</Text>
       <View style={styles.goToBrowserAction}>
-        <PrimaryButton
+        <Button
+          variant="primary"
           onPress={onPressFindLearning}
-          text={translate("current_learning.find_learning")}
-          icon={!isEnableFindLearning(core) ? "up-right-from-square" : null}
-          style={{ alignSelf: "center" }}
+          text={translate('current_learning.find_learning')}
+          icon={!isEnableFindLearning(core) ? 'up-right-from-square' : null}
+          style={{ alignSelf: 'center' }}
         />
       </View>
     </View>

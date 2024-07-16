@@ -13,15 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-
-import { translate } from "@totara/locale";
-import { useSession } from "@totara/core";
-import { isValidApiVersion } from "@totara/core/coreUtils";
-import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
-import { config } from "@totara/lib";
-import { Linking, ImageSourcePropType } from "react-native";
-import { Images } from "@resources/images";
+import { Images } from '@resources/images';
+import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { useSession } from '@totara/core';
+import { isValidApiVersion } from '@totara/core/coreUtils';
+import { config } from '@totara/lib';
+import { translate } from '@totara/locale';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Linking } from 'react-native';
 
 type Props = {
   onCancel?: () => void;
@@ -36,21 +36,22 @@ const IncompatibleApiModal = ({ onCancel, siteUrl, testID }: Props) => {
   if (isShowIncompatibleApi)
     return (
       <InfoModal
-        title={translate("incompatible_api.title")}
-        description={translate("incompatible_api.description")}
+        title={translate('incompatible_api.title')}
+        description={translate('incompatible_api.description')}
         imageSource={Images.urlNotValid as ImageSourcePropType}
         visible={isShowIncompatibleApi}
         testID={testID}>
         {site && (
-          <PrimaryButton
-            text={translate("incompatible_api.action_primary")}
+          <Button
+            variant="primary"
+            text={translate('incompatible_api.action_primary')}
             onPress={() => {
               Linking.openURL(config.loginUri(site));
             }}
           />
         )}
         <TertiaryButton
-          text={translate("incompatible_api.action_tertiary_cancel")}
+          text={translate('incompatible_api.action_tertiary_cancel')}
           onPress={() => {
             onCancel && onCancel();
           }}

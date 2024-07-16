@@ -13,11 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode } from "react";
-import { translate } from "@totara/locale";
-import { PrimaryButton, InfoModal, TertiaryButton } from "@totara/components";
-import { Images } from "@resources/images";
-import { ImageSourcePropType } from "react-native";
+import { Images } from '@resources/images';
+import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { translate } from '@totara/locale';
+import type { ReactNode } from 'react';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
 
 type Props = {
   onClose: () => void;
@@ -28,16 +29,17 @@ type Props = {
 const SelfCompletion = ({ onClose, onClickAsComplete, children }: Props) => {
   return (
     <InfoModal
-      title={translate("course.course_complete_confirmation.title")}
-      description={translate("course.course_complete_confirmation.description")}
+      title={translate('course.course_complete_confirmation.title')}
+      description={translate('course.course_complete_confirmation.description')}
       imageSource={Images.selfCompletion as ImageSourcePropType}
       visible>
-      <PrimaryButton
-        text={translate("course.course_complete_confirmation.primary_button_title")}
+      <Button
+        variant="primary"
+        text={translate('course.course_complete_confirmation.primary_button_title')}
         onPress={onClickAsComplete}
       />
 
-      <TertiaryButton text={translate("course.course_complete_confirmation.tertiary_button_title")} onPress={onClose} />
+      <TertiaryButton text={translate('course.course_complete_confirmation.tertiary_button_title')} onPress={onClose} />
       {children}
     </InfoModal>
   );

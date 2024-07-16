@@ -13,14 +13,14 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View, ImageSourcePropType } from "react-native";
-
-import { PrimaryButton, ModalContent } from "@totara/components";
-import { translate } from "@totara/locale";
-import { Grade } from "@totara/types/Scorm";
-import { Images } from "@resources/images";
-import { SCORM_TEST_IDS } from "@totara/lib/testIds";
+import { Images } from '@resources/images';
+import { Button, ModalContent } from '@totara/components';
+import { SCORM_TEST_IDS } from '@totara/lib/testIds';
+import { translate } from '@totara/locale';
+import { Grade } from '@totara/types/Scorm';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { View } from 'react-native';
 
 type ScormFeedbackProps = {
   score: string;
@@ -42,19 +42,20 @@ const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
   const isWithGrade = showGrades && completionScoreRequired !== undefined && completionScoreRequired !== null;
 
   const scoreText = isWithGrade
-    ? translate("scorm.feedback.grade_title", { score: `${score}${gradeMethod !== Grade.objective ? "%" : ""}` })
-    : "";
+    ? translate('scorm.feedback.grade_title', { score: `${score}${gradeMethod !== Grade.objective ? '%' : ''}` })
+    : '';
 
   return (
     <View style={{ flex: 1 }} testID={ATTEMPT_FEEDBACK}>
       <ModalContent
         title={scoreText}
         description={translate(
-          isWithGrade ? "scorm.feedback.completed_attempt_with_grade" : "scorm.feedback.completed_attempt"
+          isWithGrade ? 'scorm.feedback.completed_attempt_with_grade' : 'scorm.feedback.completed_attempt'
         )}
         imageSource={Images.attemptComplete as ImageSourcePropType}>
-        <PrimaryButton
-          text={translate("course.course_complete.button_title")}
+        <Button
+          variant="primary"
+          text={translate('course.course_complete.button_title')}
           onPress={onClose}
           testID={SCORM_TEST_IDS.FEEDBACK_CLOSE}
         />

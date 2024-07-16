@@ -13,39 +13,36 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode, useState } from "react";
-import { ScrollView, Text, View, TextStyle, TouchableOpacity, RefreshControl } from "react-native";
-import { get, isEmpty } from "lodash";
+import { NetworkStatus as ApolloNetworkStatus } from '@apollo/client';
+import { Button, Loading, LoadingError, MessageBar, NetworkStatusIndicator, SecondaryButton } from '@totara/components';
+import Icon from '@totara/components/Icon';
+import { DATE_FORMAT_FULL } from '@totara/lib/constants';
+import { navigateTo, NAVIGATION } from '@totara/lib/navigation';
+import { spacedFlexRow } from '@totara/lib/styles/base';
+import { SCORM_TEST_IDS } from '@totara/lib/testIds';
+import { showConfirmation } from '@totara/lib/tools';
+import { translate } from '@totara/locale';
+import { gutter } from '@totara/theme';
+import { margins } from '@totara/theme/constants';
+import { scormSummaryStyles } from '@totara/theme/scorm';
+import type { AppliedTheme } from '@totara/theme/Theme';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { ScormBundle } from '@totara/types/Scorm';
+import { Grade } from '@totara/types/Scorm';
+import { get, isEmpty } from 'lodash';
+import type { ReactNode } from 'react';
+import React, { useState } from 'react';
+import type { TextStyle } from 'react-native';
+import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-import Icon from "@totara/components/Icon";
+import { fetchLastAttemptResult } from './api';
 import {
-  MessageBar,
-  NetworkStatusIndicator,
-  LoadingError,
-  PrimaryButton,
-  SecondaryButton,
-  Loading
-} from "@totara/components";
-import { gutter } from "@totara/theme";
-import { translate } from "@totara/locale";
-import { AppliedTheme, TotaraTheme } from "@totara/theme/Theme";
-import { scormSummaryStyles } from "@totara/theme/scorm";
-import { NetworkStatus as ApolloNetworkStatus } from "@apollo/client";
-import {
-  setCompletedScormAttempt,
   getOfflineLastActivityResult,
   retrieveAllData,
-  saveInTheCache
-} from "./storageUtils";
-import { getDataForScormSummary } from "./utils";
-import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
-import { DATE_FORMAT_FULL } from "@totara/lib/constants";
-import { ScormBundle, Grade } from "@totara/types/Scorm";
-import { spacedFlexRow } from "@totara/lib/styles/base";
-import { showConfirmation } from "@totara/lib/tools";
-import { margins } from "@totara/theme/constants";
-import { fetchLastAttemptResult } from "./api";
-import { SCORM_TEST_IDS } from "@totara/lib/testIds";
+  saveInTheCache,
+  setCompletedScormAttempt
+} from './storageUtils';
+import { getDataForScormSummary } from './utils';
 
 const { SCORM_ROOT, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -76,7 +73,7 @@ type GridLabelProps = {
 const GridLabelValue = ({ theme, textId, value, children }: GridLabelProps) => (
   <View style={scormSummaryStyles.sectionField}>
     <Text style={theme.textRegular}>{translate(textId)}</Text>
-    <View style={{ flexDirection: "row" }}>
+    <View style={{ flexDirection: 'row' }}>
       <Text style={gridStyle(theme)}>{value}</Text>
       {children}
     </View>
@@ -163,8 +160,8 @@ const onExitActivityAttempt = ({
   onRefresh
 }: OnExitActivityAttemptProps) => {
   showConfirmation({
-    title: translate("scorm.confirmation.title"),
-    message: translate("scorm.confirmation.message"),
+    title: translate('scorm.confirmation.title'),
+    message: translate('scorm.confirmation.message'),
     callback: () => {
       const existingLastAttempt = getOfflineLastActivityResult({
         scormId: id,
@@ -200,7 +197,7 @@ const onExitActivityAttempt = ({
             host
           })
             .then(response => {
-              const status = get(response, "data.status");
+              const status = get(response, 'data.status');
               if (status) {
                 const { attemptsCurrent, gradefinal } = status;
                 if (attemptsCurrent >= attempt) {
@@ -216,7 +213,7 @@ const onExitActivityAttempt = ({
                 }
               }
             })
-            .catch(e => console.log("Error: ", e))
+            .catch(e => console.log('Error: ', e))
             .finally(() => {
               setIsLoadingCurrentStatus && setIsLoadingCurrentStatus(false);
             });
@@ -264,23 +261,23 @@ const ScormSummary = ({
     showGrades
   } = bundleData;
   if (isLoadingCurrentStatus) {
-    return <Loading testID={"summary_loading"} />;
+    return <Loading testID={'summary_loading'} />;
   }
   if (!scormBundle && error) {
-    return <LoadingError onRefreshTap={onRefresh} testID={"summary_error"} error={error} />;
+    return <LoadingError onRefreshTap={onRefresh} testID={'summary_error'} error={error} />;
   }
   return (
     <>
-      <View style={scormSummaryStyles.expanded} testID={"scorm_summary_container"}>
+      <View style={scormSummaryStyles.expanded} testID={'scorm_summary_container'}>
         <NetworkStatusIndicator />
         {maxAttempts && maxAttempts <= totalAttempt && (
-          <MessageBar mode={"alert"} text={translate("scorm.info_completed_attempts")} icon={"exclamation-circle"} />
+          <MessageBar mode={'alert'} text={translate('scorm.info_completed_attempts')} icon={'exclamation-circle'} />
         )}
         {timeOpen && (
           <MessageBar
-            mode={"alert"}
-            text={`${translate("scorm.info_upcoming_activity")} ${timeOpen.format(DATE_FORMAT_FULL)}`}
-            icon={"exclamation-circle"}
+            mode={'alert'}
+            text={`${translate('scorm.info_upcoming_activity')} ${timeOpen.format(DATE_FORMAT_FULL)}`}
+            icon={'exclamation-circle'}
           />
         )}
         <View style={{ flex: 1 }}>
@@ -291,16 +288,16 @@ const ScormSummary = ({
             <View style={{ padding: gutter }}>
               {!isEmpty(description) && (
                 <>
-                  <GridTitle textId={"scorm.summary.summary"} theme={theme} style={{ paddingTop: 0 }} />
+                  <GridTitle textId={'scorm.summary.summary'} theme={theme} style={{ paddingTop: 0 }} />
                   <Text style={TotaraTheme.textRegular}>{description}</Text>
                 </>
               )}
               {showGrades && (
                 <>
-                  <GridTitle textId={"scorm.summary.grade.title"} theme={theme} />
+                  <GridTitle textId={'scorm.summary.grade.title'} theme={theme} />
                   <GridLabelValue
                     theme={theme}
-                    textId={"scorm.summary.grade.method"}
+                    textId={'scorm.summary.grade.method'}
                     value={attemptGrade && translate(`scorm.grading_method.${attemptGrade}`)}
                   />
                   <TouchableOpacity
@@ -312,13 +309,13 @@ const ScormSummary = ({
                           attempts,
                           gradeMethod,
                           title: name,
-                          backIcon: "chevron-left"
+                          backIcon: 'chevron-left'
                         }
                       })
                     }
                     disabled={isEmpty(attempts)}
                     testID={SCORM_TEST_IDS.BUTTON_VIEW_ATTEMPTS}>
-                    <GridLabelValue theme={theme} textId={"scorm.summary.grade.reported"} value={calculatedGrade}>
+                    <GridLabelValue theme={theme} textId={'scorm.summary.grade.reported'} value={calculatedGrade}>
                       {!isEmpty(attempts) && (
                         <Icon
                           name="chevron-right"
@@ -331,22 +328,22 @@ const ScormSummary = ({
                   </TouchableOpacity>
                 </>
               )}
-              <GridTitle textId={"scorm.summary.attempt.title"} theme={theme} />
+              <GridTitle textId={'scorm.summary.attempt.title'} theme={theme} />
               <GridLabelValue
                 theme={theme}
-                textId={"scorm.summary.attempt.total_attempts"}
-                value={maxAttempts || translate("scorm.summary.attempt.unlimited")}
+                textId={'scorm.summary.attempt.total_attempts'}
+                value={maxAttempts || translate('scorm.summary.attempt.unlimited')}
               />
-              <GridLabelValue theme={theme} textId={"scorm.summary.attempt.completed_attempts"} value={totalAttempt} />
+              <GridLabelValue theme={theme} textId={'scorm.summary.attempt.completed_attempts'} value={totalAttempt} />
             </View>
           </ScrollView>
         </View>
         <AttemptController
           shouldAllowNewAttempt={shouldAllowNewAttempt}
           newAttempt={{
-            title: translate("scorm.summary.new_attempt"),
+            title: translate('scorm.summary.new_attempt'),
             action: () => {
-              navigation.addListener("didFocus", onRefresh);
+              navigation.addListener('didFocus', onRefresh);
               const attemptNumber = totalAttempt + 1;
               const scormActivityRoute = isDownloaded ? OFFLINE_SCORM_ACTIVITY : WEBVIEW_ACTIVITY;
               navigateTo({
@@ -356,7 +353,7 @@ const ScormSummary = ({
                   title: name,
                   attempt: attemptNumber,
                   scorm: scormBundle && scormBundle.scorm,
-                  backIcon: "chevron-left",
+                  backIcon: 'chevron-left',
                   uri: launchUrl,
                   backAction: () =>
                     onExitActivityAttempt({
@@ -380,9 +377,9 @@ const ScormSummary = ({
             }
           }}
           lastAttempt={{
-            title: translate("scorm.summary.last_attempt"),
+            title: translate('scorm.summary.last_attempt'),
             action: () => {
-              navigation.addListener("didFocus", onRefresh);
+              navigation.addListener('didFocus', onRefresh);
               const attemptNumber = totalAttempt;
               navigateTo({
                 routeId: WEBVIEW_ACTIVITY,
@@ -391,7 +388,7 @@ const ScormSummary = ({
                   title: name,
                   attempt: attemptNumber,
                   scorm: scormBundle && scormBundle.scorm,
-                  backIcon: "chevron-left",
+                  backIcon: 'chevron-left',
                   uri: repeatUrl,
                   backAction: () =>
                     onExitActivityAttempt({
@@ -448,11 +445,12 @@ const AttemptController = ({
           />
         )}
 
-        <PrimaryButton
+        <Button
+          variant="primary"
           text={newAttempt && newAttempt.title}
           onPress={newAttempt && newAttempt.action}
           style={{ flex: 1 }}
-          mode={(!shouldAllowNewAttempt && "disabled") || undefined}
+          mode={(!shouldAllowNewAttempt && 'disabled') || undefined}
           testID={SCORM_TEST_IDS.NEW_ATTEMPT}
         />
       </View>
@@ -460,5 +458,5 @@ const AttemptController = ({
   );
 };
 
-export { showScormFeedback, onExitActivityAttempt };
+export { onExitActivityAttempt, showScormFeedback };
 export default ScormSummary;

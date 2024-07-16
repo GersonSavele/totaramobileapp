@@ -13,55 +13,53 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import DueDateState from "../features/currentLearning/components/DueDateState";
-import CircleIcon from "./CircleIcon";
-import { AddBadge, CheckBadge } from "./AddBadge";
-import ProgressCircle from "./ProgressCircle";
-import InfoModal from "./InfoModal";
-import AppStateListener from "./AppStateListener";
-import PrimaryButton from "./PrimaryButton";
-import SecondaryButton from "./SecondaryButton";
-import GeneralErrorModal from "./GeneralErrorModal";
-import InputTextWithInfo from "./InputTextWithInfo";
-import TertiaryButton from "./TertiaryButton";
-import TouchableIcon from "./TouchableIcon";
-import FormError from "./FormError";
-import MoreText from "./MoreText";
-import LinkText from "./LinkText";
-import MessageBar from "./MessageBar";
-import TotaraNavigationOptions from "./NavigationOptions";
-import LoadingError from "./LoadingError";
-import NetworkStatusIndicator from "./NetworkStatusIndicator";
-import Loading from "./Loading";
-import ImageWrapper from "./ImageWrapper";
-import ModalContent from "./ModalContent";
-import WebviewToolbar from "./WebviewToolbar";
-import Button from "./Button";
+import DueDateState from '../features/currentLearning/components/DueDateState';
+import { AddBadge, CheckBadge } from './AddBadge';
+import AppStateListener from './AppStateListener';
+import Button from './Button';
+import CircleIcon from './CircleIcon';
+import FormError from './FormError';
+import GeneralErrorModal from './GeneralErrorModal';
+import ImageWrapper from './ImageWrapper';
+import InfoModal from './InfoModal';
+import InputTextWithInfo from './InputTextWithInfo';
+import LinkText from './LinkText';
+import Loading from './Loading';
+import LoadingError from './LoadingError';
+import MessageBar from './MessageBar';
+import ModalContent from './ModalContent';
+import MoreText from './MoreText';
+import TotaraNavigationOptions from './NavigationOptions';
+import NetworkStatusIndicator from './NetworkStatusIndicator';
+import ProgressCircle from './ProgressCircle';
+import SecondaryButton from './SecondaryButton';
+import TertiaryButton from './TertiaryButton';
+import TouchableIcon from './TouchableIcon';
+import WebviewToolbar from './WebviewToolbar';
 
 export {
   AddBadge,
-  Button,
-  DueDateState,
-  CircleIcon,
-  CheckBadge,
-  ProgressCircle,
   AppStateListener,
-  PrimaryButton,
+  Button,
+  CheckBadge,
+  CircleIcon,
+  DueDateState,
+  FormError,
   GeneralErrorModal,
+  ImageWrapper,
   InfoModal,
   InputTextWithInfo,
-  TertiaryButton,
-  TouchableIcon,
-  FormError,
-  SecondaryButton,
-  MoreText,
   LinkText,
-  MessageBar,
-  TotaraNavigationOptions,
   Loading,
   LoadingError,
-  NetworkStatusIndicator,
-  ImageWrapper,
+  MessageBar,
   ModalContent,
+  MoreText,
+  NetworkStatusIndicator,
+  ProgressCircle,
+  SecondaryButton,
+  TertiaryButton,
+  TotaraNavigationOptions,
+  TouchableIcon,
   WebviewToolbar
 };

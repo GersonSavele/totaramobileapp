@@ -13,36 +13,37 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { Linking, ImageSourcePropType } from "react-native";
-
-import { InfoModal, PrimaryButton, TertiaryButton } from "@totara/components";
-import { translate } from "@totara/locale";
-import { useSession } from "@totara/core";
-import { Images } from "@resources/images";
-import { useDispatch } from "react-redux";
-import { ADDITIONALACTION_TEST_IDS } from "@totara/lib/testIds";
+import { Images } from '@resources/images';
+import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { useSession } from '@totara/core';
+import { ADDITIONALACTION_TEST_IDS } from '@totara/lib/testIds';
+import { translate } from '@totara/locale';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Linking } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 const AdditionalAction = () => {
   const { host, endSession } = useSession();
   const dispatch = useDispatch();
   return (
     <InfoModal
-      title={translate("additional_actions_modal.auth_model_title")}
-      description={translate("additional_actions_modal.auth_model_description")}
+      title={translate('additional_actions_modal.auth_model_title')}
+      description={translate('additional_actions_modal.auth_model_description')}
       imageSource={Images.actionRequired as ImageSourcePropType}
       visible={true}
       testID={ADDITIONALACTION_TEST_IDS.INFOR}>
-      <PrimaryButton
-        text={translate("additional_actions_modal.auth_model_go_to_browser")}
-        icon={"external-link-alt"}
+      <Button
+        variant="primary"
+        text={translate('additional_actions_modal.auth_model_go_to_browser')}
+        icon={'external-link-alt'}
         onPress={() => {
           Linking.openURL(host!);
         }}
         testID={ADDITIONALACTION_TEST_IDS.PRIMARY_BUTTON}
       />
       <TertiaryButton
-        text={translate("additional_actions_modal.auth_model_logout")}
+        text={translate('additional_actions_modal.auth_model_logout')}
         onPress={() => {
           dispatch(endSession());
         }}

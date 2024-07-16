@@ -13,22 +13,23 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { PrimaryButton, SecondaryButton, TertiaryButton } from "@totara/components";
-import { fontWeights, margins, paddings } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import React, { useLayoutEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
-import { translate } from "@totara/locale";
-// import { HeaderBackButton } from "@react-navigation/stack";
-import { HeaderBackButton } from "@react-navigation/elements";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NAVIGATION, popAndGoToByRef } from "@totara/lib/navigation";
-import { ImageElement } from "./components";
-import { NetworkStatus, useQuery } from "@apollo/client";
-import { enrolmentInfoQuery } from "../enrolment/api";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { DescriptionContent } from "@totara/components/DescriptionContent";
-import { learningItemEnum } from "../constants";
+import { NetworkStatus, useQuery } from '@apollo/client';
+import { HeaderBackButton } from '@react-navigation/elements';
+import type { RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Button, SecondaryButton, TertiaryButton } from '@totara/components';
+import { DescriptionContent } from '@totara/components/DescriptionContent';
+import { NAVIGATION, popAndGoToByRef } from '@totara/lib/navigation';
+import { translate } from '@totara/locale';
+import { fontWeights, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React, { useLayoutEffect } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { learningItemEnum } from '../constants';
+import { enrolmentInfoQuery } from '../enrolment/api';
+import { ImageElement } from './components';
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 
@@ -40,19 +41,19 @@ const overviewStyles = StyleSheet.create({
 
   banner: {
     aspectRatio: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex"
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex'
   },
 
   imageElement: {
     borderWidth: 1,
     borderColor: colorNeutral3,
     flex: 1,
-    width: "100%",
+    width: '100%',
     aspectRatio: 2,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
   title: {
@@ -68,7 +69,7 @@ const overviewStyles = StyleSheet.create({
   enrolment: {
     marginTop: margins.marginL,
     backgroundColor: colorNeutral3,
-    alignItems: "center",
+    alignItems: 'center',
     padding: paddings.paddingXL
   },
 
@@ -97,14 +98,14 @@ type OverviewModalParamList = {
 export const OverviewModal = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const { params } = useRoute<RouteProp<OverviewModalParamList, "OverviewModal">>();
+  const { params } = useRoute<RouteProp<OverviewModalParamList, 'OverviewModal'>>();
 
   // @ts-ignore
   const { itemid, title, mobileImage: imageSource, summary, summaryFormat } = params;
 
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
     variables: { courseid: itemid },
-    fetchPolicy: "no-cache"
+    fetchPolicy: 'no-cache'
   });
 
   const enrolmentInfo = data?.enrolmentInfo;
@@ -145,7 +146,7 @@ export const OverviewModal = () => {
           privileged && (
             <TertiaryButton
               testID="enrolment_modal_header_go_to_course"
-              text={translate("find_learning_overview.go_to_course")}
+              text={translate('find_learning_overview.go_to_course')}
               onPress={goTo}
             />
           )
@@ -155,10 +156,10 @@ export const OverviewModal = () => {
   }, [navigation]);
 
   const enrolmentStatusText = isEnrolled
-    ? translate("find_learning_overview.you_are_enrolled")
+    ? translate('find_learning_overview.you_are_enrolled')
     : guestAccess || canEnrol
-      ? translate("find_learning_overview.you_can_enrol")
-      : translate("find_learning_overview.you_are_not_enrolled");
+      ? translate('find_learning_overview.you_can_enrol')
+      : translate('find_learning_overview.you_are_not_enrolled');
 
   const isLoading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch;
 
@@ -169,29 +170,30 @@ export const OverviewModal = () => {
       </View>
       <View style={overviewStyles.enrolment}>
         {isLoading && (
-          <View testID={"enrolment_modal_loading"}>
+          <View testID={'enrolment_modal_loading'}>
             <ActivityIndicator />
-            <Text style={overviewStyles.enrolmentLoading}>{translate("enrolment_options.loading_enrolment_data")}</Text>
+            <Text style={overviewStyles.enrolmentLoading}>{translate('enrolment_options.loading_enrolment_data')}</Text>
           </View>
         )}
         {error && (
-          <View testID={"enrolment_modal_loading_error"}>
-            <Text>{translate("enrolment_options.loading_enrolment_error")}</Text>
+          <View testID={'enrolment_modal_loading_error'}>
+            <Text>{translate('enrolment_options.loading_enrolment_error')}</Text>
             <View style={{ marginTop: margins.marginL }}>
-              <SecondaryButton text={translate("general.try_again")} onPress={onTryReload}></SecondaryButton>
+              <SecondaryButton text={translate('general.try_again')} onPress={onTryReload}></SecondaryButton>
             </View>
           </View>
         )}
         {!isLoading && !error && (
           <View>
-            <Text testID={"enrolment_modal_status_text"} style={overviewStyles.enrolmentStatus}>
+            <Text testID={'enrolment_modal_status_text'} style={overviewStyles.enrolmentStatus}>
               {enrolmentStatusText}
             </Text>
             {(guestAccess || isEnrolled || canEnrol || privileged) && (
-              <View testID={"enrolment_modal_status_button"}>
-                <PrimaryButton
+              <View testID={'enrolment_modal_status_button'}>
+                <Button
+                  variant="primary"
                   style={overviewStyles.enrolmentAction}
-                  text={translate("find_learning_overview.go_to_course")}
+                  text={translate('find_learning_overview.go_to_course')}
                   onPress={goTo}
                 />
               </View>

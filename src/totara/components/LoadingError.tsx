@@ -13,15 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { Image, StyleSheet, View, Text, ImageSourcePropType } from "react-native";
-import { get } from "lodash";
-import PrimaryButton from "@totara/components/PrimaryButton";
-import { Images } from "@resources/images";
-import { paddings } from "@totara/theme/constants";
-import { translate } from "@totara/locale";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { ApolloError } from "@apollo/client/errors";
+import type { ApolloError } from '@apollo/client/errors';
+import { Images } from '@resources/images';
+import { translate } from '@totara/locale';
+import { paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { get } from 'lodash';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+
+import Button from './Button';
 
 type LoadingErrorProps = {
   onRefreshTap(): void;
@@ -34,18 +36,18 @@ const getErrorFeedback = (error?: ApolloError) => {
   if (error && error.networkError && (!error.networkError.statusCode || error.networkError.statusCode === 408)) {
     return {
       image: Images.offline,
-      title: translate("content_error.title"),
-      description: translate("content_error.description")
+      title: translate('content_error.title'),
+      description: translate('content_error.description')
     };
   }
   const errorMessage = get(
     error,
-    "networkError.result.errors[0].message",
-    translate("general_error_feedback_modal.description")
+    'networkError.result.errors[0].message',
+    translate('general_error_feedback_modal.description')
   );
   return {
     image: Images.generalError,
-    title: translate("general_error_feedback_modal.title"),
+    title: translate('general_error_feedback_modal.title'),
     description: errorMessage
   };
 };
@@ -61,7 +63,7 @@ const LoadingError = ({ onRefreshTap, testID, error }: LoadingErrorProps) => {
       </View>
 
       <View style={styles.actionContainer}>
-        <PrimaryButton onPress={onRefreshTap} text={translate("general.try_again")} />
+        <Button variant="primary" onPress={onRefreshTap} text={translate('general.try_again')} />
       </View>
     </View>
   );
@@ -69,15 +71,15 @@ const LoadingError = ({ onRefreshTap, testID, error }: LoadingErrorProps) => {
 
 const styles = StyleSheet.create({
   containerStyle: {
-    height: "100%",
-    justifyContent: "center",
-    flexDirection: "column",
-    alignItems: "center"
+    height: '100%',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   errorContainer: {
     padding: paddings.paddingL,
-    alignItems: "center",
-    alignContent: "space-between"
+    alignItems: 'center',
+    alignContent: 'space-between'
   },
   actionContainer: {
     padding: paddings.paddingL
@@ -85,12 +87,12 @@ const styles = StyleSheet.create({
   textTitle: {
     ...TotaraTheme.textH2,
     padding: paddings.paddingL,
-    textAlign: "center"
+    textAlign: 'center'
   },
   testDescription: {
     ...TotaraTheme.textRegular,
     marginHorizontal: paddings.paddingXL,
-    textAlign: "center"
+    textAlign: 'center'
   }
 });
 
