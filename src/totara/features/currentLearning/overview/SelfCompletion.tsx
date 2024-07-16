@@ -14,7 +14,7 @@
  */
 
 import { Images } from '@resources/images';
-import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { Button, InfoModal } from '@totara/components';
 import { translate } from '@totara/locale';
 import type { ReactNode } from 'react';
 import React from 'react';
@@ -39,7 +39,11 @@ const SelfCompletion = ({ onClose, onClickAsComplete, children }: Props) => {
         onPress={onClickAsComplete}
       />
 
-      <TertiaryButton text={translate('course.course_complete_confirmation.tertiary_button_title')} onPress={onClose} />
+      <Button
+        variant="tertiary"
+        text={translate('course.course_complete_confirmation.tertiary_button_title')}
+        onPress={onClose}
+      />
       {children}
     </InfoModal>
   );

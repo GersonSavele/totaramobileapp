@@ -14,7 +14,7 @@
  */
 
 import { Images } from '@resources/images';
-import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { Button, InfoModal } from '@totara/components';
 import { useSession } from '@totara/core';
 import { ADDITIONALACTION_TEST_IDS } from '@totara/lib/testIds';
 import { translate } from '@totara/locale';
@@ -42,7 +42,8 @@ const AdditionalAction = () => {
         }}
         testID={ADDITIONALACTION_TEST_IDS.PRIMARY_BUTTON}
       />
-      <TertiaryButton
+      <Button
+        variant="tertiary"
         text={translate('additional_actions_modal.auth_model_logout')}
         onPress={() => {
           dispatch(endSession());

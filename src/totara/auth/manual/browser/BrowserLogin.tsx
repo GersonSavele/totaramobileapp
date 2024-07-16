@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { Images } from '@resources/images';
 import { authLinkingHandler } from '@totara/auth/authUtils';
-import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { Button, InfoModal } from '@totara/components';
 import { useSession } from '@totara/core';
 import { fetchData, registerDevice } from '@totara/core/AuthRoutines';
 import { config } from '@totara/lib';
@@ -93,7 +93,8 @@ const BrowserLogin = () => {
         }}
         icon="external-link-alt"
       />
-      <TertiaryButton
+      <Button
+        variant="tertiary"
         text={translate('browser_login.tertiary_title')}
         onPress={() => {
           setVisible(false);

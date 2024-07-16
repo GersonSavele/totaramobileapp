@@ -14,7 +14,7 @@
  */
 
 import { Images } from '@resources/images';
-import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { Button, InfoModal } from '@totara/components';
 import { useSession } from '@totara/core';
 import { isValidApiVersion } from '@totara/core/coreUtils';
 import { config } from '@totara/lib';
@@ -50,7 +50,8 @@ const IncompatibleApiModal = ({ onCancel, siteUrl, testID }: Props) => {
             }}
           />
         )}
-        <TertiaryButton
+        <Button
+          variant="tertiary"
           text={translate('incompatible_api.action_tertiary_cancel')}
           onPress={() => {
             onCancel && onCancel();

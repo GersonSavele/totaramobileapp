@@ -14,7 +14,7 @@
  */
 
 import { Images } from '@resources/images';
-import { Button, InfoModal, TertiaryButton } from '@totara/components';
+import { Button, InfoModal } from '@totara/components';
 import { translate } from '@totara/locale';
 import React from 'react';
 import type { ImageSourcePropType } from 'react-native';
@@ -39,7 +39,11 @@ const NativeAccessRestriction = ({ onClose, urlView }: Props) => {
         icon="external-link-alt"
         style={{ alignSelf: 'center' }}
       />
-      <TertiaryButton text={translate('current_learning.restriction_view.tertiary_button_title')} onPress={onClose} />
+      <Button
+        variant="tertiary"
+        text={translate('current_learning.restriction_view.tertiary_button_title')}
+        onPress={onClose}
+      />
     </InfoModal>
   );
 };

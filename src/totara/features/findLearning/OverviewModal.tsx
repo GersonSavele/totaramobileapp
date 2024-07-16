@@ -17,7 +17,7 @@ import { NetworkStatus, useQuery } from '@apollo/client';
 import { HeaderBackButton } from '@react-navigation/elements';
 import type { RouteProp } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Button, TertiaryButton } from '@totara/components';
+import { Button } from '@totara/components';
 import { DescriptionContent } from '@totara/components/DescriptionContent';
 import { NAVIGATION, popAndGoToByRef } from '@totara/lib/navigation';
 import { translate } from '@totara/locale';
@@ -144,7 +144,8 @@ export const OverviewModal = () => {
       headerRight: () => {
         return (
           privileged && (
-            <TertiaryButton
+            <Button
+              variant="tertiary"
               testID="enrolment_modal_header_go_to_course"
               text={translate('find_learning_overview.go_to_course')}
               onPress={goTo}

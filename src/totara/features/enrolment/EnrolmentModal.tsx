@@ -17,7 +17,7 @@ import { NetworkStatus, useLazyQuery, useMutation, useQuery } from '@apollo/clie
 import { Input } from '@placeholders/react-native-elements';
 import type { RouteProp } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Button, TertiaryButton } from '@totara/components';
+import { Button } from '@totara/components';
 import { NAVIGATION } from '@totara/lib/navigation';
 import { translate } from '@totara/locale';
 import { fontWeights, margins, paddings } from '@totara/theme/constants';

@@ -21,7 +21,6 @@ import { Linking } from 'react-native';
 
 import Button from './Button';
 import InfoModal from './InfoModal';
-import TertiaryButton from './TertiaryButton';
 
 type GeneralErrorModalProps = {
   customTitle?: string;
@@ -60,7 +59,8 @@ const GeneralErrorModal = ({
         }}
       />
       {siteUrl && siteUrl.length > 0 && (
-        <TertiaryButton
+        <Button
+          variant="tertiary"
           testID={'test_generalErrorOpenURL'}
           text={translate('general_error_feedback_modal.action_tertiary')}
           onPress={() => {
