@@ -12,51 +12,55 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-//@ts-nocheck
+// @ts-nocheck
 
-import React from "react";
-import { Image, StyleSheet, Text } from "react-native";
-import { getBuildNumber, getVersion } from "react-native-device-info";
-import { View } from "react-native-animatable";
-import { Clipboard } from "react-native";
-import { Toast } from "native-base";
-import { Images } from "@resources/images";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings, margins } from "@totara/theme/constants";
-import { translate } from "@totara/locale";
-import { useSession } from "@totara/core";
+import { Images } from '@resources/images';
+import { useSession } from '@totara/core';
+import { translate } from '@totara/locale';
+import { margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { Image, StyleSheet, Text } from 'react-native';
+import { Clipboard } from 'react-native';
+import { View } from 'react-native-animatable';
+import { getBuildNumber, getVersion } from 'react-native-device-info';
+import { showMessage } from 'react-native-flash-message';
 
 const About = () => {
   const { host, siteInfo } = useSession();
   const onSiteURLLongPress = () => {
     Clipboard.setString(host!);
-    Toast.show({
-      text: translate("general.copied_to_clipboard")
-    });
+    showToast();
   };
 
   const onPluginVersionLongPress = () => {
     Clipboard.setString(siteInfo!.version as string);
-    Toast.show({
-      text: translate("general.copied_to_clipboard")
-    });
+    showToast();
   };
 
+  const showToast = () =>
+    showMessage({
+      message: translate('general.copied_to_clipboard'),
+      backgroundColor: 'black',
+      icon: 'info',
+      floating: true
+    });
+
   return (
-    <View style={styles.container} testID={"aboutContainer"}>
-      <View style={styles.logoContainer} animation={"slideInUp"}>
+    <View style={styles.container} testID={'aboutContainer'}>
+      <View style={styles.logoContainer} animation={'slideInUp'}>
         <Image source={Images.totaraLogo} style={styles.logo} />
       </View>
       <View style={styles.versionContainer}>
-        <Text style={styles.versionBuild}>{translate("about.version", { version: getVersion() })}</Text>
+        <Text style={styles.versionBuild}>{translate('about.version', { version: getVersion() })}</Text>
         <Text style={styles.versionBuild}>{`(${getBuildNumber()})`}</Text>
       </View>
       <View style={styles.environmentDetails}>
         <Text style={styles.siteUrlPluginVersion} onLongPress={onSiteURLLongPress}>
-          {translate("about.site_url", { url: host })}
+          {translate('about.site_url', { url: host })}
         </Text>
         <Text style={styles.siteUrlPluginVersion} onLongPress={onPluginVersionLongPress}>
-          {translate("about.plugin_version", { version: siteInfo!.version })}
+          {translate('about.plugin_version', { version: siteInfo!.version })}
         </Text>
       </View>
     </View>
@@ -65,32 +69,32 @@ const About = () => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
+    justifyContent: 'center',
     flex: 1
   },
-  logoContainer: { alignSelf: "center" },
+  logoContainer: { alignSelf: 'center' },
   logo: {
     height: 240 / 2, //half-size of original file
     aspectRatio: 240 / 170 //using aspectRatio of logo_totara@2x.png
   },
   versionContainer: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     paddingTop: paddings.padding2XL
   },
   versionBuild: {
     ...TotaraTheme.textSmall,
     color: TotaraTheme.colorNeutral6,
-    alignSelf: "center"
+    alignSelf: 'center'
   },
   environmentDetails: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: margins.marginL
   },
   siteUrlPluginVersion: {
     ...TotaraTheme.textXSmall,
     color: TotaraTheme.colorNeutral6,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: margins.marginXS
   }
 });

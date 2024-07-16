@@ -13,33 +13,33 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode } from "react";
-import { StatusBar, Platform, LogBox, Text, SafeAreaView, NativeModules } from "react-native";
-
-import { config } from "@totara/lib";
-import RootContainer from "@totara/RootContainer";
-import { PLATFORM_ANDROID } from "@totara/lib/constants";
-import { store, persistor } from "@totara/store";
-import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
-import Loading from "@totara/components/Loading";
-import { ThemeProvider } from "@totara/theme";
-import { OrientationLocker, PORTRAIT } from "react-native-orientation-locker";
-import { NativeBaseProvider } from "native-base";
+import Loading from '@totara/components/Loading';
+import { config } from '@totara/lib';
+import { PLATFORM_ANDROID } from '@totara/lib/constants';
+import RootContainer from '@totara/RootContainer';
+import { persistor, store } from '@totara/store';
+import { ThemeProvider } from '@totara/theme';
+import { NativeBaseProvider } from 'native-base';
+import type { ReactNode } from 'react';
+import React from 'react';
+import { LogBox, Platform, SafeAreaView, StatusBar, Text } from 'react-native';
+import FlashMessage from 'react-native-flash-message';
+import { OrientationLocker, PORTRAIT } from 'react-native-orientation-locker';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 if (Platform.OS === PLATFORM_ANDROID) {
-  StatusBar.setBackgroundColor("rgba(0,0,0,0)");
-  StatusBar.setBarStyle("dark-content");
+  StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+  StatusBar.setBarStyle('dark-content');
   StatusBar.setTranslucent(true);
 } else {
-  StatusBar.setBarStyle("default");
+  StatusBar.setBarStyle('default');
 }
 
 if (config.disableConsoleYellowBox) {
   LogBox.ignoreAllLogs();
 }
-LogBox.ignoreLogs(["new NativeEventEmitter"]);
-
+LogBox.ignoreLogs(['new NativeEventEmitter']);
 
 const App: () => ReactNode = () => {
   return (
@@ -54,6 +54,7 @@ const App: () => ReactNode = () => {
           </ThemeProvider>
         </PersistGate>
       </Provider>
+      <FlashMessage position="top" />
     </SafeAreaView>
   );
 };
