@@ -13,24 +13,21 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// FIX: Native base typescript bug
-// @ts-nocheck
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableIcon } from '@totara/components';
+import { useSession } from '@totara/core';
+import { fetchData, registerDevice } from '@totara/core/AuthRoutines';
+import { config } from '@totara/lib';
+import { DEVICE_REGISTRATION } from '@totara/lib/constants';
+import { ThemeContext } from '@totara/theme';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React, { useContext, useEffect, useRef } from 'react';
+import { Linking, StyleSheet, View } from 'react-native';
+import { WebView } from 'react-native-webview';
+import { useDispatch } from 'react-redux';
 
-import React, { useRef, useContext, useEffect } from "react";
-import { View, StyleSheet, Linking } from "react-native";
-import { WebView } from "react-native-webview";
-import { Container, Content, Footer } from "native-base";
-import { useNavigation } from "@react-navigation/native";
-import { config } from "@totara/lib";
-import { DEVICE_REGISTRATION } from "@totara/lib/constants";
-import { TouchableIcon } from "@totara/components";
-import { ThemeContext } from "@totara/theme";
-import { useWebviewFlow } from "./WebviewFlowHook";
-import { useSession } from "@totara/core";
-import { fetchData, registerDevice } from "@totara/core/AuthRoutines";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { useDispatch } from "react-redux";
+import { useWebviewFlow } from './WebviewFlowHook';
 
 const WebviewLogin = () => {
   const { initSession, siteInfo, host, apiKey } = useSession();
@@ -73,8 +70,8 @@ const WebviewLogin = () => {
   const theme = useContext(ThemeContext);
 
   return (
-    <Container style={TotaraTheme.viewContainer}>
-      <Content contentContainerStyle={{ flex: 1 }}>
+    <View style={TotaraTheme.viewContainer}>
+      <View style={{ flex: 1 }}>
         <WebView
           ref={refLoginWebview}
           source={{
@@ -87,8 +84,8 @@ const WebviewLogin = () => {
           injectedJavaScript={jsCode}
           onNavigationStateChange={onLogViewNavigate}
         />
-      </Content>
-      <Footer style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
+      </View>
+      <View style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
         <View style={styles.barContent}>
           <TouchableIcon
             icon={"chevron-left"}
@@ -119,8 +116,8 @@ const WebviewLogin = () => {
             size={theme.textH3.fontSize}
           />
         </View>
-      </Footer>
-    </Container>
+      </View>
+    </View>
   );
 };
 

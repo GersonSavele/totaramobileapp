@@ -17,7 +17,6 @@ import React from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import PropTypes from "prop-types";
 
-// use react-native button instead on jest, as native-base button
 // has issues while on test
 
 const MockButton = ({ onPress, ...rest }) => <Button title={"this is a mock button"} onPress={onPress} {...rest} />;

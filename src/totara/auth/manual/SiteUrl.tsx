@@ -13,9 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// FIX: Native-base Form has a type check issue, therefore ignoring
-//@ts-nocheck
-
 import { useNavigation } from '@react-navigation/native';
 import { Images } from '@resources/images';
 import { Button, InfoModal, TextInput } from '@totara/components';

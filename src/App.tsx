@@ -19,7 +19,6 @@ import { PLATFORM_ANDROID } from '@totara/lib/constants';
 import RootContainer from '@totara/RootContainer';
 import { persistor, store } from '@totara/store';
 import { ThemeProvider } from '@totara/theme';
-import { NativeBaseProvider } from 'native-base';
 import type { ReactNode } from 'react';
 import React from 'react';
 import { LogBox, Platform, SafeAreaView, StatusBar, Text } from 'react-native';
@@ -48,9 +47,7 @@ const App: () => ReactNode = () => {
         <PersistGate loading={<Loading />} persistor={persistor}>
           <OrientationLocker orientation={PORTRAIT} />
           <ThemeProvider>
-            <NativeBaseProvider>
-              <RootContainer />
-            </NativeBaseProvider>
+            <RootContainer />
           </ThemeProvider>
         </PersistGate>
       </Provider>
