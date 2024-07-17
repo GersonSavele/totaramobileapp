@@ -15,7 +15,7 @@ export default (): ExpoConfig => ({
   },
   ios: {
     supportsTablet: true,
-    bundleIdentifier: 'com.totaralearning.TotaraMobileApp',
+    bundleIdentifier: 'nz.co.abletech.totara', // TODO: Change this to the acutal ID when we have access
     buildNumber: '14',
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_IOS : './GoogleService-Info.plist'
   },
@@ -24,7 +24,7 @@ export default (): ExpoConfig => ({
       foregroundImage: './assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff'
     },
-    package: 'com.totaralearning.TotaraMobileApp',
+    package: 'nz.co.abletech.totara', // TODO: Change this to the acutal ID when we have access
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_ANDROID : './google-services.json'
   },
   plugins: [
