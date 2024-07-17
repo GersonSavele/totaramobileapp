@@ -98,7 +98,8 @@ pipeline {
                 script {
                     dir('totara-mobile-app') {
                         withCredentials([string(credentialsId: 'EAS_ACCESS_TOKEN', variable: 'EXPO_TOKEN')]) {
-                            sh 'EAS_NO_VCS=1 npm run eas:build:dev'
+                            // TODO: Uncomment when we're happy to run builds on each PR
+                            // sh 'EAS_NO_VCS=1 npm run eas:build:dev'
                         }
                     }
                 }
