@@ -29,10 +29,9 @@ import { translate } from '@totara/locale';
 import { margins, paddings } from '@totara/theme/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
 import { get } from 'lodash';
-import { FormControl, Input, ScrollView } from 'native-base';
 import React from 'react';
 import type { ImageSourcePropType } from 'react-native';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -103,7 +102,7 @@ const SiteUrl = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.mainContent}>
-        <FormControl style={styles.siteUrlContainer}>
+        <View style={styles.siteUrlContainer}>
           <View style={styles.logoContainer}>
             <Image source={require('@resources/images/totara_logo/totara_logo.png')} style={styles.logo} />
           </View>
@@ -133,7 +132,7 @@ const SiteUrl = () => {
               testID={TEST_IDS.SUBMIT_URL}
             />
           </View>
-        </FormControl>
+        </View>
       </ScrollView>
 
       <Text style={styles.version}>
