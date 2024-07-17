@@ -22,7 +22,6 @@ import FormError from './FormError';
 import GeneralErrorModal from './GeneralErrorModal';
 import ImageWrapper from './ImageWrapper';
 import InfoModal from './InfoModal';
-import InputTextWithInfo from './InputTextWithInfo';
 import LinkText from './LinkText';
 import Loading from './Loading';
 import LoadingError from './LoadingError';
@@ -32,6 +31,7 @@ import MoreText from './MoreText';
 import TotaraNavigationOptions from './NavigationOptions';
 import NetworkStatusIndicator from './NetworkStatusIndicator';
 import ProgressCircle from './ProgressCircle';
+import { TextInput } from './TextInput';
 import TouchableIcon from './TouchableIcon';
 import WebviewToolbar from './WebviewToolbar';
 
@@ -46,7 +46,6 @@ export {
   GeneralErrorModal,
   ImageWrapper,
   InfoModal,
-  InputTextWithInfo,
   LinkText,
   Loading,
   LoadingError,
@@ -55,6 +54,7 @@ export {
   MoreText,
   NetworkStatusIndicator,
   ProgressCircle,
+  TextInput,
   TotaraNavigationOptions,
   TouchableIcon,
   WebviewToolbar

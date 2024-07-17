@@ -18,7 +18,7 @@
 
 import { useNavigation } from '@react-navigation/native';
 import { Images } from '@resources/images';
-import { Button, InfoModal, InputTextWithInfo } from '@totara/components';
+import { Button, InfoModal, TextInput } from '@totara/components';
 import { useSession } from '@totara/core';
 import IncompatibleApiModal from '@totara/core/IncompatibleApiModal';
 import { config } from '@totara/lib';
@@ -102,7 +102,7 @@ const SiteUrl = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView enableOnAndroid contentContainerStyle={styles.mainContent}>
+      <ScrollView contentContainerStyle={styles.mainContent}>
         <FormControl style={styles.siteUrlContainer}>
           <View style={styles.logoContainer}>
             <Image source={require('@resources/images/totara_logo/totara_logo.png')} style={styles.logo} />
@@ -112,23 +112,18 @@ const SiteUrl = () => {
               <Text style={styles.urlTitle}>{translate('site_url.title')}</Text>
               <Text style={styles.urlInformation}>{translate('site_url.url_information')}</Text>
             </View>
-            <InputTextWithInfo
-              placeholder={translate('site_url.url_text_placeholder')}
-              message={inputSiteUrlMessage}
-              status={inputSiteUrlStatus === 'invalidUrl' ? 'error' : 'focus'}>
-              <Input
-                keyboardType="url"
-                clearButtonMode="while-editing"
-                autoCapitalize="none"
-                onChangeText={text => onChangeInputSiteUrl(text)}
-                value={inputSiteUrl}
-                style={styles.inputText}
-                autoFocus={inputSiteUrlStatus !== 'fetching'}
-                testID={TEST_IDS.SITE_URL_INPUT}
-                returnKeyType={'done'}
-                onSubmitEditing={() => onSubmit(inputSiteUrl!)}
-              />
-            </InputTextWithInfo>
+            <TextInput
+              keyboardType="url"
+              onChangeText={text => onChangeInputSiteUrl(text)}
+              value={inputSiteUrl}
+              autoFocus={inputSiteUrlStatus !== 'fetching'}
+              testID={TEST_IDS.SITE_URL_INPUT}
+              returnKeyType="done"
+              onSubmitEditing={() => onSubmit(inputSiteUrl!)}
+              status={inputSiteUrlStatus === 'invalidUrl' ? 'error' : 'focus'}
+              label={translate('site_url.url_text_placeholder')}
+              error={inputSiteUrlMessage}
+            />
             <Button
               variant="primary"
               onPress={() => onSubmit(inputSiteUrl!)}
@@ -204,10 +199,6 @@ const styles = StyleSheet.create({
   urlInformation: {
     ...TotaraTheme.textRegular,
     color: TotaraTheme.colorNeutral6
-  },
-  inputText: {
-    paddingRight: 0,
-    paddingLeft: 0
   },
   buttonEnter: {
     marginTop: margins.marginS

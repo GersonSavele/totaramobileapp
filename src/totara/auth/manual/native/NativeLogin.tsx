@@ -13,13 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// FIX: Native base typescript bug
-// @ts-nocheck
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Images } from '@resources/images';
-import { Button, FormError, InfoModal, InputTextWithInfo } from '@totara/components';
+import { Button, FormError, InfoModal } from '@totara/components';
 import { useSession } from '@totara/core';
 import { fetchData, registerDevice } from '@totara/core/AuthRoutines';
 import { config } from '@totara/lib';
@@ -28,16 +25,16 @@ import { translate } from '@totara/locale';
 import { gutter, ThemeContext } from '@totara/theme';
 import { margins } from '@totara/theme/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
-import { FormControl, Input, ScrollView } from 'native-base';
 import React, { useContext, useEffect } from 'react';
 import type { ImageSourcePropType } from 'react-native';
-import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+
+import { TextInput } from '@/src/totara/components';
 
 import { useNativeFlow } from './NativeFlowHook';
 
 const NativeLogin = () => {
-  // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
   const { siteInfo, host, apiKey, initSession } = useSession();
   const dispatch = useDispatch();
@@ -74,7 +71,7 @@ const NativeLogin = () => {
           isShow={nativeLoginState.errorStatusUnauthorized}
         />
       </View>
-      <ScrollView style={styles.content} enableOnAndroid>
+      <ScrollView style={styles.content}>
         <Image
           source={theme.urlLogo ? { uri: theme.urlLogo } : require('@resources/images/totara_logo/totara_logo.png')}
           style={styles.totaraLogo}
@@ -84,49 +81,28 @@ const NativeLogin = () => {
           <Text style={styles.loginTitle}>{translate('native_login.header_title')}</Text>
           <Text style={styles.loginInformation}>{translate('native_login.login_information')}</Text>
         </View>
-        <FormControl>
-          <View>
-            <InputTextWithInfo
-              placeholder={translate('native_login.username_text_placeholder')}
-              message={
-                nativeLoginState.inputUsernameStatus == 'error'
-                  ? translate('native_login.validation.enter_valid_username')
-                  : undefined
-              }
-              status={nativeLoginState.inputUsernameStatus}>
-              <Input
-                clearButtonMode="while-editing"
-                autoCapitalize="none"
-                onChangeText={inputUsernameWithShowError}
-                value={nativeLoginState.inputUsername}
-                style={styles.inputText}
-                onFocus={onFocusInput}
-                testID={TEST_IDS.USER_INPUT}
-              />
-            </InputTextWithInfo>
-          </View>
-          <View>
-            <InputTextWithInfo
-              placeholder={translate('native_login.password_text_placeholder')}
-              message={
-                nativeLoginState.inputPasswordStatus == 'error'
-                  ? translate('native_login.validation.enter_valid_password')
-                  : undefined
-              }
-              status={nativeLoginState.inputPasswordStatus}>
-              <Input
-                secureTextEntry={true}
-                clearButtonMode="while-editing"
-                onChangeText={inputPasswordWithShowError}
-                value={nativeLoginState.inputPassword}
-                style={styles.inputText}
-                onFocus={onFocusInput}
-                testID={TEST_IDS.USER_PW}
-              />
-            </InputTextWithInfo>
-          </View>
+        <View>
+          <TextInput
+            label={translate('native_login.username_text_placeholder')}
+            onChangeText={inputUsernameWithShowError}
+            value={nativeLoginState.inputUsername}
+            onFocus={onFocusInput}
+            testID={TEST_IDS.USER_INPUT}
+            status={nativeLoginState.inputUsernameStatus}
+            error={translate('native_login.validation.enter_valid_username')}
+          />
+          <TextInput
+            label={translate('native_login.password_text_placeholder')}
+            secureTextEntry
+            onChangeText={inputPasswordWithShowError}
+            value={nativeLoginState.inputPassword}
+            onFocus={onFocusInput}
+            testID={TEST_IDS.USER_PW}
+            status={nativeLoginState.inputPasswordStatus}
+            error={translate('native_login.validation.enter_valid_password')}
+          />
           <Button
-            type="variant"
+            variant="primary"
             onPress={onClickEnter}
             text={translate('general.enter')}
             mode={nativeLoginState.isRequestingLogin ? 'loading' : undefined}
@@ -140,7 +116,7 @@ const NativeLogin = () => {
               <Text style={styles.forgotCredential}>{translate('native_login.forgot_username_password')}</Text>
             </TouchableOpacity>
           </View>
-        </FormControl>
+        </View>
       </ScrollView>
       {nativeLoginState.unhandledLoginError && (
         <InfoModal
@@ -149,7 +125,7 @@ const NativeLogin = () => {
           imageSource={Images.generalError as ImageSourcePropType}
           testID={NATIVE_LOGIN_TEST_IDS.UNHANDLED_ERROR}>
           <Button
-            type="variant"
+            variant="primary"
             text={translate('native_login.auth_general_error.action_primary')}
             onPress={onFocusInput}
           />
@@ -187,10 +163,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     marginBottom: margins.marginM,
     marginTop: margins.margin2XL
-  },
-  inputText: {
-    paddingLeft: 0,
-    marginLeft: 0
   },
   forgotCredentialContainer: {
     justifyContent: 'space-around',
