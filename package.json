@@ -15,6 +15,7 @@
     "eas:build:dev": "npx eas build --platform android --profile development --non-interactive",
     "eas:build:uat": "npx eas build --platform all --branch uat",
     "eas:build:prod": "npx eas build --platform all --branch prod",
+    "eas-build-pre-install": "sh ./scripts/eas/eas-build-pre-install.sh",
     "eas-build-on-success": "sh ./scripts/eas/eas-build-on-success.sh",
     "eas-build-on-error": "sh ./scripts/eas/eas-build-on-error.sh"
   },
