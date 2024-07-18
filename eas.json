@@ -12,7 +12,7 @@
           "image": "latest"
         },
         "env": {
-          "APP_ENV": "development"
+          "APP_ENV": "dev"
         },
         "prebuildCommand": "prebuild --skip-dependency-update react",
         "cache": {

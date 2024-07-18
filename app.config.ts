@@ -2,7 +2,7 @@ import type { ConfigContext, ExpoConfig } from '@expo/config';
 
 export default (): ExpoConfig => ({
   slug: 'TotaraMobileApp',
-  name: 'TotaraMobileApp',
+  name: 'Totara',
   version: '1.3.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
@@ -40,7 +40,21 @@ export default (): ExpoConfig => ({
         }
       }
     ],
-    "./plugins/notifee-mod.js"
+    [
+      'app-icon-badge',
+      {
+        enabled: process.env.APP_ENV !== 'prod',
+        badges: [
+          {
+            text: process.env.APP_ENV,
+            type: 'banner',
+            color: 'white',
+            background: '#000000'
+          }
+        ]
+      }
+    ],
+    './plugins/notifee-mod.js'
   ],
   experiments: {},
   extra: {

@@ -35,6 +35,22 @@ pipeline {
     }
 
    stages {
+      stage('Checkout code') {
+        when {
+            expression { return params.GIT_REF != null && params.GIT_REF != '' }
+        }
+        steps {
+            echo "Git reference: ${params.GIT_REF}"
+            checkout([
+                $class: 'GitSCM', 
+                branches: [[name: "origin/${params.GIT_REF}"]], 
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [], 
+                submoduleCfg: []
+            ])
+          }
+        }
+
         stage('Install dependencies') {
             steps {
                 script {
@@ -89,7 +105,7 @@ pipeline {
                     dir('totara-mobile-app') {
                         withCredentials([string(credentialsId: 'EAS_ACCESS_TOKEN', variable: 'EXPO_TOKEN')]) {
                             // TODO: Uncomment when we're happy to run builds on each PR
-                            // sh 'EAS_NO_VCS=1 npm run eas:build:dev'
+                            sh "EAS_BUILD=1 EAS_NO_VCS=1 npm run eas:build:${APP_ENV}"
                         }
                     }
                 }

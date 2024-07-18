@@ -4,7 +4,7 @@ SLACK_URL='https://hooks.slack.com/services/T024FPB26/B07BXLY3C0N/XFuJAf5QgweGLL
 
 if [[ "$EAS_BUILD_PLATFORM" == "ios" ]]; then
   platform="iOS"
-  emoji="🍎"
+  emoji="🍏"
 
 elif [[ "$EAS_BUILD_PLATFORM" == "android" ]]; then
   platform="Android"
