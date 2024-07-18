@@ -12,7 +12,7 @@
     "lint": "npx eslint . --quiet --ext .js,.jsx,.ts,.tsx",
     "translations": "node scripts/post-install/install-translations.js",
     "lint:types": "npx tsc  --noemit",
-    "eas:build:dev": "npx eas build --platform android --profile development --non-interactive",
+    "eas:build:dev": "npx eas build --platform all --profile development --non-interactive",
     "eas:build:uat": "npx eas build --platform all --branch uat",
     "eas:build:prod": "npx eas build --platform all --branch prod",
     "eas-build-pre-install": "./scripts/eas/eas-build-pre-install.sh",
