@@ -46,16 +46,6 @@ pipeline {
             }
         }
 
-        stage('Install translations') {
-            steps {
-                script {
-                    dir('totara-mobile-app') {
-                        sh 'npm run translations'
-                    }
-                }
-            }
-        }
-
         stage('Run lint checks') {
             steps {
                 script {
