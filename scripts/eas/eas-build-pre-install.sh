@@ -6,6 +6,3 @@ if [[ "$EAS_BUILD_PLATFORM" == "android" ]]; then
 elif [[ "$EAS_BUILD_PLATFORM" == "ios" ]]; then
   HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake
 fi
-
-# Download locale translations for the build
-npm run translations

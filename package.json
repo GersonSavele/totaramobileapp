@@ -17,7 +17,8 @@
     "eas:build:prod": "npx eas build --platform all --branch prod",
     "eas-build-pre-install": "./scripts/eas/eas-build-pre-install.sh",
     "eas-build-on-success": "sh ./scripts/eas/eas-build-on-success.sh",
-    "eas-build-on-error": "sh ./scripts/eas/eas-build-on-error.sh"
+    "eas-build-on-error": "sh ./scripts/eas/eas-build-on-error.sh",
+    "postinstall": "npm run translations"
   },
   "dependencies": {
     "@apollo/client": "^3.10.8",
