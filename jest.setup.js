@@ -165,18 +165,6 @@ jest.mock("@react-native-firebase/messaging", () => {
   });
 });
 
-// jest.mock("@codler/react-native-keyboard-aware-scroll-view", () => {
-//   return {
-//     KeyboardAwareScrollView: jest.fn().mockImplementation(({ children }) => children)
-//   };
-// });
-
-// jest.mock("react-native-localize", () => {
-//   return {
-//     findBestAvailableLanguage: jest.fn()
-//   };
-// });
-
 jest.mock("date-fns", () => {
   return {
     formatDistance: jest.fn(),
