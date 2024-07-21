@@ -13,7 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { PDFView } from '@placeholders/react-native-view-pdf';
 import WebViewWrapper from '@totara/auth/WebViewWrapper';
 import { Loading } from '@totara/components';
 import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
@@ -21,10 +20,14 @@ import { TotaraTheme } from '@totara/theme/Theme';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
+import WebView from 'react-native-webview';
 
 import { useParams } from '@/src/totara/lib/hooks';
 
 const PDF_TYPE = 'application/pdf';
+/**
+ * WebviewActivity opens an activity with the given url
+ */
 
 const WebviewActivity = () => {
   const { uri, backAction, activity, fileurl, mimetype, apiKey } = useParams('WebviewActivity');
@@ -50,12 +53,10 @@ const PDFViewWrapper = ({ fileurl, apiKey }: { fileurl?: string; apiKey?: string
 
   return (
     <>
-      <PDFView
-        style={{ flex: 1 }}
-        resource={fileurl!}
-        resourceType={'url'}
-        urlProps={{ headers: { [AUTH_HEADER_FIELD]: `${apiKey}` } }}
-        onLoad={() => setIsLoaded(true)}></PDFView>
+      <WebView
+        source={{ headers: { [AUTH_HEADER_FIELD]: `${apiKey}` }, uri: fileurl }}
+        onLoadEnd={() => setIsLoaded(true)}
+      />
       {!isLoaded && (
         <View style={pdfViewStyle.loadingWrapper}>
           <Loading />

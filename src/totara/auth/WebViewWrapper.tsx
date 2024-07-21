@@ -25,7 +25,7 @@ import { AuthenticatedWebView } from './AuthenticatedWebView';
 
 type WebViewWrapperProps = {
   uri: string;
-  backAction?: () => boolean;
+  backAction?: () => boolean | void;
   onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
   showAllToolbarItems?: boolean;
 };
