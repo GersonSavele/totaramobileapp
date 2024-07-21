@@ -183,7 +183,7 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    expect(enrolmentKeyInputErrored.props.errorMessage).toBe(translate("enrolment_options.required"));
+    expect(enrolmentKeyInputErrored.props.error).toBe(translate("enrolment_options.required"));
   });
 
   test("Should not accept self enrolment with wrong key", async () => {
@@ -215,7 +215,7 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    expect(keyInputField.props.errorMessage).toBe("Incorrect enrolment key, please try again");
+    expect(keyInputField.props.error).toBe("Incorrect enrolment key, please try again");
   });
 
   test("Should not accept self enrolment with wrong key", async () => {
@@ -247,6 +247,6 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    expect(keyInputField.props.errorMessage).toBeNull();
+    expect(keyInputField.props.error).toBeNull();
   });
 });

@@ -14,9 +14,8 @@
  */
 
 import { NetworkStatus, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Input } from '@placeholders/react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import { Button } from '@totara/components';
+import { Button, TextInput } from '@totara/components';
 import { translate } from '@totara/locale';
 import { fontWeights, margins, paddings } from '@totara/theme/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
@@ -25,6 +24,7 @@ import { isEmpty } from 'lodash';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { Show } from '../../lib/components/Show';
 import { useParams } from '../../lib/hooks';
 import { enrolmentInfoQuery, guestAccessQuery, selfEnrolmentMutation } from './api';
 
@@ -42,13 +42,6 @@ const styles = StyleSheet.create({
   widgetTitle: {
     ...TotaraTheme.textRegular,
     fontWeight: fontWeights.fontWeightBold
-  },
-  input: {
-    paddingLeft: 0,
-    marginTop: margins.marginL
-  },
-  inputError: {
-    color: TotaraTheme.colorAlert
   },
   button: {
     marginTop: margins.marginL
@@ -137,21 +130,16 @@ const GuestAccessWidget = ({
   return (
     <View testID={'guest_access_widget'} style={styles.widgetContainer}>
       <Text style={styles.widgetTitle}>{translate('enrolment_options.guest_access')}</Text>
-      {passwordRequired && (
-        <Input
-          // TODO: Remove this TS ignore once the actual component is implemented
-          // @ts-ignore
-          containerStyle={styles.input}
-          placeholder={translate('enrolment_options.password_required')}
-          clearButtonMode="while-editing"
-          autoCapitalize="none"
-          testID={'guest_access_password'}
-          returnKeyType={'done'}
-          errorMessage={passwordState.errorMessage}
-          errorStyle={styles.inputError}
+      {/* <Show when={passwordRequired}> */}
+        <TextInput
+          label={translate('enrolment_options.password_required')}
+          testID="guest_access_password"
+          returnKeyType="done"
+          error={passwordState.errorMessage}
+          status={passwordState.errorMessage ? 'error' : undefined}
           onChangeText={onPasswordChange}
         />
-      )}
+      {/* </Show> */}
       <Button
         variant="primary"
         testID={'guest_access_button'}
@@ -230,27 +218,23 @@ const SelfEnrolmentWidget = ({
 
   const enrolmentErrorKeyRequiredMsg = enrolmentKeyState.isNotValid && translate('enrolment_options.required');
   const enrolmentErrorKeyMsg = dataSelfEnrol?.mobile_findlearning_enrolment_result?.msgKey;
+  const error = enrolmentErrorKeyRequiredMsg || enrolmentErrorKeyMsg;
 
   return (
     <View testID={'self_enrolment_widget'} style={styles.widgetContainer}>
       <Text testID={'self_enrolment_title'} style={styles.widgetTitle}>
         {title}
       </Text>
-      {passwordRequired && (
-        <Input
-          // TODO: Remove this TS ignore once the actual component is implemented
-          // @ts-ignore
-          containerStyle={styles.input}
-          placeholder={translate('enrolment_options.enrolment_key')}
-          clearButtonMode="while-editing"
-          autoCapitalize="none"
-          testID={'self_enrolment_key'}
-          returnKeyType={'done'}
-          errorMessage={enrolmentErrorKeyRequiredMsg || enrolmentErrorKeyMsg}
-          errorStyle={styles.inputError}
+      <Show when={passwordRequired}>
+        <TextInput
+          label={translate('enrolment_options.enrolment_key')}
+          testID="self_enrolment_key"
+          returnKeyType="done"
+          error={error}
+          status={error ? 'error' : undefined}
           onChangeText={onEnrolmentKeyChange}
         />
-      )}
+      </Show>
       <Button
         variant="primary"
         testID={'self_enrolment_button'}
@@ -271,7 +255,7 @@ const EnrolmentOptionsContent = ({
   enrolmentOptions: EnrolmentOption[];
 }) => {
   return (
-    <ScrollView style={styles.mainContainer}>
+    <ScrollView style={styles.mainContainer} keyboardDismissMode='on-drag' automaticallyAdjustKeyboardInsets>
       <View testID={'enrolment_options_content'}>
         {enrolmentOptions
           .sort((e1, e2) => e1.sortOrder - e2.sortOrder)
