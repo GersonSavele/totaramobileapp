@@ -56,9 +56,11 @@ const TabContainer = () => {
   };
 
   return (
-    <Tab.Navigator screenOptions={{
-      tabBarShowLabel: false
-    }}>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        headerShown: false
+      }}>
       <Tab.Screen
         name="Learning"
         component={CurrentLearningStack}
@@ -84,7 +86,7 @@ const TabContainer = () => {
         />
       )}
       <Tab.Screen
-        name="Downloads"
+        name="DownloadsStack"
         component={DownloadsStack}
         options={{
           tabBarAccessibilityLabel: translate("downloads.title"),

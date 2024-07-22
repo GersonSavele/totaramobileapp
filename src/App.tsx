@@ -42,7 +42,7 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
 
 const App: () => ReactNode = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <>
       <Provider store={store}>
         <PersistGate loading={<Loading />} persistor={persistor}>
           <OrientationLocker orientation={PORTRAIT} />
@@ -52,7 +52,7 @@ const App: () => ReactNode = () => {
         </PersistGate>
       </Provider>
       <FlashMessage position="top" />
-    </SafeAreaView>
+    </>
   );
 };
 
