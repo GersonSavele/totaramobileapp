@@ -12,13 +12,14 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React, { ReactNode } from "react";
-import { View } from "react-native";
-import { isEmpty } from "lodash";
+import { isEmpty } from 'lodash';
+import type { ReactNode } from 'react';
+import React from 'react';
+import type { ViewStyle } from 'react-native';
+import { View } from 'react-native';
 
-import { ToFullSummary } from "./treeOperations";
-import { jsonObjectToWekaNodes, wrappedWekaNodes } from "./wekaUtils";
-import { ViewStyle } from "react-native";
+import { ToFullSummary } from './treeOperations';
+import { jsonObjectToWekaNodes, wrappedWekaNodes } from './wekaUtils';
 
 const WekaContent = ({ content, testID, style }: { content?: any; testID?: string; style?: ViewStyle }) => {
   if (isEmpty(content)) {

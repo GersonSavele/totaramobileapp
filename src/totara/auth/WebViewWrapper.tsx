@@ -13,14 +13,15 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { useEffect, useRef, useState } from "react";
-import { WebView, WebViewNavigation } from "react-native-webview";
-import { View, BackHandler } from "react-native";
-import { AuthenticatedWebView } from "./AuthenticatedWebView";
-import WebviewToolbar from "@totara/components/WebviewToolbar";
-import { useSession } from "@totara/core";
-import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
+import WebviewToolbar from '@totara/components/WebviewToolbar';
+import { useSession } from '@totara/core';
+import { DEFAULT_LANGUAGE } from '@totara/lib/constants';
+import React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { BackHandler, View } from 'react-native';
+import type { WebView, WebViewNavigation } from 'react-native-webview';
+
+import { AuthenticatedWebView } from './AuthenticatedWebView';
 
 type WebViewWrapperProps = {
   uri: string;
@@ -46,7 +47,7 @@ const WebViewWrapper = ({
   useEffect(() => {
     if (uri && backAction) {
       // @ts-ignore
-      const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
       return () => backHandler.remove();
     }
   }, [uri, backAction]);

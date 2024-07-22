@@ -13,16 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React from "react";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings, fontWeights, margins, borderRadius } from "@totara/theme/constants";
-import { capitalizeFirstLetter } from "@totara/lib/tools";
-import { CatalogItem } from "@totara/types/FindLearning";
-import { ImageElement } from "./ImageElement";
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
-import { FINDLEARNING_TEST_IDS } from "@totara/lib/testIds";
-import { translate } from "@totara/locale";
+import { FINDLEARNING_TEST_IDS } from '@totara/lib/testIds';
+import { capitalizeFirstLetter } from '@totara/lib/tools';
+import { translate } from '@totara/locale';
+import { borderRadius, fontWeights, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { CatalogItem } from '@totara/types/FindLearning';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+
+import { ImageElement } from './ImageElement';
 
 interface LearningItemTileProps {
   item: CatalogItem;
@@ -72,19 +73,19 @@ const styles = StyleSheet.create({
     marginBottom: margins.marginL,
     borderColor: TotaraTheme.colorNeutral5,
     borderWidth: 1,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderRadius: borderRadius.borderRadiusS,
     backgroundColor: TotaraTheme.colorNeutral2
   },
   itemImage: {
-    width: "100%",
+    width: '100%',
     aspectRatio: 2,
     backgroundColor: TotaraTheme.colorPrimary
   },
   detailWrapper: {
     padding: paddings.paddingL,
-    justifyContent: "space-between",
-    height: "50%"
+    justifyContent: 'space-between',
+    height: '50%'
   },
   title: {
     ...TotaraTheme.textRegular,
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     color: TotaraTheme.colorNeutral7
   },
   skeletonWrapper: {
-    flexBasis: "50%",
+    flexBasis: '50%',
     padding: paddings.paddingL,
     paddingTop: 0,
     marginBottom: margins.marginS
@@ -114,6 +115,6 @@ const styles = StyleSheet.create({
     height: 15,
     marginTop: margins.marginL,
     borderRadius: borderRadius.borderRadiusM,
-    width: "40%"
+    width: '40%'
   }
 });

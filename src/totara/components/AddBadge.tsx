@@ -13,14 +13,14 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import Icon from '@totara/components/Icon';
+import { ThemeContext } from '@totara/theme';
+import { iconSizes } from '@totara/theme/constants';
+import { Status } from '@totara/types';
+import React, { useContext } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import Icon from "@totara/components/Icon";
-import { Status } from "@totara/types";
-import ProgressCircle from "./ProgressCircle";
-import { ThemeContext } from "@totara/theme";
-import { iconSizes } from "@totara/theme/constants";
+import ProgressCircle from './ProgressCircle';
 
 type Props = {
   size: number;
@@ -64,15 +64,15 @@ const RightBadge = ({ status, size, offsetSize }: Props) => {
       container: {
         top: -1 * offsetSize,
         right: -1 * offsetSize,
-        position: "absolute",
+        position: 'absolute',
         backgroundColor: backgroundColor,
         borderRadius: size * 2,
         borderWidth: size / 8,
         borderColor: borderColor,
         width: size * 2,
         height: size * 2,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
       }
     });
   };
@@ -94,7 +94,7 @@ const RightBadge = ({ status, size, offsetSize }: Props) => {
       );
     }
     case Status.hidden: {
-      const viewStyle = getContainerStyle(size, offsetSize, "#999999", theme.colorNeutral1);
+      const viewStyle = getContainerStyle(size, offsetSize, '#999999', theme.colorNeutral1);
       return (
         <View style={viewStyle.container}>
           <LockBadge size={size} color={theme.textColorLight} />
@@ -106,7 +106,7 @@ const RightBadge = ({ status, size, offsetSize }: Props) => {
       return null;
     }
     default: {
-      if (typeof status == "number") {
+      if (typeof status == 'number') {
         const viewStyle = getContainerStyle(size, offsetSize, theme.colorNeutral1, theme.colorNeutral1);
         return (
           <View style={viewStyle.container}>

@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet } from "react-native";
-import { margins, paddings, opacities } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { margins, opacities, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { StyleSheet } from 'react-native';
 
 const separator = {
   opacity: opacities.opacityS,
@@ -34,7 +34,7 @@ const listViewStyles = StyleSheet.create({
     paddingLeft: paddings.paddingL
   },
   rowItem: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: paddings.paddingM,
     backgroundColor: TotaraTheme.colorNeutral1
   },
@@ -48,15 +48,15 @@ const listViewStyles = StyleSheet.create({
     height: 2
   },
   noContent: {
-    height: "100%",
-    justifyContent: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
+    height: '100%',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   noContentTitle: {
     marginTop: margins.margin2XL,
-    fontWeight: "bold"
+    fontWeight: 'bold'
   }
 });
 

@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet } from "react-native";
-import { spacedFlexRow } from "@totara/lib/styles/base";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { margins } from "@totara/theme/constants";
-import { Images } from "@resources/images";
+import { Images } from '@resources/images';
+import { spacedFlexRow } from '@totara/lib/styles/base';
+import { margins } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { StyleSheet } from 'react-native';
 const { colorAccent, colorNeutral7, colorSuccess, colorNeutral6, colorAlert } = TotaraTheme;
 
 const courseDetailsStyle = StyleSheet.create({
@@ -38,13 +38,13 @@ const courseDetailsStyle = StyleSheet.create({
 
 const completionStates = {
   notAvailable: {
-    icon: "lock",
+    icon: 'lock',
     backgroundColor: colorAccent,
     iconColor: colorNeutral7,
     borderColor: colorNeutral7
   },
   completed: {
-    icon: "check",
+    icon: 'check',
     backgroundColor: colorSuccess,
     iconColor: colorAccent,
     borderColor: colorSuccess
@@ -57,7 +57,7 @@ const completionStates = {
     fontAwesomeIcon: false
   },
   completeFail: {
-    icon: "times",
+    icon: 'times',
     backgroundColor: colorAlert,
     iconColor: colorAccent,
     borderColor: colorAlert

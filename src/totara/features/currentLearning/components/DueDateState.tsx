@@ -13,16 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet, Text, View } from "react-native";
-import moment from "moment";
-import React from "react";
-import { paddings } from "@totara/theme/constants";
-import { getLocale, translate } from "@totara/locale";
-import { DATE_FORMAT } from "@totara/lib/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { isInvalidDueDate } from "../utils";
+import { DATE_FORMAT } from '@totara/lib/constants';
+import { getLocale, translate } from '@totara/locale';
+import { paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
 import { formatDistance, parseISO } from 'date-fns';
 import * as locales from 'date-fns/locale';
+import moment from 'moment';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { isInvalidDueDate } from '../utils';
 
 /**
  * Component to render dueDate and change style depending on the dueDateState
@@ -44,18 +45,20 @@ const getDueDateModeStyle = (dueDateState?: string) => {
   }
 };
 
-const DueDateState = ({ dueDate = "", dueDateState }: Props) => {
+const DueDateState = ({ dueDate = '', dueDateState }: Props) => {
   if (isInvalidDueDate({ dueDate, dueDateState })) return null;
   const dueDateModeStyle = getDueDateModeStyle(dueDateState);
-  const formatedDistance = formatDistance(new Date(parseISO(`${dueDate}`)), new Date(), { locale: locales[getLocale()] });
+  const formatedDistance = formatDistance(new Date(parseISO(`${dueDate}`)), new Date(), {
+    locale: locales[getLocale()]
+  });
   return (
     <View style={[styles.container, dueDateModeStyle]}>
       <Text style={[TotaraTheme.textXSmall, { color: TotaraTheme.textColorLight }]}>
         {dueDateState && dueDateState == DueDateStateStatus.danger
-          ? translate("current_learning.overdue_by")
-          : translate("current_learning.due_in")}
+          ? translate('current_learning.overdue_by')
+          : translate('current_learning.due_in')}
         &nbsp;
-        <Text style={{ fontWeight: "bold" }}>{formatedDistance}&nbsp;</Text>
+        <Text style={{ fontWeight: 'bold' }}>{formatedDistance}&nbsp;</Text>
       </Text>
       <Text style={[TotaraTheme.textXSmall, { color: TotaraTheme.textColorLight }]}>
         ({moment(dueDate).format(DATE_FORMAT)})
@@ -65,17 +68,17 @@ const DueDateState = ({ dueDate = "", dueDateState }: Props) => {
 };
 
 enum DueDateStateStatus {
-  warning = "warning",
-  danger = "danger",
-  info = "info"
+  warning = 'warning',
+  danger = 'danger',
+  info = 'info'
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: paddings.paddingL,
-    flexWrap: "wrap",
-    alignItems: "center"
+    flexWrap: 'wrap',
+    alignItems: 'center'
   }
 });
 

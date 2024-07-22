@@ -13,15 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Dimensions } from "react-native";
 import {
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,
   SCREEN_WIDTH_SMALL,
   SCREEN_WIDTH_X_LARGE
-} from "@totara/lib/constants";
+} from '@totara/lib/constants';
+import { Dimensions } from 'react-native';
 
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export const deviceSize = () => {
   if (SCREEN_WIDTH > 414) {

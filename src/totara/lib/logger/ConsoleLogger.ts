@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Logger } from "./Logger";
+import type { Logger } from './Logger';
 
 /**
  * ConsoleLogger is a basic logger that outputs into JS console
@@ -24,24 +24,24 @@ class ConsoleLogger implements Logger {
   close() {}
 
   debug(message: string, ...others: any[]) {
-    console.debug("[DEBUG]", message, others);
+    console.debug('[DEBUG]', message, others);
   }
 
   info(message: string, ...others: any[]) {
-    console.info("[INFO]", message, others);
+    console.info('[INFO]', message, others);
   }
 
   warn(message: string, ...others: any[]) {
-    console.warn("[WARN]", message, others);
+    console.warn('[WARN]', message, others);
   }
 
   error(message: string, error: Error, ...others: any[]) {
     // eslint-disable-next-line no-undef
     if (__DEV__) {
       // its ok to ignore __DEV__ not defined on TS.  It is defined globally
-      console.error("[ERROR]", message, error, others); // only blow up on development mode
+      console.error('[ERROR]', message, error, others); // only blow up on development mode
     } else {
-      console.log("[ERROR]", message, error, others);
+      console.log('[ERROR]', message, error, others);
     }
   }
 }

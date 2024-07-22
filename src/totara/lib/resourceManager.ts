@@ -19,26 +19,20 @@
  * It MUST NOT HANDLE any specific business related file
  * It MUST NOT HANDLE any async storage operation
  * */
-import { unzip, subscribe } from "react-native-zip-archive";
+import type { DownloadBeginCallbackResultT, DownloadProgressCallbackResultT } from '@dr.pogodin/react-native-fs';
+import { downloadFile, exists, isResumable, resumeDownload, unlink } from '@dr.pogodin/react-native-fs';
+import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
+import { uuid } from '@totara/lib/tools';
+import { translate } from '@totara/locale';
+import type { Resource } from '@totara/types';
+import type { ResourceType } from '@totara/types/Resource';
+import { ResourceState } from '@totara/types/Resource';
+import { Platform } from 'react-native';
+import { subscribe, unzip } from 'react-native-zip-archive';
 
-import {
-  DownloadBeginCallbackResultT,
-  downloadFile,
-  DownloadProgressCallbackResultT,
-  unlink,
-  isResumable,
-  resumeDownload,
-  exists
-} from "@dr.pogodin/react-native-fs";
-import { Resource } from "@totara/types";
-import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
-import { ResourceState, ResourceType } from "@totara/types/Resource";
-import { uuid } from "@totara/lib/tools";
-import { addResource, updateResource, deleteResource as storeDeleteResource } from "../actions/resource";
-import { store } from "../store";
-import { showMessage } from ".";
-import { translate } from "@totara/locale";
-import { Platform } from "react-native";
+import { addResource, deleteResource as storeDeleteResource, updateResource } from '../actions/resource';
+import { store } from '../store';
+import { showMessage } from '.';
 
 const onDownloadBegin = (id: string, res: DownloadBeginCallbackResultT) => {
   updateResource({
@@ -124,7 +118,7 @@ const download = ({ apiKey, customId, type, name, resourceUrl, targetPathFile, t
 
         return unzip(targetPathFile, targetExtractPath);
       } else {
-        showMessage({ title: "", text: translate("general.error_unknown") });
+        showMessage({ title: '', text: translate('general.error_unknown') });
       }
     })
     .then(unzipped => {
@@ -162,7 +156,7 @@ const resumeDownloads = () => {
     .filter(resource => statesForResume.some(state => state === resource.state))
     .map(resource => resource.jobId);
 
-  if (Platform.OS === "ios") {
+  if (Platform.OS === 'ios') {
     //this feature is only available to iOS
     filteredJobId.forEach(async id => {
       if (await isResumable(id)) {

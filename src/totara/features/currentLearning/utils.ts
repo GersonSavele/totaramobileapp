@@ -13,53 +13,54 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import { includes } from "lodash";
-import { sortBy, isEmpty } from "lodash";
-import { completionStates } from "./course/courseDetailsStyle";
-import { completionTrack, completionStatus, completionIconStateKey, learningItemEnum } from "../constants";
-import { translate } from "@totara/locale";
-import moment from "moment";
+import { translate } from '@totara/locale';
+import { includes } from 'lodash';
+import { isEmpty, sortBy } from 'lodash';
+import moment from 'moment';
 
-const extractTargetId = (id) => {
-  return includes(id, "_") ? id.split("_")[1] : id;
+import { completionIconStateKey, completionStatus, completionTrack, learningItemEnum } from '../constants';
+import { completionStates } from './course/courseDetailsStyle';
+
+const extractTargetId = id => {
+  return includes(id, '_') ? id.split('_')[1] : id;
 };
 
-const sortByDueDateThenTypeThenFullName = (toBeSorted) => {
+const sortByDueDateThenTypeThenFullName = toBeSorted => {
   const typesForSorting = {
     [learningItemEnum.Certification]: 1,
     [learningItemEnum.Program]: 2,
     [learningItemEnum.Course]: 3
   };
 
-  const withItemTypeMapped = toBeSorted.map((x) => {
+  const withItemTypeMapped = toBeSorted.map(x => {
     return {
       ...x,
       itemTypeMapped: typesForSorting[x.itemtype]
     };
   });
 
-  return sortBy(withItemTypeMapped, ["duedate", "itemTypeMapped", "fullname"]);
+  return sortBy(withItemTypeMapped, ['duedate', 'itemTypeMapped', 'fullname']);
 };
 
 const completionAccessibility = {
   notAvailable: {
-    label: translate("course.course_details.accessibility_activity_unavailable"),
-    role: "none",
+    label: translate('course.course_details.accessibility_activity_unavailable'),
+    role: 'none',
     state: { disabled: true }
   },
   manualCompletion: {
-    label: translate("course.course_details.accessibility_manual_completion"),
+    label: translate('course.course_details.accessibility_manual_completion'),
     state: { checked: false },
-    role: "checkbox"
+    role: 'checkbox'
   },
   autoCompletion: {
-    role: "checkbox",
-    label: translate("course.course_details.accessibility_auto_completion"),
+    role: 'checkbox',
+    label: translate('course.course_details.accessibility_auto_completion'),
     state: { checked: false, disabled: true }
   },
   completeFail: {
-    label: translate("course.course_details.accessibility_failed"),
-    role: "none"
+    label: translate('course.course_details.accessibility_failed'),
+    role: 'none'
   }
 };
 
@@ -111,9 +112,9 @@ const isInvalidDueDate = ({ dueDate, dueDateState }: { dueDate?: Date | string |
 };
 
 export {
-  extractTargetId,
-  sortByDueDateThenTypeThenFullName,
-  getCompletionStatus,
   completionAccessibility,
-  isInvalidDueDate
+  extractTargetId,
+  getCompletionStatus,
+  isInvalidDueDate,
+  sortByDueDateThenTypeThenFullName
 };

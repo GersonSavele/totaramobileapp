@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import * as Progress from "react-native-progress";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import * as Progress from 'react-native-progress';
 
 type ProgressCircleParam = {
   progress?: number;
@@ -46,13 +46,13 @@ const ProgressCircle = ({
       thickness={2}
       borderWidth={0}
       indeterminate={indeterminate}
-      formatText={() => progress + "%"}
+      formatText={() => progress + '%'}
       showsText={true}
       textStyle={{
         fontSize: TotaraTheme.textXXSmall.fontSize,
-        textAlign: "center",
+        textAlign: 'center',
         color: color ? color : TotaraTheme.textColorDark,
-        fontWeight: "bold"
+        fontWeight: 'bold'
       }}
     />
   );

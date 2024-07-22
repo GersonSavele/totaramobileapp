@@ -13,14 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
-import { translate } from "@totara/locale";
-import CriteriaSheet from "../components/CriteriaSheet";
-import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
-import listViewStyles from "@totara/theme/listView";
-import { paddings } from "@totara/theme/constants";
-import MoreInfo from "@totara/components/MoreInfo";
+import MoreInfo from '@totara/components/MoreInfo';
+import CurrentLearningListViewItem from '@totara/features/currentLearning/learningItems/CurrentLearningListViewItem';
+import { translate } from '@totara/locale';
+import { paddings } from '@totara/theme/constants';
+import listViewStyles from '@totara/theme/listView';
+import React, { useEffect, useState } from 'react';
+import { FlatList, View } from 'react-native';
+
+import CriteriaSheet from '../components/CriteriaSheet';
 
 const LearningItems = ({ item, navigation }: any) => {
   // Note: This navigation is only injected for testing purposes.
@@ -67,18 +68,18 @@ const CourseList = ({ navigation }: CourseListProps) => {
   };
 
   return (
-    <View testID={"test_course_list"}>
+    <View testID={'test_course_list'}>
       <FlatList
         ItemSeparatorComponent={renderSeparator}
         ListFooterComponent={renderSeparator}
-        style={{ height: "100%" }}
+        style={{ height: '100%' }}
         data={courseList.courses}
         renderItem={renderItems}
         keyExtractor={(_, id) => id.toString()}
         showsHorizontalScrollIndicator={false}
       />
       <CriteriaSheet
-        title={translate("course_group.criteria.bottom_sheet_header")}
+        title={translate('course_group.criteria.bottom_sheet_header')}
         criteriaList={courseList.completionCriteria}
         onClose={onClose}
         index={index}

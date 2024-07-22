@@ -13,25 +13,26 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { Text, TouchableOpacity, View, ScrollView, Modal } from "react-native";
-import { isEmpty } from "lodash";
-import { courseSelfComplete } from "../course/api";
-import { AddBadge, Loading, GeneralErrorModal, CircleIcon } from "@totara/components";
-import { translate } from "@totara/locale";
-import { DescriptionFormat } from "@totara/types/LearningItem";
-import CourseCompletionModal from "../CourseCompletionModal";
-import { Criteria } from "@totara/types";
-import SelfCompletion from "./SelfCompletion";
-import { courseCriteria } from "@totara/features/constants";
-import { overviewStyles } from "./overviewStyles";
-import { iconSizes } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import listViewStyles from "@totara/theme/listView";
-import { activeOpacity } from "@totara/lib/styles/base";
-import { CL_TEST_IDS } from "@totara/lib/testIds";
-import { DescriptionContent } from "@totara/components/DescriptionContent";
+import { useMutation } from '@apollo/client';
+import { AddBadge, CircleIcon, GeneralErrorModal, Loading } from '@totara/components';
+import { DescriptionContent } from '@totara/components/DescriptionContent';
+import { courseCriteria } from '@totara/features/constants';
+import { activeOpacity } from '@totara/lib/styles/base';
+import { CL_TEST_IDS } from '@totara/lib/testIds';
+import { translate } from '@totara/locale';
+import { iconSizes } from '@totara/theme/constants';
+import listViewStyles from '@totara/theme/listView';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { Criteria } from '@totara/types';
+import type { DescriptionFormat } from '@totara/types/LearningItem';
+import { isEmpty } from 'lodash';
+import React, { useState } from 'react';
+import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+
+import { courseSelfComplete } from '../course/api';
+import CourseCompletionModal from '../CourseCompletionModal';
+import { overviewStyles } from './overviewStyles';
+import SelfCompletion from './SelfCompletion';
 
 type OverviewProps = {
   id: number;
@@ -68,7 +69,7 @@ const OverviewDetails = ({
     completionEnabled &&
     criteria &&
     criteria?.some(value => {
-      return value["type"] === courseCriteria.selfComplete;
+      return value['type'] === courseCriteria.selfComplete;
     });
 
   const showTabs = isSelfCompletion || completionEnabled || showGrades;
@@ -117,17 +118,17 @@ const OverviewDetails = ({
 
 const Grade = ({ gradeFinal }: { gradeFinal: number }) => {
   return (
-    <TouchableOpacity style={overviewStyles.container} activeOpacity={1.0} onPress={() => { }}>
+    <TouchableOpacity style={overviewStyles.container} activeOpacity={1.0} onPress={() => {}}>
       <View style={overviewStyles.contentWrap}>
         <View style={overviewStyles.innerViewWrap}>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row' }}>
             <Text style={overviewStyles.gradePrefixText}>{`${gradeFinal}`.length > 0 ? gradeFinal : 0}</Text>
           </View>
         </View>
         <View style={overviewStyles.horizontalSeparator} />
         <View style={overviewStyles.carouselTextContainer}>
           <Text numberOfLines={1} style={overviewStyles.labelWrap}>
-            {translate("course.grade.title")}
+            {translate('course.grade.title')}
           </Text>
         </View>
       </View>
@@ -156,7 +157,7 @@ const Progress = ({ progress, isCourseSet, showCriteriaList = () => null }: Prog
         <View style={overviewStyles.horizontalSeparator} />
         <View style={overviewStyles.carouselTextContainer}>
           <Text numberOfLines={1} style={overviewStyles.labelWrap}>
-            {translate("course.progress.title")}
+            {translate('course.progress.title')}
           </Text>
         </View>
       </View>
@@ -171,15 +172,15 @@ type CompletionProps = {
   courseRefreshCallback?: () => {};
 };
 
-const Complete = ({ id, criteria, onclickContinueLearning = () => { }, courseRefreshCallback }: CompletionProps) => {
+const Complete = ({ id, criteria, onclickContinueLearning = () => {}, courseRefreshCallback }: CompletionProps) => {
   const isSelfCompleted = criteria?.some(value => {
-    if (value["type"] === courseCriteria.selfComplete) {
-      return value["complete"] === true;
+    if (value['type'] === courseCriteria.selfComplete) {
+      return value['complete'] === true;
     }
   });
 
   const isCourseCompleted = criteria?.every(value => {
-    return value["complete"] === true;
+    return value['complete'] === true;
   });
 
   const refetchCourseQueries = () => {
@@ -229,7 +230,7 @@ const Complete = ({ id, criteria, onclickContinueLearning = () => { }, courseRef
         <View style={overviewStyles.horizontalSeparator} />
         <View style={overviewStyles.carouselTextContainer}>
           <Text numberOfLines={1} style={overviewStyles.labelWrap}>
-            {translate("course.mark_as_complete.title")}
+            {translate('course.mark_as_complete.title')}
           </Text>
         </View>
       </View>
@@ -258,7 +259,7 @@ type SummaryProps = {
   summaryFormat?: DescriptionFormat;
 };
 
-const Summary = ({ summary = "", summaryTypeTitle = "", summaryFormat }: SummaryProps) => {
+const Summary = ({ summary = '', summaryTypeTitle = '', summaryFormat }: SummaryProps) => {
   return (
     <View style={overviewStyles.summaryContainer}>
       <Text numberOfLines={1} style={TotaraTheme.textHeadline}>

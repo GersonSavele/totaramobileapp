@@ -13,15 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useEffect, useReducer } from "react";
+import { fetchData } from '@totara/core/AuthRoutines';
+import { config } from '@totara/lib';
+import { isValidUrlText } from '@totara/lib/tools';
+import { translate } from '@totara/locale';
+import type { SiteInfo } from '@totara/types/SiteInfo';
+import { useEffect, useReducer } from 'react';
+import { getVersion } from 'react-native-device-info';
 
-import { config } from "@totara/lib";
-import { translate } from "@totara/locale";
-import { isValidUrlText } from "@totara/lib/tools";
-import { fetchData } from "@totara/core/AuthRoutines";
-import { SiteInfo } from "@totara/types/SiteInfo";
-import { getVersion } from "react-native-device-info";
-import { formatUrl } from "../authUtils";
+import { formatUrl } from '../authUtils';
 
 export type useSiteUrlProps = {
   siteUrl?: string;
@@ -36,42 +36,42 @@ export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: useSiteUrlProps) => {
   });
 
   useEffect(() => {
-    if (siteUrlState.inputSiteUrlStatus === "fetching") {
+    if (siteUrlState.inputSiteUrlStatus === 'fetching') {
       // eslint-disable-next-line no-undef
       const fetchDataWithFetch = fetchData(fetch);
       const onSubmitCall = fetchDataWithFetch<SiteInfo>(config.infoUri(siteUrlState.inputSiteUrl!), {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({ version: getVersion() })
       });
 
       onSubmitCall
-        .then((result) => {
+        .then(result => {
           const { version } = result;
           if (version < config.minApiVersion) {
-            dispatch({ type: "minAPIVersionMismatch" });
+            dispatch({ type: 'minAPIVersionMismatch' });
             return;
           }
 
-          dispatch({ type: "done" });
+          dispatch({ type: 'done' });
           onSiteInfoDone(result);
         })
-        .catch((error) => {
-          const errorType = error.status === 404 ? "invalidAPI" : "networkError";
+        .catch(error => {
+          const errorType = error.status === 404 ? 'invalidAPI' : 'networkError';
           dispatch({ type: errorType, payload: error.message });
         });
     }
   }, [siteUrlState.inputSiteUrlStatus]);
 
   const onSubmit = (siteUrl: string) => {
-    dispatch({ type: "submit", payload: siteUrl });
+    dispatch({ type: 'submit', payload: siteUrl });
   };
 
   const onChangeInputSiteUrl = (siteUrl: string) => {
-    dispatch({ type: "change", payload: siteUrl });
+    dispatch({ type: 'change', payload: siteUrl });
   };
 
   const reset = () => {
-    dispatch({ type: "done", payload: siteUrl });
+    dispatch({ type: 'done', payload: siteUrl });
   };
 
   return {
@@ -84,36 +84,36 @@ export const useSiteUrl = ({ siteUrl, onSiteInfoDone }: useSiteUrlProps) => {
 
 const siteUrlReducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "submit": {
+    case 'submit': {
       if (action.payload && isValidUrlText(action.payload)) {
         return {
           ...state,
-          inputSiteUrl: formatUrl(action.payload || ""),
-          inputSiteUrlStatus: "fetching"
+          inputSiteUrl: formatUrl(action.payload || ''),
+          inputSiteUrlStatus: 'fetching'
         };
       } else {
         return {
           ...state,
-          inputSiteUrlStatus: "invalidUrl",
-          inputSiteUrlMessage: translate("site_url.validation.enter_valid_url")
+          inputSiteUrlStatus: 'invalidUrl',
+          inputSiteUrlMessage: translate('site_url.validation.enter_valid_url')
         };
       }
     }
-    case "done": {
+    case 'done': {
       return {
         ...state,
-        inputSiteUrlStatus: "done"
+        inputSiteUrlStatus: 'done'
       };
     }
-    case "change": {
+    case 'change': {
       return {
         ...state,
         inputSiteUrl: action.payload
       };
     }
-    case "networkError":
-    case "invalidAPI":
-    case "minAPIVersionMismatch": {
+    case 'networkError':
+    case 'invalidAPI':
+    case 'minAPIVersionMismatch': {
       return {
         ...state,
         inputSiteUrlStatus: action.type,
@@ -128,12 +128,12 @@ const siteUrlReducer = (state: State, action: Action): State => {
 };
 
 type State = {
-  inputSiteUrlStatus?: "done" | "fetching" | "invalidUrl" | "invalidAPI" | "minAPIVersionMismatch" | "networkError";
+  inputSiteUrlStatus?: 'done' | 'fetching' | 'invalidUrl' | 'invalidAPI' | 'minAPIVersionMismatch' | 'networkError';
   inputSiteUrlMessage?: string;
   inputSiteUrl?: string;
 };
 
 type Action = {
-  type: "invalidUrl" | "invalidAPI" | "minAPIVersionMismatch" | "networkError" | "done" | "submit" | "change";
+  type: 'invalidUrl' | 'invalidAPI' | 'minAPIVersionMismatch' | 'networkError' | 'done' | 'submit' | 'change';
   payload?: any;
 };

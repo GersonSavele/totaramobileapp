@@ -13,9 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Resource } from "@totara/types";
-import { ResourceState } from "@totara/types/Resource";
-import { ADD_RESOURCE, UPDATE_RESOURCE, DELETE_RESOURCE } from "../actions/constants";
+import type { Resource } from '@totara/types';
+import { ResourceState } from '@totara/types/Resource';
+
+import { ADD_RESOURCE, DELETE_RESOURCE, UPDATE_RESOURCE } from '../actions/constants';
 
 const initialState = {
   resources: [] as Resource[]
@@ -29,7 +30,7 @@ const resourceReducer = (state = initialState, action) => {
 
       //PREVENT ADDING SAME RESOURCE TWICE
       const resourcesList: Resource[] = state.resources;
-      if (resourcesList.find((r) => r.id === resourcePayload.id)) {
+      if (resourcesList.find(r => r.id === resourcePayload.id)) {
         return state;
       }
 
@@ -42,7 +43,7 @@ const resourceReducer = (state = initialState, action) => {
       const payload = action.payload; //payload: { id: 123, url: etc}
 
       const resourcesList: Resource[] = state.resources;
-      const idx = resourcesList.findIndex((x) => x.id === payload.id);
+      const idx = resourcesList.findIndex(x => x.id === payload.id);
 
       if (idx < 0) return state;
 
@@ -70,14 +71,14 @@ const resourceReducer = (state = initialState, action) => {
     case DELETE_RESOURCE: {
       const { ids } = action.payload;
       const resourcesList: Resource[] = state.resources;
-      const filtered = resourcesList.filter((item) => ids.indexOf(item.id) === -1);
+      const filtered = resourcesList.filter(item => ids.indexOf(item.id) === -1);
 
       return {
         ...state,
         resources: [...filtered]
       };
     }
-    case "CLEAR": {
+    case 'CLEAR': {
       //TODO: remove it, just for testing
       return {
         ...state,

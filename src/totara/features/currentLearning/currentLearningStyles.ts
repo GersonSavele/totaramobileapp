@@ -13,11 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet, ViewStyle } from "react-native";
-import { margins, paddings, borderRadius, fontWeights, fontSizes } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { viewHeight } from "@totara/features/constants";
-import { flexGrow } from "@totara/lib/styles/base";
+import { viewHeight } from '@totara/features/constants';
+import { flexGrow } from '@totara/lib/styles/base';
+import { borderRadius, fontSizes, fontWeights, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
 const { colorOpacity70, textH2, textXSmall, textXXSmall, colorNeutral2, colorNeutral7, colorSecondary1 } = TotaraTheme;
 
 const { marginL } = margins;
@@ -36,14 +37,14 @@ const learningDetailsStyles = StyleSheet.create({
     minHeight: viewHeight.learningItemCard
   },
   imageViewContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     height: 300
   },
   imageViewGradient: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
@@ -51,17 +52,17 @@ const learningDetailsStyles = StyleSheet.create({
   },
   itemCard: {
     padding: paddings.paddingXL,
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     flex: 1,
     backgroundColor: colorNeutral2
   },
   learningTypeLabelWrap: {
     marginTop: margins.marginXS,
     borderRadius: borderRadius.borderRadiusM,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderWidth: 1,
-    alignSelf: "flex-start",
-    alignItems: "center",
+    alignSelf: 'flex-start',
+    alignItems: 'center',
     borderColor: colorNeutral7
   },
   tabBarContainer: {
@@ -70,7 +71,7 @@ const learningDetailsStyles = StyleSheet.create({
   },
   programLabelText: {
     ...textXXSmall,
-    textAlign: "center",
+    textAlign: 'center',
     padding: paddings.paddingL,
     paddingRight: paddings.paddingL,
     paddingTop: paddings.paddingXS,
@@ -79,22 +80,22 @@ const learningDetailsStyles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-around",
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
     backgroundColor: colorOpacity70
   },
   tabNav: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginLeft: marginL,
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1
   },
   tabViewItem: {
-    height: "100%",
-    justifyContent: "center",
+    height: '100%',
+    justifyContent: 'center',
     borderBottomWidth: 2,
-    borderBottomColor: "transparent"
+    borderBottomColor: 'transparent'
   },
   tabViewItemSelected: {
     borderBottomColor: TotaraTheme.colorNeutral7
@@ -109,7 +110,7 @@ const learningDetailsStyles = StyleSheet.create({
     color: TotaraTheme.colorNeutral7
   },
   itemFullName: {
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
     ...TotaraTheme.textHeadline,
     fontWeight: fontWeights.fontWeightSemiBold,
     fontSize: fontSizes.fontSizeL
@@ -120,16 +121,16 @@ const currentLearningStyles = StyleSheet.create({
   viewHeader,
   spinnerContainer: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center'
   },
   contentWrap: {
     flex: 1,
-    backgroundColor: "transparent"
+    backgroundColor: 'transparent'
   },
   headerWrapper: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flexWrap: "wrap"
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
   },
   title: {
     ...textH2,
@@ -146,4 +147,4 @@ const currentLearningStyles = StyleSheet.create({
   }
 });
 
-export { learningDetailsStyles, currentLearningStyles };
+export { currentLearningStyles, learningDetailsStyles };

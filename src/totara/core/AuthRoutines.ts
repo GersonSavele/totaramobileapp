@@ -13,24 +13,26 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { ApolloClient, ApolloLink, HttpLink, NormalizedCacheObject, ServerError } from "@apollo/client";
-import ApolloLinkTimeout from "apollo-link-timeout";
-import { get } from "lodash";
-import { setContext } from "@apollo/client/link/context";
-import { RetryLink } from "@apollo/client/link/retry";
-import { onError, ErrorResponse } from "@apollo/client/link/error";
+import type { NormalizedCacheObject, ServerError } from '@apollo/client';
+import { ApolloClient, ApolloLink, HttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import type { ErrorResponse } from '@apollo/client/link/error';
+import { onError } from '@apollo/client/link/error';
+import { RetryLink } from '@apollo/client/link/retry';
+import type { AsyncStorageStatic } from '@react-native-async-storage/async-storage';
+import { config, Log } from '@totara/lib';
+import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
+import event, { EVENT_LISTENER, Events } from '@totara/lib/event';
+import { translate } from '@totara/locale';
+import type { AppState, SiteInfo } from '@totara/types';
+import type { Setup } from '@totara/types/Auth';
+import { NetworkFailedError } from '@totara/types/Error';
+import ApolloLinkTimeout from 'apollo-link-timeout';
+import { get } from 'lodash';
 
-import { AsyncStorageStatic } from "@react-native-async-storage/async-storage";
-import { config, Log } from "@totara/lib";
-import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
-import { AppState, SiteInfo } from "@totara/types";
-import { NetworkFailedError } from "@totara/types/Error";
-import { persistor } from "./../store";
-import { purge } from "./../actions/root";
-import { deleteDevice } from "./api/core";
-import { Setup } from "@totara/types/Auth";
-import event, { Events, EVENT_LISTENER } from "@totara/lib/event";
-import { translate } from "@totara/locale";
+import { purge } from './../actions/root';
+import { persistor } from './../store';
+import { deleteDevice } from './api/core';
 
 /**
  * Authentication Routines, part of AuthProvider however refactored to individual functions
@@ -61,7 +63,7 @@ export const registerDevice =
     };
 
     return fetchData<ApiKey>(config.deviceRegisterUri(setup.uri), {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
         setupsecret: setup.secret
       })
@@ -69,9 +71,9 @@ export const registerDevice =
       .then(apiKey => {
         const siteInfoData = JSON.stringify(setup.siteInfo);
         return Promise.all([
-          asyncStorage.setItem("apiKey", apiKey.apikey),
-          asyncStorage.setItem("siteInfo", siteInfoData),
-          asyncStorage.setItem("host", setup.uri)
+          asyncStorage.setItem('apiKey', apiKey.apikey),
+          asyncStorage.setItem('siteInfo', siteInfoData),
+          asyncStorage.setItem('host', setup.uri)
         ]).then(() => {
           return apiKey;
         });
@@ -86,7 +88,7 @@ export const registerDevice =
       })
       .catch(error => {
         //NOTE: This is using warning so the app does not crash
-        Log.warn("unable to get apiKey", error);
+        Log.warn('unable to get apiKey', error);
         return {} as AppState;
       });
   };
@@ -108,11 +110,11 @@ export const deviceCleanup = ({ apolloClient, dispatch }) => {
       mutation: deleteDevice
     })
     .then(({ data: { delete_device } }) => {
-      if (!delete_device) Log.warn("Unable to delete device from server");
+      if (!delete_device) Log.warn('Unable to delete device from server');
       return delete_device;
     })
     .catch(error => {
-      Log.warn("remote clean up had issues, but continue to do local clean up", error);
+      Log.warn('remote clean up had issues, but continue to do local clean up', error);
     })
     .finally(() => {
       logOut({ apolloClient, dispatch });
@@ -126,9 +128,9 @@ export const deviceCleanup = ({ apolloClient, dispatch }) => {
  */
 export const bootstrap = (asyncStorage: AsyncStorageStatic) => async (): Promise<AppState | undefined> => {
   const [apiKey, host, siteInfo] = await Promise.all([
-    asyncStorage.getItem("apiKey"),
-    asyncStorage.getItem("host"),
-    asyncStorage.getItem("siteInfo")
+    asyncStorage.getItem('apiKey'),
+    asyncStorage.getItem('host'),
+    asyncStorage.getItem('siteInfo')
   ]);
 
   if (apiKey !== null && host !== null && siteInfo !== null) {
@@ -156,11 +158,11 @@ export const createApolloClient = (apiKey: string, host: string, cache: any): Ap
 
   const errorLink = onError(({ networkError }: ErrorResponse) => {
     if (networkError && (networkError as ServerError).statusCode === 401) {
-      Log.warn("Forbidden error");
+      Log.warn('Forbidden error');
     } else {
-      const errorMessage = get(networkError, "result.errors[0].message", translate("general.error_unknown"));
-      if (networkError) Log.warn("Network error status code: ", (networkError as ServerError).statusCode);
-      Log.warn("Error message: ", errorMessage);
+      const errorMessage = get(networkError, 'result.errors[0].message', translate('general.error_unknown'));
+      if (networkError) Log.warn('Network error status code: ', (networkError as ServerError).statusCode);
+      Log.warn('Error message: ', errorMessage);
       const payload = { errorMessage };
       event.emit(EVENT_LISTENER, { event: Events.NetworkError, payload });
     }
@@ -220,19 +222,19 @@ export const fetchData =
         if (response.status === 200) {
           return response.json();
         } else {
-          Log.warn("fetch error response", response);
+          Log.warn('fetch error response', response);
           return Promise.reject(response);
         }
       })
       .catch(error => {
-        if (error?.message === "Network request failed") {
+        if (error?.message === 'Network request failed') {
           return Promise.reject(new NetworkFailedError());
         }
         return Promise.reject(error);
       })
       .then(json => {
         if (json.data) return json.data as unknown as T;
-        else return Promise.reject("json expected to have data attribute");
+        else return Promise.reject('json expected to have data attribute');
       });
 
     //TIMEOUT OF 10 SECS (10*1000)

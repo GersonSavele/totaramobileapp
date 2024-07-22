@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { paddings } from '../../theme/constants';
 import type { GetTextInputStylesConfig } from './types';
 
-export const getTextInputStyles = ({ theme, isFocused, isErrored }: GetTextInputStylesConfig) => {
+export const getTextInputStyles = ({ theme, isErrored }: GetTextInputStylesConfig) => {
   return StyleSheet.create({
     textInput: {
       borderBottomWidth: 0.5,

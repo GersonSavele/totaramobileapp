@@ -13,9 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { Text, View } from "react-native";
-import activitiesStyles from "./activitiesStyles";
+import React from 'react';
+import { Text, View } from 'react-native';
+
+import activitiesStyles from './activitiesStyles';
 
 type LabelProps = {
   label: string;

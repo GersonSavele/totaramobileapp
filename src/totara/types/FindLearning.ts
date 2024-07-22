@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { learningItemEnum } from "@totara/features/constants";
+import type { learningItemEnum } from '@totara/features/constants';
 
 export interface CatalogItem {
   id: number;

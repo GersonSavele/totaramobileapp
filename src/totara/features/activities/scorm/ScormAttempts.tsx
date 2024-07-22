@@ -13,17 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
-import { Text, View, FlatList, SafeAreaView } from "react-native";
-
-import { ThemeContext } from "@totara/theme";
-import { translate } from "@totara/locale";
-import { Attempt, Grade } from "@totara/types/Scorm";
-import { fullFlex } from "@totara/lib/styles/base";
-import { scormAttemptsStyles } from "@totara/theme/scorm";
-import { fontWeights } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { SCORM_TEST_IDS } from "@totara/lib/testIds";
+import { fullFlex } from '@totara/lib/styles/base';
+import { SCORM_TEST_IDS } from '@totara/lib/testIds';
+import { translate } from '@totara/locale';
+import { ThemeContext } from '@totara/theme';
+import { fontWeights } from '@totara/theme/constants';
+import { scormAttemptsStyles } from '@totara/theme/scorm';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { Attempt } from '@totara/types/Scorm';
+import { Grade } from '@totara/types/Scorm';
+import React, { useContext } from 'react';
+import { FlatList, SafeAreaView, Text, View } from 'react-native';
 
 type AttemptsParams = {
   gradeMethod: Grade;
@@ -50,7 +50,7 @@ const ScormAttempts = ({ navigation }: ScormActivityProps) => {
           ...TotaraTheme.textHeadline,
           ...scormAttemptsStyles.sectionTitle
         }}>
-        {translate("scorm.attempts.title")}
+        {translate('scorm.attempts.title')}
       </Text>
       <FlatList
         style={{ flex: 1 }}
@@ -83,7 +83,7 @@ const AttemptReport = ({ attemptReport, attempt, gradeMethod }: AttemptReport) =
   return (
     <View style={scormAttemptsStyles.holder} testID={ATTEMPT_ITEM_ID}>
       <Text style={[theme.textRegular, scormAttemptsStyles.attempt]}>
-        {translate("scorm.attempts.attempt")} {attempt}
+        {translate('scorm.attempts.attempt')} {attempt}
       </Text>
       <View style={scormAttemptsStyles.result}>
         <Text

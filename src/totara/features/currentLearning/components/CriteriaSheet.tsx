@@ -13,18 +13,18 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useRef, useCallback, useMemo } from "react";
-import { View, TouchableOpacity, SectionList, Text, FlatList } from "react-native";
+import BottomSheet from '@gorhom/bottom-sheet';
+import Icon from '@totara/components/Icon';
+import { TEST_IDS } from '@totara/lib/testIds';
+import { iconSizes } from '@totara/theme/constants';
+import listViewStyles from '@totara/theme/listView';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { Criteria } from '@totara/types';
+import { groupBy } from 'lodash';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { FlatList, SectionList, Text, TouchableOpacity, View } from 'react-native';
 
-import Icon from "@totara/components/Icon";
-import { groupBy } from "lodash";
-import { TotaraTheme } from "@totara/theme/Theme";
-import BottomSheet from "@gorhom/bottom-sheet";
-import listViewStyles from "@totara/theme/listView";
-import { Criteria } from "@totara/types";
-import criteriaSheetStyle from "./criteriaSheetStyle";
-import { iconSizes } from "@totara/theme/constants";
-import { TEST_IDS } from "@totara/lib/testIds";
+import criteriaSheetStyle from './criteriaSheetStyle';
 
 type Props = {
   title: string;
@@ -37,11 +37,11 @@ type Props = {
 const ListItem = ({ item, isOverview }: any) => {
   // requirement and status return with URL and should replace the url and tags.
   const REGEX = /(<([^>]+)>)/gi;
-  let description = isOverview && item.requirement!.replace(REGEX, "");
+  let description = isOverview && item.requirement!.replace(REGEX, '');
   isOverview &&
-    item.status!.replace(REGEX, "") !== undefined &&
-    item.status!.replace(REGEX, "").length > 0 &&
-    (description += " | " + item.status!.replace(REGEX, ""));
+    item.status!.replace(REGEX, '') !== undefined &&
+    item.status!.replace(REGEX, '').length > 0 &&
+    (description += ' | ' + item.status!.replace(REGEX, ''));
 
   return isOverview ? (
     <View style={criteriaSheetStyle.renderOuterViewWrap}>
@@ -49,7 +49,7 @@ const ListItem = ({ item, isOverview }: any) => {
         <View style={{ flex: 2 }}>
           <Text numberOfLines={1} style={criteriaSheetStyle.criteriaText}>
             {/* // item criteria return with URL and should replace the url and tags */}
-            {item.criteria!.replace(REGEX, "")}
+            {item.criteria!.replace(REGEX, '')}
           </Text>
           <Text numberOfLines={1} style={criteriaSheetStyle.requirementText}>
             {description}
@@ -83,8 +83,8 @@ type ContentProps = {
 };
 
 const BottomSheetContent = ({ criteriaList = [] }: ContentProps) => {
-  if (criteriaList[0] && criteriaList[0]["__typename"] !== undefined) {
-    const groupedCriteriaList = groupBy(criteriaList, "type");
+  if (criteriaList[0] && criteriaList[0]['__typename'] !== undefined) {
+    const groupedCriteriaList = groupBy(criteriaList, 'type');
     const criteriaSectionList = Object.entries(groupedCriteriaList).map(([key, value]) => {
       return { title: key, data: value };
     });
@@ -144,11 +144,11 @@ const CriteriaSheet = ({ criteriaList, onClose, title, index = -1 }: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ["25%", "75%"], []);
+  const snapPoints = useMemo(() => ['25%', '75%'], []);
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    console.log('handleSheetChanges', index);
   }, []);
 
   const handleClosePress = () => {

@@ -9,7 +9,7 @@
     "prebuild": "APP_ENV=dev npx expo prebuild --clean",
     "test": "npx jest --watchAll",
     "test:ci": "npx jest --ci",
-    "lint": "npx eslint . --quiet --ext .js,.jsx,.ts,.tsx",
+    "lint": "npx eslint . --quiet --ext .ts,.tsx",
     "translations": "node scripts/post-install/install-translations.js",
     "lint:types": "npx tsc  --noemit",
     "eas:build:dev": "npx eas build --platform all --profile development --non-interactive",

@@ -13,12 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Activity } from "./Activity";
-import { learningItemEnum } from "@totara/features/constants";
+import type { learningItemEnum } from '@totara/features/constants';
+
+import type { Activity } from './Activity';
 
 export enum DescriptionFormat {
-  jsonEditor = "JSON_EDITOR",
-  html = "HTML"
+  jsonEditor = 'JSON_EDITOR',
+  html = 'HTML'
 }
 
 export interface Section {

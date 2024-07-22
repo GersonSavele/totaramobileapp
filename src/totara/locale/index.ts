@@ -13,16 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { ApolloClient } from "@apollo/client";
-import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
-import { queryLanguageStrings } from "./api";
-import i18n from "./i18n";
-import { Scope, TranslateOptions } from "i18n-js";
-import { merge } from "lodash";
+import type { ApolloClient } from '@apollo/client';
+import { DEFAULT_LANGUAGE } from '@totara/lib/constants';
+import type { Scope, TranslateOptions } from 'i18n-js';
+import { merge } from 'lodash';
+
+import { queryLanguageStrings } from './api';
+import i18n from './i18n';
 
 const translate = (scope: Scope, options?: TranslateOptions) => {
   return i18n.t(scope, options);
-}
+};
 
 const addLocale = (locale: string, json: any) => {
   i18n.translations[locale] = json;
@@ -43,7 +44,7 @@ const getTranslations = () => {
 type SetUpProps = { client: ApolloClient<object>; languagePreference: string; onFinish: Function };
 
 const setUpLocale = ({ client, languagePreference, onFinish }: SetUpProps) => {
-  if (languagePreference === "en"){
+  if (languagePreference === 'en') {
     //no need to proceed with API call because english is bundled in the App
     onFinish();
   }
@@ -76,4 +77,4 @@ const setUpLocale = ({ client, languagePreference, onFinish }: SetUpProps) => {
     });
 };
 
-export { translate, addLocale, changeLocale, getLocale, getTranslations, setUpLocale };
+export { addLocale, changeLocale, getLocale, getTranslations, setUpLocale, translate };

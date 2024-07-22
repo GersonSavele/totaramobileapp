@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { gql } from "@apollo/client";
-import { config } from "@totara/lib";
-import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
+import { gql } from '@apollo/client';
+import { config } from '@totara/lib';
+import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
 
 //TODO: rename - use alias - when backend finishes TL-26268
 const scormQuery = gql`
@@ -142,17 +142,17 @@ const fetchLastAttemptResult = ({
   // fetch from global
   // eslint-disable-next-line no-undef
   return fetch(config.apiUri(host), {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({
-      operationName: "totara_mobile_scorm_current_status",
+      operationName: 'totara_mobile_scorm_current_status',
       variables: { scormid: scormId }
     }),
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
       [AUTH_HEADER_FIELD]: apiKey,
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     }
-  }).then((response) => {
+  }).then(response => {
     if (response.status === 200) {
       return response.json();
     } else {
@@ -161,4 +161,4 @@ const fetchLastAttemptResult = ({
   });
 };
 
-export { scormQuery, scormFeedbackQuery, scormActivitiesRecordsQuery, mutationAttempts, fetchLastAttemptResult };
+export { fetchLastAttemptResult, mutationAttempts, scormActivitiesRecordsQuery, scormFeedbackQuery, scormQuery };

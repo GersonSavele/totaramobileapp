@@ -13,7 +13,7 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import { TOKEN_SENT, UPDATE_COUNT, UPDATE_TOKEN } from "../actions/constants";
+import { TOKEN_SENT, UPDATE_COUNT, UPDATE_TOKEN } from '../actions/constants';
 
 type notificationType = {
   token: string;
@@ -22,7 +22,7 @@ type notificationType = {
 };
 
 const initialState: notificationType = {
-  token: "",
+  token: '',
   tokenSent: false,
   count: 0
 };

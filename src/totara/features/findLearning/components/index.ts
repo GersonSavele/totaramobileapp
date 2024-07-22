@@ -1,4 +1,4 @@
-import { ImageElement } from "./ImageElement";
-import { LearningItemTile } from "./LearningItemTile";
+import { ImageElement } from './ImageElement';
+import { LearningItemTile } from './LearningItemTile';
 
-export { ImageElement, LearningItemTile }
+export { ImageElement, LearningItemTile };

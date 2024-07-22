@@ -15,14 +15,14 @@
 
 // TODO: Look at whether this is needed
 // import localConfig from "./config.local";
-import ConsoleLogger from "./logger/ConsoleLogger";
+import ConsoleLogger from './logger/ConsoleLogger';
 
 const defaultConfig = {
-  urlProtocol: "https",
+  urlProtocol: 'https',
   mobileApi: {
     persistentQuery: true
   },
-  userAgent: "TotaraMobileApp",
+  userAgent: 'TotaraMobileApp',
   apiUri: (host: string) => `${host}/totara/mobile/api.php`,
   infoUri: (host: string) => `${host}/totara/mobile/site_info.php`,
   loginUri: (host: string) => `${host}/login/index.php?mobile_initiated=1`,
@@ -32,13 +32,13 @@ const defaultConfig = {
   forgotPasswordUri: (host: string) => `${host}/login/forgot_password.php`,
   nativeLoginSetupUri: (host: string) => `${host}/totara/mobile/login_setup.php`,
   nativeLoginUri: (host: string) => `${host}/totara/mobile/login.php`,
-  appLinkDomain: "https://mobile.totaralearning.com",
-  deepLinkSchema: "totara://",
-  minApiVersion: "2020100100",
-  rootOfflineScormPlayer: "html",
-  sentryUri: "",
+  appLinkDomain: 'https://mobile.totaralearning.com',
+  deepLinkSchema: 'totara://',
+  minApiVersion: '2020100100',
+  rootOfflineScormPlayer: 'html',
+  sentryUri: '',
   disableConsoleYellowBox: false,
-  devOrgUrl: "" // Default organization url only used in dev mode.
+  devOrgUrl: '' // Default organization url only used in dev mode.
 };
 
 export const internalConfig = {

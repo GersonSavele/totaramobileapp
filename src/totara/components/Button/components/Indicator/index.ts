@@ -1,2 +1,2 @@
-export * from "./Indicator"
-export * from "./types"
+export * from './Indicator';
+export * from './types';

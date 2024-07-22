@@ -13,16 +13,16 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
 const event = new EventEmitter();
 
-const EVENT_LISTENER = "event_listener";
+const EVENT_LISTENER = 'event_listener';
 
 enum Events {
   Logout,
   NetworkError
 }
 
-export { Events, EVENT_LISTENER };
+export { EVENT_LISTENER, Events };
 export default event;

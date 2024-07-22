@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { resizeByScreenSize } from "./PlatformUtility";
-import { applyTheme } from "./Theme";
-import { ThemeContext, ThemeProvider } from "./ThemeContext";
+import { resizeByScreenSize } from './PlatformUtility';
+import { applyTheme } from './Theme';
+import { ThemeContext, ThemeProvider } from './ThemeContext';
 
 const gutter = resizeByScreenSize(8, 16, 16, 24);
 const baseSpace = 8;
 
-export { resizeByScreenSize, gutter, applyTheme, ThemeContext, ThemeProvider, baseSpace };
+export { applyTheme, baseSpace, gutter, resizeByScreenSize, ThemeContext, ThemeProvider };

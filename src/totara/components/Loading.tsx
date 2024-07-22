@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 type LoadingProps = {
   text?: string;
@@ -34,9 +34,9 @@ const Loading = ({ text, testID }: LoadingProps) => {
 const loadingViewSyles = StyleSheet.create({
   container: {
     flex: 1,
-    alignSelf: "center",
-    flexDirection: "column",
-    justifyContent: "center"
+    alignSelf: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center'
   }
 });
 

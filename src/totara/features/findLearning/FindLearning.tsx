@@ -16,26 +16,27 @@
 // FIX: searchbar typescript bug
 // @ts-nocheck
 
-import React, { useState, useEffect, useCallback } from "react";
-import { FlatList, Image, ImageSourcePropType, Platform, Pressable, Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { translate } from "@totara/locale";
-import { PLATFORM_ANDROID, PLATFORM_IOS } from "@totara/lib/constants";
-import { learningItemEnum } from "@totara/features/constants";
-import { LearningItemTile, LearningItemTileSkeleton } from "./components/LearningItemTile";
-import { findLearningStyles } from "./findLearningStyles";
-import { useNavigation } from "@react-navigation/native";
-import { NAVIGATION } from "@totara/lib/navigation";
-import { useLazyQuery } from "@apollo/client";
-import { queryFindLearning, queryViewCatalog } from "./api";
-import { CatalogItem, FindLearningPage } from "@totara/types/FindLearning";
-import { FINDLEARNING_TEST_IDS } from "@totara/lib/testIds";
-import { formatPageData, onSearch } from "./utils";
-import { isEmpty } from "lodash";
-import { Images } from "@resources/images";
-import { MessageBar } from "@totara/components";
-import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
-import Icon from "../../components/Icon";
+import { useLazyQuery } from '@apollo/client';
+import { useNavigation } from '@react-navigation/native';
+import { Images } from '@resources/images';
+import { MessageBar } from '@totara/components';
+import { learningItemEnum } from '@totara/features/constants';
+import NativeAccessRestriction from '@totara/features/currentLearning/NativeAccessRestriction';
+import { NAVIGATION } from '@totara/lib/navigation';
+import { FINDLEARNING_TEST_IDS } from '@totara/lib/testIds';
+import { translate } from '@totara/locale';
+import type { CatalogItem, FindLearningPage } from '@totara/types/FindLearning';
+import { isEmpty } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { FlatList, Image, Pressable, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import Icon from '../../components/Icon';
+import { queryFindLearning, queryViewCatalog } from './api';
+import { LearningItemTile, LearningItemTileSkeleton } from './components/LearningItemTile';
+import { findLearningStyles } from './findLearningStyles';
+import { formatPageData, onSearch } from './utils';
 
 type FindLearningHeaderProps = {
   onChangeText: (text: string) => void;
@@ -54,20 +55,19 @@ const FindLearningHeader = ({
   onSearch,
   onCancel,
   count = 0,
-  onFocusText,
   loading = false,
-  showCancel = true,
+  showCancel = true
 }: FindLearningHeaderProps) => {
   return (
     <View style={findLearningStyles.headerWrapper} testID={FINDLEARNING_TEST_IDS.HEADER}>
-      <Text style={findLearningStyles.header}>{translate("find_learning.title")}</Text>
+      <Text style={findLearningStyles.header}>{translate('find_learning.title')}</Text>
       <View style={findLearningStyles.searchBarContainer}>
         <View style={findLearningStyles.searchBar}>
           <View>
             <Icon name="magnifying-glass" style={{ padding: 5 }} />
           </View>
           <TextInput
-            placeholder={translate("find_learning.search")}
+            placeholder={translate('find_learning.search')}
             style={findLearningStyles.searchBar}
             onChangeText={onChangeText}
             value={findLeaningText}
@@ -75,36 +75,34 @@ const FindLearningHeader = ({
             returnKeyType="search"
             testID={FINDLEARNING_TEST_IDS.SEARCH_TEXT_INPUT}
           />
-          <View style={{ ...findLearningStyles.clearSearch, display: (showCancel ? "flex" : "none") }}>
-            <Pressable onPress={(e) => { onCancel(); }}>
+          <View style={{ ...findLearningStyles.clearSearch, display: showCancel ? 'flex' : 'none' }}>
+            <Pressable onPress={onCancel}>
               <Icon name="xmark" style={{ padding: 10 }} />
             </Pressable>
           </View>
         </View>
       </View>
-      {
-        !loading && (count || (count === 0 && !isEmpty(findLeaningText))) ? (
-          <Text style={findLearningStyles.result} testID={FINDLEARNING_TEST_IDS.NO_OF_ITEMS}>
-            {translate("find_learning.results", {
-              count
-            })}
-          </Text>
-        ) : null
-      }
-    </View >
+      {!loading && (count || (count === 0 && !isEmpty(findLeaningText))) ? (
+        <Text style={findLearningStyles.result} testID={FINDLEARNING_TEST_IDS.NO_OF_ITEMS}>
+          {translate('find_learning.results', {
+            count
+          })}
+        </Text>
+      ) : null}
+    </View>
   );
 };
 
 const FindLearning = () => {
   const [searchResult, setSearchResult] = useState<FindLearningPage>();
-  const [searchData, setSearchData] = useState<{ key: string; pointer?: number }>({ key: "", pointer: 0 });
+  const [searchData, setSearchData] = useState<{ key: string; pointer?: number }>({ key: '', pointer: 0 });
 
   const navigation = useNavigation();
   const filterQuery =
     isEmpty(searchData.key) && searchData.pointer !== undefined ? queryViewCatalog : queryFindLearning;
 
   const [onCallSearch, { loading, data, error }] = useLazyQuery(filterQuery, {
-    fetchPolicy: "no-cache"
+    fetchPolicy: 'no-cache'
   });
 
   useEffect(() => {
@@ -126,10 +124,10 @@ const FindLearning = () => {
   }, [searchData.pointer]);
 
   const [showRestriction, setShowRestriction] = useState(false);
-  const [urlViewTarget, setUrlViewTarget] = useState<string>("");
+  const [urlViewTarget, setUrlViewTarget] = useState<string>('');
 
   const onItemTap = ({ item }: { item: CatalogItem }) => {
-    const { itemid, title, mobileImage, summary, summaryFormat, viewUrl = "", itemType, native } = item;
+    const { itemid, title, mobileImage, summary, summaryFormat, viewUrl = '', itemType, native } = item;
     switch (itemType) {
       case learningItemEnum.Course: {
         if (native === false) {
@@ -155,8 +153,8 @@ const FindLearning = () => {
           viewUrl,
           title:
             itemType == learningItemEnum.Resource
-              ? translate("learning_items.resource")
-              : itemType == learningItemEnum.Playlist && translate("learning_items.playlist")
+              ? translate('learning_items.resource')
+              : itemType == learningItemEnum.Playlist && translate('learning_items.playlist')
         });
         break;
       }
@@ -176,7 +174,7 @@ const FindLearning = () => {
   );
 
   return (
-    <SafeAreaView style={findLearningStyles.mainWrapper} edges={["top"]}>
+    <SafeAreaView style={findLearningStyles.mainWrapper} edges={['top']}>
       <FlatList
         ListHeaderComponent={
           <>
@@ -186,14 +184,14 @@ const FindLearning = () => {
                 setSearchData(newSearchData);
               }}
               onSearch={() => {
-                if (searchData.key !== "") {
+                if (searchData.key !== '') {
                   setSearchResult(undefined);
                 }
                 const newSearchData = { ...searchData, pointer: 0 };
                 setSearchData(newSearchData);
               }}
               onCancel={() => {
-                if (searchData.key !== "") {
+                if (searchData.key !== '') {
                   setSearchResult(undefined);
                 }
                 const newSearchData = { key: '', pointer: 0 };
@@ -208,7 +206,7 @@ const FindLearning = () => {
               }}
             />
             {error && (
-              <MessageBar mode={"alert"} text={translate("general.error_unknown")} icon={"exclamation-circle"} />
+              <MessageBar mode={'alert'} text={translate('general.error_unknown')} icon={'exclamation-circle'} />
             )}
           </>
         }
@@ -224,7 +222,7 @@ const FindLearning = () => {
           setSearchData({ ...searchData, pointer: searchResult.pointer ?? 0 })
         }
         ListEmptyComponent={
-          (!loading && searchData.key === "" && searchData.pointer === 0 && <NoFindLearning />) || null
+          (!loading && searchData.key === '' && searchData.pointer === 0 && <NoFindLearning />) || null
         }
       />
       {showRestriction && <NativeAccessRestriction onClose={onClose} urlView={urlViewTarget} />}
@@ -234,7 +232,7 @@ const FindLearning = () => {
 
 const SkeletonLoading = () => {
   return (
-    <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
+    <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
       {Array.from(Array(8)).map((_, i) => (
         <LearningItemTileSkeleton key={i} />
       ))}
@@ -246,7 +244,7 @@ const NoFindLearning = () => {
   return (
     <View style={findLearningStyles.noLearningItemContainer}>
       <Image source={Images.noCurrentLearning as ImageSourcePropType} />
-      <Text style={findLearningStyles.noLearningItemsText}>{translate("find_learning.no_learning_items")}</Text>
+      <Text style={findLearningStyles.noLearningItemsText}>{translate('find_learning.no_learning_items')}</Text>
     </View>
   );
 };

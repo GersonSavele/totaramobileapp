@@ -13,18 +13,19 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import { CourseSets } from "@totara/types/CourseGroup";
-import { courseSet, horizontalList } from "./courseGroupStyles";
-import { NAVIGATION } from "@totara/lib/navigation";
-import { navigateTo } from "@totara/lib/navigation";
-import Course from "./Course";
-import MoreInfo from "@totara/components/MoreInfo";
-import Icon from "@totara/components/Icon";
-import { iconSizes } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { activeOpacity } from "@totara/lib/styles/base";
+import Icon from '@totara/components/Icon';
+import MoreInfo from '@totara/components/MoreInfo';
+import { NAVIGATION } from '@totara/lib/navigation';
+import { navigateTo } from '@totara/lib/navigation';
+import { activeOpacity } from '@totara/lib/styles/base';
+import { iconSizes } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { CourseSets } from '@totara/types/CourseGroup';
+import React from 'react';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+
+import Course from './Course';
+import { courseSet, horizontalList } from './courseGroupStyles';
 
 type CourseSetListProps = {
   courseSetList: [CourseSets];
@@ -45,14 +46,14 @@ const LearningItems = ({ item, navigate, showCriteriaList = () => null }: any) =
   const takeFirstTwoCourses = item.courses?.slice(0, 2) || [];
 
   return (
-    <View style={courseSet.container} testID={"test_learning_items"}>
+    <View style={courseSet.container} testID={'test_learning_items'}>
       <TouchableOpacity onPress={navigateToCourse} activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
           <View style={courseSet.headerBar}>
-            <Text style={courseSet.headerTitle} numberOfLines={1} ellipsizeMode="tail" testID={"test_header_title"}>
+            <Text style={courseSet.headerTitle} numberOfLines={1} ellipsizeMode="tail" testID={'test_header_title'}>
               {item.label}
             </Text>
-            <MoreInfo onPress={showCriteriaList} testID={"test_view_criteria_clicked"} />
+            <MoreInfo onPress={showCriteriaList} testID={'test_view_criteria_clicked'} />
           </View>
           <View>
             {takeFirstTwoCourses.map(course => {
@@ -66,11 +67,7 @@ const LearningItems = ({ item, navigate, showCriteriaList = () => null }: any) =
                 activeOpacity={activeOpacity}
                 style={courseSet.viewAllTouchableOpacity}>
                 <Text style={courseSet.viewAllTitle}>View all</Text>
-                <Icon
-                  name="chevron-right"
-                  color={TotaraTheme.colorLink}
-                  size={iconSizes.sizeM / 2}
-                />
+                <Icon name="chevron-right" color={TotaraTheme.colorLink} size={iconSizes.sizeM / 2} />
               </TouchableOpacity>
             )}
           </View>

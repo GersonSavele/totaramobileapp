@@ -13,11 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { createStackNavigator } from "@react-navigation/stack";
-import { NAVIGATION } from "../../lib/navigation";
-import About from "./About";
-import CloseButton from "../../components/CloseButton";
-import { NAVIGATION_TEST_IDS } from "../../lib/testIds";
+import { createStackNavigator } from '@react-navigation/stack';
+
+import CloseButton from '../../components/CloseButton';
+import { NAVIGATION } from '../../lib/navigation';
+import { NAVIGATION_TEST_IDS } from '../../lib/testIds';
+import About from './About';
 
 // const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
 //   {
@@ -37,10 +38,14 @@ const Stack = createStackNavigator();
 
 const AboutStack = () => (
   <Stack.Navigator initialRouteName={NAVIGATION.ABOUT}>
-    <Stack.Screen name={NAVIGATION.ABOUT} component={About} options={({ navigation }) => ({
-      headerLeft: () => <CloseButton onPress={() => navigation.goBack()} testID={NAVIGATION_TEST_IDS.BACK} />
-    })} />
+    <Stack.Screen
+      name={NAVIGATION.ABOUT}
+      component={About}
+      options={({ navigation }) => ({
+        headerLeft: () => <CloseButton onPress={() => navigation.goBack()} testID={NAVIGATION_TEST_IDS.BACK} />
+      })}
+    />
   </Stack.Navigator>
-)
+);
 
 export default AboutStack;

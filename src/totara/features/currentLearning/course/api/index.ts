@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { gql } from "@apollo/client";
-import { config } from "@totara/lib";
-import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
+import { gql } from '@apollo/client';
+import { config } from '@totara/lib';
+import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
 
 const coreCourse = gql`
   query totara_mobile_course($courseid: core_id!, $guestpw: String) {
@@ -114,8 +114,8 @@ const XMLHttpRequestPostFetch = (host, body, apiKey) => {
     // please check https://github.com/facebook/react-native/issues/32931 and MOB-1144
     // eslint-disable-next-line no-undef
     var request = new XMLHttpRequest();
-    request.open("POST", config.apiUri(host));
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.open('POST', config.apiUri(host));
+    request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     request.setRequestHeader(AUTH_HEADER_FIELD, apiKey);
 
     request.onload = function () {
@@ -144,7 +144,7 @@ const fetchResource = ({ instanceId, apiKey, host }: FetchParam): Promise<unknow
   return XMLHttpRequestPostFetch(
     host,
     JSON.stringify({
-      operationName: "totara_mobile_resource",
+      operationName: 'totara_mobile_resource',
       variables: { resourceid: instanceId }
     }),
     apiKey
@@ -155,11 +155,11 @@ const updateStateViewResource = ({ instanceId, modtype, apiKey, host }: FetchPar
   return XMLHttpRequestPostFetch(
     host,
     JSON.stringify({
-      operationName: "totara_mobile_completion_activity_view",
+      operationName: 'totara_mobile_completion_activity_view',
       variables: { cmid: instanceId, activity: modtype }
     }),
     apiKey
   );
 };
 
-export { coreCourse, courseSelfComplete, activitySelfComplete, fetchResource, updateStateViewResource };
+export { activitySelfComplete, coreCourse, courseSelfComplete, fetchResource, updateStateViewResource };

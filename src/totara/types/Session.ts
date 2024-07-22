@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Core } from "./Core";
-import { SiteInfo } from "./SiteInfo";
+import type { Core } from './Core';
+import type { SiteInfo } from './SiteInfo';
 
 export type Session = {
   apiKey?: string;

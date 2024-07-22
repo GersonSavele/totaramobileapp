@@ -13,12 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Scope, TranslateOptions } from "i18n-js";
+import type { Scope, TranslateOptions } from 'i18n-js';
 
 // don't use the real translate as it linked to a native function which checks the phone's locale
 // on test we don't need to check translations
 const translate = (scope: Scope, options?: TranslateOptions) => `translated ${scope} with ${options}`;
 
-const getLocale = () => "en";
+const getLocale = () => 'en';
 
-export { translate, getLocale };
+export { getLocale, translate };

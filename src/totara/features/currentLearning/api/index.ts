@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { gql } from "@apollo/client";
-import { config } from "@totara/lib";
+import { gql } from '@apollo/client';
+import { config } from '@totara/lib';
 
 const query = config.mobileApi.persistentQuery
   ? gql`

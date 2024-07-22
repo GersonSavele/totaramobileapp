@@ -13,25 +13,18 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { by, element, waitFor } from "detox";
-import { mockServerUrl, mockUsername, mockPassword } from "../../../../../../e2e/graphql/config";
-import {
-  TEST_IDS,
-  CL_TEST_IDS,
-  SCORM_TEST_IDS,
-  NAVIGATION_TEST_IDS,
-  RESOURCE_TEST_IDS,
-  TAB_TEST_IDS,
-  PROFILE_TEST_IDS
-} from "../../../../lib/testIds";
-import { startGraphQLServer, stopGraphQLServer } from "../../../../../../e2e/graphql/index";
-import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../../e2e/graphql/mocks/scalars";
-import { scorm } from "../../../../../../e2e/graphql/mocks/scorm";
-import { currentLearning } from "../../../../../../e2e/graphql/mocks/currentLearning";
-import { courseDetails } from "../../../../../../e2e/graphql/mocks/courseDetails";
-import { mobileMe } from "../../../../../../e2e/graphql/mocks/me";
-import { notifications } from "../../../../../../e2e/graphql/mocks/notifications";
-import { lang } from "../../../../../../e2e/graphql/mocks/lang";
+import { by, element, waitFor } from 'detox';
+
+import { mockPassword, mockServerUrl, mockUsername } from '../../../../../../e2e/graphql/config';
+import { startGraphQLServer } from '../../../../../../e2e/graphql/index';
+import { courseDetails } from '../../../../../../e2e/graphql/mocks/courseDetails';
+import { currentLearning } from '../../../../../../e2e/graphql/mocks/currentLearning';
+import { lang } from '../../../../../../e2e/graphql/mocks/lang';
+import { mobileMe } from '../../../../../../e2e/graphql/mocks/me';
+import { notifications } from '../../../../../../e2e/graphql/mocks/notifications';
+import { defaultCoreDate, defaultCoreId, defaultLI, defaultString } from '../../../../../../e2e/graphql/mocks/scalars';
+import { scorm } from '../../../../../../e2e/graphql/mocks/scorm';
+import { CL_TEST_IDS, NAVIGATION_TEST_IDS, RESOURCE_TEST_IDS, SCORM_TEST_IDS, TEST_IDS } from '../../../../lib/testIds';
 
 const customMocks = {
   ...defaultCoreId,
@@ -57,9 +50,9 @@ customMocks.Query = () => ({
   ...scorm.default,
   ...notifications.default,
   ...lang.default
-})
+});
 
-describe("Scorm test", () => {
+describe('Scorm test', () => {
   beforeAll(async () => {
     await startGraphQLServer(customMocks);
     await device.launchApp();
@@ -75,45 +68,44 @@ describe("Scorm test", () => {
     // await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
     // await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
     // await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
-
     // await stopGraphQLServer();
   });
 
-  it("should navigate to the scorm summary screen and complete online work flow", async () => {
+  it('should navigate to the scorm summary screen and complete online work flow', async () => {
     const scormCourseTestId = `${CL_TEST_IDS.LEARNING_ITEM}1`;
     const sectionTestId = `${CL_TEST_IDS.ACTIVITY_SECTION}174`;
     const activityTestId = `${CL_TEST_IDS.ACTIVITY}462`;
     await waitFor(element(by.id(scormCourseTestId)))
       .toBeVisible()
       .whileElement(by.id(CL_TEST_IDS.CAROUSEL))
-      .scroll(300, "right");
+      .scroll(300, 'right');
     await element(by.id(scormCourseTestId)).tap();
     await element(by.id(CL_TEST_IDS.TAB_2)).tap();
     await element(by.id(sectionTestId)).tap();
     await waitFor(element(by.id(activityTestId)))
       .toBeVisible()
       .whileElement(by.id(sectionTestId));
-    await element(by.id(sectionTestId)).swipe("up", "slow", 0.5);
+    await element(by.id(sectionTestId)).swipe('up', 'slow', 0.5);
     await element(by.id(activityTestId)).tap();
     await element(by.id(SCORM_TEST_IDS.BUTTON_VIEW_ATTEMPTS)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     await element(by.id(SCORM_TEST_IDS.LAST_ATTEMPT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
-    await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Cancel').and(by.type('_UIAlertControllerActionView'))).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
-    await element(by.label("Ok").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Ok').and(by.type('_UIAlertControllerActionView'))).tap();
     await element(by.id(SCORM_TEST_IDS.NEW_ATTEMPT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
-    await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Cancel').and(by.type('_UIAlertControllerActionView'))).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
-    await element(by.label("Ok").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Ok').and(by.type('_UIAlertControllerActionView'))).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(0).tap();
   });
 
-  it("should be able to follow full offline scorm activity flow", async () => {
+  it('should be able to follow full offline scorm activity flow', async () => {
     customMocks.Query = () => ({
       ...mobileMe.default,
       ...currentLearning.default,
@@ -133,10 +125,10 @@ describe("Scorm test", () => {
 
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
-    await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Cancel').and(by.type('_UIAlertControllerActionView'))).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(1).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
-    await element(by.label("Ok").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Ok').and(by.type('_UIAlertControllerActionView'))).tap();
     await element(by.id(SCORM_TEST_IDS.FEEDBACK_CLOSE)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).atIndex(0).tap();
   });

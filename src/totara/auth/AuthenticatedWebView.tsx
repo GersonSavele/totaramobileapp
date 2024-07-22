@@ -13,17 +13,18 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { forwardRef } from "react";
-import { WebView, WebViewNavigation } from "react-native-webview";
-import { MutationFunction, gql, useMutation } from "@apollo/client";
-import CookieManager from "@react-native-cookies/cookies";
-
-import { config, Log } from "@totara/lib";
-import { WEBVIEW_SECRET } from "@totara/lib/constants";
-import { Loading, LoadingError } from "@totara/components";
-import DeviceInfo from "react-native-device-info";
-import { TEST_IDS } from "@totara/lib/testIds";
-import { connect } from "react-redux";
+import type { MutationFunction } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
+import CookieManager from '@react-native-cookies/cookies';
+import { Loading, LoadingError } from '@totara/components';
+import { config, Log } from '@totara/lib';
+import { WEBVIEW_SECRET } from '@totara/lib/constants';
+import { TEST_IDS } from '@totara/lib/testIds';
+import React, { forwardRef } from 'react';
+import DeviceInfo from 'react-native-device-info';
+import type { WebViewNavigation } from 'react-native-webview';
+import { WebView } from 'react-native-webview';
+import { connect } from 'react-redux';
 
 const createWebview = gql`
   mutation totara_mobile_create_webview($url: String!) {
@@ -77,7 +78,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
             isAuthenticated: true
           });
         } else {
-          throw new Error("data missing on response");
+          throw new Error('data missing on response');
         }
       })
       .catch(error => {
@@ -85,7 +86,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
         this.setState({ error: error, isLoading: false });
       });
 
-    const clearCookiesPromise = CookieManager.clearAll(true).catch(error => Log.warn("unable to clearcookies", error));
+    const clearCookiesPromise = CookieManager.clearAll(true).catch(error => Log.warn('unable to clearcookies', error));
 
     const userAgentPromise = DeviceInfo.getUserAgent().then(agent => {
       this.setState({ agent: `${agent} ${config.userAgent}` });
@@ -98,8 +99,8 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
     const { deleteWebview } = this.props;
     if (this.state.webviewSecret) {
       return deleteWebview({ variables: { secret: this.state.webviewSecret } })
-        .then(data => Log.debug("deleted webview", data))
-        .catch(error => Log.warn("unable to create webview", error));
+        .then(data => Log.debug('deleted webview', data))
+        .catch(error => Log.warn('unable to create webview', error));
     }
   }
 
@@ -123,7 +124,7 @@ class AuthenticatedWebViewComponent extends React.Component<Props, State> {
       <WebView
         source={{
           uri: config.webViewUri(host!),
-          headers: { [WEBVIEW_SECRET]: webviewSecret, "Accept-Language": `${languagePreference}` }
+          headers: { [WEBVIEW_SECRET]: webviewSecret, 'Accept-Language': `${languagePreference}` }
         }}
         style={{ flex: 1 }}
         userAgent={agent}
@@ -176,16 +177,16 @@ type State = {
   agent?: string;
 };
 
-const mapStateToProps = (state: State): State => ({ ...state })
-const ConnectedAuthenticatedWebViewComponent = connect(mapStateToProps)(AuthenticatedWebViewComponent)
+const mapStateToProps = (state: State): State => ({ ...state });
+const ConnectedAuthenticatedWebViewComponent = connect(mapStateToProps)(AuthenticatedWebViewComponent);
 
 const AuthenticatedWebViewComponentForwardRef = forwardRef<WebView, OuterProps>((props, ref) => {
   const [cwv] = useMutation(createWebview);
   const [dwv] = useMutation(deleteWebview);
 
-  return <ConnectedAuthenticatedWebViewComponent {...props} innerRef={ref} createWebview={cwv} deleteWebview={dwv} />
+  return <ConnectedAuthenticatedWebViewComponent {...props} innerRef={ref} createWebview={cwv} deleteWebview={dwv} />;
 });
 
-AuthenticatedWebViewComponentForwardRef.displayName = "AuthenticatedWebViewComponentWrap";
+AuthenticatedWebViewComponentForwardRef.displayName = 'AuthenticatedWebViewComponentWrap';
 
 export { AuthenticatedWebViewComponentForwardRef as AuthenticatedWebView, AuthenticatedWebViewComponent };

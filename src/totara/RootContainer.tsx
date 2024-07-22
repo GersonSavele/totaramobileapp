@@ -13,18 +13,19 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { DefaultTheme, NavigationContainer, Theme } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import type { Theme } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
-import SessionContainer from "./SessionContainer";
-import SiteUrl from "./auth/manual/SiteUrl";
-import BrowserLogin from "./auth/manual/browser/BrowserLogin";
-import NativeLogin from "./auth/manual/native/NativeLogin";
-import WebviewLogin from "./auth/manual/webview/WebviewLogin";
-import { cardModalOptions, NAVIGATION, navigationRef } from "./lib/navigation";
-import { translate } from "./locale";
-import { TotaraTheme } from "./theme/Theme";
+import BrowserLogin from './auth/manual/browser/BrowserLogin';
+import NativeLogin from './auth/manual/native/NativeLogin';
+import SiteUrl from './auth/manual/SiteUrl';
+import WebviewLogin from './auth/manual/webview/WebviewLogin';
+import { cardModalOptions, NAVIGATION, navigationRef } from './lib/navigation';
+import { translate } from './locale';
+import SessionContainer from './SessionContainer';
+import { TotaraTheme } from './theme/Theme';
 
 const navigationTheme: Theme = {
   ...DefaultTheme,
@@ -41,7 +42,7 @@ const RootContainer = () => {
     <NavigationContainer theme={navigationTheme} ref={navigationRef}>
       <Stack.Navigator
         screenOptions={{
-          presentation: "modal",
+          presentation: 'modal',
           headerShown: false
         }}>
         <Stack.Screen name="SessionContainer" component={SessionContainer} />
@@ -49,17 +50,17 @@ const RootContainer = () => {
         <Stack.Screen
           name={NAVIGATION.NATIVE_LOGIN}
           component={NativeLogin}
-          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: false }}
+          options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: false }}
         />
         <Stack.Screen
           name={NAVIGATION.WEBVIEW_LOGIN}
           component={WebviewLogin}
-          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: false }}
+          options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: false }}
         />
         <Stack.Screen
           name={NAVIGATION.BROWSER_LOGIN}
           component={BrowserLogin}
-          options={{ ...cardModalOptions, headerBackTitle: translate("general.cancel"), headerBackTitleVisible: false }}
+          options={{ ...cardModalOptions, headerBackTitle: translate('general.cancel'), headerBackTitleVisible: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

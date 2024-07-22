@@ -13,29 +13,30 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { Text, TextStyle, StyleSheet, View } from "react-native";
-
-import Icon, { IconName } from "@totara/components/Icon";
-import { margins, paddings } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
+import type { IconName } from '@totara/components/Icon';
+import Icon from '@totara/components/Icon';
+import { margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import type { TextStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 type MessageBarProps = {
   text: string;
   icon?: IconName;
-  mode?: "info" | "alert";
+  mode?: 'info' | 'alert';
   style?: TextStyle;
   testID?: string;
 };
 
 // @ts-ignore
-const MessageBar = ({ text, icon = 'circle-info', mode = "info", style, testID }: MessageBarProps) => {
+const MessageBar = ({ text, icon = 'circle-info', mode = 'info', style, testID }: MessageBarProps) => {
   let backgroundStyle = { backgroundColor: TotaraTheme.colorInfo };
   let textStyle: any = [TotaraTheme.textSmall, styles.content, { color: TotaraTheme.colorNeutral1 }];
   if (style) {
     textStyle.push(style);
   }
-  if (mode === "alert") {
+  if (mode === 'alert') {
     backgroundStyle.backgroundColor = TotaraTheme.colorAlert;
   }
 
@@ -50,11 +51,11 @@ const MessageBar = ({ text, icon = 'circle-info', mode = "info", style, testID }
 const styles = StyleSheet.create({
   container: {
     padding: paddings.paddingM,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   content: {
     marginRight: margins.marginS,
-    alignSelf: "center"
+    alignSelf: 'center'
   }
 });
 

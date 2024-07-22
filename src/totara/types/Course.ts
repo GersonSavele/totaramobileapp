@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Section, LearningItem } from "./LearningItem";
-import { Completion } from "./Completion";
-import { Criteria } from "./Criteria";
+import type { Completion } from './Completion';
+import type { Criteria } from './Criteria';
+import type { LearningItem, Section } from './LearningItem';
 
 export interface CourseContentDetails {
   course: Course;
@@ -41,9 +41,9 @@ export interface Course extends LearningItem {
 }
 
 export enum CourseFormat {
-  demo = "demo",
-  singleActivity = "singleactivity",
-  social = "social",
-  topics = "topics",
-  weeks = "weeks"
+  demo = 'demo',
+  singleActivity = 'singleactivity',
+  social = 'social',
+  topics = 'topics',
+  weeks = 'weeks'
 }

@@ -13,34 +13,34 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Text, TouchableOpacity, View, FlatList, SafeAreaView } from "react-native";
-import React, { useEffect } from "react";
+import { useMutation } from '@apollo/client';
+import { useNavigation } from '@react-navigation/native';
+import { GeneralErrorModal } from '@totara/components';
+import Icon from '@totara/components/Icon';
+import { WekaContent } from '@totara/components/weka/WekaContent';
+import { useSession } from '@totara/core';
+import { completionStatus, completionTrack } from '@totara/features/constants';
+import { showMessage } from '@totara/lib';
+import { ActivityModType } from '@totara/lib/constants';
+import { navigateTo, NAVIGATION } from '@totara/lib/navigation';
+import { CL_TEST_IDS } from '@totara/lib/testIds';
+import { decodeHtmlCharCodes } from '@totara/lib/tools';
+import { translate } from '@totara/locale';
+import { margins } from '@totara/theme/constants';
+import listViewStyles from '@totara/theme/listView';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { Activity, Section } from '@totara/types';
+import { DescriptionFormat } from '@totara/types/LearningItem';
+import { get, isEmpty } from 'lodash';
+import React, { useEffect } from 'react';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
-import Icon from "@totara/components/Icon";
-import { useMutation } from "@apollo/client";
-import { get, isEmpty } from "lodash";
-import { useNavigation } from "@react-navigation/native";
-import TextContent from "./TextContent";
-import CompletionIcon from "./CompletionIcon";
-import activitiesStyles from "./activitiesStyles";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { Section, Activity } from "@totara/types";
-import { useSession } from "@totara/core";
-import { DescriptionFormat } from "@totara/types/LearningItem";
-import { GeneralErrorModal } from "@totara/components";
-import { translate } from "@totara/locale";
-import { completionStatus, completionTrack } from "@totara/features/constants";
-import { ActivityModType } from "@totara/lib/constants";
-import { navigateTo, NAVIGATION } from "@totara/lib/navigation";
-import { activitySelfComplete, fetchResource, updateStateViewResource } from "../course/api";
-import listViewStyles from "@totara/theme/listView";
-import { CL_TEST_IDS } from "@totara/lib/testIds";
-import { showMessage } from "@totara/lib";
-import { decodeHtmlCharCodes } from "@totara/lib/tools";
-import { WekaContent } from "@totara/components/weka/WekaContent";
-import { margins } from "@totara/theme/constants";
+import { activitySelfComplete, fetchResource, updateStateViewResource } from '../course/api';
+import activitiesStyles from './activitiesStyles';
+import CompletionIcon from './CompletionIcon';
+import TextContent from './TextContent';
 
-const { SCORM_ROOT, SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
+const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
@@ -63,7 +63,7 @@ const Activities = ({
   const navigation = useNavigation();
   // const navigation = useNavigation<{ ScormActivityStack: any }>();
 
-  useEffect(() => navigation.addListener("focus", courseRefreshCallBack), [navigation]);
+  useEffect(() => navigation.addListener('focus', courseRefreshCallBack), [navigation]);
   return (
     <SafeAreaView>
       {sections.map(item => {
@@ -201,7 +201,7 @@ const RestrictionSectionHeader = ({ title, showCriteriaList }: RestHeaderProps) 
           {decodeHtmlCharCodes(title)}
         </Text>
         <Text style={activitiesStyles.sectionNotAvailable}>
-          {translate("course.course_activity_section.not_available")}
+          {translate('course.course_activity_section.not_available')}
         </Text>
       </TouchableOpacity>
     </View>
@@ -279,7 +279,7 @@ type ListUnLockProps = {
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
   const navigation = useNavigation();
 
-  const { host = "", apiKey = "" } = useSession();
+  const { host = '', apiKey = '' } = useSession();
 
   const [selfComplete, { data, error: errorSelfComplete, loading: loadingSelfComplete }] =
     useMutation(activitySelfComplete);
@@ -306,7 +306,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
         style={
           isLabel
             ? [activitiesStyles.itemContentWrapper]
-            : [activitiesStyles.itemContentWrapper, { alignItems: "center" }]
+            : [activitiesStyles.itemContentWrapper, { alignItems: 'center' }]
         }>
         {completionEnabled && (
           <View style={isLabel && activitiesStyles.labelSelfCompletionIcon}>
@@ -334,7 +334,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                 //     title: item.name
                 //   }
                 // });
-                console.log("SCORM");
+                console.log('SCORM');
                 navigateTo({
                   navigate: navigation.navigate,
                   routeId: SCORM_ROOT,
@@ -342,7 +342,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                     id: item.instanceid.toString(),
                     title: item.name
                   }
-                })
+                });
                 break;
               }
               case ActivityModType.label: {
@@ -357,7 +357,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   .then(resourceData => {
                     // @ts-ignore
                     const objResourceData = JSON.parse(resourceData);
-                    const resource = get(objResourceData, "data.resource");
+                    const resource = get(objResourceData, 'data.resource');
                     if (resource) {
                       return updateStateViewResource({
                         apiKey,
@@ -365,15 +365,15 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         instanceId: item.id,
                         modtype: item.modtype
                       }).then(activityViewResponse => {
-                        const isLogged = get(activityViewResponse, "data.core_completion_activity_view", false);
+                        const isLogged = get(activityViewResponse, 'data.core_completion_activity_view', false);
                         if (!isLogged) {
-                          console.warn("Activity logging failed");
+                          console.warn('Activity logging failed');
                         }
                         return resource;
                       });
                     } else {
-                      showMessage({ text: translate("course.activity.invalid_file_data") });
-                      throw new Error("Invalid activity resource data");
+                      showMessage({ text: translate('course.activity.invalid_file_data') });
+                      throw new Error('Invalid activity resource data');
                     }
                   })
                   .then(resource => {
@@ -386,7 +386,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         fileurl,
                         mimetype,
                         apiKey,
-                        backAction: () => { },
+                        backAction: () => {},
                         title: item?.name
                       }
                     });
@@ -402,7 +402,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
-                    backAction: () => { },
+                    backAction: () => {},
                     title: item?.name
                   }
                 });
@@ -428,7 +428,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
         </TouchableOpacity>
       </View>
       {!isLabel && <View style={listViewStyles.thinSeparator} />}
-      {errorSelfComplete && <GeneralErrorModal primaryActionCustomText={translate("general.ok")} />}
+      {errorSelfComplete && <GeneralErrorModal primaryActionCustomText={translate('general.ok')} />}
     </View>
   );
 };

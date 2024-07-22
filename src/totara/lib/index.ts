@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import config from "./config";
-import { Logger, Log } from "./logger";
-import { showMessage } from "./tools";
-import * as constants from "./constants";
+import config from './config';
+import * as constants from './constants';
+import { Log, Logger } from './logger';
+import { showMessage } from './tools';
 
-export { config, Logger, Log, showMessage, constants };
+export { config, constants, Log, Logger, showMessage };

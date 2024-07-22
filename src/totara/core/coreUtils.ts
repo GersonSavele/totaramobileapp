@@ -13,12 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { config } from "@totara/lib";
-import { InMemoryCache, defaultDataIdFromObject } from "@apollo/client";
-import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createApolloClient } from "./AuthRoutines";
-import { LearningItem } from "../types";
+import { defaultDataIdFromObject, InMemoryCache } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { config } from '@totara/lib';
+import { AsyncStorageWrapper, CachePersistor } from 'apollo3-cache-persist';
+
+import type { LearningItem } from '../types';
+import { createApolloClient } from './AuthRoutines';
 
 enum Compatible {
   Api = 1
@@ -31,7 +32,7 @@ const isValidApiVersion = (apiVersoin?: string) => {
 
 const isCompatible = (version?: string) => {
   const fullCompatible = [Compatible.Api];
-  if (config.minApiVersion === "disabled") {
+  if (config.minApiVersion === 'disabled') {
     return fullCompatible;
   } else {
     if (version && config.minApiVersion <= version) return [Compatible.Api];
@@ -43,7 +44,7 @@ const setupApolloClient = async ({ apiKey, host }) => {
   const cache = new InMemoryCache({
     dataIdFromObject: object => {
       switch (object.__typename) {
-        case "totara_mobile_current_learning": {
+        case 'totara_mobile_current_learning': {
           const learningItem = object as unknown as LearningItem;
           return `${learningItem.id}__${learningItem.itemtype}`; // totara_core_learning_item is generic type, need to use 1 more field discriminate different types
         }
@@ -66,5 +67,5 @@ const setupApolloClient = async ({ apiKey, host }) => {
   };
 };
 
-export { isValidApiVersion, isCompatible, setupApolloClient };
+export { isCompatible, isValidApiVersion, setupApolloClient };
 export default { isValidApiVersion, isCompatible, setupApolloClient };

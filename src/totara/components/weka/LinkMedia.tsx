@@ -13,24 +13,25 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View, Text } from "react-native";
-import { WebView } from "react-native-webview";
-import { isEmpty } from "lodash";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { useSession } from "@totara/core";
-import { getHostnameFromRegex, getUrlLastComponentFromRegex } from "@totara/lib/tools";
-import { ConfigProps } from "./wekaUtils";
-import ImageViewerWrapper from "./ImageViewerWrapper";
-import styles from "./wekaStyle";
-import EmbeddedMedia from "./EmbeddedMedia";
-import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
+import { useSession } from '@totara/core';
+import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
+import { getHostnameFromRegex, getUrlLastComponentFromRegex } from '@totara/lib/tools';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { isEmpty } from 'lodash';
+import React from 'react';
+import { Text, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
-const VIMEO_URL_PREFIX = "https://player.vimeo.com/video/";
+import EmbeddedMedia from './EmbeddedMedia';
+import ImageViewerWrapper from './ImageViewerWrapper';
+import styles from './wekaStyle';
+import type { ConfigProps } from './wekaUtils';
+
+const VIMEO_URL_PREFIX = 'https://player.vimeo.com/video/';
 
 enum HostName {
-  youtube = "www.youtube.com",
-  vimeo = "vimeo.com"
+  youtube = 'www.youtube.com',
+  vimeo = 'vimeo.com'
 }
 
 const LinkMedia = ({ content = {}, textColor = TotaraTheme.colorNeutral8 }: ConfigProps) => {
@@ -67,10 +68,10 @@ const WebViewWrapper = ({ content = {} }: ConfigProps) => {
   let url = content.attrs.url;
   const hostName = getHostnameFromRegex(url);
   // App only support for youtube and vimeo video insert link, and there is configuration for make a full screen video
-  hostName === HostName.youtube && (url = url.split("watch?v=").join("embed/"));
+  hostName === HostName.youtube && (url = url.split('watch?v=').join('embed/'));
   hostName === HostName.vimeo && (url = VIMEO_URL_PREFIX + getUrlLastComponentFromRegex(url));
 
-  const handleWebViewRequest = (request) => {
+  const handleWebViewRequest = request => {
     if (url === request.url) {
       return true;
     } else return false;
@@ -81,11 +82,11 @@ const WebViewWrapper = ({ content = {} }: ConfigProps) => {
         style={styles.webViewWrapper}
         javaScriptEnabled={true}
         domStorageEnabled={false}
-        originWhitelist={["*"]}
+        originWhitelist={['*']}
         scrollEnabled={false}
         allowsInlineMediaPlayback={true}
         allowsFullscreenVideo={true}
-        onShouldStartLoadWithRequest={(request) => {
+        onShouldStartLoadWithRequest={request => {
           return handleWebViewRequest(request);
         }}
         source={{

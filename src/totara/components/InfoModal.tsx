@@ -13,10 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode } from "react";
-import { Modal, ImageSourcePropType } from "react-native";
+import type { ReactNode } from 'react';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Modal } from 'react-native';
 
-import ModalContent from "./ModalContent";
+import ModalContent from './ModalContent';
 
 type InfoModalProps = {
   title?: string;

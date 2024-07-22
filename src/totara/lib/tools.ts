@@ -13,12 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Alert, Dimensions, Platform } from "react-native";
-import { translate } from "@totara/locale";
-import moment from "moment";
-import { get, isEmpty } from "lodash";
-import { SubPlugin } from "@totara/lib/constants";
-import config from "./config";
+import { SubPlugin } from '@totara/lib/constants';
+import { translate } from '@totara/locale';
+import { get, isEmpty } from 'lodash';
+import moment from 'moment';
+import { Alert, Dimensions, Platform } from 'react-native';
+
+import config from './config';
 
 type ShowMessageParams = {
   title?: string;
@@ -26,8 +27,8 @@ type ShowMessageParams = {
   callback?: (value?: string | undefined) => void;
 };
 
-const showMessage = ({ title = "", text, callback = () => null }: ShowMessageParams) => {
-  Alert.alert(title, text, [{ text: translate("general.ok"), onPress: callback }], {
+const showMessage = ({ title = '', text, callback = () => null }: ShowMessageParams) => {
+  Alert.alert(title, text, [{ text: translate('general.ok'), onPress: callback }], {
     cancelable: false
   });
 };
@@ -46,11 +47,11 @@ const showConfirmation = ({
     message,
     [
       {
-        text: translate("general.cancel"),
-        style: "cancel"
+        text: translate('general.cancel'),
+        style: 'cancel'
       },
       {
-        text: translate("general.ok"),
+        text: translate('general.ok'),
         onPress: callback
       }
     ],
@@ -65,85 +66,85 @@ const humanReadablePercentage = ({ writtenBytes, sizeInBytes }) => {
 
 //RFC4122 version 4 compliant
 const uuid = () => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     let r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8;
+      v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 };
 
 const timeAgo = (fromUnixTime: number) => {
-  moment.relativeTimeThreshold("h", 24);
+  moment.relativeTimeThreshold('h', 24);
   return moment.unix(fromUnixTime).fromNow();
 };
 
-const capitalizeFirstLetter = (string) => {
+const capitalizeFirstLetter = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 const deviceScreen = {
-  width: Dimensions.get("window").width,
-  height: Dimensions.get("window").height,
-  scale: Dimensions.get("window").scale,
+  width: Dimensions.get('window').width,
+  height: Dimensions.get('window').height,
+  scale: Dimensions.get('window').scale,
   screenSizes: {
-    small: Dimensions.get("window").width + Dimensions.get("window").height < 1000 //Iphone 5 and smaller android devices
+    small: Dimensions.get('window').width + Dimensions.get('window').height < 1000 //Iphone 5 and smaller android devices
   }
 };
 
-const getHostnameFromRegex = (url) => {
+const getHostnameFromRegex = url => {
   // run against regex
   const matches = url.match(/^https?:\/\/([^/?#]+)(?:[/?#]|$)/i);
   // extract hostname (will be null if no match is found)
   return matches && matches[1];
 };
 
-const getUrlLastComponentFromRegex = (url) => {
+const getUrlLastComponentFromRegex = url => {
   return url
-    .replace(/\/\s*$/, "")
-    .split("/")
+    .replace(/\/\s*$/, '')
+    .split('/')
     .pop();
 };
 
-const isIOS = Platform.OS === "ios";
-const isAndroid = Platform.OS === "android";
+const isIOS = Platform.OS === 'ios';
+const isAndroid = Platform.OS === 'android';
 
 const isValidUrlText = (urlText: string) => {
   const pattern = new RegExp(
-    "^(https?:\\/\\/)?" + // protocol
-    "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-    "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-    "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-    "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-      "(\\#[-a-z\\d_]*)?$",
-    "i"
+    '^(https?:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$',
+    'i'
   ); // fragment locator
   return pattern.test(urlText);
 };
 
-const decodeHtmlCharCodes = (str) =>
+const decodeHtmlCharCodes = str =>
   str.replace(/(&#(\d+);)/g, (match, capture, charCode) => String.fromCharCode(charCode));
 
-const isEnableFindLearning = (core) => {
+const isEnableFindLearning = core => {
   if (config.disableFindLearning) {
     return false;
   }
-  const subPlugnis = get(core, "system.mobile_subplugins");
-  return !isEmpty(subPlugnis?.find((element) => element.pluginname === SubPlugin.findLearning));
+  const subPlugnis = get(core, 'system.mobile_subplugins');
+  return !isEmpty(subPlugnis?.find(element => element.pluginname === SubPlugin.findLearning));
 };
 
 export {
-  showMessage,
-  showConfirmation,
-  humanReadablePercentage,
-  uuid,
-  deviceScreen,
-  timeAgo,
   capitalizeFirstLetter,
+  decodeHtmlCharCodes,
+  deviceScreen,
   getHostnameFromRegex,
   getUrlLastComponentFromRegex,
-  isIOS,
+  humanReadablePercentage,
   isAndroid,
+  isEnableFindLearning,
+  isIOS,
   isValidUrlText,
-  decodeHtmlCharCodes,
-  isEnableFindLearning
+  showConfirmation,
+  showMessage,
+  timeAgo,
+  uuid
 };

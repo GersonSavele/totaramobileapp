@@ -13,24 +13,24 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View, Text, StyleSheet, Linking } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
-import { WebViewNavigation } from "react-native-webview";
-import { NotificationMessage } from "@totara/types";
-import { fontWeights, paddings } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { decodeHtmlCharCodes, timeAgo } from "@totara/lib/tools";
-import { DescriptionFormat } from "@totara/types/LearningItem";
-import WebViewWrapper from "@totara/auth/WebViewWrapper";
-import { useSession } from "@totara/core";
-import { DescriptionContent } from "@totara/components/DescriptionContent";
+import type { StackScreenProps } from '@react-navigation/stack';
+import WebViewWrapper from '@totara/auth/WebViewWrapper';
+import { DescriptionContent } from '@totara/components/DescriptionContent';
+import { useSession } from '@totara/core';
+import { decodeHtmlCharCodes, timeAgo } from '@totara/lib/tools';
+import { fontWeights, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { NotificationMessage } from '@totara/types';
+import type { DescriptionFormat } from '@totara/types/LearningItem';
+import React from 'react';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+import type { WebViewNavigation } from 'react-native-webview';
 
 type ParamList = {
   messageDetails: NotificationMessage;
 };
 
-type NotificationDetailProps = StackScreenProps<ParamList, "messageDetails">;
+type NotificationDetailProps = StackScreenProps<ParamList, 'messageDetails'>;
 
 const NotificationDetails = ({ route }: NotificationDetailProps) => {
   const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat, fullMessageHTML } = route.params;
@@ -48,17 +48,17 @@ const NotificationDetails = ({ route }: NotificationDetailProps) => {
   return (
     <View style={styles.mainContainer}>
       <View>
-        <Text testID={"test_title"} style={styles.title}>
+        <Text testID={'test_title'} style={styles.title}>
           {decodeHtmlCharCodes(subject)}
         </Text>
-        <Text testID={"test_timeCreated"} style={styles.timeCreated}>
+        <Text testID={'test_timeCreated'} style={styles.timeCreated}>
           {timeAgo(timeCreated)}
         </Text>
       </View>
       <DescriptionContent
         content={fullMessage}
         contentType={fullMessageFormat as DescriptionFormat}
-        testID={"test_fullMessage"}
+        testID={'test_fullMessage'}
         source={{ html: fullMessageHTML }}
       />
     </View>

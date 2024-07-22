@@ -12,28 +12,28 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import { userOwnProfile } from "@totara/features/profile/api/index";
-import { GraphQLError } from "graphql";
+import { userOwnProfile } from '@totara/features/profile/api/index';
+import { GraphQLError } from 'graphql';
 
 const fullProfile = {
   profile: {
-    __typename: "core_user",
-    email: "totara.user@totaralearning.com",
-    firstname: "Totara",
-    id: "999",
-    profileimage: "theme/image.php/basis/core/",
-    surname: "User",
-    username: "totarau"
+    __typename: 'core_user',
+    email: 'totara.user@totaralearning.com',
+    firstname: 'Totara',
+    id: '999',
+    profileimage: 'theme/image.php/basis/core/',
+    surname: 'User',
+    username: 'totarau'
   }
-}
+};
 
 const shortProfile = {
   profile: {
-    __typename: "core_user",
-    firstname: "Totara",
-    surname: "User"
+    __typename: 'core_user',
+    firstname: 'Totara',
+    surname: 'User'
   }
-}
+};
 
 const profileMock = [
   {
@@ -63,9 +63,9 @@ const profileMockError = [
       query: userOwnProfile
     },
     result: {
-      errors: [new GraphQLError("Error!")]
+      errors: [new GraphQLError('Error!')]
     }
   }
 ];
 
-export { profileMock, shortProfileMock, profileMockError };
+export { profileMock, profileMockError, shortProfileMock };

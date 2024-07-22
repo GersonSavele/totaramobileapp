@@ -12,21 +12,22 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { getLocale, translate } from "@totara/locale";
-import { learningItemToRouteMap, navigateTo } from "@totara/lib/navigation";
-import { ImageWrapper, ProgressCircle } from "@totara/components";
-import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
-import { capitalizeFirstLetter } from "@totara/lib/tools";
-import NativeAccessRestriction from "@totara/features/currentLearning/NativeAccessRestriction";
-import { borderRadius, iconSizes, margins, paddings } from "@totara/theme/constants";
-import { extractTargetId, isInvalidDueDate } from "../utils";
-import { activeOpacity, flexGrow } from "@totara/lib/styles/base";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
+import { ImageWrapper, ProgressCircle } from '@totara/components';
+import DefaultImage from '@totara/features/currentLearning/components/DefaultImage';
+import NativeAccessRestriction from '@totara/features/currentLearning/NativeAccessRestriction';
+import { learningItemToRouteMap, navigateTo } from '@totara/lib/navigation';
+import { activeOpacity, flexGrow } from '@totara/lib/styles/base';
+import { capitalizeFirstLetter } from '@totara/lib/tools';
+import { getLocale, translate } from '@totara/locale';
+import { borderRadius, iconSizes, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
 import { formatDistance, parseISO } from 'date-fns';
 import * as locales from 'date-fns/locale';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import { extractTargetId, isInvalidDueDate } from '../utils';
 
 type ListViewItemProps = {
   item: any;
@@ -39,20 +40,22 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
   const { fullname, progress, itemtype, duedate, duedateState, id, native, imageSrc } = item;
 
   const DueDateWidget = (dueDate, dueDateState) => {
-    if (isInvalidDueDate({ dueDate, dueDateState })) return <View testID={"test_noDueDate"} />;
+    if (isInvalidDueDate({ dueDate, dueDateState })) return <View testID={'test_noDueDate'} />;
 
     const color =
-      dueDateState === "danger"
+      dueDateState === 'danger'
         ? TotaraTheme.colorAlert
-        : dueDateState === "warning"
+        : dueDateState === 'warning'
           ? TotaraTheme.colorWarning
           : TotaraTheme.colorInfo;
     const text =
-      dueDateState === "danger" ? translate("current_learning.overdue_by") : translate("current_learning.due_in");
+      dueDateState === 'danger' ? translate('current_learning.overdue_by') : translate('current_learning.due_in');
 
-    const formatedDistance = formatDistance(new Date(parseISO(`${dueDate}`)), new Date(), { locale: locales[getLocale()] });
+    const formatedDistance = formatDistance(new Date(parseISO(`${dueDate}`)), new Date(), {
+      locale: locales[getLocale()]
+    });
     return (
-      <Text testID={"test_dueDate"} style={{ color: color }}>
+      <Text testID={'test_dueDate'} style={{ color: color }}>
         {`${text} ${formatedDistance}`}
       </Text>
     );
@@ -79,7 +82,7 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
   return (
     <TouchableOpacity
       onPress={() => onItemPress()}
-      testID={"test_currentLearningListViewItem"}
+      testID={'test_currentLearningListViewItem'}
       activeOpacity={activeOpacity}>
       <View style={currentLearningListViewStyles.itemContainer} testID={itemTestID}>
         <View style={currentLearningListViewStyles.itemImage}>
@@ -94,13 +97,13 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
             <View style={flexGrow}>
               <Text
                 style={currentLearningListViewStyles.itemTitle}
-                testID={"test_CurrentLearningItem_Title"}
+                testID={'test_CurrentLearningItem_Title'}
                 numberOfLines={2}>
                 {fullname}
               </Text>
               <Text
                 style={currentLearningListViewStyles.itemLearningTypeLabel}
-                testID={"test_CurrentLearningItem_Type"}>
+                testID={'test_CurrentLearningItem_Type'}>
                 {capitalizeFirstLetter(translate(`learning_items.${itemtype}`))}
               </Text>
             </View>
@@ -108,7 +111,7 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
               <ProgressCircle
                 size={iconSizes.sizeXL}
                 progress={progress}
-                testID={"test_CurrentLearningItem_Progress"}
+                testID={'test_CurrentLearningItem_Progress'}
               />
             )}
           </View>
@@ -123,7 +126,7 @@ const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) =>
 const currentLearningListViewStyles = StyleSheet.create({
   itemContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: paddings.paddingL
   },
   itemImage: {
@@ -138,9 +141,9 @@ const currentLearningListViewStyles = StyleSheet.create({
   },
   itemInfoContainer: {
     ...flexGrow,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center"
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   itemTitle: {
     ...TotaraTheme.textRegular,
@@ -149,12 +152,12 @@ const currentLearningListViewStyles = StyleSheet.create({
   },
   itemSubLine: {
     marginTop: margins.marginXS,
-    flexDirection: "row",
-    alignItems: "flex-end"
+    flexDirection: 'row',
+    alignItems: 'flex-end'
   },
   itemProgress: {
-    alignSelf: "flex-start",
-    alignContent: "center"
+    alignSelf: 'flex-start',
+    alignContent: 'center'
   },
   imageWrap: {
     flex: 1,
@@ -168,7 +171,7 @@ const currentLearningListViewStyles = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusM,
     color: TotaraTheme.colorNeutral7,
     borderColor: TotaraTheme.colorNeutral6,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     marginVertical: margins.marginXS
   }
 });

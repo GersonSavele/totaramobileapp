@@ -13,8 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { NAVIGATION } from "@totara/lib/navigation";
-import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from "./constants";
+import { NAVIGATION } from '@totara/lib/navigation';
+
+import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from './constants';
 
 const { WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -165,31 +166,31 @@ const mapTypeToNode = {
     return new WekaList(jsonObjectToWekaNodes(content, level));
   },
 
-  [WekaEditorType.image]: (item) => {
+  [WekaEditorType.image]: item => {
     return new WekaImage(item.url, item.fileName);
   },
 
-  [WekaEditorType.emoji]: (shortcode) => {
+  [WekaEditorType.emoji]: shortcode => {
     return new WekaEmoji(shortcode);
   },
 
-  [WekaEditorType.text]: (item) => {
+  [WekaEditorType.text]: item => {
     return new WekaText(item.text, item.type, item.marks);
   },
 
   [WekaEditorType.heading]: (content, level) => {
     return new WekaHeading(jsonObjectToWekaNodes(content, level));
   },
-  [WekaEditorType.linkMedia]: (content) => {
+  [WekaEditorType.linkMedia]: content => {
     return new WekaLinkMedia(content);
   },
-  [WekaEditorType.attachment]: (content) => {
+  [WekaEditorType.attachment]: content => {
     return new WekaAttachment(content);
   },
-  [WekaEditorType.video]: (content) => {
+  [WekaEditorType.video]: content => {
     return new WekaVideo(content);
   },
-  [WekaEditorType.ruler]: (content) => {
+  [WekaEditorType.ruler]: content => {
     return new WekaRuler(content);
   }
 };
@@ -267,7 +268,7 @@ const navigateWebView = ({
   navigation: any;
 }) => {
   const props = {
-    uri: url?.replace("totara/mobile/", ""), // This is the temp solution for webview headers error fix
+    uri: url?.replace('totara/mobile/', ''), // This is the temp solution for webview headers error fix
     apiKey,
     backAction: onRequestClose,
     title: title
@@ -286,27 +287,27 @@ const navigateWebView = ({
 // Disable eslint for interface so we can export without warnings.
 export {
   // eslint-disable-next-line no-undef
-  Visitor,
-  // eslint-disable-next-line no-undef
-  Node,
-  wrappedWekaNodes,
-  jsonObjectToWekaNodes,
-  WekaRoot,
-  WekaParagraph,
-  WekaText,
-  WekaList,
-  WekaEmoji,
-  WekaOrderList,
-  WekaBulletList,
-  WekaHeading,
-  WekaImage,
-  navigateWebView,
-  WekaLinkMedia,
-  // eslint-disable-next-line no-undef
   ConfigProps,
   // eslint-disable-next-line no-undef
   EmbeddedMediaProps,
+  jsonObjectToWekaNodes,
+  navigateWebView,
+  // eslint-disable-next-line no-undef
+  Node,
+  // eslint-disable-next-line no-undef
+  Visitor,
   WekaAttachment,
+  WekaBulletList,
+  WekaEmoji,
+  WekaHeading,
+  WekaImage,
+  WekaLinkMedia,
+  WekaList,
+  WekaOrderList,
+  WekaParagraph,
+  WekaRoot,
   WekaRuler,
-  WekaVideo
+  WekaText,
+  WekaVideo,
+  wrappedWekaNodes
 };

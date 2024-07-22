@@ -13,19 +13,20 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
-import CourseSet from "./CourseSet";
-import CourseSetList from "./CourseSetList";
-import { CourseGroup, StatusKey, CourseSets } from "@totara/types/CourseGroup";
-import { translate } from "@totara/locale";
-import { courses } from "./courseGroupStyles";
-import listViewStyles from "@totara/theme/listView";
-import { iconSizes } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
+import Icon from '@totara/components/Icon';
+import { activeOpacity } from '@totara/lib/styles/base';
+import { translate } from '@totara/locale';
+import { iconSizes } from '@totara/theme/constants';
+import listViewStyles from '@totara/theme/listView';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { CourseGroup, CourseSets } from '@totara/types/CourseGroup';
+import { StatusKey } from '@totara/types/CourseGroup';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-import Icon from "@totara/components/Icon";
-import { activeOpacity } from "@totara/lib/styles/base";
+import { courses } from './courseGroupStyles';
+import CourseSet from './CourseSet';
+import CourseSetList from './CourseSetList';
 
 type CoursesProps = {
   courseGroup: CourseGroup;
@@ -39,9 +40,9 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
       {courseGroup.courseSetHeader && courseGroup.courseSetHeader.length > 0 ? (
         <CompletionInfo
           title={courseGroup.courseSetHeader}
-          icon={"check-circle"}
-          viewTestID={"test_set_header"}
-          textTestID={"test_set_header_title"}
+          icon={'check-circle'}
+          viewTestID={'test_set_header'}
+          textTestID={'test_set_header_title'}
           iconColor={TotaraTheme.colorSuccess}
         />
       ) : null}
@@ -52,7 +53,7 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
               <CourseSet
                 courseSets={item[0]}
                 navigation={navigation}
-                testID={"test_course_set"}
+                testID={'test_course_set'}
                 showCriteriaList={() => showCriteriaList(item[0].completionCriteria)}
               />
             )}
@@ -60,7 +61,7 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
               <CourseSetList
                 courseSetList={item}
                 navigate={navigation.navigate}
-                testID={"test_course_set_list"}
+                testID={'test_course_set_list'}
                 showCriteriaList={showCriteriaList}
               />
             )}
@@ -75,14 +76,14 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
         );
       })}
       {courseGroup.completion.statuskey === StatusKey.completed && (
-        <Completed endnote={courseGroup.endnote} navigation={navigation} testID={"test_program_completed"} />
+        <Completed endnote={courseGroup.endnote} navigation={navigation} testID={'test_program_completed'} />
       )}
       {courseGroup.countUnavailableSets > 0 && (
         <CompletionInfo
-          title={courseGroup.countUnavailableSets.toString() + " " + translate("course_group.courses.unavailable_sets")}
-          icon={"ban"}
-          viewTestID={"test_unavailable_set"}
-          textTestID={"test_unavailable_set_title"}
+          title={courseGroup.countUnavailableSets.toString() + ' ' + translate('course_group.courses.unavailable_sets')}
+          icon={'ban'}
+          viewTestID={'test_unavailable_set'}
+          textTestID={'test_unavailable_set_title'}
           iconColor={TotaraTheme.colorAlert}
         />
       )}
@@ -101,7 +102,7 @@ type CompletionInfoProps = {
 const CompletionInfo = ({ title, icon, viewTestID, textTestID, iconColor }: CompletionInfoProps) => {
   return (
     <View style={courses.completionInfoView} testID={viewTestID}>
-      <View style={{ backgroundColor: "transparent" }}>
+      <View style={{ backgroundColor: 'transparent' }}>
         <Icon name={icon} size={iconSizes.sizeS} color={iconColor} />
       </View>
       <Text style={courses.completionInfoTitle} testID={textTestID}>
@@ -120,16 +121,16 @@ type CompletedProps = {
 const Completed = ({ endnote, navigation, testID }: CompletedProps) => {
   return (
     <View style={courses.bottomView} testID={testID}>
-      <Text style={courses.completedText}>{translate("course_group.courses.compete")}</Text>
-      <Text numberOfLines={5} style={courses.endNoteText} testID={"test_endnote"}>
+      <Text style={courses.completedText}>{translate('course_group.courses.compete')}</Text>
+      <Text numberOfLines={5} style={courses.endNoteText} testID={'test_endnote'}>
         {endnote}
       </Text>
       <TouchableOpacity
         style={courses.button}
-        testID={"test_go_back_button"}
+        testID={'test_go_back_button'}
         onPress={() => navigation.goBack()}
         activeOpacity={activeOpacity}>
-        <Text style={courses.buttonTextTitle}>{translate("course_group.courses.current_learning_button_title")}</Text>
+        <Text style={courses.buttonTextTitle}>{translate('course_group.courses.current_learning_button_title')}</Text>
       </TouchableOpacity>
     </View>
   );

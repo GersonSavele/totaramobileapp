@@ -13,11 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 // @ts-nocheck
-import { ImageStyle, StyleSheet, View, ViewStyle } from "react-native";
-import { ImageWrapper } from "@totara/components";
-import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
-import React from "react";
-import { borderRadius } from "@totara/theme/constants";
+import { ImageWrapper } from '@totara/components';
+import DefaultImage from '@totara/features/currentLearning/components/DefaultImage';
+import { borderRadius } from '@totara/theme/constants';
+import React from 'react';
+import type { ImageStyle, ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 interface ImageElementProps {
   imageStyle?: ImageStyle;
@@ -43,7 +44,7 @@ const ImageElement = ({ imageStyle, image, itemType }: ImageElementProps) => {
 const styles = StyleSheet.create({
   itemImage: {
     flex: 1,
-    flexDirection: "column-reverse",
+    flexDirection: 'column-reverse',
     borderRadius: borderRadius.borderRadiusM
   },
   imageWrap: {

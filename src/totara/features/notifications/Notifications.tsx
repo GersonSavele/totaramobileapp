@@ -13,32 +13,24 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  ImageSourcePropType,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity
-} from "react-native";
-import { useMutation, useQuery, NetworkStatus } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
+import type { StackScreenProps } from '@react-navigation/stack';
+import { Images } from '@resources/images';
+import { Loading, MessageBar } from '@totara/components';
+import NetworkStatusIndicator from '@totara/components/NetworkStatusIndicator';
+import { notificationQueryMarkRead, notificationsQuery, parser } from '@totara/features/notifications/api';
+import NotificationItem from '@totara/features/notifications/NotificationItem';
+import { translate } from '@totara/locale';
+import { paddings } from '@totara/theme/constants';
+import headerStyles from '@totara/theme/headers';
+import listViewStyles from '@totara/theme/listView';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { NotificationMessage } from '@totara/types';
+import React, { useEffect, useState } from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { FlatList, Image, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-import { Images } from "@resources/images";
-import { translate } from "@totara/locale";
-import headerStyles from "@totara/theme/headers";
-import listViewStyles from "@totara/theme/listView";
-import NetworkStatusIndicator from "@totara/components/NetworkStatusIndicator";
-import { NotificationMessage } from "@totara/types";
-import NotificationItem from "@totara/features/notifications/NotificationItem";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { Loading, MessageBar } from "@totara/components";
-import { notificationQueryMarkRead, notificationsQuery, parser } from "@totara/features/notifications/api";
-import { paddings } from "@totara/theme/constants";
-import { StackScreenProps } from "@react-navigation/stack";
-import { TEST_IDS } from "../../lib/testIds";
+import { TEST_IDS } from '../../lib/testIds';
 
 const Notifications = ({ navigation }: StackScreenProps<any>) => {
   const { error, networkStatus, data, refetch } = useQuery(notificationsQuery, { notifyOnNetworkStatusChange: true });
@@ -50,8 +42,8 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
   const [selectable, setSelectable] = useState(false);
   const headerTitle =
     selectable && selectedList.length > 0
-      ? translate("notifications.selected", { count: selectedList.length })
-      : translate("notifications.title");
+      ? translate('notifications.selected', { count: selectedList.length })
+      : translate('notifications.title');
 
   //EVENTS
   useEffect(() => {
@@ -60,18 +52,18 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
 
   const showOptions = (show: boolean) => {
     const leftOption = show && (
-      <TouchableOpacity testID={"test_cancel"} onPress={onCancelTap} style={{ paddingLeft: paddings.paddingL }}>
-        <Text style={TotaraTheme.textMedium}> {translate("general.cancel")}</Text>
+      <TouchableOpacity testID={'test_cancel'} onPress={onCancelTap} style={{ paddingLeft: paddings.paddingL }}>
+        <Text style={TotaraTheme.textMedium}> {translate('general.cancel')}</Text>
       </TouchableOpacity>
     );
 
     const rightOption = show && (
       <TouchableOpacity
-        testID={"test_markAsRead"}
+        testID={'test_markAsRead'}
         onPress={markAsReadAllSelected}
         style={{ paddingRight: paddings.paddingL }}>
         <Text style={[TotaraTheme.textMedium, { color: TotaraTheme.colorLink }]}>
-          {translate("notifications.mark_as_read")}
+          {translate('notifications.mark_as_read')}
         </Text>
       </TouchableOpacity>
     );
@@ -99,7 +91,7 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
 
     if (!item.isRead) markAsRead([item.id]);
 
-    navigation.navigate("NotificationDetail", item);
+    navigation.navigate('NotificationDetail', item);
   };
 
   const onItemLongPress = (item: NotificationMessage) => {
@@ -160,33 +152,33 @@ const Notifications = ({ navigation }: StackScreenProps<any>) => {
       <NetworkStatusIndicator />
       {error && (
         <MessageBar
-          mode={"alert"}
-          text={translate("general.error_unknown")}
-          icon={"exclamation-circle"}
+          mode={'alert'}
+          text={translate('general.error_unknown')}
+          icon={'exclamation-circle'}
           testID={TEST_IDS.MESSAGE_ERROR_ID}
         />
       )}
       <View style={{ flex: 1 }}>
-        {networkStatus === NetworkStatus.loading && <Loading testID={"test_loading"} />}
+        {networkStatus === NetworkStatus.loading && <Loading testID={'test_loading'} />}
         {notificationList.length == 0 && (
           <ScrollView
             contentContainerStyle={{
               flexGrow: 1,
-              justifyContent: "center"
+              justifyContent: 'center'
             }}
             refreshControl={<RefreshControl refreshing={networkStatus === NetworkStatus.refetch} onRefresh={refetch} />}
-            testID={"test_notificationsEmptyContainer"}>
+            testID={'test_notificationsEmptyContainer'}>
             <View style={listViewStyles.noContent}>
               <Image source={Images.noNotifications as ImageSourcePropType} />
               <Text style={[TotaraTheme.textHeadline, listViewStyles.noContentTitle]}>
-                {translate("notifications.empty")}
+                {translate('notifications.empty')}
               </Text>
             </View>
           </ScrollView>
         )}
         {notificationList.length > 0 && (
           <FlatList<NotificationMessage>
-            testID={"test_notificationsList"}
+            testID={'test_notificationsList'}
             refreshing={networkStatus === NetworkStatus.refetch}
             onRefresh={onRefresh}
             contentContainerStyle={listViewStyles.contentContainerStyle}

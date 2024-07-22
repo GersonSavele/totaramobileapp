@@ -13,10 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet } from "react-native";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, borderRadius, fontWeights, iconSizes, paddings } from "@totara/theme/constants";
-import { deviceScreen } from "@totara/lib/tools";
+import { deviceScreen } from '@totara/lib/tools';
+import { borderRadius, fontWeights, iconSizes, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { StyleSheet } from 'react-native';
 const { marginXS, marginM, marginS } = margins;
 
 const wekaStyle = StyleSheet.create({
@@ -25,17 +25,17 @@ const wekaStyle = StyleSheet.create({
     marginEnd: marginXS
   },
   docWrap: {
-    justifyContent: "flex-start",
-    flexDirection: "row"
+    justifyContent: 'flex-start',
+    flexDirection: 'row'
   },
   emoji: {
-    textAlign: "left",
+    textAlign: 'left',
     ...TotaraTheme.textRegular,
     marginVertical: marginM
   },
   textContainerWrapper: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     marginVertical: marginS
   },
   linkMediaTitle: {
@@ -51,7 +51,7 @@ const wekaStyle = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral5,
     aspectRatio: 16 / 9,
-    overflow: "hidden" //Fixed: MOB-920, https://stackoverflow.com/questions/54131875/screen-blinks-once-when-rendering-a-webview-on-android/54719378#54719378
+    overflow: 'hidden' //Fixed: MOB-920, https://stackoverflow.com/questions/54131875/screen-blinks-once-when-rendering-a-webview-on-android/54719378#54719378
   },
   linkMediaDescription: {
     ...TotaraTheme.textRegular,
@@ -60,36 +60,36 @@ const wekaStyle = StyleSheet.create({
     color: TotaraTheme.colorFont
   },
   listContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginRight: marginM,
-    justifyContent: "flex-start"
+    justifyContent: 'flex-start'
   },
   textLink: {
-    justifyContent: "center",
+    justifyContent: 'center',
     marginBottom: marginM,
     ...TotaraTheme.textRegular,
     color: TotaraTheme.colorLink
   },
   imageContainer: {
-    width: "100%",
+    width: '100%',
     height: deviceScreen.width,
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2
   },
   imageContainerWrapper: {
-    display: "flex",
+    display: 'flex',
     borderRadius: borderRadius.borderRadiusM,
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
     height: (deviceScreen.width * 1) / 2 - 20
   },
   list: {
-    textAlign: "left",
+    textAlign: 'left',
     ...TotaraTheme.textRegular,
     marginRight: marginM,
     marginTop: margins.marginS,
-    alignSelf: "flex-start"
+    alignSelf: 'flex-start'
   },
   ruler: {
     backgroundColor: TotaraTheme.colorNeutral6,
@@ -97,36 +97,36 @@ const wekaStyle = StyleSheet.create({
     height: 0.5
   },
   touchableViewWrap: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: marginS,
-    alignContent: "center",
-    justifyContent: "center",
-    alignItems: "center"
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   attachmentFileName: {
-    textAlign: "left",
+    textAlign: 'left',
     ...TotaraTheme.textRegular,
     color: TotaraTheme.colorLink,
-    alignSelf: "flex-start"
+    alignSelf: 'flex-start'
   },
   iconWrap: {
-    justifyContent: "center",
+    justifyContent: 'center',
     marginEnd: marginS
   },
   embeddedMediaTitle: {
-    textAlign: "left",
+    textAlign: 'left',
     ...TotaraTheme.textRegular,
     color: TotaraTheme.colorNeutral6,
-    justifyContent: "center"
+    justifyContent: 'center'
   },
   webViewWrapper: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
     borderRadius: borderRadius.borderRadiusM,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     opacity: 0.99 //Fixed: MOB-920, https://stackoverflow.com/questions/54131875/screen-blinks-once-when-rendering-a-webview-on-android/54719378#54719378
   },
   closeButtonTouchableOpacity: {
@@ -134,16 +134,16 @@ const wekaStyle = StyleSheet.create({
     marginEnd: marginM,
     height: iconSizes.sizeXL,
     width: iconSizes.sizeXL,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   closeButtonWrap: {
-    height: "10%",
-    justifyContent: "flex-end",
-    alignItems: "flex-start"
+    height: '10%',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start'
   },
   listItemWrapper: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
     marginLeft: margins.marginXS,
     paddingVertical: paddings.paddingS

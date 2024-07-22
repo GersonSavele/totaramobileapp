@@ -13,8 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Session } from "@totara/types";
-import { SETUP_HOST, INIT_SESSION, END_SESSION, SET_CORE} from "../actions/constants";
+import type { Session } from '@totara/types';
+
+import { END_SESSION, INIT_SESSION, SET_CORE, SETUP_HOST } from '../actions/constants';
 
 const initialState = {
   apiKey: undefined,
@@ -40,7 +41,7 @@ const sessionReducer = (state = initialState, action) => {
         siteInfo: action.payload.siteInfo
       } as Session;
     }
-    case SET_CORE:{
+    case SET_CORE: {
       return {
         ...state,
         core: action.payload

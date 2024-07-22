@@ -13,15 +13,16 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { translate } from "../../locale";
-import NotificationDetails from "./NotificationDetail";
-import TotaraNavigationOptions from "../../components/NavigationOptions";
-import Notifications from "./Notifications";
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+
+import TotaraNavigationOptions from '../../components/NavigationOptions';
+import { translate } from '../../locale';
+import NotificationDetails from './NotificationDetail';
+import Notifications from './Notifications';
 
 const Stack = createStackNavigator();
-const detaultScreenOptions = TotaraNavigationOptions({ backTitle: translate("general.back") });
+const detaultScreenOptions = TotaraNavigationOptions({ backTitle: translate('general.back') });
 
 const NotificationsStack = () => {
   return (

@@ -1,5 +1,5 @@
 // export * from "./Button"
-import Button from "./Button"
-export * from "./types"
+import Button from './Button';
+export * from './types';
 
-export default Button
+export default Button;

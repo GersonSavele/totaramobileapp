@@ -13,19 +13,20 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
-import { Text, TouchableOpacity, View, Image, ImageSourcePropType } from "react-native";
+import { Images } from '@resources/images';
+import { ImageWrapper, ProgressCircle } from '@totara/components';
+import { NAVIGATION } from '@totara/lib/navigation';
+import { navigateTo } from '@totara/lib/navigation';
+import { iconSizes, margins } from '@totara/theme/constants';
+import listViewStyles from '@totara/theme/listView';
+import type { LearningItem } from '@totara/types';
+import React, { useState } from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
-import { ImageWrapper, ProgressCircle } from "@totara/components";
-import { NAVIGATION } from "@totara/lib/navigation";
-import NativeAccessRestriction from "../NativeAccessRestriction";
-import { navigateTo } from "@totara/lib/navigation";
-import { rowItem } from "./courseGroupStyles";
-import { margins, iconSizes } from "@totara/theme/constants";
-import { Images } from "@resources/images";
-import { LearningItem } from "@totara/types";
-import listViewStyles from "@totara/theme/listView";
-import { extractTargetId } from "../utils";
+import NativeAccessRestriction from '../NativeAccessRestriction';
+import { extractTargetId } from '../utils';
+import { rowItem } from './courseGroupStyles';
 type CourseProps = {
   course: LearningItem;
   navigate: any;
@@ -60,22 +61,22 @@ const Course = ({ course, navigate, testID }: CourseProps) => {
             <Image
               style={rowItem.image}
               source={Images.defaultCourses as ImageSourcePropType}
-              testID={"test_default_image"}
+              testID={'test_default_image'}
               resizeMode="contain"
             />
           )}
         </View>
         <View style={rowItem.detailsWrapper}>
-          <Text style={rowItem.courseName} numberOfLines={2} testID={"test_course_full_name"}>
+          <Text style={rowItem.courseName} numberOfLines={2} testID={'test_course_full_name'}>
             {course.fullname}
           </Text>
         </View>
-        <View style={{ alignSelf: "center" }}>
+        <View style={{ alignSelf: 'center' }}>
           {course.progress !== null && (
             <ProgressCircle
               size={iconSizes.sizeXL}
               progress={course.progress}
-              testID={"test_CurrentLearningItem_Progress"}
+              testID={'test_CurrentLearningItem_Progress'}
             />
           )}
         </View>

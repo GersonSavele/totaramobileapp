@@ -13,13 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import messaging from "@react-native-firebase/messaging";
+import messaging from '@react-native-firebase/messaging';
 
 const registerPushNotifications = async () => {
   try {
     await messaging().requestPermission();
   } catch (error) {
-    console.debug("Notifications Permission status error:", error);
+    console.debug('Notifications Permission status error:', error);
     return;
   }
   await unregisterPushNotification();

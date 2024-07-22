@@ -13,17 +13,18 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { LearningItem } from "@totara/types";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { paddings, fontWeights, fontSizes, margins } from "@totara/theme/constants";
-import carouselItemStyles from "@totara/features/currentLearning/learningItems/carouselItemStyles";
-import { capitalizeFirstLetter } from "@totara/lib/tools";
-import ImageElement from "./ImageElement";
-import { translate } from "@totara/locale";
-import DueDateState from "./DueDateState";
-import { SummaryContent } from "@totara/components/SummaryContent";
+import { SummaryContent } from '@totara/components/SummaryContent';
+import carouselItemStyles from '@totara/features/currentLearning/learningItems/carouselItemStyles';
+import { capitalizeFirstLetter } from '@totara/lib/tools';
+import { translate } from '@totara/locale';
+import { fontSizes, fontWeights, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { LearningItem } from '@totara/types';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
+import DueDateState from './DueDateState';
+import ImageElement from './ImageElement';
 
 interface LearningItemCardProps {
   item: LearningItem;
@@ -37,7 +38,7 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
       <ImageElement image={item.imageSrc} itemType={item.itemtype} />
       {item.duedate && <DueDateState dueDateState={item.duedateState} dueDate={item.duedate} />}
       <View style={styles.itemCard}>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: 'row' }}>
           <Text style={styles.itemFullName} numberOfLines={2}>
             {item.fullname}
           </Text>
@@ -48,7 +49,7 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
           </Text>
           <View
             style={{ flex: 1, marginTop: margins.marginM }}
-            onLayout={(x) => {
+            onLayout={x => {
               const viewHeight = x.nativeEvent.layout.height;
               const lineHeight = TotaraTheme.textSmall.lineHeight!;
               setNumberOfLines(Math.floor(viewHeight / lineHeight));
@@ -64,22 +65,22 @@ const LearningItemCard = ({ item }: LearningItemCardProps) => {
 const styles = StyleSheet.create({
   itemCard: {
     padding: paddings.paddingXL,
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     flex: 1
   },
   itemFullName: {
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
     ...TotaraTheme.textHeadline,
     fontWeight: fontWeights.fontWeightSemiBold,
     fontSize: fontSizes.fontSizeL
   },
   disabledOverlay: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     top: 0,
     opacity: 0.5,
-    height: "100%",
-    width: "100%"
+    height: '100%',
+    width: '100%'
   }
 });
 

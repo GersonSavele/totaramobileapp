@@ -13,10 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { createStackNavigator } from "@react-navigation/stack";
-import totaraNavigationOptions from "@totara/components/NavigationOptions";
-import Downloads from "@totara/features/downloads/Downloads";
-import { NAVIGATION } from "../../lib/navigation";
+import { createStackNavigator } from '@react-navigation/stack';
+import totaraNavigationOptions from '@totara/components/NavigationOptions';
+import Downloads from '@totara/features/downloads/Downloads';
+
+import { NAVIGATION } from '../../lib/navigation';
 
 // const DownloadsStack = createCompatNavigatorFactory(createStackNavigator)(
 //   {
@@ -36,6 +37,6 @@ const DownloadsStack = () => (
   <Stack.Navigator initialRouteName={NAVIGATION.DOWNLOADS} screenOptions={{ ...totaraNavigationOptions({}) }}>
     <Stack.Screen name={NAVIGATION.DOWNLOADS} component={Downloads} />
   </Stack.Navigator>
-)
+);
 
 export default DownloadsStack;

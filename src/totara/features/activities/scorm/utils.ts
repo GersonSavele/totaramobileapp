@@ -13,24 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { get, isEmpty } from "lodash";
-import * as RNFS from "@dr.pogodin/react-native-fs";
-import { Platform } from "react-native";
-import moment from "moment";
+import * as RNFS from '@dr.pogodin/react-native-fs';
+import { FILE_EXTENSION, OFFLINE_SCORM_PREFIX, SECONDS_FORMAT } from '@totara/lib/constants';
+import type { Attempt, GradeForAttemptProps, Package, Sco, ScormBundle, ScormPlayerProps } from '@totara/types/Scorm';
+import { AttemptGrade, Grade } from '@totara/types/Scorm';
+import { get, isEmpty } from 'lodash';
+import moment from 'moment';
+import { Platform } from 'react-native';
 
-import {
-  AttemptGrade,
-  Grade,
-  Attempt,
-  ScormBundle,
-  GradeForAttemptProps,
-  ScormPlayerProps,
-  Sco,
-  Package
-} from "@totara/types/Scorm";
-
-import { offlineScormServerRoot, scormZipPackagePath, ScormLessonStatus } from "./constants";
-import { OFFLINE_SCORM_PREFIX, FILE_EXTENSION, SECONDS_FORMAT } from "@totara/lib/constants";
+import { offlineScormServerRoot, ScormLessonStatus, scormZipPackagePath } from './constants';
 
 type GetPlayerInitialDataProps = {
   launchSrc: string;
@@ -41,8 +32,8 @@ type GetPlayerInitialDataProps = {
   packageLocation: string;
   playerInitalData: any;
 };
-const xpath = require("xpath");
-const dom = require("xmldom").DOMParser;
+const xpath = require('xpath');
+const dom = require('xmldom').DOMParser;
 
 const getOfflineScormPackageName = (scormId: string) => `${OFFLINE_SCORM_PREFIX}${scormId}`;
 
@@ -149,7 +140,7 @@ const getAttemptsGrade = (attemptsReport: Attempt[], attemptGrade: AttemptGrade,
         }
         return highestResult;
       }, undefined);
-      return get(highestAttempt, "gradereported", 0);
+      return get(highestAttempt, 'gradereported', 0);
     }
     case AttemptGrade.average: {
       const sumofscores = attemptsReport.reduce(
@@ -177,8 +168,8 @@ const getGradeForAttempt = ({ attemptCmi, maxGrade, gradeMethod }: GradeForAttem
     for (let [, cmi] of Object.entries(attemptCmi)) {
       // Check whether SCORM-1.2 can be "score.raw" and "core.score.raw"
       // Versions of scorm have different "score" paths
-      const rawScore = parseInt(get(cmi, "core.score.raw", undefined) || get(cmi, "score.raw", 0));
-      const lessonStatus = get(cmi, "core.lesson_status", "").toLowerCase();
+      const rawScore = parseInt(get(cmi, 'core.score.raw', undefined) || get(cmi, 'score.raw', 0));
+      const lessonStatus = get(cmi, 'core.lesson_status', '').toLowerCase();
       if (lessonStatus === ScormLessonStatus.passed || lessonStatus === ScormLessonStatus.completed) {
         completedScos = completedScos + 1;
       }
@@ -254,35 +245,35 @@ const scormDataIntoJsInitCode = (scormData: any, cmi: any) => {
   const _hidetoc = "'" + scormData.hidetoc + "'";
 
   return (
-    "{onInjectScormData(" +
+    '{onInjectScormData(' +
     _entrysrc +
-    ", " +
+    ', ' +
     _def +
-    ", " +
+    ', ' +
     _cmiobj +
-    ", " +
+    ', ' +
     _cmiint +
-    ", " +
+    ', ' +
     _scormdebugging +
-    ", " +
+    ', ' +
     _scormauto +
-    ", " +
+    ', ' +
     _scormid +
-    ", " +
+    ', ' +
     _scoid +
-    ", " +
+    ', ' +
     _attempt +
-    ", " +
+    ', ' +
     _autocommit +
-    ", " +
+    ', ' +
     _masteryoverride +
-    ", " +
+    ', ' +
     _hidetoc +
-    ", " +
+    ', ' +
     "'" +
     JSON.stringify(cmi) +
     "'" +
-    ")}"
+    ')}'
   );
 };
 
@@ -291,7 +282,7 @@ const setupOfflineScormPlayer = (
   onScormPlayerInitialized = isScormPlayerInitialized,
   onInitializeScormWebplayer = initializeScormWebplayer
 ) => {
-  return onScormPlayerInitialized().then((isInit) => {
+  return onScormPlayerInitialized().then(isInit => {
     if (isInit) {
       return offlineScormServerRoot;
     } else {
@@ -307,34 +298,34 @@ const loadScormPackageData = (packageData?: Package, onGetScormPackageData = get
     if (packageData.scos && packageData.defaultSco) {
       return Promise.resolve(packageData);
     } else {
-      return onGetScormPackageData(`${offlineScormServerRoot}/${packageData.path}`).then((data) => {
+      return onGetScormPackageData(`${offlineScormServerRoot}/${packageData.path}`).then(data => {
         const tmpPackageData = { ...packageData, ...data } as Package;
         return tmpPackageData;
       });
     }
   } else {
-    return Promise.reject("Cannot find offline package data");
+    return Promise.reject('Cannot find offline package data');
   }
 };
 
 const getPackageContent = () =>
-  Platform.OS === "android"
+  Platform.OS === 'android'
     ? RNFS.readDirAssets(getScormPlayerPackagePath())
     : RNFS.readDir(getScormPlayerPackagePath());
 
 const initializeScormWebplayer = () => {
   return RNFS.mkdir(offlineScormServerRoot).then(() => {
-    return getPackageContent().then((result) => {
+    return getPackageContent().then(result => {
       if (result && result.length) {
         let promisesToCopyFiles: [Promise<void>?] = [];
         for (let i = 0; i < result.length; i++) {
           const itemPathFrom = result[i].path;
           const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
           const copyAssetsToPlayer = () =>
-            Platform.OS === "android"
+            Platform.OS === 'android'
               ? RNFS.copyFileAssets(itemPathFrom, itemPathTo)
               : RNFS.copyFile(itemPathFrom, itemPathTo);
-          const promiseCopyItem = RNFS.exists(itemPathTo).then((isExist) => {
+          const promiseCopyItem = RNFS.exists(itemPathTo).then(isExist => {
             if (!isExist) {
               return copyAssetsToPlayer();
             } else {
@@ -347,21 +338,21 @@ const initializeScormWebplayer = () => {
         }
         return Promise.all(promisesToCopyFiles);
       } else {
-        throw new Error("Cannot find any content in the location (" + getScormPlayerPackagePath() + ")");
+        throw new Error('Cannot find any content in the location (' + getScormPlayerPackagePath() + ')');
       }
     });
   });
 };
 
 const isScormPlayerInitialized = () => {
-  return getPackageContent().then((result) => {
+  return getPackageContent().then(result => {
     if (result && result.length) {
       const promisesToExistFiles = <Promise<Boolean>[]>[];
       for (let i = 0; i < result.length; i++) {
         const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
         promisesToExistFiles.push(RNFS.exists(itemPathTo));
       }
-      return Promise.all(promisesToExistFiles).then((resultExistsFiles) => {
+      return Promise.all(promisesToExistFiles).then(resultExistsFiles => {
         for (let index = 0; index < resultExistsFiles.length; index++) {
           if (!resultExistsFiles[index]) {
             return false;
@@ -370,28 +361,30 @@ const isScormPlayerInitialized = () => {
         return true;
       });
     } else {
-      throw new Error("No package content found.");
+      throw new Error('No package content found.');
     }
   });
 };
 
-const getScormPlayerPackagePath = () => (Platform.OS === "android" ? `html` : `${RNFS.MainBundlePath}/html`);
+const getScormPlayerPackagePath = () => (Platform.OS === 'android' ? `html` : `${RNFS.MainBundlePath}/html`);
 
 // downloaded scorm activity package processing
 
 const getScormPackageData = (packagPath: string) => {
   const manifestFilePath = `${packagPath}/imsmanifest.xml`;
-  return RNFS.readFile(manifestFilePath).then((xmlcontent) => {
-    if (!isEmpty(xmlcontent)) {
-      const xmlData = new dom().parseFromString(xmlcontent);
-      const scosList = getScosDataForPackage(xmlData);
-      const defaultSco = getInitialScormLoadData(xmlData);
+  return RNFS.readFile(manifestFilePath)
+    .then(xmlcontent => {
+      if (!isEmpty(xmlcontent)) {
+        const xmlData = new dom().parseFromString(xmlcontent);
+        const scosList = getScosDataForPackage(xmlData);
+        const defaultSco = getInitialScormLoadData(xmlData);
 
-      if (!isEmpty(scosList)) return { scos: scosList, defaultSco: defaultSco } as Package;
-    }
-  }).catch((e => {
-    console.warn('error', e)
-  }));
+        if (!isEmpty(scosList)) return { scos: scosList, defaultSco: defaultSco } as Package;
+      }
+    })
+    .catch(e => {
+      console.warn('error', e);
+    });
 };
 
 /**
@@ -411,7 +404,7 @@ const getScosDataForPackage = (manifestDom: any) => {
   let organizationNode;
   let scos: [Sco?] = [];
   while ((organizationNode = resultOrganisations.iterateNext())) {
-    const organizationId = organizationNode.getAttribute("identifier");
+    const organizationId = organizationNode.getAttribute('identifier');
     const itemResult = xpath.evaluate(
       ".//*[local-name(.)='item']/@identifier",
       organizationNode,
@@ -471,7 +464,7 @@ const getInitialScormLoadData = (manifestDom: any) => {
       manifestDom
     );
     if (firstScoOnDefaultOrgNode && firstScoOnDefaultOrgNode.length === 1) {
-      defaultScoId = firstScoOnDefaultOrgNode[0].getAttribute("identifier");
+      defaultScoId = firstScoOnDefaultOrgNode[0].getAttribute('identifier');
       defaultLaunchSrc = getDefaultScoLaunchUrl(manifestDom, defaultScoId!);
     }
   }
@@ -487,32 +480,32 @@ const getInitialScormLoadData = (manifestDom: any) => {
 const getDefaultScoLaunchUrl = (manifestDom: any, scoId: string) => {
   const scoNode = xpath.select("//*[local-name(.)='item' and @identifier ='" + scoId + "']", manifestDom);
   if (scoNode.length === 1) {
-    const resouceId = scoNode[0].getAttribute("identifierref");
-    const queryString = scoNode[0].getAttribute("parameters");
+    const resouceId = scoNode[0].getAttribute('identifierref');
+    const queryString = scoNode[0].getAttribute('parameters');
     const resourceNode = xpath.select(
       "//*[local-name(.)='resources']/*[local-name(.)='resource' and @identifier ='" + resouceId + "']",
       manifestDom
     );
-    if (resourceNode && resourceNode.length === 1 && resourceNode[0].getAttribute("href")) {
-      return `${resourceNode[0].getAttribute("href")}${queryString}`;
+    if (resourceNode && resourceNode.length === 1 && resourceNode[0].getAttribute('href')) {
+      return `${resourceNode[0].getAttribute('href')}${queryString}`;
     }
   }
 };
 
 export {
-  getOfflinePackageUnzipPath,
-  getTargetZipFile,
-  getOfflineScormPackageName,
-  getDataForScormSummary,
   calculatedAttemptsGrade,
   getAttemptsGrade,
+  getDataForScormSummary,
   getGradeForAttempt,
-  shouldAllowAttempt,
+  getOfflinePackageUnzipPath,
+  getOfflineScormPackageName,
+  getScormPackageData,
   getScormPlayerInitialData,
-  scormDataIntoJsInitCode,
-  setupOfflineScormPlayer,
-  loadScormPackageData,
+  getTargetZipFile,
   initializeScormWebplayer,
   isScormPlayerInitialized,
-  getScormPackageData
+  loadScormPackageData,
+  scormDataIntoJsInitCode,
+  setupOfflineScormPlayer,
+  shouldAllowAttempt
 };

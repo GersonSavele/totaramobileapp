@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Grade, ScormBundle, GradeForAttemptProps } from "@totara/types/Scorm";
-import { scormActivitiesRecordsQuery } from "@totara/features/activities/scorm/api";
-import { setWith, get, values, remove, omit, isEmpty, difference } from "lodash";
+import { scormActivitiesRecordsQuery } from '@totara/features/activities/scorm/api';
+import type { Grade, GradeForAttemptProps, ScormBundle } from '@totara/types/Scorm';
+import { difference, get, isEmpty, omit, remove, setWith, values } from 'lodash';
 
-import { getGradeForAttempt } from "./utils";
+import { getGradeForAttempt } from './utils';
 
 type CacheProps = {
   client: any;
@@ -83,7 +83,7 @@ const saveInTheCache = ({ client, scormBundles }: CacheProps) => {
       }
     });
   } catch (e) {
-    console.warn("Scorm cache data saving error: ", e);
+    console.warn('Scorm cache data saving error: ', e);
   }
 };
 
@@ -118,7 +118,12 @@ const setScormActivityData = ({
       existingOfflineActivityData.pop();
     }
   }
-  setWith(newData, `[${scormId}].offlineAttempts`, existingOfflineActivityData.concat<ScormBundle>([newAttemptGrade]), Object);
+  setWith(
+    newData,
+    `[${scormId}].offlineAttempts`,
+    existingOfflineActivityData.concat<ScormBundle>([newAttemptGrade]),
+    Object
+  );
 
   setWith(newData, `[${scormId}].commits[${attempt}][${scoId}]`, commitData, Object);
   return newData;
@@ -244,13 +249,13 @@ const getScormAttemptData = ({
 };
 
 export {
+  getOfflineActivity,
+  getOfflineLastActivityResult,
+  getOfflineScormCommits,
+  getScormAttemptData,
   retrieveAllData,
   saveInTheCache,
-  setScormActivityData,
-  setCompletedScormAttempt,
-  getOfflineLastActivityResult,
-  getOfflineActivity,
-  getOfflineScormCommits,
   setCleanScormCommit,
-  getScormAttemptData
+  setCompletedScormAttempt,
+  setScormActivityData
 };

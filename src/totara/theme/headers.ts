@@ -12,15 +12,15 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import { StyleSheet } from "react-native";
-import { paddings } from "@totara/theme/constants";
-import { gutter } from "@totara/theme/index";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { paddings } from '@totara/theme/constants';
+import { gutter } from '@totara/theme/index';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { StyleSheet } from 'react-native';
 
 const headerStyles = StyleSheet.create({
   navigationHeader: {
-    flexDirection: "column",
-    justifyContent: "space-between",
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     paddingHorizontal: gutter,
     paddingVertical: paddings.paddingL,
     backgroundColor: TotaraTheme.colorSecondary1

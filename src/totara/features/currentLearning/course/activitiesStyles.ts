@@ -13,10 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet } from "react-native";
-import { margins, fontWeights, paddings } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { spacedFlexRow } from "@totara/lib/styles/base";
+import { spacedFlexRow } from '@totara/lib/styles/base';
+import { fontWeights, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { StyleSheet } from 'react-native';
 
 const { marginL, marginM } = margins;
 const { textRegular, colorAccent, colorLink, textMedium, colorSecondary1 } = TotaraTheme;
@@ -24,41 +24,41 @@ const { textRegular, colorAccent, colorLink, textMedium, colorSecondary1 } = Tot
 const activitiesStyles = StyleSheet.create({
   itemTitle: {
     ...textRegular,
-    justifyContent: "center",
-    alignSelf: "flex-start"
+    justifyContent: 'center',
+    alignSelf: 'flex-start'
   },
   sectionView: {
     // @ts-ignore
     ...spacedFlexRow,
     height: 58,
     marginHorizontal: marginL,
-    alignItems: "center"
+    alignItems: 'center'
   },
   itemTouchableContent: {
-    flexDirection: "column",
+    flexDirection: 'column',
     flex: 1
   },
   itemContentWrapper: {
     minHeight: 68,
-    justifyContent: "flex-start",
-    flexDirection: "row",
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
     flex: 1,
     marginHorizontal: marginL
   },
   itemLockContentWrapper: {
     opacity: 0.25,
-    alignItems: "center"
+    alignItems: 'center'
   },
   itemTextContainer: {
     height: 45,
-    justifyContent: "center",
+    justifyContent: 'center',
     marginRight: marginL
   },
   sectionNotAvailable: {
     ...textRegular,
     color: colorLink,
     flex: 1,
-    textAlign: "right",
+    textAlign: 'right',
     margin: margins.marginS
   },
   sectionTitle: {
@@ -68,10 +68,10 @@ const activitiesStyles = StyleSheet.create({
   },
   labelContainer: {
     marginVertical: marginM,
-    justifyContent: "center"
+    justifyContent: 'center'
   },
   labelTextDescription: {
-    textAlign: "left",
+    textAlign: 'left',
     ...textRegular,
     color: TotaraTheme.colorNeutral6
   },
@@ -85,7 +85,7 @@ const activitiesStyles = StyleSheet.create({
     marginHorizontal: marginL
   },
   labelSelfCompletionIcon: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     marginTop: margins.marginM
   }
 });

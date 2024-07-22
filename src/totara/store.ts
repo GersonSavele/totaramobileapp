@@ -12,32 +12,34 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import { createStore, applyMiddleware } from "redux";
-import { createLogger } from "redux-logger";
-import { persistStore, persistReducer } from "redux-persist";
-import createSensitiveStorage from "redux-persist-sensitive-storage";
-import rootReducer, { RootState } from "./reducers";
+import { applyMiddleware, createStore } from 'redux';
+import { createLogger } from 'redux-logger';
+import { persistReducer, persistStore } from 'redux-persist';
+import createSensitiveStorage from 'redux-persist-sensitive-storage';
+
+import type { RootState } from './reducers';
+import rootReducer from './reducers';
 
 const storage = createSensitiveStorage({
-  keychainService: "myKeychain",
-  sharedPreferencesName: "mySharedPrefs"
+  keychainService: 'myKeychain',
+  sharedPreferencesName: 'mySharedPrefs'
 });
 
 const persistConfig = {
   // Root
-  key: "root",
+  key: 'root',
   storage,
-  whitelist: ["sessionReducer", "resourceReducer", "notificationReducer"]
+  whitelist: ['sessionReducer', 'resourceReducer', 'notificationReducer']
 };
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
 
 const createMiddleware = (logger: boolean) => {
-  if (logger) return applyMiddleware(createLogger({ collapsed: true, level: "info" }));
+  if (logger) return applyMiddleware(createLogger({ collapsed: true, level: 'info' }));
   else applyMiddleware();
 };
 
 // eslint-disable-next-line no-undef
 const store = createStore(persistedReducer, createMiddleware(__DEV__));
 const persistor = persistStore(store);
-export { store, persistor };
+export { persistor, store };

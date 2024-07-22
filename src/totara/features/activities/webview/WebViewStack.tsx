@@ -13,12 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { createStackNavigator } from "@react-navigation/stack";
-import CloseButton from "@totara/components/CloseButton";
-import { NAVIGATION } from "@totara/lib/navigation";
-import { NAVIGATION_TEST_IDS } from "@totara/lib/testIds";
-import React from "react";
-import { WebviewActivity } from "./WebviewActivity";
+import { createStackNavigator } from '@react-navigation/stack';
+import CloseButton from '@totara/components/CloseButton';
+import { NAVIGATION } from '@totara/lib/navigation';
+import { NAVIGATION_TEST_IDS } from '@totara/lib/testIds';
+import React from 'react';
+
+import { WebviewActivity } from './WebviewActivity';
 
 // const WebViewStack = createCompatNavigatorFactory(createStackNavigator)(
 //   {
@@ -50,26 +51,29 @@ import { WebviewActivity } from "./WebviewActivity";
 const Stack = createStackNavigator();
 
 const WebViewStack = () => (
-  <Stack.Navigator screenOptions={{ presentation: "modal" }}>
-    <Stack.Screen name={NAVIGATION.WEBVIEW_ACTIVITY} component={WebviewActivity} options={({ route, navigation }) => {
-      const { backAction, title } = route.params as any;
-      // const { backAction, title } = navigation.state.params as any;
-      return {
-        headerTitleAlign: "center",
-        title: title,
-        headerLeft: () => (
-          <CloseButton
-            onPress={() => {
-              backAction();
-              navigation.goBack();
-            }}
-            testID={NAVIGATION_TEST_IDS.BACK}
-          />
-        )
-      };
-    }
-    } />
+  <Stack.Navigator screenOptions={{ presentation: 'modal' }}>
+    <Stack.Screen
+      name={NAVIGATION.WEBVIEW_ACTIVITY}
+      component={WebviewActivity}
+      options={({ route, navigation }) => {
+        const { backAction, title } = route.params as any;
+        // const { backAction, title } = navigation.state.params as any;
+        return {
+          headerTitleAlign: 'center',
+          title: title,
+          headerLeft: () => (
+            <CloseButton
+              onPress={() => {
+                backAction();
+                navigation.goBack();
+              }}
+              testID={NAVIGATION_TEST_IDS.BACK}
+            />
+          )
+        };
+      }}
+    />
   </Stack.Navigator>
-)
+);
 
 export default WebViewStack;

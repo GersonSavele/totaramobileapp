@@ -12,14 +12,14 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React from "react";
-import { Text } from "react-native";
-import { isEmpty } from "lodash";
+import { TotaraTheme } from '@totara/theme/Theme';
+import { DescriptionFormat } from '@totara/types/LearningItem';
+import { isEmpty } from 'lodash';
+import React from 'react';
+import { Text } from 'react-native';
 
-import { DescriptionFormat } from "@totara/types/LearningItem";
-import { jsonObjectToWekaNodes, wrappedWekaNodes } from "./weka/wekaUtils";
-import { ToShortSummary } from "./weka/treeOperations";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { ToShortSummary } from './weka/treeOperations';
+import { jsonObjectToWekaNodes, wrappedWekaNodes } from './weka/wekaUtils';
 
 type SummaryContentProps = {
   contentType?: DescriptionFormat;

@@ -13,10 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { iconSizes, paddings } from "@totara/theme/constants";
+import { iconSizes, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 type SwitchOptionProps = {
   icon: any;
@@ -26,7 +26,7 @@ type SwitchOptionProps = {
 const SwitchOption = ({ icon, selected }: SwitchOptionProps) => {
   return (
     <View style={[switchStyles.optionWidget, selected && switchStyles.optionWidgetSelected]}>
-      <Image source={icon} style={[switchStyles.optionImage, selected && { tintColor: "black" }]} />
+      <Image source={icon} style={[switchStyles.optionImage, selected && { tintColor: 'black' }]} />
     </View>
   );
 };
@@ -38,7 +38,7 @@ type SwitchProps = {
 
 const Switch = ({ children, onPress }: SwitchProps) => {
   return (
-    <TouchableOpacity onPress={onPress} style={{ alignSelf: "center" }}>
+    <TouchableOpacity onPress={onPress} style={{ alignSelf: 'center' }}>
       <View style={switchStyles.container}>{children}</View>
     </TouchableOpacity>
   );
@@ -49,21 +49,21 @@ const switchStyles = StyleSheet.create({
     height: iconSizes.sizeL,
     width: iconSizes.sizeL,
     borderRadius: iconSizes.sizeL / 2,
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden"
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden'
   },
   optionImage: {
-    tintColor: "white"
+    tintColor: 'white'
   },
   optionWidgetSelected: {
-    backgroundColor: "white"
+    backgroundColor: 'white'
   },
   optionWidgetIconSelected: {
-    color: "white"
+    color: 'white'
   },
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: paddings.paddingXS,
     borderRadius: iconSizes.sizeL / 2,
     backgroundColor: TotaraTheme.colorNeutral4

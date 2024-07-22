@@ -13,4 +13,4 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-export { default } from "./NotificationsStack";
+export { default } from './NotificationsStack';

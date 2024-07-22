@@ -13,15 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
-import { Image, TouchableOpacity, ImageStyle } from "react-native";
-import * as Progress from "react-native-progress";
-import { debounce } from "lodash";
-
-import { ThemeContext, gutter } from "@totara/theme";
-import { ResourceState } from "@totara/types/Resource";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { RESOURCE_TEST_IDS } from "@totara/lib/testIds";
+import { RESOURCE_TEST_IDS } from '@totara/lib/testIds';
+import { gutter, ThemeContext } from '@totara/theme';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { ResourceState } from '@totara/types/Resource';
+import { debounce } from 'lodash';
+import React, { useContext } from 'react';
+import type { ImageStyle } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
+import * as Progress from 'react-native-progress';
 
 type ResourceDownloaderProps = {
   resourceState?: ResourceState;
@@ -34,8 +34,8 @@ type ResourceDownloaderProps = {
 };
 
 const DownloadIcon = {
-  solid: require("@resources/icons/tabbar/downloads_solid.png"),
-  regular: require("@resources/icons/tabbar/downloads_regular.png")
+  solid: require('@resources/icons/tabbar/downloads_solid.png'),
+  regular: require('@resources/icons/tabbar/downloads_regular.png')
 };
 
 const ResourceDownloaderComponent = ({ resourceState, progress, size }: ResourceDownloaderProps) => {
@@ -55,8 +55,8 @@ const ResourceDownloaderComponent = ({ resourceState, progress, size }: Resource
           fontSize: theme.textSmall.fontSize,
           lineHeight: theme.textSmall.fontSize,
           color: theme.textColorDark,
-          fontWeight: "bold",
-          textAlign: "center"
+          fontWeight: 'bold',
+          textAlign: 'center'
         }}
       />
     );
@@ -83,7 +83,7 @@ const ResourceDownloader = ({
   size,
   style,
   testID,
-  accessibilityLabel = ""
+  accessibilityLabel = ''
 }: ResourceDownloaderProps) => {
   const disabled =
     (resourceState === undefined && !onPress) ||
@@ -97,7 +97,7 @@ const ResourceDownloader = ({
       }, 1000)}
       accessibilityLabel={accessibilityLabel}
       disabled={disabled}
-      style={[{ padding: gutter, alignSelf: "center" }, style]}>
+      style={[{ padding: gutter, alignSelf: 'center' }, style]}>
       <ResourceDownloaderComponent resourceState={resourceState} size={size} progress={progress} />
     </TouchableOpacity>
   );

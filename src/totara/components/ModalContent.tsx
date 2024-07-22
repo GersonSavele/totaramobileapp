@@ -13,10 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode } from "react";
-import { View, StyleSheet, Text, Image, ImageSourcePropType } from "react-native";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, paddings, borderRadius } from "@totara/theme/constants";
+import { borderRadius, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { ReactNode } from 'react';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 type ModalContentProps = {
   title?: string;
@@ -56,32 +58,32 @@ const ModalContent = ({ title, description, children, imageSource, testID }: Mod
 const styles = StyleSheet.create({
   transparentViewStyle: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: TotaraTheme.colorOpacity30
   },
   containerStyle: {
     borderRadius: borderRadius.borderRadiusXS,
     marginHorizontal: margins.marginXL,
     paddingVertical: paddings.padding3XL,
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: TotaraTheme.colorNeutral1
   },
   sectionContainer: {
     marginBottom: margins.marginL,
     marginHorizontal: margins.marginXL,
-    alignItems: "center"
+    alignItems: 'center'
   },
   actionContainer: {
-    justifyContent: "space-between",
-    alignSelf: "center"
+    justifyContent: 'space-between',
+    alignSelf: 'center'
   },
   infoImage: {
-    alignItems: "center",
-    resizeMode: "contain"
+    alignItems: 'center',
+    resizeMode: 'contain'
   },
   infoText: {
     color: TotaraTheme.textColorDark,
-    textAlign: "center",
+    textAlign: 'center',
     paddingBottom: paddings.paddingXL
   }
 });

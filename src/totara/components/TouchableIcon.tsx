@@ -13,11 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
-
-import Icon, { IconName } from "@totara/components/Icon";
-import { paddings } from "@totara/theme/constants";
+import type { IconName } from '@totara/components/Icon';
+import Icon from '@totara/components/Icon';
+import { paddings } from '@totara/theme/constants';
+import React from 'react';
+import type { ViewStyle } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 type Props = {
   icon: IconName;
@@ -39,7 +40,7 @@ const TouchableIcon = ({ icon, onPress, disabled, size, style, testID, ...rest }
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: paddings.paddingL
   }
 });

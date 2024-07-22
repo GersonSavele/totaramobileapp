@@ -13,19 +13,21 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
-import { RefreshControl, Text, TouchableOpacity, View } from "react-native";
-import ImageElement from "./components/ImageElement";
-import { learningDetailsStyles } from "./currentLearningStyles";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { CourseGroup, Course, LearningItem } from "@totara/types";
-import { margins } from "@totara/theme/constants";
-import { CL_TEST_IDS } from "@totara/lib/testIds";
-import Animated, { useSharedValue, useAnimatedScrollHandler } from "react-native-reanimated";
-import LinearGradient from "react-native-linear-gradient";
-import { AnimatedHeader, HEIGHT } from "@totara/components/AnimatedHeader";
-import DueDateState from "./components/DueDateState";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
+import { AnimatedHeader, HEIGHT } from '@totara/components/AnimatedHeader';
+import { CL_TEST_IDS } from '@totara/lib/testIds';
+import { margins } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { Course, CourseGroup, LearningItem } from '@totara/types';
+import type { ReactNode } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
+
+import DueDateState from './components/DueDateState';
+import ImageElement from './components/ImageElement';
+import { learningDetailsStyles } from './currentLearningStyles';
 
 const { marginXL } = margins;
 
@@ -52,7 +54,7 @@ type TitleBarProps = {
 const TitleBar = ({ item, badgeTitle }: TitleBarProps) => {
   return (
     <View style={learningDetailsStyles.itemCard}>
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: 'row' }}>
         <Text style={learningDetailsStyles.itemFullName}>{item.fullname}</Text>
       </View>
       <View style={learningDetailsStyles.learningTypeLabelWrap}>
@@ -80,7 +82,7 @@ const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }:
               overviewIsShown && { ...learningDetailsStyles.tabViewItemSelected }
             ]}
             testID={CL_TEST_IDS.TAB_1}
-            accessibilityRole={"tab"}
+            accessibilityRole={'tab'}
             accessibilityState={overviewIsShown ? { selected: true } : {}}
             onPress={onPress}>
             <Text
@@ -97,7 +99,7 @@ const TabBar = ({ onPress, overviewIsShown, tabBarLeftTitle, tabBarRightTitle }:
               { marginLeft: marginXL },
               !overviewIsShown && { ...learningDetailsStyles.tabViewItemSelected }
             ]}
-            accessibilityRole={"tab"}
+            accessibilityRole={'tab'}
             accessibilityState={!overviewIsShown ? { selected: true } : {}}
             onPress={onPress}
             testID={CL_TEST_IDS.TAB_2}>
@@ -170,7 +172,7 @@ const LearningDetails = ({
       />
       <Animated.ScrollView
         scrollIndicatorInsets={{ right: 0 }}
-        contentInsetAdjustmentBehavior={"scrollableAxes"}
+        contentInsetAdjustmentBehavior={'scrollableAxes'}
         refreshControl={
           <RefreshControl
             style={{ zIndex: gradientShadowZIndex + 100 }}
@@ -183,7 +185,7 @@ const LearningDetails = ({
         <Animated.View
           style={{
             flex: 1,
-            alignItems: "center",
+            alignItems: 'center',
             height: HEIGHT
           }}>
           <View style={learningDetailsStyles.imageViewContainer}>
@@ -191,7 +193,7 @@ const LearningDetails = ({
           </View>
           <View style={learningDetailsStyles.imageViewGradient}>
             <LinearGradient
-              colors={["rgba(0, 0, 0, 0.6)", "rgba(0, 0, 0, 0.4)", "rgba(0, 0, 0, 0)"]}
+              colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0)']}
               style={{ height: HEIGHT / 2, zIndex: gradientShadowZIndex }}
             />
           </View>

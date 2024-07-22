@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import CourseGroupDetails from "./CourseGroupDetails";
-import CourseList from "./CourseList";
+import CourseGroupDetails from './CourseGroupDetails';
+import CourseList from './CourseList';
 
 export { CourseGroupDetails, CourseList };

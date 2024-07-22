@@ -13,11 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext, useState, useEffect } from "react";
-import { StyleSheet, Text } from "react-native";
-import * as Animatable from "react-native-animatable";
-
-import { ThemeContext } from "@totara/theme";
+import { ThemeContext } from '@totara/theme';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 type Props = {
   message: string;
@@ -31,13 +30,13 @@ const FormError = ({ message, isShow }: Props) => {
   useEffect(() => {
     if (animationType !== undefined || isShow) {
       // @ts-ignore
-      setAnimationType(isShow ? "fadeInDown" : "fadeOutUp");
+      setAnimationType(isShow ? 'fadeInDown' : 'fadeOutUp');
     }
   }, [isShow]);
 
   const styles = StyleSheet.create({
     container: {
-      position: "absolute",
+      position: 'absolute',
       top: 0,
       left: 0,
       right: 0,

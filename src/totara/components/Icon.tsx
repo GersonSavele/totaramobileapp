@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
 import { FontAwesome6 } from '@expo/vector-icons';
-import glyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/FontAwesome6Free.json';
+import type glyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/FontAwesome6Free.json';
+import React from 'react';
 
-import { iconSizes } from "../theme/constants";
+import { iconSizes } from '../theme/constants';
 
 export type IconName = keyof typeof glyphMap;
 
@@ -28,15 +28,8 @@ type IconProps = {
   style?: object;
 };
 
-const Icon = ({
-  name,
-  color = 'black',
-  size = iconSizes.sizeM,
-  style = {},
-}: IconProps) => {
-  return (
-    <FontAwesome6 name={name} size={size} color={color} style={style} />
-  );
+const Icon = ({ name, color = 'black', size = iconSizes.sizeM, style = {} }: IconProps) => {
+  return <FontAwesome6 name={name} size={size} color={color} style={style} />;
 };
 
 export default Icon;

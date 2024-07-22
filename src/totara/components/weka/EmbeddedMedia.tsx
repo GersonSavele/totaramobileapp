@@ -13,14 +13,16 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { CircleIcon } from "@totara/components";
-import { TotaraTheme } from "@totara/theme/Theme";
-import styles from "./wekaStyle";
-import { navigateWebView, EmbeddedMediaProps } from "./wekaUtils";
-import { useSession } from "@totara/core";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
+import { CircleIcon } from '@totara/components';
+import { useSession } from '@totara/core';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+
+import styles from './wekaStyle';
+import type { EmbeddedMediaProps } from './wekaUtils';
+import { navigateWebView } from './wekaUtils';
 
 const EmbeddedMedia = ({ content = {}, title }: EmbeddedMediaProps) => {
   const { apiKey } = useSession();
@@ -32,7 +34,7 @@ const EmbeddedMedia = ({ content = {}, title }: EmbeddedMediaProps) => {
       onPress={() => navigateWebView({ url: content?.url, title, apiKey, navigation })}>
       <View style={styles.iconWrap}>
         <CircleIcon
-          icon={"play"}
+          icon={'play'}
           backgroundColor={TotaraTheme.colorNeutral2}
           iconColor={TotaraTheme.colorLink}
           borderColor={TotaraTheme.colorLink}

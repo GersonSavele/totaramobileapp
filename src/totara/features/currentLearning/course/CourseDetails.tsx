@@ -13,28 +13,29 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Switch } from "react-native";
-import { isEmpty, isEqual } from "lodash";
-import { Loading, LoadingError } from "@totara/components";
-import { useQuery, NetworkStatus } from "@apollo/client";
-import { translate } from "@totara/locale";
-import { coreCourse } from "./api";
-import Activities from "./Activities";
-import { CourseContentDetails } from "@totara/types";
-import { StatusKey } from "@totara/types/Completion";
-import OverviewDetails from "../overview/OverviewDetails";
-import { TotaraTheme } from "@totara/theme/Theme";
-import LearningDetails from "../LearningDetails";
-import CourseCompletionModal from "../CourseCompletionModal";
-import { learningItemEnum } from "@totara/features/constants";
-import courseDetailsStyle from "./courseDetailsStyle";
-import { CourseFormat } from "@totara/types/Course";
-import { DescriptionFormat } from "@totara/types/LearningItem";
-import CriteriaSheet from "../components/CriteriaSheet";
+import { NetworkStatus, useQuery } from '@apollo/client';
+import { Loading, LoadingError } from '@totara/components';
+import { learningItemEnum } from '@totara/features/constants';
+import { translate } from '@totara/locale';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { CourseContentDetails } from '@totara/types';
+import { StatusKey } from '@totara/types/Completion';
+import { CourseFormat } from '@totara/types/Course';
+import type { DescriptionFormat } from '@totara/types/LearningItem';
+import { isEmpty, isEqual } from 'lodash';
+import React, { useState } from 'react';
+import { StyleSheet, Switch, Text, View } from 'react-native';
+
+import CriteriaSheet from '../components/CriteriaSheet';
+import CourseCompletionModal from '../CourseCompletionModal';
+import LearningDetails from '../LearningDetails';
+import OverviewDetails from '../overview/OverviewDetails';
+import Activities from './Activities';
+import { coreCourse } from './api';
+import courseDetailsStyle from './courseDetailsStyle';
 
 const CourseDetails = ({ navigation, route }: any) => {
-  const courseId = route.params.targetId
+  const courseId = route.params.targetId;
   const passwordRequired = route.params.passwordRequired;
 
   let queryVariables = { courseid: courseId };
@@ -134,12 +135,12 @@ const CourseDetailsContent = ({
         loading={loading}
         item={courseDetails.course}
         itemType={learningItemEnum.Course}
-        tabBarLeftTitle={translate("course.course_details.overview")}
-        tabBarRightTitle={translate("course.course_details.activities")}
+        tabBarLeftTitle={translate('course.course_details.overview')}
+        tabBarRightTitle={translate('course.course_details.activities')}
         onPress={onSwitchTab}
         overviewIsShown={showOverview}
         image={courseDetails.imageSrc}
-        badgeTitle={translate("learning_items.course")}
+        badgeTitle={translate('learning_items.course')}
         navigation={navigation}>
         <View style={[styles.container, { backgroundColor: TotaraTheme.colorNeutral2 }]}>
           <View style={[styles.activitiesContainer, { backgroundColor: TotaraTheme.colorNeutral1 }]}>
@@ -151,13 +152,13 @@ const CourseDetailsContent = ({
                 {!isSingleActivity && (
                   <View style={courseDetailsStyle.expandContentWrap}>
                     <Text style={courseDetailsStyle.expandTextWrap}>
-                      {translate("course.course_details.expand_or_collapse")}
+                      {translate('course.course_details.expand_or_collapse')}
                     </Text>
                     <Switch
                       style={[{ borderColor: TotaraTheme.colorNeutral5 }]}
                       value={isExpandedAll}
                       onValueChange={() => onChangeExpand(isExpandedAll, expanableSectionIds)}
-                      accessibilityLabel={translate("course.course_details.accessibility_expand_all")}
+                      accessibilityLabel={translate('course.course_details.accessibility_expand_all')}
                     />
                   </View>
                 )}
@@ -180,7 +181,7 @@ const CourseDetailsContent = ({
                 summaryFormat={courseDetails.course.summaryformat as DescriptionFormat}
                 gradeFinal={courseDetails.gradeFinal}
                 progress={courseDetails.course.completion.progress}
-                summaryTypeTitle={translate("course.course_overview.course_summary")}
+                summaryTypeTitle={translate('course.course_overview.course_summary')}
                 onclickContinueLearning={onClose}
                 courseRefreshCallback={courseRefreshCallback}
                 showGrades={courseDetails.course.showGrades}
@@ -195,7 +196,7 @@ const CourseDetailsContent = ({
         )}
       </LearningDetails>
       <CriteriaSheet
-        title={translate("course_group.criteria.bottom_sheet_header")}
+        title={translate('course_group.criteria.bottom_sheet_header')}
         criteriaList={criteria}
         onClose={onCloseLayover}
         index={index}

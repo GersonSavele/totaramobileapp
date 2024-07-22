@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet, Dimensions } from "react-native";
-import { borderRadius, margins, paddings, shadow, fontWeights } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { borderRadius, fontWeights, margins, paddings, shadow } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const overviewStyles = StyleSheet.create({
   scrollViewContainer: {
@@ -31,31 +31,31 @@ const overviewStyles = StyleSheet.create({
   },
   contentWrap: {
     borderRadius: borderRadius.borderRadiusM,
-    overflow: "hidden",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
+    overflow: 'hidden',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   innerViewWrap: {
     marginHorizontal: margins.marginL,
-    alignContent: "center",
-    justifyContent: "center"
+    alignContent: 'center',
+    justifyContent: 'center'
   },
   carouselTextContainer: {
-    justifyContent: "center",
-    flexDirection: "column",
+    justifyContent: 'center',
+    flexDirection: 'column',
     marginVertical: margins.marginXL,
     marginHorizontal: margins.marginL,
-    maxWidth: Dimensions.get("window").width * 0.6
+    maxWidth: Dimensions.get('window').width * 0.6
   },
   gradeMaxTextWrap: {
     fontWeight: fontWeights.fontWeightNormal,
-    alignSelf: "flex-end"
+    alignSelf: 'flex-end'
   },
   horizontalSeparator: {
-    height: "60%",
+    height: '60%',
     width: 0.5,
-    alignSelf: "center",
+    alignSelf: 'center',
     backgroundColor: TotaraTheme.colorNeutral5
   },
   summaryContainer: {
@@ -70,9 +70,9 @@ const overviewStyles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-around",
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
     backgroundColor: TotaraTheme.colorOpacity70
   },
   gradePrefixText: {
@@ -81,7 +81,7 @@ const overviewStyles = StyleSheet.create({
   },
   labelWrap: {
     ...TotaraTheme.textRegular,
-    textAlign: "center"
+    textAlign: 'center'
   }
 });
 

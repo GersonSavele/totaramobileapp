@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { SiteInfo } from "@totara/types/SiteInfo";
+import type { SiteInfo } from '@totara/types/SiteInfo';
 
 export type ManualFlowChildProps = {
   siteUrl: string;

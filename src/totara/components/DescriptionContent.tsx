@@ -13,17 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { Linking, StyleSheet, Text } from "react-native";
-import { isEmpty } from "lodash";
+import { DESCRIPTIONCONTENT_TEST_IDS } from '@totara/lib/testIds';
+import { isValidUrlText } from '@totara/lib/tools';
+import { margins } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { DescriptionFormat } from '@totara/types/LearningItem';
+import { isEmpty } from 'lodash';
+import React from 'react';
+import { Linking, StyleSheet, Text } from 'react-native';
+import WebView from 'react-native-webview';
 
-import { DescriptionFormat } from "@totara/types/LearningItem";
-import { WekaContent } from "./weka/WekaContent";
-import WebView from "react-native-webview";
-import { isValidUrlText } from "@totara/lib/tools";
-import { DESCRIPTIONCONTENT_TEST_IDS } from "@totara/lib/testIds";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { margins } from "@totara/theme/constants";
+import { WekaContent } from './weka/WekaContent';
 
 type DescriptionContentProps = {
   contentType: DescriptionFormat;
@@ -42,7 +42,9 @@ const onLoadWithRequestExternalBrowser = event => {
 
 const getWebview = ({ source, container, testID }) => (
   <WebView
-    source={{ html: `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body>${source?.html}</body></html>` }}
+    source={{
+      html: `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body>${source?.html}</body></html>`
+    }}
     style={container}
     onShouldStartLoadWithRequest={onLoadWithRequestExternalBrowser}
     testID={testID || DESCRIPTIONCONTENT_TEST_IDS.WEB}

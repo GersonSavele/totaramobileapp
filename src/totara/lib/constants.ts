@@ -13,60 +13,60 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-const DEVICE_REGISTRATION = "X-TOTARA-MOBILE-DEVICE-REGISTRATION";
-const WEBVIEW_SECRET = "X-TOTARA-MOBILE-WEBVIEW-SECRET";
-const AUTHORIZATION = "AUTHORIZATION";
-const AUTH_HEADER_FIELD = "x-api-key";
+const DEVICE_REGISTRATION = 'X-TOTARA-MOBILE-DEVICE-REGISTRATION';
+const WEBVIEW_SECRET = 'X-TOTARA-MOBILE-WEBVIEW-SECRET';
+const AUTHORIZATION = 'AUTHORIZATION';
+const AUTH_HEADER_FIELD = 'x-api-key';
 
-const DATE_FORMAT = "D MMM, YYYY";
-const DATE_FORMAT_FULL = "dddd, DD MMMM YYYY, h:mm A";
-const SECONDS_FORMAT = "X";
+const DATE_FORMAT = 'D MMM, YYYY';
+const DATE_FORMAT_FULL = 'dddd, DD MMMM YYYY, h:mm A';
+const SECONDS_FORMAT = 'X';
 
-const PLATFORM_IOS = "ios";
-const PLATFORM_ANDROID = "android";
+const PLATFORM_IOS = 'ios';
+const PLATFORM_ANDROID = 'android';
 const ANDROID_STATUSBAR_HEIGHT = 75;
 
-const SCREEN_WIDTH_X_LARGE = "xlarge";
-const SCREEN_WIDTH_LARGE = "large";
-const SCREEN_WIDTH_MEDIUM = "medium";
-const SCREEN_WIDTH_SMALL = "small";
+const SCREEN_WIDTH_X_LARGE = 'xlarge';
+const SCREEN_WIDTH_LARGE = 'large';
+const SCREEN_WIDTH_MEDIUM = 'medium';
+const SCREEN_WIDTH_SMALL = 'small';
 
-const FILE_EXTENSION = ".zip";
-const OFFLINE_SCORM_PREFIX = "OfflineSCORM_";
+const FILE_EXTENSION = '.zip';
+const OFFLINE_SCORM_PREFIX = 'OfflineSCORM_';
 
 enum ActivityModType {
-  scorm = "scorm",
-  label = "label",
-  resource = "resource"
+  scorm = 'scorm',
+  label = 'label',
+  resource = 'resource'
 }
 
-const DEFAULT_LANGUAGE = "en";
+const DEFAULT_LANGUAGE = 'en';
 
 const PULL_TO_REFRESH_OFFSET = 50;
 
 enum SubPlugin {
-  findLearning = "findlearning"
+  findLearning = 'findlearning'
 }
 
 export {
-  DEVICE_REGISTRATION,
-  WEBVIEW_SECRET,
-  AUTHORIZATION,
+  ActivityModType,
+  ANDROID_STATUSBAR_HEIGHT,
   AUTH_HEADER_FIELD,
+  AUTHORIZATION,
   DATE_FORMAT,
   DATE_FORMAT_FULL,
-  SECONDS_FORMAT,
-  PLATFORM_IOS,
+  DEFAULT_LANGUAGE,
+  DEVICE_REGISTRATION,
+  FILE_EXTENSION,
+  OFFLINE_SCORM_PREFIX,
   PLATFORM_ANDROID,
-  SCREEN_WIDTH_X_LARGE,
+  PLATFORM_IOS,
+  PULL_TO_REFRESH_OFFSET,
   SCREEN_WIDTH_LARGE,
   SCREEN_WIDTH_MEDIUM,
   SCREEN_WIDTH_SMALL,
-  OFFLINE_SCORM_PREFIX,
-  FILE_EXTENSION,
-  ActivityModType,
-  DEFAULT_LANGUAGE,
-  ANDROID_STATUSBAR_HEIGHT,
-  PULL_TO_REFRESH_OFFSET,
-  SubPlugin
+  SCREEN_WIDTH_X_LARGE,
+  SECONDS_FORMAT,
+  SubPlugin,
+  WEBVIEW_SECRET
 };

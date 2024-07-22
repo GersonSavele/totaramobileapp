@@ -13,35 +13,35 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useEffect, useState } from "react";
-import { FlatList, Image, ImageSourcePropType, ListRenderItemInfo, Text, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
-import headerStyles from "@totara/theme/headers";
-import { translate } from "@totara/locale";
-import NetworkStatusIndicator from "@totara/components/NetworkStatusIndicator";
-import { RootState } from "@totara/reducers";
-import { Resource } from "@totara/types";
+import type { StackScreenProps } from '@react-navigation/stack';
+import { Images } from '@resources/images';
+import NetworkStatusIndicator from '@totara/components/NetworkStatusIndicator';
+import { NAVIGATION } from '@totara/lib/navigation';
+import ResourceManager from '@totara/lib/resourceManager';
+import { translate } from '@totara/locale';
+import type { RootState } from '@totara/reducers';
+import { paddings } from '@totara/theme/constants';
+import headerStyles from '@totara/theme/headers';
+import listViewStyles from '@totara/theme/listView';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { Resource } from '@totara/types';
+import React, { useEffect, useState } from 'react';
+import type { ImageSourcePropType, ListRenderItemInfo } from 'react-native';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import { Images } from "@resources/images";
-import ResourceManager from "@totara/lib/resourceManager";
-import listViewStyles from "@totara/theme/listView";
-import { NAVIGATION } from "@totara/lib/navigation";
-import { TotaraTheme } from "@totara/theme/Theme";
-import DownloadItem from "./DownloadItem";
-import { paddings } from "@totara/theme/constants";
-import { StackScreenProps } from "@react-navigation/stack";
+import DownloadItem from './DownloadItem';
 const { SCORM_ROOT, SCORM_STACK_ROOT } = NAVIGATION;
 
 const Downloads = ({ navigation }: StackScreenProps<any>) => {
-
   const resourcesList = useSelector((state: RootState) => state.resourceReducer.resources);
 
   const [selectable, setSelectable] = useState(false);
   const [selectedList, setSelectedList] = useState<string[]>([]);
   const headerTitle =
     selectable && selectedList.length > 0
-      ? translate("downloads.selected", { count: selectedList.length })
-      : translate("downloads.title");
+      ? translate('downloads.selected', { count: selectedList.length })
+      : translate('downloads.title');
 
   useEffect(() => {
     showOptions(selectable);
@@ -50,14 +50,14 @@ const Downloads = ({ navigation }: StackScreenProps<any>) => {
   const showOptions = (show: boolean) => {
     const leftOption = show && (
       <TouchableOpacity onPress={onCancelTap} style={{ paddingLeft: paddings.paddingL }}>
-        <Text style={TotaraTheme.textMedium}>{translate("general.cancel")}</Text>
+        <Text style={TotaraTheme.textMedium}>{translate('general.cancel')}</Text>
       </TouchableOpacity>
     );
 
     const rightOption = show && (
       <TouchableOpacity onPress={onDeleteTap} style={{ paddingRight: paddings.paddingL }}>
         <Text style={[TotaraTheme.textMedium, { color: TotaraTheme.colorDestructive }]}>
-          {translate("general.delete")}
+          {translate('general.delete')}
         </Text>
       </TouchableOpacity>
     );
@@ -109,41 +109,41 @@ const Downloads = ({ navigation }: StackScreenProps<any>) => {
   };
 
   const toggleSelected = (item: Resource) => {
-    const exists = selectedList.some((x) => x === item.id);
+    const exists = selectedList.some(x => x === item.id);
     if (!exists) setSelectedList([...selectedList, item.id]);
     else {
-      setSelectedList([...selectedList.filter((x) => x !== item.id)]);
+      setSelectedList([...selectedList.filter(x => x !== item.id)]);
     }
   };
   //ACTIONS
 
   const isSelected = (item: Resource) => {
-    return selectedList.some((x) => x === item.id);
+    return selectedList.some(x => x === item.id);
   };
 
   return (
-    <View style={TotaraTheme.viewContainer} testID={"downloadsContainer"}>
-      <View style={[headerStyles.navigationHeader, { flexDirection: "row" }]}>
+    <View style={TotaraTheme.viewContainer} testID={'downloadsContainer'}>
+      <View style={[headerStyles.navigationHeader, { flexDirection: 'row' }]}>
         <Text style={TotaraTheme.textH2}>{headerTitle}</Text>
       </View>
       <NetworkStatusIndicator />
       <View style={{ flex: 1 }}>
         {resourcesList.length == 0 ? (
-          <View style={listViewStyles.noContent} testID={"test_DownloadsEmptyState"}>
+          <View style={listViewStyles.noContent} testID={'test_DownloadsEmptyState'}>
             <Image source={Images.noDownloads as ImageSourcePropType} />
             <Text style={[TotaraTheme.textHeadline, listViewStyles.noContentTitle]}>
-              {translate("downloads.empty")}
+              {translate('downloads.empty')}
             </Text>
           </View>
         ) : (
           <FlatList
             contentContainerStyle={listViewStyles.contentContainerStyle}
             data={resourcesList}
-            keyExtractor={(resourceItem) => resourceItem.id}
+            keyExtractor={resourceItem => resourceItem.id}
             ItemSeparatorComponent={() => <View style={listViewStyles.itemSeparator} />}
             renderItem={(data: ListRenderItemInfo<Resource>) => (
               <DownloadItem
-                testID={"test_DownloadsItem"}
+                testID={'test_DownloadsItem'}
                 item={data.item}
                 selected={isSelected(data.item)}
                 selectable={selectable}

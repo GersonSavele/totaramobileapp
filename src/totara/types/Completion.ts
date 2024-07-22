@@ -14,10 +14,10 @@
  */
 
 export enum StatusKey {
-  completeViaRpl = "completeviarpl",
-  complete = "complete",
-  inProgress = "inprogress",
-  notYetStarted = "notyetstarted"
+  completeViaRpl = 'completeviarpl',
+  complete = 'complete',
+  inProgress = 'inprogress',
+  notYetStarted = 'notyetstarted'
 }
 
 export interface Completion {

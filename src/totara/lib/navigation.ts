@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { TransitionPresets } from "@react-navigation/stack";
-import { learningItemEnum } from "@totara/features/constants";
-import React from "react";
+import { TransitionPresets } from '@react-navigation/stack';
+import { learningItemEnum } from '@totara/features/constants';
+import React from 'react';
 
 /**
  * Navigates to a next screen using react navigation.
@@ -25,20 +25,16 @@ import React from "react";
 const navigateTo = ({ navigate, routeId, props }) => {
   switch (routeId) {
     case WEBVIEW_ACTIVITY:
-      navigate(routeId, 
-        { 
-          screen: routeId, 
-          params: props,
-        }
-      );
+      navigate(routeId, {
+        screen: routeId,
+        params: props
+      });
       break;
     case SCORM_ROOT:
-      navigate(routeId, 
-        { 
-          screen: routeId, 
-          params: props,
-        }
-      );
+      navigate(routeId, {
+        screen: routeId,
+        params: props
+      });
       break;
     default:
       navigate(routeId, props);
@@ -48,39 +44,39 @@ const navigateTo = ({ navigate, routeId, props }) => {
 const navigationRef = React.createRef<any>();
 
 //current learning
-const CURRENT_LEARNING = "CurrentLearning";
-const COURSE_DETAILS = "CourseDetails";
-const COURSE_GROUP_DETAILS = "CourseGroupDetails"; //either LearningItemEnum.Program or LearningItemEnum.Certificate
-const COURSE_LIST = "CourseList";
+const CURRENT_LEARNING = 'CurrentLearning';
+const COURSE_DETAILS = 'CourseDetails';
+const COURSE_GROUP_DETAILS = 'CourseGroupDetails'; //either LearningItemEnum.Program or LearningItemEnum.Certificate
+const COURSE_LIST = 'CourseList';
 
 //scorm routes
-const SCORM_STACK_ROOT = "ScormActivityStack";
-const WEBVIEW_ACTIVITY_STACK = "WebviewActivityStack";
-const WEBVIEW_ACTIVITY = "WebviewActivity";
-const SCORM_ROOT = "ScormActivity";
+const SCORM_STACK_ROOT = 'ScormActivityStack';
+const WEBVIEW_ACTIVITY_STACK = 'WebviewActivityStack';
+const WEBVIEW_ACTIVITY = 'WebviewActivity';
+const SCORM_ROOT = 'ScormActivity';
 // const SCORM_ACTIVITY = "ScormActivity";
-const SCORM_ATTEMPTS = "ScormAttempts";
-const OFFLINE_SCORM_ACTIVITY = "OfflineScormActivity";
-const SCORM_FEEDBACK = "ScormFeedback";
+const SCORM_ATTEMPTS = 'ScormAttempts';
+const OFFLINE_SCORM_ACTIVITY = 'OfflineScormActivity';
+const SCORM_FEEDBACK = 'ScormFeedback';
 
-const PROFILE = "Profile";
-const ABOUT = "About";
-const SETTINGS = "Settings";
-const DOWNLOADS = "Downloads";
+const PROFILE = 'Profile';
+const ABOUT = 'About';
+const SETTINGS = 'Settings';
+const DOWNLOADS = 'Downloads';
 
 //Find Learning
-const FIND_LEARNING_STACK = "FindLearningStack";
-const FIND_LEARNING = "FindLearning";
-const FIND_LEARNING_OVERVIEW = "FindLearningOverview";
-const FIND_LEARNING_COURSE_DETAILS = "FindLearningCourseDetails";
-const FIND_LEARNING_WEBVIEW = "FindLearningWebViewWrapper";
-const ENROLMENT_MODAL = "EnrolmentModal";
+const FIND_LEARNING_STACK = 'FindLearningStack';
+const FIND_LEARNING = 'FindLearning';
+const FIND_LEARNING_OVERVIEW = 'FindLearningOverview';
+const FIND_LEARNING_COURSE_DETAILS = 'FindLearningCourseDetails';
+const FIND_LEARNING_WEBVIEW = 'FindLearningWebViewWrapper';
+const ENROLMENT_MODAL = 'EnrolmentModal';
 
 //Site url and Login
-const SITE_URL = "SiteUrl";
-const NATIVE_LOGIN = "NativeLogin";
-const BROWSER_LOGIN = "BrowserLogin";
-const WEBVIEW_LOGIN = "WebViewLogin";
+const SITE_URL = 'SiteUrl';
+const NATIVE_LOGIN = 'NativeLogin';
+const BROWSER_LOGIN = 'BrowserLogin';
+const WEBVIEW_LOGIN = 'WebViewLogin';
 
 const learningItemToRouteMap = {
   [learningItemEnum.Course]: COURSE_DETAILS,
@@ -122,16 +118,16 @@ const cardModalOptions = {
   headerStatusBarHeight: 0,
   headerShown: true,
   headerBackTitleVisible: false,
-  headerTitle: "",
+  headerTitle: '',
   headerStyle: {
-    shadowColor: "transparent",
+    shadowColor: 'transparent',
     elevation: 0
   }
 };
 
 const popupModalOptions = {
   animationEnabled: true,
-  cardStyle: { backgroundColor: "rgba(0,0,0, 0.15)" },
+  cardStyle: { backgroundColor: 'rgba(0,0,0, 0.15)' },
   cardStyleInterpolator: ({ current: { progress } }) => {
     return {
       cardStyle: {
@@ -173,13 +169,13 @@ const popAndGoToByRef = (to, params) => {
 };
 
 export {
-  navigationRef,
+  cardModalOptions,
+  horizontalAnimation,
+  learningItemToRouteMap,
   navigateByRef,
-  popAndGoToByRef,
   navigateTo,
   NAVIGATION,
-  learningItemToRouteMap,
-  cardModalOptions,
-  popupModalOptions,
-  horizontalAnimation
+  navigationRef,
+  popAndGoToByRef,
+  popupModalOptions
 };

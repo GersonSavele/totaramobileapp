@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { queryFindLearning } from "./index";
+import { queryFindLearning } from './index';
 
-const catalogPageMock = (noOfItems) => ({
+const catalogPageMock = noOfItems => ({
   catalogPage: {
     maxCount: noOfItems,
     pointer: 0,
@@ -23,13 +23,13 @@ const catalogPageMock = (noOfItems) => ({
     items: Array.from(Array(noOfItems)).map((_, i) => ({
       id: i,
       itemid: i,
-      itemType: "course",
-      title: "Advanced explicit",
+      itemType: 'course',
+      title: 'Advanced explicit',
       mobileImage:
-        "http://mobilefindlearning.sb.wlg.totaralms.com/theme/image.php/ventura/core/1627611234/course_defaultimage?preview=totara_catalog_medium&amp;theme=ventura",
-      summary: "",
-      summaryFormat: "HTML",
-      __typename: "mobile_findlearning_catalog_item"
+        'http://mobilefindlearning.sb.wlg.totaralms.com/theme/image.php/ventura/core/1627611234/course_defaultimage?preview=totara_catalog_medium&amp;theme=ventura',
+      summary: '',
+      summaryFormat: 'HTML',
+      __typename: 'mobile_findlearning_catalog_item'
     }))
   }
 });

@@ -13,10 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Icons } from "@resources/icons";
-import { paddings } from "@totara/theme/constants";
-import React from "react";
-import { Image, ImageSourcePropType, StyleSheet, TouchableOpacity } from "react-native";
+import { Icons } from '@resources/icons';
+import { paddings } from '@totara/theme/constants';
+import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 const CloseButton = ({ onPress, testID, disabled }: { onPress; disabled?: boolean; testID?: string }) => {
   return (

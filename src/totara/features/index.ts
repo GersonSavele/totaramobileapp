@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import CurrentLearning from "./currentLearning";
-import Profile from "./profile";
+import CurrentLearning from './currentLearning';
+import Profile from './profile';
 
 export { CurrentLearning, Profile };

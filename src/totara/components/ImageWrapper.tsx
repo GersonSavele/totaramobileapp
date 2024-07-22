@@ -13,17 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 // @ts-nocheck
-import React from "react";
-import { useSession } from "@totara/core";
-import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
-import { ImageStyle, TextStyle, ViewStyle } from "react-native";
-import FastImage from "react-native-fast-image";
+import { useSession } from '@totara/core';
+import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
+import React from 'react';
+import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 type ImageWrapperType = {
   url: string;
   style?: ViewStyle | TextStyle | ImageStyle;
   accessibilityLabel?: string;
-  resizeMode?: "cover" | "contain" | "stretch" | "center" | undefined;
+  resizeMode?: 'cover' | 'contain' | 'stretch' | 'center' | undefined;
 };
 
 const ImageWrapper = ({ url, style, accessibilityLabel, resizeMode = undefined }: ImageWrapperType) => {
@@ -34,12 +34,12 @@ const ImageWrapper = ({ url, style, accessibilityLabel, resizeMode = undefined }
       resizeMode={resizeMode}
       style={style}
       onError={() => {
-        console.log("Loading onError");
+        console.log('Loading onError');
       }}
       accessibilityLabel={accessibilityLabel}
       source={{
         uri: url,
-        cache: "web",
+        cache: 'web',
         priority: FastImage.priority.normal,
         headers: {
           [AUTH_HEADER_FIELD]: apiKey

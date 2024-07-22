@@ -13,21 +13,21 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import * as RNFS from "@dr.pogodin/react-native-fs";
-import { config } from "@totara/lib";
+import * as RNFS from '@dr.pogodin/react-native-fs';
+import { config } from '@totara/lib';
 
 const DOWNLOAD_FOLDER = `${RNFS.DocumentDirectoryPath}`;
 
-const FILE_EXTENSION = ".zip";
-const OFFLINE_SCORM_PREFIX = "OfflineSCORM_";
+const FILE_EXTENSION = '.zip';
+const OFFLINE_SCORM_PREFIX = 'OfflineSCORM_';
 const scormZipPackagePath = DOWNLOAD_FOLDER;
 const offlineScormServerRoot = `${scormZipPackagePath}/${config.rootOfflineScormPlayer}`;
 
 enum ScormLessonStatus {
-  incomplete = "incomplete",
-  passed = "passed",
-  completed = "completed",
-  failed = "failed"
+  incomplete = 'incomplete',
+  passed = 'passed',
+  completed = 'completed',
+  failed = 'failed'
 }
 
-export { FILE_EXTENSION, OFFLINE_SCORM_PREFIX, offlineScormServerRoot, scormZipPackagePath, ScormLessonStatus };
+export { FILE_EXTENSION, OFFLINE_SCORM_PREFIX, offlineScormServerRoot, ScormLessonStatus, scormZipPackagePath };

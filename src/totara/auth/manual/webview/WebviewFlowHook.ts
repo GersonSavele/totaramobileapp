@@ -13,19 +13,18 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useState, useEffect } from "react";
-import { WebViewMessageEvent, WebViewNavigation } from "react-native-webview/lib/WebViewTypes";
-import CookieManager from "@react-native-cookies/cookies";
-
-import { config } from "@totara/lib";
-import { ManualFlowChildProps } from "@totara/auth/manual/ManualFlowChildProps";
+import CookieManager from '@react-native-cookies/cookies';
+import type { ManualFlowChildProps } from '@totara/auth/manual/ManualFlowChildProps';
+import { config } from '@totara/lib';
+import { useEffect, useState } from 'react';
+import type { WebViewMessageEvent, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 
 export const useWebviewFlow = ({ siteUrl }: ManualFlowChildProps) => {
-  const getProtocolEndpoint = (url: string) => url.split("://");
+  const getProtocolEndpoint = (url: string) => url.split('://');
 
   const didReceiveOnMessage = (event: WebViewMessageEvent) => {
     const setupSecretValue = event.nativeEvent.data;
-    if (typeof setupSecretValue !== "undefined" && setupSecretValue != "null" && setupSecretValue) {
+    if (typeof setupSecretValue !== 'undefined' && setupSecretValue != 'null' && setupSecretValue) {
       setsetupSecret(setupSecretValue);
     }
   };
@@ -46,7 +45,7 @@ export const useWebviewFlow = ({ siteUrl }: ManualFlowChildProps) => {
 
   const [canWebGoBackward, setCanWebGoBackward] = useState(false);
   const [canWebGoForward, setCanWebGoForward] = useState(false);
-  const [setupSecret, setsetupSecret] = useState("");
+  const [setupSecret, setsetupSecret] = useState('');
 
   useEffect(() => {
     return () => {

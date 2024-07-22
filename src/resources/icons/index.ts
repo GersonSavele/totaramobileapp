@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import iconCarousel from "./carousel/carousel.png";
-import iconList from "./list/list.png";
-import closeIcon from "./closeIcon/closeIcon.png";
+import iconCarousel from './carousel/carousel.png';
+import closeIcon from './closeIcon/closeIcon.png';
+import iconList from './list/list.png';
 
 const Icons = {
   iconCarousel,

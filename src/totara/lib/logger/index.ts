@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Logger } from "./Logger";
-import { internalConfig } from "../config";
+import { internalConfig } from '../config';
+import { Logger } from './Logger';
 
 const LoggerImpl = internalConfig.logger; // TODO would good to make this injectable, do a simple dependency injection
 

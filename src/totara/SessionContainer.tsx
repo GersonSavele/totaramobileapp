@@ -13,27 +13,28 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { ApolloProvider, ApolloClient, NormalizedCacheObject } from "@apollo/client";
-import { Linking } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import type { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import AttemptSynchronizer from '@totara/features/activities/scorm/AttemptSynchronizer';
+import type { CachePersistor } from 'apollo3-cache-persist';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Linking } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { linkingHandler } from "./auth/authUtils";
-import SiteUrl from "./auth/manual/SiteUrl";
-import { AppStateListener, Loading } from "./components";
-import { useSession } from "./core";
-import { deviceCleanup, fetchData, registerDevice } from "./core/AuthRoutines";
-import MainContainer from "./MainContainer";
-import { CachePersistor } from "apollo3-cache-persist";
-import { setupApolloClient } from "./core/coreUtils";
-import { queryCore } from "./core/api/core";
-import AdditionalAction from "./auth/additional-actions/AdditionalAction";
-import AttemptSynchronizer from "@totara/features/activities/scorm/AttemptSynchronizer";
-import { useDispatch } from "react-redux";
-import event, { Events, EVENT_LISTENER } from "./lib/event";
-import { changeLocale, setUpLocale } from "./locale";
-import { DEFAULT_LANGUAGE } from "./lib/constants";
+import AdditionalAction from './auth/additional-actions/AdditionalAction';
+import { linkingHandler } from './auth/authUtils';
+import SiteUrl from './auth/manual/SiteUrl';
+import { AppStateListener, Loading } from './components';
+import { useSession } from './core';
+import { queryCore } from './core/api/core';
+import { deviceCleanup, fetchData, registerDevice } from './core/AuthRoutines';
+import { setupApolloClient } from './core/coreUtils';
+import { DEFAULT_LANGUAGE } from './lib/constants';
+import event, { EVENT_LISTENER, Events } from './lib/event';
+import { changeLocale, setUpLocale } from './locale';
+import MainContainer from './MainContainer';
 
 const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dispatch }) => {
   if (url) {
@@ -56,7 +57,7 @@ const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dis
           });
       },
       () => {
-        console.warn("fail");
+        console.warn('fail');
       }
     );
   }
@@ -140,7 +141,7 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
           }
         })
         .catch(e => {
-          console.warn("Failing to fetching user data: ", e);
+          console.warn('Failing to fetching user data: ', e);
         });
     }
   }, [apolloClient, apiKey, core]);
@@ -160,7 +161,7 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
           });
         } else {
           return () => {
-            Linking.removeAllListeners("url");
+            Linking.removeAllListeners('url');
           };
         }
       }

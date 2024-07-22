@@ -13,24 +13,24 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
-import { Text, TouchableOpacity, View, FlatList } from "react-native";
-import { CourseSets } from "@totara/types/CourseGroup";
-import { translate } from "@totara/locale";
-import { NAVIGATION, navigateTo } from "@totara/lib/navigation";
-import { courseSet } from "./courseGroupStyles";
-import { margins } from "@totara/theme/constants";
-import NativeAccessRestriction from "../NativeAccessRestriction";
-import MoreInfo from "@totara/components/MoreInfo";
-import { ImageWrapper } from "@totara/components";
-import DefaultImage from "@totara/features/currentLearning/components/DefaultImage";
-import { extractTargetId } from "../utils";
-import { activeOpacity } from "@totara/lib/styles/base";
-import { CL_TEST_IDS } from "@totara/lib/testIds";
-import { SummaryContent } from "@totara/components/SummaryContent";
+import { ImageWrapper } from '@totara/components';
+import Icon from '@totara/components/Icon';
+import MoreInfo from '@totara/components/MoreInfo';
+import { SummaryContent } from '@totara/components/SummaryContent';
+import DefaultImage from '@totara/features/currentLearning/components/DefaultImage';
+import { navigateTo, NAVIGATION } from '@totara/lib/navigation';
+import { activeOpacity } from '@totara/lib/styles/base';
+import { CL_TEST_IDS } from '@totara/lib/testIds';
+import { translate } from '@totara/locale';
+import { margins } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { CourseSets } from '@totara/types/CourseGroup';
+import React, { useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
-import Icon from "@totara/components/Icon";
-import { TotaraTheme } from "@totara/theme/Theme";
+import NativeAccessRestriction from '../NativeAccessRestriction';
+import { extractTargetId } from '../utils';
+import { courseSet } from './courseGroupStyles';
 
 type CourseSetProps = {
   courseSets: CourseSets;
@@ -88,7 +88,7 @@ const CourseSetItem = ({ item, navigation }: any) => {
       {!viewable && (
         <View style={courseSet.absoluteItem}>
           <Icon name="ban" color={TotaraTheme.colorAlert} size={16} />
-          <Text style={{ marginLeft: margins.marginS }}>{translate("course_group.courses.unavailable_course")}</Text>
+          <Text style={{ marginLeft: margins.marginS }}>{translate('course_group.courses.unavailable_course')}</Text>
         </View>
       )}
     </View>

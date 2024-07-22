@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet } from "react-native";
-import { margins, iconSizes, borderRadius, fontWeights } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { borderRadius, fontWeights, iconSizes, margins } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { StyleSheet } from 'react-native';
 
 const { marginL, marginS, margin2XL } = margins;
 const { borderRadiusL, borderRadiusXS } = borderRadius;
@@ -25,20 +25,20 @@ const criteriaSheetStyle = StyleSheet.create({
   transparentView: {
     flex: 1,
     backgroundColor: colorOpacity70,
-    justifyContent: "flex-end"
+    justifyContent: 'flex-end'
   },
   renderOuterViewWrap: {
     marginVertical: marginS
   },
   renderInnerViewWrap: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
     flex: 1,
     marginHorizontal: marginL
   },
   criteriaText: {
     ...textRegular,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     color: TotaraTheme.colorNeutral8
   },
   requirementText: {
@@ -46,7 +46,7 @@ const criteriaSheetStyle = StyleSheet.create({
     marginBottom: marginL,
     ...textSmall,
     opacity: 0.48,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     color: TotaraTheme.colorNeutral8
   },
   headerViewWrap: {
@@ -58,38 +58,38 @@ const criteriaSheetStyle = StyleSheet.create({
     marginTop: marginS,
     height: iconSizes.sizeXL,
     width: iconSizes.sizeXL,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   headerViewIndicatorWrap: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: margin2XL,
     marginTop: marginS
   },
   indicatorWrap: {
-    width: "20%",
+    width: '20%',
     height: 5,
     opacity: 0.1,
     borderRadius: borderRadiusXS,
     backgroundColor: colorNeutral8,
-    alignSelf: "center"
+    alignSelf: 'center'
   },
   nameViewWrap: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     ...textRegular,
-    justifyContent: "center",
+    justifyContent: 'center',
     color: TotaraTheme.colorNeutral8
   },
   container: {
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     margin: marginL
   },
   renderListWrap: {
     backgroundColor: colorAccent,
-    marginBottom: "5%",
-    height: "95%"
+    marginBottom: '5%',
+    height: '95%'
   },
   listHeader: {
     ...textHeadline,
@@ -98,11 +98,11 @@ const criteriaSheetStyle = StyleSheet.create({
   },
   listContent: {
     backgroundColor: colorAccent,
-    height: "100%"
+    height: '100%'
   },
   availableReasonTextWrap: {
     ...textRegular,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     color: colorNeutral8,
     backgroundColor: colorAccent,
     margin: marginL

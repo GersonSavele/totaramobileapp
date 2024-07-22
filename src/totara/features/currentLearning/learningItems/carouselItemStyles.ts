@@ -12,9 +12,9 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import { StyleSheet } from "react-native";
-import { margins, paddings, borderRadius, shadow } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { borderRadius, margins, paddings, shadow } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { StyleSheet } from 'react-native';
 const { marginS } = margins;
 const { borderRadiusM } = borderRadius;
 const { colorNeutral8, colorNeutral1, colorNeutral6 } = TotaraTheme;
@@ -29,13 +29,13 @@ const carouselItemStyles = StyleSheet.create({
   },
   content: {
     borderRadius: borderRadiusM,
-    width: "100%",
-    height: "100%",
-    overflow: "hidden"
+    width: '100%',
+    height: '100%',
+    overflow: 'hidden'
   },
   type: {
     marginTop: marginS,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     paddingHorizontal: paddingL,
     paddingVertical: paddingXS,
     borderWidth: 1,
@@ -50,7 +50,7 @@ const carouselItemStyles = StyleSheet.create({
   },
   learningItem: {
     zIndex: 2,
-    position: "absolute",
+    position: 'absolute',
     right: 0,
     top: 0
   },
@@ -60,7 +60,7 @@ const carouselItemStyles = StyleSheet.create({
     marginHorizontal: margins.marginS
   },
   pagination: {
-    borderStyle: "dashed",
+    borderStyle: 'dashed',
     paddingVertical: 0,
     paddingHorizontal: 0
   },

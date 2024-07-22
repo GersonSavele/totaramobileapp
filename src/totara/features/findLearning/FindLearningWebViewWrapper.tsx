@@ -13,12 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { SafeAreaView } from "react-native";
-import WebViewWrapper from "@totara/auth/WebViewWrapper";
-import { WebViewNavigation } from "react-native-webview";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import type { RouteProp } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import WebViewWrapper from '@totara/auth/WebViewWrapper';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { SafeAreaView } from 'react-native';
+import type { WebViewNavigation } from 'react-native-webview';
 
 type WebviewProps = {
   FindLearningWebViewWrapper: {
@@ -27,11 +28,11 @@ type WebviewProps = {
 };
 
 const FindLearningWebViewWrapper = () => {
-  const { params } = useRoute<RouteProp<WebviewProps, "FindLearningWebViewWrapper">>();
+  const { params } = useRoute<RouteProp<WebviewProps, 'FindLearningWebViewWrapper'>>();
   const { viewUrl } = params;
 
   const onLoadWithRequest = (navState: WebViewNavigation) => {
-    if (navState.url.indexOf("") < 0) {
+    if (navState.url.indexOf('') < 0) {
       return false;
     }
     return true;

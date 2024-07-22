@@ -13,10 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { createStackNavigator } from "@react-navigation/stack";
-import { NAVIGATION } from "../../lib/navigation";
-import Profile from "./Profile";
-import totaraNavigationOptions from "@totara/components/NavigationOptions";
+import { createStackNavigator } from '@react-navigation/stack';
+import totaraNavigationOptions from '@totara/components/NavigationOptions';
+
+import { NAVIGATION } from '../../lib/navigation';
+import Profile from './Profile';
 
 // const ProfileStack = createCompatNavigatorFactory(createStackNavigator)(
 //     {
@@ -37,6 +38,6 @@ const ProfileStack = () => (
   <Stack.Navigator initialRouteName={NAVIGATION.PROFILE} screenOptions={{ ...totaraNavigationOptions({}) }}>
     <Stack.Screen name={NAVIGATION.PROFILE} component={Profile} />
   </Stack.Navigator>
-)
+);
 
 export default ProfileStack;

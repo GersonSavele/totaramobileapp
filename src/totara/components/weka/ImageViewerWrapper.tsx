@@ -13,19 +13,19 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState } from "react";
-import { TouchableOpacity, Modal, View } from "react-native";
-import { ImageWrapper } from "@totara/components";
-import { translate } from "@totara/locale";
+import { ImageWrapper } from '@totara/components';
+import Icon from '@totara/components/Icon';
+import { translate } from '@totara/locale';
+import { iconSizes } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React, { useState } from 'react';
+import { Modal, TouchableOpacity, View } from 'react-native';
 
-import Icon from "@totara/components/Icon";
-import { iconSizes } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import styles from "./wekaStyle";
+import styles from './wekaStyle';
 
 const ModalView = ({ children, onRequestClose }: any) => {
   return (
-    <Modal animationType={"slide"} transparent={false}>
+    <Modal animationType={'slide'} transparent={false}>
       <View style={styles.closeButtonWrap}>
         <TouchableOpacity style={styles.closeButtonTouchableOpacity} onPress={onRequestClose}>
           <Icon name="times" size={iconSizes.sizeM} color={TotaraTheme.colorNeutral5} />
@@ -50,14 +50,14 @@ const ImageViewerWrapper = ({ fileName, url }: ImageViewProps) => {
         url={url}
         style={styles.imageContainer}
         resizeMode="contain"
-        accessibilityLabel={translate("course.activity.accessibility_image")}
+        accessibilityLabel={translate('course.activity.accessibility_image')}
       />
       {visible && (
         <ModalView onRequestClose={onRequestClose}>
           <ImageWrapper
             url={url}
-            style={{ height: "80%", resizeMode: "contain" }}
-            accessibilityLabel={translate("course.activity.accessibility_image_zoom")}
+            style={{ height: '80%', resizeMode: 'contain' }}
+            accessibilityLabel={translate('course.activity.accessibility_image_zoom')}
           />
         </ModalView>
       )}

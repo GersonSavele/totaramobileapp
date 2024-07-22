@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { LearningItem, DescriptionFormat } from "./LearningItem";
+import type { DescriptionFormat, LearningItem } from './LearningItem';
 
 export interface CourseGroup {
   id: number;
@@ -42,16 +42,16 @@ export interface CourseSets {
 }
 
 export enum StatusKey {
-  assigned = "assigned",
-  completed = "completed",
-  inProgress = "inprogress",
-  expired = "expired"
+  assigned = 'assigned',
+  completed = 'completed',
+  inProgress = 'inprogress',
+  expired = 'expired'
 }
 
 export enum RenewalStatusKey {
-  notDue = "notdue",
-  dueForRenewal = "dueforrenewal",
-  expired = "expired"
+  notDue = 'notdue',
+  dueForRenewal = 'dueforrenewal',
+  expired = 'expired'
 }
 
 export interface Completion {

@@ -13,18 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useEffect } from "react";
-import { View, SafeAreaView, StyleSheet } from "react-native";
-import { PDFView } from "@placeholders/react-native-view-pdf";
-import Orientation from "react-native-orientation-locker";
+import { PDFView } from '@placeholders/react-native-view-pdf';
+import WebViewWrapper from '@totara/auth/WebViewWrapper';
+import { Loading } from '@totara/components';
+import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { Activity } from '@totara/types';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
 
-import { Activity } from "@totara/types";
-import { AUTH_HEADER_FIELD } from "@totara/lib/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { Loading } from "@totara/components";
-import WebViewWrapper from "@totara/auth/WebViewWrapper";
-
-const PDF_TYPE = "application/pdf";
+const PDF_TYPE = 'application/pdf';
 /**
  * WebviewActivity opens an activity with the given url
  */
@@ -43,7 +42,7 @@ type WebviewActivityProps = {
   navigation: any;
 };
 
-const WebviewActivity = ({ route, navigation }: WebviewActivityProps) => {
+const WebviewActivity = ({ route }: WebviewActivityProps) => {
   const { uri, backAction, activity, fileurl, mimetype, apiKey } = route.params as WebviewActivityParams;
   // const { uri, backAction, activity, fileurl, mimetype, apiKey } = navigation.state.params as WebviewActivityParams;
   useEffect(() => {
@@ -70,7 +69,7 @@ const PDFViewWrapper = ({ fileurl, apiKey }: { fileurl?: string; apiKey?: string
       <PDFView
         style={{ flex: 1 }}
         resource={fileurl!}
-        resourceType={"url"}
+        resourceType={'url'}
         urlProps={{ headers: { [AUTH_HEADER_FIELD]: `${apiKey}` } }}
         onLoad={() => setIsLoaded(true)}></PDFView>
       {!isLoaded && (
@@ -83,7 +82,7 @@ const PDFViewWrapper = ({ fileurl, apiKey }: { fileurl?: string; apiKey?: string
 };
 
 const pdfViewStyle = StyleSheet.create({
-  loadingWrapper: { position: "absolute", width: "100%", height: "100%" }
+  loadingWrapper: { position: 'absolute', width: '100%', height: '100%' }
 });
 
 export { WebviewActivity };

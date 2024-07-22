@@ -13,10 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import ViewMoreText from "react-native-view-more-text";
-import React, { useContext } from "react";
-import { StyleSheet, Text, View, TextStyle } from "react-native";
-import { ThemeContext } from "@totara/theme";
+import { ThemeContext } from '@totara/theme';
+import React, { useContext } from 'react';
+import type { TextStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import ViewMoreText from 'react-native-view-more-text';
 type MoreTextProps = {
   longText: string;
   style?: TextStyle;
@@ -48,7 +49,7 @@ const MoreText = ({ longText, style }: MoreTextProps) => {
       numberOfLines={5}
       renderViewMore={renderViewMore}
       renderViewLess={renderViewLess}
-      textStyle={{ textAlign: "justify" }}>
+      textStyle={{ textAlign: 'justify' }}>
       <Text style={style}>{longText}</Text>
     </ViewMoreText>
   );
@@ -56,9 +57,9 @@ const MoreText = ({ longText, style }: MoreTextProps) => {
 
 const styles = StyleSheet.create({
   moreLessContainer: {
-    display: "flex",
-    width: "100%",
-    alignItems: "flex-end"
+    display: 'flex',
+    width: '100%',
+    alignItems: 'flex-end'
   }
 });
 

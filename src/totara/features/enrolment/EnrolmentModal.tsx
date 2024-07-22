@@ -18,7 +18,6 @@ import { Input } from '@placeholders/react-native-elements';
 import type { RouteProp } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button } from '@totara/components';
-import { NAVIGATION } from '@totara/lib/navigation';
 import { translate } from '@totara/locale';
 import { fontWeights, margins, paddings } from '@totara/theme/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
@@ -75,7 +74,6 @@ const GuestAccessWidget = ({
   courseId: string;
   enrolment: EnrolmentOption;
 }) => {
-  const navigation = useNavigation();
   const [validateGuestAccess, { loading, data: guestAccessResult }] = useLazyQuery(guestAccessQuery);
 
   const [passwordState, setPasswordState] = useState<GuestPasswordState>({});
@@ -103,10 +101,8 @@ const GuestAccessWidget = ({
   };
 
   const navigateToCourse = () => {
-    const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
-
     // TODO Fix
-    // navigation.navigate(routeId, {
+    // navigation.navigate(NAVIGATION.FIND_LEARNING_COURSE_DETAILS, {
     //   targetId: courseId,
     //   guestPassword: passwordState.password,
     //   passwordRequired,
@@ -180,7 +176,6 @@ const SelfEnrolmentWidget = ({
   courseId: string;
   enrolment: EnrolmentOption;
 }) => {
-  const navigation = useNavigation();
   const [selfEnrol, { data: dataSelfEnrol, loading: loadingSelfEnrol }] = useMutation(selfEnrolmentMutation);
 
   const [enrolmentKeyState, setEnrolmentKeyState] = useState<EnrolmentKeyState>({
@@ -197,9 +192,8 @@ const SelfEnrolmentWidget = ({
   };
 
   const navigateToCourse = () => {
-    const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
     // TODO Fix
-    // navigation.navigate(routeId, { targetId: courseId, courseGroupType: learningItemEnum.Course });
+    // navigation.navigate(NAVIGATION.FIND_LEARNING_COURSE_DETAILS;, { targetId: courseId, courseGroupType: learningItemEnum.Course });
   };
 
   const enrolmentSuccess = dataSelfEnrol?.mobile_findlearning_enrolment_result?.success;

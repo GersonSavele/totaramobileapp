@@ -13,14 +13,14 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
-import { WebView, WebViewMessageEvent, WebViewNavigation } from "react-native-webview";
-import Orientation from "react-native-orientation-locker";
-
-import { WebviewToolbar } from "@totara/components";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { SCORM_TEST_IDS } from "@totara/lib/testIds";
+import { WebviewToolbar } from '@totara/components';
+import { SCORM_TEST_IDS } from '@totara/lib/testIds';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React, { useEffect, useRef, useState } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
+import type { WebViewMessageEvent, WebViewNavigation } from 'react-native-webview';
+import { WebView } from 'react-native-webview';
 
 type Props = {
   url: string;
@@ -69,11 +69,11 @@ const OfflineScormPlayer = ({ url, injectScript, onMessageHandler }: Props) => {
 const styles = StyleSheet.create({
   playerContainer: {
     flexGrow: 1,
-    width: "100%",
+    width: '100%',
     backgroundColor: TotaraTheme.colorSecondary1
   },
   player: {
-    width: "100%"
+    width: '100%'
   }
 });
 

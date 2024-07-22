@@ -12,11 +12,12 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import { combineReducers } from "redux";
-import notificationReducer from "./notification";
-import resourceReducer from "./resource";
-import sessionReducer from "./session";
-import { PURGE } from "../actions/constants";
+import { combineReducers } from 'redux';
+
+import { PURGE } from '../actions/constants';
+import notificationReducer from './notification';
+import resourceReducer from './resource';
+import sessionReducer from './session';
 
 const appReducer = combineReducers({
   notificationReducer,

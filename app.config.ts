@@ -1,4 +1,4 @@
-import type { ConfigContext, ExpoConfig } from '@expo/config';
+import type { ExpoConfig } from '@expo/config';
 
 export default (): ExpoConfig => ({
   slug: 'TotaraMobileApp',

@@ -13,15 +13,16 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { iconSizes } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
-import Icon from "@totara/components/Icon";
-import styles from "./wekaStyle";
-import { navigateWebView } from "./wekaUtils";
-import { useSession } from "@totara/core";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
+import Icon from '@totara/components/Icon';
+import { useSession } from '@totara/core';
+import { iconSizes } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+
+import styles from './wekaStyle';
+import { navigateWebView } from './wekaUtils';
 
 type ConfigProps = {
   content?: any;
@@ -38,13 +39,13 @@ const Attachment = ({ content = {} }: ConfigProps) => {
       <TouchableOpacity
         style={styles.touchableViewWrap}
         key={index}
-        onPress={() => navigateWebView({ url: nestedContent.attrs.url, apiKey, navigation, title: "" })}>
+        onPress={() => navigateWebView({ url: nestedContent.attrs.url, apiKey, navigation, title: '' })}>
         <View style={styles.iconWrap}>
           <Icon
             name="paperclip"
             color={TotaraTheme.colorLink}
             size={iconSizes.sizeS}
-            style={{ alignSelf: "flex-start" }}
+            style={{ alignSelf: 'flex-start' }}
           />
         </View>
         <View style={{ flex: 8 }}>

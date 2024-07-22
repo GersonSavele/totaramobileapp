@@ -13,14 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { by, element } from "detox";
-import { PROFILE_TEST_IDS, TAB_TEST_IDS, TEST_IDS } from "../../lib/testIds";
-import { startGraphQLServer, stopGraphQLServer } from "../../../../e2e/graphql/index";
-import { mockServerUrl, mockUsername, mockPassword } from "../../../../e2e/graphql/config";
-import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../e2e/graphql/mocks/scalars";
-import { mobileMe } from "../../../../e2e/graphql/mocks/me";
+import { by, element } from 'detox';
 
-describe("User authentication", () => {
+import { mockPassword, mockServerUrl, mockUsername } from '../../../../e2e/graphql/config';
+import { startGraphQLServer, stopGraphQLServer } from '../../../../e2e/graphql/index';
+import { mobileMe } from '../../../../e2e/graphql/mocks/me';
+import { defaultCoreDate, defaultCoreId, defaultString } from '../../../../e2e/graphql/mocks/scalars';
+import { PROFILE_TEST_IDS, TAB_TEST_IDS, TEST_IDS } from '../../lib/testIds';
+
+describe('User authentication', () => {
   beforeAll(async () => {
     const customMocks = {
       ...defaultCoreId,
@@ -41,11 +42,11 @@ describe("User authentication", () => {
   afterAll(async () => {
     await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
     await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
-    await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Yes').and(by.type('_UIAlertControllerActionView'))).tap();
     await stopGraphQLServer();
   });
 
-  it("should have organization url input and native login", async () => {
+  it('should have organization url input and native login', async () => {
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).clearText();
     await element(by.id(TEST_IDS.SITE_URL_INPUT)).typeText(mockServerUrl);
     await element(by.id(TEST_IDS.SUBMIT_URL)).tap();

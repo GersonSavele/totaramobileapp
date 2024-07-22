@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { gql } from "@apollo/client";
-import { UserProfile } from "@totara/types";
+import { gql } from '@apollo/client';
+import type { UserProfile } from '@totara/types';
 
 export type QueryResult = {
   loading: boolean;

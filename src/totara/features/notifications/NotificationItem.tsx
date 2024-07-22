@@ -13,17 +13,16 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { NotificationMessage } from "@totara/types";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-import Icon from "@totara/components/Icon";
-import { fontWeights, iconSizes, paddings } from "@totara/theme/constants";
-import React, { useContext } from "react";
-import { ThemeContext } from "@totara/theme";
-import { TotaraTheme } from "@totara/theme/Theme";
-import listViewStyles from "@totara/theme/listView";
-import { decodeHtmlCharCodes, timeAgo } from "@totara/lib/tools";
-import { translate } from "@totara/locale";
+import Icon from '@totara/components/Icon';
+import { decodeHtmlCharCodes, timeAgo } from '@totara/lib/tools';
+import { translate } from '@totara/locale';
+import { ThemeContext } from '@totara/theme';
+import { fontWeights, iconSizes, paddings } from '@totara/theme/constants';
+import listViewStyles from '@totara/theme/listView';
+import { TotaraTheme } from '@totara/theme/Theme';
+import type { NotificationMessage } from '@totara/types';
+import React, { useContext } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type NotificationItemProps = {
   testID?: string;
@@ -46,12 +45,12 @@ const NotificationItem = ({
   return (
     <TouchableOpacity
       testID={testID}
-      accessibilityHint={translate("notifications.tap_to_launch_hint")}
+      accessibilityHint={translate('notifications.tap_to_launch_hint')}
       onPress={() => onNotificationItemPress(item)}
       onLongPress={() => onNotificationItemLongPress(item)}>
       <View key={item.id} style={listViewStyles.rowItem}>
         {selectable && (
-          <View testID={"test_checkbox"} style={[styles.itemCircle, { display: !selectable ? "none" : "flex" }]}>
+          <View testID={'test_checkbox'} style={[styles.itemCircle, { display: !selectable ? 'none' : 'flex' }]}>
             <Icon
               name="check-circle"
               color={selected ? theme.colorLink : TotaraTheme.colorNeutral3}
@@ -60,17 +59,17 @@ const NotificationItem = ({
           </View>
         )}
         <View style={{ flex: 1 }}>
-          <Text testID={"test_title"} style={[styles.title, item.isRead && styles.read]}>
+          <Text testID={'test_title'} style={[styles.title, item.isRead && styles.read]}>
             {decodeHtmlCharCodes(item.subject)}
           </Text>
-          <Text testID={"test_timeCreated"} style={styles.timeCreated}>
+          <Text testID={'test_timeCreated'} style={styles.timeCreated}>
             {timeAgo(item.timeCreated)}
           </Text>
         </View>
         <View
           style={{
-            alignItems: "flex-end",
-            justifyContent: "center"
+            alignItems: 'flex-end',
+            justifyContent: 'center'
           }}>
           <Icon name="angle-right" color={TotaraTheme.colorNeutral3} size={iconSizes.sizeM} />
         </View>
@@ -95,8 +94,8 @@ const styles = StyleSheet.create({
   },
   itemCircle: {
     padding: paddings.paddingL,
-    display: "flex",
-    justifyContent: "center"
+    display: 'flex',
+    justifyContent: 'center'
   }
 });
 

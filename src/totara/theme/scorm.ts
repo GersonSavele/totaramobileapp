@@ -13,31 +13,31 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-import { margins, fontWeights, paddings } from "./constants";
+import { fontWeights, margins, paddings } from './constants';
 
 const scormSummaryStyles = StyleSheet.create({
   expanded: {
     flex: 1,
-    flexDirection: "column"
+    flexDirection: 'column'
   },
   sectionTitle: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: paddings.paddingL,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     fontWeight: fontWeights.fontWeightBold
   },
   sectionField: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: paddings.paddingL
   },
-  sectionArrow: { alignSelf: "center", marginLeft: margins.marginS },
+  sectionArrow: { alignSelf: 'center', marginLeft: margins.marginS },
   attemptContainer: {
     padding: paddings.paddingL,
-    flexDirection: "column",
-    alignItems: "stretch"
+    flexDirection: 'column',
+    alignItems: 'stretch'
   }
 });
 
@@ -48,24 +48,24 @@ const scormAttemptsStyles = StyleSheet.create({
     fontWeight: fontWeights.fontWeightBold
   },
   holder: {
-    justifyContent: "space-between",
-    flexDirection: "row",
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     marginVertical: margins.marginL,
     paddingHorizontal: paddings.paddingL
   },
   attempt: {
     flex: 2,
-    alignSelf: "center",
-    fontWeight: "normal"
+    alignSelf: 'center',
+    fontWeight: 'normal'
   },
   result: {
     flex: 1,
-    alignItems: "flex-end"
+    alignItems: 'flex-end'
   }
 });
 
 const onlineScormActivityStyles = StyleSheet.create({
-  playerContainer: { width: "100%", height: "100%" }
+  playerContainer: { width: '100%', height: '100%' }
 });
 
-export { scormSummaryStyles, scormAttemptsStyles, onlineScormActivityStyles };
+export { onlineScormActivityStyles, scormAttemptsStyles, scormSummaryStyles };

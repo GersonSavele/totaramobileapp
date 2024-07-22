@@ -14,21 +14,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import {
-  Image,
-  ImageSourcePropType,
-  ImageStyle,
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewStyle
-} from "react-native";
-import { learningItemEnum } from "@totara/features/constants";
-import { Images } from "@resources/images";
-import React from "react";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { margins } from "@totara/theme/constants";
+import { Images } from '@resources/images';
+import { learningItemEnum } from '@totara/features/constants';
+import { margins } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import type { ImageSourcePropType, ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 type DefaultImageProps = {
   itemType: learningItemEnum;
@@ -48,7 +40,7 @@ const DefaultImage = ({ itemType, style }: DefaultImageProps) => {
       <Image
         style={[styles.imageWrap, style] as StyleProp<ImageStyle>}
         source={defaultImage as ImageSourcePropType}
-        resizeMode={"contain"}
+        resizeMode={'contain'}
       />
     </View>
   );
@@ -62,8 +54,8 @@ const styles = StyleSheet.create({
   imageWrap: {
     flex: 1,
     margin: margins.marginM,
-    alignSelf: "center",
-    resizeMode: "contain"
+    alignSelf: 'center',
+    resizeMode: 'contain'
   }
 });
 

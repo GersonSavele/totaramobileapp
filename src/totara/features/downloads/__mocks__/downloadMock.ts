@@ -12,18 +12,18 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import { ResourceState } from "@totara/types/Resource";
+import { ResourceState } from '@totara/types/Resource';
 
 const downloadItemMockAdded = {
-  id: "1",
-  name: "Resource 1MB",
+  id: '1',
+  name: 'Resource 1MB',
   state: ResourceState.Added,
   sizeInBytes: 1024 * 1024 //1MB
 };
 
 const downloadItemMockAddedWithKilo = {
-  id: "2",
-  name: "Resource 10KB",
+  id: '2',
+  name: 'Resource 10KB',
   state: ResourceState.Added,
   sizeInBytes: 1024 * 10 //10KB
 };

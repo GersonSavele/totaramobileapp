@@ -13,13 +13,13 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { gql } from "@apollo/client";
-import { NotificationMessage } from "@totara/types";
-import { isEmpty } from "lodash";
+import { gql } from '@apollo/client';
+import type { NotificationMessage } from '@totara/types';
+import { isEmpty } from 'lodash';
 
-const parser = (data) => {
+const parser = data => {
   if (!data) return [];
-  return data.message_popup_messages.map((message) => {
+  return data.message_popup_messages.map(message => {
     const {
       id,
       subject,
@@ -43,9 +43,9 @@ const parser = (data) => {
   });
 };
 
-const countUnreadMessages = (data) => {
+const countUnreadMessages = data => {
   if (data && !isEmpty(data.message_popup_messages))
-    return data.message_popup_messages.filter((x) => x.isread === false).length;
+    return data.message_popup_messages.filter(x => x.isread === false).length;
   return 0;
 };
 
@@ -80,4 +80,4 @@ const mutationForToken = gql`
   }
 `;
 
-export { notificationsQuery, notificationQueryMarkRead, mutationForToken, parser, countUnreadMessages };
+export { countUnreadMessages, mutationForToken, notificationQueryMarkRead, notificationsQuery, parser };

@@ -16,13 +16,13 @@
 class NetworkError extends Error {}
 
 class NetworkFailedError extends NetworkError {
-  constructor(message = "Network failed Error") {
+  constructor(message = 'Network failed Error') {
     super(message);
   }
 }
 
 class UnsupportedAuthFlow extends NetworkError {
-  constructor(message = "UnsupportedAuthFlow") {
+  constructor(message = 'UnsupportedAuthFlow') {
     super(message);
   }
 }

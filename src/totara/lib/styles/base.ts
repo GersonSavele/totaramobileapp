@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleProp, ViewStyle } from "react-native";
+import type { StyleProp, ViewStyle } from 'react-native';
 
 const spacedFlexRow: StyleProp<ViewStyle> = {
-  flexDirection: "row",
-  justifyContent: "space-between"
+  flexDirection: 'row',
+  justifyContent: 'space-between'
 };
 const flexGrow: ViewStyle = {
   flexGrow: 1,
@@ -28,4 +28,4 @@ const activeOpacity = 0.6;
 
 const fullFlex = { flex: 1 };
 
-export { spacedFlexRow, fullFlex, activeOpacity, flexGrow };
+export { activeOpacity, flexGrow, fullFlex, spacedFlexRow };

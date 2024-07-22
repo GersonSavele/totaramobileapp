@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, paddings, borderRadius, fontSizes } from "@totara/theme/constants";
-import { StyleSheet, Dimensions } from "react-native";
+import { borderRadius, fontSizes, margins, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { Dimensions, StyleSheet } from 'react-native';
 
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export const findLearningStyles = StyleSheet.create({
   mainWrapper: {
@@ -41,15 +41,15 @@ export const findLearningStyles = StyleSheet.create({
     paddingHorizontal: paddings.paddingL,
     paddingVertical: paddings.paddingM,
     fontSize: fontSizes.fontSizeL,
-    flexDirection: "row",
-    alignItems: "center",
-    width: "auto",
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 'auto',
     flexGrow: 1,
-    borderRadius: borderRadius.borderRadiusS, 
+    borderRadius: borderRadius.borderRadiusS
   },
   clearSearch: {
-    marginLeft: "auto",
-    marginRight: 0,
+    marginLeft: 'auto',
+    marginRight: 0
   },
   result: {
     ...TotaraTheme.textHeadline,
@@ -60,22 +60,22 @@ export const findLearningStyles = StyleSheet.create({
     flexGrow: 1
   },
   itemTitle: {
-    textAlign: "center",
+    textAlign: 'center',
     flex: 1
   },
   skeletonWrapper: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
     flex: 0.5,
     height: 150,
     marginTop: margins.marginL,
     paddingHorizontal: paddings.paddingXL
   },
   skeletonContentWrapper: {
-    flexDirection: "column",
+    flexDirection: 'column',
     height: 150,
-    justifyContent: "space-around"
+    justifyContent: 'space-around'
   },
   imageSkeleton: {
     width: SCREEN_WIDTH / 2 - 10,
@@ -83,24 +83,24 @@ export const findLearningStyles = StyleSheet.create({
     borderRadius: borderRadius.borderRadiusS
   },
   nameSkeleton: {
-    width: "80%",
+    width: '80%',
     height: 20,
     borderRadius: borderRadius.borderRadiusXS
   },
   typeSkeleton: {
-    width: "50%",
+    width: '50%',
     height: 20,
     borderRadius: borderRadius.borderRadiusXS
   },
   noLearningItemContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    alignContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
     flexGrow: 1
   },
   noLearningItemsText: {
     ...TotaraTheme.textHeadline,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     paddingTop: paddings.padding3XL
   }
 });

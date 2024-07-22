@@ -13,9 +13,9 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import { PURGE } from "./constants";
+import { PURGE } from './constants';
 
-const purge = (payload) => ({
+const purge = payload => ({
   type: PURGE,
   payload: payload
 });

@@ -12,14 +12,13 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React from "react";
-import { StyleSheet, View, Platform, Linking, Share } from "react-native";
-
-import TouchableIcon from "@totara/components/TouchableIcon";
-import { WebView, WebViewNavigation } from "react-native-webview";
-import { showMessage } from "@totara/lib";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { iconSizes } from "@totara/theme/constants";
+import TouchableIcon from '@totara/components/TouchableIcon';
+import { showMessage } from '@totara/lib';
+import { iconSizes } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { Linking, Platform, Share, StyleSheet, View } from 'react-native';
+import type { WebView, WebViewNavigation } from 'react-native-webview';
 
 type WebviewToolbarProps = {
   refWebview: React.RefObject<WebView>;
@@ -28,7 +27,7 @@ type WebviewToolbarProps = {
   showAllToolbarItems?: boolean;
 };
 
-const WebviewToolbar = ({ refWebview, navState, viewUrl = "", showAllToolbarItems = false }: WebviewToolbarProps) => {
+const WebviewToolbar = ({ refWebview, navState, viewUrl = '', showAllToolbarItems = false }: WebviewToolbarProps) => {
   const onShare = async () => {
     try {
       await Share.share({
@@ -49,17 +48,17 @@ const WebviewToolbar = ({ refWebview, navState, viewUrl = "", showAllToolbarItem
 
   return (
     <View style={styles.footer}>
-      <View style={[styles.barNavigationContent, showAllToolbarItems && { justifyContent: "space-around" }]}>
+      <View style={[styles.barNavigationContent, showAllToolbarItems && { justifyContent: 'space-around' }]}>
         <TouchableIcon
           disabled={!navState?.canGoBack}
-          icon={"chevron-left"}
+          icon={'chevron-left'}
           onPress={() => refWebview.current && refWebview.current!.goBack()}
           color={TotaraTheme.colorLink}
           size={iconSizes.sizeM}
         />
         <TouchableIcon
           disabled={!navState?.canGoForward}
-          icon={"chevron-right"}
+          icon={'chevron-right'}
           onPress={() => refWebview.current && refWebview.current!.goForward()}
           color={TotaraTheme.colorLink}
           size={iconSizes.sizeM}
@@ -67,14 +66,9 @@ const WebviewToolbar = ({ refWebview, navState, viewUrl = "", showAllToolbarItem
       </View>
       {showAllToolbarItems && (
         <View style={styles.barExtraActionContent}>
+          <TouchableIcon icon={'share-nodes'} onPress={onShare} color={TotaraTheme.colorLink} size={iconSizes.sizeM} />
           <TouchableIcon
-            icon={"share-nodes"}
-            onPress={onShare}
-            color={TotaraTheme.colorLink}
-            size={iconSizes.sizeM}
-          />
-          <TouchableIcon
-            icon={Platform.OS === "android" ? ("chrome") : ("safari")}
+            icon={Platform.OS === 'android' ? 'chrome' : 'safari'}
             onPress={openExternalURL}
             color={TotaraTheme.colorLink}
             size={iconSizes.sizeM}
@@ -87,17 +81,17 @@ const WebviewToolbar = ({ refWebview, navState, viewUrl = "", showAllToolbarItem
 const styles = StyleSheet.create({
   footer: {
     backgroundColor: TotaraTheme.colorSecondary1,
-    flexDirection: "row",
-    justifyContent: "space-between"
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   barNavigationContent: {
     flex: 1,
-    flexDirection: "row",
-    alignSelf: "flex-start"
+    flexDirection: 'row',
+    alignSelf: 'flex-start'
   },
   barExtraActionContent: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     flex: 1
   }
 });

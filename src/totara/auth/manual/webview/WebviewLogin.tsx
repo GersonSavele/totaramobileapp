@@ -88,7 +88,7 @@ const WebviewLogin = () => {
       <View style={[styles.footer, { backgroundColor: theme.colorSecondary1 }]}>
         <View style={styles.barContent}>
           <TouchableIcon
-            icon={"chevron-left"}
+            icon={'chevron-left'}
             disabled={!canWebGoBackward}
             onPress={() => {
               refLoginWebview.current && refLoginWebview.current!.goBack();
@@ -97,7 +97,7 @@ const WebviewLogin = () => {
             size={theme.textH3.fontSize}
           />
           <TouchableIcon
-            icon={"chevron-right"}
+            icon={'chevron-right'}
             disabled={!canWebGoForward}
             onPress={() => {
               refLoginWebview.current && refLoginWebview.current!.goForward();
@@ -108,9 +108,9 @@ const WebviewLogin = () => {
         </View>
         <View style={styles.barContent}>
           <TouchableIcon
-            icon={"external-link-alt"}
+            icon={'external-link-alt'}
             onPress={() => {
-              Linking.openURL(navProtocol + "://" + navEndPoint);
+              Linking.openURL(navProtocol + '://' + navEndPoint);
             }}
             color={theme.colorNeutral7}
             size={theme.textH3.fontSize}
@@ -123,28 +123,28 @@ const WebviewLogin = () => {
 
 const styles = StyleSheet.create({
   navigation: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderBottomWidth: 0
   },
   addressContainer: {
     marginHorizontal: 40,
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
-    alignSelf: "center",
-    justifyContent: "space-between"
+    alignSelf: 'center',
+    justifyContent: 'space-between'
   },
   addressText: {
     marginLeft: 4,
     flex: 1
   },
   footer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderTopWidth: 0,
-    justifyContent: "space-between"
+    justifyContent: 'space-between'
   },
   barContent: {
-    flexDirection: "row",
-    alignSelf: "flex-start"
+    flexDirection: 'row',
+    alignSelf: 'flex-start'
   }
 });
 

@@ -13,16 +13,17 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import { by, element } from "detox";
-import { TAB_TEST_IDS, TEST_IDS, NAVIGATION_TEST_IDS, PROFILE_TEST_IDS } from "../../../lib/testIds";
-import { defaultCoreId, defaultCoreDate, defaultString } from "../../../../../e2e/graphql/mocks/scalars";
-import { startGraphQLServer, stopGraphQLServer } from "../../../../../e2e/graphql/index";
-import { currentLearning } from "../../../../../e2e/graphql/mocks/currentLearning";
-import { mobileMe } from "../../../../../e2e/graphql/mocks/me";
-import { profile } from "../../../../../e2e/graphql/mocks/profile";
-import { notifications } from "../../../../../e2e/graphql/mocks/notifications";
-import { lang } from "../../../../../e2e/graphql/mocks/lang";
-import { mockServerUrl, mockUsername, mockPassword } from "../../../../../e2e/graphql/config";
+import { by, element } from 'detox';
+
+import { mockPassword, mockServerUrl, mockUsername } from '../../../../../e2e/graphql/config';
+import { startGraphQLServer, stopGraphQLServer } from '../../../../../e2e/graphql/index';
+import { currentLearning } from '../../../../../e2e/graphql/mocks/currentLearning';
+import { lang } from '../../../../../e2e/graphql/mocks/lang';
+import { mobileMe } from '../../../../../e2e/graphql/mocks/me';
+import { notifications } from '../../../../../e2e/graphql/mocks/notifications';
+import { profile } from '../../../../../e2e/graphql/mocks/profile';
+import { defaultCoreDate, defaultCoreId, defaultString } from '../../../../../e2e/graphql/mocks/scalars';
+import { NAVIGATION_TEST_IDS, PROFILE_TEST_IDS, TAB_TEST_IDS, TEST_IDS } from '../../../lib/testIds';
 
 const customMocks = {
   ...defaultCoreId,
@@ -38,7 +39,7 @@ const customMocks = {
   })
 };
 
-describe("About test", () => {
+describe('About test', () => {
   beforeAll(async () => {
     await startGraphQLServer(customMocks);
     await device.launchApp();
@@ -54,14 +55,14 @@ describe("About test", () => {
     await stopGraphQLServer();
   });
 
-  it("should navigate user to the about screen", async () => {
+  it('should navigate user to the about screen', async () => {
     await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
     await element(by.id(PROFILE_TEST_IDS.ABOUT)).tap();
     await element(by.id(NAVIGATION_TEST_IDS.BACK)).tap();
     await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
     //TODO: this is for selecting alert confirmation action button and it needs to check for the android
-    await element(by.label("Cancel").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Cancel').and(by.type('_UIAlertControllerActionView'))).tap();
     await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
-    await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Yes').and(by.type('_UIAlertControllerActionView'))).tap();
   });
 });

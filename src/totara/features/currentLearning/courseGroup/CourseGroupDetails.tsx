@@ -13,18 +13,19 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
-import { useQuery, NetworkStatus, useMutation } from "@apollo/client";
-import { translate } from "@totara/locale";
-import Courses from "./Courses";
-import OverviewDetails from "../overview/OverviewDetails";
-import { CourseGroup } from "@totara/types";
-import { LoadingError, Loading } from "@totara/components";
-import { coreProgram, coreCertification, mutationReportProgramme } from "./api";
-import LearningDetails from "../LearningDetails";
-import { details } from "./courseGroupStyles";
-import CriteriaSheet from "../components/CriteriaSheet";
+import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
+import { Loading, LoadingError } from '@totara/components';
+import { translate } from '@totara/locale';
+import type { CourseGroup } from '@totara/types';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+
+import CriteriaSheet from '../components/CriteriaSheet';
+import LearningDetails from '../LearningDetails';
+import OverviewDetails from '../overview/OverviewDetails';
+import { coreCertification, coreProgram, mutationReportProgramme } from './api';
+import { details } from './courseGroupStyles';
+import Courses from './Courses';
 
 type CourseGroupProps = {
   route: any;
@@ -34,15 +35,15 @@ type CourseGroupProps = {
 const courseGroupTypeMap = {
   program: {
     query: coreProgram,
-    idField: "programid",
-    queryAlias: "totara_mobile_program",
-    badgeTitlePath: "learning_items.program"
+    idField: 'programid',
+    queryAlias: 'totara_mobile_program',
+    badgeTitlePath: 'learning_items.program'
   },
   certification: {
     query: coreCertification,
-    idField: "certificationid",
-    queryAlias: "totara_mobile_certification",
-    badgeTitlePath: "learning_items.certification"
+    idField: 'certificationid',
+    queryAlias: 'totara_mobile_certification',
+    badgeTitlePath: 'learning_items.certification'
   }
 };
 
@@ -72,14 +73,14 @@ const CourseGroupDetails = ({ route, navigation }: CourseGroupProps) => {
       }).then(({ data }) => {
         //TODO: investigate - somehow the API is not returning "totara_mobile_program_view"
         if (!data?.totara_mobile_program_view) {
-          console.warn("Programme/Certificate reporting failed.");
+          console.warn('Programme/Certificate reporting failed.');
         }
       });
     }
   }, [data]);
 
-  if (networkStatus === NetworkStatus.loading) return <Loading testID={"test_loading"} />;
-  if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} testID={"test_error"} error={error} />;
+  if (networkStatus === NetworkStatus.loading) return <Loading testID={'test_loading'} />;
+  if (!data && error) return <LoadingError onRefreshTap={onContentRefresh} testID={'test_error'} error={error} />;
 
   if (data) {
     const courseGroup = data[typeMap.queryAlias] as CourseGroup;
@@ -88,14 +89,14 @@ const CourseGroupDetails = ({ route, navigation }: CourseGroupProps) => {
         courseGroup={courseGroup}
         onContentRefresh={onContentRefresh}
         navigation={navigation}
-        testID={"test_data"}
+        testID={'test_data'}
         badgeTitlePath={typeMap.badgeTitlePath}
         itemType={courseGroupType}
         loading={networkStatus === NetworkStatus.refetch}
       />
     );
   } else {
-    return <Loading testID={"data_loading"} />;
+    return <Loading testID={'data_loading'} />;
   }
 };
 
@@ -141,8 +142,8 @@ const CourseGroupDetailsContent = ({
         loading={loading}
         item={courseGroup}
         itemType={itemType}
-        tabBarLeftTitle={translate("course_group.tabs.overview")}
-        tabBarRightTitle={translate("course_group.tabs.courses")}
+        tabBarLeftTitle={translate('course_group.tabs.overview')}
+        tabBarRightTitle={translate('course_group.tabs.courses')}
         onPress={onSwitchTab}
         overviewIsShown={showOverview}
         badgeTitle={translate(badgeTitlePath)}
@@ -161,14 +162,14 @@ const CourseGroupDetailsContent = ({
                 progress={courseGroup?.completion?.progress}
                 isCourseSet={true}
                 showCriteriaList={showCriteriaList}
-                summaryTypeTitle={translate("course_group.overview.summary_title_program")}
+                summaryTypeTitle={translate('course_group.overview.summary_title_program')}
               />
             )}
           </View>
         </View>
       </LearningDetails>
       <CriteriaSheet
-        title={translate("course_group.criteria.bottom_sheet_header")}
+        title={translate('course_group.criteria.bottom_sheet_header')}
         criteriaList={criteria}
         onClose={onClose}
         index={index}

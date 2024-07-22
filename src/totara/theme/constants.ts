@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { Dimensions } from "react-native";
-import { TotaraTheme } from "@totara/theme/Theme";
+import { TotaraTheme } from '@totara/theme/Theme';
+import { Dimensions } from 'react-native';
 
 const textAttributes = {
-  short_code_prefix: "0x"
+  short_code_prefix: '0x'
 };
 
 const borderRadius = {
@@ -29,20 +29,20 @@ const borderRadius = {
 };
 
 enum fontWeights {
-  fontWeightRegular = "400",
-  fontWeightNormal = "500",
-  fontWeightSemiBold = "600",
-  fontWeightBold = "700"
+  fontWeightRegular = '400',
+  fontWeightNormal = '500',
+  fontWeightSemiBold = '600',
+  fontWeightBold = '700'
 }
 
 enum fontStyles {
-  fontStyleItalic = "italic"
+  fontStyleItalic = 'italic'
 }
 
 enum marksTypes {
-  italic = "em",
-  bold = "strong",
-  link = "link"
+  italic = 'em',
+  bold = 'strong',
+  link = 'link'
 }
 
 const fontSizes = {
@@ -123,29 +123,29 @@ const row = {
 };
 
 const modalSize = {
-  width: Dimensions.get("window").width * 0.7,
-  height: Dimensions.get("window").height * 0.7
+  width: Dimensions.get('window').width * 0.7,
+  height: Dimensions.get('window').height * 0.7
 };
 
 const resultCircleSize = 185;
 const resultWrapperScaleX = 2;
 
 export {
-  textAttributes,
-  margins,
-  paddings,
-  fontSizes,
-  fontWeights,
   borderRadius,
-  tabBar,
+  fontSizes,
+  fontStyles,
+  fontWeights,
   header,
   iconSizes,
+  margins,
+  marksTypes,
   modalSize,
+  opacities,
+  paddings,
   resultCircleSize,
   resultWrapperScaleX,
-  shadow,
   row,
-  opacities,
-  fontStyles,
-  marksTypes
+  shadow,
+  tabBar,
+  textAttributes
 };

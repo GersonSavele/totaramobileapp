@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-declare module "*.png" {
+declare module '*.png' {
   const content: string;
   export default content;
 }

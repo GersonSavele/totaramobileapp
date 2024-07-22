@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const coreProgram = gql`
   query totara_mobile_program($programid: core_id!) {
@@ -124,4 +124,4 @@ const mutationReportProgramme = gql`
   }
 `;
 
-export { coreProgram, coreCertification, mutationReportProgramme };
+export { coreCertification, coreProgram, mutationReportProgramme };

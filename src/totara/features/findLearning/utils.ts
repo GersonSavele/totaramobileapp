@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { FindLearningPage } from "@totara/types/FindLearning";
+import type { FindLearningPage } from '@totara/types/FindLearning';
 
 const formatPageData = ({
   pageData,

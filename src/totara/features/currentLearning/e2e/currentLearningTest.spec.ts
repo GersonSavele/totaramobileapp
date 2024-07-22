@@ -13,16 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { by, element } from "detox";
-import { CL_TEST_IDS, NAVIGATION_TEST_IDS, PROFILE_TEST_IDS, TAB_TEST_IDS, TEST_IDS } from "../../../lib/testIds";
-import { startGraphQLServer, stopGraphQLServer } from "../../../../../e2e/graphql/index";
-import { defaultCoreId, defaultCoreDate, defaultString, defaultLI } from "../../../../../e2e/graphql/mocks/scalars";
-import { currentLearning } from "../../../../../e2e/graphql/mocks/currentLearning";
-import { courseDetails } from "../../../../../e2e/graphql/mocks/courseDetails";
-import { mobileMe } from "../../../../../e2e/graphql/mocks/me";
-import { lang } from "../../../../../e2e/graphql/mocks/lang";
-import { notifications } from "../../../../../e2e/graphql/mocks/notifications";
-import { mockServerUrl, mockUsername, mockPassword } from "../../../../../e2e/graphql/config";
+import { by, element } from 'detox';
+
+import { mockPassword, mockServerUrl, mockUsername } from '../../../../../e2e/graphql/config';
+import { startGraphQLServer, stopGraphQLServer } from '../../../../../e2e/graphql/index';
+import { courseDetails } from '../../../../../e2e/graphql/mocks/courseDetails';
+import { currentLearning } from '../../../../../e2e/graphql/mocks/currentLearning';
+import { lang } from '../../../../../e2e/graphql/mocks/lang';
+import { mobileMe } from '../../../../../e2e/graphql/mocks/me';
+import { notifications } from '../../../../../e2e/graphql/mocks/notifications';
+import { defaultCoreDate, defaultCoreId, defaultLI, defaultString } from '../../../../../e2e/graphql/mocks/scalars';
+import { CL_TEST_IDS, NAVIGATION_TEST_IDS, PROFILE_TEST_IDS, TAB_TEST_IDS, TEST_IDS } from '../../../lib/testIds';
 
 const customMocks = {
   ...defaultCoreId,
@@ -39,7 +40,7 @@ const customMocks = {
   })
 };
 
-describe("Current learning test", () => {
+describe('Current learning test', () => {
   beforeAll(async () => {
     await startGraphQLServer(customMocks);
     await device.launchApp();
@@ -54,22 +55,22 @@ describe("Current learning test", () => {
   afterAll(async () => {
     await element(by.id(TAB_TEST_IDS.PROFILE)).tap();
     await element(by.id(PROFILE_TEST_IDS.LOGOUT)).tap();
-    await element(by.label("Yes").and(by.type("_UIAlertControllerActionView"))).tap();
+    await element(by.label('Yes').and(by.type('_UIAlertControllerActionView'))).tap();
 
     await stopGraphQLServer();
   });
 
-  it("should have user landing on current learning and switch to the list view", async () => {
+  it('should have user landing on current learning and switch to the list view', async () => {
     await element(by.id(CL_TEST_IDS.SWITCH)).tap();
   });
 
-  it("should navigate to the course and view course overview", async () => {
-    await element(by.id("learningItem_1")).tap();
+  it('should navigate to the course and view course overview', async () => {
+    await element(by.id('learningItem_1')).tap();
     await element(by.id(CL_TEST_IDS.PROGRESS)).tap();
     await element(by.id(TEST_IDS.CLICK_CLOSE)).tap();
   });
 
-  it("should navigate to the course activity list and activity", async () => {
+  it('should navigate to the course activity list and activity', async () => {
     await element(by.id(CL_TEST_IDS.TAB_2)).tap();
     let shouldContinue = true;
     let i = 0;

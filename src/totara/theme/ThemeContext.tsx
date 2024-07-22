@@ -13,10 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode } from "react";
+import { useSession } from '@totara/core';
+import type { ReactNode } from 'react';
+import React from 'react';
 
-import { AppliedTheme, TotaraTheme, applyTheme } from "./Theme";
-import { useSession } from "@totara/core";
+import type { AppliedTheme } from './Theme';
+import { applyTheme, TotaraTheme } from './Theme';
 
 type Props = {
   children: ReactNode;

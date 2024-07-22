@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { AppliedTheme } from "@totara/theme/Theme";
+import type { AppliedTheme } from '@totara/theme/Theme';
 
 export type SiteInfo = {
   auth: string;

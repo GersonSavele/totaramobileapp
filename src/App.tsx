@@ -21,7 +21,7 @@ import { persistor, store } from '@totara/store';
 import { ThemeProvider } from '@totara/theme';
 import type { ReactNode } from 'react';
 import React from 'react';
-import { LogBox, Platform, SafeAreaView, StatusBar, Text } from 'react-native';
+import { LogBox, Platform, StatusBar, Text } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { OrientationLocker, PORTRAIT } from 'react-native-orientation-locker';
 import { Provider } from 'react-redux';

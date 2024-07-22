@@ -16,22 +16,22 @@
 // @ts-nocheck
 // ts no check because the imcompatibility in icon types
 
-import React from "react";
-import MessageBar from "@totara/components/MessageBar";
-import { View } from "react-native";
-import { useNetInfo } from "@react-native-community/netinfo";
+import { useNetInfo } from '@react-native-community/netinfo';
+import MessageBar from '@totara/components/MessageBar';
+import React from 'react';
+import { View } from 'react-native';
 
 const NetworkStatusIndicator = () => {
   const { isConnected, isInternetReachable } = useNetInfo();
-  const messageNotConnected = "You are not connected to the internet";
-  const messageConnecting = "Connecting...";
+  const messageNotConnected = 'You are not connected to the internet';
+  const messageConnecting = 'Connecting...';
   return (
-    <View testID={"test_container"}>
+    <View testID={'test_container'}>
       {(!isConnected || (isConnected && !isInternetReachable)) && (
         <MessageBar
-          testID={"test_messageBar"}
+          testID={'test_messageBar'}
           text={!isConnected ? messageNotConnected : messageConnecting}
-          icon={"bolt"}
+          icon={'bolt'}
         />
       )}
     </View>

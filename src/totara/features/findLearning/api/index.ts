@@ -12,7 +12,7 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const queryFindLearning = gql`
   query mobile_findlearning_filter_catalog($pointer: Int, $filter_data: mobile_findlearning_filter_input!) {

@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { enrolmentInfoQuery, selfEnrolmentMutation } from "@totara/features/enrolment/api";
-import { GraphQLError } from "graphql";
+import { enrolmentInfoQuery, selfEnrolmentMutation } from '@totara/features/enrolment/api';
+import { GraphQLError } from 'graphql';
 
 export const enrolmentOptionsMock = [
   {
@@ -35,14 +35,14 @@ export const enrolmentOptionsMock = [
           enrolmentOptions: [
             {
               id: 1,
-              type: "guest",
-              roleName: "",
-              customName: "",
-              sortOrder: "",
+              type: 'guest',
+              roleName: '',
+              customName: '',
+              sortOrder: '',
               passwordRequired: true
             }
           ],
-          __typename: "enrolment_options"
+          __typename: 'enrolment_options'
         }
       }
     }
@@ -65,14 +65,14 @@ export const enrolmentOptionsMock = [
           enrolmentOptions: [
             {
               id: 1,
-              type: "guest",
-              roleName: "",
-              customName: "",
-              sortOrder: "",
+              type: 'guest',
+              roleName: '',
+              customName: '',
+              sortOrder: '',
               passwordRequired: true
             }
           ],
-          __typename: "enrolment_options"
+          __typename: 'enrolment_options'
         }
       }
     }
@@ -95,14 +95,14 @@ export const enrolmentOptionsMock = [
           enrolmentOptions: [
             {
               id: 1,
-              type: "guest",
-              roleName: "",
-              customName: "",
-              sortOrder: "",
+              type: 'guest',
+              roleName: '',
+              customName: '',
+              sortOrder: '',
               passwordRequired: true
             }
           ],
-          __typename: "enrolment_options"
+          __typename: 'enrolment_options'
         }
       }
     }
@@ -125,14 +125,14 @@ export const enrolmentOptionsMock = [
           enrolmentOptions: [
             {
               id: 1,
-              type: "self",
-              roleName: "Learner",
-              customName: "",
-              sortOrder: "",
+              type: 'self',
+              roleName: 'Learner',
+              customName: '',
+              sortOrder: '',
               passwordRequired: true
             }
           ],
-          __typename: "enrolment_options"
+          __typename: 'enrolment_options'
         }
       }
     }
@@ -155,22 +155,22 @@ export const enrolmentOptionsMock = [
           enrolmentOptions: [
             {
               id: 1,
-              type: "self",
-              roleName: "",
-              customName: "self enrolment 1",
+              type: 'self',
+              roleName: '',
+              customName: 'self enrolment 1',
               sortOrder: 1,
               passwordRequired: true
             },
             {
               id: 2,
-              type: "self",
-              roleName: "",
-              customName: "self enrolment 2",
+              type: 'self',
+              roleName: '',
+              customName: 'self enrolment 2',
               sortOrder: 2,
               passwordRequired: true
             }
           ],
-          __typename: "enrolment_options"
+          __typename: 'enrolment_options'
         }
       }
     }
@@ -183,7 +183,7 @@ export const enrolmentOptionsMock = [
       }
     },
     result: {
-      errors: [new GraphQLError("Error!")]
+      errors: [new GraphQLError('Error!')]
     }
   },
   {
@@ -193,7 +193,7 @@ export const enrolmentOptionsMock = [
         input: {
           courseid: 4,
           instanceid: 1,
-          password: "wrongPwd"
+          password: 'wrongPwd'
         }
       }
     },
@@ -201,8 +201,8 @@ export const enrolmentOptionsMock = [
       data: {
         mobile_findlearning_enrolment_result: {
           success: false,
-          msgKey: "Incorrect enrolment key, please try again",
-          __typename: "core_enrol_attempt_self_enrolment_result"
+          msgKey: 'Incorrect enrolment key, please try again',
+          __typename: 'core_enrol_attempt_self_enrolment_result'
         }
       }
     }
@@ -214,7 +214,7 @@ export const enrolmentOptionsMock = [
         input: {
           courseid: 4,
           instanceid: 1,
-          password: "correctPwd"
+          password: 'correctPwd'
         }
       }
     },
@@ -223,7 +223,7 @@ export const enrolmentOptionsMock = [
         mobile_findlearning_enrolment_result: {
           success: true,
           msgKey: null,
-          __typename: "core_enrol_attempt_self_enrolment_result"
+          __typename: 'core_enrol_attempt_self_enrolment_result'
         }
       }
     }

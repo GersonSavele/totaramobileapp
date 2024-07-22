@@ -13,21 +13,21 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import { TOKEN_SENT, UPDATE_COUNT, UPDATE_TOKEN } from "./constants";
+import { TOKEN_SENT, UPDATE_COUNT, UPDATE_TOKEN } from './constants';
 
-const updateToken = (payload) => ({
+const updateToken = payload => ({
   type: UPDATE_TOKEN,
   payload: payload
 });
 
-const tokenSent = (payload) => ({
+const tokenSent = payload => ({
   type: TOKEN_SENT,
   payload: payload
 });
 
-const updateCount = (payload) => ({
+const updateCount = payload => ({
   type: UPDATE_COUNT,
   payload: payload
 });
 
-export { updateToken, tokenSent, updateCount };
+export { tokenSent, updateCount, updateToken };

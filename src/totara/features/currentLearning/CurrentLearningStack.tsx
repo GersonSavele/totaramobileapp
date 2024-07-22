@@ -12,12 +12,13 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import { createStackNavigator } from "@react-navigation/stack";
-import { NAVIGATION } from "@totara/lib/navigation";
-import totaraNavigationOptions from "@totara/components/NavigationOptions";
-import CurrentLearning from "./CurrentLearning";
-import CourseDetails from "./course/CourseDetails";
-import { CourseGroupDetails, CourseList } from "./courseGroup";
+import { createStackNavigator } from '@react-navigation/stack';
+import totaraNavigationOptions from '@totara/components/NavigationOptions';
+import { NAVIGATION } from '@totara/lib/navigation';
+
+import CourseDetails from './course/CourseDetails';
+import { CourseGroupDetails, CourseList } from './courseGroup';
+import CurrentLearning from './CurrentLearning';
 
 // const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
 //   {
@@ -58,26 +59,37 @@ const Stack = createStackNavigator();
 
 const CurrentLearningStack = () => (
   <Stack.Navigator initialRouteName={NAVIGATION.CURRENT_LEARNING}>
-    <Stack.Screen name={NAVIGATION.CURRENT_LEARNING} component={CurrentLearning}
-      options={({ navigation }) =>
+    <Stack.Screen
+      name={NAVIGATION.CURRENT_LEARNING}
+      component={CurrentLearning}
+      options={() =>
         totaraNavigationOptions({
           // title: navigation.getParam("title"),
           // opacity: navigation.getParam("opacity") || 0.0
-        })} />
-    <Stack.Screen name={NAVIGATION.COURSE_DETAILS} component={CourseDetails}
-      options={totaraNavigationOptions({})} />
-    <Stack.Screen name={NAVIGATION.COURSE_GROUP_DETAILS} component={CourseGroupDetails}
+        })
+      }
+    />
+    <Stack.Screen name={NAVIGATION.COURSE_DETAILS} component={CourseDetails} options={totaraNavigationOptions({})} />
+    <Stack.Screen
+      name={NAVIGATION.COURSE_GROUP_DETAILS}
+      component={CourseGroupDetails}
       options={() =>
         totaraNavigationOptions({
           headerShown: false
-        })} />
-    <Stack.Screen name={NAVIGATION.COURSE_LIST} component={CourseList}
+        })
+      }
+    />
+    <Stack.Screen
+      name={NAVIGATION.COURSE_LIST}
+      component={CourseList}
       options={({ navigation }: any) =>
         totaraNavigationOptions({
-          title: navigation.getParam("title"),
-          opacity: navigation.getParam("opacity")
-        })} />
+          title: navigation.getParam('title'),
+          opacity: navigation.getParam('opacity')
+        })
+      }
+    />
   </Stack.Navigator>
-)
+);
 
 export default CurrentLearningStack;

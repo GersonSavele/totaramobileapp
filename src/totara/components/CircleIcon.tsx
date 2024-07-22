@@ -13,12 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { StyleSheet, View, Image } from "react-native";
-
-import Icon from "@totara/components/Icon";
-import { iconSizes } from "@totara/theme/constants";
-import { TotaraTheme } from "@totara/theme/Theme";
+import Icon from '@totara/components/Icon';
+import { iconSizes } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 
 type Props = {
   icon?: any;
@@ -58,9 +57,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: iconSizes.sizeM,
     width: iconSizes.sizeM,
-    borderStyle: "solid",
-    justifyContent: "center",
-    alignItems: "center"
+    borderStyle: 'solid',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

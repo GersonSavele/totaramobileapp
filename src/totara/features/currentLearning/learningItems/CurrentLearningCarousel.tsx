@@ -12,19 +12,20 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React, { useState, useRef } from "react";
-import { TouchableOpacity, View, ScrollView, RefreshControl, FlatList, Text } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { AddBadge } from "@totara/components";
-import { navigateTo, learningItemToRouteMap } from "@totara/lib/navigation";
-import NativeAccessRestriction from "../NativeAccessRestriction";
-import { iconSizes, paddings } from "@totara/theme/constants";
-import { deviceScreen } from "@totara/lib/tools";
-import LearningItemCard from "../components/LearningItemCard";
-import carouselItemStyles from "./carouselItemStyles";
-import { extractTargetId } from "../utils";
-import { activeOpacity } from "@totara/lib/styles/base";
-import { CL_TEST_IDS } from "@totara/lib/testIds";
+import { useNavigation } from '@react-navigation/native';
+import { AddBadge } from '@totara/components';
+import { learningItemToRouteMap, navigateTo } from '@totara/lib/navigation';
+import { activeOpacity } from '@totara/lib/styles/base';
+import { CL_TEST_IDS } from '@totara/lib/testIds';
+import { deviceScreen } from '@totara/lib/tools';
+import { iconSizes, paddings } from '@totara/theme/constants';
+import React, { useState } from 'react';
+import { FlatList, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+
+import LearningItemCard from '../components/LearningItemCard';
+import NativeAccessRestriction from '../NativeAccessRestriction';
+import { extractTargetId } from '../utils';
+import carouselItemStyles from './carouselItemStyles';
 
 type CurrentLearningCarouselProps = {
   currentLearning?: any;
@@ -32,7 +33,7 @@ type CurrentLearningCarouselProps = {
 };
 
 const CurrentLearningCarousel = ({ currentLearning, onRefresh }: CurrentLearningCarouselProps) => {
-  const [activeSlide, setActiveSlide] = useState(0);
+  const [_, setActiveSlide] = useState(0);
 
   const slideOverlap = 23;
   const slideWidth = deviceScreen.width - slideOverlap * 2;
@@ -48,12 +49,11 @@ const CurrentLearningCarousel = ({ currentLearning, onRefresh }: CurrentLearning
   return (
     <View>
       <ScrollView
-        style={{ height: "100%" }}
-        contentContainerStyle={{ height: "100%" }}
+        style={{ height: '100%' }}
+        contentContainerStyle={{ height: '100%' }}
         showsVerticalScrollIndicator={false}
         testID={CL_TEST_IDS.CAROUSEL_WRAPPER_ID}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
-      >
+        refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}>
         <FlatList
           style={{ flex: 1, paddingStart: slideOverlap }}
           data={currentLearning}

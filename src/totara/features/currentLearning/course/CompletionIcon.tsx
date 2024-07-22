@@ -13,11 +13,12 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
-import { CircleIcon } from "@totara/components";
-import { iconSizes, margins } from "@totara/theme/constants";
-import { getCompletionStatus } from "../utils";
+import { CircleIcon } from '@totara/components';
+import { iconSizes, margins } from '@totara/theme/constants';
+import React from 'react';
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+
+import { getCompletionStatus } from '../utils';
 
 type BuildContentProps = {
   completion?: string;

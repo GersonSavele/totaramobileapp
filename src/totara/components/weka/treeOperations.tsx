@@ -13,33 +13,36 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode } from "react";
-import { View, Text } from "react-native";
-import {
-  Visitor,
+import { textAttributes } from '@totara/theme/constants';
+import type { ReactNode } from 'react';
+import React from 'react';
+import { Text, View } from 'react-native';
+
+import type {
   Node,
-  WekaRoot,
-  WekaParagraph,
-  WekaList,
-  WekaEmoji,
-  WekaText,
-  WekaOrderList,
+  Visitor,
+  WekaAttachment,
   WekaBulletList,
+  WekaEmoji,
   WekaHeading,
   WekaImage,
   WekaLinkMedia,
-  WekaAttachment,
+  WekaList,
+  WekaOrderList,
+  WekaParagraph,
+  WekaRoot,
+  WekaText,
   WekaVideo
-} from "./wekaUtils";
-import { textAttributes } from "@totara/theme/constants";
-const BULLET_POINT_UNICODE = "\u2022";
-import LinkMedia from "./LinkMedia";
-import ImageViewerWrapper from "./ImageViewerWrapper";
-import EmbeddedMedia from "./EmbeddedMedia";
-import Attachment from "./Attachment";
-import TextContentWrapper from "./TextContentWrapper";
-import styles from "./wekaStyle";
-import { margins } from "@totara/theme/constants";
+} from './wekaUtils';
+const BULLET_POINT_UNICODE = '\u2022';
+import { margins } from '@totara/theme/constants';
+
+import Attachment from './Attachment';
+import EmbeddedMedia from './EmbeddedMedia';
+import ImageViewerWrapper from './ImageViewerWrapper';
+import LinkMedia from './LinkMedia';
+import TextContentWrapper from './TextContentWrapper';
+import styles from './wekaStyle';
 
 const { marginS } = margins;
 
@@ -48,19 +51,19 @@ const { marginS } = margins;
 */
 class ToShortSummary implements Visitor<string> {
   visitWekaVideo(): string {
-    return "";
+    return '';
   }
   visitWekaRuler(): string {
-    return "";
+    return '';
   }
   visitWekaAttachment(): string {
-    return "";
+    return '';
   }
   visitWekaLinkMedia(): string {
-    return "";
+    return '';
   }
   visitWekaImage(): string {
-    return "";
+    return '';
   }
   visitWekaBulletList(element: WekaBulletList): string {
     return element?.content
@@ -68,17 +71,17 @@ class ToShortSummary implements Visitor<string> {
         return `${BULLET_POINT_UNICODE} ${item?.accept(this)}`;
       })
       .filter(String)
-      .join("\n")
+      .join('\n')
       .toString()
       .trim();
   }
   visitWekaOrderList(element: WekaOrderList): string {
     return element?.content
       ?.map((item, index) => {
-        return (index + 1).toString() + ". " + item?.accept(this);
+        return (index + 1).toString() + '. ' + item?.accept(this);
       })
       .filter(String)
-      .join("\n")
+      .join('\n')
       .toString()
       .trim();
   }
@@ -100,7 +103,7 @@ class ToShortSummary implements Visitor<string> {
         return item?.accept(this);
       })
       .filter(String)
-      .join("")
+      .join('')
       .toString()
       .trim();
   }
@@ -111,7 +114,7 @@ class ToShortSummary implements Visitor<string> {
     let stringArray = content?.map(item => {
       return item?.accept(this);
     });
-    return stringArray.filter(String).join("\n").toString().trim();
+    return stringArray.filter(String).join('\n').toString().trim();
   }
 }
 
@@ -202,4 +205,4 @@ class ToFullSummary implements Visitor<Object> {
   }
 }
 
-export { ToShortSummary, ToFullSummary };
+export { ToFullSummary, ToShortSummary };

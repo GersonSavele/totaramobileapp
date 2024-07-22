@@ -13,7 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useNavigation } from '@react-navigation/native';
 import { Images } from '@resources/images';
 import { Button } from '@totara/components';
 import { useSession } from '@totara/core';
@@ -32,7 +31,6 @@ type NoCurrentLearningProps = {
 
 const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
   const { host, core } = useSession();
-  const navigation = useNavigation();
   const onPressFindLearning = () => {
     if (isEnableFindLearning(core)) {
       // TODO Fix
@@ -60,11 +58,11 @@ const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
 
 const styles = StyleSheet.create({
   containerStyle: {
-    alignItems: "center"
+    alignItems: 'center'
   },
   noCurrentLearningDescription: {
     ...TotaraTheme.textHeadline,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     paddingTop: paddings.padding3XL
   },
   goToBrowserAction: {

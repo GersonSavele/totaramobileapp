@@ -27,7 +27,6 @@ import React, { useLayoutEffect } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { learningItemEnum } from '../constants';
 import { enrolmentInfoQuery } from '../enrolment/api';
 import { ImageElement } from './components';
 
@@ -117,6 +116,8 @@ export const OverviewModal = () => {
 
   const goTo = () => {
     if (isEnrolled || privileged) {
+      // TODO: Remove ESLint ignore when the API change is sorted
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
       // TODO Fix API Change!
       // navigation.navigate(routeId, { targetId: itemid, courseGroupType: learningItemEnum.Course });

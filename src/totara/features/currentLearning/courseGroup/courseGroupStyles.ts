@@ -13,11 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { StyleSheet } from "react-native";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { margins, paddings, borderRadius, fontWeights, row, shadow } from "@totara/theme/constants";
-import { deviceScreen } from "@totara/lib/tools";
-import { spacedFlexRow } from "@totara/lib/styles/base";
+import { spacedFlexRow } from '@totara/lib/styles/base';
+import { deviceScreen } from '@totara/lib/tools';
+import { borderRadius, fontWeights, margins, paddings, row, shadow } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import { StyleSheet } from 'react-native';
 
 const details = StyleSheet.create({
   container: {
@@ -36,19 +36,19 @@ const courses = StyleSheet.create({
   },
   bottomView: {
     marginHorizontal: margins.marginXL,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: margins.marginXL
   },
   button: {
     borderRadius: borderRadius.borderRadiusXS,
     borderWidth: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: TotaraTheme.colorAccent,
     borderColor: TotaraTheme.textColorDark
   },
   buttonTextTitle: {
     ...TotaraTheme.textRegular,
-    textAlign: "center",
+    textAlign: 'center',
     fontWeight: fontWeights.fontWeightBold,
     paddingHorizontal: paddings.padding3XL,
     paddingVertical: paddings.paddingXL
@@ -58,13 +58,13 @@ const courses = StyleSheet.create({
     marginHorizontal: margins.marginL,
     backgroundColor: TotaraTheme.colorNeutral2,
     marginTop: margins.marginXL,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   completionInfoTitle: {
     ...TotaraTheme.textRegular,
-    textAlign: "center",
+    textAlign: 'center',
     paddingVertical: paddings.paddingXL,
     marginStart: margins.marginM
   },
@@ -78,14 +78,14 @@ const courses = StyleSheet.create({
   },
   nextSet: {
     marginVertical: margins.marginL,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    justifyContent: "space-between"
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    justifyContent: 'space-between'
   },
   nextSetText: {
     ...TotaraTheme.textXSmall,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
     fontWeight: fontWeights.fontWeightBold
   }
 });
@@ -120,7 +120,7 @@ const courseSet = StyleSheet.create({
   },
   itemContainer: {
     borderRadius: borderRadius.borderRadiusM,
-    width: "100%"
+    width: '100%'
   },
   courseTitle: {
     ...TotaraTheme.textRegular,
@@ -133,10 +133,10 @@ const courseSet = StyleSheet.create({
     aspectRatio: 8 / 3 //To Do: this aspectRatio will be changed later
   },
   absoluteItem: {
-    position: "absolute",
+    position: 'absolute',
     bottom: margins.marginL,
     left: margins.marginL,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   headerBar: {
     flex: 1,
@@ -144,9 +144,9 @@ const courseSet = StyleSheet.create({
     borderTopLeftRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral2,
     height: 54,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: paddings.paddingXL
   },
   headerTitle: {
@@ -156,8 +156,8 @@ const courseSet = StyleSheet.create({
   },
   viewAllContent: {
     height: 35,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   viewAllTitle: {
     ...TotaraTheme.textXSmall,
@@ -166,19 +166,19 @@ const courseSet = StyleSheet.create({
     marginEnd: margins.marginXS
   },
   viewAllTouchableOpacity: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
 const rowItem = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: paddings.paddingXL,
     borderRadius: borderRadius.borderRadiusM,
-    alignItems: "center",
-    justifyContent: "space-between"
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   imageWrapper: {
     backgroundColor: TotaraTheme.colorNeutral2,
@@ -213,4 +213,4 @@ const horizontalList = StyleSheet.create({
   }
 });
 
-export { details, courses, courseSet, rowItem, horizontalList };
+export { courses, courseSet, details, horizontalList, rowItem };

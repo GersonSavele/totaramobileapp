@@ -13,15 +13,15 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useEffect, useState } from "react";
-import { useMutation, useApolloClient } from "@apollo/client";
-import { useNetInfo } from "@react-native-community/netinfo";
-import { isEmpty, get, map } from "lodash";
+import { useApolloClient, useMutation } from '@apollo/client';
+import { useNetInfo } from '@react-native-community/netinfo';
+import { Log, showMessage } from '@totara/lib';
+import { translate } from '@totara/locale';
+import { get, isEmpty, map } from 'lodash';
+import { useEffect, useState } from 'react';
 
-import { showMessage, Log } from "@totara/lib";
-import { translate } from "@totara/locale";
-import { getOfflineScormCommits, setCleanScormCommit, retrieveAllData, saveInTheCache } from "./storageUtils";
-import { mutationAttempts } from "./api";
+import { mutationAttempts } from './api';
+import { getOfflineScormCommits, retrieveAllData, saveInTheCache, setCleanScormCommit } from './storageUtils';
 
 type SyncData = {
   scormId: string;
@@ -64,7 +64,7 @@ const syncScormAttempt = ({ syncData, unSyncData, client, saveAttempt }: SyncSco
         });
         return saveInTheCache({ client, scormBundles: newData });
       } else {
-        throw new Error("Data sync failed.");
+        throw new Error('Data sync failed.');
       }
     })
     .then(() => {
@@ -92,7 +92,7 @@ const syncServerWithScormAttempt = ({ scormId, tracks, saveAttempt }: PropsSyncS
     }
   }).then(responce => {
     if (!isEmpty(responce)) {
-      const attemptsAccepted = get(responce, "data.attempts.attempts_accepted", undefined);
+      const attemptsAccepted = get(responce, 'data.attempts.attempts_accepted', undefined);
       if (!isEmpty(attemptsAccepted)) {
         return !attemptsAccepted.includes(false);
       }
@@ -112,7 +112,7 @@ const netInfoEffect =
     onSyncScormAttempt = syncScormAttempt
   }: NetInfoEffectProps) =>
   () => {
-    if (type && type !== "unknown" && isInternetReachable) {
+    if (type && type !== 'unknown' && isInternetReachable) {
       if (!isEmpty(unSyncData)) {
         // Send the attempt through the API and remove the attempt from the cache
         onSyncScormAttempt({
@@ -126,7 +126,7 @@ const netInfoEffect =
             setUnsyncData(updatedUnsyncData);
           })
           .catch(e => {
-            showMessage({ text: `${translate("scorm.data_sync_error")}` });
+            showMessage({ text: `${translate('scorm.data_sync_error')}` });
             Log.warn(e);
           });
       } else {

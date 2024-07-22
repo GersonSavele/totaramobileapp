@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const queryCore = gql`
   query totara_mobile_me {

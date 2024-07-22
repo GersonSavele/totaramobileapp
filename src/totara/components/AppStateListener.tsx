@@ -13,9 +13,11 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { ReactNode } from "react";
-import { AppState, AppStateStatus } from "react-native";
-import { Log } from "@totara/lib";
+import { Log } from '@totara/lib';
+import type { ReactNode } from 'react';
+import React from 'react';
+import type { AppStateStatus } from 'react-native';
+import { AppState } from 'react-native';
 
 type Props = {
   onActive?: () => void;
@@ -26,9 +28,9 @@ type Props = {
 
 class AppStateListener extends React.Component<Props> {
   static defaultProps = {
-    onActive: () => Log.debug("App is in Active/Foreground Mode."),
-    onBackground: () => Log.debug("App is in Background Mode."),
-    onInactive: () => Log.debug("App is in Inactive mode.")
+    onActive: () => Log.debug('App is in Active/Foreground Mode.'),
+    onBackground: () => Log.debug('App is in Background Mode.'),
+    onInactive: () => Log.debug('App is in Inactive mode.')
   };
 
   constructor(props: Props) {
@@ -39,12 +41,12 @@ class AppStateListener extends React.Component<Props> {
   };
 
   componentDidMount() {
-    AppState.addEventListener("change", this.handleAppStateChange);
+    AppState.addEventListener('change', this.handleAppStateChange);
   }
 
   componentWillUnmount() {
     //@ts-ignore
-    AppState.removeEventListener("change", this.handleAppStateChange);
+    AppState.removeEventListener('change', this.handleAppStateChange);
   }
 
   /**
@@ -56,15 +58,15 @@ class AppStateListener extends React.Component<Props> {
   handleAppStateChange = (nextAppState: AppStateStatus) => {
     this.setState({ appState: nextAppState });
 
-    if (nextAppState === "active") {
+    if (nextAppState === 'active') {
       // Do something here on app active foreground mode.
       this.props.onActive!();
     }
-    if (nextAppState === "background") {
+    if (nextAppState === 'background') {
       // Do something here on app background.
       this.props.onBackground!();
     }
-    if (nextAppState === "inactive") {
+    if (nextAppState === 'inactive') {
       // Do something here on app inactive mode.
       this.props.onInactive!();
     }

@@ -13,10 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React, { useContext } from "react";
-import { Text, TextStyle, TouchableOpacity } from "react-native";
-
-import { ThemeContext } from "@totara/theme";
+import { ThemeContext } from '@totara/theme';
+import React, { useContext } from 'react';
+import type { TextStyle } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 type Props = {
   children?: Element;

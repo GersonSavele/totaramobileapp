@@ -13,8 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { notificationsQuery } from "@totara/features/notifications/api/index";
-import { GraphQLError } from "graphql";
+import { notificationsQuery } from '@totara/features/notifications/api/index';
+import { GraphQLError } from 'graphql';
 
 const notificationsMock = [
   {
@@ -25,26 +25,26 @@ const notificationsMock = [
       data: {
         message_popup_messages: [
           {
-            id: "1",
-            subject: "Notification item",
-            fullmessage: "Full message example",
-            fullmessageformat: "PLAIN",
+            id: '1',
+            subject: 'Notification item',
+            fullmessage: 'Full message example',
+            fullmessageformat: 'PLAIN',
             isread: true,
             timecreated: 111,
-            contextUrl: "http://dummy.url",
-            fullmessageHTML: "dummy_data",
-            __typename: "message_popup_messages"
+            contextUrl: 'http://dummy.url',
+            fullmessageHTML: 'dummy_data',
+            __typename: 'message_popup_messages'
           },
           {
-            id: "2",
-            subject: "Notification item 2",
-            fullmessage: "Full message example 2",
-            fullmessageformat: "PLAIN",
+            id: '2',
+            subject: 'Notification item 2',
+            fullmessage: 'Full message example 2',
+            fullmessageformat: 'PLAIN',
             isread: true,
             timecreated: 222,
             contextUrl: null,
             fullmessageHTML: null,
-            __typename: "message_popup_messages"
+            __typename: 'message_popup_messages'
           }
         ]
       }
@@ -61,26 +61,26 @@ const notificationsMockUnRead = [
       data: {
         message_popup_messages: [
           {
-            id: "1",
-            subject: "Notification item",
-            fullmessage: "Full message example",
-            fullmessageformat: "PLAIN",
+            id: '1',
+            subject: 'Notification item',
+            fullmessage: 'Full message example',
+            fullmessageformat: 'PLAIN',
             isread: false,
             timecreated: 111,
-            contextUrl: "http://dummy.url",
-            fullmessageHTML: "dummy_data",
-            __typename: "message_popup_messages"
+            contextUrl: 'http://dummy.url',
+            fullmessageHTML: 'dummy_data',
+            __typename: 'message_popup_messages'
           },
           {
-            id: "2",
-            subject: "Notification item 2",
-            fullmessage: "Full message example 2",
-            fullmessageformat: "PLAIN",
+            id: '2',
+            subject: 'Notification item 2',
+            fullmessage: 'Full message example 2',
+            fullmessageformat: 'PLAIN',
             isread: false,
             timecreated: 222,
             contextUrl: null,
             fullmessageHTML: null,
-            __typename: "message_popup_messages"
+            __typename: 'message_popup_messages'
           }
         ]
       }
@@ -107,7 +107,7 @@ const notificationsMockError = [
       query: notificationsQuery
     },
     result: {
-      errors: [new GraphQLError("Error!")]
+      errors: [new GraphQLError('Error!')]
     }
   }
 ];

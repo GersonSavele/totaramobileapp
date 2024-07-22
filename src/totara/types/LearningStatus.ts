@@ -14,9 +14,9 @@
  */
 
 export enum Status {
-  hidden = "hidden", // TODO should be lock instaed
-  active = "active",
-  done = "done"
+  hidden = 'hidden', // TODO should be lock instaed
+  active = 'active',
+  done = 'done'
 }
 
 export interface LearningStatus {

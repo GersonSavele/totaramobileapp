@@ -12,14 +12,15 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-import React from "react";
-import { Text } from "react-native";
-import { fontWeights, fontStyles, marksTypes } from "@totara/theme/constants";
-import styles from "./wekaStyle";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { navigateWebView } from "./wekaUtils";
-import { useSession } from "@totara/core";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
+import { useSession } from '@totara/core';
+import { fontStyles, fontWeights, marksTypes } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { Text } from 'react-native';
+
+import styles from './wekaStyle';
+import { navigateWebView } from './wekaUtils';
 
 type TextProps = {
   attrs?: any;
@@ -33,22 +34,22 @@ const TextContentWrapper = ({ attrs = {}, marks = {}, textColor, text }: TextPro
     attrs.level === 1
       ? { ...TotaraTheme.textHeadline, color: textColor }
       : attrs.level == 2
-      ? { ...TotaraTheme.textMedium, color: textColor }
-      : { ...TotaraTheme.textRegular, color: textColor };
+        ? { ...TotaraTheme.textMedium, color: textColor }
+        : { ...TotaraTheme.textRegular, color: textColor };
   marks = Array.from(marks);
   const fontItalic =
     marks &&
-    marks.map((marks) => {
+    marks.map(marks => {
       return marks.type === marksTypes.italic && { fontStyle: fontStyles.fontStyleItalic };
     });
   const fontBold =
     marks &&
-    marks.map((marks) => {
+    marks.map(marks => {
       return marks.type === marksTypes.bold && { fontWeight: fontWeights.fontWeightBold };
     });
   const link =
     marks &&
-    marks.map((marks) => {
+    marks.map(marks => {
       return marks.type === marksTypes.link && { marks };
     });
 

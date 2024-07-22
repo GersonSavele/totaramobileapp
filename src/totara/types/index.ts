@@ -13,38 +13,38 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { LearningItem, Section } from "./LearningItem";
-import { Activity, ActivityType, ScormActivity } from "./Activity";
-import { Course, CourseContentDetails } from "./Course";
-import { Criteria } from "./Criteria";
-import { Status, LearningStatus } from "./LearningStatus";
-import { Me } from "./Core";
-import { SiteInfo, AppState } from "./Auth";
-import { Theme } from "./Theme";
-import { UserProfile } from "./UserProfile";
-import { NotificationMessage } from "./NotificationMessage";
-import { Resource } from "./Resource";
-import { CourseGroup } from "./CourseGroup";
-import { Session } from "./Session";
+import { Activity, ActivityType, ScormActivity } from './Activity';
+import { AppState, SiteInfo } from './Auth';
+import { Me } from './Core';
+import { Course, CourseContentDetails } from './Course';
+import { CourseGroup } from './CourseGroup';
+import { Criteria } from './Criteria';
+import { LearningItem, Section } from './LearningItem';
+import { LearningStatus, Status } from './LearningStatus';
+import { NotificationMessage } from './NotificationMessage';
+import { Resource } from './Resource';
+import { Session } from './Session';
+import { Theme } from './Theme';
+import { UserProfile } from './UserProfile';
 
 export {
-  LearningItem,
-  ScormActivity,
   Activity,
   ActivityType,
-  Course,
-  Status,
-  LearningStatus,
-  Me,
-  UserProfile,
-  SiteInfo,
   AppState,
-  Theme,
-  Section,
-  Criteria,
-  NotificationMessage,
-  Resource,
+  Course,
   CourseContentDetails,
   CourseGroup,
-  Session
+  Criteria,
+  LearningItem,
+  LearningStatus,
+  Me,
+  NotificationMessage,
+  Resource,
+  ScormActivity,
+  Section,
+  Session,
+  SiteInfo,
+  Status,
+  Theme,
+  UserProfile
 };

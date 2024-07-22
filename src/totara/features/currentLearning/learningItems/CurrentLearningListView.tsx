@@ -13,10 +13,10 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
-import CurrentLearningListViewItem from "@totara/features/currentLearning/learningItems/CurrentLearningListViewItem";
-import listViewStyles from "@totara/theme/listView";
+import CurrentLearningListViewItem from '@totara/features/currentLearning/learningItems/CurrentLearningListViewItem';
+import listViewStyles from '@totara/theme/listView';
+import React from 'react';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 
 type CurrentLearningListViewProps = {
   currentLearning?: any;
@@ -32,7 +32,7 @@ const CurrentLearningListView = ({ currentLearning, onRefresh }: CurrentLearning
     <View style={currentLearningListViewStyles.container}>
       <FlatList
         ItemSeparatorComponent={() => <View style={listViewStyles.itemSeparator} />}
-        testID={"test_currentLearningListView"}
+        testID={'test_currentLearningListView'}
         data={currentLearning}
         renderItem={renderItem}
         refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}

@@ -13,8 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { completionTrack, completionStatus } from "@totara/features/constants";
-import { DescriptionFormat } from "./LearningItem";
+import type { completionStatus, completionTrack } from '@totara/features/constants';
+
+import type { DescriptionFormat } from './LearningItem';
 
 export interface Activity {
   id: number;
@@ -31,7 +32,7 @@ export interface Activity {
 }
 
 export interface ScormActivity extends Activity {
-  modtype: "scorm";
+  modtype: 'scorm';
   currentAttempt: number;
   maxAttempt: number;
   score: number;
@@ -43,19 +44,19 @@ export interface ScormActivity extends Activity {
 }
 
 export interface SeminarActivity extends Activity {
-  modtype: "facetoface";
+  modtype: 'facetoface';
 }
 
 export interface ForumsActivity extends Activity {
-  modtype: "forum";
+  modtype: 'forum';
 }
 
 export interface QuizActivity extends Activity {
-  modtype: "quiz";
+  modtype: 'quiz';
 }
 
 export interface AssignmentActivity extends Activity {
-  modtype: "assign";
+  modtype: 'assign';
 }
 
 export type ActivityType = ScormActivity | SeminarActivity | ForumsActivity | QuizActivity | AssignmentActivity;

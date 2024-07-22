@@ -13,12 +13,11 @@
  * Please contact [licensing@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-
-import Icon from "@totara/components/Icon";
-import { TotaraTheme } from "@totara/theme/Theme";
-import { iconSizes, paddings } from "@totara/theme/constants";
+import Icon from '@totara/components/Icon';
+import { iconSizes, paddings } from '@totara/theme/constants';
+import { TotaraTheme } from '@totara/theme/Theme';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 type MoreInfoProps = {
   onPress(): void;

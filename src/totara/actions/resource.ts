@@ -13,17 +13,17 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { store } from "../store";
-import { ADD_RESOURCE, DELETE_RESOURCE, UPDATE_RESOURCE } from "./constants";
+import { store } from '../store';
+import { ADD_RESOURCE, DELETE_RESOURCE, UPDATE_RESOURCE } from './constants';
 
-const addResource = (payload) => {
+const addResource = payload => {
   store.dispatch({
     type: ADD_RESOURCE,
     payload: payload
   });
 };
 
-const updateResource = (payload) => {
+const updateResource = payload => {
   store.dispatch({
     type: UPDATE_RESOURCE,
     payload: payload
@@ -39,4 +39,4 @@ const deleteResource = (ids: string[]) => {
   });
 };
 
-export { addResource, updateResource, deleteResource };
+export { addResource, deleteResource, updateResource };
