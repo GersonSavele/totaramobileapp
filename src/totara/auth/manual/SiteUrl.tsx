@@ -103,7 +103,11 @@ const SiteUrl = () => {
       <ScrollView contentContainerStyle={styles.mainContent}>
         <View style={styles.siteUrlContainer}>
           <View style={styles.logoContainer}>
-            <Image source={require('@resources/images/totara_logo/totara_logo.png')} style={styles.logo} />
+            <Image
+              testID="totara_logo"
+              source={require('@resources/images/totara_logo/totara_logo.png')}
+              style={styles.logo}
+            />
           </View>
           <View style={styles.formContainer}>
             <View>

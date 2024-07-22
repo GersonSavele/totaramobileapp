@@ -9,6 +9,12 @@
     "prebuild": "APP_ENV=dev npx expo prebuild --clean",
     "test": "npx jest --watchAll",
     "test:ci": "npx jest --ci",
+    "e2e:build": "npx detox build",
+    "e2e:build:ios": "npm run e2e:build -- --configuration ios.sim.release",
+    "e2e:build:android": "npm run e2e:build -- --configuration android.emu.debug",
+    "e2e:run": "npx detox test",
+    "e2e:run:ios": "npm run e2e:run -- --configuration ios.sim.release",
+    "e2e:run:android": "npm run e2e:run -- --configuration android.emu.debug",
     "lint": "npx eslint . --quiet --ext .ts,.tsx",
     "translations": "node scripts/post-install/install-translations.js",
     "lint:types": "npx tsc  --noemit",
@@ -115,16 +121,5 @@
     "typescript-eslint": "^7.16.0",
     "waait": "^1.0.5",
     "yauzl-promise": "^4.0.0"
-  },
-  "detox": {
-    "configurations": {
-      "ios.sim.debug": {
-        "type": "ios.simulator",
-        "device": {
-          "type": "iPhone 15"
-        }
-      }
-    },
-    "test-runner": "jest"
   }
 }

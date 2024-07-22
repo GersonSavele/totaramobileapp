@@ -16,6 +16,7 @@
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
 import "react-native-gesture-handler/jestSetup";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
+import "detox"
 // require("isomorphic-fetch");
 
 global.console = {

@@ -2,13 +2,9 @@
 module.exports = {
   preset: "ts-jest",
   roots: [
-    // "./",
-    // "../src/totara/auth/e2e",
-    // "../src/totara/features/currentLearning/e2e",
-    "../src/totara/features/activities/scorm/e2e",
-    // "../src/totara/features/about/e2e"
+    "../e2e/suites/"
   ],
-  testMatch: ['**/*.spec.ts','**/*.test.js'],
+  testMatch: ['**/*.test.ts'],
   setupFilesAfterEnv: [
     "./init.ts"
   ],
