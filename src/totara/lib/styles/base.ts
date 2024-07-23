@@ -13,9 +13,9 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import type { StyleProp, ViewStyle } from 'react-native';
+import type { ViewStyle } from 'react-native';
 
-const spacedFlexRow: StyleProp<ViewStyle> = {
+const spacedFlexRow: ViewStyle = {
   flexDirection: 'row',
   justifyContent: 'space-between'
 };

@@ -13,9 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// @ts-nocheck
-// ts no check because the imcompatibility in icon types
-
 import { useNetInfo } from '@react-native-community/netinfo';
 import MessageBar from '@totara/components/MessageBar';
 import React from 'react';

@@ -23,13 +23,14 @@ type Props = {
   isShow: boolean;
 };
 
+type AnimationTypes = 'fadeInDown' | 'fadeOutUp';
+
 const FormError = ({ message, isShow }: Props) => {
   const theme = useContext(ThemeContext);
-  const [animationType, setAnimationType] = useState();
+  const [animationType, setAnimationType] = useState<AnimationTypes>('fadeInDown');
 
   useEffect(() => {
     if (animationType !== undefined || isShow) {
-      // @ts-ignore
       setAnimationType(isShow ? 'fadeInDown' : 'fadeOutUp');
     }
   }, [isShow]);

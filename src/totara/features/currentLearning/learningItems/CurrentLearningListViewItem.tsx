@@ -31,7 +31,7 @@ import { extractTargetId, isInvalidDueDate } from '../utils';
 
 type ListViewItemProps = {
   item: any;
-  itemTestID: string;
+  itemTestID?: string;
 };
 
 const CurrentLearningListViewItem = ({ item, itemTestID }: ListViewItemProps) => {

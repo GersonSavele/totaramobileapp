@@ -12,13 +12,14 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-// @ts-nocheck
 import { ImageWrapper } from '@totara/components';
 import DefaultImage from '@totara/features/currentLearning/components/DefaultImage';
 import { borderRadius } from '@totara/theme/constants';
 import React from 'react';
 import type { ImageStyle, ViewStyle } from 'react-native';
 import { StyleSheet, View } from 'react-native';
+
+import type { learningItemEnum } from '../../constants';
 
 interface ImageElementProps {
   imageStyle?: ImageStyle;
@@ -31,11 +32,11 @@ interface ImageElementProps {
 const ImageElement = ({ imageStyle, image, itemType }: ImageElementProps) => {
   const imageStyleSheet = StyleSheet.flatten([styles.itemImage, imageStyle]);
   return (
-    <View style={[imageStyleSheet]}>
-      {image && image.length > 0 ? (
+    <View style={imageStyleSheet}>
+      {image?.length ? (
         <ImageWrapper url={image} style={[styles.imageWrap]} />
       ) : (
-        <DefaultImage itemType={itemType} style={[styles.imageWrap]} />
+        <DefaultImage itemType={itemType as learningItemEnum} style={styles.imageWrap} />
       )}
     </View>
   );

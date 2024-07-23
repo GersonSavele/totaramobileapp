@@ -21,10 +21,8 @@ import { StyleSheet } from 'react-native';
 const { colorAccent, colorNeutral7, colorSuccess, colorNeutral6, colorAlert } = TotaraTheme;
 
 const courseDetailsStyle = StyleSheet.create({
-  //@ts-ignore
   expandContentWrap: {
     margin: margins.marginL,
-    // @ts-ignore
     ...spacedFlexRow
   },
   expandTextWrap: {

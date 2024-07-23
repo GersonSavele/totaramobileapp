@@ -24,6 +24,7 @@ const formatPageData = ({
 }) => {
   if (previousPage?.items) {
     if (pageData) {
+      // TODO: Investigate this type issue further
       // @ts-ignore
       return { ...pageData, items: [...previousPage.items, ...pageData.items] } as FindLearningPage;
     }

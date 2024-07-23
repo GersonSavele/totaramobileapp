@@ -12,14 +12,13 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-// @ts-nocheck
-
 import { Images } from '@resources/images';
 import { useSession } from '@totara/core';
 import { translate } from '@totara/locale';
 import { margins, paddings } from '@totara/theme/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
 import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
 import { Image, StyleSheet, Text } from 'react-native';
 import { Clipboard } from 'react-native';
 import { View } from 'react-native-animatable';
@@ -49,7 +48,8 @@ const About = () => {
   return (
     <View style={styles.container} testID={'aboutContainer'}>
       <View style={styles.logoContainer} animation={'slideInUp'}>
-        <Image source={Images.totaraLogo} style={styles.logo} />
+        {/* TODO: Set up better type declarations for image assets */}
+        <Image source={Images.totaraLogo as unknown as ImageSourcePropType} style={styles.logo} />
       </View>
       <View style={styles.versionContainer}>
         <Text style={styles.versionBuild}>{translate('about.version', { version: getVersion() })}</Text>

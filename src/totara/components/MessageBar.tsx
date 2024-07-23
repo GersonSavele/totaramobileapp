@@ -29,16 +29,15 @@ type MessageBarProps = {
   testID?: string;
 };
 
-// @ts-ignore
 const MessageBar = ({ text, icon = 'circle-info', mode = 'info', style, testID }: MessageBarProps) => {
-  let backgroundStyle = { backgroundColor: TotaraTheme.colorInfo };
-  let textStyle: any = [TotaraTheme.textSmall, styles.content, { color: TotaraTheme.colorNeutral1 }];
-  if (style) {
-    textStyle.push(style);
-  }
-  if (mode === 'alert') {
-    backgroundStyle.backgroundColor = TotaraTheme.colorAlert;
-  }
+  const backgroundStyle = { backgroundColor: mode === 'alert' ? TotaraTheme.colorAlert : TotaraTheme.colorInfo };
+
+  const textStyle = {
+    ...TotaraTheme.textSmall,
+    ...styles.content,
+    color: TotaraTheme.colorNeutral1,
+    ...(style ?? {})
+  } as TextStyle;
 
   return (
     <View style={[styles.container, backgroundStyle]} testID={testID}>

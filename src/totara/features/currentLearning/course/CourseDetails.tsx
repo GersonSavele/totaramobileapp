@@ -34,6 +34,7 @@ import Activities from './Activities';
 import { coreCourse } from './api';
 import courseDetailsStyle from './courseDetailsStyle';
 
+// TODO: Set up params for each route in the App and access the appropriate ones here
 const CourseDetails = ({ navigation, route }: any) => {
   const courseId = route.params.targetId;
   const passwordRequired = route.params.passwordRequired;

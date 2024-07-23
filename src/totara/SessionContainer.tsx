@@ -71,9 +71,8 @@ const initialURLHandler = ({ fetchDataWithFetch, url, siteInfo, initSession, dis
  * @returns either the log in flow of the main container
  */
 const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<NormalizedCacheObject> }) => {
-  // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
-  const initialIsLoading: boolean = !initialClient;
+  const initialIsLoading = !initialClient;
 
   const { initSession, host, apiKey, siteInfo, core, setCore } = useSession();
   const dispatch = useDispatch();
@@ -90,15 +89,14 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
     if (core) changeLocale(core?.user?.lang || DEFAULT_LANGUAGE);
   }, []);
 
-  // @ts-ignore
   useEffect(() => {
-    const unsubscribe = event.addListener(EVENT_LISTENER, param => {
+    const subscription = event.addListener(EVENT_LISTENER, param => {
       if (param.event === Events.Logout) {
         onLogout(apolloClient, dispatch);
       }
     });
 
-    return () => unsubscribe;
+    return () => subscription.remove();
   }, [apolloClient]);
 
   //please note this use effect utilises apollo client, which touches the storage and
@@ -113,7 +111,6 @@ const SessionContainer = ({ initialClient }: { initialClient: ApolloClient<Norma
       });
     } else if (!apiKey && apolloClient) {
       persistor?.purge();
-      // @ts-ignore
       setApolloClient(undefined);
     } else if (apiKey && apolloClient && isLoading) {
       setIsLoading(false);

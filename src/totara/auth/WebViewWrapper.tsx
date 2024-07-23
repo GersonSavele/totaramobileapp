@@ -25,7 +25,7 @@ import { AuthenticatedWebView } from './AuthenticatedWebView';
 
 type WebViewWrapperProps = {
   uri: string;
-  backAction?: () => void;
+  backAction?: () => boolean;
   onShouldStartLoadWithRequest?: (navState: WebViewNavigation) => boolean;
   showAllToolbarItems?: boolean;
 };
@@ -46,7 +46,6 @@ const WebViewWrapper = ({
 
   useEffect(() => {
     if (uri && backAction) {
-      // @ts-ignore
       const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
       return () => backHandler.remove();
     }

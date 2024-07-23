@@ -13,7 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// FIX: searchbar typescript bug
+// TODO: Sort out App Route Param structure before trying to fix navigation TS issues
 // @ts-nocheck
 
 import { useLazyQuery } from '@apollo/client';

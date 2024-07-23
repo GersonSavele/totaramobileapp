@@ -23,10 +23,8 @@ import { FlatList, View } from 'react-native';
 
 import CriteriaSheet from '../components/CriteriaSheet';
 
-const LearningItems = ({ item, navigation }: any) => {
-  // Note: This navigation is only injected for testing purposes.
-  // @ts-ignore
-  return <CurrentLearningListViewItem item={item} navigation={navigation} />;
+const LearningItems = ({ item }: any) => {
+  return <CurrentLearningListViewItem item={item} />;
 };
 
 type CourseListProps = {

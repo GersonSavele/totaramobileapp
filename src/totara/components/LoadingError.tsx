@@ -32,6 +32,7 @@ type LoadingErrorProps = {
 };
 
 const getErrorFeedback = (error?: ApolloError) => {
+  // TODO: Deeper exploration into what the actual shape of the error is so we can type it accordingly
   // @ts-ignore next line
   if (error && error.networkError && (!error.networkError.statusCode || error.networkError.statusCode === 408)) {
     return {

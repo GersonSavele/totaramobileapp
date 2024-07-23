@@ -98,9 +98,7 @@ const cardStyle = {
 };
 
 const courseSet = StyleSheet.create({
-  //@ts-ignore
   courseSetHeader: {
-    // @ts-ignore
     ...spacedFlexRow,
     flex: 1,
     marginHorizontal: margins.marginL

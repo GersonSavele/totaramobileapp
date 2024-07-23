@@ -355,8 +355,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   host
                 })
                   .then(resourceData => {
-                    // @ts-ignore
-                    const objResourceData = JSON.parse(resourceData);
+                    const objResourceData = JSON.parse(resourceData as string);
                     const resource = get(objResourceData, 'data.resource');
                     if (resource) {
                       return updateStateViewResource({

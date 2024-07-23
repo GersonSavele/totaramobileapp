@@ -13,6 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+// TODO: Sort out types on these nodes when possible
+// @ts-nocheck
 import { NAVIGATION } from '@totara/lib/navigation';
 
 import { MAX_LIST_ITEM_LEVELS, WekaEditorType } from './constants';

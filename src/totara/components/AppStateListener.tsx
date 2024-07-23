@@ -16,7 +16,7 @@
 import { Log } from '@totara/lib';
 import type { ReactNode } from 'react';
 import React from 'react';
-import type { AppStateStatus } from 'react-native';
+import type { AppStateStatus, NativeEventSubscription } from 'react-native';
 import { AppState } from 'react-native';
 
 type Props = {
@@ -33,6 +33,8 @@ class AppStateListener extends React.Component<Props> {
     onInactive: () => Log.debug('App is in Inactive mode.')
   };
 
+  subscription: NativeEventSubscription | undefined;
+
   constructor(props: Props) {
     super(props);
   }
@@ -41,12 +43,11 @@ class AppStateListener extends React.Component<Props> {
   };
 
   componentDidMount() {
-    AppState.addEventListener('change', this.handleAppStateChange);
+    this.subscription = AppState.addEventListener('change', this.handleAppStateChange);
   }
 
   componentWillUnmount() {
-    //@ts-ignore
-    AppState.removeEventListener('change', this.handleAppStateChange);
+    this.subscription.remove();
   }
 
   /**

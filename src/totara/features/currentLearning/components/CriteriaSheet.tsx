@@ -82,6 +82,7 @@ type ContentProps = {
   criteriaList?: [Criteria] | [string] | [];
 };
 
+// TODO: Deeper exploration into sorting out the types on this
 const BottomSheetContent = ({ criteriaList = [] }: ContentProps) => {
   if (criteriaList[0] && criteriaList[0]['__typename'] !== undefined) {
     const groupedCriteriaList = groupBy(criteriaList, 'type');

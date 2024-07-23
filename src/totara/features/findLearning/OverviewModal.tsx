@@ -27,6 +27,7 @@ import React, { useLayoutEffect } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import type { DescriptionFormat } from '../../types/LearningItem';
 import { enrolmentInfoQuery } from '../enrolment/api';
 import { ImageElement } from './components';
 
@@ -91,6 +92,7 @@ type OverviewModalParamList = {
     title: string;
     mobileImage: string;
     summary: string;
+    summaryFormat: DescriptionFormat
   };
 };
 
@@ -99,7 +101,6 @@ export const OverviewModal = () => {
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<OverviewModalParamList, 'OverviewModal'>>();
 
-  // @ts-ignore
   const { itemid, title, mobileImage: imageSource, summary, summaryFormat } = params;
 
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {

@@ -56,7 +56,8 @@ const ImageViewerWrapper = ({ fileName, url }: ImageViewProps) => {
         <ModalView onRequestClose={onRequestClose}>
           <ImageWrapper
             url={url}
-            style={{ height: '80%', resizeMode: 'contain' }}
+            style={{ height: '80%' }}
+            resizeMode="contain"
             accessibilityLabel={translate('course.activity.accessibility_image_zoom')}
           />
         </ModalView>

@@ -31,7 +31,7 @@ const PDF_TYPE = 'application/pdf';
 type WebviewActivityParams = {
   activity: Activity;
   uri: string;
-  backAction: () => void;
+  backAction: () => boolean;
   fileurl?: string;
   mimetype?: string;
   apiKey?: string;
@@ -44,7 +44,6 @@ type WebviewActivityProps = {
 
 const WebviewActivity = ({ route }: WebviewActivityProps) => {
   const { uri, backAction, activity, fileurl, mimetype, apiKey } = route.params as WebviewActivityParams;
-  // const { uri, backAction, activity, fileurl, mimetype, apiKey } = navigation.state.params as WebviewActivityParams;
   useEffect(() => {
     Orientation.unlockAllOrientations();
     return () => Orientation.lockToPortrait();

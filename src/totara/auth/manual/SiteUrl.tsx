@@ -13,6 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+// TODO: Resmove this TS no-check when routing is cleared up
+// @ts-nocheck
 import { useNavigation } from '@react-navigation/native';
 import { Images } from '@resources/images';
 import { Button, InfoModal, TextInput } from '@totara/components';

@@ -43,21 +43,17 @@ const wekaStyle = StyleSheet.create({
     fontWeight: fontWeights.fontWeightBold,
     marginTop: margins.marginXL,
     marginBottom: margins.marginM,
-    // @ts-ignore
-    color: TotaraTheme.colorFont
   },
   linkMediaContainer: {
     maxWidth: deviceScreen.width,
     borderRadius: borderRadius.borderRadiusM,
     backgroundColor: TotaraTheme.colorNeutral5,
     aspectRatio: 16 / 9,
-    overflow: 'hidden' //Fixed: MOB-920, https://stackoverflow.com/questions/54131875/screen-blinks-once-when-rendering-a-webview-on-android/54719378#54719378
+    overflow: 'hidden'
   },
   linkMediaDescription: {
     ...TotaraTheme.textRegular,
-    marginTop: marginM,
-    // @ts-ignore
-    color: TotaraTheme.colorFont
+    marginTop: marginM
   },
   listContainer: {
     flexDirection: 'row',

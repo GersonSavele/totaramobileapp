@@ -12,16 +12,15 @@
  * LTD, you may not access, use, modify, or distribute this software.
  * Please contact [sales@totaralearning.com] for more information.
  */
-// @ts-nocheck
 import { useSession } from '@totara/core';
 import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
 import React from 'react';
-import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import type { FastImageProps } from 'react-native-fast-image';
 import FastImage from 'react-native-fast-image';
 
 type ImageWrapperType = {
   url: string;
-  style?: ViewStyle | TextStyle | ImageStyle;
+  style?: FastImageProps['style'];
   accessibilityLabel?: string;
   resizeMode?: 'cover' | 'contain' | 'stretch' | 'center' | undefined;
 };
