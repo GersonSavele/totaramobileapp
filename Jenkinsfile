@@ -105,7 +105,7 @@ pipeline {
                     dir('totara-mobile-app') {
                         withCredentials([string(credentialsId: 'EAS_ACCESS_TOKEN', variable: 'EXPO_TOKEN')]) {
                             // TODO: Uncomment when we're happy to run builds on each PR
-                            sh "EAS_BUILD=1 EAS_NO_VCS=1 npm run eas:build:${APP_ENV}"
+                            // sh "EAS_BUILD=1 EAS_NO_VCS=1 npm run eas:build:${APP_ENV}"
                         }
                     }
                 }
