@@ -1,6 +1,5 @@
 export class App {
   static async launch() {
-    // await device.installApp();
-    await device.launchApp();
+    await device.launchApp({ newInstance: true, permissions: { notifications: 'YES' } });
   }
 }

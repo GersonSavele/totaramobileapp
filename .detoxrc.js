@@ -12,8 +12,8 @@ module.exports = {
   apps: {
     'ios.release': {
       type: 'ios.app',
-      binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/TotaraMobileApp.app',
-      build: 'xcodebuild -workspace ios/TotaraMobileApp.xcworkspace -scheme TotaraMobileApp -configuration Release -sdk iphonesimulator -derivedDataPath ios/build'
+      binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/Totara.app',
+      build: 'xcodebuild -workspace ios/Totara.xcworkspace -scheme Totara -configuration Release -sdk iphonesimulator -derivedDataPath ios/build'
     },
     'android.debug': {
       type: 'android.apk',

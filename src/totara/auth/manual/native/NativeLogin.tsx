@@ -69,6 +69,7 @@ const NativeLogin = () => {
         <FormError
           message={translate('native_login.error_unauthorized')}
           isShow={nativeLoginState.errorStatusUnauthorized}
+          testID={TEST_IDS.NATIVE_LOGIN_ERROR}
         />
       </View>
       <ScrollView style={styles.content}>
@@ -76,6 +77,7 @@ const NativeLogin = () => {
           source={theme.urlLogo ? { uri: theme.urlLogo } : require('@resources/images/totara_logo/totara_logo.png')}
           style={styles.totaraLogo}
           resizeMode={'contain'}
+          testID={TEST_IDS.NATIVE_LOGIN_HEADER}
         />
         <View style={styles.infoContainer}>
           <Text style={styles.loginTitle}>{translate('native_login.header_title')}</Text>
@@ -88,6 +90,7 @@ const NativeLogin = () => {
             value={nativeLoginState.inputUsername}
             onFocus={onFocusInput}
             testID={TEST_IDS.USER_INPUT}
+            errorTestID={TEST_IDS.USER_INPUT_ERROR}
             status={nativeLoginState.inputUsernameStatus}
             error={translate('native_login.validation.enter_valid_username')}
           />
@@ -98,6 +101,7 @@ const NativeLogin = () => {
             value={nativeLoginState.inputPassword}
             onFocus={onFocusInput}
             testID={TEST_IDS.USER_PW}
+            errorTestID={TEST_IDS.USER_PW_ERROR}
             status={nativeLoginState.inputPasswordStatus}
             error={translate('native_login.validation.enter_valid_password')}
           />

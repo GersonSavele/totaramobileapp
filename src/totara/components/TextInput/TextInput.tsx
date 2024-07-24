@@ -8,7 +8,7 @@ import { Message } from './components/Message';
 import { getTextInputStyles } from './styles';
 import type { FocusEvent, TextInputProps } from './types';
 
-export const TextInput = ({ label, style, status, error, ...props }: TextInputProps) => {
+export const TextInput = ({ label, style, status, error, errorTestID, ...props }: TextInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const theme = useContext(ThemeContext);
   const isErrored = status === 'error';
@@ -38,7 +38,9 @@ export const TextInput = ({ label, style, status, error, ...props }: TextInputPr
         onBlur={handleBlur}
       />
       <Show when={isErrored}>
-        <Message status={status}>{error}</Message>
+        <Message testID={errorTestID} status={status}>
+          {error}
+        </Message>
       </Show>
     </View>
   );

@@ -21,11 +21,12 @@ import * as Animatable from 'react-native-animatable';
 type Props = {
   message: string;
   isShow: boolean;
+  testID?: string
 };
 
 type AnimationTypes = 'fadeInDown' | 'fadeOutUp';
 
-const FormError = ({ message, isShow }: Props) => {
+const FormError = ({ message, isShow, testID }: Props) => {
   const theme = useContext(ThemeContext);
   const [animationType, setAnimationType] = useState<AnimationTypes>('fadeInDown');
 
@@ -48,7 +49,7 @@ const FormError = ({ message, isShow }: Props) => {
   });
 
   return (
-    <Animatable.View animation={animationType} duration={500} style={styles.container}>
+    <Animatable.View testID={testID} animation={animationType} duration={500} style={styles.container}>
       <Text style={[theme.textSmall, { color: theme.textColorLight }]}>{message}</Text>
     </Animatable.View>
   );

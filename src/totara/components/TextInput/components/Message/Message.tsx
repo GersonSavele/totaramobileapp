@@ -6,9 +6,13 @@ import { ThemeContext } from '@/src/totara/theme';
 import { getMessageStyles } from './styles';
 import type { MessageProps } from './types';
 
-export const Message = ({ status, children }: MessageProps) => {
+export const Message = ({ status, children, testID }: MessageProps) => {
   const theme = useContext(ThemeContext);
   const styles = getMessageStyles({ theme });
 
-  return <Text style={[theme.textXSmall, styles[status ?? 'hide']]}>{children}</Text>;
+  return (
+    <Text testID={testID} style={[theme.textXSmall, styles[status ?? 'hide']]}>
+      {children}
+    </Text>
+  );
 };

@@ -125,6 +125,7 @@ const SiteUrl = () => {
               status={inputSiteUrlStatus === 'invalidUrl' ? 'error' : 'focus'}
               label={translate('site_url.url_text_placeholder')}
               error={inputSiteUrlMessage}
+              errorTestID={TEST_IDS.SITE_URL_INPUT_ERROR}
             />
             <Button
               variant="primary"

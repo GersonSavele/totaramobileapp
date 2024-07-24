@@ -5,6 +5,7 @@ import type { AppliedTheme } from '../../theme/Theme';
 export type TextInputProps = RNTextInputProps &
   ValidatedTextInputProps & {
     label: string;
+    errorTestID?: string;
   };
 
 type ValidatedTextInputProps =
