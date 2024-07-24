@@ -20,6 +20,7 @@ import CloseButton from '@totara/components/CloseButton';
 import Loading from '@totara/components/Loading';
 import ResourceDownloader from '@totara/components/ResourceDownloader';
 import { useSession } from '@totara/core';
+import { useNavigation, useParams } from '@totara/lib/hooks';
 import { NAVIGATION } from '@totara/lib/navigation';
 import ResourceManager from '@totara/lib/resourceManager';
 import { fullFlex } from '@totara/lib/styles/base';
@@ -30,7 +31,7 @@ import type { RootState } from '@totara/reducers';
 import { iconSizes } from '@totara/theme/constants';
 import type { Resource } from '@totara/types/Resource';
 import { ResourceState, ResourceType } from '@totara/types/Resource';
-import type { Scorm, ScormActivityParams, ScormBundle } from '@totara/types/Scorm';
+import type { ScormActivityParams, ScormBundle } from '@totara/types/Scorm';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -46,27 +47,12 @@ import { getOfflinePackageUnzipPath, getTargetZipFile } from './utils';
 
 const { download } = ResourceManager;
 
-type ScormActivityProps = {
-  navigation: any;
-};
-
 type ApiDataEffectProps = {
   data?: any;
   client: any;
   id: string;
   scormBundle?: ScormBundle;
   setScormBundle: Function;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ResourceListEffectProps = {
-  scorm?: Scorm;
-  resourceList: Resource[];
-  id: string;
-  apiKey: string;
-  isInternetReachable?: boolean | null;
-  navigation: any;
-  setResourceState: Function;
 };
 
 const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
@@ -116,9 +102,9 @@ const onRefresh =
     }
   };
 
-const ScormActivity = (props: ScormActivityProps) => {
-  const { navigation } = props;
-  const { id, title = '' } = navigation.state.params as ScormActivityParams;
+const ScormActivity = () => {
+  const navigation = useNavigation('ScormActivity');
+  const { id, title = '' } = useParams('ScormActivity');
   const apolloClient = useApolloClient();
   const { loading, error, data, refetch, networkStatus } = useQuery(scormQuery, {
     variables: { scormid: id },

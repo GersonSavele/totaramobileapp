@@ -13,7 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import type { StackScreenProps } from '@react-navigation/stack';
 import { Images } from '@resources/images';
 import NetworkStatusIndicator from '@totara/components/NetworkStatusIndicator';
 import { NAVIGATION } from '@totara/lib/navigation';
@@ -30,11 +29,13 @@ import type { ImageSourcePropType, ListRenderItemInfo } from 'react-native';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import { useNavigation } from '../../lib/hooks';
 import DownloadItem from './DownloadItem';
-const { SCORM_ROOT, SCORM_STACK_ROOT } = NAVIGATION;
+const { SCORM_STACK_ROOT } = NAVIGATION;
 
-const Downloads = ({ navigation }: StackScreenProps<any>) => {
+const Downloads = () => {
   const resourcesList = useSelector((state: RootState) => state.resourceReducer.resources);
+  const navigation = useNavigation('Downloads');
 
   const [selectable, setSelectable] = useState(false);
   const [selectedList, setSelectedList] = useState<string[]>([]);
@@ -81,11 +82,8 @@ const Downloads = ({ navigation }: StackScreenProps<any>) => {
 
     if (!selectable) {
       navigation.navigate(SCORM_STACK_ROOT, {
-        screen: SCORM_ROOT,
-        params: {
-          id: item.customId,
-          title: item.name
-        }
+        id: item.customId,
+        title: item.name
       });
     }
   };

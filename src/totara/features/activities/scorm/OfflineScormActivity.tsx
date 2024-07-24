@@ -20,11 +20,13 @@ import { SCORM_TEST_IDS } from '@totara/lib/testIds';
 import { translate } from '@totara/locale';
 import type { RootState } from '@totara/reducers';
 import { ResourceType } from '@totara/types/Resource';
-import type { Package, Scorm } from '@totara/types/Scorm';
+import type { Package } from '@totara/types/Scorm';
 import { get, isEmpty } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { BackHandler, Platform, Text } from 'react-native';
 import { useSelector } from 'react-redux';
+
+import { useParams } from '@/src/totara/lib/hooks';
 
 import OfflineScormPlayer from './components/OfflineScormPlayer';
 import { ScormLessonStatus } from './constants';
@@ -37,20 +39,11 @@ import {
   setupOfflineScormPlayer
 } from './utils';
 
-type OfflineScormParams = {
-  attempt: number;
-  scorm?: Scorm;
-  backAction: () => void;
-};
-
-type OfflineScormProps = {
-  navigation: any;
-};
 const { NONE_EXIST_RESOURCE_ID, INVALID_SCORM_ID } = SCORM_TEST_IDS;
 const getResources = (state: RootState) => state.resourceReducer.resources;
 
-const OfflineScormActivity = ({ navigation }: OfflineScormProps) => {
-  const { scorm, attempt, backAction } = navigation.state.params as OfflineScormParams;
+const OfflineScormActivity = () => {
+  const { scorm, attempt, backAction } = useParams('OfflineScormActivity');
   if (!scorm || !scorm.id) {
     return <Text testID={INVALID_SCORM_ID}>{translate('general.error_unknown')}</Text>;
   }

@@ -40,11 +40,7 @@ const Stack = createStackNavigator();
 const RootContainer = () => {
   return (
     <NavigationContainer theme={navigationTheme} ref={navigationRef}>
-      <Stack.Navigator
-        screenOptions={{
-          presentation: 'modal',
-          headerShown: false
-        }}>
+      <Stack.Navigator screenOptions={{ presentation: 'modal', headerShown: false }}>
         <Stack.Screen name="SessionContainer" component={SessionContainer} />
         <Stack.Screen name={NAVIGATION.SITE_URL} component={SiteUrl} />
         <Stack.Screen

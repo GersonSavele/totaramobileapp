@@ -18,32 +18,17 @@ import WebViewWrapper from '@totara/auth/WebViewWrapper';
 import { Loading } from '@totara/components';
 import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
-import type { Activity } from '@totara/types';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
+import { useParams } from '@/src/totara/lib/hooks';
+
 const PDF_TYPE = 'application/pdf';
-/**
- * WebviewActivity opens an activity with the given url
- */
 
-type WebviewActivityParams = {
-  activity: Activity;
-  uri: string;
-  backAction: () => boolean;
-  fileurl?: string;
-  mimetype?: string;
-  apiKey?: string;
-};
+const WebviewActivity = () => {
+  const { uri, backAction, activity, fileurl, mimetype, apiKey } = useParams('WebviewActivity');
 
-type WebviewActivityProps = {
-  route: any;
-  navigation: any;
-};
-
-const WebviewActivity = ({ route }: WebviewActivityProps) => {
-  const { uri, backAction, activity, fileurl, mimetype, apiKey } = route.params as WebviewActivityParams;
   useEffect(() => {
     Orientation.unlockAllOrientations();
     return () => Orientation.lockToPortrait();

@@ -15,8 +15,7 @@
 
 import { NetworkStatus, useQuery } from '@apollo/client';
 import { HeaderBackButton } from '@react-navigation/elements';
-import type { RouteProp } from '@react-navigation/native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Button } from '@totara/components';
 import { DescriptionContent } from '@totara/components/DescriptionContent';
 import { NAVIGATION, popAndGoToByRef } from '@totara/lib/navigation';
@@ -27,6 +26,7 @@ import React, { useLayoutEffect } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useParams } from '../../lib/hooks';
 import type { DescriptionFormat } from '../../types/LearningItem';
 import { enrolmentInfoQuery } from '../enrolment/api';
 import { ImageElement } from './components';
@@ -86,22 +86,10 @@ const overviewStyles = StyleSheet.create({
   }
 });
 
-type OverviewModalParamList = {
-  OverviewModal: {
-    itemid: string;
-    title: string;
-    mobileImage: string;
-    summary: string;
-    summaryFormat: DescriptionFormat
-  };
-};
-
 export const OverviewModal = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const { params } = useRoute<RouteProp<OverviewModalParamList, 'OverviewModal'>>();
-
-  const { itemid, title, mobileImage: imageSource, summary, summaryFormat } = params;
+  const { itemid, title, mobileImage: imageSource, summary, summaryFormat } = useParams('FindLearningOverview');
 
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
     variables: { courseid: itemid },
@@ -205,7 +193,7 @@ export const OverviewModal = () => {
         )}
       </View>
       <Text style={overviewStyles.title}>{title}</Text>
-      <DescriptionContent contentType={summaryFormat} content={summary} />
+      <DescriptionContent contentType={summaryFormat as DescriptionFormat} content={summary} />
     </ScrollView>
   );
 };

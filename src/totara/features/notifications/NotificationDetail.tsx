@@ -13,27 +13,22 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import type { StackScreenProps } from '@react-navigation/stack';
 import WebViewWrapper from '@totara/auth/WebViewWrapper';
 import { DescriptionContent } from '@totara/components/DescriptionContent';
 import { useSession } from '@totara/core';
 import { decodeHtmlCharCodes, timeAgo } from '@totara/lib/tools';
 import { fontWeights, paddings } from '@totara/theme/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
-import type { NotificationMessage } from '@totara/types';
 import type { DescriptionFormat } from '@totara/types/LearningItem';
 import React from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import type { WebViewNavigation } from 'react-native-webview';
 
-type ParamList = {
-  messageDetails: NotificationMessage;
-};
+import { useParams } from '../../lib/hooks';
 
-type NotificationDetailProps = StackScreenProps<ParamList, 'messageDetails'>;
-
-const NotificationDetails = ({ route }: NotificationDetailProps) => {
-  const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat, fullMessageHTML } = route.params;
+const NotificationDetails = () => {
+  const { subject, timeCreated, fullMessage, contextUrl, fullMessageFormat, fullMessageHTML } =
+    useParams('NotificationDetails');
   const { host } = useSession();
 
   const onLoadWithRequest = (navState: WebViewNavigation) => {

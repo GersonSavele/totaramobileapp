@@ -22,13 +22,14 @@ import { iconSizes } from '@totara/theme/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
 import type { CourseSets } from '@totara/types/CourseGroup';
 import React from 'react';
+import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 import Course from './Course';
 import { courseSet, horizontalList } from './courseGroupStyles';
 
 type CourseSetListProps = {
-  courseSetList: [CourseSets];
+  courseSetList: CourseSets[];
   navigate: any;
   testID: string;
   showCriteriaList?: (any) => void;
@@ -46,7 +47,7 @@ const LearningItems = ({ item, navigate, showCriteriaList = () => null }: any) =
   const takeFirstTwoCourses = item.courses?.slice(0, 2) || [];
 
   return (
-    <View style={courseSet.container} testID={'test_learning_items'}>
+    <View style={{ backgroundColor: 'red', height: 5, width: 5 }} testID={'test_learning_items'}>
       <TouchableOpacity onPress={navigateToCourse} activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
           <View style={courseSet.headerBar}>
@@ -78,15 +79,9 @@ const LearningItems = ({ item, navigate, showCriteriaList = () => null }: any) =
 };
 
 const CourseSetList = ({ courseSetList, navigate, testID, showCriteriaList = () => null }: CourseSetListProps) => {
-  const renderItems = ({ item }: any) => {
-    return (
-      <LearningItems
-        navigate={navigate}
-        item={item}
-        showCriteriaList={() => showCriteriaList(item.completionCriteria)}
-      />
-    );
-  };
+  const renderItems = ({ item }: ListRenderItemInfo<CourseSets>) => (
+    <LearningItems navigate={navigate} item={item} showCriteriaList={() => showCriteriaList(item.completionCriteria)} />
+  );
 
   return (
     <View style={horizontalList.container} testID={testID}>

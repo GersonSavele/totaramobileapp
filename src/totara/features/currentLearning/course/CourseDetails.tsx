@@ -26,6 +26,8 @@ import { isEmpty, isEqual } from 'lodash';
 import React, { useState } from 'react';
 import { StyleSheet, Switch, Text, View } from 'react-native';
 
+import { useNavigation, useParams } from '@/src/totara/lib/hooks';
+
 import CriteriaSheet from '../components/CriteriaSheet';
 import CourseCompletionModal from '../CourseCompletionModal';
 import LearningDetails from '../LearningDetails';
@@ -34,15 +36,11 @@ import Activities from './Activities';
 import { coreCourse } from './api';
 import courseDetailsStyle from './courseDetailsStyle';
 
-// TODO: Set up params for each route in the App and access the appropriate ones here
-const CourseDetails = ({ navigation, route }: any) => {
-  const courseId = route.params.targetId;
-  const passwordRequired = route.params.passwordRequired;
+const CourseDetails = () => {
+  const { targetId, guestPassword, passwordRequired } = useParams('CourseDetails');
 
-  let queryVariables = { courseid: courseId };
+  let queryVariables = { courseid: targetId, guestpw: undefined };
   if (passwordRequired) {
-    const guestPassword = route?.params?.guestPassword;
-    // @ts-ignore
     queryVariables = { ...queryVariables, guestpw: guestPassword };
   }
 
@@ -65,7 +63,6 @@ const CourseDetails = ({ navigation, route }: any) => {
         pullToRefresh={onContentRefresh}
         courseDetails={data.mobile_course}
         courseRefreshCallback={refetch}
-        navigation={navigation}
       />
     );
   } else {
@@ -77,7 +74,6 @@ type CourseDetailsContentProps = {
   courseDetails: CourseContentDetails;
   courseRefreshCallback: () => {};
   pullToRefresh: () => void;
-  navigation: any;
   loading: boolean;
 };
 
@@ -85,9 +81,9 @@ const CourseDetailsContent = ({
   courseDetails,
   courseRefreshCallback,
   pullToRefresh,
-  navigation,
   loading
 }: CourseDetailsContentProps) => {
+  const navigation = useNavigation('CourseDetails');
   const expanableSections =
     courseDetails?.course?.sections.filter(section => section.available && !isEmpty(section.data)) || [];
   const expanableSectionIds = Array.from(expanableSections, section => section.id);

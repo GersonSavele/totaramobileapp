@@ -20,41 +20,6 @@ import CourseDetails from './course/CourseDetails';
 import { CourseGroupDetails, CourseList } from './courseGroup';
 import CurrentLearning from './CurrentLearning';
 
-// const CurrentLearningStack = createCompatNavigatorFactory(createStackNavigator)(
-//   {
-//     [CURRENT_LEARNING]: {
-//       screen: CurrentLearning as any,
-//       navigationOptions: ({ navigation }: any) =>
-//         totaraNavigationOptions({
-//           // title: navigation.getParam("title"),
-//           opacity: navigation.getParam("opacity") || 0.0
-//         })
-//     },
-//     [COURSE_DETAILS]: {
-//       screen: CourseDetails as any,
-//       navigationOptions: () => totaraNavigationOptions({})
-//     },
-//     [COURSE_GROUP_DETAILS]: {
-//       screen: CourseGroupDetails as any,
-//       navigationOptions: () =>
-//         totaraNavigationOptions({
-//           headerShown: false
-//         })
-//     },
-//     [COURSE_LIST]: {
-//       screen: CourseList as any,
-//       navigationOptions: ({ navigation }: any) =>
-//         totaraNavigationOptions({
-//           title: navigation.getParam("title"),
-//           opacity: navigation.getParam("opacity")
-//         })
-//     }
-//   },
-//   {
-//     initialRouteName: "CurrentLearning"
-//   }
-// );
-
 const Stack = createStackNavigator();
 
 const CurrentLearningStack = () => (
@@ -62,12 +27,7 @@ const CurrentLearningStack = () => (
     <Stack.Screen
       name={NAVIGATION.CURRENT_LEARNING}
       component={CurrentLearning}
-      options={() =>
-        totaraNavigationOptions({
-          // title: navigation.getParam("title"),
-          // opacity: navigation.getParam("opacity") || 0.0
-        })
-      }
+      options={() => totaraNavigationOptions({})}
     />
     <Stack.Screen name={NAVIGATION.COURSE_DETAILS} component={CourseDetails} options={totaraNavigationOptions({})} />
     <Stack.Screen

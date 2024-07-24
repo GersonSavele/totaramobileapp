@@ -25,19 +25,12 @@ import { Grade } from '@totara/types/Scorm';
 import React, { useContext } from 'react';
 import { FlatList, SafeAreaView, Text, View } from 'react-native';
 
-type AttemptsParams = {
-  gradeMethod: Grade;
-  attempts: [Attempt?];
-};
-
-type ScormActivityProps = {
-  navigation: any;
-};
+import { useParams } from '@/src/totara/lib/hooks';
 
 const { ATTEMPTS_LIST_ID, ATTEMPT_ITEM_ID } = SCORM_TEST_IDS;
 
-const ScormAttempts = ({ navigation }: ScormActivityProps) => {
-  const { gradeMethod, attempts } = navigation.state.params as AttemptsParams;
+const ScormAttempts = () => {
+  const { gradeMethod, attempts } = useParams('ScormAttempts');
 
   const attemptReport = (attemptReport: Attempt, index: number, gradeMethod: Grade) => {
     return <AttemptReport attemptReport={attemptReport} attempt={index + 1} gradeMethod={gradeMethod} />;
@@ -73,7 +66,6 @@ type AttemptReport = {
   gradeMethod: Grade;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 const AttemptReport = ({ attemptReport, attempt, gradeMethod }: AttemptReport) => {
   const theme = useContext(ThemeContext);
 

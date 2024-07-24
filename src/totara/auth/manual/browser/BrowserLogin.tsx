@@ -14,7 +14,7 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Images } from '@resources/images';
 import { authLinkingHandler } from '@totara/auth/authUtils';
 import { Button, InfoModal } from '@totara/components';
@@ -27,12 +27,12 @@ import type { ImageSourcePropType } from 'react-native';
 import { Linking } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import { useParams } from '@/src/totara/lib/hooks';
+
 const BrowserLogin = () => {
-  // eslint-disable-next-line no-undef
   const fetchDataWithFetch = fetchData(fetch);
   const navigation = useNavigation();
-  const { params } = useRoute();
-  const { siteUrl } = params as any;
+  const { siteUrl } = useParams('BrowserLogin');
   const { initSession, siteInfo, apiKey } = useSession();
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(true);

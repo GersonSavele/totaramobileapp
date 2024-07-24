@@ -15,8 +15,7 @@
 
 import { NetworkStatus, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Input } from '@placeholders/react-native-elements';
-import type { RouteProp } from '@react-navigation/native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Button } from '@totara/components';
 import { translate } from '@totara/locale';
 import { fontWeights, margins, paddings } from '@totara/theme/constants';
@@ -26,6 +25,7 @@ import { isEmpty } from 'lodash';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { useParams } from '../../lib/hooks';
 import { enrolmentInfoQuery, guestAccessQuery, selfEnrolmentMutation } from './api';
 
 const styles = StyleSheet.create({
@@ -311,16 +311,9 @@ const LoadingError = ({ onTryReload }: { onTryReload: () => void }) => {
   );
 };
 
-type EnrolmentModalParamList = {
-  EnrolmentModal: {
-    targetId: string;
-  };
-};
-
 export const EnrolmentModal = () => {
   const navigation = useNavigation();
-  const { params } = useRoute<RouteProp<EnrolmentModalParamList, 'EnrolmentModal'>>();
-  const { targetId } = params;
+  const { targetId } = useParams('EnrolmentModal');
 
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
     variables: { courseid: targetId },

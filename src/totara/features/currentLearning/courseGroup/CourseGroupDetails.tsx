@@ -20,17 +20,14 @@ import type { CourseGroup } from '@totara/types';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
+import { useNavigation, useParams } from '@/src/totara/lib/hooks';
+
 import CriteriaSheet from '../components/CriteriaSheet';
 import LearningDetails from '../LearningDetails';
 import OverviewDetails from '../overview/OverviewDetails';
 import { coreCertification, coreProgram, mutationReportProgramme } from './api';
 import { details } from './courseGroupStyles';
 import Courses from './Courses';
-
-type CourseGroupProps = {
-  route: any;
-  navigation: any;
-};
 
 const courseGroupTypeMap = {
   program: {
@@ -47,13 +44,9 @@ const courseGroupTypeMap = {
   }
 };
 
-type ParamsType = {
-  targetId: string;
-  courseGroupType: string;
-};
-
-const CourseGroupDetails = ({ route, navigation }: CourseGroupProps) => {
-  const { targetId, courseGroupType } = route.params as ParamsType;
+const CourseGroupDetails = () => {
+  const { targetId, courseGroupType } = useParams('CourseGroupDetails');
+  const navigation = useNavigation('CourseGroupDetails');
   const typeMap = courseGroupTypeMap[courseGroupType];
   const { networkStatus, error, data, refetch } = useQuery(typeMap.query, {
     variables: { [typeMap.idField]: targetId },

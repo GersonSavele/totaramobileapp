@@ -132,12 +132,11 @@ const MainContainer = () => {
       <Stack.Screen
         name={NAVIGATION.FIND_LEARNING_WEBVIEW}
         component={FindLearningWebViewWrapper}
-        options={({ route }: any) => ({
+        options={{
           ...horizontalAnimation,
           ...detaultScreenOptions,
-          gestureDirection: 'horizontal',
-          headerTitle: route.params.title
-        })}
+          gestureDirection: 'horizontal'
+        }}
       />
     </Stack.Navigator>
   );

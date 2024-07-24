@@ -110,7 +110,7 @@ const NAVIGATION = {
   BROWSER_LOGIN,
   ENROLMENT_MODAL,
   FIND_LEARNING_WEBVIEW
-};
+} as const;
 
 const cardModalOptions = {
   cardOverlayEnabled: true,

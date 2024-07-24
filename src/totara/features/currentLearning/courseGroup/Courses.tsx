@@ -48,7 +48,7 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
       ) : null}
       {courseGroup.currentCourseSets.map((item: [CourseSets], key: number) => {
         return (
-          <View key={key}>
+          <View key={key} style={{ backgroundColor: 'red', height: 5, width: 5 }}>
             {item.length == 1 && (
               <CourseSet
                 courseSets={item[0]}
@@ -57,7 +57,7 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
                 showCriteriaList={() => showCriteriaList(item[0].completionCriteria)}
               />
             )}
-            {item.length > 1 && (
+            {item.length >= 1 && (
               <CourseSetList
                 courseSetList={item}
                 navigate={navigation.navigate}

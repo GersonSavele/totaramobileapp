@@ -22,22 +22,12 @@ import React from 'react';
 import type { ImageSourcePropType } from 'react-native';
 import { View } from 'react-native';
 
-type ScormFeedbackProps = {
-  score: string;
-  gradeMethod: Grade;
-  showGrades: boolean;
-  completionScoreRequired?: number;
-  onClose: () => void;
-};
-type FeedbackProps = {
-  navigation: any;
-};
+import { useParams } from '@/src/totara/lib/hooks';
 
 const { ATTEMPT_FEEDBACK } = SCORM_TEST_IDS;
 
-const ScormFeedbackModal = ({ navigation }: FeedbackProps) => {
-  const { showGrades, gradeMethod, completionScoreRequired, score, onClose } = navigation.state
-    .params as ScormFeedbackProps;
+const ScormFeedbackModal = () => {
+  const { showGrades, gradeMethod, completionScoreRequired, score, onClose } = useParams('ScormFeedback');
 
   const isWithGrade = showGrades && completionScoreRequired !== undefined && completionScoreRequired !== null;
 
