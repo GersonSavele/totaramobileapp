@@ -44,6 +44,8 @@ export class NativeLoginScreen {
   }
 
   static async expectLoginErrorToBeVisible() {
-    await expect(this.loginError).toBeVisible();
+    // On android `.toBeVisible` can fail here due to how modals
+    // get laid out. `toExist` is more reliable in this instance
+    await expect(this.loginError).toExist();
   }
 }

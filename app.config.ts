@@ -54,6 +54,7 @@ export default (): ExpoConfig => ({
         ]
       }
     ],
+    '@config-plugins/detox',
     './plugins/notifee-mod.js'
   ],
   experiments: {},

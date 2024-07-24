@@ -54,9 +54,9 @@ module.exports = {
       device: 'simulator',
       app: 'ios.release'
     },
-    'android.emu.debug': {
+    'android.emu.release': {
       device: 'emulator',
-      app: 'android.debug'
+      app: 'android.release'
     }
   }
 };
