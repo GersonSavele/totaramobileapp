@@ -15,15 +15,13 @@
  * @author Simon Tegg <simon.tegg@totaralearning.com>
  */
 
-// import SCORMAPI from "../ScormApi.1.2";
+import SCORMAPI from "../ScormApi.1.2";
 import getSCORMDatamodel from "../getScormDataModel";
 import inititalizeCMI from "../initializeCmi";
 import collectData from "../scormCollectData";
 import lessonStatus from "../scormMutateLessonStatus";
 
-// TODO: Un-skip this test suite when we figure out why they're failing just in CI
-
-xtest('LMSInitialize should return "true"', () => {
+test('LMSInitialize should return "true"', () => {
   const objectId = "theid";
   const defaults = { [objectId]: "mock" };
   const scormAPI = SCORMAPI(
@@ -46,7 +44,7 @@ xtest('LMSInitialize should return "true"', () => {
   expect(inititalized).toBe("true");
 });
 
-xtest("LMSSetValue and LMSGetValue", () => {
+test("LMSSetValue and LMSGetValue", () => {
   const objectId = "theid";
   const defaults = { [objectId]: "mock" };
   const scormAPI = SCORMAPI(
@@ -107,7 +105,7 @@ xtest("LMSSetValue and LMSGetValue", () => {
   expect(errorCode).toBe("0"); // ?
 });
 
-xtest("LMSCommit should call onpostCommitDataToNative", () => {
+test("LMSCommit should call onpostCommitDataToNative", () => {
   global.setTimeout = jest.fn();
   global.onpostCommitDataToNative = jest.fn();
   const objectId = "theid";
@@ -134,7 +132,7 @@ xtest("LMSCommit should call onpostCommitDataToNative", () => {
   expect(global.onpostCommitDataToNative).toHaveBeenCalled();
 });
 
-xtest("LMSGetLastError and LMSGetDiagnostic should return an errorcode", () => {
+test("LMSGetLastError and LMSGetDiagnostic should return an errorcode", () => {
   const objectId = "theid";
   const defaults = { [objectId]: "mock" };
   const scormAPI = SCORMAPI(
@@ -163,7 +161,7 @@ xtest("LMSGetLastError and LMSGetDiagnostic should return an errorcode", () => {
   expect(detailedErrorMessage).toBe("0");
 });
 
-xtest("LMSGetErrorString should return a descriptive error message", () => {
+test("LMSGetErrorString should return a descriptive error message", () => {
   const objectId = "theid";
   const defaults = { [objectId]: "mock" };
   const scormAPI = SCORMAPI(
@@ -186,7 +184,7 @@ xtest("LMSGetErrorString should return a descriptive error message", () => {
   expect(errorStr).toBe("Invalid argument error");
 });
 
-xtest("LMSFinish should call globals functions", () => {
+test("LMSFinish should call globals functions", () => {
   // SCORM globals
   global.setTimeout = jest.fn();
   global.onpostCommitDataToNative = jest.fn();

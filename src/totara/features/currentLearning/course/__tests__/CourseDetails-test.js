@@ -111,7 +111,7 @@ const mocksError = [
 ];
 
 // TODO: Skipping due to a flakey snapshot test failing in CI
-xdescribe("Testing: Apollo MockedProvider should test three state such as loading, final and error", () => {
+describe("Testing: Apollo MockedProvider should test three state such as loading, final and error", () => {
   it("Test result : Render loading state initially and return no component", async () => {
     let component;
     await TestRenderer.act(async () => {

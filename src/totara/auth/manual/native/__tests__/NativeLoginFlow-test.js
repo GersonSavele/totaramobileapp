@@ -125,9 +125,7 @@ describe("useNativeLogin", () => {
   //   expect(onSetupSecretSuccess).toHaveBeenCalledWith("setupSecret");
   // });
 
-  // TODO Fix
-  // Rewrite using waitFor now that waitForNextUpdate is not available
-  it.skip("should set form error for response with handled error[error status: 401], when fetch setupSecret", async () => {
+  it("should set form error for response with handled error[error status: 401], when fetch setupSecret", async () => {
     expect.assertions(3);
 
     const mockFetchData = jest.fn((input, init) => {
@@ -139,7 +137,8 @@ describe("useNativeLogin", () => {
         return Promise.resolve({
           loginsecret: "loginSecret"
         });
-      } else if (input === "https://site.com/totara/mobile/login.php") {
+      } 
+      if (input === "https://site.com/totara/mobile/login.php") {
         expect(init).toMatchObject({
           method: "POST",
           body: JSON.stringify({
@@ -150,9 +149,9 @@ describe("useNativeLogin", () => {
           headers: { [DEVICE_REGISTRATION]: config.userAgent }
         });
         return Promise.reject({ status: 401 });
-      } else {
-        throw new Error("should not execute, test failed", input);
       }
+       
+      throw new Error("should not execute, test failed", input);
     });
 
     const { result } = renderHook(props => useNativeFlow(mockFetchData)(props), {
@@ -161,7 +160,7 @@ describe("useNativeLogin", () => {
       }
     });
 
-    act(() => {
+    await act(() => {
       result.current.inputUsernameWithShowError("username");
       result.current.inputPasswordWithShowError("password");
       result.current.onClickEnter();
@@ -175,9 +174,7 @@ describe("useNativeLogin", () => {
     });
   });
 
-  // TODO Fix
-  // Rewrite using waitFor now that waitForNextUpdate is not available
-  it.skip("should set form error for response with handled error[error status: 401], when fetch loginSecret", async () => {
+  it("should set form error for response with handled error[error status: 401], when fetch loginSecret", async () => {
     expect.assertions(2);
 
     const mockFetchData = jest.fn((input, init) => {
@@ -198,7 +195,7 @@ describe("useNativeLogin", () => {
       }
     });
 
-    act(() => {
+    await act(() => {
       result.current.inputUsernameWithShowError("username");
       result.current.inputPasswordWithShowError("password");
       result.current.onClickEnter();
