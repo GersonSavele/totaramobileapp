@@ -44,10 +44,6 @@ const CourseDetails = () => {
     queryVariables = { ...queryVariables, guestpw: guestPassword };
   }
 
-  console.log('V');
-  console.log({ variables: queryVariables });
-  console.log('V');
-
   const { networkStatus, error, data, refetch } = useQuery(coreCourse, {
     variables: queryVariables,
     notifyOnNetworkStatusChange: true

@@ -20,11 +20,11 @@ import "detox"
 // require("isomorphic-fetch");
 
 global.console = {
-  log: console.log,
+  log: jest.fn(),
   error: jest.fn(),
   warn: jest.fn(),
   info: jest.fn(),
-  debug: console.debug
+  debug: jest.fn()
 };
 
 jest.mock("@react-native-cookies/cookies", () => {

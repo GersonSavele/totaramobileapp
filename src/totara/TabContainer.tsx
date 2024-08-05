@@ -27,7 +27,7 @@ import { Image, View } from 'react-native';
 import { useSession } from './core';
 import CurrentLearningStack from './features/currentLearning';
 import FindLearningStack from './features/findLearning/FindLearningStack';
-import { notificationsQuery } from './features/notifications/api';
+import { countUnreadMessages, notificationsQuery } from './features/notifications/api';
 import Profile from './features/profile/Profile';
 import { TAB_TEST_IDS } from './lib/testIds';
 import { translate } from './locale';
@@ -35,14 +35,11 @@ import { translate } from './locale';
 const Tab = createBottomTabNavigator();
 const TabContainer = () => {
   const theme = useContext(ThemeContext);
-  const { data: _data } = useQuery(notificationsQuery);
-  // const notificationCount = countUnreadMessages(data);
+  const { data } = useQuery(notificationsQuery);
+  const notificationCount = countUnreadMessages(data);
   const { core } = useSession();
 
-  const notificationCount = 7;
-
   useEffect(() => {
-    console.log('Setting it!');
     notifee.setBadgeCount(notificationCount).then(() => console.log('Badge count set!'));
   }, [notificationCount]);
 

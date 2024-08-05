@@ -60,7 +60,6 @@ const CurrentLearning = () => {
   };
 
   if (data) {
-    console.log(data);
     const { currentLearning: notSorted } = data;
     const currentLearning = sortByDueDateThenTypeThenFullName(notSorted);
     const accessibilityLabelText = translate('current_learning.accessibility_view_mode', {
