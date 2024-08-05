@@ -19,17 +19,14 @@ import { render } from "@testing-library/react-native";
 import ScormAttempts from "../ScormAttempts";
 import { Grade } from "@totara/types/Scorm";
 import { SCORM_TEST_IDS } from "@totara/lib/testIds";
+import * as Navigation from '@/src/totara/lib/hooks';
 
 const { ATTEMPTS_LIST_ID, ATTEMPT_ITEM_ID } = SCORM_TEST_IDS;
 
-const attemptNavigation = attempts => ({
-  state: {
-    params: {
-      gradeMethod: Grade.objective,
-      attempts: attempts
-    }
-  }
-});
+jest.spyOn(Navigation, 'useParams').mockImplementation(() => ({
+  gradeMethod: Grade.objective,
+  attempts: attempts
+}));
 
 describe("ScormAttempts", () => {
   afterEach(() => {
@@ -53,24 +50,41 @@ describe("ScormAttempts", () => {
         gradereported: 1
       }
     ];
-    const { getByTestId, getAllByTestId } = render(<ScormAttempts navigation={attemptNavigation(existingAttempts)} />);
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => ({
+      gradeMethod: Grade.objective,
+      attempts: existingAttempts
+    }));
+
+    const { getByTestId, getAllByTestId } = render(<ScormAttempts />);
     const viewListAttempts = getByTestId(ATTEMPTS_LIST_ID);
     const viewAttemptItems = getAllByTestId(ATTEMPT_ITEM_ID);
     expect(viewListAttempts).toBeTruthy();
     expect(viewAttemptItems.length).toBe(2);
   });
+
   it("Should render empty attempts result list for empty/undefined or null attempts", async () => {
-    let tree = render(<ScormAttempts navigation={attemptNavigation([])} />);
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => ({
+      gradeMethod: Grade.objective,
+      attempts: []
+    }));
+
+    let tree = render(<ScormAttempts />);
     let viewListAttempts = await tree.getByTestId(ATTEMPTS_LIST_ID);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();
 
-    tree = render(<ScormAttempts navigation={attemptNavigation()} />);
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => ({
+      gradeMethod: Grade.objective,
+    }));
+
+    tree = render(<ScormAttempts />);
     viewListAttempts = await tree.getByTestId(ATTEMPTS_LIST_ID);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();
 
-    tree = render(<ScormAttempts navigation={attemptNavigation(null)} />);
+    tree = render(<ScormAttempts />);
     viewListAttempts = await tree.getByTestId(ATTEMPTS_LIST_ID);
     expect(viewListAttempts).toBeTruthy();
     expect(viewListAttempts).not.toContain();

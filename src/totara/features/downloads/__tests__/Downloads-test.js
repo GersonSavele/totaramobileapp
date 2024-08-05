@@ -18,12 +18,11 @@ import Downloads from "@totara/features/downloads/Downloads";
 import * as ReactRedux from "react-redux";
 import { downloadsOneItemMock, downloadsTwoItemsMock } from "@totara/features/downloads/__mocks__/downloadMock";
 import wait from "waait";
+import * as Navigation from '@/src/totara/lib/hooks';
 
 const navigationMock = {
-  navigation: {
-    setOptions: jest.fn(),
-    navigate: jest.fn()
-  }
+  setOptions: jest.fn(),
+  navigate: jest.fn()
 };
 
 describe("Downloads", () => {
@@ -31,12 +30,15 @@ describe("Downloads", () => {
     cleanup();
   });
 
+  jest.spyOn(Navigation, "useNavigation").mockImplementation(() => navigationMock);
+  
+
   it("Should render Downloads empty state", async () => {
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return [];
     });
 
-    const { getByTestId } = render(<Downloads navigation={navigationMock.navigation} />);
+    const { getByTestId } = render(<Downloads />);
 
     const test_DownloadsEmptyState = await getByTestId("test_DownloadsEmptyState");
     expect(test_DownloadsEmptyState).toBeTruthy();
@@ -47,19 +49,18 @@ describe("Downloads", () => {
       return downloadsTwoItemsMock;
     });
 
-    const { getAllByTestId } = render(<Downloads navigation={navigationMock.navigation} />);
+    const { getAllByTestId } = render(<Downloads />);
 
     const testItems = await getAllByTestId("test_DownloadsItem");
     expect(testItems.length).toBe(2);
   });
 
   it("Should item be able be pressed for navigation", async () => {
-    const navigation = navigationMock.navigation;
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return downloadsOneItemMock;
     });
 
-    const { getByTestId } = render(<Downloads navigation={navigation} />);
+    const { getByTestId } = render(<Downloads />);
     await act(async () => {
       await wait(0);
     });
@@ -67,16 +68,15 @@ describe("Downloads", () => {
     const itemTest = await getByTestId("test_DownloadsItem");
     fireEvent.press(itemTest);
 
-    expect(navigation.navigate).toBeCalled();
+    expect(navigationMock.navigate).toHaveBeenCalled();
   });
 
   it("Should item be able be long pressed for select", async () => {
-    const navigation = navigationMock.navigation;
     jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
       return downloadsOneItemMock;
     });
 
-    const { getByTestId } = render(<Downloads navigation={navigation} />);
+    const { getByTestId } = render(<Downloads />);
     await act(async () => {
       await wait(0);
     });

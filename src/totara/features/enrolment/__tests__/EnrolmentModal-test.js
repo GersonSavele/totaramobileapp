@@ -13,22 +13,23 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import React from "react";
-import { render, act, fireEvent } from "@testing-library/react-native";
-import { EnrolmentModal } from "./../EnrolmentModal";
-import { MockedProvider } from "@apollo/client/testing";
-import { enrolmentOptionsMock, enrolmentOptionsMockError } from "./../api/enrolmentOptions.mock";
-import wait from "waait";
-import { useRoute } from "@react-navigation/native";
-import { translate } from "@totara/locale";
+import React from 'react';
+import { render, act, fireEvent } from '@testing-library/react-native';
+import { EnrolmentModal } from './../EnrolmentModal';
+import { MockedProvider } from '@apollo/client/testing';
+import { enrolmentOptionsMock, enrolmentOptionsMockError } from './../api/enrolmentOptions.mock';
+import wait from 'waait';
+import { useRoute } from '@react-navigation/native';
+import { translate } from '@totara/locale';
+import * as Navigation from '@/src/totara/lib/hooks';
 
-describe("Enrolment Options", () => {
-  test("Should render loading widget", async () => {
-    useRoute.mockReturnValue({
-      params: {
-        targetId: 1
-      }
-    });
+describe('Enrolment Options', () => {
+  test('Should render loading widget', async () => {
+    const params = {
+      targetId: 1
+    };
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { getByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -36,11 +37,11 @@ describe("Enrolment Options", () => {
       </MockedProvider>
     );
 
-    const widget = getByTestId("loading_enrolment_data");
+    const widget = getByTestId('loading_enrolment_data');
     expect(widget).toBeTruthy();
   });
 
-  test("Should render loading error", async () => {
+  test('Should render loading error', async () => {
     useRoute.mockReturnValue({
       params: {
         targetId: 1
@@ -57,17 +58,17 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    const widget = await getByTestId("loading_error");
+    const widget = await getByTestId('loading_error');
     expect(widget).toBeTruthy();
   });
 
-  test("Should render guest widget", async () => {
+  test('Should render guest widget', async () => {
     const id = 1;
-    useRoute.mockReturnValue({
-      params: {
-        targetId: id
-      }
-    });
+    const params = {
+      targetId: id
+    };
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { getByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -79,17 +80,17 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    const widget = getByTestId("guest_access_widget");
+    const widget = getByTestId('guest_access_widget');
     expect(widget).toBeTruthy();
   });
 
-  test("Should render self enrolment widget - learner", async () => {
+  test('Should render self enrolment widget - learner', async () => {
     const id = 4;
-    useRoute.mockReturnValue({
-      params: {
-        targetId: id
-      }
-    });
+    const params = {
+      targetId: id
+    }
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { getByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -103,17 +104,17 @@ describe("Enrolment Options", () => {
 
     const widgetTitle = getByTestId(`self_enrolment_title`);
     expect(widgetTitle.props.children).toBe(
-      translate("enrolment_options.self_enrolment_title", { roleName: "Learner" })
+      translate('enrolment_options.self_enrolment_title', { roleName: 'Learner' })
     );
   });
 
-  test("Should render self enrolment widget - requires enrolment key", async () => {
+  test('Should render self enrolment widget - requires enrolment key', async () => {
     const id = 4;
-    useRoute.mockReturnValue({
-      params: {
-        targetId: id
-      }
-    });
+    const params = {
+      targetId: id
+    };
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { getByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -129,13 +130,13 @@ describe("Enrolment Options", () => {
     expect(widgetEnrolmentKey).toBeTruthy();
   });
 
-  test("Should render two self enrolment widgets in sorting order", async () => {
+  test('Should render two self enrolment widgets in sorting order', async () => {
     const id = 5;
-    useRoute.mockReturnValue({
-      params: {
-        targetId: id
-      }
-    });
+    const params = {
+      targetId: id
+    };
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { findAllByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -147,22 +148,22 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    const widgetEnrolmentTitle = await findAllByTestId("self_enrolment_title");
+    const widgetEnrolmentTitle = await findAllByTestId('self_enrolment_title');
     expect(widgetEnrolmentTitle.length).toBe(2);
 
     const [firstTitle, secondTitle] = widgetEnrolmentTitle;
 
-    expect(firstTitle.props.children).toBe("self enrolment 1");
-    expect(secondTitle.props.children).toBe("self enrolment 2");
+    expect(firstTitle.props.children).toBe('self enrolment 1');
+    expect(secondTitle.props.children).toBe('self enrolment 2');
   });
 
-  test("Should not allow enrolment to key be empty when required", async () => {
+  test('Should not allow enrolment to key be empty when required', async () => {
     const id = 4;
-    useRoute.mockReturnValue({
-      params: {
-        targetId: id
-      }
-    });
+    const params = {
+      targetId: id
+    };
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { findByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -174,25 +175,25 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    const container = await findByTestId("self_enrolment_widget");
-    const enrolMeButton = container.findByProps({ testID: "self_enrolment_button" });
-    const enrolmentKeyInputErrored = container.findByProps({ testID: "self_enrolment_key" });
+    const container = await findByTestId('self_enrolment_widget');
+    const enrolMeButton = container.findByProps({ testID: 'self_enrolment_button' });
+    const enrolmentKeyInputErrored = container.findByProps({ testID: 'self_enrolment_key' });
     fireEvent.press(enrolMeButton);
 
     await act(async () => {
       await wait(0);
     });
 
-    expect(enrolmentKeyInputErrored.props.error).toBe(translate("enrolment_options.required"));
+    expect(enrolmentKeyInputErrored.props.error).toBe(translate('enrolment_options.required'));
   });
 
-  test("Should not accept self enrolment with wrong key", async () => {
+  test('Should not accept self enrolment with wrong key', async () => {
     const id = 4;
-    useRoute.mockReturnValue({
-      params: {
-        targetId: id
-      }
-    });
+    const params = {
+      targetId: id
+    };
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { findByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -204,27 +205,27 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    const container = await findByTestId("self_enrolment_widget");
-    const keyInputField = container.findByProps({ testID: "self_enrolment_key" });
-    const enrolMeButton = container.findByProps({ testID: "self_enrolment_button" });
+    const container = await findByTestId('self_enrolment_widget');
+    const keyInputField = container.findByProps({ testID: 'self_enrolment_key' });
+    const enrolMeButton = container.findByProps({ testID: 'self_enrolment_button' });
 
-    fireEvent.changeText(keyInputField, "wrongPwd");
+    fireEvent.changeText(keyInputField, 'wrongPwd');
     fireEvent.press(enrolMeButton);
 
     await act(async () => {
       await wait(0);
     });
 
-    expect(keyInputField.props.error).toBe("Incorrect enrolment key, please try again");
+    expect(keyInputField.props.error).toBe('Incorrect enrolment key, please try again');
   });
 
-  test("Should not accept self enrolment with wrong key", async () => {
+  test('Should not accept self enrolment with wrong key', async () => {
     const id = 4;
-    useRoute.mockReturnValue({
-      params: {
-        targetId: id
-      }
-    });
+    const params = {
+      targetId: id
+    }
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { findByTestId } = render(
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -236,11 +237,11 @@ describe("Enrolment Options", () => {
       await wait(0);
     });
 
-    const container = await findByTestId("self_enrolment_widget");
-    const keyInputField = container.findByProps({ testID: "self_enrolment_key" });
-    const enrolMeButton = container.findByProps({ testID: "self_enrolment_button" });
+    const container = await findByTestId('self_enrolment_widget');
+    const keyInputField = container.findByProps({ testID: 'self_enrolment_key' });
+    const enrolMeButton = container.findByProps({ testID: 'self_enrolment_button' });
 
-    fireEvent.changeText(keyInputField, "correctPwd");
+    fireEvent.changeText(keyInputField, 'correctPwd');
     fireEvent.press(enrolMeButton);
 
     await act(async () => {

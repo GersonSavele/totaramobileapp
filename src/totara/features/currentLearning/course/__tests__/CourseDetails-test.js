@@ -22,6 +22,8 @@ import { coreCourse } from "../api";
 import CourseDetails from "../CourseDetails";
 import CourseCompletionModal from "../../CourseCompletionModal";
 import { act } from "@testing-library/react-native";
+import * as Navigation from '@/src/totara/lib/hooks';
+
 const response = {
   course: course
 };
@@ -86,8 +88,8 @@ const course = {
     "GROUPING YOUR USERS TO PROVIDE A PERSONALISED LEARNING EXPERIENCE↵↵Audiences are a powerful tool in Totara Learn, allowing you to group your users in order to assign them learning and performance management activities.↵↵Enrol in this course to explore how to:↵↵	* Create set and dynamic audiences↵↵	* Assign learning to an audience ↵↵ The course will take you around one hour 15 minutes to complete.↵↵"
 };
 
-const navigation = { getParam: jest.fn() };
-const route = { params: {  } };
+jest.spyOn(Navigation, 'useParams').mockImplementation(() => ({}));
+
 const mocks = [
   {
     request: {
@@ -117,7 +119,7 @@ describe("Testing: Apollo MockedProvider should test three state such as loading
     await TestRenderer.act(async () => {
       component = TestRenderer.create(
         <MockedProvider mocks={[]} addTypename={false}>
-          <CourseDetails navigation={navigation} route={route} />
+          <CourseDetails />
         </MockedProvider>
       );
     });
@@ -130,7 +132,7 @@ describe("Testing: Apollo MockedProvider should test three state such as loading
     await TestRenderer.act(async () => {
       component = TestRenderer.create(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <CourseDetails navigation={navigation} route={route} />
+          <CourseDetails />
         </MockedProvider>
       );
     });
@@ -146,7 +148,7 @@ describe("Testing: Apollo MockedProvider should test three state such as loading
     await TestRenderer.act(async () => {
       component = TestRenderer.create(
         <MockedProvider mocks={mocksError} addTypename={false}>
-          <CourseDetails navigation={navigation} route={route} />
+          <CourseDetails />
         </MockedProvider>
       );
     });

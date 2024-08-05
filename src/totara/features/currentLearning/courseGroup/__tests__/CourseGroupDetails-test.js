@@ -20,28 +20,25 @@ import wait from "waait";
 
 import { programMock, certificationMock, mockEmpty, mockError } from "../api/courseGroup.mock";
 import CourseGroupDetails from "../CourseGroupDetails";
+import * as Navigation from '@/src/totara/lib/hooks';
 
-const navigation = {};
-
-const routeProgram = { 
-  params: { 
-    targetId: 5,
-    courseGroupType: "program"
-  }
+const routeProgram = {
+  targetId: 5,
+  courseGroupType: 'program'
 };
 
-const routeCert = { 
-  params: { 
-    targetId: 5,
-    courseGroupType: "certification"
-  }
+const routeCert = {
+  targetId: 5,
+  courseGroupType: 'certification'
 };
 
 describe("CourseGroupDetails", () => {
   test("Should render loading", async () => {
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => routeProgram);
+
     const tree = (
       <MockedProvider mocks={mockEmpty} addTypename={false}>
-        <CourseGroupDetails navigation={navigation} route={routeProgram} />
+        <CourseGroupDetails />
       </MockedProvider>
     );
 
@@ -51,9 +48,11 @@ describe("CourseGroupDetails", () => {
   });
 
   test("Should render error", async () => {
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => routeProgram);
+
     const tree = (
       <MockedProvider mocks={mockError}>
-        <CourseGroupDetails navigation={navigation} route={routeProgram} />
+        <CourseGroupDetails/>
       </MockedProvider>
     );
 
@@ -66,9 +65,11 @@ describe("CourseGroupDetails", () => {
   });
 
   test("Should render program", async () => {
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => routeProgram);
+
     const tree = (
       <MockedProvider mocks={programMock}>
-        <CourseGroupDetails navigation={navigation} route={routeProgram} />
+        <CourseGroupDetails />
       </MockedProvider>
     );
 
@@ -82,9 +83,10 @@ describe("CourseGroupDetails", () => {
   });
 
   test("Should render certificate", async () => {
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => routeCert);
     const tree = (
       <MockedProvider mocks={certificationMock}>
-        <CourseGroupDetails navigation={navigation} route={routeCert} />
+        <CourseGroupDetails />
       </MockedProvider>
     );
     render(tree);

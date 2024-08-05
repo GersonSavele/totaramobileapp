@@ -184,3 +184,8 @@ jest.mock("@gorhom/bottom-sheet", () => {
 });
 
 jest.mock("@notifee/react-native", () => ({}))
+
+jest.mock("@/src/totara/lib/hooks", () => ({
+  useParams: jest.fn(),
+  useNavigation: jest.fn()
+}));

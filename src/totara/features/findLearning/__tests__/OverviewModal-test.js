@@ -22,14 +22,15 @@ import wait from "waait";
 import { OverviewModal } from "./../OverviewModal";
 import { enrolmentOptionsMock } from "./../../enrolment/api/enrolmentOptions.mock";
 import { translate } from "@totara/locale";
+import * as Navigation from '@/src/totara/lib/hooks';
 
 describe("Find Learning - Overview Modal", () => {
   it("Should render loading state", async () => {
-    useRoute.mockReturnValue({
-      params: {
-        itemid: 1
-      }
-    });
+    const params = {
+      itemid: 1
+    }
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const tree = (
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -43,11 +44,11 @@ describe("Find Learning - Overview Modal", () => {
   });
 
   it("Should render 'You are enrolled to this course' and 'Go to course' button", async () => {
-    useRoute.mockReturnValue({
-      params: {
-        itemid: 1
-      }
-    });
+    const params = {
+      itemid: 1
+    }
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const tree = (
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -68,11 +69,11 @@ describe("Find Learning - Overview Modal", () => {
   });
 
   it("Should render 'You can enrol to this course' and 'Go to course' button", async () => {
-    useRoute.mockReturnValue({
-      params: {
-        itemid: 2
-      }
-    });
+    const params = {
+      itemid: 2
+    }
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const tree = (
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -93,11 +94,11 @@ describe("Find Learning - Overview Modal", () => {
   });
 
   it("Should render 'You are not enroled to this course' and don't render 'Go to course' button", async () => {
-    useRoute.mockReturnValue({
-      params: {
-        itemid: 3
-      }
-    });
+    const params = {
+      itemid: 3
+    }
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const tree = (
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -118,11 +119,11 @@ describe("Find Learning - Overview Modal", () => {
   });
 
   it("Should render 'Go to course' for privileged user", async () => {
-    useRoute.mockReturnValue({
-      params: {
-        itemid: 4
-      }
-    });
+    const params = {
+      itemid: 4
+    }
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const tree = (
       <MockedProvider mocks={enrolmentOptionsMock}>
@@ -140,11 +141,11 @@ describe("Find Learning - Overview Modal", () => {
   });
 
   it("Should render error state", async () => {
-    useRoute.mockReturnValue({
-      params: {
-        itemid: 0
-      }
-    });
+    const params = {
+      itemid: 0
+    }
+
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const tree = (
       <MockedProvider mocks={enrolmentOptionsMock}>

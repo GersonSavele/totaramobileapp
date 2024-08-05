@@ -18,6 +18,7 @@ import { render } from "@testing-library/react-native";
 import moment from "moment";
 import * as ReactRedux from "react-redux";
 import NotificationDetails from "@totara/features/notifications/NotificationDetail";
+import * as Navigation from '@/src/totara/lib/hooks';
 
 describe("NotificationDetails", () => {
   jest.spyOn(ReactRedux, "useSelector").mockImplementation(() => {
@@ -41,13 +42,9 @@ describe("NotificationDetails", () => {
   it("Should render with title, time ago, and full message", () => {
     const itemToBeTested = { ...defaultMockItem };
 
-    const route = {
-      params: {
-        ...itemToBeTested
-      }
-    };
+    jest.spyOn(Navigation, 'useParams').mockImplementation(() => itemToBeTested);
 
-    const { getByTestId } = render(<NotificationDetails route={route} />);
+    const { getByTestId } = render(<NotificationDetails />);
 
     const labelTitle = getByTestId("test_title");
     expect(labelTitle.children[0]).toBe(itemToBeTested.subject);

@@ -27,20 +27,24 @@ import ScormActivity, { apiDataEffect, onRefresh, navigationOptions } from "../S
 import { scormSuccessMock } from "../api/scorm.mock";
 import { SCORM_TEST_IDS } from "@totara/lib/testIds";
 import * as storageUtils from "../storageUtils";
+import * as Navigation from '@/src/totara/lib/hooks';
 
 const { SUMMARY_ID, LOADING_ID } = SCORM_TEST_IDS;
 
 describe("ScormActivity", () => {
   const navigation = {
-    state: {
-      params: {
-        id: 1,
-        title: "title"
-      }
-    },
     navigate: jest.fn(),
     setOptions: jest.fn()
   };
+
+  const params = {
+    id: 1,
+    title: 'title'
+  };
+
+  jest.spyOn(Navigation, "useNavigation").mockImplementation(() => navigation);
+  jest.spyOn(Navigation, "useParams").mockImplementation(() => params);
+
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -56,7 +60,7 @@ describe("ScormActivity", () => {
     });
     const tree = (
       <MockedProvider mocks={scormSuccessMock}>
-        <ScormActivity navigation={navigation} />
+        <ScormActivity />
       </MockedProvider>
     );
     const { getByTestId } = render(tree);

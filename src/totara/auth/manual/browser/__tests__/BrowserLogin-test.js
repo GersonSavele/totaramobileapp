@@ -15,9 +15,8 @@
 import React from "react";
 import BrowserLogin from "../BrowserLogin";
 import { render } from "@testing-library/react-native";
-import * as coreSession from "@totara/core";
 import * as ReactRedux from "react-redux";
-import * as nav from "@react-navigation/native";
+import * as Navigation from '@/src/totara/lib/hooks';
 
 jest.mock("@totara/core", () => ({
   useSession: () => ({}),
@@ -27,9 +26,12 @@ jest.mock("@totara/core", () => ({
 describe("BrowserLogin", () => {
   beforeAll(() => {
     jest.spyOn(ReactRedux, "useDispatch").mockImplementation(() => jest.fn());
+
+    jest.spyOn(Navigation, "useParams").mockImplementation(() => ({ siteUrl: "http://abc.com" }))
+    
     global.fetch = jest.fn().mockImplementation(() => jest.fn());
-    jest.spyOn(nav, "useRoute").mockReturnValue({ params: { siteUrl: "http://abc.com" } });
   });
+
   it("should render BrowserLogin InforModal", async () => {
     const { root } = render(<BrowserLogin />);
     expect(root).toBeTruthy();

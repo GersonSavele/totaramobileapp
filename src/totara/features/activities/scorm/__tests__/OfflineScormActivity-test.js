@@ -30,6 +30,7 @@ import * as utils from "../utils";
 import * as storageUtils from "../storageUtils";
 import { Grade } from "@totara/types/Scorm";
 import { ScormLessonStatus } from "../constants";
+import * as Navigation from '@/src/totara/lib/hooks';
 
 describe("OfflineScormActivity", () => {
   const { NONE_EXIST_RESOURCE_ID, INVALID_SCORM_ID } = SCORM_TEST_IDS;
@@ -49,14 +50,13 @@ describe("OfflineScormActivity", () => {
 
   it("Should render TEXT general error for non existing scorm or scorm.id", async () => {
     const itemToBeTested = { ...mockScormActivityNavigation };
-    const navigation = {
-      state: {
-        params: {
-          ...itemToBeTested
-        }
-      }
+    const params = {
+      ...itemToBeTested
     };
-    const tree = <OfflineScormActivity navigation={navigation} />;
+
+    jest.spyOn(Navigation, "useParams").mockImplementation(() => params);
+
+    const tree = <OfflineScormActivity />;
     const { getByTestId } = render(tree);
     const labelTitle = getByTestId(INVALID_SCORM_ID);
     expect(labelTitle.children[0]).toBe(translate("general.error_unknown"));
@@ -68,17 +68,15 @@ describe("OfflineScormActivity", () => {
       scorm: { id: "10" }
     };
 
-    const navigation = {
-      state: {
-        params: {
-          ...itemToBeTested
-        }
-      }
-    };
+    const params = {
+      ...itemToBeTested
+    }
     const spy = jest.spyOn(redux, "useSelector");
     spy.mockReturnValue([]);
 
-    const tree = <OfflineScormActivity navigation={navigation} />;
+    jest.spyOn(Navigation, "useParams").mockImplementation(() => params);
+
+    const tree = <OfflineScormActivity />;
     const { getByTestId } = render(tree);
     const labelTitleNo = await getByTestId(NONE_EXIST_RESOURCE_ID);
     expect(labelTitleNo.children[0]).toBe(translate("general.error_unknown"));
