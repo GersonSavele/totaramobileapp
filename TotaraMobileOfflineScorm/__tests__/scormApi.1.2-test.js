@@ -15,7 +15,7 @@
  * @author Simon Tegg <simon.tegg@totaralearning.com>
  */
 
-import SCORMAPI from "../ScormApi.1.2";
+import SCORMAPI from "../scormApi.1.2";
 import getSCORMDatamodel from "../getScormDataModel";
 import inititalizeCMI from "../initializeCmi";
 import collectData from "../scormCollectData";
