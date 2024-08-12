@@ -1,7 +1,7 @@
 import type { ExpoConfig } from '@expo/config';
 
 export default (): ExpoConfig => ({
-  slug: 'TotaraMobileApp',
+  slug: 'totara-mobile-app',
   name: 'Totara',
   version: '1.3.0',
   orientation: 'portrait',
@@ -15,7 +15,7 @@ export default (): ExpoConfig => ({
   },
   ios: {
     supportsTablet: true,
-    bundleIdentifier: 'nz.co.abletech.totara', // TODO: Change this to the acutal ID when we have access
+    bundleIdentifier: 'com.totaralearning.TotaraMobileApp',
     buildNumber: '14',
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_IOS : './GoogleService-Info.plist'
   },
@@ -24,7 +24,7 @@ export default (): ExpoConfig => ({
       foregroundImage: './assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff'
     },
-    package: 'nz.co.abletech.totara', // TODO: Change this to the acutal ID when we have access
+    package: 'com.totaramobileapp',
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_ANDROID : './google-services.json'
   },
   plugins: [
@@ -60,8 +60,8 @@ export default (): ExpoConfig => ({
   experiments: {},
   extra: {
     eas: {
-      projectId: '7a0f187a-4f59-4859-8d6e-728e5d65421f'
+      projectId: '384245c6-9fab-4b8d-8c3c-77d4d5638f64'
     }
   },
-  owner: 'abletech'
+  owner: 'totara'
 });
