@@ -2,11 +2,10 @@
 
 "use strict";
 
-const download = require("download");
+const fs = require("fs");
+const https = require("https");
 const path = require("path");
-const yauzl = require("yauzl-promise"),
-  fs = require("fs"),
-  { pipeline } = require("stream/promises");
+const unzipper = require('unzipper');
 
 const LANGS_FOLDER = path.join(__dirname, "../..", "src/totara/locale/languages/");
 const LANGS_URL = "https://download.totaralms.com/lang/T15/";
@@ -15,28 +14,66 @@ const ZIP_FILE_NAME = "mobile.json.zip";
 const downloadURL = `${LANGS_URL}${ZIP_FILE_NAME}`;
 
 async function main() {
-  console.log(`Downloading translations from ${downloadURL}`);
-  const fetched = await download(downloadURL, LANGS_FOLDER);
-
-  const zipFile = LANGS_FOLDER + ZIP_FILE_NAME;
-  console.log(`Downloaded ${zipFile} with size of ${fetched.length / 1024} KB`);
-
-  const zip = await yauzl.open(zipFile);
   try {
-    for await (const entry of zip) {
-      if (entry.filename.endsWith("/")) {
-        await fs.promises.mkdir(`${LANGS_FOLDER}${entry.filename}`);
-      } else {
-        const readStream = await entry.openReadStream();
-        const writeStream = fs.createWriteStream(`${LANGS_FOLDER}${entry.filename}`);
-        await pipeline(readStream, writeStream);
-      }
-    }
-  } finally {
-    await zip.close();
-  }
+    console.log(`Downloading translations from ${downloadURL}`);
+    const zipFilePath = path.join(LANGS_FOLDER, ZIP_FILE_NAME);
 
-  const folder = fs.readdirSync(LANGS_FOLDER);
+    // Download file
+    await download(downloadURL, zipFilePath);
+
+    console.log(
+      `Downloaded ${zipFilePath} with size of ${(
+        fs.statSync(zipFilePath).size /
+        1024
+      ).toFixed(2)} KB`
+    );
+
+    // Unzip file
+    await unzip(zipFilePath, LANGS_FOLDER);
+
+    catalogLanguageFiles(LANGS_FOLDER);
+
+    // Remove zip file
+    fs.unlinkSync(zipFilePath);
+    console.log(`Deleted ${zipFilePath}`);
+
+  } catch (error) {
+    console.error(`Error during download: ${error}`);
+  }
+}
+
+async function download(url, dest) {
+  return await new Promise((resolve, reject) => {
+    const file = fs.createWriteStream(dest);
+    https
+      .get(url, (response) => {
+        // Check if the response is a successful status
+        if (response.statusCode !== 200) {
+          reject(
+            `Failed to get '${url}' (${response.statusCode})`
+          );
+          return;
+        }
+
+        response.pipe(file);
+        file.on("finish", () => {
+          file.close(resolve);
+        });
+      })
+      .on("error", (err) => {
+        // Delete the file if an error occurs
+        fs.unlink(dest, () => reject(err.message));
+      });
+  });
+}
+
+async function unzip(file, dest) {
+  const directory = await unzipper.Open.file(file);
+  return await directory.extract({ path: dest })
+}
+
+function catalogLanguageFiles(langFolder) {
+  const folder = fs.readdirSync(langFolder);
   const filter = folder.filter(x => path.extname(x).toLowerCase() === ".json" && x !== "all.json");
 
   console.log(`${filter.length} translations have been found.`);
@@ -47,7 +84,7 @@ async function main() {
   filter.forEach(x => {
     console.log(x);
     const lang = x.split(".")[0];
-    const content = fs.readFileSync(LANGS_FOLDER + x, "utf8");
+    const content = fs.readFileSync(langFolder + x, "utf8");
     try {
       body[lang] = JSON.parse(content);
     } catch (e) {
@@ -55,11 +92,8 @@ async function main() {
     }
   });
 
-  fs.writeFileSync(`${LANGS_FOLDER}all.json`, JSON.stringify(body, null, 2));
-  console.info(`Written all.json to ${LANGS_FOLDER}`);
-
-  fs.unlinkSync(zipFile);
-  console.log(`Deleted ${zipFile}`);
+  fs.writeFileSync(`${langFolder}all.json`, JSON.stringify(body, null, 2));
+  console.info(`Written all.json to ${langFolder}`);
 }
 
 main();
