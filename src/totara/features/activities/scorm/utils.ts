@@ -33,7 +33,7 @@ type GetPlayerInitialDataProps = {
   playerInitalData: any;
 };
 const xpath = require('xpath');
-const dom = require('xmldom').DOMParser;
+const dom = require('@xmldom/xmldom').DOMParser;
 
 const getOfflineScormPackageName = (scormId: string) => `${OFFLINE_SCORM_PREFIX}${scormId}`;
 
