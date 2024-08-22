@@ -13,8 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// TODO: Resmove this TS no-check when routing is cleared up
-// @ts-nocheck
 import { useNavigation } from '@react-navigation/native';
 import { Images } from '@resources/images';
 import { Button, InfoModal, TextInput } from '@totara/components';
@@ -47,17 +45,17 @@ const SiteErrorModal = ({ onDismiss, siteUrlFailure, testID }: PropSiteError) =>
   const content =
     siteUrlFailure === 'networkError'
       ? {
-          title: translate('server_not_reachable.title'),
-          description: translate('server_not_reachable.message'),
-          imageSource: Images.generalError,
-          primaryAction: translate('server_not_reachable.go_back')
-        }
+        title: translate('server_not_reachable.title'),
+        description: translate('server_not_reachable.message'),
+        imageSource: Images.generalError,
+        primaryAction: translate('server_not_reachable.go_back')
+      }
       : {
-          title: translate('site_url.auth_invalid_site.title'),
-          description: translate('site_url.auth_invalid_site.description'),
-          imageSource: Images.urlNotValid,
-          primaryAction: translate('site_url.auth_invalid_site.action_primary')
-        };
+        title: translate('site_url.auth_invalid_site.title'),
+        description: translate('site_url.auth_invalid_site.description'),
+        imageSource: Images.urlNotValid,
+        primaryAction: translate('site_url.auth_invalid_site.action_primary')
+      };
 
   return (
     <InfoModal
@@ -126,6 +124,7 @@ const SiteUrl = () => {
               label={translate('site_url.url_text_placeholder')}
               error={inputSiteUrlMessage}
               errorTestID={TEST_IDS.SITE_URL_INPUT_ERROR}
+              autoCorrect={false}
             />
             <Button
               variant="primary"
