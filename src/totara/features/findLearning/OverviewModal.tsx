@@ -15,7 +15,6 @@
 
 import { NetworkStatus, useQuery } from '@apollo/client';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { useNavigation } from '@react-navigation/native';
 import { Button } from '@totara/components';
 import { DescriptionContent } from '@totara/components/DescriptionContent';
 import { NAVIGATION, popAndGoToByRef } from '@totara/lib/navigation';
@@ -26,10 +25,11 @@ import React, { useLayoutEffect } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useParams } from '../../lib/hooks';
+import { useNavigation, useParams } from '../../lib/hooks';
 import type { DescriptionFormat } from '../../types/LearningItem';
 import { enrolmentInfoQuery } from '../enrolment/api';
 import { ImageElement } from './components';
+import { learningItemEnum } from '../constants';
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 
@@ -88,7 +88,7 @@ const overviewStyles = StyleSheet.create({
 
 export const OverviewModal = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
+  const navigation = useNavigation('OverviewModal');
   const { itemid, title, mobileImage: imageSource, summary, summaryFormat } = useParams('FindLearningOverview');
 
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
@@ -105,11 +105,10 @@ export const OverviewModal = () => {
 
   const goTo = () => {
     if (isEnrolled || privileged) {
-      // TODO: Remove ESLint ignore when the API change is sorted
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const routeId = NAVIGATION.FIND_LEARNING_COURSE_DETAILS;
-      // TODO Fix API Change!
-      // navigation.navigate(routeId, { targetId: itemid, courseGroupType: learningItemEnum.Course });
+      navigation.navigate(NAVIGATION.FIND_LEARNING_COURSE_DETAILS, {
+        targetId: `${itemid}`,
+        courseGroupType: learningItemEnum.Course
+      });
     } else {
       popAndGoToByRef(NAVIGATION.ENROLMENT_MODAL, {
         targetId: itemid

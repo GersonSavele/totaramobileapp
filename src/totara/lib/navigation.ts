@@ -49,6 +49,8 @@ const CURRENT_LEARNING = 'CurrentLearning';
 const COURSE_DETAILS = 'CourseDetails';
 const COURSE_GROUP_DETAILS = 'CourseGroupDetails'; //either LearningItemEnum.Program or LearningItemEnum.Certificate
 const COURSE_LIST = 'CourseList';
+const ACTIVITY_LIST = 'ActivityList';
+const NO_CURRENT_LEARNING = 'NoCurrentLearning';
 
 //scorm routes
 const SCORM_STACK_ROOT = 'ScormActivityStack';
@@ -72,6 +74,7 @@ const FIND_LEARNING_OVERVIEW = 'FindLearningOverview';
 const FIND_LEARNING_COURSE_DETAILS = 'FindLearningCourseDetails';
 const FIND_LEARNING_WEBVIEW = 'FindLearningWebViewWrapper';
 const ENROLMENT_MODAL = 'EnrolmentModal';
+const OVERVIEW_MODAL = 'OverviewModal';
 
 //Site url and Login
 const SITE_URL = 'SiteUrl';
@@ -110,7 +113,10 @@ const NAVIGATION = {
   WEBVIEW_LOGIN,
   BROWSER_LOGIN,
   ENROLMENT_MODAL,
-  FIND_LEARNING_WEBVIEW
+  FIND_LEARNING_WEBVIEW,
+  ACTIVITY_LIST,
+  NO_CURRENT_LEARNING,
+  OVERVIEW_MODAL
 } as const;
 
 const cardModalOptions = {

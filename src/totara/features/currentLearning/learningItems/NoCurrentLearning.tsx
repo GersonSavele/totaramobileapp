@@ -13,6 +13,8 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+import { useNavigation } from '@/src/totara/lib/hooks';
+import { NAVIGATION } from '@/src/totara/lib/navigation';
 import { Images } from '@resources/images';
 import { Button } from '@totara/components';
 import { useSession } from '@totara/core';
@@ -31,10 +33,10 @@ type NoCurrentLearningProps = {
 
 const NoCurrentLearning = ({ testID }: NoCurrentLearningProps) => {
   const { host, core } = useSession();
+  const navigation = useNavigation('NoCurrentLearning');
   const onPressFindLearning = () => {
     if (isEnableFindLearning(core)) {
-      // TODO Fix
-      // navigation.navigate(NAVIGATION.FIND_LEARNING);
+      navigation.navigate(NAVIGATION.FIND_LEARNING);
     } else {
       Linking.openURL(config.findLearningUri(host!));
     }

@@ -14,7 +14,6 @@
  */
 
 import { useMutation } from '@apollo/client';
-import { useNavigation } from '@react-navigation/native';
 import { GeneralErrorModal } from '@totara/components';
 import Icon from '@totara/components/Icon';
 import { WekaContent } from '@totara/components/weka/WekaContent';
@@ -39,6 +38,7 @@ import { activitySelfComplete, fetchResource, updateStateViewResource } from '..
 import activitiesStyles from './activitiesStyles';
 import CompletionIcon from './CompletionIcon';
 import TextContent from './TextContent';
+import { useNavigation } from '@/src/totara/lib/hooks';
 
 const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -277,7 +277,7 @@ type ListUnLockProps = {
 };
 
 const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: ListUnLockProps) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation('ActivityList');
 
   const { host = '', apiKey = '' } = useSession();
 
@@ -326,22 +326,9 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           onPress={() => {
             switch (item.modtype) {
               case ActivityModType.scorm: {
-                // TODO Fix
-                // navigation.navigate(SCORM_STACK_ROOT, {
-                //   screen: SCORM_ROOT,
-                //   params: {
-                //     id: item.instanceid.toString(),
-                //     title: item.name
-                //   }
-                // });
-                console.log('SCORM');
-                navigateTo({
-                  navigate: navigation.navigate,
-                  routeId: SCORM_ROOT,
-                  props: {
-                    id: item.instanceid.toString(),
-                    title: item.name
-                  }
+                navigation.navigate(NAVIGATION.SCORM_ROOT, {
+                  id: item.instanceid.toString(),
+                  title: item.name
                 });
                 break;
               }
@@ -385,7 +372,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                         fileurl,
                         mimetype,
                         apiKey,
-                        backAction: () => {},
+                        backAction: () => { },
                         title: item?.name
                       }
                     });
@@ -401,7 +388,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                   routeId: WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
-                    backAction: () => {},
+                    backAction: () => { },
                     title: item?.name
                   }
                 });

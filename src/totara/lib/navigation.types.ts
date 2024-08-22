@@ -5,6 +5,7 @@ import type { CourseSets } from '../types/CourseGroup';
 import type { CatalogItem } from '../types/FindLearning';
 import type { Attempt, Grade, Scorm, ScormActivityParams } from '../types/Scorm';
 import type { NAVIGATION } from './navigation';
+import { learningItemEnum } from '../features/constants';
 
 type CurrentLearningTabParamList = {
   [NAVIGATION.CURRENT_LEARNING]: undefined;
@@ -20,15 +21,20 @@ type CurrentLearningTabParamList = {
   [NAVIGATION.COURSE_LIST]: {
     coursesList: CourseSets[];
   };
+  [NAVIGATION.ACTIVITY_LIST]: undefined;
+  [NAVIGATION.NO_CURRENT_LEARNING]: undefined;
 };
 
 type FindLearningTabParamList = {
   [NAVIGATION.FIND_LEARNING_STACK]: undefined;
   [NAVIGATION.FIND_LEARNING_COURSE_DETAILS]: {
     targetId: string;
-    passwordRequired: string;
-    guestPassword: string;
+    passwordRequired?: boolean;
+    guestPassword?: string;
+    courseGroupType?: learningItemEnum;
   };
+  [NAVIGATION.FIND_LEARNING]: undefined;
+  [NAVIGATION.OVERVIEW_MODAL]: undefined;
 };
 
 type DownloadsTabParamList = {

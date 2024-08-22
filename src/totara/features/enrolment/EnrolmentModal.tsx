@@ -14,7 +14,6 @@
  */
 
 import { NetworkStatus, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { useNavigation } from '@react-navigation/native';
 import { Button, TextInput } from '@totara/components';
 import { translate } from '@totara/locale';
 import { fontWeights, margins, paddings } from '@totara/theme/constants';
@@ -25,7 +24,9 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Show } from '../../lib/components/Show';
-import { useParams } from '../../lib/hooks';
+import { useNavigation, useParams } from '../../lib/hooks';
+import { NAVIGATION } from '../../lib/navigation';
+import { learningItemEnum } from "../constants";
 import { enrolmentInfoQuery, guestAccessQuery, selfEnrolmentMutation } from './api';
 
 const styles = StyleSheet.create({
@@ -67,6 +68,7 @@ const GuestAccessWidget = ({
   courseId: string;
   enrolment: EnrolmentOption;
 }) => {
+  const navigation = useNavigation('EnrolmentModal');
   const [validateGuestAccess, { loading, data: guestAccessResult }] = useLazyQuery(guestAccessQuery);
 
   const [passwordState, setPasswordState] = useState<GuestPasswordState>({});
@@ -94,13 +96,12 @@ const GuestAccessWidget = ({
   };
 
   const navigateToCourse = () => {
-    // TODO Fix
-    // navigation.navigate(NAVIGATION.FIND_LEARNING_COURSE_DETAILS, {
-    //   targetId: courseId,
-    //   guestPassword: passwordState.password,
-    //   passwordRequired,
-    //   courseGroupType: learningItemEnum.Course
-    // });
+    navigation.navigate(NAVIGATION.FIND_LEARNING_COURSE_DETAILS, {
+      targetId: courseId,
+      guestPassword: passwordState.password,
+      passwordRequired,
+      courseGroupType: learningItemEnum.Course
+    });
   };
 
   const onPasswordChange = newValue => {
@@ -131,14 +132,14 @@ const GuestAccessWidget = ({
     <View testID={'guest_access_widget'} style={styles.widgetContainer}>
       <Text style={styles.widgetTitle}>{translate('enrolment_options.guest_access')}</Text>
       {/* <Show when={passwordRequired}> */}
-        <TextInput
-          label={translate('enrolment_options.password_required')}
-          testID="guest_access_password"
-          returnKeyType="done"
-          error={passwordState.errorMessage}
-          status={passwordState.errorMessage ? 'error' : undefined}
-          onChangeText={onPasswordChange}
-        />
+      <TextInput
+        label={translate('enrolment_options.password_required')}
+        testID="guest_access_password"
+        returnKeyType="done"
+        error={passwordState.errorMessage}
+        status={passwordState.errorMessage ? 'error' : undefined}
+        onChangeText={onPasswordChange}
+      />
       {/* </Show> */}
       <Button
         variant="primary"
@@ -164,6 +165,7 @@ const SelfEnrolmentWidget = ({
   courseId: string;
   enrolment: EnrolmentOption;
 }) => {
+  const navigation = useNavigation('EnrolmentModal');
   const [selfEnrol, { data: dataSelfEnrol, loading: loadingSelfEnrol }] = useMutation(selfEnrolmentMutation);
 
   const [enrolmentKeyState, setEnrolmentKeyState] = useState<EnrolmentKeyState>({
@@ -180,8 +182,10 @@ const SelfEnrolmentWidget = ({
   };
 
   const navigateToCourse = () => {
-    // TODO Fix
-    // navigation.navigate(NAVIGATION.FIND_LEARNING_COURSE_DETAILS;, { targetId: courseId, courseGroupType: learningItemEnum.Course });
+    navigation.navigate(NAVIGATION.FIND_LEARNING_COURSE_DETAILS, {
+      targetId: courseId,
+      courseGroupType: learningItemEnum.Course
+    });
   };
 
   const enrolmentSuccess = dataSelfEnrol?.mobile_findlearning_enrolment_result?.success;
@@ -296,7 +300,7 @@ const LoadingError = ({ onTryReload }: { onTryReload: () => void }) => {
 };
 
 export const EnrolmentModal = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation('EnrolmentModal');
   const { targetId } = useParams('EnrolmentModal');
 
   const { data, networkStatus, error, refetch } = useQuery(enrolmentInfoQuery, {
