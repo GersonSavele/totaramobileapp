@@ -13,22 +13,23 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import 'moment/min/locales';
+import "moment/min/locales";
 
-import { I18n } from 'i18n-js';
-// import * as RNLocalize from "react-native-localize";
-import moment from 'moment';
+import { DEFAULT_LANGUAGE } from "@totara/lib/constants";
+import { I18n } from "i18n-js";
+import moment from "moment";
+import * as RNLocalize from "react-native-localize";
 
-// if the all.json is not being generated automatically by the post install script for any reason, comment the following line and uncomment the next ones to especify one or more pre defined translations
-import importedTranslations from './languages/all.json';
+// if the all.json is not being generated automatically by the post install script for any reason, comment the following line and uncomment the next ones to specify one or more pre defined translations
+import importedTranslations from "./languages/all.json";
 // import * as en from "./languages/en.json";
 const translations = importedTranslations;
 
-// const { languageTag } = RNLocalize.findBestAvailableLanguage(Object.keys(translations)) || {
-//   languageTag: DEFAULT_LANGUAGE
-// };
-const languageTag = 'en';
-const i18n = new I18n(translations);
+const { languageTag } = RNLocalize.findBestLanguageTag(Object.keys(translations)) || {
+  languageTag: DEFAULT_LANGUAGE
+};
+
+const i18n = new I18n();
 i18n.defaultLocale = languageTag;
 i18n.locale = languageTag;
 i18n.enableFallback = true;
