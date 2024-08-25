@@ -1,11 +1,11 @@
 import type { StackScreenProps } from '@react-navigation/stack';
 
+import type { learningItemEnum } from '../features/constants';
 import type { Activity, NotificationMessage } from '../types';
 import type { CourseSets } from '../types/CourseGroup';
 import type { CatalogItem } from '../types/FindLearning';
 import type { Attempt, Grade, Scorm, ScormActivityParams } from '../types/Scorm';
 import type { NAVIGATION } from './navigation';
-import { learningItemEnum } from '../features/constants';
 
 type CurrentLearningTabParamList = {
   [NAVIGATION.CURRENT_LEARNING]: undefined;

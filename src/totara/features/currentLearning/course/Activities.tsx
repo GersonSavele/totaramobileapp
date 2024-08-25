@@ -34,11 +34,12 @@ import { get, isEmpty } from 'lodash';
 import React, { useEffect } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
+import { useNavigation } from '@/src/totara/lib/hooks';
+
 import { activitySelfComplete, fetchResource, updateStateViewResource } from '../course/api';
 import activitiesStyles from './activitiesStyles';
 import CompletionIcon from './CompletionIcon';
 import TextContent from './TextContent';
-import { useNavigation } from '@/src/totara/lib/hooks';
 
 const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
@@ -326,7 +327,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           onPress={() => {
             switch (item.modtype) {
               case ActivityModType.scorm: {
-                navigation.navigate(NAVIGATION.SCORM_ROOT, {
+                navigation.navigate(SCORM_ROOT, {
                   id: item.instanceid.toString(),
                   title: item.name
                 });

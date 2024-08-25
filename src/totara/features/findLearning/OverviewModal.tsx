@@ -27,9 +27,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useNavigation, useParams } from '../../lib/hooks';
 import type { DescriptionFormat } from '../../types/LearningItem';
+import { learningItemEnum } from '../constants';
 import { enrolmentInfoQuery } from '../enrolment/api';
 import { ImageElement } from './components';
-import { learningItemEnum } from '../constants';
 
 const { textHeadline, textMedium, textRegular, colorNeutral3 } = TotaraTheme;
 

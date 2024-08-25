@@ -13,8 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-import { useNavigation } from '@/src/totara/lib/hooks';
-import { NAVIGATION } from '@/src/totara/lib/navigation';
 import { Images } from '@resources/images';
 import { Button } from '@totara/components';
 import { useSession } from '@totara/core';
@@ -26,6 +24,9 @@ import { TotaraTheme } from '@totara/theme/Theme';
 import React from 'react';
 import type { ImageSourcePropType } from 'react-native';
 import { Image, Linking, StyleSheet, Text, View } from 'react-native';
+
+import { useNavigation } from '@/src/totara/lib/hooks';
+import { NAVIGATION } from '@/src/totara/lib/navigation';
 
 type NoCurrentLearningProps = {
   testID?: string;
