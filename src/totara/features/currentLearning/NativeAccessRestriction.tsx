@@ -36,7 +36,7 @@ const NativeAccessRestriction = ({ onClose, urlView }: Props) => {
         variant="primary"
         onPress={() => Linking.openURL(urlView)}
         text={translate('current_learning.restriction_view.primary_button_title')}
-        icon="external-link-alt"
+        icon="up-right-from-square"
         style={{ alignSelf: 'center' }}
       />
       <Button

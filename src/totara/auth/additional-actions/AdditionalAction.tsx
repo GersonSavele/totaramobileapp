@@ -36,7 +36,7 @@ const AdditionalAction = () => {
       <Button
         variant="primary"
         text={translate('additional_actions_modal.auth_model_go_to_browser')}
-        icon={'external-link-alt'}
+        icon={'up-right-from-square'}
         onPress={() => {
           Linking.openURL(host!);
         }}

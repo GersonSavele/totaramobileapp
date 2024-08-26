@@ -91,7 +91,7 @@ const BrowserLogin = () => {
         onPress={() => {
           Linking.openURL(loginUrl);
         }}
-        icon="external-link-alt"
+        icon="up-right-from-square"
       />
       <Button
         variant="tertiary"

@@ -108,7 +108,7 @@ const WebviewLogin = () => {
         </View>
         <View style={styles.barContent}>
           <TouchableIcon
-            icon={'external-link-alt'}
+            icon={'up-right-from-square'}
             onPress={() => {
               Linking.openURL(navProtocol + '://' + navEndPoint);
             }}
