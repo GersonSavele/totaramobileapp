@@ -23,12 +23,18 @@ import { useRoute } from '@react-navigation/native';
 import { translate } from '@totara/locale';
 import * as Navigation from '@/src/totara/lib/hooks';
 
+const navigationMock = {
+  setOptions: jest.fn(),
+  navigate: jest.fn()
+};
+
 describe('Enrolment Options', () => {
   test('Should render loading widget', async () => {
     const params = {
       targetId: 1
     };
 
+    jest.spyOn(Navigation, "useNavigation").mockImplementation(() => navigationMock);
     jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const { getByTestId } = render(

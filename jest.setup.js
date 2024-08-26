@@ -132,6 +132,10 @@ jest.mock("react-native-orientation-locker", () => {
 
 jest.mock("redux-persist-sensitive-storage", () => jest.fn());
 
+jest.mock("react-native-localize", () => ({
+  findBestLanguageTag: jest.fn()
+}));
+
 jest.mock("@dr.pogodin/react-native-static-server", () => jest.fn());
 
 jest.mock("@react-native-async-storage/async-storage", () => jest.fn());

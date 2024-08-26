@@ -24,12 +24,18 @@ import { enrolmentOptionsMock } from "./../../enrolment/api/enrolmentOptions.moc
 import { translate } from "@totara/locale";
 import * as Navigation from '@/src/totara/lib/hooks';
 
+const navigationMock = {
+  setOptions: jest.fn(),
+  navigate: jest.fn()
+};
+
 describe("Find Learning - Overview Modal", () => {
   it("Should render loading state", async () => {
     const params = {
       itemid: 1
     }
 
+    jest.spyOn(Navigation, "useNavigation").mockImplementation(() => navigationMock);
     jest.spyOn(Navigation, 'useParams').mockImplementation(() => params);
 
     const tree = (
