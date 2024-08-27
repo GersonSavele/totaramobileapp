@@ -23,6 +23,7 @@ import { isEmpty } from 'lodash';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { Message } from '../../components/TextInput/components/Message';
 import { Show } from '../../lib/components/Show';
 import { useNavigation, useParams } from '../../lib/hooks';
 import { NAVIGATION } from '../../lib/navigation';
@@ -131,16 +132,16 @@ const GuestAccessWidget = ({
   return (
     <View testID={'guest_access_widget'} style={styles.widgetContainer}>
       <Text style={styles.widgetTitle}>{translate('enrolment_options.guest_access')}</Text>
-      {/* <Show when={passwordRequired}> */}
-      <TextInput
-        label={translate('enrolment_options.password_required')}
-        testID="guest_access_password"
-        returnKeyType="done"
-        error={passwordState.errorMessage}
-        status={passwordState.errorMessage ? 'error' : undefined}
-        onChangeText={onPasswordChange}
-      />
-      {/* </Show> */}
+      <Show when={passwordRequired}>
+        <TextInput
+          label={translate('enrolment_options.password_required')}
+          testID="guest_access_password"
+          returnKeyType="done"
+          error={passwordState.errorMessage}
+          status={passwordState.errorMessage ? 'error' : undefined}
+          onChangeText={onPasswordChange}
+        />
+      </Show>
       <Button
         variant="primary"
         testID={'guest_access_button'}
@@ -247,6 +248,11 @@ const SelfEnrolmentWidget = ({
         onPress={onEnrolMeTap}
         mode={loadingSelfEnrol ? 'loading' : undefined}
       />
+      <Show when={!passwordRequired && error}>
+        <Message testID={""} status={'error'}>
+          {error}
+        </Message>
+      </Show>
     </View>
   );
 };
