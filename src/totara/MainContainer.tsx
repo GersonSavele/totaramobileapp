@@ -14,7 +14,7 @@
  */
 
 import { useMutation, useQuery } from '@apollo/client';
-import _messaging from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import { createStackNavigator } from '@react-navigation/stack';
 import ScormActivity from '@totara/features/activities/scorm/ScormActivity';
 import { registerPushNotifications } from '@totara/lib/notificationService';
@@ -34,7 +34,7 @@ import { EnrolmentModal } from './features/enrolment/EnrolmentModal';
 import FindLearningWebViewWrapper from './features/findLearning/FindLearningWebViewWrapper';
 import { OverviewModal } from './features/findLearning/OverviewModal';
 import { mutationForToken, notificationsQuery } from './features/notifications/api';
-import { cardModalOptions, horizontalAnimation } from './lib/navigation';
+import { cardModalOptions, horizontalAnimation, navigateByRef } from './lib/navigation';
 import { NAVIGATION } from './lib/navigation';
 import { NAVIGATION_TEST_IDS } from './lib/testIds';
 import { translate } from './locale';
@@ -50,26 +50,24 @@ const MainContainer = () => {
   ResourceManager.resumeDownloads();
 
   const notificationState = useSelector((state: RootState) => state.notificationReducer);
-  const { client: _client } = useQuery(notificationsQuery);
+  const { client } = useQuery(notificationsQuery);
   const [sendToken] = useMutation(mutationForToken);
   const dispatch = useDispatch();
 
-  // TODO: Uncomment when Firebase is hooked up
+  const handleNotificationReceived = remoteMessage => {
+    if (remoteMessage) {
+      fetchNotifications(client);
+      if (remoteMessage?.data?.notification === "1") {
+        navigateByRef("Notifications", {});
+      }
+    }
+  };
 
-  // const handleNotificationReceived = remoteMessage => {
-  //   if (remoteMessage) {
-  //     fetchNotifications(client);
-  //     if (remoteMessage?.data?.notification === "1") {
-  //       navigateByRef("Notifications", {});
-  //     }
-  //   }
-  // };
-
-  // const fetchNotifications = client => {
-  //   if (client) {
-  //     client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" });
-  //   }
-  // };
+  const fetchNotifications = client => {
+    if (client) {
+      client.query({ query: notificationsQuery, fetchPolicy: "network-only", errorPolicy: "ignore" });
+    }
+  };
 
   useEffect(() => {
     if (notificationState?.tokenSent) return;
@@ -97,25 +95,29 @@ const MainContainer = () => {
   }, []);
 
   useEffect(() => {
-    // messaging().onNotificationOpenedApp(remoteMessage => {
-    //   console.debug(`onNotificationOpenedApp ${remoteMessage}`);
-    //   handleNotificationReceived(remoteMessage);
-    // });
-    // messaging()
-    //   .getInitialNotification()
-    //   .then(remoteMessage => {
-    //     console.debug(`getInitialNotification ${remoteMessage}`);
-    //     fetchNotifications(client);
-    //     handleNotificationReceived(remoteMessage);
-    //   });
-    // messaging().onTokenRefresh(token => {
-    //   dispatch(updateToken({ token: token }));
-    // });
-    // const unsubscribe = messaging().onMessage(message => {
-    //   console.debug(`onMessage ${JSON.stringify(message)}`);
-    //   fetchNotifications(client);
-    // });
-    // return unsubscribe;
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.debug(`onNotificationOpenedApp ${remoteMessage}`);
+      handleNotificationReceived(remoteMessage);
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        console.debug(`getInitialNotification ${remoteMessage}`);
+        fetchNotifications(client);
+        handleNotificationReceived(remoteMessage);
+      });
+
+    messaging().onTokenRefresh(token => {
+      dispatch(updateToken({ token: token }));
+    });
+
+    const unsubscribe = messaging().onMessage(message => {
+      console.debug(`onMessage ${JSON.stringify(message)}`);
+      fetchNotifications(client);
+    });
+
+    return unsubscribe;
   }, []);
 
   return (
