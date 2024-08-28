@@ -51,7 +51,7 @@ type NotificationsTabParamList = {
 };
 
 type ScormStackParamList = {
-  [NAVIGATION.SCORM_ROOT]: ScormActivityParams;
+  [NAVIGATION.SCORM_ACTIVITY]: ScormActivityParams;
   [NAVIGATION.SCORM_ATTEMPTS]: {
     gradeMethod: Grade;
     attempts?: Attempt[];

@@ -41,7 +41,7 @@ import activitiesStyles from './activitiesStyles';
 import CompletionIcon from './CompletionIcon';
 import TextContent from './TextContent';
 
-const { SCORM_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
+const { SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
@@ -327,7 +327,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
           onPress={() => {
             switch (item.modtype) {
               case ActivityModType.scorm: {
-                navigation.navigate(SCORM_ROOT, {
+                navigation.navigate(NAVIGATION.SCORM_ACTIVITY, {
                   id: item.instanceid.toString(),
                   title: item.name
                 });

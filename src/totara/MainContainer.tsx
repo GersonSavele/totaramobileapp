@@ -16,7 +16,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import _messaging from '@react-native-firebase/messaging';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ScormStack } from '@totara/features/activities/scorm/ScormActivity';
+import ScormActivity, { navigationOptions } from '@totara/features/activities/scorm/ScormActivity';
 import { registerPushNotifications } from '@totara/lib/notificationService';
 import ResourceManager from '@totara/lib/resourceManager';
 import React, { useEffect } from 'react';
@@ -37,8 +37,11 @@ import { NAVIGATION_TEST_IDS } from './lib/testIds';
 import { translate } from './locale';
 import type { RootState } from './reducers';
 import TabContainer from './TabContainer';
+import ScormAttempts from './features/activities/scorm/ScormAttempts';
+import OfflineScormActivity from './features/activities/scorm/OfflineScormActivity';
+import ScormFeedbackModal from './features/activities/scorm/components/ScormFeedbackModal';
 
-const { SCORM_STACK_ROOT, ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
+const { ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
 
 const Stack = createStackNavigator();
 const detaultScreenOptions = TotaraNavigationOptions({ backTitle: translate('general.back') });
@@ -117,7 +120,20 @@ const MainContainer = () => {
   return (
     <Stack.Navigator screenOptions={{ presentation: 'modal', headerShown: false }}>
       <Stack.Screen name="TabContainer" component={TabContainer} />
-      <Stack.Screen name={SCORM_STACK_ROOT} component={ScormStack} />
+      <Stack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
+        <Stack.Screen name={NAVIGATION.SCORM_ACTIVITY} component={ScormActivity} options={{ ...navigationOptions }} />
+        <Stack.Screen name={NAVIGATION.SCORM_ATTEMPTS} component={ScormAttempts} options={{ ...navigationOptions }} />
+        <Stack.Screen
+          name={NAVIGATION.OFFLINE_SCORM_ACTIVITY}
+          component={OfflineScormActivity}
+          options={{ ...navigationOptions }}
+        />
+        <Stack.Screen
+          name={NAVIGATION.SCORM_FEEDBACK}
+          component={ScormFeedbackModal}
+          options={{ ...navigationOptions }}
+        />
+      </Stack.Group>
       <Stack.Screen name={WEBVIEW_ACTIVITY} component={WebViewStack} />
       <Stack.Screen
         name={ABOUT}

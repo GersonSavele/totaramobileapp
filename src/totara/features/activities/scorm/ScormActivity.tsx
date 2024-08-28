@@ -15,7 +15,6 @@
 
 import { useApolloClient, useQuery } from '@apollo/client';
 import { useNetInfo } from '@react-native-community/netinfo';
-import { createStackNavigator } from '@react-navigation/stack';
 import CloseButton from '@totara/components/CloseButton';
 import Loading from '@totara/components/Loading';
 import ResourceDownloader from '@totara/components/ResourceDownloader';
@@ -36,11 +35,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { WebviewActivity } from '../webview/WebviewActivity';
 import { scormQuery } from './api';
-import ScormFeedbackModal from './components/ScormFeedbackModal';
-import OfflineScormActivity from './OfflineScormActivity';
-import ScormAttempts from './ScormAttempts';
 import ScormSummary from './ScormSummary';
 import { getOfflineActivity } from './storageUtils';
 import { getOfflinePackageUnzipPath, getTargetZipFile } from './utils';
@@ -104,7 +99,7 @@ const onRefresh =
 
 const ScormActivity = () => {
   const navigation = useNavigation('ScormActivity');
-  const { id, title = '' } = useParams('ScormActivity');
+  const { id, title = '' } = useParams('ScormActivity') ?? {};
   const apolloClient = useApolloClient();
   const { loading, error, data, refetch, networkStatus } = useQuery(scormQuery, {
     variables: { scormid: id },
@@ -204,8 +199,6 @@ const ScormActivity = () => {
   );
 };
 
-const Stack = createStackNavigator();
-
 const navigationOptions = ({ navigation }) => {
   const { title = '', backAction = () => navigation.pop() } = navigation.state.params as ScormActivityParams;
   return {
@@ -215,67 +208,6 @@ const navigationOptions = ({ navigation }) => {
     headerRight: () => headerRight({ navigation })
   };
 };
-
-// const innerStack = createCompatNavigatorFactory(createStackNavigator)(
-//   {
-//     [SCORM_ROOT]: {
-//       screen: ScormActivity,
-//       navigationOptions
-//     },
-//     [SCORM_ATTEMPTS]: {
-//       screen: ScormAttempts,
-//       navigationOptions
-//     },
-//     [OFFLINE_SCORM_ACTIVITY]: {
-//       screen: OfflineScormActivity,
-//       navigationOptions
-//     },
-//     [WEBVIEW_ACTIVITY]: {
-//       screen: WebviewActivity,
-//       navigationOptions
-//     }
-//   },
-//   {
-//     // initialRouteKey: SCORM_ROOT,
-//     initialRouteName: SCORM_ROOT
-//   }
-// );
-
-const innerStack = () => (
-  <Stack.Navigator initialRouteName={NAVIGATION.SCORM_ROOT}>
-    <Stack.Screen name={NAVIGATION.SCORM_ROOT} component={ScormActivity} options={{ ...navigationOptions }} />
-    <Stack.Screen name={NAVIGATION.SCORM_ATTEMPTS} component={ScormAttempts} options={{ ...navigationOptions }} />
-    <Stack.Screen
-      name={NAVIGATION.OFFLINE_SCORM_ACTIVITY}
-      component={OfflineScormActivity}
-      options={{ ...navigationOptions }}
-    />
-    <Stack.Screen name={NAVIGATION.WEBVIEW_ACTIVITY} component={WebviewActivity} options={{ ...navigationOptions }} />
-  </Stack.Navigator>
-);
-
-// const scormStack = createCompatNavigatorFactory(createStackNavigator)(
-//   {
-//     [SCORM_STACK_ROOT]: {
-//       screen: innerStack
-//     },
-//     [SCORM_FEEDBACK]: {
-//       screen: ScormFeedbackModal,
-//       navigationOptions
-//     }
-//   },
-//   {
-//     mode: "modal",
-//     headerMode: "none"
-//   }
-// );
-
-const ScormStack = () => (
-  <Stack.Navigator screenOptions={{ presentation: 'modal', headerShown: false }}>
-    <Stack.Screen name={NAVIGATION.SCORM_STACK_ROOT} component={innerStack} />
-    <Stack.Screen name={NAVIGATION.SCORM_FEEDBACK} component={ScormFeedbackModal} options={{ ...navigationOptions }} />
-  </Stack.Navigator>
-);
 
 const headerRight = props => {
   const { navigation } = props;
@@ -301,5 +233,5 @@ const headerRight = props => {
   }
 };
 
-export { apiDataEffect, navigationOptions, onRefresh, ScormStack };
+export { apiDataEffect, navigationOptions, onRefresh };
 export default ScormActivity;

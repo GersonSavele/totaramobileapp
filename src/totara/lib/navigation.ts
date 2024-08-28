@@ -31,7 +31,7 @@ const navigateTo = ({ navigate, routeId, props }) => {
         params: props
       });
       break;
-    case SCORM_ROOT:
+    case SCORM_ACTIVITY:
       navigate(routeId, {
         screen: routeId,
         params: props
@@ -56,8 +56,7 @@ const NO_CURRENT_LEARNING = 'NoCurrentLearning';
 const SCORM_STACK_ROOT = 'ScormActivityStack';
 const WEBVIEW_ACTIVITY_STACK = 'WebviewActivityStack';
 const WEBVIEW_ACTIVITY = 'WebviewActivity';
-const SCORM_ROOT = 'ScormActivity';
-// const SCORM_ACTIVITY = "ScormActivity";
+const SCORM_ACTIVITY = "ScormActivity";
 const SCORM_ATTEMPTS = 'ScormAttempts';
 const OFFLINE_SCORM_ACTIVITY = 'OfflineScormActivity';
 const SCORM_FEEDBACK = 'ScormFeedback';
@@ -94,7 +93,7 @@ const NAVIGATION = {
   SETTINGS,
   DOWNLOADS,
   SCORM_STACK_ROOT,
-  SCORM_ROOT,
+  SCORM_ACTIVITY,
   SCORM_ATTEMPTS,
   SCORM_FEEDBACK,
   OFFLINE_SCORM_ACTIVITY,

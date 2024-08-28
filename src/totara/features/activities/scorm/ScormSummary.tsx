@@ -44,7 +44,7 @@ import {
 } from './storageUtils';
 import { getDataForScormSummary } from './utils';
 
-const { SCORM_ROOT, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, WEBVIEW_ACTIVITY } = NAVIGATION;
+const { SCORM_ACTIVITY, OFFLINE_SCORM_ACTIVITY, SCORM_ATTEMPTS, SCORM_FEEDBACK, WEBVIEW_ACTIVITY } = NAVIGATION;
 
 type SummaryProps = {
   id: string;
@@ -129,7 +129,7 @@ const showScormFeedback = ({
   navigate: Function;
   navigateTo: Function;
 }) => {
-  const goToSummary = () => navigate({ routeName: SCORM_ROOT });
+  const goToSummary = () => navigate({ routeName: SCORM_ACTIVITY });
   navigateTo({
     routeId: SCORM_FEEDBACK,
     navigate: navigate,

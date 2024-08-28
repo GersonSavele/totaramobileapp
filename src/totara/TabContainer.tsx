@@ -40,7 +40,7 @@ const TabContainer = () => {
   const { core } = useSession();
 
   useEffect(() => {
-    notifee.setBadgeCount(notificationCount).then(() => console.log('Badge count set!'));
+    notifee.setBadgeCount(notificationCount);
   }, [notificationCount]);
 
   const TabBarIconBuilder = ({ image, focused, color }: { image: iconImageProps; focused: boolean; color: string }) => {
