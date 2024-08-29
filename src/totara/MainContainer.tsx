@@ -26,6 +26,9 @@ import { tokenSent, updateToken } from './actions/notification';
 import CloseButton from './components/CloseButton';
 import TotaraNavigationOptions from './components/NavigationOptions';
 import About from './features/about/About';
+import ScormFeedbackModal from './features/activities/scorm/components/ScormFeedbackModal';
+import OfflineScormActivity from './features/activities/scorm/OfflineScormActivity';
+import ScormAttempts from './features/activities/scorm/ScormAttempts';
 import WebViewStack from './features/activities/webview/WebViewStack';
 import { EnrolmentModal } from './features/enrolment/EnrolmentModal';
 import FindLearningWebViewWrapper from './features/findLearning/FindLearningWebViewWrapper';
@@ -37,9 +40,6 @@ import { NAVIGATION_TEST_IDS } from './lib/testIds';
 import { translate } from './locale';
 import type { RootState } from './reducers';
 import TabContainer from './TabContainer';
-import ScormAttempts from './features/activities/scorm/ScormAttempts';
-import OfflineScormActivity from './features/activities/scorm/OfflineScormActivity';
-import ScormFeedbackModal from './features/activities/scorm/components/ScormFeedbackModal';
 
 const { ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
 

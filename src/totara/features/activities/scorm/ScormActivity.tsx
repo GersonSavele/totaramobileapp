@@ -20,7 +20,6 @@ import Loading from '@totara/components/Loading';
 import ResourceDownloader from '@totara/components/ResourceDownloader';
 import { useSession } from '@totara/core';
 import { useNavigation, useParams } from '@totara/lib/hooks';
-import { NAVIGATION } from '@totara/lib/navigation';
 import ResourceManager from '@totara/lib/resourceManager';
 import { fullFlex } from '@totara/lib/styles/base';
 import { NAVIGATION_TEST_IDS, SCORM_TEST_IDS } from '@totara/lib/testIds';

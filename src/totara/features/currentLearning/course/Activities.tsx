@@ -41,7 +41,6 @@ import activitiesStyles from './activitiesStyles';
 import CompletionIcon from './CompletionIcon';
 import TextContent from './TextContent';
 
-const { SCORM_STACK_ROOT, WEBVIEW_ACTIVITY } = NAVIGATION;
 type ActivitiesProps = {
   sections: [Section];
   courseRefreshCallBack: () => {};
@@ -367,7 +366,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
                     const { mimetype, fileurl } = resource;
                     navigateTo({
                       navigate: navigation.navigate,
-                      routeId: WEBVIEW_ACTIVITY,
+                      routeId: NAVIGATION.WEBVIEW_ACTIVITY,
                       props: {
                         activity: item,
                         fileurl,
@@ -386,7 +385,7 @@ const ListItemUnlock = ({ item, courseRefreshCallBack, completionEnabled }: List
               default: {
                 navigateTo({
                   navigate: navigation.navigate,
-                  routeId: WEBVIEW_ACTIVITY,
+                  routeId: NAVIGATION.WEBVIEW_ACTIVITY,
                   props: {
                     activity: item,
                     backAction: () => { },
