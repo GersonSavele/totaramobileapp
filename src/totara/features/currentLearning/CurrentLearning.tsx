@@ -14,6 +14,7 @@
  */
 
 import { NetworkStatus, useQuery } from '@apollo/client';
+import { useFocusEffect } from '@react-navigation/native';
 import { Icons } from '@resources/icons';
 import { Loading, LoadingError, MessageBar, NetworkStatusIndicator } from '@totara/components';
 import { Switch, SwitchOption } from '@totara/components/Switch';
@@ -22,9 +23,10 @@ import { CL_TEST_IDS } from '@totara/lib/testIds';
 import { translate } from '@totara/locale';
 import { ThemeContext } from '@totara/theme';
 import { paddings } from '@totara/theme/constants';
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 
+import i18n from '../../locale/i18n';
 import query from './api';
 import { currentLearningStyles } from './currentLearningStyles';
 import CurrentLearningCarousel from './learningItems/CurrentLearningCarousel';
@@ -47,6 +49,18 @@ const CurrentLearning = () => {
   const onContentRefresh = () => {
     refetch();
   };
+
+  useEffect(() => {
+    i18n.onChange(() => {
+      onContentRefresh();
+    });
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      onContentRefresh();
+    }, [])
+  );
 
   if (networkStatus === NetworkStatus.loading) return <Loading />;
   if (!data && error) {
@@ -72,8 +86,6 @@ const CurrentLearning = () => {
 
     return (
       <View style={[theme.viewContainer, { flex: 1 }]}>
-        {/* TODO Refactor */}
-        {/* <NavigationEvents onWillFocus={onContentRefresh} /> */}
         <View style={currentLearningStyles.headerViewWrap}>
           <View style={currentLearningStyles.headerWrapper}>
             <Text testID="current_learning_page_header" style={currentLearningStyles.title} numberOfLines={2}>
