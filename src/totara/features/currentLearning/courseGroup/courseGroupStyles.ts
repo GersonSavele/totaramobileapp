@@ -112,6 +112,9 @@ const courseSet = StyleSheet.create({
     ...shadow.android,
     ...cardStyle
   },
+  listContainer: {
+    width: deviceScreen.width
+  },
   noShadowContainer: {
     ...cardStyle,
     backgroundColor: TotaraTheme.colorNeutral2

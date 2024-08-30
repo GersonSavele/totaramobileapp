@@ -42,12 +42,9 @@ const CurrentLearningStack = () => (
     <Stack.Screen
       name={NAVIGATION.COURSE_LIST}
       component={CourseList}
-      options={({ navigation }: any) =>
-        totaraNavigationOptions({
-          title: navigation.getParam('title'),
-          opacity: navigation.getParam('opacity')
-        })
-      }
+      options={() => {
+        return totaraNavigationOptions({});
+      }}
     />
   </Stack.Navigator>
 );

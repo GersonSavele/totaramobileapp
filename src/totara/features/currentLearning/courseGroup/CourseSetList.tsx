@@ -15,8 +15,6 @@
 
 import Icon from '@totara/components/Icon';
 import MoreInfo from '@totara/components/MoreInfo';
-import { NAVIGATION } from '@totara/lib/navigation';
-import { navigateTo } from '@totara/lib/navigation';
 import { activeOpacity } from '@totara/lib/styles/base';
 import { iconSizes } from '@totara/theme/constants';
 import { TotaraTheme } from '@totara/theme/Theme';
@@ -37,17 +35,18 @@ type CourseSetListProps = {
 
 const LearningItems = ({ item, navigate, showCriteriaList = () => null }: any) => {
   const navigateToCourse = () => {
-    navigateTo({
-      navigate: navigate,
-      routeId: NAVIGATION.COURSE_LIST,
-      props: { coursesList: item }
-    });
+    // TODO: Add the link back once the CourseList page is fixed
+    // navigateTo({
+    //   navigate: navigate,
+    //   routeId: NAVIGATION.COURSE_LIST,
+    //   props: { coursesList: item }
+    // });
   };
 
   const takeFirstTwoCourses = item.courses?.slice(0, 2) || [];
 
   return (
-    <View style={{ backgroundColor: 'red', height: 5, width: 5 }} testID={'test_learning_items'}>
+    <View testID={'test_learning_items'} style={courseSet.listContainer}>
       <TouchableOpacity onPress={navigateToCourse} activeOpacity={1.0}>
         <View style={courseSet.itemContainer}>
           <View style={courseSet.headerBar}>

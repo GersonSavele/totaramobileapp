@@ -48,7 +48,7 @@ const Courses = ({ courseGroup, navigation, showCriteriaList = () => null }: Cou
       ) : null}
       {courseGroup.currentCourseSets.map((item: [CourseSets], key: number) => {
         return (
-          <View key={key} style={{ backgroundColor: 'red', height: 5, width: 5 }}>
+          <View key={key}>
             {item.length == 1 && (
               <CourseSet
                 courseSets={item[0]}
