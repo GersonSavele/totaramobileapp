@@ -14,32 +14,31 @@
  */
 import { useSession } from '@totara/core';
 import { AUTH_HEADER_FIELD } from '@totara/lib/constants';
+import { Image } from 'expo-image';
 import React from 'react';
-import type { FastImageProps } from 'react-native-fast-image';
-import FastImage from 'react-native-fast-image';
+import type { ImageStyle, StyleProp } from 'react-native';
 
 type ImageWrapperType = {
   url: string;
-  style?: FastImageProps['style'];
+  style?: StyleProp<ImageStyle>;
   accessibilityLabel?: string;
-  resizeMode?: 'cover' | 'contain' | 'stretch' | 'center' | undefined;
+  resizeMode?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
 };
 
 const ImageWrapper = ({ url, style, accessibilityLabel, resizeMode = undefined }: ImageWrapperType) => {
   const { apiKey } = useSession();
 
   return (
-    <FastImage
-      resizeMode={resizeMode}
+    <Image
       style={style}
+      contentFit={resizeMode}
       onError={() => {
         console.log('Loading onError');
       }}
       accessibilityLabel={accessibilityLabel}
+      priority="normal"
       source={{
         uri: url,
-        cache: 'web',
-        priority: FastImage.priority.normal,
         headers: {
           [AUTH_HEADER_FIELD]: apiKey
         }

@@ -50,18 +50,18 @@ PODS:
   - EXJSONUtils (0.13.1)
   - EXManifests (0.14.3):
     - ExpoModulesCore
-  - Expo (51.0.29):
+  - Expo (51.0.31):
     - ExpoModulesCore
-  - expo-dev-client (4.0.23):
+  - expo-dev-client (4.0.25):
     - EXManifests
     - expo-dev-launcher
     - expo-dev-menu
     - expo-dev-menu-interface
     - EXUpdatesInterface
-  - expo-dev-launcher (4.0.25):
+  - expo-dev-launcher (4.0.27):
     - DoubleConversion
     - EXManifests
-    - expo-dev-launcher/Main (= 4.0.25)
+    - expo-dev-launcher/Main (= 4.0.27)
     - expo-dev-menu
     - expo-dev-menu-interface
     - ExpoModulesCore
@@ -87,7 +87,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-launcher/Main (4.0.25):
+  - expo-dev-launcher/Main (4.0.27):
     - DoubleConversion
     - EXManifests
     - expo-dev-launcher/Unsafe
@@ -116,7 +116,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-launcher/Unsafe (4.0.25):
+  - expo-dev-launcher/Unsafe (4.0.27):
     - DoubleConversion
     - EXManifests
     - expo-dev-menu
@@ -144,10 +144,10 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu (5.0.19):
+  - expo-dev-menu (5.0.21):
     - DoubleConversion
-    - expo-dev-menu/Main (= 5.0.19)
-    - expo-dev-menu/ReactNativeCompatibles (= 5.0.19)
+    - expo-dev-menu/Main (= 5.0.21)
+    - expo-dev-menu/ReactNativeCompatibles (= 5.0.21)
     - glog
     - hermes-engine
     - RCT-Folly (= 2024.01.01.00)
@@ -168,7 +168,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - expo-dev-menu-interface (1.8.3)
-  - expo-dev-menu/Main (5.0.19):
+  - expo-dev-menu/Main (5.0.21):
     - DoubleConversion
     - EXManifests
     - expo-dev-menu-interface
@@ -194,7 +194,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu/ReactNativeCompatibles (5.0.19):
+  - expo-dev-menu/ReactNativeCompatibles (5.0.21):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -215,7 +215,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu/SafeAreaView (5.0.19):
+  - expo-dev-menu/SafeAreaView (5.0.21):
     - DoubleConversion
     - ExpoModulesCore
     - glog
@@ -237,7 +237,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu/Vendored (5.0.19):
+  - expo-dev-menu/Vendored (5.0.21):
     - DoubleConversion
     - expo-dev-menu/SafeAreaView
     - glog
@@ -265,9 +265,16 @@ PODS:
     - ExpoModulesCore
   - ExpoFont (12.0.9):
     - ExpoModulesCore
+  - ExpoImage (1.12.15):
+    - ExpoModulesCore
+    - libavif/libdav1d
+    - SDWebImage (~> 5.19.1)
+    - SDWebImageAVIFCoder (~> 0.11.0)
+    - SDWebImageSVGCoder (~> 1.7.0)
+    - SDWebImageWebPCoder (~> 0.14.6)
   - ExpoKeepAwake (13.0.2):
     - ExpoModulesCore
-  - ExpoModulesCore (1.12.21):
+  - ExpoModulesCore (1.12.23):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -380,6 +387,11 @@ PODS:
   - hermes-engine (0.74.5):
     - hermes-engine/Pre-built (= 0.74.5)
   - hermes-engine/Pre-built (0.74.5)
+  - libavif/core (0.11.1)
+  - libavif/libdav1d (0.11.1):
+    - libavif/core
+    - libdav1d (>= 0.6.0)
+  - libdav1d (1.2.0)
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
     - libwebp/mux (= 1.3.2)
@@ -1592,10 +1604,6 @@ PODS:
     - React
   - RNDeviceInfo (11.1.0):
     - React-Core
-  - RNFastImage (8.6.3):
-    - React-Core
-    - SDWebImage (~> 5.11.1)
-    - SDWebImageWebPCoder (~> 0.8.4)
   - RNFBApp (20.1.0):
     - Firebase/CoreOnly (= 10.27.0)
     - React-Core
@@ -1684,12 +1692,17 @@ PODS:
   - RNZipArchive/Core (6.1.2):
     - React-Core
     - SSZipArchive (~> 2.2)
-  - SDWebImage (5.11.1):
-    - SDWebImage/Core (= 5.11.1)
-  - SDWebImage/Core (5.11.1)
-  - SDWebImageWebPCoder (0.8.5):
+  - SDWebImage (5.19.7):
+    - SDWebImage/Core (= 5.19.7)
+  - SDWebImage/Core (5.19.7)
+  - SDWebImageAVIFCoder (0.11.0):
+    - libavif/core (>= 0.11.0)
+    - SDWebImage (~> 5.10)
+  - SDWebImageSVGCoder (1.7.0):
+    - SDWebImage/Core (~> 5.6)
+  - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.10)
+    - SDWebImage/Core (~> 5.17)
   - SocketRocket (0.7.0)
   - SSZipArchive (2.4.3)
   - Yoga (0.0.0)
@@ -1711,6 +1724,7 @@ DEPENDENCIES:
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
+  - ExpoImage (from `../node_modules/expo-image/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
@@ -1779,7 +1793,6 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -1801,10 +1814,14 @@ SPEC REPOS:
     - FirebaseMessaging
     - GoogleDataTransport
     - GoogleUtilities
+    - libavif
+    - libdav1d
     - libwebp
     - nanopb
     - PromisesObjC
     - SDWebImage
+    - SDWebImageAVIFCoder
+    - SDWebImageSVGCoder
     - SDWebImageWebPCoder
     - SocketRocket
     - SSZipArchive
@@ -1842,6 +1859,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   ExpoFont:
     :path: "../node_modules/expo-font/ios"
+  ExpoImage:
+    :path: "../node_modules/expo-image/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
@@ -1975,8 +1994,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
-  RNFastImage:
-    :path: "../node_modules/react-native-fast-image"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBMessaging:
@@ -2007,16 +2024,17 @@ SPEC CHECKSUMS:
   EXConstants: 409690fbfd5afea964e5e9d6c4eb2c2b59222c59
   EXJSONUtils: 30c17fd9cc364d722c0946a550dfbf1be92ef6a4
   EXManifests: c1fab4c3237675e7b0299ea8df0bcb14baca4f42
-  Expo: 2c1f878fb356a11e8c32eb391f97eb7abfb21e55
-  expo-dev-client: 924e474dc9eccf507260a22c5a8301bed0497453
-  expo-dev-launcher: 5f27c01458fd729684cc49a345f4c9ca052f4864
-  expo-dev-menu: 9ff772f6918e5fdfd73f31cc7534b853925f3d47
+  Expo: 4773e11951abd0f666f67023f0cb1d48c3e8a32b
+  expo-dev-client: 97910d9e4753f5deae96c3b657a071ee09ce85f5
+  expo-dev-launcher: fe4f2c0a0aa627449eeaec5f9f11e04090f97c40
+  expo-dev-menu: 5b14897ecce3a8cf9e9cf9109344c2c192a3766a
   expo-dev-menu-interface: be32c09f1e03833050f0ee290dcc86b3ad0e73e4
   ExpoAsset: 323700f291684f110fb55f0d4022a3362ea9f875
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
   ExpoFont: e7f2275c10ca8573c991e007329ad6bf98086485
+  ExpoImage: f77df382153d716f332f974438a803c4527f60b0
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
-  ExpoModulesCore: 620690a98d712d142e0acce5933419b05a63214a
+  ExpoModulesCore: e3c518e094990b3ad960edbd19c291f2a1b56b0a
   ExpoSystemUI: d4f065a016cae6721b324eb659cdee4d4cf0cb26
   ExpoWebBrowser: 7595ccac6938eb65b076385fd23d035db9ecdc8e
   EXSplashScreen: d8b3c547b9b18a41d80c6f6b274c4c26664febd4
@@ -2033,6 +2051,8 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   hermes-engine: 8c1577f3fdb849cbe7729c2e7b5abc4b845e88f8
+  libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
+  libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
@@ -2092,7 +2112,6 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
-  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBApp: 1ae7462cddf74a49df206d3418bc0170f8fa53e5
   RNFBMessaging: 85f661b9f16e2b081e6809ef63d3daa4458b9042
   RNGestureHandler: 20a4307fd21cbff339abfcfa68192f3f0a6a518b
@@ -2102,8 +2121,10 @@ SPEC CHECKSUMS:
   RNScreens: 30249f9331c3b00ae7cb7922e11f58b3ed369c07
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
   RNZipArchive: 6d736ee4e286dbbd9d81206b7a4da355596ca04a
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
+  SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90
+  SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
+  SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   Yoga: 33622183a85805e12703cd618b2c16bfd18bfffb
