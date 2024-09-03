@@ -16,7 +16,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import _messaging from '@react-native-firebase/messaging';
 import { createStackNavigator } from '@react-navigation/stack';
-import ScormActivity, { navigationOptions } from '@totara/features/activities/scorm/ScormActivity';
+import ScormActivity from '@totara/features/activities/scorm/ScormActivity';
 import { registerPushNotifications } from '@totara/lib/notificationService';
 import ResourceManager from '@totara/lib/resourceManager';
 import React, { useEffect } from 'react';
@@ -40,6 +40,7 @@ import { NAVIGATION_TEST_IDS } from './lib/testIds';
 import { translate } from './locale';
 import type { RootState } from './reducers';
 import TabContainer from './TabContainer';
+import type { ScormActivityParams } from './types/Scorm';
 
 const { ABOUT, WEBVIEW_ACTIVITY } = NAVIGATION;
 
@@ -120,19 +121,20 @@ const MainContainer = () => {
   return (
     <Stack.Navigator screenOptions={{ presentation: 'modal', headerShown: false }}>
       <Stack.Screen name="TabContainer" component={TabContainer} />
-      <Stack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
-        <Stack.Screen name={NAVIGATION.SCORM_ACTIVITY} component={ScormActivity} options={{ ...navigationOptions }} />
-        <Stack.Screen name={NAVIGATION.SCORM_ATTEMPTS} component={ScormAttempts} options={{ ...navigationOptions }} />
-        <Stack.Screen
-          name={NAVIGATION.OFFLINE_SCORM_ACTIVITY}
-          component={OfflineScormActivity}
-          options={{ ...navigationOptions }}
-        />
-        <Stack.Screen
-          name={NAVIGATION.SCORM_FEEDBACK}
-          component={ScormFeedbackModal}
-          options={{ ...navigationOptions }}
-        />
+      <Stack.Group
+        screenOptions={({ route, navigation }) => {
+          const { title = '' } = route.params as ScormActivityParams;
+          return {
+            presentation: 'modal',
+            headerShown: true,
+            title,
+            headerLeft: () => <CloseButton onPress={() => navigation.goBack()} testID={NAVIGATION_TEST_IDS.BACK} />
+          };
+        }}>
+        <Stack.Screen name={NAVIGATION.SCORM_ACTIVITY} component={ScormActivity} />
+        <Stack.Screen name={NAVIGATION.SCORM_ATTEMPTS} component={ScormAttempts} />
+        <Stack.Screen name={NAVIGATION.OFFLINE_SCORM_ACTIVITY} component={OfflineScormActivity} />
+        <Stack.Screen name={NAVIGATION.SCORM_FEEDBACK} component={ScormFeedbackModal} />
       </Stack.Group>
       <Stack.Screen name={WEBVIEW_ACTIVITY} component={WebViewStack} />
       <Stack.Screen

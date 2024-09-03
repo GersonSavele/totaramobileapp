@@ -97,7 +97,7 @@ const ResourceDownloader = ({
       }, 1000)}
       accessibilityLabel={accessibilityLabel}
       disabled={disabled}
-      style={[{ padding: gutter, alignSelf: 'center' }, style]}>
+      style={[{ padding: gutter }, style]}>
       <ResourceDownloaderComponent resourceState={resourceState} size={size} progress={progress} />
     </TouchableOpacity>
   );

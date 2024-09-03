@@ -31,7 +31,7 @@ import { useSelector } from 'react-redux';
 
 import { useNavigation } from '../../lib/hooks';
 import DownloadItem from './DownloadItem';
-const { SCORM_STACK_ROOT } = NAVIGATION;
+const { SCORM_ACTIVITY } = NAVIGATION;
 
 const Downloads = () => {
   const resourcesList = useSelector((state: RootState) => state.resourceReducer.resources);
@@ -81,7 +81,7 @@ const Downloads = () => {
     toggleSelected(item);
 
     if (!selectable) {
-      navigation.navigate(SCORM_STACK_ROOT, {
+      navigation.navigate(SCORM_ACTIVITY, {
         id: item.customId,
         title: item.name
       });
