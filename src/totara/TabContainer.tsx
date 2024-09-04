@@ -31,6 +31,7 @@ import { countUnreadMessages, notificationsQuery } from './features/notification
 import Profile from './features/profile/Profile';
 import { TAB_TEST_IDS } from './lib/testIds';
 import { translate } from './locale';
+import { TotaraTheme } from './theme/Theme';
 
 const Tab = createBottomTabNavigator();
 const TabContainer = () => {
@@ -115,7 +116,13 @@ const TabContainer = () => {
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIconBuilder color={color} focused={focused} image={tabBarIconImages.profile} />
           ),
-          tabBarTestID: TAB_TEST_IDS.PROFILE
+          tabBarTestID: TAB_TEST_IDS.PROFILE,
+          headerShown: true,
+          headerTitle: '',
+          headerStyle: {
+            backgroundColor: TotaraTheme.colorNeutral2,
+            shadowOpacity: 0
+          }
         }}
       />
     </Tab.Navigator>
