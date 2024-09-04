@@ -17,6 +17,7 @@ import * as RNFS from '@dr.pogodin/react-native-fs';
 import { FILE_EXTENSION, OFFLINE_SCORM_PREFIX, SECONDS_FORMAT } from '@totara/lib/constants';
 import type { Attempt, GradeForAttemptProps, Package, Sco, ScormBundle, ScormPlayerProps } from '@totara/types/Scorm';
 import { AttemptGrade, Grade } from '@totara/types/Scorm';
+import { Asset } from 'expo-asset';
 import { get, isEmpty } from 'lodash';
 import moment from 'moment';
 import { Platform } from 'react-native';
@@ -308,10 +309,14 @@ const loadScormPackageData = (packageData?: Package, onGetScormPackageData = get
   }
 };
 
-const getPackageContent = () =>
-  Platform.OS === 'android'
-    ? RNFS.readDirAssets(getScormPlayerPackagePath())
-    : RNFS.readDir(getScormPlayerPackagePath());
+const getPackageContent = () => {
+  const assets = [
+    require('@/assets/html/loading.html'),
+    require('@/assets/html/index.html'),
+    require('@/assets/html/scormApi.1.2.bundle.js.txt')
+  ];
+  return Asset.loadAsync(assets);
+};
 
 const initializeScormWebplayer = () => {
   return RNFS.mkdir(offlineScormServerRoot).then(() => {
@@ -319,18 +324,25 @@ const initializeScormWebplayer = () => {
       if (result && result.length) {
         let promisesToCopyFiles: [Promise<void>?] = [];
         for (let i = 0; i < result.length; i++) {
-          const itemPathFrom = result[i].path;
-          const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
-          const copyAssetsToPlayer = () =>
+          const itemUrlFrom = result[i].localUri;
+          let itemPathTo = `${offlineScormServerRoot}/${result[i].name}.${result[i].type}`;
+          if (result[i].name.endsWith('.js') && result[i].type == 'txt') {
+            itemPathTo = `${offlineScormServerRoot}/${result[i].name.replace('.js', '')}.js`;
+          }
+          const copyAssetsToPlayer =
             Platform.OS === 'android'
-              ? RNFS.copyFileAssets(itemPathFrom, itemPathTo)
-              : RNFS.copyFile(itemPathFrom, itemPathTo);
+              ? RNFS.copyFile(itemUrlFrom, itemPathTo)
+              : RNFS.downloadFile({
+                  fromUrl: itemUrlFrom,
+                  toFile: itemPathTo
+                }).promise.then(() => {});
+
           const promiseCopyItem = RNFS.exists(itemPathTo).then(isExist => {
             if (!isExist) {
-              return copyAssetsToPlayer();
+              return copyAssetsToPlayer;
             } else {
               return RNFS.unlink(itemPathTo).then(() => {
-                return copyAssetsToPlayer();
+                return copyAssetsToPlayer;
               });
             }
           });
@@ -349,7 +361,10 @@ const isScormPlayerInitialized = () => {
     if (result && result.length) {
       const promisesToExistFiles = <Promise<Boolean>[]>[];
       for (let i = 0; i < result.length; i++) {
-        const itemPathTo = `${offlineScormServerRoot}/${result[i].name}`;
+        let itemPathTo = `${offlineScormServerRoot}/${result[i].name}.${result[i].type}`;
+        if (result[i].name.endsWith('.js') && result[i].type == 'txt') {
+          itemPathTo = `${offlineScormServerRoot}/${result[i].name.replace('.js', '')}.js`;
+        }
         promisesToExistFiles.push(RNFS.exists(itemPathTo));
       }
       return Promise.all(promisesToExistFiles).then(resultExistsFiles => {

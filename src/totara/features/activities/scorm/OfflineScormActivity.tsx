@@ -149,7 +149,11 @@ const loadedScormEffect =
             ios: offlineServerPath,
             default: ''
           });
-          server = new StaticServer({ fileDir, stopInBackground: true });
+          server = new StaticServer({
+            fileDir,
+            stopInBackground: true,
+            hostname: Platform.OS === 'android' ? 'localhost' : undefined
+          });
 
           const res = await server?.start();
           if (res && server) {
