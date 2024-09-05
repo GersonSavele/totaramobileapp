@@ -33,7 +33,8 @@ export default (): ExpoConfig => ({
       'expo-build-properties',
       {
         ios: {
-          useFrameworks: 'static'
+          useFrameworks: 'static',
+          deploymentTarget: '13.4'
         },
         android: {
           minSdkVersion: 28

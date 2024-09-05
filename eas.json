@@ -1,23 +1,41 @@
 {
-    "cli": {
-      "version": ">= 10.1.1"
+  "cli": {
+    "version": ">= 10.1.1"
+  },
+  "build": {
+    "development": {
+      "distribution": "internal",
+      "ios": {
+        "image": "latest"
+      },
+      "android": {
+        "image": "latest"
+      },
+      "env": {
+        "APP_ENV": "dev"
+      },
+      "prebuildCommand": "prebuild --skip-dependency-update react",
+      "cache": {
+        "key": "eas-1"
+      }
     },
-    "build": {
-      "development": {
-        "distribution": "internal",
-        "ios": {
-          "image": "latest"
-        },
-        "android": {
-          "image": "latest"
-        },
-        "env": {
-          "APP_ENV": "dev"
-        },
-        "prebuildCommand": "prebuild --skip-dependency-update react",
-        "cache": {
-          "key": "eas-1"
-        }
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "image": "latest",
+        "simulator": true
+      },
+      "android": {
+        "image": "latest",
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "dev"
+      },
+      "prebuildCommand": "prebuild --skip-dependency-update react",
+      "cache": {
+        "key": "eas-2"
       }
     }
   }
+}
