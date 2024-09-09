@@ -13,6 +13,7 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
+import * as Sentry from '@sentry/react-native';
 import Loading from '@totara/components/Loading';
 import { config } from '@totara/lib';
 import { PLATFORM_ANDROID } from '@totara/lib/constants';
@@ -40,6 +41,11 @@ if (config.disableConsoleYellowBox) {
 }
 LogBox.ignoreLogs(['new NativeEventEmitter']);
 
+Sentry.init({
+  dsn: config.sentryUri,
+  debug: false // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+});
+
 const App: () => ReactNode = () => {
   return (
     <>
@@ -56,4 +62,4 @@ const App: () => ReactNode = () => {
   );
 };
 
-export default App;
+export default Sentry.wrap(App);

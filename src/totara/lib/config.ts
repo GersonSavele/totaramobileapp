@@ -13,8 +13,6 @@
  * Please contact [sales@totaralearning.com] for more information.
  */
 
-// TODO: Look at whether this is needed
-// import localConfig from "./config.local";
 import ConsoleLogger from './logger/ConsoleLogger';
 
 const defaultConfig = {
@@ -36,7 +34,7 @@ const defaultConfig = {
   deepLinkSchema: 'totara://',
   minApiVersion: '2020100100',
   rootOfflineScormPlayer: 'html',
-  sentryUri: '',
+  sentryDsn: process.env.SENTRY_DSN || '',
   disableConsoleYellowBox: false,
   devOrgUrl: '' // Default organization url only used in dev mode.
 };

@@ -50,7 +50,7 @@ PODS:
   - EXJSONUtils (0.13.1)
   - EXManifests (0.14.3):
     - ExpoModulesCore
-  - Expo (51.0.31):
+  - Expo (51.0.32):
     - ExpoModulesCore
   - expo-dev-client (4.0.25):
     - EXManifests
@@ -263,7 +263,7 @@ PODS:
     - ExpoModulesCore
   - ExpoFileSystem (17.0.1):
     - ExpoModulesCore
-  - ExpoFont (12.0.9):
+  - ExpoFont (12.0.10):
     - ExpoModulesCore
   - ExpoImage (1.12.15):
     - ExpoModulesCore
@@ -274,7 +274,7 @@ PODS:
     - SDWebImageWebPCoder (~> 0.14.6)
   - ExpoKeepAwake (13.0.2):
     - ExpoModulesCore
-  - ExpoModulesCore (1.12.23):
+  - ExpoModulesCore (1.12.24):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -326,12 +326,12 @@ PODS:
   - EXUpdatesInterface (0.16.2):
     - ExpoModulesCore
   - FBLazyVector (0.74.5)
-  - Firebase/CoreOnly (10.27.0):
-    - FirebaseCore (= 10.27.0)
-  - Firebase/Messaging (10.27.0):
+  - Firebase/CoreOnly (10.29.0):
+    - FirebaseCore (= 10.29.0)
+  - Firebase/Messaging (10.29.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 10.27.0)
-  - FirebaseCore (10.27.0):
+    - FirebaseMessaging (~> 10.29.0)
+  - FirebaseCore (10.29.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
     - GoogleUtilities/Logger (~> 7.12)
@@ -344,7 +344,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
-  - FirebaseMessaging (10.27.0):
+  - FirebaseMessaging (10.29.0):
     - FirebaseCore (~> 10.0)
     - FirebaseInstallations (~> 10.0)
     - GoogleDataTransport (~> 9.3)
@@ -1604,11 +1604,11 @@ PODS:
     - React
   - RNDeviceInfo (11.1.0):
     - React-Core
-  - RNFBApp (20.1.0):
-    - Firebase/CoreOnly (= 10.27.0)
+  - RNFBApp (20.5.0):
+    - Firebase/CoreOnly (= 10.29.0)
     - React-Core
-  - RNFBMessaging (20.1.0):
-    - Firebase/Messaging (= 10.27.0)
+  - RNFBMessaging (20.5.0):
+    - Firebase/Messaging (= 10.29.0)
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
@@ -1683,6 +1683,11 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNSentry (5.22.3):
+    - hermes-engine
+    - React-Core
+    - React-hermes
+    - Sentry/HybridSDK (= 8.26.0)
   - RNSVG (15.2.0):
     - React-Core
   - RNZipArchive (6.1.2):
@@ -1703,6 +1708,7 @@ PODS:
   - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
+  - Sentry/HybridSDK (8.26.0)
   - SocketRocket (0.7.0)
   - SSZipArchive (2.4.3)
   - Yoga (0.0.0)
@@ -1800,6 +1806,7 @@ DEPENDENCIES:
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNZipArchive (from `../node_modules/react-native-zip-archive`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1823,6 +1830,7 @@ SPEC REPOS:
     - SDWebImageAVIFCoder
     - SDWebImageSVGCoder
     - SDWebImageWebPCoder
+    - Sentry
     - SocketRocket
     - SSZipArchive
 
@@ -2008,6 +2016,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNZipArchive:
@@ -2024,28 +2034,28 @@ SPEC CHECKSUMS:
   EXConstants: 409690fbfd5afea964e5e9d6c4eb2c2b59222c59
   EXJSONUtils: 30c17fd9cc364d722c0946a550dfbf1be92ef6a4
   EXManifests: c1fab4c3237675e7b0299ea8df0bcb14baca4f42
-  Expo: 4773e11951abd0f666f67023f0cb1d48c3e8a32b
+  Expo: 33132a667698a3259a4e6c0af1b4936388e5fa33
   expo-dev-client: 97910d9e4753f5deae96c3b657a071ee09ce85f5
   expo-dev-launcher: fe4f2c0a0aa627449eeaec5f9f11e04090f97c40
   expo-dev-menu: 5b14897ecce3a8cf9e9cf9109344c2c192a3766a
   expo-dev-menu-interface: be32c09f1e03833050f0ee290dcc86b3ad0e73e4
   ExpoAsset: 323700f291684f110fb55f0d4022a3362ea9f875
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
-  ExpoFont: e7f2275c10ca8573c991e007329ad6bf98086485
+  ExpoFont: 00756e6c796d8f7ee8d211e29c8b619e75cbf238
   ExpoImage: f77df382153d716f332f974438a803c4527f60b0
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
-  ExpoModulesCore: e3c518e094990b3ad960edbd19c291f2a1b56b0a
+  ExpoModulesCore: db3e31e694684f08223d713e89f7648c6d3e04d0
   ExpoSystemUI: d4f065a016cae6721b324eb659cdee4d4cf0cb26
   ExpoWebBrowser: 7595ccac6938eb65b076385fd23d035db9ecdc8e
   EXSplashScreen: d8b3c547b9b18a41d80c6f6b274c4c26664febd4
   EXUpdatesInterface: 996527fd7d1a5d271eb523258d603f8f92038f24
   FBLazyVector: ac12dc084d1c8ec4cc4d7b3cf1b0ebda6dab85af
-  Firebase: 26b040b20866a55f55eb3611b9fcf3ae64816b86
-  FirebaseCore: a2b95ae4ce7c83ceecfbbbe3b6f1cddc7415a808
+  Firebase: cec914dab6fd7b1bd8ab56ea07ce4e03dd251c2d
+  FirebaseCore: 30e9c1cbe3d38f5f5e75f48bfcea87d7c358ec16
   FirebaseCoreExtension: 705ca5b14bf71d2564a0ddc677df1fc86ffa600f
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
   FirebaseInstallations: 913cf60d0400ebd5d6b63a28b290372ab44590dd
-  FirebaseMessaging: 585984d0a1df120617eb10b44cad8968b859815e
+  FirebaseMessaging: 7b5d8033e183ab59eb5b852a53201559e976d366
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
@@ -2112,19 +2122,21 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
-  RNFBApp: 1ae7462cddf74a49df206d3418bc0170f8fa53e5
-  RNFBMessaging: 85f661b9f16e2b081e6809ef63d3daa4458b9042
+  RNFBApp: 5f87753a8d8b37d229adf85cd0ff37709ffdf008
+  RNFBMessaging: 3fa1114c0868dd21f20dfe186adf42297ea316b1
   RNGestureHandler: 20a4307fd21cbff339abfcfa68192f3f0a6a518b
   RNLocalize: b77875884750cb6a58cd6865863fe2ba2729b72b
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNReanimated: d51431fd3597a8f8320319dce8e42cee82a5445f
   RNScreens: 30249f9331c3b00ae7cb7922e11f58b3ed369c07
+  RNSentry: 7e184247ee04989474d12cce0b7ef7bc4a71632f
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
   RNZipArchive: 6d736ee4e286dbbd9d81206b7a4da355596ca04a
   SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
   SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
+  Sentry: 74a073c71c998117edb08f56f443c83570a31bed
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   Yoga: 33622183a85805e12703cd618b2c16bfd18bfffb

@@ -43,6 +43,7 @@
     "@react-navigation/bottom-tabs": "^6.6.0",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.4.0",
+    "@sentry/react-native": "~5.22.0",
     "@xmldom/xmldom": "^0.8.10",
     "apollo-link-timeout": "^4.0.0",
     "apollo3-cache-persist": "^0.15.0",

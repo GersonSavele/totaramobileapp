@@ -16,7 +16,7 @@ export default (): ExpoConfig => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.totaralearning.TotaraMobileApp',
-    buildNumber: '101',
+    buildNumber: '104',
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_IOS : './GoogleService-Info.plist'
   },
   android: {
@@ -27,7 +27,7 @@ export default (): ExpoConfig => ({
     blockedPermissions: ['android.permission.USE_FULL_SCREEN_INTENT'],
     package: 'com.totaramobileapp',
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_ANDROID : './google-services.json',
-    versionCode: 101
+    versionCode: 104
   },
   plugins: [
     '@react-native-firebase/app',
@@ -58,7 +58,19 @@ export default (): ExpoConfig => ({
       }
     ],
     '@config-plugins/detox',
-    './plugins/notifee-mod.js'
+    './plugins/notifee-mod.js',
+    [
+      '@sentry/react-native/expo',
+      {
+        // 'sentry org slug, or use the `SENTRY_ORG` environment variable'
+        organization: process.env.SENTRY_ORG,
+        // 'sentry project name, or use the `SENTRY_PROJECT` environment variable'
+        project: process.env.SENTRY_PROJECT,
+        // If you are using a self-hosted instance, update the value of the url property
+        // to point towards your self-hosted instance. For example, https://self-hosted.example.com/.
+        url: 'https://sentry.io/'
+      }
+    ]
   ],
   experiments: {},
   extra: {
