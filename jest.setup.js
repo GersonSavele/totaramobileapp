@@ -38,6 +38,16 @@ jest.mock("@react-native-cookies/cookies", () => {
   };
 });
 
+jest.mock('@/assets/html/loading.html', () => 'loading.html');
+jest.mock('@/assets/html/index.html', () => 'index.html');
+jest.mock('@/assets/html/scormApi.1.2.bundle.js.txt', () => 'scormApi.1.2.bundle.js.txt');
+
+jest.mock("expo-asset", () => ({
+  Asset: { 
+    loadAsync: jest.fn()
+  }
+}));
+
 jest.mock("react-native-reanimated", () => {
   const Reanimated = require("react-native-reanimated/mock");
   Reanimated.default.call = () => {};
@@ -101,14 +111,14 @@ jest.mock("@dr.pogodin/react-native-fs", () => ({
   downloadFile: jest.fn(),
   uploadFiles: jest.fn(),
   touch: jest.fn(),
-  MainBundlePath: jest.fn(),
-  CachesDirectoryPath: jest.fn(),
-  DocumentDirectoryPath: jest.fn(),
-  ExternalDirectoryPath: jest.fn(),
-  ExternalStorageDirectoryPath: jest.fn(),
-  TemporaryDirectoryPath: jest.fn(),
-  LibraryDirectoryPath: jest.fn(),
-  PicturesDirectoryPath: jest.fn()
+  MainBundlePath: "/MainBundlePath",
+  CachesDirectoryPath: "/CachesDirectoryPath",
+  DocumentDirectoryPath: "/DocumentDirectoryPath",
+  ExternalDirectoryPath: "/ExternalDirectoryPath",
+  ExternalStorageDirectoryPath: "/ExternalStorageDirectoryPath",
+  TemporaryDirectoryPath: "/TemporaryDirectoryPath",
+  LibraryDirectoryPath: "/LibraryDirectoryPath",
+  PicturesDirectoryPath: "PicturesDirectoryPath/"
 }));
 
 jest.mock("redux-persist", () => {

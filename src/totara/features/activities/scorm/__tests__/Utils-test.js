@@ -31,6 +31,7 @@ import {
 } from "../utils";
 import { AttemptGrade, Grade } from "@totara/types/Scorm";
 import { ScormLessonStatus, offlineScormServerRoot } from "../constants";
+import { Asset } from "expo-asset";
 describe("scorm utilities", () => {
   //This is a mock. These fields are from API response
   const defaultData = {
@@ -619,7 +620,11 @@ describe("scorm utilities", () => {
 });
 
 describe("scorm player package handling", () => {
-  const mockSourceDirContent = ["file1.html", "file2.js", "file3.html"];
+  const mockSourceDirContent = [
+    { localUri: "localUri", name: "loading", type: "html" }, 
+    { localUri: "localUri", name: "index", type: "html" }, 
+    { localUri: "localUri", name: "scorm.js", type: "txt" }
+  ];
   const errorMkDir = "Failed to create a new directory";
   const errorUnlink = "Failed to delete a file";
   const errorIsExistingFile = "Failed find the existing file";
@@ -642,15 +647,14 @@ describe("scorm player package handling", () => {
     isSuccessCopy = true
   }) => {
     Platform.OS = platformOS;
+    Asset.loadAsync.mockResolvedValue(mockSourceDirContent);
     RNFS.mkdir.mockImplementation(mockVoidPromise(isSuccessMkDir, errorMkDir));
     RNFS.unlink.mockImplementation(mockVoidPromise(isSuccessUnlink, errorUnlink));
     RNFS.exists.mockImplementation(mockReturnPromise(isSuccessExists, false, errorIsExistingFile));
     if (Platform.OS === "android") {
-      RNFS.readDirAssets.mockImplementation(mockReturnPromise(isSuccessReadDir, sourceDirContent, errorReadingDir));
-      RNFS.copyFileAssets.mockImplementation(mockVoidPromise(isSuccessCopy, errorCoping));
+      RNFS.copyFile.mockImplementation(() => (Promise.resolve(null)));
     } else {
-      RNFS.readDir.mockImplementation(mockReturnPromise(isSuccessReadDir, sourceDirContent, errorReadingDir));
-      RNFS.copyFile.mockImplementation(mockVoidPromise(isSuccessCopy, errorCoping));
+      RNFS.downloadFile.mockImplementation(() => ({ promise: Promise.resolve(null) }));
     }
   };
 
@@ -658,7 +662,7 @@ describe("scorm player package handling", () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
-    test("should return array of promises copy files in the directory.", async () => {
+    it("should return array of promises copy files in the directory.", async () => {
       setupDefaultConfigeMock({ platformOS: "android" });
       let result;
       result = await initializeScormWebplayer();
