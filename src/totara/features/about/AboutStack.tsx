@@ -20,20 +20,6 @@ import { NAVIGATION } from '../../lib/navigation';
 import { NAVIGATION_TEST_IDS } from '../../lib/testIds';
 import About from './About';
 
-// const AboutStack = createCompatNavigatorFactory(createStackNavigator)(
-//   {
-//     About: {
-//       screen: About,
-//       navigationOptions: ({ navigation }) => {
-//         return {
-//           headerLeft: () => <CloseButton onPress={() => navigation.goBack()} testID={NAVIGATION_TEST_IDS.BACK} />
-//         };
-//       }
-//     }
-//   },
-//   { initialRouteName: "About" }
-// );
-
 const Stack = createStackNavigator();
 
 const AboutStack = () => (

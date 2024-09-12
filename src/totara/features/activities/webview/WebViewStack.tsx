@@ -21,33 +21,6 @@ import React from 'react';
 
 import { WebviewActivity } from './WebviewActivity';
 
-// const WebViewStack = createCompatNavigatorFactory(createStackNavigator)(
-//   {
-//     [WEBVIEW_ACTIVITY]: {
-//       screen: WebviewActivity,
-//       navigationOptions: ({ navigation }) => {
-//         const { backAction, title } = navigation.state.params as any;
-//         return {
-//           headerTitleAlign: "center",
-//           title: title,
-//           headerLeft: () => (
-//             <CloseButton
-//               onPress={() => {
-//                 backAction();
-//                 navigation.goBack();
-//               }}
-//               testID={NAVIGATION_TEST_IDS.BACK}
-//             />
-//           )
-//         };
-//       }
-//     }
-//   },
-//   {
-//     mode: "modal"
-//   }
-// );
-
 const Stack = createStackNavigator();
 
 const WebViewStack = () => (

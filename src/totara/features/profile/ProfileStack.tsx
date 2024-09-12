@@ -19,19 +19,6 @@ import totaraNavigationOptions from '@totara/components/NavigationOptions';
 import { NAVIGATION } from '../../lib/navigation';
 import Profile from './Profile';
 
-// const ProfileStack = createCompatNavigatorFactory(createStackNavigator)(
-//     {
-//         [NAVIGATION.PROFILE]: {
-//             screen: Profile
-//         }
-//     },
-//     {
-//         mode: "modal",
-//         initialRouteName: NAVIGATION.PROFILE,
-//         defaultNavigationOptions: totaraNavigationOptions({})
-//     }
-// );
-
 const Stack = createStackNavigator();
 
 const ProfileStack = () => (
