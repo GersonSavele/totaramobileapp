@@ -1,5 +1,10 @@
 Totara Mobile App Changelog
 
+# Release 1.3 (13th September 2024):
+
+Improvement
+[MOB-1272] Replatform app for use with Expo with RN 0.74.5
+
 # Release 1.2 (12th April 2024):
 
 Bug
