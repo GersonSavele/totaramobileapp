@@ -16,7 +16,7 @@
       },
       "prebuildCommand": "prebuild --skip-dependency-update react",
       "cache": {
-        "key": "eas-1"
+        "key": "eas-dev"
       }
     },
     "preview": {
@@ -34,7 +34,17 @@
       },
       "prebuildCommand": "prebuild --skip-dependency-update react",
       "cache": {
-        "key": "eas-2"
+        "key": "eas-pre"
+      }
+    },
+    "production": {
+      "distribution": "store",
+      "env": {
+        "APP_ENV": "production"
+      },
+      "prebuildCommand": "prebuild --skip-dependency-update react",
+      "cache": {
+        "key": "eas-prd"
       }
     }
   }
