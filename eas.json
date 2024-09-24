@@ -40,7 +40,7 @@
     "production": {
       "distribution": "store",
       "env": {
-        "APP_ENV": "production"
+        "APP_ENV": "prod"
       },
       "prebuildCommand": "prebuild --skip-dependency-update react",
       "cache": {
