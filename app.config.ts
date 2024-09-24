@@ -16,7 +16,7 @@ export default (): ExpoConfig => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.totaralearning.TotaraMobileApp',
-    buildNumber: '15',
+    buildNumber: '98',
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_IOS : './GoogleService-Info.plist'
   },
   android: {
@@ -24,9 +24,10 @@ export default (): ExpoConfig => ({
       foregroundImage: './assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff'
     },
+    blockedPermissions: ['android.permission.USE_FULL_SCREEN_INTENT'],
     package: 'com.totaramobileapp',
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_ANDROID : './google-services.json',
-    versionCode: 15
+    versionCode: 98
   },
   plugins: [
     '@react-native-firebase/app',

@@ -1,6 +1,6 @@
 {
-  "name": "Totara",
-  "version": "1.0.0",
+  "name": "totara-mobile-app",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "start": "npx expo start",
