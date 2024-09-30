@@ -17,11 +17,26 @@ import messaging from '@react-native-firebase/messaging';
 
 const registerPushNotifications = async () => {
   try {
-    await messaging().requestPermission();
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.debug(`requestPermission enabled`);
+    }
+
+    if (!messaging().isDeviceRegisteredForRemoteMessages) {
+      console.debug('registerDeviceForRemoteMessages');
+      await messaging().registerDeviceForRemoteMessages();
+    } else {
+      console.debug('skipping registerDeviceForRemoteMessages');
+    }
   } catch (error) {
     console.debug('Notifications Permission status error:', error);
     return;
   }
+
   await unregisterPushNotification();
   return messaging().getToken();
 };

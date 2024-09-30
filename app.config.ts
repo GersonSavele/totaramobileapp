@@ -3,7 +3,7 @@ import type { ExpoConfig } from '@expo/config';
 export default (): ExpoConfig => ({
   slug: 'totara-mobile-app',
   name: 'Totara',
-  version: '2.0.0',
+  version: '2.0.2',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
   scheme: 'totara',
@@ -16,8 +16,11 @@ export default (): ExpoConfig => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.totaralearning.TotaraMobileApp',
-    buildNumber: '105',
-    googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_IOS : './GoogleService-Info.plist'
+    buildNumber: '107',
+    googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_IOS : './GoogleService-Info.plist',
+    entitlements: {
+      'aps-environment': 'production'
+    }
   },
   android: {
     adaptiveIcon: {
@@ -27,7 +30,7 @@ export default (): ExpoConfig => ({
     blockedPermissions: ['android.permission.USE_FULL_SCREEN_INTENT'],
     package: 'com.totaramobileapp',
     googleServicesFile: process.env.EAS_BUILD ? process.env.GOOGLE_SERVICES_FILE_ANDROID : './google-services.json',
-    versionCode: 105
+    versionCode: 107
   },
   plugins: [
     '@react-native-firebase/app',
@@ -63,9 +66,9 @@ export default (): ExpoConfig => ({
       '@sentry/react-native/expo',
       {
         // 'sentry org slug, or use the `SENTRY_ORG` environment variable'
-        organization: process.env.SENTRY_ORG,
+        organization: process.env.SENTRY_ORG || 'SENTRY_ORG',
         // 'sentry project name, or use the `SENTRY_PROJECT` environment variable'
-        project: process.env.SENTRY_PROJECT,
+        project: process.env.SENTRY_PROJECT || 'SENTRY_PROJECT',
         // If you are using a self-hosted instance, update the value of the url property
         // to point towards your self-hosted instance. For example, https://self-hosted.example.com/.
         url: 'https://sentry.io/'

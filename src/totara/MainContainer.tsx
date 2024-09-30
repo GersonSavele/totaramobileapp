@@ -112,6 +112,10 @@ const MainContainer = () => {
       dispatch(updateToken({ token: token }));
     });
 
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.debug('Message handled in the background', remoteMessage);
+    });
+
     const unsubscribe = messaging().onMessage(message => {
       console.debug(`onMessage ${JSON.stringify(message)}`);
       fetchNotifications(client);
