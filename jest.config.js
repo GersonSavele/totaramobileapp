@@ -19,7 +19,7 @@ const config = {
     preset: "jest-expo",
     moduleNameMapper: {
         "\\.(jpg|jpeg|png)$": "<rootDir>/src/__mocks__/fileMock.js",
-        "^./config.local$":  "<rootDir>/src/__mocks__/fileMock.js",
+        "^./config.local$":  "<rootDir>/src/__mocks__/configMock.js",
         "@totara/(.*)": "<rootDir>/src/totara/$1",
         "@resources/(.*)": "<rootDir>/src/resources/$1"
       },
