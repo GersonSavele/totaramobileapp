@@ -21,3 +21,4 @@ npm run //get languages
 
 The offline SCORM server set up is not required to be updated normally, but if it is the case, its script should be bundled to "html" directory under "TotaraMobileOfflineScorm", it can be done using  
 `npm run build_scorm` command
+# totaramobileapp
